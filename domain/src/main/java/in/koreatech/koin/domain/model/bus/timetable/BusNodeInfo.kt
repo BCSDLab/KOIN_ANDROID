@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.domain.model.bus.timetable
 
+import `in`.koreatech.koin.domain.model.bus.city.CityBusGeneralDestination
+import `in`.koreatech.koin.domain.model.bus.city.CityBusNumber
 import java.time.LocalTime
 
 sealed class BusNodeInfo {
@@ -14,8 +16,9 @@ sealed class BusNodeInfo {
         val arrivalTime: String
     ): BusNodeInfo()
 
-    data class CitybusNodeInfo(
-        val startLocation: String,
-        val timeInfo: String
+    data class CityBusNodeInfo(
+        val busNumber: CityBusNumber,
+        val departNode: CityBusGeneralDestination,
+        val arrivalNode: CityBusGeneralDestination
     ): BusNodeInfo()
 }

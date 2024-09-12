@@ -1,20 +1,12 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
-import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
+import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,15 +15,31 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.github.chrisbanes.photoview.PhotoView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.dialog.AlertModalDialog
+import `in`.koreatech.koin.core.dialog.AlertModalDialogData
+import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningBinding
+import `in`.koreatech.koin.domain.constant.BREAKFAST
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.dining.LikeActionType
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.ui.dining.DiningActivity
+import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.util.ext.toStringWithComma
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
+class DiningAdapter(
+    private val onLikeClickResult: suspend (Dining) -> LikeActionType,
+    private val onShareClick: (Dining) -> Unit,
+    private val coroutineScope: CoroutineScope
+) : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as DiningViewHolder).bind(getItem(position))
@@ -41,60 +49,53 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
         return DiningViewHolder(ItemDiningBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dining: Dining) {
             with(binding) {
                 val context = root.context
 
                 setDiningImageVisibility(context, dining)
-                setDiningDataText(context, dining)
+                setDiningData(context, dining)
                 setEmptyDataVisibility(dining)
+                initShareAction(dining)
+                initLikeAction(dining)
 
                 if(dining.imageUrl.isNotEmpty()) {
+                    lottieImageLoading.visibility = View.VISIBLE
                     cardViewDining.strokeWidth = 0
                     textViewNoPhoto.visibility = View.INVISIBLE
                     imageViewNoPhoto.visibility = View.INVISIBLE
                     imageViewDining.visibility = View.VISIBLE
                     Glide.with(context)
                         .load(dining.imageUrl)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                binding.lottieImageLoading.visibility = View.GONE
+                                return false
+                            }
+                        })
                         .into(imageViewDining)
 
-                    val dialog = createZoomableDialog(context)
+                    val dialog = ImageZoomableDialog(context, dining.imageUrl)
+                    dialog.initialScale = 0.75f
                     cardViewDining.setOnClickListener {
                         dialog.show()
-                        val photoView = dialog.findViewById<PhotoView>(R.id.photo_view_dining)
-                        Glide.with(context)
-                            .load(dining.imageUrl)
-                            .listener(object : RequestListener<Drawable> {
-                                override fun onLoadFailed(
-                                    e: GlideException?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    isFirstResource: Boolean
-                                ): Boolean = false
-
-                                override fun onResourceReady(
-                                    resource: Drawable?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    dataSource: DataSource?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    photoView.post {
-                                        photoView.scale = DIALOG_MIN_SCALE
-
-                                        val closeButton = dialog.findViewById<ImageView>(R.id.close_button_dining)
-                                        val lp = closeButton.layoutParams as FrameLayout.LayoutParams
-                                        val rectF = photoView.displayRect
-                                        lp.setMargins(0, rectF.top.toInt() - closeButton.height - 8, rectF.left.toInt(), 0)
-                                        closeButton.layoutParams = lp
-                                        closeButton.visibility = View.VISIBLE
-                                    }
-                                    return false
-                                }
-                            })
-                            .into(photoView)
                         EventLogger.logClickEvent(
                             AnalyticsConstant.Domain.CAMPUS,
                             AnalyticsConstant.Label.MENU_IMAGE,
@@ -107,12 +108,13 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     textViewNoPhoto.visibility = View.VISIBLE
                     imageViewNoPhoto.visibility = View.VISIBLE
                     imageViewDining.visibility = View.INVISIBLE
-                    cardViewDining.setOnClickListener(null)
-                    EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
-                        AnalyticsConstant.Label.MENU_IMAGE,
-                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
-                    )
+                    cardViewDining.setOnClickListener {
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.CAMPUS,
+                            AnalyticsConstant.Label.MENU_IMAGE,
+                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                        )
+                    }
                 }
 
                 if(dining.changedAt.isNotEmpty()) {
@@ -132,6 +134,95 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
             }
         }
 
+        private fun setDiningCard(context: Context, dining: Dining) {
+            with(dining) {
+                // 능수관, 2캠퍼스일 때 이미지 카드 노출 X
+                if (place == DiningPlace.Nungsu.place || place == DiningPlace.Campus2.place) {
+                    binding.cardViewDining.visibility = View.GONE
+                }
+                // 아침 이미지 분기처리
+                else if (type == BREAKFAST) {
+                    if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
+                    else binding.cardViewDining.visibility = View.GONE
+                }
+                // 점심, 저녁
+                else {
+                    if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
+                    else showEmptyDiningImage(context, dining)
+                }
+            }
+        }
+
+        private fun initLikeAction(dining: Dining) {
+            binding.linearLayoutLike.setOnClickListener {
+                coroutineScope.launch {
+                    withContext(Dispatchers.Main) {
+                        val result = onLikeClickResult(dining)
+                        when(result) {
+                            LikeActionType.LIKE -> {
+                                dining.isLiked = true
+                                ++dining.likes
+                                setLikeUI(dining)
+                            }
+
+                            LikeActionType.UNLIKE -> {
+                                dining.isLiked = false
+                                --dining.likes
+                                setLikeUI(dining)
+                            }
+
+                            LikeActionType.LOGIN_REQUIRED -> {
+                                val dialog =
+                                    AlertModalDialog(binding.root.context, AlertModalDialogData(
+                                        R.string.recommend_login_to_like_dining,
+                                        R.string.recommend_like_dining,
+                                        R.string.action_login,
+                                    ),
+                                        onPositiveButtonClicked = {
+                                            val intent = Intent(
+                                                binding.root.context,
+                                                LoginActivity::class.java
+                                            )
+                                            intent.putExtra("activity", DiningActivity::class.java)
+                                            binding.root.context.startActivity(intent)
+                                        },
+                                        onNegativeButtonClicked = {
+                                            it.dismiss()
+                                        }
+                                    )
+                                dialog.show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private fun initShareAction(dining: Dining) {
+            binding.linearLayoutShare.setOnClickListener {
+                onShareClick(dining)
+            }
+        }
+
+        private fun setLikeUI(dining: Dining) {
+            with(binding) {
+                if (dining.likes > 0) {
+                    textViewLike.visibility = View.INVISIBLE
+                    textViewLikeCount.visibility = View.VISIBLE
+                    textViewLikeCount.text = dining.likes.toStringWithComma()
+                } else {
+                    textViewLike.visibility = View.VISIBLE
+                    textViewLikeCount.visibility = View.INVISIBLE
+                }
+
+                if(dining.isLiked) {
+                    imageViewLike.setImageResource(R.drawable.ic_like_filled)
+                } else {
+                    imageViewLike.setImageResource(R.drawable.ic_like)
+                }
+            }
+        }
+
         private fun setDiningImageVisibility(context: Context, dining: Dining) {
             when(dining.place) {
                 context.getString(R.string.dining_nungsu),
@@ -139,6 +230,51 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 else -> binding.cardViewDining.visibility = View.VISIBLE
             }
         }
+
+        private fun showDiningImage(context: Context, dining: Dining){
+            with(binding) {
+                cardViewDining.visibility = View.VISIBLE
+                cardViewDining.strokeWidth = 0
+                textViewNoPhoto.visibility = View.INVISIBLE
+                imageViewNoPhoto.visibility = View.INVISIBLE
+                imageViewDining.visibility = View.VISIBLE
+
+                Glide.with(context)
+                    .load(dining.imageUrl)
+                    .into(imageViewDining)
+
+                // 이미지 클릭시 dialog 형태로 노출
+                val dialog = ImageZoomableDialog(context, dining.imageUrl)
+                dialog.initialScale = 0.75f
+                cardViewDining.setOnClickListener {
+                    dialog.show()
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.CAMPUS,
+                        AnalyticsConstant.Label.MENU_IMAGE,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                    )
+                }
+            }
+        }
+
+        private fun showEmptyDiningImage(context: Context, dining: Dining) {
+            with (binding) {
+                cardViewDining.visibility = View.VISIBLE
+                cardViewDining.strokeWidth =
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
+                textViewNoPhoto.visibility = View.VISIBLE
+                imageViewNoPhoto.visibility = View.VISIBLE
+                imageViewDining.visibility = View.INVISIBLE
+                cardViewDining.setOnClickListener {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.CAMPUS,
+                        AnalyticsConstant.Label.MENU_IMAGE,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                    )
+                }
+            }
+        }
+
         private fun setEmptyDataVisibility(dining: Dining) {
             with(binding) {
                 textViewKcal.visibility = View.VISIBLE
@@ -146,7 +282,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 textViewCashPrice.visibility = View.VISIBLE
                 dividerSlash.visibility = View.VISIBLE
                 textViewCardPrice.visibility = View.VISIBLE
-                
+
                 if(dining.kcal.isEmpty() || dining.kcal == "0") {
                     textViewKcal.visibility = View.GONE
                     dividerDot.visibility = View.GONE
@@ -164,7 +300,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 }
             }
         }
-        private fun setDiningDataText(context: Context, dining: Dining) {
+        private fun setDiningData(context: Context, dining: Dining) {
             with(binding) {
                 textViewDiningCorner.text = dining.place
                 textViewKcal.text =
@@ -173,62 +309,14 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     context.getString(R.string.price, dining.priceCash)
                 textViewCardPrice.text =
                     context.getString(R.string.price, dining.priceCard)
-                textViewDiningMenuItems.text = dining.menu.joinToString("\n")
-            }
-        }
-        private fun createZoomableDialog(context: Context) : Dialog = object : Dialog(context) {
-
-            private var isUserImageInteraction = false
-            private lateinit var photoView : PhotoView
-
-            override fun onStart() {
-                super.onStart()
-                window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            }
-
-            @SuppressLint("ClickableViewAccessibility")
-            override fun onCreate(savedInstanceState: Bundle?) {
-                super.onCreate(savedInstanceState)
-                setContentView(R.layout.dialog_dining_image)
-
-                photoView = findViewById(R.id.photo_view_dining)
-                photoView.apply {
-                    setOnTouchListener { v, event ->
-                        attacher.onTouch(v, event)
-                        if (event?.action == ACTION_POINTER_DOWN || event?.action == MotionEvent.ACTION_UP)
-                            false
-                        else true
-                    }
-                    minimumScale = DIALOG_MIN_SCALE
-                }
-            }
-
-            override fun onTouchEvent(event: MotionEvent): Boolean {
-                if(event.action == ACTION_POINTER_DOWN)
-                    isUserImageInteraction = true
-
-                // 이미지 영역 밖 터치 시 dismiss
-                if(event.action == MotionEvent.ACTION_UP) {
-                    if (!isUserImageInteraction) {
-                        val rect = Rect()
-                        window!!.decorView.getWindowVisibleDisplayFrame(rect)
-                        val statusBarHeight = rect.top
-
-                        if (!photoView.displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
-                            dismiss()
-                        }
-                    }
-                    isUserImageInteraction = false
-                }
-                return super.onTouchEvent(event)
+                textViewDiningMenuItems1.text = dining.menu.subList(0, dining.menu.size / 2).joinToString("\n")
+                textViewDiningMenuItems2.text = dining.menu.subList(dining.menu.size / 2, dining.menu.size).joinToString("\n")
+                setLikeUI(dining)
             }
         }
     }
 
     companion object {
-        private const val DIALOG_MIN_SCALE = 0.75f
-        private const val ACTION_POINTER_DOWN = 261
         private val diffCallback = object : DiffUtil.ItemCallback<Dining>() {
             override fun areItemsTheSame(
                 oldItem: Dining,

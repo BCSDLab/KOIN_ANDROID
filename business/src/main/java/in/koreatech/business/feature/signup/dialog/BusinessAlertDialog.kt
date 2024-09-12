@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.signup.dialog
 
+import android.opengl.Visibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -39,8 +41,11 @@ fun BusinessAlertDialog(
     dialogTitle: String,
     dialogText: String,
     positiveButtonText: String,
+    visibility: Boolean = false
 ) {
-
+    if (!visibility) {
+        return
+    }
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier
@@ -120,4 +125,16 @@ fun BusinessAlertDialog(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewDialog() {
+    BusinessAlertDialog(
+        onDismissRequest = {},
+        onConfirmation ={},
+        dialogTitle ="",
+        dialogText ="",
+        positiveButtonText ="",
+    )
 }

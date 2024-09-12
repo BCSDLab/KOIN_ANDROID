@@ -6,8 +6,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view_now_bus"
@@ -29,13 +29,10 @@
                     android:layout_gravity="center"
                     android:background="@drawable/bg_rect_radius_40dp"
                     android:gravity="start|center"
-                    android:includeFontPadding="false"
-                    android:lineHeight="17sp"
                     android:text="출발"
                     android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.12"
                     android:textColor="@color/white"
-                    android:textSize="11sp"
-                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,12 +43,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="7dp"
                     android:gravity="start|center"
-                    android:includeFontPadding="false"
-                    android:lineHeight="22sp"
-                    android:lineSpacingExtra="7sp"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
-                    app:fontName="Custom2"
                     app:layout_constraintBottom_toBottomOf="@id/chip_departure"
                     app:layout_constraintStart_toEndOf="@id/chip_departure"
                     app:layout_constraintTop_toTopOf="@id/chip_departure"
@@ -66,12 +59,9 @@
                     android:layout_marginTop="7dp"
                     android:background="@drawable/bg_rect_radius_40dp"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:lineHeight="17sp"
                     android:text="도착"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.12"
                     android:textColor="@color/white"
-                    android:textSize="11sp"
-                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/chip_departure" />
 
@@ -82,12 +72,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="7dp"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:lineHeight="22sp"
-                    android:lineSpacingExtra="7sp"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
-                    app:fontName="Custom2"
                     app:layout_constraintBottom_toBottomOf="@id/chip_arrival"
                     app:layout_constraintStart_toEndOf="@id/chip_arrival"
                     app:layout_constraintTop_toTopOf="@id/chip_arrival"
@@ -109,14 +95,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="6dp"
                     android:gravity="end|center"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="-0.04"
-                    android:lineHeight="20sp"
-                    android:lineSpacingExtra="6sp"
                     android:text="학교셔틀"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.14"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:fontName="Custom6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,13 +107,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:gravity="start|top"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="-0.02"
-                    android:lineSpacingExtra="2sp"
                     android:text="운행정보없음"
+                    android:textAppearance="@style/TextAppearance.Koin.Bold.18"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/chip_arrival" />
 
@@ -141,13 +118,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="end|center_vertical"
-                    android:includeFontPadding="false"
-                    android:lineHeight="19sp"
-                    android:lineSpacingExtra="6sp"
                     android:text="(00:00)분 출발"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.13"
                     android:textColor="@color/white"
-                    android:textSize="13sp"
-                    app:fontName="Custom6"
                     app:layout_constraintBaseline_toBaselineOf="@id/text_view_now_arrival_time"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -174,12 +147,9 @@
                     android:id="@+id/text_view_next_bus"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:lineSpacingExtra="7sp"
                     android:text="다음버스"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
-                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -199,14 +169,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="6dp"
                     android:gravity="end|center"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="-0.04"
-                    android:lineHeight="20sp"
-                    android:lineSpacingExtra="6sp"
                     android:text="학교셔틀"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.14"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:fontName="Custom6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -216,13 +181,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:gravity="start|top"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="-0.02"
-                    android:lineSpacingExtra="2sp"
                     android:text="운행정보없음"
+                    android:textAppearance="@style/TextAppearance.Koin.Bold.18"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_view_next_bus" />
 
@@ -231,13 +192,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="end|center_vertical"
-                    android:includeFontPadding="false"
-                    android:lineHeight="19sp"
-                    android:lineSpacingExtra="6sp"
                     android:text="(00:00)분 출발"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.13"
                     android:textColor="@color/white"
-                    android:textSize="13sp"
-                    app:fontName="Custom6"
                     app:layout_constraintBaseline_toBaselineOf="@id/text_view_next_arrival_time"
                     app:layout_constraintEnd_toEndOf="parent" />
 

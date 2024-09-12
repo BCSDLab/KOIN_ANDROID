@@ -1,12 +1,14 @@
 package `in`.koreatech.koin.ui.navigation.state
 
 sealed class MenuState {
-    object Main: MenuState()
-    object Store: MenuState()
-    object Bus: MenuState()
-    object Dining: MenuState()
-    object Timetable: MenuState()
-    object Land: MenuState()
-    object Owner: MenuState()
-    object UserInfo: MenuState()
+    data object Main: MenuState()
+    data object Store: MenuState()
+    data object Bus: MenuState()
+    data object Dining: MenuState()
+    data object Timetable: MenuState()
+    data object Land: MenuState()
+    data object Owner: MenuState()
+    data object UserInfo: MenuState()
+    data object Notification: MenuState()
+    data object LoginOrLogout: MenuState()
 }

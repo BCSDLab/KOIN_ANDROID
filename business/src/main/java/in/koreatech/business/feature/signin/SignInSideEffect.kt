@@ -1,7 +1,5 @@
 package `in`.koreatech.business.feature.signin
 
-import `in`.koreatech.business.feature.changepassword.passwordauthentication.PasswordAuthenticationSideEffect
-
 sealed class SignInSideEffect {
 
     object NavigateToSignUp: SignInSideEffect()

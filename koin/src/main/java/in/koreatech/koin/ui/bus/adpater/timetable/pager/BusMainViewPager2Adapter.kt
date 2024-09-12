@@ -7,9 +7,11 @@ import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import `in`.koreatech.koin.domain.model.bus.BusType
 
 class BusMainViewPager2Adapter(
-    fragmentActivity: FragmentActivity
+    fragmentActivity: FragmentActivity,
+    private val type: String
 ): FragmentStateAdapter(fragmentActivity) {
 
     private val registeredFragments = SparseArray<Fragment>()
@@ -20,7 +22,7 @@ class BusMainViewPager2Adapter(
         return registeredFragments[position] ?: when(position) {
             0 -> BusMainFragment()
             1 -> BusSearchFragment()
-            2 -> BusTimetableFragment()
+            2 -> BusTimetableFragment.newInstance(type)
             else -> throw IllegalArgumentException("Position must be lower than $itemCount")
         }.also { registeredFragments[position] = it }
     }

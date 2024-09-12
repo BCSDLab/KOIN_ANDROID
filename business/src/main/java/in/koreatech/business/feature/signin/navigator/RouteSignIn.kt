@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import `in`.koreatech.business.feature.changepassword.navigator.ChangePassword
+import `in`.koreatech.business.feature.findpassword.navigator.ChangePassword
 import `in`.koreatech.business.feature.signin.SignInScreenImpl
 import `in`.koreatech.business.feature.signup.navigator.SignupNavigator
 

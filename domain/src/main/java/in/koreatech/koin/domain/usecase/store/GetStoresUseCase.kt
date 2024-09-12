@@ -2,6 +2,7 @@ package `in`.koreatech.koin.domain.usecase.store
 
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategory
+import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import `in`.koreatech.koin.domain.util.ext.sortedOpenStore
 import `in`.koreatech.koin.domain.util.match
@@ -12,14 +13,17 @@ class GetStoresUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         category: StoreCategory? = null,
-        search: String? = null,
+        storeSorter: StoreSorter? = StoreSorter.NONE,
+        isOperating: Boolean? = null,
+        isDelivery: Boolean? = null
     ): List<Store> {
-        return storeRepository.getStores()
+        return storeRepository.getStores(
+            storeSorter = storeSorter,
+            isOperating = isOperating,
+            isDelivery = isDelivery
+        )
             .filter {
-                if (category == null) return@filter true
                 category in it.categoryIds
             }
-            .filter { if (search != null) it.name.match(search) else true }
-            .sortedOpenStore()
     }
 }

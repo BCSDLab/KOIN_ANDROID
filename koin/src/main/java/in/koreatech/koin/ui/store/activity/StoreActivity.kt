@@ -1,28 +1,37 @@
 package `in`.koreatech.koin.ui.store.activity
 
+import android.graphics.Rect
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MotionEvent
-import android.view.View
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
+import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.store.adapter.StoreCategoriesRecyclerAdapter
+import `in`.koreatech.koin.ui.store.adapter.StoreEventPagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
@@ -32,27 +41,62 @@ import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class StoreActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
+    private var currentTime by Delegates.notNull<Long>()
+    private var categoryElapsedTime by Delegates.notNull<Long>()
+    private var storeElapsedTime by Delegates.notNull<Long>()
 
     private val binding by dataBinding<StoreActivityMainBinding>(R.layout.store_activity_main)
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
-
     private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
-
     }
+
+    private val viewPagerHandler = Handler(Looper.getMainLooper())
+    private val viewPagerDelayTime = 10000L
 
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
-            storeDetailContract.launch(it.uid)
+            storeElapsedTime = System.currentTimeMillis() - currentTime
+
+            storeDetailContract.launch(Pair(it.uid, getStoreCategoryName(viewModel.category.value)))
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CLICK,
-                it.name
+                it.name + ", category: " + getStoreCategoryName(viewModel.category.value) + ", store_name: " + it.name + ", duration_time: " + storeElapsedTime / 1000
             )
+        }
+    }
+
+    private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
+        setOnItemClickListener {
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
+                it.shopName
+            )
+            storeDetailContract.launch(Pair(it.shopId, getStoreCategoryName(viewModel.category.value)))
+        }
+    }
+
+    private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
+        setOnItemClickListener {
+            categoryElapsedTime = System.currentTimeMillis() - currentTime
+            viewModel.setCategory(it.toStoreCategory())
+            binding.searchEditText.text.clear()
+            val eventValue = getStoreCategoryName(viewModel.category.value)
+            val preValue = getStoreCategoryName(preCategories)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CATEGORIES,
+                eventValue+ ", previous_categories: " + preValue + ", current_categories: " + eventValue + ", duration_time: " + categoryElapsedTime / 1000
+            )
+            preCategories = it.toStoreCategory()
+            currentTime = System.currentTimeMillis()
         }
     }
 
@@ -92,6 +136,28 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        initViewModel()
+        initView()
+
+        val initStoreCategory =
+            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
+        storeCategoriesAdapter.selectPosition =
+            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
+        viewModel.setCategory(initStoreCategory)
+
+        storeCategoriesAdapter.initCategory(initStoreCategory)
+    }
+
+    override fun onBackPressed() {
+        if (binding.searchEditText.hasFocus()) {
+            binding.searchEditText.clearFocus()
+            return
+        }
+        super.onBackPressed()
+    }
+
+    private fun initView() {
+        currentTime = System.currentTimeMillis()
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
@@ -99,13 +165,16 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             }
         }
 
-        binding.searchEditText.addTextChangedListener {
-            viewModel.updateSearchQuery(it.toString())
-            showRemoveQueryButton = isSearchMode && !it.isNullOrEmpty()
+
+        binding.categoriesRecyclerview.apply {
+            layoutManager = GridLayoutManager(this@StoreActivity, 5)
+            adapter = storeCategoriesAdapter
         }
 
-        binding.searchEditText.setOnFocusChangeListener { v, hasFocus ->
-            isSearchMode = hasFocus
+
+        binding.searchEditText.addTextChangedListener {
+            viewModel.updateSearchQuery(it.toString())
+            showRemoveQueryButton = !it.isNullOrEmpty()
         }
 
         binding.searchEditText.setOnTouchListener { v, event ->
@@ -133,20 +202,184 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             if (showRemoveQueryButton) binding.searchEditText.setText("")
         }
 
-        handleCategoryClickEvent()
-        initViewModel()
 
-        val initStoreCategory =
-            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
-        viewModel.setCategory(initStoreCategory)
+        binding.eventViewPager.apply {
+
+            currentItem = Int.MAX_VALUE / 2
+            adapter = storeEventPagerAdapter
+
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    this@StoreActivity,
+                    R.dimen.view_pager_item_margin
+                )
+            )
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+
+                }
+
+                override fun onPageSelected(position: Int) {
+
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+                    if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+                        startAutoScroll()
+                    }
+                }
+            })
+        }
+
+        binding.root.post {
+            val rect = Rect()
+            window!!.decorView.getWindowVisibleDisplayFrame(rect)
+            val statusBarHeight = rect.top
+
+            binding.containerScrollView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+                val oldScrollRatio =
+                    oldScrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(
+                        0
+                    ).height - statusBarHeight))
+                val scrollRatio =
+                    scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(
+                        0
+                    ).height - statusBarHeight))
+                if (scrollRatio >= 0.7 && oldScrollRatio < 0.7) {
+                    EventLogger.logScrollEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES,
+                        "scroll in " + getStoreCategoryName(viewModel.category.value)
+                    )
+                }
+            }
+        }
+
+        with(binding) {
+            storeManyReviewCheckbox.setOnClickListener {
+
+                if (storeManyReviewCheckbox.isChecked) {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CAN,
+                        "check_review_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                    )
+                    storeManyReviewCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.blue_alpha20
+                        )
+                    )
+                    viewModel.settingStoreSorter(StoreSorter.COUNT)
+
+                    storeHighRatingCheckbox.isChecked = false
+                    storeHighRatingCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.gray15
+                        )
+                    )
+                } else {
+                    storeManyReviewCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.gray15
+                        )
+                    )
+                    viewModel.settingStoreSorter(StoreSorter.NONE)
+                }
+            }
+
+            storeHighRatingCheckbox.setOnClickListener {
+                if (storeHighRatingCheckbox.isChecked) {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CAN,
+                        "check_star_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                    )
+                    storeHighRatingCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.blue_alpha20
+                        )
+                    )
+                    viewModel.settingStoreSorter(StoreSorter.RATING)
+
+                    storeManyReviewCheckbox.isChecked = false
+                    storeManyReviewCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.gray15
+                        )
+                    )
+                } else {
+                    storeHighRatingCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.gray15
+                        )
+                    )
+                    viewModel.settingStoreSorter(StoreSorter.NONE)
+                }
+            }
+
+            storeIsOperatingCheckbox.setOnClickListener {
+                storeIsOperatingCheckbox.setTextColor(
+                    if (storeIsOperatingCheckbox.isChecked) {
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CAN,
+                            "check_open_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                        )
+                        ContextCompat.getColor(
+                        this@StoreActivity,
+                        R.color.blue_alpha20
+                    )}
+                    else ContextCompat.getColor(this@StoreActivity, R.color.gray15)
+                )
+
+                viewModel.filterStoreIsOpen(storeIsOperatingCheckbox.isChecked)
+            }
+
+            storeIsDeliveryCheckbox.setOnClickListener {
+                storeIsDeliveryCheckbox.setTextColor(
+                    if (storeIsDeliveryCheckbox.isChecked){
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CAN,
+                            "check_delivery_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                        )
+                        ContextCompat.getColor(
+                        this@StoreActivity,
+                        R.color.blue_alpha20
+                    )}
+                    else ContextCompat.getColor(this@StoreActivity, R.color.gray15)
+                )
+
+                viewModel.filterStoreIsDelivery(storeIsDeliveryCheckbox.isChecked)
+            }
+        }
     }
 
-    override fun onBackPressed() {
-        if (binding.searchEditText.hasFocus()) {
-            binding.searchEditText.clearFocus()
-            return
+    private val runnable = object : Runnable {
+        override fun run() {
+            var currentPosition = binding.eventViewPager.currentItem
+            val itemCount = binding.eventViewPager.adapter?.itemCount ?: 0
+
+            currentPosition = if (currentPosition >= itemCount - 1) 0 else currentPosition + 1
+
+            binding.eventViewPager.setCurrentItem(currentPosition, true)
+            viewPagerHandler.postDelayed(this, viewPagerDelayTime)
         }
-        super.onBackPressed()
+    }
+
+    private fun startAutoScroll() {
+        viewPagerHandler.removeCallbacks(runnable)
+        viewPagerHandler.postDelayed(runnable, viewPagerDelayTime)
     }
 
     private fun initViewModel() {
@@ -156,6 +389,15 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             binding.storeSwiperefreshlayout.isRefreshing = it
         }
 
+        observeLiveData(viewModel.storeEvents) {
+            storeEventPagerAdapter.submitList(it)
+            binding.eventViewPager.isGone = it.isNullOrEmpty()
+        }
+
+        observeLiveData(viewModel.storeCategories) {
+            storeCategoriesAdapter.submitList(it.drop(1))
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stores.collect {
@@ -163,56 +405,8 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 }
             }
         }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.category.collect {
-                    handleCategorySelection(it)
-                }
-            }
-        }
     }
 
-    private fun handleCategoryClickEvent() {
-        binding.storeCategoryChicken.setCategoryOnClick(StoreCategory.Chicken)
-        binding.storeCategoryChickenTextview.setCategoryOnClick(StoreCategory.Chicken)
-
-        binding.storeCategoryPizza.setCategoryOnClick(StoreCategory.Pizza)
-        binding.storeCategoryPizzaTextview.setCategoryOnClick(StoreCategory.Pizza)
-
-        binding.storeCategoryDosirak.setCategoryOnClick(StoreCategory.DOSIRAK)
-        binding.storeCategoryDosirakTextview.setCategoryOnClick(StoreCategory.DOSIRAK)
-
-        binding.storeCategoryPorkFeet.setCategoryOnClick(StoreCategory.PorkFeet)
-        binding.storeCategoryPorkFeetTextview.setCategoryOnClick(StoreCategory.PorkFeet)
-
-        binding.storeCategoryChinese.setCategoryOnClick(StoreCategory.Chinese)
-        binding.storeCategoryChineseTextview.setCategoryOnClick(StoreCategory.Chinese)
-
-        binding.storeCategoryNormal.setCategoryOnClick(StoreCategory.NormalFood)
-        binding.storeCategoryNormalTextview.setCategoryOnClick(StoreCategory.NormalFood)
-
-        binding.storeCategoryCafe.setCategoryOnClick(StoreCategory.Cafe)
-        binding.storeCategoryCafeTextview.setCategoryOnClick(StoreCategory.Cafe)
-
-        binding.storeCategoryHair.setCategoryOnClick(StoreCategory.BeautySalon)
-        binding.storeCategoryHairTextview.setCategoryOnClick(StoreCategory.BeautySalon)
-
-        binding.storeCategoryEtc.setCategoryOnClick(StoreCategory.Etc)
-        binding.storeCategoryEtcTextview.setCategoryOnClick(StoreCategory.Etc)
-    }
-
-    private fun handleCategorySelection(category: StoreCategory?) {
-        binding.storeCategoryChickenTextview.setCategorySelected(category == StoreCategory.Chicken)
-        binding.storeCategoryPizzaTextview.setCategorySelected(category == StoreCategory.Pizza)
-        binding.storeCategoryDosirakTextview.setCategorySelected(category == StoreCategory.DOSIRAK)
-        binding.storeCategoryPorkFeetTextview.setCategorySelected(category == StoreCategory.PorkFeet)
-        binding.storeCategoryChineseTextview.setCategorySelected(category == StoreCategory.Chinese)
-        binding.storeCategoryNormalTextview.setCategorySelected(category == StoreCategory.NormalFood)
-        binding.storeCategoryCafeTextview.setCategorySelected(category == StoreCategory.Cafe)
-        binding.storeCategoryHairTextview.setCategorySelected(category == StoreCategory.BeautySalon)
-        binding.storeCategoryEtcTextview.setCategorySelected(category == StoreCategory.Etc)
-    }
 
     private fun getStoreCategoryName(category: StoreCategory?): String {
         return when (category) {
@@ -229,28 +423,19 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    private fun View.setCategoryOnClick(category: StoreCategory) {
-        setOnClickListener {
-            binding.searchEditText.clearFocus()
-            viewModel.setCategory(category)
-
-            val eventValue = getStoreCategoryName(viewModel.category.value)
-
-            EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CATEGORIES,
-                eventValue
-            )
-        }
+    override fun onRestart() {
+        viewModel.refreshStores()
+        super.onRestart()
     }
 
-    private fun TextView.setCategorySelected(isSelected: Boolean) {
-        setTextColor(
-            ContextCompat.getColor(
-                context,
-                if (isSelected) R.color.colorAccent else R.color.black
-            )
-        )
+    override fun onPause() {
+        super.onPause()
+        viewPagerHandler.removeCallbacks(runnable)
+    }
+
+    override fun onResume() {
+        currentTime = System.currentTimeMillis()
+        super.onResume()
+        startAutoScroll()
     }
 }
-

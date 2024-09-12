@@ -10,12 +10,11 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserRemoveUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.userinfo.UserInfoState
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
@@ -24,7 +23,7 @@ import javax.inject.Inject
 class UserInfoViewModel @Inject constructor(
     private val userInfoUseCase: GetUserInfoUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
-    private val userRemoveUseCase: UserRemoveUseCase
+    private val userRemoveUseCase: UserRemoveUseCase,
 ) : BaseViewModel() {
 
     private val _user = MutableLiveData<User?>()
@@ -43,14 +42,22 @@ class UserInfoViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launchWithLoading {
-        userLogoutUseCase()?.let { errorHandler ->
-            _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
-        } ?: _userInfoState.update { it.copy(status = UiStatus.Success) }
+        userLogoutUseCase()
+            .onSuccess {
+                _userInfoState.update { it.copy(status = UiStatus.Success) }
+            }
+            .onFailure { errorHandler ->
+                _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+            }
     }
 
     fun removeUser() = viewModelScope.launchWithLoading {
-        userRemoveUseCase().second?.let { errorHandler ->
-            _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
-        } ?: _userInfoState.update { it.copy(status = UiStatus.Success) }
+        userRemoveUseCase()
+            .onSuccess {
+                _userInfoState.update { it.copy(status = UiStatus.Success) }
+            }
+            .onFailure { errorHandler ->
+                _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+            }
     }
 }
