@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.article
 
-import android.app.Activity
 import android.app.DownloadManager
 import android.graphics.Rect
 import android.net.Uri
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
 import android.view.View
-import android.webkit.JavascriptInterface
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -23,6 +21,8 @@ import `in`.koreatech.koin.core.download.FileDownloadManager
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.webview.loadKoreatechHtml
+import `in`.koreatech.koin.core.webview.setOnImageClickListener
 import `in`.koreatech.koin.databinding.FragmentArticleDetailBinding
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -74,20 +74,6 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
         initAttachmentAdapter()
         initHotArticles()
         initButtonClickListeners()
-    }
-
-    private class ImageHandler(private val activity: Activity) {
-
-        @JavascriptInterface
-        fun onImageClick(imageUrl: String) {
-            activity.runOnUiThread {
-                val dialog = ImageZoomableDialog(activity, imageUrl).apply {
-                    initialScale = 0.94f
-                    cancelableOnTouchOutside = false
-                }
-                dialog.show()
-            }
-        }
     }
 
     private fun initArticle() {
@@ -178,26 +164,19 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     private fun setContent(article: ArticleState) {
         //binding.htmlView.setHtml(article.content)
         binding.webView.apply {
-            settings.apply {
-                javaScriptEnabled = true
-                loadWithOverviewMode = true
+            setOnImageClickListener(requireActivity()) {
+                val dialog = ImageZoomableDialog(requireActivity(), it).apply {
+                    initialScale = 0.94f
+                    cancelableOnTouchOutside = false
+                }
+                dialog.show()
             }
-            addJavascriptInterface(
-                ImageHandler(requireActivity()),
-                ImageHandler::class.java.simpleName
-            )
-        }.loadDataWithBaseURL(
-            getString(R.string.koreatech_url),
-            article.content.addImageClickScript().addImageWidthStyle(),
-            "text/html",
-            "utf-8",
-            null
-        )
+        }.loadKoreatechHtml(requireContext(), article.content)
     }
 
     private fun setNavigateArticleButtonVisibility(article: ArticleState) {
         // binding.buttonToPrevArticle.visibility = if (article.prevArticleId == null) View.INVISIBLE else View.VISIBLE
-        // binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.INVISIBLE else View.VISIBLE // 이번 배포에 포함 X
+        // binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.INVISIBLE else View.VISIBLE // TODO 잠시 배포에 포함 X
         binding.buttonToPrevArticle.visibility = View.INVISIBLE
         binding.buttonToNextArticle.visibility = View.INVISIBLE
     }
@@ -225,31 +204,6 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
                 putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
             }
         )
-    }
-
-    // 이미지 클릭 시 다이얼로그 Open
-    private fun String.addImageClickScript(): String {
-        return "<script type=\"text/javascript\">\n" +
-                "        function setupImageClickListener() {\n" +
-                "            var images = document.getElementsByTagName('img');\n" +
-                "            for (var i = 0; i < images.length; i++) {\n" +
-                "                images[i].onclick = function() {\n" +
-                "                    ${ImageHandler::class.java.simpleName}.${ImageHandler::onImageClick.name}(this.src);\n" +
-                "                };\n" +
-                "            }\n" +
-                "        }\n" +
-                "\n" +
-                "        window.onload = setupImageClickListener;\n" +
-                "    </script>" + this
-    }
-
-    // 이미지가 화면 크기를 넘어가지 않도록
-    private fun String.addImageWidthStyle(): String {
-        return "<style>\n" +
-                "        img {\n" +
-                "            max-width: 100%;\n" +
-                "        }\n" +
-                "    </style>" + this
     }
 
     companion object {
