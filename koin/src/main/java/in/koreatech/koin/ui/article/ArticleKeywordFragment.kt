@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.article
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,6 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleKeywordViewModel
 import `in`.koreatech.koin.ui.article.viewmodel.KeywordAddUiState
 import `in`.koreatech.koin.ui.article.viewmodel.KeywordInputUiState
-import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
@@ -50,10 +50,9 @@ class ArticleKeywordFragment : Fragment() {
                 positiveButtonText = R.string.action_login
             ),
             onPositiveButtonClicked = {
-                val intent = Intent(
-                    binding.root.context,
-                    LoginActivity::class.java
-                )
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("koin://login/login?link=koin://article/route?fragment=article_keyword")
+                }
                 startActivity(intent)
             }, onNegativeButtonClicked = {
                 it.dismiss()
