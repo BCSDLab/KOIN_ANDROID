@@ -26,6 +26,7 @@ class BusinessMainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    //KoinBusinessNavHost()
                     SignInNavigator()
                 }
             }
