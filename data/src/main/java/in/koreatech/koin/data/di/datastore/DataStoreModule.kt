@@ -10,29 +10,15 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
-import `in`.koreatech.koin.data.source.local.UserLocalDataSource
-import `in`.koreatech.koin.data.source.datastore.UserDataStore
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
 
-    private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = UserLocalDataSource.PREF_NAME
-    )
-
     private val Context.articleDataStore: DataStore<Preferences> by preferencesDataStore(
         name = "article_data_store"
     )
-
-    @Provides
-    @Singleton
-    fun provideUserDataStore(
-        @ApplicationContext context: Context
-    ): UserDataStore {
-        return UserDataStore(context.userDataStore)
-    }
 
     @Provides
     @Singleton

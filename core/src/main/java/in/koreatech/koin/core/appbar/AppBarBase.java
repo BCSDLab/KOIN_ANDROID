@@ -64,6 +64,16 @@ public class AppBarBase extends AppBarLayout {
     }
 
 
+    public void storeDetailClickListener(OnClickListener onClickListener) {
+        if (onClickListener == null) return;
+        this.onClickListener = onClickListener;
+        background.setOnClickListener(onClickListener);
+        leftButton.setOnClickListener(onClickListener);
+        rightButton.setOnClickListener( onClickListener);
+        title.setOnClickListener(onClickListener);
+    }
+
+
     public void init() {
         View view = inflate(getContext(), R.layout.base_appbar_dark, null);
         addView(view);

@@ -55,6 +55,9 @@ class MainActivityViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
+    private val _showDiningTooltip = MutableStateFlow(false)
+    val showDiningTooltip: StateFlow<Boolean> get() = _showDiningTooltip
+
     private val _selectedPosition = MutableLiveData(0)
     val selectedPosition : LiveData<Int> get() = _selectedPosition
     private val _diningData = MutableLiveData<List<Dining>>(listOf())
@@ -64,9 +67,6 @@ class MainActivityViewModel @Inject constructor(
 
     private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
-
-    private val _showDiningTooltip: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showDiningTooltip: StateFlow<Boolean> get() = _showDiningTooltip
 
     init {
         updateDining()

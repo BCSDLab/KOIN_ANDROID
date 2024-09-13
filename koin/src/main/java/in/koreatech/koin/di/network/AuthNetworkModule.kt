@@ -36,7 +36,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthNetworkModule {
-
     @Auth
     @Provides
     @Singleton
@@ -116,6 +115,14 @@ object AuthNetworkModule {
 
     @Provides
     @Singleton
+    fun provideUploadUrlApi(
+        @Auth retrofit: Retrofit
+    ): UploadUrlApi {
+        return retrofit.create(UploadUrlApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideArticleAuthApi(
         @Auth retrofit: Retrofit
     ): ArticleAuthApi {
@@ -181,14 +188,6 @@ object OwnerAuthNetworkModule {
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideUploadUrlApi(
-        @OwnerAuth retrofit: Retrofit
-    ): UploadUrlApi {
-        return retrofit.create(UploadUrlApi::class.java)
     }
 
     @Provides

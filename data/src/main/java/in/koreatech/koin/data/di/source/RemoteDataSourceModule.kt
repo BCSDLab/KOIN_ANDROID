@@ -87,8 +87,9 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideStoreRemoteDataSource(
         storeApi: StoreApi,
+        userAuthApi: UserAuthApi
     ): StoreRemoteDataSource {
-        return StoreRemoteDataSource(storeApi)
+        return StoreRemoteDataSource(storeApi, userAuthApi)
     }
 
     @Provides
@@ -114,5 +115,13 @@ object RemoteDataSourceModule {
         articleAuthApi: ArticleAuthApi
     ): ArticleRemoteDataSource {
         return ArticleRemoteDataSource(articleApi, articleAuthApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopRemoteDataSource(
+        coopShopApi: CoopShopApi,
+    ): CoopShopRemoteDataSource {
+        return CoopShopRemoteDataSource(coopShopApi)
     }
 }

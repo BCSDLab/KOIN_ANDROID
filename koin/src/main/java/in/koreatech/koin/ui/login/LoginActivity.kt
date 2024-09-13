@@ -22,7 +22,6 @@ import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.signup.SignupActivity
 import `in`.koreatech.koin.util.SnackbarUtil
-import `in`.koreatech.koin.util.ext.getSerializableExtraCompat
 import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
@@ -34,12 +33,10 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
     override val screenTitle = "로그인"
 
     private val loginViewModel by viewModels<LoginViewModel>()
-    private lateinit var nextNavigateActivityClass: Class<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        nextNavigateActivityClass = intent.getSerializableExtraCompat<Class<*>>("activity") ?: MainActivity::class.java
         initView()
         initViewModel()
     }
@@ -66,7 +63,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
 
     private fun goToNextRoute() {
         goToReservedRoute()
-        startActivity(Intent(this@LoginActivity, nextNavigateActivityClass))
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         finish()
     }
 

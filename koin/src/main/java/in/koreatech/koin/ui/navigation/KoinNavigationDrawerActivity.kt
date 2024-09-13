@@ -175,7 +175,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             MenuState.Store -> {
                                 EventLogger.logClickEvent(
                                     AnalyticsConstant.Domain.BUSINESS,
-                                    AnalyticsConstant.Label.HAMBURGER_SHOP,
+                                    AnalyticsConstant.Label.HAMBURGER,
                                     getString(R.string.nearby_stores)
                                 )
                             }
@@ -193,6 +193,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                     AnalyticsConstant.Domain.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER_DINING,
                                     getString(R.string.navigation_item_dining)
+                                )
+                            }
+
+                            MenuState.Land -> {
+                                EventLogger.logClickEvent(
+                                    AnalyticsConstant.Domain.BUSINESS,
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    getString(R.string.navigation_item_real_estate)
                                 )
                             }
 
