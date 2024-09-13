@@ -587,4 +587,5 @@
     <string name="store_review_count">( 리뷰 %1$s개 )</string>
     <string name="store_review_is_modify">%1$s (수정됨)</string>
     <string name="login_request_to_write_review">리뷰 작성 시 로그인을 해주세요.</string>
+    <string name="request_notification_permission">설정에서 알림 권한을 허용해주세요</string>
 </resources>

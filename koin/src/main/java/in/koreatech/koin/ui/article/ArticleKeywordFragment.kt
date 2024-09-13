@@ -22,6 +22,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.dialog.AlertModalDialog
 import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.FragmentArticleKeywordBinding
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleKeywordViewModel
@@ -277,6 +278,11 @@ class ArticleKeywordFragment : Fragment() {
         }
 
         binding.notificationKeyword.setOnSwitchClickListener { isChecked ->
+            if (requireContext().checkNotificationPermission().not()) {
+                ToastUtil.getInstance().makeShort(R.string.request_notification_permission)
+                return@setOnSwitchClickListener
+            }
+
             if (viewModel.user.value.isAnonymous) {
                 binding.notificationKeyword.isChecked = false
                 loginModal.show()
