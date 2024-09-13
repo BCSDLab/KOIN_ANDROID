@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.login
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.viewModels
@@ -52,7 +53,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     when (it.status) {
                         is UiStatus.Init -> Unit
                         is UiStatus.Loading -> Unit
-                        is UiStatus.Success -> startActivity(Intent(this@LoginActivity, nextNavigateActivityClass))
+                        is UiStatus.Success -> goToNextRoute()
                         is UiStatus.Failed -> {
                             SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
                             loginViewModel.onFailedLogin()
@@ -60,6 +61,27 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     }
                 }
             }
+        }
+    }
+
+    private fun goToNextRoute() {
+        goToReservedRoute()
+        startActivity(Intent(this@LoginActivity, nextNavigateActivityClass))
+        finish()
+    }
+
+    private fun goToReservedRoute() {
+        val uri = intent.data
+        val link = uri?.getQueryParameter("link").also {
+            println("dddddddddd" + it)
+        }
+
+        if (link != null) {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(link)
+            }
+            startActivity(intent)
+            finish()
         }
     }
 

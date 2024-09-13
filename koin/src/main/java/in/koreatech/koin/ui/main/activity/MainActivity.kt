@@ -37,6 +37,7 @@ import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAVIGATE_ACTION
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
+import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
@@ -62,7 +63,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             val intent = Intent(this, ArticleActivity::class.java).apply {
                 putExtra(NAVIGATE_ACTION, R.id.action_articleListFragment_to_articleDetailFragment)
                 putExtra(ARTICLE_ID, it.id)
-                putExtra(NAVIGATED_BOARD_ID, it.board.id)
+                putExtra(NAVIGATED_BOARD_ID, BoardType.ALL.id)
             }
             startActivity(intent)
         }
