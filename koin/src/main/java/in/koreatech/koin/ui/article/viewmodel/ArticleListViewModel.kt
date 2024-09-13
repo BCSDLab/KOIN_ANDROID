@@ -10,6 +10,7 @@ import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticlePaginationState
 import `in`.koreatech.koin.ui.article.state.toArticlePaginationState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -21,7 +22,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
@@ -69,6 +70,7 @@ class ArticleListViewModel @Inject constructor(
         )
 
     fun setCurrentBoard(board: BoardType) {
+        if (currentBoard.value == board) return
         savedStateHandle[BOARD_TYPE] = board
         setCurrentPage(1)
     }
@@ -78,6 +80,7 @@ class ArticleListViewModel @Inject constructor(
     }
 
     fun selectKeyword(keyword: String) {
+        if (selectedKeyword.value == keyword) return
         savedStateHandle[SELECTED_KEYWORD] = keyword
         setCurrentPage(1)
     }
