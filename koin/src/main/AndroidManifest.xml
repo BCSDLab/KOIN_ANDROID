@@ -45,7 +45,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="koin" android:host="article" android:pathPrefix="/route" />
+                <data android:scheme="koin" android:host="article" android:pathPrefix="/activity" />
             </intent-filter>
         </activity>
 

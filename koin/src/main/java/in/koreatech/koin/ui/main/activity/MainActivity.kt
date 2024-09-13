@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.main.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
@@ -64,10 +65,8 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     private val hotArticleAdapter = HotArticleAdapter(
         onClick = {
-            val intent = Intent(this, ArticleActivity::class.java).apply {
-                putExtra(NAVIGATE_ACTION, R.id.action_articleListFragment_to_articleDetailFragment)
-                putExtra(ARTICLE_ID, it.id)
-                putExtra(NAVIGATED_BOARD_ID, BoardType.ALL.id)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${BoardType.ALL.id}")
             }
             startActivity(intent)
         }

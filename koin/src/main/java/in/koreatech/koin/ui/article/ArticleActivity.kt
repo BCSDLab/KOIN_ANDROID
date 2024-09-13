@@ -35,23 +35,35 @@ class ArticleActivity : ActivityBase() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_article_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        intent.getIntExtra(NAVIGATE_ACTION, -1).let {
-            if (it == R.id.action_articleListFragment_to_articleDetailFragment)
-                navController.navigate(
-                    it,
-                    bundleOf(
-                        ARTICLE_ID to intent.getIntExtra(ARTICLE_ID, 0),
-                        NAVIGATED_BOARD_ID to intent.getIntExtra(NAVIGATED_BOARD_ID, 0)
-                    )
-                )
-        }
-
         navController.addOnDestinationChangedListener { _, dest, _ ->
             when (dest.id) {
                 R.id.articleListFragment -> setToolbar(ArticleToolbarState.ARTICLE_LIST)
                 R.id.articleDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
                 R.id.articleSearchFragment -> setToolbar(ArticleToolbarState.ARTICLE_SEARCH)
                 R.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD)
+            }
+        }
+        navigateToReservedFragment()
+    }
+
+    private fun navigateToReservedFragment() {
+        val uri = intent.data
+        val link = uri?.getQueryParameter("fragment")
+
+        if (link != null) {
+            when (link) {
+                "article_keyword" -> navController.navigate(R.id.articleKeywordFragment)
+                "article_detail" -> {
+                    val articleId = uri.getQueryParameter("article_id")?.toIntOrNull() ?: 0
+                    val boardId = uri.getQueryParameter("board_id")?.toIntOrNull() ?: 0
+                    navController.navigate(
+                        R.id.articleDetailFragment,
+                        bundleOf(
+                            ARTICLE_ID to articleId,
+                            NAVIGATED_BOARD_ID to boardId
+                        )
+                    )
+                }
             }
         }
     }
