@@ -6,6 +6,7 @@
     <string name="error_network">네트워크 환경을 확인해주세요</string>
 
     <!--common-->
+    <string name="phone_number">휴대폰 번호</string>
     <string name="common_need_permission">권한이 필요합니다.</string>
     <string name="common_confirmation">확인</string>
     <string name="common_confirm">확인하기</string>
@@ -114,6 +115,7 @@
     <string name="error">오류가 발생하였습니다. 잠시뒤에 다시 시도해 주세요</string>
     <string name="for_business">For Business</string>
     <string name="login_required_field_not_filled">아이디와 비밀번호를 입력해주세요</string>
+    <string name="phone_number_is_null">전화번호를 입력해주세요.</string>
 
 
     <!--인증번호 관련-->
@@ -145,6 +147,7 @@
     <string name="password_find">비밀번호 찾기</string>
     <string name="password_change">비밀번호 변경</string>
     <string name="password_mismatch" >비밀번호가 일치하지 않습니다.</string>
+    <string name="password_is_null">비밀번호를 입력해주세요.</string>
 
 =======
     <!-- 가게 등록 -->

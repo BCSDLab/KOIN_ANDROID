@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.signin.navigator
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,9 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import `in`.koreatech.business.feature.findpassword.navigator.ChangePassword
-import `in`.koreatech.business.feature.signin.SignInScreenImpl
+import `in`.koreatech.business.feature.signin.SignInScreen
 import `in`.koreatech.business.feature.signup.navigator.SignupNavigator
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SignInNavigator(
     modifier: Modifier = Modifier,
@@ -22,7 +24,7 @@ fun SignInNavigator(
         modifier = modifier
     ){
         composable(route = SignInNavigator.SignIn.name){
-            SignInScreenImpl(
+            SignInScreen(
                 navigateToMain = {},
                 navigateToSignUp = {
                     navController.navigate(SignInNavigator.SignUp.name)

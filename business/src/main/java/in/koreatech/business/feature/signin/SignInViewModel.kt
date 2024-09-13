@@ -1,8 +1,10 @@
 package `in`.koreatech.business.feature.signin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.business.OwnerSignInUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
@@ -16,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userLoginUseCase: UserLoginUseCase
+    private val ownerSignInUseCase: OwnerSignInUseCase
 ) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
     override val container = container<SignInState, SignInSideEffect>(
         SignInState()
@@ -24,12 +26,10 @@ class SignInViewModel @Inject constructor(
 
     fun insertId(id: String) = intent{
         reduce { state.copy(id = id) }
-        validateField()
     }
 
     fun insertPassword(password: String) = intent{
         reduce { state.copy(password = password) }
-        validateField()
     }
     fun navigateToSignUp() = intent {
         postSideEffect(SignInSideEffect.NavigateToSignUp)
@@ -41,10 +41,11 @@ class SignInViewModel @Inject constructor(
 
     fun login(){
         intent{
-            if(state.validateField){
+            if((state.id.isNotBlank() && state.password.isNotBlank())){
+                state.copy(notValidateField = false)
                 viewModelScope.launch {
-                    userLoginUseCase(
-                        email = state.id.trim(),
+                    ownerSignInUseCase(
+                        phoneNumber = state.id.trim(),
                         password = state.password.trim()
                     )   .onSuccess {
                         navigateToMain()
@@ -55,25 +56,35 @@ class SignInViewModel @Inject constructor(
                 }
             }
             else{
-                toastNullMessage()
+                showNullMessage()
             }
         }
     }
 
+    fun setErrorMessage(message: String){
+        intent {
+            reduce{
+                state.copy(
+                    nullErrorMessage = message
+                )
+            }
+        }
+    }
     private fun navigateToMain() = intent {
         postSideEffect(SignInSideEffect.NavigateToMain)
     }
 
-    private fun toastNullMessage() = intent {
-        postSideEffect(SignInSideEffect.ShowNullMessage(ErrorType.NullEmailOrPassword))
+    private fun showNullMessage() {
+        intent {
+            reduce {
+                state.copy(notValidateField = true)
+            }
+            if(state.id.isBlank()) postSideEffect(SignInSideEffect.ShowNullMessage(ErrorType.NullPhoneNumber))
+            else if(state.password.isBlank()) postSideEffect(SignInSideEffect.ShowNullMessage(ErrorType.NullPassword))
+        }
     }
     private fun toastErrorMessage(message: String) = intent {
         postSideEffect(SignInSideEffect.ShowMessage(message))
     }
 
-    private fun validateField() = intent {
-        reduce{
-            state.copy(validateField = (state.id.isNotBlank() && state.password.isNotBlank()))
-        }
-    }
 }
