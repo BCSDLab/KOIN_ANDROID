@@ -51,8 +51,9 @@ class ArticleKeywordFragment : Fragment() {
             ),
             onPositiveButtonClicked = {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("koin://login/login?link=koin://article/route?fragment=article_keyword")
+                    data = Uri.parse("koin://login/login?link=koin://article/activity?fragment=article_keyword")
                 }
+                it.dismiss()
                 startActivity(intent)
             }, onNegativeButtonClicked = {
                 it.dismiss()

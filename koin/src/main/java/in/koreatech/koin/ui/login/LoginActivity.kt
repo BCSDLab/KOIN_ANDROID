@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.login
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
@@ -62,22 +63,23 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
     }
 
     private fun goToNextRoute() {
-        goToReservedRoute()
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-        finish()
-    }
-
-    private fun goToReservedRoute() {
         val uri = intent.data
-        val link = uri?.getQueryParameter("link").also {
-            println("dddddddddd" + it)
-        }
+        val link = uri?.getQueryParameter("link")
 
         if (link != null) {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(link)
+            try {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    flags = FLAG_ACTIVITY_CLEAR_TOP
+                    data = Uri.parse(link)
+                }
+                startActivity(intent)
+                finish()
+            } catch (e: Exception) {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
             }
-            startActivity(intent)
+        } else {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
     }
