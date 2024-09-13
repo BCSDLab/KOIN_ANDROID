@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
-import android.graphics.BitmapFactory.decodeStream
 import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -58,6 +57,7 @@ import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.koin.domain.model.store.AttachStore
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -80,6 +80,7 @@ fun BusinessAuthScreen(
             var fileName = ""
             var fileSize = 0L
             businessAuthState.fileInfo.clear()
+            businessAuthViewModel.initStoreImageUrls()
             uriList.forEach {
                 val inputStream = context.contentResolver.openInputStream(it)
                 businessAuthViewModel.onImageUrlsChanged(mutableListOf())
@@ -97,18 +98,12 @@ fun BusinessAuthScreen(
                         }
                     }
                 }
-                businessAuthViewModel.onImageUrlsChanged(uriList.map {
-                    AttachStore(
-                        it.toString(),
-                        fileName
-                    )
-                }.toMutableList())
                 if (inputStream != null) {
                     businessAuthViewModel.getPreSignedUrl(
-                        uri = it,
                         fileName = fileName,
                         fileSize = fileSize,
                         fileType = "image/" + fileName.split(".")[1],
+                        imageUri = it.toString()
                     )
 
                 }
@@ -260,21 +255,11 @@ fun BusinessAuthScreen(
                     value = businessAuthState.shopNumber,
                     onValueChange = { businessAuthViewModel.onStoreNumberChanged(it) },
                     label = stringResource(id = R.string.enter_business_registration_number),
-                    isError = businessAuthState.shopNumber.length != 10 && businessAuthState.shopNumber.isNotEmpty(),
-                    errorText = stringResource(id = R.string.business_number_not_validate)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = stringResource(id = R.string.personal_contact),
-                    fontSize = 14.sp,
-                    fontWeight = Bold
-                )
-                LinedTextField(
-                    value = businessAuthState.phoneNumber,
-                    onValueChange = { businessAuthViewModel.onPhoneNumberChanged(it) },
-                    label = stringResource(id = R.string.enter_personal_contact),
-                    isError = businessAuthState.phoneNumber.length != 11 && businessAuthState.phoneNumber.isNotEmpty(),
-                    errorText = stringResource(id = R.string.phone_number_not_validate)
+                    isError = businessAuthState.signupContinuationState == SignupContinuationState.BusinessNumberIsNotValidate ||
+                            businessAuthState.signupContinuationState is SignupContinuationState.Failed,
+                    errorText = if (businessAuthState.signupContinuationState is SignupContinuationState.Failed)
+                        businessAuthState.signupContinuationState.message
+                    else stringResource(id = R.string.business_number_not_validate)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -354,23 +339,14 @@ fun BusinessAuthScreen(
                     ),
 
                     onClick = {
-                        businessAuthState.fileInfo.forEach {
-                            businessAuthViewModel.uploadImage(
-                                it.preSignedUrl,
-                                it.uri,
-                                it.mediaType,
-                                it.fileSize,
-                            )
-                        }
                         businessAuthViewModel.sendRegisterRequest(
-                            businessAuthState.fileInfo.map { it.resultUrl },
-                            businessAuthState.shopNumber,
-                            accountSetupState.phoneNumber,
-                            businessAuthState.name,
-                            accountSetupState.password,
-                            businessAuthState.phoneNumber,
-                            businessAuthState.shopId,
-                            businessAuthState.shopName,
+                            fileUrls = businessAuthState.fileInfo.map { it.resultUrl },
+                            companyNumber = businessAuthState.shopNumber,
+                            phoneNumber = accountSetupState.phoneNumber,
+                            name = businessAuthState.name,
+                            password = accountSetupState.password,
+                            shopId = businessAuthState.shopId,
+                            shopName = businessAuthState.shopName,
                         )
 
                     }) {

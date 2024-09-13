@@ -15,6 +15,8 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.MainItemStoreBinding
 import `in`.koreatech.koin.databinding.StoreCategoryItemBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.model.store.StoreCategory
+import `in`.koreatech.koin.domain.model.store.toStoreCategory
 
 class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder>(
     diffCallback
@@ -23,6 +25,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
     var isDoubleClick: Boolean = false
+    var preCategories: StoreCategory? = null
 
     inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(binding.root){
         val container = binding.container
@@ -71,8 +74,13 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
         onItemClickListener = object : StoreCategoriesRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(id: Int) {
                 onItemClick(id)
+                preCategories = id.toStoreCategory()
             }
         }
+    }
+
+    fun initCategory(id: StoreCategory?){
+        preCategories = id
     }
 
     companion object {

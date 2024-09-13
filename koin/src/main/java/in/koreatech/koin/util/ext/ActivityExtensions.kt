@@ -80,6 +80,8 @@ fun Activity.dpToPx(dp: Int): Int {
     return (dp.toFloat() * density).roundToInt()
 }
 
+
+
 inline fun<reified T: Serializable> Intent.getSerializableExtraCompat(key: String): T? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getSerializableExtra(key, T::class.java)

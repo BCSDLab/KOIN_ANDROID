@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.main.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +37,7 @@ import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAVIGATE_ACTION
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.ui.article.BoardType
+import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
@@ -49,10 +49,14 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Main
+    private var currentTime by Delegates.notNull<Long>()
+    private var elapsedTime by Delegates.notNull<Long>()
+
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
@@ -118,10 +122,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
+            elapsedTime = System.currentTimeMillis() - currentTime
+
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                name
+                name + ", previous_page: 메인"+", current_page: "+ name +", duration_time: " +elapsedTime/1000
             )
             gotoStoreActivity(id)
         }
@@ -138,17 +144,13 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     override fun onResume() {
         super.onResume()
+        currentTime = System.currentTimeMillis()
         viewModel.updateDining()
     }
 
     private fun initView() = with(binding) {
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
-            EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.USER,
-                AnalyticsConstant.Label.HAMBURGER,
-                getString(R.string.hamburger)
-            )
         }
 
         viewPagerHotArticle.apply {
@@ -232,17 +234,16 @@ class MainActivity : KoinNavigationDrawerActivity() {
             binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
         }
 
+
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
             if (this@MainActivity::busViewPagerScrollCallback.isInitialized.not()) {
                 initBusViewPagerScrollCallback(it)
             }
         }
-
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it.drop(1))
         }
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 showDiningTooltip.collect {
@@ -272,18 +273,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
         }.also { binding.busViewPager.registerOnPageChangeCallback(it) }
     }
 
-    private fun gotoStoreActivity(position: Int) {
-        val bundle = Bundle()
-        bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
-        callDrawerItem(R.id.navi_item_store, bundle)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (this@MainActivity::busViewPagerScrollCallback.isInitialized)
-            binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
-    }
-
     private fun initDiningTooltip() {
         diningTooltip = Balloon.Builder(this)
             .setHeight(BalloonSizeSpec.WRAP)
@@ -303,5 +292,17 @@ class MainActivity : KoinNavigationDrawerActivity() {
             .setCornerRadius(8f)
             .setBalloonAnimation(BalloonAnimation.FADE)
             .build()
+    }
+
+    private fun gotoStoreActivity(position: Int) {
+        val bundle = Bundle()
+        bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
+        callDrawerItem(R.id.navi_item_store, bundle)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (this@MainActivity::busViewPagerScrollCallback.isInitialized)
+            binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
     }
 }

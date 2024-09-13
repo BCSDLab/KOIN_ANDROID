@@ -91,7 +91,7 @@ object NoAuthNetworkModule {
     @Singleton
     fun provideBusApi(
         @NoAuth retrofit: Retrofit
-    ): BusApi{
+    ): BusApi {
         return retrofit.create(BusApi::class.java)
     }
 
@@ -102,7 +102,7 @@ object NoAuthNetworkModule {
     ): StoreApi {
         return retrofit.create(StoreApi::class.java)
     }
-    
+
     @Provides
     @Singleton
     fun provideLandApi(
@@ -117,5 +117,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): ArticleApi {
         return retrofit.create(ArticleApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopApi(
+        @NoAuth retrofit: Retrofit
+    ): CoopShopApi {
+        return retrofit.create(CoopShopApi::class.java)
     }
 }

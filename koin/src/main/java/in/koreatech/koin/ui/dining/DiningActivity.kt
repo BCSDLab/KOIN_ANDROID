@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.dining
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.dining.adapter.DiningDateAdapter
 import `in`.koreatech.koin.ui.dining.adapter.DiningItemsViewPager2Adapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.toggleDrawer
@@ -56,16 +58,9 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         initViewPager()
         onActionView()
         selectInitialPositions()
+        initOnRefreshDiningList()
 
         withLoading(this, viewModel)
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedDate.collect {
-                    viewModel.getDining(it)
-                }
-            }
-        }
 
         lifecycleScope.launch {
             viewModel.userState.collect {
@@ -92,14 +87,29 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         binding.koinBaseAppBarDark.setOnClickListener {
             when(it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
-                AppBarBase.getRightButtonId() -> binding.drawerLayout.toggleDrawer()
+                AppBarBase.getRightButtonId() -> startActivity(Intent(this@DiningActivity, DiningNoticeActivity::class.java))
             }
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isTaskRoot) {
+                    val intent = Intent(this@DiningActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
     }
 
     private fun selectInitialPositions() {
         binding.tabsDiningTime.selectTab(binding.tabsDiningTime.getTabAt(initialDiningTab))
         diningDateAdapter.selectPosition(initialDateTab)
+        diningDateAdapter.notifyDataSetChanged()
+        viewModel.setSelectedDate(dates[initialDateTab])
     }
 
     private fun onActionView() {
@@ -157,9 +167,9 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private fun initCalendar() {
         with(binding) {
             recyclerViewCalendar.adapter = diningDateAdapter
+            dates.clear()
             val current = TimeUtil.getCurrentTime()
             dates.add(current)
-            Log.d("DiningActivity", "initCalendar: $current")
             repeat(3) {
                 dates.add(0, TimeUtil.getPreviousDayDate(dates.first()))
             }
@@ -218,5 +228,22 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     override fun onDestroy() {
         super.onDestroy()
         binding.diningViewPager.unregisterOnPageChangeCallback(diningViewPagerScrollCallback)
+    }
+
+    private fun initOnRefreshDiningList() {
+        binding.swipeRefreshLayoutDining.setOnRefreshListener {
+            viewModel.getDining(viewModel.selectedDate.value)
+            binding.swipeRefreshLayoutDining.isRefreshing = false
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        intent.apply {
+            this?.action = Intent.ACTION_VIEW
+            setIntent(this)
+        }
+        super.onNewIntent(intent)
+        onActionView()
+        selectInitialPositions()
     }
 }
