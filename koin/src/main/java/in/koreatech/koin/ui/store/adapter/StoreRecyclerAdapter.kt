@@ -42,9 +42,22 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
         fun bind(store: Store) {
             binding.storeNameTextview.text = store.name
             binding.storeNameTextview.setStoreNameState(store.isOpen)
-            binding.storeDeliveryTextview.setTextState(store.isDeliveryOk)
-            binding.storeCardTextview.setTextState(store.isCardOk)
-            binding.storeAccountTextview.setTextState(store.isBankOk)
+            binding.storeRatingScoreTextview.text =  String.format("%.1f", store.averageRate)
+
+            binding.isRatingImageview.setImageResource(
+                if(store.reviewCount > 0)
+                    R.drawable.ic_rating
+                else
+                    R.drawable.ic_no_rating
+            )
+
+            binding.storeReviewTextview.text = (
+                    if(store.reviewCount == 0) itemView.context.getString(R.string.store_no_review)
+                    else if (store.reviewCount > 10) itemView.context.getString(R.string.store_many_review)
+                    else itemView.context.getString(R.string.store_review_count, store.reviewCount.toString())
+                    ).toString()
+
+
             if(!store.isOpen){
                 binding.readyStoreFrameLayout.isVisible = true
                 if(store.name.hasJongSungAtLastChar()){

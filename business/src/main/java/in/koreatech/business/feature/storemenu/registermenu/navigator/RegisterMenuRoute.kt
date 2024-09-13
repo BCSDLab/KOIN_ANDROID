@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.navigator
 
 enum class RegisterMenuRoute {
-    INSERT_MENU,
+    REGISTER_MENU,
+    REGISTER,
     CHECK_MENU
 }

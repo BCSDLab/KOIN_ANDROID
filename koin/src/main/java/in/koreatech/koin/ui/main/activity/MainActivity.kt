@@ -2,22 +2,12 @@ package `in`.koreatech.koin.ui.main.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.skydoves.balloon.ArrowOrientation
-import com.skydoves.balloon.ArrowOrientationRules
-import com.skydoves.balloon.ArrowPositionRules
-import com.skydoves.balloon.Balloon
-import com.skydoves.balloon.BalloonAnimation
-import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.WebViewActivity
@@ -32,6 +22,7 @@ import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
+import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
@@ -41,15 +32,17 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
-import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Main
+    private var currentTime by Delegates.notNull<Long>()
+    private var elapsedTime by Delegates.notNull<Long>()
+
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
-    private lateinit var diningTooltip: Balloon
 
     private val busPagerAdapter = BusPagerAdapter().apply {
         setOnCardClickListener {
@@ -100,10 +93,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
+            elapsedTime = System.currentTimeMillis() - currentTime
+
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                name
+                name + ", previous_page: 메인"+", current_page: "+ name +", duration_time: " +elapsedTime/1000
             )
             gotoStoreActivity(id)
         }
@@ -114,23 +109,18 @@ class MainActivity : KoinNavigationDrawerActivity() {
         setContentView(binding.root)
 
         initView()
-        initDiningTooltip()
         initViewModel()
     }
 
     override fun onResume() {
         super.onResume()
+        currentTime = System.currentTimeMillis()
         viewModel.updateDining()
     }
 
     private fun initView() = with(binding) {
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
-            EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.USER,
-                AnalyticsConstant.Label.HAMBURGER,
-                getString(R.string.hamburger)
-            )
         }
 
         busViewPager.apply {
@@ -196,26 +186,15 @@ class MainActivity : KoinNavigationDrawerActivity() {
             binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
         }
 
+
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
             if (this@MainActivity::busViewPagerScrollCallback.isInitialized.not()) {
                 initBusViewPagerScrollCallback(it)
             }
         }
-
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it.drop(1))
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                showDiningTooltip.collect {
-                    if (it) {
-                        diningTooltip.showAlignRight(binding.textViewDiningTitle)
-                        viewModel.updateShouldShowDiningTooltip(false)
-                    }
-                }
-            }
         }
     }
 
@@ -246,26 +225,5 @@ class MainActivity : KoinNavigationDrawerActivity() {
         super.onDestroy()
         if (this@MainActivity::busViewPagerScrollCallback.isInitialized)
             binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
-    }
-
-    private fun initDiningTooltip() {
-        diningTooltip = Balloon.Builder(this)
-            .setHeight(BalloonSizeSpec.WRAP)
-            .setWidth(BalloonSizeSpec.WRAP)
-            .setText(getString(R.string.dining_image_tooltip))
-            .setTextColorResource(R.color.black)
-            .setBackgroundColorResource(R.color.gray3)
-            .setTextSize(12f)
-            .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
-            .setArrowOrientation(ArrowOrientation.BOTTOM)
-            .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
-            .setArrowSize(10)
-            .setArrowPosition(0.85f)
-            .setPaddingVertical(4)
-            .setPaddingHorizontal(5)
-            .setMarginLeft(10)
-            .setCornerRadius(8f)
-            .setBalloonAnimation(BalloonAnimation.FADE)
-            .build()
     }
 }

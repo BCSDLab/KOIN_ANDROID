@@ -15,6 +15,8 @@ data class Store(
     val isBankOk: Boolean,
     val isEvent: Boolean,
     val isOpen: Boolean,
+    val averageRate : Double,
+    val reviewCount : Int,
     val open: OpenData,
     val categoryIds: List<StoreCategory?>
 ) {

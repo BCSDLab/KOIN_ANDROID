@@ -144,7 +144,6 @@ fun InsertBasicInfoScreenImpl(
                         }
                     }
                 }
-
                 onStoreImageChange(uri)
             }
         }
