@@ -9,7 +9,8 @@ import `in`.koreatech.koin.databinding.ItemAttachmentBinding
 import `in`.koreatech.koin.ui.article.state.AttachmentState
 
 class AttachmentAdapter(
-    private val onClick: (AttachmentState) -> Unit
+    private val onClick: (AttachmentState) -> Unit,
+    private val onLongClick: (AttachmentState) -> Unit
 ) : ListAdapter<AttachmentState, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttachmentViewHolder {
@@ -31,6 +32,10 @@ class AttachmentAdapter(
                 textViewAttachmentSize.text = attachment.size
                 root.setOnClickListener {
                     onClick(attachment)
+                }
+                root.setOnLongClickListener {
+                    onLongClick(attachment)
+                    true
                 }
             }
             binding.executePendingBindings()
