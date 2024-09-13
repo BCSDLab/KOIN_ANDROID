@@ -36,6 +36,7 @@ object URLConstant {
     object SHOPS{
         const val OWNERSHOPS= "owner/shops"
         const val SHOPS = "shops"
+        const val SHOPS_V2 = "/v2/shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
     }
@@ -77,17 +78,22 @@ object URLConstant {
         const val OWNERS = "owners"
         const val VERIFICATION = "verification"
         const val REGISTER: String = "$OWNERS/register"
+        const val REGISTER_PHONE: String = "$OWNERS/register/phone"
         const val CODE = "$OWNERS/$VERIFICATION/code"
         const val EMAIL = "$OWNERS/$VERIFICATION/email"
         const val PASSWORD = "password"
         const val RESET = "reset"
         const val CHANGEPASSWORDEMAIL = "$OWNERS/$PASSWORD/$RESET/$VERIFICATION"
+        const val CHANGEPASSWORDESENDSMS = "$OWNERS/$PASSWORD/$RESET/$VERIFICATION/sms"
+        const val CHANGEPASSWORDSMSCODE = "$OWNERS/$PASSWORD/$RESET/send/sms"
         const val CHANGEPASSWORDCODE = "$OWNERS/$PASSWORD/$RESET/send"
         const val CHANGEPASSWORD ="$OWNERS/$PASSWORD/$RESET"
+        const val CHANGEPASSWORDSMS ="$OWNERS/$PASSWORD/$RESET/sms"
         const val CODE_SMS = "$OWNERS/$VERIFICATION/code/sms"
         const val SMS = "$OWNERS/$VERIFICATION/sms"
         const val PW = "password"
         const val SHOPS = "$OWNER/shops"
+        const val EXISTS_ACCOUNT= "$OWNERS/exists/account"
     }
 
     object CALLVANS {

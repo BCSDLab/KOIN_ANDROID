@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.safeApiCall
 import `in`.koreatech.koin.data.mapper.toAuthToken
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
@@ -25,7 +24,7 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
                 )
             )
 
-            Result.success(tempToken.toAuthToken())// Pair(tempToken.toAuthToken(), Result.success(Unit))
+            Result.success(tempToken.toAuthToken())
         } catch (e: HttpException) {
             Result.failure(e)
         } catch (t: Throwable) {
@@ -36,15 +35,14 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
     override suspend fun verifySmsCode(
         phoneNumber: String,
         verificationCode: String
-    ): Result<OwnerAuthToken?> {
-        return safeApiCall {
-            val tempToken = ownerRemoteDataSource.postVerificationCodeSms(
+    ): OwnerAuthToken {
+        return OwnerAuthToken(
+            ownerRemoteDataSource.postVerificationCodeSms(
                 VerificationCodeSmsRequest(
                     phoneNumber = phoneNumber,
                     certificationCode = verificationCode
                 )
-            )
-            tempToken.toAuthToken()
-        }
+            ).token
+        )
     }
 }

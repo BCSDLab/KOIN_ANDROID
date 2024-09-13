@@ -55,6 +55,7 @@
     <color name="gray16">#e1e1e1</color>
     <color name="gray17">#eeeeee</color>
     <color name="gray18">#fafafa</color>
+    <color name="gray19">#8e8e8e</color>
 
 
     <color name="black_alpha12">#1f252525</color>
@@ -152,7 +153,9 @@
     <color name="neutral_0">#FFFFFF</color>
     <!-- Danger -->
     <!-- Warning -->
+    <color name="warning_500">#FFC62B</color>
     <!-- Success -->
     <!-- Info -->
 
+    <color name="my_review">#F8FAFB</color>
 </resources>

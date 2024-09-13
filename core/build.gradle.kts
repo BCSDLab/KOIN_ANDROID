@@ -32,6 +32,8 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    
     /* Dependency - AndroidX Jetpack */
     api(libs.appcompat)
     api(libs.androidx.recyclerview)

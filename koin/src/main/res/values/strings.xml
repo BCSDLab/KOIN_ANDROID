@@ -21,7 +21,7 @@
 
     <!--부가서비스-->
     <string name="navigation_item_callvan_sharing">콜밴쉐어링</string>
-    <!--<string name="navigation_item_real_estate">복덕방</string>-->
+    <string name="navigation_item_real_estate">복덕방</string>
     <string name="navigation_item_usedmarket">중고장터</string>
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
@@ -327,6 +327,7 @@
     <string name="notification_dining_photo_upload">식단 사진 업로드 알림</string>
     <string name="notification_dining_photo_upload_description">식단 사진이 업로드 될 경우 알림을 받습니다.</string>
 
+
     <!-- Land -->
     <string name="land_data_load_fail">원룸 리스트를 받아오지 못했습니다</string>
     <string name="land_monthly_fee">월세</string>
@@ -482,4 +483,47 @@
     <string name="set_dining_sold_out_notification">식단 품절 알림 받기</string>
     <string name="set_image_upload_notification">식단 사진 업로드 알림 받기</string>
     <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
+
+
+    <!--리뷰 기능-->
+    <string name="review">리뷰 (%1$s)</string>
+    <string name="no_review">작성된 리뷰가 없습니다.\n첫 번째 리뷰를 작성해보세요 :)</string>
+    <string name="write_review">리뷰 작성하기</string>
+    <string name="upload_review_image">리뷰와 관련된 사진을 업로드해주세요.</string>
+    <string name="image">사진</string>
+    <string name="write_more_info">더 많은 정보를 작성해보세요!</string>
+    <string name="review_notice">리뷰를 남겨주시면 사장님과 다른 분들에게 도움이 됩니다. 또한, 악의적인 리뷰는 관리자에 의해 삭제될 수 있습니다.</string>
+    <string name="write">작성하기</string>
+    <string name="content">내용</string>
+    <string name="write_review_content">리뷰를 작성해주세요.</string>
+    <string name="upload_image">사진 등록하기</string>
+    <string name="add_menu">메뉴 추가하기</string>
+    <string name="delete">삭제</string>
+    <string name="check_delete_review">리뷰를 삭제하시겠습니까?</string>
+    <string name="review_report">리뷰 신고하기</string>
+    <string name="review_report_reason_choose">신고 이유를 선택해주세요.</string>
+    <string name="review_report_reason_input">신고 사유를 입력해주세요.</string>
+    <string name="review_will_be_blinded">접수된 신고는 관계자 확인 하에 블라인드 처리됩니다.\n블라인드 처리까지 시간이 소요될 수 있습니다. </string>
+    <string name="review_not_relation">주제에 맞지 않음</string>
+    <string name="review_not_relation_explain">해당 음식점과 관련 없는 리뷰입니다.</string>
+    <string name="review_spam">스팸</string>
+    <string name="review_spam_explain">광고가 포함된 리뷰입니다.</string>
+    <string name="review_abuse">욕설</string>
+    <string name="review_abuse_explain">욕설, 성적인 언어, 비방하는 글이 포함된 리뷰입니다.</string>
+    <string name="review_private">개인정보</string>
+    <string name="review_private_explain">개인정보가 포함된 리뷰입니다.</string>
+    <string name="report">신고하기</string>
+    <string name="latest">최신순</string>
+    <string name="oldest">오래된순</string>
+    <string name="high_rating">별점높은순</string>
+    <string name="low_rating">별점낮은순</string>
+    <string name="review_null_check_box">1개 이상의 신고 이유를 선택해주세요.</string>
+    <string name="review_null_etc_reason">기타항목의 신고 사유를 작성해주세요</string>
+    <string name="review_report_complete">해당 리뷰의 신고가 완료되었습니다.</string>
+    <string name="review_already_reported">이미 신고된 리뷰입니다.</string>
+    <string name="store_no_review">첫 번째 리뷰를 작성해보세요 :)</string>
+    <string name="store_many_review">( 리뷰 10+개 )</string>
+    <string name="store_review_count">( 리뷰 %1$s개 )</string>
+    <string name="store_review_is_modify">%1$s (수정됨)</string>
+    <string name="login_request_to_write_review">리뷰 작성 시 로그인을 해주세요.</string>
 </resources>
