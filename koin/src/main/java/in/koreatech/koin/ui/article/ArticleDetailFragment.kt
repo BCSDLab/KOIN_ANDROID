@@ -46,7 +46,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
 
     private val binding: FragmentArticleDetailBinding by dataBinding()
 
-    private val attachmentAdapter = AttachmentAdapter(::onAttachmentClick)
+    private val attachmentAdapter = AttachmentAdapter(::onAttachmentClick, ::onAttachmentLongClick)
     private val hotArticleAdapter = HotArticleAdapter(::onHotArticleClick)
 
     private val attachmentDownloadManager: FileDownloadManager by lazy {
@@ -196,8 +196,10 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     }
 
     private fun setNavigateArticleButtonVisibility(article: ArticleState) {
-        binding.buttonToPrevArticle.visibility = if (article.prevArticleId == null) View.INVISIBLE else View.VISIBLE
-        binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.INVISIBLE else View.VISIBLE
+        // binding.buttonToPrevArticle.visibility = if (article.prevArticleId == null) View.INVISIBLE else View.VISIBLE
+        // binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.INVISIBLE else View.VISIBLE // 이번 배포에 포함 X
+        binding.buttonToPrevArticle.visibility = View.INVISIBLE
+        binding.buttonToNextArticle.visibility = View.INVISIBLE
     }
 
     private fun onAttachmentClick(attachment: AttachmentState) {
@@ -209,7 +211,10 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setAllowedOverMetered(true)
             .setAllowedOverRoaming(true))
+    }
 
+    private fun onAttachmentLongClick(attachment: AttachmentState) {
+        ToastUtil.getInstance().makeShort(attachment.name)
     }
 
     private fun onHotArticleClick(article: ArticleHeaderState) {
