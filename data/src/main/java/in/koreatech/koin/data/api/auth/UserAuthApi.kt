@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
-import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
@@ -51,7 +51,4 @@ interface UserAuthApi {
 
     @POST(URLConstant.USER.CHECKPASSWORD)
     suspend fun checkPassword(@Body passwordRequest: PasswordRequest)
-
-    @PUT(URLConstant.USER.ME)
-    suspend fun updateUserPassword(@Body passwordRequest: PasswordRequest)
 }

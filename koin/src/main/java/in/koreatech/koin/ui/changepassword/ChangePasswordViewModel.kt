@@ -48,16 +48,14 @@ class ChangePasswordViewModel @Inject constructor(
     private val _onFinishStep: MutableEventFlow<Unit> = MutableEventFlow()
     val onFinishStep: EventFlow<Unit> get() = _onFinishStep
 
-
-
     val isConfirmPwdSame = combine(enteredNewPwd, enteredConfirmPwd, ::Pair)
-        .filter { it.second.isNotBlank() }
+        .filter { it.first.isNotBlank() && it.second.isNotBlank() }
         .map { it.first == it.second }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), true)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
 
     val isAbleToComplete = combine(confirmPwdFormat, isConfirmPwdSame, ::Pair)
         .map { it.first.isValidFormat && it.second }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), true)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
 
     private val _userInfo: StateFlow<User> = getUserStateUseCase().stateIn(viewModelScope, SharingStarted.Lazily, User.Anonymous)
 
@@ -112,7 +110,7 @@ class ChangePasswordViewModel @Inject constructor(
 
     fun changeUserPassword() {
         viewModelScope.launch {
-            updateUserPasswordUseCase(enteredNewPwd.value)
+            updateUserPasswordUseCase(_userInfo.value, enteredNewPwd.value)
                 .onSuccess {
                     _isPasswordChangeSuccess.emit(true)
                 }
