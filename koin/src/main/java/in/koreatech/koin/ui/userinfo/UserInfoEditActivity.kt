@@ -18,8 +18,6 @@ import `in`.koreatech.koin.ui.userinfo.contract.UserInfoEditContract
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
 import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoEditViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.splitPhoneNumber
-import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
@@ -40,33 +38,29 @@ class UserInfoEditActivity : ActivityBase() {
     }
 
     private fun initView() = with(binding) {
-        koinBaseAppBar.setAppBarButtonClickedListener(
+        appbarUserInfoEdit.setAppBarButtonClickedListener(
             leftButtonClicked = {
                 onBackPressed()
             },
-            rightButtonClicked = {
-                userInfoEditViewModel.updateUserInfo(
-                    name = binding.userinfoeditedEdittextName.textString,
-                    nickname = binding.userinfoeditedEdittextNickName.textString,
-                    separatedPhoneNumber = arrayOf(
-                        binding.userinfoeditedEdittextPhoneNum1,
-                        binding.userinfoeditedEdittextPhoneNum2,
-                        binding.userinfoeditedEdittextPhoneNum3
-                    ).map { it.textString },
-                    gender = when {
-                        binding.userinfoeditedRadiobuttonGenderMan.isChecked -> Gender.Man
-                        binding.userinfoeditedRadiobuttonGenderWoman.isChecked -> Gender.Woman
-                        else -> Gender.Unknown
-                    },
-                    studentId = binding.userinfoeditedEdittextStudentId.textString,
-                    major = userinfoeditedSpinnerMajor.text.toString()
-                )
-            }
+            rightButtonClicked = {}
         )
-        userinfoeditedSpinnerMajor.lifecycleOwner = this@UserInfoEditActivity
+        spinnerMajor.lifecycleOwner = this@UserInfoEditActivity
 
-        userinfoeditedButtonNicknameCheck.setOnClickListener {
-            userInfoEditViewModel.checkNickname(userinfoeditedEdittextNickName.textString)
+        btnConfirm.setOnClickListener {
+            userInfoEditViewModel.updateUserInfo(
+                name = etName.text.toString(),
+                nickname = etNickname.text.toString(),
+                rawPhoneNumber = tvPhoneNumber.text.toString(),
+                gender =
+                    if (rbGenderMan.isChecked)
+                        Gender.Man
+                    else if (rbGenderWoman.isChecked)
+                        Gender.Woman
+                    else
+                        Gender.Unknown,
+                studentId = etStudentId.text.toString(),
+                major = spinnerMajor.text.toString()
+            )
         }
     }
 
@@ -83,34 +77,25 @@ class UserInfoEditActivity : ActivityBase() {
 
                     is User.Student ->
                         with(binding) {
-                            userinfoeditedTextviewId.text = user.email
-                            userinfoeditedTextviewAnonymousNickName.text = user.anonymousNickname
-
-                            userinfoeditedEdittextName.setText(user.name)
-
-                            userinfoeditedEdittextNickName.setText(user.nickname)
-
-                            if (user.phoneNumber.isNullOrEmpty()) {
-                                userinfoeditedEdittextPhoneNum1.setText("")
-                                userinfoeditedEdittextPhoneNum2.setText("")
-                                userinfoeditedEdittextPhoneNum3.setText("")
-                            } else {
-                                val (first, middle, end) = user.phoneNumber!!.splitPhoneNumber()
-                                userinfoeditedEdittextPhoneNum1.setText(first)
-                                userinfoeditedEdittextPhoneNum2.setText(middle)
-                                userinfoeditedEdittextPhoneNum3.setText(end)
-                            }
-
+                            tvId.text = user.email
+                            etName.setText(user.name)
+                            etNickname.setText(user.nickname)
+                            tvPhoneNumber.setText(user.phoneNumber?.filter { it != '-' })
+                            etStudentId.setText(user.studentNumber)
                             when (user.gender) {
-                                Gender.Man -> userinfoeditedRadiobuttonGenderMan.isChecked = true
-                                Gender.Woman -> userinfoeditedRadiobuttonGenderWoman.isChecked = true
-                                else -> {
-                                    userinfoeditedRadiobuttonGenderMan.isChecked = false
-                                    userinfoeditedRadiobuttonGenderWoman.isChecked = false
+                                is Gender.Man -> {
+                                    binding.rbGenderMan.isChecked = true
+                                }
+
+                                is Gender.Woman -> {
+                                    binding.rbGenderWoman.isChecked = true
+                                }
+
+                                is Gender.Unknown -> {
+                                    binding.rbGenderMan.isChecked = false
+                                    binding.rbGenderWoman.isChecked = false
                                 }
                             }
-
-                            userinfoeditedEdittextStudentId.setText(user.studentNumber)
                         }
                 }
             }
@@ -144,8 +129,8 @@ class UserInfoEditActivity : ActivityBase() {
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     depts.collect { (depts, userMajor) ->
-                        binding.userinfoeditedSpinnerMajor.setItems(depts)
-                        with(binding.userinfoeditedSpinnerMajor) {
+                        binding.spinnerMajor.setItems(depts)
+                        with(binding.spinnerMajor) {
                             setItems(depts)
                             val pos = depts.indexOf(userMajor)
                             if (pos != -1) {
@@ -157,4 +142,30 @@ class UserInfoEditActivity : ActivityBase() {
             }
         }
     }
+
+//    private fun checkGenderBtn(gender: Gender) {
+//        when(gender) {
+//            is Gender.Man -> {
+//                binding.btnGenderMale.setBackgroundColor(resources.getColor(R.color.primary_500, null))
+//                binding.btnGenderMale.setTextColor(resources.getColor(R.color.neutral_0, null))
+//
+//                binding.btnGenderFemale.setBackgroundColor(resources.getColor(R.color.neutral_100, null))
+//                binding.btnGenderFemale.setTextColor(resources.getColor(R.color.neutral_800, null))
+//            }
+//            is Gender.Woman -> {
+//                binding.btnGenderFemale.setBackgroundColor(resources.getColor(R.color.primary_500, null))
+//                binding.btnGenderFemale.setTextColor(resources.getColor(R.color.neutral_0, null))
+//
+//                binding.btnGenderMale.setBackgroundColor(resources.getColor(R.color.neutral_100, null))
+//                binding.btnGenderMale.setTextColor(resources.getColor(R.color.neutral_800, null))
+//            }
+//            else -> {
+//                binding.btnGenderFemale.setBackgroundColor(resources.getColor(R.color.neutral_100, null))
+//                binding.btnGenderFemale.setTextColor(resources.getColor(R.color.neutral_800, null))
+//
+//                binding.btnGenderMale.setBackgroundColor(resources.getColor(R.color.neutral_100, null))
+//                binding.btnGenderMale.setTextColor(resources.getColor(R.color.neutral_800, null))
+//            }
+//        }
+//    }
 }

@@ -30,10 +30,6 @@ class UserInfoActivity : ActivityBase() {
     override val screenTitle = "내 정보"
     private val userInfoViewModel by viewModels<UserInfoViewModel>()
 
-    private val userInfoEditActivityNew = registerForActivityResult(UserInfoEditContract()) { edited ->
-        if (edited) userInfoViewModel.getUserInfo()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -45,25 +41,21 @@ class UserInfoActivity : ActivityBase() {
     }
 
     private fun initView() = with(binding) {
-        koinBaseAppBar.setAppBarButtonClickedListener(
+        appbarUserInfo.setAppBarButtonClickedListener(
             leftButtonClicked = {
                 onBackPressed()
             },
             rightButtonClicked = {
-                UserInfoCheckPasswordDialog().show(supportFragmentManager, "dialog")
+                startActivity(Intent(this@UserInfoActivity, UserInfoEditActivity::class.java))
             }
         )
 
-        userinfoButtonDeleteUser.setOnClickListener {
+        btnLeave.setOnClickListener {
             SnackbarUtil.makeLongSnackbarActionYes(
-                userinfoScrollview, getString(R.string.user_info_user_remove_message)
+                clUserInfo, getString(R.string.user_info_user_remove_message)
             ) {
                 userInfoViewModel.removeUser()
             }
-        }
-
-        userinfoButtonLogoutUser.setOnClickListener {
-            userInfoViewModel.logout()
         }
     }
 
@@ -73,14 +65,15 @@ class UserInfoActivity : ActivityBase() {
         observeLiveData(user) { user ->
             if (user != null && user.isStudent) {
                 val userState = user.toUserState(this@UserInfoActivity)
-                binding.userinfoTextviewId.text = userState.email
-                binding.userinfoTextviewName.text = userState.username
-                binding.userinfoTextviewNickName.text = userState.userNickname
-                binding.userinfoTextviewAnonymousNickName.text = userState.userAnonymousNickname
-                binding.userinfoTextviewPhoneNum.text = userState.phoneNumber
-                binding.userinfoTextviewGender.text = userState.gender
-                binding.userinfoTextviewStudentId.text = userState.studentNumber
-                binding.userinfoTextviewMajor.text = userState.major
+                with(binding) {
+                    svId.labelText = userState.email
+                    svName.labelText = userState.username
+                    svNickname.labelText = userState.userNickname
+                    svPhoneNumber.labelText = userState.phoneNumber
+                    svStudentNumber.labelText = userState.studentNumber
+                    svMajor.labelText = userState.major
+                    svGender.labelText = userState.gender
+                }
             } else {
                 ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
                 finish()
