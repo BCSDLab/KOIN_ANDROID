@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.ui.changepassword
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -28,7 +27,7 @@ class ChangePasswordChangePwdFragment : Fragment(R.layout.fragment_change_passwo
     }
 
     private val confirmPwdWatcher by lazy {
-        DebounceTextWatcher(lifecycleScope) {
+        DebounceTextWatcher(scope = lifecycleScope, debounceTime = 0L) {
             viewModel.onConfirmPasswordChanged(it)
         }
     }
@@ -67,7 +66,11 @@ class ChangePasswordChangePwdFragment : Fragment(R.layout.fragment_change_passwo
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isConfirmPwdSame.collect { isSame ->
                     with(binding) {
-                        groupWarning.visibility = if (isSame) View.GONE else View.VISIBLE
+                        groupWarning.visibility = if (!isSame && !tietConfirmPassword.text.isNullOrBlank()){
+                            View.VISIBLE
+                        } else {
+                            View.GONE
+                        }
                     }
                 }
             }
