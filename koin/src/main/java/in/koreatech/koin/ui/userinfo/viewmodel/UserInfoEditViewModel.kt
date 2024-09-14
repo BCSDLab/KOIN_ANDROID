@@ -17,6 +17,7 @@ import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
 import `in`.koreatech.koin.ui.userinfo.state.NicknameState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -51,6 +52,7 @@ class UserInfoEditViewModel @Inject constructor(
 
     private val _userInfoEditedEvent = SingleLiveEvent<Unit>()
     val userInfoEditedEvent: LiveData<Unit> get() = _userInfoEditedEvent
+
 
     val depts: StateFlow<Pair<List<String>, String?>> = flow { emit(getDeptNamesUseCase()) }
         .combine(user.asFlow()) { depts, user -> depts to user }
@@ -100,11 +102,32 @@ class UserInfoEditViewModel @Inject constructor(
     fun updateUserInfo(
         name: String,
         nickname: String,
-        separatedPhoneNumber: List<String>?,
+        rawPhoneNumber: String,
         gender: Gender,
         studentId: String,
         major: String
     ) {
+//        if (isLoading.value == false) {
+//            viewModelScope.launchWithLoading {
+//                user.value?.let { user ->
+//                    updateStudentUserInfoUseCase(
+//                        beforeUser = user,
+//                        name = name,
+//                        nickname = nickname,
+//                        rawPhoneNumber = rawPhoneNumber,
+//                        gender = gender,
+//                        studentId = studentId,
+//                        major = major,
+//                        isCheckNickname = nicknameState.value?.let {
+//                            it.nickname == nickname && it.isNicknameDuplicated == false
+//                        } ?: false
+//                    )?.let { errorHandler ->
+//                        _toastErrorMessage.value = errorHandler.message
+//                    } ?: _userInfoEditedEvent.call()
+//                }
+//            }
+//        }
+
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 user.value?.let { user ->
@@ -112,19 +135,16 @@ class UserInfoEditViewModel @Inject constructor(
                         beforeUser = user,
                         name = name,
                         nickname = nickname,
-                        separatedPhoneNumber = separatedPhoneNumber,
+                        rawPhoneNumber = rawPhoneNumber,
                         gender = gender,
                         studentId = studentId,
                         major = major,
-                        isCheckNickname = nicknameState.value?.let {
-                            it.nickname == nickname && it.isNicknameDuplicated == false
-                        } ?: false
+                        isCheckNickname = true
                     )?.let { errorHandler ->
                         _toastErrorMessage.value = errorHandler.message
                     } ?: _userInfoEditedEvent.call()
                 }
             }
         }
-
     }
 }

@@ -20,7 +20,7 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
         beforeUser: User,
         name: String?,
         nickname: String?,
-        separatedPhoneNumber: List<String>?,
+        rawPhoneNumber: String?,
         gender: Gender,
         studentId: String?,
         major: String?,
@@ -35,7 +35,7 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
                 throw IllegalStateException(ERROR_INVALID_STUDENT_ID)
             }
 
-            val phoneNumber = separatedPhoneNumber?.joinToString(separator = "") { it.trim() }?.formatPhoneNumber()
+            val phoneNumber = rawPhoneNumber?.trim()?.formatPhoneNumber()
 
             if (!phoneNumber.isNullOrBlank() && phoneNumber.length != 13) {
                 throw IllegalStateException(ERROR_INVALID_PHONE_NUMBER)

@@ -12,6 +12,8 @@
     <string name="common_negative">아니오</string>
     <string name="common_cancellation">취소</string>
     <string name="common_complete">완료</string>
+    <string name="common_edit">편집</string>
+    <string name="common_save">저장</string>
     <string name="need_permission">권한이 필요합니다.</string>
     <string name="back">뒤로가기</string>
     <string name="positive">확인</string>
