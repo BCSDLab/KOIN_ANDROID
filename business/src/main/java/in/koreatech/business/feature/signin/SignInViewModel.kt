@@ -51,12 +51,12 @@ class SignInViewModel @Inject constructor(
                         navigateToMain()
                     }
                         .onFailure {
-                            toastErrorMessage(it.message)
+                            showErrorMessage(it.message)
                         }
                 }
             }
             else{
-                showNullMessage()
+                showErrorMessage()
             }
         }
     }
@@ -65,7 +65,7 @@ class SignInViewModel @Inject constructor(
         intent {
             reduce{
                 state.copy(
-                    nullErrorMessage = message
+                    errorMessage = message
                 )
             }
         }
@@ -74,7 +74,7 @@ class SignInViewModel @Inject constructor(
         postSideEffect(SignInSideEffect.NavigateToMain)
     }
 
-    private fun showNullMessage() {
+    private fun showErrorMessage() {
         intent {
             reduce {
                 state.copy(notValidateField = true)
@@ -83,7 +83,7 @@ class SignInViewModel @Inject constructor(
             else if(state.password.isBlank()) postSideEffect(SignInSideEffect.ShowNullMessage(ErrorType.NullPassword))
         }
     }
-    private fun toastErrorMessage(message: String) = intent {
+    private fun showErrorMessage(message: String) = intent {
         postSideEffect(SignInSideEffect.ShowMessage(message))
     }
 

@@ -58,14 +58,10 @@ fun SignInScreen(
         modifier = modifier,
         id = state.id,
         password = state.password,
-        nullErrorMessage = state.nullErrorMessage,
+        errorMessage = state.errorMessage,
         notValidateField = state.notValidateField,
-        onIdChange = {
-            id -> viewModel.insertId(id)
-        },
-        onPasswordChange = {
-            password -> viewModel.insertPassword(password)
-        },
+        onIdChange = viewModel::insertId,
+        onPasswordChange = viewModel::insertPassword,
         onSignInClick = {
            viewModel.login()
                         },
@@ -80,7 +76,7 @@ fun SignInScreenImpl(
     modifier: Modifier = Modifier,
     id: String = "",
     password: String = "",
-    nullErrorMessage: String = "",
+    errorMessage: String = "",
     notValidateField: Boolean = false,
     onIdChange: (String) -> Unit = {},
     onPasswordChange: (String) -> Unit  = {},
@@ -192,7 +188,7 @@ fun SignInScreenImpl(
                 .padding(top = 4.dp)
             ,
             fontSize = 11.sp,
-            text = if(notValidateField) nullErrorMessage else "",
+            text = if(notValidateField) errorMessage else "",
             color = ColorAccent
         )
 
@@ -223,7 +219,7 @@ fun SignInScreenImpl(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
-                .padding(top = 16.dp, bottom = 24.dp)
+                .padding(bottom = 24.dp)
                 .height(44.dp)
 
         ) {
