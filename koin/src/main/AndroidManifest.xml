@@ -253,6 +253,11 @@
             android:exported="false"
             android:label="설정"
             android:theme="@style/KAPTheme.NoActionBar"  />
+
+        <activity android:name=".ui.term.TermActivity"
+            android:exported="false"
+            android:label="약관"
+            android:theme="@style/KAPTheme.NoActionBar"  />
     </application>
 
 </manifest>

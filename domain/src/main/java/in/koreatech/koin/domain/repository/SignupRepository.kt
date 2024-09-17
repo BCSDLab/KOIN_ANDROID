@@ -1,12 +1,12 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 
 interface SignupRepository {
     suspend fun getPrivacyTermText(): String
     suspend fun getKoinTermText(): String
-
     suspend fun requestEmailVerification(
         portalAccount: String,
         gender: Gender,
@@ -18,4 +18,6 @@ interface SignupRepository {
         phoneNumber: String?,
         studentNumber: String?,
     ): Result<Unit>
+    suspend fun getPrivacyTerm(): Term
+    suspend fun getKoinTerm(): Term
 }
