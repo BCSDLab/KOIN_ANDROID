@@ -1,10 +1,12 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
+import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import retrofit2.Response
@@ -13,6 +15,9 @@ import retrofit2.http.*
 interface UserApi {
     @POST(URLConstant.USER.LOGIN)
     suspend fun getToken(@Body loginRequest: LoginRequest): AuthResponse
+
+    @POST(URLConstant.OWNER.SIGNIN)
+    suspend fun getOwnerToken(@Body ownerLoginRequest: OwnerLoginRequest): OwnerAuthResponse
 
     @POST(URLConstant.USER.STUDENT.REGISTER)
     suspend fun postRegister(@Body studentInfoRequest: StudentInfoRequest)

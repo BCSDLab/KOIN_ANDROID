@@ -1,6 +1,6 @@
 package `in`.koreatech.business.feature.findpassword.navigator
 
-
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -15,6 +15,7 @@ import `in`.koreatech.business.feature.findpassword.finishchangepassword.FinishC
 import `in`.koreatech.business.feature.findpassword.passwordauthentication.PasswordAuthenticationScreenImpl
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ChangePassword(
     modifier: Modifier = Modifier,
