@@ -12,6 +12,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivityChangePasswordBinding
 import kotlinx.coroutines.launch
@@ -50,6 +51,14 @@ class ChangePasswordActivity : ActivityBase() {
     }
 
     private fun initView() {
+
+        with(binding) {
+            appbarChangePassword.setOnClickListener {
+                when(it.id) {
+                    AppBarBase.getLeftButtonId() -> { onBackPressedDispatcher.onBackPressed() }
+                }
+            }
+        }
         with(binding.vpContainer) {
             adapter = vpAdapter
             isUserInputEnabled = false
