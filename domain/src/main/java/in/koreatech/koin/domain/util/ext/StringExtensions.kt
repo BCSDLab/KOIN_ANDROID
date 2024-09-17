@@ -17,7 +17,7 @@ val String.isValidStudentId: Boolean get() {
 fun String.toUnderlineForHtml() = "<u>$this</u>"
 fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)}'>$this</font>" //color = #ff000000 형태
 
-fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+&"""))
+fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 
 fun String.formatPhoneNumber(): String =
     this.replace(Regex("(\\d{3})(\\d{4})(\\d{4})"), "$1-$2-$3")
