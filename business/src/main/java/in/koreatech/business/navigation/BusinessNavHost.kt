@@ -32,11 +32,11 @@ fun KoinBusinessNavHost(
         composable(
             route = SIGNINSCREEN,
         ) {
-                TestScreen(
+                /*TestScreen(
                     onSignUpComplete = {
-                        navController.toNavigateModifyMenuScreen(2796)
+                        navController.navigate(REGISTERMENUSCREEN)
                     }
-                )
+                )*/
         } //Todo 네비게이션 통합할때 삭제하기
 
         modifyMenuScreen(

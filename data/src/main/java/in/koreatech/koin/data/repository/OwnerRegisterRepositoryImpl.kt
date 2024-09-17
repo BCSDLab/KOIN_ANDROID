@@ -16,6 +16,7 @@ import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
+import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
 import java.io.EOFException
 
@@ -92,7 +93,7 @@ class OwnerRegisterRepositoryImpl(
         isCardOk: Boolean,
         isBankOk: Boolean
     ): Result<Unit> {
-        return try {
+        return runCatching {
             ownerRemoteDataSource.postStoreRegister(
                 StoreRegisterResponse(
                     address = address,
@@ -108,13 +109,8 @@ class OwnerRegisterRepositoryImpl(
                     phone = phoneNumber?.toPhoneNumber() ?: ""
                 )
             )
-            Result.success(Unit)
-        } catch (e: EOFException) {
-            Result.failure(e)
-        } catch (e: HttpException) {
-            Result.failure(e)
-        } catch (t: Throwable) {
-            Result.failure(t)
+        }.onFailure {exception ->
+            if(exception is CancellationException) throw exception
         }
     }
 
@@ -128,7 +124,7 @@ class OwnerRegisterRepositoryImpl(
         menuOptionPrice: List<StoreMenuOptionPrice>,
         menuSinglePrice: String
     ): Result<Unit> {
-        return try {
+        return runCatching {
             ownerRemoteDataSource.postStoreMenu(
                 storeId,
                 StoreMenuRegisterResponse(
@@ -141,14 +137,37 @@ class OwnerRegisterRepositoryImpl(
                     singlePrice = if(isSingle)menuSinglePrice.toInt() else null
                 )
             )
-
-            Result.success(Unit)
-        } catch (e: EOFException) {
-            Result.failure(e)
-        } catch (e: HttpException) {
-            Result.failure(e)
-        } catch (t: Throwable) {
-            Result.failure(t)
+        }.onFailure {exception ->
+            if(exception is CancellationException) throw exception
         }
+    }
+
+    override suspend fun storeMenuModify(
+        menuId: Int,
+        menuCategoryId: List<Int>,
+        description: String,
+        menuImageUrlList: List<String>,
+        isSingle: Boolean,
+        menuName: String,
+        menuOptionPrice: List<StoreMenuOptionPrice>,
+        menuSinglePrice: String
+    ): Result<Unit> {
+        return runCatching {
+            ownerRemoteDataSource.putStoreModifiedMenu(
+                menuId,
+                StoreMenuRegisterResponse(
+                    menuCategoryId = menuCategoryId,
+                    description = description,
+                    imageUrls=menuImageUrlList,
+                    isSingle = isSingle,
+                    name = menuName,
+                    optionPrices = if(!isSingle)menuOptionPrice.toOptionPriceList() else null,
+                    singlePrice = if(isSingle)menuSinglePrice.toInt() else null
+                )
+            )
+        }.onFailure {exception ->
+            if(exception is CancellationException) throw exception
+        }
+
     }
 }
