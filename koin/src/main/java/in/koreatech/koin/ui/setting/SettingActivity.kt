@@ -12,10 +12,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
 import `in`.koreatech.koin.ui.changepassword.ChangePasswordActivity
+import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
+import `in`.koreatech.koin.ui.term.TermActivity
 import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
 import kotlinx.coroutines.launch
 
@@ -33,6 +36,7 @@ class SettingActivity : ActivityBase() {
             .setMessage(getString(R.string.login_request))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
+                startActivity(Intent(this, LoginActivity::class.java))
                 dialog.dismiss()
             }
             .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
@@ -56,6 +60,14 @@ class SettingActivity : ActivityBase() {
 
     private fun initListeners() {
         with(binding) {
+            appbarSetting.setOnClickListener {
+                when (it.id) {
+                    AppBarBase.getLeftButtonId() -> {
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            }
+
             svProfile.setOnSettingClickListener {
                 if (viewModel.isStudent)
                     startActivity(Intent(this@SettingActivity, UserInfoActivity::class.java))
@@ -72,10 +84,14 @@ class SettingActivity : ActivityBase() {
                 startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
             }
             svPrivacyPolicy.setOnSettingClickListener {
-                //
+                startActivity(Intent(this@SettingActivity, TermActivity::class.java).apply {
+                    putExtra(TermActivity.KEY_TERM, TermActivity.TERM_PRIVACY_POLICY)
+                })
             }
             svKoinTerms.setOnSettingClickListener {
-                //
+                startActivity(Intent(this@SettingActivity, TermActivity::class.java).apply {
+                    putExtra(TermActivity.KEY_TERM, TermActivity.TERM_KOIN)
+                })
             }
             svOpenSourceLicense.setOnSettingClickListener {
                 //
