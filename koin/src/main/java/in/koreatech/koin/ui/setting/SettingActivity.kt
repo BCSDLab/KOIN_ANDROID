@@ -15,11 +15,12 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
-import `in`.koreatech.koin.ui.changepassword.ChangePasswordActivity
+import `in`.koreatech.koin.ui.changepassword.ChangePasswordContract
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.term.TermActivity
 import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
+import `in`.koreatech.koin.util.SnackbarUtil
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -43,6 +44,11 @@ class SettingActivity : ActivityBase() {
                 dialog.cancel()
             }.create()
     }
+
+    private val changePasswordResult =
+        registerForActivityResult(ChangePasswordContract()) { isChanged ->
+            if (isChanged) SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.change_password_change_complete))
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,9 +81,9 @@ class SettingActivity : ActivityBase() {
                     loginAlertDialog.show()
             }
             svChangePassword.setOnSettingClickListener {
-                if (viewModel.isStudent)
-                    startActivity(Intent(this@SettingActivity, ChangePasswordActivity::class.java))
-                else
+                if (viewModel.isStudent) {
+                    changePasswordResult.launch(Unit)
+                } else
                     loginAlertDialog.show()
             }
             svNotification.setOnSettingClickListener {

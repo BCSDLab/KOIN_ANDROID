@@ -90,7 +90,7 @@ class ChangePasswordActivity : ActivityBase() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isPasswordChangeSuccess.collect { isSuccessful ->
                     if(isSuccessful) {
-                        ToastUtil.getInstance().makeShort(R.string.change_password_change_complete)
+                        setResult(ChangePasswordContract.RESULT_PASSWORD_CHANGED)
                         finish()
                     }
                     else {
