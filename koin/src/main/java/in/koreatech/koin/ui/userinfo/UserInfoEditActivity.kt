@@ -17,7 +17,10 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.ui.userinfo.contract.UserInfoEditContract
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
 import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoEditViewModel
+import `in`.koreatech.koin.util.DebounceTextWatcher
+import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
@@ -26,6 +29,13 @@ class UserInfoEditActivity : ActivityBase() {
     private val binding by dataBinding<ActivityUserInfoEditedBinding>(R.layout.activity_user_info_edited)
     override val screenTitle = "내 정보 수정"
     private val userInfoEditViewModel by viewModels<UserInfoEditViewModel>()
+
+    private val nicknameWatcher by lazy {
+        DebounceTextWatcher(lifecycleScope, 0L) {
+            invalidateNickNameViews(true)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +54,9 @@ class UserInfoEditActivity : ActivityBase() {
             },
             rightButtonClicked = {}
         )
+
+        etNickname.addTextChangedListener(nicknameWatcher)
+
         spinnerMajor.lifecycleOwner = this@UserInfoEditActivity
 
         btnConfirm.setOnClickListener {
@@ -52,15 +65,19 @@ class UserInfoEditActivity : ActivityBase() {
                 nickname = etNickname.text.toString(),
                 rawPhoneNumber = tvPhoneNumber.text.toString(),
                 gender =
-                    if (rbGenderMan.isChecked)
-                        Gender.Man
-                    else if (rbGenderWoman.isChecked)
-                        Gender.Woman
-                    else
-                        Gender.Unknown,
+                if (rbGenderMan.isChecked)
+                    Gender.Man
+                else if (rbGenderWoman.isChecked)
+                    Gender.Woman
+                else
+                    Gender.Unknown,
                 studentId = etStudentId.text.toString(),
                 major = spinnerMajor.text.toString()
             )
+        }
+
+        btnNicknameDuplication.setOnClickListener {
+            userInfoEditViewModel.checkNickname(etNickname.textString)
         }
     }
 
@@ -107,15 +124,15 @@ class UserInfoEditActivity : ActivityBase() {
             observeLiveData(nicknameDuplicatedEvent) {
                 when (it) {
                     NicknameCheckState.POSSIBLE -> {
-                        ToastUtil.getInstance().makeShort(R.string.nickname_available)
+                        invalidateNickNameViews(false)
                     }
 
                     NicknameCheckState.SAME_AS_BEFORE -> {
-                        ToastUtil.getInstance().makeShort(R.string.edit_user_error_same_as_before)
+                        invalidateNickNameViews(false)
                     }
 
                     NicknameCheckState.EXIST -> {
-                        ToastUtil.getInstance().makeShort(R.string.error_nickname_duplicated)
+                        SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_nickname_duplicated))
                     }
                 }
             }
@@ -143,29 +160,23 @@ class UserInfoEditActivity : ActivityBase() {
         }
     }
 
-//    private fun checkGenderBtn(gender: Gender) {
-//        when(gender) {
-//            is Gender.Man -> {
-//                binding.btnGenderMale.setBackgroundColor(resources.getColor(R.color.primary_500, null))
-//                binding.btnGenderMale.setTextColor(resources.getColor(R.color.neutral_0, null))
-//
-//                binding.btnGenderFemale.setBackgroundColor(resources.getColor(R.color.neutral_100, null))
-//                binding.btnGenderFemale.setTextColor(resources.getColor(R.color.neutral_800, null))
-//            }
-//            is Gender.Woman -> {
-//                binding.btnGenderFemale.setBackgroundColor(resources.getColor(R.color.primary_500, null))
-//                binding.btnGenderFemale.setTextColor(resources.getColor(R.color.neutral_0, null))
-//
-//                binding.btnGenderMale.setBackgroundColor(resources.getColor(R.color.neutral_100, null))
-//                binding.btnGenderMale.setTextColor(resources.getColor(R.color.neutral_800, null))
-//            }
-//            else -> {
-//                binding.btnGenderFemale.setBackgroundColor(resources.getColor(R.color.neutral_100, null))
-//                binding.btnGenderFemale.setTextColor(resources.getColor(R.color.neutral_800, null))
-//
-//                binding.btnGenderMale.setBackgroundColor(resources.getColor(R.color.neutral_100, null))
-//                binding.btnGenderMale.setTextColor(resources.getColor(R.color.neutral_800, null))
-//            }
-//        }
-//    }
+    private fun invalidateNickNameViews(isDuplicated: Boolean) {
+        with(binding) {
+            if (isDuplicated) {
+                btnConfirm.text = getString(R.string.user_info_nickname_duplication)
+                btnConfirm.isEnabled = false
+                btnNicknameDuplication.isEnabled = true
+            } else {
+                btnConfirm.text = getString(R.string.common_save)
+                btnConfirm.isEnabled = true
+                btnNicknameDuplication.isEnabled = false
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        binding.etNickname.removeTextChangedListener(nicknameWatcher)
+
+        super.onDestroy()
+    }
 }

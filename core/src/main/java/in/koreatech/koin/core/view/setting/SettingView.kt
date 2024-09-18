@@ -21,18 +21,30 @@ class SettingView @JvmOverloads constructor(
 
     private lateinit var binding: SettingViewBinding
 
-    var paddingVertical = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, resources.displayMetrics).toInt()
-    var paddingHorizontal = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24f, resources.displayMetrics).toInt()
+    private var paddingVertical = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, resources.displayMetrics).toInt()
+    private var paddingHorizontal = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24f, resources.displayMetrics).toInt()
 
     @StyleRes
     private var headTextAppearanceRes = R.style.TextAppearance_Koin_Regular_16
-    var headText = "설정 항목 텍스트"
+    private var _headText = "설정 항목 텍스트"
+    var headText
+        get() = _headText
+        set(value) {
+            _headText = value
+            binding.tvHead.text = value
+        }
 
     private var labelType = LABEL_TYPE_NONE
 
     @StyleRes
     private var labelTextAppearanceRes = R.style.TextAppearance_Koin_Regular_16
-    var labelText = "라벨 텍스트"
+    private var _labelText = "라벨 텍스트"
+    var labelText
+        get() = _labelText
+        set(value) {
+            _labelText = value
+            binding.tvLabel.text = value
+        }
 
     @DrawableRes
     private var labelImageRes = R.drawable.ic_arrow_right
@@ -64,11 +76,11 @@ class SettingView @JvmOverloads constructor(
                 paddingVertical = getDimensionPixelSize(R.styleable.SettingView_paddingVertical, paddingVertical)
                 paddingHorizontal = getDimensionPixelSize(R.styleable.SettingView_paddingHorizontal, paddingHorizontal)
 
-                headText = getString(R.styleable.SettingView_headText) ?: headText
+                _headText = getString(R.styleable.SettingView_headText) ?: _headText
                 headTextAppearanceRes = getResourceId(R.styleable.SettingView_headTextAppearance, -1)
 
                 labelType = getInt(R.styleable.SettingView_labelType, LABEL_TYPE_NONE)
-                labelText = getString(R.styleable.SettingView_labelText) ?: labelText
+                _labelText = getString(R.styleable.SettingView_labelText) ?: _labelText
                 labelTextAppearanceRes = getResourceId(R.styleable.SettingView_labelTextAppearance, -1)
                 labelImageRes = getResourceId(R.styleable.SettingView_labelImage, labelImageRes)
 

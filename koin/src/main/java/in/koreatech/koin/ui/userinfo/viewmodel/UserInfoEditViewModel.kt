@@ -107,27 +107,6 @@ class UserInfoEditViewModel @Inject constructor(
         studentId: String,
         major: String
     ) {
-//        if (isLoading.value == false) {
-//            viewModelScope.launchWithLoading {
-//                user.value?.let { user ->
-//                    updateStudentUserInfoUseCase(
-//                        beforeUser = user,
-//                        name = name,
-//                        nickname = nickname,
-//                        rawPhoneNumber = rawPhoneNumber,
-//                        gender = gender,
-//                        studentId = studentId,
-//                        major = major,
-//                        isCheckNickname = nicknameState.value?.let {
-//                            it.nickname == nickname && it.isNicknameDuplicated == false
-//                        } ?: false
-//                    )?.let { errorHandler ->
-//                        _toastErrorMessage.value = errorHandler.message
-//                    } ?: _userInfoEditedEvent.call()
-//                }
-//            }
-//        }
-
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 user.value?.let { user ->
