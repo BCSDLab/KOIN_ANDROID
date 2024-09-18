@@ -97,7 +97,7 @@ class SettingActivity : ActivityBase() {
                 //
             }
             svContact.setOnSettingClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL.BCSD_ASK_FORM)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL.KOIN_ASK_FORM)))
             }
         }
     }

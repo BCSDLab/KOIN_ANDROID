@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.navigation
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -22,6 +23,7 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -51,7 +53,6 @@ import `in`.koreatech.koin.util.ext.whiteStatusBar
 import `in`.koreatech.koin.util.ext.windowWidth
 import kotlinx.coroutines.launch
 
-// TODO:: UserInfo 걷어내고 Notification 걷어내고 Setting 추가하기
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerActivity : ActivityBase(),
     NavigationView.OnNavigationItemSelectedListener {
@@ -173,11 +174,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         when (state) {
                             MenuState.Setting -> {
                                 // TODO::로그 변경 사항 전달하여 수정하기
-//                                EventLogger.logClickEvent(
-//                                    AnalyticsConstant.Domain.USER,
-//                                    AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
-//                                    getString(R.string.navigation_item_my_info)
-//                                )
+
                             }
 
                             MenuState.LoginOrLogout -> {
@@ -472,11 +469,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     //TODO:: 문의하기 이거로 변경
     private fun goToContactWebActivity() {
-        Intent(this, WebViewActivity::class.java).apply {
-            putExtra("title", getString(R.string.bcsd_webpage_name))
-            putExtra("url", "https://bcsdlab.com/")
-            startActivity(this)
-        }
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL.KOIN_ASK_FORM)))
     }
 
     private fun goToLoginActivity() {
