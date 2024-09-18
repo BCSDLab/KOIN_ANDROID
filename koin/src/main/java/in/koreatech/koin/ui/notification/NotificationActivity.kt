@@ -158,7 +158,7 @@ class NotificationActivity : ActivityBase() {
         binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
         }
-        binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
+        binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
     }
