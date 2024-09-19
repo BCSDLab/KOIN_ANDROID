@@ -4,36 +4,37 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
+import androidx.navigation.Navigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import `in`.koreatech.business.feature.findpassword.changepassword.ChangePasswordScreenImpl
 import `in`.koreatech.business.feature.findpassword.finishchangepassword.FinishChangePasswordScreen
 import `in`.koreatech.business.feature.findpassword.passwordauthentication.PasswordAuthenticationScreenImpl
+import `in`.koreatech.business.navigation.CHANGEPASSWORDSCREEN
+import `in`.koreatech.business.navigation.SIGNINSCREEN
 
 
 @OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun ChangePassword(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
-) {
-    NavHost(
-        navController = navController,
-        startDestination = ChangePasswordRoute.Authentication.name,
-        modifier = modifier
-    ) {
+fun NavGraphBuilder.changePasswordScreen(
+    navigateToFinish: () -> Unit = {},
+    navigateToSignInScreen: () -> Unit = {},
+    onBackPressed: () -> Unit = {},
+    navigateToChangeScreen: (String) -> Unit = {}
+){
+    navigation(
+        route = CHANGEPASSWORDSCREEN,
+        startDestination = ChangePasswordRoute.Authentication.name
+    ){
         composable(route = ChangePasswordRoute.Authentication.name) {
             PasswordAuthenticationScreenImpl(
-                navigateToChangePassword = {
-                    navigateToRandomScreen(navController, it)
-                },
-                onBackPressed = {
-                    navController.navigateUp()
-                }
+                navigateToChangePassword = navigateToChangeScreen,
+                onBackPressed = onBackPressed
             )
         }
 
@@ -47,24 +48,15 @@ fun ChangePassword(
             )
         ) {
             ChangePasswordScreenImpl(
-                navigateToFinish = {
-                    navController.navigate(ChangePasswordRoute.Finish.name)
-                },
-                onBackPressed = {
-                    navController.navigateUp()
-                }
+                navigateToFinish = navigateToFinish,
+                onBackPressed = onBackPressed
             )
         }
 
         composable(route = ChangePasswordRoute.Finish.name) {
-            FinishChangePasswordScreen()
+            FinishChangePasswordScreen(
+                navigateToSignInScreen = navigateToSignInScreen
+            )
         }
     }
-}
-
-private fun navigateToRandomScreen(
-    navController: NavController,
-    phoneNumber: String
-) {
-    navController.navigate("${ChangePasswordRoute.ChangePassword}/${phoneNumber}")
 }

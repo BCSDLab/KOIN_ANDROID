@@ -4,45 +4,31 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import `in`.koreatech.business.feature.findpassword.navigator.ChangePassword
+import androidx.navigation.navigation
 import `in`.koreatech.business.feature.signin.SignInScreen
-import `in`.koreatech.business.feature.signup.navigator.SignupNavigator
+import `in`.koreatech.business.navigation.SIGNINSCREEN
 
 @OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun SignInNavigator(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
-) {
-    NavHost(
-        navController = navController,
-        startDestination = SignInNavigator.SignIn.name,
-        modifier = modifier
+fun NavGraphBuilder.signInScreen(
+    navigateToMain: (Boolean) -> Unit = {},
+    navigateToSignUp: () -> Unit = {},
+    navigateToFindPassword: () -> Unit  = {}
+){
+    navigation(
+        route = SIGNINSCREEN,
+        startDestination =  SignInNavigator.SignIn.name
     ){
         composable(route = SignInNavigator.SignIn.name){
             SignInScreen(
-                navigateToMain = {},
-                navigateToSignUp = {
-                    navController.navigate(SignInNavigator.SignUp.name)
-                },
-                navigateToFindPassword = {
-                    navController.navigate(SignInNavigator.FindPassword.name)
-                }
+                navigateToMain = navigateToMain,
+                navigateToSignUp = navigateToSignUp,
+                navigateToFindPassword = navigateToFindPassword
             )
-        }
-
-        composable(route = SignInNavigator.SignUp.name){
-            SignupNavigator(
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-
-        composable(route = SignInNavigator.FindPassword.name){
-            ChangePassword()
         }
     }
 }

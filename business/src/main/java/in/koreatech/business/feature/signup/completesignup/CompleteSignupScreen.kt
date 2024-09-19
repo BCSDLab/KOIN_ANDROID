@@ -195,7 +195,6 @@ fun Preview() {
             .fillMaxSize()
 
     ) {
-
             CompleteSignupScreen(
                 onBackClicked = {  }
             )
