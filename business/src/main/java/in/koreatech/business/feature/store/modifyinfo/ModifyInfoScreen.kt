@@ -1,5 +1,8 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -38,7 +43,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.launchImagePicker
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -46,11 +53,13 @@ import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray9
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.util.DateFormatUtil.dayOfWeekToIndex
 import `in`.koreatech.koin.domain.util.StoreUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ModifyInfoScreen(
     modifier: Modifier = Modifier,
@@ -63,14 +72,28 @@ fun ModifyInfoScreen(
     val storeInfoState = storeInfoViewModel.collectAsState().value
     val listState = rememberLazyListState()
     val context = LocalContext.current
-
+    val pagerState = rememberPagerState { state.storeInfo.imageUrls.size }
+    val galleryLauncher = launchImagePicker(
+        contentResolver = context.contentResolver,
+        initImageUrls = viewModel::initStoreImageUrls,
+        getPreSignedUrl = {
+            viewModel.getPreSignedUrl(
+                it.first.first,
+                it.first.second,
+                it.second.first,
+                it.second.second
+            )
+        },
+        clearFileInfo = { state.fileInfo.clear() }
+    )
+    
     Column {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(ColorPrimary),
         ) {
-            IconButton(onClick = { viewModel.onBackButtonClicked() }) {
+            IconButton(onClick = viewModel::onBackButtonClicked) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_flyer_before_arrow),
                     contentDescription = stringResource(R.string.back),
@@ -96,15 +119,38 @@ fun ModifyInfoScreen(
                         .background(Gray2),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Image(
-                        modifier = Modifier.height(255.dp),
-                        painter = state.storeInfo?.imageUrls?.getOrNull(0)
-                            .let { painterResource(id = R.drawable.no_image) },
-                        contentDescription = stringResource(R.string.shop_image),
-                        contentScale = ContentScale.Crop,
-                    )
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(255.dp)
+                            .align(Alignment.Center),
+                    ) { page ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Image(
+                                modifier = Modifier.height(255.dp),
+                                painter = rememberAsyncImagePainter(
+                                    model = if (state.storeInfo.imageUrls.isNotEmpty()) state.storeInfo.imageUrls[page] else R.drawable.no_image
+                                ),
+                                contentDescription = stringResource(R.string.shop_image),
+                                contentScale = ContentScale.Crop,
+                            )
+                        }
+                    }
+
                     Button(
-                        onClick = {},
+                        onClick = {
+                            galleryLauncher.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
+
+                        },
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .width(100.dp)
@@ -278,6 +324,9 @@ fun ModifyInfoScreen(
         when (it) {
             ModifyInfoSideEffect.NavigateToBackScreen -> onBackClicked()
             ModifyInfoSideEffect.NavigateToSettingOperatingTime -> onSettingOperatingClicked()
+            ModifyInfoSideEffect.ShowToastMessage -> {
+                ToastUtil.getInstance().makeShort(R.string.error_image_upload)
+            }
             else -> {}
         }
     }
@@ -343,5 +392,4 @@ fun AvailableRadioButton(text: String, selected: Boolean, onClick: () -> Unit) {
             ),
         )
     }
-
 }
