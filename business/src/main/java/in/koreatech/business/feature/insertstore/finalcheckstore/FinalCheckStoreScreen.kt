@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenState
+import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.business.feature.insertstore.selectcategory.InsertStoreProgressBar
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorMinor
@@ -43,10 +45,12 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun FinalCheckStoreScreen(
     modifier: Modifier = Modifier,
+    storeInfo: InsertDetailInfoScreenState,
     onBackPressed: () -> Unit,
     navigateToFinishScreen: () -> Unit,
     viewModel: FinalCheckStoreScreenViewModel = hiltViewModel()
 ){
+    viewModel.getStoreInfo(storeInfo)
     val state = viewModel.collectAsState().value
 
     FinalCheckStoreScreenImpl(
