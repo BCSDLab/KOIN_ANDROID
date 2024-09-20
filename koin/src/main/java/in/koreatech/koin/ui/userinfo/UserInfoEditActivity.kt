@@ -63,7 +63,7 @@ class UserInfoEditActivity : ActivityBase() {
             userInfoEditViewModel.updateUserInfo(
                 name = etName.text.toString(),
                 nickname = etNickname.text.toString(),
-                rawPhoneNumber = tvPhoneNumber.text.toString(),
+                rawPhoneNumber = etPhoneNumber.text.toString(),
                 gender =
                 if (rbGenderMan.isChecked)
                     Gender.Man
@@ -97,7 +97,7 @@ class UserInfoEditActivity : ActivityBase() {
                             tvId.text = user.email
                             etName.setText(user.name)
                             etNickname.setText(user.nickname)
-                            tvPhoneNumber.setText(user.phoneNumber?.filter { it != '-' })
+                            etPhoneNumber.setText(user.phoneNumber)
                             etStudentId.setText(user.studentNumber)
                             when (user.gender) {
                                 is Gender.Man -> {

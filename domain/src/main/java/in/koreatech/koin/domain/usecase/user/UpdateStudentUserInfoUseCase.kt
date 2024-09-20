@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
+import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import javax.inject.Inject
 
@@ -35,11 +36,11 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
                 throw IllegalStateException(ERROR_INVALID_STUDENT_ID)
             }
 
-            val phoneNumber = rawPhoneNumber?.trim()?.formatPhoneNumber()
-
-            if (!phoneNumber.isNullOrBlank() && phoneNumber.length != 13) {
+            if (!rawPhoneNumber.isNullOrBlank() && !rawPhoneNumber.isValidPhoneNumber) {
                 throw IllegalStateException(ERROR_INVALID_PHONE_NUMBER)
             }
+
+            val phoneNumber = rawPhoneNumber?.trim()?.formatPhoneNumber()
 
             val newUser: User = when (beforeUser) {
                 User.Anonymous -> throw IllegalAccessException()
