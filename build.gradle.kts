@@ -7,8 +7,8 @@ buildscript {
     }
 
     extra.apply {
-        set("versionName", "3.5.3")
-        set("versionCode", 30503)
+        set("versionName", "3.5.4")
+        set("versionCode", 30504)
     }
 
     dependencies {
