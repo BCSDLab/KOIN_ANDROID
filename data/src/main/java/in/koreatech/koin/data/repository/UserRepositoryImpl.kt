@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
+import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
@@ -27,6 +28,14 @@ class UserRepositoryImpl @Inject constructor(
         )
 
         return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
+    }
+
+    override suspend fun getOwnerToken(phoneNumber: String, hashedPassword: String): AuthToken {
+        val authResponse = userRemoteDataSource.getOwnerToken(
+            OwnerLoginRequest(phoneNumber, hashedPassword)
+        )
+
+        return AuthToken(authResponse.token, authResponse.refreshToken)
     }
 
     override suspend fun getUserInfo(): User {

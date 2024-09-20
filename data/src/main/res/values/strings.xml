@@ -4,6 +4,7 @@
     <string name="error_internal_server_error">서버 오류가 발생했습니다.</string>
     <string name="error_network_connection">네트워크 연결을 확인해 주세요.</string>
     <string name="error_network_unknown">알 수 없는 오류가 발생했습니다.</string>
+    <string name="error_wrong_password">비밀번호가 틀렸습니다.</string>
     <string name="error_login_incorrect">아이디 또는 비밀번호가 올바르지 않습니다.</string>
     <string name="error_login_user_not_found">존재하지 않는 사용자입니다.</string>
     <string name="error_verify_password">비밀번호가 일치하지 않습니다</string>

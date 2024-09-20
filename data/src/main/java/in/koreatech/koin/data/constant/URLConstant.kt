@@ -77,6 +77,7 @@ object URLConstant {
         const val OWNER = "owner"
         const val OWNERS = "owners"
         const val VERIFICATION = "verification"
+        const val SIGNIN = "$OWNER/login"
         const val REGISTER: String = "$OWNERS/register"
         const val REGISTER_PHONE: String = "$OWNERS/register/phone"
         const val CODE = "$OWNERS/$VERIFICATION/code"
