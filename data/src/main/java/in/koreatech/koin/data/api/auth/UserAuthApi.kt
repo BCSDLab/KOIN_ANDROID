@@ -23,7 +23,7 @@ interface UserAuthApi {
     suspend fun putUser(@Body userRequest: UserRequest): UserResponse
 
     @DELETE(URLConstant.USER.USER)
-    suspend fun deleteUser()
+    suspend fun deleteUser(): Response<Unit?>
 
     @GET(URLConstant.USER.CHECKNICKNAME + "/{nickname}")
     suspend fun checkNickName(): UserInfoEditResponse
