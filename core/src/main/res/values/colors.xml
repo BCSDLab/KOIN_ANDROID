@@ -151,6 +151,14 @@
     <color name="neutral_50">#FAFAFA</color>
     <color name="neutral_0">#FFFFFF</color>
     <!-- Danger -->
+    <color name="danger_700">#EC2D30</color>
+    <color name="danger_600">#F64C4C</color>
+    <color name="danger_500">#EB6F70</color>
+    <color name="danger_400">#F49898</color>
+    <color name="danger_300">#FFCCD2</color>
+    <color name="danger_200">#FFEBEE</color>
+    <color name="danger_100">#FEF2F2</color>
+    <color name="danger_50">#FFFBFB</color>
     <!-- Warning -->
     <!-- Success -->
     <color name="success_700">#0C9D61</color>

@@ -10,6 +10,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.dialog.AlertModalDialog
+import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
@@ -51,11 +53,12 @@ class UserInfoActivity : ActivityBase() {
         )
 
         btnLeave.setOnClickListener {
-            SnackbarUtil.makeLongSnackbarActionYes(
-                clUserInfo, getString(R.string.user_info_user_remove_message)
-            ) {
-                userInfoViewModel.removeUser()
-            }
+            UserLeaveDialog().show(supportFragmentManager, "dialog")
+//            SnackbarUtil.makeLongSnackbarActionYes(
+//                clUserInfo, getString(R.string.user_info_user_remove_message)
+//            ) {
+//                userInfoViewModel.removeUser()
+//            }
         }
     }
 
