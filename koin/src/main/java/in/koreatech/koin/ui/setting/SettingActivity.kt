@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
@@ -31,18 +32,16 @@ class SettingActivity : ActivityBase() {
     private lateinit var binding: ActivitySettingBinding
     private val viewModel by viewModels<SettingViewModel>()
 
-    private val loginAlertDialog: AlertDialog by lazy {
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.user_only))
-            .setMessage(getString(R.string.login_request))
-            .setCancelable(false)
-            .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
-                startActivity(Intent(this, LoginActivity::class.java))
-                dialog.dismiss()
+    private val loginSnackBar: Snackbar by lazy {
+        Snackbar.make(binding.root, R.string.snack_bar_login_title, Snackbar.LENGTH_LONG).apply {
+            setTextColor(getColor(R.color.neutral_0))
+            setActionTextColor(getColor(R.color.sub_sub500))
+            setBackgroundTint(getColor(R.color.primary_900))
+            setAction(R.string.snack_bar_login_action_text) {
+                startActivity(Intent(this@SettingActivity, LoginActivity::class.java))
+                dismiss()
             }
-            .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
-                dialog.cancel()
-            }.create()
+        }
     }
 
     private val changePasswordResult =
@@ -78,13 +77,13 @@ class SettingActivity : ActivityBase() {
                 if (viewModel.isStudent)
                     startActivity(Intent(this@SettingActivity, UserInfoActivity::class.java))
                 else
-                    loginAlertDialog.show()
+                    loginSnackBar.show()
             }
             svChangePassword.setOnSettingClickListener {
                 if (viewModel.isStudent) {
                     changePasswordResult.launch(Unit)
                 } else
-                    loginAlertDialog.show()
+                    loginSnackBar.show()
             }
             svNotification.setOnSettingClickListener {
                 startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
@@ -145,5 +144,10 @@ class SettingActivity : ActivityBase() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        loginSnackBar.dismiss()
+        super.onDestroy()
     }
 }
