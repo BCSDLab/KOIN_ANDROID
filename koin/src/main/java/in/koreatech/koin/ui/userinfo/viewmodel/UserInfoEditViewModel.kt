@@ -17,7 +17,6 @@ import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
 import `in`.koreatech.koin.ui.userinfo.state.NicknameState
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -53,7 +52,6 @@ class UserInfoEditViewModel @Inject constructor(
     private val _userInfoEditedEvent = SingleLiveEvent<Unit>()
     val userInfoEditedEvent: LiveData<Unit> get() = _userInfoEditedEvent
 
-
     val depts: StateFlow<Pair<List<String>, String?>> = flow { emit(getDeptNamesUseCase()) }
         .combine(user.asFlow()) { depts, user -> depts to user }
         .filter { it.second.isStudent }
@@ -78,13 +76,8 @@ class UserInfoEditViewModel @Inject constructor(
     }
 
     fun checkNickname(nickname: String) = viewModelScope.launchWithLoading {
-        _nicknameState.value = NicknameState.newNickname(nickname)
-
-        if (nickname == (user.value as? User.Student)?.nickname) {
-            _nicknameState.value = _nicknameState.value?.copy(isNicknameDuplicated = false)
-            _nicknameDuplicatedEvent.value = NicknameCheckState.SAME_AS_BEFORE
+        if(_nicknameDuplicatedEvent.value == NicknameCheckState.SAME_AS_BEFORE)
             return@launchWithLoading
-        }
 
         checkNicknameValidationUseCase(nickname).let { (isDuplicated, error) ->
             isDuplicated?.let {
@@ -118,12 +111,24 @@ class UserInfoEditViewModel @Inject constructor(
                         gender = gender,
                         studentId = studentId,
                         major = major,
-                        isCheckNickname = true
+                        isCheckNickname = _nicknameState.value?.isNicknameDuplicated ?: true
                     )?.let { errorHandler ->
                         _toastErrorMessage.value = errorHandler.message
                     } ?: _userInfoEditedEvent.call()
                 }
             }
+        }
+    }
+
+    fun onNickNameChanged(newNickname: String) {
+        _nicknameState.value = NicknameState.newNickname(newNickname)
+
+        if (newNickname.isBlank()) {
+            _nicknameDuplicatedEvent.value = NicknameCheckState.POSSIBLE
+        } else if (newNickname == (user.value as? User.Student)?.nickname) {
+            _nicknameDuplicatedEvent.value = NicknameCheckState.SAME_AS_BEFORE
+        } else {
+            _nicknameDuplicatedEvent.value = NicknameCheckState.NEED_CHECK
         }
     }
 }

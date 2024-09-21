@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.userinfo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -32,7 +33,7 @@ class UserInfoEditActivity : ActivityBase() {
 
     private val nicknameWatcher by lazy {
         DebounceTextWatcher(lifecycleScope, 0L) {
-            invalidateNickNameViews(true)
+            userInfoEditViewModel.onNickNameChanged(it)
         }
     }
 
@@ -56,7 +57,6 @@ class UserInfoEditActivity : ActivityBase() {
         )
 
         etNickname.addTextChangedListener(nicknameWatcher)
-
         spinnerMajor.lifecycleOwner = this@UserInfoEditActivity
 
         btnConfirm.setOnClickListener {
@@ -79,6 +79,7 @@ class UserInfoEditActivity : ActivityBase() {
         btnNicknameDuplication.setOnClickListener {
             userInfoEditViewModel.checkNickname(etNickname.textString)
         }
+        invalidateNickNameViews(false)
     }
 
     private fun initViewModel() {
@@ -123,6 +124,10 @@ class UserInfoEditActivity : ActivityBase() {
 
             observeLiveData(nicknameDuplicatedEvent) {
                 when (it) {
+                    NicknameCheckState.NEED_CHECK -> {
+                        invalidateNickNameViews(true)
+                    }
+
                     NicknameCheckState.POSSIBLE -> {
                         invalidateNickNameViews(false)
                     }
