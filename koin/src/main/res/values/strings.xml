@@ -4,6 +4,10 @@
     <string name="sign_up">회원가입</string>
     <string name="login">로그인</string>
 
+    <!-- SnackBar -->
+    <string name="snack_bar_login_title">로그인이 필요한 기능이에요.</string>
+    <string name="snack_bar_login_action_text">로그인 하기</string>
+
     <!--left drawer menu -->
     <string name="home">홈</string>
 
