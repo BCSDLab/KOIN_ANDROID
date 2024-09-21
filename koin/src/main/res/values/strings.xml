@@ -429,7 +429,7 @@
 
     <!-- Business Signup -->
     <string name="are_you_boss"><u>사장님이신가요?</u></string>
-    <string name="are_you_student"><u>학생인신가요?</u></string>
+    <string name="are_you_student"><u>학생이신가요?</u></string>
     <string name="for_business">For Business</string>
     <string name="sign_up_for_boss">사장님용\n회원가입</string>
     <string name="is_all_agree">모두 동의합니다.</string>
