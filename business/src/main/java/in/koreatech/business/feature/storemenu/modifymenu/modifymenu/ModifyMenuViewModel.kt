@@ -19,6 +19,7 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseC
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -238,7 +239,7 @@ class ModifyMenuViewModel @Inject constructor(
         }
     }
 
-    fun changeMenuName(menuName: String) = intent{
+    fun changeMenuName(menuName: String) = blockingIntent{
         reduce {
             state.copy(
                 menuName = menuName
@@ -247,7 +248,7 @@ class ModifyMenuViewModel @Inject constructor(
     }
 
     fun changeMenuPrice(price: String){
-        intent{
+        blockingIntent{
             reduce {
                 state.copy(menuPrice = price)
             }
@@ -255,7 +256,7 @@ class ModifyMenuViewModel @Inject constructor(
     }
 
     fun changeDetailMenuServing(index: Int, serving: String){
-        intent{
+        blockingIntent{
             if (index in state.menuOptionPrice.indices) {
                 reduce {
                     val newMenuPrice = state.menuOptionPrice.toMutableList()
@@ -267,7 +268,7 @@ class ModifyMenuViewModel @Inject constructor(
     }
 
     fun changeDetailMenuPrice(index: Int, price: String){
-        intent{
+        blockingIntent{
             if (index in state.menuOptionPrice.indices) {
                 reduce {
                     val newMenuPrice = state.menuOptionPrice.toMutableList()
@@ -334,7 +335,7 @@ class ModifyMenuViewModel @Inject constructor(
         }
     }
 
-    fun changeMenuDetail(menuDetail: String) = intent{
+    fun changeMenuDetail(menuDetail: String) = blockingIntent{
         reduce {
             state.copy(
                 description = menuDetail

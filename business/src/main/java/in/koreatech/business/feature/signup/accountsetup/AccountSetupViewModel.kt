@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -88,7 +89,7 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    fun onPhoneNumChanged(phoneNumber: String) = intent {
+    fun onPhoneNumChanged(phoneNumber: String) = blockingIntent {
         reduce {
             state.copy(
                 phoneNumber = phoneNumber,
@@ -98,7 +99,7 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    fun onAuthCodeChanged(authCode: String) = intent {
+    fun onAuthCodeChanged(authCode: String) = blockingIntent {
         reduce {
             state.copy(
                 authCode = authCode,
