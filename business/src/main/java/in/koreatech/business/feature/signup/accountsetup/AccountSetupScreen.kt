@@ -42,6 +42,7 @@ import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -159,11 +160,17 @@ fun AccountSetupScreen(
                     modifier = Modifier.width(203.dp),
                     label = stringResource(id = R.string.enter_phone_number),
                     textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                    errorText = if (state.phoneNumberState is SignupContinuationState.Failed) state.phoneNumberState.message else stringResource(
-                        R.string.error_network_unknown
-                    ),
+                    errorText = when (state.sendCodeError) {
+                        OwnerError.ExistsPhoneNumberException -> stringResource(
+                            id = R.string.error_account_duplicated
+                        )
+                        OwnerError.NotValidPhoneNumberException -> stringResource(
+                            id = R.string.error_invalid_phone_number
+                        )
+                        else -> stringResource(id = R.string.error_network_unknown)
+                    },
                     successText = stringResource(R.string.success_send_sms_code),
-                    isError = state.phoneNumberState is SignupContinuationState.Failed,
+                    isError = state.sendCodeError != null,
                     isSuccess = state.phoneNumberState == SignupContinuationState.RequestedSmsValidation,
                 )
 
@@ -171,17 +178,15 @@ fun AccountSetupScreen(
                     .width(115.dp)
                     .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = state.phoneNumber.isNotEmpty() && state.phoneNumberState !is SignupContinuationState.Failed,
+                    enabled = state.phoneNumber.isNotEmpty() && state.phoneNumberState !is SignupContinuationState.RequestedSmsValidation,
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
+                        backgroundColor = if(state.sendCodeError == null) ColorPrimary else ColorSecondary,
                         contentColor = Color.White,
                         disabledBackgroundColor = Gray2,
                         disabledContentColor = Gray1,
                     ),
-                    onClick = {
-                        viewModel.checkExistsAccount(state.phoneNumber)
-
-                    }) {
+                    onClick = viewModel::checkExistsAccount
+                    ) {
                     Text(
                         text = stringResource(id = R.string.send_authentication_code),
                         fontWeight = Bold,
