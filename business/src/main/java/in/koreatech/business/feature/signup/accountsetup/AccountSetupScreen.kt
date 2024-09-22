@@ -134,6 +134,7 @@ fun AccountSetupScreen(
 
         Column(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
@@ -279,14 +280,11 @@ fun AccountSetupScreen(
                 errorText = stringResource(id = R.string.password_mismatch),
                 isError = state.isPasswordConfirmError,
             )
-
-
-
-
-            Spacer(modifier = Modifier.height(55.dp))
+            Spacer(modifier = Modifier.weight(1f))
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(bottom = 24.dp)
                     .height(44.dp),
                 shape = RectangleShape,
                 enabled = state.isButtonEnabled,
