@@ -73,6 +73,11 @@ class ArticleKeywordViewModel @Inject constructor(
             return
         }
 
+        if (trimmedKeyword.length > MAX_KEYWORD_LENGTH || trimmedKeyword.length < MIN_KEYWORD_LENGTH) {
+            _keywordAddUiState.tryEmit(KeywordAddUiState.InvalidLength)
+            return
+        }
+
         if (myKeywords.value.contains(trimmedKeyword)) {
             _keywordAddUiState.tryEmit(KeywordAddUiState.AlreadyExist)
             return
@@ -107,6 +112,8 @@ class ArticleKeywordViewModel @Inject constructor(
     companion object {
         const val MAX_KEYWORD_COUNT = 10
         const val MAX_SUGGEST_KEYWORD_COUNT = 5
+        const val MAX_KEYWORD_LENGTH = 20
+        const val MIN_KEYWORD_LENGTH = 2
         const val KEYWORD_INPUT = "keyword_input"
     }
 }
@@ -118,6 +125,7 @@ sealed interface KeywordAddUiState {
     data object AlreadyExist : KeywordAddUiState
     data object LimitExceeded : KeywordAddUiState
     data object BlankNotAllowed : KeywordAddUiState
+    data object InvalidLength : KeywordAddUiState
     data object RequireInput : KeywordAddUiState
     data object Error : KeywordAddUiState
 }

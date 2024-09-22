@@ -201,6 +201,13 @@ class ArticleKeywordFragment : Fragment() {
                             )
                         }
 
+                        KeywordAddUiState.InvalidLength -> {
+                            SnackbarUtil.makeShortSnackbar(
+                                binding.root,
+                                getString(R.string.keyword_add_invalid_length),
+                            )
+                        }
+
                         KeywordAddUiState.AlreadyExist -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
