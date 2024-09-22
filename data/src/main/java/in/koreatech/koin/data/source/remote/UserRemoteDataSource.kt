@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.source.remote
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
@@ -70,5 +71,8 @@ class UserRemoteDataSource(
 
     suspend fun verifyPassword(passwordRequest: PasswordRequest) {
         userAuthApi.checkPassword(passwordRequest)
+    }
+    suspend fun postABTestAssign(abTestRequest: ABTestRequest): ABTestResponse {
+        return userApi.postABTestAssign(abTestRequest)
     }
 }

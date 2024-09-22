@@ -3,12 +3,14 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
+import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -108,5 +110,11 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun verifyPassword(hashedPassword: String) {
         userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
+    }
+
+    override suspend fun postABTestAssign(title: String): ABTest {
+        userRemoteDataSource.postABTestAssign(ABTestRequest(title)).let {
+            return ABTest(it.variableName, it.accessHistoryId)
+        }
     }
 }

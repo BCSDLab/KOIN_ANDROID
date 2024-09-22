@@ -2,10 +2,12 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
+import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
@@ -33,4 +35,7 @@ interface UserApi {
 
     @POST(URLConstant.USER.REFRESH)
     suspend fun postUserRefresh(@Body refreshRequest: RefreshRequest): Response<RefreshResponse>
+
+    @POST("abtest/assign")
+    suspend fun postABTestAssign(@Body abTestRequest: ABTestRequest): ABTestResponse
 }
