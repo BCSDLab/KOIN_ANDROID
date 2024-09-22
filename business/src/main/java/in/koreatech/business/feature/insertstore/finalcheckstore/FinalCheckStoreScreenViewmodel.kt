@@ -48,7 +48,7 @@ class FinalCheckStoreScreenViewModel @Inject constructor(
         }
     }
 
-    private fun getStoreInfo(storeInfo: InsertDetailInfoScreenState) {
+    fun getStoreInfo(storeInfo: InsertDetailInfoScreenState) {
         intent {
             reduce {
                 state.copy(

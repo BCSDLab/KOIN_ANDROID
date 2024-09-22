@@ -12,7 +12,7 @@ import `in`.koreatech.business.navigation.REGISTERMENUSCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.registerMenu(
+fun NavGraphBuilder.registerMenuScreen(
     navController: NavHostController
 ){
     navigation(

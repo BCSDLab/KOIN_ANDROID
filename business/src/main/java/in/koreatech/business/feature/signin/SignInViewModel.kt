@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopListUseCase
 import `in`.koreatech.koin.domain.usecase.business.OwnerSignInUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val ownerSignInUseCase: OwnerSignInUseCase
+    private val ownerSignInUseCase: OwnerSignInUseCase,
+    private val getOwnerShopListUseCase: GetOwnerShopListUseCase
 ) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
     override val container = container<SignInState, SignInSideEffect>(
         SignInState()
@@ -42,13 +44,15 @@ class SignInViewModel @Inject constructor(
     fun login(){
         intent{
             if((state.id.isNotBlank() && state.password.isNotBlank())){
-                state.copy(notValidateField = false)
+                reduce {
+                    state.copy(notValidateField = false)
+                }
                 viewModelScope.launch {
                     ownerSignInUseCase(
                         phoneNumber = state.id.trim(),
                         password = state.password.trim()
                     )   .onSuccess {
-                        navigateToMain()
+                        getOwnerInfo()
                     }
                         .onFailure {
                             showErrorMessage(it.message)
@@ -70,8 +74,20 @@ class SignInViewModel @Inject constructor(
             }
         }
     }
-    private fun navigateToMain() = intent {
-        postSideEffect(SignInSideEffect.NavigateToMain)
+
+    private fun getOwnerInfo() = intent {
+        viewModelScope.launch {
+            getOwnerShopListUseCase()
+                .onSuccess{
+                    navigateToMain(it.isEmpty())
+            }.onFailure {
+                showErrorMessage(it.message)
+            }
+        }
+    }
+    private fun navigateToMain(isFirst: Boolean) = intent {
+        if(isFirst) postSideEffect(SignInSideEffect.NavigateToRegisterStore)
+        else  postSideEffect(SignInSideEffect.NavigateToMyStore)
     }
 
     private fun showErrorMessage() {
@@ -84,6 +100,9 @@ class SignInViewModel @Inject constructor(
         }
     }
     private fun showErrorMessage(message: String) = intent {
+        reduce {
+            state.copy(notValidateField = true)
+        }
         postSideEffect(SignInSideEffect.ShowMessage(message))
     }
 

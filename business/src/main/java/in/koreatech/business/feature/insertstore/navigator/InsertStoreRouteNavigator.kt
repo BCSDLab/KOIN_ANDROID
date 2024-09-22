@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.NavType
@@ -15,8 +17,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreen
-import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreenImpl
 import `in`.koreatech.business.feature.insertstore.finishregisterstore.FinishRegisterScreen
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreen
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenState
@@ -26,21 +28,21 @@ import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInf
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.business.feature.insertstore.selectcategory.SelectCategoryScreen
 import `in`.koreatech.business.feature.insertstore.startinsetstore.StartInsertScreen
+import `in`.koreatech.business.navigation.MYSTORESCREEN
+import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
+import `in`.koreatech.business.navigation.SIGNUPSCREEN
+import `in`.koreatech.business.navigation.sharedHiltViewModel
 import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun InsertStoreNavigator(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-    detailInfoScreenViewModel: InsertDetailInfoScreenViewModel = hiltViewModel()
-) {
-    NavHost(
-        navController = navController,
-        startDestination = InsertStoreRoute.START.name,
-        modifier = modifier
-    ) {
 
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.registerStoreScreen(
+    navController: NavHostController
+){
+    navigation(
+        route = REGISTERSTORESCREEN,
+        startDestination = InsertStoreRoute.START.name
+    ){
         composable(
             route = InsertStoreRoute.START.name,
         ) {
@@ -57,14 +59,14 @@ fun InsertStoreNavigator(
         composable(
             route = InsertStoreRoute.SELECT_CATEGORY.name,
         ) {
-           SelectCategoryScreen(
-               navigateToInsertBasicInfoScreen = {
-                   navigateToMainInfo(navController, it)
-               },
-               onBackPressed = {
-                   navController.navigateUp()
-               }
-           )
+            SelectCategoryScreen(
+                navigateToInsertBasicInfoScreen = {
+                    navigateToMainInfo(navController, it)
+                },
+                onBackPressed = {
+                    navController.navigateUp()
+                }
+            )
         }
 
         composable(
@@ -89,6 +91,7 @@ fun InsertStoreNavigator(
         composable(
             route = InsertStoreRoute.DETAIL_INFO.name
         ){
+
             val bundle = it.arguments
 
             val basicInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -97,47 +100,66 @@ fun InsertStoreNavigator(
                 bundle?.getParcelable("storeBasicInfo") as? InsertBasicInfoScreenState
             }
 
-            detailInfoScreenViewModel.getStoreBasicInfo(basicInfo)
-
-            InsertDetailInfoScreen(
-                reviseButtonClicked = {
-                    navController.navigate(InsertStoreRoute.OPERATING_TIME.name)
-                },
-                onBackPressed = {
-                    navController.navigateUp()
-                },
-
-                viewModel = detailInfoScreenViewModel,
-
-                navigateToCheckScreen = { storeInfo ->
-                    navigateToCheckScreen(navController, storeInfo)
-                }
+            val insertDetailInfoScreenViewModel: InsertDetailInfoScreenViewModel = it.sharedHiltViewModel(
+                navController = navController
             )
-        }
 
+            if (basicInfo != null) {
+                InsertDetailInfoScreen(
+                    basicInfo = basicInfo,
+                    reviseButtonClicked = {
+                        navController.navigate(InsertStoreRoute.OPERATING_TIME.name)
+                    },
+                    onBackPressed = {
+                        navController.navigateUp()
+                    },
+
+                    viewModel = insertDetailInfoScreenViewModel,
+
+                    navigateToCheckScreen = {
+                        navigateToCheckScreen(navController, it)
+                    }
+                )
+            }
+        }
         composable(
             route = InsertStoreRoute.OPERATING_TIME.name
 
         ){
+            val insertDetailInfoScreenViewModel: InsertDetailInfoScreenViewModel = it.sharedHiltViewModel(
+                navController = navController
+            )
+
             OperatingTimeSettingScreen(
                 onBackPressed = {
                     navController.navigateUp()
                 },
-                viewModel = detailInfoScreenViewModel
+                viewModel = insertDetailInfoScreenViewModel
             )
         }
 
         composable(
             route = InsertStoreRoute.CHECK_SCREEN.name
         ){
-            FinalCheckStoreScreen(
-                onBackPressed = {
-                    navController.navigateUp()
-                },
-                navigateToFinishScreen = {
-                    navController.navigate(InsertStoreRoute.FINISH_SCREEN.name)
-                }
-            )
+            val bundle = it.arguments
+
+            val storeInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                bundle?.getParcelable("storeInfo", InsertDetailInfoScreenState::class.java)
+            } else {
+                bundle?.getParcelable("storeInfo") as? InsertDetailInfoScreenState
+            }
+
+            if(storeInfo != null){
+                FinalCheckStoreScreen(
+                    storeInfo = storeInfo,
+                    onBackPressed = {
+                        navController.navigateUp()
+                    },
+                    navigateToFinishScreen = {
+                        navController.navigate(InsertStoreRoute.FINISH_SCREEN.name)
+                    }
+                )
+            }
         }
 
         composable(
@@ -145,7 +167,13 @@ fun InsertStoreNavigator(
         ) {
             FinishRegisterScreen(
                 goToMainScreen = {
-
+                    navController.navigate(MYSTORESCREEN){
+                        popUpTo(
+                            REGISTERSTORESCREEN
+                        ){
+                            inclusive = true
+                        }
+                    }
                 },
                 onBackPressed = {
                     navController.navigateUp()
@@ -154,7 +182,6 @@ fun InsertStoreNavigator(
         }
     }
 }
-
 private fun navigateToMainInfo(
     navController: NavController,
     categoryId: Int
@@ -167,8 +194,10 @@ private fun navigateToDetailInfo(
     navController: NavController,
     storeBasicInfo: InsertBasicInfoScreenState
 ) {
-    val bundle = Bundle()
-    bundle.putParcelable("storeBasicInfo", storeBasicInfo)
+    val bundle = Bundle().apply {
+        this.putParcelable("storeBasicInfo", storeBasicInfo)
+    }
+
     navController.navigate(InsertStoreRoute.DETAIL_INFO.name, args = bundle)
 }
 
@@ -186,7 +215,9 @@ fun NavController.navigate(
     navOptions: NavOptions? = null,
     navigatorExtras: Navigator.Extras? = null
 ) {
-    val nodeId = graph.findNode(route = route)?.id
+    val nodes = graph.findNode(REGISTERSTORESCREEN) as? NavGraph
+
+    val nodeId = nodes?.findNode(route)?.id
     if (nodeId != null) {
         navigate(nodeId, args, navOptions, navigatorExtras)
     }
