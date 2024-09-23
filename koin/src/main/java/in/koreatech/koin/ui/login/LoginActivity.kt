@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -118,22 +119,27 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                 )
             }
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.USER,
+                EventAction.USER,
                 AnalyticsConstant.Label.LOGIN,
-                getString(R.string.login)
+                getString(R.string.login_complete)
             )
         }
 
         loginButtonSignup.setOnClickListener {
             startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.USER,
-                AnalyticsConstant.Label.START_SIGN_UP,
+                EventAction.USER,
+                AnalyticsConstant.Label.LOGIN,
                 getString(R.string.sign_up)
             )
         }
 
         forgotPasswordLinearLayout.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.USER,
+                AnalyticsConstant.Label.LOGIN,
+                getString(R.string.find_password)
+            )
             startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
         }
 

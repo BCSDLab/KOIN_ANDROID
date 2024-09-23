@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -155,7 +156,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 val tab = binding.tabsDiningTime.getTabAt(it)
                 tab?.view?.setOnClickListener {
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
+                        EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_TIME,
                         tab.text.toString()
                     )
@@ -205,7 +206,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 } else if(state == ViewPager2.SCROLL_STATE_IDLE){
                     if(isUserScrolling){
                         EventLogger.logScrollEvent(
-                            AnalyticsConstant.Domain.CAMPUS,
+                            EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_TIME,
                             binding.tabsDiningTime.getTabAt(binding.tabsDiningTime.selectedTabPosition)?.text.toString()
                         )

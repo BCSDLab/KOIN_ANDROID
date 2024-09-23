@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.contract.LoginContract
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -50,14 +51,14 @@ class StoreDetailReviewFragment : Fragment() {
                     onDelete = {
                         viewModel.deleteReview(it, viewModel.store.value!!.uid)
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
                             viewModel.store.value?.name ?: "Unknown"
                         )
                     },
                     onCancel = {
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL,
                             viewModel.store.value?.name ?: "Unknown"
                         )
@@ -65,7 +66,7 @@ class StoreDetailReviewFragment : Fragment() {
                 )
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.BUSINESS,
+                    EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE,
                     viewModel.store.value?.name ?: "Unknown"
                 )
@@ -88,14 +89,14 @@ class StoreDetailReviewFragment : Fragment() {
                         goToLogin = {
                             loginActivityLauncher.launch(Unit)
                             EventLogger.logClickEvent(
-                                AnalyticsConstant.Domain.BUSINESS,
+                                EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN,
                                 viewModel.store.value?.name ?: "Unknown"
                             )
                         },
                         onCancel = {
                             EventLogger.logClickEvent(
-                                AnalyticsConstant.Domain.BUSINESS,
+                                EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
                                 viewModel.store.value?.name ?: "Unknown"
                             )
@@ -104,7 +105,7 @@ class StoreDetailReviewFragment : Fragment() {
                     loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.BUSINESS,
+                    EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT,
                     viewModel.store.value?.name ?: "Unknown"
                 )
@@ -152,14 +153,14 @@ class StoreDetailReviewFragment : Fragment() {
                         goToLogin = {
                             loginActivityLauncher.launch(Unit)
                             EventLogger.logClickEvent(
-                                AnalyticsConstant.Domain.BUSINESS,
+                                EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN,
                                 viewModel.store.value?.name ?: "Unknown"
                             )
                         },
                         onCancel = {
                             EventLogger.logClickEvent(
-                                AnalyticsConstant.Domain.BUSINESS,
+                                EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL,
                                 viewModel.store.value?.name ?: "Unknown"
                             )
@@ -168,7 +169,7 @@ class StoreDetailReviewFragment : Fragment() {
                     loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.BUSINESS,
+                    EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE,
                     viewModel.store.value?.name ?: "Unknown"
                 )
@@ -298,7 +299,7 @@ class StoreDetailReviewFragment : Fragment() {
 
             if (seventyPercentScroll in (oldScrollY + 1)..scrollY) {
                 EventLogger.logScrollEvent(
-                    AnalyticsConstant.Domain.BUSINESS,
+                    EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW,
                     viewModel.store.value?.name ?: "Unknown"
                 )
