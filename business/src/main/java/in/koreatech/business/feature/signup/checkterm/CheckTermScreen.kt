@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -137,7 +138,7 @@ fun CheckTermScreen(
         }
 
         Column(
-            modifier = Modifier
+            modifier = Modifier.fillMaxSize()
                 .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
@@ -260,11 +261,11 @@ fun CheckTermScreen(
                 Text(text = stringResource(R.string.term_2), fontSize = 10.sp, color = Color.Black)
             }
 
-            Spacer(modifier = Modifier.height(50.dp))
-
+            Spacer(modifier = Modifier.weight(1f))
             Button(
                 modifier = modifier
                     .fillMaxWidth()
+                    .padding(bottom = 24.dp)
                     .height(44.dp),
                 onClick = { viewModel.onNextButtonClicked() },
                 shape = RoundedCornerShape(4.dp),
