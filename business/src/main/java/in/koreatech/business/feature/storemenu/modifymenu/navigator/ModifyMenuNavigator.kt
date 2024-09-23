@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.ModifyMenuCheckScreen
 import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.ModifyMenuScreen
 import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.ModifyMenuViewModel
 import `in`.koreatech.business.navigation.MODIFYMENUSCREEN
@@ -38,6 +39,18 @@ fun NavGraphBuilder.modifyMenuScreen(
                         navController.navigate(ModifyMenuRoute.CHECK_MODIFY_MENU.name)
                     },
                 )
+        }
+
+        composable(
+            route = ModifyMenuRoute.CHECK_MODIFY_MENU.name
+        ){
+            val viewModel: ModifyMenuViewModel = it.sharedHiltViewModel(navController =  navController)
+            ModifyMenuCheckScreen(
+                viewModel = viewModel,
+                onBackPressed = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

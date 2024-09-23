@@ -31,8 +31,10 @@ interface OwnerAuthApi {
     suspend fun getOwnerShopMenus(@Query("shopId") uid: Int): StoreMenuResponse
 
     @POST(URLConstant.SHOPS.OWNERSHOPS + "/{id}"+"/menus")
-    suspend fun postShopMenu(@Path("id") storeId: Int, @Body storeRegisterResponse: StoreMenuRegisterResponse): StoreMenuRegisterResponse
+    suspend fun postShopMenu(@Path("id") storeId: Int, @Body storeRegisterResponse: StoreMenuRegisterResponse)
 
+    @PUT(URLConstant.SHOPS.OWNERSHOPS +"/menus"+ "/{menuId}")
+    suspend fun putShopModifiedMenu(@Path("menuId") menuId: Int, @Body storeRegisterResponse: StoreMenuRegisterResponse)
     @GET(URLConstant.SHOPS.OWNERSHOPS +"/menus" + "/{menuId}")
     suspend fun getMenuInfo(@Path("menuId") menuId: Int): StoreMenuInfoResponse
     @GET(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}" + "/event")

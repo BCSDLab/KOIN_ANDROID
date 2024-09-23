@@ -1,16 +1,13 @@
-package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
+package `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
@@ -45,14 +41,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.feature.storemenu.TitleAndContent
+import `in`.koreatech.business.feature.storemenu.TitleAndImageString
 import `in`.koreatech.business.feature.storemenu.TitleAndImageUri
 import `in`.koreatech.business.feature.storemenu.TitleAndOptionPrice
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
 import `in`.koreatech.business.ui.theme.ColorTextBackgrond
-import `in`.koreatech.business.ui.theme.ColorTransparency
-import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -60,19 +55,19 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun RegisterMenuCheckScreen(
+fun ModifyMenuCheckScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
-    viewModel: RegisterMenuViewModel = hiltViewModel(),
+    viewModel: ModifyMenuViewModel = hiltViewModel(),
     goToStoreMainScreen: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val context = LocalContext.current
 
-    RegisterMenuCheckScreenImpl(
+    ModifyMenuCheckScreenImpl(
         onBackPressed = onBackPressed,
         menuName = state.menuName,
-        registerMenuState = state,
+        modifyMenuState = state,
         onPositiveButtonClicked = {
             viewModel.onPositiveButtonClicked(context)
         }
@@ -83,10 +78,10 @@ fun RegisterMenuCheckScreen(
 
 
 @Composable
-fun RegisterMenuCheckScreenImpl(
+fun ModifyMenuCheckScreenImpl(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {},
-    registerMenuState: RegisterMenuState = RegisterMenuState(),
+    modifyMenuState: ModifyMenuState = ModifyMenuState(),
     menuName: String = "",
     onPositiveButtonClicked: () -> Unit = {}
 ) {
@@ -111,7 +106,7 @@ fun RegisterMenuCheckScreenImpl(
                 )
             }
             Text(
-                text = stringResource(R.string.menu_add),
+                text = stringResource(R.string.menu_modify),
                 modifier = Modifier.align(Alignment.Center),
                 style = TextStyle(color = Color.White, fontSize = 20.sp),
             )
@@ -120,7 +115,7 @@ fun RegisterMenuCheckScreenImpl(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            item {
+            item{
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -128,7 +123,7 @@ fun RegisterMenuCheckScreenImpl(
                         .height(35.dp)
                         .background(ColorTextBackgrond),
                     contentAlignment = Alignment.CenterStart
-                ) {
+                ){
                     Text(
                         modifier = Modifier
                             .padding(start = 16.dp),
@@ -145,22 +140,22 @@ fun RegisterMenuCheckScreenImpl(
                 )
 
                 TitleAndOptionPrice(
-                    optionPriceList = registerMenuState.menuOptionPrice,
-                    menuPrice = registerMenuState.menuPrice
+                    optionPriceList = modifyMenuState.menuOptionPrice,
+                    menuPrice = modifyMenuState.menuPrice
                 )
 
                 TitleAndContent(
                     stringId = R.string.menu_category,
-                    content = registerMenuState.menuCategoryLabel
+                    content = modifyMenuState.menuCategoryLabel
                 )
 
                 TitleAndContent(
                     stringId = R.string.menu_composition,
-                    content = registerMenuState.description
+                    content = modifyMenuState.description
                 )
 
-                TitleAndImageUri(
-                    imageUriList = registerMenuState.imageUriList
+                TitleAndImageString(
+                    imageStringList = modifyMenuState.imageUriList
                 )
             }
 
@@ -211,20 +206,20 @@ fun RegisterMenuCheckScreenImpl(
 }
 
 @Composable
-private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScreen: () -> Unit) {
+private fun HandleSideEffects(viewModel: ModifyMenuViewModel, goToCheckMenuScreen: () -> Unit) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is RegisterMenuSideEffect.FinishRegisterMenu -> {
+            is ModifyMenuSideEffect.FinishModifyMenu -> {
 
-                ToastUtil.getInstance().makeShort(context.getString(R.string.menu_success_register_menu))
+                ToastUtil.getInstance().makeShort(context.getString(R.string.menu_success_modify_menu))
                 goToCheckMenuScreen()
             }
-            is RegisterMenuSideEffect.ShowMessage -> {
+            is ModifyMenuSideEffect.ShowMessage -> {
                 val message = when (sideEffect.type) {
-                    RegisterMenuErrorType.FailRegisterMenu ->context.getString(R.string.menu_fail_register_menu)
-                    RegisterMenuErrorType.FailUploadImage ->context.getString(R.string.menu_fail_upload_image)
+                    ModifyMenuErrorType.FailModifyMenu ->context.getString(R.string.menu_fail_modify_menu)
+                    ModifyMenuErrorType.FailUploadImage ->context.getString(R.string.menu_fail_upload_image)
                     else -> ""
                 }
                 ToastUtil.getInstance().makeShort(message)
@@ -238,7 +233,7 @@ private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScr
 @Composable
 fun PreviewRegisterMenuCheckScreen() {
     Surface {
-        RegisterMenuCheckScreenImpl(
+        ModifyMenuCheckScreenImpl(
             menuName = "불족발 + 막국수 저녁 Set"
         )
     }

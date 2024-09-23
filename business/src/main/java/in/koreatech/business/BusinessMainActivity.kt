@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.business.feature.signin.navigator.SignInNavigator
 import `in`.koreatech.business.navigation.KoinBusinessNavHost
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 
@@ -25,7 +26,8 @@ class BusinessMainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    KoinBusinessNavHost()
+                    //KoinBusinessNavHost()
+                    SignInNavigator()
                 }
             }
         }
