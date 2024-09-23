@@ -12,6 +12,7 @@ import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.domain.model.bus.toBusType
@@ -46,7 +47,7 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
         binding.busTimetableBustypeShuttle.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.Shuttle)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE,
                 getString(R.string.bus_name_school_shuttle)
             )
@@ -54,7 +55,7 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
         binding.busTimetableBustypeDaesung.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.Express)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE,
                 getString(R.string.bus_name_express)
             )
@@ -62,7 +63,7 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
         binding.busTimetableBustypeCity.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.City)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE,
                 getString(R.string.bus_name_city)
             )

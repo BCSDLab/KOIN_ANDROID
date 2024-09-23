@@ -21,6 +21,8 @@ import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -45,7 +47,7 @@ import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -53,7 +55,7 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class MainActivity : KoinNavigationDrawerActivity() {
+class MainActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Main
     private var currentTime by Delegates.notNull<Long>()
     private var elapsedTime by Delegates.notNull<Long>()
@@ -76,7 +78,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         setOnCardClickListener {
             callDrawerItem(R.id.navi_item_bus, Bundle())
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.MAIN_BUS,
                 getString(R.string.bus)
             )
@@ -84,7 +86,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         setOnSwitchClickListener {
             viewModel.switchBusNode()
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.MAIN_BUS_CHANGETOFROM,
                 it.localized(this@MainActivity)
             )
@@ -124,9 +126,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
             elapsedTime = System.currentTimeMillis() - currentTime
 
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                name + ", previous_page: 메인"+", current_page: "+ name +", duration_time: " +elapsedTime/1000
+                name,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
             gotoStoreActivity(id)
         }
@@ -204,7 +209,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewModel.setSelectedPosition(tab.position)
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
+                    EventAction.CAMPUS,
                     AnalyticsConstant.Label.MAIN_MENU_CORNER,
                     tab.text.toString()
                 )
@@ -261,7 +266,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 EventLogger.logScrollEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
+                    EventAction.CAMPUS,
                     AnalyticsConstant.Label.MAIN_BUS_SCROLL,
                     busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(
                         this@MainActivity

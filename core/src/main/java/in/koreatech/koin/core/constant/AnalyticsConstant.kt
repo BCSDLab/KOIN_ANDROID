@@ -2,12 +2,6 @@ package `in`.koreatech.koin.core.constant
 
 object AnalyticsConstant {
 
-    object Domain {
-        const val BUSINESS = "BUSINESS"
-        const val CAMPUS = "CAMPUS"
-        const val USER = "USER"
-    }
-
     object Category {
         const val CLICK = "click"
         const val SCROLL = "scroll"
@@ -20,12 +14,12 @@ object AnalyticsConstant {
         const val SHOP_CATEGORIES_SEARCH = "shop_categories_search"
         const val SHOP_CATEGORIES_EVENT = "shop_categories_event"
         const val HAMBURGER = "hamburger"
-        const val HAMBURGER_SHOP = "${HAMBURGER}_shop"
-        const val HAMBURGER_DINING = "${HAMBURGER}_dining"
+        const val HAMBURGER_SHOP = HAMBURGER
+        const val HAMBURGER_DINING = "${HAMBURGER}"
+        const val HAMBURGER_LAND = "${HAMBURGER}"
         const val HAMBURGER_MY_INFO_WITHOUT_LOGIN = "${HAMBURGER}_my_info_without_login"
         const val HAMBURGER_MY_INFO_WITH_LOGIN = "${HAMBURGER}_my_info_with_login"
-        const val HAMBURGER_BUS = "${HAMBURGER}_bus"
-        const val USER_ONLY_OK = "user_only_ok"
+        const val HAMBURGER_BUS = "${HAMBURGER}"
         const val MAIN_MENU_MOVEDETAILVIEW = "main_menu_moveDetailView"
         const val MAIN_MENU_CORNER = "main_menu_corner"
         const val MENU_TIME = "menu_time"
@@ -70,7 +64,14 @@ object AnalyticsConstant {
         const val SHOP_DETAIL_VIEW = "shop_detail_view"
 
         const val SHOP_DETAIL_VIEW_REVIEW_BACK ="shop_detail_view_review_back"
-
+        const val NOTIFICATION = "notification"
+        const val NOTIFICATION_SOLD_OUT = "notification_sold_out"
+        const val NOTIFICATION_BREAKFAST_SOLD_OUT = "notification_breakfast_sold_out"
+        const val NOTIFICATION_LUNCH_SOLD_OUT = "notification_lunch_sold_out"
+        const val NOTIFICATION_DINNER_SOLD_OUT = "notification_dinner_sold_out"
     }
 
+    const val PREVIOUS_PAGE = "previous_page"
+    const val CURRENT_PAGE = "current_page"
+    const val DURATION_TIME = "duration_time"
 }

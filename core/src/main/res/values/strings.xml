@@ -170,4 +170,8 @@
     <string name="menu_fail_upload_image">메뉴 사진 업로드 실패</string>
     <string name="menu_fail_register_menu">메뉴 등록 실패</string>
     <string name="menu_success_register_menu">메뉴가 정상적으로 등록되었습니다.</string>
+
+    <!-- 이벤트 로깅 -->
+    <string name="event_set_notification">알림설정</string>
+
 </resources>
