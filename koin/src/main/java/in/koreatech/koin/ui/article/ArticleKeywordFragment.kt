@@ -19,6 +19,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.AlertModalDialog
 import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
@@ -149,9 +152,15 @@ class ArticleKeywordFragment : Fragment() {
                                     createChip(
                                         keyword,
                                         R.drawable.ic_add_round,
-                                        binding.chipGroupSuggestionKeywords,
-                                        viewModel::addKeyword
-                                    )
+                                        binding.chipGroupSuggestionKeywords
+                                    ) {
+                                        EventLogger.logClickEvent(
+                                            EventAction.CAMPUS,
+                                            AnalyticsConstant.Label.RECOMMENDED_KEYWORD,
+                                            keyword
+                                        )
+                                        viewModel.addKeyword(it)
+                                    }
                                 )
                             }
                         }
@@ -295,10 +304,22 @@ class ArticleKeywordFragment : Fragment() {
                 loginModal.show()
                 return@setOnSwitchClickListener
             }
-            if (isChecked)
+            if (isChecked) {
+                EventLogger.logClickEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
+                    "on"
+                )
                 notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD)
-            else
+            }
+            else {
+                EventLogger.logClickEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
+                    "off"
+                )
                 notificationViewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD)
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
