@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
+import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventResponse
@@ -55,4 +57,10 @@ interface StoreApi {
 
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/reviews")
     suspend fun getShopReviews(@Path("id") uid: Int): StoreReviewResponse
+
+    @GET("benefit/{id}/shops")
+    suspend fun getBenefitShopList(@Path("id") uid: Int): StoreBenefitResponse
+
+    @GET("benefit/categories")
+    suspend fun getBenefitCategories(): BenefitCategoryListResponse
 }
