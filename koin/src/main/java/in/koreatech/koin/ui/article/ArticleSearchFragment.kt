@@ -18,6 +18,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleSearchBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
@@ -168,6 +171,11 @@ class ArticleSearchFragment : Fragment() {
     }
 
     private fun onSearchQueryClicked(query: String) {
+        EventLogger.logClickEvent(
+            EventAction.CAMPUS,
+            AnalyticsConstant.Label.POPULAR_SEARCH_WORD,
+            query
+        )
         binding.textInputSearch.setText(query)
         binding.textInputSearch.setSelection(query.length)
         viewModel.search()

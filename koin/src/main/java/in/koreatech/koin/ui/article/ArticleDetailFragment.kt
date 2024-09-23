@@ -16,6 +16,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.download.FileDownloadManager
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
@@ -197,6 +200,11 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     }
 
     private fun onHotArticleClick(article: ArticleHeaderState) {
+        EventLogger.logClickEvent(
+            EventAction.CAMPUS,
+            AnalyticsConstant.Label.POPULAR_NOTICE,
+            article.title
+        )
         navController.navigate(
             R.id.action_articleDetailFragment_to_articleDetailFragment,
             Bundle().apply {

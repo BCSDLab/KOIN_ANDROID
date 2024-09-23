@@ -28,6 +28,9 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
@@ -54,6 +57,11 @@ class ArticleListFragment : Fragment() {
         object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.NOTICE_TAB,
+                        it.text.toString()
+                    )
                     viewModel.setCurrentBoard(BoardType.entries[it.position])
                 }
             }
@@ -143,6 +151,11 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun onArticleClicked(article: ArticleHeaderState) {
+        EventLogger.logClickEvent(
+            EventAction.CAMPUS,
+            AnalyticsConstant.Label.INVENTORY,
+            getString(R.string.list)
+        )
         navController.navigate(
             R.id.action_articleListFragment_to_articleDetailFragment,
             bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id)
@@ -151,9 +164,19 @@ class ArticleListFragment : Fragment() {
 
     private fun handleKeywordChips() {
         binding.imageViewToKeywordAddPage.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.MANAGE_KEYWORD,
+                "키워드관리"
+            )
             navigateToKeywordFragment()
         }
         binding.chipSeeAll.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTICE_FILTER_ALL,
+                getString(R.string.see_all_article)
+            )
             viewModel.selectKeyword("")
         }
         viewLifecycleOwner.lifecycleScope.run {
@@ -164,7 +187,14 @@ class ArticleListFragment : Fragment() {
 
                         if (keywords.isEmpty()) {
                             binding.chipGroupMyKeywords.addView(
-                                createChip(getString(R.string.add_new_keyword), false, ::navigateToKeywordFragment)
+                                createChip(getString(R.string.add_new_keyword), false) {
+                                    EventLogger.logClickEvent(
+                                        EventAction.CAMPUS,
+                                        AnalyticsConstant.Label.ADD_KEYWORD,
+                                        "키워드추가"
+                                    )
+                                    navigateToKeywordFragment()
+                                }
                             )
                         } else {
                             addKeywordChip(keywords)

@@ -69,6 +69,16 @@ object AnalyticsConstant {
         const val NOTIFICATION_BREAKFAST_SOLD_OUT = "notification_breakfast_sold_out"
         const val NOTIFICATION_LUNCH_SOLD_OUT = "notification_lunch_sold_out"
         const val NOTIFICATION_DINNER_SOLD_OUT = "notification_dinner_sold_out"
+        const val NOTICE_TAB = "notice_tab"
+        const val INVENTORY = "inventory"
+        const val POPULAR_NOTICE = "popular_notice"
+        const val NOTICE_SEARCH = "notice_search"
+        const val POPULAR_SEARCH_WORD = "popular_search_word"
+        const val MANAGE_KEYWORD = "manage_keyword"
+        const val NOTICE_FILTER_ALL = "notice_filter_all"
+        const val ADD_KEYWORD = "add_keyword"
+        const val RECOMMENDED_KEYWORD = "recommended_keyword"
+        const val KEYWORD_NOTIFICATION = "keyword_notification"
     }
 
     const val PREVIOUS_PAGE = "previous_page"

@@ -10,6 +10,9 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityArticleBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
@@ -76,6 +79,11 @@ class ArticleActivity : ActivityBase() {
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.action_search_article -> {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.NOTICE_SEARCH,
+                            getString(R.string.search)
+                        )
                         navController.navigate(R.id.action_articleListFragment_to_articleSearchFragment)
                         true
                     }
