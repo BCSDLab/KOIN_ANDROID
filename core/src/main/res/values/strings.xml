@@ -60,7 +60,7 @@
     <string name="navigation_item_kakao_talk">카카오톡 대화</string>
     <string name="navigation_item_version_info">버전 정보</string>
     <string name="navigation_item_developer">만든 이</string>
-    <string name="navigation_item_open_source">오픈소스</string>
+    <string name="navigation_item_open_source">오픈소스 라이선스</string>
     <string name="navigation_item_my_info">내 정보</string>
     <string name="navigation_item_logout">로그아웃</string>
     <string name="navigation_item_login">로그인</string>

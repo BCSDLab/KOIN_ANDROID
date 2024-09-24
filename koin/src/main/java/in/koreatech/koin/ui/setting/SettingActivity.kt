@@ -4,10 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -99,7 +99,7 @@ class SettingActivity : ActivityBase() {
                 })
             }
             svOpenSourceLicense.setOnSettingClickListener {
-                //
+                startActivity(Intent(this@SettingActivity, OssLicensesMenuActivity::class.java))
             }
             svContact.setOnSettingClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL.KOIN_ASK_FORM)))
