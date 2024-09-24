@@ -16,7 +16,6 @@ import `in`.koreatech.koin.domain.usecase.user.UpdateStudentUserInfoUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
-import `in`.koreatech.koin.ui.userinfo.state.NicknameState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -37,13 +36,7 @@ class UserInfoEditViewModel @Inject constructor(
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
-    private val _getDeptErrorMessage = MutableLiveData<String>()
-    val getDeptErrorMessage: LiveData<String> get() = _getDeptErrorMessage
-
-    private val _nicknameState = MutableLiveData<NicknameState>()
-    val nicknameState: LiveData<NicknameState> get() = _nicknameState
-
-    private val _nicknameDuplicatedEvent = SingleLiveEvent<NicknameCheckState>()
+    private val _nicknameDuplicatedEvent = MutableLiveData(NicknameCheckState.SAME_AS_BEFORE)
     val nicknameDuplicatedEvent: LiveData<NicknameCheckState> get() = _nicknameDuplicatedEvent
 
     private val _toastErrorMessage = SingleLiveEvent<String>()
@@ -62,34 +55,18 @@ class UserInfoEditViewModel @Inject constructor(
         getUserInfoUseCase()
             .onSuccess { user ->
                 _user.value = user
-                _nicknameState.value = when (user) {
-                    User.Anonymous -> NicknameState.newNickname("")
-                    is User.Student -> {
-                        user.nickname?.let {
-                            NicknameState(it, false)
-                        } ?: NicknameState.newNickname("")
-                    }
-                }
             }.onFailure {
                 _toastErrorMessage.value = it.message
             }
     }
 
     fun checkNickname(nickname: String) = viewModelScope.launchWithLoading {
-        if(_nicknameDuplicatedEvent.value == NicknameCheckState.SAME_AS_BEFORE)
-            return@launchWithLoading
-
         checkNicknameValidationUseCase(nickname).let { (isDuplicated, error) ->
             isDuplicated?.let {
-                _nicknameState.value = _nicknameState.value?.copy(isNicknameDuplicated = it)
                 _nicknameDuplicatedEvent.value = if (it) NicknameCheckState.EXIST else NicknameCheckState.POSSIBLE
             }
             error?.let { _toastErrorMessage.value = it.message }
         }
-    }
-
-    fun setNickname(nickname: String) {
-        _nicknameState.value = NicknameState.newNickname(nickname)
     }
 
     fun updateUserInfo(
@@ -111,7 +88,7 @@ class UserInfoEditViewModel @Inject constructor(
                         gender = gender,
                         studentId = studentId,
                         major = major,
-                        isCheckNickname = _nicknameState.value?.isNicknameDuplicated ?: true
+                        isCheckNickname = _nicknameDuplicatedEvent.value?.isAvailable() ?: false
                     )?.let { errorHandler ->
                         _toastErrorMessage.value = errorHandler.message
                     } ?: _userInfoEditedEvent.call()
@@ -121,7 +98,6 @@ class UserInfoEditViewModel @Inject constructor(
     }
 
     fun onNickNameChanged(newNickname: String) {
-        _nicknameState.value = NicknameState.newNickname(newNickname)
 
         if (newNickname.isBlank()) {
             _nicknameDuplicatedEvent.value = NicknameCheckState.POSSIBLE
