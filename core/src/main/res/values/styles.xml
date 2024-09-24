@@ -22,8 +22,20 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="KAPTheme.NoActionBar.WhiteStatus" parent="KAPTheme.NoActionBar" >
+    <style name="KAPTheme.NoActionBar.WhiteStatus" parent="KAPTheme.NoActionBar">
         <item name="colorPrimaryDark">@color/gray8</item>
+    </style>
+
+    <style name="KAPTheme.License" parent="KAPTheme">
+        <item name="actionBarStyle">@style/LicenseCustomActionbar</item>
+    </style>
+
+    <style name="LicenseCustomActionbar" parent="Widget.AppCompat.ActionBar">
+        <item name="displayOptions">showCustom</item>
+        <item name="background">?attr/colorPrimary</item>
+        <item name="customNavigationLayout">@layout/actionbar_license</item>
+        <item name="homeAsUpIndicator">@drawable/ic_back_arrow</item>
+        <item name="contentInsetEnd">@dimen/abc_action_bar_content_inset_with_nav</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
@@ -40,7 +52,7 @@
 
     <style name="KAPTextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/colorPrimaryText</item>
-    </style>T
+    </style>
 
     <style name="KAPProgress" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/white</item>
@@ -94,23 +106,23 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
-    
+
     <style name="AppTheme.Toolbar" parent="AppTheme" />
-    
-    <style name="AppTheme.Toolbar.Main" parent="AppTheme.Toolbar" >
+
+    <style name="AppTheme.Toolbar.Main" parent="AppTheme.Toolbar">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.DifferentCornerSize.RoundedOnlyBottom</item>
         <item name="cardBackgroundColor">@color/colorPrimary</item>
         <item name="cardElevation">@dimen/toolbar_main_elevation</item>
     </style>
 
-    <style name="ShapeAppearanceOverlay.DifferentCornerSize.RoundedOnlyBottom" parent="" >
+    <style name="ShapeAppearanceOverlay.DifferentCornerSize.RoundedOnlyBottom" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">0dp</item>
         <item name="cornerSizeTopRight">0dp</item>
         <item name="cornerSizeBottomLeft">@dimen/toolbar_main_corner_raduis</item>
         <item name="cornerSizeBottomRight">@dimen/toolbar_main_corner_raduis</item>
     </style>
-    
+
     <style name="CustomBottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
     </style>

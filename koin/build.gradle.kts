@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.koin.application)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.firebase)
+    alias(libs.plugins.koin.oss.license)
     id("com.google.gms.google-services")
 }
 
@@ -100,4 +101,5 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.balloon)
     implementation(libs.dataStore)
+
 }
