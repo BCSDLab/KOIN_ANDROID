@@ -68,7 +68,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private val hotArticleAdapter = HotArticleAdapter(
         onClick = {
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${BoardType.ALL.id}")
+                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
             }
             startActivity(intent)
         }
