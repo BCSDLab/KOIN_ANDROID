@@ -21,6 +21,7 @@ import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.ActivityCallBenefitStoreMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreSorter
+import `in`.koreatech.koin.ui.store.adapter.StoreBenefitRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreEventPagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
@@ -55,6 +56,9 @@ class CallBenefitStoreActivity : ActivityBase() {
             storeDetailContract.launch(Pair(it.shopId, getStoreCategoryName(viewModel.category.value)))
         }
     }
+    private val benefitAdapter = StoreBenefitRecyclerAdapter {
+        benefitViewModel.setCategoryId(it)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +75,9 @@ class CallBenefitStoreActivity : ActivityBase() {
                 layoutManager = LinearLayoutManager(this@CallBenefitStoreActivity)
                 adapter = storeAdapter
             }
-
+            benefitRecyclerview.apply {
+                adapter = benefitAdapter
+            }
 
             eventViewPager.apply {
                 currentItem = Int.MAX_VALUE / 2
@@ -116,6 +122,13 @@ class CallBenefitStoreActivity : ActivityBase() {
                     if(it.shops.isNotEmpty()) {
                         storeAdapter.submitList(it.shops)
                     }
+                }
+            }
+        }
+        lifecycleScope.launch{
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                benefitViewModel.storeBenefitCategories.collect{
+                    benefitAdapter.submitList(it.benefitCategories)
                 }
             }
         }
