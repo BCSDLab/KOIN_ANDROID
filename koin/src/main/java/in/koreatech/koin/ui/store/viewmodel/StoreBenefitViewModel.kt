@@ -27,10 +27,9 @@ class StoreBenefitViewModel @Inject constructor(
     init{
         getStoreBenefitCategories()
     }
-    private fun getStoreBenefitCategories() = viewModelScope.launch {
+    private fun getStoreBenefitCategories() = viewModelScope.launchWithLoading {
         storeBenefitCategoryUseCase().onSuccess {
             _storeBenefitCategories.value = it
-            Log.e("으아아", it.toString())
             _categoryId.value = it.benefitCategories[0].id
             getStoreBenefitShopList(_categoryId.value)
         }.onFailure {
@@ -38,7 +37,7 @@ class StoreBenefitViewModel @Inject constructor(
         }
     }
 
-    fun getStoreBenefitShopList(uid: Int) = viewModelScope.launch {
+    fun getStoreBenefitShopList(uid: Int) = viewModelScope.launchWithLoading {
         benefitShopListUseCase(uid).onSuccess {
             _storeBenefitShopList.value = it
         }.onFailure {

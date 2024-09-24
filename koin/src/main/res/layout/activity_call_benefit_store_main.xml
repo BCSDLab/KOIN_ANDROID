@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:ignore="MissingPrefix">
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/callvan_main_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <in.koreatech.koin.core.appbar.AppBarBase
+                    android:id="@+id/koin_base_appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leftButtonBackground="@drawable/ic_back_arrow"
+                    app:leftButtonHeight="14dp"
+                    app:leftButtonWidth="14dp"
+                    app:rightButtonBackground="@drawable/ic_hamburger_button"
+                    app:rightButtonHeight="18dp"
+                    app:rightButtonWidth="12dp"
+                    app:titleText="전화 주문 혜택" />
+
+            </LinearLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/store_swiperefreshlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="56dp">
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/container_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:fillViewport="true">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline_start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.044" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline_end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.953" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/category_constraint_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline_category_start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_begin="18dp" />
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline_category_end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_begin="392dp" />
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/benefit_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                app:layout_constraintBottom_toTopOf="@id/benefit_description"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="1.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/delivery_fee_benefit"
+                                    android:layout_width="170dp"
+                                    android:layout_height="56dp"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/button_rect_primary_line_radius_5dp"
+                                    android:drawableStart="@drawable/ic_trash_can"
+                                    android:paddingStart="40dip"
+                                    android:paddingEnd="30dip"
+                                    android:text="배달비 할인"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="14sp"
+                                    android:tint="@color/colorPrimary"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/minimum_order_price_benefit"
+                                    android:layout_width="170dp"
+                                    android:layout_height="56dp"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/button_rect_primary_line_radius_5dp"
+                                    android:drawableStart="@drawable/ic_trash_can"
+                                    android:paddingStart="30dip"
+                                    android:paddingEnd="20dip"
+                                    android:text="최소주문금액 0원"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="14sp"
+                                    android:tint="@color/colorPrimary"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/delivery_fee_benefit"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/service_benefit"
+                                    android:layout_width="170dp"
+                                    android:layout_height="56dp"
+                                    android:layout_marginStart="20dp"
+                                    android:background="@drawable/button_rect_primary_line_radius_5dp"
+                                    android:drawableStart="@drawable/ic_trash_can"
+                                    android:paddingStart="40dip"
+                                    android:paddingEnd="30dip"
+                                    android:text="서비스 증정"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="14sp"
+                                    android:tint="@color/colorPrimary"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/delivery_fee_benefit" />
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/pick_up_benefit"
+                                    android:layout_width="170dp"
+                                    android:layout_height="56dp"
+                                    android:background="@drawable/button_rect_gray18_radius_5dp"
+                                    android:drawableStart="@drawable/ic_trash_can"
+                                    android:paddingStart="40dip"
+                                    android:paddingEnd="30dip"
+                                    android:text="픽업 서비스"
+                                    android:textColor="@color/gray20"
+                                    android:textSize="14sp"
+                                    android:tint="@color/colorPrimary"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/service_benefit"
+                                    app:layout_constraintTop_toBottomOf="@+id/minimum_order_price_benefit" />
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <TextView
+                                android:id="@+id/benefit_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start|center"
+                                android:layout_marginVertical="16dp"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:lineSpacingExtra="6sp"
+                                android:textColor="@color/gray20"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/benefit_layout"
+                                tools:text="계좌이체하면 배달비가 무료(할인)인 상점들을 모아뒀어요." />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/event_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="12dp"
+                            android:clipToPadding="false"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/category_constraint_layout"
+                            tools:listitem="@layout/store_event_card" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/store_recyclerview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/background"
+                            android:clipToPadding="false"
+                            android:paddingBottom="12dp"
+                            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                            app:layout_constraintTop_toBottomOf="@+id/event_view_pager"
+                            tools:listitem="@layout/store_list_item" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <!--navigation drawer-->
+        <include layout="@layout/base_navigation_drawer_right" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>
