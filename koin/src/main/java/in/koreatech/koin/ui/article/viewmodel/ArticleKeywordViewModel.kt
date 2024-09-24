@@ -91,7 +91,7 @@ class ArticleKeywordViewModel @Inject constructor(
         articleRepository.saveKeyword(trimmedKeyword).onStart {
             _keywordAddUiState.emit(KeywordAddUiState.Loading)
         }.onEach {
-            _keywordAddUiState.emit(KeywordAddUiState.Success)
+            _keywordAddUiState.emit(KeywordAddUiState.Success(trimmedKeyword))
         }.catch {
             _keywordAddUiState.emit(KeywordAddUiState.Error)
         }.launchIn(viewModelScope)
@@ -99,7 +99,7 @@ class ArticleKeywordViewModel @Inject constructor(
 
     fun deleteKeyword(keyword: String) {
         articleRepository.deleteKeyword(keyword).onEach {
-            _keywordAddUiState.emit(KeywordAddUiState.Success)
+            _keywordAddUiState.emit(KeywordAddUiState.Success(keyword))
         }.catch {
             _keywordAddUiState.emit(KeywordAddUiState.Error)
         }.launchIn(viewModelScope)
@@ -121,7 +121,7 @@ class ArticleKeywordViewModel @Inject constructor(
 sealed interface KeywordAddUiState {
     data object Nothing : KeywordAddUiState
     data object Loading : KeywordAddUiState
-    data object Success : KeywordAddUiState
+    data class Success(val keyword: String) : KeywordAddUiState
     data object AlreadyExist : KeywordAddUiState
     data object LimitExceeded : KeywordAddUiState
     data object BlankNotAllowed : KeywordAddUiState

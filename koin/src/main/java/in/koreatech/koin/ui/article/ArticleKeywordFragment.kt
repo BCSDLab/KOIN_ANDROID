@@ -234,7 +234,14 @@ class ArticleKeywordFragment : Fragment() {
                         KeywordAddUiState.Loading -> {
                         }
 
-                        KeywordAddUiState.Success -> {
+                        is KeywordAddUiState.Success -> {
+                            try {
+                                binding.chipGroupSuggestionKeywords.removeView(
+                                    binding.chipGroupSuggestionKeywords.children.first { chip ->
+                                        (chip as Chip).text == state.keyword
+                                    }
+                                )
+                            } catch (_: Exception) {}
                             binding.textInputSearch.text = null
                         }
 
