@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -22,7 +23,6 @@ import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
-import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
@@ -119,6 +119,14 @@ class MainActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun initView() = with(binding) {
+
+        storeListButton.setOnClickListener {
+            gotoStoreActivity(0)
+        }
+        callBenefitStoreListButton.setOnClickListener{
+            val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
+            startActivity(intent)
+        }
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
         }
