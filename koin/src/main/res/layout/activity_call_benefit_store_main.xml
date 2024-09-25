@@ -54,19 +54,6 @@
                         android:layout_height="match_parent"
                         android:background="@color/white">
 
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline_start"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.044" />
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline_end"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.953" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/category_constraint_layout"
@@ -76,45 +63,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline_category_start"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_begin="18dp" />
 
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline_category_end"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_begin="392dp" />
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/benefit_layout"
-                                android:layout_width="0dp"
-                                android:layout_height="150dp"
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/benefit_recyclerview"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:paddingHorizontal="10dp"
+                                app:layoutManager="GridLayoutManager"
                                 app:layout_constraintBottom_toTopOf="@id/benefit_description"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:spanCount="2"
+                                tools:itemCount="4"
+                                tools:listitem="@layout/item_store_benefit" />
 
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/benefit_recyclerview"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:paddingHorizontal="10dp"
-                                    app:layoutManager="GridLayoutManager"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:spanCount="2"
-                                    tools:itemCount="4"
-                                    tools:listitem="@layout/item_store_benefit" />
-
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <TextView
                                 android:id="@+id/benefit_description"
@@ -130,11 +93,24 @@
                                 app:fontName="Custom6"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/benefit_layout"
+                                app:layout_constraintTop_toBottomOf="@+id/benefit_recyclerview"
                                 tools:text="계좌이체하면 배달비가 무료(할인)인 상점들을 모아뒀어요." />
+
+                            <FrameLayout
+                                android:id="@+id/border_frameLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="12dp"
+                                android:background="@color/event_card_neutral_100"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:layout_marginVertical="20dp"
+                                app:layout_constraintTop_toBottomOf="@+id/benefit_description">
+                            </FrameLayout>
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                         <androidx.viewpager2.widget.ViewPager2
                             android:id="@+id/event_view_pager"
@@ -151,12 +127,13 @@
                             android:id="@+id/store_recyclerview"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="18dp"
                             android:layout_marginTop="12dp"
                             android:background="@color/background"
                             android:clipToPadding="false"
                             android:paddingBottom="12dp"
-                            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
-                            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/event_view_pager"
                             tools:listitem="@layout/store_list_item" />
 

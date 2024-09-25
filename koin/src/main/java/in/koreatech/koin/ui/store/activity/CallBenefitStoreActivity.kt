@@ -64,10 +64,16 @@ class CallBenefitStoreActivity : ActivityBase() {
             )
         }
     }
-    private val benefitAdapter = StoreBenefitRecyclerAdapter {
-        benefitViewModel.setCategoryId(it)
-    }
-
+    private val benefitAdapter = StoreBenefitRecyclerAdapter(
+        onItemClick = {
+            benefitViewModel.setCategoryId(it)
+        },
+        getPosition = {
+            binding.benefitDescription.text =
+                benefitViewModel.storeBenefitCategories.value.benefitCategories.getOrNull(it)?.detail
+                    ?: ""
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +109,6 @@ class CallBenefitStoreActivity : ActivityBase() {
                         positionOffsetPixels: Int
                     ) {
                     }
-
                     override fun onPageScrollStateChanged(state: Int) {
                         if (state == ViewPager.SCROLL_STATE_DRAGGING) {
                             startAutoScroll()
@@ -121,7 +126,7 @@ class CallBenefitStoreActivity : ActivityBase() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 benefitViewModel.storeBenefitCategories.collect {
                     binding.benefitDescription.text =
-                        it.benefitCategories.getOrNull(benefitViewModel.categoryId.value)?.detail
+                        benefitViewModel.storeBenefitCategories.value.benefitCategories.getOrNull(0)?.detail
                             ?: ""
                 }
             }
