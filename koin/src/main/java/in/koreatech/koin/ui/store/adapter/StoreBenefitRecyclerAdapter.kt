@@ -17,11 +17,11 @@ import `in`.koreatech.koin.domain.model.store.BenefitCategory
 
 class StoreBenefitRecyclerAdapter(
     private val onItemClick: (Int) -> Unit,
+    private val getPosition: (Int) -> Unit,
 ) : ListAdapter<BenefitCategory, RecyclerView.ViewHolder>(
     diffCallback
 ) {
     private var currentId = 0
-
     inner class ViewHolder(private val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -47,6 +47,7 @@ class StoreBenefitRecyclerAdapter(
                 storeBenefitItemLayout.setOnClickListener {
                     currentId = benefitCategory.id
                     onItemClick(benefitCategory.id)
+                    getPosition(getBindingAdapterPosition())
                     notifyDataSetChanged()
                 }
 
