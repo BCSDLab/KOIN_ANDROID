@@ -242,6 +242,21 @@ class ModifyMenuViewModel @Inject constructor(
         }
     }
 
+    fun menuImageFromCamera(imageUri: String) {
+        intent {
+            val newMenuUriList = state.imageUriList.toMutableList()
+            newMenuUriList[state.imageIndex] = imageUri
+
+            if(newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(TEMP_IMAGE_URI)
+
+            reduce {
+                state.copy(
+                    imageUriList = newMenuUriList
+                )
+            }
+        }
+    }
+
     fun changeMenuName(menuName: String) = blockingIntent{
         reduce {
             state.copy(

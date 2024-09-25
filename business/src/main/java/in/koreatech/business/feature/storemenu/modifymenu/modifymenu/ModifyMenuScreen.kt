@@ -69,6 +69,7 @@ import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.upload.createImageFile
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -122,6 +123,9 @@ fun ModifyMenuScreen(
         onModifyImage = {
             viewModel.modifyMenuImageUri(it)
         },
+        menuImageFromCamera={
+            viewModel.menuImageFromCamera(it)
+        },
         setImageModify = {
             viewModel.isImageModify(it)
         },
@@ -154,10 +158,12 @@ fun ModifyMenuScreenImpl(
     onChangeImage: (List<Uri>) -> Unit = {},
     onDeleteImage: (Int) -> Unit ={},
     onModifyImage: (String) -> Unit ={},
+    menuImageFromCamera: (String) -> Unit ={},
     setImageModify:(Boolean) -> Unit ={},
     setImageIndex: (Int) -> Unit = {},
     onNextButtonClicked: () -> Unit ={}
 ) {
+    val context = LocalContext.current
     val sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -176,6 +182,18 @@ fun ModifyMenuScreenImpl(
             }
         }
     )
+
+    var takePictureUri: Uri? = null
+
+    val takePhotoFromCameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = {
+            if(it){
+                takePictureUri?.let { uri -> menuImageFromCamera(uri.toString()) }
+            }
+        }
+    )
+
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
@@ -257,6 +275,8 @@ fun ModifyMenuScreenImpl(
                     modifier = Modifier
                         .padding(top = 16.dp, bottom = 48.dp)
                         .clickable {
+                            takePictureUri = createImageFile(context)
+                            takePhotoFromCameraLauncher.launch(takePictureUri)
                             coroutineScope.launch {
                                 sheetState.hide()
                             }

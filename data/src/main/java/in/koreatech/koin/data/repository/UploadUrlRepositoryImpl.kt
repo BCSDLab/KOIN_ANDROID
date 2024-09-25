@@ -38,7 +38,6 @@ class UploadUrlRepositoryImpl @Inject constructor(
         fileName: String
     ): Result<Pair<String, String>> {
         return try {
-
             val dataSource = uploadUrlRemoteDataSource.postUploadMarketUrl(
                 UploadUrlRequest(contentLength, contentType, fileName)
             )
