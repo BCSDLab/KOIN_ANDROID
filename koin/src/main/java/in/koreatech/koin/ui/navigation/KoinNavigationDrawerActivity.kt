@@ -227,7 +227,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             }
 
                             MenuState.Article -> {
-
+                                EventLogger.logClickEvent(
+                                    EventAction.CAMPUS,
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    getString(R.string.navigation_item_article)
+                                )
                             }
 
                             else -> Unit

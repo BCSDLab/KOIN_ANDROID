@@ -126,6 +126,11 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
 
     private fun initButtonClickListeners() {
         binding.buttonToList.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.INVENTORY,
+                getString(R.string.list)
+            )
             navController.popBackStack(R.id.articleListFragment, false)
         }
         binding.buttonToPrevArticle.setOnClickListener {
