@@ -30,11 +30,14 @@ import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
+
 @AndroidEntryPoint
 class CallBenefitStoreActivity : ActivityBase() {
     override val screenTitle: String
         get() = "전화주문혜택"
-    private val binding: ActivityCallBenefitStoreMainBinding by dataBinding<ActivityCallBenefitStoreMainBinding>(R.layout.activity_call_benefit_store_main)
+    private val binding: ActivityCallBenefitStoreMainBinding by dataBinding<ActivityCallBenefitStoreMainBinding>(
+        R.layout.activity_call_benefit_store_main
+    )
     private val viewModel by viewModels<StoreViewModel>()
     private val benefitViewModel by viewModels<StoreBenefitViewModel>()
     private val viewPagerHandler = Handler(Looper.getMainLooper())
@@ -53,7 +56,12 @@ class CallBenefitStoreActivity : ActivityBase() {
                 AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
                 it.shopName
             )
-            storeDetailContract.launch(Pair(it.shopId, getStoreCategoryName(viewModel.category.value)))
+            storeDetailContract.launch(
+                Pair(
+                    it.shopId,
+                    getStoreCategoryName(viewModel.category.value)
+                )
+            )
         }
     }
     private val benefitAdapter = StoreBenefitRecyclerAdapter {
@@ -69,7 +77,7 @@ class CallBenefitStoreActivity : ActivityBase() {
 
     }
 
-    private fun initView(){
+    private fun initView() {
         with(binding) {
             storeRecyclerview.apply {
                 layoutManager = LinearLayoutManager(this@CallBenefitStoreActivity)
@@ -106,38 +114,45 @@ class CallBenefitStoreActivity : ActivityBase() {
         }
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         viewModel.refreshStores()
         withLoading(this, benefitViewModel)
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                benefitViewModel.storeBenefitCategories.collect{
-                    binding.benefitDescription.text= it.benefitCategories.getOrNull(benefitViewModel.categoryId.value)?.detail ?: ""
+                benefitViewModel.storeBenefitCategories.collect {
+                    binding.benefitDescription.text =
+                        it.benefitCategories.getOrNull(benefitViewModel.categoryId.value)?.detail
+                            ?: ""
                 }
             }
         }
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                benefitViewModel.benefitShopList.collect{
-                    if(it.shops.isNotEmpty()) {
+                benefitViewModel.benefitShopList.collect {
+                    if (it.shops.isNotEmpty()) {
                         storeAdapter.submitList(it.shops)
                     }
                 }
             }
         }
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                benefitViewModel.storeBenefitCategories.collect{
+                benefitViewModel.storeBenefitCategories.collect {
                     benefitAdapter.submitList(it.benefitCategories)
                 }
             }
         }
-
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                benefitViewModel.categoryId.collect {
+                    benefitAdapter.setCurrentId(it)
+                }
+            }
+        }
         observeLiveData(viewModel.storeEvents) {
             storeEventPagerAdapter.submitList(it)
             binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
-
         viewModel.settingStoreSorter(StoreSorter.NONE)
     }
 
