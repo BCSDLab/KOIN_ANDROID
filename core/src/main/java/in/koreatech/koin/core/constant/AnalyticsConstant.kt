@@ -13,6 +13,7 @@ object AnalyticsConstant {
         const val SHOP_CATEGORIES = "shop_categories"
         const val SHOP_CATEGORIES_SEARCH = "shop_categories_search"
         const val SHOP_CATEGORIES_EVENT = "shop_categories_event"
+        const val CAFETERIA_INFO = "cafeteria_info"
         const val HAMBURGER = "hamburger"
         const val HAMBURGER_SHOP = HAMBURGER
         const val HAMBURGER_DINING = "${HAMBURGER}"
@@ -43,7 +44,6 @@ object AnalyticsConstant {
         const val SHOP_DETAIL_VIEW_BACK = "shop_detail_view_back"
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
 
-
         const val SHOP_DETAIL_VIEW_REVIEW = "shop_detail_view_review"
         const val SHOP_DETAIL_VIEW_REVIEW_WRITE = "shop_detail_view_review_write"
         const val SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE = "shop_detail_view_review_write_done"
@@ -70,6 +70,7 @@ object AnalyticsConstant {
         const val NOTIFICATION_LUNCH_SOLD_OUT = "notification_lunch_sold_out"
         const val NOTIFICATION_DINNER_SOLD_OUT = "notification_dinner_sold_out"
         const val NOTICE_TAB = "notice_tab"
+        const val NOTICE_PAGE = "notice_page"
         const val INVENTORY = "inventory"
         const val POPULAR_NOTICE = "popular_notice"
         const val NOTICE_SEARCH = "notice_search"
@@ -79,6 +80,7 @@ object AnalyticsConstant {
         const val ADD_KEYWORD = "add_keyword"
         const val RECOMMENDED_KEYWORD = "recommended_keyword"
         const val KEYWORD_NOTIFICATION = "keyword_notification"
+        const val LOGIN_POPUP_KEYWORD = "login_popup_keyword"
     }
 
     const val PREVIOUS_PAGE = "previous_page"

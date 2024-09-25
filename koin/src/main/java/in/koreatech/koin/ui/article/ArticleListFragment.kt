@@ -30,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
@@ -52,6 +53,8 @@ class ArticleListFragment : Fragment() {
     private val navController by lazy { findNavController() }
 
     private val viewModel by viewModels<ArticleListViewModel>()
+
+    private var scrollPercentage = 0.0f     // for GA4
 
     private val onTabSelectedListener =
         object : TabLayout.OnTabSelectedListener {
@@ -100,6 +103,21 @@ class ArticleListFragment : Fragment() {
             handleKeywordChips()
             initTooltipState()
             collectData()
+            binding.nestedScrollViewArticleList.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                val offset = binding.nestedScrollViewArticleList.computeVerticalScrollOffset()
+                val extent = binding.nestedScrollViewArticleList.computeVerticalScrollExtent()
+                val range = binding.nestedScrollViewArticleList.computeVerticalScrollRange()
+
+                val newScrollPercentage = 100.0f * offset / (range - extent)
+                if (EventUtils.didCrossedScrollThreshold(scrollPercentage, newScrollPercentage) && scrollPercentage.toDouble() != .0) {
+                    EventLogger.logScrollEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.NOTICE_PAGE,
+                        getString(R.string.title_article)
+                    )
+                }
+                scrollPercentage = 100.0f * offset / (range - extent)
+            }
         }
         return binding.root
     }
@@ -151,11 +169,6 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun onArticleClicked(article: ArticleHeaderState) {
-        EventLogger.logClickEvent(
-            EventAction.CAMPUS,
-            AnalyticsConstant.Label.INVENTORY,
-            getString(R.string.list)
-        )
         navController.navigate(
             R.id.action_articleListFragment_to_articleDetailFragment,
             bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id)
