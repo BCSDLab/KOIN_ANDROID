@@ -50,8 +50,8 @@ fun KoinBusinessNavHost(
 
     NavHost(
         navController = navController,
-        //startDestination = if(accessToken != EMPTYTOKEN) MYSTORESCREEN else SIGNINSCREEN,
-        startDestination = SIGNINSCREEN
+        startDestination = if(accessToken != EMPTYTOKEN) MYSTORESCREEN else SIGNINSCREEN,
+        //startDestination = SIGNINSCREEN
     ) {
         signInScreen(
             navigateToMain = { isFirst ->
