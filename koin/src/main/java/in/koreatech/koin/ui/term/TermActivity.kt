@@ -74,6 +74,9 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
                     }
                 }
             }
+            fab.setOnClickListener {
+                nsvTermKoin.smoothScrollTo(0, 0)
+            }
 
             rvArticle.adapter = articleAdapter
             rvArticle.layoutManager = LinearLayoutManager(this@TermActivity)
