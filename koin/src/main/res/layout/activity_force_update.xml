@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_600">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="17dp"
+        android:padding="12dp"
+        android:src="@drawable/ic_exit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="49dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/lottie_koin_mark" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lottie_view"
+        android:text="코인을 사용하기 위해\n업데이트가 꼭 필요해요."
+        tools:text="코인을 사용하기 위해\n업데이트가 꼭 필요해요." />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        android:text="코인을 사용하기 위해\n업데이트가 꼭 필요해요"
+        tools:text="코인을 사용하기 위해\n업데이트가 꼭 필요해요" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/bg_rect_sub500_radius_4"
+        android:paddingHorizontal="43.5dp"
+        android:paddingVertical="6dp"
+        android:text="@string/force_update_do_update"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_content" />
+
+    <TextView
+        android:id="@+id/tv_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/force_update_already_update_u"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_update" />
+
+    <TextView
+        android:id="@+id/tv_copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:text="@string/copyright_2024"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_update"
+        app:layout_constraintVertical_bias="1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
