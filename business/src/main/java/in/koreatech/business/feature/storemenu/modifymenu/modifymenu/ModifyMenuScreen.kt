@@ -90,51 +90,25 @@ fun ModifyMenuScreen(
         registerMenuState = state,
         imageIndex = state.imageIndex,
         isModify = state.isModify,
-        changeMenuName = {
-            viewModel.changeMenuName(it)
-        },
-        onChangeMenuPrice = {
-            viewModel.changeMenuPrice(it)
-        },
+        changeMenuName = viewModel::changeMenuName,
+        onChangeMenuPrice = viewModel::changeMenuPrice,
         onChangeDetailMenuServing = {
             viewModel.changeDetailMenuServing(it.first, it.second)
         },
         onChangeDetailMenuPrice ={
             viewModel.changeDetailMenuPrice(it.first, it.second)
         } ,
-        onDeleteMenuPrice ={
-            viewModel.deleteMenuPrice(it)
-        },
-        onChangeMenuDetail = {
-            viewModel.changeMenuDetail(it)
-        },
-        addPriceButtonClicked = {
-            viewModel.addPrice()
-        },
-        onMenuCategoryIsClicked = {
-            viewModel.menuCategoryIsClicked(it)
-        },
-        onChangeImage = {
-            viewModel.changeMenuImageUri(it)
-        },
-        onDeleteImage = {
-            viewModel.deleteMenuImageUri(it)
-        },
-        onModifyImage = {
-            viewModel.modifyMenuImageUri(it)
-        },
-        menuImageFromCamera={
-            viewModel.menuImageFromCamera(it)
-        },
-        setImageModify = {
-            viewModel.isImageModify(it)
-        },
-        setImageIndex = {
-            viewModel.setImageIndex(it)
-        },
-        onNextButtonClicked = {
-            viewModel.onNextButtonClick()
-        },
+        onDeleteMenuPrice = viewModel::deleteMenuPrice,
+        onChangeMenuDetail = viewModel::changeMenuDetail,
+        addPriceButtonClicked = viewModel::addPrice,
+        onMenuCategoryIsClicked = viewModel::menuCategoryIsClicked,
+        onChangeImage = viewModel::changeMenuImageUri,
+        onDeleteImage = viewModel::deleteMenuImageUri,
+        onModifyImage = viewModel::modifyMenuImageUri,
+        menuImageFromCamera=viewModel::menuImageFromCamera,
+        setImageModify = viewModel::isImageModify,
+        setImageIndex = viewModel::setImageIndex,
+        onNextButtonClicked = viewModel::onNextButtonClick,
     )
     HandleSideEffects(viewModel, goToCheckMenuScreen)
 }

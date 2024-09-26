@@ -13,11 +13,11 @@ interface OwnerShopRepository {
     suspend fun getOwnerShopEvents(storeId: Int): ShopEvents
     suspend fun getOwnerShopMenus(storeId: Int): StoreMenu
     suspend fun getOwnerShopInfo(storeId: Int): StoreDetailInfo
-
     suspend fun getStoreMenuInfo(menuId: Int): StoreMenuInfo
     suspend fun deleteOwnerShopEvent(storeId: Int, eventId: Int)
     suspend fun modifyOwnerShopInfo(
         shopId: Int,
         storeDetailInfo: StoreDetailInfo,
- )
+    )
+    fun getOwnerStoreSize(): Boolean
 }

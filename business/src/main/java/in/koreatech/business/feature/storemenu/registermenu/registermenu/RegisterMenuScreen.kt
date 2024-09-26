@@ -70,6 +70,7 @@ import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.file.FileUtil
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.upload.createImageFile
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
@@ -93,51 +94,27 @@ fun RegisterMenuScreen(
         registerMenuState = state,
         imageIndex = state.imageIndex,
         isModify = state.isModify,
-        changeMenuName = {
-            viewModel.changeMenuName(it)
-        },
-        onChangeMenuPrice = {
-            viewModel.changeMenuPrice(it)
-        },
+        changeMenuName = viewModel::changeMenuName,
+        onChangeMenuPrice = viewModel::changeMenuPrice,
         onChangeDetailMenuServing = {
             viewModel.changeDetailMenuServing(it.first, it.second)
         },
         onChangeDetailMenuPrice ={
             viewModel.changeDetailMenuPrice(it.first, it.second)
         } ,
-        onDeleteMenuPrice ={
-            viewModel.deleteMenuPrice(it)
-        },
-        onChangeMenuDetail = {
-            viewModel.changeMenuDetail(it)
-        },
+        onDeleteMenuPrice = viewModel::deleteMenuPrice,
+        onChangeMenuDetail = viewModel::changeMenuDetail,
         addPriceButtonClicked = {
             viewModel.addPrice()
         },
-        onMenuCategoryIsClicked = {
-          viewModel.menuCategoryIsClicked(it)
-        },
-        onChangeImage = {
-            viewModel.changeMenuImageUri(it)
-        },
-        onDeleteImage = {
-            viewModel.deleteMenuImageUri(it)
-        },
-        onModifyImage = {
-            viewModel.modifyMenuImageUri(it)
-        },
-        menuImageFromCamera = {
-            viewModel.menuImageFromCamera(it)
-        },
-        setImageModify = {
-            viewModel.isImageModify(it)
-        },
-        setImageIndex = {
-            viewModel.setImageIndex(it)
-        },
-        onNextButtonClicked = {
-            viewModel.onNextButtonClick()
-        },
+        onMenuCategoryIsClicked = viewModel::menuCategoryIsClicked,
+        onChangeImage = viewModel::changeMenuImageUri,
+        onDeleteImage = viewModel::deleteMenuImageUri,
+        onModifyImage = viewModel::modifyMenuImageUri,
+        menuImageFromCamera = viewModel::menuImageFromCamera,
+        setImageModify = viewModel::isImageModify,
+        setImageIndex = viewModel::setImageIndex,
+        onNextButtonClicked = viewModel::onNextButtonClick,
     )
 
     HandleSideEffects(viewModel, goToCheckMenuScreen)
@@ -278,7 +255,7 @@ fun RegisterMenuScreenImpl(
                     modifier = Modifier
                         .padding(top = 16.dp, bottom = 48.dp)
                         .clickable {
-                            takePictureUri = createImageFile(context)
+                            takePictureUri = FileUtil.getInstance().createImageFile()
                             takePhotoFromCameraLauncher.launch(takePictureUri)
                             coroutineScope.launch {
                                 sheetState.hide()
