@@ -30,8 +30,8 @@ class UserErrorHandlerImpl @Inject constructor(
             when (it) {
                 is HttpException -> {
                     when (it.code()) {
-                        400 -> ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_login_incorrect))
-                        404 -> ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_login_user_not_found))
+                        400 -> ErrorHandler(context.getString(R.string.error_login_incorrect))
+                        404 -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_login_user_not_found))
                         else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }
@@ -74,11 +74,15 @@ class UserErrorHandlerImpl @Inject constructor(
         return throwable.handleCommonError(context) {
             when (it) {
                 is HttpException -> {
-                    ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_network))
+                    when (it.code()) {
+                        400 -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_nickname_format_length))
+                        404 -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_login_user_not_found))
+                        else -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_network))
+                    }
                 }
 
                 is IllegalArgumentException -> {
-                    ErrorHandler(context.getString(R.string.error_nickname_error))
+                    ErrorHandler(context.getString(R.string.error_nickname_format_symbol))
                 }
                 else -> unknownErrorHandler(context)
             }
@@ -89,7 +93,7 @@ class UserErrorHandlerImpl @Inject constructor(
         return throwable.handleCommonError(context) {
             when {
                 it is HttpException -> {
-                    ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_network))
+                    ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_network))
                 }
 
                 it is IndexOutOfBoundsException || it.message == ERROR_INVALID_STUDENT_ID -> {

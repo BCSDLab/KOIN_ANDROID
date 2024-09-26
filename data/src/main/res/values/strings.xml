@@ -16,6 +16,8 @@
     <string name="error_invalid_student_number">학번 형식이 잘못되었습니다.</string>
     <string name="error_nickname_duplicated">이미 존재하는 닉네임입니다.</string>
     <string name="error_nickname_error">올바른 닉네임을 입력해 주세요</string>
+    <string name="error_nickname_format_symbol">한글, 영문 및 숫자만 사용할 수 있습니다</string>
+    <string name="error_nickname_format_length">닉네임은 최대 10자입니다.</string>
     <string name="error_nickname_empty">닉네임을 입력해 주세요</string>
     <string name="error_nickname_validation_not_performed">닉네임 중복체크를 해주세요</string>
     <string name="error_phone_number_invalid_format">전화번호 형식이 잘못되었습니다.</string>
