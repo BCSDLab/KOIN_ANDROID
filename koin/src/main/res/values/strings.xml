@@ -327,6 +327,12 @@
     <string name="notification_dining_photo_upload">식단 사진 업로드 알림</string>
     <string name="notification_dining_photo_upload_description">식단 사진이 업로드 될 경우 알림을 받습니다.</string>
 
+    <!-- force update -->
+    <string name="force_update_do_update">업데이트하기</string>
+    <string name="force_update_already_update">이미 업데이트를 하셨나요?</string>
+    <string name="force_update_already_update_u"><u>이미 업데이트를 하셨나요?</u></string>
+    <string name="force_update_dialog_content">업데이트 이후에도 이 화면이 나타나는\n경우에는 스토어에서 코인을\n삭제 후 재설치 해 주세요.</string>
+    <string name="force_update_go_store">스토어로 가기</string>
 
     <!-- Land -->
     <string name="land_data_load_fail">원룸 리스트를 받아오지 못했습니다</string>
@@ -526,4 +532,7 @@
     <string name="store_review_count">( 리뷰 %1$s개 )</string>
     <string name="store_review_is_modify">%1$s (수정됨)</string>
     <string name="login_request_to_write_review">리뷰 작성 시 로그인을 해주세요.</string>
+
+    <!-- etc -->
+    <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>
 </resources>
