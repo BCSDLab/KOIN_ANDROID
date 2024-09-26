@@ -37,9 +37,7 @@ class SplashViewModel @Inject constructor(
                 getVersionInformationUseCase()
                     .onSuccess {
                         _version.value = it
-                        if (!(it.versionUpdatePriority is VersionUpdatePriority.High ||
-                                    it.versionUpdatePriority is VersionUpdatePriority.Medium)
-                        ) {
+                        if (isVersionPriorityNone(it.versionUpdatePriority)) {
                             checkToken()
                         }
                     }.onFailure {
@@ -64,5 +62,12 @@ class SplashViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun isVersionPriorityNone(priority: VersionUpdatePriority): Boolean {
+        if (priority == VersionUpdatePriority.None) {
+            return true
+        }
+        return false
     }
 }
