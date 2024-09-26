@@ -1,6 +1,7 @@
 package `in`.koreatech.koin
 
 import android.app.Application
+import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference
@@ -19,6 +20,7 @@ class KoinApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        KakaoSdk.init(this, resources.getString(R.string.kakao_app_key))
         Napier.base(DebugAntilog())
         init()
     }
