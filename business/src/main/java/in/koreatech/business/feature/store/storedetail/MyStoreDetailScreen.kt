@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -195,60 +196,6 @@ fun MyStoreScrollScreen(
                             )
                         }
                         Spacer(modifier = Modifier.width(10.dp))
-                    }
-                }
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 5.dp),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    Button(
-                        onClick = { viewModel.onManageMenuClicked() },
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
-                            .width(107.dp)
-                            .height(40.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White,
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(0.dp),
-                        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.manage_menu),
-                            style = TextStyle(
-                                color = ColorPrimary,
-                                fontSize = 15.sp
-                            )
-                        )
-                    }
-
-                    Button(
-                        onClick = { viewModel.onRegisterMenuClicked() },
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .width(107.dp)
-                            .height(40.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = ColorPrimary,
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(0.dp),
-                        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
-
-                    ) {
-                        Text(
-                            text = stringResource(R.string.register_menu),
-                            style = TextStyle(
-                                color = Color.White,
-                                fontSize = 15.sp
-                            )
-                        )
                     }
                 }
             }
