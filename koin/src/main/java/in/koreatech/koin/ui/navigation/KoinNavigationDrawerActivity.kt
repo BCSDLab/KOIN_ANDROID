@@ -259,6 +259,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Store -> goToStoreActivity()
                 MenuState.Setting -> {
                     goToSettingActivity()
+                    return@observeLiveData
                 }
 
                 MenuState.LoginOrLogout -> {
