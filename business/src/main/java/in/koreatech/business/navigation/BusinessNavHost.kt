@@ -108,6 +108,13 @@ fun NavController.toNavigateModifyMenuScreen(menuId: Int) {
     navigate("${MODIFYMENUSCREEN}/$menuId", bundle)
 }
 
+fun NavController.toNavigateRegisterMenuScreen(storeId: Int) {
+    val bundle = Bundle().apply {
+        putInt("storeId", storeId)
+    }
+    navigate(REGISTERMENUSCREEN, bundle)
+}
+
 fun NavController.navigate(
     route: String,
     args: Bundle,
