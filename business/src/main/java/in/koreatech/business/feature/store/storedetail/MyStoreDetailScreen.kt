@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -70,8 +71,10 @@ fun MyStoreDetailScreen(
     navigateToLoginScreen: () -> Unit = {},
     navigateToUploadEventScreen: () -> Unit = {},
     navigateToModifyScreen: () -> Unit = {},
+    navigateToRegisterStoreScreen: () -> Unit = {},
     navigateToManageMenuScreen: () -> Unit = {},
-    navigateToRegisterMenuScreen: () -> Unit = {},
+    navigateToRegisterMenuScreen: (Int) -> Unit = {},
+    navigateToModifyMenuScreen: (Int) -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
@@ -99,6 +102,7 @@ fun MyStoreDetailScreen(
                 }
             },
             onDeleteEvent = viewModel::deleteEventAll,
+            onMenuItemClicked = viewModel::onModifyMenuClicked
         )
     }
     viewModel.collectSideEffect {
@@ -109,18 +113,24 @@ fun MyStoreDetailScreen(
             }
 
             MyStoreDetailSideEffect.NavigateToUploadEventScreen -> navigateToUploadEventScreen()
-            MyStoreDetailSideEffect.NavigateToModifyScreen -> navigateToModifyScreen()
-            MyStoreDetailSideEffect.NavigateToManageMenuScreen -> {
-                navigateToManageMenuScreen()
+            MyStoreDetailSideEffect.NavigateToModifyScreen -> {
+                navigateToModifyScreen()
             }
+            MyStoreDetailSideEffect.NavigateToRegisterStoreScreen -> navigateToRegisterStoreScreen()
+            MyStoreDetailSideEffect.NavigateToManageMenuScreen -> navigateToManageMenuScreen()
 
             MyStoreDetailSideEffect.NavigateToRegisterMenuScreen -> {
-                navigateToRegisterMenuScreen()
+                navigateToRegisterMenuScreen(state.storeId)
+            }
+
+            is MyStoreDetailSideEffect.NavigateToModifyMenuScreen ->{
+                navigateToModifyMenuScreen(it.menuId)
             }
 
             MyStoreDetailSideEffect.ShowErrorModifyEventToast -> ToastUtil.getInstance().makeShort(
                 context.getString(R.string.error_modify_event)
             )
+
         }
     }
 }
@@ -136,6 +146,8 @@ fun MyStoreScrollScreen(
     viewModel: MyStoreDetailViewModel,
     onTabSelected: (Int) -> Unit = {},
     onDeleteEvent: () -> Unit = {},
+    onMenuItemClicked: (Int) -> Unit,
+
 ) {
     val toolBarHeight = 145.dp
     val configuration = LocalConfiguration.current
@@ -242,7 +254,14 @@ fun MyStoreScrollScreen(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         when (page) {
-                            0 -> MenuScreen(isCollapsed, pagerState.currentPage, state)
+                            0 -> MenuScreen(
+                                verticalOffset = isCollapsed,
+                                currentPage = pagerState.currentPage,
+                                state = state,
+                                onMenuItemClicked = {
+                                    onMenuItemClicked(it)
+                                }
+                            )
                             1 -> EventScreen(
                                 isCollapsed,
                                 pagerState.currentPage,

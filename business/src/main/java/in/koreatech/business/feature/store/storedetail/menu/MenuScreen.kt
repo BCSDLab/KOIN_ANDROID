@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.store.storedetail.menu
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,12 @@ import `in`.koreatech.business.ui.theme.Gray6
 
 
 @Composable
-fun MenuScreen(verticalOffset: Boolean, currentPage: Int, state: MyStoreDetailState) {
+fun MenuScreen(
+    verticalOffset: Boolean,
+    currentPage: Int,
+    state: MyStoreDetailState,
+    onMenuItemClicked: (Int) -> Unit = {}
+) {
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
         verticalOffset, scrollState.value
@@ -82,7 +88,12 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int, state: MyStoreDetailSt
 
         state.storeMenu?.forEach {
             MenuCategories(it)
-            MenuItem(it)
+            MenuItem(
+                menuList = it,
+                onMenuClicked = {menuId ->
+                        onMenuItemClicked(menuId)
+                }
+            )
         }
     }
 }

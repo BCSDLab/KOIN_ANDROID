@@ -280,7 +280,7 @@ fun ModifyMenuScreenImpl(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(start = 16.dp),
-                    onClick = { onBackPressed }
+                    onClick = { onBackPressed() }
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_white_arrow_back),
@@ -596,7 +596,7 @@ fun ModifyMenuScreenImpl(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Button(
-                            onClick = {},
+                            onClick = {onBackPressed()},
                             shape = RectangleShape,
                             colors = ButtonDefaults.buttonColors(Color.White),
                             modifier = Modifier

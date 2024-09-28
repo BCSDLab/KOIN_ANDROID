@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.store.storedetail
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
@@ -107,7 +108,7 @@ fun StoreInfoScreen(
         )
         {
             Button(
-                onClick = { viewModel.onManageMenuClicked() },
+                onClick = { viewModel.onRegisterStoreClicked() },
                 modifier = Modifier
                     .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
                     .width(107.dp)
@@ -152,7 +153,9 @@ fun StoreInfoScreen(
             }
 
             Button(
-                onClick = { viewModel.onRegisterMenuClicked() },
+                onClick = {
+                    viewModel.onRegisterMenuClicked()
+                          },
                 modifier = Modifier
                     .width(107.dp)
                     .height(40.dp),
