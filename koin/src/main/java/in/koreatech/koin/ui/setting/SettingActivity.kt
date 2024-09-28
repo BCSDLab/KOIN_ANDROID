@@ -86,7 +86,10 @@ class SettingActivity : ActivityBase() {
                     loginSnackBar.show()
             }
             svNotification.setOnSettingClickListener {
-                startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
+                if(viewModel.isStudent) {
+                    startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
+                } else
+                    loginSnackBar.show()
             }
             svPrivacyPolicy.setOnSettingClickListener {
                 startActivity(Intent(this@SettingActivity, TermActivity::class.java).apply {
