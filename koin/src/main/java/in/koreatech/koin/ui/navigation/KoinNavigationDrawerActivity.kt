@@ -172,15 +172,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     else -> {
                         koinNavigationDrawerViewModel.selectMenu(state)
                         when (state) {
-                            MenuState.Setting -> {
-                                // TODO::로그 변경 사항 전달하여 수정하기
-
-                            }
-
-                            MenuState.LoginOrLogout -> {
-                                //
-                            }
-
                             MenuState.Store -> {
                                 EventLogger.logClickEvent(
                                     AnalyticsConstant.Domain.BUSINESS,
@@ -204,12 +195,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                     getString(R.string.navigation_item_dining)
                                 )
                             }
-
-                            MenuState.Contact -> {
-                                // TODO::로그 변경 사항 전달하여 수정하기
-
-                            }
-
                             else -> Unit
                         }
                     }
@@ -372,12 +357,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
-    private fun changeMenuFont(view: View) {
-        if (view is TextView) {
-            view.typeface = FontManager.getTypeface(this, FontManager.KoinFontType.PRETENDARD_REGULAR)
-        }
-    }
-
     private fun goToMainActivity() {
         goToActivityFinish(Intent(this, MainActivity::class.java))
     }
@@ -468,7 +447,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
 
-    //TODO:: 문의하기 이거로 변경
     private fun goToContactWebActivity() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL.KOIN_ASK_FORM)))
     }
@@ -491,23 +469,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             this, it
         ) == PackageManager.PERMISSION_GRANTED
     }
-
-    val TextView.selected: TextView
-        get() {
-            val s = text.toString()
-            val styledText = HtmlCompat.fromHtml(
-                "<font color='#f7941e'>$s</font>",
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-            setText(styledText, TextView.BufferType.SPANNABLE) //#f7941e
-            return this
-        }
-
-    val TextView.normal: TextView
-        get() {
-            text = text.toString()
-            return this
-        }
 
     companion object {
         private val MAIN_REQUIRED_PERMISSION = mutableListOf<String>().apply {
