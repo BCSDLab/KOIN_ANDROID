@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.store.activity
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,7 +18,10 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -28,7 +30,7 @@ import `in`.koreatech.koin.databinding.StoreActivityMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreEventPagerAdapter
@@ -40,11 +42,12 @@ import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
+import `in`.koreatech.koin.util.ext.statusBarHeight
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class StoreActivity : KoinNavigationDrawerActivity() {
+class StoreActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Store
     private var currentTime by Delegates.notNull<Long>()
     private var categoryElapsedTime by Delegates.notNull<Long>()
@@ -53,7 +56,14 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val binding by dataBinding<StoreActivityMainBinding>(R.layout.store_activity_main)
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
-    private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
+
+    fun interface StoreCategoryFactory {
+        fun getCurrentCategory(): String
+    }
+    private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract {
+        viewModel.category.value?.let { getStoreCategoryName(it) } ?: "Unknown"
+    }) {
+
     }
 
     private val viewPagerHandler = Handler(Looper.getMainLooper())
@@ -65,9 +75,12 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
             storeDetailContract.launch(Pair(it.uid, getStoreCategoryName(viewModel.category.value)))
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CLICK,
-                it.name + ", category: " + getStoreCategoryName(viewModel.category.value) + ", store_name: " + it.name + ", duration_time: " + storeElapsedTime / 1000
+                it.name,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, getStoreCategoryName(viewModel.category.value)),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
         }
     }
@@ -75,7 +88,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
         setOnItemClickListener {
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
                 it.shopName
             )
@@ -85,15 +98,19 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener {
-            categoryElapsedTime = System.currentTimeMillis() - currentTime
+            val previous = getStoreCategoryName(viewModel.category.value)
+
             viewModel.setCategory(it.toStoreCategory())
             binding.searchEditText.text.clear()
-            val eventValue = getStoreCategoryName(viewModel.category.value)
-            val preValue = getStoreCategoryName(preCategories)
+            val current = getStoreCategoryName(viewModel.category.value)
+
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CATEGORIES,
-                eventValue+ ", previous_categories: " + preValue + ", current_categories: " + eventValue + ", duration_time: " + categoryElapsedTime / 1000
+                current,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previous),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, current),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
             preCategories = it.toStoreCategory()
             currentTime = System.currentTimeMillis()
@@ -180,7 +197,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.searchEditText.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.BUSINESS,
+                    EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
                     "search in " + getStoreCategoryName(viewModel.category.value)
                 )
@@ -236,9 +253,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
         binding.root.post {
-            val rect = Rect()
-            window!!.decorView.getWindowVisibleDisplayFrame(rect)
-            val statusBarHeight = rect.top
+            val statusBarHeight = this.statusBarHeight
 
             binding.containerScrollView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val oldScrollRatio =
@@ -246,12 +261,10 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                         0
                     ).height - statusBarHeight))
                 val scrollRatio =
-                    scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(
-                        0
-                    ).height - statusBarHeight))
-                if (scrollRatio >= 0.7 && oldScrollRatio < 0.7) {
+                    scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(0).height - statusBarHeight))
+                if (EventUtils.didCrossedScrollThreshold(oldScrollRatio, scrollRatio)) {
                     EventLogger.logScrollEvent(
-                        AnalyticsConstant.Domain.BUSINESS,
+                        EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CATEGORIES,
                         "scroll in " + getStoreCategoryName(viewModel.category.value)
                     )
@@ -264,7 +277,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
                 if (storeManyReviewCheckbox.isChecked) {
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.BUSINESS,
+                        EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
                         "check_review_"+viewModel.category.value?.let { getStoreCategoryName(it) }
                     )
@@ -297,7 +310,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             storeHighRatingCheckbox.setOnClickListener {
                 if (storeHighRatingCheckbox.isChecked) {
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.BUSINESS,
+                        EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
                         "check_star_"+viewModel.category.value?.let { getStoreCategoryName(it) }
                     )
@@ -331,7 +344,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 storeIsOperatingCheckbox.setTextColor(
                     if (storeIsOperatingCheckbox.isChecked) {
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
                             "check_open_"+viewModel.category.value?.let { getStoreCategoryName(it) }
                         )
@@ -349,7 +362,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 storeIsDeliveryCheckbox.setTextColor(
                     if (storeIsDeliveryCheckbox.isChecked){
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
                             "check_delivery_"+viewModel.category.value?.let { getStoreCategoryName(it) }
                         )

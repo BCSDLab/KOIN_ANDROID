@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.fragment.DataBindingFragment
@@ -50,7 +51,7 @@ class ExpressBusTimetableFragment : DataBindingFragment<LayoutExpressBusTimetabl
                 return@setOnItemSelectedListener
             }
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE_EXPRESS,
                 busTimetableCoursesSpinner.selectedItem.toString()
             )

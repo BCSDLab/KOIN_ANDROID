@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/recommend_login_to_like_dining" />
+            tools:text="키워드 알림을 받으려면\n로그인이 필요해요." />
 
         <TextView
             android:id="@+id/text_view_alert_modal_message"
@@ -41,27 +41,30 @@
             app:layout_constraintEnd_toEndOf="@id/text_view_alert_modal_title"
             app:layout_constraintStart_toStartOf="@id/text_view_alert_modal_title"
             app:layout_constraintTop_toBottomOf="@id/text_view_alert_modal_title"
-            tools:text="@string/recommend_like_dining" />
+            tools:text="로그인 후 간편하게 공지사항 키워드\n알림을 받아보세요!" />
 
         <Button
             android:id="@+id/button_negative"
             style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_marginTop="24dp"
             android:text="@string/close"
+            android:minWidth="100dp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/button_positive"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_view_alert_modal_message"
             app:layout_constraintTop_toBottomOf="@id/text_view_alert_modal_message" />
 
         <Button
             android:id="@+id/button_positive"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:minWidth="100dp"
             app:layout_constraintBottom_toBottomOf="@id/button_negative"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/text_view_alert_modal_message"
             app:layout_constraintStart_toEndOf="@+id/button_negative"
             app:layout_constraintTop_toTopOf="@id/button_negative"
             tools:text="@string/action_login" />
