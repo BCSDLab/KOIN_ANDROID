@@ -8,17 +8,21 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.business.util.getImageInfo
 import `in`.koreatech.koin.domain.constant.STORE_MENU_IMAGE_MAX
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.GetMenuCategoryUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.GetMenuInfoUseCase
+import `in`.koreatech.koin.domain.usecase.business.menu.ModifyMenuUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.RegisterMenuUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -32,7 +36,7 @@ class ModifyMenuViewModel @Inject constructor(
     private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val getMenuInfoUseCase: GetMenuInfoUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
-    private val registerMenuUseCase: RegisterMenuUseCase
+    private val modifyMenuUseCase: ModifyMenuUseCase
 ): ViewModel(), ContainerHost<ModifyMenuState, ModifyMenuSideEffect> {
     override val container = container<ModifyMenuState, ModifyMenuSideEffect>(ModifyMenuState())
 
@@ -130,17 +134,17 @@ class ModifyMenuViewModel @Inject constructor(
                 )
             }
 
-            if(state.imageUrlList.size == state.imageUriList.size){
-                registerMenu()
+            if((state.imageUriList.last() == TEMP_IMAGE_URI && (state.imageUrlList.size == state.imageUriList.size - 1)) || state.imageUrlList.size == STORE_MENU_IMAGE_MAX){
+                modifyMenu()
             }
         }
     }
 
-    private fun registerMenu(){
+    private fun modifyMenu(){
         intent {
             viewModelScope.launch{
-                    registerMenuUseCase(
-                        storeId = state.shopId,
+                    modifyMenuUseCase(
+                        menuId = state.menuId,
                         menuCategoryId = state.menuCategoryId,
                         description = state.description,
                         menuImageUrlList = state.imageUrlList,
@@ -148,14 +152,14 @@ class ModifyMenuViewModel @Inject constructor(
                         menuOptionPrice = state.menuOptionPrice,
                         menuSinglePrice = state.menuPrice
                     ).onSuccess {
-                        postSideEffect(ModifyMenuSideEffect.FinishRegisterMenu)
+                        postSideEffect(ModifyMenuSideEffect.FinishModifyMenu)
                         reduce {
                             state.copy(
                                 imageUrlList = emptyList()
                             )
                         }
                     }.onFailure {
-                        postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailRegisterMenu))
+                        postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailModifyMenu))
                         reduce {
                             state.copy(
                                 imageUrlList = emptyList()
@@ -170,7 +174,7 @@ class ModifyMenuViewModel @Inject constructor(
         postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailUploadImage))
     }
 
-    fun settingId(menuId: Int){
+    private fun settingId(menuId: Int){
         intent{
             if(menuId != state.menuId){
                 reduce {
@@ -238,7 +242,7 @@ class ModifyMenuViewModel @Inject constructor(
         }
     }
 
-    fun changeMenuName(menuName: String) = intent{
+    fun changeMenuName(menuName: String) = blockingIntent{
         reduce {
             state.copy(
                 menuName = menuName
@@ -247,7 +251,7 @@ class ModifyMenuViewModel @Inject constructor(
     }
 
     fun changeMenuPrice(price: String){
-        intent{
+        blockingIntent{
             reduce {
                 state.copy(menuPrice = price)
             }
@@ -255,7 +259,7 @@ class ModifyMenuViewModel @Inject constructor(
     }
 
     fun changeDetailMenuServing(index: Int, serving: String){
-        intent{
+        blockingIntent{
             if (index in state.menuOptionPrice.indices) {
                 reduce {
                     val newMenuPrice = state.menuOptionPrice.toMutableList()
@@ -267,7 +271,7 @@ class ModifyMenuViewModel @Inject constructor(
     }
 
     fun changeDetailMenuPrice(index: Int, price: String){
-        intent{
+        blockingIntent{
             if (index in state.menuOptionPrice.indices) {
                 reduce {
                     val newMenuPrice = state.menuOptionPrice.toMutableList()
@@ -334,7 +338,7 @@ class ModifyMenuViewModel @Inject constructor(
         }
     }
 
-    fun changeMenuDetail(menuDetail: String) = intent{
+    fun changeMenuDetail(menuDetail: String) = blockingIntent{
         reduce {
             state.copy(
                 description = menuDetail
@@ -374,36 +378,20 @@ class ModifyMenuViewModel @Inject constructor(
 
     fun onPositiveButtonClicked(context: Context){
         intent {
-
-            state.imageUriList.forEach { uriString ->
-                if (uriString != TEMP_IMAGE_URI)
-                {
-                    val uri = Uri.parse(uriString)
-
-                    val inputStream = context.contentResolver.openInputStream(uri)
-
-                    if (uri.scheme.equals("content")) {
-                        val cursor = context.contentResolver.query(uri, null, null, null, null)
-                        cursor.use {
-                            if (cursor != null && cursor.moveToFirst()) {
-                                val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                                val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-                                if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                                    val fileName = cursor.getString(fileNameIndex)
-                                    val fileSize = cursor.getLong(fileSizeIndex)
-
-                                    if (inputStream != null) {
-                                        getPreSignedUrl(
-                                            fileSize = fileSize,
-                                            fileType = "image/" + fileName.split(".")[1],
-                                            fileName = fileName,
-                                            imageUri = uriString
-                                        )
-                                    }
-                                    inputStream?.close()
-                                }
-                            }
+            viewModelScope.launch {
+                state.imageUriList.forEach { uriString ->
+                    if (uriString != TEMP_IMAGE_URI) {
+                        if (uriString.contains("content")) {
+                            val uri = Uri.parse(uriString)
+                            val imageInfo = getImageInfo(context, uri)
+                            getPreSignedUrl(
+                                fileSize = imageInfo.imageSize,
+                                fileType = imageInfo.imageType,
+                                fileName = imageInfo.imageName,
+                                imageUri = uriString
+                            )
+                        } else {
+                            insertStoreFileUrl(uriString)
                         }
                     }
                 }

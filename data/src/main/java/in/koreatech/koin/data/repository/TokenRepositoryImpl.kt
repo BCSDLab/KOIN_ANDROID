@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import android.util.Log
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.domain.repository.TokenRepository
@@ -42,6 +43,7 @@ class TokenRepositoryImpl @Inject constructor(
 
     override suspend fun getOwnerAccessToken(): String? {
         return tokenLocalDataSource.getOwnerAccessToken()
+        userLocalDataSource.updateIsLogin(true)
     }
 
     override fun getAccessOwnerTokenBlocking(): String? {
@@ -50,6 +52,7 @@ class TokenRepositoryImpl @Inject constructor(
 
     override suspend fun removeOwnerAccessToken() {
         tokenLocalDataSource.removeOwnerAccessToken()
+        userLocalDataSource.updateIsLogin(false)
     }
 
     override suspend fun removeRefreshToken() {
