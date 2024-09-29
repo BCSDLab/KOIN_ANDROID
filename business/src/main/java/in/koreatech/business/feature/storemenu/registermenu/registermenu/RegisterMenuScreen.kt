@@ -72,12 +72,10 @@ import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.file.FileUtil
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.upload.createImageFile
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import java.io.File
 
 
 @Composable
