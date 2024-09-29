@@ -1,20 +1,33 @@
 package `in`.koreatech.koin.ui.main.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.ArrowOrientationRules
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
+import `in`.koreatech.koin.core.viewpager.enableAutoScroll
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
@@ -22,20 +35,27 @@ import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
+import `in`.koreatech.koin.ui.article.ArticleActivity
+import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAVIGATE_ACTION
+import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
+import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
+import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
+import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
+import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class MainActivity : KoinNavigationDrawerActivity() {
+class MainActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Main
     private var currentTime by Delegates.notNull<Long>()
     private var elapsedTime by Delegates.notNull<Long>()
@@ -43,12 +63,22 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
+    private lateinit var diningTooltip: Balloon
+
+    private val hotArticleAdapter = HotArticleAdapter(
+        onClick = {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
+            }
+            startActivity(intent)
+        }
+    )
 
     private val busPagerAdapter = BusPagerAdapter().apply {
         setOnCardClickListener {
             callDrawerItem(R.id.navi_item_bus, Bundle())
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.MAIN_BUS,
                 getString(R.string.bus)
             )
@@ -56,7 +86,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         setOnSwitchClickListener {
             viewModel.switchBusNode()
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.MAIN_BUS_CHANGETOFROM,
                 it.localized(this@MainActivity)
             )
@@ -96,9 +126,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
             elapsedTime = System.currentTimeMillis() - currentTime
 
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                name + ", previous_page: 메인"+", current_page: "+ name +", duration_time: " +elapsedTime/1000
+                name,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
             gotoStoreActivity(id)
         }
@@ -109,6 +142,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         setContentView(binding.root)
 
         initView()
+        initDiningTooltip()
         initViewModel()
     }
 
@@ -121,6 +155,17 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private fun initView() = with(binding) {
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
+        }
+
+        viewPagerHotArticle.apply {
+            adapter = hotArticleAdapter
+            offscreenPageLimit = 3
+            enableAutoScroll(this@MainActivity, 5_000)
+        }
+        TabLayoutMediator(tabHotArticle, viewPagerHotArticle) { _, _ -> }.attach()
+
+        textSeeMoreArticle.setOnClickListener {
+            startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
         }
 
         busViewPager.apply {
@@ -142,7 +187,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
         recyclerViewStoreCategory.apply {
             layoutManager =
                 LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
-            //adapter = storeCategoryRecyclerAdapter
             adapter = storeCategoriesRecyclerAdapter
         }
 
@@ -155,6 +199,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
 //        }
 
         pagerDiningContainer.adapter = diningContainerAdapter
+        pagerDiningContainer.offscreenPageLimit = 3
 
         TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
             tab.text = DiningPlace.entries[position].place
@@ -164,7 +209,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewModel.setSelectedPosition(tab.position)
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
+                    EventAction.CAMPUS,
                     AnalyticsConstant.Label.MAIN_MENU_CORNER,
                     tab.text.toString()
                 )
@@ -178,6 +223,13 @@ class MainActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.hotArticles.collect {
+                    hotArticleAdapter.submitList(it)
+                }
+            }
+        }
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
@@ -196,6 +248,16 @@ class MainActivity : KoinNavigationDrawerActivity() {
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it.drop(1))
         }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                showDiningTooltip.collect {
+                    if (it) {
+                        diningTooltip.showAlignRight(binding.textViewDiningTitle)
+                        viewModel.updateShouldShowDiningTooltip(false)
+                    }
+                }
+            }
+        }
     }
 
     private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {
@@ -204,7 +266,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 EventLogger.logScrollEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
+                    EventAction.CAMPUS,
                     AnalyticsConstant.Label.MAIN_BUS_SCROLL,
                     busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(
                         this@MainActivity
@@ -213,6 +275,27 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 prev = position
             }
         }.also { binding.busViewPager.registerOnPageChangeCallback(it) }
+    }
+
+    private fun initDiningTooltip() {
+        diningTooltip = Balloon.Builder(this)
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setWidth(BalloonSizeSpec.WRAP)
+            .setText(getString(R.string.dining_image_tooltip))
+            .setTextColorResource(R.color.black)
+            .setBackgroundColorResource(R.color.gray3)
+            .setTextSize(12f)
+            .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
+            .setArrowOrientation(ArrowOrientation.BOTTOM)
+            .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
+            .setArrowSize(10)
+            .setArrowPosition(0.85f)
+            .setPaddingVertical(4)
+            .setPaddingHorizontal(5)
+            .setMarginLeft(10)
+            .setCornerRadius(8f)
+            .setBalloonAnimation(BalloonAnimation.FADE)
+            .build()
     }
 
     private fun gotoStoreActivity(position: Int) {

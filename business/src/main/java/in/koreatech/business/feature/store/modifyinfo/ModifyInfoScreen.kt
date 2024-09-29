@@ -225,28 +225,29 @@ fun ModifyInfoScreen(
                 ) {
                     AvailableRadioButton(
                         text = stringResource(id = R.string.delivery_available),
-                        selected = state.storeInfo?.isDeliveryOk ?: false,
+                        selected = state.storeInfo.isDeliveryOk,
                         onClick = viewModel::onDeliveryAvailableChanged
                     )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.card_payment_available),
-                        selected = state.storeInfo?.isCardOk ?: false,
+                        selected = state.storeInfo.isCardOk,
                         onClick = viewModel::onCardAvailableChanged
                     )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.bank_transfer_available),
-                        selected = state.storeInfo?.isBankOk ?: false,
+                        selected = state.storeInfo.isBankOk ,
                         onClick = viewModel::onTransferAvailableChanged
                     )
                 }
             }
+
             item {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Button(
                         onClick = {
                             viewModel.modifyStoreInfo(
                                 storeInfoState.storeId,
-                                state.storeInfo ?: return@Button
+                                state.storeInfo
                             )
                             viewModel.onBackButtonClicked()
                         },

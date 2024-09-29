@@ -15,6 +15,7 @@ import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -30,25 +31,25 @@ class BusinessAuthViewModel @Inject constructor(
     override val container =
         container<BusinessAuthState, BusinessAuthSideEffect>(BusinessAuthState())
 
-    fun onNameChanged(name: String) = intent {
+    fun onNameChanged(name: String) = blockingIntent {
         reduce {
             state.copy(name = name)
         }
     }
 
-    fun onShopNameChanged(storeName: String) = intent {
+    fun onShopNameChanged(storeName: String) = blockingIntent {
         reduce {
             state.copy(shopName = storeName)
         }
     }
 
-    fun onShopIdChanged(shopId: Int?) = intent {
+    fun onShopIdChanged(shopId: Int?) = blockingIntent {
         reduce {
             state.copy(shopId = shopId)
         }
     }
 
-    fun onStoreNumberChanged(storeNumber: String) = intent {
+    fun onStoreNumberChanged(storeNumber: String) = blockingIntent {
         reduce {
             state.copy(
                 shopNumber = storeNumber,

@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -60,21 +61,21 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         }
     }
 
-    fun onChangePhoneNumber(phoneNumber: String) = intent{
+    fun onChangePhoneNumber(phoneNumber: String) = blockingIntent{
         reduce {
             state.copy(storePhoneNumber = phoneNumber)
         }
         isDetailInfoValid()
     }
 
-    fun onChangeDeliveryFee(deliveryFee: String) = intent{
+    fun onChangeDeliveryFee(deliveryFee: String) = blockingIntent{
         reduce {
             state.copy(storeDeliveryFee = deliveryFee)
         }
         isDetailInfoValid()
     }
 
-    fun onChangeOtherInfo(otherInfo: String) = intent{
+    fun onChangeOtherInfo(otherInfo: String) = blockingIntent{
         reduce {
             state.copy(storeOtherInfo = otherInfo)
         }

@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import `in`.koreatech.business.feature.store.navigator.ModifyInfoNavigator
 import `in`.koreatech.business.feature.textfield.MenuBorderTextField
 import `in`.koreatech.business.ui.theme.ColorAccent
 import `in`.koreatech.business.ui.theme.ColorMinor

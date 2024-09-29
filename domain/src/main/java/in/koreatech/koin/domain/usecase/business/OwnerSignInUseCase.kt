@@ -19,6 +19,7 @@ class OwnerSignInUseCase @Inject constructor(
         return try {
             val authToken = userRepository.getOwnerToken(phoneNumber, password.toSHA256())
             tokenRepository.saveAccessToken(authToken.token)
+            tokenRepository.saveOwnerAccessToken(authToken.token)
             tokenRepository.saveRefreshToken(authToken.refreshToken)
             Unit to null
         } catch (throwable: Throwable) {
