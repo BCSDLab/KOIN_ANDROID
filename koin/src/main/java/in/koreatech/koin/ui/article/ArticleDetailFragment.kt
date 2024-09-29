@@ -6,7 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -41,13 +43,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
+class ArticleDetailFragment : Fragment() {
 
     @Inject
     lateinit var articleDetailViewModelFactory: ArticleDetailViewModel.Factory
     private val navController by lazy { findNavController() }
 
-    private val binding: FragmentArticleDetailBinding by dataBinding()
+    private var _binding: FragmentArticleDetailBinding? = null
+    private val binding get() = _binding!!
 
     private val attachmentAdapter = AttachmentAdapter(::onAttachmentClick, ::onAttachmentLongClick)
     private val hotArticleAdapter = HotArticleAdapter(::onHotArticleClick)
@@ -66,6 +69,15 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
             requireArguments().getInt(ARTICLE_ID),
             requireArguments().getInt(NAVIGATED_BOARD_ID)
         )
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentArticleDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -217,6 +229,11 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
                 putInt(NAVIGATED_BOARD_ID, article.board.id)
             }
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
