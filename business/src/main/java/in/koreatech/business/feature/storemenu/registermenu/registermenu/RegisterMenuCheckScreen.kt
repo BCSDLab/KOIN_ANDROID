@@ -44,6 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.business.feature.storemenu.TitleAndContent
+import `in`.koreatech.business.feature.storemenu.TitleAndImageUri
+import `in`.koreatech.business.feature.storemenu.TitleAndOptionPrice
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
@@ -100,7 +103,7 @@ fun RegisterMenuCheckScreenImpl(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .padding(start = 16.dp),
-                onClick = { onBackPressed }
+                onClick = { onBackPressed() }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_arrow_back),
@@ -125,7 +128,7 @@ fun RegisterMenuCheckScreenImpl(
                         .height(35.dp)
                         .background(ColorTextBackgrond),
                     contentAlignment = Alignment.CenterStart
-                ){
+                ) {
                     Text(
                         modifier = Modifier
                             .padding(start = 16.dp),
@@ -133,165 +136,32 @@ fun RegisterMenuCheckScreenImpl(
                         color = ColorSecondaryText
                     )
                 }
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_name),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 12.dp),
-                    text = menuName,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Gray7
-                )
-
-            }
-
-            item{
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_price),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 8.dp)
-                ){
-                    if(registerMenuState.menuOptionPrice.isEmpty()){
-                        Text(
-                            modifier = Modifier.padding(top = 16.dp),
-                            text = stringResource(id = R.string.menu_price_won, registerMenuState.menuPrice),
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    else{
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ){
-                            registerMenuState.menuOptionPrice.forEach { menuDetailPrice ->
-                                Text(
-                                    modifier = Modifier.padding(top = 4.dp),
-                                    text = stringResource(id = R.string.menu_price_many_won, menuDetailPrice.option, menuDetailPrice.price),
-                                    fontSize = 15.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                    }
-                }
-
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Gray7
-                )
-            }
-
-            item{
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_category),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = registerMenuState.menuCategoryLabel,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Gray7
-                )
             }
 
             item {
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_composition),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
+                TitleAndContent(
+                    stringId = R.string.menu_name,
+                    content = menuName
                 )
 
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp)
-                    ,
-                    text = registerMenuState.description,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
+                TitleAndOptionPrice(
+                    optionPriceList = registerMenuState.menuOptionPrice,
+                    menuPrice = registerMenuState.menuPrice
                 )
 
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Gray7
-                )
-            }
-            
-            item{
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_image),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
+                TitleAndContent(
+                    stringId = R.string.menu_category,
+                    content = registerMenuState.menuCategoryLabel
                 )
 
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp)
-                ) {
-                    items(registerMenuState.imageUriList) { item ->
-                        if (item != Uri.EMPTY){
-                            Image(
-                                modifier = Modifier
-                                    .size(137.dp)
-                                    .padding(end = 16.dp)
-                                ,
-                                painter = rememberAsyncImagePainter(
-                                    item
-                                ),
-                                contentDescription = "",
-                                contentScale = ContentScale.Crop
-                            )
-                        }
-                    }
-                }
+                TitleAndContent(
+                    stringId = R.string.menu_composition,
+                    content = registerMenuState.description
+                )
+
+                TitleAndImageUri(
+                    imageUriList = registerMenuState.imageUriList
+                )
             }
 
             item {

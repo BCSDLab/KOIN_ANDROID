@@ -11,5 +11,7 @@ data class AccountSetupState(
     val isPasswordConfirmError: Boolean = false,
     val verifyState : SignupContinuationState = SignupContinuationState.AvailablePhoneNumber,
     val phoneNumberState: SignupContinuationState = SignupContinuationState.AvailablePhoneNumber,
+    val verifyError:Throwable? = null,
+    val sendCodeError:Throwable? = null,
     val isButtonEnabled: Boolean = false
 )
