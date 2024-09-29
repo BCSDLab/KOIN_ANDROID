@@ -1,11 +1,9 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.response.toVersion
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.model.version.Version
 import `in`.koreatech.koin.domain.repository.VersionRepository
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class VersionRepositoryImpl @Inject constructor(
