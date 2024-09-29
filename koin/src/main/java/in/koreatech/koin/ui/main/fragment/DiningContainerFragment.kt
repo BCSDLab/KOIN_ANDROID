@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.databinding.FragmentDiningContainerBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
@@ -40,10 +42,11 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
                 val mainActivity = activity as MainActivity
                 mainActivity.callDrawerItem(R.id.navi_item_dining)
             }
+            val type = DiningUtil.getCurrentType()
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.MAIN_MENU_MOVEDETAILVIEW,
-                requireContext().getString(R.string.navigation_item_dining)
+                if (type == DiningType.NextBreakfast) "내일 " else "오늘 " + requireContext().getString(R.string.navigation_item_dining)
             )
         }
     }

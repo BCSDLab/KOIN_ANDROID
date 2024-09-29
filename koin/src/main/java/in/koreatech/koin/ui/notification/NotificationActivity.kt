@@ -15,6 +15,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
@@ -49,7 +53,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (!checkPermission()) {
+        if (!checkNotificationPermission()) {
             permissionDenied()
         } else {
             permissionGranted()
@@ -107,6 +111,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                                     }
 
                                     SubscribesType.NOTHING -> Unit
+                                    else -> Unit
                                 }
                             }
                             uiState.notificationPermissionInfo.subscribes.forEach {
@@ -141,6 +146,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
                         is NotificationUiState.Failed -> {}
                         is NotificationUiState.Nothing -> {}
+                        else -> {}
                     }
                 }
             }
@@ -154,13 +160,18 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     private fun subscribeNotification() {
         binding.notificationDiningSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscription(isChecked, SubscribesType.DINING_SOLD_OUT)
             enableSubscriptionDetail(isChecked, SubscribesType.DINING_SOLD_OUT)
         }
         binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
         }
-        binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
+        binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
 
@@ -168,12 +179,27 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     private fun subscribeDetailNotification() {
         binding.notificationDiningBreakfastSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_BREAKFAST_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
         }
         binding.notificationDiningLunchSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_LUNCH_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
         }
         binding.notificationDiningDinnerSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_DINNER_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
         }
     }
@@ -200,12 +226,6 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
         binding.notificationDiningDinnerSoldOut.isVisible = isChecked
     }
 
-    private fun checkPermission() = NOTIFICATION_REQUIRED_PERMISSION.all {
-        ContextCompat.checkSelfPermission(
-            this, it
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
     private fun setOnClickNotificationSetting() {
         binding.textViewNotificationSetting.setOnClickListener {
             intentAppSettings()
@@ -221,11 +241,5 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     companion object {
         const val PACKAGE = "package"
-
-        private val NOTIFICATION_REQUIRED_PERMISSION = mutableListOf<String>().apply {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }.toTypedArray()
     }
 }

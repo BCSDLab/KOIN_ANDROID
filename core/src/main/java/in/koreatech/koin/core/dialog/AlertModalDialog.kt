@@ -11,7 +11,7 @@ import `in`.koreatech.koin.core.databinding.AlertModalDialogBinding
 class AlertModalDialog(
     private val context: Context,
     private val data: AlertModalDialogData,
-    private val onPositiveButtonClicked: () -> Unit,
+    private val onPositiveButtonClicked: (Dialog) -> Unit,
     private val onNegativeButtonClicked: (Dialog) -> Unit
 ) : Dialog(context) {
 
@@ -35,7 +35,7 @@ class AlertModalDialog(
             buttonNegative.text = context.getString(data.negativeButtonText)
 
             buttonPositive.setOnClickListener {
-                onPositiveButtonClicked()
+                onPositiveButtonClicked(this@AlertModalDialog)
             }
 
             buttonNegative.setOnClickListener {
