@@ -1,19 +1,21 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
+import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
-import `in`.koreatech.koin.domain.util.DiningUtil
-import androidx.lifecycle.*
-import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.store.StoreCategories
-import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
+import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
+import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.conflate
@@ -27,12 +29,14 @@ class MainActivityViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val abTestUseCase: ABTestUseCase,
-    ) : BaseViewModel() {
+) : BaseViewModel() {
+    private val _variableName = MutableLiveData<String>()
+    val variableName: LiveData<String> get() = _variableName
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
 
     private val _selectedPosition = MutableLiveData(0)
-    val selectedPosition : LiveData<Int> get() = _selectedPosition
+    val selectedPosition: LiveData<Int> get() = _selectedPosition
     private val _diningData = MutableLiveData<List<Dining>>(listOf())
     val diningData: LiveData<List<Dining>> get() = _diningData
     private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
@@ -44,6 +48,15 @@ class MainActivityViewModel @Inject constructor(
     init {
         updateDining()
         getStoreCategories()
+        postABTestAssign("benefit")
+
+    }
+
+    private fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
+        abTestUseCase(title).onSuccess {
+            _variableName.value = it
+        }.onFailure { error ->
+            _errorToast.value = error.message}
     }
 
     val busTimer = liveData {
