@@ -2,12 +2,14 @@ package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
+import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
+import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import retrofit2.Response
@@ -84,4 +86,7 @@ interface UserAuthApi {
         @Path("reviewId") reviewId: Int,
         @Body storeReviewReportsRequest: StoreReviewReportsRequest
     ):Response<Unit?>
+
+    @POST("abtest/assign")
+    suspend fun postABTestAssign(@Body abTestRequest: ABTestRequest): ABTestResponse
 }

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
 import kotlinx.coroutines.flow.Flow
@@ -26,4 +27,5 @@ interface UserRepository {
     suspend fun updateDeviceToken(token: String)
     suspend fun deleteDeviceToken()
     suspend fun verifyPassword(hashedPassword: String)
+    suspend fun postABTestAssign(title: String) : ABTest
 }
