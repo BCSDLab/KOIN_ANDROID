@@ -7,6 +7,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
+import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
+import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
@@ -66,5 +68,13 @@ object LocalDataSourceModule {
         @ApplicationContext applicationContext: Context,
     ): UserLocalDataSource {
         return UserLocalDataSource(applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticleLocalDataSource(
+        articleDataStore: ArticleDataStore
+    ): ArticleLocalDataSource {
+        return ArticleLocalDataSource(articleDataStore)
     }
 }

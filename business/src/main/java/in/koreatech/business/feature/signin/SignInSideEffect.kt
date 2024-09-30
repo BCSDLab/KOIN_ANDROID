@@ -6,7 +6,9 @@ sealed class SignInSideEffect {
 
     object NavigateToFindPassword: SignInSideEffect()
 
-    object NavigateToMain: SignInSideEffect()
+    object NavigateToMyStore: SignInSideEffect()
+
+    object NavigateToRegisterStore: SignInSideEffect()
 
     data class ShowNullMessage(val type: ErrorType): SignInSideEffect()
 

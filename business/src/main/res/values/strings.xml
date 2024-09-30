@@ -51,7 +51,7 @@
     <string name="password_change">비밀번호 변경</string>
 
     <string name="check_terms">1. 약관 동의</string>
-    <string name="input_basic_information">2.기본 정보 입력</string>
+    <string name="input_basic_information">2. 기본 정보 입력</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
     <string name="password_mismatch">비밀번호가 일치하지 않습니다.</string>
@@ -73,7 +73,7 @@
     <string name="verification_code_error">인증번호가 일치하지 않습니다.</string>
     <string name="by">으로</string>
     <string name="time_limit">제한시간</string>
-    <string name="business_auth">3.사업자 인증</string>
+    <string name="business_auth">3. 사업자 인증</string>
     <string name="master_name">대표자명(실명)</string>
     <string name="enter_store_name">가게명 직접 입력하기</string>
     <string name="search_store">가게 검색</string>
@@ -177,4 +177,6 @@
     <string name="account_verification_step">1. 계정 인증</string>
     <string name="change_password_step">2. 비밀번호 변경</string>
     <string name="input_auth_code">인증번호를 입력해주세요.</string>
+    <string name="manage_menu">메뉴 관리</string>
+    <string name="register_menu">메뉴 추가</string>
 </resources>
