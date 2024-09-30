@@ -55,6 +55,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun deleteUser() {
         try {
             userRemoteDataSource.deleteUser()
+            userLocalDataSource.updateUserInfo(User.Anonymous)
+            userLocalDataSource.updateIsLogin(false)
             tokenLocalDataSource.removeAccessToken()
             tokenLocalDataSource.removeRefreshToken()
         } catch (e: HttpException) {
