@@ -306,13 +306,11 @@ class ArticleKeywordFragment : Fragment() {
 
     private fun initKeywordNotification() {
         notificationViewModel.getPermissionInfo()
-        if (requireContext().checkNotificationPermission().not()) {
-            binding.notificationKeyword.disableAll()
-        }
 
         binding.notificationKeyword.setOnSwitchClickListener { isChecked ->
             if (requireContext().checkNotificationPermission().not()) {
                 ToastUtil.getInstance().makeShort(R.string.request_notification_permission)
+                binding.notificationKeyword.isChecked = false
                 return@setOnSwitchClickListener
             }
 
