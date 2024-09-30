@@ -11,13 +11,13 @@ class ABTestUseCase  @Inject constructor(
     private val tokenRepository: TokenRepository,
     private val userErrorHandler: UserErrorHandler
 ) {
-    suspend operator fun invoke(title: String): ErrorHandler? {
+    suspend operator fun invoke(title: String): Pair<String?, ErrorHandler?> {
         return try {
             val accessHistoryId = userRepository.postABTestAssign(title).accessHistoryId
             tokenRepository.saveAccessHistoryId(accessHistoryId)
-            null
+            return userRepository.postABTestAssign(title).variableName to null
         } catch (t: Throwable) {
-            userErrorHandler.handleVerifyUserPasswordError(t)
+            null to userErrorHandler.handleVerifyUserPasswordError(t)
         }
     }
 }
