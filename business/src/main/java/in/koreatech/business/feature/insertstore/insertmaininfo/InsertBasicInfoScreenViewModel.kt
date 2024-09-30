@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseC
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -29,14 +30,14 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
             getCategoryId(categoryId)
         }
 
-    fun insertStoreName(storeName: String) = intent {
+    fun insertStoreName(storeName: String) = blockingIntent {
         reduce {
             state.copy(storeName = storeName)
         }
         isBasicInfoValidate()
     }
 
-    fun insertStoreAddress(storeAddress: String) = intent{
+    fun insertStoreAddress(storeAddress: String) = blockingIntent{
         reduce {
             state.copy(storeAddress = storeAddress)
         }

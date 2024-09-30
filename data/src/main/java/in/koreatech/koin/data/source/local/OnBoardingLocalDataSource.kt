@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.source.local
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -9,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -32,6 +32,21 @@ class OnBoardingLocalDataSource @Inject constructor(
         val KEY_SHOULD_SHOW_NOTIFICATION_ON_BOARDING = booleanPreferencesKey(
             "should_show_notification_on_boarding"
         )
+        val KEY_SHOULD_SHOW_KEYWORD_TOOLTIP = booleanPreferencesKey(
+            "should_show_keyword_tooltip"
+        )
+    }
+
+    suspend fun updateShouldShowKeywordTooltip(shouldShow: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[KEY_SHOULD_SHOW_KEYWORD_TOOLTIP] = shouldShow
+        }
+    }
+
+    fun getShouldShowKeywordTooltip(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[KEY_SHOULD_SHOW_KEYWORD_TOOLTIP] ?: true
+        }
     }
 
     suspend fun updateShouldShowDiningTooltip(shouldShow: Boolean) {

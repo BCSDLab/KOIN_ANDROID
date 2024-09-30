@@ -103,4 +103,10 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.balloon)
     implementation(libs.dataStore)
+
+    implementation(libs.nav.fragment.ktx)
+    implementation(libs.nav.ui.ktx)
+    implementation(libs.nav.dynamic.features.fragment)
+
+    implementation(libs.feature.delivery.ktx)
 }

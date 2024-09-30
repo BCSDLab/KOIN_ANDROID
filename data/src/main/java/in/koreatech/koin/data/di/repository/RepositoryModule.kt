@@ -6,10 +6,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.repository.*
 import `in`.koreatech.koin.data.source.local.*
 import `in`.koreatech.koin.data.source.remote.*
 import `in`.koreatech.koin.domain.repository.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module
@@ -173,6 +177,22 @@ object RepositoryModule {
         onBoardingLocalDataSource: OnBoardingLocalDataSource
     ): OnBoardingRepository {
         return OnBoardingRepositoryImpl(onBoardingLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticleRepository(
+        articleRemoteDataSource: ArticleRemoteDataSource,
+        articleLocalDataSource: ArticleLocalDataSource,
+        userRepository: UserRepository,
+        @IoDispatcher dispatcher: CoroutineDispatcher
+    ): ArticleRepository {
+        return ArticleRepositoryImpl(
+            articleRemoteDataSource,
+            articleLocalDataSource,
+            userRepository,
+            CoroutineScope(SupervisorJob() + dispatcher)
+        )
     }
 
     @Provides

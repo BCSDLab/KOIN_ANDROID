@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.AlertModalDialog
@@ -27,6 +28,7 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.LikeActionType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.util.ext.toStringWithComma
@@ -67,6 +69,7 @@ class DiningAdapter(
                     textViewNoPhoto.visibility = View.INVISIBLE
                     imageViewNoPhoto.visibility = View.INVISIBLE
                     imageViewDining.visibility = View.VISIBLE
+
                     Glide.with(context)
                         .load(dining.imageUrl)
                         .listener(object : RequestListener<Drawable> {
@@ -86,6 +89,7 @@ class DiningAdapter(
                                 dataSource: DataSource?,
                                 isFirstResource: Boolean
                             ): Boolean {
+                                binding.lottieImageLoading.pauseAnimation()
                                 binding.lottieImageLoading.visibility = View.GONE
                                 return false
                             }
@@ -97,7 +101,7 @@ class DiningAdapter(
                     cardViewDining.setOnClickListener {
                         dialog.show()
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.CAMPUS,
+                            EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_IMAGE,
                             DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                         )
@@ -105,12 +109,16 @@ class DiningAdapter(
                 } else {
                     cardViewDining.strokeWidth =
                         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
+                    textViewNoPhoto.text = if(TimeUtil.isWeekend(dining.date)) context.getString(
+                        R.string.photo_not_provided_on_weekend
+                    ) else context.getString(R.string.no_photo)
+
                     textViewNoPhoto.visibility = View.VISIBLE
                     imageViewNoPhoto.visibility = View.VISIBLE
                     imageViewDining.visibility = View.INVISIBLE
                     cardViewDining.setOnClickListener {
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.CAMPUS,
+                            EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_IMAGE,
                             DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                         )
@@ -249,7 +257,7 @@ class DiningAdapter(
                 cardViewDining.setOnClickListener {
                     dialog.show()
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
+                        EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_IMAGE,
                         DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                     )
@@ -267,7 +275,7 @@ class DiningAdapter(
                 imageViewDining.visibility = View.INVISIBLE
                 cardViewDining.setOnClickListener {
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
+                        EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_IMAGE,
                         DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                     )

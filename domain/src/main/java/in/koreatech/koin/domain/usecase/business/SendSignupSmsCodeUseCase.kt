@@ -7,16 +7,14 @@ import javax.inject.Inject
 
 class SendSignupSmsCodeUseCase @Inject constructor(
     private val ownerSignupRepository: OwnerSignupRepository,
-    private val ownerErrorHandler: OwnerErrorHandler,
 ) {
     suspend operator fun invoke(
         phoneNumber: String,
-    ): ErrorHandler? {
+    ): Result<Unit> {
         return try {
             ownerSignupRepository.requestSmsVerificationCode(phoneNumber)
-            null
         } catch (t: Throwable) {
-            ownerErrorHandler.handleSendSmsError(t)
+            Result.failure(t)
         }
     }
 }
