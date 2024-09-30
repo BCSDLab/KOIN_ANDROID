@@ -7,7 +7,7 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.databinding.ActivityForceUpdateBinding
 import `in`.koreatech.koin.ui.splash.SplashActivity
-import `in`.koreatech.koin.util.ext.navigatePlayStore
+import `in`.koreatech.koin.util.ext.navigateToPlayStore
 
 @AndroidEntryPoint
 class ForceUpdateActivity: ActivityBase() {
@@ -49,7 +49,7 @@ class ForceUpdateActivity: ActivityBase() {
 
     private fun setOnClickUpdateButton() {
         binding.btnUpdate.setOnClickListener {
-            navigatePlayStore()
+            navigateToPlayStore()
         }
     }
 
