@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.userinfo
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -15,6 +16,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityUserInfoBinding
 import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.ui.userinfo.contract.UserInfoEditContract
 import `in`.koreatech.koin.ui.userinfo.state.toUserState
 import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
@@ -28,6 +30,10 @@ class UserInfoActivity : ActivityBase() {
     private val binding by dataBinding<ActivityUserInfoBinding>(R.layout.activity_user_info)
     override val screenTitle = "내 정보"
     private val userInfoViewModel by viewModels<UserInfoViewModel>()
+
+    private val userInfoEditActivityNew = registerForActivityResult(UserInfoEditContract()) { edited ->
+        if (edited) userInfoViewModel.getUserInfo()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +51,7 @@ class UserInfoActivity : ActivityBase() {
                 onBackPressed()
             },
             rightButtonClicked = {
-                startActivity(Intent(this@UserInfoActivity, UserInfoEditActivity::class.java))
+                userInfoEditActivityNew.launch(Unit)
             }
         )
 
