@@ -2,7 +2,8 @@
     <string name="app_name" tools:ignore="DuplicateDefinition">코인\n커뮤니티</string>
 
     <string name="sign_up">회원가입</string>
-    <string name="login">로그인</string>
+    <string name="login_complete">로그인완료</string>
+    <string name="find_password">비밀번호찾기</string>
 
     <!--left drawer menu -->
     <string name="home">홈</string>
@@ -12,6 +13,7 @@
     <string name="navigation_item_bus">버스/교통</string>
     <string name="navigation_item_dining">식단</string>
     <string name="navigation_item_circle">동아리</string>
+    <string name="navigation_item_land">복덕방</string>
     <!--<string name="navigation_item_faq">FAQ</string>-->
 
     <!--커뮤니티-->
@@ -274,6 +276,7 @@
     <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
     <string name="dining_soldout">품절</string>
     <string name="dining_changed">변경됨</string>
+    <string name="cafeteria_info">학생식당정보</string>
     <string name="bus_app_bar_title">버스 / 교통</string>
     <string name="bus_tab_info">운행정보</string>
     <string name="bus_tab_search_info">운행 정보 검색</string>
@@ -489,6 +492,68 @@
     <string name="set_dining_sold_out_notification">식단 품절 알림 받기</string>
     <string name="set_image_upload_notification">식단 사진 업로드 알림 받기</string>
     <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
+    
+    <!-- Koreatech 공지사항 -->
+    <string name="title_article">공지사항</string>
+    <string name="navigation_title_article">공지사항</string>
+    <string name="navigation_title_article_search">공지글 검색</string>
+    <string name="navigation_title_article_keyword">키워드 관리</string>
+    <string name="article_free">자유게시판</string>
+    <string name="article_employment">취업게시판</string>
+    <string name="article_anonymous">익명게시판</string>
+    <string name="article_all">전체공지</string>
+    <string name="article_normal">일반공지</string>
+    <string name="article_normal_simple">일반</string>
+    <string name="article_school">학사공지</string>
+    <string name="article_school_simple">학사</string>
+    <string name="article_scholarship">장학공지</string>
+    <string name="article_scholarship_simple">장학</string>
+    <string name="article_recruit">취업공지</string>
+    <string name="article_recruit_simple">취업</string>
+    <string name="article_koin">코인공지</string>
+    <string name="article_qna">질문게시판</string>
+    <string name="article_promotion">홍보게시판</string>
+    <string name="article_ipp">현장실습</string>
+    <string name="article_ipp_simple">현장실습</string>
+    <string name="article_student">학생생활</string>
+    <string name="article_student_simple">학생</string>
+    <string name="previous_page">이전</string>
+    <string name="next_page">다음</string>
+    <string name="divider_dot">•</string>
+    <string name="list">목록</string>
+    <string name="next_article">다음 글</string>
+    <string name="prev_article">이전 글</string>
+    <string name="hot_articles">인기있는 게시글</string>
+    <string name="see_all_article">모두보기</string>
+    <string name="my_keyword">내 키워드</string>
+    <string name="keyword_notice_description">키워드는 최대 10개까지 추가 가능합니다.</string>
+    <string name="add_keyword">추가</string>
+    <string name="suggestion_keywords">추천 키워드</string>
+    <string name="keyword_notification">키워드 알림</string>
+    <string name="keyword_notification_notice_description">키워드가 포함된 게시물의 알림을 받을 수 있습니다.</string>
+    <string name="get_keyword_notification">키워드 알림받기</string>
+    <string name="hint_input_keyword">알림받을 키워드를 입력해 주세요.</string>
+    <string name="keyword_add_require_input">키워드를 입력해주세요.</string>
+    <string name="keyword_add_limit_exceeded">키워드는 최대 10개까지 추가 가능합니다.</string>
+    <string name="keyword_add_already_exist">이미 추가되어 있는 키워드입니다.</string>
+    <string name="keyword_add_invalid_length">키워드 길이는 2글자 이상, 20글자 이하입니다.</string>
+    <string name="keyword_add_blank_not_allowed">키워드에 공백은 포함할 수 없습니다.</string>
+    <string name="add_new_keyword">새 키워드 추가</string>
+    <string name="empty_articles">게시글이 존재하지 않습니다.</string>
+    <string name="most_searched_keyword">많이 검색된 키워드</string>
+    <string name="recent_searched_keyword">최근 검색기록</string>
+    <string name="clear_all">전체 삭제</string>
+    <string name="recommend_login_to_get_keyword_notification_title">키워드 알림을 받으려면\n로그인이 필요해요.</string>
+    <string name="recommend_login_to_get_keyword_notification_message">로그인 후 간편하게 공지사항 키워드\n알림을 받아보세요!</string>
+    <string name="search_input_required">검색어를 입력해주세요.</string>
+    <string name="empty_search_result">일치하는 공지글이 없습니다.\n다른 키워드로 다시 시도해주세요.</string>
+    <string name="now_hot_article">지금 인기있는 공지</string>
+    <string name="attachment">첨부파일</string>
+    <string name="downloading">다운로드 중</string>
+    <string name="start_download">파일을 다운로드합니다.</string>
+    <string name="download_complete">다운로드가 완료되었습니다.</string>
+    <string name="keyword_tooltip">키워드를 추가하고 맞춤 알림을 받아보세요!</string>
+
 
 
     <!--리뷰 기능-->
@@ -532,6 +597,7 @@
     <string name="store_review_count">( 리뷰 %1$s개 )</string>
     <string name="store_review_is_modify">%1$s (수정됨)</string>
     <string name="login_request_to_write_review">리뷰 작성 시 로그인을 해주세요.</string>
+    <string name="request_notification_permission">설정에서 알림 권한을 허용해주세요</string>
 
     <!-- etc -->
     <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>
