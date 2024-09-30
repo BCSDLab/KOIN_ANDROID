@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.domain.repository.TokenRepository
@@ -18,6 +17,10 @@ class TokenRepositoryImpl @Inject constructor(
 
     override suspend fun saveRefreshToken(token: String) {
         tokenLocalDataSource.saveRefreshToken(token)
+    }
+
+    override suspend fun saveAccessHistoryId(token: String) {
+        tokenLocalDataSource.saveAccessHistoryId(token)
     }
 
     override suspend fun getAccessToken(): String? {

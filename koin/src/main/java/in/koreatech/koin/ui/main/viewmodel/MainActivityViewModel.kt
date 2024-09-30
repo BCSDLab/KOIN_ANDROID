@@ -25,8 +25,9 @@ class MainActivityViewModel @Inject constructor(
     private val getBusTimerUseCase: GetBusTimerUseCase,
     private val busErrorHandler: BusErrorHandler,
     private val getDiningUseCase: GetDiningUseCase,
-    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
-) : BaseViewModel() {
+    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
+    private val abTestUseCase: ABTestUseCase,
+    ) : BaseViewModel() {
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
 

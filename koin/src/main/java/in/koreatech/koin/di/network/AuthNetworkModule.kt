@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.Auth
+import `in`.koreatech.koin.core.qualifier.History
 import `in`.koreatech.koin.core.qualifier.OwnerAuth
 import `in`.koreatech.koin.core.qualifier.PreSignedUrl
 import `in`.koreatech.koin.core.qualifier.Refresh
@@ -62,6 +63,23 @@ object AuthNetworkModule {
         userApi: UserApi,
     ): Authenticator = AuthAuthenticator(tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
 
+
+    @History
+    @Provides
+    @Singleton
+    fun provideHistoryInterceptor(
+        tokenLocalDataSource: TokenLocalDataSource,
+    ): Interceptor {
+        return Interceptor { chain: Interceptor.Chain ->
+            runBlocking {
+                val historyId = tokenLocalDataSource.getAccessHistoryId() ?: ""
+                val newRequest: Request = chain.request().newBuilder()
+                    .addHeader("access_history_id", historyId)
+                    .build()
+                chain.proceed(newRequest)
+            }
+        }
+    }
 
     @Auth
     @Provides
