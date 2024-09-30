@@ -1,14 +1,12 @@
 package `in`.koreatech.koin.data.source.local
 
 import android.content.Context
-import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.job
 import kotlinx.coroutines.withContext
 
 
@@ -54,12 +52,26 @@ class TokenLocalDataSource @Inject constructor(
         }
     }
 
+    suspend fun saveAccessHistoryId(
+        refreshToken: String,
+    ) = withContext(dispatchersIO) {
+        with(sharedPreferences.edit()) {
+            putString(SHARED_PREF_HISTORY_KEY, refreshToken)
+            apply()
+        }
+    }
+
+
     suspend fun getAccessToken(): String? = withContext(dispatchersIO) {
         sharedPreferences.getString(SHARED_PREF_KEY, null)
     }
 
     suspend fun getRefreshToken(): String? = withContext(dispatchersIO) {
         sharedPreferences.getString(SHARED_PREF_REFRESH_KEY, null)
+    }
+
+    suspend fun getAccessHistoryId(): String? = withContext(dispatchersIO) {
+        sharedPreferences.getString(SHARED_PREF_HISTORY_KEY, null)
     }
 
     suspend fun removeAccessToken() = withContext(dispatchersIO) {
@@ -120,6 +132,7 @@ class TokenLocalDataSource @Inject constructor(
 
         private const val SHARED_PREF_KEY = "accessToken"
         private const val SHARED_PREF_REFRESH_KEY = "refreshToken"
+        private const val SHARED_PREF_HISTORY_KEY = "accessHistoryId"
 
         private const val SHARED_DEVICE_KEY = "deviceToken"
     }

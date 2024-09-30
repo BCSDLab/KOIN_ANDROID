@@ -8,6 +8,10 @@ annotation class Auth
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class History
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class NoAuth
 
 @Qualifier
