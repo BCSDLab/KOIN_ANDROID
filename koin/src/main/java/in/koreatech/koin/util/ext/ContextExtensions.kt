@@ -18,7 +18,7 @@ fun Context.hideKeyboard(view: View) {
 
 fun Context.showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-fun Context.navigatePlayStore() {
+fun Context.navigateToPlayStore() {
     val appPackageName: String = packageName
     try {
         val appStoreIntent =

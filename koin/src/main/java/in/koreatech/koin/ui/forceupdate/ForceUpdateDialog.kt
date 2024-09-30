@@ -5,7 +5,7 @@ import android.view.View
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.BaseDialogFragment
 import `in`.koreatech.koin.databinding.DialogForceUpdateBinding
-import `in`.koreatech.koin.util.ext.navigatePlayStore
+import `in`.koreatech.koin.util.ext.navigateToPlayStore
 
 class ForceUpdateDialog : BaseDialogFragment<DialogForceUpdateBinding>(
     R.layout.dialog_force_update,
@@ -39,7 +39,7 @@ class ForceUpdateDialog : BaseDialogFragment<DialogForceUpdateBinding>(
             dismiss()
         }
         binding.btnStore.setOnClickListener {
-            requireContext().navigatePlayStore()
+            requireContext().navigateToPlayStore()
         }
     }
 }
