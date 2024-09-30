@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -118,7 +119,7 @@ class StoreReviewReportActivity:  ActivityBase() {
                 inputReportReasonEdittext.text.toString()
             )
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_DONE,
                 storeName ?: "Unknown"
             )
