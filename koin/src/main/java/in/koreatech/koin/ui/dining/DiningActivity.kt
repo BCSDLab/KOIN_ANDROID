@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.dining
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
@@ -109,9 +108,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         binding.tabsDiningTime.selectTab(binding.tabsDiningTime.getTabAt(initialDiningTab))
         diningDateAdapter.selectPosition(initialDateTab)
         diningDateAdapter.notifyDataSetChanged()
-        viewModel.setSelectedDate(dates[initialDateTab].also {
-            Log.d("dddddddddddddddd333", it.toString())
-        })
+        viewModel.setSelectedDate(dates[initialDateTab])
     }
 
     private fun onActionView() {
