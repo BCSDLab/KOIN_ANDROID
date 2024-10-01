@@ -2,10 +2,10 @@ package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
 sealed class RegisterMenuSideEffect {
 
-    object GoToCheckMenuScreen: RegisterMenuSideEffect()
+    object GoToCheckMenuScreen : RegisterMenuSideEffect()
 
-    object FinishRegisterMenu: RegisterMenuSideEffect()
-    data class ShowMessage(val type: RegisterMenuErrorType): RegisterMenuSideEffect()
+    object FinishRegisterMenu : RegisterMenuSideEffect()
+    data class ShowMessage(val type: RegisterMenuErrorType) : RegisterMenuSideEffect()
 }
 enum class RegisterMenuErrorType {
     NullMenuName,

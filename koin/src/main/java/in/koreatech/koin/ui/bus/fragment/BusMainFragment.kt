@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -54,7 +55,7 @@ class BusMainFragment : Fragment(R.layout.bus_main_fragment) {
             viewModel.setDeparture(position.busNodeSelection)
             if(viewModel.isUserSelection) {
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
+                    EventAction.CAMPUS,
                     AnalyticsConstant.Label.BUS_DEPARTURE,
                     resources.getStringArray(R.array.bus_place)[position]
                 )
@@ -70,7 +71,7 @@ class BusMainFragment : Fragment(R.layout.bus_main_fragment) {
             viewModel.setArrival(position.busNodeSelection)
             if(viewModel.isUserSelection) {
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
+                    EventAction.CAMPUS,
                     AnalyticsConstant.Label.BUS_ARRIVAL,
                     resources.getStringArray(R.array.bus_place)[position]
                 )
