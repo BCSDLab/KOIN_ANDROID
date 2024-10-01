@@ -57,7 +57,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     }
 
     private val viewPagerHandler = Handler(Looper.getMainLooper())
-    private val viewPagerDelayTime = 10000L
+    private val viewPagerDelayTime = 4000L
 
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
@@ -80,6 +80,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 it.shopName
             )
             storeDetailContract.launch(Pair(it.shopId, getStoreCategoryName(viewModel.category.value)))
+        }
+
+        setOnArrowClickListener {
+            binding.eventViewPager.setCurrentItem(it, true)
+            startAutoScroll()
         }
     }
 
