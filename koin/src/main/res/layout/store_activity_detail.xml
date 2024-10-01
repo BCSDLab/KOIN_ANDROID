@@ -27,7 +27,7 @@
                     app:leftButtonBackground="@drawable/ic_back_arrow"
                     app:leftButtonHeight="14dp"
                     app:leftButtonWidth="14dp"
-                    app:rightButtonBackground="@drawable/ic_call_benefit"
+                    app:rightButtonBackground="@drawable/ic_call"
                     app:rightButtonHeight="24dp"
                     app:rightButtonWidth="24dp"
                     app:titleText="@string/nearby_store" />
