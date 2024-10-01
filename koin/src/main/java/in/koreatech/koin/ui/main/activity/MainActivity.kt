@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.main.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -203,6 +204,22 @@ class MainActivity : KoinNavigationDrawerActivity() {
         }
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it.drop(1))
+        }
+        observeLiveData(variableName){
+            when(viewModel.variableName.value){
+                "A" -> {
+                    binding.storeButtonLayout.visibility= View.GONE
+                    binding.recyclerViewStoreCategory.visibility= View.VISIBLE
+                }
+                "B" -> {
+                    binding.storeButtonLayout.visibility= View.VISIBLE
+                    binding.recyclerViewStoreCategory.visibility= View.GONE
+                }
+                else -> {
+                    binding.storeButtonLayout.visibility= View.GONE
+                    binding.recyclerViewStoreCategory.visibility= View.VISIBLE
+                }
+            }
         }
     }
 
