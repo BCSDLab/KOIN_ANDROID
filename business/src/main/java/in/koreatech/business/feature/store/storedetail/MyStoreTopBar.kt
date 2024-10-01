@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
@@ -127,7 +129,8 @@ fun StoreInfoScreen(
                     painter = painterResource(id = R.drawable.ic_setting),
                     contentDescription = stringResource(R.string.shop_management),
                 )
-                Text(text = stringResource(R.string.shop_management))
+                Spacer(modifier = Modifier.width(1.dp))
+                Text(text = stringResource(R.string.shop_management), color = ColorPrimary, fontSize = 16.sp)
             }
         }
         Text(

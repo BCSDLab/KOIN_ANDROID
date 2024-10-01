@@ -49,7 +49,7 @@ fun SignInScreen(
     modifier: Modifier = Modifier,
     navigateToSignUp: () -> Unit,
     navigateToFindPassword: () -> Unit,
-    navigateToMain: () -> Unit,
+    navigateToMain: (Boolean) -> Unit,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
@@ -266,12 +266,18 @@ private fun HandleSideEffects(
     viewModel: SignInViewModel,
     navigateToSignUp: () -> Unit,
     navigateToFindPassword: () -> Unit,
-    navigateToMain: () -> Unit)
+    navigateToMain: (Boolean) -> Unit
+)
 {
     val context = LocalContext.current
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is SignInSideEffect.NavigateToMain -> navigateToMain()
+            is SignInSideEffect.NavigateToRegisterStore -> {
+                navigateToMain(true)
+            }
+            is SignInSideEffect.NavigateToMyStore -> {
+                navigateToMain(false)
+            }
             is SignInSideEffect.NavigateToFindPassword -> navigateToFindPassword()
             is SignInSideEffect.NavigateToSignUp -> navigateToSignUp()
             is SignInSideEffect.ShowMessage -> {

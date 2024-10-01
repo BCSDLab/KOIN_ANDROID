@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -49,7 +50,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun insertPhoneNumber(phoneNumber: String) = intent {
+    fun insertPhoneNumber(phoneNumber: String) = blockingIntent {
         reduce {
             state.copy(
                 phoneNumber = phoneNumber,
@@ -59,7 +60,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun insertAuthCode(authCode: String) = intent {
+    fun insertAuthCode(authCode: String) = blockingIntent {
         reduce {
             state.copy(
                 authenticationCode = authCode,

@@ -37,6 +37,7 @@ import `in`.koreatech.business.ui.theme.Gray6
 
 @Composable
 fun FinishChangePasswordScreen(
+    navigateToSignInScreen: () -> Unit ={},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -135,7 +136,7 @@ fun FinishChangePasswordScreen(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navigateToSignInScreen() },
                     colors = ButtonDefaults.buttonColors(ColorPrimary),
                     modifier = modifier
                         .padding(bottom = 24.dp)

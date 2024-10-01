@@ -19,7 +19,7 @@ import retrofit2.http.Query
 
 interface OwnerAuthApi {
     @POST(URLConstant.OWNER.SHOPS)
-    suspend fun postMyStore(@Body storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse
+    suspend fun postMyStore(@Body storeRegisterResponse: StoreRegisterResponse)
 
     @GET(URLConstant.SHOPS.OWNERSHOPS)
     suspend fun getMyShopList(): StoreResponse

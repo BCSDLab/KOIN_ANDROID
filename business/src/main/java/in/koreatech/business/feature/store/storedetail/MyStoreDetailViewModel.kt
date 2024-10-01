@@ -165,9 +165,17 @@ class MyStoreDetailViewModel @Inject constructor(
     }
 
     fun navigateToModifyScreen() = intent {
+        if (state.storeId == -1) return@intent
         postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen)
     }
 
+    fun onManageMenuClicked() = intent {
+        postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen)
+    }
+
+    fun onRegisterMenuClicked() = intent {
+        postSideEffect(MyStoreDetailSideEffect.NavigateToRegisterMenuScreen)
+    }
     fun modifyEventError() = intent {
         postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
     }
