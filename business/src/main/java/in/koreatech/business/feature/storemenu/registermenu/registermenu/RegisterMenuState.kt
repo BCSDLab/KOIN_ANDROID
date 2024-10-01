@@ -6,7 +6,7 @@ import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 
 data class RegisterMenuState(
 
-    val shopId: Int = 163,
+    val storeId: Int = -1,
     val menuName: String = "",
     val menuPrice: String = "",
     val menuOptionPrice: List<StoreMenuOptionPrice> = emptyList(),
