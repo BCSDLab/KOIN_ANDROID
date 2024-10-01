@@ -2,6 +2,7 @@
 activityComposeVersion = "1.8.2"
 activityKtxVersion = "1.5.0"
 cardviewVersion = "1.0.0"
+featureDeliveryKtxVersion = "2.1.0"
 firebaseBomVersion = "30.1.0"
 fragmentKtxVersion = "1.5.0"
 jetbrainsAnnotationsVersion = "23.0.0"
@@ -74,6 +75,7 @@ androidx-runner = { module = "androidx.test:runner", version.ref = "runnerVersio
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 
+feature-delivery-ktx = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "featureDeliveryKtxVersion" }
 napier = {module = "io.github.aakira:napier", version.ref="napier"}
 
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotationsVersion" }

@@ -59,7 +59,6 @@ class ArticleSearchViewModel @Inject constructor(
     }
 
     fun search() {
-        _isLoading.value = true
         val trimmedQuery = query.value.trim()
         if (trimmedQuery.isEmpty()) {
             _searchResultUiState.tryEmit(SearchUiState.RequireInput)
@@ -68,6 +67,7 @@ class ArticleSearchViewModel @Inject constructor(
 
         articleRepository.fetchSearchedArticles(trimmedQuery, 4, 1, 20)
             .onStart {
+                _isLoading.value = true
                 _searchResultUiState.tryEmit(SearchUiState.Loading)
             }.onEach {
                 if (it.articleHeaders.isEmpty()) {
