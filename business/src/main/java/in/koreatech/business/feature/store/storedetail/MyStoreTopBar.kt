@@ -130,7 +130,7 @@ fun StoreInfoScreen(
             }
 
             Button(
-                onClick = { viewModel.onManageMenuClicked() },
+                onClick = { }, //TODO 상점이 여러개일 경우 선택하는 기능 만들기
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
