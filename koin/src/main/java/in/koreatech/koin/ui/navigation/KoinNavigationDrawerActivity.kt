@@ -326,14 +326,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userInfoFlow.collect { user ->
-                    when (menuState) {
-                        MenuState.Main, MenuState.Notification -> {
-                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
-                            koinNavigationDrawerViewModel.updateDeviceToken()
-                        }
-
-                        else -> Unit
-                    }
                     when (user) {
                         User.Anonymous -> {
                             nameTextView.visibility = View.GONE
@@ -346,6 +338,15 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             nameTextView.visibility = View.VISIBLE
                             helloMessageTextView.text = getString(R.string.navigation_hello_message)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+
+                            when (menuState) {
+                                MenuState.Main, MenuState.Notification -> {
+                                    if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                                    koinNavigationDrawerViewModel.updateDeviceToken()
+                                }
+
+                                else -> Unit
+                            }
                         }
                     }
                 }

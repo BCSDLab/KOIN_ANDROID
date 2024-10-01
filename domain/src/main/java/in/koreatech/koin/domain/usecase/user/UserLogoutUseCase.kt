@@ -7,14 +7,14 @@ import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 
 class UserLogoutUseCase @Inject constructor(
-    private val tokenRepository: TokenRepository,
     private val userRepository: UserRepository,
-    private val tokenErrorHandler: TokenErrorHandler
+    private val tokenErrorHandler: TokenErrorHandler,
+    private val deleteUserRefreshTokenUseCase: DeleteUserRefreshTokenUseCase
 ){
     suspend operator fun invoke() : Pair<Unit, ErrorHandler?> {
         return try {
             userRepository.deleteDeviceToken()
-            tokenRepository.removeToken()
+            deleteUserRefreshTokenUseCase()
             Unit to null
         } catch (t: Throwable) {
             Unit to tokenErrorHandler.handleLogoutError(t)
