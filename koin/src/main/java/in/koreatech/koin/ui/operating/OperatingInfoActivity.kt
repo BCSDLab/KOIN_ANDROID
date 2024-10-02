@@ -24,6 +24,7 @@ class OperatingInfoActivity : AppCompatActivity() {
             insets
         }
         initWebView()
+        initToolbar()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -34,6 +35,13 @@ class OperatingInfoActivity : AppCompatActivity() {
                 domStorageEnabled = true
             }
             loadUrl(getString(R.string.koreatech_operating_info_url))
+        }
+    }
+
+    private fun initToolbar() {
+        binding.toolbarOperatingInfo.apply {
+            setTitle(getString(R.string.navigation_item_koreatech_operating_information))
+            setOnNavigationIconClickListener { finish() }
         }
     }
 }
