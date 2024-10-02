@@ -1,7 +1,6 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -89,8 +88,7 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
-
-    fun getOwnerShopInfo(shopId: Int) = intent {
+    private fun getOwnerShopInfo(shopId: Int) = intent {
         viewModelScope.launch {
             getOwnerShopInfoUseCase(shopId).onSuccess {
                 reduce {
@@ -106,7 +104,52 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
-    fun initOwnerShopList() = intent {
+    private fun getShopEvents() = intent {
+        viewModelScope.launch {
+            getOwnerShopEventsUseCase(state.storeId).also {
+                reduce {
+                    state.copy(
+                        storeEvent = it.events.toImmutableList(),
+                        isEventExpanded = List(it.events.size) { _ -> false })
+                }
+            }
+        }
+    }
+
+    fun changeMyStoreInfo(storeId: Int) = intent{
+        viewModelScope.launch {
+            getOwnerShopInfoUseCase(storeId).onSuccess {
+                reduce {
+                    state.copy(
+                        storeInfo = it
+                    )
+                }
+                reduce {
+                    state.copy(
+                        storeId = storeId
+                    )
+                }
+                getShopEvents()
+                getShopMenus()
+            }.onFailure {
+                reduce {
+                    state.copy(storeInfo = null)
+                }
+            }
+        }
+    }
+
+    fun changeDialogVisibility() = intent {
+        reduce {
+            state.copy(
+                dialogVisibility = if (state.isSelectedEvent.size > 0) {
+                    !state.dialogVisibility
+                } else false
+            )
+        }
+    }
+
+    private fun initOwnerShopList() = intent {
         viewModelScope.launch {
             getOwnerShopListUseCase().onSuccess {
                 reduce {
@@ -133,7 +176,7 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
-    fun getShopMenus() = intent {
+    private fun getShopMenus() = intent {
         viewModelScope.launch {
             getOwnerShopMenusUseCase(state.storeId).also {
                 reduce {
@@ -143,24 +186,18 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
-    fun getShopEvents() = intent {
-        viewModelScope.launch {
-            getOwnerShopEventsUseCase(state.storeId).also {
-                reduce {
-                    state.copy(
-                        storeEvent = it.events.toImmutableList(),
-                        isEventExpanded = List(it.events.size) { _ -> false })
-                }
-            }
+    fun showSelectStoreDialog() = intent{
+        reduce {
+            state.copy(
+                selectDialogVisibility = true
+            )
         }
     }
 
-    fun changeDialogVisibility() = intent {
+    fun closeSelectStoreDialog() = intent{
         reduce {
             state.copy(
-                dialogVisibility = if (state.isSelectedEvent.size > 0) {
-                    !state.dialogVisibility
-                } else false
+                selectDialogVisibility = false
             )
         }
     }

@@ -2,15 +2,10 @@ package `in`.koreatech.business.feature.store.navigator
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoScreen
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
@@ -23,7 +18,6 @@ import `in`.koreatech.business.navigation.sharedHiltViewModel
 import `in`.koreatech.business.navigation.toNavigateModifyMenuScreen
 import `in`.koreatech.business.navigation.toNavigateRegisterMenuScreen
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.myStoreScreen(
     navController: NavHostController
 ){
@@ -58,9 +52,11 @@ fun NavGraphBuilder.myStoreScreen(
             route = StoreRoute.MODIFY_INFO.name
         ) {
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
+            val myStoreInfoViewModel: MyStoreDetailViewModel = it.sharedHiltViewModel(navController = navController)
 
             ModifyInfoScreen(
                 viewModel = modifyInfoViewModel,
+                storeInfoViewModel= myStoreInfoViewModel,
                 onSettingOperatingClicked = { navController.navigate(StoreRoute.SETTING_OPERATING_TIME.name) },
                 onBackClicked = { navController.popBackStack() }
             )
