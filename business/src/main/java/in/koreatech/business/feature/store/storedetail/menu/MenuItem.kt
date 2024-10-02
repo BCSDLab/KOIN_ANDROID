@@ -58,8 +58,8 @@ fun MenuItem(
                     .height(68.dp),
                 contentScale = ContentScale.Crop
                 ,
-                painter = if(item.imageUrls.isNullOrEmpty())painterResource(id = R.drawable.ic_koin_logo)else rememberAsyncImagePainter(
-                    item.imageUrls!![0]
+                painter = rememberAsyncImagePainter(
+                    model = item.imageUrls?.firstOrNull() ?: R.drawable.ic_koin_logo
                 ),
                 contentDescription = stringResource(R.string.menu_default_image),
             )

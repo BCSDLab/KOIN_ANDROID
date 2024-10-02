@@ -191,7 +191,9 @@ fun StoreInfoScreen(
         ) {
             Image(
                 modifier = Modifier.height(255.dp),
-                painter = if(state.storeInfo?.imageUrls?.getOrNull(0) == null) painterResource(id = R.drawable.no_image) else rememberAsyncImagePainter(state.storeInfo?.imageUrls?.getOrNull(0)),
+                painter = rememberAsyncImagePainter(
+                    model = state.storeInfo?.imageUrls?.getOrNull(0) ?: R.drawable.no_image
+                ),
                 contentDescription = stringResource(R.string.shop_image),
                 contentScale = ContentScale.Crop,
             )

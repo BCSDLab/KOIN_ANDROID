@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.store.storedetail.menu
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -80,20 +81,21 @@ fun MenuScreen(
             }
         }
     }
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(enabled = enabledScroll, state = scrollState)
+            .fillMaxSize(),
+        userScrollEnabled = enabledScroll
     ) {
-
-        state.storeMenu?.forEach {
-            MenuCategories(it)
-            MenuItem(
-                menuList = it,
-                onMenuClicked = {menuId ->
+        state.storeMenu?.let {
+            items(state.storeMenu){
+                MenuCategories(it)
+                MenuItem(
+                    menuList = it,
+                    onMenuClicked = {menuId ->
                         onMenuItemClicked(menuId)
-                }
-            )
+                    }
+                )
+            }
         }
     }
 }
