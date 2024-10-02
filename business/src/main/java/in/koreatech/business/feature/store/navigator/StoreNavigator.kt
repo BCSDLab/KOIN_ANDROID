@@ -18,7 +18,10 @@ import `in`.koreatech.business.feature.store.modifyinfo.ModifyOperatingTimeScree
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailScreen
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.navigation.MYSTORESCREEN
+import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
+import `in`.koreatech.business.navigation.toNavigateModifyMenuScreen
+import `in`.koreatech.business.navigation.toNavigateRegisterMenuScreen
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.myStoreScreen(
@@ -37,7 +40,17 @@ fun NavGraphBuilder.myStoreScreen(
                 modifier = Modifier.fillMaxSize(),
                 navigateToModifyScreen = { navController.navigate(StoreRoute.MODIFY_INFO.name) },
                 viewModel = myStoreInfoViewModel,
-                modifyInfoViewModel = modifyInfoViewModel
+                modifyInfoViewModel = modifyInfoViewModel,
+                navigateToRegisterStoreScreen = {
+                    navController.navigate(REGISTERSTORESCREEN)
+                },
+                navigateToRegisterMenuScreen = {  storeId ->
+                    navController.toNavigateRegisterMenuScreen(storeId)
+                },
+                navigateToModifyMenuScreen = {menuId ->
+                    navController.toNavigateModifyMenuScreen(menuId)
+
+                }
             )
         }
 
