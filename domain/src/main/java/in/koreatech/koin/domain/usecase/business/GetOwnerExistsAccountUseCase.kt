@@ -7,17 +7,14 @@ import javax.inject.Inject
 
 class GetOwnerExistsAccountUseCase @Inject constructor(
     private val ownerSignupRepository: OwnerSignupRepository,
-    private val ownerError: OwnerErrorHandler,
 ) {
     suspend operator fun invoke(
         phoneNumber: String,
-    ): Pair<Boolean?, ErrorHandler?> {
+    ): Result<Unit>{
         return try {
-            ownerSignupRepository.getExistsAccount(phoneNumber).let {
-                Pair(false, null)
-            }
+            ownerSignupRepository.getExistsAccount(phoneNumber)
         } catch (t: Throwable) {
-            ownerError.handleExistsAccountError(t)
+            Result.failure(t)
         }
     }
 }

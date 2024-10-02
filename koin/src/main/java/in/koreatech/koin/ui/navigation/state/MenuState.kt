@@ -11,4 +11,5 @@ sealed class MenuState {
     data object UserInfo: MenuState()
     data object Notification: MenuState()
     data object LoginOrLogout: MenuState()
+    data object Article: MenuState()
 }

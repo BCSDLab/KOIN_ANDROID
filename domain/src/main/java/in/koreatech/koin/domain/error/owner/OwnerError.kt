@@ -12,5 +12,6 @@ sealed class OwnerError {
     object IncorrectParaMeter: IllegalAccessException()
     object NotValidPhoneNumberException: IllegalAccessException()
     object NotExistsPhoneNumberException: IllegalAccessException()
+    object ExistsPhoneNumberException: IllegalAccessException()
 
 }

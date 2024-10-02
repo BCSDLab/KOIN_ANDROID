@@ -1,6 +1,8 @@
 package `in`.koreatech.business.feature.store.storedetail.menu
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,11 +16,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorCategory
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -28,12 +32,19 @@ import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 
 
 @Composable
-fun MenuItem(menuList: StoreMenuCategories) {
+fun MenuItem(
+    menuList: StoreMenuCategories,
+    onMenuClicked:(Int) -> Unit = {}
+) {
     menuList.menus?.forEach { item ->
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 25.dp, vertical = 10.dp),
+                .padding(horizontal = 25.dp, vertical = 10.dp)
+                .clickable {
+                    onMenuClicked(item.id)
+                }
+            ,
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -45,7 +56,11 @@ fun MenuItem(menuList: StoreMenuCategories) {
                 modifier = Modifier
                     .width(68.dp)
                     .height(68.dp),
-                painter = painterResource(id = R.drawable.ic_koin_logo),
+                contentScale = ContentScale.Crop
+                ,
+                painter = rememberAsyncImagePainter(
+                    model = item.imageUrls?.firstOrNull() ?: R.drawable.ic_koin_logo
+                ),
                 contentDescription = stringResource(R.string.menu_default_image),
             )
         }

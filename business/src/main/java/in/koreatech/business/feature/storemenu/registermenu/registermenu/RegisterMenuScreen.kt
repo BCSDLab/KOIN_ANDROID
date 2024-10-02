@@ -1,9 +1,12 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
 import android.net.Uri
+import android.os.Environment
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -56,7 +59,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import `in`.koreatech.business.feature.store.navigator.ModifyInfoNavigator
 import `in`.koreatech.business.feature.textfield.MenuBorderTextField
 import `in`.koreatech.business.ui.theme.ColorAccent
 import `in`.koreatech.business.ui.theme.ColorMinor
@@ -68,6 +70,7 @@ import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.file.FileUtil
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import kotlinx.coroutines.launch
@@ -89,48 +92,27 @@ fun RegisterMenuScreen(
         registerMenuState = state,
         imageIndex = state.imageIndex,
         isModify = state.isModify,
-        changeMenuName = {
-            viewModel.changeMenuName(it)
-        },
-        onChangeMenuPrice = {
-            viewModel.changeMenuPrice(it)
-        },
+        changeMenuName = viewModel::changeMenuName,
+        onChangeMenuPrice = viewModel::changeMenuPrice,
         onChangeDetailMenuServing = {
             viewModel.changeDetailMenuServing(it.first, it.second)
         },
         onChangeDetailMenuPrice ={
             viewModel.changeDetailMenuPrice(it.first, it.second)
         } ,
-        onDeleteMenuPrice ={
-            viewModel.deleteMenuPrice(it)
-        },
-        onChangeMenuDetail = {
-            viewModel.changeMenuDetail(it)
-        },
+        onDeleteMenuPrice = viewModel::deleteMenuPrice,
+        onChangeMenuDetail = viewModel::changeMenuDetail,
         addPriceButtonClicked = {
             viewModel.addPrice()
         },
-        onMenuCategoryIsClicked = {
-          viewModel.menuCategoryIsClicked(it)
-        },
-        onChangeImage = {
-            viewModel.changeMenuImageUri(it)
-        },
-        onDeleteImage = {
-            viewModel.deleteMenuImageUri(it)
-        },
-        onModifyImage = {
-            viewModel.modifyMenuImageUri(it)
-        },
-        setImageModify = {
-            viewModel.isImageModify(it)
-        },
-        setImageIndex = {
-            viewModel.setImageIndex(it)
-        },
-        onNextButtonClicked = {
-            viewModel.onNextButtonClick()
-        },
+        onMenuCategoryIsClicked = viewModel::menuCategoryIsClicked,
+        onChangeImage = viewModel::changeMenuImageUri,
+        onDeleteImage = viewModel::deleteMenuImageUri,
+        onModifyImage = viewModel::modifyMenuImageUri,
+        menuImageFromCamera = viewModel::menuImageFromCamera,
+        setImageModify = viewModel::isImageModify,
+        setImageIndex = viewModel::setImageIndex,
+        onNextButtonClicked = viewModel::onNextButtonClick,
     )
 
     HandleSideEffects(viewModel, goToCheckMenuScreen)
@@ -155,10 +137,12 @@ fun RegisterMenuScreenImpl(
     onChangeImage: (List<Uri>) -> Unit = {},
     onDeleteImage: (Int) -> Unit ={},
     onModifyImage: (Uri) -> Unit ={},
+    menuImageFromCamera: (Uri) -> Unit ={},
     setImageModify:(Boolean) -> Unit ={},
     setImageIndex: (Int) -> Unit = {},
     onNextButtonClicked: () -> Unit ={}
 ) {
+    val context = LocalContext.current
     val sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -177,6 +161,17 @@ fun RegisterMenuScreenImpl(
             }
         }
     )
+    var takePictureUri: Uri? = null
+
+    val takePhotoFromCameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = {
+            if(it){
+                takePictureUri?.let { uri -> menuImageFromCamera(uri) }
+            }
+        }
+    )
+
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
@@ -258,6 +253,8 @@ fun RegisterMenuScreenImpl(
                     modifier = Modifier
                         .padding(top = 16.dp, bottom = 48.dp)
                         .clickable {
+                            takePictureUri = FileUtil.getInstance().createImageFile()
+                            takePhotoFromCameraLauncher.launch(takePictureUri)
                             coroutineScope.launch {
                                 sheetState.hide()
                             }
@@ -281,7 +278,7 @@ fun RegisterMenuScreenImpl(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(start = 16.dp),
-                    onClick = { onBackPressed }
+                    onClick = { onBackPressed() }
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_white_arrow_back),
@@ -516,9 +513,7 @@ fun RegisterMenuScreenImpl(
                                         .padding(bottom = 16.dp)
                                         .clickable {
                                             coroutineScope.launch {
-
                                                 setImageIndex(index)
-
                                                 if (sheetState.isVisible) {
                                                     sheetState.hide()
                                                 } else {
@@ -597,7 +592,7 @@ fun RegisterMenuScreenImpl(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Button(
-                            onClick = {},
+                            onClick = {onBackPressed()},
                             shape = RectangleShape,
                             colors = ButtonDefaults.buttonColors(Color.White),
                             modifier = Modifier

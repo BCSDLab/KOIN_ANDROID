@@ -14,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -52,7 +53,7 @@ class CallBenefitStoreActivity : ActivityBase() {
     private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
         setOnItemClickListener {
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
                 it.shopName
             )

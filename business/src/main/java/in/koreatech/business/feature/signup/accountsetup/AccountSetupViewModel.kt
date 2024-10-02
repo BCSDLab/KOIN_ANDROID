@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -88,20 +89,22 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    fun onPhoneNumChanged(phoneNumber: String) = intent {
+    fun onPhoneNumChanged(phoneNumber: String) = blockingIntent {
         reduce {
             state.copy(
                 phoneNumber = phoneNumber,
-                phoneNumberState = SignupContinuationState.AvailablePhoneNumber
+                phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
+                sendCodeError = null,
             )
         }
     }
 
-    fun onAuthCodeChanged(authCode: String) = intent {
+    fun onAuthCodeChanged(authCode: String) = blockingIntent {
         reduce {
             state.copy(
                 authCode = authCode,
-                verifyState = SignupContinuationState.AvailablePhoneNumber
+                verifyState = SignupContinuationState.AvailablePhoneNumber,
+                verifyError = null,
             )
         }
     }
@@ -138,38 +141,42 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    private fun sendSmsVerificationCode(phoneNumber: String) {
-        viewModelScope.launch {
-            sendSignupSmsCodeUseCase(phoneNumber).let { error ->
-                intent {
+    private fun sendSmsVerificationCode() {
+        intent {
+            viewModelScope.launch {
+                sendSignupSmsCodeUseCase(state.phoneNumber).onSuccess {
                     reduce {
                         state.copy(
-                            phoneNumberState = if (error == null) SignupContinuationState.RequestedSmsValidation else SignupContinuationState.Failed(
-                                error.message
-                            ),
+                            phoneNumberState = SignupContinuationState.RequestedSmsValidation,
+                            sendCodeError = null,
                         )
                     }
-
+                }.onFailure {
+                    reduce {
+                        state.copy(
+                            sendCodeError = it,
+                        )
+                    }
                 }
             }
         }
     }
 
-    fun checkExistsAccount(phoneNumber: String) {
+    fun checkExistsAccount() {
         viewModelScope.launch {
-            getOwnerExistsAccountUseCase(phoneNumber).onSuccess {
-                intent {
-                    reduce {
-                        state.copy(phoneNumberState = SignupContinuationState.AvailablePhoneNumber)
-                    }
-                    sendSmsVerificationCode(phoneNumber)
-                }
-
-            }.onFailure {
-                intent {
+            intent {
+                getOwnerExistsAccountUseCase(state.phoneNumber).onSuccess {
                     reduce {
                         state.copy(
-                            phoneNumberState = SignupContinuationState.Failed(it.message),
+                            phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
+                            sendCodeError = null,
+                        )
+                    }
+                    sendSmsVerificationCode()
+                }.onFailure {
+                    reduce {
+                        state.copy(
+                            sendCodeError = it,
                         )
                     }
                 }

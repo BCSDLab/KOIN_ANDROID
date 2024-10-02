@@ -38,6 +38,20 @@
         <activity
             android:name=".ui.store.activity.CallBenefitStoreActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.article.ArticleActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="keyword" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="koin" android:host="article" android:pathPrefix="/activity" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -151,8 +165,16 @@
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus" />
+            android:exported="true"
+            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="koin" android:host="login" android:pathPrefix="/login" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.signup.SignupActivity"
             android:exported="false"
@@ -182,6 +204,17 @@
                 <action android:name="dining" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- 카카오 스킴 설정 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="@string/kakaolink_host"
+                    android:scheme="@string/kakao_scheme" />
             </intent-filter>
         </activity>
         <activity

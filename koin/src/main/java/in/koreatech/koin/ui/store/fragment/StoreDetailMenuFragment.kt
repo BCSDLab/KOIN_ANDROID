@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailMenuBinding
@@ -251,7 +252,7 @@ class StoreDetailMenuFragment : Fragment() {
 
             if (seventyPercentScroll in (oldScrollY + 1)..scrollY) {
                 EventLogger.logScrollEvent(
-                    AnalyticsConstant.Domain.BUSINESS,
+                    EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
                     viewModel.store.value?.name ?: "Unknown"
                 )
