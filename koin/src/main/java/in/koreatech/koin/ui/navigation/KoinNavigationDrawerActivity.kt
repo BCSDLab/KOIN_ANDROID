@@ -109,7 +109,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         findViewById<TextView>(R.id.navi_hello_message)
     }
     private val loginOrLogoutTextView by lazy {
-        menus.get(MenuState.LoginOrLogout) as TextView? ?: findViewById(R.id.navi_item_login_or_logout)
+        menus.get(MenuState.LoginOrLogout) as TextView?
+            ?: findViewById(R.id.navi_item_login_or_logout)
     }
 
 
@@ -268,6 +269,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             when (menuState) {
                 MenuState.Bus -> goToBusActivity()
                 MenuState.Dining -> goToDiningActivity()
+                MenuState.OperatingInfo -> goToOperatingInfoActivity()
                 MenuState.Land -> goToLandActivity()
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
@@ -315,7 +317,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     when (user) {
                         User.Anonymous -> {
                             nameTextView.visibility = View.GONE
-                            helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
+                            helloMessageTextView.text =
+                                getString(R.string.navigation_hello_message_anonymous)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
                         }
 
@@ -372,6 +375,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Dining)
             }
 
+            R.id.navi_item_operating_information -> {
+                koinNavigationDrawerViewModel.selectMenu(MenuState.OperatingInfo)
+            }
+
             R.id.navi_item_bus -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Bus)
             }
@@ -407,6 +414,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToDiningActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, DiningActivity::class.java))
+        } else {
+            startActivity(Intent(this, DiningActivity::class.java))
+        }
+    }
+
+    private fun goToOperatingInfoActivity() {
         if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, DiningActivity::class.java))
         } else {

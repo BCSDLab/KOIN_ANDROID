@@ -7,6 +7,7 @@ sealed class MenuState {
     data object Store: MenuState()
     data object Bus: MenuState()
     data object Dining: MenuState()
+    data object OperatingInfo: MenuState()
     data object Timetable: MenuState()
     data object Land: MenuState()
     data object Owner: MenuState()
