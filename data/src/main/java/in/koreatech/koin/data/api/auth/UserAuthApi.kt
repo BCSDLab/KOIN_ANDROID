@@ -84,4 +84,7 @@ interface UserAuthApi {
         @Path("reviewId") reviewId: Int,
         @Body storeReviewReportsRequest: StoreReviewReportsRequest
     ):Response<Unit?>
+
+    @GET(URLConstant.OWNER.OWNER)
+    suspend fun getOwnerTokenIsValid()
 }

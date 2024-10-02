@@ -71,6 +71,7 @@
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
     <string name="navigation_item_owner">코인 사장님</string>
+    <string name="navigation_item_article">공지사항</string>
     <string name="navigation_item_ask_bcsd">문의하기</string>
     <!--End left drawer menu -->
 
@@ -149,7 +150,6 @@
     <string name="password_mismatch" >비밀번호가 일치하지 않습니다.</string>
     <string name="password_is_null">비밀번호를 입력해주세요.</string>
 
-=======
     <!-- 가게 등록 -->
     <string name="insert_store">가게 등록</string>
     <string name="insert_store_info">가게 정보 기입</string>
@@ -217,4 +217,8 @@
     <string name="menu_success_register_menu">메뉴가 정상적으로 등록되었습니다.</string>
     <string name="menu_fail_modify_menu">메뉴 수정 실패</string>
     <string name="menu_success_modify_menu">메뉴가 정상적으로 수정되었습니다.</string>
+
+    <!-- 이벤트 로깅 -->
+    <string name="event_set_notification">알림설정</string>
+
 </resources>
