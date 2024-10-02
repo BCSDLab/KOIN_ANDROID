@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -78,7 +79,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             flyerDialogFragment?.initialPosition = position
             flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_PICTURE,
                 viewModel.store.value?.name ?: "Unknown"
             )
@@ -107,14 +108,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
                     showCallDialog()
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.BUSINESS,
+                        EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CALL,
                         (viewModel.store.value?.name
                             ?: "Unknown") + ", duration_time: ${dialogElapsedTime / 1000}"
                     )
                     if (currentTab == 2) {// 리뷰탭에서 전화누르기까지 시간
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
                             (viewModel.store.value?.name
                                 ?: "Unknown") + ", previous_page: 리뷰" + ", current_page:" + currentPage + ", duration_time: ${reviewElapsedTime / 1000}"
@@ -158,14 +159,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     0 -> {
                         currentPage = "메뉴"
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
                             viewModel.store.value?.name ?: "Unknown"
                         )
                         if (currentTab == 2) {
                             reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
                             EventLogger.logClickEvent(
-                                AnalyticsConstant.Domain.BUSINESS,
+                                EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
                                 (viewModel.store.value?.name
                                     ?: "Unknown") + ", previous_page: 리뷰" + ", current_page:" + currentPage + ", duration_time: ${reviewElapsedTime / 1000}"
@@ -176,14 +177,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     1 -> {
                         currentPage = "이벤트/공지"
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
                             viewModel.store.value?.name ?: "Unknown"
                         )
                         if (currentTab == 2) {
                             reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
                             EventLogger.logClickEvent(
-                                AnalyticsConstant.Domain.BUSINESS,
+                                EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
                                 buildString {
                                     append(
@@ -202,7 +203,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     2 -> {
                         reviewCurrentTime = System.currentTimeMillis()
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW,
                             viewModel.store.value?.name ?: "Unknown"
                         )
@@ -339,7 +340,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 binding.storeDetailImageview.apply {
                     adapter = StoreDetailImageViewpagerAdapter(it.imageUrls) {
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.BUSINESS,
+                            EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_PICTURE,
                             viewModel.store.value?.name ?: "Unknown"
                         )
@@ -364,7 +365,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         currentPage = "카테고리($category)"
         if ( isSwipeGesture) {
             EventLogger.logSwipeEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                 (viewModel.store.value?.name ?: "Unknown") + ", current_page: " + category + ", duration_time: ${storeElapsedTime / 1000}"
             )
@@ -372,7 +373,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         }
         else{
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                 (viewModel.store.value?.name ?: "Unknown") + ", current_page: " + category + ", duration_time: ${storeElapsedTime / 1000}"
             )
@@ -381,7 +382,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         if(currentTab == 2){
             reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
                 (viewModel.store.value?.name
                     ?: "Unknown") +", previous_page: 리뷰" +", current_page:" +currentPage+ ", duration_time: ${reviewElapsedTime / 1000}"
@@ -456,5 +457,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
     companion object {
         private const val DIALOG_TAG = "flyer_dialog"
+        const val ELAPSED_TIME = "elapsedTime"
+        const val STORE_NAME = "storeName"
+        const val BACK_ACTION = "back_action"
     }
 }

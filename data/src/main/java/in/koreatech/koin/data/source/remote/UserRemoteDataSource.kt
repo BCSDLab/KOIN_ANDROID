@@ -29,6 +29,10 @@ class UserRemoteDataSource(
         return userApi.getOwnerToken(ownerLoginRequest)
     }
 
+    suspend fun ownerTokenIsValid(){
+        userAuthApi.getOwnerTokenIsValid()
+    }
+
     suspend fun getUserInfo(): UserResponse {
         return userAuthApi.getUser()
     }

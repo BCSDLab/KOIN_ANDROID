@@ -44,14 +44,12 @@ const val EMPTYTOKEN = "empty_token"
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun KoinBusinessNavHost(
+    startDestination: String = "",
     navController: NavHostController = rememberNavController()
 ) {
-    val accessToken = getToken(LocalContext.current)
-
     NavHost(
         navController = navController,
-        //startDestination = if(accessToken != EMPTYTOKEN) MYSTORESCREEN else SIGNINSCREEN,
-        startDestination = SIGNINSCREEN
+        startDestination = startDestination,
     ) {
         signInScreen(
             navigateToMain = { isFirst ->
@@ -106,6 +104,13 @@ fun NavController.toNavigateModifyMenuScreen(menuId: Int) {
         putInt("menuId", menuId)
     }
     navigate("${MODIFYMENUSCREEN}/$menuId", bundle)
+}
+
+fun NavController.toNavigateRegisterMenuScreen(storeId: Int) {
+    val bundle = Bundle().apply {
+        putInt("storeId", storeId)
+    }
+    navigate(REGISTERMENUSCREEN, bundle)
 }
 
 fun NavController.navigate(

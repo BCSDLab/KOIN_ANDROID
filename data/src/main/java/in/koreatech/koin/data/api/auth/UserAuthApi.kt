@@ -87,6 +87,8 @@ interface UserAuthApi {
         @Body storeReviewReportsRequest: StoreReviewReportsRequest
     ):Response<Unit?>
 
+    @GET(URLConstant.OWNER.OWNER)
+    suspend fun getOwnerTokenIsValid()
     @POST("abtest/assign")
     suspend fun postABTestAssign(@Body abTestRequest: ABTestRequest): ABTestResponse
 }
