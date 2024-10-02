@@ -191,6 +191,21 @@ class RegisterMenuViewModel @Inject constructor(
         }
     }
 
+    fun menuImageFromCamera(imageUri: Uri) {
+        intent {
+            val newMenuUriList = state.imageUriList.toMutableList()
+            newMenuUriList[state.imageIndex] = imageUri
+
+            if(newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(Uri.EMPTY)
+
+            reduce {
+                state.copy(
+                    imageUriList = newMenuUriList
+                )
+            }
+        }
+    }
+
     fun changeMenuName(menuName: String) = blockingIntent{
         reduce {
             state.copy(

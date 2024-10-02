@@ -15,6 +15,7 @@ import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.repository.OwnerShopRepository
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class OwnerShopRepositoryImpl @Inject constructor(
@@ -63,5 +64,11 @@ class OwnerShopRepositoryImpl @Inject constructor(
                 phone = storeDetailInfo.phone.toPhoneNumber()
             )
         )
+    }
+
+    override fun getOwnerStoreSize(): Boolean {
+        return runBlocking {
+            ownerRemoteDataSource.getMyShopList().isEmpty()
+        }
     }
 }
