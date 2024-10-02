@@ -31,8 +31,9 @@ class OperatingInfoActivity : AppCompatActivity() {
         binding.webviewOperatingInfo.apply {
             settings.apply {
                 javaScriptEnabled = true
-                this.textZoom
+                domStorageEnabled = true
             }
+            loadUrl(getString(R.string.koreatech_operating_info_url))
         }
     }
 }
