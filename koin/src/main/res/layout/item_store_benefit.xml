@@ -17,7 +17,6 @@
             android:id="@+id/benefit_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:tint="@color/primary_500"
             tools:src="@drawable/ic_trash_can" />
         <TextView
             android:id="@+id/benefit_title"

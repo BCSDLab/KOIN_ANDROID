@@ -31,16 +31,14 @@ class StoreBenefitRecyclerAdapter(
                 if(currentId==benefitCategory.id){
                     storeBenefitItemLayout.background = ContextCompat.getDrawable(binding.root.context, R.drawable.button_rect_primary_line_radius_5dp)
                     benefitTitle.setTextColor(ContextCompat.getColor(binding.root.context, R.color.primary_500))
-                    Glide.with(binding.benefitIcon)
+                    Glide.with(binding.root.context)
                         .load(benefitCategory.onImageUrl)
-                        .error(R.drawable.ic_trash_can)
                         .into(binding.benefitIcon)
                 }else{
                     storeBenefitItemLayout.background = ContextCompat.getDrawable(binding.root.context, R.drawable.button_rect_gray18_radius_5dp)
                     benefitTitle.setTextColor(ContextCompat.getColor(binding.root.context, R.color.gray20))
-                    Glide.with(binding.benefitIcon)
+                    Glide.with(binding.root.context)
                         .load(benefitCategory.offImageUrl)
-                        .error(R.drawable.ic_trash_can)
                         .into(binding.benefitIcon)
                 }
 
