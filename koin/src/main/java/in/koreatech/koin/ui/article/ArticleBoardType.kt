@@ -3,7 +3,7 @@ package `in`.koreatech.koin.ui.article
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.R
 
-enum class BoardType(
+enum class ArticleBoardType(
     val id: Int,
     @StringRes val koreanName: Int,
     @StringRes val simpleKoreanName: Int,
@@ -17,7 +17,7 @@ enum class BoardType(
     SCHOLARSHIP(6, R.string.article_scholarship, R.string.article_scholarship_simple),
     SCHOOL(7,  R.string.article_school, R.string.article_school_simple),
     RECRUIT(8, R.string.article_recruit, R.string.article_recruit_simple),
-    // KOIN(9, R.string.article_koin, R.string.article_koin),
+    KOIN(9, R.string.article_koin, R.string.article_koin, false),
     // QNA(10, R.string.article_qna),               // NOT USED
     // PROMOTION(11, R.string.article_promotion),   // NOT USED
      IPP(12, R.string.article_ipp, R.string.article_ipp_simple),
