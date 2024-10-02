@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -175,6 +176,16 @@ class MyStoreDetailViewModel @Inject constructor(
 
     fun onRegisterMenuClicked() = intent {
         postSideEffect(MyStoreDetailSideEffect.NavigateToRegisterMenuScreen)
+    }
+
+    fun onModifyMenuClicked(menuId: Int){
+        intent {
+            postSideEffect(MyStoreDetailSideEffect.NavigateToModifyMenuScreen(menuId))
+        }
+    }
+
+    fun onRegisterStoreClicked() = intent {
+        postSideEffect(MyStoreDetailSideEffect.NavigateToRegisterStoreScreen)
     }
     fun modifyEventError() = intent {
         postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
