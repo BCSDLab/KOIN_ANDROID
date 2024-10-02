@@ -39,6 +39,8 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
+import `in`.koreatech.koin.ui.notification.NotificationActivity
+import `in`.koreatech.koin.ui.operating.OperatingInfoActivity
 import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
@@ -76,9 +78,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             R.id.navi_item_setting,
             R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
-            R.id.navi_item_bus, R.id.navi_item_dining,
+            R.id.navi_item_bus,
+            R.id.navi_item_dining,
             R.id.navi_item_operating_information,
-            R.id.navi_item_timetable, R.id.navi_item_land,
+            R.id.navi_item_timetable,
+            R.id.navi_item_land,
             R.id.navi_item_owner,
             R.id.navi_item_article,
             R.id.navi_item_contact
@@ -91,6 +95,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Store,
                 MenuState.Bus,
                 MenuState.Dining,
+                MenuState.OperatingInfo,
                 MenuState.Timetable,
                 MenuState.Land,
                 MenuState.Owner,
@@ -423,9 +428,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private fun goToOperatingInfoActivity() {
         if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, DiningActivity::class.java))
+            goToActivityFinish(Intent(this, OperatingInfoActivity::class.java))
         } else {
-            startActivity(Intent(this, DiningActivity::class.java))
+            startActivity(Intent(this, OperatingInfoActivity::class.java))
         }
     }
 
