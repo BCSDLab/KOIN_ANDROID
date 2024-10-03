@@ -1,36 +1,37 @@
 package `in`.koreatech.koin.data.source.local
 
 import android.content.Context
-import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
+import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.entity.term.TermEntity
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class SignupTermsLocalDataSource @Inject constructor(
-    @ApplicationContext private val applicationContext: Context
+    @ApplicationContext private val applicationContext: Context,
+    @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) {
-    suspend fun getPrivacyTermText(): String = withContext(Dispatchers.IO) {
+    suspend fun getPrivacyTermText(): String = withContext(coroutineDispatcher) {
         applicationContext.assets.open(PRIVACY_TERMS_TEXT_FILE_NAME).bufferedReader().useLines { lines ->
             lines.joinToString("\n")
         }
     }
 
-    suspend fun getKoinTermText(): String = withContext(Dispatchers.IO) {
+    suspend fun getKoinTermText(): String = withContext(coroutineDispatcher) {
         applicationContext.assets.open(KOIN_TERMS_TEXT_FILE_NAME).bufferedReader().useLines { lines ->
             lines.joinToString("\n")
         }
     }
 
-    suspend fun getPrivacyTerm(): TermEntity = withContext(Dispatchers.IO) {
+    suspend fun getPrivacyTerm(): TermEntity = withContext(coroutineDispatcher) {
         applicationContext.assets.open(PRIVACY_TERMS_JSON_FILE_NAME).bufferedReader().use { it.readText() }.let {
             Json.decodeFromString<TermEntity>(it)
         }
     }
 
-    suspend fun getKoinTerms(): TermEntity = withContext(Dispatchers.IO) {
+    suspend fun getKoinTerms(): TermEntity = withContext(coroutineDispatcher) {
         applicationContext.assets.open(KOIN_TERMS_JSON_FILE_NAME).bufferedReader().use { it.readText() }.let {
             Json.decodeFromString<TermEntity>(it)
         }
