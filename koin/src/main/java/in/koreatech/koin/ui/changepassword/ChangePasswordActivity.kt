@@ -25,7 +25,7 @@ class ChangePasswordActivity : ActivityBase() {
     private lateinit var binding: ActivityChangePasswordBinding
     private val viewModel by viewModels<ChangePasswordViewModel>()
 
-    private val vpAdapter by lazy {
+    private val viewPager by lazy {
         ChangePasswordPageAdapter(this)
     }
 
@@ -60,7 +60,7 @@ class ChangePasswordActivity : ActivityBase() {
             }
         }
         with(binding.vpContainer) {
-            adapter = vpAdapter
+            adapter = viewPager
             isUserInputEnabled = false
         }
     }
@@ -101,7 +101,7 @@ class ChangePasswordActivity : ActivityBase() {
         }
     }
 
-    inner class ChangePasswordPageAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+    class ChangePasswordPageAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = CHANGE_PASSWORD_PAGES.size
         override fun createFragment(position: Int): Fragment = CHANGE_PASSWORD_PAGES[position]()
     }
