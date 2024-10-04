@@ -49,7 +49,7 @@ class UserRemoteDataSource(
     }
 
     suspend fun deleteUser() {
-        return userAuthApi.deleteUser()
+        userAuthApi.deleteUser()
     }
 
     suspend fun checkNickname(nickname: String) {

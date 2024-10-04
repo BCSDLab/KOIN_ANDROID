@@ -15,201 +15,77 @@
             android:layout_height="match_parent"
             tools:ignore="MissingPrefix">
 
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.07"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.07" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.27"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.27" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.345"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.345" />
-
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.391"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.38" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.425"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.43" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.422"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.469" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.469"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.46" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.516"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.52" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.591"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.591" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_horizental_0.666"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="487dp" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical_0.889"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.889" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical_0.111"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.111" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical_0.15"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.15" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical_0.85"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.85" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical_0.32"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.32" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical_0.68"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.68" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical_0.43"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.43" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_vertical_0.57"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.57" />
-
-
             <ImageView
+                android:id="@+id/iv_signup_complete_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/finish_6"
-                app:layout_constraintBottom_toTopOf="@id/guideline_horizental_0.345"
-                app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.43"
-                app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.57"
-                app:layout_constraintTop_toBottomOf="@id/guideline_horizental_0.27" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35" />
 
             <TextView
+                android:id="@+id/tv_signup_complete_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="임시 회원 가입 완료"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/signup_complete_title"
                 android:textAppearance="@style/TextAppearance.Koin.Regular"
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/guideline_horizental_0.345"
-                app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.32"
-                app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.68"
-                app:layout_constraintTop_toTopOf="@+id/guideline_horizental_0.422" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_signup_complete_title" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_signup_complete_description"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="48dp"
                 android:background="@null"
-                android:text="임시 회원 가입이 완료되었습니다.\n10분 안에 아우누리에서 이메일 인증해 주세요."
+                android:text="@string/signup_complete_description"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.Koin.Regular.16"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@id/guideline_horizental_0.469"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.85"
-                app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.15"
-                app:layout_constraintTop_toTopOf="@+id/guideline_horizental_0.516" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/go_to_shcool_home_page_button"
-                android:layout_width="295dp"
-                android:layout_height="44dp"
-                android:background="@color/colorPrimary"
-                android:paddingLeft="33dp"
-                android:paddingRight="33dp"
-                android:text="아우누리 바로가기"
-                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.666"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/guideline_horizental_0.591"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_complete_title" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/go_to_login_button"
-                android:layout_width="295dp"
-                android:layout_height="44dp"
-                android:layout_marginTop="40dp"
+                android:id="@+id/btn_go_college_portal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="48dp"
                 android:background="@color/colorPrimary"
-                android:paddingLeft="33dp"
-                android:paddingRight="33dp"
-                android:text="로그인 화면 바로가기"
+                android:text="@string/signup_complete_go_college_portal"
+                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_complete_description" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_go_login"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/signup_complete_go_login"
                 android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/go_to_shcool_home_page_button"
+                app:layout_constraintEnd_toEndOf="@id/btn_go_college_portal"
+                app:layout_constraintStart_toStartOf="@id/btn_go_college_portal"
+                app:layout_constraintTop_toBottomOf="@id/btn_go_college_portal"
                 app:layout_constraintVertical_bias="0.0" />
 
 

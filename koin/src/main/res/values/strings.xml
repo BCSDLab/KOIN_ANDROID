@@ -5,6 +5,10 @@
     <string name="login_complete">로그인완료</string>
     <string name="find_password">비밀번호찾기</string>
 
+    <!-- SnackBar -->
+    <string name="snack_bar_login_title">로그인이 필요한 기능이에요.</string>
+    <string name="snack_bar_login_action_text">로그인 하기</string>
+
     <!--left drawer menu -->
     <string name="home">홈</string>
 
@@ -30,7 +34,7 @@
 
     <!--right drawer menu-->
     <string name="navigation_item_user_info">회원 정보</string>
-    <!--<string name="navigation_item_setting">설정</string>-->
+    <string name="navigation_item_setting">설정</string>
     <string name="navigation_item_koin_page">코인 사이트</string>
     <!--<string name="navigation_item_user_request">문의 사항</string>-->
     <string name="navigation_item_kakao_talk">카카오톡 대화</string>
@@ -101,17 +105,18 @@
 
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.ui.timetable.UserLockBottomSheetBehavior</string>
 
-    <!--Sign Up-->
+    <!--SignUp-->
     <string name="signup_info">인적사항</string>
-    <string name="signup_name">이름</string>
-    <string name="signup_nickname">닉네임</string>
+    <string name="signup_name">이름 (선택)</string>
+    <string name="signup_nickname">닉네임 (선택)</string>
     <string name="signup_nickname_check_duplicated">중복 확인</string>
-    <string name="signup_gender">성별</string>
+    <string name="signup_gender">성별 (선택)</string>
     <string name="signup_gender_man">남자</string>
     <string name="signup_gender_woman">여자</string>
-    <string name="signup_phone_number">전화번호</string>
-    <string name="signup_student_id">학번</string>
-    <string name="signup_is_graduate">졸업여부</string>
+    <string name="signup_phone_number">전화번호 (선택)</string>
+    <string name="signup_student_id">학번 (선택)</string>
+    <string name="signup_major">학부 (선택)</string>
+    <string name="signup_is_graduate">졸업여부 (선택)</string>
     <string name="signup_graduated_student">졸업생</string>
     <string name="signup_enrolled_student">재학생</string>
     <string name="signup_confirm">회원가입하기</string>
@@ -125,10 +130,10 @@
     <string name="signup_error_check_password">특수문자를 포함한 영어와 숫자 6~18 자리 비밀번호를 입력해주세요</string>
     <string name="signup_error_check_password_match">비밀번호가 일치하지 않습니다</string>
     <string name="signup_error_when_email_validation">이메일 인증 중 오류가 발생했습니다</string>
-    <string name="signup_init_name">이름을 입력해주세요</string>
-    <string name="signup_init_phone_number">전화번호를 입력해주세요</string>
+    <string name="signup_init_name">이름을 올바른 형식으로 입력해주세요</string>
+    <string name="signup_init_phone_number">전화번호를 올바른 형식으로 입력해주세요</string>
     <string name="signup_init_student_id">학번을 입력해주세요</string>
-    <string name="signup_check_nickname">닉네임을 확인해주세요.</string>
+    <string name="signup_check_nickname_duplication">닉네임 중복 검사를 진행해주세요.</string>
     <string name="signup_check_gender">성별을 선택해주세요</string>
     <string name="signup_check_graduate">졸업유무를 선택해주세요</string>
     <string name="signup_privacy_terms">개인정보 이용약관</string>
@@ -140,6 +145,11 @@
     <string name="signup_email_validation_completed_title">KOREATECH E-mail 인증</string>
     <string name="signup_email_validation_completed_message">10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?</string>
 
+    <!-- Signup complete -->
+    <string name="signup_complete_title">임시 회원 가입 완료</string>
+    <string name="signup_complete_description">임시 회원 가입이 완료되었습니다.\n10분 안에 아우누리에서 이메일 인증해 주세요.</string>
+    <string name="signup_complete_go_college_portal">아우누리 바로가기</string>
+    <string name="signup_complete_go_login">로그인 화면 바로가기</string>
     <!-- Forgot password -->
     <string name="forgotpassword_title">FORGOT PASSWORD?</string>
     <string name="forgotpassword_message">비밀번호 초기화가 필요합니다.\n계정을 찾으려면 KOREATECH 이메일을 입력해주세요.</string>
@@ -234,7 +244,42 @@
     <string name="hide_menu">메뉴 접기</string>
     <string name="search">검색</string>
 
+    <!-- Setting -->
+    <string name="setting_title_normal">일반</string>
+    <string name="setting_item_profile">프로필</string>
+    <string name="setting_item_change_password">비밀번호 변경</string>
+    <string name="setting_item_notification">알림</string>
+
+    <string name="setting_title_service">서비스</string>
+    <string name="setting_item_privacy_policy">개인정보 처리방침</string>
+    <string name="setting_item_koin_terms">코인 이용약관</string>
+    <string name="setting_item_open_source_license">오픈소스 라이선스</string>
+    <string name="setting_item_app_version">앱 버전</string>
+    <string name="setting_item_contact">문의하기</string>
+
+    <string name="setting_app_version_is_latest">현재 최신 버전 입니다.</string>
+    <string name="setting_app_version_display_latest">최신 버전 %s</string>
+
     <!-- user info -->
+    <string name="user_info_title_basic">기본정보</string>
+    <string name="user_info_id_title">아이디</string>
+    <string name="user_info_name_title">이름</string>
+    <string name="user_info_name_hint">홍길동 (선택)</string>
+    <string name="user_info_nickname_title">닉네임</string>
+    <string name="user_info_nickname_hint">닉네임을 입력해 주세요. (선택)</string>
+    <string name="user_info_nickname_check_duplication">중복확인</string>
+    <string name="user_info_phone_number_title">휴대전화</string>
+    <string name="user_info_phone_number_hint">010-0000-0000 (선택)</string>
+    <string name="user_info_gender_title">성별</string>
+    <string name="user_info_major_hint">선택된 전공이 없습니다.</string>
+
+    <string name="user_info_title_student_info">학생정보</string>
+    <string name="user_info_student_id_title">학번</string>
+    <string name="user_info_student_id_hint">학번을 설정해 주세요. (선택)</string>
+    <string name="user_info_major_title">전공</string>
+    <string name="user_info_user_leave_title">회원탈퇴</string>
+
+    <string name="user_info_nickname_duplication">닉네임 중복확인을 해주세요.</string>
     <string name="user_info_no_email">이메일을 설정해 주세요</string>
     <string name="user_info_no_nickname">닉네임을 설정해 주세요</string>
     <string name="user_info_no_anonymous_nickname">익명 닉네임이 설정되지 않았습니다</string>
@@ -243,11 +288,9 @@
     <string name="user_info_no_major">전공을 설정해 주세요</string>
     <string name="user_info_gender_male">남성</string>
     <string name="user_info_gender_female">여성</string>
-    <string name="user_info_gender_unknown">지정되지 않음</string>
     <string name="user_info_anonymous">익명 사용자입니다.</string>
     <string name="user_info_user_remove_message">정말 탈퇴하시려구요? 한번 더 생각해보세요 :)</string>
     <string name="user_info_no_name">이름을 설정해주세요</string>
-    <string name="user_info_id_hint">학번 입력시 자동 입력</string>
     <string name="user_info_edited">사용자 정보가 수정되었습니다.</string>
     <string name="nickname_available">사용 가능한 닉네임입니다</string>
 
@@ -258,6 +301,26 @@
     <string name="user_info_check_password_title">내 정보 수정하기</string>
     <string name="user_info_check_password_subtitle">보안을 위해 비밀번호 입력이 필요합니다.</string>
     <string name="user_info_check_password_warning">비밀번호가 일치하지 않습니다.</string>
+
+    <!-- Change Password -->
+    <string name="change_password_title">비밀번호 변경</string>
+    <string name="change_password_warning_password_wrong">비밀번호가 일치하지 않습니다</string>
+
+    <string name="change_password_verify_title">1. 계정인증</string>
+    <string name="change_password_verify_id_title">아이디</string>
+    <string name="change_password_verify_current_pwd_title">현재 비밀번호</string>
+    <string name="change_password_verify_current_pwd_hint">현재 비밀번호를 입력해주세요.</string>
+
+    <string name="change_password_change_title">2. 비밀번호 변경</string>
+    <string name="change_password_change_new_password">새 비밀번호</string>
+    <string name="change_password_change_new_password_hint">새 비밀번호를 입력하세요.</string>
+    <string name="change_password_change_confirm_new_password">새 비밀번호 확인</string>
+    <string name="change_password_change_confirm_new_password_hint">새 비밀번호를 다시 입력해주세요.</string>
+    <string name="change_password_change_terms_english">영어 포함</string>
+    <string name="change_password_change_terms_number">숫자 포함</string>
+    <string name="change_password_change_terms_symbol">특수문자 포함</string>
+    <string name="change_password_change_terms_length">6자이상 18자 이내 입력</string>
+    <string name="change_password_change_complete">비밀번호 변경이 완료되었습니다.</string>
 
     <!-- Dining -->
     <string name="dining_no_more_data_load">더 이상 데이터를 불러올 수 없습니다.</string>
@@ -370,7 +433,7 @@
 
     <!-- Business Signup -->
     <string name="are_you_boss"><u>사장님이신가요?</u></string>
-    <string name="are_you_student"><u>학생인신가요?</u></string>
+    <string name="are_you_student"><u>학생이신가요?</u></string>
     <string name="for_business">For Business</string>
     <string name="sign_up_for_boss">사장님용\n회원가입</string>
     <string name="is_all_agree">모두 동의합니다.</string>
