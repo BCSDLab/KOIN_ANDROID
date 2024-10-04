@@ -1,18 +1,23 @@
 package `in`.koreatech.business.feature.store.storedetail
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
@@ -31,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
@@ -93,6 +99,90 @@ fun StoreInfoScreen(
 ) {
     val state = viewModel.collectAsState().value
     Column(modifier = Modifier) {
+
+        Row(
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        )
+        {
+            Button(
+                onClick = { viewModel.onRegisterStoreClicked() },
+                modifier = Modifier
+                    .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
+                    .width(107.dp)
+                    .height(40.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = ColorPrimary,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(0.dp),
+                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.register_store),
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 15.sp
+                    )
+                )
+            }
+
+            Button(
+                onClick = { }, //TODO 상점이 여러개일 경우 선택하는 기능 만들기
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
+                    .width(107.dp)
+                    .height(40.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = ColorPrimary,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(0.dp),
+                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.select_store),
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 15.sp
+                    )
+                )
+            }
+
+            Button(
+                onClick = {
+                    viewModel.onRegisterMenuClicked()
+                          },
+                modifier = Modifier
+                    .width(107.dp)
+                    .height(40.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = ColorPrimary,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(0.dp),
+                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
+
+                ) {
+                Text(
+                    text = stringResource(R.string.register_menu),
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 15.sp
+                    )
+                )
+            }
+        }
+
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = ColorPrimary
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -101,8 +191,9 @@ fun StoreInfoScreen(
         ) {
             Image(
                 modifier = Modifier.height(255.dp),
-                painter = state.storeInfo?.imageUrls?.getOrNull(0)
-                    .let { painterResource(id = R.drawable.no_image) },
+                painter = rememberAsyncImagePainter(
+                    model = state.storeInfo?.imageUrls?.getOrNull(0) ?: R.drawable.no_image
+                ),
                 contentDescription = stringResource(R.string.shop_image),
                 contentScale = ContentScale.Crop,
             )
@@ -123,11 +214,12 @@ fun StoreInfoScreen(
 
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = stringResource(R.string.shop_management), color = ColorPrimary, fontSize = 16.sp)
+                Spacer(modifier = Modifier.width(1.dp))
                 Image(
                     painter = painterResource(id = R.drawable.ic_setting),
                     contentDescription = stringResource(R.string.shop_management),
                 )
-                Text(text = stringResource(R.string.shop_management))
             }
         }
         Text(

@@ -183,6 +183,22 @@ object RepositoryModule {
 
     @Provides
     @Singleton
+    fun provideArticleRepository(
+        articleRemoteDataSource: ArticleRemoteDataSource,
+        articleLocalDataSource: ArticleLocalDataSource,
+        userRepository: UserRepository,
+        @IoDispatcher dispatcher: CoroutineDispatcher
+    ): ArticleRepository {
+        return ArticleRepositoryImpl(
+            articleRemoteDataSource,
+            articleLocalDataSource,
+            userRepository,
+            CoroutineScope(SupervisorJob() + dispatcher)
+        )
+    }
+
+    @Provides
+    @Singleton
     fun provideCoopShopRepository(
         coopShopRemoteDataSource: CoopShopRemoteDataSource
     ): CoopShopRepository {

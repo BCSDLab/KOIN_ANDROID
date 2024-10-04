@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.koreatech.business"
-    >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:name=".KoinBusinessApplication">
         <activity
-            android:name=".BusinessMainActivity"
+            android:name=".main.BusinessMainActivity"
             android:exported="true"
             android:label="@string/title_activity_business_main"
             android:theme="@style/Theme.KOIN_ANDROID">

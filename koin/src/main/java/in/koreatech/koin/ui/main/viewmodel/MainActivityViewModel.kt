@@ -1,28 +1,36 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
 import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
-import `in`.koreatech.koin.domain.util.DiningUtil
-import androidx.lifecycle.*
-import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.store.StoreCategories
-import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.usecase.onboarding.dining.GetShouldShowDiningTooltipUseCase
 import `in`.koreatech.koin.domain.usecase.onboarding.dining.UpdateShouldShowDiningTooltipUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
+import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
+import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,10 +40,23 @@ class MainActivityViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val getShouldShowDiningTooltipUseCase: GetShouldShowDiningTooltipUseCase,
-    private val updateShouldShowDiningTooltipUseCase: UpdateShouldShowDiningTooltipUseCase
+    private val updateShouldShowDiningTooltipUseCase: UpdateShouldShowDiningTooltipUseCase,
+    fetchHotArticlesUseCase: FetchHotArticlesUseCase
 ) : BaseViewModel() {
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
+
+    val hotArticles: StateFlow<List<ArticleHeaderState>> = fetchHotArticlesUseCase()
+        .map {
+            it.take(HOT_ARTICLE_COUNT).map { article -> article.toArticleHeaderState() }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
+
+    private val _showDiningTooltip = MutableStateFlow(false)
+    val showDiningTooltip: StateFlow<Boolean> get() = _showDiningTooltip
 
     private val _selectedPosition = MutableLiveData(0)
     val selectedPosition : LiveData<Int> get() = _selectedPosition
@@ -46,9 +67,6 @@ class MainActivityViewModel @Inject constructor(
 
     private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
-
-    private val _showDiningTooltip: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showDiningTooltip: StateFlow<Boolean> get() = _showDiningTooltip
 
     init {
         updateDining()
@@ -129,5 +147,9 @@ class MainActivityViewModel @Inject constructor(
             updateShouldShowDiningTooltipUseCase(shouldShow)
             _showDiningTooltip.value = shouldShow
         }
+    }
+
+    companion object {
+        private const val HOT_ARTICLE_COUNT = 4
     }
 }

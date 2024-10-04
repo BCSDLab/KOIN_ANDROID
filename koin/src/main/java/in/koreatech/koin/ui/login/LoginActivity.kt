@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.ui.login
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.viewModels
@@ -11,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -21,7 +24,6 @@ import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.signup.SignupActivity
 import `in`.koreatech.koin.util.SnackbarUtil
-import `in`.koreatech.koin.util.ext.getSerializableExtraCompat
 import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
@@ -33,12 +35,10 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
     override val screenTitle = "로그인"
 
     private val loginViewModel by viewModels<LoginViewModel>()
-    private lateinit var nextNavigateActivityClass: Class<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        nextNavigateActivityClass = intent.getSerializableExtraCompat<Class<*>>("activity") ?: MainActivity::class.java
         initView()
         initViewModel()
     }
@@ -52,7 +52,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     when (it.status) {
                         is UiStatus.Init -> Unit
                         is UiStatus.Loading -> Unit
-                        is UiStatus.Success -> startActivity(Intent(this@LoginActivity, nextNavigateActivityClass))
+                        is UiStatus.Success -> goToNextRoute()
                         is UiStatus.Failed -> {
                             SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
                             loginViewModel.onFailedLogin()
@@ -60,6 +60,28 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     }
                 }
             }
+        }
+    }
+
+    private fun goToNextRoute() {
+        val uri = intent.data
+        val link = uri?.getQueryParameter("link")
+
+        if (link != null) {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    flags = FLAG_ACTIVITY_CLEAR_TOP
+                    data = Uri.parse(link)
+                }
+                startActivity(intent)
+                finish()
+            } catch (e: Exception) {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            }
+        } else {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
         }
     }
 
@@ -97,22 +119,27 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                 )
             }
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.USER,
+                EventAction.USER,
                 AnalyticsConstant.Label.LOGIN,
-                getString(R.string.login)
+                getString(R.string.login_complete)
             )
         }
 
         loginButtonSignup.setOnClickListener {
             startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.USER,
-                AnalyticsConstant.Label.START_SIGN_UP,
+                EventAction.USER,
+                AnalyticsConstant.Label.LOGIN,
                 getString(R.string.sign_up)
             )
         }
 
         forgotPasswordLinearLayout.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.USER,
+                AnalyticsConstant.Label.LOGIN,
+                getString(R.string.find_password)
+            )
             startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
         }
 

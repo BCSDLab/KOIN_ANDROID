@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreEvent
+import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreEventUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
@@ -47,10 +48,20 @@ class StoreViewModel @Inject constructor(
     private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
 
+    private val _storeSorter = MutableLiveData<StoreSorter>()
+    val storeSorter: LiveData<StoreSorter> get() = _storeSorter
+
+    private val _isOperating = MutableLiveData<Boolean>(false)
+    val isOperating: LiveData<Boolean> get() = _isOperating
+
+    private val _isDelivery = MutableLiveData<Boolean>(false)
+    val isDelivery: LiveData<Boolean> get() = _isDelivery
+
     init {
+        _storeSorter.value = StoreSorter.NONE
         getStoreCategories()
         getStoreEvents()
-        changeCategory()
+        //changeCategory()
         searchStore()
     }
 
@@ -74,7 +85,10 @@ class StoreViewModel @Inject constructor(
                 }
                 .map {
                     getStoresUseCase(
-                        category = it
+                        category = it,
+                        storeSorter = _storeSorter.value,
+                        isOperating = _isOperating.value,
+                        isDelivery = _isDelivery.value
                     )
                 }
                 .collectLatest {
@@ -96,7 +110,10 @@ class StoreViewModel @Inject constructor(
                 .map { (search, category) ->
                     searchStoreUseCase(
                         search = search,
-                        category = category
+                        category = category,
+                        storeSorter = _storeSorter.value,
+                        isOperating = _isOperating.value,
+                        isDelivery = _isDelivery.value
                     )
                 }
                 .collectLatest {
@@ -120,6 +137,29 @@ class StoreViewModel @Inject constructor(
     fun setNeedToProceedStoreInfo(check: Boolean, storeName: String, storeId: Int, storeNumber: String) {
         viewModelScope.launch {
             _needToProceedStoreInfo.emit(NeedSignUpStoreInfo(check,  storeName, storeId))
+        }
+    }
+
+    fun settingStoreSorter(sorter: StoreSorter) {
+        _storeSorter.value = sorter
+        viewModelScope.launch {
+            invalidateStoresUseCase()
+            refreshEvent.emit(Unit)
+        }
+    }
+
+    fun filterStoreIsOpen(isOpen: Boolean) {
+        _isOperating.value = isOpen
+        viewModelScope.launch {
+            invalidateStoresUseCase()
+            refreshEvent.emit(Unit)
+        }
+    }
+    fun filterStoreIsDelivery(isDelivery: Boolean) {
+        _isDelivery.value = isDelivery
+        viewModelScope.launch {
+            invalidateStoresUseCase()
+            refreshEvent.emit(Unit)
         }
     }
 

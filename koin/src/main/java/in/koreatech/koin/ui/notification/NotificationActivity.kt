@@ -1,20 +1,20 @@
 package `in`.koreatech.koin.ui.notification
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
@@ -47,7 +47,7 @@ class NotificationActivity : ActivityBase() {
 
     override fun onResume() {
         super.onResume()
-        if (!checkPermission()) {
+        if (!checkNotificationPermission()) {
             permissionDenied()
         } else {
             permissionGranted()
@@ -105,6 +105,7 @@ class NotificationActivity : ActivityBase() {
                                     }
 
                                     SubscribesType.NOTHING -> Unit
+                                    else -> Unit
                                 }
                             }
                             uiState.notificationPermissionInfo.subscribes.forEach {
@@ -139,6 +140,7 @@ class NotificationActivity : ActivityBase() {
 
                         is NotificationUiState.Failed -> {}
                         is NotificationUiState.Nothing -> {}
+                        else -> {}
                     }
                 }
             }
@@ -152,6 +154,11 @@ class NotificationActivity : ActivityBase() {
 
     private fun subscribeNotification() {
         binding.notificationDiningSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscription(isChecked, SubscribesType.DINING_SOLD_OUT)
             enableSubscriptionDetail(isChecked, SubscribesType.DINING_SOLD_OUT)
         }
@@ -165,12 +172,27 @@ class NotificationActivity : ActivityBase() {
 
     private fun subscribeDetailNotification() {
         binding.notificationDiningBreakfastSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_BREAKFAST_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
         }
         binding.notificationDiningLunchSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_LUNCH_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
         }
         binding.notificationDiningDinnerSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_DINNER_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
         }
     }
@@ -197,12 +219,6 @@ class NotificationActivity : ActivityBase() {
         binding.notificationDiningDinnerSoldOut.isVisible = isChecked
     }
 
-    private fun checkPermission() = NOTIFICATION_REQUIRED_PERMISSION.all {
-        ContextCompat.checkSelfPermission(
-            this, it
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
     private fun setOnClickNotificationSetting() {
         binding.textViewNotificationSetting.setOnClickListener {
             intentAppSettings()
@@ -218,11 +234,5 @@ class NotificationActivity : ActivityBase() {
 
     companion object {
         const val PACKAGE = "package"
-
-        private val NOTIFICATION_REQUIRED_PERMISSION = mutableListOf<String>().apply {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }.toTypedArray()
     }
 }

@@ -74,4 +74,8 @@
         <attr name="enableDivider" format="boolean" />
         <attr name="dividerColor" format="reference|color" />
     </declare-styleable>
+
+    <declare-styleable name="StarRatingBar">
+        <attr name="customAttribute" format="dimension"/>
+    </declare-styleable>
 </resources>

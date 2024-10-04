@@ -7,6 +7,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.os.Parcelable
 import android.util.DisplayMetrics
 import android.view.WindowInsets
@@ -79,6 +80,8 @@ fun Activity.dpToPx(dp: Int): Int {
     return (dp.toFloat() * density).roundToInt()
 }
 
+
+
 inline fun<reified T: Serializable> Intent.getSerializableExtraCompat(key: String): T? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getSerializableExtra(key, T::class.java)
@@ -91,6 +94,14 @@ inline fun<reified T: Parcelable> Intent.getParcelableExtraCompat(key: String): 
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getParcelableExtra(key, T::class.java)
     } else {
-        getSerializableExtra(key) as T?
+        getParcelableExtra(key) as T?
+    }
+}
+
+inline fun<reified T: Parcelable> Bundle.getParcelableExtraCompat(key: String): T? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getParcelable(key, T::class.java)
+    } else {
+        getParcelable(key) as T?
     }
 }

@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
@@ -26,12 +25,13 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.util.FontManager
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
@@ -81,6 +81,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             R.id.navi_item_timetable,
             R.id.navi_item_land,
             R.id.navi_item_owner,
+            R.id.navi_item_article,
             R.id.navi_item_contact
         ).map {
             findViewById<View>(it)
@@ -94,6 +95,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Timetable,
                 MenuState.Land,
                 MenuState.Owner,
+                MenuState.Article,
                 MenuState.Contact
             )
         ) { view, state ->
@@ -137,11 +139,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
                 dialog.dismiss()
                 goToLoginActivity()
-                EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.USER,
-                    AnalyticsConstant.Label.USER_ONLY_OK,
-                    getString(R.string.user_only_ok)
-                )
             }
             .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
                 dialog.cancel()
@@ -174,7 +171,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         when (state) {
                             MenuState.Store -> {
                                 EventLogger.logClickEvent(
-                                    AnalyticsConstant.Domain.BUSINESS,
+                                    EventAction.BUSINESS,
                                     AnalyticsConstant.Label.HAMBURGER_SHOP,
                                     getString(R.string.nearby_stores)
                                 )
@@ -182,7 +179,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                             MenuState.Bus -> {
                                 EventLogger.logClickEvent(
-                                    AnalyticsConstant.Domain.CAMPUS,
+                                    EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER_BUS,
                                     getString(R.string.bus)
                                 )
@@ -190,11 +187,44 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                             MenuState.Dining -> {
                                 EventLogger.logClickEvent(
-                                    AnalyticsConstant.Domain.CAMPUS,
+                                    EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER_DINING,
                                     getString(R.string.navigation_item_dining)
                                 )
                             }
+
+                            MenuState.Land -> {
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    getString(R.string.navigation_item_real_estate)
+                                )
+                            }
+
+                            MenuState.LoginOrLogout -> {
+                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isStudent) {
+                                    EventLogger.logClickEvent(
+                                        EventAction.USER,
+                                        AnalyticsConstant.Label.HAMBURGER,
+                                        getString(R.string.navigation_item_logout)
+                                    )
+                                } else {
+                                    EventLogger.logClickEvent(
+                                        EventAction.USER,
+                                        AnalyticsConstant.Label.HAMBURGER,
+                                        getString(R.string.navigation_item_login)
+                                    )
+                                }
+                            }
+
+                            MenuState.Article -> {
+                                EventLogger.logClickEvent(
+                                    EventAction.CAMPUS,
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    getString(R.string.navigation_item_article)
+                                )
+                            }
+
                             else -> Unit
                         }
                     }
@@ -262,6 +292,15 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     }
                 }
 
+                MenuState.LoginOrLogout -> {
+                    if (userInfoFlow.value.isStudent) {
+                        logout()
+                    }
+                    goToLoginActivity()
+                }
+
+                MenuState.Article -> goToArticleActivity()
+
                 MenuState.Contact -> {
                     goToContactWebActivity()
                 }
@@ -307,7 +346,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             }
         }
     }
-
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val itemId = item.itemId
@@ -415,6 +453,16 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
+    private fun goToArticleActivity() {
+        val intent = Intent(this, ArticleActivity::class.java)
+
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(intent)
+        } else {
+            startActivity(intent)
+        }
+    }
+
     private fun goToLandActivity() {
         if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, LandActivity::class.java))
@@ -438,6 +486,27 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         Intent(this, SettingActivity::class.java).apply {
             startActivity(this)
         }
+    }
+
+    fun showLoginRequestDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.user_only))
+            .setMessage(getString(R.string.login_request))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
+                val intent = Intent(
+                    this,
+                    LoginActivity::class.java
+                )
+                intent.putExtra("FIRST_LOGIN", false)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
+            }
+            .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
+                dialog.cancel()
+            }
+        val dialog = builder.create() // 알림창 객체 생성
+        dialog.show() // 알림창 띄우기
     }
 
     private fun goToActivityFinish(intent: Intent) {

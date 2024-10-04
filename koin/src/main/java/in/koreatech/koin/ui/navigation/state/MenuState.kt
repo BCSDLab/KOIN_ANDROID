@@ -10,5 +10,6 @@ sealed class MenuState {
     data object Timetable: MenuState()
     data object Land: MenuState()
     data object Owner: MenuState()
+    data object Article: MenuState()
     data object Contact: MenuState()
 }

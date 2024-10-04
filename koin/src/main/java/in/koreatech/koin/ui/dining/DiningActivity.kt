@@ -8,14 +8,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.viewpager.addOnPageScrollListener
 import `in`.koreatech.koin.databinding.ActivityDiningBinding
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -26,7 +30,6 @@ import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.util.ext.toggleDrawer
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -41,18 +44,22 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private val diningDateAdapter by lazy { DiningDateAdapter {
         viewModel.setSelectedDate(it)
     } }
-    private lateinit var diningViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
     private var initialDateTab = 0
     private var initialDiningTab = 0
     private val diningOnBoardingBottomSheet by lazy {
         DiningNotificationOnBoardingFragment()
+    }
+    private val diningPageChangeListener = object: OnPageChangeCallback() {
+        override fun onPageScrollStateChanged(state: Int) {
+            super.onPageScrollStateChanged(state)
+            binding.swipeRefreshLayoutDining.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        initDiningViewPagerScrollCallback()
         initCalendar()
         initViewPager()
         onActionView()
@@ -86,7 +93,14 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         binding.koinBaseAppBarDark.setOnClickListener {
             when(it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
-                AppBarBase.getRightButtonId() -> startActivity(Intent(this@DiningActivity, DiningNoticeActivity::class.java))
+                AppBarBase.getRightButtonId() -> {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.CAFETERIA_INFO,
+                        getString(R.string.cafeteria_info)
+                    )
+                    startActivity(Intent(this@DiningActivity, DiningNoticeActivity::class.java))
+                }
             }
         }
 
@@ -136,7 +150,14 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             diningViewPager.apply {
                 offscreenPageLimit = 3
                 adapter = DiningItemsViewPager2Adapter(this@DiningActivity)
-                registerOnPageChangeCallback(diningViewPagerScrollCallback)
+                addOnPageScrollListener(this@DiningActivity) {
+                    EventLogger.logScrollEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.MENU_TIME,
+                        tabsDiningTime.getTabAt(it)?.text.toString()
+                    )
+                }
+                registerOnPageChangeCallback(diningPageChangeListener)
             }
             TabLayoutMediator(tabsDiningTime, diningViewPager) { tab, position ->
                 tab.text = when (position) {
@@ -154,7 +175,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 val tab = binding.tabsDiningTime.getTabAt(it)
                 tab?.view?.setOnClickListener {
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
+                        EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_TIME,
                         tab.text.toString()
                     )
@@ -193,28 +214,6 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    private fun initDiningViewPagerScrollCallback() {
-        // 탭 선택이 아닌 스크롤 이벤트만 받기 위한 구현
-        diningViewPagerScrollCallback = object : ViewPager2.OnPageChangeCallback() {
-            var isUserScrolling = false
-            override fun onPageScrollStateChanged(state: Int) {
-                super.onPageScrollStateChanged(state)
-                if(state == ViewPager2.SCROLL_STATE_DRAGGING){
-                    isUserScrolling = true
-                } else if(state == ViewPager2.SCROLL_STATE_IDLE){
-                    if(isUserScrolling){
-                        EventLogger.logScrollEvent(
-                            AnalyticsConstant.Domain.CAMPUS,
-                            AnalyticsConstant.Label.MENU_TIME,
-                            binding.tabsDiningTime.getTabAt(binding.tabsDiningTime.selectedTabPosition)?.text.toString()
-                        )
-                    }
-                    isUserScrolling = false
-                }
-            }
-        }
-    }
-
     private fun getDiningTabByType(type: DiningType): Int {
         return when (type) {
             DiningType.Breakfast -> 0
@@ -222,11 +221,6 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             DiningType.Dinner -> 2
             DiningType.NextBreakfast -> 0
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        binding.diningViewPager.unregisterOnPageChangeCallback(diningViewPagerScrollCallback)
     }
 
     private fun initOnRefreshDiningList() {
@@ -244,5 +238,10 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         super.onNewIntent(intent)
         onActionView()
         selectInitialPositions()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.diningViewPager.unregisterOnPageChangeCallback(diningPageChangeListener)
     }
 }

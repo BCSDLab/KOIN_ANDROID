@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
@@ -10,11 +11,18 @@ import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
-import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewContentResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewStatisticsResponse
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -23,6 +31,10 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
+import `in`.koreatech.koin.domain.model.store.StoreReport
+import `in`.koreatech.koin.domain.model.store.StoreReview
+import `in`.koreatech.koin.domain.model.store.StoreReviewContent
+import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
@@ -36,6 +48,8 @@ fun StoreItemResponse.toStore(): Store = Store(
     isBankOk = isBankOk ?: false,
     isEvent = isEvent ?: false,
     isOpen = isOpen ?: false,
+    averageRate = averageRate ?: 0.0,
+    reviewCount = reviewCount ?: 0,
     open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
         Store.OpenData(
             dayOfWeek = it.dayOfWeek ?: "",
@@ -91,13 +105,14 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
     accountNumber = accountNumber ?: null
 )
 
-fun List<StoreMenuCategoryResponse.MenuCategory>.toCategory(): List<StoreMenuCategory>{
+fun List<StoreMenuCategoryResponse.MenuCategory>.toCategory(): List<StoreMenuCategory> {
     val responseList = ArrayList<StoreMenuCategory>()
-    for (category in this){
+    for (category in this) {
         responseList.add(StoreMenuCategory(category.id, category.name))
     }
     return responseList
 }
+
 fun StoreItemWithMenusResponse.CategoriesResponseDTO.toCategory() = StoreWithMenu.Category(
     id = id,
     name = name
@@ -160,6 +175,15 @@ fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
     endDate = endDate ?: ""
 )
 
+fun StoreReviewResponse.toStoreReview() = StoreReview(
+    totalCount = totalCount,
+    currentCount = currentCount,
+    totalPage = totalPage,
+    currentPage = currentPage,
+    statistics = statistics.toStoreReviewStatistics(),
+    reviews = reviews.toStoreReviewContentList()
+)
+
 fun List<OperatingTime>.toMyStoreDayOffResponse(): ArrayList<StoreDayOffResponse> {
     val responseList = ArrayList<StoreDayOffResponse>()
     for (dayOff in this) {
@@ -195,6 +219,70 @@ fun List<StoreDayOffResponse>.toOperatingTime(): List<OperatingTime> {
             dayOff.dayOfWeek,
             dayOff.openTime ?: "",
         )
+        responseList.add(response)
+    }
+    return responseList
+}
+
+fun List<StoreMenuOptionPrice>.toOptionPriceList(): List<StoreMenuRegisterResponse.OptionPrice>{
+    val responseList = ArrayList<StoreMenuRegisterResponse.OptionPrice>()
+    for (option in this){
+        val response = StoreMenuRegisterResponse.OptionPrice(option.option, option.price.toInt())
+
+        responseList.add(response)
+    }
+    return responseList
+}
+fun StoreMenuInfoResponse.toStoreMenuInfo(): StoreMenuInfo{
+    val responseList = ArrayList<StoreMenuOptionPrice>()
+
+    if (this.optionPrices != null){
+        for (priceOption in this.optionPrices){
+            val response = StoreMenuOptionPrice(
+                option = priceOption.option,
+                price =  priceOption.price.toString()
+            )
+
+            responseList.add(response)
+        }
+    }
+    return StoreMenuInfo(
+        shopId = shopId,
+        name = name,
+        isSingle = isSingle,
+        singlePrice = singlePrice,
+        optionPrice = responseList,
+        description = description,
+        categoryIds = categoryIds,
+        imageUrl = imageUrls
+    )
+}
+
+fun StoreReviewStatisticsResponse.toStoreReviewStatistics() = StoreReviewStatistics(
+    averageRating = averageRating,
+    ratings = ratings
+)
+
+fun List<StoreReviewContentResponse>.toStoreReviewContentList(): List<StoreReviewContent> =
+    this.map { response ->
+        StoreReviewContent(
+            reviewId = response.reviewId ?: 0,
+            rating = response.rating ?: 0,
+            nickName = response.nickName ?: "",
+            content = response.content ?: "",
+            imageUrls = response.imageUrls ?: emptyList(),
+            menuNames = response.menuNames ?: emptyList(),
+            isMine = response.isMine ?: false,
+            isModified = response.isModified ?: false,
+            isReported = response.isReported ?: false,
+            createdAt = response.createdAt ?: ""
+        )
+    }
+
+fun List<StoreReport>.toReportContent(): List<StoreReviewReportsRequest.ReportContent> {
+    val responseList = ArrayList<StoreReviewReportsRequest.ReportContent>()
+    for (report in this) {
+        val response = StoreReviewReportsRequest.ReportContent(report.title, report.content)
         responseList.add(response)
     }
     return responseList
