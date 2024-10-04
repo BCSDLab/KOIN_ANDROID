@@ -22,9 +22,10 @@ object LocalDataSourceModule {
     @Provides
     @Singleton
     fun provideSignupLocalDataSource(
-        @ApplicationContext applicationContext: Context
+        @ApplicationContext applicationContext: Context,
+        @IoDispatcher dispatcherIO: CoroutineDispatcher
     ): SignupTermsLocalDataSource {
-        return SignupTermsLocalDataSource(applicationContext)
+        return SignupTermsLocalDataSource(applicationContext, dispatcherIO)
     }
 
     @Provides

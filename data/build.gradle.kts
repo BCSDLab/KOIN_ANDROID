@@ -52,4 +52,6 @@ dependencies {
 
     implementation(libs.androidx.security.crypto)
     implementation(libs.dataStore)
+
+    implementation(libs.jsoup)
 }
