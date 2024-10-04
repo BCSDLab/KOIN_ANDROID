@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.handleCommonError
 import `in`.koreatech.koin.data.util.unknownErrorHandler
 import `in`.koreatech.koin.data.util.withUnknown
+import `in`.koreatech.koin.domain.constant.ERROR_INVALID_PHONE_NUMBER
 import `in`.koreatech.koin.domain.constant.ERROR_INVALID_STUDENT_ID
 import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_GENDER_NOT_SET
 import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_NICKNAME_VALIDATION_NOT_CHECK
@@ -29,8 +30,8 @@ class UserErrorHandlerImpl @Inject constructor(
             when (it) {
                 is HttpException -> {
                     when (it.code()) {
-                        400 -> ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_login_incorrect))
-                        404 -> ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_login_user_not_found))
+                        400 -> ErrorHandler(context.getString(R.string.error_login_incorrect))
+                        404 -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_login_user_not_found))
                         else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }
@@ -72,17 +73,29 @@ class UserErrorHandlerImpl @Inject constructor(
     override fun handleUsernameDuplicatedError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when (it) {
-                is IllegalArgumentException -> {
-                    ErrorHandler(context.getString(R.string.error_nickname_error))
+                is HttpException -> {
+                    when (it.code()) {
+                        400 -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_nickname_format_length))
+                        404 -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_login_user_not_found))
+                        else -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_network))
+                    }
                 }
+
+                is IllegalArgumentException -> {
+                    ErrorHandler(context.getString(R.string.error_nickname_format_symbol))
+                }
+                else -> unknownErrorHandler(context)
             }
-            unknownErrorHandler(context)
         }
     }
 
     override fun handleUpdateUserError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when {
+                it is HttpException -> {
+                    ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_network))
+                }
+
                 it is IndexOutOfBoundsException || it.message == ERROR_INVALID_STUDENT_ID -> {
                     ErrorHandler(context.getString(R.string.error_invalid_student_number))
                 }
@@ -93,6 +106,10 @@ class UserErrorHandlerImpl @Inject constructor(
 
                 it.message == ERROR_USERINFO_GENDER_NOT_SET -> {
                     ErrorHandler(context.getString(R.string.error_gender_not_checked))
+                }
+
+                it.message == ERROR_INVALID_PHONE_NUMBER -> {
+                    ErrorHandler(context.getString(R.string.error_phone_number_invalid_format))
                 }
 
                 else -> unknownErrorHandler(context)

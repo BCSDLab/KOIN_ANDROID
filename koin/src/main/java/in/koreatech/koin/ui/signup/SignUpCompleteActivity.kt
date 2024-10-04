@@ -21,17 +21,13 @@ class SignUpCompleteActivity : ActivityBase() {
         initView()
     }
 
-    override fun onBackPressed() {
-        //super.onBackPressed()
-    }
-
-    private fun initView() = with(binding){
-        goToLoginButton.setOnClickListener{
+    private fun initView() = with(binding) {
+        btnGoLogin.setOnClickListener {
             finishAffinity()
             startActivity(Intent(this@SignUpCompleteActivity, LoginActivity::class.java))
         }
 
-        goToShcoolHomePageButton.setOnClickListener {
+        btnGoCollegePortal.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.koreatech_url)))
             startActivity(intent)
         }
