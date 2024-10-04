@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +43,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -69,8 +71,10 @@ fun MyStoreDetailScreen(
     navigateToLoginScreen: () -> Unit = {},
     navigateToUploadEventScreen: () -> Unit = {},
     navigateToModifyScreen: () -> Unit = {},
+    navigateToRegisterStoreScreen: () -> Unit = {},
     navigateToManageMenuScreen: () -> Unit = {},
-    navigateToRegisterMenuScreen: () -> Unit = {},
+    navigateToRegisterMenuScreen: (Int) -> Unit = {},
+    navigateToModifyMenuScreen: (Int) -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
@@ -98,6 +102,7 @@ fun MyStoreDetailScreen(
                 }
             },
             onDeleteEvent = viewModel::deleteEventAll,
+            onMenuItemClicked = viewModel::onModifyMenuClicked
         )
     }
     viewModel.collectSideEffect {
@@ -108,18 +113,24 @@ fun MyStoreDetailScreen(
             }
 
             MyStoreDetailSideEffect.NavigateToUploadEventScreen -> navigateToUploadEventScreen()
-            MyStoreDetailSideEffect.NavigateToModifyScreen -> navigateToModifyScreen()
-            MyStoreDetailSideEffect.NavigateToManageMenuScreen -> {
-                navigateToManageMenuScreen()
+            MyStoreDetailSideEffect.NavigateToModifyScreen -> {
+                navigateToModifyScreen()
             }
+            MyStoreDetailSideEffect.NavigateToRegisterStoreScreen -> navigateToRegisterStoreScreen()
+            MyStoreDetailSideEffect.NavigateToManageMenuScreen -> navigateToManageMenuScreen()
 
             MyStoreDetailSideEffect.NavigateToRegisterMenuScreen -> {
-                navigateToRegisterMenuScreen()
+                navigateToRegisterMenuScreen(state.storeId)
+            }
+
+            is MyStoreDetailSideEffect.NavigateToModifyMenuScreen ->{
+                navigateToModifyMenuScreen(it.menuId)
             }
 
             MyStoreDetailSideEffect.ShowErrorModifyEventToast -> ToastUtil.getInstance().makeShort(
                 context.getString(R.string.error_modify_event)
             )
+
         }
     }
 }
@@ -135,6 +146,8 @@ fun MyStoreScrollScreen(
     viewModel: MyStoreDetailViewModel,
     onTabSelected: (Int) -> Unit = {},
     onDeleteEvent: () -> Unit = {},
+    onMenuItemClicked: (Int) -> Unit,
+
 ) {
     val toolBarHeight = 145.dp
     val configuration = LocalConfiguration.current
@@ -199,60 +212,6 @@ fun MyStoreScrollScreen(
                 }
             }
             item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 5.dp),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    Button(
-                        onClick = { viewModel.onManageMenuClicked() },
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
-                            .width(107.dp)
-                            .height(40.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White,
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(0.dp),
-                        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.manage_menu),
-                            style = TextStyle(
-                                color = ColorPrimary,
-                                fontSize = 15.sp
-                            )
-                        )
-                    }
-
-                    Button(
-                        onClick = { viewModel.onRegisterMenuClicked() },
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .width(107.dp)
-                            .height(40.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = ColorPrimary,
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(0.dp),
-                        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
-
-                    ) {
-                        Text(
-                            text = stringResource(R.string.register_menu),
-                            style = TextStyle(
-                                color = Color.White,
-                                fontSize = 15.sp
-                            )
-                        )
-                    }
-                }
-            }
-            item {
                 Divider(
                     modifier = Modifier
                         .padding(vertical = 5.dp)
@@ -295,7 +254,14 @@ fun MyStoreScrollScreen(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         when (page) {
-                            0 -> MenuScreen(isCollapsed, pagerState.currentPage, state)
+                            0 -> MenuScreen(
+                                verticalOffset = isCollapsed,
+                                currentPage = pagerState.currentPage,
+                                state = state,
+                                onMenuItemClicked = {
+                                    onMenuItemClicked(it)
+                                }
+                            )
                             1 -> EventScreen(
                                 isCollapsed,
                                 pagerState.currentPage,

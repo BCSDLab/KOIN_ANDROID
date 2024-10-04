@@ -43,5 +43,9 @@ gradlePlugin {
             id = "in.koreatech.plugin.java"
             implementationClass = "JavaLibraryConventionPlugin"
         }
+        register("OssLicensePlugin") {
+            id = "in.koreatech.plugin.oss"
+            implementationClass = "OssLicensePlugin"
+        }
     }
 }
