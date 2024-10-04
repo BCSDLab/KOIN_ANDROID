@@ -62,6 +62,7 @@ balloon = "1.5.0"
 dataStore = "1.0.0"
 ossLicensesPluginVersion = "0.10.4"
 ossLicensesVersion = "17.1.0"
+jsoup = "1.18.1"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -166,6 +167,8 @@ dataStore = { module = "androidx.datastore:datastore-preferences", version.ref =
 
 oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version.ref = "ossLicensesPluginVersion"}
 oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "ossLicensesVersion"}
+
+jsoup = {module = "org.jsoup:jsoup", version.ref = "jsoup"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

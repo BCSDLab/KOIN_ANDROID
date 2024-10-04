@@ -4,9 +4,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
-import `in`.koreatech.koin.domain.usecase.version.GetVersionInformationUseCase
+import `in`.koreatech.koin.domain.usecase.version.GetLatestVersionUseCase
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.util.EventFlow
 import `in`.koreatech.koin.util.MutableEventFlow
@@ -19,8 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val getVersionInformationUseCase: GetVersionInformationUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val getLatestVersionUseCase: GetLatestVersionUseCase
 ) : BaseViewModel() {
 
     private val _versionState: MutableStateFlow<VersionState> = MutableStateFlow(VersionState.Init)
@@ -49,14 +48,16 @@ class SettingViewModel @Inject constructor(
 
     fun fetchVersion() {
         viewModelScope.launch {
-            getVersionInformationUseCase()
-                .onSuccess { (currentVersion, latestVersion, versionUpdatePriority) ->
+            getLatestVersionUseCase()
+                .onSuccess { (currentVersion, latestVersion) ->
                     _versionState.value =
-                        if (versionUpdatePriority == VersionUpdatePriority.None)
+                        if (currentVersion == latestVersion) {
                             VersionState.Latest(currentVersion)
-                        else
+                        } else {
                             VersionState.Outdated(currentVersion, latestVersion)
-                }.onFailure {
+                        }
+                }
+                .onFailure {
                     _versionError.emit(Unit)
                 }
         }
