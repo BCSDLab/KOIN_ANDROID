@@ -20,7 +20,7 @@ abstract class ActivityBase : AppCompatActivity, IProgressDialog {
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
     private var customProgressDialog: CustomProgressDialog? = null
-    protected abstract val screenTitle: String
+    protected abstract val screenTitle: String      // for GA4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

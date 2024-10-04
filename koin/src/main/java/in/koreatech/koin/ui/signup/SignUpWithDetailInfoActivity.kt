@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.ActivitySignUpWithDetailInfoBinding
@@ -99,7 +100,7 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                     isCheckNickname = signupViewModel.isCheckedNickname
                 )
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.USER,
+                    EventAction.USER,
                     AnalyticsConstant.Label.COMPLETE_SIGN_UP,
                     getString(R.string.complete_sign_up)
                 )

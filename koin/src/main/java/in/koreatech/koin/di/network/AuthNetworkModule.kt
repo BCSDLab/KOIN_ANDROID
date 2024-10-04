@@ -14,6 +14,7 @@ import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
@@ -35,7 +36,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthNetworkModule {
-
     @Auth
     @Provides
     @Singleton
@@ -112,6 +112,22 @@ object AuthNetworkModule {
     ): DiningAuthApi {
         return retrofit.create(DiningAuthApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideUploadUrlApi(
+        @Auth retrofit: Retrofit
+    ): UploadUrlApi {
+        return retrofit.create(UploadUrlApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticleAuthApi(
+        @Auth retrofit: Retrofit
+    ): ArticleAuthApi {
+        return retrofit.create(ArticleAuthApi::class.java)
+    }
 }
 
 @Module
@@ -172,14 +188,6 @@ object OwnerAuthNetworkModule {
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideUploadUrlApi(
-        @OwnerAuth retrofit: Retrofit
-    ): UploadUrlApi {
-        return retrofit.create(UploadUrlApi::class.java)
     }
 
     @Provides

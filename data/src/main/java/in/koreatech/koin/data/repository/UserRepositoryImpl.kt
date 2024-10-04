@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
+import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
@@ -14,6 +15,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -28,6 +30,27 @@ class UserRepositoryImpl @Inject constructor(
         )
 
         return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
+    }
+
+    override suspend fun getOwnerToken(phoneNumber: String, hashedPassword: String): AuthToken {
+        val authResponse = userRemoteDataSource.getOwnerToken(
+            OwnerLoginRequest(phoneNumber, hashedPassword)
+        )
+
+        return AuthToken(authResponse.token, authResponse.refreshToken)
+    }
+
+    override fun ownerTokenIsValid(): Boolean {
+        return runBlocking{
+            try {
+                userRemoteDataSource.ownerTokenIsValid()
+                true
+            } catch (e: HttpException){
+                if (e.code() == 401) false
+                else throw e
+            }
+
+        }
     }
 
     override suspend fun getUserInfo(): User {

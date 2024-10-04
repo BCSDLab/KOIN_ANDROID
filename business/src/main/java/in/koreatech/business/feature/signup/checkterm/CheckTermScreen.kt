@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -138,8 +138,9 @@ fun CheckTermScreen(
         }
 
         Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp).verticalScroll(scrollState),
+            modifier = Modifier.fillMaxSize()
+                .padding(horizontal = 24.dp)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -147,6 +148,9 @@ fun CheckTermScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(40.dp)
+                    .clickable {
+                        viewModel.onAllTermCheckedChanged()
+                    }
                     .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
                 verticalAlignment = Alignment.CenterVertically
 
@@ -160,9 +164,7 @@ fun CheckTermScreen(
                         .padding(horizontal = 8.dp)
                         .height(24.dp)
                         .width(24.dp)
-                        .clickable {
-                            viewModel.onAllTermCheckedChanged()
-                        }
+
                 )
 
                 Text(
@@ -179,7 +181,9 @@ fun CheckTermScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(22.dp)
-
+                    .clickable {
+                        viewModel.onPrivacyTermCheckedChanged()
+                    }
             ) {
                 Image(
                     painter = if (state.isCheckedPrivacyTerms || state.isAllTermChecked) painterResource(
@@ -192,10 +196,7 @@ fun CheckTermScreen(
                         .padding(horizontal = 8.dp)
                         .height(24.dp)
                         .width(24.dp)
-                        .clickable {
-                            viewModel.onPrivacyTermCheckedChanged()
 
-                        }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
@@ -223,7 +224,9 @@ fun CheckTermScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(22.dp)
-
+                    .clickable {
+                        viewModel.onKoinTermCheckedChanged()
+                    }
             ) {
                 Image(
                     painter = if (state.isCheckedKoinTerms || state.isAllTermChecked) painterResource(
@@ -236,9 +239,6 @@ fun CheckTermScreen(
                         .padding(horizontal = 8.dp)
                         .height(24.dp)
                         .width(24.dp)
-                        .clickable {
-                            viewModel.onKoinTermCheckedChanged()
-                        }
                 )
 
                 Text(
@@ -261,11 +261,11 @@ fun CheckTermScreen(
                 Text(text = stringResource(R.string.term_2), fontSize = 10.sp, color = Color.Black)
             }
 
-            Spacer(modifier = Modifier.height(50.dp))
-
+            Spacer(modifier = Modifier.weight(1f))
             Button(
                 modifier = modifier
                     .fillMaxWidth()
+                    .padding(bottom = 24.dp)
                     .height(44.dp),
                 onClick = { viewModel.onNextButtonClicked() },
                 shape = RoundedCornerShape(4.dp),

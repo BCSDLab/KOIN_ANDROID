@@ -150,10 +150,10 @@ fun CompleteSignupScreen(
                 fontSize = 16.sp,
                 color = ColorDescription,
             )
-
-            Spacer(modifier = Modifier.height(51.dp))
+            Spacer(modifier = Modifier.weight(1f))
             Button(modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 24.dp)
                 .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -195,7 +195,6 @@ fun Preview() {
             .fillMaxSize()
 
     ) {
-
             CompleteSignupScreen(
                 onBackClicked = {  }
             )

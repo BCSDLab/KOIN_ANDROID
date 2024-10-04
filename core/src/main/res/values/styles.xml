@@ -130,4 +130,23 @@
     <style name="CustomBottomSheet" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_rect_white_radius_20dp</item>
     </style>
+
+    <style name="RectangleChoiceChip" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/color_chip_background</item>
+        <item name="android:textColor">@color/color_chip_text</item>
+        <item name="closeIconTint">@color/neutral_500</item>
+    </style>
+
+    <style name="RectangleChoiceChipDeep" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/color_chip_background_deep</item>
+        <item name="android:textColor">@color/color_chip_text_deep</item>
+    </style>
+
+    <style name="WhiteToolbarIconTheme" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/black</item>
+    </style>
+
+    <style name="OutlinedTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/color_outline_text_field</item>
+    </style>
 </resources>
