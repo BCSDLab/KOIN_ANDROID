@@ -35,17 +35,35 @@ fun User.Student.toUserRequest() = UserRequest(
         else -> null
     },
     identity = 0,
-    isGraduated = isStudent
+    isGraduated = isStudent,
+    hashedPassword = null
+)
+
+fun User.Student.toUserRequestWithPassword(hashedPassword: String) = UserRequest(
+    nickname = nickname,
+    name = name,
+    studentNumber = studentNumber,
+    major = major,
+    phoneNumber = phoneNumber,
+    gender = when (gender) {
+        Gender.Man -> 0
+        Gender.Woman -> 1
+        else -> null
+    },
+    identity = 0,
+    isGraduated = isStudent,
+    hashedPassword = hashedPassword
 )
 
 fun Graduated.toBoolean(): Boolean{
     return this == Graduated.Graduate
 }
 
-fun Gender.toInt(): Int{
+fun Gender.toInt(): Int? {
     return when (this){
         Gender.Man -> 0
-        else -> 1
+        Gender.Woman -> 1
+        else -> null
     }
 }
 

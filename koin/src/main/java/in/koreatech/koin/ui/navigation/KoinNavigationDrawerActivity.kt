@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
@@ -23,13 +22,13 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.util.FontManager
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.ui.article.ArticleActivity
@@ -40,11 +39,10 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
-import `in`.koreatech.koin.ui.notification.NotificationActivity
+import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
 import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
-import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.closeDrawer
@@ -75,20 +73,21 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private val menus by lazy {
         listOf(
-            R.id.navi_item_notification,
-            R.id.navi_item_myinfo,
+            R.id.navi_item_setting,
             R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
-            R.id.navi_item_bus, R.id.navi_item_dining,
-            R.id.navi_item_timetable, R.id.navi_item_land,
+            R.id.navi_item_bus,
+            R.id.navi_item_dining,
+            R.id.navi_item_timetable,
+            R.id.navi_item_land,
             R.id.navi_item_owner,
-            R.id.navi_item_article
+            R.id.navi_item_article,
+            R.id.navi_item_contact
         ).map {
             findViewById<View>(it)
         }.zip(
             listOf(
-                MenuState.Notification,
-                MenuState.UserInfo,
+                MenuState.Setting,
                 MenuState.LoginOrLogout,
                 MenuState.Store,
                 MenuState.Bus,
@@ -96,7 +95,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Timetable,
                 MenuState.Land,
                 MenuState.Owner,
-                MenuState.Article
+                MenuState.Article,
+                MenuState.Contact
             )
         ) { view, state ->
             state to view
@@ -157,11 +157,13 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             view.setOnClickListener {
                 when (state) {
                     MenuState.Owner -> {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            if(BuildConfig.IS_DEBUG) Uri.parse(URLConstant.OWNER_URL_STAGE) else Uri.parse(URLConstant.OWNER_URL_PRODUCTION)
-                        )
-                        startActivity(intent)
+                        Intent(this, WebViewActivity::class.java).apply {
+                            putExtra(
+                                "url",
+                                if (BuildConfig.IS_DEBUG) URLConstant.OWNER_URL_STAGE
+                                else URLConstant.OWNER_URL_PRODUCTION
+                            )
+                        }.run(::startActivity)
                     }
 
                     else -> {
@@ -197,16 +199,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                     AnalyticsConstant.Label.HAMBURGER,
                                     getString(R.string.navigation_item_real_estate)
                                 )
-                            }
-
-                            MenuState.UserInfo -> {
-                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous.not()) {
-                                    EventLogger.logClickEvent(
-                                        EventAction.USER,
-                                        AnalyticsConstant.Label.HAMBURGER,
-                                        "정보수정 -> 내정보"
-                                    )
-                                }
                             }
 
                             MenuState.LoginOrLogout -> {
@@ -280,32 +272,23 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Land -> goToLandActivity()
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
+                MenuState.Setting -> {
+                    goToSettingActivity()
+                    return@observeLiveData
+                }
+
+                MenuState.LoginOrLogout -> {
+                    if (userInfoFlow.value.isStudent) {
+                        logout()
+                    }
+                    goToLoginActivity()
+                }
+
                 MenuState.Timetable -> {
                     if (userInfoFlow.value.isAnonymous) {
                         goToAnonymousTimeTableActivity()
                     } else {
-                        goToTimetableActivty()
-                    }
-                }
-
-                MenuState.UserInfo -> {
-                    if (userInfoFlow.value.isAnonymous) {
-                        loginAlertDialog.show()
-                    } else {
-                        goToUserInfoActivity()
-                    }
-                }
-
-                MenuState.Notification -> {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.NOTIFICATION,
-                        getString(R.string.event_set_notification)
-                    )
-                    if (userInfoFlow.value.isAnonymous) {
-                        loginAlertDialog.show()
-                    } else {
-                        goToNotificationActivity()
+                        goToTimetableActivity()
                     }
                 }
 
@@ -317,6 +300,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.Article -> goToArticleActivity()
+
+                MenuState.Contact -> {
+                    goToContactWebActivity()
+                }
 
                 else -> Unit
             }
@@ -334,13 +321,19 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         }
 
                         is User.Student -> {
-                            nameTextView.text = user.name
+                            nameTextView.text = if (user.nickname?.isNotEmpty() == true) {
+                                user.nickname!!
+                            } else if (user.name?.isNotEmpty() == true) {
+                                user.name!!
+                            } else {
+                                "회원"
+                            }
                             nameTextView.visibility = View.VISIBLE
                             helloMessageTextView.text = getString(R.string.navigation_hello_message)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
 
                             when (menuState) {
-                                MenuState.Main, MenuState.Notification -> {
+                                MenuState.Main -> {
                                     if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
                                     koinNavigationDrawerViewModel.updateDeviceToken()
                                 }
@@ -402,12 +395,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
-    private fun changeMenuFont(view: View) {
-        if (view is TextView) {
-            view.typeface = FontManager.getTypeface(this, FontManager.KoinFontType.PRETENDARD_REGULAR)
-        }
-    }
-
     private fun goToMainActivity() {
         goToActivityFinish(Intent(this, MainActivity::class.java))
     }
@@ -458,6 +445,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
+    private fun goToTimetableActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, TimetableActivity::class.java))
+        } else {
+            startActivity(Intent(this, TimetableActivity::class.java))
+        }
+    }
+
     private fun goToArticleActivity() {
         val intent = Intent(this, ArticleActivity::class.java)
 
@@ -465,14 +460,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             goToActivityFinish(intent)
         } else {
             startActivity(intent)
-        }
-    }
-
-    private fun goToTimetableActivty() {
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, TimetableActivity::class.java))
-        } else {
-            startActivity(Intent(this, TimetableActivity::class.java))
         }
     }
 
@@ -495,14 +482,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     /**
      * right navigation drawer 서비스 메뉴 호출
      */
-    private fun goToUserInfoActivity() {
-        Intent(this, UserInfoActivity::class.java).apply {
-            startActivity(this)
-        }
-    }
-
-    private fun goToNotificationActivity() {
-        Intent(this, NotificationActivity::class.java).apply {
+    private fun goToSettingActivity() {
+        Intent(this, SettingActivity::class.java).apply {
             startActivity(this)
         }
     }
@@ -534,12 +515,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         finish()
     }
 
-    private fun goToNavigationDeveloper() {
-        Intent(this, WebViewActivity::class.java).apply {
-            putExtra("title", getString(R.string.bcsd_webpage_name))
-            putExtra("url", "https://bcsdlab.com/")
-            startActivity(this)
-        }
+
+    private fun goToContactWebActivity() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL.KOIN_ASK_FORM)))
     }
 
     private fun goToLoginActivity() {
@@ -560,23 +538,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             this, it
         ) == PackageManager.PERMISSION_GRANTED
     }
-
-    val TextView.selected: TextView
-        get() {
-            val s = text.toString()
-            val styledText = HtmlCompat.fromHtml(
-                "<font color='#f7941e'>$s</font>",
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-            setText(styledText, TextView.BufferType.SPANNABLE) //#f7941e
-            return this
-        }
-
-    val TextView.normal: TextView
-        get() {
-            text = text.toString()
-            return this
-        }
 
     companion object {
         private val MAIN_REQUIRED_PERMISSION = mutableListOf<String>().apply {
