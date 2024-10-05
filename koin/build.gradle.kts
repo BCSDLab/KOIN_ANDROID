@@ -110,4 +110,6 @@ dependencies {
     implementation(libs.nav.dynamic.features.fragment)
 
     implementation(libs.feature.delivery.ktx)
+
+    implementation(libs.timber)
 }
