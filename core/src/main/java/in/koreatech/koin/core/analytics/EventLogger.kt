@@ -5,6 +5,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import `in`.koreatech.koin.core.BuildConfig
+import `in`.koreatech.koin.core.analytics.EventLogger.logEvent
 
 object EventLogger {
 
@@ -53,6 +54,24 @@ object EventLogger {
      */
     fun logSwipeEvent(action: EventAction, label: String, value: String) {
         logEvent(action, EventCategory.SWIPE, label, value)
+    }
+
+    /**
+     * @param action: 커스텀 이벤트 발생(EventAction 이외에 action)
+     * @param category: 커스텀 이벤트 종류(EventCategory 이외에 category)
+     * @param label: 이벤트 소분류
+     * @param value: 이벤트 값
+     * @sample logEvent("force_update", "page_view", "forced_update_page_view", "v4.0.0")
+     */
+    fun logCustomEvent(action: String, category: String, label: String, value: String) {
+        if (BuildConfig.IS_DEBUG) return
+        else {
+            Firebase.analytics.logEvent(action) {
+                param(EVENT_CATEGORY, category)
+                param(EVENT_LABEL, label)
+                param(VALUE, value)
+            }
+        }
     }
 
     /**

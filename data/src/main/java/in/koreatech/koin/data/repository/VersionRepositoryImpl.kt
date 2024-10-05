@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
+import `in`.koreatech.koin.domain.model.version.Version
 import `in`.koreatech.koin.domain.repository.VersionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,8 +29,8 @@ class VersionRepositoryImpl @Inject constructor(
         return versionLocalDataSource.getVersion()
     }
 
-    override suspend fun getLatestVersionFromRemote(): String {
-        return versionRemoteDataSource.getAndroidAppVersion().version
+    override suspend fun getLatestVersionFromRemote(): Version {
+        return versionRemoteDataSource.getAndroidAppVersion().toVersion()
     }
 
     override suspend fun getLatestVersionFromPlayStore(): String? {
