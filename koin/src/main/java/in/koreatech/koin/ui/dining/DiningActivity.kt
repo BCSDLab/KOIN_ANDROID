@@ -8,6 +8,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -45,6 +48,12 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private var initialDiningTab = 0
     private val diningOnBoardingBottomSheet by lazy {
         DiningNotificationOnBoardingFragment()
+    }
+    private val diningPageChangeListener = object: OnPageChangeCallback() {
+        override fun onPageScrollStateChanged(state: Int) {
+            super.onPageScrollStateChanged(state)
+            binding.swipeRefreshLayoutDining.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,6 +157,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                         tabsDiningTime.getTabAt(it)?.text.toString()
                     )
                 }
+                registerOnPageChangeCallback(diningPageChangeListener)
             }
             TabLayoutMediator(tabsDiningTime, diningViewPager) { tab, position ->
                 tab.text = when (position) {
@@ -228,5 +238,10 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         super.onNewIntent(intent)
         onActionView()
         selectInitialPositions()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.diningViewPager.unregisterOnPageChangeCallback(diningPageChangeListener)
     }
 }

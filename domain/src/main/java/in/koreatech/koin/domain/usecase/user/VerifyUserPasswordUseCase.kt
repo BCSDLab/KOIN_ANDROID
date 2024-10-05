@@ -12,7 +12,6 @@ class VerifyUserPasswordUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(password: String): ErrorHandler? {
         return try {
-
             userRepository.verifyPassword(password.toSHA256())
             null
         } catch (t: Throwable) {

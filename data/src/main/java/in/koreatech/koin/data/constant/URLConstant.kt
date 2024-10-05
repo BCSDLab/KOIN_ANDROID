@@ -7,6 +7,7 @@ object URLConstant {
 
     const val BASE_URL_PRODUCTION = "https://api.koreatech.in" //release server
     const val BASE_URL_STAGE = "https://api.stage.koreatech.in" //development server
+    const val URL_PLAYSTORE = "https://play.google.com/store/apps/details?id=in.koreatech.koin"
     // const val BASE_URL_STAGE = "https://api.koreatech.in" //development server
 
     const val OWNER_URL_STAGE = "https://owner.stage.koreatech.in/"
