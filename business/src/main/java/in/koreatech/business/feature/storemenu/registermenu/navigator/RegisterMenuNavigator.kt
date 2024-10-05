@@ -8,6 +8,8 @@ import androidx.navigation.navigation
 import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuCheckScreen
 import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuScreen
 import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuViewModel
+import `in`.koreatech.business.navigation.MODIFYMENUSCREEN
+import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.REGISTERMENUSCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
 
@@ -41,7 +43,14 @@ fun NavGraphBuilder.registerMenuScreen(
             val viewModel: RegisterMenuViewModel = it.sharedHiltViewModel(navController = navController)
             RegisterMenuCheckScreen(
                 viewModel = viewModel,
-                onBackPressed = { navController.navigateUp() }
+                onBackPressed = { navController.navigateUp() },
+                goToStoreMainScreen = {
+                    navController.navigate(MYSTORESCREEN){
+                        this.popUpTo(MODIFYMENUSCREEN){
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }

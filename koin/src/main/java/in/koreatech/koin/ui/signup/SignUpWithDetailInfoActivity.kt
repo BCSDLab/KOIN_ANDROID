@@ -84,7 +84,7 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                     gender = when {
                         signupUserRadiobuttonGenderMan.isChecked -> Gender.Man
                         signupUserRadiobuttonGenderWoman.isChecked -> Gender.Woman
-                        else -> null
+                        else -> Gender.Unknown
                     },
                     isGraduated = when {
                         signupUserRadiobuttonGraduate.isChecked -> Graduated.Graduate
@@ -137,19 +137,11 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                 Lifecycle.State.STARTED
             ).collect { state ->
                 when (state) {
-                    SignupContinuationState.InitName -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_name))
+                    SignupContinuationState.CheckNameFormat -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_name))
 
-                    SignupContinuationState.InitPhoneNumber -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_phone_number))
+                    SignupContinuationState.CheckPhoneNumberFormat -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_phone_number))
 
-                    SignupContinuationState.InitStudentId -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_student_id))
-
-                    SignupContinuationState.CheckNickName -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_nickname))
-
-                    SignupContinuationState.CheckGender -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_gender))
-
-                    SignupContinuationState.CheckGraduate -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_graduate))
-
-                    SignupContinuationState.CheckDept -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.user_info_no_major))
+                    SignupContinuationState.CheckNickNameDuplication -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_nickname_duplication))
 
                     SignupContinuationState.NicknameDuplicated -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_nickname_duplicated))
 

@@ -93,11 +93,13 @@ object RepositoryModule {
     @Singleton
     fun provideVersionRepository(
         versionLocalDataSource: VersionLocalDataSource,
-        versionRemoteDataSource: VersionRemoteDataSource
+        versionRemoteDataSource: VersionRemoteDataSource,
+        @IoDispatcher dispatcher: CoroutineDispatcher
     ): VersionRepository {
         return VersionRepositoryImpl(
             versionLocalDataSource,
-            versionRemoteDataSource
+            versionRemoteDataSource,
+            CoroutineScope(SupervisorJob() + dispatcher)
         )
     }
 

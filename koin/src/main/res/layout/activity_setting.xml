@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <in.koreatech.koin.core.appbar.AppBarBase
+        android:id="@+id/appbar_setting"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftButtonBackground="@drawable/ic_back_arrow"
+        app:rightButtonVisibility="gone"
+        app:titleText="@string/navigation_item_setting"
+        app:titleTextColor="@color/neutral_0" />
+
+    <TextView
+        android:id="@+id/view_title_normal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/neutral_50"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="8dp"
+        android:text="@string/setting_title_normal"
+        android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+        android:textColor="@color/neutral_600"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar_setting" />
+
+    <in.koreatech.koin.core.view.setting.SettingView
+        android:id="@+id/sv_profile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:headText="@string/setting_item_profile"
+        app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+        app:labelType="image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_title_normal" />
+
+    <in.koreatech.koin.core.view.setting.SettingView
+        android:id="@+id/sv_change_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:headText="@string/setting_item_change_password"
+        app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+        app:labelType="image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_profile" />
+
+    <in.koreatech.koin.core.view.setting.SettingView
+        android:id="@+id/sv_notification"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:headText="@string/setting_item_notification"
+        app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+        app:labelType="image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_change_password" />
+
+    <TextView
+        android:id="@+id/view_title_service"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/neutral_50"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="8dp"
+        android:text="@string/setting_title_service"
+        android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+        android:textColor="@color/neutral_600"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_notification" />
+
+    <in.koreatech.koin.core.view.setting.SettingView
+        android:id="@+id/sv_privacy_policy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:headText="@string/setting_item_privacy_policy"
+        app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_title_service" />
+
+    <in.koreatech.koin.core.view.setting.SettingView
+        android:id="@+id/sv_koin_terms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:headText="@string/setting_item_koin_terms"
+        app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_privacy_policy" />
+
+    <in.koreatech.koin.core.view.setting.SettingView
+        android:id="@+id/sv_open_source_license"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:headText="@string/setting_item_open_source_license"
+        app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_koin_terms" />
+
+    <in.koreatech.koin.core.view.setting.SettingView
+        android:id="@+id/sv_app_version"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:headText="@string/setting_item_app_version"
+        app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_open_source_license" />
+
+    <TextView
+        android:id="@+id/tv_client_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.14"
+        android:textColor="@color/neutral_800"
+        app:layout_constraintBottom_toTopOf="@id/tv_app_version"
+        app:layout_constraintEnd_toEndOf="@id/sv_app_version"
+        app:layout_constraintTop_toTopOf="@id/sv_app_version"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="3.1.14" />
+
+    <TextView
+        android:id="@+id/tv_app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+        app:layout_constraintBottom_toBottomOf="@id/sv_app_version"
+        app:layout_constraintEnd_toEndOf="@id/tv_client_version"
+        app:layout_constraintTop_toBottomOf="@id/tv_client_version"
+        tools:text="현재 최신 버전입니다"
+        tools:textColor="@color/neutral_500" />
+
+    <in.koreatech.koin.core.view.setting.SettingView
+        android:id="@+id/sv_contact"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:headText="@string/setting_item_contact"
+        app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

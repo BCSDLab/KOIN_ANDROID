@@ -11,4 +11,5 @@ data class UserRequest(
     @SerializedName("is_graduated") val isGraduated: Boolean,
     @SerializedName("phone_number") val phoneNumber: String?,
     @SerializedName("gender") val gender: Int?,
+    @SerializedName("password") val hashedPassword: String?
 )

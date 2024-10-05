@@ -26,12 +26,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/navi_item_notification"
+            android:id="@+id/navi_item_setting"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
-            android:src="@drawable/ic_notification"
+            android:src="@drawable/ic_setting"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,36 +60,11 @@
             app:layout_constraintTop_toBottomOf="@id/drawer_left_arrow_button"
             app:layout_goneMarginStart="24dp" />
 
-        <LinearLayout
-            android:id="@+id/navi_item_myinfo"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="22dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/navi_hello_message">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_drawer_myinfo"
-                app:tint="@color/neutral_600" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:gravity="center_vertical"
-                android:text="@string/navigation_item_my_info"
-                android:textAppearance="@style/TextAppearance.Koin.Medium.14"
-                android:textColor="@color/neutral_600" />
-        </LinearLayout>
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/navi_item_login_or_logout"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
+            android:layout_marginTop="26dp"
             android:layout_marginEnd="24dp"
             android:gravity="center_vertical"
             android:text="로그인"
@@ -97,8 +72,7 @@
             android:textColor="@color/neutral_600"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@id/navi_item_myinfo"
-            app:layout_constraintTop_toTopOf="@id/navi_item_myinfo" />
+            app:layout_constraintTop_toBottomOf="@id/navi_hello_message" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_section_service"
@@ -113,7 +87,7 @@
             android:textColor="@color/neutral_600"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/navi_item_myinfo" />
+            app:layout_constraintTop_toBottomOf="@id/navi_item_login_or_logout" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/navi_item_bus"
@@ -254,5 +228,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/navi_item_article" />
+
+        <TextView
+            android:id="@+id/navi_item_contact"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="@string/navigation_item_ask_bcsd"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            android:textColor="@color/neutral_800"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.navigation.NavigationView>
