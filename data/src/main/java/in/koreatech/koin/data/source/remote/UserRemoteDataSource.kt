@@ -28,6 +28,10 @@ class UserRemoteDataSource(
         return userApi.getOwnerToken(ownerLoginRequest)
     }
 
+    suspend fun ownerTokenIsValid(){
+        userAuthApi.getOwnerTokenIsValid()
+    }
+
     suspend fun getUserInfo(): UserResponse {
         return userAuthApi.getUser()
     }
@@ -45,7 +49,7 @@ class UserRemoteDataSource(
     }
 
     suspend fun deleteUser() {
-        return userAuthApi.deleteUser()
+        userAuthApi.deleteUser()
     }
 
     suspend fun checkNickname(nickname: String) {

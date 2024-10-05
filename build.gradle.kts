@@ -7,8 +7,8 @@ buildscript {
     }
 
     extra.apply {
-        set("versionName", "3.6.1")
-        set("versionCode", 30601)
+        set("versionName", "3.6.2")
+        set("versionCode", 30602)
     }
 
     dependencies {
@@ -16,6 +16,7 @@ buildscript {
         classpath(libs.kotlin.gradle)
         classpath(libs.android.gradle.crashlytics)
         classpath(libs.firebase.appdistribution.gradle)
+        classpath(libs.oss.licenses.plugin)
         classpath(libs.hilt.gradle.plugin)
     }
 }
@@ -25,6 +26,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.google.service) apply false
     alias(libs.plugins.androidLibrary) apply false
 }
