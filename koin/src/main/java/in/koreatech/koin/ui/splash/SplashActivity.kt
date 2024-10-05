@@ -1,77 +1,66 @@
 package `in`.koreatech.koin.ui.splash
 
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.core.os.bundleOf
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.contract.LoginContract
 import `in`.koreatech.koin.core.activity.ActivityBase
-import `in`.koreatech.koin.core.network.RetrofitManager
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
+import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
+import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
-import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import androidx.activity.viewModels
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.lifecycleScope
-import com.kakao.sdk.common.KakaoSdk
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
+    companion object {
+        private const val screenTitle = "스플래시"
+        private const val koinStart = "koin_start"
+        const val version = "version"
+        const val title = "title"
+        const val content = "content"
+    }
+
+    override val screenTitle = SplashActivity.screenTitle
 
     private val firebasePerformanceUtil by lazy {
-        FirebasePerformanceUtil("koin_start")
+        FirebasePerformanceUtil(koinStart)
     }
-    override val screenTitle = "스플래시"
 
     private val splashViewModel by viewModels<SplashViewModel>()
     private val createdTime = System.currentTimeMillis()
 
-    private val loginActivityLauncher = registerForActivityResult(LoginContract()) {}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
-        KakaoSdk.init(this, resources.getString(R.string.kakao_app_key))
-        WindowInsetsControllerCompat(window, window.decorView).let { controller ->
-            controller.hide(WindowInsetsCompat.Type.systemBars())
-            controller.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
 
-        firebasePerformanceUtil.start()
-        RetrofitManager.getInstance().init()
-        UserInfoSharedPreferencesHelper.getInstance().init(applicationContext)
-
-        initViewModel()
+        initView()
+        initObserve()
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
+    private fun initView() {
         splashViewModel.checkUpdate()
+        firebasePerformanceUtil.start()
+        SystemBarsUtils(this).apply {
+            setImmersiveMode(window)
+        }
     }
 
-    private fun initViewModel() = with(splashViewModel) {
-        observeLiveData(version) { (currentVersion, latestVersion, versionUpdatePriority) ->
-            when (versionUpdatePriority) {
-                VersionUpdatePriority.High, VersionUpdatePriority.Medium -> {
-                    createVersionUpdateDialog(
-                        currentVersion,
-                        latestVersion,
-                        versionUpdatePriority
-                    )
-                }
-
-                else -> Unit
+    private fun initObserve() = with(splashViewModel) {
+        observeLiveData(version) { version ->
+            when (version.versionUpdatePriority) {
+                VersionUpdatePriority.Importance -> goToForceUpdateActivity(version.title, version.content)
+                VersionUpdatePriority.None -> Unit
             }
         }
 
@@ -84,21 +73,22 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun createVersionUpdateDialog(
-        currentVersion: String,
-        latestVersion: String,
-        versionUpdatePriority: VersionUpdatePriority
-    ) {
-        val dialog =
-            VersionUpdateDialog(versionUpdatePriority, currentVersion, latestVersion)
-        dialog.show(supportFragmentManager, "Dialog")
-
+    private fun goToForceUpdateActivity(title: String, content: String) {
+        lifecycleScope.launch {
+            delay()
+            Intent(this@SplashActivity, ForceUpdateActivity::class.java).apply {
+                putExtra(version, bundleOf(SplashActivity.title to title, SplashActivity.content to content))
+            }.let { intent ->
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in, R.anim.hold)
+                finish()
+            }
+        }
     }
 
     private fun gotoMainActivityOrDelay() {
         lifecycleScope.launch {
-            while (System.currentTimeMillis() - createdTime < 2000) yield()
-
+            delay()
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             overridePendingTransition(R.anim.fade, R.anim.hold)
             finish()
@@ -106,14 +96,7 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun gotoLoginActivityOrDelay() {
-        lifecycleScope.launch {
-            while (System.currentTimeMillis() - createdTime < 2000) yield()
-
-            loginActivityLauncher.launch(Unit)
-            overridePendingTransition(R.anim.fade, R.anim.hold)
-            finish()
-            firebasePerformanceUtil.stop()
-        }
+    private suspend fun delay() {
+        while (System.currentTimeMillis() - createdTime < 2000) yield()
     }
 }
