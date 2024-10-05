@@ -28,6 +28,7 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.LikeActionType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.util.ext.toStringWithComma
@@ -68,6 +69,7 @@ class DiningAdapter(
                     textViewNoPhoto.visibility = View.INVISIBLE
                     imageViewNoPhoto.visibility = View.INVISIBLE
                     imageViewDining.visibility = View.VISIBLE
+
                     Glide.with(context)
                         .load(dining.imageUrl)
                         .listener(object : RequestListener<Drawable> {
@@ -87,6 +89,7 @@ class DiningAdapter(
                                 dataSource: DataSource?,
                                 isFirstResource: Boolean
                             ): Boolean {
+                                binding.lottieImageLoading.pauseAnimation()
                                 binding.lottieImageLoading.visibility = View.GONE
                                 return false
                             }
@@ -106,6 +109,10 @@ class DiningAdapter(
                 } else {
                     cardViewDining.strokeWidth =
                         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
+                    textViewNoPhoto.text = if(TimeUtil.isWeekend(dining.date)) context.getString(
+                        R.string.photo_not_provided_on_weekend
+                    ) else context.getString(R.string.no_photo)
+
                     textViewNoPhoto.visibility = View.VISIBLE
                     imageViewNoPhoto.visibility = View.VISIBLE
                     imageViewDining.visibility = View.INVISIBLE

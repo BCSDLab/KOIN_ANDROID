@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -31,7 +33,12 @@ import `in`.koreatech.business.ui.theme.Gray6
 
 
 @Composable
-fun MenuScreen(verticalOffset: Boolean, currentPage: Int, state: MyStoreDetailState) {
+fun MenuScreen(
+    verticalOffset: Boolean,
+    currentPage: Int,
+    state: MyStoreDetailState,
+    onMenuItemClicked: (Int) -> Unit = {}
+) {
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
         verticalOffset, scrollState.value
@@ -74,15 +81,21 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int, state: MyStoreDetailSt
             }
         }
     }
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(enabled = enabledScroll, state = scrollState)
+            .fillMaxSize(),
+        userScrollEnabled = enabledScroll
     ) {
-
-        state.storeMenu?.forEach {
-            MenuCategories(it)
-            MenuItem(it)
+        state.storeMenu?.let {
+            items(state.storeMenu){
+                MenuCategories(it)
+                MenuItem(
+                    menuList = it,
+                    onMenuClicked = {menuId ->
+                        onMenuItemClicked(menuId)
+                    }
+                )
+            }
         }
     }
 }

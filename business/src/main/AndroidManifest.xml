@@ -3,7 +3,7 @@
     <application
         android:name=".KoinBusinessApplication">
         <activity
-            android:name=".BusinessMainActivity"
+            android:name=".main.BusinessMainActivity"
             android:exported="true"
             android:label="@string/title_activity_business_main"
             android:theme="@style/Theme.KOIN_ANDROID">

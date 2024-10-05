@@ -7,7 +7,7 @@ import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.TextView
-import androidx.activity.addCallback
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -19,16 +19,15 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
-import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailImageViewpagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailViewpagerAdapter
@@ -42,7 +41,7 @@ import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
+class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
     private var storeCurrentTime by Delegates.notNull<Long>()
     private var storeElapsedTime by Delegates.notNull<Long>()
@@ -74,40 +73,33 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
     private val callContract = registerForActivityResult(StoreCallContract()) {}
 
     private val storeMenuAdapter = StoreDetailMenuRecyclerAdapter()
-
-    //    private val storeDetailFlyerRecyclerAdapter = StoreDetailFlyerRecyclerAdapter().apply {
-//        setOnItemClickListener { position, _ ->
-//            flyerDialogFragment = StoreFlyerDialogFragment()
-//            flyerDialogFragment?.initialPosition = position
-//            flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
-//            EventLogger.logClickEvent(
-//                EventAction.BUSINESS,
-//                AnalyticsConstant.Label.SHOP_PICTURE,
-//                viewModel.store.value?.name ?: "Unknown"
-//            )
-//        }
-//    }
+    private val storeDetailFlyerRecyclerAdapter = StoreDetailFlyerRecyclerAdapter().apply {
+        setOnItemClickListener { position, _ ->
+            flyerDialogFragment = StoreFlyerDialogFragment()
+            flyerDialogFragment?.initialPosition = position
+            flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.SHOP_PICTURE,
+                viewModel.store.value?.name ?: "Unknown"
+            )
+        }
+    }
     private val storeDetailViewpagerAdapter = StoreDetailViewpagerAdapter(this)
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        onBackPressedDispatcher.addCallback(this) {
-            intent.putExtra(BACK_ACTION, "swipe")
-            intent.putExtra(ELAPSED_TIME, getElapsedTimeAndReset())
-            intent.putExtra(STORE_NAME, viewModel.store.value?.name)
-            setResult(RESULT_OK, intent)
-            finish()
-        }
-        binding.koinBaseAppbar.setOnClickListener {
+        initViewModel()
+
+
+        binding.koinBaseAppbar.storeDetailClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> {
-                    intent.putExtra(BACK_ACTION, "click")
-                    intent.putExtra(ELAPSED_TIME, getElapsedTimeAndReset())
-                    intent.putExtra(STORE_NAME, viewModel.store.value?.name)
-                    setResult(RESULT_OK, intent)
-                    finish()
+                    storeElapsedTime = System.currentTimeMillis() - storeCurrentTime
+                    isSwipeGesture = false
+                    onBackPressed()
                 }
 
                 AppBarBase.getRightButtonId() -> {
@@ -253,7 +245,6 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
 
     }
 
-
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event?.action == MotionEvent.ACTION_CANCEL) {
             isSwipeGesture = true
@@ -348,8 +339,6 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
 
                 binding.storeDetailImageview.apply {
                     adapter = StoreDetailImageViewpagerAdapter(it.imageUrls) {
-                        ImageZoomableDialog(context, it)
-                            .also { it.show() }
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_PICTURE,
@@ -374,30 +363,29 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
         val category = intent.extras?.getString(StoreDetailActivityContract.CATEGORY)
         storeElapsedTime = System.currentTimeMillis() - storeCurrentTime
         currentPage = "카테고리($category)"
-        if (isSwipeGesture) {
+        if ( isSwipeGesture) {
             EventLogger.logSwipeEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
-                (viewModel.store.value?.name
-                    ?: "Unknown") + ", current_page: " + category + ", duration_time: ${storeElapsedTime / 1000}"
+                (viewModel.store.value?.name ?: "Unknown") + ", current_page: " + category + ", duration_time: ${storeElapsedTime / 1000}"
             )
 
-        } else {
+        }
+        else{
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
-                (viewModel.store.value?.name
-                    ?: "Unknown") + ", current_page: " + category + ", duration_time: ${storeElapsedTime / 1000}"
+                (viewModel.store.value?.name ?: "Unknown") + ", current_page: " + category + ", duration_time: ${storeElapsedTime / 1000}"
             )
         }
 
-        if (currentTab == 2) {
+        if(currentTab == 2){
             reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
                 (viewModel.store.value?.name
-                    ?: "Unknown") + ", previous_page: 리뷰" + ", current_page:" + currentPage + ", duration_time: ${reviewElapsedTime / 1000}"
+                    ?: "Unknown") +", previous_page: 리뷰" +", current_page:" +currentPage+ ", duration_time: ${reviewElapsedTime / 1000}"
             )
         }
         flyerDialogFragment?.dismiss()
