@@ -65,6 +65,7 @@ ossLicensesPluginVersion = "0.10.4"
 ossLicensesVersion = "17.1.0"
 navigation = "2.7.7"
 jsoup = "1.18.1"
+timber = "5.0.1"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -177,6 +178,7 @@ jsoup = {module = "org.jsoup:jsoup", version.ref = "jsoup"}
 oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version.ref = "ossLicensesPluginVersion"}
 oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "ossLicensesVersion"}
 
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
