@@ -134,7 +134,7 @@ fun MyStoreSelectDialog(
 
 @Preview
 @Composable
-fun PreviewMyStoreSelectDialog() {
+private fun PreviewMyStoreSelectDialog() {
     MyStoreSelectDialog(
     )
 }

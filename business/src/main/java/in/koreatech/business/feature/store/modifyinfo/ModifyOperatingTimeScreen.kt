@@ -42,7 +42,6 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ModifyOperatingTimeScreen(
     modifier: Modifier = Modifier,
-    myStoreDetailViewModel: MyStoreDetailViewModel = hiltViewModel(),
     viewModel: ModifyInfoViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
 ) {
