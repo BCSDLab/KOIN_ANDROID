@@ -2,6 +2,7 @@ package `in`.koreatech.koin
 
 import android.app.Application
 import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -19,6 +20,9 @@ class KoinApplication : Application() {
 
     @Inject
     lateinit var tokenRepository: TokenRepository
+
+    @Inject
+    lateinit var crashlytics: FirebaseCrashlytics
 
     override fun onCreate() {
         super.onCreate()
