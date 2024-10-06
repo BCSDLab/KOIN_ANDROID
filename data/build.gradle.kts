@@ -54,5 +54,11 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.dataStore)
 
+    /* Dependency - firebase */
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messsaing)
+
     implementation(libs.jsoup)
+
+    implementation(libs.timber)
 }
