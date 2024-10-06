@@ -1,11 +1,9 @@
 package `in`.koreatech.koin.data.source.remote.firebase.messaging
 
 import com.google.firebase.messaging.FirebaseMessaging
-import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,6 +28,8 @@ class FirebaseMessagingDataSourceImpl @Inject constructor(
         if (token.isNotEmpty() && token != tokenLocalDataSource.getDeviceToken()) {
             tokenLocalDataSource.saveDeviceToken(token)
         }
-        userAuthApi.updateDeviceToken(DeviceTokenRequest(token))
+        if (!tokenLocalDataSource.getAccessToken().isNullOrEmpty()) {
+            userAuthApi.updateDeviceToken(DeviceTokenRequest(token))
+        }
     }
 }
