@@ -65,7 +65,7 @@ fun MyStoreDetailScreen(
     modifyInfoViewModel: ModifyInfoViewModel,
     navigateToLoginScreen: () -> Unit = {},
     navigateToUploadEventScreen: () -> Unit = {},
-    navigateToModifyScreen: () -> Unit = {},
+    navigateToModifyScreen: (Int) -> Unit = {},
     navigateToRegisterStoreScreen: () -> Unit = {},
     navigateToManageMenuScreen: () -> Unit = {},
     navigateToRegisterMenuScreen: (Int) -> Unit = {},
@@ -78,7 +78,6 @@ fun MyStoreDetailScreen(
     val context = LocalContext.current
 
     LaunchedEffect(state.storeInfo) {
-        viewModel.changeMyStoreInfo(storeId = state.storeId)
         modifyInfoViewModel.initStoreInfo(state.storeInfo ?: return@LaunchedEffect)
     }
 
@@ -114,8 +113,8 @@ fun MyStoreDetailScreen(
             }
 
             MyStoreDetailSideEffect.NavigateToUploadEventScreen -> navigateToUploadEventScreen()
-            MyStoreDetailSideEffect.NavigateToModifyScreen -> {
-                navigateToModifyScreen()
+            is MyStoreDetailSideEffect.NavigateToModifyScreen -> {
+                navigateToModifyScreen(it.storeId)
             }
             MyStoreDetailSideEffect.NavigateToRegisterStoreScreen -> navigateToRegisterStoreScreen()
             MyStoreDetailSideEffect.NavigateToManageMenuScreen -> navigateToManageMenuScreen()

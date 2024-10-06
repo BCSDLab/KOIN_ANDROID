@@ -177,11 +177,15 @@ class ModifyInfoViewModel @Inject constructor(
     }
 
     fun modifyStoreInfo(storeId: Int, storeDetailInfo: StoreDetailInfo) {
-        viewModelScope.launch {
-            modifyInfoUseCase.invoke(
-                storeId,
-                storeDetailInfo,
-            )
+        intent {
+            viewModelScope.launch {
+                modifyInfoUseCase.invoke(
+                    storeId,
+                    storeDetailInfo,
+                ).apply {
+                    this ?: postSideEffect(ModifyInfoSideEffect.NavigateToMyStoreScreen)
+                }
+            }
         }
     }
 

@@ -4,6 +4,7 @@ package `in`.koreatech.business.feature.store.storedetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.usecase.business.DeleteOwnerEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopInfoUseCase
@@ -139,6 +140,12 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
+    fun modifyStoreInfo(storeInfo: StoreDetailInfo) = intent {
+        reduce {
+            state.copy(storeInfo = storeInfo)
+        }
+    }
+
     fun changeDialogVisibility() = intent {
         reduce {
             state.copy(
@@ -186,6 +193,21 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
+    fun refreshStoreList() = intent {
+            viewModelScope.launch {
+                getOwnerShopListUseCase()
+                    .onSuccess {
+                        reduce {
+                            state.copy(
+                                storeList = it,
+                            )
+                        }
+                    }.onFailure {
+                        postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
+                    }
+        }
+    }
+
     fun showSelectStoreDialog() = intent{
         reduce {
             state.copy(
@@ -204,7 +226,7 @@ class MyStoreDetailViewModel @Inject constructor(
 
     fun navigateToModifyScreen() = intent {
         if (state.storeId == -1) return@intent
-        postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen)
+        postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen(state.storeId))
     }
 
     fun onManageMenuClicked() = intent {

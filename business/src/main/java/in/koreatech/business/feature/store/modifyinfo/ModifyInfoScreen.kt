@@ -58,6 +58,7 @@ fun ModifyInfoScreen(
     viewModel: ModifyInfoViewModel = hiltViewModel(),
     storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel(),
     onSettingOperatingClicked: () -> Unit = {},
+    onModifyButtonCLicked: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val storeInfoState = storeInfoViewModel.collectAsState().value
@@ -249,7 +250,6 @@ fun ModifyInfoScreen(
                                 storeInfoState.storeId,
                                 state.storeInfo
                             )
-                            viewModel.onBackButtonClicked()
                         },
                         modifier = Modifier
                             .width(130.dp)
@@ -279,7 +279,11 @@ fun ModifyInfoScreen(
         when (it) {
             ModifyInfoSideEffect.NavigateToBackScreen -> onBackClicked()
             ModifyInfoSideEffect.NavigateToSettingOperatingTime -> onSettingOperatingClicked()
-            else -> {}
+            ModifyInfoSideEffect.NavigateToMyStoreScreen -> {
+                storeInfoViewModel.modifyStoreInfo(state.storeInfo)
+                storeInfoViewModel.refreshStoreList()
+                onModifyButtonCLicked()
+            }
         }
     }
 }
