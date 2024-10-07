@@ -36,9 +36,9 @@ class OperatingInfoActivity : AppCompatActivity() {
                 domStorageEnabled = true
             }
             if (BuildConfig.IS_DEBUG)
-                loadUrl(getString(R.string.koreatech_operating_info_url))
+                loadUrl(getString(R.string.koreatech_operating_info_stage_url))
             else
-                loadUrl(getString(R.string.koreatech_operating_info_url)) // TODO : Change to release URL
+                loadUrl(getString(R.string.koreatech_operating_info_production_url))
 
         }
     }
