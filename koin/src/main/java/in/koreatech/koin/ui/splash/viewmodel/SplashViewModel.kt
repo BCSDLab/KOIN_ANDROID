@@ -65,4 +65,8 @@ class SplashViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateLatestVersionName(versionCode: Int) {
+        //
+    }
 }
