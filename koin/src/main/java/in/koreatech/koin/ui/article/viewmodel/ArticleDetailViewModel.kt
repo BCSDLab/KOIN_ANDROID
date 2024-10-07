@@ -8,7 +8,6 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
 import `in`.koreatech.koin.ui.article.ArticleBoardType
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.ArticleState
@@ -25,7 +24,6 @@ class ArticleDetailViewModel @AssistedInject constructor(
     @Assisted("articleId") articleId: Int,
     @Assisted("navigatedBoardId") val navigatedBoardId: Int,
     private val articleRepository: ArticleRepository,
-    fetchHotArticlesUseCase: FetchHotArticlesUseCase,
 ) : BaseViewModel() {
 
     val article: StateFlow<ArticleState> =
@@ -56,7 +54,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
                 )
             )
 
-    val hotArticles: StateFlow<List<ArticleHeaderState>> = fetchHotArticlesUseCase()
+    val hotArticles: StateFlow<List<ArticleHeaderState>> = articleRepository.fetchHotArticleHeaders()
         .map {
             var doesHotContainsThis = false
             it.filterIndexed { index, hotArticleHeader ->
