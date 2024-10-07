@@ -25,7 +25,7 @@ class VersionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrentVersion(): String? {
-        return versionLocalDataSource.getVersion()
+        return versionLocalDataSource.getCurrentVersionName()
     }
 
     override suspend fun getLatestVersionFromRemote(): String {
@@ -36,6 +36,30 @@ class VersionRepositoryImpl @Inject constructor(
         return _latestVersion.value?.also {
             fetchingLatestVersionFromPlayStore()
         }
+    }
+
+    override suspend fun updateLatestVersionCode(versionCode: Int) {
+        versionLocalDataSource.updateLatestVersionCode(versionCode)
+    }
+
+    override suspend fun updateLatestVersionName(versionName: String) {
+        versionLocalDataSource.updateLatestVersionName(versionName)
+    }
+
+    override suspend fun getLatestVersionCode(): Int? {
+        return versionLocalDataSource.getLatestVersionCode()
+    }
+
+    override suspend fun getLatestVersionName(): String? {
+        return versionLocalDataSource.getLatestVersionName()
+    }
+
+    override suspend fun getCurrentVersionCode(): Int? {
+        return versionLocalDataSource.getCurrentVersionCode()
+    }
+
+    override suspend fun getCurrentVersionName(): String? {
+        return versionLocalDataSource.getCurrentVersionName()
     }
 
     private fun fetchingLatestVersionFromPlayStore() {
