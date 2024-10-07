@@ -1,5 +1,16 @@
 package `in`.koreatech.koin.ui.splash
 
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.kakao.sdk.common.KakaoSdk
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.contract.LoginContract
 import `in`.koreatech.koin.core.activity.ActivityBase
@@ -8,20 +19,9 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.ui.main.activity.MainActivity
-import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import androidx.activity.viewModels
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.lifecycleScope
-import com.kakao.sdk.common.KakaoSdk
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 
@@ -51,7 +51,7 @@ class SplashActivity : ActivityBase() {
         firebasePerformanceUtil.start()
         RetrofitManager.getInstance().init()
         UserInfoSharedPreferencesHelper.getInstance().init(applicationContext)
-
+        checkInAppUpdate()
         initViewModel()
     }
 
@@ -93,6 +93,17 @@ class SplashActivity : ActivityBase() {
             VersionUpdateDialog(versionUpdatePriority, currentVersion, latestVersion)
         dialog.show(supportFragmentManager, "Dialog")
 
+    }
+
+    private fun checkInAppUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            // 업데이트가 필요한 상황이거나 최신 버전이라면, 버전 코드 업데이트 진행
+            if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                || appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                splashViewModel.updateLatestVersionName(appUpdateInfo.availableVersionCode())
+            }
+        }
     }
 
     private fun gotoMainActivityOrDelay() {
