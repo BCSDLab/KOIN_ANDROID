@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ActivityOperatingInfoBinding
 
@@ -34,7 +35,11 @@ class OperatingInfoActivity : AppCompatActivity() {
                 javaScriptEnabled = true
                 domStorageEnabled = true
             }
-            loadUrl(getString(R.string.koreatech_operating_info_url))
+            if (BuildConfig.IS_DEBUG)
+                loadUrl(getString(R.string.koreatech_operating_info_url))
+            else
+                loadUrl(getString(R.string.koreatech_operating_info_url)) // TODO : Change to release URL
+
         }
     }
 
