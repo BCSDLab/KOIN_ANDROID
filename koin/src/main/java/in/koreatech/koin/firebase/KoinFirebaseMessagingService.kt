@@ -1,12 +1,15 @@
 package `in`.koreatech.koin.firebase
 
-import android.util.Log
+import android.content.Intent
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import `in`.koreatech.koin.core.notification.Notifier
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
-import `in`.koreatech.koin.domain.repository.NotificationRepository
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
+import `in`.koreatech.koin.ui.scheme.SchemeActivity
+import `in`.koreatech.koin.ui.splash.SplashActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -16,6 +19,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class KoinFirebaseMessagingService : FirebaseMessagingService() {
+    companion object {
+        private const val URL = "url"
+    }
+    @Inject
+    lateinit var notifier: Notifier
+
     @Inject
     lateinit var firebaseMessagingRepository: FirebaseMessagingRepository
 
@@ -40,11 +49,16 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        Timber.e("FirebaseMessaging Received Notification Payload : ${message.notification}")
 
         message.data.let { data ->
             Timber.e("FirebaseMessaging Received Data Payload : $data")
             if (data.isNotEmpty()) {
-
+                val intent = Intent(this, SchemeActivity::class.java).apply {
+                    putExtra(EXTRA_URL, data[URL])
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }
+                notifier.sendNotification(data, intent)
             }
         }
     }
