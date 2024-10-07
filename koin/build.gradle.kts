@@ -74,6 +74,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":core"))
     implementation(project(":core:notification"))
+    implementation(project(":core:navigation"))
     implementation(project(":data"))
     implementation(project(":domain"))
 
