@@ -15,24 +15,20 @@ class UpdateLatestVersionUseCase @Inject constructor(
      *
      *  @since 2024-10-07
      */
-    suspend operator fun invoke(versionCode: Int) {
-        kotlin.runCatching {
-            if(versionCode > 99999 || versionCode < 10000) throw IllegalArgumentException("VersionCode must be in 10000 to 99999| input: ${versionCode}")
+    suspend operator fun invoke(versionCode: Int) = runCatching {
+        if (versionCode > 99999 || versionCode < 10000) throw IllegalArgumentException("VersionCode must be in 10000 to 99999| input: $versionCode")
 
-            var vc = versionCode
+        var vc = versionCode
 
-            val path = vc % 100
-            vc /= 100
-            val minor = vc % 100
-            vc /= 100
-            val major = vc
+        val path = vc % 100
+        vc /= 100
+        val minor = vc % 100
+        vc /= 100
+        val major = vc
 
-            val versionName = listOf(major, minor, path).joinToString(separator = ".")
+        val versionName = listOf(major, minor, path).joinToString(separator = ".")
 
-            versionRepository.updateLatestVersionCode(versionCode)
-            versionRepository.updateLatestVersionName(versionName)
-        }
+        versionRepository.updateLatestVersionCode(versionCode)
+        versionRepository.updateLatestVersionName(versionName)
     }
-
-    private val regex = """^(\d{1}\d{2}\d{2})$""".toRegex()
 }
