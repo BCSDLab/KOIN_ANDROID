@@ -224,7 +224,7 @@
 
                 <data
                     android:host="@string/kakaolink_host"
-                    android:scheme="@string/kakao_scheme" />
+                    android:scheme="${kakaoScheme}" />
             </intent-filter>
         </activity>
         <activity
