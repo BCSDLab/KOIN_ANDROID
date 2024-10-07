@@ -15,15 +15,7 @@ import javax.inject.Inject
 class VersionRepositoryImpl @Inject constructor(
     private val versionLocalDataSource: VersionLocalDataSource,
     private val versionRemoteDataSource: VersionRemoteDataSource,
-    private val coroutineScope: CoroutineScope
 ) : VersionRepository {
-
-    private val _latestVersion: MutableStateFlow<String?> = MutableStateFlow(null)
-
-    init {
-        fetchingLatestVersionFromPlayStore()
-    }
-
     override suspend fun getCurrentVersion(): String? {
         return versionLocalDataSource.getCurrentVersionName()
     }
@@ -31,13 +23,7 @@ class VersionRepositoryImpl @Inject constructor(
     override suspend fun getLatestVersionFromRemote(): String {
         return versionRemoteDataSource.getAndroidAppVersion().version
     }
-
-    override suspend fun getLatestVersionFromPlayStore(): String? {
-        return _latestVersion.value?.also {
-            fetchingLatestVersionFromPlayStore()
-        }
-    }
-
+     
     override suspend fun updateLatestVersionCode(versionCode: Int) {
         versionLocalDataSource.updateLatestVersionCode(versionCode)
     }
@@ -60,13 +46,5 @@ class VersionRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentVersionName(): String? {
         return versionLocalDataSource.getCurrentVersionName()
-    }
-
-    private fun fetchingLatestVersionFromPlayStore() {
-        flow { emit(versionRemoteDataSource.getLatestVersionFromPlayStore()) }
-            .retry(3)
-            .catch { emit(null) }
-            .onEach { _latestVersion.value = it }
-            .launchIn(coroutineScope)
     }
 }
