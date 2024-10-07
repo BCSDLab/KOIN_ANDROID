@@ -73,6 +73,7 @@ dependencies {
     implementation ("androidx.datastore:datastore:1.0.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":core"))
+    implementation(project(":core:notification"))
     implementation(project(":data"))
     implementation(project(":domain"))
 
