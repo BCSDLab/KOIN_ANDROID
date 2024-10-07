@@ -6,7 +6,6 @@ import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
-import `in`.koreatech.koin.domain.model.article.Attachment
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -15,17 +14,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
@@ -57,6 +51,15 @@ class ArticleRepositoryImpl @Inject constructor(
         initialValue = emptyList()
     )
 
+    private val hotArticleHeaders: StateFlow<List<ArticleHeader>> = flow {
+            emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
+        }.stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = listOf()
+        )
+
+
     init {
         user.launchIn(coroutineScope)
     }
@@ -86,9 +89,7 @@ class ArticleRepositoryImpl @Inject constructor(
     }
 
     override fun fetchHotArticleHeaders(): Flow<List<ArticleHeader>> {
-        return flow {
-            emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
-        }
+        return hotArticleHeaders
     }
 
     override fun fetchMyKeyword(): Flow<List<String>> {
