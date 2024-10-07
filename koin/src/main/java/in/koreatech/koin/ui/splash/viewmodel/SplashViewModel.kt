@@ -67,7 +67,7 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    fun updateLatestVersionName(versionCode: Int) {
+    fun updateLatestVersion(versionCode: Int) {
         viewModelScope.launchIgnoreCancellation {
             updateLatestVersionUseCase(versionCode)
                 .onFailure {
