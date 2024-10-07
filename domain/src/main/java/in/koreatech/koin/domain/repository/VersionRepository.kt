@@ -3,7 +3,6 @@ package `in`.koreatech.koin.domain.repository
 interface VersionRepository {
     suspend fun getCurrentVersion(): String?
     suspend fun getLatestVersionFromRemote(): String
-    suspend fun getLatestVersionFromPlayStore(): String?
 
     suspend fun updateLatestVersionCode(versionCode: Int)
     suspend fun updateLatestVersionName(versionName: String)
