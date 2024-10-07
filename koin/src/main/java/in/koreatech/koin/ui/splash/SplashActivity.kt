@@ -11,6 +11,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.contract.LoginContract
 import `in`.koreatech.koin.core.activity.ActivityBase
@@ -101,7 +102,15 @@ class SplashActivity : ActivityBase() {
             // 업데이트가 필요한 상황이거나 최신 버전이라면, 버전 코드 업데이트 진행
             if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 || appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                splashViewModel.updateLatestVersionName(appUpdateInfo.availableVersionCode())
+                splashViewModel.updateLatestVersion(appUpdateInfo.availableVersionCode())
+            }
+        }
+        appUpdateManager.appUpdateInfo.addOnFailureListener { e ->
+            Log.e("dhk", "Fail to get latest app: exception: ${e}")
+
+            // 개발 환경에서는 항상 버전을 불러올 수 없으므로 작업 환경 버전으로 설정
+            if(BuildConfig.DEBUG) {
+                splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
             }
         }
     }
