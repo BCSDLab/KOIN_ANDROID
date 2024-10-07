@@ -2,6 +2,7 @@ package `in`.koreatech.koin.di.network
 
 import android.content.Context
 import android.content.Intent
+import android.net.http.HttpException
 import android.os.Looper
 import androidx.core.os.HandlerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -17,6 +18,7 @@ import `in`.koreatech.koin.util.ext.showToast
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -37,7 +39,7 @@ class AuthAuthenticator @Inject constructor(
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
         mutex.withLock {
             Timber.e("HTTP 401 response : $response")
-            Timber.e("토큰 재발금 요청 시도")
+            Timber.e("토큰 재발급 요청 시도")
             if (response.responseCount() > maxRetry) {
                 deleteUserRefreshTokenUseCase()
                 goToLoginActivity()
@@ -46,12 +48,18 @@ class AuthAuthenticator @Inject constructor(
 
             val currentRefreshToken = tokenLocalDataSource.getRefreshToken() ?: ""
 
-            val newResponse = try {
+            val newResponse = runCatching {
                 userApi.postUserRefresh(RefreshRequest(currentRefreshToken))
-            } catch (e: Exception) {
-                Timber.e("Refresh 재발급 API 호출 에러 : ${e.message}")
-                null
-            }
+            }.onSuccess {
+                if (!it.isSuccessful) {
+                    Timber.e("Refresh API HTTP Exception : $it")
+                    deleteUserRefreshTokenUseCase()
+                    goToLoginActivity()
+                    return@withLock null
+                }
+            }.onFailure {
+                Timber.e("Refresh 재발급 API 호출 에러 : ${it.message}")
+            }.getOrNull()
 
             val tokenBody = newResponse?.body()?.toAuthToken() ?: run {
                 deleteUserRefreshTokenUseCase()
