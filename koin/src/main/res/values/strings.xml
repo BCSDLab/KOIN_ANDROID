@@ -65,7 +65,8 @@
     <string name="koreatech_email_postfix">%1$s\u0040koreatech.ac.kr</string>
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
     <string name="koreatech_url">https://portal.koreatech.ac.kr/</string>
-    <string name="koreatech_operating_info_url">https://stage.koreatech.in/webview/campusinfo</string>
+    <string name="koreatech_operating_info_stage_url">https://stage.koreatech.in/webview/campusinfo</string>
+    <string name="koreatech_operating_info_production_url">https://koreatech.in/webview/campusinfo</string>
     <string name="koreatech_email_url">https://email.koreatech.ac.kr/</string>
 
     <!-- Required value in actionbardrawertoggle -->
