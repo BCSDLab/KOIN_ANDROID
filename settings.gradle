@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 include ':koin', ':core'
 include ':data'
 include ':domain'
+include ':business'
