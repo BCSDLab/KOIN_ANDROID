@@ -20,7 +20,6 @@ class KoinApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        KakaoSdk.init(this, resources.getString(R.string.kakao_app_key))
         Napier.base(DebugAntilog())
         init()
     }
