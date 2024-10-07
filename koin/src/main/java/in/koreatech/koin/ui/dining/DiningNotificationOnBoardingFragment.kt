@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -14,7 +16,9 @@ import `in`.koreatech.koin.databinding.DiningNotificationOnBoardingBottomSheetBi
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.notification.NotificationActivity
+import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
@@ -31,6 +35,7 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.getPermissionInfo()
         return DiningNotificationOnBoardingBottomSheetBinding.inflate(inflater, container, false).also {
             binding = it
         }.root
@@ -39,6 +44,41 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
+            viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                    viewModel.notificationUiState.collect { uiState ->
+                        when (uiState) {
+                            is NotificationUiState.Success -> {
+                                uiState.notificationPermissionInfo.subscribes.forEach {
+                                    when (it.type) {
+
+                                        SubscribesType.DINING_SOLD_OUT -> with(notificationDiningSoldOut) {
+                                            if (isChecked != it.isPermit) {
+                                                fakeChecked = it.isPermit
+                                                isChecked = it.isPermit
+                                            }
+                                        }
+
+                                        SubscribesType.DINING_IMAGE_UPLOAD -> with(notificationSetImageUploadNotification) {
+                                            if (isChecked != it.isPermit) {
+                                                fakeChecked = it.isPermit
+                                                isChecked = it.isPermit
+                                            }
+                                        }
+
+                                        SubscribesType.NOTHING -> Unit
+                                        else -> Unit
+                                    }
+                                }
+                            }
+
+                            is NotificationUiState.Failed -> {}
+                            is NotificationUiState.Nothing -> {}
+                        }
+                    }
+                }
+            }
             btnNavigateToNotificationSetting.setOnClickListener {
                 dismiss()
                 val intent = Intent(requireContext(), NotificationActivity::class.java)
