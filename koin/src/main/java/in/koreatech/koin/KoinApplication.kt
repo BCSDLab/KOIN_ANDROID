@@ -30,5 +30,6 @@ class KoinApplication : Application() {
         ToastUtil.getInstance().init(applicationContext)
         RecentSearchSharedPreference.getInstance().init(applicationContext)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandlerUtil(applicationContext))
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
     }
 }
