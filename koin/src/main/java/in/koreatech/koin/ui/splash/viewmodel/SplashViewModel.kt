@@ -71,7 +71,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launchIgnoreCancellation {
             updateLatestVersionUseCase(versionCode)
                 .onFailure {
-                    Log.d("SplashViewModel", "Fail to update latest version: $versionCode")
+                    Log.d("SplashViewModel", "Fail to update latest version: ${it.message}")
                 }
         }
     }

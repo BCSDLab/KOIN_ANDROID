@@ -99,19 +99,25 @@ class SplashActivity : ActivityBase() {
     private fun checkInAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            // 업데이트가 필요한 상황이거나 최신 버전이라면, 버전 코드 업데이트 진행
-            if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                || appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                splashViewModel.updateLatestVersion(appUpdateInfo.availableVersionCode())
+            when (appUpdateInfo.updateAvailability()) {
+                UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS,
+                UpdateAvailability.UPDATE_AVAILABLE -> {
+                    // 업데이트가 필요한 상황이거나 업데이트 중이라면 최신 버전값 저장
+                    splashViewModel.updateLatestVersion(appUpdateInfo.availableVersionCode())
+                }
+
+                UpdateAvailability.UPDATE_NOT_AVAILABLE,
+                UpdateAvailability.UNKNOWN -> {
+                    // 업데이트 가능 유무를 모르거나, 업데이트가 불가능 한 경우 현재 버전 저장
+                    splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
+                }
             }
         }
-        appUpdateManager.appUpdateInfo.addOnFailureListener { e ->
-            Log.e("dhk", "Fail to get latest app: exception: ${e}")
 
-            // 개발 환경에서는 항상 버전을 불러올 수 없으므로 작업 환경 버전으로 설정
-            if(BuildConfig.DEBUG) {
-                splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
-            }
+        appUpdateManager.appUpdateInfo.addOnFailureListener { e ->
+            // 업데이트 정보를 받아오는데 실패한 경우 현재 버전 저장
+            Log.e("SplashActivity", "Fail to get latest app: exception: ${e}")
+            splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
         }
     }
 
