@@ -58,7 +58,7 @@ fun ModifyInfoScreen(
     viewModel: ModifyInfoViewModel = hiltViewModel(),
     storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel(),
     onSettingOperatingClicked: () -> Unit = {},
-    onModifyButtonCLicked: () -> Unit = {}
+    onModifyButtonClicked: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val storeInfoState = storeInfoViewModel.collectAsState().value
@@ -282,7 +282,7 @@ fun ModifyInfoScreen(
             ModifyInfoSideEffect.NavigateToMyStoreScreen -> {
                 storeInfoViewModel.modifyStoreInfo(state.storeInfo)
                 storeInfoViewModel.refreshStoreList()
-                onModifyButtonCLicked()
+                onModifyButtonClicked()
             }
         }
     }

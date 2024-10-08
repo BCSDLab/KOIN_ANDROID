@@ -69,7 +69,7 @@ fun NavGraphBuilder.myStoreScreen(
                 storeInfoViewModel= myStoreInfoViewModel,
                 onSettingOperatingClicked = { navController.navigate(StoreRoute.SETTING_OPERATING_TIME.name) },
                 onBackClicked = { navController.popBackStack() },
-                onModifyButtonCLicked = {
+                onModifyButtonClicked = {
                     navController.navigate(StoreRoute.MY_STORE.name){
                         popUpTo(StoreRoute.MODIFY_INFO.name){
                             inclusive = true
