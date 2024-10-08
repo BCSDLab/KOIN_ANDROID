@@ -6,9 +6,8 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
-import `in`.koreatech.business.BusinessMainActivity
+import `in`.koreatech.business.main.BusinessMainActivity
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthState
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 
 import kotlinx.coroutines.runBlocking

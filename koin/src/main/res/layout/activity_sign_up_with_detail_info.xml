@@ -50,7 +50,7 @@
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="199dp" />
+            app:layout_constraintGuide_end="630dp" />
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -159,7 +159,7 @@
             android:id="@+id/signup_user_edittext_name"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="61dp"
+            android:layout_marginStart="40dp"
             android:layout_marginEnd="16dp"
             android:imeOptions="actionGo"
             android:inputType="text"
@@ -189,7 +189,6 @@
             android:id="@+id/signup_user_edittext_nick_name"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
             android:imeOptions="actionGo"
             android:inputType="text"
             android:maxLength="10"
@@ -197,7 +196,7 @@
             android:textAppearance="@style/TextAppearance.Koin.Regular.13"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_nickname_textview"
-            app:layout_constraintStart_toEndOf="@id/signup_user_nickname_textview"
+            app:layout_constraintStart_toStartOf="@id/signup_user_edittext_name"
             app:layout_constraintTop_toTopOf="@+id/signup_user_nickname_textview"
             tools:text="anybody" />
 
@@ -244,12 +243,11 @@
             android:id="@+id/signup_user_radiogroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="61dp"
             android:layout_weight="4"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_gender_textview"
-            app:layout_constraintStart_toEndOf="@id/signup_user_gender_textview"
+            app:layout_constraintStart_toStartOf="@id/signup_user_edittext_name"
             app:layout_constraintTop_toTopOf="@+id/signup_user_gender_textview">
 
             <RadioButton
@@ -299,7 +297,6 @@
             android:id="@+id/signup_user_edittext_phone_number"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
             android:layout_marginEnd="16dp"
             android:imeOptions="actionGo"
             android:inputType="number"
@@ -311,7 +308,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_phone_number_textview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/signup_user_phone_number_textview"
+            app:layout_constraintStart_toStartOf="@id/signup_user_edittext_name"
             app:layout_constraintTop_toTopOf="@+id/signup_user_phone_number_textview" />
 
         <TextView
@@ -330,7 +327,6 @@
             android:id="@+id/signup_user_edittext_student_id"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="61dp"
             android:layout_marginEnd="16dp"
             android:imeOptions="actionGo"
             android:inputType="number"
@@ -342,7 +338,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_student_id_textview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/signup_user_student_id_textview"
+            app:layout_constraintStart_toStartOf="@id/signup_user_edittext_name"
             app:layout_constraintTop_toTopOf="@+id/signup_user_student_id_textview" />
 
         <TextView
@@ -352,7 +348,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="26dp"
             android:layout_marginBottom="36dp"
-            android:text="@string/major_title"
+            android:text="@string/signup_major"
             android:textAppearance="@style/TextAppearance.Koin.Regular.15"
             android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@id/signup_user_student_id_textview"
@@ -364,7 +360,6 @@
             android:id="@+id/spinner_signup_user_major"
             android:layout_width="200dp"
             android:layout_height="40dp"
-            android:layout_marginStart="61dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/background_round_square"
             android:gravity="center_vertical"
@@ -376,7 +371,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_major_textview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/signup_user_major_textview"
+            app:layout_constraintStart_toStartOf="@id/signup_user_edittext_name"
             app:layout_constraintTop_toTopOf="@id/signup_user_major_textview"
             app:spinner_arrow_drawable="@drawable/ic_arrow_down_3"
             app:spinner_arrow_gravity="end"
@@ -405,12 +400,11 @@
             android:id="@+id/signup_user_graduate_radiogroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="38dp"
             android:layout_weight="4"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_graduate_textview"
-            app:layout_constraintStart_toEndOf="@id/signup_user_graduate_textview"
+            app:layout_constraintStart_toStartOf="@id/signup_user_edittext_name"
             app:layout_constraintTop_toTopOf="@+id/signup_user_graduate_textview">
 
             <RadioButton
@@ -499,6 +493,6 @@
                 android:textColor="@color/black" />
 
         </LinearLayout>
-`
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -69,6 +69,7 @@ import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.upload.createImageFile
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
@@ -89,48 +90,25 @@ fun ModifyMenuScreen(
         registerMenuState = state,
         imageIndex = state.imageIndex,
         isModify = state.isModify,
-        changeMenuName = {
-            viewModel.changeMenuName(it)
-        },
-        onChangeMenuPrice = {
-            viewModel.changeMenuPrice(it)
-        },
+        changeMenuName = viewModel::changeMenuName,
+        onChangeMenuPrice = viewModel::changeMenuPrice,
         onChangeDetailMenuServing = {
             viewModel.changeDetailMenuServing(it.first, it.second)
         },
         onChangeDetailMenuPrice ={
             viewModel.changeDetailMenuPrice(it.first, it.second)
         } ,
-        onDeleteMenuPrice ={
-            viewModel.deleteMenuPrice(it)
-        },
-        onChangeMenuDetail = {
-            viewModel.changeMenuDetail(it)
-        },
-        addPriceButtonClicked = {
-            viewModel.addPrice()
-        },
-        onMenuCategoryIsClicked = {
-            viewModel.menuCategoryIsClicked(it)
-        },
-        onChangeImage = {
-            viewModel.changeMenuImageUri(it)
-        },
-        onDeleteImage = {
-            viewModel.deleteMenuImageUri(it)
-        },
-        onModifyImage = {
-            viewModel.modifyMenuImageUri(it)
-        },
-        setImageModify = {
-            viewModel.isImageModify(it)
-        },
-        setImageIndex = {
-            viewModel.setImageIndex(it)
-        },
-        onNextButtonClicked = {
-            viewModel.onNextButtonClick()
-        },
+        onDeleteMenuPrice = viewModel::deleteMenuPrice,
+        onChangeMenuDetail = viewModel::changeMenuDetail,
+        addPriceButtonClicked = viewModel::addPrice,
+        onMenuCategoryIsClicked = viewModel::menuCategoryIsClicked,
+        onChangeImage = viewModel::changeMenuImageUri,
+        onDeleteImage = viewModel::deleteMenuImageUri,
+        onModifyImage = viewModel::modifyMenuImageUri,
+        menuImageFromCamera=viewModel::menuImageFromCamera,
+        setImageModify = viewModel::isImageModify,
+        setImageIndex = viewModel::setImageIndex,
+        onNextButtonClicked = viewModel::onNextButtonClick,
     )
     HandleSideEffects(viewModel, goToCheckMenuScreen)
 }
@@ -154,10 +132,12 @@ fun ModifyMenuScreenImpl(
     onChangeImage: (List<Uri>) -> Unit = {},
     onDeleteImage: (Int) -> Unit ={},
     onModifyImage: (String) -> Unit ={},
+    menuImageFromCamera: (String) -> Unit ={},
     setImageModify:(Boolean) -> Unit ={},
     setImageIndex: (Int) -> Unit = {},
     onNextButtonClicked: () -> Unit ={}
 ) {
+    val context = LocalContext.current
     val sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -176,6 +156,18 @@ fun ModifyMenuScreenImpl(
             }
         }
     )
+
+    var takePictureUri: Uri? = null
+
+    val takePhotoFromCameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = {
+            if(it){
+                takePictureUri?.let { uri -> menuImageFromCamera(uri.toString()) }
+            }
+        }
+    )
+
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
@@ -257,6 +249,8 @@ fun ModifyMenuScreenImpl(
                     modifier = Modifier
                         .padding(top = 16.dp, bottom = 48.dp)
                         .clickable {
+                            takePictureUri = createImageFile(context)
+                            takePhotoFromCameraLauncher.launch(takePictureUri)
                             coroutineScope.launch {
                                 sheetState.hide()
                             }
@@ -280,7 +274,7 @@ fun ModifyMenuScreenImpl(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(start = 16.dp),
-                    onClick = { onBackPressed }
+                    onClick = { onBackPressed() }
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_white_arrow_back),
@@ -596,7 +590,7 @@ fun ModifyMenuScreenImpl(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Button(
-                            onClick = {},
+                            onClick = {onBackPressed()},
                             shape = RectangleShape,
                             colors = ButtonDefaults.buttonColors(Color.White),
                             modifier = Modifier

@@ -129,6 +129,11 @@ class ArticleKeywordFragment : Fragment() {
                                 viewModel::deleteKeyword
                             )
                         )
+                    binding.chipGroupSuggestionKeywords.children.forEach { chip ->
+                        if ((chip as Chip).text == keyword) {
+                            chipGroupSuggestionKeywords.removeView(chip)
+                        }
+                    }
                 }
             }
         }
@@ -152,6 +157,7 @@ class ArticleKeywordFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.suggestedKeywords.collect { suggests ->
+                    binding.chipGroupSuggestionKeywords.removeAllViews()
                     suggests.forEach { keyword ->
                         binding.run {
                             if (chipGroupSuggestionKeywords.childCount >= ArticleKeywordViewModel.MAX_SUGGEST_KEYWORD_COUNT)
@@ -306,13 +312,11 @@ class ArticleKeywordFragment : Fragment() {
 
     private fun initKeywordNotification() {
         notificationViewModel.getPermissionInfo()
-        if (requireContext().checkNotificationPermission().not()) {
-            binding.notificationKeyword.disableAll()
-        }
 
         binding.notificationKeyword.setOnSwitchClickListener { isChecked ->
             if (requireContext().checkNotificationPermission().not()) {
                 ToastUtil.getInstance().makeShort(R.string.request_notification_permission)
+                binding.notificationKeyword.isChecked = false
                 return@setOnSwitchClickListener
             }
 
