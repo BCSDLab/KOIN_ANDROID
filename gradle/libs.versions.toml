@@ -2,6 +2,7 @@
 activityComposeVersion = "1.8.2"
 activityKtxVersion = "1.5.0"
 cardviewVersion = "1.0.0"
+featureDeliveryKtxVersion = "2.1.0"
 firebaseBomVersion = "30.1.0"
 fragmentKtxVersion = "1.5.0"
 jetbrainsAnnotationsVersion = "23.0.0"
@@ -18,6 +19,7 @@ firebaseGradleVersion = "2.4.1"
 hiltVersion = "2.50"
 kotlinxCoroutinesAndroidVersion = "1.6.3"
 kotlinxCoroutinesCoreVersion = "1.6.3"
+kotlinxSerializationVersionVersion = "1.6.3"
 laserNativeEditorVersion = "3.0.4"
 leakcanaryAndroidVersion = "2.12"
 lifecycleLivedataKtxVersion = "2.5.1"
@@ -46,9 +48,9 @@ glideVersion = "4.9.0"
 butterknifeVersion = "10.1.0"
 googleServiceVersion = "4.3.14"
 composeNavigationVersion = "2.7.7"
-orbitVersion="7.0.1"
-hiltComposeVersion="1.0.0"
-markermanVersion="2.3.0"
+orbitVersion = "7.0.1"
+hiltComposeVersion = "1.0.0"
+markermanVersion = "2.3.0"
 coilVersion = "2.6.0"
 napier = "2.6.1"
 composeNumberPickerVersion = "1.0.3"
@@ -59,6 +61,8 @@ kakaoShare = "2.11.2"
 lottie = "6.4.0"
 balloon = "1.5.0"
 dataStore = "1.0.0"
+ossLicensesPluginVersion = "0.10.4"
+ossLicensesVersion = "17.1.0"
 navigation = "2.7.7"
 jsoup = "1.18.1"
 
@@ -74,6 +78,7 @@ androidx-runner = { module = "androidx.test:runner", version.ref = "runnerVersio
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 
+feature-delivery-ktx = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "featureDeliveryKtxVersion" }
 napier = {module = "io.github.aakira:napier", version.ref="napier"}
 
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotationsVersion" }
@@ -86,7 +91,7 @@ compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion"}
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion" }
 security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 
 android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradleVersion" }
@@ -107,7 +112,7 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
 firebase-perf = { module = "com.google.firebase:firebase-perf" }
-firebase-messsaing = { module = "com.google.firebase:firebase-messaging"}
+firebase-messsaing = { module = "com.google.firebase:firebase-messaging" }
 firebase-appdistribution-gradle = { module = "com.google.firebase:firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradleVersion" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInjectVersion" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
@@ -115,6 +120,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltV
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion" }
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltVersion" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroidVersion" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationVersionVersion" }
 laser-native-editor = { module = "com.github.irshulx:laser-native-editor", version.ref = "laserNativeEditorVersion" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
 map-sdk = { module = "com.naver.maps:map-sdk", version.ref = "mapSdkVersion" }
@@ -139,28 +145,28 @@ butterknife = { module = "com.jakewharton:butterknife", version.ref = "butterkni
 butterknife-compiler = { module = "com.jakewharton:butterknife-compiler", version.ref = "butterknifeVersion" }
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version = "1.0.0" }
 
-orbit-core = {module= "org.orbit-mvi:orbit-core", version.ref = "orbitVersion"}
-orbit-viewmodel = {module= "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitVersion"}
-orbit-compose = {module= "org.orbit-mvi:orbit-compose", version.ref = "orbitVersion"}
+orbit-core = { module = "org.orbit-mvi:orbit-core", version.ref = "orbitVersion" }
+orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitVersion" }
+orbit-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbitVersion" }
 
-hilt-compose= {module= "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeVersion"}
+hilt-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeVersion" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtoolsVersion" }
 
-markerman-roundedImageView={module= "com.makeramen:roundedimageview", version.ref = "markermanVersion"}
+markerman-roundedImageView = { module = "com.makeramen:roundedimageview", version.ref = "markermanVersion" }
 
-coil ={module = "io.coil-kt:coil", version.ref ="coilVersion"}
-coil-compose = {module = "io.coil-kt:coil-compose", version.ref = "coilVersion"}
-coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
+coil = { module = "io.coil-kt:coil", version.ref = "coilVersion" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilVersion" }
 
-compose-numberPicker = {module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion"}
-powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
+compose-numberPicker = { module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion" }
+powerSpinner = { module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner" }
 
-guava = {module = "com.google.guava:guava", version.ref="guavaVersion"}
-kakao-share = {module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare"}
+guava = { module = "com.google.guava:guava", version.ref = "guavaVersion" }
+kakao-share = { module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare" }
 
-lottie = {module = "com.airbnb.android:lottie", version.ref = "lottie"}
-balloon = {module = "com.github.skydoves:balloon", version.ref = "balloon"}
-dataStore = {module = "androidx.datastore:datastore-preferences", version.ref = "dataStore"}
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
+dataStore = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 
 nav-fragment-ktx = {module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation"}
 nav-ui-ktx = {module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation"}
@@ -168,10 +174,15 @@ nav-dynamic-features-fragment = {module = "androidx.navigation:navigation-dynami
 
 jsoup = {module = "org.jsoup:jsoup", version.ref = "jsoup"}
 
+oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version.ref = "ossLicensesPluginVersion"}
+oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "ossLicensesVersion"}
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradleVersion" }
 google-service = { id = "com.google.gms.google-services", version.ref = "googleServiceVersion" }
@@ -181,8 +192,9 @@ koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
 koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 koin-library = { id = "in.koreatech.plugin.library", version = "unspecified" }
-koin-firebase = {id = "in.koreatech.plugin.firebase", version="unspecified"}
-koin-java = { id = "in.koreatech.plugin.java", version="unspecified" }
+koin-firebase = { id = "in.koreatech.plugin.firebase", version = "unspecified" }
+koin-java = { id = "in.koreatech.plugin.java", version = "unspecified" }
+koin-oss-license = { id = "in.koreatech.plugin.oss", version = "unspecified" }
 
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose", "compose-ui-tooling"]

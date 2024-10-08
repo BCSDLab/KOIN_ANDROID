@@ -11,6 +11,7 @@ import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.ModifyMen
 import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.ModifyMenuScreen
 import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.ModifyMenuViewModel
 import `in`.koreatech.business.navigation.MODIFYMENUSCREEN
+import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -49,6 +50,13 @@ fun NavGraphBuilder.modifyMenuScreen(
                 viewModel = viewModel,
                 onBackPressed = {
                     navController.navigateUp()
+                },
+                goToStoreMainScreen = {
+                    navController.navigate(MYSTORESCREEN){
+                        this.popUpTo(MODIFYMENUSCREEN){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

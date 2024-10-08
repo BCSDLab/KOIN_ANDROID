@@ -77,6 +77,7 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
                             is UiStatus.Success -> {
                                 hideErrors()
                                 startActivity(Intent(requireContext(), UserInfoEditActivity::class.java))
+                                dismiss()
                             }
 
                             is UiStatus.Failed -> {

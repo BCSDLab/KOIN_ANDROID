@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
@@ -14,6 +15,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -38,6 +40,19 @@ class UserRepositoryImpl @Inject constructor(
         return AuthToken(authResponse.token, authResponse.refreshToken)
     }
 
+    override fun ownerTokenIsValid(): Boolean {
+        return runBlocking{
+            try {
+                userRemoteDataSource.ownerTokenIsValid()
+                true
+            } catch (e: HttpException){
+                if (e.code() == 401) false
+                else throw e
+            }
+
+        }
+    }
+
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser().also {
             userLocalDataSource.updateUserInfo(it)
@@ -55,6 +70,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun deleteUser() {
         try {
             userRemoteDataSource.deleteUser()
+            userLocalDataSource.updateUserInfo(User.Anonymous)
+            userLocalDataSource.updateIsLogin(false)
             tokenLocalDataSource.removeAccessToken()
             tokenLocalDataSource.removeRefreshToken()
         } catch (e: HttpException) {
@@ -108,5 +125,14 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun verifyPassword(hashedPassword: String) {
         userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
+    }
+
+    override suspend fun updateUserPassword(user: User, hashedPassword: String) {
+        when (user) {
+            User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
+            is User.Student -> {
+                userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
+            }
+        }
     }
 }

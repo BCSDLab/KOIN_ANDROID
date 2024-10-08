@@ -2,12 +2,20 @@ package `in`.koreatech.koin.domain.util
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 object TimeUtil {
     private val simpleDateFormat = SimpleDateFormat()
     fun getCurrentTime(): Date {
         return Calendar.getInstance().time
+    }
+
+    fun isWeekend(dateString: String): Boolean {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val date = LocalDate.parse(dateString, formatter)
+        return date.dayOfWeek.value == 6 || date.dayOfWeek.value == 7
     }
 
     fun getNextDayDate(date: Date): Date {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterMenuViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getMenuCategoryUseCase : GetMenuCategoryUseCase,
     private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
@@ -34,19 +36,19 @@ class RegisterMenuViewModel @Inject constructor(
 ): ViewModel(), ContainerHost<RegisterMenuState, RegisterMenuSideEffect> {
     override val container = container<RegisterMenuState,RegisterMenuSideEffect>(RegisterMenuState())
 
-
+    private val storeId: Int = checkNotNull(savedStateHandle["storeId"])
     init {
-        getStoreMenuCategory()
+        getStoreMenuCategory(storeId)
         addDefaultImage()
     }
 
-    private fun getStoreMenuCategory(){
+    private fun getStoreMenuCategory(storeId: Int){
         intent {
             viewModelScope.launch {
-                val storeId = 163 //Todo: 임시 변수 이므로 수정 필요
                 val menuCategory = getMenuCategoryUseCase(storeId)
                 reduce {
                     state.copy(
+                        storeId = storeId,
                         menuCategory = menuCategory
                     )
                 }
@@ -108,7 +110,7 @@ class RegisterMenuViewModel @Inject constructor(
         intent {
             viewModelScope.launch{
                     registerMenuUseCase(
-                        storeId = state.shopId,
+                        storeId = state.storeId,
                         menuCategoryId = state.menuCategoryId,
                         description = state.description,
                         menuImageUrlList = state.imageUrlList,
@@ -183,6 +185,21 @@ class RegisterMenuViewModel @Inject constructor(
         intent {
             val newMenuUriList = state.imageUriList.toMutableList()
             newMenuUriList[state.imageIndex] = modifyUri
+            reduce {
+                state.copy(
+                    imageUriList = newMenuUriList
+                )
+            }
+        }
+    }
+
+    fun menuImageFromCamera(imageUri: Uri) {
+        intent {
+            val newMenuUriList = state.imageUriList.toMutableList()
+            newMenuUriList[state.imageIndex] = imageUri
+
+            if(newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(Uri.EMPTY)
+
             reduce {
                 state.copy(
                     imageUriList = newMenuUriList
