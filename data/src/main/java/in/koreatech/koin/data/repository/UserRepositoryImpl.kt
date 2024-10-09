@@ -132,6 +132,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun postABTestAssign(title: String): ABTest {
         userRemoteDataSource.postABTestAssign(ABTestRequest(title)).let {
             return ABTest(it.variableName, it.accessHistoryId)
+        }
+    }
     override suspend fun updateUserPassword(user: User, hashedPassword: String) {
         when (user) {
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
