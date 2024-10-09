@@ -237,7 +237,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     positionOffset: Float,
                     positionOffsetPixels: Int
                 ) {
-
                 }
 
                 override fun onPageSelected(position: Int) {

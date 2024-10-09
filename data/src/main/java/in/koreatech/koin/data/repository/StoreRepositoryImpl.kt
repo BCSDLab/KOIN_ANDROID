@@ -8,12 +8,17 @@ import `in`.koreatech.koin.data.mapper.toStoreEvent
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreReview
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
+import `in`.koreatech.koin.data.mapper.toStoreBenefitCategory
 import `in`.koreatech.koin.data.request.user.ReviewRequest
+import `in`.koreatech.koin.data.response.store.BenefitCategoryResponse
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.store.BenefitCategory
+import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreBenefit
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
@@ -138,5 +143,14 @@ class StoreRepositoryImpl @Inject constructor(
         catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override suspend fun getStoreBenefitShopList(uid: Int): StoreBenefit {
+        storeRemoteDataSource.getStoreBenefitShopList(uid).apply {
+            return StoreBenefit(count?:0, shops?.map { it.toStore() } ?: emptyList())
+        }
+    }
+    override suspend fun getStoreBenefitCategories() : BenefitCategoryList {
+        return storeRemoteDataSource.getStoreBenefitCategories().toStoreBenefitCategory()
     }
 }
