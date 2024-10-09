@@ -35,18 +35,16 @@ class SplashViewModel @Inject constructor(
 
     fun checkUpdate() {
         viewModelScope.launchIgnoreCancellation {
-            getVersionInformationUseCase()
-                .onSuccess {
-                    _version.value = it
-                    if (!(it.versionUpdatePriority is VersionUpdatePriority.High ||
-                                it.versionUpdatePriority is VersionUpdatePriority.Medium)
-                    ) {
+                getVersionInformationUseCase()
+                    .onSuccess {
+                        _version.value = it
+                        if (isVersionPriorityNone(it.versionUpdatePriority)) {
+                            checkToken()
+                        }
+                    }.onFailure {
+                        _checkVersionError.value = it
                         checkToken()
                     }
-                }.onFailure {
-                    _checkVersionError.value = it
-                    checkToken()
-                }
 
         }
     }
@@ -65,6 +63,13 @@ class SplashViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun isVersionPriorityNone(priority: VersionUpdatePriority): Boolean {
+        if (priority == VersionUpdatePriority.None) {
+            return true
+        }
+        return false
     }
 
     fun updateLatestVersion(versionCode: Int) {

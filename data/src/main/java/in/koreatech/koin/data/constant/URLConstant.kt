@@ -14,7 +14,7 @@ object URLConstant {
     const val OWNER_URL_PRODUCTION = "https://owner.koreatech.in/"
 
     const val ADMIN = "admin/"
-    const val VERSION = "versions"
+    const val VERSION = "version"
     const val FAQ = "faqs"
     const val LECTURE = "lectures"
     const val TIMETABLE = "timetable"
