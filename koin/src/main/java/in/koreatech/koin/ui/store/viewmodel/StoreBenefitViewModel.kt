@@ -51,4 +51,5 @@ class StoreBenefitViewModel @Inject constructor(
         getStoreBenefitShopList(id)
     }
 
+    fun getCategoryTitle() = _storeBenefitCategories.value.benefitCategories[_categoryId.value - 1].title
 }

@@ -160,6 +160,14 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             gotoStoreActivity(0)
         }
         callBenefitStoreListButton.setOnClickListener{
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                "전화주문혜택",
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+            )
             val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
             startActivity(intent)
         }
