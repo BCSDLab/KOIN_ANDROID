@@ -15,27 +15,25 @@ class GetVersionInformationUseCase @Inject constructor(
             return Result.failure(t)
         } ?: return Result.failure(NullPointerException("Failed to load application version: null"))
 
-        val latestVersion = try {
+        val version = try {
             versionRepository.getLatestVersionFromRemote()
         } catch (t: Throwable) {
             return Result.failure(t)
         }
 
-        return kotlin.runCatching {
-            val (currentMajor, currentMinor, currentPoint) = currentVersion.split(".")
+        return runCatching {
+            val (currentMajor, currentMinor, currentPath) = currentVersion.split(".")
                 .map { it.toInt() }
-            val (latestMajor, latestMinor, latestPoint) = latestVersion.split(".")
+            val (latestMajor, latestMinor, latestPath) = version.latestVersion.split(".")
                 .map { it.toInt() }
 
             when {
-                currentMajor < latestMajor ->
-                    Version(currentVersion, latestVersion, VersionUpdatePriority.High)
-                currentMajor == latestMajor && currentMinor < latestMinor ->
-                    Version(currentVersion, latestVersion, VersionUpdatePriority.Medium)
-                currentMajor == latestMajor && currentMinor == latestMinor && currentPoint < latestPoint ->
-                    Version(currentVersion, latestVersion, VersionUpdatePriority.Low)
+                currentMajor < latestMajor ||
+                currentMajor == latestMajor && currentMinor < latestMinor ||
+                currentMajor == latestMajor && currentMinor == latestMinor && currentPath < latestPath ->
+                    Version(currentVersion, version.latestVersion, version.title, version.content, VersionUpdatePriority.Importance)
                 else ->
-                    Version(currentVersion, latestVersion, VersionUpdatePriority.None)
+                    Version(currentVersion, version.latestVersion, version.title, version.content, VersionUpdatePriority.None)
             }
         }
     }
