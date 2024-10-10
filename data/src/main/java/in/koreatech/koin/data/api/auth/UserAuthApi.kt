@@ -29,7 +29,7 @@ interface UserAuthApi {
     suspend fun putUser(@Body userRequest: UserRequest): UserResponse
 
     @DELETE(URLConstant.USER.USER)
-    suspend fun deleteUser()
+    suspend fun deleteUser(): Response<Unit?>
 
     @GET(URLConstant.USER.CHECKNICKNAME + "/{nickname}")
     suspend fun checkNickName(): UserInfoEditResponse
@@ -71,21 +71,21 @@ interface UserAuthApi {
     suspend fun deleteReview(
         @Path("reviewId") reviewId: Int,
         @Path("shopId") shopId: Int,
-    ):Response<Unit?>
+    ): Response<Unit?>
 
     @PUT("/shops/{shopId}/reviews/{reviewId}")
     suspend fun modifyReview(
         @Path("reviewId") reviewId: Int,
         @Path("shopId") shopId: Int,
         @Body reviewRequest: ReviewRequest,
-    ):Response<Unit?>
+    ): Response<Unit?>
 
-    @POST(URLConstant.SHOPS.SHOPS +"/{storeId}" + "/reviews" + "/{reviewId}" + "/reports")
+    @POST(URLConstant.SHOPS.SHOPS + "/{storeId}" + "/reviews" + "/{reviewId}" + "/reports")
     suspend fun postStoreReviewReports(
         @Path("storeId") storeId: Int,
         @Path("reviewId") reviewId: Int,
         @Body storeReviewReportsRequest: StoreReviewReportsRequest
-    ):Response<Unit?>
+    ): Response<Unit?>
 
     @GET(URLConstant.OWNER.OWNER)
     suspend fun getOwnerTokenIsValid()
