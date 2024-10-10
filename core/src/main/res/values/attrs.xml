@@ -22,7 +22,7 @@
         <attr name="rightButtonTextColor" format="reference|color" />
         <attr name="rightButtonHeight" format="reference|dimension" />
         <attr name="rightButtonWidth" format="reference|dimension" />
-        <attr name="rightButtonVisibility" >
+        <attr name="rightButtonVisibility">
             <enum name="visible" value="0x00000000" />
             <enum name="invisible" value="0x00000004" />
             <enum name="gone" value="0x00000008" />
@@ -32,30 +32,47 @@
     </declare-styleable>
 
     <declare-styleable name="Typekit">
-        <attr name="fontName" format="string"/>
+        <attr name="fontName" format="string" />
     </declare-styleable>
-    
+
     <declare-styleable name="TimetableView">
-        <attr name="rowCount" format="integer"/>
-        <attr name="columnCount" format="integer"/>
-        <attr name="cellHeight" format="dimension"/>
-        <attr name="sideCellWidth" format="dimension"/>
-        <attr name="headerTitle" format="reference"/>
-        <attr name="stickerColors" format="reference"/>
-        <attr name="startTime" format="integer"/>
-        <attr name="headerHighlightColor" format="color"/>
-        <attr name="headerHeight" format="dimension"/>
-        <attr name="marginBottom" format="dimension"/>
-        <attr name="activateTimebar" format="boolean"/>
+        <attr name="rowCount" format="integer" />
+        <attr name="columnCount" format="integer" />
+        <attr name="cellHeight" format="dimension" />
+        <attr name="sideCellWidth" format="dimension" />
+        <attr name="headerTitle" format="reference" />
+        <attr name="stickerColors" format="reference" />
+        <attr name="startTime" format="integer" />
+        <attr name="headerHighlightColor" format="color" />
+        <attr name="headerHeight" format="dimension" />
+        <attr name="marginBottom" format="dimension" />
+        <attr name="activateTimebar" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="Notification">
-        <attr name="text" format="reference|string"/>
-        <attr name="description" format="reference|string"/>
-        <attr name="paddingTop" format="dimension"/>
-        <attr name="paddingBottom" format="dimension"/>
-        <attr name="paddingStart" format="dimension"/>
-        <attr name="paddingEnd" format="dimension"/>
+        <attr name="text" format="reference|string" />
+        <attr name="description" format="reference|string" />
+        <attr name="paddingTop" format="dimension" />
+        <attr name="paddingBottom" format="dimension" />
+        <attr name="paddingStart" format="dimension" />
+        <attr name="paddingEnd" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="SettingView">
+        <attr name="headText" format="reference|string" />
+        <attr name="headTextAppearance" format="reference" />
+        <attr name="labelType" format="enum">
+            <enum name="none" value="-1" />
+            <enum name="text" value="0" />
+            <enum name="image" value="1" />
+        </attr>
+        <attr name="labelText" format="reference|string" />
+        <attr name="labelTextAppearance" format="reference" />
+        <attr name="labelImage" format="reference|color" />
+        <attr name="paddingVertical" format="dimension" />
+        <attr name="paddingHorizontal" format="dimension" />
+        <attr name="enableDivider" format="boolean" />
+        <attr name="dividerColor" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="StarRatingBar">

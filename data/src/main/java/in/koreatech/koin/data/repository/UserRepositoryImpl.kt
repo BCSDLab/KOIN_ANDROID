@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
@@ -128,6 +129,14 @@ class UserRepositoryImpl @Inject constructor(
         userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
     }
 
+    override suspend fun updateUserPassword(user: User, hashedPassword: String) {
+        when (user) {
+            User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
+            is User.Student -> {
+                userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
+            }
+        }
+    }
     override suspend fun postABTestAssign(title: String): ABTest {
         userRemoteDataSource.postABTestAssign(ABTestRequest(title)).let {
             return ABTest(it.variableName, it.accessHistoryId)

@@ -1,14 +1,10 @@
 package `in`.koreatech.koin.ui.notification
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,20 +15,18 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
+import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class NotificationActivity : KoinNavigationDrawerActivity() {
-    override val menuState: MenuState = MenuState.Notification
+class NotificationActivity : ActivityBase() {
     override val screenTitle: String = "알림"
     private val binding by dataBinding<ActivityNotificationBinding>(R.layout.activity_notification)
     private val viewModel: NotificationViewModel by viewModels()
@@ -99,7 +93,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                                         if (isChecked != it.isPermit) {
                                             fakeChecked = it.isPermit
                                             isChecked = it.isPermit
-                                            updateDiningSoldOutVisibility (it.isPermit)
+                                            updateDiningSoldOutVisibility(it.isPermit)
                                         }
                                     }
 
@@ -174,7 +168,6 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
         binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
-
     }
 
     private fun subscribeDetailNotification() {

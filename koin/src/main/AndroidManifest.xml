@@ -67,8 +67,11 @@
             <action android:name="android.intent.action.MAIN" />
         </intent-filter>
         </activity>
-        
 
+
+        <activity android:name=".ui.forceupdate.ForceUpdateActivity"
+            android:exported="false"
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.notification.NotificationActivity"
             android:exported="false"
@@ -221,7 +224,7 @@
             android:name=".ui.dining.DiningNoticeActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar"/>
+            android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.bus.BusActivity"
             android:exported="false"
@@ -284,6 +287,27 @@
             android:exported="false"
             android:label="회원가입 완료"
             android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:exported="false"
+            android:label="설정"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.changepassword.ChangePasswordActivity"
+            android:exported="false"
+            android:label="비밀번호 변경"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.term.TermActivity"
+            android:exported="false"
+            android:label="약관"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/KAPTheme.License" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/KAPTheme.License" />
     </application>
 
 </manifest>
