@@ -1,27 +1,29 @@
 package `in`.koreatech.koin.ui.store.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.viewModels
-import androidx.core.view.isGone
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.ActivityCallBenefitStoreMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreSorter
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreBenefitRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreEventPagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
@@ -32,13 +34,15 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
-class CallBenefitStoreActivity : ActivityBase() {
+class CallBenefitStoreActivity : KoinNavigationDrawerActivity() {
     override val screenTitle: String
         get() = "전화주문혜택"
     private val binding: ActivityCallBenefitStoreMainBinding by dataBinding<ActivityCallBenefitStoreMainBinding>(
         R.layout.activity_call_benefit_store_main
     )
+    override val menuState: MenuState = MenuState.StoreBenefit
     private val viewModel by viewModels<StoreViewModel>()
     private val benefitViewModel by viewModels<StoreBenefitViewModel>()
     private val viewPagerHandler = Handler(Looper.getMainLooper())
@@ -86,6 +90,14 @@ class CallBenefitStoreActivity : ActivityBase() {
 
     private fun initView() {
         with(binding) {
+
+            koinBaseAppbar.setOnClickListener {
+                when(it.id) {
+                    AppBarBase.getLeftButtonId() -> finish()
+                    AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+                }
+            }
+
             storeRecyclerview.apply {
                 layoutManager = LinearLayoutManager(this@CallBenefitStoreActivity)
                 adapter = storeAdapter
@@ -94,7 +106,7 @@ class CallBenefitStoreActivity : ActivityBase() {
                 adapter = benefitAdapter
             }
 
-            eventViewPager.apply {
+          /*  eventViewPager.apply {
                 currentItem = Int.MAX_VALUE / 2
                 adapter = storeEventPagerAdapter
                 addItemDecoration(
@@ -116,7 +128,7 @@ class CallBenefitStoreActivity : ActivityBase() {
                         }
                     }
                 })
-            }
+            }*/
         }
     }
 
@@ -157,7 +169,7 @@ class CallBenefitStoreActivity : ActivityBase() {
         }
         observeLiveData(viewModel.storeEvents) {
             storeEventPagerAdapter.submitList(it)
-            binding.eventViewPager.isGone = it.isNullOrEmpty()
+         //   binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
         viewModel.settingStoreSorter(StoreSorter.NONE)
     }
@@ -181,6 +193,7 @@ class CallBenefitStoreActivity : ActivityBase() {
         viewModel.refreshStores()
         super.onRestart()
     }
+/*
 
     private val runnable = object : Runnable {
         override fun run() {
@@ -197,6 +210,6 @@ class CallBenefitStoreActivity : ActivityBase() {
     private fun startAutoScroll() {
         viewPagerHandler.removeCallbacks(runnable)
         viewPagerHandler.postDelayed(runnable, viewPagerDelayTime)
-    }
+    }*/
 
 }

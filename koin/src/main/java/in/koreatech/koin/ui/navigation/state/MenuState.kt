@@ -5,6 +5,7 @@ sealed class MenuState {
     data object Setting: MenuState()
     data object LoginOrLogout: MenuState()
     data object Store: MenuState()
+    data object StoreBenefit: MenuState()
     data object Bus: MenuState()
     data object Dining: MenuState()
     data object Timetable: MenuState()
