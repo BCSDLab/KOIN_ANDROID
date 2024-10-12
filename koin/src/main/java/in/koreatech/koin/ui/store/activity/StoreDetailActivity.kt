@@ -114,6 +114,23 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                         viewModel.store.value?.name ?: "Unknown",
                         EventExtra(AnalyticsConstant.DURATION_TIME, {dialogElapsedTime / 1000}.toString())
                     )
+
+                    if(intent.extras?.getBoolean(StoreDetailActivityContract.IS_BENEFIT) == true){
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.BENEFIT_SHOP_CALL,
+                            viewModel.store.value?.name ?: "Unknown",
+                            EventExtra(AnalyticsConstant.DURATION_TIME, "${dialogElapsedTime / 1000}")
+                        )
+                    }
+                    else{
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CALL,
+                            (viewModel.store.value?.name
+                                ?: "Unknown") + ", duration_time: ${dialogElapsedTime / 1000}"
+                        )
+                    }
                     if (currentTab == 2) {// 리뷰탭에서 전화누르기까지 시간
 
                         EventLogger.logClickEvent(
