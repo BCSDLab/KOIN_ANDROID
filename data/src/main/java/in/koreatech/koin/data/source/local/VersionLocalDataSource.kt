@@ -10,11 +10,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import java.io.IOException
 import javax.inject.Inject
 
@@ -50,7 +47,7 @@ class VersionLocalDataSource @Inject constructor(
             .catch { if (it is IOException) emit(emptyPreferences()) else throw it }
             .map { pref ->
                 pref[KEY_LATEST_VERSION_CODE]
-            }.first()
+            }.firstOrNull()
     }
 
     suspend fun getLatestVersionName(): String? {
@@ -58,7 +55,7 @@ class VersionLocalDataSource @Inject constructor(
             .catch { if (it is IOException) emit(emptyPreferences()) else throw it }
             .map { pref ->
                 pref[KEY_LATEST_VERSION_NAME]
-            }.first()
+            }.firstOrNull()
     }
 
     // 이후 버전 코드가 2^31 이상이 되는 경우 개선
