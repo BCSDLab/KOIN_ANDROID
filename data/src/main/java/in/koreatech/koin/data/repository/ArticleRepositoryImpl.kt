@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
@@ -44,7 +45,8 @@ class ArticleRepositoryImpl @Inject constructor(
             initialValue = User.Anonymous
         )
 
-    private val _myKeywords = MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
+    private val _myKeywords =
+        MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
     private val myKeywords = _myKeywords.stateIn(
         scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -52,21 +54,30 @@ class ArticleRepositoryImpl @Inject constructor(
     )
 
     private val hotArticleHeaders: StateFlow<List<ArticleHeader>> = flow {
-            emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
-        }.stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = listOf()
-        )
+        emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
+    }.catch {
+        emit(emptyList())
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = listOf()
+    )
 
 
     init {
         user.launchIn(coroutineScope)
     }
 
-    override fun fetchArticlePagination(boardId: Int, page: Int, limit: Int): Flow<ArticlePagination> {
+    override fun fetchArticlePagination(
+        boardId: Int,
+        page: Int,
+        limit: Int
+    ): Flow<ArticlePagination> {
         return flow {
-            emit(articleRemoteDataSource.fetchArticlePagination(boardId, page, limit).toArticlePagination())
+            emit(
+                articleRemoteDataSource.fetchArticlePagination(boardId, page, limit)
+                    .toArticlePagination()
+            )
         }
     }
 
@@ -145,7 +156,10 @@ class ArticleRepositoryImpl @Inject constructor(
         limit: Int
     ): Flow<ArticlePagination> {
         return flow {
-            emit(articleRemoteDataSource.fetchSearchedArticles(query, boardId, page, limit).toArticlePagination())
+            emit(
+                articleRemoteDataSource.fetchSearchedArticles(query, boardId, page, limit)
+                    .toArticlePagination()
+            )
         }
     }
 
