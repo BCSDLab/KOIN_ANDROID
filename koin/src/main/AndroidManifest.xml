@@ -36,6 +36,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
         <activity
+            android:name=".ui.store.activity.CallBenefitStoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.article.ArticleActivity"
             android:exported="true"
             android:launchMode="singleTop"

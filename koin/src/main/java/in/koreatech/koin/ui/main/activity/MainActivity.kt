@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
@@ -153,6 +155,22 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initView() = with(binding) {
+
+        storeListButton.setOnClickListener {
+            gotoStoreActivity(0)
+        }
+        callBenefitStoreListButton.setOnClickListener{
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                "전화주문혜택",
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+            )
+            val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
+            startActivity(intent)
+        }
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
         }
@@ -255,6 +273,22 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         diningTooltip.showAlignRight(binding.textViewDiningTitle)
                         viewModel.updateShouldShowDiningTooltip(false)
                     }
+                }
+            }
+        }
+        observeLiveData(variableName){
+            when(viewModel.variableName.value){
+                "A" -> {
+                    binding.storeButtonLayout.visibility= View.GONE
+                    binding.recyclerViewStoreCategory.visibility= View.VISIBLE
+                }
+                "B" -> {
+                    binding.storeButtonLayout.visibility= View.VISIBLE
+                    binding.recyclerViewStoreCategory.visibility= View.GONE
+                }
+                else -> {
+                    binding.storeButtonLayout.visibility= View.GONE
+                    binding.recyclerViewStoreCategory.visibility= View.VISIBLE
                 }
             }
         }
