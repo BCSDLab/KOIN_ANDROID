@@ -78,4 +78,9 @@
     <declare-styleable name="StarRatingBar">
         <attr name="customAttribute" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="WhiteToolbar">
+        <attr name="title" format="reference|string"/>
+        <attr name="navigationIconEnabled" format="boolean"/>
+    </declare-styleable>
 </resources>
