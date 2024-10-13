@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import `in`.koreatech.convention.implementation
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.koin.compose)
@@ -10,6 +11,9 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
 android {
     namespace = "in.koreatech.koin"
 
@@ -18,6 +22,7 @@ android {
         versionCode = rootProject.extra["versionCode"] as Int
         versionName = rootProject.extra["versionName"].toString()
         manifestPlaceholders["naverMapKey"] = getPropertyKey("navermap_key")
+        manifestPlaceholders["kakaoScheme"] = "kakao" + getPropertyKey("kakao_native_app_key")
     }
 
     signingConfigs {
@@ -37,6 +42,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
             buildConfigField("Boolean", "IS_DEBUG", "true")
+            buildConfigField("String", "KAKAO_NATIVE_APP_KEY", localProperties["kakao_native_app_key"].toString())
             firebaseCrashlytics {
                 mappingFileUploadEnabled = false
             }
@@ -107,7 +113,6 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.balloon)
     implementation(libs.dataStore)
-    implementation(libs.dataStore.preferences)
 
     implementation(libs.nav.fragment.ktx)
     implementation(libs.nav.ui.ktx)

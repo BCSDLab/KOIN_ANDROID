@@ -59,7 +59,7 @@ class GetBusTimerUseCase @Inject constructor(
                                         ) { count = 0L }
                                     },
                                     nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                    nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                    nextBusArrivalTime = busArrivalInfo.nextBusArrivalTime,
                                     criteria = busArrivalInfo.criteria,
                                     busNumber = busArrivalInfo.busNumber
                                 )
@@ -82,7 +82,7 @@ class GetBusTimerUseCase @Inject constructor(
                                             ) { count = 0L }
                                         },
                                         nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                        nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                        nextBusArrivalTime = busArrivalInfo.nextBusArrivalTime,
                                         criteria = busArrivalInfo.criteria
                                     )
 
@@ -105,7 +105,7 @@ class GetBusTimerUseCase @Inject constructor(
                                             ) { count = 0L }
                                         },
                                         nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                        nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                        nextBusArrivalTime = busArrivalInfo.nextBusArrivalTime,
                                         criteria = busArrivalInfo.criteria
                                     )
                                 is BusArrivalInfo.CommutingBusArrivalInfo -> null

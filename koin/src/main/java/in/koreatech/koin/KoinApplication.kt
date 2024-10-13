@@ -20,7 +20,6 @@ class KoinApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        KakaoSdk.init(this, resources.getString(R.string.kakao_app_key))
         Napier.base(DebugAntilog())
         init()
     }
@@ -30,5 +29,6 @@ class KoinApplication : Application() {
         ToastUtil.getInstance().init(applicationContext)
         RecentSearchSharedPreference.getInstance().init(applicationContext)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandlerUtil(applicationContext))
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
     }
 }
