@@ -7,10 +7,10 @@ class GetLatestVersionUseCase @Inject constructor(
     private val versionRepository: VersionRepository
 ) {
     suspend operator fun invoke(): Result<Pair<String, String>> = runCatching {
-        val currentVersion = versionRepository.getCurrentVersion()
+        val currentVersion = versionRepository.getCurrentVersionName()
             ?: return Result.failure(NullPointerException("Failed to load client application version"))
 
-        val latestVersion = versionRepository.getLatestVersionFromPlayStore()
+        val latestVersion = versionRepository.getLatestVersionName()
             ?: return Result.failure(NullPointerException("Failed to load latest application version"))
 
         currentVersion to latestVersion
