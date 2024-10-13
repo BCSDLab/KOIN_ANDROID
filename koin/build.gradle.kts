@@ -42,7 +42,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
             buildConfigField("Boolean", "IS_DEBUG", "true")
-            buildConfigField("String", "KAKAO_NATIVE_APP_KEY", localProperties["kakao_native_app_key"].toString())
+            buildConfigField(
+                "String",
+                "KAKAO_NATIVE_APP_KEY",
+                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
+            )
             firebaseCrashlytics {
                 mappingFileUploadEnabled = false
             }
@@ -55,6 +59,11 @@ android {
             )
             buildConfigField("Boolean", "IS_DEBUG", "false")
             signingConfig = signingConfigs.getByName("release")
+            buildConfigField(
+                "String",
+                "KAKAO_NATIVE_APP_KEY",
+                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
+            )
             firebaseAppDistribution {
                 artifactType = "AAB"
                 releaseNotes = "${rootProject.extra["versionName"]} release"
