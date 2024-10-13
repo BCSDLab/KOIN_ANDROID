@@ -75,9 +75,6 @@ fun getPropertyKey(propertyKey: String): String {
 }
 
 dependencies {
-    implementation ("androidx.datastore:datastore-preferences:1.0.0") // 버전은 최신 버전으로 변경해주세요.
-
-    implementation ("androidx.datastore:datastore:1.0.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":core"))
     implementation(project(":data"))
@@ -97,6 +94,11 @@ dependencies {
     /* Dependency - naver api */
     implementation(libs.map.sdk)
 
+    /* Dependency -google play core */
+    implementation(libs.inApp.update)
+    implementation(libs.inApp.update.ktx)
+    implementation(libs.feature.delivery.ktx)
+
     // https://github.com/irshuLx/Android-WYSIWYG-Editor
     implementation(libs.laser.native.editor)
     implementation(libs.colorpicker)
@@ -115,6 +117,4 @@ dependencies {
     implementation(libs.nav.fragment.ktx)
     implementation(libs.nav.ui.ktx)
     implementation(libs.nav.dynamic.features.fragment)
-
-    implementation(libs.feature.delivery.ktx)
 }
