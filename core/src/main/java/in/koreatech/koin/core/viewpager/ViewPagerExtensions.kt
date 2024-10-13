@@ -3,6 +3,7 @@ package `in`.koreatech.koin.core.viewpager
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 
 fun ViewPager2.enableAutoScroll(lifecycleOwner: LifecycleOwner, interval: Long) {
 
@@ -39,7 +40,7 @@ fun ViewPager2.enableAutoScroll(lifecycleOwner: LifecycleOwner, interval: Long) 
  * 페이지가 스크롤되었을 때 호출, (TabLayout 연동 시 탭 클릭에 의한 스크롤에는 호출 X)
  */
 fun ViewPager2.addOnPageScrollListener(lifecycleOwner: LifecycleOwner, action: (Int) -> Unit) {
-    val callback = object : ViewPager2.OnPageChangeCallback() {
+    val callback = object : OnPageChangeCallback() {
         var isUserScrolling = false
         override fun onPageScrollStateChanged(state: Int) {
             super.onPageScrollStateChanged(state)
@@ -53,14 +54,17 @@ fun ViewPager2.addOnPageScrollListener(lifecycleOwner: LifecycleOwner, action: (
             }
         }
     }
+    addOnPageChangedListener(lifecycleOwner, callback)
+}
+
+fun ViewPager2.addOnPageChangedListener(lifecycleOwner: LifecycleOwner, onPageChangeCallback: OnPageChangeCallback) {
     lifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
         override fun onResume(owner: LifecycleOwner) {
-            super.onResume(owner)
-            registerOnPageChangeCallback(callback)
+            registerOnPageChangeCallback(onPageChangeCallback)
         }
+
         override fun onPause(owner: LifecycleOwner) {
-            super.onPause(owner)
-            unregisterOnPageChangeCallback(callback)
+            unregisterOnPageChangeCallback(onPageChangeCallback)
         }
     })
 }
