@@ -51,7 +51,6 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -72,7 +71,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private val hotArticleAdapter = HotArticleAdapter(
         onClick = {
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
+                data =
+                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
             }
             startActivity(intent)
         }
@@ -322,8 +322,18 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 )
                 startActivity(intent)
             }
+
             SchemeType.DINING.type -> {
                 val intent = navigator.navigateToDinging(
+                    context = this,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
+
+            SchemeType.ARTICLE.type -> {
+                val intent = navigator.navigateToArticle(
                     context = this,
                     targetId = Pair(EXTRA_ID, targetId),
                     type = Pair(EXTRA_TYPE, type),
