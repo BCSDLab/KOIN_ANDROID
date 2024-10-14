@@ -65,7 +65,7 @@ class ArticleListFragment : Fragment() {
                         AnalyticsConstant.Label.NOTICE_TAB,
                         it.text.toString()
                     )
-                    viewModel.setCurrentBoard(BoardType.entries[it.position])
+                    viewModel.setCurrentBoard(ArticleBoardType.entries[it.position])
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -160,7 +160,7 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun addCategoryTabs() {
-        BoardType.entries.forEach {
+        ArticleBoardType.entries.forEach {
             binding.tabLayoutArticleBoard.addTab(binding.tabLayoutArticleBoard.newTab().apply {
                 id = View.generateViewId()
                 text = getString(it.simpleKoreanName)
@@ -284,7 +284,7 @@ class ArticleListFragment : Fragment() {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.currentBoard.collect { board ->
-                        binding.tabLayoutArticleBoard.getTabAt(BoardType.entries.indexOf(board))?.select()
+                        binding.tabLayoutArticleBoard.getTabAt(ArticleBoardType.entries.indexOf(board))?.select()
                     }
                 }
             }

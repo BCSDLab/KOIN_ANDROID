@@ -1,4 +1,6 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.koin.compose)
@@ -9,6 +11,9 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
 android {
     namespace = "in.koreatech.koin"
 
@@ -17,6 +22,7 @@ android {
         versionCode = rootProject.extra["versionCode"] as Int
         versionName = rootProject.extra["versionName"].toString()
         manifestPlaceholders["naverMapKey"] = getPropertyKey("navermap_key")
+        manifestPlaceholders["kakaoScheme"] = "kakao" + getPropertyKey("kakao_native_app_key")
     }
 
     signingConfigs {
@@ -36,6 +42,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
             buildConfigField("Boolean", "IS_DEBUG", "true")
+            buildConfigField(
+                "String",
+                "KAKAO_NATIVE_APP_KEY",
+                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
+            )
             firebaseCrashlytics {
                 mappingFileUploadEnabled = false
             }
@@ -48,6 +59,11 @@ android {
             )
             buildConfigField("Boolean", "IS_DEBUG", "false")
             signingConfig = signingConfigs.getByName("release")
+            buildConfigField(
+                "String",
+                "KAKAO_NATIVE_APP_KEY",
+                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
+            )
             firebaseAppDistribution {
                 artifactType = "AAB"
                 releaseNotes = "${rootProject.extra["versionName"]} release"
@@ -68,9 +84,6 @@ fun getPropertyKey(propertyKey: String): String {
 }
 
 dependencies {
-    implementation ("androidx.datastore:datastore-preferences:1.0.0") // 버전은 최신 버전으로 변경해주세요.
-
-    implementation ("androidx.datastore:datastore:1.0.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":core"))
     implementation(project(":data"))
@@ -90,6 +103,11 @@ dependencies {
     /* Dependency - naver api */
     implementation(libs.map.sdk)
 
+    /* Dependency -google play core */
+    implementation(libs.inApp.update)
+    implementation(libs.inApp.update.ktx)
+    implementation(libs.feature.delivery.ktx)
+
     // https://github.com/irshuLx/Android-WYSIWYG-Editor
     implementation(libs.laser.native.editor)
     implementation(libs.colorpicker)
@@ -108,6 +126,4 @@ dependencies {
     implementation(libs.nav.fragment.ktx)
     implementation(libs.nav.ui.ktx)
     implementation(libs.nav.dynamic.features.fragment)
-
-    implementation(libs.feature.delivery.ktx)
 }
