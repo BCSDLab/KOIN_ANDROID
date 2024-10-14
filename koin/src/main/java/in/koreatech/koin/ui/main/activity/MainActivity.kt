@@ -44,6 +44,7 @@ import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_
 import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.ui.bus.BusActivity
+import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
@@ -279,14 +280,32 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(variableName){
             when(viewModel.variableName.value){
                 "A" -> {
+                    EventLogger.logCustomEvent(
+                        action = "A/B_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
                     binding.storeButtonLayout.visibility= View.GONE
                     binding.recyclerViewStoreCategory.visibility= View.VISIBLE
                 }
                 "B" -> {
+                    EventLogger.logCustomEvent(
+                        action = "A/B_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택O"
+                    )
                     binding.storeButtonLayout.visibility= View.VISIBLE
                     binding.recyclerViewStoreCategory.visibility= View.GONE
                 }
                 else -> {
+                    EventLogger.logCustomEvent(
+                        action = "A/B_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
                     binding.storeButtonLayout.visibility= View.GONE
                     binding.recyclerViewStoreCategory.visibility= View.VISIBLE
                 }
