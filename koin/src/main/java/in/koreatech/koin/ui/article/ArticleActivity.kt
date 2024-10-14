@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.article
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.os.bundleOf
@@ -52,21 +53,37 @@ class ArticleActivity : ActivityBase() {
         navigateToDetailFragment()
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        navigateToArticleDetail(intent)
+        super.onNewIntent(intent)
+    }
+
     // 지정된 프래그먼트로 이동 (extra로 전달받은 경우에만)
     private fun navigateToDetailFragment() {
         val uri = intent.data
         val link = uri?.getQueryParameter("fragment")   // 내부에서만 사용하는 딥링크
 
-        navigateToArticleDetail()
+        navigateToArticleDetail(intent)
 
-        when {
-            link == "article_keyword" -> navController.navigate(R.id.articleKeywordFragment)    // See ArticleKeywordFragment, LoginActivity
+        when (link) {
+            "article_keyword" -> navController.navigate(R.id.articleKeywordFragment)    // See ArticleKeywordFragment, LoginActivity
+            "article_detail" -> {
+                val articleId = uri.getQueryParameter("article_id")?.toIntOrNull() ?: 0
+                val boardId = uri.getQueryParameter("board_id")?.toIntOrNull() ?: 0
+                navController.navigate(
+                    R.id.articleDetailFragment,
+                    bundleOf(
+                        ARTICLE_ID to articleId,
+                        NAVIGATED_BOARD_ID to boardId
+                    )
+                )
+            }
         }
     }
 
     // 키워드 알림 전용
-    private fun navigateToArticleDetail() {
-        intent.getIntExtra(EXTRA_ID, -1).let {
+    private fun navigateToArticleDetail(mIntent: Intent?) {
+        mIntent?.getIntExtra(EXTRA_ID, -1).let {
             Timber.d("article id : $it")
             if (it == -1) return
 
