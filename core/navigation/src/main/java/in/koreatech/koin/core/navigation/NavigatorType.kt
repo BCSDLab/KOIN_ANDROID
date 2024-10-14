@@ -9,5 +9,5 @@ enum class NavigatorType(
 enum class SchemeType(
     val type: String
 ) {
-    SHOP("shop"), DINING("dining")
+    SHOP("shop"), DINING("dining"), ARTICLE("KEYWORD")
 }
