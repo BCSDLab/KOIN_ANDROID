@@ -73,7 +73,7 @@ class SchemeActivity : ActivityBase() {
                 NavigatorType.MAIN -> {
                     val intent = navigator.navigateToSplash(
                         context = this,
-                        targetId = Pair(EXTRA_ID, ""),
+                        targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
                         type = Pair(EXTRA_TYPE, url?.toHost()),
                         navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
                     )
@@ -85,7 +85,7 @@ class SchemeActivity : ActivityBase() {
                         SchemeType.SHOP.type -> {
                             val intent = navigator.navigateToShop(
                                 context = this,
-                                targetId = Pair(EXTRA_ID, ""),
+                                targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
                                 type = Pair(EXTRA_TYPE, host)
                             )
                             navigateToActivity(intent)
@@ -103,10 +103,7 @@ class SchemeActivity : ActivityBase() {
                         SchemeType.ARTICLE.type -> {
                             val intent = navigator.navigateToArticle(
                                 context = this,
-                                targetId = Pair(
-                                    EXTRA_ID,
-                                    url.substringAfterLast("=").toLongOrNull()
-                                ),
+                                targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
                                 type = Pair(EXTRA_TYPE, host)
                             )
                             navigateToActivity(intent)
@@ -125,6 +122,10 @@ class SchemeActivity : ActivityBase() {
                 }
             }
         }
+    }
+
+    private fun getIdFromUrl(url: String): Int {
+        return url.substringAfterLast("=").toIntOrNull() ?: -1
     }
 
     private fun navigateToActivity(intent: Intent) {

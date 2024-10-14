@@ -23,7 +23,6 @@ import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -102,7 +101,7 @@ class SplashActivity : ActivityBase() {
     }
 
     private fun gotoMainActivityOrDelay() {
-        val targetId = intent.getStringExtra(EXTRA_ID) ?: ""
+        val targetId = intent.getIntExtra(EXTRA_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
         val navType = intent.getStringExtra(EXTRA_NAV_TYPE) ?: ""
 
