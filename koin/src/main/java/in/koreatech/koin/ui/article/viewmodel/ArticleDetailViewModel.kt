@@ -7,13 +7,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.article.html.HtmlTag
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
 import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.ArticleState
-import `in`.koreatech.koin.ui.article.state.HtmlElement
 import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.toArticleState
 import kotlinx.coroutines.flow.SharingStarted
@@ -64,7 +62,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
             it.filterIndexed { index, hotArticleHeader ->
                 if (articleId == hotArticleHeader.id)
                     doesHotContainsThis = true
-                articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if(doesHotContainsThis) 1 else 0)
+                articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if (doesHotContainsThis) 1 else 0)
             }.map { it.toArticleHeaderState() }
         }.stateIn(
             scope = viewModelScope,

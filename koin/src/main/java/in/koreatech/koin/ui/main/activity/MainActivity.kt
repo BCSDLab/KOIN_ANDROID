@@ -310,7 +310,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun handleIntent() {
-        val targetId = intent.getStringExtra(EXTRA_ID)?.toIntOrNull() ?: -1
+        val targetId = intent.getIntExtra(EXTRA_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
         when (type) {
