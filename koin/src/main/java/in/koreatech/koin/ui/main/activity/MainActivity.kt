@@ -21,6 +21,7 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.abtest.ABTestConstants.BENEFIT_STORE
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
@@ -155,7 +156,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initView() = with(binding) {
-
+        viewModel.postABTestAssign(BENEFIT_STORE.experimentTitle)
         storeListButton.setOnClickListener {
             gotoStoreActivity(0)
         }
@@ -268,13 +269,15 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
             }
         }
+        binding.recyclerViewStoreCategory.visibility= View.GONE
+        binding.storeButtonLayout.visibility= View.VISIBLE
         observeLiveData(variableName){
             when(viewModel.variableName.value){
-                "A" -> {
+                BENEFIT_STORE.getGroup("A") -> {
                     binding.storeButtonLayout.visibility= View.GONE
                     binding.recyclerViewStoreCategory.visibility= View.VISIBLE
                 }
-                "B" -> {
+                BENEFIT_STORE.getGroup("B") -> {
                     binding.storeButtonLayout.visibility= View.VISIBLE
                     binding.recyclerViewStoreCategory.visibility= View.GONE
                 }
