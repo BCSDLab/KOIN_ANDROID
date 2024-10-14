@@ -130,6 +130,26 @@
             app:layout_constraintTop_toBottomOf="@id/navi_item_dining" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_operating_information"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/navigation_item_koreatech_operating_information"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_dining" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_operating_information" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/navi_item_timetable"
             android:layout_width="0dp"
             android:layout_height="56dp"
@@ -139,7 +159,7 @@
             android:textAppearance="@style/TextAppearance.Koin.Regular.16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/navi_item_dining" />
+            app:layout_constraintTop_toBottomOf="@id/navi_item_operating_information" />
 
         <View
             android:layout_width="0dp"
