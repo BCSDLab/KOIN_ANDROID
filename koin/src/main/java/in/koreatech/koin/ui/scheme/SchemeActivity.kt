@@ -90,6 +90,7 @@ class SchemeActivity : ActivityBase() {
                             )
                             navigateToActivity(intent)
                         }
+
                         SchemeType.DINING.type -> {
                             val intent = navigator.navigateToDinging(
                                 context = this,
@@ -98,6 +99,19 @@ class SchemeActivity : ActivityBase() {
                             )
                             navigateToActivity(intent)
                         }
+
+                        SchemeType.ARTICLE.type -> {
+                            val intent = navigator.navigateToArticle(
+                                context = this,
+                                targetId = Pair(
+                                    EXTRA_ID,
+                                    url.substringAfterLast("=").toLongOrNull()
+                                ),
+                                type = Pair(EXTRA_TYPE, host)
+                            )
+                            navigateToActivity(intent)
+                        }
+
                         else -> {
                             val intent = navigator.navigateToMain(context = this)
                             navigateToActivity(intent)
