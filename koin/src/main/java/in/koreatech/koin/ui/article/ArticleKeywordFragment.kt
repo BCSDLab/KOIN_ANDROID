@@ -164,19 +164,22 @@ class ArticleKeywordFragment : Fragment() {
                                 return@forEach
 
                             if (viewModel.myKeywords.value.contains(keyword).not()) {
+                                val onClick: (String) -> Unit = {
+                                    EventLogger.logClickEvent(
+                                        EventAction.CAMPUS,
+                                        AnalyticsConstant.Label.RECOMMENDED_KEYWORD,
+                                        keyword
+                                    )
+                                    viewModel.addKeyword(it)
+                                }
                                 chipGroupSuggestionKeywords.addView(
                                     createChip(
                                         keyword,
                                         R.drawable.ic_add_round,
-                                        binding.chipGroupSuggestionKeywords
-                                    ) {
-                                        EventLogger.logClickEvent(
-                                            EventAction.CAMPUS,
-                                            AnalyticsConstant.Label.RECOMMENDED_KEYWORD,
-                                            keyword
-                                        )
-                                        viewModel.addKeyword(it)
-                                    }
+                                        binding.chipGroupSuggestionKeywords,
+                                        onCloseIconClicked = onClick,
+                                        onClick = onClick
+                                    )
                                 )
                             }
                         }
@@ -190,7 +193,8 @@ class ArticleKeywordFragment : Fragment() {
         text: String,
         @DrawableRes icon: Int,
         root: ViewGroup,
-        onCloseIconClicked: (String) -> Unit
+        onCloseIconClicked: (String) -> Unit = {},
+        onClick: (String) -> Unit = {}
     ): Chip {
         val chip = layoutInflater.inflate(R.layout.chip_layout, root, false) as Chip
         return chip.apply {
@@ -199,6 +203,7 @@ class ArticleKeywordFragment : Fragment() {
             isCheckable = false
             isCloseIconVisible = true
             setCloseIconResource(icon)
+            setOnClickListener { onClick(text) }
             setOnCloseIconClickListener {
                 onCloseIconClicked(text)
             }

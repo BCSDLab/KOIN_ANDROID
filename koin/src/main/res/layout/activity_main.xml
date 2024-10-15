@@ -82,7 +82,6 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="20dp"
                                 android:layout_marginTop="24dp">
 
                                 <TextView
@@ -91,6 +90,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/title_article"
                                     android:textColor="@color/colorPrimary"
+                                    android:layout_marginStart="20dp"
                                     android:textSize="15sp"
                                     android:textStyle="bold"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -101,6 +101,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="더보기"
+                                    android:layout_marginEnd="20dp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     android:textColor="@color/neutral_500"
                                     android:textSize="14sp"
@@ -159,6 +160,96 @@
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
+                        <LinearLayout
+                            android:id="@+id/store_button_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/store_list_button"
+                                android:layout_width="166dp"
+                                android:layout_height="64dp">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:background="@drawable/bg_rect_white_radius_8dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/store_image"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:src="@drawable/ic_shop"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        android:layout_marginStart="28dp"/>
+
+                                    <TextView
+                                        android:id="@+id/store_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
+                                        android:text="상점 목록"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="16sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        android:layout_marginEnd="28dp"
+                                        app:layout_constraintStart_toEndOf="@id/store_image"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <android.widget.Space
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.6" />
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/call_benefit_store_list_button"
+                                android:layout_width="166dp"
+                                android:layout_height="64dp">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:background="@drawable/bg_rect_white_radius_8dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/call_benefit_image"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_marginStart="12dp"
+                                        android:src="@drawable/ic_call_benefit"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <TextView
+                                        android:id="@+id/call_benefit_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginEnd="12dp"
+                                        android:text="전화 주문 혜택"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="16sp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/call_benefit_image"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.cardview.widget.CardView>
+
+                        </LinearLayout>
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/recycler_view_store_category"
                                 android:layout_width="match_parent"

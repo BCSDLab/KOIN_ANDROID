@@ -13,6 +13,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.appbar.ToolbarMenu
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.util.dataBinding
@@ -99,24 +100,25 @@ class ArticleActivity : ActivityBase() {
 
     private fun setToolbar(state: ArticleToolbarState) {
         binding.toolbarArticleList.apply {
-            title = getString(state.title)
-            menu.clear()
-            state.menuRes?.let { inflateMenu(it) }
-            setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.action_search_article -> {
-                        EventLogger.logClickEvent(
-                            EventAction.CAMPUS,
-                            AnalyticsConstant.Label.NOTICE_SEARCH,
-                            getString(R.string.search)
-                        )
-                        navController.navigate(R.id.action_articleListFragment_to_articleSearchFragment)
-                        true
+            setOnNavigationIconClickListener { finish() }
+            setTitle(getString(state.title))
+            setMenus(ToolbarMenu(
+                menuRes = state.menuRes,
+                onClick = { itemId ->
+                    when (itemId) {
+                        R.id.action_search_article -> {
+                            EventLogger.logClickEvent(
+                                EventAction.CAMPUS,
+                                AnalyticsConstant.Label.NOTICE_SEARCH,
+                                getString(R.string.search)
+                            )
+                            navController.navigate(R.id.action_articleListFragment_to_articleSearchFragment)
+                        }
                     }
 
                     else -> false
                 }
-            }
+            ))
         }
     }
 

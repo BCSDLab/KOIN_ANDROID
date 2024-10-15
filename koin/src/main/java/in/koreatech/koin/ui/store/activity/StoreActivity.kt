@@ -73,7 +73,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         setOnItemClickListener {
             storeElapsedTime = System.currentTimeMillis() - currentTime
 
-            storeDetailContract.launch(Pair(it.uid, getStoreCategoryName(viewModel.category.value)))
+            storeDetailContract.launch(Triple(it.uid, getStoreCategoryName(viewModel.category.value), false))
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CLICK,
@@ -92,7 +92,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
                 it.shopName
             )
-            storeDetailContract.launch(Pair(it.shopId, getStoreCategoryName(viewModel.category.value)))
+            storeDetailContract.launch(Triple(it.shopId, getStoreCategoryName(viewModel.category.value), false))
         }
     }
 
@@ -237,7 +237,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     positionOffset: Float,
                     positionOffsetPixels: Int
                 ) {
-
                 }
 
                 override fun onPageSelected(position: Int) {

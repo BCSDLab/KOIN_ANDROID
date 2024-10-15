@@ -26,7 +26,6 @@ class KoinApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        KakaoSdk.init(this, resources.getString(R.string.kakao_app_key))
         Napier.base(DebugAntilog())
         init()
     }
@@ -37,6 +36,7 @@ class KoinApplication : Application() {
         RecentSearchSharedPreference.getInstance().init(applicationContext)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandlerUtil(applicationContext))
         initTimber()
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
     }
 
     private fun initTimber() {

@@ -9,15 +9,11 @@
         android:layout_height="match_parent"
         tools:context=".ui.article.ArticleActivity">
 
-        <Toolbar
+        <in.koreatech.koin.core.appbar.WhiteToolbar
             android:id="@+id/toolbar_article_list"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="4dp"
-            android:theme="@style/WhiteToolbarIconTheme"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="@string/app_name" />
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_article_fragment"
