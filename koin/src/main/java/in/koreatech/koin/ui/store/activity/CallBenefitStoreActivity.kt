@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -22,6 +24,7 @@ import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.ActivityCallBenefitStoreMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreSorter
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreBenefitRecyclerAdapter
@@ -36,7 +39,8 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class CallBenefitStoreActivity : KoinNavigationDrawerActivity() {
+class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
+    override val menuState = MenuState.BenefitStore
     override val screenTitle: String
         get() = "전화주문혜택"
     private val binding: ActivityCallBenefitStoreMainBinding by dataBinding<ActivityCallBenefitStoreMainBinding>(
@@ -51,27 +55,47 @@ class CallBenefitStoreActivity : KoinNavigationDrawerActivity() {
     }
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
-            storeDetailContract.launch(Pair(it.uid, getStoreCategoryName(StoreCategory.All)))
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.BENEFIT_SHOP_CLICK,
+                it.name,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, benefitViewModel.getCategoryTitle()),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+            )
+            storeDetailContract.launch(Triple(it.uid, getStoreCategoryName(StoreCategory.All), true))
         }
     }
     private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
         setOnItemClickListener {
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
+                AnalyticsConstant.Label.BENEFIT_SHOP_CATEGORIES_EVENT,
                 it.shopName
             )
             storeDetailContract.launch(
-                Pair(
+                Triple(
                     it.shopId,
-                    getStoreCategoryName(viewModel.category.value)
+                    getStoreCategoryName(viewModel.category.value),
+                    false
                 )
             )
         }
     }
     private val benefitAdapter = StoreBenefitRecyclerAdapter(
         onItemClick = {
+
+            var previousCategory = benefitViewModel.getCategoryTitle()
             benefitViewModel.setCategoryId(it)
+
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.BENEFIT_SHOP_CATEGORIES,
+                benefitViewModel.getCategoryTitle(),
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousCategory),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, benefitViewModel.getCategoryTitle()),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+            )
         },
         getPosition = {
             binding.benefitDescription.text =
@@ -174,7 +198,7 @@ class CallBenefitStoreActivity : KoinNavigationDrawerActivity() {
         viewModel.settingStoreSorter(StoreSorter.NONE)
     }
 
-    fun getStoreCategoryName(category: StoreCategory?): String {
+    private fun getStoreCategoryName(category: StoreCategory?): String {
         return when (category) {
             StoreCategory.Chicken -> getString(R.string.chicken)
             StoreCategory.Pizza -> getString(R.string.pizza)
