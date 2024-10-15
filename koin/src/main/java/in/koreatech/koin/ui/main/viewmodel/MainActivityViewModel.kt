@@ -78,14 +78,11 @@ class MainActivityViewModel @Inject constructor(
         updateDining()
         getStoreCategories()
         getShouldShowDiningTooltip()
-        postABTestAssign("benefitPage")
-    }
 
-    private fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
+    }
+    fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
         abTestUseCase(title).onSuccess {
             _variableName.value = it
-        }.onFailure { error ->
-            _errorToast.value = error.message
         }
     }
 
