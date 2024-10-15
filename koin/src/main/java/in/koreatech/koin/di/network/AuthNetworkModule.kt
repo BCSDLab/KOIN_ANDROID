@@ -59,11 +59,12 @@ object AuthNetworkModule {
     @Provides
     @Singleton
     fun provideRefreshInterceptor(
+        @ApplicationContext context: Context,
         tokenLocalDataSource: TokenLocalDataSource,
         updateUserRefreshTokenUseCase: UpdateUserRefreshTokenUseCase,
         deleteUserRefreshTokenUseCase: DeleteUserRefreshTokenUseCase,
         userApi: UserApi,
-    ): Authenticator = AuthAuthenticator(tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
+    ): Authenticator = AuthAuthenticator(context, tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
 
 
     @Auth

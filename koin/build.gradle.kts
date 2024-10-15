@@ -86,6 +86,8 @@ fun getPropertyKey(propertyKey: String): String {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":core"))
+    implementation(project(":core:notification"))
+    implementation(project(":core:navigation"))
     implementation(project(":data"))
     implementation(project(":domain"))
 
@@ -126,4 +128,8 @@ dependencies {
     implementation(libs.nav.fragment.ktx)
     implementation(libs.nav.ui.ktx)
     implementation(libs.nav.dynamic.features.fragment)
+
+    implementation(libs.feature.delivery.ktx)
+
+    implementation(libs.timber)
 }

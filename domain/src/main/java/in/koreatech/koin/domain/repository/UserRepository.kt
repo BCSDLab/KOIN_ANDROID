@@ -24,7 +24,6 @@ interface UserRepository {
     suspend fun isUsernameDuplicated(nickname: String): Boolean
     suspend fun isUserEmailDuplicated(email: String): Boolean
     suspend fun updateUser(user: User)
-    suspend fun updateDeviceToken(token: String)
     suspend fun deleteDeviceToken()
     suspend fun verifyPassword(hashedPassword: String)
     suspend fun updateUserPassword(user: User, hashedPassword: String)

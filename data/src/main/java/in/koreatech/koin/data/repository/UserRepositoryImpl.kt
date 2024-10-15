@@ -111,15 +111,6 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateDeviceToken(token: String) {
-        if (tokenLocalDataSource.getDeviceToken()
-                .isNullOrEmpty() || (tokenLocalDataSource.getDeviceToken() != token && token.isNotEmpty())
-        ) {
-            tokenLocalDataSource.saveDeviceToken(token)
-            userRemoteDataSource.updateDeviceToken(token)
-        }
-    }
-
     override suspend fun deleteDeviceToken() {
         tokenLocalDataSource.removeDeviceToken()
         userRemoteDataSource.deleteDeviceToken()
