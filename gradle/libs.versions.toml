@@ -2,6 +2,7 @@
 activityComposeVersion = "1.8.2"
 activityKtxVersion = "1.5.0"
 cardviewVersion = "1.0.0"
+inAppUpdateVersion = "2.1.0"
 featureDeliveryKtxVersion = "2.1.0"
 firebaseBomVersion = "32.5.0"
 fragmentKtxVersion = "1.5.0"
@@ -67,6 +68,7 @@ navigation = "2.7.7"
 jsoup = "1.18.1"
 timber = "5.0.1"
 
+
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardviewVersion" }
@@ -79,7 +81,13 @@ androidx-runner = { module = "androidx.test:runner", version.ref = "runnerVersio
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 
+
+# Google Play Core
+inApp-update = { group = "com.google.android.play", name = "app-update", version.ref = "inAppUpdateVersion" }
+inApp-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "inAppUpdateVersion" }
 feature-delivery-ktx = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "featureDeliveryKtxVersion" }
+
+
 napier = {module = "io.github.aakira:napier", version.ref="napier"}
 
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotationsVersion" }
@@ -167,7 +175,9 @@ kakao-share = { module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare" }
 
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
-dataStore = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
+
+dataStore = { module = "androidx.datastore:datastore", version.ref = "dataStore" }
+dataStore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 
 nav-fragment-ktx = {module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation"}
 nav-ui-ktx = {module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation"}

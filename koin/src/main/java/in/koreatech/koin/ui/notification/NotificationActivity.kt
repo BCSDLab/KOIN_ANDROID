@@ -61,6 +61,7 @@ class NotificationActivity : ActivityBase() {
             notificationDiningSoldOut.isEnabled = true
             notificationShopEvent.isEnabled = true
             notificationDiningImageUpload.isEnabled = true
+            notificationArticleKeyword.isEnabled = true
         }
     }
 
@@ -71,6 +72,7 @@ class NotificationActivity : ActivityBase() {
             notificationDiningSoldOut.disableAll()
             notificationShopEvent.disableAll()
             notificationDiningImageUpload.disableAll()
+            notificationArticleKeyword.disableAll()
         }
     }
 
@@ -104,6 +106,12 @@ class NotificationActivity : ActivityBase() {
                                         }
                                     }
 
+                                    SubscribesType.ARTICLE_KEYWORD -> with(binding.notificationArticleKeyword) {
+                                        if (isChecked != it.isPermit) {
+                                            fakeChecked = it.isPermit
+                                            isChecked = it.isPermit
+                                        }
+                                    }
                                     SubscribesType.NOTHING -> Unit
                                     else -> Unit
                                 }
@@ -167,6 +175,9 @@ class NotificationActivity : ActivityBase() {
         }
         binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
+        }
+        binding.notificationArticleKeyword.setOnSwitchClickListener { isChecked ->
+            handleSubscription(isChecked, SubscribesType.ARTICLE_KEYWORD)
         }
     }
 

@@ -39,6 +39,8 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
+import `in`.koreatech.koin.ui.notification.NotificationActivity
+import `in`.koreatech.koin.ui.operating.OperatingInfoActivity
 import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
@@ -78,6 +80,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             R.id.navi_item_store,
             R.id.navi_item_bus,
             R.id.navi_item_dining,
+            R.id.navi_item_operating_information,
             R.id.navi_item_timetable,
             R.id.navi_item_land,
             R.id.navi_item_owner,
@@ -92,6 +95,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Store,
                 MenuState.Bus,
                 MenuState.Dining,
+                MenuState.OperatingInfo,
                 MenuState.Timetable,
                 MenuState.Land,
                 MenuState.Owner,
@@ -110,7 +114,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         findViewById<TextView>(R.id.navi_hello_message)
     }
     private val loginOrLogoutTextView by lazy {
-        menus.get(MenuState.LoginOrLogout) as TextView? ?: findViewById(R.id.navi_item_login_or_logout)
+        menus.get(MenuState.LoginOrLogout) as TextView?
+            ?: findViewById(R.id.navi_item_login_or_logout)
     }
 
 
@@ -269,6 +274,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             when (menuState) {
                 MenuState.Bus -> goToBusActivity()
                 MenuState.Dining -> goToDiningActivity()
+                MenuState.OperatingInfo -> goToOperatingInfoActivity()
                 MenuState.Land -> goToLandActivity()
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
@@ -316,7 +322,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     when (user) {
                         User.Anonymous -> {
                             nameTextView.visibility = View.GONE
-                            helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
+                            helloMessageTextView.text =
+                                getString(R.string.navigation_hello_message_anonymous)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
                         }
 
@@ -373,6 +380,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Dining)
             }
 
+            R.id.navi_item_operating_information -> {
+                koinNavigationDrawerViewModel.selectMenu(MenuState.OperatingInfo)
+            }
+
             R.id.navi_item_bus -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Bus)
             }
@@ -412,6 +423,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             goToActivityFinish(Intent(this, DiningActivity::class.java))
         } else {
             startActivity(Intent(this, DiningActivity::class.java))
+        }
+    }
+
+    private fun goToOperatingInfoActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, OperatingInfoActivity::class.java))
+        } else {
+            startActivity(Intent(this, OperatingInfoActivity::class.java))
         }
     }
 
