@@ -46,7 +46,6 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
     private val binding: ActivityCallBenefitStoreMainBinding by dataBinding<ActivityCallBenefitStoreMainBinding>(
         R.layout.activity_call_benefit_store_main
     )
-    override val menuState: MenuState = MenuState.StoreBenefit
     private val viewModel by viewModels<StoreViewModel>()
     private val benefitViewModel by viewModels<StoreBenefitViewModel>()
     private val viewPagerHandler = Handler(Looper.getMainLooper())
