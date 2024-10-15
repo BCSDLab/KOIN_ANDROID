@@ -82,7 +82,6 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="20dp"
                                 android:layout_marginTop="24dp">
 
                                 <TextView
@@ -91,6 +90,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/title_article"
                                     android:textColor="@color/colorPrimary"
+                                    android:layout_marginStart="20dp"
                                     android:textSize="15sp"
                                     android:textStyle="bold"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -101,6 +101,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="더보기"
+                                    android:layout_marginEnd="20dp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     android:textColor="@color/neutral_500"
                                     android:textSize="14sp"

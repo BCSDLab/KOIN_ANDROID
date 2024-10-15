@@ -12,7 +12,7 @@ import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.store.StoreCategories
-import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
+import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.usecase.onboarding.dining.GetShouldShowDiningTooltipUseCase
@@ -29,6 +29,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -45,16 +46,18 @@ class MainActivityViewModel @Inject constructor(
     private val abTestUseCase: ABTestUseCase,
     private val getShouldShowDiningTooltipUseCase: GetShouldShowDiningTooltipUseCase,
     private val updateShouldShowDiningTooltipUseCase: UpdateShouldShowDiningTooltipUseCase,
-    fetchHotArticlesUseCase: FetchHotArticlesUseCase
+    articleRepository: ArticleRepository
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
 
-    val hotArticles: StateFlow<List<ArticleHeaderState>> = fetchHotArticlesUseCase()
+    val hotArticles: StateFlow<List<ArticleHeaderState>> = articleRepository.fetchHotArticleHeaders()
         .map {
             it.take(HOT_ARTICLE_COUNT).map { article -> article.toArticleHeaderState() }
+        }.catch {
+
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

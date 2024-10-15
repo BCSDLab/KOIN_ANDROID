@@ -14,7 +14,6 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
 import `in`.koreatech.koin.ui.changepassword.ChangePasswordContract
 import `in`.koreatech.koin.ui.login.LoginActivity
@@ -86,7 +85,7 @@ class SettingActivity : ActivityBase() {
                     loginSnackBar.show()
             }
             svNotification.setOnSettingClickListener {
-                if(viewModel.isStudent) {
+                if (viewModel.isStudent) {
                     startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
                 } else
                     loginSnackBar.show()
@@ -135,15 +134,12 @@ class SettingActivity : ActivityBase() {
                             binding.tvClientVersion.text = null
                             binding.tvAppVersion.text = null
                         }
-                    }
-                }
-            }
-        }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.versionError.collect {
-                    ToastUtil.getInstance().makeShort(R.string.version_check_failed)
+                        is VersionState.Failure -> {
+                            binding.tvClientVersion.text = null
+                            binding.tvAppVersion.text = null
+                        }
+                    }
                 }
             }
         }

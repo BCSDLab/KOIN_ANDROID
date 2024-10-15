@@ -1,15 +1,14 @@
 package `in`.koreatech.koin.ui.article.state
 
 import android.os.Parcelable
-import androidx.annotation.StringRes
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
-import `in`.koreatech.koin.ui.article.BoardType
+import `in`.koreatech.koin.ui.article.ArticleBoardType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ArticleHeaderState(
     val id: Int,
-    val board: BoardType,
+    val board: ArticleBoardType,
     val title: String,
     val author: String,
     val viewCount: Int,
@@ -19,7 +18,7 @@ data class ArticleHeaderState(
 
 fun ArticleHeader.toArticleHeaderState() = ArticleHeaderState(
     id = id,
-    board = BoardType.entries.firstOrNull { it.id == boardId } ?: BoardType.ALL,
+    board = ArticleBoardType.entries.firstOrNull { it.id == boardId } ?: ArticleBoardType.ALL,
     title = title,
     author = author,
     viewCount = viewCount,
