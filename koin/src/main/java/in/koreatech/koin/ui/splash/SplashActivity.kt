@@ -12,6 +12,11 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.NavigatorType
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
@@ -22,6 +27,7 @@ import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
@@ -32,6 +38,9 @@ class SplashActivity : ActivityBase() {
         const val title = "title"
         const val content = "content"
     }
+
+    @Inject
+    lateinit var navigator: Navigator
 
     override val screenTitle = SplashActivity.screenTitle
 
@@ -62,7 +71,11 @@ class SplashActivity : ActivityBase() {
     private fun initObserve() = with(splashViewModel) {
         observeLiveData(version) { version ->
             when (version.versionUpdatePriority) {
-                VersionUpdatePriority.Importance -> goToForceUpdateActivity(version.title, version.content)
+                VersionUpdatePriority.Importance -> goToForceUpdateActivity(
+                    version.title,
+                    version.content
+                )
+
                 VersionUpdatePriority.None -> Unit
             }
         }
@@ -80,7 +93,10 @@ class SplashActivity : ActivityBase() {
         lifecycleScope.launch {
             delay()
             Intent(this@SplashActivity, ForceUpdateActivity::class.java).apply {
-                putExtra(version, bundleOf(SplashActivity.title to title, SplashActivity.content to content))
+                putExtra(
+                    version,
+                    bundleOf(SplashActivity.title to title, SplashActivity.content to content)
+                )
             }.let { intent ->
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in, R.anim.hold)
@@ -115,16 +131,33 @@ class SplashActivity : ActivityBase() {
     }
 
     private fun gotoMainActivityOrDelay() {
+        val targetId = intent.getIntExtra(EXTRA_ID, -1)
+        val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
+        val navType = intent.getStringExtra(EXTRA_NAV_TYPE) ?: ""
+
         lifecycleScope.launch {
             delay()
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            val intent = if (navType == NavigatorType.MAIN.type) {
+                navigator.navigateToMain(
+                    context = this@SplashActivity,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type)
+                )
+            } else {
+                Intent(this@SplashActivity, MainActivity::class.java)
+            }
+
+            startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
             finish()
             firebasePerformanceUtil.stop()
         }
+
     }
 
     private suspend fun delay() {
         while (System.currentTimeMillis() - createdTime < 2000) yield()
     }
 }
+
+

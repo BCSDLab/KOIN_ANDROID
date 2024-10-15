@@ -468,6 +468,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, TimetableActivity::class.java))
         } else {
+            EventLogger.logClickEvent(
+                action = EventAction.USER,
+                label = "hamburger",
+                value = "시간표"
+            )
             startActivity(Intent(this, TimetableActivity::class.java))
         }
     }

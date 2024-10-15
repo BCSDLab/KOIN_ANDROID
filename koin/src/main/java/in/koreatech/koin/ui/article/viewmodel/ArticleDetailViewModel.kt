@@ -60,7 +60,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
             it.filterIndexed { index, hotArticleHeader ->
                 if (articleId == hotArticleHeader.id)
                     doesHotContainsThis = true
-                articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if(doesHotContainsThis) 1 else 0)
+                articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if (doesHotContainsThis) 1 else 0)
             }.map { it.toArticleHeaderState() }
         }.stateIn(
             scope = viewModelScope,

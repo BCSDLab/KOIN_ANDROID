@@ -28,6 +28,10 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.SchemeType
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.core.viewpager.enableAutoScroll
@@ -51,6 +55,7 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -61,10 +66,14 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
     private lateinit var diningTooltip: Balloon
 
+    @Inject
+    lateinit var navigator: Navigator
+
     private val hotArticleAdapter = HotArticleAdapter(
         onClick = {
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
+                data =
+                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
             }
             startActivity(intent)
         }
@@ -139,6 +148,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         initView()
         initDiningTooltip()
         initViewModel()
+        handleIntent()
     }
 
     override fun onResume() {
@@ -348,6 +358,40 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         val bundle = Bundle()
         bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
         callDrawerItem(R.id.navi_item_store, bundle)
+    }
+
+    private fun handleIntent() {
+        val targetId = intent.getIntExtra(EXTRA_ID, -1)
+        val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
+
+        when (type) {
+            SchemeType.SHOP.type -> {
+                val intent = navigator.navigateToShop(
+                    context = this,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
+
+            SchemeType.DINING.type -> {
+                val intent = navigator.navigateToDinging(
+                    context = this,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
+
+            SchemeType.ARTICLE.type -> {
+                val intent = navigator.navigateToArticle(
+                    context = this,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onDestroy() {
