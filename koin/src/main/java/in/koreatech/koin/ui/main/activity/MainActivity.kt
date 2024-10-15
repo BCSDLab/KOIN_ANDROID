@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,8 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.abtest.ABTestConstants.BENEFIT_STORE
+import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
@@ -37,6 +40,7 @@ import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.bus.BusActivity
+import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
@@ -52,9 +56,6 @@ import kotlin.properties.Delegates
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Main
-    private var currentTime by Delegates.notNull<Long>()
-    private var elapsedTime by Delegates.notNull<Long>()
-
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
@@ -118,7 +119,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
-            elapsedTime = System.currentTimeMillis() - currentTime
 
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
@@ -143,11 +143,26 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     override fun onResume() {
         super.onResume()
-        currentTime = System.currentTimeMillis()
         viewModel.updateDining()
     }
 
     private fun initView() = with(binding) {
+        viewModel.postABTestAssign(BENEFIT_STORE.experimentTitle)
+        storeListButton.setOnClickListener {
+            gotoStoreActivity(0)
+        }
+        callBenefitStoreListButton.setOnClickListener{
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                "전화주문혜택",
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+            )
+            val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
+            startActivity(intent)
+        }
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
         }
@@ -250,6 +265,42 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         diningTooltip.showAlignRight(binding.textViewDiningTitle)
                         viewModel.updateShouldShowDiningTooltip(false)
                     }
+                }
+            }
+        }
+        binding.recyclerViewStoreCategory.visibility= View.GONE
+        binding.storeButtonLayout.visibility= View.VISIBLE
+        observeLiveData(variableName){
+            when(viewModel.variableName.value){
+                "A" -> {
+                    EventLogger.logCustomEvent(
+                        action = "A/B_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
+                    binding.storeButtonLayout.visibility= View.GONE
+                    binding.recyclerViewStoreCategory.visibility= View.VISIBLE
+                }
+                "B" -> {
+                    EventLogger.logCustomEvent(
+                        action = "A/B_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택O"
+                    )
+                    binding.storeButtonLayout.visibility= View.VISIBLE
+                    binding.recyclerViewStoreCategory.visibility= View.GONE
+                }
+                else -> {
+                    EventLogger.logCustomEvent(
+                        action = "A/B_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
+                    binding.storeButtonLayout.visibility= View.GONE
+                    binding.recyclerViewStoreCategory.visibility= View.VISIBLE
                 }
             }
         }

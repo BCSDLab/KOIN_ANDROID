@@ -64,7 +64,11 @@ object EventLogger {
      * @sample logEvent("force_update", "page_view", "forced_update_page_view", "v4.0.0")
      */
     fun logCustomEvent(action: String, category: String, label: String, value: String) {
-        if (BuildConfig.IS_DEBUG) return
+        if (BuildConfig.IS_DEBUG) {
+            Log.d(
+                "EventLogger", "[action: ${action}, category: ${category}, label: $label, value: $value " + "]"
+            )
+        }
         else {
             Firebase.analytics.logEvent(action) {
                 param(EVENT_CATEGORY, category)
