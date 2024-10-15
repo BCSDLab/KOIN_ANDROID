@@ -153,6 +153,7 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
                 })
             }*/
         }
+        initOnRefreshDiningList()
     }
 
     private fun initViewModel() {
@@ -209,6 +210,13 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
             StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
             StoreCategory.Etc -> getString(R.string.etc)
             StoreCategory.All, null -> getString(R.string.see_all)
+        }
+    }
+
+    private fun initOnRefreshDiningList() {
+        binding.storeSwiperefreshlayout.setOnRefreshListener {
+            viewModel.refreshStores()
+            binding.storeSwiperefreshlayout.isRefreshing = false
         }
     }
 
