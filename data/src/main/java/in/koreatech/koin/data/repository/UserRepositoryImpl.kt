@@ -142,9 +142,4 @@ class UserRepositoryImpl @Inject constructor(
             }
         }
     }
-    override suspend fun postABTestAssign(title: String): ABTest {
-        userRemoteDataSource.postABTestAssign(ABTestRequest(title)).let {
-            return ABTest(it.variableName, it.accessHistoryId)
-        }
-    }
 }
