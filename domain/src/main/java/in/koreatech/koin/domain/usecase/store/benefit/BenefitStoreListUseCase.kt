@@ -7,13 +7,7 @@ import javax.inject.Inject
 class BenefitStoreListUseCase @Inject constructor(
     private val storeRepository: StoreRepository
 ) {
-    suspend operator fun invoke(uid: Int): Result<StoreBenefit> {
-        return try {
-            storeRepository.getStoreBenefitShopList(uid).let {
-                Result.success(it)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend operator fun invoke(uid: Int): Result<StoreBenefit> = runCatching {
+        storeRepository.getStoreBenefitShopList(uid)
     }
 }
