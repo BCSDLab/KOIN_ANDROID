@@ -60,9 +60,6 @@ import kotlin.properties.Delegates
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Main
-    private var currentTime by Delegates.notNull<Long>()
-    private var elapsedTime by Delegates.notNull<Long>()
-
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
@@ -126,7 +123,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
-            elapsedTime = System.currentTimeMillis() - currentTime
 
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
@@ -151,7 +147,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     override fun onResume() {
         super.onResume()
-        currentTime = System.currentTimeMillis()
         viewModel.updateDining()
     }
 

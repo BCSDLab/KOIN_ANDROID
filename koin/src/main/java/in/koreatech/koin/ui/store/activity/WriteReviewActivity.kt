@@ -173,7 +173,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE,
                     (storeName ?: "Unknown") ,
-                    EventExtra(AnalyticsConstant.DURATION_TIME, {elapsedTime/1000}.toString())
+                    EventExtra(AnalyticsConstant.DURATION_TIME, (elapsedTime/1000.0).toString())
                 )
                 finish()
             }
