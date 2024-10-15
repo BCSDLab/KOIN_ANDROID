@@ -14,4 +14,6 @@ sealed class MenuState {
     data object Owner: MenuState()
     data object Article: MenuState()
     data object Contact: MenuState()
+
+    data object BenefitStore: MenuState()
 }
