@@ -112,7 +112,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CALL,
                         viewModel.store.value?.name ?: "Unknown",
-                        EventExtra(AnalyticsConstant.DURATION_TIME, {dialogElapsedTime / 1000}.toString())
+                        EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
                     )
 
                     if(intent.extras?.getBoolean(StoreDetailActivityContract.IS_BENEFIT) == true){
@@ -120,7 +120,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.BENEFIT_SHOP_CALL,
                             viewModel.store.value?.name ?: "Unknown",
-                            EventExtra(AnalyticsConstant.DURATION_TIME, "${dialogElapsedTime / 1000}")
+                            EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
                         )
                     }
                     else{
@@ -128,7 +128,9 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CALL,
                             (viewModel.store.value?.name
-                                ?: "Unknown") + ", duration_time: ${dialogElapsedTime / 1000}"
+                                ?: "Unknown") ,
+                            EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
+
                         )
                     }
                     if (currentTab == 2) {// 리뷰탭에서 전화누르기까지 시간
@@ -139,7 +141,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             viewModel.store.value?.name ?: "Unknown",
                             EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
                             EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                            EventExtra(AnalyticsConstant.DURATION_TIME, {reviewElapsedTime / 1000}.toString())
+                            EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
                         )
                     }
                 }
@@ -192,7 +194,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                                 viewModel.store.value?.name ?: "Unknown",
                                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
                                 EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                                EventExtra(AnalyticsConstant.DURATION_TIME, {reviewElapsedTime / 1000}.toString())
+                                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
                             )
                         }
                     }
@@ -213,7 +215,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                                 viewModel.store.value?.name ?: "Unknown",
                                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
                                 EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                                EventExtra(AnalyticsConstant.DURATION_TIME, {reviewElapsedTime / 1000}.toString())
+                                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
                             )
                         }
                     }
@@ -387,7 +389,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                 viewModel.store.value?.name ?: "Unknown" ,
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, category ?: "Unknown"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, {storeElapsedTime / 1000}.toString()),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0 ).toString()),
             )
 
         }
@@ -397,7 +399,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                 viewModel.store.value?.name ?: "Unknown" ,
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, category ?: "Unknown"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, {storeElapsedTime / 1000}.toString()),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0 ).toString()),
             )
         }
 
@@ -409,7 +411,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 viewModel.store.value?.name ?: "Unknown",
                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                EventExtra(AnalyticsConstant.DURATION_TIME, {reviewElapsedTime / 1000}.toString())
+                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
             )
 
         }
