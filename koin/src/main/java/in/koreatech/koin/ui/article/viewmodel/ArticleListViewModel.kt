@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.OnBoardingRepository
-import `in`.koreatech.koin.ui.article.BoardType
+import `in`.koreatech.koin.ui.article.ArticleBoardType
 import `in`.koreatech.koin.ui.article.state.ArticlePaginationState
 import `in`.koreatech.koin.ui.article.state.toArticlePaginationState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +30,7 @@ class ArticleListViewModel @Inject constructor(
     private val onBoardingRepository: OnBoardingRepository
 ) : BaseViewModel() {
 
-    val currentBoard = savedStateHandle.getStateFlow(BOARD_TYPE, BoardType.ALL)
+    val currentBoard = savedStateHandle.getStateFlow(BOARD_TYPE, ArticleBoardType.ALL)
     val currentPage = savedStateHandle.getStateFlow(CURRENT_PAGE, 1)
     val selectedKeyword = savedStateHandle.getStateFlow(SELECTED_KEYWORD, "")
 
@@ -69,7 +69,7 @@ class ArticleListViewModel @Inject constructor(
             initialValue = false
         )
 
-    fun setCurrentBoard(board: BoardType) {
+    fun setCurrentBoard(board: ArticleBoardType) {
         if (currentBoard.value == board) return
         savedStateHandle[BOARD_TYPE] = board
         setCurrentPage(1)

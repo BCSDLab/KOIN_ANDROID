@@ -94,12 +94,10 @@ object RepositoryModule {
     fun provideVersionRepository(
         versionLocalDataSource: VersionLocalDataSource,
         versionRemoteDataSource: VersionRemoteDataSource,
-        @IoDispatcher dispatcher: CoroutineDispatcher
     ): VersionRepository {
         return VersionRepositoryImpl(
             versionLocalDataSource,
             versionRemoteDataSource,
-            CoroutineScope(SupervisorJob() + dispatcher)
         )
     }
 

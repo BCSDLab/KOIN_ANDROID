@@ -1,13 +1,15 @@
 package `in`.koreatech.koin.ui.splash
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import android.util.Log
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.UpdateAvailability
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -46,6 +48,7 @@ class SplashActivity : ActivityBase() {
 
         initView()
         initObserve()
+        checkInAppUpdate()
     }
 
     private fun initView() {
@@ -83,6 +86,31 @@ class SplashActivity : ActivityBase() {
                 overridePendingTransition(R.anim.slide_in, R.anim.hold)
                 finish()
             }
+        }
+    }
+
+    private fun checkInAppUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            when (appUpdateInfo.updateAvailability()) {
+                UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS,
+                UpdateAvailability.UPDATE_AVAILABLE -> {
+                    // 업데이트가 필요한 상황이거나 업데이트 중이라면 최신 버전값 저장
+                    splashViewModel.updateLatestVersion(appUpdateInfo.availableVersionCode())
+                }
+
+                UpdateAvailability.UPDATE_NOT_AVAILABLE,
+                UpdateAvailability.UNKNOWN -> {
+                    // 업데이트 가능 유무를 모르거나, 업데이트가 불가능 한 경우 현재 버전 저장
+                    splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
+                }
+            }
+        }
+
+        appUpdateManager.appUpdateInfo.addOnFailureListener { e ->
+            // 업데이트 정보를 받아오는데 실패한 경우 현재 버전 저장
+            Log.e("SplashActivity", "Fail to get latest app: exception: ${e}")
+            splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
         }
     }
 

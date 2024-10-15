@@ -188,7 +188,7 @@ class ArticleSearchFragment : Fragment() {
     private fun onArticleClicked(article: ArticleHeaderState) {
         navController.navigate(
             R.id.action_articleSearchFragment_to_articleDetailFragment,
-            bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to BoardType.ALL.id)
+            bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id)
         )
     }
 }
