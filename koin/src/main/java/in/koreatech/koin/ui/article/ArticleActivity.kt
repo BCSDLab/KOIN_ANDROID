@@ -92,7 +92,7 @@ class ArticleActivity : ActivityBase() {
                 R.id.articleDetailFragment,
                 bundleOf(
                     ARTICLE_ID to it,
-                    NAVIGATED_BOARD_ID to BoardType.ALL.id
+                    NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
                 )
             )
         }
@@ -115,8 +115,6 @@ class ArticleActivity : ActivityBase() {
                             navController.navigate(R.id.action_articleListFragment_to_articleSearchFragment)
                         }
                     }
-
-                    else -> false
                 }
             ))
         }
