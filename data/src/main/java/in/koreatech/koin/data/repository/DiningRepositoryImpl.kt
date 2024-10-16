@@ -13,16 +13,4 @@ class DiningRepositoryImpl @Inject constructor(
     override suspend fun getDining(date: String): List<Dining> {
         return diningRemoteDataSource.getDining(date).map(DiningResponse::toDining)
     }
-
-    override suspend fun getAuthDining(date: String): List<Dining> {
-        return diningRemoteDataSource.getAuthDining(date).map(DiningResponse::toDining)
-    }
-
-    override suspend fun likeDining(id: Int) {
-        diningRemoteDataSource.likeDining(id)
-    }
-
-    override suspend fun unlikeDining(id: Int) {
-        diningRemoteDataSource.unlikeDining(id)
-    }
 }

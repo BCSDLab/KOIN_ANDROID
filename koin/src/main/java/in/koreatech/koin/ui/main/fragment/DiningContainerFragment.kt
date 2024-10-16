@@ -95,7 +95,7 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
     }
 
     private fun updateStatus(position: Int, arrangedList: List<Dining>) {
-        val isSoldOut = arrangedList[position].soldoutAt.isNotEmpty()
+        val isSoldOut = arrangedList[position].soldOutAt.isNotEmpty()
         val isChanged = arrangedList[position].changedAt.isNotEmpty()
         with(binding.textViewDiningStatus) {
             when {
