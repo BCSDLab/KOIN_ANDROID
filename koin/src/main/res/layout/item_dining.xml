@@ -237,48 +237,6 @@
             android:background="@color/background_dark"
             app:layout_constraintTop_toBottomOf="@id/linear_layout_dining_menu_content" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linear_layout_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="6dp"
-            android:padding="7dp"
-            app:layout_constraintEnd_toEndOf="@id/view_vertical_divider"
-            app:layout_constraintTop_toBottomOf="@id/view_horizontal_divider">
-
-            <ImageView
-                android:id="@+id/image_view_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:src="@drawable/ic_like"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/text_view_like"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/text_view_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_like"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/text_view_like_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/image_view_like"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="3" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <View
             android:id="@+id/view_vertical_divider"
             android:layout_width="1dp"

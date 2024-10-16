@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.ui.dining
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,7 +24,6 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.ui.dining.adapter.DiningAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -34,19 +32,8 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     private val viewModel by activityViewModels<DiningViewModel>()
     private val type by lazy { arguments?.getString(TYPE) }
     private val diningAdapter by lazy { DiningAdapter(
-        onLikeClickResult = { dining ->
-            viewLifecycleOwner.lifecycleScope.async {
-                viewModel.toggleLikeDining(dining)
-            }.await()
-        },
         onShareClick = ::shareDining,
-        coroutineScope = viewLifecycleOwner.lifecycleScope
     ) }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getUser()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

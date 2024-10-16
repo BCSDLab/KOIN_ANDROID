@@ -12,8 +12,6 @@ data class Dining(
     val imageUrl: String,
     val createdAt: String,
     val updatedAt: String,
-    val soldoutAt: String,
+    val soldOutAt: String,
     val changedAt: String,
-    var likes: Int,
-    var isLiked: Boolean
 )

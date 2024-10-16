@@ -5,12 +5,33 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.api.ArticleApi
-import `in`.koreatech.koin.data.api.*
+import `in`.koreatech.koin.data.api.BusApi
+import `in`.koreatech.koin.data.api.CoopShopApi
+import `in`.koreatech.koin.data.api.DeptApi
+import `in`.koreatech.koin.data.api.DiningApi
+import `in`.koreatech.koin.data.api.LandApi
+import `in`.koreatech.koin.data.api.OwnerApi
+import `in`.koreatech.koin.data.api.PreSignedUrlApi
+import `in`.koreatech.koin.data.api.StoreApi
+import `in`.koreatech.koin.data.api.UploadUrlApi
+import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.api.VersionApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
-import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
-import `in`.koreatech.koin.data.source.remote.*
+import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.BusRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.LandRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.NotificationRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import javax.inject.Singleton
 
 @Module
@@ -70,9 +91,8 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideDiningRemoteDataSource(
         diningApi: DiningApi,
-        diningAuthApi: DiningAuthApi
     ): DiningRemoteDataSource {
-        return DiningRemoteDataSource(diningApi, diningAuthApi)
+        return DiningRemoteDataSource(diningApi)
     }
 
     @Provides
