@@ -27,10 +27,8 @@ fun List<Dining>.arrange() = this.let {
             imageUrl = "",
             createdAt = "",
             updatedAt = "",
-            soldoutAt = "",
+            soldOutAt = "",
             changedAt = "",
-            likes = 0,
-            isLiked = false
         )
     }
 }
