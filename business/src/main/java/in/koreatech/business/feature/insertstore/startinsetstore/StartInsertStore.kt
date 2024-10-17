@@ -51,7 +51,6 @@ fun StartInsertScreen(
                 modifier = modifier
                     .width(40.dp)
                     .height(40.dp)
-                    .clickable { }
             )
         }
 

@@ -1,16 +1,13 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -22,8 +19,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -43,13 +38,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.OwnerStoreAppBar
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
+import `in`.koreatech.business.feature.store.storedetail.dialog.MyStoreSelectDialog
 import `in`.koreatech.business.feature.store.storedetail.event.EventScreen
 import `in`.koreatech.business.feature.store.storedetail.menu.MenuScreen
 import `in`.koreatech.business.ui.theme.Blue2
@@ -70,7 +65,7 @@ fun MyStoreDetailScreen(
     modifyInfoViewModel: ModifyInfoViewModel,
     navigateToLoginScreen: () -> Unit = {},
     navigateToUploadEventScreen: () -> Unit = {},
-    navigateToModifyScreen: () -> Unit = {},
+    navigateToModifyScreen: (Int) -> Unit = {},
     navigateToRegisterStoreScreen: () -> Unit = {},
     navigateToManageMenuScreen: () -> Unit = {},
     navigateToRegisterMenuScreen: (Int) -> Unit = {},
@@ -83,7 +78,6 @@ fun MyStoreDetailScreen(
     val context = LocalContext.current
 
     LaunchedEffect(state.storeInfo) {
-        viewModel.initOwnerShopList()
         modifyInfoViewModel.initStoreInfo(state.storeInfo ?: return@LaunchedEffect)
     }
 
@@ -91,6 +85,12 @@ fun MyStoreDetailScreen(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         OwnerStoreAppBar(stringResource(R.string.my_shop))
+        MyStoreSelectDialog(
+            dialogVisibility = state.selectDialogVisibility,
+            storeList = state.storeList,
+            onClickCancel = viewModel::closeSelectStoreDialog,
+            selectStore = viewModel::changeMyStoreInfo
+        )
         MyStoreScrollScreen(
             state = state,
             listState = listState,
@@ -113,8 +113,8 @@ fun MyStoreDetailScreen(
             }
 
             MyStoreDetailSideEffect.NavigateToUploadEventScreen -> navigateToUploadEventScreen()
-            MyStoreDetailSideEffect.NavigateToModifyScreen -> {
-                navigateToModifyScreen()
+            is MyStoreDetailSideEffect.NavigateToModifyScreen -> {
+                navigateToModifyScreen(it.storeId)
             }
             MyStoreDetailSideEffect.NavigateToRegisterStoreScreen -> navigateToRegisterStoreScreen()
             MyStoreDetailSideEffect.NavigateToManageMenuScreen -> navigateToManageMenuScreen()

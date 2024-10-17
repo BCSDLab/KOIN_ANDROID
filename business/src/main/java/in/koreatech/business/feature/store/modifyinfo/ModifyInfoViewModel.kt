@@ -2,6 +2,7 @@ package `in`.koreatech.business.feature.store.modifyinfo
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chargemap.compose.numberpicker.FullHours
@@ -176,11 +177,15 @@ class ModifyInfoViewModel @Inject constructor(
     }
 
     fun modifyStoreInfo(storeId: Int, storeDetailInfo: StoreDetailInfo) {
-        viewModelScope.launch {
-            modifyInfoUseCase.invoke(
-                storeId,
-                storeDetailInfo,
-            )
+        intent {
+            viewModelScope.launch {
+                modifyInfoUseCase.invoke(
+                    storeId,
+                    storeDetailInfo,
+                ).apply {
+                    this ?: postSideEffect(ModifyInfoSideEffect.NavigateToMyStoreScreen)
+                }
+            }
         }
     }
 
