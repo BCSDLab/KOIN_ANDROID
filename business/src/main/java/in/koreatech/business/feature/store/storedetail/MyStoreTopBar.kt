@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.store.storedetail
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
@@ -35,7 +34,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -130,7 +128,9 @@ fun StoreInfoScreen(
             }
 
             Button(
-                onClick = { }, //TODO 상점이 여러개일 경우 선택하는 기능 만들기
+                onClick = {
+                    viewModel.showSelectStoreDialog()
+                          },
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
