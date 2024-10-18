@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,17 +18,20 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
 ){
 
     var onItemClickListener: OnItemClickListener? = null
+    var onArrowClickListener : OnArrowClickListener? = null
 
     inner class StoreEventCardViewHolder(
         val binding: StoreEventCardBinding
     ): RecyclerView.ViewHolder(binding.root){
         val container = binding.storeEventContainer
         val eventStoreImage = binding.eventImageView
-        val eventStoreName = binding.evnetStoreNameTv
+        val eventStoreName = binding.eventStoreNameTv
+        val eventLeftArrow = binding.leftEventArrow
+        val eventRightArrow = binding.rightEventArrow
+        val eventPagerCounterText = binding.eventPageCounterTextView
         fun bind(storeEvent: StoreEvent) {
             binding.root.setOnClickListener {
                 onItemClickListener?.onItemClick(storeEvent)
-
             }
         }
     }
@@ -47,9 +51,20 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
             bind(event)
 
             eventStoreName.text = event.shopName
+            eventPagerCounterText.text = "${position + 1}/$itemCount"
+
+            eventLeftArrow.setOnClickListener {
+                val prevPosition = if (position > 0) position - 1 else itemCount - 1
+                onArrowClickListener?.onArrowClick(prevPosition)
+            }
+
+            eventRightArrow.setOnClickListener {
+                val nextPosition = (position + 1) % itemCount
+                onArrowClickListener?.onArrowClick(nextPosition)
+            }
 
             if(event.thumbnailImages?.isEmpty() == true){
-                eventStoreImage.setImageResource(R.drawable.event_default)
+                eventStoreImage.setImageResource(R.drawable.default_event_image)
             }
             else{
                 Glide.with(eventStoreImage)
@@ -69,8 +84,22 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
         }
     }
 
+    inline fun setOnArrowClickListener(crossinline onItemClick: (position: Int) -> Unit){
+        onArrowClickListener = object :OnArrowClickListener{
+            override fun onArrowClick(position: Int) {
+                onItemClick(position)
+            }
+        }
+    }
+
+
+
     interface OnItemClickListener {
         fun onItemClick(storeEvent: StoreEvent)
+    }
+
+    interface OnArrowClickListener{
+        fun onArrowClick(position: Int)
     }
 
     companion object {
