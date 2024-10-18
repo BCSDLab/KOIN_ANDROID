@@ -284,7 +284,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             when(viewModel.variableName.value){
                 "A" -> {
                     EventLogger.logCustomEvent(
-                        action = "A/B_TEST",
+                        action = "AB_TEST",
                         category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
                         label = "BUSINESS_benefit_1",
                         value = "혜택X"
@@ -294,7 +294,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
                 "B" -> {
                     EventLogger.logCustomEvent(
-                        action = "A/B_TEST",
+                        action = "AB_TEST",
                         category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
                         label = "BUSINESS_benefit_1",
                         value = "혜택O"
@@ -304,7 +304,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
                 else -> {
                     EventLogger.logCustomEvent(
-                        action = "A/B_TEST",
+                        action = "AB_TEST",
                         category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
                         label = "BUSINESS_benefit_1",
                         value = "혜택X"
