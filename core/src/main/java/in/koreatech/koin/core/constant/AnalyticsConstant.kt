@@ -10,6 +10,7 @@ object AnalyticsConstant {
 
     object Label {
         const val MAIN_SHOP_CATEGORIES = "main_shop_categories"
+        const val MAIN_SHOP_BENEFIT = "main_shop_benefit"
         const val SHOP_CATEGORIES = "shop_categories"
         const val SHOP_CATEGORIES_SEARCH = "shop_categories_search"
         const val SHOP_CATEGORIES_EVENT = "shop_categories_event"
@@ -81,6 +82,11 @@ object AnalyticsConstant {
         const val RECOMMENDED_KEYWORD = "recommended_keyword"
         const val KEYWORD_NOTIFICATION = "keyword_notification"
         const val LOGIN_POPUP_KEYWORD = "login_popup_keyword"
+
+        const val BENEFIT_SHOP_CATEGORIES = "benefit_shop_categories"
+        const val BENEFIT_SHOP_CATEGORIES_EVENT = "benefit_shop_categories_event"
+        const val BENEFIT_SHOP_CLICK = "benefit_shop_click"
+        const val BENEFIT_SHOP_CALL = "benefit_shop_call"
     }
 
     const val PREVIOUS_PAGE = "previous_page"

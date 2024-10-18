@@ -4,7 +4,7 @@ activityKtxVersion = "1.5.0"
 cardviewVersion = "1.0.0"
 inAppUpdateVersion = "2.1.0"
 featureDeliveryKtxVersion = "2.1.0"
-firebaseBomVersion = "30.1.0"
+firebaseBomVersion = "32.5.0"
 fragmentKtxVersion = "1.5.0"
 jetbrainsAnnotationsVersion = "23.0.0"
 colorpickerVersion = "1.1.1"
@@ -66,6 +66,7 @@ ossLicensesPluginVersion = "0.10.4"
 ossLicensesVersion = "17.1.0"
 navigation = "2.7.7"
 jsoup = "1.18.1"
+timber = "5.0.1"
 
 
 [libraries]
@@ -187,6 +188,7 @@ jsoup = {module = "org.jsoup:jsoup", version.ref = "jsoup"}
 oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version.ref = "ossLicensesPluginVersion"}
 oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "ossLicensesVersion"}
 
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
