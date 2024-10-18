@@ -2,9 +2,12 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
+import `in`.koreatech.koin.domain.model.store.BenefitCategory
+import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreBenefit
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
@@ -38,4 +41,8 @@ interface StoreRepository {
         reviewId: Int?,
         reportList: List<StoreReport>?
     ): Result<Unit>
+
+    suspend fun getStoreBenefitShopList(uid: Int): StoreBenefit
+
+    suspend fun getStoreBenefitCategories(): BenefitCategoryList
 }

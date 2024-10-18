@@ -35,13 +35,15 @@ class GetUserInfoUseCase @Inject constructor(
                         user to deptErrorHandler.getDeptNameFromDeptCodeError(t)
                     }
                 }
-
-
             } catch (t: Throwable) {
                 null to userErrorHandler.handleGetUserInfoError(t)
             }
 
-            return userRepository.getUserInfo() to null
+            return try {
+                userRepository.getUserInfo() to null
+            } catch (e: Exception) {
+                null to userErrorHandler.handleGetUserInfoError(e)
+            }
         }
     }
 }

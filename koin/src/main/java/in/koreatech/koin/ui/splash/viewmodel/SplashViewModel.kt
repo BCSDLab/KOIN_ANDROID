@@ -19,9 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val getVersionInformationUseCase: GetVersionInformationUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
-    private val updateLatestVersionUseCase: UpdateLatestVersionUseCase
+    private val updateLatestVersionUseCase: UpdateLatestVersionUseCase,
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : BaseViewModel() {
 
     private val _version = MutableLiveData<Version>()
@@ -49,18 +48,12 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    fun checkToken() {
+    private fun checkToken() {
         viewModelScope.launchIgnoreCancellation {
-            isTokenSavedInDeviceUseCase().also {
-                if (it) getUserInfoUseCase().let { (user, error) ->
-                    if (error != null) {
-                        _tokenState.value = TokenState.Invalid
-                    } else {
-                        _tokenState.value = TokenState.Valid
-                    }
-                } else {
-                    _tokenState.value = TokenState.Invalid
-                }
+            if (isTokenSavedInDeviceUseCase()) {
+                _tokenState.value = TokenState.Valid
+            } else {
+                _tokenState.value = TokenState.Invalid
             }
         }
     }

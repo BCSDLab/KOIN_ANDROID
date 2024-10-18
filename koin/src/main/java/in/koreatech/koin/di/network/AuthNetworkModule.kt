@@ -45,8 +45,10 @@ object AuthNetworkModule {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val accessToken = tokenLocalDataSource.getAccessToken() ?: ""
+                val historyId = tokenLocalDataSource.getAccessHistoryId() ?: ""
                 val newRequest: Request = chain.request().newBuilder()
                     .addHeader("Authorization", "Bearer $accessToken")
+                    .addHeader("access_history_id", historyId)
                     .build()
                 chain.proceed(newRequest)
             }
@@ -57,11 +59,12 @@ object AuthNetworkModule {
     @Provides
     @Singleton
     fun provideRefreshInterceptor(
+        @ApplicationContext context: Context,
         tokenLocalDataSource: TokenLocalDataSource,
         updateUserRefreshTokenUseCase: UpdateUserRefreshTokenUseCase,
         deleteUserRefreshTokenUseCase: DeleteUserRefreshTokenUseCase,
         userApi: UserApi,
-    ): Authenticator = AuthAuthenticator(tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
+    ): Authenticator = AuthAuthenticator(context, tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
 
 
     @Auth
