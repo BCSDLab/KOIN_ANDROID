@@ -316,6 +316,16 @@ class ArticleKeywordFragment : Fragment() {
     }
 
     private fun initKeywordNotification() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.user.collect { user ->
+                    if (user.isAnonymous.not()) {
+                        notificationViewModel.getPermissionInfo()
+                    }
+                }
+            }
+        }
+
         binding.notificationKeyword.setOnSwitchClickListener { isChecked ->
             if (requireContext().checkNotificationPermission().not()) {
                 ToastUtil.getInstance().makeShort(R.string.request_notification_permission)
@@ -327,8 +337,6 @@ class ArticleKeywordFragment : Fragment() {
                 binding.notificationKeyword.isChecked = false
                 loginModal.show()
                 return@setOnSwitchClickListener
-            } else {
-                notificationViewModel.getPermissionInfo()
             }
 
             if (isChecked) {
