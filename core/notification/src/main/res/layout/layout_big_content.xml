@@ -9,7 +9,6 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#121212"
         style="@style/TextAppearance.Compat.Notification.Title"
         tools:text="코인 알림 제목" />
 
@@ -18,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        style="@style/TextAppearance.Compat.Notification.Info"
+        style="@style/TextAppearance.Compat.Notification.Content"
         tools:text="코인 알림 콘텐츠" />
 
     <ImageView

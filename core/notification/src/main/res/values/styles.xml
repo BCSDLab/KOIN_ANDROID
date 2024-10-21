@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.Compat.Notification.Content" parent="TextAppearance.Compat.Notification.Title">
+        <item name="android:textStyle">normal</item>
+    </style>
+</resources>
