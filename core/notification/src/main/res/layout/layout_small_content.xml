@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/tv_content"
-            style="@style/TextAppearance.Compat.Notification.Info"
+            style="@style/TextAppearance.Compat.Notification.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
