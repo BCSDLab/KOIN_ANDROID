@@ -55,10 +55,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             binding.swipeRefreshLayoutDining.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
