@@ -551,7 +551,7 @@
 
     <!-- Kakao link setting -->
     <string name="kakaolink_host">kakaolink</string>
-    <string name="action_share">공유하기</string>
+    <string name="action_share">카카오톡으로 식단 공유하기</string>
     <string name="action_like">좋아요</string>
     <string name="dining_notification_on_boarding">알림 설정을 허용하고\n식단 품절 알림을 받아보세요!</string>
     <string name="set_dining_sold_out_notification">식단 품절 알림 받기</string>

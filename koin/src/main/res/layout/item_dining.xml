@@ -260,26 +260,16 @@
                     android:background="@color/background_dark"
                     app:layout_constraintTop_toBottomOf="@id/linear_layout_dining_menu_content" />
 
-                <View
-                    android:id="@+id/view_vertical_divider"
-                    android:layout_width="1dp"
-                    android:layout_height="10dp"
-                    android:layout_marginEnd="6dp"
-                    android:background="@color/background_dark"
-                    app:layout_constraintBottom_toBottomOf="@id/linear_layout_share"
-                    app:layout_constraintEnd_toStartOf="@id/linear_layout_share"
-                    app:layout_constraintTop_toTopOf="@id/linear_layout_share" />
-
                 <LinearLayout
                     android:id="@+id/linear_layout_share"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
+                    android:paddingVertical="14dp"
+                    android:gravity="center"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:orientation="horizontal"
-                    android:padding="7dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view_horizontal_divider">
 
                     <ImageView
