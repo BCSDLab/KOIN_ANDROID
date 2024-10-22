@@ -37,7 +37,8 @@ class OnboardingManager @Inject internal constructor(
     private lateinit var tooltip: Balloon
     private val tooltipDismissObserver = object : DefaultLifecycleObserver {
         override fun onPause(owner: LifecycleOwner) {
-            tooltip.dismiss()
+            if (::tooltip.isInitialized)
+                tooltip.dismiss()
             super.onPause(owner)
         }
     }
