@@ -14,7 +14,7 @@ class OnboardingLocalDataSource @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
 
-    suspend fun getShouldShowTooltip(onboardingType: String): Boolean {
+    suspend fun getShouldOnboarding(onboardingType: String): Boolean {
         return dataStore.data.catch {
             emit(emptyPreferences())
         }.map { preferences ->
@@ -22,7 +22,7 @@ class OnboardingLocalDataSource @Inject constructor(
         }.firstOrNull() ?: true
     }
 
-    suspend fun updateShouldShowTooltip(onboardingType: String, shouldShow: Boolean) {
+    suspend fun updateShouldOnboarding(onboardingType: String, shouldShow: Boolean) {
         dataStore.edit { preferences ->
             preferences[booleanPreferencesKey(onboardingType)] = shouldShow
         }
