@@ -21,24 +21,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/text_view_dining_corner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="A코너" />
+
                 <LinearLayout
                     android:id="@+id/linear_layout_dining_information"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
                     android:orientation="horizontal"
-                    android:paddingTop="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/text_view_dining_corner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:text="A코너" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/text_view_dining_corner"
+                    app:layout_constraintBottom_toBottomOf="@id/text_view_dining_corner">
 
                     <TextView
                         android:id="@+id/text_view_kcal"
@@ -79,7 +85,7 @@
                     android:id="@+id/text_view_dining_sold_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginStart="6dp"
                     android:background="@drawable/background_dining_sold_out_text"
                     android:gravity="center"
                     android:minWidth="50dp"
@@ -88,8 +94,9 @@
                     android:textColor="#FFAD0D"
                     android:textStyle="bold"
                     android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@id/linear_layout_dining_information"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/text_view_dining_corner"
+                    app:layout_constraintBottom_toBottomOf="@id/text_view_dining_corner"
+                    app:layout_constraintStart_toEndOf="@id/text_view_dining_corner" />
 
                 <TextView
                     android:id="@+id/text_view_dining_changed"
@@ -97,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="24dp"
+                    android:layout_marginStart="6dp"
                     android:background="@drawable/background_dining_changed_text"
                     android:gravity="center"
                     android:minWidth="58dp"
@@ -105,8 +113,9 @@
                     android:textColor="#4B4B4B"
                     android:textStyle="bold"
                     android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@id/linear_layout_dining_information"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/text_view_dining_corner"
+                    app:layout_constraintBottom_toBottomOf="@id/text_view_dining_corner"
+                    app:layout_constraintStart_toEndOf="@id/text_view_dining_corner" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_view_dining"
@@ -117,7 +126,7 @@
                     app:cardCornerRadius="10dp"
                     app:cardElevation="0dp"
                     app:layout_constraintStart_toStartOf="@id/linear_layout_dining_information"
-                    app:layout_constraintTop_toBottomOf="@id/linear_layout_dining_information"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_dining_corner"
                     app:rippleColor="@android:color/transparent"
                     app:strokeColor="@color/gray15"
                     app:strokeWidth="1dp">
