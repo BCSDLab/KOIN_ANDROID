@@ -10,14 +10,6 @@ class OnboardingRepositoryImpl @Inject constructor(
     private val onboardingLocalDataSource: OnboardingLocalDataSource
 ) : OnboardingRepository {
 
-    override suspend fun updateShouldShowNotificationOnboarding(shouldShow: Boolean) {
-        onboardingLocalDataSource.updateShouldShowNotificationOnboarding(shouldShow)
-    }
-
-    override suspend fun getShouldShowNotificationOnboarding(): Result<Boolean> {
-        return onboardingLocalDataSource.getShouldShowNotificationOnboarding()
-    }
-
     override suspend fun getShouldShowTooltip(onboardingType: String): Boolean {
         return onboardingLocalDataSource.getShouldShowTooltip(onboardingType)
     }
