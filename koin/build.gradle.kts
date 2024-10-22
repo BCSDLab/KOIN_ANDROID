@@ -123,7 +123,6 @@ dependencies {
 
     implementation(libs.kakao.share)
     implementation(libs.lottie)
-    implementation(libs.balloon)
     implementation(libs.dataStore)
 
     implementation(libs.nav.fragment.ktx)
