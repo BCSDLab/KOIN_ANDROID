@@ -13,16 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.skydoves.balloon.ArrowOrientation
-import com.skydoves.balloon.ArrowOrientationRules
-import com.skydoves.balloon.ArrowPositionRules
-import com.skydoves.balloon.Balloon
-import com.skydoves.balloon.BalloonAnimation
-import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.ABTestConstants.BENEFIT_STORE
-import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
@@ -32,6 +25,9 @@ import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
+import `in`.koreatech.koin.core.onboarding.ArrowDirection
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
+import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.core.viewpager.enableAutoScroll
@@ -44,7 +40,6 @@ import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.bus.BusActivity
-import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
@@ -52,11 +47,11 @@ import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerTimeActivity() {
@@ -64,10 +59,12 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
-    private lateinit var diningTooltip: Balloon
 
     @Inject
     lateinit var navigator: Navigator
+
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
 
     private val hotArticleAdapter = HotArticleAdapter(
         onClick = {
@@ -161,7 +158,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         storeListButton.setOnClickListener {
             gotoStoreActivity(0)
         }
-        callBenefitStoreListButton.setOnClickListener{
+        callBenefitStoreListButton.setOnClickListener {
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
@@ -268,20 +265,10 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it.drop(1))
         }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                showDiningTooltip.collect {
-                    if (it) {
-                        diningTooltip.showAlignRight(binding.textViewDiningTitle)
-                        viewModel.updateShouldShowDiningTooltip(false)
-                    }
-                }
-            }
-        }
-        binding.recyclerViewStoreCategory.visibility= View.GONE
-        binding.storeButtonLayout.visibility= View.VISIBLE
-        observeLiveData(variableName){
-            when(viewModel.variableName.value){
+        binding.recyclerViewStoreCategory.visibility = View.GONE
+        binding.storeButtonLayout.visibility = View.VISIBLE
+        observeLiveData(variableName) {
+            when (viewModel.variableName.value) {
                 "A" -> {
                     EventLogger.logCustomEvent(
                         action = "AB_TEST",
@@ -289,9 +276,10 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         label = "BUSINESS_benefit_1",
                         value = "혜택X"
                     )
-                    binding.storeButtonLayout.visibility= View.GONE
-                    binding.recyclerViewStoreCategory.visibility= View.VISIBLE
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
+
                 "B" -> {
                     EventLogger.logCustomEvent(
                         action = "AB_TEST",
@@ -299,9 +287,10 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         label = "BUSINESS_benefit_1",
                         value = "혜택O"
                     )
-                    binding.storeButtonLayout.visibility= View.VISIBLE
-                    binding.recyclerViewStoreCategory.visibility= View.GONE
+                    binding.storeButtonLayout.visibility = View.VISIBLE
+                    binding.recyclerViewStoreCategory.visibility = View.GONE
                 }
+
                 else -> {
                     EventLogger.logCustomEvent(
                         action = "AB_TEST",
@@ -309,8 +298,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         label = "BUSINESS_benefit_1",
                         value = "혜택X"
                     )
-                    binding.storeButtonLayout.visibility= View.GONE
-                    binding.recyclerViewStoreCategory.visibility= View.VISIBLE
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
             }
         }
@@ -334,24 +323,13 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initDiningTooltip() {
-        diningTooltip = Balloon.Builder(this)
-            .setHeight(BalloonSizeSpec.WRAP)
-            .setWidth(BalloonSizeSpec.WRAP)
-            .setText(getString(R.string.dining_image_tooltip))
-            .setTextColorResource(R.color.black)
-            .setBackgroundColorResource(R.color.gray3)
-            .setTextSize(12f)
-            .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
-            .setArrowOrientation(ArrowOrientation.BOTTOM)
-            .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
-            .setArrowSize(10)
-            .setArrowPosition(0.85f)
-            .setPaddingVertical(4)
-            .setPaddingHorizontal(5)
-            .setMarginLeft(10)
-            .setCornerRadius(8f)
-            .setBalloonAnimation(BalloonAnimation.FADE)
-            .build()
+        with(onboardingManager) {
+            showOnboardingTooltipIfNeeded(
+                type = OnboardingType.DINING_IMAGE,
+                view = binding.textViewDiningTitle,
+                arrowDirection = ArrowDirection.LEFT
+            )
+        }
     }
 
     private fun gotoStoreActivity(position: Int) {

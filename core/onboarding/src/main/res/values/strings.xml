@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dining_image_tooltip">식단 사진을 확인해보세요!</string>
+    <string name="article_keyword_tooltip">키워드를 추가하고 맞춤 알림을 받아보세요!</string>
+</resources>

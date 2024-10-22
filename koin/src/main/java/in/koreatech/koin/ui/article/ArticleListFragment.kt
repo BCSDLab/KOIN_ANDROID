@@ -68,6 +68,7 @@ class ArticleListFragment : Fragment() {
                     viewModel.setCurrentBoard(ArticleBoardType.entries[it.position])
                 }
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         }
@@ -109,7 +110,11 @@ class ArticleListFragment : Fragment() {
                 val range = binding.nestedScrollViewArticleList.computeVerticalScrollRange()
 
                 val newScrollPercentage = 100.0f * offset / (range - extent)
-                if (EventUtils.didCrossedScrollThreshold(scrollPercentage, newScrollPercentage) && scrollPercentage.toDouble() != .0) {
+                if (EventUtils.didCrossedScrollThreshold(
+                        scrollPercentage,
+                        newScrollPercentage
+                    ) && scrollPercentage.toDouble() != .0
+                ) {
                     EventLogger.logScrollEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.NOTICE_PAGE,
@@ -152,7 +157,8 @@ class ArticleListFragment : Fragment() {
 
     private fun initArticleRecyclerView() {
         binding.recyclerViewArticleList.adapter = articleAdapter
-        binding.recyclerViewArticleList.addItemDecoration(object: DividerItemDecoration(requireContext(), VERTICAL) {
+        binding.recyclerViewArticleList.addItemDecoration(object :
+            DividerItemDecoration(requireContext(), VERTICAL) {
             override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
                 drawArticleDivider(c, parent)
             }
@@ -171,7 +177,10 @@ class ArticleListFragment : Fragment() {
     private fun onArticleClicked(article: ArticleHeaderState) {
         navController.navigate(
             R.id.action_articleListFragment_to_articleDetailFragment,
-            bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id)
+            bundleOf(
+                ARTICLE_ID to article.id,
+                NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id
+            )
         )
     }
 
@@ -223,8 +232,7 @@ class ArticleListFragment : Fragment() {
                         if (keyword.isEmpty()) {
                             binding.chipSeeAll.isChecked = true
                             isKeywordSelected = true
-                        }
-                        else
+                        } else
                             binding.chipGroupMyKeywords.children.forEach {
                                 if ("#$keyword" == (it as Chip).text.toString()) {
                                     it.isChecked = true
@@ -252,7 +260,12 @@ class ArticleListFragment : Fragment() {
 
     private fun addKeywordChip(keywords: List<String>) {
         keywords.forEach { keyword ->
-            if (binding.chipGroupMyKeywords.children.any { (it as Chip).text == TextUtils.concat("#", keyword) }.not())
+            if (binding.chipGroupMyKeywords.children.any {
+                    (it as Chip).text == TextUtils.concat(
+                        "#",
+                        keyword
+                    )
+                }.not())
                 binding.chipGroupMyKeywords.addView(
                     createChip(TextUtils.concat("#", keyword).toString(), true,
                         onChipClicked = {
@@ -268,7 +281,8 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip {
-        val chip = layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as Chip
+        val chip =
+            layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as Chip
         return chip.apply {
             id = View.generateViewId()
             this.isCheckable = isCheckable
@@ -284,7 +298,11 @@ class ArticleListFragment : Fragment() {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.currentBoard.collect { board ->
-                        binding.tabLayoutArticleBoard.getTabAt(ArticleBoardType.entries.indexOf(board))?.select()
+                        binding.tabLayoutArticleBoard.getTabAt(
+                            ArticleBoardType.entries.indexOf(
+                                board
+                            )
+                        )?.select()
                     }
                 }
             }
@@ -372,7 +390,7 @@ class ArticleListFragment : Fragment() {
         keywordTooltip = Balloon.Builder(requireContext())
             .setHeight(BalloonSizeSpec.WRAP)
             .setWidth(BalloonSizeSpec.WRAP)
-            .setText(getString(R.string.keyword_tooltip))
+            .setText("temp")
             .setTextColorResource(R.color.white)
             .setBackgroundColorResource(R.color.neutral_600)
             .setTextSize(12f)

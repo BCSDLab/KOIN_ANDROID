@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
@@ -19,11 +18,25 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = "koin_data_store"
 )
 
-class OnBoardingLocalDataSource @Inject constructor(
-    @ApplicationContext context: Context
+class OnboardingLocalDataSource @Inject constructor(
+    context: Context
 ) {
 
     private val dataStore = context.dataStore
+
+    suspend fun getShouldShowTooltip(onboardingType: String): Boolean {
+        return dataStore.data.catch {
+            emit(emptyPreferences())
+        }.map { preferences ->
+            preferences[booleanPreferencesKey(onboardingType)] ?: true
+        }.firstOrNull() ?: true
+    }
+
+    suspend fun updateShouldShowTooltip(onboardingType: String, shouldShow: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[booleanPreferencesKey(onboardingType)] = shouldShow
+        }
+    }
 
     private companion object {
         val KEY_SHOULD_SHOW_DINING_TOOLTIP = booleanPreferencesKey(
@@ -72,7 +85,7 @@ class OnBoardingLocalDataSource @Inject constructor(
         }
     }
 
-    suspend fun updateShouldShowNotificationOnBoarding(shouldShow: Boolean) {
+    suspend fun updateShouldShowNotificationOnboarding(shouldShow: Boolean) {
         Result.runCatching {
             dataStore.edit { preferences ->
                 preferences[KEY_SHOULD_SHOW_NOTIFICATION_ON_BOARDING] = shouldShow
@@ -80,7 +93,7 @@ class OnBoardingLocalDataSource @Inject constructor(
         }
     }
 
-    suspend fun getShouldShowNotificationOnBoarding(): Result<Boolean> {
+    suspend fun getShouldShowNotificationOnboarding(): Result<Boolean> {
         return Result.runCatching {
             val flow = dataStore.data.catch { e ->
                 if (e is IOException) {
