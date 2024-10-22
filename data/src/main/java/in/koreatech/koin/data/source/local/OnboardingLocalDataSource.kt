@@ -36,33 +36,4 @@ class OnboardingLocalDataSource @Inject constructor(
             preferences[booleanPreferencesKey(onboardingType)] = shouldShow
         }
     }
-
-    private companion object {
-        val KEY_SHOULD_SHOW_NOTIFICATION_ON_BOARDING = booleanPreferencesKey(
-            "should_show_notification_on_boarding"
-        )
-    }
-
-    suspend fun updateShouldShowNotificationOnboarding(shouldShow: Boolean) {
-        Result.runCatching {
-            dataStore.edit { preferences ->
-                preferences[KEY_SHOULD_SHOW_NOTIFICATION_ON_BOARDING] = shouldShow
-            }
-        }
-    }
-
-    suspend fun getShouldShowNotificationOnboarding(): Result<Boolean> {
-        return Result.runCatching {
-            val flow = dataStore.data.catch { e ->
-                if (e is IOException) {
-                    emit(emptyPreferences())
-                } else {
-                    throw e
-                }
-            }.map { preferences ->
-                preferences[KEY_SHOULD_SHOW_NOTIFICATION_ON_BOARDING] ?: true
-            }
-            flow.firstOrNull() ?: true
-        }
-    }
 }
