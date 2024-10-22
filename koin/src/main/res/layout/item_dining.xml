@@ -3,284 +3,291 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/linear_layout_dining_information"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:orientation="horizontal"
-            android:paddingTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/text_view_dining_corner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="A코너" />
-
-            <TextView
-                android:id="@+id/text_view_kcal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                tools:text="786kcal" />
-
-            <TextView
-                android:id="@+id/divider_dot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="•" />
-
-            <TextView
-                android:id="@+id/text_view_card_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                tools:text="1000원" />
-
-            <TextView
-                android:id="@+id/divider_slash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="/" />
-
-            <TextView
-                android:id="@+id/text_view_cash_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="1000원" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/text_view_dining_sold_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/background_dining_sold_out_text"
-            android:gravity="center"
-            android:minWidth="50dp"
-            android:minHeight="26dp"
-            android:text="@string/sold_out"
-            android:textColor="#FFAD0D"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/linear_layout_dining_information"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/text_view_dining_changed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/background_dining_changed_text"
-            android:gravity="center"
-            android:minWidth="58dp"
-            android:minHeight="26dp"
-            android:text="@string/changed"
-            android:textColor="#4B4B4B"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/linear_layout_dining_information"
-            app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="wrap_content"
+        android:background="@color/background_dark"
+        android:paddingBottom="16dp"
+        android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_view_dining"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-            app:layout_constraintStart_toStartOf="@id/linear_layout_dining_information"
-            app:layout_constraintTop_toBottomOf="@id/linear_layout_dining_information"
-            app:rippleColor="@android:color/transparent"
-            app:strokeColor="@color/gray15"
-            app:strokeWidth="1dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="1dp"
+            app:cardUseCompatPadding="true"
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FAFAFA">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/image_view_dining"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/image_view_no_photo"
+                <LinearLayout
+                    android:id="@+id/linear_layout_dining_information"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/no_photo"
-                    app:layout_constraintBottom_toTopOf="@id/text_view_no_photo"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="24dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/text_view_dining_corner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="A코너" />
+
+                    <TextView
+                        android:id="@+id/text_view_kcal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        tools:text="786kcal" />
+
+                    <TextView
+                        android:id="@+id/divider_dot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="•" />
+
+                    <TextView
+                        android:id="@+id/text_view_card_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        tools:text="1000원" />
+
+                    <TextView
+                        android:id="@+id/divider_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/" />
+
+                    <TextView
+                        android:id="@+id/text_view_cash_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="1000원" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/text_view_no_photo"
+                    android:id="@+id/text_view_dining_sold_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/no_photo"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image_view_no_photo" />
-
-                <androidx.constraintlayout.widget.Group
-                    android:id="@+id/group_sold_out"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/background_dining_sold_out_text"
+                    android:gravity="center"
+                    android:minWidth="50dp"
+                    android:minHeight="26dp"
+                    android:text="@string/sold_out"
+                    android:textColor="#FFAD0D"
+                    android:textStyle="bold"
                     android:visibility="invisible"
-                    app:constraint_referenced_ids="view_sold_out, image_view_sold_out, text_view_sold_out" />
+                    app:layout_constraintBottom_toBottomOf="@id/linear_layout_dining_information"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_view_dining_changed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/background_dining_changed_text"
+                    android:gravity="center"
+                    android:minWidth="58dp"
+                    android:minHeight="26dp"
+                    android:text="@string/changed"
+                    android:textColor="#4B4B4B"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/linear_layout_dining_information"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_view_dining"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintStart_toStartOf="@id/linear_layout_dining_information"
+                    app:layout_constraintTop_toBottomOf="@id/linear_layout_dining_information"
+                    app:rippleColor="@android:color/transparent"
+                    app:strokeColor="@color/gray15"
+                    app:strokeWidth="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#FAFAFA">
+
+                        <ImageView
+                            android:id="@+id/image_view_dining"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_view_no_photo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/no_photo"
+                            app:layout_constraintBottom_toTopOf="@id/text_view_no_photo"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <TextView
+                            android:id="@+id/text_view_no_photo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/no_photo"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/image_view_no_photo" />
+
+                        <androidx.constraintlayout.widget.Group
+                            android:id="@+id/group_sold_out"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="invisible"
+                            app:constraint_referenced_ids="view_sold_out, image_view_sold_out, text_view_sold_out" />
+
+                        <View
+                            android:id="@+id/view_sold_out"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:alpha="0.5"
+                            android:background="@color/black" />
+
+                        <ImageView
+                            android:id="@+id/image_view_sold_out"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/no_meals"
+                            app:layout_constraintBottom_toTopOf="@id/text_view_sold_out"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <TextView
+                            android:id="@+id/text_view_sold_out"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/sold_out_menu"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/image_view_sold_out"
+                            app:layout_constraintStart_toStartOf="@id/image_view_sold_out"
+                            app:layout_constraintTop_toBottomOf="@id/image_view_sold_out" />
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/lottie_image_loading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="true"
+                            app:lottie_rawRes="@raw/lottie_loading" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_dining_menu_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/card_view_dining">
+
+                    <TextView
+                        android:id="@+id/text_view_dining_menu_items1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:minHeight="80dp"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        tools:text="혼합잡곡밥&amp;흰밥\n호박고추장국\n닭살두반장볶음(chicken)\n옥수수콘김치전" />
+
+                    <TextView
+                        android:id="@+id/text_view_dining_menu_items2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:minHeight="80dp"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        tools:text="혼합잡곡밥&amp;흰밥\n호박고추장국\n닭살두반장볶음(chicken)\n옥수수콘김치전" />
+                </LinearLayout>
 
                 <View
-                    android:id="@+id/view_sold_out"
+                    android:id="@+id/view_horizontal_divider"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:alpha="0.5"
-                    android:background="@color/black" />
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/background_dark"
+                    app:layout_constraintTop_toBottomOf="@id/linear_layout_dining_menu_content" />
 
-                <ImageView
-                    android:id="@+id/image_view_sold_out"
+                <View
+                    android:id="@+id/view_vertical_divider"
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@color/background_dark"
+                    app:layout_constraintBottom_toBottomOf="@id/linear_layout_share"
+                    app:layout_constraintEnd_toStartOf="@id/linear_layout_share"
+                    app:layout_constraintTop_toTopOf="@id/linear_layout_share" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/no_meals"
-                    app:layout_constraintBottom_toTopOf="@id/text_view_sold_out"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="7dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
+                    app:layout_constraintTop_toBottomOf="@id/view_horizontal_divider">
 
-                <TextView
-                    android:id="@+id/text_view_sold_out"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/sold_out_menu"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/image_view_sold_out"
-                    app:layout_constraintStart_toStartOf="@id/image_view_sold_out"
-                    app:layout_constraintTop_toBottomOf="@id/image_view_sold_out" />
+                    <ImageView
+                        android:id="@+id/image_view_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:src="@drawable/ic_share" />
 
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/lottie_image_loading"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/lottie_loading" />
-
+                    <TextView
+                        android:id="@+id/text_view_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_share"
+                        android:textAlignment="gravity" />
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/linear_layout_dining_menu_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/card_view_dining">
-
-            <TextView
-                android:id="@+id/text_view_dining_menu_items1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minHeight="80dp"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                tools:text="혼합잡곡밥&amp;흰밥\n호박고추장국\n닭살두반장볶음(chicken)\n옥수수콘김치전" />
-
-            <TextView
-                android:id="@+id/text_view_dining_menu_items2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minHeight="80dp"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                tools:text="혼합잡곡밥&amp;흰밥\n호박고추장국\n닭살두반장볶음(chicken)\n옥수수콘김치전" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/view_horizontal_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="12dp"
-            android:background="@color/background_dark"
-            app:layout_constraintTop_toBottomOf="@id/linear_layout_dining_menu_content" />
-
-        <View
-            android:id="@+id/view_vertical_divider"
-            android:layout_width="1dp"
-            android:layout_height="10dp"
-            android:layout_marginEnd="6dp"
-            android:background="@color/background_dark"
-            app:layout_constraintBottom_toBottomOf="@id/linear_layout_share"
-            app:layout_constraintEnd_toStartOf="@id/linear_layout_share"
-            app:layout_constraintTop_toTopOf="@id/linear_layout_share" />
-
-        <LinearLayout
-            android:id="@+id/linear_layout_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="7dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_horizontal_divider">
-
-            <ImageView
-                android:id="@+id/image_view_share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:src="@drawable/ic_share" />
-
-            <TextView
-                android:id="@+id/text_view_share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_share"
-                android:textAlignment="gravity" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/view_dining_divider"
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:layout_marginTop="4dp"
-            android:background="@color/background_dark"
-            app:layout_constraintTop_toBottomOf="@id/linear_layout_share" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </layout>
