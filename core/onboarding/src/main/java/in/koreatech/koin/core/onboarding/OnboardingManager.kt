@@ -2,6 +2,7 @@ package `in`.koreatech.koin.core.onboarding
 
 import android.content.Context
 import android.view.View
+import androidx.annotation.FloatRange
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -45,6 +46,7 @@ class OnboardingManager @Inject internal constructor(
      * 앱 실행 최초 1회에만 툴팁 표시
      * @param type 툴팁 타입
      * @param view 툴팁을 위치시킬 뷰
+     * @param arrowPosition 화살표 위치 (0.0 ~ 1.0)
      * @param arrowDirection 툴팁 화살표 방향 (ex. ArrowDirection.LEFT -> 화살표는 왼쪽방향, 툴팁은 오른쪽에 위치)
      * ```
      * // In Activity
@@ -68,7 +70,8 @@ class OnboardingManager @Inject internal constructor(
     fun LifecycleOwner.showOnboardingTooltipIfNeeded(
         type: OnboardingType,
         view: View,
-        arrowDirection: ArrowDirection
+        @FloatRange(from = 0.0, to = 1.0) arrowPosition: Float = 0.5f,
+        arrowDirection: ArrowDirection,
     ) {
         lifecycle.addObserver(tooltipDismissObserver)
         lifecycleScope.launch {
@@ -77,7 +80,7 @@ class OnboardingManager @Inject internal constructor(
                 delay(500)
                 withContext(mainDispatcher) {
                     if (shouldShow) {
-                        tooltip = createTooltip(type, arrowDirection)
+                        tooltip = createTooltip(type, arrowDirection, arrowPosition)
                         tooltip.showAlign(view, arrowDirection)
                         onboardingRepository.updateShouldShowTooltip(type.name, false)
                     }
@@ -88,7 +91,8 @@ class OnboardingManager @Inject internal constructor(
 
     private fun createTooltip(
         type: OnboardingType,
-        arrowDirection: ArrowDirection
+        arrowDirection: ArrowDirection,
+        arrowPosition: Float
     ): Balloon {
         val iconForm = IconForm.Builder(context)
             .setDrawable(AppCompatResources.getDrawable(context, R.drawable.round_close_24))
@@ -107,6 +111,7 @@ class OnboardingManager @Inject internal constructor(
             .setArrowOrientation(arrowDirection.toArrowOrientation())
             .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
             .setArrowSize(10)
+            .setArrowPosition(arrowPosition)
             .setPaddingVertical(8)
             .setPaddingHorizontal(10)
             .setIconForm(iconForm)
