@@ -90,6 +90,7 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":core:onboarding"))
 
     implementation(libs.guava)
 
