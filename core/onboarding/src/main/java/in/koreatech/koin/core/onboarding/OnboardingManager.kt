@@ -115,7 +115,7 @@ class OnboardingManager @Inject internal constructor(
             .setPaddingVertical(8)
             .setPaddingHorizontal(10)
             .setIconForm(iconForm)
-            .setMarginLeft(10)
+            .setMargin(10)
             .setDismissWhenTouchOutside(false)
             .setDismissWhenClicked(true)
             .setCornerRadius(8f)
