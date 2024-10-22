@@ -90,6 +90,27 @@ class OnboardingManager @Inject internal constructor(
         }
     }
 
+    /**
+     * 앱 최초 실행 시에 실행시키고 싶은 액션이 있는 경우 사용
+     * @param action 실행시킬 액션. ex) BottomSheetDialogFragment.show()
+     */
+    fun LifecycleOwner.showOnboardingIfNeeded(
+        type: OnboardingType,
+        action: () -> Unit
+    ) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                val shouldShow = onboardingRepository.getShouldShowTooltip(type.name)
+                withContext(mainDispatcher) {
+                    if (shouldShow) {
+                        action()
+                        onboardingRepository.updateShouldShowTooltip(type.name, false)
+                    }
+                }
+            }
+        }
+    }
+
     private fun createTooltip(
         type: OnboardingType,
         arrowDirection: ArrowDirection,
@@ -104,7 +125,6 @@ class OnboardingManager @Inject internal constructor(
         return Balloon.Builder(context)
             .setHeight(BalloonSizeSpec.WRAP)
             .setWidth(BalloonSizeSpec.WRAP)
-            .setText(context.getString(type.descriptionResId))
             .setTextColorResource(R.color.white)
             .setBackgroundColorResource(R.color.neutral_600)
             .setTextSize(12f)
@@ -121,6 +141,10 @@ class OnboardingManager @Inject internal constructor(
             .setDismissWhenClicked(true)
             .setCornerRadius(8f)
             .setBalloonAnimation(BalloonAnimation.FADE)
+            .apply {
+                if (type.descriptionResId != 0)
+                    setText(context.getString(type.descriptionResId))
+            }
             .build()
     }
 
