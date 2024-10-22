@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
+import `in`.koreatech.koin.data.source.local.OnboardingLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
@@ -77,5 +78,13 @@ object LocalDataSourceModule {
         articleDataStore: ArticleDataStore
     ): ArticleLocalDataSource {
         return ArticleLocalDataSource(articleDataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOnboardingLocalDataSource(
+        @ApplicationContext applicationContext: Context
+    ): OnboardingLocalDataSource {
+        return OnboardingLocalDataSource(applicationContext)
     }
 }

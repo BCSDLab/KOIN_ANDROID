@@ -369,7 +369,6 @@
     <string name="store_detail_wrong_store_id_message">잘못된 진입입니다.</string>
     <string name="store_last_updated_message">%1$s 업데이트됨</string>
     <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
-    <string name="dining_image_tooltip">식단 사진을 확인해보세요!</string>
 
     <!-- Dining Notice -->
     <string name="dining_notice_title_format">%1$s %2$s 운영시간</string>
@@ -617,7 +616,6 @@
     <string name="downloading">다운로드 중</string>
     <string name="start_download">파일을 다운로드합니다.</string>
     <string name="download_complete">다운로드가 완료되었습니다.</string>
-    <string name="keyword_tooltip">키워드를 추가하고 맞춤 알림을 받아보세요!</string>
 
 
     <!--리뷰 기능-->

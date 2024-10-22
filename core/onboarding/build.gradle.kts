@@ -6,7 +6,9 @@ plugins {
 android {
     namespace = "in.koreatech.koin.core.onboarding"
 }
-
+kapt {
+    correctErrorTypes = true
+}
 dependencies {
     implementation(project(":domain"))
 
