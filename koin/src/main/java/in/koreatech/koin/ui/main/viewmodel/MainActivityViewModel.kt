@@ -15,18 +15,14 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
-import `in`.koreatech.koin.domain.usecase.onboarding.dining.GetShouldShowDiningTooltipUseCase
-import `in`.koreatech.koin.domain.usecase.onboarding.dining.UpdateShouldShowDiningTooltipUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
-import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -44,8 +40,6 @@ class MainActivityViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val abTestUseCase: ABTestUseCase,
-    private val getShouldShowDiningTooltipUseCase: GetShouldShowDiningTooltipUseCase,
-    private val updateShouldShowDiningTooltipUseCase: UpdateShouldShowDiningTooltipUseCase,
     articleRepository: ArticleRepository
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
@@ -53,19 +47,17 @@ class MainActivityViewModel @Inject constructor(
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
 
-    val hotArticles: StateFlow<List<ArticleHeaderState>> = articleRepository.fetchHotArticleHeaders()
-        .map {
-            it.take(HOT_ARTICLE_COUNT).map { article -> article.toArticleHeaderState() }
-        }.catch {
+    val hotArticles: StateFlow<List<ArticleHeaderState>> =
+        articleRepository.fetchHotArticleHeaders()
+            .map {
+                it.take(HOT_ARTICLE_COUNT).map { article -> article.toArticleHeaderState() }
+            }.catch {
 
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList()
-        )
-
-    private val _showDiningTooltip = MutableStateFlow(false)
-    val showDiningTooltip: StateFlow<Boolean> get() = _showDiningTooltip
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
 
     private val _selectedPosition = MutableLiveData(0)
     val selectedPosition: LiveData<Int> get() = _selectedPosition
@@ -80,9 +72,8 @@ class MainActivityViewModel @Inject constructor(
     init {
         updateDining()
         getStoreCategories()
-        getShouldShowDiningTooltip()
-
     }
+
     fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
         abTestUseCase(title).onSuccess {
             _variableName.value = it
@@ -145,22 +136,6 @@ class MainActivityViewModel @Inject constructor(
     fun getStoreCategories() {
         viewModelScope.launchWithLoading {
             _storeCategories.value = getStoreCategoriesUseCase()
-        }
-    }
-
-    fun getShouldShowDiningTooltip() {
-        viewModelScope.launchWithLoading {
-            getShouldShowDiningTooltipUseCase()
-                .onSuccess {
-                    _showDiningTooltip.value = it
-                }
-        }
-    }
-
-    fun updateShouldShowDiningTooltip(shouldShow: Boolean = false) {
-        viewModelScope.launchWithLoading {
-            updateShouldShowDiningTooltipUseCase(shouldShow)
-            _showDiningTooltip.value = shouldShow
         }
     }
 

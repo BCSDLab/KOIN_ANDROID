@@ -10,24 +10,6 @@ class OnboardingRepositoryImpl @Inject constructor(
     private val onboardingLocalDataSource: OnboardingLocalDataSource
 ) : OnboardingRepository {
 
-    override fun updateShouldShowKeywordTooltip(shouldShow: Boolean): Flow<Unit> {
-        return flow {
-            emit(onboardingLocalDataSource.updateShouldShowKeywordTooltip(shouldShow))
-        }
-    }
-
-    override fun getShouldShowKeywordTooltip(): Flow<Boolean> {
-        return onboardingLocalDataSource.getShouldShowKeywordTooltip()
-    }
-
-    override suspend fun updateShouldShowDiningTooltip(shouldShow: Boolean) {
-        onboardingLocalDataSource.updateShouldShowDiningTooltip(shouldShow)
-    }
-
-    override suspend fun getShouldShowDiningTooltip(): Result<Boolean> {
-        return onboardingLocalDataSource.getShouldShowDiningTooltip()
-    }
-
     override suspend fun updateShouldShowNotificationOnboarding(shouldShow: Boolean) {
         onboardingLocalDataSource.updateShouldShowNotificationOnboarding(shouldShow)
     }
