@@ -77,13 +77,13 @@ class OnboardingManager @Inject internal constructor(
         lifecycle.addObserver(tooltipDismissObserver)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val shouldShow = onboardingRepository.getShouldShowTooltip(type.name)
+                val shouldShow = onboardingRepository.getShouldOnboarding(type.name)
                 delay(500)
                 withContext(mainDispatcher) {
                     if (shouldShow) {
                         tooltip = createTooltip(type, arrowDirection, arrowPosition)
                         tooltip.showAlign(view, arrowDirection)
-                        onboardingRepository.updateShouldShowTooltip(type.name, false)
+                        onboardingRepository.updateShouldOnboarding(type.name, false)
                     }
                 }
             }
@@ -100,11 +100,11 @@ class OnboardingManager @Inject internal constructor(
     ) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val shouldShow = onboardingRepository.getShouldShowTooltip(type.name)
+                val shouldShow = onboardingRepository.getShouldOnboarding(type.name)
                 withContext(mainDispatcher) {
                     if (shouldShow) {
                         action()
-                        onboardingRepository.updateShouldShowTooltip(type.name, false)
+                        onboardingRepository.updateShouldOnboarding(type.name, false)
                     }
                 }
             }
