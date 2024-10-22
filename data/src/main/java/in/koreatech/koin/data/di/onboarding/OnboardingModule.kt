@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.data.di.onboarding
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -27,11 +30,15 @@ abstract class OnboardingRepositoryModule {
 @InstallIn(ActivityComponent::class)
 object OnboardingLocalDataSourceModule {
 
+    private val Context.onboardingDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "onboarding"
+    )
+
     @Provides
     @ActivityScoped
     fun provideOnboardingManager(
         @ApplicationContext context: Context
     ): OnboardingLocalDataSource {
-        return OnboardingLocalDataSource(context)
+        return OnboardingLocalDataSource(context.onboardingDataStore)
     }
 }
