@@ -14,7 +14,6 @@ import `in`.koreatech.koin.data.repository.DeptRepositoryImpl
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
 import `in`.koreatech.koin.data.repository.LandRepositoryImpl
 import `in`.koreatech.koin.data.repository.NotificationRepositoryImpl
-import `in`.koreatech.koin.data.repository.OnboardingRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerChangePasswordRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerRegisterRepositoryImpl
 import `in`.koreatech.koin.data.repository.OwnerShopRepositoryImpl
@@ -30,7 +29,6 @@ import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
-import `in`.koreatech.koin.data.source.local.OnboardingLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
@@ -56,7 +54,6 @@ import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.repository.LandRepository
 import `in`.koreatech.koin.domain.repository.NotificationRepository
-import `in`.koreatech.koin.domain.repository.OnboardingRepository
 import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
 import `in`.koreatech.koin.domain.repository.OwnerShopRepository
@@ -227,14 +224,6 @@ object RepositoryModule {
         ownerRemoteDataSource: OwnerRemoteDataSource
     ): OwnerShopRepository {
         return OwnerShopRepositoryImpl(ownerRemoteDataSource)
-    }
-
-    @Provides
-    @Singleton
-    fun provideOnboardingRepository(
-        onboardingLocalDataSource: OnboardingLocalDataSource
-    ): OnboardingRepository {
-        return OnboardingRepositoryImpl(onboardingLocalDataSource)
     }
 
     @Provides
