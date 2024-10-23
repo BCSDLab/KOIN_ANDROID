@@ -17,6 +17,7 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
+import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
@@ -130,6 +131,14 @@ object AuthNetworkModule {
         @Auth retrofit: Retrofit
     ): ArticleAuthApi {
         return retrofit.create(ArticleAuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimetableAuthApi(
+        @Auth retrofit: Retrofit
+    ): TimetableAuthApi {
+        return retrofit.create(TimetableAuthApi::class.java)
     }
 }
 
