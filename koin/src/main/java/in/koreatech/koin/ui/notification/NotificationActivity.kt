@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.notification
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -21,6 +22,7 @@ import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
+import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
 import kotlinx.coroutines.launch
@@ -43,6 +45,12 @@ class NotificationActivity : ActivityBase() {
         observeData()
         onSubscribe()
         setOnClickNotificationSetting()
+        binding.clGotoArticleKeyword.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_keyword")
+            }
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {
@@ -61,7 +69,6 @@ class NotificationActivity : ActivityBase() {
             notificationDiningSoldOut.isEnabled = true
             notificationShopEvent.isEnabled = true
             notificationDiningImageUpload.isEnabled = true
-            notificationArticleKeyword.isEnabled = true
         }
     }
 
@@ -72,7 +79,6 @@ class NotificationActivity : ActivityBase() {
             notificationDiningSoldOut.disableAll()
             notificationShopEvent.disableAll()
             notificationDiningImageUpload.disableAll()
-            notificationArticleKeyword.disableAll()
         }
     }
 
@@ -100,13 +106,6 @@ class NotificationActivity : ActivityBase() {
                                     }
 
                                     SubscribesType.DINING_IMAGE_UPLOAD -> with(binding.notificationDiningImageUpload) {
-                                        if (isChecked != it.isPermit) {
-                                            fakeChecked = it.isPermit
-                                            isChecked = it.isPermit
-                                        }
-                                    }
-
-                                    SubscribesType.ARTICLE_KEYWORD -> with(binding.notificationArticleKeyword) {
                                         if (isChecked != it.isPermit) {
                                             fakeChecked = it.isPermit
                                             isChecked = it.isPermit
@@ -181,9 +180,6 @@ class NotificationActivity : ActivityBase() {
                 if (isChecked) "on" else "off"
             )
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
-        }
-        binding.notificationArticleKeyword.setOnSwitchClickListener { isChecked ->
-            handleSubscription(isChecked, SubscribesType.ARTICLE_KEYWORD)
         }
     }
 
