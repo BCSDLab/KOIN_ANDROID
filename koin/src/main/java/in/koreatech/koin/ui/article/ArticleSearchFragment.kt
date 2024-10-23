@@ -59,11 +59,16 @@ class ArticleSearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if(_binding == null) {
+        if (_binding == null) {
             _binding = FragmentArticleSearchBinding.inflate(inflater, container, false)
             (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
             binding.textInputSearch.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
+                        "검색하기"
+                    )
                     viewModel.search()
                     true
                 } else false
@@ -73,6 +78,11 @@ class ArticleSearchFragment : Fragment() {
                 onSearchInputChanged(it.toString())
             }
             binding.imageSearch.setOnClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
+                    "검색하기"
+                )
                 viewModel.search()
             }
             binding.textViewRecentSearchedKeywordClear.setOnClickListener {
