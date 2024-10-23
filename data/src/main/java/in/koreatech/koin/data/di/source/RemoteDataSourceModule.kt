@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.api.*
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
+import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.remote.*
 import javax.inject.Singleton
@@ -123,5 +124,14 @@ object RemoteDataSourceModule {
         coopShopApi: CoopShopApi,
     ): CoopShopRemoteDataSource {
         return CoopShopRemoteDataSource(coopShopApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimetableRemoteDataSource(
+        timetableApi: TimetableApi,
+        timetableAuthApi: TimetableAuthApi
+    ): TimetableRemoteDataSource {
+        return TimetableRemoteDataSource(timetableApi, timetableAuthApi)
     }
 }
