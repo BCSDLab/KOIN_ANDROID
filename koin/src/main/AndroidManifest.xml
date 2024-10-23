@@ -36,6 +36,10 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
 
+        <activity android:name=".ui.timetablev2.TimetableActivity"
+            android:exported="false"
+            android:theme="@style/KAPTheme.NoActionBar"/>
+
         <activity android:name=".ui.scheme.SchemeActivity"
             android:exported="false"
             android:launchMode="singleTop"
