@@ -112,6 +112,7 @@ class NotificationActivity : ActivityBase() {
                                             isChecked = it.isPermit
                                         }
                                     }
+
                                     SubscribesType.NOTHING -> Unit
                                     else -> Unit
                                 }
@@ -174,6 +175,11 @@ class NotificationActivity : ActivityBase() {
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
         }
         binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_MENU_IMAGE_UPLOAD,
+                if (isChecked) "on" else "off"
+            )
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
         binding.notificationArticleKeyword.setOnSwitchClickListener { isChecked ->

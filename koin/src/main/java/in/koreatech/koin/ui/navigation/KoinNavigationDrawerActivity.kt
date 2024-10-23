@@ -206,6 +206,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 )
                             }
 
+                            MenuState.OperatingInfo -> {
+                                EventLogger.logClickEvent(
+                                    EventAction.CAMPUS,
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    getString(R.string.navigation_item_koreatech_operating_information)
+                                )
+                            }
+
                             MenuState.LoginOrLogout -> {
                                 if (koinNavigationDrawerViewModel.userInfoFlow.value.isStudent) {
                                     EventLogger.logClickEvent(
@@ -341,7 +349,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                             when (menuState) {
                                 MenuState.Main -> {
-                                    if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                                    if (!checkMainPermission()) requestMainPermissionLauncher.launch(
+                                        MAIN_REQUIRED_PERMISSION
+                                    )
                                     koinNavigationDrawerViewModel.updateDeviceToken()
                                 }
 

@@ -38,8 +38,8 @@
     <string name="bus_course_shuttle_from_koreatech">셔틀 하교</string>
     <string name="bus_course_commuting_to_koreatech">등교</string>
     <string name="bus_course_commuting_from_koreatech">하교</string>
-    <string name="bus_course_express_to_koreatech"><![CDATA[야우리->한기대]]></string>
-    <string name="bus_course_express_from_koreatech"><![CDATA[한기대->야우리]]></string>
+    <string name="bus_course_express_to_koreatech"><![CDATA[야우리 → 한기대]]></string>
+    <string name="bus_course_express_from_koreatech"><![CDATA[한기대 → 야우리]]></string>
     <string name="bus_remain_time_format">H시간 mm분 ss초 전</string>
     <string name="bus_no_remain_time">운행정보없음</string>
     <string name="bus_arrival_time_format">H:mm 출발</string>

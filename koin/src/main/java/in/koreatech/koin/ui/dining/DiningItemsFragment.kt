@@ -16,6 +16,9 @@ import com.kakao.sdk.template.model.ItemInfo
 import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentDiningItemsBinding
@@ -60,6 +63,11 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     }
 
     private fun shareDining(dining: Dining) {
+        EventLogger.logClickEvent(
+            EventAction.CAMPUS,
+            AnalyticsConstant.Label.MENU_SHARE,
+            "공유하기"
+        )
         val messageTemplate = createFeedMessageTemplate(dining)
 
         if (ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
