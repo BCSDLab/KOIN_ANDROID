@@ -16,6 +16,7 @@ import com.kakao.sdk.template.model.ItemInfo
 import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentDiningItemsBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -25,15 +26,22 @@ import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.ui.dining.adapter.DiningAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     private val binding by dataBinding<FragmentDiningItemsBinding>()
     private val viewModel by activityViewModels<DiningViewModel>()
     private val type by lazy { arguments?.getString(TYPE) }
-    private val diningAdapter by lazy { DiningAdapter(
-        onShareClick = ::shareDining,
-    ) }
+
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
+    private val diningAdapter by lazy {
+        DiningAdapter(
+            onShareClick = ::shareDining,
+            onboardingManager = onboardingManager
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,7 +53,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.dining.collect {
                     val diningList = it.filter { dining -> dining.type == type }.arrange()
-                    diningAdapter.submitList( diningList.filter { dining -> dining.menu.isNotEmpty() && dining.menu.first() != "미운영" } )
+                    diningAdapter.submitList(diningList.filter { dining -> dining.menu.isNotEmpty() && dining.menu.first() != "미운영" })
                 }
             }
         }
@@ -54,8 +62,11 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     private fun shareDining(dining: Dining) {
         val messageTemplate = createFeedMessageTemplate(dining)
 
-        if(ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
-            ShareClient.instance.shareDefault(requireContext(), messageTemplate) { sharingResult, error ->
+        if (ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
+            ShareClient.instance.shareDefault(
+                requireContext(),
+                messageTemplate
+            ) { sharingResult, error ->
                 error?.printStackTrace()
                 sharingResult?.let {
                     requireContext().startActivity(it.intent)
