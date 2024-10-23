@@ -11,5 +11,6 @@ enum class OnboardingType(
 ) {
     DINING_IMAGE(R.string.dining_image_tooltip),
     DINING_NOTIFICATION(0),
+    DINING_SHARE(R.string.dining_share_tooltip),
     ARTICLE_KEYWORD(R.string.article_keyword_tooltip)
 }
