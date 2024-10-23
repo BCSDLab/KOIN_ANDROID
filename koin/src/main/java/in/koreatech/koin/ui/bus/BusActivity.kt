@@ -5,10 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.FontManager
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.BusActivityMainBinding
@@ -28,6 +32,22 @@ class BusActivity : KoinNavigationDrawerActivity() {
         FirebasePerformanceUtil("Bus_Activity")
     }
     override val menuState: MenuState = MenuState.Bus
+
+    private val busTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.BUS_TAB_MENU,
+                tab?.text.toString()
+            )
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
+        }
+
+        override fun onTabReselected(tab: TabLayout.Tab?) {
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +86,7 @@ class BusActivity : KoinNavigationDrawerActivity() {
             busMainViewpager.currentItem = tabStartPosition
         }
         changeFont(busMainTabs.getChildAt(0))
+        busMainTabs.addOnTabSelectedListener(busTabSelectedListener)
     }
 
     override fun onStart() {
@@ -93,6 +114,7 @@ class BusActivity : KoinNavigationDrawerActivity() {
 
     override fun onDestroy() {
         firebasePerformanceUtil.stop()
+        binding.busMainTabs.removeOnTabSelectedListener(busTabSelectedListener)
         super.onDestroy()
     }
 }

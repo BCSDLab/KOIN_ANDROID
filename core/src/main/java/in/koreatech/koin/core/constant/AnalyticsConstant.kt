@@ -18,13 +18,14 @@ object AnalyticsConstant {
         const val HAMBURGER = "hamburger"
         const val HAMBURGER_SHOP = HAMBURGER
         const val HAMBURGER_DINING = "${HAMBURGER}"
-        const val HAMBURGER_LAND = "${HAMBURGER}"
-        const val HAMBURGER_MY_INFO_WITHOUT_LOGIN = "${HAMBURGER}_my_info_without_login"
-        const val HAMBURGER_MY_INFO_WITH_LOGIN = "${HAMBURGER}_my_info_with_login"
         const val HAMBURGER_BUS = "${HAMBURGER}"
         const val MAIN_MENU_MOVEDETAILVIEW = "main_menu_moveDetailView"
         const val MAIN_MENU_CORNER = "main_menu_corner"
         const val MENU_TIME = "menu_time"
+        const val BUS_TAB_MENU = "bus_tab_menu"
+        const val BUS_SEARCH_DEPARTURE = "bus_search_departure"
+        const val BUS_SEARCH_ARRIVAL = "bus_search_arrival"
+        const val BUS_SEARCH = "bus_search"
         const val MAIN_BUS = "main_bus"
         const val MAIN_BUS_CHANGETOFROM = "main_bus_changeToFrom"
         const val MAIN_BUS_SCROLL = "main_bus_scroll"
@@ -32,8 +33,10 @@ object AnalyticsConstant {
         const val BUS_ARRIVAL = "bus_arrival"
         const val BUS_TIMETABLE = "bus_timetable"
         const val BUS_TIMETABLE_AREA = "bus_timetable_area"
+        const val BUS_TIMETABLE_CITYBUS_ROUTE = "bus_timetable_citybus_route"
         const val BUS_TIMETABLE_TIME = "bus_timetable_time"
         const val BUS_TIMETABLE_EXPRESS = "bus_timetable_express"
+        const val BUS_TIMETABLE_CITYBUS = "bus_timetable_citybus"
         const val MENU_IMAGE = "menu_image"
         const val LOGIN = "login"
         const val START_SIGN_UP = "start_sign_up"
@@ -64,12 +67,13 @@ object AnalyticsConstant {
 
         const val SHOP_DETAIL_VIEW = "shop_detail_view"
 
-        const val SHOP_DETAIL_VIEW_REVIEW_BACK ="shop_detail_view_review_back"
+        const val SHOP_DETAIL_VIEW_REVIEW_BACK = "shop_detail_view_review_back"
         const val NOTIFICATION = "notification"
         const val NOTIFICATION_SOLD_OUT = "notification_sold_out"
         const val NOTIFICATION_BREAKFAST_SOLD_OUT = "notification_breakfast_sold_out"
         const val NOTIFICATION_LUNCH_SOLD_OUT = "notification_lunch_sold_out"
         const val NOTIFICATION_DINNER_SOLD_OUT = "notification_dinner_sold_out"
+        const val NOTIFICATION_MENU_IMAGE_UPLOAD = "notification_menu_image_upload"
         const val NOTICE_TAB = "notice_tab"
         const val NOTICE_PAGE = "notice_page"
         const val INVENTORY = "inventory"
@@ -82,11 +86,14 @@ object AnalyticsConstant {
         const val RECOMMENDED_KEYWORD = "recommended_keyword"
         const val KEYWORD_NOTIFICATION = "keyword_notification"
         const val LOGIN_POPUP_KEYWORD = "login_popup_keyword"
+        const val NOTICE_SEARCH_EVENT = "notice_search_event"
 
         const val BENEFIT_SHOP_CATEGORIES = "benefit_shop_categories"
         const val BENEFIT_SHOP_CATEGORIES_EVENT = "benefit_shop_categories_event"
         const val BENEFIT_SHOP_CLICK = "benefit_shop_click"
         const val BENEFIT_SHOP_CALL = "benefit_shop_call"
+
+        const val MENU_SHARE = "menu_share"
     }
 
     const val PREVIOUS_PAGE = "previous_page"

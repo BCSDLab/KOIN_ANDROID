@@ -143,6 +143,15 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     it.getQueryParameter("type")?.let { type ->
                         initialDiningTab = getDiningTabByType(DiningUtil.getTypeByString(type))
                     }
+
+                    // 카카오톡 공유를 통해 앱으로 들어온 경우 호출
+                    dateString?.let {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.MENU_SHARE,
+                            "코인으로 이동"
+                        )
+                    }
                 } catch (_: Exception) {
                 }
             }
