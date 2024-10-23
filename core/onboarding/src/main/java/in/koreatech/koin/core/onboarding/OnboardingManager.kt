@@ -111,6 +111,11 @@ class OnboardingManager @Inject internal constructor(
         }
     }
 
+    fun dismissTooltip() {
+        if (::tooltip.isInitialized)
+            tooltip.dismiss()
+    }
+
     private fun createTooltip(
         type: OnboardingType,
         arrowDirection: ArrowDirection,
