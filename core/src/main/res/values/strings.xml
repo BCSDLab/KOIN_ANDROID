@@ -90,6 +90,7 @@
     <!-- URL -->
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
     <string name="koreatech_url">https://portal.koreatech.ac.kr/</string>
+    <string name="koreatech_stems_url">https://job.koreatech.ac.kr/</string>
     <string name="koreatech_email_url">https://email.koreatech.ac.kr/</string>
 
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.core.helpers.UserLockBottomSheetBehavior</string>

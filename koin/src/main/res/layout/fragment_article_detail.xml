@@ -102,6 +102,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
+                tools:visibility="invisible"
                 android:layout_marginEnd="24dp"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
@@ -119,6 +120,7 @@
                 app:layout_constraintEnd_toStartOf="@id/button_to_next_article"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
+                tools:visibility="invisible"
                 android:layout_marginEnd="8dp"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
@@ -126,6 +128,25 @@
                 android:text="@string/prev_article"
                 android:textColor="@color/gray14"
                 android:background="@drawable/bg_gray_button" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_to_portal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/button_to_list"
+                app:layout_constraintBottom_toBottomOf="@id/button_to_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="24dp"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:visibility="gone"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:stateListAnimator="@null"
+                tools:text="원본 글 바로가기"
+                android:textColor="@color/black"
+                android:backgroundTint="#E4EAF2"
+                app:cornerRadius="6dp" />
 
             <View
                 android:id="@+id/divider_content_articles"
