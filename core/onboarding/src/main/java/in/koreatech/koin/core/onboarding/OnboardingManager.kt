@@ -24,10 +24,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-enum class ArrowDirection {
-    BOTTOM, TOP, LEFT, RIGHT
-}
-
 class OnboardingManager @Inject internal constructor(
     private val onboardingRepository: OnboardingRepository,
     private val context: Context,
@@ -151,15 +147,6 @@ class OnboardingManager @Inject internal constructor(
                     setText(context.getString(type.descriptionResId))
             }
             .build()
-    }
-
-    private fun ArrowDirection.toArrowOrientation(): ArrowOrientation {
-        return when (this) {
-            ArrowDirection.BOTTOM -> ArrowOrientation.BOTTOM
-            ArrowDirection.TOP -> ArrowOrientation.TOP
-            ArrowDirection.LEFT -> ArrowOrientation.START
-            ArrowDirection.RIGHT -> ArrowOrientation.END
-        }
     }
 
     private fun Balloon.showAlign(view: View, arrowDirection: ArrowDirection) {
