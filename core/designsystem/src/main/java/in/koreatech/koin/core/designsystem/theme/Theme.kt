@@ -4,10 +4,12 @@ import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Shapes
 import androidx.compose.material.Typography
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 
@@ -43,6 +45,10 @@ val LocalKoinTypography = staticCompositionLocalOf {
         bold18 = TextStyle.Default,
         bold20 = TextStyle.Default
     )
+}
+
+val LocalShapes = staticCompositionLocalOf {
+    Shapes
 }
 
 @Composable
@@ -104,13 +110,17 @@ fun KoinTheme(
         overline = RegularStyle3
     )
 
+    val shapes = Shapes
+
     CompositionLocalProvider(
         LocalKoinColorPalette provides extendedColors,
         LocalKoinTypography provides koinTypography,
+        LocalShapes provides shapes
     ) {
         MaterialTheme(
             colors = colorScheme,
             typography = typography,
+            shapes = Shapes,
             content = content
         )
     }
@@ -119,10 +129,16 @@ fun KoinTheme(
 object KoinTheme {
     val colors: KoinColorPalette
         @Composable
+        @ReadOnlyComposable
         get() = LocalKoinColorPalette.current
     val typography: KoinTypography
         @Composable
+        @ReadOnlyComposable
         get() = LocalKoinTypography.current
+    val shapes: Shapes
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalShapes.current
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
