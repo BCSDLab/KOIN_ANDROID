@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.core.designsystem.theme
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,6 +14,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 
 internal val LocalKoinColorPalette = staticCompositionLocalOf {
     KoinColorPalette(
@@ -209,3 +212,12 @@ object KoinTheme {
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
 fun isSupportDynamicTheme(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
+
+@Preview(name = "Dark Mode", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Light Mode", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
+annotation class ThemePreviews
+
+@Preview(name = "Default Font size", fontScale = 1.0F)
+@Preview(name = "Large Font size(1.5F)", fontScale = 1.5F)
+annotation class FontScalePreviews
