@@ -6,7 +6,7 @@ data class TimetableFrameResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("timetable_name")
-    val timetableName: String,
+    val timetableName: String?,
     @SerializedName("is_main")
     val isMain: Boolean,
 )

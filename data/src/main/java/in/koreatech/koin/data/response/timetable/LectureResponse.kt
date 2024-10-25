@@ -6,27 +6,27 @@ data class LectureResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("code") // "HRD011"
-    val code: String,
+    val code: String?,
     @SerializedName("name") // "직업능력개발훈련평가"
-    val name: String,
+    val name: String?,
     @SerializedName("grades") // "2"
-    val grades: String,
+    val grades: String?,
     @SerializedName("lecture_class") // "01"
-    val lectureClass: String,
+    val lectureClass: String?,
     @SerializedName("regular_number") // "40"
-    val regularNumber: String,
+    val regularNumber: String?,
     @SerializedName("department") // "HRD학과"
-    val department: String,
+    val department: String?,
     @SerializedName("target") // "기공3"
-    val target: String,
+    val target: String?,
     @SerializedName("professor") // "홍길동"
-    val professor: String,
+    val professor: String?,
     @SerializedName("is_english") // "0" : fasle / "1" : true
-    val isEnglish: String,
+    val isEnglish: String?,
     @SerializedName("design_score") // "0"
-    val designScore: String,
+    val designScore: String?,
     @SerializedName("is_elearning") //
-    val isElearning: String,
+    val isElearning: String?,
     @SerializedName("class_time")
     val classTime: List<Int>,
 )
