@@ -1,30 +1,61 @@
 package `in`.koreatech.koin.feature.timetable.component
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DayHeader(
+fun RowScope.DayHeader(
     day: String,
     modifier: Modifier = Modifier,
+    isEnd: Boolean = false
 ) {
-    Text(
-        text = day,
-        textAlign = TextAlign.Center,
+    Box(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(4.dp)
-    )
+            .weight(1f)
+    ) {
+        Text(
+            text = day,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .drawBehind {
+                    if (!isEnd) {
+                        drawLine(
+                            color = Color.LightGray,
+                            start = Offset(size.width, 0f),
+                            end = Offset(size.width, size.height),
+                            strokeWidth = 1f,
+                        )
+                    }
+                }
+                .padding(4.dp)
+        )
+    }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 60)
 @Composable
 private fun DayHeaderPreview() {
-    DayHeader(day = "월")
+    Row(
+        modifier = Modifier.padding(5.dp)
+    ) {
+        DayHeader(
+            day = "화"
+        )
+        DayHeader(
+            day = "화", isEnd = true
+        )
+    }
 }
