@@ -8,27 +8,27 @@ data class TimetableLectureResponse(
     @SerializedName("lecture_id")
     val lectureId: Int,
     @SerializedName("regular_number") // "38"
-    val regularNumber: String,
+    val regularNumber: String?,
     @SerializedName("code") // "ARB244"
-    val code: String,
+    val code: String?,
     @SerializedName("design_score") // "0"
-    val designScore: String,
+    val designScore: String?,
     @SerializedName("class_time")
     val classTime: List<Int>,
     @SerializedName("class_place") // "2공학관"
-    val classPlace: String,
+    val classPlace: String?,
     @SerializedName("memo")
     val memo: String?,
     @SerializedName("grades") // "3"
-    val grades: String,
+    val grades: String?,
     @SerializedName("class_title") // "한국사"
-    val classTitle: String,
+    val classTitle: String?,
     @SerializedName("lecture_class") // "01"
-    val lectureClass: String,
+    val lectureClass: String?,
     @SerializedName("target") // "디자 1 건축"
-    val target: String,
+    val target: String?,
     @SerializedName("professor") // "이돈우"
-    val professor: String,
+    val professor: String?,
     @SerializedName("department") // "디자인ㆍ건축공학부"
-    val department: String,
+    val department: String?,
 )
