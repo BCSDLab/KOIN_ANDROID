@@ -11,43 +11,109 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.graphics.Color
 
-val LocalKoinColorPalette = staticCompositionLocalOf {
-    KoinColorPalette()
-}
-
-val KoinLightColorScheme = lightColors()
-
-// 다크 테마 대응시 수정
-val KoinDarkColorScheme = lightColors()
-
-val LocalKoinTypography = staticCompositionLocalOf {
-    KoinTypography(
-        regular10 = TextStyle.Default,
-        regular12 = TextStyle.Default,
-        regular13 = TextStyle.Default,
-        regular14 = TextStyle.Default,
-        regular15 = TextStyle.Default,
-        regular16 = TextStyle.Default,
-        regular18 = TextStyle.Default,
-        medium12 = TextStyle.Default,
-        medium13 = TextStyle.Default,
-        medium14 = TextStyle.Default,
-        medium15 = TextStyle.Default,
-        medium16 = TextStyle.Default,
-        medium18 = TextStyle.Default,
-        bold12 = TextStyle.Default,
-        bold13 = TextStyle.Default,
-        bold14 = TextStyle.Default,
-        bold15 = TextStyle.Default,
-        bold16 = TextStyle.Default,
-        bold18 = TextStyle.Default,
-        bold20 = TextStyle.Default
+internal val LocalKoinColorPalette = staticCompositionLocalOf {
+    KoinColorPalette(
+        primary900 = Color.Unspecified,
+        primary800 = Color.Unspecified,
+        primary700 = Color.Unspecified,
+        primary600 = Color.Unspecified,
+        primary500 = Color.Unspecified,
+        primary400 = Color.Unspecified,
+        primary300 = Color.Unspecified,
+        primary200 = Color.Unspecified,
+        primary100 = Color.Unspecified,
+        sub900 = Color.Unspecified,
+        sub800 = Color.Unspecified,
+        sub700 = Color.Unspecified,
+        sub600 = Color.Unspecified,
+        sub500 = Color.Unspecified,
+        sub400 = Color.Unspecified,
+        sub300 = Color.Unspecified,
+        sub200 = Color.Unspecified,
+        sub100 = Color.Unspecified,
+        neutral800 = Color.Unspecified,
+        neutral700 = Color.Unspecified,
+        neutral600 = Color.Unspecified,
+        neutral500 = Color.Unspecified,
+        neutral400 = Color.Unspecified,
+        neutral300 = Color.Unspecified,
+        neutral200 = Color.Unspecified,
+        neutral100 = Color.Unspecified,
+        neutral50 = Color.Unspecified,
+        neutral0 = Color.Unspecified,
+        danger700 = Color.Unspecified,
+        danger600 = Color.Unspecified,
+        danger500 = Color.Unspecified,
+        danger400 = Color.Unspecified,
+        danger300 = Color.Unspecified,
+        danger200 = Color.Unspecified,
+        danger100 = Color.Unspecified,
+        danger50 = Color.Unspecified,
+        warning700 = Color.Unspecified,
+        warning600 = Color.Unspecified,
+        warning500 = Color.Unspecified,
+        warning400 = Color.Unspecified,
+        warning300 = Color.Unspecified,
+        warning200 = Color.Unspecified,
+        warning100 = Color.Unspecified,
+        warning50 = Color.Unspecified,
+        success700 = Color.Unspecified,
+        success600 = Color.Unspecified,
+        success500 = Color.Unspecified,
+        success400 = Color.Unspecified,
+        success300 = Color.Unspecified,
+        success200 = Color.Unspecified,
+        success100 = Color.Unspecified,
+        success50 = Color.Unspecified,
+        info700 = Color.Unspecified,
+        info600 = Color.Unspecified,
+        info500 = Color.Unspecified,
+        info400 = Color.Unspecified,
+        info300 = Color.Unspecified,
+        info200 = Color.Unspecified,
+        info100 = Color.Unspecified,
+        info50 = Color.Unspecified
     )
 }
 
-val LocalShapes = staticCompositionLocalOf {
+
+val LocalKoinTypography = staticCompositionLocalOf {
+    KoinTypography(
+        regular10 = RegularStyle1,
+        regular12 = RegularStyle2,
+        regular13 = RegularStyle3,
+        regular14 = RegularStyle4,
+        regular15 = RegularStyle5,
+        regular16 = RegularStyle6,
+        regular18 = RegularStyle7,
+        medium12 = MediumStyle1,
+        medium13 = MediumStyle2,
+        medium14 = MediumStyle3,
+        medium15 = MediumStyle4,
+        medium16 = MediumStyle5,
+        medium18 = MediumStyle6,
+        bold12 = BoldStyle1,
+        bold13 = BoldStyle2,
+        bold14 = BoldStyle3,
+        bold15 = BoldStyle4,
+        bold16 = BoldStyle5,
+        bold18 = BoldStyle6,
+        bold20 = BoldStyle7,
+    )
+}
+
+internal val KoinLightColorScheme = lightColors(
+    primary = blue50
+)
+
+// 다크 테마 대응시 수정
+internal val KoinDarkColorScheme = lightColors(
+    primary = blue50
+)
+
+internal val LocalShapes = staticCompositionLocalOf {
     Shapes
 }
 
