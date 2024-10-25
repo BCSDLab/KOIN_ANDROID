@@ -35,14 +35,14 @@ data class KoinTypography(
     val bold20: TextStyle
 )
 
-val Pretendard = FontFamily(
+internal val Pretendard = FontFamily(
     Font(R.font.pretendard_bold, FontWeight.Bold, FontStyle.Normal),
     Font(R.font.pretendard_bold, FontWeight.W600, FontStyle.Normal),
     Font(R.font.pretendard_medium, FontWeight.Medium, FontStyle.Normal),
     Font(R.font.pretendard_regular, FontWeight.Normal, FontStyle.Normal),
 )
 
-val DefaultTextStyle: TextStyle = TextStyle(
+internal val DefaultTextStyle: TextStyle = TextStyle(
     fontStyle = FontStyle.Normal,
     fontFamily = Pretendard,
     platformStyle = PlatformTextStyle(
