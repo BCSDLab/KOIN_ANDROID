@@ -8,8 +8,8 @@ data class TimetableLecturesResponse(
     @SerializedName("timetable")
     val timetable: List<TimetableLectureResponse>,
     @SerializedName("grades")
-    val grades: Int,
+    val grades: Int?,
     @SerializedName("total_grades")
-    val totalGrades: Int,
+    val totalGrades: Int?,
 )
 
