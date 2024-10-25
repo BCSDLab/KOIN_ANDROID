@@ -1,0 +1,32 @@
+plugins {
+    alias(libs.plugins.koin.library)
+
+}
+
+android {
+    namespace = "in.koreatech.koin.core.designsystem"
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
+
+    buildFeatures {
+        compose = true
+    }
+}
+
+dependencies {
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose)
+
+    debugImplementation(libs.bundles.compose.debug.test)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.ui.test.manifest)
+}
