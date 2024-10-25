@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.timetablev2
 
 import android.os.Bundle
 import androidx.compose.material.MaterialTheme
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.feature.timetable.view.TimetableScreen
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
