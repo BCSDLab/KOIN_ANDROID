@@ -1,39 +1,40 @@
 package `in`.koreatech.koin.feature.timetable.section
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.feature.timetable.component.DayHeader
 
 @Composable
 fun TimetableHeader(
     modifier: Modifier = Modifier,
-    dayStartPadding: Dp = 0.dp,
     days: List<String> = listOf("월", "화", "수", "목", "금"),
-    dayHeader: @Composable (day: String) -> Unit = { DayHeader(day = it) },
 ) {
     Row(
         modifier = modifier
-            .background(Color.LightGray)
-            .padding(start = dayStartPadding)
+            .border(
+                width = 0.dp,
+                color = Color.LightGray,
+                shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+            )
     ) {
-        days.forEach { day ->
-            Box(modifier = Modifier.weight(1f)) {
-                dayHeader(day = day)
-            }
+        days.forEachIndexed { index, day ->
+            DayHeader(day = day, isEnd = index == days.size - 1)
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true, heightDp = 30)
+@Preview(showBackground = true, heightDp = 30)
 @Composable
 private fun TimetableHeaderPreview() {
-    TimetableHeader()
+    TimetableHeader(
+        modifier = Modifier.padding(2.dp)
+    )
 }
