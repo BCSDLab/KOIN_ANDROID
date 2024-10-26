@@ -162,13 +162,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             view.setOnClickListener {
                 when (state) {
                     MenuState.Owner -> {
-                        Intent(this, WebViewActivity::class.java).apply {
-                            putExtra(
-                                "url",
-                                if (BuildConfig.IS_DEBUG) URLConstant.OWNER_URL_STAGE
-                                else URLConstant.OWNER_URL_PRODUCTION
-                            )
-                        }.run(::startActivity)
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            if(BuildConfig.IS_DEBUG) Uri.parse(URLConstant.OWNER_URL_STAGE) else Uri.parse(URLConstant.OWNER_URL_PRODUCTION)
+                        )
+                        startActivity(intent)
                     }
 
                     else -> {
