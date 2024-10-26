@@ -3,10 +3,10 @@ package `in`.koreatech.koin.core.designsystem.theme
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.material.Typography
-import androidx.compose.material.lightColors
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -104,12 +104,12 @@ internal val LocalKoinTypography = staticCompositionLocalOf {
     )
 }
 
-internal val KoinLightColorScheme = lightColors(
+internal val KoinLightColorScheme = lightColorScheme(
     primary = blue50
 )
 
 // 다크 테마 대응시 수정
-internal val KoinDarkColorScheme = lightColors(
+internal val KoinDarkColorScheme = lightColorScheme(
     primary = blue50
 )
 
@@ -160,20 +160,23 @@ fun KoinTheme(
         bold18 = BoldStyle6,
         bold20 = BoldStyle7,
     )
-
+    
     val typography = Typography(
-        defaultFontFamily = Pretendard,
-        h1 = MediumStyle6,
-        h2 = MediumStyle5,
-        h3 = MediumStyle5,
-        h4 = MediumStyle4,
-        h5 = MediumStyle3,
-        h6 = MediumStyle2,
-        body1 = RegularStyle5,
-        body2 = RegularStyle4,
-        button = MediumStyle5,
-        caption = RegularStyle1,
-        overline = RegularStyle3
+        displayLarge = MediumStyle6,
+        displayMedium = MediumStyle5,
+        displaySmall = MediumStyle4,
+        headlineLarge = MediumStyle6,
+        headlineMedium = MediumStyle5,
+        headlineSmall = MediumStyle4,
+        titleLarge = MediumStyle5,
+        titleMedium = MediumStyle4,
+        titleSmall = MediumStyle3,
+        bodyLarge = RegularStyle5,
+        bodyMedium = RegularStyle4,
+        bodySmall = RegularStyle3,
+        labelLarge = RegularStyle3,
+        labelMedium = RegularStyle2,
+        labelSmall = RegularStyle1
     )
 
     val shapes = Shapes
@@ -184,7 +187,7 @@ fun KoinTheme(
         LocalShapes provides shapes
     ) {
         MaterialTheme(
-            colors = colorScheme,
+            colorScheme = colorScheme,
             typography = typography,
             shapes = Shapes,
             content = content
