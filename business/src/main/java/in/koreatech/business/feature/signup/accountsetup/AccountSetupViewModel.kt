@@ -70,7 +70,7 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    fun onPasswordChanged(password: String) = intent {
+    fun onPasswordChanged(password: String) = blockingIntent {
         reduce {
             state.copy(
                 password = password,
@@ -80,7 +80,7 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    fun onPasswordConfirmChanged(passwordConfirm: String) = intent {
+    fun onPasswordConfirmChanged(passwordConfirm: String) = blockingIntent {
         reduce {
             state.copy(
                 passwordConfirm = passwordConfirm,
