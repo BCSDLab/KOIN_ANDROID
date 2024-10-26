@@ -32,20 +32,12 @@ class SignupViewModel @Inject constructor(
     var portalEmail: String = ""
     var password: String = ""
     var isCheckedNickname: Boolean = false
-//    var isPerformDept: Boolean = false
 
     private val _signupContinuationState = MutableSharedFlow<SignupContinuationState>()
     val signupContinuationState: SharedFlow<SignupContinuationState> = _signupContinuationState.asSharedFlow()
 
-//    학부 선택을 Spinner 로 구현하도록 변경되며 주석처리
-//    private val _dept = MutableLiveData<String>()
-//    val dept: LiveData<String> get() = _dept
-
     val depts: StateFlow<List<String>> = flow { emit(getDeptNamesUseCase()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf())
-
-//    private val _getDeptErrorMessage = MutableLiveData<String>()
-//    val getDeptErrorMessage: LiveData<String> get() = _getDeptErrorMessage
 
     fun setAccount(portalEmail: String, password: String) {
         this.portalEmail = portalEmail
@@ -70,7 +62,7 @@ class SignupViewModel @Inject constructor(
 
     fun continueDetailSignup(
         portalAccount: String,
-        gender: Gender?,
+        gender: Gender,
         isGraduated: Graduated?,
         major: String,
         name: String,
@@ -123,17 +115,4 @@ class SignupViewModel @Inject constructor(
             }
         }
     }
-
-    /* 학부 선택을 Spinner 로 구현하도록 변경되며 주석처리
-     * TODO:: Spinner 자동 입력되도록 변경
-     fun getDept(studentId: String) = viewModelScope.launchIgnoreCancellation {
-        deptNameFromStudentIdUseCase(studentId).let { (deptName, error) ->
-            deptName?.let {
-                _dept.value = it
-                isPerformDept = true
-            }
-            error?.let { _getDeptErrorMessage.value = error.message }
-        }
-    }
-    */
 }

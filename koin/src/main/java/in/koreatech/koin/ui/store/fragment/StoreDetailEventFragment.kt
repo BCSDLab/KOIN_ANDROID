@@ -1,12 +1,20 @@
 package `in`.koreatech.koin.ui.store.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.RecyclerView
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailEventBinding
+import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -31,6 +39,8 @@ class StoreDetailEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModel()
+        initEventScrollCallback()
+        initScrollEvent()
     }
 
     private fun initViews() {
@@ -58,5 +68,43 @@ class StoreDetailEventFragment : Fragment() {
             storeDetailEventAdapter.submitList(it)
         }
 
+        observeLiveData(viewModel.scrollUp){
+            if(it == StoreDetailScrollType.EVENT){
+                binding.storeEventScrollView.fullScroll(ScrollView.FOCUS_UP)
+                viewModel.scrollReset()
+            }
+        }
+
+    }
+
+    private fun initEventScrollCallback() {
+        binding.storeEventScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            val contentHeight = binding.storeEventScrollView.getChildAt(0).measuredHeight
+            val scrollViewHeight = binding.storeEventScrollView.height
+            val totalScrollRange = contentHeight - scrollViewHeight
+            val seventyPercentScroll = (totalScrollRange * 0.7).toInt()
+
+            if (seventyPercentScroll in (oldScrollY + 1)..scrollY) {
+                EventLogger.logScrollEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                    viewModel.store.value?.name ?: "Unknown"
+                )
+            }
+        }
+    }
+
+    private fun initScrollEvent() {
+        binding.storeDetailEventRecyclerview.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+            val oldScrollRatio = oldScrollY.toFloat() / (v as RecyclerView).height
+            val currentScrollRatio = scrollY.toFloat() / v.height
+            Log.d("StoreDetailEventFragment", "oldScrollRatio: $oldScrollRatio, currentScrollRatio: $currentScrollRatio")
+            if (EventUtils.didCrossedScrollThreshold(oldScrollRatio, currentScrollRatio))
+                EventLogger.logScrollEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                    viewModel.store.value?.name ?: "",
+                )
+            }
     }
 }

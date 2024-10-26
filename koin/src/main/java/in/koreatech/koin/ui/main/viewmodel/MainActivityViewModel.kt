@@ -1,23 +1,40 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
-import `in`.koreatech.koin.domain.util.DiningUtil
-import androidx.lifecycle.*
-import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.store.StoreCategories
-import `in`.koreatech.koin.domain.model.store.StoreEvent
+import `in`.koreatech.koin.domain.usecase.onboarding.dining.GetShouldShowDiningTooltipUseCase
+import `in`.koreatech.koin.domain.usecase.onboarding.dining.UpdateShouldShowDiningTooltipUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
+import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
+import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
+import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
+import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,13 +42,33 @@ class MainActivityViewModel @Inject constructor(
     private val getBusTimerUseCase: GetBusTimerUseCase,
     private val busErrorHandler: BusErrorHandler,
     private val getDiningUseCase: GetDiningUseCase,
-    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
+    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
+    private val abTestUseCase: ABTestUseCase,
+    private val getShouldShowDiningTooltipUseCase: GetShouldShowDiningTooltipUseCase,
+    private val updateShouldShowDiningTooltipUseCase: UpdateShouldShowDiningTooltipUseCase,
+    articleRepository: ArticleRepository
 ) : BaseViewModel() {
+    private val _variableName = MutableLiveData<String>()
+    val variableName: LiveData<String> get() = _variableName
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
 
+    val hotArticles: StateFlow<List<ArticleHeaderState>> = articleRepository.fetchHotArticleHeaders()
+        .map {
+            it.take(HOT_ARTICLE_COUNT).map { article -> article.toArticleHeaderState() }
+        }.catch {
+
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
+
+    private val _showDiningTooltip = MutableStateFlow(false)
+    val showDiningTooltip: StateFlow<Boolean> get() = _showDiningTooltip
+
     private val _selectedPosition = MutableLiveData(0)
-    val selectedPosition : LiveData<Int> get() = _selectedPosition
+    val selectedPosition: LiveData<Int> get() = _selectedPosition
     private val _diningData = MutableLiveData<List<Dining>>(listOf())
     val diningData: LiveData<List<Dining>> get() = _diningData
     private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
@@ -43,6 +80,13 @@ class MainActivityViewModel @Inject constructor(
     init {
         updateDining()
         getStoreCategories()
+        getShouldShowDiningTooltip()
+
+    }
+    fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
+        abTestUseCase(title).onSuccess {
+            _variableName.value = it
+        }
     }
 
     val busTimer = liveData {
@@ -84,7 +128,7 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launchWithLoading {
             getDiningUseCase(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
                 .onSuccess {
-                    if(it.isNotEmpty()) {
+                    if (it.isNotEmpty()) {
                         _selectedType.value = DiningUtil.getCurrentType()
                     }
                     _diningData.value = it
@@ -98,9 +142,29 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getStoreCategories(){
+    fun getStoreCategories() {
         viewModelScope.launchWithLoading {
             _storeCategories.value = getStoreCategoriesUseCase()
         }
+    }
+
+    fun getShouldShowDiningTooltip() {
+        viewModelScope.launchWithLoading {
+            getShouldShowDiningTooltipUseCase()
+                .onSuccess {
+                    _showDiningTooltip.value = it
+                }
+        }
+    }
+
+    fun updateShouldShowDiningTooltip(shouldShow: Boolean = false) {
+        viewModelScope.launchWithLoading {
+            updateShouldShowDiningTooltipUseCase(shouldShow)
+            _showDiningTooltip.value = shouldShow
+        }
+    }
+
+    companion object {
+        private const val HOT_ARTICLE_COUNT = 4
     }
 }

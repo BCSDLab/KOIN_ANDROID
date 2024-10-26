@@ -42,7 +42,7 @@ fun StartInsertScreen(
                 .padding(top = 56.dp, start = 10.dp , bottom = 18.dp)
                 .width(40.dp)
                 .height(40.dp)
-                .clickable { onBackPressed }
+                .clickable { onBackPressed() }
 
         ) {
             Image(
@@ -51,7 +51,6 @@ fun StartInsertScreen(
                 modifier = modifier
                     .width(40.dp)
                     .height(40.dp)
-                    .clickable { }
             )
         }
 

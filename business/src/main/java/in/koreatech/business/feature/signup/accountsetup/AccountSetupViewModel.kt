@@ -1,19 +1,15 @@
 package `in`.koreatech.business.feature.signup.accountsetup
 
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.internal.composableLambdaInstance
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.business.BusinessSignupCheckUseCase
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.usecase.business.GetOwnerExistsAccountUseCase
+import `in`.koreatech.koin.domain.usecase.business.OwnerVerificationCodeUseCase
 import `in`.koreatech.koin.domain.usecase.business.SendSignupSmsCodeUseCase
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
-import kotlinx.coroutines.Dispatchers
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -21,6 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -30,18 +27,14 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountSetupViewModel @Inject constructor(
     private val sendSignupSmsCodeUseCase: SendSignupSmsCodeUseCase,
-    private val businessSignupCheckUseCase: BusinessSignupCheckUseCase,
+    private val verifySmsCodeUseCase: OwnerVerificationCodeUseCase,
+    private val getOwnerExistsAccountUseCase: GetOwnerExistsAccountUseCase,
 ) : ViewModel(), ContainerHost<AccountSetupState, AccountSetupSideEffect> {
     override val container =
         container<AccountSetupState, AccountSetupSideEffect>(AccountSetupState())
 
-
     private val passwordFlow = container.stateFlow
         .map { it.password }
-        .distinctUntilChanged()
-
-    private val idFlow = container.stateFlow
-        .map { it.id }
         .distinctUntilChanged()
 
     private val passwordConfirmFlow = container.stateFlow
@@ -59,12 +52,12 @@ class AccountSetupViewModel @Inject constructor(
     init {
         combine(
             passwordFlow,
-            idFlow,
             passwordConfirmFlow,
             phoneNumberFlow,
             authCodeFlow
-        ) { password, id, passwordConfirm, phoneNumber, authCode ->
-            password.isNotEmpty() && id.isNotEmpty() && passwordConfirm.isNotEmpty() && phoneNumber.isNotEmpty() && authCode.isNotEmpty()
+        ) { password, passwordConfirm, phoneNumber, authCode ->
+            password.isNotEmpty() && passwordConfirm.isNotEmpty() && phoneNumber.isNotEmpty() && authCode.isNotEmpty()
+                    && password.isValidPassword() && password == passwordConfirm
         }.distinctUntilChanged()
             .onEach {
                 updateButton(it)
@@ -73,19 +66,17 @@ class AccountSetupViewModel @Inject constructor(
 
     private fun updateButton(enabled: Boolean) = intent {
         reduce {
-            state.copy(isButtonEnabled = enabled)
-        }
-    }
-
-    fun onIdChanged(id: String) = intent {
-        reduce {
-            state.copy(id = id)
+            state.copy(isButtonEnabled = enabled && state.verifyState == SignupContinuationState.CheckComplete)
         }
     }
 
     fun onPasswordChanged(password: String) = intent {
         reduce {
-            state.copy(password = password, isPasswordError = !password.isValidPassword())
+            state.copy(
+                password = password,
+                isPasswordError = !password.isValidPassword(),
+                isPasswordConfirmError = state.password != state.passwordConfirm
+            )
         }
     }
 
@@ -98,15 +89,23 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    fun onPhoneNumChanged(phoneNumber: String) = intent {
+    fun onPhoneNumChanged(phoneNumber: String) = blockingIntent {
         reduce {
-            state.copy(phoneNumber = phoneNumber, isPhoneNumberError = phoneNumber.length != 11)
+            state.copy(
+                phoneNumber = phoneNumber,
+                phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
+                sendCodeError = null,
+            )
         }
     }
 
-    fun onAuthCodeChanged(authCode: String) = intent {
+    fun onAuthCodeChanged(authCode: String) = blockingIntent {
         reduce {
-            state.copy(authCode = authCode, signUpContinuationError = null)
+            state.copy(
+                authCode = authCode,
+                verifyState = SignupContinuationState.AvailablePhoneNumber,
+                verifyError = null,
+            )
         }
     }
 
@@ -115,41 +114,77 @@ class AccountSetupViewModel @Inject constructor(
     }
 
     fun verifySmsCode(
-        password: String, passwordConfirm: String, phoneNumber: String, verifyCode: String
+        phoneNumber: String, verifyCode: String
     ) {
         viewModelScope.launch {
-            businessSignupCheckUseCase(
-                password, passwordConfirm, phoneNumber, verifyCode
+            verifySmsCodeUseCase(
+                phoneNumber, verifyCode
             ).onSuccess {
                 intent {
                     reduce {
                         state.copy(
-                            signupContinuationState = it,
-                            signUpContinuationError = null
+                            verifyState = SignupContinuationState.CheckComplete,
                         )
                     }
-                    postSideEffect(AccountSetupSideEffect.NavigateToNextScreen(state.phoneNumber))
                 }
             }.onFailure {
                 intent {
-                    reduce { state.copy(signUpContinuationError = it) }
+                    reduce {
+                        state.copy(
+                            verifyState = SignupContinuationState.Failed(
+                                it.message,
+                            ),
+                        )
+                    }
                 }
             }
         }
     }
 
-    fun sendSmsVerificationCode(phoneNumber: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            sendSignupSmsCodeUseCase(phoneNumber).onSuccess {
-                intent {
-                    reduce { state.copy(signupContinuationState = it) }
-                    reduce { state.copy(signUpContinuationError = null) }
-                }
-            }.onFailure {
-                intent {
-                    reduce { state.copy(signUpContinuationError = it) }
+    private fun sendSmsVerificationCode() {
+        intent {
+            viewModelScope.launch {
+                sendSignupSmsCodeUseCase(state.phoneNumber).onSuccess {
+                    reduce {
+                        state.copy(
+                            phoneNumberState = SignupContinuationState.RequestedSmsValidation,
+                            sendCodeError = null,
+                        )
+                    }
+                }.onFailure {
+                    reduce {
+                        state.copy(
+                            sendCodeError = it,
+                        )
+                    }
                 }
             }
         }
+    }
+
+    fun checkExistsAccount() {
+        viewModelScope.launch {
+            intent {
+                getOwnerExistsAccountUseCase(state.phoneNumber).onSuccess {
+                    reduce {
+                        state.copy(
+                            phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
+                            sendCodeError = null,
+                        )
+                    }
+                    sendSmsVerificationCode()
+                }.onFailure {
+                    reduce {
+                        state.copy(
+                            sendCodeError = it,
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun onNavigateToNextScreen() = intent {
+        postSideEffect(AccountSetupSideEffect.NavigateToNextScreen)
     }
 }

@@ -6,10 +6,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.repository.*
 import `in`.koreatech.koin.data.source.local.*
 import `in`.koreatech.koin.data.source.remote.*
 import `in`.koreatech.koin.domain.repository.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module
@@ -22,21 +26,24 @@ object RepositoryModule {
     ): NotificationRepository {
         return NotificationRepositoryImpl(notificationRemoteDataSource)
     }
+
     @Provides
     @Singleton
     fun provideTokenRepository(
-        tokenLocalDataSource: TokenLocalDataSource
-    ) : TokenRepository {
-        return TokenRepositoryImpl(tokenLocalDataSource)
+        tokenLocalDataSource: TokenLocalDataSource,
+        userLocalDataSource: UserLocalDataSource
+    ): TokenRepository {
+        return TokenRepositoryImpl(tokenLocalDataSource, userLocalDataSource)
     }
 
     @Provides
     @Singleton
     fun provideUserRepository(
         userRemoteDataSource: UserRemoteDataSource,
-        tokenLocalDataSource: TokenLocalDataSource
-    ) : UserRepository {
-        return UserRepositoryImpl(userRemoteDataSource, tokenLocalDataSource)
+        tokenLocalDataSource: TokenLocalDataSource,
+        userLocalDataSource: UserLocalDataSource
+    ): UserRepository {
+        return UserRepositoryImpl(userRemoteDataSource, tokenLocalDataSource, userLocalDataSource)
     }
 
     @Provides
@@ -44,7 +51,7 @@ object RepositoryModule {
     fun provideSignupRepository(
         userRemoteDataSource: UserRemoteDataSource,
         signupTermsLocalDataSource: SignupTermsLocalDataSource
-    ) : SignupRepository {
+    ): SignupRepository {
         return SignupRepositoryImpl(userRemoteDataSource, signupTermsLocalDataSource)
     }
 
@@ -86,11 +93,11 @@ object RepositoryModule {
     @Singleton
     fun provideVersionRepository(
         versionLocalDataSource: VersionLocalDataSource,
-        versionRemoteDataSource: VersionRemoteDataSource
-    ) : VersionRepository {
+        versionRemoteDataSource: VersionRemoteDataSource,
+    ): VersionRepository {
         return VersionRepositoryImpl(
             versionLocalDataSource,
-            versionRemoteDataSource
+            versionRemoteDataSource,
         )
     }
 
@@ -99,7 +106,7 @@ object RepositoryModule {
     fun provideDeptRepository(
         deptRemoteDataSource: DeptRemoteDataSource,
         deptLocalDataSource: DeptLocalDataSource
-    ) : DeptRepository {
+    ): DeptRepository {
         return DeptRepositoryImpl(
             deptRemoteDataSource, deptLocalDataSource
         )
@@ -143,7 +150,7 @@ object RepositoryModule {
     @Singleton
     fun providePreSignedUrlRepository(
         preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource,
-        uploadImageLocalDataSource :UploadImageLocalDataSource
+        uploadImageLocalDataSource: UploadImageLocalDataSource
     ): PreSignedUrlRepository {
         return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource, uploadImageLocalDataSource)
     }
@@ -162,5 +169,37 @@ object RepositoryModule {
         ownerRemoteDataSource: OwnerRemoteDataSource
     ): OwnerShopRepository {
         return OwnerShopRepositoryImpl(ownerRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOnBoardingRepository(
+        onBoardingLocalDataSource: OnBoardingLocalDataSource
+    ): OnBoardingRepository {
+        return OnBoardingRepositoryImpl(onBoardingLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticleRepository(
+        articleRemoteDataSource: ArticleRemoteDataSource,
+        articleLocalDataSource: ArticleLocalDataSource,
+        userRepository: UserRepository,
+        @IoDispatcher dispatcher: CoroutineDispatcher
+    ): ArticleRepository {
+        return ArticleRepositoryImpl(
+            articleRemoteDataSource,
+            articleLocalDataSource,
+            userRepository,
+            CoroutineScope(SupervisorJob() + dispatcher)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopRepository(
+        coopShopRemoteDataSource: CoopShopRemoteDataSource
+    ): CoopShopRepository {
+        return CoopShopRepositoryImpl(coopShopRemoteDataSource)
     }
 }

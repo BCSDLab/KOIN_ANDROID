@@ -11,6 +11,17 @@ object DiningUtil {
     fun typeFiltering(diningList: List<Dining>, type: DiningType): List<Dining> =
         diningList.typeFilter(type).arrange()
 
+    fun getTypeByString(type: String): DiningType {
+        return when (type) {
+            DiningType.Breakfast.typeEnglish -> DiningType.Breakfast
+            DiningType.Lunch.typeEnglish -> DiningType.Lunch
+            DiningType.Dinner.typeEnglish -> DiningType.Dinner
+            DiningType.NextBreakfast.typeEnglish -> DiningType.NextBreakfast
+            else -> DiningType.Breakfast
+        }
+    }
+
+
     fun getCurrentType(): DiningType {
         var currentType = DiningType.Breakfast
         diningEndTime.forEachIndexed { index, time ->

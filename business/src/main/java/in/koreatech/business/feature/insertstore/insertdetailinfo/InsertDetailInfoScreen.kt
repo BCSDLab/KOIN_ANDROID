@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
+import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.business.feature.insertstore.selectcategory.InsertStoreProgressBar
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
@@ -53,11 +54,14 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun InsertDetailInfoScreen(
     modifier: Modifier = Modifier,
+    basicInfo: InsertBasicInfoScreenState,
     onBackPressed: () -> Unit,
     navigateToCheckScreen: (InsertDetailInfoScreenState) -> Unit,
     reviseButtonClicked: (viewModel: InsertDetailInfoScreenViewModel) -> Unit,
     viewModel: InsertDetailInfoScreenViewModel = hiltViewModel()
 ) {
+    viewModel.getStoreBasicInfo(basicInfo)
+
     val state = viewModel.collectAsState().value
     InsertDetailInfoScreenImpl(
         storePhoneNumber = state.storePhoneNumber,

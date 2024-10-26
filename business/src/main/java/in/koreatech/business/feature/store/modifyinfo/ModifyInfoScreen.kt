@@ -67,6 +67,7 @@ fun ModifyInfoScreen(
     viewModel: ModifyInfoViewModel = hiltViewModel(),
     storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel(),
     onSettingOperatingClicked: () -> Unit = {},
+    onModifyButtonClicked: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val storeInfoState = storeInfoViewModel.collectAsState().value
@@ -271,30 +272,30 @@ fun ModifyInfoScreen(
                 ) {
                     AvailableRadioButton(
                         text = stringResource(id = R.string.delivery_available),
-                        selected = state.storeInfo?.isDeliveryOk ?: false,
+                        selected = state.storeInfo.isDeliveryOk,
                         onClick = viewModel::onDeliveryAvailableChanged
                     )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.card_payment_available),
-                        selected = state.storeInfo?.isCardOk ?: false,
+                        selected = state.storeInfo.isCardOk,
                         onClick = viewModel::onCardAvailableChanged
                     )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.bank_transfer_available),
-                        selected = state.storeInfo?.isBankOk ?: false,
+                        selected = state.storeInfo.isBankOk ,
                         onClick = viewModel::onTransferAvailableChanged
                     )
                 }
             }
+
             item {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Button(
                         onClick = {
                             viewModel.modifyStoreInfo(
                                 storeInfoState.storeId,
-                                state.storeInfo ?: return@Button
+                                state.storeInfo
                             )
-                            viewModel.onBackButtonClicked()
                         },
                         modifier = Modifier
                             .width(130.dp)
@@ -324,6 +325,11 @@ fun ModifyInfoScreen(
         when (it) {
             ModifyInfoSideEffect.NavigateToBackScreen -> onBackClicked()
             ModifyInfoSideEffect.NavigateToSettingOperatingTime -> onSettingOperatingClicked()
+            ModifyInfoSideEffect.NavigateToMyStoreScreen -> {
+                storeInfoViewModel.modifyStoreInfo(state.storeInfo)
+                storeInfoViewModel.refreshStoreList()
+                onModifyButtonClicked()
+            }
             ModifyInfoSideEffect.ShowToastMessage -> {
                 ToastUtil.getInstance().makeShort(R.string.error_image_upload)
             }

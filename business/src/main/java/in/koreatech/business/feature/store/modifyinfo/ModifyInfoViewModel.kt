@@ -1,5 +1,8 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
+import android.graphics.Bitmap
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chargemap.compose.numberpicker.FullHours
@@ -11,6 +14,7 @@ import `in`.koreatech.koin.domain.usecase.business.store.ModifyShopInfoUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -129,31 +133,31 @@ class ModifyInfoViewModel @Inject constructor(
         }
     }
 
-    fun onStoreNameChanged(storeName: String) = intent {
+    fun onStoreNameChanged(storeName: String) = blockingIntent {
         reduce {
             state.copy(storeInfo = state.storeInfo.copy(name = storeName))
         }
     }
 
-    fun onPhoneNumberChanged(phone: String) = intent {
+    fun onPhoneNumberChanged(phone: String) = blockingIntent {
         reduce {
             state.copy(storeInfo = state.storeInfo.copy(phone = phone))
         }
     }
 
-    fun onAddressChanged(address: String) = intent {
+    fun onAddressChanged(address: String) = blockingIntent {
         reduce {
             state.copy(storeInfo = state.storeInfo.copy(address = address))
         }
     }
 
-    fun onDeliveryPriceChanged(price: Int) = intent {
+    fun onDeliveryPriceChanged(price: Int) = blockingIntent {
         reduce {
             state.copy(storeInfo = state.storeInfo.copy(deliveryPrice = price))
         }
     }
 
-    fun onDescriptionChanged(description: String) = intent {
+    fun onDescriptionChanged(description: String) = blockingIntent {
         reduce {
             state.copy(storeInfo = state.storeInfo.copy(description = description))
         }
@@ -173,11 +177,15 @@ class ModifyInfoViewModel @Inject constructor(
     }
 
     fun modifyStoreInfo(storeId: Int, storeDetailInfo: StoreDetailInfo) {
-        viewModelScope.launch {
-            modifyInfoUseCase.invoke(
-                storeId,
-                storeDetailInfo,
-            )
+        intent {
+            viewModelScope.launch {
+                modifyInfoUseCase.invoke(
+                    storeId,
+                    storeDetailInfo,
+                ).apply {
+                    this ?: postSideEffect(ModifyInfoSideEffect.NavigateToMyStoreScreen)
+                }
+            }
         }
     }
 
