@@ -210,6 +210,7 @@ koin-oss-license = { id = "in.koreatech.plugin.oss", version = "unspecified" }
 
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose", "compose-ui-tooling"]
+compose_m3 = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material3", "activity-compose", "compose-ui-tooling"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
 hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]
