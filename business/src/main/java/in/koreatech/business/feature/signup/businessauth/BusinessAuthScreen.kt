@@ -318,9 +318,11 @@ fun BusinessAuthScreen(
                             contentDescription = stringResource(id = R.string.attach_file)
                         )
                         Text(
+                            modifier = Modifier.padding(start = 8.dp),
                             text = stringResource(id = R.string.file_upload),
                             fontSize = 13.sp,
                             fontWeight = Bold,
+                            color = Gray1,
                         )
                     }
                 }

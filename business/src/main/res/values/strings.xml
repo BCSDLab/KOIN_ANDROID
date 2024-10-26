@@ -82,6 +82,7 @@
     <string name="file_upload_instruction">사업자 등록증, 영업신고증, 통장사본을 첨부하세요.</string>
     <string name="file_upload_requirements">사업자등록증, 영업신고증, 통장사본 이미지 필수\n10mb 이하의 PDF 혹은 이미지 형식의 파일(e.g. jpg, png, gif 등)로 5개까지 업로드 가능합니다.</string>
     <string name="select_file">파일 선택하기</string>
+    <string name="cancel_upload">취소하기</string>
     <string name="cancel">취소</string>
     <string name="business_registration_number">사업자 등록번호</string>
     <string name="personal_contact">개인 연락처</string>
