@@ -1,33 +1,56 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.navigator
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
+import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuCheckScreen
 import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuScreen
 import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuViewModel
+import `in`.koreatech.business.navigation.MODIFYMENUSCREEN
+import `in`.koreatech.business.navigation.MYSTORESCREEN
+import `in`.koreatech.business.navigation.REGISTERMENUSCREEN
+import `in`.koreatech.business.navigation.sharedHiltViewModel
 
-@Composable
-fun RegisterMenuNavigator(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-    registerMenuViewModel: RegisterMenuViewModel = hiltViewModel()
-) {
-    NavHost(
-        navController = navController,
-        startDestination = RegisterMenuRoute.INSERT_MENU.name,
-        modifier = modifier
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.registerMenuScreen(
+    navController: NavHostController
+){
+    navigation(
+        route = REGISTERMENUSCREEN,
+        startDestination = RegisterMenuRoute.REGISTER.name,
     ) {
 
         composable(
-            route = RegisterMenuRoute.INSERT_MENU.name,
+            route = RegisterMenuRoute.REGISTER.name,
         ) {
+            val viewModel: RegisterMenuViewModel = it.sharedHiltViewModel(navController = navController)
             RegisterMenuScreen(
-                viewModel = registerMenuViewModel,
-                onBackPressed = {}
+                viewModel = viewModel,
+                onBackPressed = {
+                    navController.navigateUp()
+                },
+                goToCheckMenuScreen = {
+                    navController.navigate(RegisterMenuRoute.CHECK_MENU.name)
+                }
+            )
+        }
+
+        composable(
+            route = RegisterMenuRoute.CHECK_MENU.name
+        ){
+            val viewModel: RegisterMenuViewModel = it.sharedHiltViewModel(navController = navController)
+            RegisterMenuCheckScreen(
+                viewModel = viewModel,
+                onBackPressed = { navController.navigateUp() },
+                goToStoreMainScreen = {
+                    navController.navigate(MYSTORESCREEN){
+                        this.popUpTo(MODIFYMENUSCREEN){
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }

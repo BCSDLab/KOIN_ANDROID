@@ -14,7 +14,10 @@ import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
+import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
+import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
@@ -43,8 +46,10 @@ object AuthNetworkModule {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val accessToken = tokenLocalDataSource.getAccessToken() ?: ""
+                val historyId = tokenLocalDataSource.getAccessHistoryId() ?: ""
                 val newRequest: Request = chain.request().newBuilder()
                     .addHeader("Authorization", "Bearer $accessToken")
+                    .addHeader("access_history_id", historyId)
                     .build()
                 chain.proceed(newRequest)
             }
@@ -55,11 +60,12 @@ object AuthNetworkModule {
     @Provides
     @Singleton
     fun provideRefreshInterceptor(
+        @ApplicationContext context: Context,
         tokenLocalDataSource: TokenLocalDataSource,
         updateUserRefreshTokenUseCase: UpdateUserRefreshTokenUseCase,
         deleteUserRefreshTokenUseCase: DeleteUserRefreshTokenUseCase,
         userApi: UserApi,
-    ): Authenticator = AuthAuthenticator(tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
+    ): Authenticator = AuthAuthenticator(context, tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
 
 
     @Auth
@@ -101,6 +107,38 @@ object AuthNetworkModule {
         @Auth retrofit: Retrofit
     ) : UserAuthApi {
         return retrofit.create(UserAuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDiningAuthApi(
+        @Auth retrofit: Retrofit
+    ): DiningAuthApi {
+        return retrofit.create(DiningAuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUploadUrlApi(
+        @Auth retrofit: Retrofit
+    ): UploadUrlApi {
+        return retrofit.create(UploadUrlApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticleAuthApi(
+        @Auth retrofit: Retrofit
+    ): ArticleAuthApi {
+        return retrofit.create(ArticleAuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimetableAuthApi(
+        @Auth retrofit: Retrofit
+    ): TimetableAuthApi {
+        return retrofit.create(TimetableAuthApi::class.java)
     }
 }
 
@@ -162,14 +200,6 @@ object OwnerAuthNetworkModule {
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideUploadUrlApi(
-        @OwnerAuth retrofit: Retrofit
-    ): UploadUrlApi {
-        return retrofit.create(UploadUrlApi::class.java)
     }
 
     @Provides

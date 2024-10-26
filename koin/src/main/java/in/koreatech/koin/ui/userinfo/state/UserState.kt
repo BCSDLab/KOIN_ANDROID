@@ -21,21 +21,19 @@ fun User.toUserState(context: Context): UserState {
         User.Anonymous -> throw IllegalStateException()
         is User.Student -> with(context) {
             UserState(
-                email = email ?: getString(R.string.user_info_no_email),
-                username = name ?: getString(R.string.user_info_no_name),
-                userNickname = nickname ?: getString(R.string.user_info_no_nickname),
-                userAnonymousNickname = anonymousNickname
-                    ?: getString(R.string.user_info_no_anonymous_nickname),
-                phoneNumber = phoneNumber ?: getString(R.string.user_info_no_phone_number),
+                email = email ?: "",
+                username = name ?: "",
+                userNickname = nickname ?: "",
+                userAnonymousNickname = anonymousNickname ?: "",
+                phoneNumber = phoneNumber ?: "",
                 gender = when (gender) {
                     Gender.Woman -> getString(R.string.user_info_gender_female)
                     Gender.Man -> getString(R.string.user_info_gender_male)
-                    Gender.Unknown -> getString(R.string.user_info_gender_unknown)
+                    Gender.Unknown -> ""
                 },
-                studentNumber = studentNumber ?: getString(R.string.user_info_no_student_number),
-                major = major ?: getString(R.string.user_info_no_major)
+                studentNumber = studentNumber ?: "",
+                major = major ?: ""
             )
         }
     }
-
 }

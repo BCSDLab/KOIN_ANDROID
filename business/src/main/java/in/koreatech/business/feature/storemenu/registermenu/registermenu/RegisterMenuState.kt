@@ -1,18 +1,22 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
-import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import android.net.Uri
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 
 data class RegisterMenuState(
 
-    val shopId: Int = -1,
+    val storeId: Int = -1,
     val menuName: String = "",
-    val menuPrice: List<String> = emptyList(),
+    val menuPrice: String = "",
+    val menuOptionPrice: List<StoreMenuOptionPrice> = emptyList(),
     val menuCategory: List<StoreMenuCategory> = emptyList(),
+    val menuCategoryId: List<Int> = emptyList(),
     val description: String = "",
-    val imageUriList: List<String> = emptyList(),
-    val isRecommendMenu : Boolean = false,
-    val isMainMenu: Boolean = false,
-    val isSetMenu: Boolean = false,
-    val isSideMenu: Boolean = false
+    val imageUriList: List<Uri> = emptyList(),
+    val imageUrlList: List<String> = emptyList(),
+    val isModify: Boolean = false,
+    val menuCategoryLabel: String ="",
+    val imageIndex: Int = 0
 
 )

@@ -2,8 +2,8 @@ package `in`.koreatech.koin.ui.bus.adpater.timetable
 
 import `in`.koreatech.koin.databinding.BusTimetableCityHeaderBinding
 import `in`.koreatech.koin.databinding.BusTimetableCityItemBinding
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableHeaderViewHolder
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableItemViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableHeaderViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableItemViewHolder
 import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.CityBusTimetableHeaderViewHolder
 import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.CityBusTimetableItemViewHolder
 import `in`.koreatech.koin.ui.bus.state.CityBusTimetableUiItem
@@ -13,12 +13,12 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import `in`.koreatech.koin.databinding.BusTimetableCityFooterBinding
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableFooterViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableFooterViewHolder
 import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.CityBusTimetableFooterViewHolder
 
-class CityBusTimetableAdapter : BusTimetableAdapter<CityBusTimetableUiItem>(itemCallback) {
+class CityBusTimetableAdapter : TableAdapter<CityBusTimetableUiItem>(itemCallback) {
 
-    override fun onCreateHeaderViewHolder(parent: ViewGroup): BusTimetableHeaderViewHolder {
+    override fun onCreateHeaderViewHolder(parent: ViewGroup): TableHeaderViewHolder {
         return CityBusTimetableHeaderViewHolder(
             BusTimetableCityHeaderBinding.inflate(
                 LayoutInflater.from(parent.context)
@@ -26,7 +26,7 @@ class CityBusTimetableAdapter : BusTimetableAdapter<CityBusTimetableUiItem>(item
         )
     }
 
-    override fun onCreateItemViewHolder(parent: ViewGroup): BusTimetableItemViewHolder<CityBusTimetableUiItem> {
+    override fun onCreateItemViewHolder(parent: ViewGroup): TableItemViewHolder<CityBusTimetableUiItem> {
         return CityBusTimetableItemViewHolder(
             BusTimetableCityItemBinding.inflate(LayoutInflater.from(parent.context)).apply {
                 root.layoutParams = LinearLayout.LayoutParams(
@@ -37,7 +37,7 @@ class CityBusTimetableAdapter : BusTimetableAdapter<CityBusTimetableUiItem>(item
         )
     }
 
-    override fun onCreateFooterViewHolder(parent: ViewGroup): BusTimetableFooterViewHolder {
+    override fun onCreateFooterViewHolder(parent: ViewGroup): TableFooterViewHolder {
         return CityBusTimetableFooterViewHolder(
             BusTimetableCityFooterBinding.inflate(LayoutInflater.from(parent.context))
         )
@@ -49,7 +49,7 @@ class CityBusTimetableAdapter : BusTimetableAdapter<CityBusTimetableUiItem>(item
                 oldItem: CityBusTimetableUiItem,
                 newItem: CityBusTimetableUiItem
             ): Boolean {
-                return oldItem.timeInfo == newItem.timeInfo
+                return oldItem.am == newItem.am
             }
 
             override fun areContentsTheSame(

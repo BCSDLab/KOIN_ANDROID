@@ -2,11 +2,15 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
+import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
+import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.*
 
 class UserRemoteDataSource(
@@ -17,6 +21,16 @@ class UserRemoteDataSource(
         loginRequest: LoginRequest
     ): AuthResponse {
         return userApi.getToken(loginRequest)
+    }
+
+    suspend fun getOwnerToken(
+        ownerLoginRequest: OwnerLoginRequest
+    ): OwnerAuthResponse {
+        return userApi.getOwnerToken(ownerLoginRequest)
+    }
+
+    suspend fun ownerTokenIsValid(){
+        userAuthApi.getOwnerTokenIsValid()
     }
 
     suspend fun getUserInfo(): UserResponse {
@@ -36,14 +50,14 @@ class UserRemoteDataSource(
     }
 
     suspend fun deleteUser() {
-        return userAuthApi.deleteUser()
+        userAuthApi.deleteUser()
     }
 
-    suspend fun checkNickname(nickname: String){
+    suspend fun checkNickname(nickname: String) {
         userApi.checkNickname(nickname)
     }
 
-    suspend fun checkEmail(email: String){
+    suspend fun checkEmail(email: String) {
         userApi.checkEmail(email)
     }
 
@@ -57,5 +71,12 @@ class UserRemoteDataSource(
 
     suspend fun deleteDeviceToken() {
         userAuthApi.deleteDeviceToken()
+    }
+
+    suspend fun verifyPassword(passwordRequest: PasswordRequest) {
+        userAuthApi.checkPassword(passwordRequest)
+    }
+    suspend fun postABTestAssign(abTestRequest: ABTestRequest): ABTestResponse {
+        return userAuthApi.postABTestAssign(abTestRequest)
     }
 }

@@ -12,8 +12,11 @@ import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.domain.model.bus.toBusType
+import `in`.koreatech.koin.ui.main.fragment.DiningContainerFragment
 
 @AndroidEntryPoint
 class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() {
@@ -23,6 +26,8 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
 
     private val busTimetableViewPager2Adapter by lazy { BusTimetableViewPager2Adapter(requireActivity()) }
 
+    private val busType by lazy { arguments?.getString(TYPE)?.toBusType() ?: BusType.Shuttle }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -31,7 +36,7 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
     }
 
     private fun initView() {
-        busTimetableViewModel.setBusType(BusType.Shuttle)
+        busTimetableViewModel.setBusType(busType)
 
         binding.busTimetablePager.apply {
             offscreenPageLimit = 3
@@ -42,7 +47,7 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
         binding.busTimetableBustypeShuttle.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.Shuttle)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE,
                 getString(R.string.bus_name_school_shuttle)
             )
@@ -50,7 +55,7 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
         binding.busTimetableBustypeDaesung.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.Express)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE,
                 getString(R.string.bus_name_express)
             )
@@ -58,7 +63,7 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
         binding.busTimetableBustypeCity.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.City)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE,
                 getString(R.string.bus_name_city)
             )
@@ -95,5 +100,15 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
         busTimetableBustypeShuttle.alpha = 0.5f
         busTimetableBustypeDaesung.alpha = 0.5f
         busTimetableBustypeCity.alpha = 1f
+    }
+
+    companion object {
+        private const val TYPE = "type"
+        fun newInstance(type: String) =
+            BusTimetableFragment().apply {
+                arguments = Bundle().apply {
+                    putString(TYPE, type)
+                }
+            }
     }
 }

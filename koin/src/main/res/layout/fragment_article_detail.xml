@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="100dp">
+
+            <include
+                android:id="@+id/article_header"
+                layout="@layout/item_article_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider_header_content"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="@color/divider"
+                app:layout_constraintTop_toBottomOf="@id/article_header" />
+
+            <in.koreatech.koin.ui.article.HtmlView
+                android:id="@+id/html_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/divider_header_content"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="24dp"
+                app:layout_constraintTop_toBottomOf="@id/divider_header_content" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_attachment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="text_attachment, recycler_view_attachments" />
+
+            <TextView
+                android:id="@+id/text_attachment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="24dp"
+                android:text="@string/attachment"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/web_view" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_attachments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                tools:listitem="@layout/item_attachment"
+                android:paddingHorizontal="24dp"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="2"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/text_attachment" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_to_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="24dp"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:text="@string/list"
+                android:textColor="@color/gray14"
+                android:stateListAnimator="@null"
+                android:background="@drawable/bg_gray_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_attachments" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_to_next_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/button_to_list"
+                app:layout_constraintBottom_toBottomOf="@id/button_to_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:layout_marginEnd="24dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:stateListAnimator="@null"
+                android:text="@string/next_article"
+                android:textColor="@color/gray14"
+                android:background="@drawable/bg_gray_button" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_to_prev_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/button_to_list"
+                app:layout_constraintBottom_toBottomOf="@id/button_to_list"
+                app:layout_constraintEnd_toStartOf="@id/button_to_next_article"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:layout_marginEnd="8dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:stateListAnimator="@null"
+                android:text="@string/prev_article"
+                android:textColor="@color/gray14"
+                android:background="@drawable/bg_gray_button" />
+
+            <View
+                android:id="@+id/divider_content_articles"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="@color/divider"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/button_to_list" />
+
+            <TextView
+                android:id="@+id/text_view_hot_articles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="24dp"
+                android:text="@string/hot_articles"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_content_articles" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_hot_articles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_hot_article_header"
+                tools:itemCount="4"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/text_view_hot_articles" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

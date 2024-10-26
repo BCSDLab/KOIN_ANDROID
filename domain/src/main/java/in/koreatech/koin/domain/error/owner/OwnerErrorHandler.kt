@@ -8,4 +8,9 @@ interface OwnerErrorHandler {
     fun handleGetOwnerShopListError(throwable: Throwable): ErrorHandler
     fun handleDeleteOwnerShopEventError(throwable: Throwable): ErrorHandler
     fun handleModifyOwnerShopInfoError(throwable: Throwable): ErrorHandler
+    fun handleVerifySmsCodeError(throwable: Throwable):ErrorHandler
+    fun handleOwnerRegisterError(throwable: Throwable): ErrorHandler
+    fun handleSendSmsError(throwable: Throwable): ErrorHandler
+    fun handleExistsAccountError(throwable: Throwable): Pair<Boolean?, ErrorHandler>
+    fun handleFindPasswordError(throwable: Throwable): ErrorHandler
 }

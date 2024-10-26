@@ -4,8 +4,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.api.ArticleApi
 import `in`.koreatech.koin.data.api.*
+import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
+import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
+import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.remote.*
 import javax.inject.Singleton
@@ -67,8 +71,9 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideDiningRemoteDataSource(
         diningApi: DiningApi,
+        diningAuthApi: DiningAuthApi
     ): DiningRemoteDataSource {
-        return DiningRemoteDataSource(diningApi)
+        return DiningRemoteDataSource(diningApi, diningAuthApi)
     }
 
     @Provides
@@ -83,8 +88,9 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideStoreRemoteDataSource(
         storeApi: StoreApi,
+        userAuthApi: UserAuthApi
     ): StoreRemoteDataSource {
-        return StoreRemoteDataSource(storeApi)
+        return StoreRemoteDataSource(storeApi, userAuthApi)
     }
 
     @Provides
@@ -101,5 +107,31 @@ object RemoteDataSourceModule {
         preSignedUrlApi: PreSignedUrlApi,
     ): PreSignedUrlRemoteDataSource {
         return PreSignedUrlRemoteDataSource(preSignedUrlApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticleRemoteDataSource(
+        articleApi: ArticleApi,
+        articleAuthApi: ArticleAuthApi
+    ): ArticleRemoteDataSource {
+        return ArticleRemoteDataSource(articleApi, articleAuthApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopRemoteDataSource(
+        coopShopApi: CoopShopApi,
+    ): CoopShopRemoteDataSource {
+        return CoopShopRemoteDataSource(coopShopApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimetableRemoteDataSource(
+        timetableApi: TimetableApi,
+        timetableAuthApi: TimetableAuthApi
+    ): TimetableRemoteDataSource {
+        return TimetableRemoteDataSource(timetableApi, timetableAuthApi)
     }
 }

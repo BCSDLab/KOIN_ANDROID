@@ -28,6 +28,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailState
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorTextField
+import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray4
 import `in`.koreatech.business.ui.theme.Gray6
 
@@ -139,7 +140,7 @@ fun EventToolbar() {
                 contentDescription = stringResource(R.string.edit)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = stringResource(R.string.edit))
+            Text(text = stringResource(R.string.edit), color= Gray1)
         }
         Button(
             onClick = { /*TODO*/ },
@@ -155,7 +156,7 @@ fun EventToolbar() {
                 contentDescription = stringResource(R.string.add)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = stringResource(R.string.add))
+            Text(text = stringResource(R.string.add), color= Gray1)
         }
     }
 }
