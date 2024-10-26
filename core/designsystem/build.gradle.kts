@@ -21,7 +21,7 @@ dependencies {
     implementation(libs.material)
 
     implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.compose)
+    implementation(libs.bundles.compose.m3)
 
     debugImplementation(libs.bundles.compose.debug.test)
     androidTestImplementation(libs.compose.ui.test.manifest)
