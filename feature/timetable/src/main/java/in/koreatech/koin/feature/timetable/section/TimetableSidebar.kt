@@ -33,7 +33,7 @@ fun TimetableSidebar(
                     .size(height = hourHeight, width = hourWidth)
                     .drawBehind {
                         drawLine(
-                            Color.LightGray,
+                            color = Color.LightGray,
                             start = Offset(0f, 0f),
                             end = Offset(size.width, 0f),
                             strokeWidth = 1.dp.toPx()
@@ -41,7 +41,7 @@ fun TimetableSidebar(
 
                         if (distanceTime - 1 == hour) {
                             drawLine(
-                                Color.LightGray,
+                                color = Color.LightGray,
                                 start = Offset(0f, size.height),
                                 end = Offset(size.width, size.height),
                                 strokeWidth = 1.dp.toPx()
