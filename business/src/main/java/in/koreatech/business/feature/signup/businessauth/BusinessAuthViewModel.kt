@@ -3,6 +3,7 @@ package `in`.koreatech.business.feature.signup.businessauth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.business.feature.loading.LoadingState
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
@@ -90,6 +91,7 @@ class BusinessAuthViewModel @Inject constructor(
         imageUri: String,
     ) {
         viewModelScope.launch {
+            LoadingState.show()
             getPresignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
@@ -152,6 +154,7 @@ class BusinessAuthViewModel @Inject constructor(
                     reduce { state.copy(error = it) }
                 }
             }
+            LoadingState.hide()
         }
     }
 
