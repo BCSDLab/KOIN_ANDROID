@@ -49,6 +49,7 @@ import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.dialog.OperatingTimeDialog
+import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
 import `in`.koreatech.business.ui.theme.ColorTextBackgrond
@@ -255,6 +256,7 @@ fun DayOperatingTimeSetting(
                 if(!operatingTime.closed) onShowOpenTimeDialog(index)
             },
             text = operatingTime.openTime,
+            color =if (operatingTime.closed) ColorMinor else Color.Black,
             fontSize = 15.sp
         )
 
@@ -269,6 +271,7 @@ fun DayOperatingTimeSetting(
                if(!operatingTime.closed) onShowCloseTimeDialog(index)
             },
             text = operatingTime.closeTime,
+            color =if (operatingTime.closed) ColorMinor else Color.Black,
             fontSize = 15.sp
         )
 
@@ -303,9 +306,10 @@ fun OperatingTimeSettingDialog(
                         .fillMaxWidth()
                 ) {
                     Text(
+                        modifier = Modifier.padding(bottom = 8.dp),
                         text = title,
                         style = MaterialTheme.typography.h6,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        fontSize = 20.sp
                     )
 
                     HoursNumberPicker(
@@ -356,13 +360,13 @@ fun PreviewDialog() {
     OperatingTimeSettingDialog()
 }
 
-/*@Preview
+@Preview
 @Composable
 fun PreviewOperatingTimeSettingScreenImpl() {
     OperatingTimeSettingScreenImpl(
         operatingTimeList = operatingTimeList
     )
-}*/
+}
 
 val operatingTimeList: List<OperatingTimeState> = listOf(
     OperatingTimeState("00:00", false, "월", "00:00"),
