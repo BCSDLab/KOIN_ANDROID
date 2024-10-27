@@ -3,13 +3,12 @@ package `in`.koreatech.koin.ui.dining.adapter
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnAttach
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.findViewTreeLifecycleOwner
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,9 +22,6 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
-import `in`.koreatech.koin.core.onboarding.ArrowDirection
-import `in`.koreatech.koin.core.onboarding.OnboardingManager
-import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.constant.BREAKFAST
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -35,7 +31,6 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 
 class DiningAdapter(
     private val onShareClick: (Dining) -> Unit,
-    private val onboardingManager: OnboardingManager
 ) : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -54,14 +49,6 @@ class DiningAdapter(
 
     inner class DiningViewHolder(private val binding: ItemDiningBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-        init {
-            itemView.doOnAttach {
-                if (bindingAdapterPosition == 0) {
-                    it.findViewTreeLifecycleOwner()?.registerViewHolderLifecycleObserver()
-                }
-            }
-        }
 
         fun bind(dining: Dining) {
             with(binding) {
@@ -153,21 +140,6 @@ class DiningAdapter(
                     textViewDiningSoldOut.visibility = View.INVISIBLE
                 }
             }
-        }
-        
-        private fun LifecycleOwner.registerViewHolderLifecycleObserver() {
-            lifecycle.addObserver(object : DefaultLifecycleObserver {
-                override fun onResume(owner: LifecycleOwner) {
-                    with(onboardingManager) {
-                        owner.showOnboardingTooltipIfNeeded(
-                            type = OnboardingType.DINING_SHARE,
-                            view = binding.textViewShare,
-                            arrowDirection = ArrowDirection.TOP
-                        )
-                    }
-                    super.onResume(owner)
-                }
-            })
         }
 
         private fun setDiningCard(context: Context, dining: Dining) {
