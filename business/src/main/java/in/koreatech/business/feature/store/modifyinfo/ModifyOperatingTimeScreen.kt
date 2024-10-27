@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.dialog.OperatingTimeDialog
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
@@ -134,7 +133,6 @@ fun ModifyOperatingTimeScreen(
                 SettingTime.OPEN ->{
                     OperatingTimeSettingDialog(
                         title = stringResource(id = R.string.store_open_time),
-                        visibility = state.showDialog,
                         operatingTimeDialog = OperatingTimeDialog(
                             state.showDialog,
                             viewModel::hideAlertDialog,
@@ -148,7 +146,6 @@ fun ModifyOperatingTimeScreen(
                 SettingTime.CLOSE ->{
                     OperatingTimeSettingDialog(
                         title = stringResource(id = R.string.store_close_time),
-                        visibility = state.showDialog,
                         operatingTimeDialog = OperatingTimeDialog(
                             state.showDialog,
                             viewModel::hideAlertDialog,
@@ -161,7 +158,6 @@ fun ModifyOperatingTimeScreen(
                 }
             }
         }
-
     }
 
     viewModel.collectSideEffect {

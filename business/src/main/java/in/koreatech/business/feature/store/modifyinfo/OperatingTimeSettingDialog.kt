@@ -36,21 +36,16 @@ import androidx.transition.Visibility
 import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.dialog.OperatingTimeDialog
-import `in`.koreatech.business.ui.theme.Blue3
-import `in`.koreatech.business.ui.theme.Gray10
 import `in`.koreatech.koin.core.R
-import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun OperatingTimeSettingDialog(
     title: String = "",
-    visibility: Boolean,
     operatingTimeDialog: OperatingTimeDialog = OperatingTimeDialog()
 ) {
     var timeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
 
-    if (visibility) {
+    if (operatingTimeDialog.showDialog) {
         Dialog(onDismissRequest = { operatingTimeDialog.closeDialog() }) {
             Surface(
                 shape = RoundedCornerShape(16.dp),
@@ -63,9 +58,10 @@ fun OperatingTimeSettingDialog(
                         .fillMaxWidth()
                 ) {
                     Text(
+                        modifier = Modifier.padding(bottom = 8.dp),
                         text = title,
                         style = MaterialTheme.typography.h6,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        fontSize = 20.sp
                     )
 
                     HoursNumberPicker(
