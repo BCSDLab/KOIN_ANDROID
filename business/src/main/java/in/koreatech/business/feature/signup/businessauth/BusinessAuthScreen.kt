@@ -76,8 +76,9 @@ fun BusinessAuthScreen(
     val accountSetupState = accountSetupViewModel.collectAsState().value
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(5),
-        onResult = { uriList ->
-            var fileName = ""
+        onResult = {
+            businessAuthViewModel.changeImageUri(it)
+          /*  var fileName = ""
             var fileSize = 0L
             businessAuthState.fileInfo.clear()
             businessAuthViewModel.initStoreImageUrls()
@@ -108,7 +109,7 @@ fun BusinessAuthScreen(
 
                 }
                 inputStream?.close()
-            }
+            }*/
         }
     )
 
@@ -341,16 +342,10 @@ fun BusinessAuthScreen(
                     ),
 
                     onClick = {
-                        businessAuthViewModel.sendRegisterRequest(
-                            fileUrls = businessAuthState.fileInfo.map { it.resultUrl },
-                            companyNumber = businessAuthState.shopNumber,
+                        businessAuthViewModel.onPositiveButtonClicked(context,
                             phoneNumber = accountSetupState.phoneNumber,
-                            name = businessAuthState.name,
-                            password = accountSetupState.password,
-                            shopId = businessAuthState.shopId,
-                            shopName = businessAuthState.shopName,
-                        )
-
+                            password = accountSetupState.password
+                            )
                     }) {
                     Text(
                         text = stringResource(id = R.string.next),
