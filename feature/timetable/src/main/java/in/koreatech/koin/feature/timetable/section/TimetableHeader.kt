@@ -8,24 +8,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.feature.timetable.component.DayHeader
+import `in`.koreatech.koin.feature.timetable.model.TimetableConstants
 
 @Composable
 fun TimetableHeader(
     modifier: Modifier = Modifier,
-    days: List<String> = listOf("월", "화", "수", "목", "금"),
+    days: List<String> = TimetableConstants.days,
 ) {
     Row(
         modifier = modifier
             .border(
-                width = 0.dp,
+                width = 1.dp,
                 color = Color.LightGray,
                 shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
             )
     ) {
-        days.forEachIndexed { index, day ->
-            DayHeader(day = day, isEnd = index == days.size - 1)
+        (listOf("") + days).forEachIndexed { index, day ->
+            DayHeader(day = day, isEnd = index == days.size)
         }
     }
 }
@@ -35,6 +37,6 @@ fun TimetableHeader(
 @Composable
 private fun TimetableHeaderPreview() {
     TimetableHeader(
-        modifier = Modifier.padding(2.dp)
+        modifier = Modifier.padding(2.dp),
     )
 }
