@@ -74,6 +74,11 @@ class AccountSetupViewModel @Inject constructor(
         reduce {
             state.copy(
                 password = password,
+            )
+
+        }
+        reduce{
+            state.copy(
                 isPasswordError = !password.isValidPassword(),
                 isPasswordConfirmError = state.password != state.passwordConfirm
             )
@@ -84,8 +89,12 @@ class AccountSetupViewModel @Inject constructor(
         reduce {
             state.copy(
                 passwordConfirm = passwordConfirm,
-                isPasswordConfirmError = state.password != passwordConfirm
+
             )
+        }
+        reduce {
+            state.copy( isPasswordConfirmError = state.password != passwordConfirm)
+
         }
     }
 
