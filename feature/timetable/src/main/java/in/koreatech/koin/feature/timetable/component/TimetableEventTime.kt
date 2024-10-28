@@ -22,8 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
-import java.time.DayOfWeek
-import java.time.LocalTime
+import `in`.koreatech.koin.feature.timetable.model.dummyEvent
 
 enum class TimetableEventType {
     BASIC, SELECTED
@@ -111,17 +110,6 @@ private fun TimetableSelectedEventTime(
             .padding(4.dp)
     )
 }
-
-
-private val dummyEvent = TimetableEvent(
-    id = 1,
-    name = "강의 제목",
-    color = Color(0xFFAFBBF2),
-    dayOfWeek = DayOfWeek.FRIDAY,
-    start = LocalTime.of(16, 0),
-    end = LocalTime.of(18, 0),
-    description = "설명",
-)
 
 @Preview(showBackground = true)
 @Composable
