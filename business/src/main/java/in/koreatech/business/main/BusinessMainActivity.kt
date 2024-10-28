@@ -35,7 +35,7 @@ class BusinessMainActivity : ComponentActivity() {
 
         initViewModel()
         setContent {
-                /*KOIN_ANDROIDTheme {
+                KOIN_ANDROIDTheme {
                     // A surface container using the 'background' color from the theme
                     Surface(
                         modifier = Modifier.fillMaxSize(),
@@ -45,8 +45,7 @@ class BusinessMainActivity : ComponentActivity() {
                             startDestination = destination
                         )
                     }
-                }*/
-                WriteEventScreen()
+                }
             }
     }
     private fun initViewModel() = with(viewModel) {
