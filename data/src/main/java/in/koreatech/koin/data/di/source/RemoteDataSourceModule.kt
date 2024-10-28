@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.api.LandApi
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.StoreApi
+import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
@@ -30,6 +31,7 @@ import `in`.koreatech.koin.data.source.remote.NotificationRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
