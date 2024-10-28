@@ -47,8 +47,6 @@ class ModifyInfoViewModel @Inject constructor(
                     operatingTimeList = newList
                 )
             }
-
-            Log.e("로그 리스트", state.operatingTimeList.toString())
         }
     }
 
