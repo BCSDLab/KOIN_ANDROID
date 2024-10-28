@@ -12,34 +12,40 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.feature.timetable.component.SidebarLabel
+import `in`.koreatech.koin.feature.timetable.model.TimetableConstants
 import java.time.LocalTime
 
 @Composable
 fun TimetableSidebar(
-    hourWidth: Dp = 68.dp,
-    hourHeight: Dp = 64.dp,
+    range: Int,
+    hourWidth: Dp,
     modifier: Modifier = Modifier,
-    startTime: LocalTime = LocalTime.of(9, 0),
-    endStartTime: LocalTime = LocalTime.of(17, 0),
+    hourHeight: Dp = (TimetableConstants.eventHeight).dp,
+    initialTime: LocalTime = LocalTime.of(9, 0),
     label: @Composable (time: LocalTime) -> Unit = { SidebarLabel(time = it) },
 ) {
-    val distanceTime = endStartTime.hour - startTime.hour
     Column(
         modifier = modifier,
     ) {
-        repeat(distanceTime) { hour ->
+        repeat(range) { hour ->
             Box(
                 modifier = Modifier
                     .size(height = hourHeight, width = hourWidth)
                     .drawBehind {
-                        drawLine(
+                        drawLine( // | (맨 앞)
+                            color = Color.LightGray,
+                            start = Offset(0f, 0f),
+                            end = Offset(0f, size.height),
+                            strokeWidth = 1.dp.toPx()
+                        )
+                        drawLine( // ― (맨 위)
                             color = Color.LightGray,
                             start = Offset(0f, 0f),
                             end = Offset(size.width, 0f),
                             strokeWidth = 1.dp.toPx()
                         )
 
-                        if (distanceTime - 1 == hour) {
+                        if (range - 1 == hour) { // 마지막 ― (맨 아래)
                             drawLine(
                                 color = Color.LightGray,
                                 start = Offset(0f, size.height),
@@ -49,7 +55,7 @@ fun TimetableSidebar(
                         }
                     }
             ) {
-                label(startTime.plusHours(hour.toLong()))
+                label(initialTime.plusHours(hour.toLong()))
             }
         }
     }
@@ -59,5 +65,8 @@ fun TimetableSidebar(
 @Preview(showBackground = true)
 @Composable
 private fun TimetableSidebarPreview() {
-    TimetableSidebar()
+    TimetableSidebar(
+        range = 9,
+        hourWidth = 68.dp
+    )
 }
