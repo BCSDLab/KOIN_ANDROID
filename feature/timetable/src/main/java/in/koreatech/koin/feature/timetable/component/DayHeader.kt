@@ -25,23 +25,25 @@ fun RowScope.DayHeader(
         modifier = modifier
             .weight(1f)
     ) {
-        Text(
-            text = day,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .drawBehind {
-                    if (!isEnd) {
-                        drawLine(
-                            color = Color.LightGray,
-                            start = Offset(size.width, 0f),
-                            end = Offset(size.width, size.height),
-                            strokeWidth = 1f,
-                        )
+        if (day.isNotEmpty()) {
+            Text(
+                text = day,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .drawBehind {
+                        if (!isEnd) {
+                            drawLine(
+                                color = Color.LightGray,
+                                start = Offset(size.width, 0f),
+                                end = Offset(size.width, size.height),
+                                strokeWidth = 1.dp.toPx(),
+                            )
+                        }
                     }
-                }
-                .padding(4.dp)
-        )
+                    .padding(4.dp)
+            )
+        }
     }
 }
 
