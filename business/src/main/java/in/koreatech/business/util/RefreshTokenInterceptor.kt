@@ -30,11 +30,13 @@ class RefreshTokenInterceptor @Inject constructor(
                         if (result.isSuccessful) {
                             result.body()?.let { resultBody ->
                                 tokenLocalDataSource.saveAccessToken(resultBody.token)
+                                tokenLocalDataSource.saveOwnerAccessToken(resultBody.token)
                                 tokenLocalDataSource.saveRefreshToken(resultBody.refreshToken)
                                 response = chain.proceed(getRequest(response, resultBody.token))
                             }
                         } else {
                             tokenLocalDataSource.removeAccessToken()
+                            tokenLocalDataSource.removeOwnerAccessToken()
                             tokenLocalDataSource.removeRefreshToken()
                             goToLoginActivity()
                         }
