@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.chargemap.compose.numberpicker.Hours
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
+import `in`.koreatech.koin.domain.model.owner.SettingTime
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -49,9 +50,9 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         }
     }
 
-    private fun isOpenTimeSetting(isOpenTimeSetting: Boolean) = intent{
+    private fun isOpenTimeSetting(openTimeSetting: SettingTime) = intent{
         reduce{
-            state.copy(isOpenTimeSetting = isOpenTimeSetting)
+            state.copy(isOpenTimeSetting = openTimeSetting)
         }
     }
 
@@ -104,7 +105,7 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         reduce {
             state.copy(showDialog = true)
         }
-        isOpenTimeSetting(true)
+        isOpenTimeSetting(SettingTime.OPEN)
         dayOfIndex(index)
     }
 
@@ -112,7 +113,7 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         reduce {
             state.copy(showDialog = true)
         }
-        isOpenTimeSetting(false)
+        isOpenTimeSetting(SettingTime.CLOSE)
         dayOfIndex(index)
     }
 
