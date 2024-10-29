@@ -11,73 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 
 internal val LocalKoinColorPalette = staticCompositionLocalOf {
-    KoinColorPalette(
-        primary900 = Color.Unspecified,
-        primary800 = Color.Unspecified,
-        primary700 = Color.Unspecified,
-        primary600 = Color.Unspecified,
-        primary500 = Color.Unspecified,
-        primary400 = Color.Unspecified,
-        primary300 = Color.Unspecified,
-        primary200 = Color.Unspecified,
-        primary100 = Color.Unspecified,
-        sub900 = Color.Unspecified,
-        sub800 = Color.Unspecified,
-        sub700 = Color.Unspecified,
-        sub600 = Color.Unspecified,
-        sub500 = Color.Unspecified,
-        sub400 = Color.Unspecified,
-        sub300 = Color.Unspecified,
-        sub200 = Color.Unspecified,
-        sub100 = Color.Unspecified,
-        neutral800 = Color.Unspecified,
-        neutral700 = Color.Unspecified,
-        neutral600 = Color.Unspecified,
-        neutral500 = Color.Unspecified,
-        neutral400 = Color.Unspecified,
-        neutral300 = Color.Unspecified,
-        neutral200 = Color.Unspecified,
-        neutral100 = Color.Unspecified,
-        neutral50 = Color.Unspecified,
-        neutral0 = Color.Unspecified,
-        danger700 = Color.Unspecified,
-        danger600 = Color.Unspecified,
-        danger500 = Color.Unspecified,
-        danger400 = Color.Unspecified,
-        danger300 = Color.Unspecified,
-        danger200 = Color.Unspecified,
-        danger100 = Color.Unspecified,
-        danger50 = Color.Unspecified,
-        warning700 = Color.Unspecified,
-        warning600 = Color.Unspecified,
-        warning500 = Color.Unspecified,
-        warning400 = Color.Unspecified,
-        warning300 = Color.Unspecified,
-        warning200 = Color.Unspecified,
-        warning100 = Color.Unspecified,
-        warning50 = Color.Unspecified,
-        success700 = Color.Unspecified,
-        success600 = Color.Unspecified,
-        success500 = Color.Unspecified,
-        success400 = Color.Unspecified,
-        success300 = Color.Unspecified,
-        success200 = Color.Unspecified,
-        success100 = Color.Unspecified,
-        success50 = Color.Unspecified,
-        info700 = Color.Unspecified,
-        info600 = Color.Unspecified,
-        info500 = Color.Unspecified,
-        info400 = Color.Unspecified,
-        info300 = Color.Unspecified,
-        info200 = Color.Unspecified,
-        info100 = Color.Unspecified,
-        info50 = Color.Unspecified
-    )
+    KoinLightColorPalette
 }
-
 
 internal val LocalKoinTypography = staticCompositionLocalOf {
     KoinTypography(
