@@ -22,9 +22,12 @@ val Gray1 = Color(0xFF4B4B4B)
 val Gray2= Color(0xFFEEEEEE)
 val Gray3= Color(0xFFCACACA)
 val Gray4= Color(0xFFFAFAFA)
+val Gray500= Color(0xFF727272)
 val Gray9= Color(0xFF898A8D)
 val Gray10=Color(0xFF999999)
 val Red2 = Color(0xFFFF0000)
+
+val ColorPrimary600 = Color(0xFF10477A)
 
 val ColorError = Color(0xFFF05D3D)
 
