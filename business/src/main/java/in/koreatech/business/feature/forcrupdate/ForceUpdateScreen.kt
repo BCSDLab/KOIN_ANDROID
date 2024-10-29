@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.forcrupdate
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,10 +41,11 @@ import `in`.koreatech.koin.core.R
 
 @Composable
 fun ForceUpdateScreen(
-    goToSelectCategoryScreen: () -> Unit = {},
-    onBackPressed: () -> Unit = {}
+    title: String ="",
+    content: String = ""
 ) {
     val openDialog = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -63,7 +66,7 @@ fun ForceUpdateScreen(
                     modifier = Modifier
                         .padding(end = 29.dp)
                         .size(24.dp)
-                        .clickable { onBackPressed() }
+                        .clickable { (context as? Activity)?.finish() }
 
                 ) {
                     Image(
@@ -84,7 +87,7 @@ fun ForceUpdateScreen(
         }
 
         Text(
-            text = "코인을 사용하기 위해\n업데이트가 꼭 필요해요.",
+            text = title,
             fontSize = 20.sp,
             color = Color.White,
             fontWeight = FontWeight.Bold,
@@ -99,7 +102,7 @@ fun ForceUpdateScreen(
         )
 
         Text(
-            text = "코인 앱을 실행해 주셔서 감사합니다!\n코인을 사용하기 위해 아래 버튼을 눌러\n스토어에서 업데이트를 진행해 주세요.",
+            text = content,
             fontSize = 14.sp,
             color = Color.White,
             textAlign = TextAlign.Center,
@@ -109,7 +112,9 @@ fun ForceUpdateScreen(
         )
 
         Button(
-            onClick = goToSelectCategoryScreen,
+            onClick = {
+                      //Todo: 플레이스토어 링크 넣기
+            },
             colors = ButtonDefaults.buttonColors(ColorSecondary),
             shape = RoundedCornerShape(4.dp),
             modifier = Modifier

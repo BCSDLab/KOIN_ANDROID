@@ -94,7 +94,10 @@ fun ForceUpdateDialog(
                         }
 
                         Button(
-                            onClick = { isShow.value = false },
+                            onClick = {
+                                isShow.value = false
+                                //Todo: 플레이스토어 링크 넣기
+                                      },
                             shape = RoundedCornerShape(4.dp),
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
                             modifier = Modifier

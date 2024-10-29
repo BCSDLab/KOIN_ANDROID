@@ -13,15 +13,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.event.writeevent.writeevent.WriteEventScreen
+import `in`.koreatech.business.feature.forcrupdate.ForceUpdateScreen
 import `in`.koreatech.business.navigation.KoinBusinessNavHost
 import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
 import `in`.koreatech.business.navigation.SIGNINSCREEN
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.repository.OwnerShopRepository
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
+import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,24 +38,47 @@ class BusinessMainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         initViewModel()
-        setContent {
-                KOIN_ANDROIDTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colors.background
-                    ) {
-                        KoinBusinessNavHost(
-                            startDestination = destination
-                        )
-                    }
-                }
-            }
+
     }
     private fun initViewModel() = with(viewModel) {
         destinationString.observe(this@BusinessMainActivity
         ) {
             destination = destinationString.value.toString()
+        }
+        version.observe(this@BusinessMainActivity)
+        {
+            when (it.versionUpdatePriority) {
+                VersionUpdatePriority.Importance ->{
+                    setContent {
+                        KOIN_ANDROIDTheme {
+                            ForceUpdateScreen(
+                                title = it.title,
+                                content = it.content
+                            )
+                        }
+                    }
+                }
+
+                VersionUpdatePriority.None ->{
+                    setContent {
+                        KOIN_ANDROIDTheme {
+                            // A surface container using the 'background' color from the theme
+                            Surface(
+                                modifier = Modifier.fillMaxSize(),
+                                color = MaterialTheme.colors.background
+                            ) {
+                                KoinBusinessNavHost(
+                                    startDestination = destination
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        checkVersionError.observe(this@BusinessMainActivity) {
+            ToastUtil.getInstance().makeShort(R.string.version_check_failed)
         }
     }
 }

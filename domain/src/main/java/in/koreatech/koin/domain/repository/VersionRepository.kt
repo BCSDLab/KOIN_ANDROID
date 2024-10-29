@@ -6,6 +6,8 @@ interface VersionRepository {
     suspend fun getCurrentVersion(): String?
     suspend fun getLatestVersionFromRemote(): Version
 
+    suspend fun getOwnerLatestVersionFromRemote(): Version
+
     suspend fun updateLatestVersionCode(versionCode: Int)
     suspend fun updateLatestVersionName(versionName: String)
     suspend fun getLatestVersionCode(): Int?
