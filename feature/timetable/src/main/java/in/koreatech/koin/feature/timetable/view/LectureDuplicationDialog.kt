@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.FontScalePreviews
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
+import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -126,22 +126,13 @@ fun LectureDuplicationDialog(
                     ) {
                         Text(text = stringResource(id = R.string.lecture_duplication_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
                     }
-                    Button(
+                    FilledTextButton(
                         modifier = Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        colors = ButtonColors(
-                            containerColor = KoinTheme.colors.primary500,
-                            contentColor = KoinTheme.colors.neutral0,
-                            disabledContainerColor = KoinTheme.colors.neutral300,
-                            disabledContentColor = KoinTheme.colors.neutral600
-                        ),
-                        shape = MaterialTheme.shapes.extraSmall,
-                        contentPadding = PaddingValues(0.dp),
+                        text = stringResource(id = R.string.lecture_duplication_confirmation),
                         onClick = { onConfirm() }
-                    ) {
-                        Text(text = stringResource(id = R.string.lecture_duplication_confirmation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral0)
-                    }
+                    )
                 }
             }
         }
