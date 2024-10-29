@@ -12,4 +12,8 @@ class VersionRemoteDataSource @Inject constructor(
     suspend fun getAndroidAppVersion(): VersionResponse {
         return versionApi.getVersion("android")
     }
+
+    suspend fun getOwnerAppVersion(): VersionResponse {
+        return versionApi.getVersion("android")
+    }
 }
