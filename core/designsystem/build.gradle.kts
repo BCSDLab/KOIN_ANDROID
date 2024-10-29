@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.koin.library)
-    alias(libs.plugins.koin.hilt)
+
 }
 
 android {
-    namespace = "in.koreatech.koin.feature.timetable"
+    namespace = "in.koreatech.koin.core.designsystem"
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.10"
@@ -16,10 +16,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":domain"))
-    implementation(project(":core:designsystem"))
-
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
