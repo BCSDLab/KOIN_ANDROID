@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lecture_duplication_title">시간표가 중복돼요.</string>
+    <string name="lecture_duplication_cancellation">취소</string>
+    <string name="lecture_duplication_confirmation">대체하기</string>
+</resources>
