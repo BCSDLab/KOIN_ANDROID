@@ -120,7 +120,7 @@ class ArticleKeywordFragment : Fragment() {
         binding.run {
             if (chipGroupMyKeyword.childCount < keywords.size) {
                 keywords.forEach { keyword ->
-                    if (chipGroupMyKeyword.children.none { (it as Chip).text == keyword })
+                    if (chipGroupMyKeyword.children.none { (it as? Chip)?.text == keyword })
                         chipGroupMyKeyword.addView(
                             createChip(
                                 keyword,
@@ -130,7 +130,7 @@ class ArticleKeywordFragment : Fragment() {
                             )
                         )
                     binding.chipGroupSuggestionKeywords.children.forEach { chip ->
-                        if ((chip as Chip).text == keyword) {
+                        if ((chip as? Chip)?.text == keyword) {
                             chipGroupSuggestionKeywords.removeView(chip)
                         }
                     }
@@ -141,7 +141,7 @@ class ArticleKeywordFragment : Fragment() {
 
     private fun removeMyKeywordView(keywords: List<String>) {
         binding.chipGroupMyKeyword.children.forEach { chip ->
-            if (keywords.none { it == (chip as Chip).text }) {
+            if (keywords.none { it == (chip as? Chip)?.text }) {
                 binding.chipGroupMyKeyword.removeView(chip)
             }
         }
@@ -195,9 +195,9 @@ class ArticleKeywordFragment : Fragment() {
         root: ViewGroup,
         onCloseIconClicked: (String) -> Unit = {},
         onClick: (String) -> Unit = {}
-    ): Chip {
-        val chip = layoutInflater.inflate(R.layout.chip_layout, root, false) as Chip
-        return chip.apply {
+    ): Chip? {
+        val chip = layoutInflater.inflate(R.layout.chip_layout, root, false) as? Chip
+        return chip?.apply {
             id = View.generateViewId()
             isChecked = false
             isCheckable = false
@@ -259,7 +259,7 @@ class ArticleKeywordFragment : Fragment() {
                             try {
                                 binding.chipGroupSuggestionKeywords.removeView(
                                     binding.chipGroupSuggestionKeywords.children.first { chip ->
-                                        (chip as Chip).text == state.keyword
+                                        (chip as? Chip)?.text == state.keyword
                                     }
                                 )
                             } catch (_: Exception) {}

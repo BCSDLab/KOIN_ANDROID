@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowOrientationRules
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
@@ -19,6 +18,7 @@ import com.skydoves.balloon.IconForm
 import com.skydoves.balloon.IconGravity
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,7 +27,8 @@ import javax.inject.Inject
 class OnboardingManager @Inject internal constructor(
     private val onboardingRepository: OnboardingRepository,
     private val context: Context,
-    private val mainDispatcher: CoroutineDispatcher
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
     private lateinit var tooltip: Balloon
@@ -71,7 +72,7 @@ class OnboardingManager @Inject internal constructor(
         arrowDirection: ArrowDirection,
     ) {
         lifecycle.addObserver(tooltipDismissObserver)
-        lifecycleScope.launch {
+        lifecycleScope.launch(ioDispatcher) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 val shouldShow = onboardingRepository.getShouldOnboarding(type.name)
                 delay(500)
@@ -94,7 +95,7 @@ class OnboardingManager @Inject internal constructor(
         type: OnboardingType,
         action: () -> Unit
     ) {
-        lifecycleScope.launch {
+        lifecycleScope.launch(ioDispatcher) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 val shouldShow = onboardingRepository.getShouldOnboarding(type.name)
                 withContext(mainDispatcher) {

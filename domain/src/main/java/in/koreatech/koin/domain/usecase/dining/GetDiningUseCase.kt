@@ -8,7 +8,7 @@ class GetDiningUseCase @Inject constructor(
     private val diningRepository: DiningRepository,
 ) {
     suspend operator fun invoke(date: String): Result<List<Dining>> {
-        return kotlin.runCatching {
+        return runCatching {
             diningRepository.getDining(date)
         }
     }
