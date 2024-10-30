@@ -2,11 +2,14 @@ package `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTi
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,10 +19,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,16 +42,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.dialog.OperatingTimeDialog
+import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
 import `in`.koreatech.business.ui.theme.ColorTextBackgrond
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.domain.model.owner.SettingTime
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -88,7 +96,7 @@ fun OperatingTimeSettingScreen(
 @Composable
 fun OperatingTimeSettingScreenImpl(
     showDialog: Boolean = false,
-    isOpenTimeSetting: Boolean = false,
+    isOpenTimeSetting: SettingTime = SettingTime.OPEN,
     dayOfWeekIndex: Int = 0,
     onShowOpenTimeDialog: (Int) -> Unit = {},
     onShowCloseTimeDialog: (Int) -> Unit = {},
@@ -176,11 +184,11 @@ fun OperatingTimeSettingScreenImpl(
             ) {
                 itemsIndexed(operatingTimeList) { index, item ->
                     DayOperatingTimeSetting(item, onShowOpenTimeDialog, onShowCloseTimeDialog, index, onCheckBoxClicked)
-
                 }
             }
             when(isOpenTimeSetting){
-                true -> ShowOpenTimeDialog(
+                SettingTime.OPEN -> OperatingTimeSettingDialog(
+                    title = stringResource(id = R.string.store_open_time),
                     operatingTimeDialog = OperatingTimeDialog(
                         showDialog,
                         onCloseDialog,
@@ -188,7 +196,8 @@ fun OperatingTimeSettingScreenImpl(
                         onSettingStoreOpenTime
                     )
                 )
-                false -> ShowCloseTimeDialog(
+                SettingTime.CLOSE -> OperatingTimeSettingDialog(
+                    title = stringResource(id = R.string.store_close_time),
                     operatingTimeDialog = OperatingTimeDialog(
                         showDialog,
                         onCloseDialog,
@@ -247,6 +256,7 @@ fun DayOperatingTimeSetting(
                 if(!operatingTime.closed) onShowOpenTimeDialog(index)
             },
             text = operatingTime.openTime,
+            color =if (operatingTime.closed) ColorMinor else Color.Black,
             fontSize = 15.sp
         )
 
@@ -261,6 +271,7 @@ fun DayOperatingTimeSetting(
                if(!operatingTime.closed) onShowCloseTimeDialog(index)
             },
             text = operatingTime.closeTime,
+            color =if (operatingTime.closed) ColorMinor else Color.Black,
             fontSize = 15.sp
         )
 
@@ -277,127 +288,76 @@ fun DayOperatingTimeSetting(
 }
 
 @Composable
-fun ShowOpenTimeDialog(
+fun OperatingTimeSettingDialog(
+    title: String = "",
     operatingTimeDialog: OperatingTimeDialog = OperatingTimeDialog()
 ) {
-    var openTimeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
+    var timeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
     if (operatingTimeDialog.showDialog) {
-        AlertDialog(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-            ,
-            onDismissRequest = { operatingTimeDialog.closeDialog() },
-            title = {
-                Text(
-                    modifier = Modifier.padding(bottom = 30.dp),
-                    text = stringResource(id = R.string.store_open_time)
-                )
-            },
-            text = {
-                HoursNumberPicker(
+        Dialog(onDismissRequest = { operatingTimeDialog.closeDialog() }) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = Color.White,
+                elevation = 8.dp
+            ) {
+                Column(
                     modifier = Modifier
+                        .padding(16.dp)
                         .fillMaxWidth()
-                        .wrapContentHeight(),
-                    dividersColor = MaterialTheme.colors.primary,
-                    leadingZero = false,
-                    value = openTimeValue,
-                    onValueChange = {
-                        openTimeValue = it
-                    },
-                    minutesRange = (0..59 step 5),
-                    hoursDivider = {
-                        Text(
-                            modifier = Modifier.size(24.dp),
-                            textAlign = TextAlign.Center,
-                            text = ":"
-                        )
+                ) {
+                    Text(
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        text = title,
+                        style = MaterialTheme.typography.h6,
+                        fontSize = 20.sp
+                    )
+
+                    HoursNumberPicker(
+                        modifier = Modifier
+                            .height(120.dp),
+                        dividersColor = MaterialTheme.colors.primary,
+                        leadingZero = true,
+                        value = timeValue,
+                        onValueChange = {
+                            timeValue = it
+                        },
+                        minutesRange = (0..59 step 5),
+                        hoursDivider = {
+                            Text(
+                                modifier = Modifier.size(24.dp),
+                                textAlign = TextAlign.Center,
+                                text = ":"
+                            )
+                        }
+                    )
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.End)
+                    ) {
+                        Button(
+                            modifier = Modifier.padding(end = 5.dp),
+                            onClick = {
+                                operatingTimeDialog.closeDialog()
+                            }) {
+                            Text(stringResource(id = R.string.cancel))
+                        }
+                        Button(
+                            onClick = {
+                                operatingTimeDialog.closeDialog()
+                                operatingTimeDialog.onSettingStoreTime(Pair(timeValue, operatingTimeDialog.dayOfWeekIndex))
+                            }) {
+                            Text(stringResource(id = R.string.positive))
+                        }
                     }
-                )
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        operatingTimeDialog.onSettingStoreTime(Pair(openTimeValue, operatingTimeDialog.dayOfWeekIndex))
-                    }) {
-                    Text(stringResource(id = R.string.positive))
-                }
-            },
-            dismissButton = {
-                Button(
-                    onClick = {
-                        operatingTimeDialog.closeDialog()
-                    }) {
-                    Text(stringResource(id = R.string.cancel))
                 }
             }
-        )
+        }
     }
 }
-
-@Composable
-fun ShowCloseTimeDialog(
-    operatingTimeDialog: OperatingTimeDialog = OperatingTimeDialog()
-) {
-    var closeTimeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
-    if (operatingTimeDialog.showDialog) {
-        AlertDialog(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-            ,
-            onDismissRequest = { operatingTimeDialog.closeDialog() },
-            title = {
-                Text(
-                    modifier = Modifier.padding(bottom = 30.dp),
-                    text = stringResource(id = R.string.store_close_time)
-                )
-            },
-            text = {
-                HoursNumberPicker(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    dividersColor = MaterialTheme.colors.primary,
-                    leadingZero = false,
-                    value = closeTimeValue,
-                    onValueChange = {
-                        closeTimeValue = it
-                    },
-                    minutesRange = (0..59 step 5),
-                    hoursDivider = {
-                        Text(
-                            modifier = Modifier.size(24.dp),
-                            textAlign = TextAlign.Center,
-                            text = ":"
-                        )
-                    }
-                )
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        operatingTimeDialog.onSettingStoreTime(Pair(closeTimeValue, operatingTimeDialog.dayOfWeekIndex))
-                    }) {
-                    Text(stringResource(id = R.string.positive))
-                }
-            },
-            dismissButton = {
-                Button(
-                    onClick = {
-                        operatingTimeDialog.closeDialog()
-                    }) {
-                    Text(stringResource(id = R.string.cancel))
-                }
-            }
-        )
-    }
-}
-
 @Preview
 @Composable
-fun PreviewDayOperatingTImeSetting() {
-    DayOperatingTimeSetting()
+fun PreviewDialog() {
+    OperatingTimeSettingDialog()
 }
 
 @Preview

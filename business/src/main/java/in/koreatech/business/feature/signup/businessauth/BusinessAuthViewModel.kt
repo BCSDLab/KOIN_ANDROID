@@ -1,9 +1,18 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.business.feature.loading.LoadingState
+import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.ImageHolder
+import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.TEMP_IMAGE_URI
+import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.toStringList
+import `in`.koreatech.business.util.getImageInfo
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
+import `in`.koreatech.koin.domain.constant.SIGN_UP_IMAGE_MAX
+import `in`.koreatech.koin.domain.constant.STORE_MENU_IMAGE_MAX
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
@@ -83,23 +92,77 @@ class BusinessAuthViewModel @Inject constructor(
         postSideEffect(BusinessAuthSideEffect.NavigateToNextScreen)
     }
 
-    fun getPreSignedUrl(
+    fun changeImageUri(uriList: List<Uri>){
+        intent {
+            reduce {
+                if(uriList.size < SIGN_UP_IMAGE_MAX){
+                    val newMenuUriList = state.imageUriList.toMutableList()
+                    for(imageUri in uriList) {
+                        newMenuUriList.add(imageUri.toString())
+                        insertStoreFileUrl(imageUri.toString().substringAfterLast("/"), imageUri.toString())
+                    }
+                    if(newMenuUriList.size != SIGN_UP_IMAGE_MAX)newMenuUriList.add(ImageHolder.TempUri.toString())
+
+                    state.copy(
+                        imageUriList = newMenuUriList
+                    )
+                }
+                else{
+                    state.copy(
+                        imageUriList = uriList.toStringList()
+                    )
+                }
+            }
+        }
+    }
+
+
+    fun onPositiveButtonClicked(context: Context, phoneNumber: String, password: String) {
+        intent {
+            viewModelScope.launch {
+                state.imageUriList.forEach { uriString ->
+                    if (uriString != TEMP_IMAGE_URI) {
+                        if (uriString.contains("content")) {
+                            val uri = Uri.parse(uriString)
+                            val imageInfo = getImageInfo(context, uri)
+                            getPreSignedUrl(
+                                fileSize = imageInfo.imageSize,
+                                fileType = imageInfo.imageType,
+                                fileName = imageInfo.imageName,
+                                imageUri = uriString
+                            )
+                        }
+                    }
+                }
+               sendRegisterRequest(
+                    fileUrls = state.fileInfo.map { it.resultUrl },
+                    companyNumber = state.shopNumber,
+                    phoneNumber = phoneNumber,
+                    name = state.name,
+                    password = password,
+                    shopId = state.shopId,
+                    shopName = state.shopName,
+                )
+            }
+        }
+    }
+
+    private fun getPreSignedUrl(
         fileSize: Long,
         fileType: String,
         fileName: String,
         imageUri: String,
     ) {
         viewModelScope.launch {
+            LoadingState.show()
             getPresignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
                 uploadImage(
-                    title = fileName.substringAfterLast("/"),
                     preSignedUrl = it.second,
                     mediaType = fileType,
                     mediaSize = fileSize,
                     imageUri = imageUri,
-                    fileUrl = it.first,
                 )
                 intent {
                     reduce {
@@ -129,8 +192,6 @@ class BusinessAuthViewModel @Inject constructor(
     }
 
     private fun uploadImage(
-        title: String,
-        fileUrl: String,
         preSignedUrl: String,
         mediaType: String,
         mediaSize: Long,
@@ -143,7 +204,6 @@ class BusinessAuthViewModel @Inject constructor(
                 mediaSize,
                 imageUri
             ).onSuccess {
-                insertStoreFileUrl(title, fileUrl)
                 intent {
                     reduce { state.copy(error = null) }
                 }
@@ -152,10 +212,11 @@ class BusinessAuthViewModel @Inject constructor(
                     reduce { state.copy(error = it) }
                 }
             }
+            LoadingState.hide()
         }
     }
 
-    fun sendRegisterRequest(
+    private fun sendRegisterRequest(
         fileUrls: List<String>,
         companyNumber: String,
         phoneNumber: String,
@@ -189,6 +250,7 @@ class BusinessAuthViewModel @Inject constructor(
 
     private fun insertStoreFileUrl(title: String, url: String) {
         intent {
+
             reduce {
                 state.copy(
                     selectedImages = state.selectedImages.apply {
