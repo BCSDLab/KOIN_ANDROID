@@ -32,7 +32,7 @@ import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy
 @Composable
 fun TextChipGroup(
     modifier: Modifier = Modifier,
-    chipOverflowStrategy: ChipOverflowStrategy = Scroll(),
+    chipOverflowStrategy: ChipOverflowStrategy = Flow(),
     titles: List<String>,
     shape: Shape = RoundedCornerShape(50),
     vararg selectedChipIndexes: Int,
@@ -43,18 +43,7 @@ fun TextChipGroup(
     chipColors: TextChipColors = TextChipDefaults.chipColors()
 ) {
     when (chipOverflowStrategy) {
-        Flow -> KoinTextChipScrollGroup(
-            modifier = modifier,
-            titles = titles,
-            shape = shape,
-            onChipSelected = onChipSelected,
-            selectedChipIndexes = selectedChipIndexes,
-            horizontalArrangement = horizontalArrangement,
-            showClickRipple = showClickRipple,
-            contentPadding = contentPadding,
-            chipColors = chipColors
-        )
-        is Scroll -> KoinTextChipFlowGroup(
+        is Flow -> KoinTextChipFlowGroup(
             modifier = modifier,
             titles = titles,
             shape = shape,
@@ -66,6 +55,17 @@ fun TextChipGroup(
             chipColors = chipColors,
             verticalArrangement = chipOverflowStrategy.verticalArrangement
         )
+        Scroll -> KoinTextChipScrollGroup(
+            modifier = modifier,
+            titles = titles,
+            shape = shape,
+            onChipSelected = onChipSelected,
+            selectedChipIndexes = selectedChipIndexes,
+            horizontalArrangement = horizontalArrangement,
+            showClickRipple = showClickRipple,
+            contentPadding = contentPadding,
+            chipColors = chipColors
+        )
     }
 }
 
@@ -75,8 +75,8 @@ fun TextChipGroup(
  * @property Scroll 같은 행에서 계속 나열하고 스크롤 부여
  */
 sealed interface ChipOverflowStrategy {
-    data object Flow : ChipOverflowStrategy
-    data class Scroll(
+    data object Scroll : ChipOverflowStrategy
+    data class Flow(
         val verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(6.dp)
     ) : ChipOverflowStrategy
 }
@@ -104,6 +104,7 @@ private fun KoinTextChipFlowGroup(
             TextChip(
                 title = it,
                 isSelected = selectedChipIndexes.contains(index),
+                shape = shape,
                 chipColors = chipColors,
                 contentPadding = contentPadding,
                 showClickRipple = showClickRipple,
@@ -133,6 +134,7 @@ private fun KoinTextChipScrollGroup(
             TextChip(
                 title = it,
                 isSelected = selectedChipIndexes.contains(index),
+                shape = shape,
                 chipColors = chipColors,
                 contentPadding = contentPadding,
                 showClickRipple = showClickRipple,
@@ -144,24 +146,24 @@ private fun KoinTextChipScrollGroup(
 
 @Preview
 @Composable
-private fun KoinTextChipGroupPreview() {
+private fun KoinTextChipGroupFlowPreview() {
     TextChipGroup(
         titles = listOf("Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6", "Chip7", "Chip8"),
         selectedChipIndexes = intArrayOf(0, 2, 3, 6),
         onChipSelected = {},
-        chipOverflowStrategy = Scroll(),
+        chipOverflowStrategy = Flow(),
         chipColors = TextChipDefaults.chipColors()
     )
 }
 
 @Preview
 @Composable
-private fun KoinTextChipGroupFlowPreview() {
+private fun KoinTextChipGroupScrollPreview() {
     TextChipGroup(
         titles = listOf("Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6", "Chip7", "Chip8"),
         selectedChipIndexes = intArrayOf(0, 2, 3, 6),
         onChipSelected = {},
-        chipOverflowStrategy = Flow,
+        chipOverflowStrategy = Scroll,
         chipColors = TextChipDefaults.chipColors()
     )
 }
