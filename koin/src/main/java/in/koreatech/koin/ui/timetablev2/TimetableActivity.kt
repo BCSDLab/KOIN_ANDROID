@@ -1,10 +1,8 @@
 package `in`.koreatech.koin.ui.timetablev2
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.getValue
@@ -12,13 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
-import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheet
 import `in`.koreatech.koin.feature.timetable.view.TimetableScreen
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -68,12 +62,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 }
             }
 
-            MaterialTheme {
+            KoinTheme {
                 TimetableScreen(
                     searchText = searchText,
                     sheetState = sheetState,
                     scaffoldState = scaffoldState,
-                    onSearchTextChange = { searchText = it }
+                    onSearchTextChange = { searchText = it },
+                    onClickTimetableSchedule = {}, // TODO : 학기 시간표 선택
+                    onClickDownloadTimetable = {} // TODO : 시간표 다운로드
                 )
             }
         }
