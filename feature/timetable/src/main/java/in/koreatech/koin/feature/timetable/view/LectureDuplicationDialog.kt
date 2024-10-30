@@ -116,7 +116,7 @@ fun LectureDuplicationDialog(
 
 @FontScalePreviews
 @Composable
-fun LectureDuplicationDialogPreview(modifier: Modifier = Modifier) {
+private fun LectureDuplicationDialogPreview(modifier: Modifier = Modifier) {
     KoinTheme {
         var isShowing by remember { mutableStateOf(true) }
 
