@@ -34,9 +34,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.size.Dimension
+import coil.size.Size
 import `in`.koreatech.business.ui.theme.ColorPrimary600
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.util.GifImage
+import `in`.koreatech.business.util.getDrawableResSize
 import `in`.koreatech.koin.core.R
 
 @Composable
@@ -46,6 +49,7 @@ fun ForceUpdateScreen(
 ) {
     val openDialog = remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val drawableResSize: Pair<Int,Int> = getDrawableResSize(context, R.drawable.koin_logo_gif)
 
     Column(
         modifier = Modifier
@@ -82,7 +86,8 @@ fun ForceUpdateScreen(
                     .height(250.dp)
                     .fillMaxWidth()
                 ,
-                drawableId = R.drawable.koin_logo_gif
+                painterResource = R.drawable.koin_logo_gif,
+                imageSize = Size(drawableResSize.first, drawableResSize.second)
             )
         }
 
