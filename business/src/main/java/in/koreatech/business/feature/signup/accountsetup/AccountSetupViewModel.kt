@@ -49,14 +49,19 @@ class AccountSetupViewModel @Inject constructor(
         .map { it.authCode }
         .distinctUntilChanged()
 
+    private val authFlow = container.stateFlow
+        .map { it.verifyState }
+        .distinctUntilChanged()
+
     init {
         combine(
             passwordFlow,
             passwordConfirmFlow,
             phoneNumberFlow,
-            authCodeFlow
-        ) { password, passwordConfirm, phoneNumber, authCode ->
-            password.isNotEmpty() && passwordConfirm.isNotEmpty() && phoneNumber.isNotEmpty() && authCode.isNotEmpty()
+            authCodeFlow,
+            authFlow
+        ) { password, passwordConfirm, phoneNumber, authCode, auth ->
+            password.isNotEmpty() && passwordConfirm.isNotEmpty() && phoneNumber.isNotEmpty() && authCode.isNotEmpty() && auth == SignupContinuationState.CheckComplete
                     && password.isValidPassword() && password == passwordConfirm
         }.distinctUntilChanged()
             .onEach {
@@ -90,7 +95,7 @@ class AccountSetupViewModel @Inject constructor(
             state.copy(
                 passwordConfirm = passwordConfirm,
 
-            )
+                )
         }
         reduce {
             state.copy( isPasswordConfirmError = state.password != passwordConfirm)
