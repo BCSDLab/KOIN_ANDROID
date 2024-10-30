@@ -282,7 +282,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         binding.storeButtonLayout.visibility= View.VISIBLE
         observeLiveData(variableName){
             when(viewModel.variableName.value){
-                "A" -> {
+                BENEFIT_STORE.getGroup("A")  -> {
                     EventLogger.logCustomEvent(
                         action = "AB_TEST",
                         category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
@@ -292,7 +292,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     binding.storeButtonLayout.visibility= View.GONE
                     binding.recyclerViewStoreCategory.visibility= View.VISIBLE
                 }
-                "B" -> {
+                BENEFIT_STORE.getGroup("B")  -> {
                     EventLogger.logCustomEvent(
                         action = "AB_TEST",
                         category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
