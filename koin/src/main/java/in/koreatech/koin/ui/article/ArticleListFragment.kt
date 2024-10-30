@@ -228,8 +228,8 @@ class ArticleListFragment : Fragment() {
                             isKeywordSelected = true
                         } else
                             binding.chipGroupMyKeywords.children.forEach {
-                                if ("#$keyword" == (it as Chip).text.toString()) {
-                                    it.isChecked = true
+                                if ("#$keyword" == (it as? Chip)?.text.toString()) {
+                                    (it as? Chip)?.isChecked = true
                                     isKeywordSelected = true
                                     return@forEach
                                 }
@@ -247,7 +247,7 @@ class ArticleListFragment : Fragment() {
     private fun removeKeywordChip(keywords: List<String>) {
         binding.chipGroupMyKeywords.children.forEachIndexed { i, chip ->
             if (i != 0)
-                if (keywords.contains((chip as Chip).text.toString().substring(1)).not())
+                if (keywords.contains((chip as? Chip)?.text.toString().substring(1)).not())
                     binding.chipGroupMyKeywords.removeView(chip)
         }
     }
@@ -255,7 +255,7 @@ class ArticleListFragment : Fragment() {
     private fun addKeywordChip(keywords: List<String>) {
         keywords.forEach { keyword ->
             if (binding.chipGroupMyKeywords.children.any {
-                    (it as Chip).text == TextUtils.concat(
+                    (it as? Chip)?.text == TextUtils.concat(
                         "#",
                         keyword
                     )
@@ -274,10 +274,10 @@ class ArticleListFragment : Fragment() {
         navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
     }
 
-    private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip {
+    private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip? {
         val chip =
-            layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as Chip
-        return chip.apply {
+            layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as? Chip
+        return chip?.apply {
             id = View.generateViewId()
             this.isCheckable = isCheckable
             isCloseIconVisible = false

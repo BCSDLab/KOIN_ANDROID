@@ -18,7 +18,7 @@ class OnboardingLocalDataSource @Inject constructor(
         return dataStore.data.catch {
             emit(emptyPreferences())
         }.map { preferences ->
-            preferences[booleanPreferencesKey(onboardingType)] ?: true
+            preferences[booleanPreferencesKey(onboardingType)]
         }.firstOrNull() ?: true
     }
 

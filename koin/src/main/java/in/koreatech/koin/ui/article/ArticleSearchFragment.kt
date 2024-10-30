@@ -158,7 +158,7 @@ class ArticleSearchFragment : Fragment() {
                 viewModel.mostSearchedKeywords.collect {
                     binding.chipGroupMostSearchedKeyword.children.forEachIndexed { i, view ->
                         val chipText = it.getOrNull(i)
-                        (view as Chip).text = chipText
+                        (view as? Chip)?.text = chipText
                         view.setOnClickListener { _ ->
                             onSearchQueryClicked(chipText ?: "")
                         }
