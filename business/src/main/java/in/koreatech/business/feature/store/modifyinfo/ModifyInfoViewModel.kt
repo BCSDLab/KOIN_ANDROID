@@ -13,7 +13,7 @@ import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.business.store.ModifyShopInfoUseCase
-import `in`.koreatech.koin.domain.usecase.owner.GetPresignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ModifyInfoViewModel @Inject constructor(
-    private val getPresignedUrlUseCase: GetPresignedUrlUseCase,
+    private val getPresignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
     private val modifyInfoUseCase: ModifyShopInfoUseCase,
 ) : ViewModel(),
@@ -232,26 +232,31 @@ class ModifyInfoViewModel @Inject constructor(
         }
     }
 
+
     fun getPreSignedUrl(
-        uri: Uri,
         fileSize: Long,
         fileType: String,
         fileName: String,
+        imageUri: String
     ) {
         viewModelScope.launch {
             getPresignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
+                uploadImage(
+                    preSignedUrl = it.second,
+                    mediaType = fileType,
+                    mediaSize = fileSize,
+                    imageUri = imageUri,
+                    fileUrl = it.first,
+                )
                 intent {
                     reduce {
                         state.copy(
-                            storeInfo = state.storeInfo.copy(
-
-                            ),
                             fileInfo = state.fileInfo.toMutableList().apply {
                                 add(
                                     StoreUrl(
-                                        uri.toString(),
+                                        imageUri,
                                         it.first,
                                         fileName,
                                         fileType,
@@ -260,31 +265,61 @@ class ModifyInfoViewModel @Inject constructor(
                                     )
                                 )
                             },
-
                         )
                     }
                 }
             }.onFailure {
                 intent {
+                    postSideEffect(ModifyInfoSideEffect.ShowToastMessage)
                 }
             }
         }
     }
 
-    fun uploadImage(
-        url: String,
-        imageUri: String,
+    private fun uploadImage(
+        fileUrl: String,
+        preSignedUrl: String,
         mediaType: String,
-        mediaSize: Long
+        mediaSize: Long,
+        imageUri: String
     ) {
-        viewModelScope.launch{
-            uploadFilesUseCase(url, imageUri, mediaSize, mediaType).onSuccess {
-                intent {
-                }
+        viewModelScope.launch {
+            uploadFilesUseCase(
+                preSignedUrl,
+                mediaType,
+                mediaSize,
+                imageUri
+            ).onSuccess {
+                insertStoreFileUrl(fileUrl)
             }.onFailure {
                 intent {
+                    postSideEffect(ModifyInfoSideEffect.ShowToastMessage)
                 }
             }
+        }
+    }
+
+    private fun insertStoreFileUrl(url: String) {
+        intent {
+            reduce {
+                state.copy(
+                    storeInfo = state.storeInfo.copy(
+                        imageUrls = state.storeInfo.imageUrls.toMutableList().apply {
+                            add(url)
+                        }
+                    ),
+                )
+            }
+        }
+    }
+
+    fun initStoreImageUrls() = intent {
+        reduce {
+            state.copy(
+                storeInfo = state.storeInfo.copy(
+                    imageUrls = emptyList()
+                )
+            )
         }
     }
 }
