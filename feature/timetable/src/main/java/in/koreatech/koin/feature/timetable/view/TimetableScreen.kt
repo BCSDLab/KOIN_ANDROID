@@ -1,9 +1,13 @@
 package `in`.koreatech.koin.feature.timetable.view
 
-import android.content.res.Resources
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
@@ -17,12 +21,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.util.pxToDp
+import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
+import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
+import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheet
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -33,6 +41,8 @@ fun TimetableScreen(
     scaffoldState: BottomSheetScaffoldState,
     modifier: Modifier = Modifier,
     onSearchTextChange: (text: String) -> Unit = {},
+    onClickTimetableSchedule: () -> Unit = {},
+    onClickDownloadTimetable: () -> Unit = {}
 ) {
     var bottomSheetHeight by remember { mutableStateOf(0f) }
 
@@ -41,6 +51,8 @@ fun TimetableScreen(
         scaffoldState = scaffoldState,
         sheetContent = {
             TimetableBottomSheet(
+                lectures = listOf(dummyLecture, dummyLecture.copy(name = "컴퓨터개발")),
+                selectedLecture = dummyLecture,
                 searchText = searchText,
                 onSearchTextChange = onSearchTextChange,
                 onBottomSheetHeightChange = { bottomSheetHeight = it }
@@ -52,8 +64,19 @@ fun TimetableScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .dynamicPadding(sheetState, bottomSheetHeight)
+                .dynamicPadding(sheetState, bottomSheetHeight),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(14.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                TimetableScheduleBox(onClick = onClickTimetableSchedule)
+                TimetableDownloadBox(onClick = onClickDownloadTimetable)
+            }
             Timetable(
                 range = 15,
                 events = listOf(dummyEvent)
@@ -62,9 +85,6 @@ fun TimetableScreen(
     }
 
 }
-
-val Float.pxToDp: Dp
-    get() = (this / Resources.getSystem().displayMetrics.density).dp
 
 @OptIn(ExperimentalMaterialApi::class)
 private fun Modifier.dynamicPadding(
