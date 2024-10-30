@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.feature.timetable.view.TimetableScreen
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
@@ -52,6 +53,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             )
             val scope = rememberCoroutineScope()
 
+            hideKeyboard(sheetState.isCollapsed)
             setAppbarEvent {
                 scope.launch {
                     if (sheetState.isExpanded) {
@@ -85,6 +87,12 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
                 AppBarBase.getRightButtonId() -> rightButtonClickable()
             }
+        }
+    }
+
+    private fun hideKeyboard(isCollapsed: Boolean) {
+        if (isCollapsed) {
+            KeyboardUtils(this).hide(binding.root)
         }
     }
 
