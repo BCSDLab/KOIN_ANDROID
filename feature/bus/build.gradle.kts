@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.koin.library)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -30,4 +31,7 @@ dependencies {
 
     debugImplementation(libs.bundles.compose.debug.test)
     androidTestImplementation(libs.compose.ui.test.manifest)
+
+    implementation("androidx.navigation:navigation-compose:2.8.3")
+    implementation(libs.kotlinx.serialization.json)
 }
