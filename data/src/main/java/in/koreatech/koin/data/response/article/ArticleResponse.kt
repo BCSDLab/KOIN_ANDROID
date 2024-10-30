@@ -33,7 +33,8 @@ data class ArticleResponse(
     @SerializedName("updated_at") val updatedAt: String?,
     @SerializedName("prev_id") val prevArticleId: Int?,
     @SerializedName("next_id") val nextArticleId: Int?,
-    @SerializedName("attachments") val attachments: List<AttachmentResponse>?
+    @SerializedName("attachments") val attachments: List<AttachmentResponse>?,
+    @SerializedName("url") val url: String?,
 ) {
     fun toArticleHeader() = ArticleHeader(
         id = id ?: 0,
@@ -50,7 +51,8 @@ data class ArticleResponse(
         content = content ?: "",
         prevArticleId = prevArticleId,
         nextArticleId = nextArticleId,
-        attachments = attachments?.map { it.toAttachment() } ?: listOf()
+        attachments = attachments?.map { it.toAttachment() } ?: listOf(),
+        url = url ?: "",
     )
 }
 

@@ -17,6 +17,8 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
+import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.addOnPageScrollListener
 import `in`.koreatech.koin.core.viewpager.addOnPageChangedListener
@@ -33,6 +35,7 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 import java.util.Date
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiningActivity : KoinNavigationDrawerActivity() {
@@ -41,24 +44,26 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "식단"
     private val viewModel by viewModels<DiningViewModel>()
     private val dates = mutableListOf<Date>()
-    private val diningDateAdapter by lazy { DiningDateAdapter {
-        viewModel.setSelectedDate(it)
-    } }
+    private val diningDateAdapter by lazy {
+        DiningDateAdapter {
+            viewModel.setSelectedDate(it)
+        }
+    }
     private var initialDateTab = 0
     private var initialDiningTab = 0
     private val diningOnBoardingBottomSheet by lazy {
         DiningNotificationOnBoardingFragment()
     }
-    private val diningPageChangeListener = object: OnPageChangeCallback() {
+    private val diningPageChangeListener = object : OnPageChangeCallback() {
         override fun onPageScrollStateChanged(state: Int) {
             super.onPageScrollStateChanged(state)
             binding.swipeRefreshLayoutDining.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -73,28 +78,23 @@ class DiningActivity : KoinNavigationDrawerActivity() {
 
         lifecycleScope.launch {
             viewModel.userState.collect {
-                if(it != null && it.isAnonymous.not()) {
-                    viewModel.shouldShowNotificationOnBoarding()
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.showDiningNotificationOnBoarding.collect { shouldShowOnBoarding ->
-                    if (shouldShowOnBoarding) {
-                        diningOnBoardingBottomSheet.show(
-                            supportFragmentManager,
-                            diningOnBoardingBottomSheet.tag
-                        )
-                        viewModel.updateShouldShowNotificationOnBoarding(false)
+                if (it != null && it.isAnonymous.not()) {
+                    with(onboardingManager) {
+                        showOnboardingIfNeeded(
+                            OnboardingType.DINING_NOTIFICATION
+                        ) {
+                            diningOnBoardingBottomSheet.show(
+                                supportFragmentManager,
+                                diningOnBoardingBottomSheet.tag
+                            )
+                        }
                     }
                 }
             }
         }
 
         binding.koinBaseAppBarDark.setOnClickListener {
-            when(it.id) {
+            when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
                 AppBarBase.getRightButtonId() -> {
                     EventLogger.logClickEvent(
@@ -129,7 +129,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun onActionView() {
-        if(Intent.ACTION_VIEW == intent.action) {
+        if (Intent.ACTION_VIEW == intent.action) {
             val uri = intent.data
             uri?.let {
                 try {
@@ -143,7 +143,17 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     it.getQueryParameter("type")?.let { type ->
                         initialDiningTab = getDiningTabByType(DiningUtil.getTypeByString(type))
                     }
-                } catch (_: Exception) { }
+
+                    // 카카오톡 공유를 통해 앱으로 들어온 경우 호출
+                    dateString?.let {
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.MENU_SHARE,
+                            "코인으로 이동"
+                        )
+                    }
+                } catch (_: Exception) {
+                }
             }
         }
     }

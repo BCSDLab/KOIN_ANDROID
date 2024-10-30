@@ -91,6 +91,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":core:onboarding"))
     implementation(project(":feature:timetable"))
 
     implementation(libs.guava)
@@ -124,7 +125,6 @@ dependencies {
 
     implementation(libs.kakao.share)
     implementation(libs.lottie)
-    implementation(libs.balloon)
     implementation(libs.dataStore)
 
     implementation(libs.nav.fragment.ktx)
