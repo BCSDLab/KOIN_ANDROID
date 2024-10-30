@@ -76,8 +76,9 @@ fun BusinessAuthScreen(
     val accountSetupState = accountSetupViewModel.collectAsState().value
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(5),
-        onResult = { uriList ->
-            var fileName = ""
+        onResult = {
+            businessAuthViewModel.changeImageUri(it)
+          /*  var fileName = ""
             var fileSize = 0L
             businessAuthState.fileInfo.clear()
             businessAuthViewModel.initStoreImageUrls()
@@ -108,7 +109,7 @@ fun BusinessAuthScreen(
 
                 }
                 inputStream?.close()
-            }
+            }*/
         }
     )
 
@@ -318,9 +319,11 @@ fun BusinessAuthScreen(
                             contentDescription = stringResource(id = R.string.attach_file)
                         )
                         Text(
+                            modifier = Modifier.padding(start = 8.dp),
                             text = stringResource(id = R.string.file_upload),
                             fontSize = 13.sp,
                             fontWeight = Bold,
+                            color = Gray1,
                         )
                     }
                 }
@@ -339,16 +342,10 @@ fun BusinessAuthScreen(
                     ),
 
                     onClick = {
-                        businessAuthViewModel.sendRegisterRequest(
-                            fileUrls = businessAuthState.fileInfo.map { it.resultUrl },
-                            companyNumber = businessAuthState.shopNumber,
+                        businessAuthViewModel.onPositiveButtonClicked(context,
                             phoneNumber = accountSetupState.phoneNumber,
-                            name = businessAuthState.name,
-                            password = accountSetupState.password,
-                            shopId = businessAuthState.shopId,
-                            shopName = businessAuthState.shopName,
-                        )
-
+                            password = accountSetupState.password
+                            )
                     }) {
                     Text(
                         text = stringResource(id = R.string.next),
