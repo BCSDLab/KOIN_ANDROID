@@ -3,6 +3,7 @@ package `in`.koreatech.business.feature.store.storedetail
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
@@ -91,11 +94,14 @@ fun CollapsedTopBar(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StoreInfoScreen(
     viewModel: MyStoreDetailViewModel,
 ) {
     val state = viewModel.collectAsState().value
+    val pagerState = rememberPagerState { state.storeInfo?.imageUrls?.size ?: 1 }
+
     Column(modifier = Modifier) {
 
         Row(
@@ -189,14 +195,27 @@ fun StoreInfoScreen(
                 .background(Gray2),
             contentAlignment = Alignment.Center,
         ) {
-            Image(
-                modifier = Modifier.height(255.dp),
-                painter = rememberAsyncImagePainter(
-                    model = state.storeInfo?.imageUrls?.getOrNull(0) ?: R.drawable.no_image
-                ),
-                contentDescription = stringResource(R.string.shop_image),
-                contentScale = ContentScale.Crop,
-            )
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(255.dp)
+            ) { page ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Image(
+                        modifier = Modifier.height(255.dp),
+                        painter = rememberAsyncImagePainter(
+                            model = if (state.storeInfo != null) state.storeInfo.imageUrls[page] else R.drawable.no_image
+                        ),
+                        contentDescription = stringResource(R.string.shop_image),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+            }
         }
         Button(
             modifier = Modifier
