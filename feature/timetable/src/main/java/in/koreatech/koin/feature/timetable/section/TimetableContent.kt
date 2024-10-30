@@ -14,6 +14,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.ParentDataModifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -250,8 +251,7 @@ fun TimetableContent(
 
 @Composable
 private fun measureEventWidth(horizontalPadding: Dp, dayCount: Int): Dp =
-    (LocalContext.current.resources.displayMetrics.widthPixels / LocalContext.current.resources.displayMetrics.density).dp /
-            (dayCount + 1) - (horizontalPadding / (dayCount + 1))
+    LocalConfiguration.current.screenWidthDp.dp / (dayCount + 1) - (horizontalPadding / (dayCount + 1))
 
 private class EventDataModifier(
     val event: TimetableEvent,
