@@ -32,6 +32,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorMinor
+import `in`.koreatech.business.ui.theme.Gray6
 
 
 @Composable
@@ -67,6 +68,7 @@ fun BusinessAlertDialog(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
+                    color = Color.Black,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -85,7 +87,7 @@ fun BusinessAlertDialog(
                         onClick = {
                             onDismissRequest()
                         },
-                        border = BorderStroke(1.dp, ColorActiveButton),
+                        border = BorderStroke(1.dp, Gray6),
                         shape = RoundedCornerShape(8.dp),
                         modifier = Modifier
                             .width(128.dp)
@@ -93,7 +95,7 @@ fun BusinessAlertDialog(
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
-                            text = stringResource(id = R.string.cancel),
+                            text = stringResource(id = R.string.cancel_upload),
                             color = ColorMinor,
                         )
                     }
