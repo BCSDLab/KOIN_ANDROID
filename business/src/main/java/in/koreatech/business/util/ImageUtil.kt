@@ -1,6 +1,7 @@
 package `in`.koreatech.business.util
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.OpenableColumns
 import `in`.koreatech.koin.domain.model.owner.ImageInfo
@@ -32,4 +33,13 @@ suspend fun getImageInfo(context: Context, uri: Uri): ImageInfo {
         }
         imageInfo
     }
+}
+
+fun getDrawableResSize(context: Context, drawableResId: Int): Pair<Int, Int>{
+    val resources = context.resources
+
+    val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+    BitmapFactory.decodeResource(resources, drawableResId, options)
+
+    return Pair(options.outWidth, options.outHeight)
 }
