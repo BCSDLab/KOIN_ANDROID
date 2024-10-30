@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -21,6 +22,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
  * 텍스트 칩
  * @param title 텍스트
  * @param isSelected 선택 여부
+ * @param shape 칩 모양
  * @param showClickRipple 클릭시 리플 효과 표시 여부
  * @param onSelect 클릭시 실행할 함수
  * @param contentPadding 칩 내부 padding
@@ -31,6 +33,7 @@ fun TextChip(
     modifier: Modifier = Modifier,
     title: String,
     isSelected: Boolean = false,
+    shape: Shape = RoundedCornerShape(50),
     showClickRipple: Boolean = true,
     onSelect: () -> Unit = {},
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
@@ -38,7 +41,7 @@ fun TextChip(
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(50))
+            .clip(shape)
             .background(if(isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
             .padding(contentPadding)
             .then(

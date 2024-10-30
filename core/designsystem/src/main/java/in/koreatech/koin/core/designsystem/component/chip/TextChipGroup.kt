@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy.Flow
@@ -19,6 +21,7 @@ import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy
  * @param modifier Modifier
  * @param chipOverflowStrategy Chip이 화면을 넘었을 때 전략 : [Flow], [Scroll]
  * @param titles 칩 텍스트 리스트
+ * @param shape 칩 모양
  * @param selectedChipIndexes 선택된 칩 인덱스 리스트
  * @param onChipSelected 칩 선택 리스너
  * @param showClickRipple 칩 클릭시 리플 효과 표시 여부
@@ -31,6 +34,7 @@ fun TextChipGroup(
     modifier: Modifier = Modifier,
     chipOverflowStrategy: ChipOverflowStrategy = Scroll(),
     titles: List<String>,
+    shape: Shape = RoundedCornerShape(50),
     vararg selectedChipIndexes: Int,
     onChipSelected: (title: String) -> Unit,
     showClickRipple: Boolean = true,
@@ -42,6 +46,7 @@ fun TextChipGroup(
         Flow -> KoinTextChipScrollGroup(
             modifier = modifier,
             titles = titles,
+            shape = shape,
             onChipSelected = onChipSelected,
             selectedChipIndexes = selectedChipIndexes,
             horizontalArrangement = horizontalArrangement,
@@ -52,6 +57,7 @@ fun TextChipGroup(
         is Scroll -> KoinTextChipFlowGroup(
             modifier = modifier,
             titles = titles,
+            shape = shape,
             onChipSelected = onChipSelected,
             selectedChipIndexes = selectedChipIndexes,
             horizontalArrangement = horizontalArrangement,
@@ -80,6 +86,7 @@ sealed interface ChipOverflowStrategy {
 private fun KoinTextChipFlowGroup(
     modifier: Modifier = Modifier,
     titles: List<String>,
+    shape: Shape,
     onChipSelected: (title: String) -> Unit,
     vararg selectedChipIndexes: Int,
     showClickRipple: Boolean,
@@ -110,6 +117,7 @@ private fun KoinTextChipFlowGroup(
 private fun KoinTextChipScrollGroup(
     modifier: Modifier = Modifier,
     titles: List<String>,
+    shape: Shape,
     onChipSelected: (title: String) -> Unit,
     vararg selectedChipIndexes: Int,
     showClickRipple: Boolean,
@@ -139,7 +147,7 @@ private fun KoinTextChipScrollGroup(
 private fun KoinTextChipGroupPreview() {
     TextChipGroup(
         titles = listOf("Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6", "Chip7", "Chip8"),
-        selectedChipIndexes = intArrayOf(0, 2, 4, 6),
+        selectedChipIndexes = intArrayOf(0, 2, 3, 6),
         onChipSelected = {},
         chipOverflowStrategy = Scroll(),
         chipColors = TextChipDefaults.chipColors()
@@ -151,7 +159,7 @@ private fun KoinTextChipGroupPreview() {
 private fun KoinTextChipGroupFlowPreview() {
     TextChipGroup(
         titles = listOf("Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6", "Chip7", "Chip8"),
-        selectedChipIndexes = intArrayOf(0, 2, 4, 6),
+        selectedChipIndexes = intArrayOf(0, 2, 3, 6),
         onChipSelected = {},
         chipOverflowStrategy = Flow,
         chipColors = TextChipDefaults.chipColors()
