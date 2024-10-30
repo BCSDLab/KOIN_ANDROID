@@ -22,6 +22,10 @@ import android.widget.DatePicker
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -42,10 +46,20 @@ class BusSearchFragment : DataBindingFragment<BusTimetableSearchFragmentBinding>
 
     private fun initView() = with(binding) {
         busSearchBusDepartureSpinner.setOnItemSelectedListener { _, _, position, _ ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.BUS_SEARCH_DEPARTURE,
+                binding.busSearchBusDepartureSpinner.selectedItem.toString()
+            )
             busSearchViewModel.setDeparture(position.busNodeSelection)
         }
 
         busSearchBusArrivalSpinner.setOnItemSelectedListener { _, _, position, _ ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.BUS_SEARCH_ARRIVAL,
+                binding.busSearchBusArrivalSpinner.selectedItem.toString()
+            )
             busSearchViewModel.setArrival(position.busNodeSelection)
         }
 
@@ -58,6 +72,11 @@ class BusSearchFragment : DataBindingFragment<BusTimetableSearchFragmentBinding>
         }
 
         busTimetableSearchFragmentSearchButton.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.BUS_SEARCH,
+                "조회"
+            )
             busSearchViewModel.search()
         }
     }

@@ -45,6 +45,11 @@ class CityBusTimetableFragment : DataBindingFragment<LayoutCityBusTimetableBindi
             itemAnimator = null
         }
         busTimetableCityCourseToggle.setOnCheckedChangeListener { _, isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE_CITYBUS,
+                binding.busTimetableCityCourseToggle.text.toString()
+            )
             val selection =
                 if (isChecked) CityBusGeneralDestination.Terminal.toggleSelection else CityBusGeneralDestination.Beongchon.toggleSelection
             cityBusTimetableViewModel.setDestination(selection)
@@ -59,7 +64,7 @@ class CityBusTimetableFragment : DataBindingFragment<LayoutCityBusTimetableBindi
             cityBusTimetableViewModel.setBusNumber(position)
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
-                AnalyticsConstant.Label.BUS_TIMETABLE_AREA,
+                AnalyticsConstant.Label.BUS_TIMETABLE_CITYBUS_ROUTE,
                 busTimetableCityBusNumberSpinner.selectedItem.toString()
             )
         }

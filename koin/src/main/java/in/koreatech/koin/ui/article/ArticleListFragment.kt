@@ -20,18 +20,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
-import com.skydoves.balloon.ArrowOrientation
-import com.skydoves.balloon.ArrowOrientationRules
-import com.skydoves.balloon.ArrowPositionRules
-import com.skydoves.balloon.Balloon
-import com.skydoves.balloon.BalloonAnimation
-import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.onboarding.ArrowDirection
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
+import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
@@ -40,13 +37,16 @@ import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ArticleListFragment : Fragment() {
+
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
 
     private var _binding: FragmentArticleListBinding? = null
     private val binding get() = _binding!!
@@ -68,14 +68,13 @@ class ArticleListFragment : Fragment() {
                     viewModel.setCurrentBoard(ArticleBoardType.entries[it.position])
                 }
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         }
 
     private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
     private lateinit var pageChips: ArrayList<Chip>
-
-    private lateinit var keywordTooltip: Balloon
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,7 +100,7 @@ class ArticleListFragment : Fragment() {
                 viewModel.setCurrentPage(viewModel.currentPage.value - 1)
             }
             handleKeywordChips()
-            initTooltipState()
+            initKeywordTooltip()
             collectData()
             binding.nestedScrollViewArticleList.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 val offset = binding.nestedScrollViewArticleList.computeVerticalScrollOffset()
@@ -109,7 +108,11 @@ class ArticleListFragment : Fragment() {
                 val range = binding.nestedScrollViewArticleList.computeVerticalScrollRange()
 
                 val newScrollPercentage = 100.0f * offset / (range - extent)
-                if (EventUtils.didCrossedScrollThreshold(scrollPercentage, newScrollPercentage) && scrollPercentage.toDouble() != .0) {
+                if (EventUtils.didCrossedScrollThreshold(
+                        scrollPercentage,
+                        newScrollPercentage
+                    ) && scrollPercentage.toDouble() != .0
+                ) {
                     EventLogger.logScrollEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.NOTICE_PAGE,
@@ -127,18 +130,14 @@ class ArticleListFragment : Fragment() {
         binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
     }
 
-    private fun initTooltipState() {
-        initKeywordTooltip()
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.shouldShowKeywordTooltip.collect { shouldShow ->
-                    if (shouldShow) {
-                        delay(500)
-                        keywordTooltip.showAlignBottom(binding.imageViewToKeywordAddPage)
-                        viewModel.updateShouldShowKeywordTooltip(false)
-                    }
-                }
-            }
+    private fun initKeywordTooltip() {
+        with(onboardingManager) {
+            viewLifecycleOwner.showOnboardingTooltipIfNeeded(
+                type = OnboardingType.ARTICLE_KEYWORD,
+                view = binding.imageViewToKeywordAddPage,
+                arrowPosition = 0.135f,
+                arrowDirection = ArrowDirection.TOP
+            )
         }
     }
 
@@ -152,7 +151,8 @@ class ArticleListFragment : Fragment() {
 
     private fun initArticleRecyclerView() {
         binding.recyclerViewArticleList.adapter = articleAdapter
-        binding.recyclerViewArticleList.addItemDecoration(object: DividerItemDecoration(requireContext(), VERTICAL) {
+        binding.recyclerViewArticleList.addItemDecoration(object :
+            DividerItemDecoration(requireContext(), VERTICAL) {
             override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
                 drawArticleDivider(c, parent)
             }
@@ -171,7 +171,10 @@ class ArticleListFragment : Fragment() {
     private fun onArticleClicked(article: ArticleHeaderState) {
         navController.navigate(
             R.id.action_articleListFragment_to_articleDetailFragment,
-            bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id)
+            bundleOf(
+                ARTICLE_ID to article.id,
+                NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id
+            )
         )
     }
 
@@ -223,11 +226,10 @@ class ArticleListFragment : Fragment() {
                         if (keyword.isEmpty()) {
                             binding.chipSeeAll.isChecked = true
                             isKeywordSelected = true
-                        }
-                        else
+                        } else
                             binding.chipGroupMyKeywords.children.forEach {
-                                if ("#$keyword" == (it as Chip).text.toString()) {
-                                    it.isChecked = true
+                                if ("#$keyword" == (it as? Chip)?.text.toString()) {
+                                    (it as? Chip)?.isChecked = true
                                     isKeywordSelected = true
                                     return@forEach
                                 }
@@ -245,14 +247,19 @@ class ArticleListFragment : Fragment() {
     private fun removeKeywordChip(keywords: List<String>) {
         binding.chipGroupMyKeywords.children.forEachIndexed { i, chip ->
             if (i != 0)
-                if (keywords.contains((chip as Chip).text.toString().substring(1)).not())
+                if (keywords.contains((chip as? Chip)?.text.toString().substring(1)).not())
                     binding.chipGroupMyKeywords.removeView(chip)
         }
     }
 
     private fun addKeywordChip(keywords: List<String>) {
         keywords.forEach { keyword ->
-            if (binding.chipGroupMyKeywords.children.any { (it as Chip).text == TextUtils.concat("#", keyword) }.not())
+            if (binding.chipGroupMyKeywords.children.any {
+                    (it as? Chip)?.text == TextUtils.concat(
+                        "#",
+                        keyword
+                    )
+                }.not())
                 binding.chipGroupMyKeywords.addView(
                     createChip(TextUtils.concat("#", keyword).toString(), true,
                         onChipClicked = {
@@ -267,9 +274,10 @@ class ArticleListFragment : Fragment() {
         navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
     }
 
-    private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip {
-        val chip = layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as Chip
-        return chip.apply {
+    private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip? {
+        val chip =
+            layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as? Chip
+        return chip?.apply {
             id = View.generateViewId()
             this.isCheckable = isCheckable
             isCloseIconVisible = false
@@ -284,7 +292,11 @@ class ArticleListFragment : Fragment() {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.currentBoard.collect { board ->
-                        binding.tabLayoutArticleBoard.getTabAt(ArticleBoardType.entries.indexOf(board))?.select()
+                        binding.tabLayoutArticleBoard.getTabAt(
+                            ArticleBoardType.entries.indexOf(
+                                board
+                            )
+                        )?.select()
                     }
                 }
             }
@@ -366,26 +378,6 @@ class ArticleListFragment : Fragment() {
             val bottom = top + height
             c.drawRect(left, top, right, bottom, paint)
         }
-    }
-
-    private fun initKeywordTooltip() {
-        keywordTooltip = Balloon.Builder(requireContext())
-            .setHeight(BalloonSizeSpec.WRAP)
-            .setWidth(BalloonSizeSpec.WRAP)
-            .setText(getString(R.string.keyword_tooltip))
-            .setTextColorResource(R.color.white)
-            .setBackgroundColorResource(R.color.neutral_600)
-            .setTextSize(12f)
-            .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
-            .setArrowOrientation(ArrowOrientation.TOP)
-            .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-            .setArrowSize(10)
-            .setPaddingVertical(8)
-            .setPaddingHorizontal(12)
-            .setMarginLeft(10)
-            .setCornerRadius(8f)
-            .setBalloonAnimation(BalloonAnimation.FADE)
-            .build()
     }
 
     override fun onDestroyView() {
