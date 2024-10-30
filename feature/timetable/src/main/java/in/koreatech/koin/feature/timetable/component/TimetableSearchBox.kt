@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.component
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,12 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,6 +54,16 @@ fun TimetableSearchBox(
             TextField(
                 value = searchText,
                 onValueChange = onSearchTextChange,
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.White, // 배경색 (클릭 X)
+                    focusedContainerColor = Color.White, // 배경색 (클릭 O)
+                    unfocusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 X)
+                    focusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 O)
+                    cursorColor = Color.Black, // 클릭 시, 커서색
+                    focusedTextColor = Color.Black, // 클릭 시, 입력 텍스트 색
+
+                ),
+                maxLines = 1,
                 placeholder = {
                     Text(
                         text = "입력해주세요.",
@@ -61,17 +77,25 @@ fun TimetableSearchBox(
                         contentDescription = null
                     )
                 },
-                shape = RoundedCornerShape(4.dp),
-                modifier = Modifier.fillMaxWidth(),
-            )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = Color.Blue,
+                        shape = RoundedCornerShape(10.dp)
+                    ),
+
+                )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 100)
 @Composable
 private fun TimetableSearchBoxPreview() {
+    var text by remember { mutableStateOf("") }
     TimetableSearchBox(
-        searchText = ""
+        searchText = text,
+        onSearchTextChange = { text = it }
     )
 }
