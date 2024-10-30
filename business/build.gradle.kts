@@ -11,6 +11,12 @@ plugins {
 android {
     namespace = "in.koreatech.business"
 
+    defaultConfig {
+        applicationId = "in.koreatech.business"
+        versionCode = rootProject.extra["versionBusinessCode"] as Int
+        versionName = rootProject.extra["versionBusinessName"].toString()
+    }
+
     androidComponents {
         onVariants(selector().withBuildType("release")) {
             it.packaging.resources.excludes.add("META-INF/**")
@@ -41,6 +47,7 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
     implementation(libs.compose.numberPicker)
     implementation(libs.androidx.security.crypto)
     implementation(libs.compose.numberPicker)
