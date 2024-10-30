@@ -21,6 +21,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
 
@@ -57,36 +59,23 @@ private fun TimetableBasicEventTime(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(end = 2.dp, bottom = 2.dp)
-            .background(
-                color = event.color,
-                shape = RoundedCornerShape(4.dp)
-            )
-            .padding(4.dp)
+            .background(color = event.color)
             .clickable { onEventTimeClick(event) }
     ) {
-        HorizontalDivider(color = Color.White, thickness = 1.dp)
+        HorizontalDivider(color = KoinTheme.colors.neutral800, thickness = 2.dp)
         Spacer(modifier = Modifier.height(2.dp))
         Text(
-            text = event.timeDashText(),
-            fontSize = 8.sp,
-            color = Color.White
+            text = event.name,
+            modifier = Modifier.padding(1.dp),
+            style = KoinTheme.typography.regular12,
+            color = KoinTheme.colors.neutral800
         )
         Text(
-            text = event.name,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
+            text = event.description.orEmpty(),
+            modifier = Modifier.padding(1.dp),
+            style = KoinTheme.typography.regular10,
+            color = KoinTheme.colors.neutral800
         )
-
-        if (event.description != null) {
-            Text(
-                text = event.description,
-                fontSize = 8.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
     }
 }
 
@@ -97,17 +86,11 @@ private fun TimetableSelectedEventTime(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(end = 2.dp, bottom = 2.dp)
-            .background(
-                color = Color.Transparent,
-                shape = RoundedCornerShape(4.dp)
-            )
+            .background(color = Color.Transparent)
             .border(
-                color = Color.Red,
+                color = KoinTheme.colors.neutral500,
                 width = 1.dp,
-                shape = RoundedCornerShape(4.dp)
             )
-            .padding(4.dp)
     )
 }
 
@@ -116,7 +99,9 @@ private fun TimetableSelectedEventTime(
 private fun TimetableEventTimePreview_Basic() {
     TimetableEventTime(
         event = dummyEvent,
-        modifier = Modifier.sizeIn(maxHeight = 64.dp),
+        modifier = Modifier
+            .sizeIn(maxHeight = 64.dp)
+            .padding(10.dp),
     )
 }
 
@@ -125,7 +110,9 @@ private fun TimetableEventTimePreview_Basic() {
 private fun TimetableEventTimePreview_Selected() {
     TimetableEventTime(
         event = dummyEvent,
-        modifier = Modifier.sizeIn(maxHeight = 64.dp),
+        modifier = Modifier
+            .sizeIn(maxHeight = 64.dp)
+            .padding(10.dp),
         eventType = TimetableEventType.SELECTED
     )
 }
