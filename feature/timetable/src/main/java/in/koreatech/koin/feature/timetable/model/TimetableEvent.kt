@@ -5,7 +5,17 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-private val timetableEventTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+enum class DayOfWeekKorean(
+    val koreanName: String
+) {
+    MONDAY("월"),
+    TUESDAY("화"),
+    WEDNESDAY("수"),
+    THURSDAY("목"),
+    FRIDAY("금"),
+    SATURDAY("토"),
+    SUNDAY("일")
+}
 
 data class TimetableEvent(
     val id: Int,
@@ -16,6 +26,15 @@ data class TimetableEvent(
     val end: LocalTime,
     val description: String? = null,
 ) {
-    fun timeDashText(): String =
-        "${start.format(timetableEventTimeFormatter)} - ${end.format(timetableEventTimeFormatter)}"
+    fun dayOfWeekToKorean(): String =
+        when (dayOfWeek) {
+            DayOfWeek.MONDAY -> DayOfWeekKorean.MONDAY.koreanName
+            DayOfWeek.TUESDAY -> DayOfWeekKorean.TUESDAY.koreanName
+            DayOfWeek.WEDNESDAY -> DayOfWeekKorean.WEDNESDAY.koreanName
+            DayOfWeek.THURSDAY -> DayOfWeekKorean.THURSDAY.koreanName
+            DayOfWeek.FRIDAY -> DayOfWeekKorean.FRIDAY.koreanName
+            DayOfWeek.SATURDAY -> DayOfWeekKorean.SATURDAY.koreanName
+            DayOfWeek.SUNDAY -> DayOfWeekKorean.SUNDAY.koreanName
+            else -> ""
+        }
 }
