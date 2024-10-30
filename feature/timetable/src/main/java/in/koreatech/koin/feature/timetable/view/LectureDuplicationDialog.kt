@@ -25,27 +25,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.FontScalePreviews
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
+import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureDuplicationDialog(
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
         onDismissRequest = { onDismiss() },
-        modifier = Modifier,
+        modifier = modifier,
     ) {
         Surface(
             modifier = Modifier
@@ -69,40 +68,15 @@ fun LectureDuplicationDialog(
                     style = KoinTheme.typography.bold16,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = buildAnnotatedString {
-                        pushStyle(
-                            ParagraphStyle(
-                                lineBreak = LineBreak(
-                                    strategy = LineBreak.Strategy.Balanced,
-                                    wordBreak = LineBreak.WordBreak.Phrase,
-                                    strictness = LineBreak.Strictness.Normal
-                                )
-                            )
-                        )
-                        withStyle(
-                            style = KoinTheme.typography.regular14.copy(
-                                color = KoinTheme.colors.neutral600,
-                            ).toSpanStyle()
-                        ) {
-                            append("추가하시려는 시간에 이미 다른 강의가 있어요.")
-                        }
-                        withStyle(
-                            style = KoinTheme.typography.regular14.copy(
-                                color = KoinTheme.colors.warning600,
-                            ).toSpanStyle()
-                        ) {
-                            append(" 새로운 강의로 대체")
-                        }
-                        withStyle(
-                            style = KoinTheme.typography.regular14.copy(
-                                color = KoinTheme.colors.neutral600,
-                            ).toSpanStyle()
-                        ) {
-                            append("하시겠어요?")
-                        }
-                    },
-                    textAlign = TextAlign.Center
+                HighlightedText(
+                    texts = stringArrayResource(id = R.array.lecture_duplication_description),
+                    highlightIndices = listOf(1),
+                    defaultStyle = KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.neutral600,
+                    ),
+                    highlightStyle = KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.warning600,
+                    )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
