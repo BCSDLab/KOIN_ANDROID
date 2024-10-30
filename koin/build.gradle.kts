@@ -88,6 +88,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":core:notification"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:designsystem"))
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":feature:timetable"))
