@@ -50,7 +50,7 @@ fun TimetableScreen(
         scaffoldState = scaffoldState,
         sheetContent = {
             TimetableBottomSheet(
-                lectures = listOf(dummyLecture, dummyLecture.copy(name = "컴퓨터개발")),
+                lectures = listOf(dummyLecture, dummyLecture.copy(name = "컴퓨터개발"),dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture),
                 selectedLecture = dummyLecture,
                 searchText = searchText,
                 onSearchTextChange = onSearchTextChange,

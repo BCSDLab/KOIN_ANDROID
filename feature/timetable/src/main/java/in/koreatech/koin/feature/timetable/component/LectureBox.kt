@@ -30,6 +30,7 @@ import `in`.koreatech.koin.feature.timetable.utils.toTimetableEvents
 
 @Composable
 fun LectureBox(
+    position: Int,
     colors: List<Color>,
     lecture: Lecture,
     selectedLecture: Lecture?,
@@ -65,6 +66,7 @@ fun LectureBox(
                     Color.White
                 },
             )
+            .padding(top = if (position != 0) 8.dp else 0.dp)
             .padding(end = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -121,18 +123,10 @@ fun LectureBox(
 private fun LectureBoxPreview() {
     KoinTheme {
         LectureBox(
+            position = 1,
             colors = listOf(Color.Blue),
             lecture = dummyLecture.copy(
-                classTime = listOf(
-                    310,
-                    311,
-                    312,
-                    313,
-                    410,
-                    411,
-                    412,
-                    413
-                )
+                classTime = listOf(310, 311, 312, 313, 410, 411, 412, 413)
             ),
             selectedLecture = null,
         )
@@ -144,6 +138,7 @@ private fun LectureBoxPreview() {
 private fun LectureBoxPreview_Selected() {
     KoinTheme {
         LectureBox(
+            position = 2,
             colors = listOf(Color.Blue),
             lecture = dummyLecture,
             selectedLecture = dummyLecture,
