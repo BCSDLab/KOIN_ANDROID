@@ -72,6 +72,7 @@ fun TimetableBottomSheet(
         LazyColumn {
             items(lectures.size) {
                 LectureBox(
+                    position = it,
                     colors = colors,
                     lecture = lectures[it],
                     selectedLecture = selectedLecture,
@@ -80,7 +81,6 @@ fun TimetableBottomSheet(
                     onAddLecture = onAddLecture
                 )
                 HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
-                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
