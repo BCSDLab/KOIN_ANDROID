@@ -2,10 +2,9 @@ package `in`.koreatech.koin.feature.timetable.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
@@ -15,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.component.LectureBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableSearchBox
@@ -43,20 +43,22 @@ fun TimetableBottomSheet(
             .background(Color.White)
             .onGloballyPositioned {
                 onBottomSheetHeightChange(it.size.height.toFloat())
-            },
+            }
+            .padding(
+                horizontal = 24.dp,
+                vertical = 10.dp
+            ),
     ) {
-        TimetableBottomSheetHeader()
-        Spacer(modifier = Modifier.height(4.dp))
-        HorizontalDivider(modifier = Modifier.height(1.dp))
-        Spacer(modifier = Modifier.height(4.dp))
+        TimetableBottomSheetHeader(
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
         TimetableSearchBox(
+            modifier = Modifier.padding(vertical = 8.dp),
             searchText = searchText,
             onSearchTextChange = onSearchTextChange
         )
-        Spacer(modifier = Modifier.height(4.dp))
-        HorizontalDivider(modifier = Modifier.height(1.dp))
-        Spacer(modifier = Modifier.height(4.dp))
-        Spacer(modifier = Modifier.height(4.dp))
+        HorizontalDivider(thickness = 2.dp, color = KoinTheme.colors.neutral300)
         LazyColumn {
             itemsIndexed(lectures) { _, lecture ->
                 LectureBox(
