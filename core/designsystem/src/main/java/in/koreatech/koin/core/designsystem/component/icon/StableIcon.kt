@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.core.designsystem.component
+package `in`.koreatech.koin.core.designsystem.component.icon
 
 import androidx.annotation.DrawableRes
 import androidx.compose.material3.Icon
