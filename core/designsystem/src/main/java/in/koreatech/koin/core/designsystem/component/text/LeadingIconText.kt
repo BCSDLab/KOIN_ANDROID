@@ -43,7 +43,7 @@ fun LeadingIconText(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painterResource(id = iconRes),
+            painter = painterResource(id = iconRes),
             contentDescription = null,
             tint = iconTint,
             modifier = Modifier.size(iconSize)
