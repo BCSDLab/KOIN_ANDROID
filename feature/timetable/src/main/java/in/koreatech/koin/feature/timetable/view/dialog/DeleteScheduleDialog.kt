@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.timetable.view
+package `in`.koreatech.koin.feature.timetable.view.dialog
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
