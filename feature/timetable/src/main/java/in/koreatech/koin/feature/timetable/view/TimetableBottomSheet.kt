@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.timetable.section
+package `in`.koreatech.koin.feature.timetable.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,7 @@ import `in`.koreatech.koin.feature.timetable.component.TimetableSearchBox
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.defaultColors
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
+import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetHeader
 
 @Composable
 fun TimetableBottomSheet(
