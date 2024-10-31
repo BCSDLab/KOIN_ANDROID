@@ -161,6 +161,11 @@ class ArticleDetailFragment : Fragment() {
             }
         }
         binding.buttonToPortal.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTICE_ORIGINAL_SHORTCUT,
+                binding.buttonToPortal.text.toString()
+            )
             Intent(requireContext(), WebViewActivity::class.java).apply {
                 putExtra("url", url)
             }.run(::startActivity)
