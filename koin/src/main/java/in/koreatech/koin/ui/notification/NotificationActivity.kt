@@ -17,6 +17,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
@@ -25,6 +26,7 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
+import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -37,6 +39,7 @@ class NotificationActivity : ActivityBase() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        withLoading(this, viewModel)
         binding.koinBaseAppBar.setAppBarButtonClickedListener(
             leftButtonClicked = { onBackPressed() },
             rightButtonClicked = {}

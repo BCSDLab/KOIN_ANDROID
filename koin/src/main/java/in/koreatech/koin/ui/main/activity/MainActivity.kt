@@ -15,7 +15,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.abtest.ABTestConstants.BENEFIT_STORE
+import `in`.koreatech.koin.core.abtest.Experiment
+import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
@@ -154,7 +155,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initView() = with(binding) {
-        viewModel.postABTestAssign(BENEFIT_STORE.experimentTitle)
+        viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
         storeListButton.setOnClickListener {
             gotoStoreActivity(0)
         }
@@ -265,11 +266,11 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it.drop(1))
         }
-        binding.recyclerViewStoreCategory.visibility= View.GONE
-        binding.storeButtonLayout.visibility= View.VISIBLE
-        observeLiveData(variableName){
-            when(viewModel.variableName.value){
-                BENEFIT_STORE.getGroup("A")  -> {
+        binding.recyclerViewStoreCategory.visibility = View.GONE
+        binding.storeButtonLayout.visibility = View.VISIBLE
+        observeLiveData(variableName) {
+            when (viewModel.variableName.value) {
+                ExperimentGroup.A -> {
                     EventLogger.logCustomEvent(
                         action = "AB_TEST",
                         category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
@@ -279,7 +280,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     binding.storeButtonLayout.visibility = View.GONE
                     binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
-                BENEFIT_STORE.getGroup("B")  -> {
+
+                ExperimentGroup.B -> {
                     EventLogger.logCustomEvent(
                         action = "AB_TEST",
                         category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
