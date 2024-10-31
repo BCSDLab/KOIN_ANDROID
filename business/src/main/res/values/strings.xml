@@ -1,5 +1,5 @@
-<resources>
-    <string name="title_activity_business_main">BusinessMainActivity</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="business_app_name" tools:ignore="DuplicateDefinition">코인\n사장님</string>
 
     <!--기타-->
     <string name="master_sign_up">사장님용\n회원가입</string>
