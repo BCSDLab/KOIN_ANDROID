@@ -2,8 +2,10 @@ package `in`.koreatech.koin.feature.timetable.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -30,7 +32,9 @@ fun TimetableBottomSheet(
     modifier: Modifier = Modifier,
     selectedLecture: Lecture? = null,
     colors: List<Color> = defaultColors,
+    onComplete: () -> Unit = {},
     onAddLecture: () -> Unit = {},
+    onAddCustomLecture: () -> Unit = {},
     onSearchTextChange: (text: String) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onBottomSheetHeightChange: (height: Float) -> Unit = {},
@@ -50,7 +54,10 @@ fun TimetableBottomSheet(
             ),
     ) {
         TimetableBottomSheetHeader(
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
+            onComplete = onComplete,
+            onAddLecture = onAddLecture,
+            onAddCustomLecture = onAddCustomLecture
         )
         HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
         TimetableSearchBox(
@@ -77,9 +84,11 @@ fun TimetableBottomSheet(
 @Preview
 @Composable
 private fun TimetableBottomSheetPreview() {
-    TimetableBottomSheet(
-        searchText = "",
-        lectures = listOf(dummyLecture, dummyLecture.copy(name = "컴퓨터 개발")),
-        selectedLecture = dummyLecture,
-    )
+    KoinTheme {
+        TimetableBottomSheet(
+            searchText = "",
+            lectures = listOf(dummyLecture, dummyLecture.copy(name = "컴퓨터 개발")),
+            selectedLecture = dummyLecture,
+        )
+    }
 }
