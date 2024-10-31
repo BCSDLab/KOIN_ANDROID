@@ -33,5 +33,6 @@
     <string name="request_login_description">로그인 하시겠어요?</string>
     <string name="request_login_confirmation">로그인하기</string>
 
+    <string name="select_department_title">전공선택</string>
 
 </resources>
