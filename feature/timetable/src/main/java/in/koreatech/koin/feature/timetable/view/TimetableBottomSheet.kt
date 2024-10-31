@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -39,6 +38,8 @@ fun TimetableBottomSheet(
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onBottomSheetHeightChange: (height: Float) -> Unit = {},
     onClickLecture: (events: List<TimetableEvent>) -> Unit = {},
+    onClickSearchIcon: () -> Unit = {},
+    onClickSettingIcon: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -63,32 +64,36 @@ fun TimetableBottomSheet(
         TimetableSearchBox(
             modifier = Modifier.padding(vertical = 8.dp),
             searchText = searchText,
-            onSearchTextChange = onSearchTextChange
+            onSearchTextChange = onSearchTextChange,
+            onClickSearchIcon = onClickSearchIcon,
+            onClickSettingIcon = onClickSettingIcon
         )
         HorizontalDivider(thickness = 2.dp, color = KoinTheme.colors.neutral300)
         LazyColumn {
-            itemsIndexed(lectures) { _, lecture ->
+            items(lectures.size) {
                 LectureBox(
                     colors = colors,
-                    lecture = lecture,
+                    lecture = lectures[it],
                     selectedLecture = selectedLecture,
                     onClickLecture = onClickLecture,
                     onSelectedLecture = onSelectedLecture,
                     onAddLecture = onAddLecture
                 )
+                HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun TimetableBottomSheetPreview() {
     KoinTheme {
         TimetableBottomSheet(
             searchText = "",
-            lectures = listOf(dummyLecture, dummyLecture.copy(name = "컴퓨터 개발")),
-            selectedLecture = dummyLecture,
+            lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),
+            selectedLecture = null,
         )
     }
 }
