@@ -2,8 +2,9 @@ package `in`.koreatech.koin.core.designsystem.component.text
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,10 +48,10 @@ fun LeadingIconText(
             tint = iconTint,
             modifier = Modifier.size(iconSize)
         )
+        Spacer(modifier = Modifier.width(spacing))
         Text(
             text = text,
-            style = textStyle,
-            modifier = Modifier.padding(start = spacing)
+            style = textStyle
         )
     }
 }
