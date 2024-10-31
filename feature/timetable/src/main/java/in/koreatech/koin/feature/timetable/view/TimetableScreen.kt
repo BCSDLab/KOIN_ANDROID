@@ -54,7 +54,9 @@ fun TimetableScreen(
                 selectedLecture = dummyLecture,
                 searchText = searchText,
                 onSearchTextChange = onSearchTextChange,
-                onBottomSheetHeightChange = { bottomSheetHeight = it }
+                onBottomSheetHeightChange = { bottomSheetHeight = it },
+                onClickSettingIcon = {},
+                onClickSearchIcon = {}
             )
         },
         sheetPeekHeight = 0.dp,
