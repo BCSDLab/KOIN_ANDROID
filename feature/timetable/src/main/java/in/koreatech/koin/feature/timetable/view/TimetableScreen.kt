@@ -60,6 +60,7 @@ fun TimetableScreen(
             )
         },
         sheetPeekHeight = 0.dp,
+        sheetElevation = 20.dp
     ) {
         Column(
             modifier = Modifier
