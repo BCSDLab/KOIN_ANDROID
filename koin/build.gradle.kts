@@ -93,6 +93,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":core:onboarding"))
     implementation(project(":feature:timetable"))
+    implementation(project(":feature:bus"))
 
     implementation(libs.guava)
 
