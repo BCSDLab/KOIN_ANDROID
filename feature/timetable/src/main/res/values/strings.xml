@@ -22,5 +22,14 @@
     </string-array>
     <string name="delete_lecture_confirmation">삭제하기</string>
 
+    <string-array name="delete_schedule_title">
+        <item>%s을</item>
+        <item>" 삭제"</item>
+        <item>하시겠어요?</item>
+    </string-array>
+    <string name="delete_schedule_description">삭제한 개인 일정은 복구할 수 없어요.</string>
+    <string name="delete_schedule_confirmation">삭제하기</string>
+
+
 
 </resources>
