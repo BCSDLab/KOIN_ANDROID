@@ -5,7 +5,9 @@
         <activity
             android:name=".main.BusinessMainActivity"
             android:exported="true"
-            android:label="@string/title_activity_business_main"
+            android:icon="@mipmap/ic_launcher_koin_business"
+
+            android:label="@string/business_app_name"
             android:theme="@style/Theme.KOIN_ANDROID">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
