@@ -98,7 +98,7 @@ fun DeleteLectureDialog(
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
                         onClick = { onDismiss() }
                     ) {
-                        Text(text = stringResource(id = R.string.lecture_duplication_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
+                        Text(text = stringResource(id = R.string.common_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
                     }
                     FilledTextButton(
                         modifier = Modifier

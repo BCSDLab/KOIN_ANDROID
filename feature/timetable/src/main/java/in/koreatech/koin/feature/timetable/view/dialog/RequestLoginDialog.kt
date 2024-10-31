@@ -6,10 +6,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,59 +21,52 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
-import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
-import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeleteScheduleDialog(
-    scheduleName: String,
+fun RequestLoginDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
+        onDismissRequest = { onDismiss() },
         modifier = modifier,
-        onDismissRequest = onDismiss
     ) {
         Surface(
+            modifier = Modifier
+                .wrapContentWidth()
+                .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall
         ) {
             Column(
                 modifier = Modifier
-                    .wrapContentSize()
+                    .fillMaxWidth()
                     .padding(
                         horizontal = 32.dp,
                         vertical = 24.dp
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val title = stringArrayResource(id = R.array.delete_schedule_title).apply {
-                    this[0] = String.format(this[0], scheduleName)
-                }
-                HighlightedText(
-                    texts = title,
-                    highlightIndices = listOf(1),
-                    defaultStyle = KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral800,
-                    ),
-                    highlightStyle = KoinTheme.typography.bold16.copy(
-                        color = KoinTheme.colors.danger700,
-                    )
+                Text(
+                    text = stringResource(id = R.string.request_login_title),
+                    color = KoinTheme.colors.neutral800,
+                    textAlign = TextAlign.Center,
+                    style = KoinTheme.typography.bold16,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = stringResource(id = R.string.delete_schedule_description),
-                    style = KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral800,
-                    )
+                    text = stringResource(id = R.string.request_login_description),
+                    color = KoinTheme.colors.neutral800,
+                    textAlign = TextAlign.Center,
+                    style = KoinTheme.typography.regular14,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
@@ -94,31 +88,28 @@ fun DeleteScheduleDialog(
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
                         onClick = { onDismiss() }
                     ) {
-                        Text(text = stringResource(id = R.string.common_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
+                        Text(text = stringResource(id = R.string.lecture_duplication_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
                     }
                     FilledTextButton(
                         modifier = Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        text = stringResource(id = R.string.delete_schedule_confirmation),
-                        buttonStyle = FilledButtonType.Danger,
+                        text = stringResource(id = R.string.request_login_confirmation),
                         onClick = { onConfirm() }
                     )
                 }
             }
-
         }
     }
 }
 
 @Preview
 @Composable
-private fun DeleteScheduleDialogPreview() {
+private fun RequestLoginDialogPreview() {
     KoinTheme {
-        DeleteScheduleDialog(
-            scheduleName = "일정명",
+        RequestLoginDialog(
             onConfirm = {},
-            onDismiss = {},
+            onDismiss = {}
         )
     }
 }
