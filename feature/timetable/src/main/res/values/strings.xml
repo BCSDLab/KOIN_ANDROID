@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lecture_duplication_title">시간표가 중복돼요.</string>
+    <string name="lecture_duplication_cancellation">취소</string>
+    <string name="lecture_duplication_confirmation">대체하기</string>
+
+    <string-array name="lecture_duplication_description">
+        <item>추가하시려는 시간에 이미 다른 강의가 있어요.</item>
+        <item>" 새로운 강의로 대체"</item>
+        <item>하시겠어요?</item>
+    </string-array>
+
+
+</resources>

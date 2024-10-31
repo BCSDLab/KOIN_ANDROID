@@ -126,36 +126,36 @@ internal val MediumStyle6 = DefaultTextStyle.copy(
 
 internal val BoldStyle1 = DefaultTextStyle.copy(
     fontSize = 12.sp,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Bold,
     lineHeight = 19.2.sp
 )
 internal val BoldStyle2 = DefaultTextStyle.copy(
     fontSize = 13.sp,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Bold,
     lineHeight = 20.8.sp
 )
 internal val BoldStyle3 = DefaultTextStyle.copy(
     fontSize = 14.sp,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Bold,
     lineHeight = 22.4.sp
 )
 internal val BoldStyle4 = DefaultTextStyle.copy(
     fontSize = 15.sp,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Bold,
     lineHeight = 24.sp
 )
 internal val BoldStyle5 = DefaultTextStyle.copy(
     fontSize = 16.sp,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Bold,
     lineHeight = 25.6.sp
 )
 internal val BoldStyle6 = DefaultTextStyle.copy(
     fontSize = 18.sp,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Bold,
     lineHeight = 28.8.sp
 )
 internal val BoldStyle7 = DefaultTextStyle.copy(
     fontSize = 20.sp,
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Bold,
     lineHeight = 30.sp
 )
