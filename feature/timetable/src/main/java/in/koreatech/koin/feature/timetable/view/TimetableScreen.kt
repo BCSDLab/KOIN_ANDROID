@@ -31,7 +31,6 @@ import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
-import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheet
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
