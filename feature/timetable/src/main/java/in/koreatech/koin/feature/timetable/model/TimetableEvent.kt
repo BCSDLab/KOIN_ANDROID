@@ -29,7 +29,7 @@ data class TimetableEvent(
     /**
      * @test : TimetableEventTest 확인하기
      */
-    fun classTimeCode(): Pair<String, String> {
+    fun formatClassTimeCode(): Pair<String, String> {
         val startPrefix = if("${start.hour - 8}".length == 1) "0${start.hour - 8}" else "${start.hour - 8}"
         val endPrefix = if("${end.hour - 8}".length == 1) "0${end.hour - 8}" else "${end.hour - 8}"
         val startSuffix = if ((start.minute == 0)) "A" else "B"
