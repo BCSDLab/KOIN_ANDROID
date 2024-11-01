@@ -50,7 +50,8 @@ class ArticleDetailViewModel @AssistedInject constructor(
                     content = "",
                     prevArticleId = null,
                     nextArticleId = null,
-                    attachments = listOf()
+                    attachments = listOf(),
+                    url = "",
                 )
             )
 

@@ -46,16 +46,6 @@ object EventLogger {
         logEvent(action, EventCategory.SWIPE, label, value, *extras)
     }
 
-
-    /**
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     */
-    fun logSwipeEvent(action: EventAction, label: String, value: String) {
-        logEvent(action, EventCategory.SWIPE, label, value)
-    }
-
     /**
      * @param action: 커스텀 이벤트 발생(EventAction 이외에 action)
      * @param category: 커스텀 이벤트 종류(EventCategory 이외에 category)

@@ -2,7 +2,6 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
-import `in`.koreatech.koin.data.response.article.AttachmentResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
