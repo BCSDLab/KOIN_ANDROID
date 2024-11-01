@@ -27,8 +27,8 @@ fun TimetableScheduleBox(
                 color = KoinTheme.colors.neutral300,
                 shape = RoundedCornerShape(10.dp)
             )
-            .padding(5.dp)
             .clickable { onClick() }
+            .padding(5.dp)
     ) {
         Text(
             text = "2학년 2학기 / 시간표1",
