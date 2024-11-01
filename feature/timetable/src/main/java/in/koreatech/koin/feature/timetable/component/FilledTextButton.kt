@@ -10,14 +10,38 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.theme.ThemePreviews
+
+
+enum class FilledButtonType {
+    Normal,
+    Danger
+}
+
+@Composable
+@Stable
+private fun buttonStyleByType(type: FilledButtonType): ButtonColors = when (type) {
+    FilledButtonType.Normal -> ButtonColors(
+        containerColor = KoinTheme.colors.primary500,
+        contentColor = KoinTheme.colors.neutral0,
+        disabledContainerColor = KoinTheme.colors.neutral300,
+        disabledContentColor = KoinTheme.colors.neutral600
+    )
+
+    FilledButtonType.Danger -> ButtonColors(
+        containerColor = KoinTheme.colors.danger700,
+        contentColor = KoinTheme.colors.neutral0,
+        disabledContainerColor = KoinTheme.colors.neutral300,
+        disabledContentColor = KoinTheme.colors.neutral600
+    )
+}
 
 @Composable
 fun FilledTextButton(
@@ -25,24 +49,24 @@ fun FilledTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    buttonStyle: FilledButtonType = FilledButtonType.Normal,
+    buttonShape: Shape = FilledTextButtonDefaults.shape,
     textStyle: TextStyle = FilledTextButtonDefaults.textStyle,
-    textColor: Color = FilledTextButtonDefaults.textColor,
-    colors: ButtonColors = FilledTextButtonDefaults.colors,
-    shape: Shape = FilledTextButtonDefaults.shape,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
+    val buttonColors = buttonStyleByType(type = buttonStyle)
     Button(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        shape = shape,
-        colors = colors,
+        shape = buttonShape,
+        colors = buttonColors,
         elevation = null,
         border = null,
         contentPadding = FilledTextButtonDefaults.contentPadding,
         interactionSource = interactionSource
     ) {
-        Text(text = text, style = textStyle, color = textColor)
+        Text(text = text, style = textStyle)
     }
 }
 
@@ -62,9 +86,10 @@ object FilledTextButtonDefaults {
 
 }
 
-@ThemePreviews
+
+@Preview
 @Composable
-private fun FilledTextButtonPreview() {
+private fun FilledTextButtonNormalPreview() {
     KoinTheme {
         Surface(modifier = Modifier.padding(24.dp)) {
             FilledTextButton(
@@ -72,6 +97,25 @@ private fun FilledTextButtonPreview() {
                     .width(96.dp)
                     .height(48.dp),
                 text = "Preview",
+                buttonStyle = FilledButtonType.Normal,
+                onClick = {}
+            )
+
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun FilledTextButtonDangerPreview() {
+    KoinTheme {
+        Surface(modifier = Modifier.padding(24.dp)) {
+            FilledTextButton(
+                modifier = Modifier
+                    .width(96.dp)
+                    .height(48.dp),
+                text = "Preview",
+                buttonStyle = FilledButtonType.Danger,
                 onClick = {}
             )
 
