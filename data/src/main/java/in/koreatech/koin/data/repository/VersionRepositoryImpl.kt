@@ -24,6 +24,10 @@ class VersionRepositoryImpl @Inject constructor(
     override suspend fun getLatestVersionFromRemote(): Version {
         return versionRemoteDataSource.getAndroidAppVersion().toVersion()
     }
+
+    override suspend fun getOwnerLatestVersionFromRemote(): Version {
+        return versionRemoteDataSource.getOwnerAppVersion().toVersion()
+    }
      
     override suspend fun updateLatestVersionCode(versionCode: Int) {
         versionLocalDataSource.updateLatestVersionCode(versionCode)

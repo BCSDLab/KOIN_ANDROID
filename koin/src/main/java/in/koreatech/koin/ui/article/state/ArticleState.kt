@@ -7,7 +7,8 @@ data class ArticleState(
     val content: String,
     val prevArticleId: Int?,
     val nextArticleId: Int?,
-    val attachments: List<AttachmentState>
+    val attachments: List<AttachmentState>,
+    val url: String,
 )
 
 fun Article.toArticleState() = ArticleState(
@@ -15,5 +16,6 @@ fun Article.toArticleState() = ArticleState(
     content = content,
     prevArticleId = prevArticleId,
     nextArticleId = nextArticleId,
-    attachments = attachments.map { it.toAttachmentState() }
+    attachments = attachments.map { it.toAttachmentState() },
+    url = url,
 )

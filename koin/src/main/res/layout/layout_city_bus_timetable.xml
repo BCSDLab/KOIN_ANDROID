@@ -17,8 +17,8 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:textAppearance="@style/TextAppearance.Koin.Medium.16"
-            android:textOff="터미널 -> 병천"
-            android:textOn="병천 -> 터미널"
+            android:textOff="터미널 → 병천"
+            android:textOn="병천 → 터미널"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
