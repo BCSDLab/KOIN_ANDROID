@@ -93,7 +93,7 @@ fun LectureBox(
                         color = KoinTheme.colors.neutral800
                     )
                     Text(
-                        text = "${event.classTimeCode().first} ~ ${event.classTimeCode().second}",
+                        text = "${event.formatClassTimeCode().first} ~ ${event.formatClassTimeCode().second}",
                         style = KoinTheme.typography.regular12,
                         color = KoinTheme.colors.neutral800
                     )
