@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -44,19 +46,25 @@ fun TimetableScreen(
     onClickDownloadTimetable: () -> Unit = {}
 ) {
     var bottomSheetHeight by remember { mutableStateOf(0f) }
+    val scope = rememberCoroutineScope()
 
     BottomSheetScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
         sheetContent = {
             TimetableBottomSheet(
-                lectures = listOf(dummyLecture, dummyLecture.copy(name = "컴퓨터개발"),dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture),
+                lectures = listOf(dummyLecture),
                 selectedLecture = dummyLecture,
                 searchText = searchText,
-                onSearchTextChange = onSearchTextChange,
-                onBottomSheetHeightChange = { bottomSheetHeight = it },
+                onClickAddLectureMode = {},
+                onComplete = { scope.launch { sheetState.collapse() } },
                 onClickSettingIcon = {},
-                onClickSearchIcon = {}
+                onClickSearchIcon = {},
+                onSearchTextChange = onSearchTextChange,
+                onClickAddLecture = {},
+                onClickLecture = {},
+                onSelectedLecture = {},
+                onBottomSheetHeightChange = { bottomSheetHeight = it },
             )
         },
         sheetPeekHeight = 0.dp,

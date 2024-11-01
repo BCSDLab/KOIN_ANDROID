@@ -14,8 +14,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun TimetableBottomSheetHeader(
     modifier: Modifier = Modifier,
     onComplete: () -> Unit = {},
-    onAddLecture: () -> Unit = {},
-    onAddCustomLecture: () -> Unit = {},
+    onClickAddLectureMode: () -> Unit = {},
+    onClickAddCustomLectureMode: () -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -27,7 +27,7 @@ fun TimetableBottomSheetHeader(
             style = KoinTheme.typography.medium18,
             color = KoinTheme.colors.primary500,
             modifier = Modifier.clickable {
-                onAddCustomLecture()
+                onClickAddCustomLectureMode()
             }
         )
         Text(
@@ -35,7 +35,7 @@ fun TimetableBottomSheetHeader(
             style = KoinTheme.typography.bold18,
             color = KoinTheme.colors.primary600,
             modifier = Modifier.clickable {
-                onAddLecture()
+                onClickAddLectureMode()
             }
         )
         Text(

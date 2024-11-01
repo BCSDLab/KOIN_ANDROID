@@ -36,7 +36,7 @@ fun LectureBox(
     lecture: Lecture,
     selectedLecture: Lecture?,
     modifier: Modifier = Modifier,
-    onAddLecture: () -> Unit = {},
+    onClickAddLecture: () -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
 ) {
@@ -110,7 +110,7 @@ fun LectureBox(
             Spacer(modifier = Modifier.height(4.dp))
         }
 
-        IconButton(onClick = onAddLecture) {
+        IconButton(onClick = onClickAddLecture) {
             StableIcon(
                 drawableResId = R.drawable.ic_plus,
                 tint = KoinTheme.colors.primary500,
