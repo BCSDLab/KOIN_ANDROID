@@ -26,7 +26,7 @@ class TimetableEventTest {
             end = LocalTime.of(10, 0)
         )
 
-        val code = event.classTimeCode()  // when
+        val code = event.formatClassTimeCode()  // when
 
         assertEquals(code, Pair("01A", "02A")) // then
     }
@@ -39,7 +39,7 @@ class TimetableEventTest {
             end = LocalTime.of(10, 30)
         )
 
-        val code = event.classTimeCode()  // when
+        val code = event.formatClassTimeCode()  // when
 
         assertEquals(code, Pair("01A", "02B")) // then
     }
@@ -51,7 +51,7 @@ class TimetableEventTest {
             end = LocalTime.of(10, 0)
         )
 
-        val code = event.classTimeCode()  // when
+        val code = event.formatClassTimeCode()  // when
 
         assertEquals(code, Pair("01B", "02A")) // then
     }
@@ -64,7 +64,7 @@ class TimetableEventTest {
             end = LocalTime.of(10, 30)
         )
 
-        val code = event.classTimeCode()  // when
+        val code = event.formatClassTimeCode()  // when
 
         assertEquals(code, Pair("01B", "02B")) // then
     }
