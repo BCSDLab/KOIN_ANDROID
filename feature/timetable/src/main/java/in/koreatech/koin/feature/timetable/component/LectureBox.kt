@@ -1,41 +1,36 @@
 package `in`.koreatech.koin.feature.timetable.component
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
+import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 import `in`.koreatech.koin.feature.timetable.utils.toTimetableEvents
 
 @Composable
 fun LectureBox(
+    position: Int,
     colors: List<Color>,
     lecture: Lecture,
     selectedLecture: Lecture?,
@@ -64,18 +59,15 @@ fun LectureBox(
                     }
                 }
             )
-            .padding(
-                horizontal = 12.dp,
-            )
             .background(
                 color = if (isSelected) {
-                    Color.Blue
+                    Color(0xFFF2F6FA)
                 } else {
                     Color.White
                 },
-                shape = RoundedCornerShape(4.dp)
             )
-            .padding(12.dp),
+            .padding(top = if (position != 0) 8.dp else 0.dp)
+            .padding(end = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -84,32 +76,28 @@ fun LectureBox(
         ) {
             Text(
                 text = lecture.name,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
+                style = KoinTheme.typography.bold12,
+                color = KoinTheme.colors.neutral800,
             )
             Text(
                 text = lecture.professor,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
+                style = KoinTheme.typography.regular12,
+                color = KoinTheme.colors.neutral800
             )
 
             Row {
                 events.forEachIndexed { index, event ->
                     Text(
-                        text = (if (index != 0) "/" else "") + event.dayOfWeekToKorean(),
-                        fontSize = 12.sp,
-                        color = Color.Black
+                        text = event.dayOfWeekToKorean(),
+                        style = KoinTheme.typography.regular12,
+                        color = KoinTheme.colors.neutral800
                     )
-                }
-                Spacer(modifier = Modifier.width(6.dp))
-                events.forEachIndexed { index, event ->
                     Text(
-                        text = (if (index != 0) "/" else "") + "${event.start}-${event.end}",
-                        fontSize = 12.sp,
-                        color = Color.Black
+                        text = "${event.classTimeCode().first} ~ ${event.classTimeCode().second}",
+                        style = KoinTheme.typography.regular12,
+                        color = KoinTheme.colors.neutral800
                     )
+                    Spacer(modifier = Modifier.width(6.dp))
                 }
             }
             Text(
@@ -120,38 +108,40 @@ fun LectureBox(
             )
             Spacer(modifier = Modifier.height(4.dp))
         }
-        if (isSelected) {
-            // select view
-        }
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = null,
+
+        StableIcon(
+            drawableResId = R.drawable.ic_plus,
+            tint = KoinTheme.colors.primary500,
             modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color.Blue,
-                    shape = CircleShape
-                )
-        )
+                .size(24.dp)
+                .clickable { onAddLecture() })
     }
 }
 
 @Preview
 @Composable
 private fun LectureBoxPreview() {
-    LectureBox(
-        colors = listOf(Color.Blue),
-        lecture = dummyLecture,
-        selectedLecture = null,
-    )
+    KoinTheme {
+        LectureBox(
+            position = 1,
+            colors = listOf(Color.Blue),
+            lecture = dummyLecture.copy(
+                classTime = listOf(310, 311, 312, 313, 410, 411, 412, 413)
+            ),
+            selectedLecture = null,
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun LectureBoxPreview_Selected() {
-    LectureBox(
-        colors = listOf(Color.Blue),
-        lecture = dummyLecture,
-        selectedLecture = dummyLecture,
-    )
+    KoinTheme {
+        LectureBox(
+            position = 2,
+            colors = listOf(Color.Blue),
+            lecture = dummyLecture,
+            selectedLecture = dummyLecture,
+        )
+    }
 }

@@ -16,9 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.timetable.R
 
 @Composable
 fun TimetableDownloadBox(
@@ -33,8 +35,8 @@ fun TimetableDownloadBox(
                 color = KoinTheme.colors.neutral300,
                 shape = RoundedCornerShape(10.dp)
             )
-            .padding(5.dp)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .padding(5.dp),
     ) {
         Text(
             text = "시간표 다운로드",
@@ -43,9 +45,9 @@ fun TimetableDownloadBox(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Icon(
-            imageVector = Icons.Default.Done,
+            painter = painterResource(id = R.drawable.ic_download),
             contentDescription = null,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(20.dp).padding(1.dp),
             tint = KoinTheme.colors.neutral800
         )
     }

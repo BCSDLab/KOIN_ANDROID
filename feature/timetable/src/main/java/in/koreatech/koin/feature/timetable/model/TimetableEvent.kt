@@ -26,6 +26,18 @@ data class TimetableEvent(
     val end: LocalTime,
     val description: String? = null,
 ) {
+    /**
+     * @test : TimetableEventTest 확인하기
+     */
+    fun classTimeCode(): Pair<String, String> {
+        val startPrefix = if("${start.hour - 8}".length == 1) "0${start.hour - 8}" else "${start.hour - 8}"
+        val endPrefix = if("${end.hour - 8}".length == 1) "0${end.hour - 8}" else "${end.hour - 8}"
+        val startSuffix = if ((start.minute == 0)) "A" else "B"
+        val endSuffix = if ((end.minute == 0)) "A" else "B"
+
+        return Pair(startPrefix+startSuffix, endPrefix +endSuffix)
+    }
+
     fun dayOfWeekToKorean(): String =
         when (dayOfWeek) {
             DayOfWeek.MONDAY -> DayOfWeekKorean.MONDAY.koreanName
