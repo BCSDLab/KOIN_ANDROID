@@ -67,6 +67,7 @@ ossLicensesVersion = "17.1.0"
 navigation = "2.7.7"
 jsoup = "1.18.1"
 timber = "5.0.1"
+kotlinxCoroutinesTestVersion = "1.9.0"
 
 
 [libraries]
@@ -101,6 +102,7 @@ compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion" }
+compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtxVersion" }
 security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 
 android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradleVersion" }
@@ -190,6 +192,8 @@ oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", v
 oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "ossLicensesVersion"}
 
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber"}
+
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
