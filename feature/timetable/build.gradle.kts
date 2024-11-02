@@ -30,6 +30,9 @@ dependencies {
 
     implementation(libs.timber)
 
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
     debugImplementation(libs.bundles.compose.debug.test)
     androidTestImplementation(libs.compose.ui.test.manifest)
+    androidTestImplementation(libs.coroutines.test)
 }
