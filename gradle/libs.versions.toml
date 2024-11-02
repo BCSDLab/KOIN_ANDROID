@@ -68,6 +68,7 @@ navigation = "2.7.7"
 jsoup = "1.18.1"
 timber = "5.0.1"
 kotlinxCoroutinesTestVersion = "1.9.0"
+turbineVersion = "1.2.0"
 
 
 [libraries]
@@ -194,6 +195,7 @@ oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", v
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber"}
 
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestVersion" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
