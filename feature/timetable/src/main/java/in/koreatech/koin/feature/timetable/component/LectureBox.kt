@@ -14,6 +14,9 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,12 +43,15 @@ fun LectureBox(
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
 ) {
-    val isSelected = selectedLecture == lecture
-    val isAdded = timetableEvents.any { lecture.id == it.id }
+//    val isSelected = selectedLecture == lecture
+//    val isAdded = timetableEvents.any { lecture.id == it.id }
     val events = lecture.toTimetableEvents()
-//    val isSelected by remember(lecture, selectedLecture) {
-//        derivedStateOf { selectedLecture == lecture }
-//    }
+    val isSelected by remember(lecture, selectedLecture) {
+        derivedStateOf { selectedLecture == lecture }
+    }
+    val isAdded by remember(lecture, timetableEvents) {
+        derivedStateOf { timetableEvents.any {lecture.id == it.id} }
+    }
 
     Row(
         modifier = modifier
