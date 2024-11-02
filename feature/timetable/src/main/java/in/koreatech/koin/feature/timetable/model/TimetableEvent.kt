@@ -17,10 +17,15 @@ enum class DayOfWeekKorean(
     SUNDAY("일")
 }
 
+data class TimetableColor(
+    val header: Color,
+    val content: Color
+)
+
 data class TimetableEvent(
     val id: Int,
     val name: String,
-    val color: Color,
+    val color: TimetableColor,
     val dayOfWeek: DayOfWeek? = null,
     val start: LocalTime,
     val end: LocalTime,
