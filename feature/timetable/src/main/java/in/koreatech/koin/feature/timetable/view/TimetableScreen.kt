@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.timetable.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetState
@@ -16,6 +18,7 @@ import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,22 +31,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.util.pxToDp
+import `in`.koreatech.koin.domain.model.timetable.response.Lecture
+import `in`.koreatech.koin.domain.model.timetable.response.Semester
+import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
-import `in`.koreatech.koin.feature.timetable.model.dummyEvent
+import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
+import `in`.koreatech.koin.feature.timetable.model.dummySemester
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TimetableScreen(
+    loading: Boolean,
+    range: Int,
+    lectures: List<Lecture>,
+    semesters: List<Semester>,
+    selectedLecture: Lecture?,
     searchText: String,
     sheetState: BottomSheetState,
     scaffoldState: BottomSheetScaffoldState,
     modifier: Modifier = Modifier,
+    timetableEvents: List<TimetableEvent> = emptyList(),
+    clickedTimetableEvents: List<TimetableEvent> = emptyList(),
     onSearchTextChange: (text: String) -> Unit = {},
     onClickTimetableSchedule: () -> Unit = {},
-    onClickDownloadTimetable: () -> Unit = {}
+    onClickDownloadTimetable: () -> Unit = {},
+    onClickAddLecture: (lecture: Lecture) -> Unit = {},
+    onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
+    onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
+    onSelectedLecture: (lecture: Lecture?) -> Unit = {},
+    onClickSettingIcon: () -> Unit = {},
+    onClickSearchIcon: () -> Unit = {}
 ) {
     var bottomSheetHeight by remember { mutableStateOf(0f) }
     val scope = rememberCoroutineScope()
@@ -53,17 +73,19 @@ fun TimetableScreen(
         scaffoldState = scaffoldState,
         sheetContent = {
             TimetableBottomSheet(
-                lectures = listOf(dummyLecture),
-                selectedLecture = dummyLecture,
+                lectures = lectures,
+                selectedLecture = selectedLecture,
                 searchText = searchText,
+                timetableEvents = timetableEvents,
                 onClickAddLectureMode = {},
                 onComplete = { scope.launch { sheetState.collapse() } },
-                onClickSettingIcon = {},
-                onClickSearchIcon = {},
+                onClickSettingIcon = onClickSettingIcon,
+                onClickSearchIcon = onClickSearchIcon,
                 onSearchTextChange = onSearchTextChange,
-                onClickAddLecture = {},
-                onClickLecture = {},
-                onSelectedLecture = {},
+                onClickAddLecture = onClickAddLecture,
+                onClickRemoveLecture = onClickRemoveLecture,
+                onClickLecture = onClickLecture,
+                onSelectedLecture = onSelectedLecture,
                 onBottomSheetHeightChange = { bottomSheetHeight = it },
             )
         },
@@ -88,13 +110,17 @@ fun TimetableScreen(
                 TimetableDownloadBox(onClick = onClickDownloadTimetable)
             }
             Timetable(
-                range = 15,
-                events = listOf(dummyEvent)
+                range = range,
+                modifier = Modifier,
+                events = timetableEvents,
+                clickEvent = clickedTimetableEvents
             )
         }
+        CircleLoadingBar(loading = loading)
     }
-
 }
+
+
 
 @OptIn(ExperimentalMaterialApi::class)
 private fun Modifier.dynamicPadding(
@@ -121,6 +147,11 @@ private fun Modifier.dynamicPadding(
 @Composable
 private fun TimetableScreenPreview() {
     TimetableScreen(
+        loading = false,
+        range = 9,
+        lectures = listOf(dummyLecture),
+        semesters = listOf(dummySemester),
+        selectedLecture = null,
         searchText = "",
         sheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed
