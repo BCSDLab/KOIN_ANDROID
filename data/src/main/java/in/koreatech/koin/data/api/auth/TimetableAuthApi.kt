@@ -15,7 +15,9 @@ import retrofit2.http.Query
 
 interface TimetableAuthApi {
     @GET("/v2/timetables/lecture")
-    suspend fun getTimetableLectures(): TimetableLecturesResponse
+    suspend fun getTimetableLectures(
+        @Query("timetable_frame_id") timetableFrameId: Int
+    ): TimetableLecturesResponse
 
     @PUT("/v2/timetables/lecture")
     suspend fun putTimetableLectures(
