@@ -30,7 +30,7 @@ fun Timetable(
         (event: TimetableEvent, eventType: TimetableEventType, onEventTimeClick: (TimetableEvent) -> Unit) -> Unit = { event, eventType, onEventTimeClick ->
         TimetableEventTime(
             event = event,
-            modifier = Modifier.padding(bottom = (1.5).dp),
+            modifier = Modifier,
             eventType = eventType,
             onEventTimeClick = onEventTimeClick
         )
@@ -39,23 +39,17 @@ fun Timetable(
 ) {
     val verticalScrollState: ScrollState = rememberScrollState()
 
-    Column(
+    TimetableContent(
         modifier = modifier
-            .background(Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TimetableContent(
-            modifier = Modifier
-                .verticalScroll(verticalScrollState)
-                .padding(vertical = 14.dp),
-            range = range,
-            horizontalPadding = 48.dp,
-            events = events,
-            clickEvent = clickEvent,
-            content = content,
-            onEventClick = onEventClick
-        )
-    }
+            .verticalScroll(verticalScrollState)
+            .padding(vertical = 14.dp),
+        range = range,
+        horizontalPadding = 48.dp,
+        events = events,
+        clickEvent = clickEvent,
+        content = content,
+        onEventClick = onEventClick
+    )
 }
 
 
