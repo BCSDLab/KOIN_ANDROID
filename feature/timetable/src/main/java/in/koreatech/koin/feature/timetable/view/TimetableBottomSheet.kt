@@ -28,14 +28,15 @@ fun TimetableBottomSheet(
     lectures: List<Lecture>,
     modifier: Modifier = Modifier,
     selectedLecture: Lecture? = null,
-    colors: List<Color> = defaultColors,
+    timetableEvents: List<TimetableEvent> = emptyList(),
     onClickAddCustomLectureMode: () -> Unit = {},
     onClickAddLectureMode: () -> Unit = {},
     onComplete: () -> Unit = {},
     onClickSettingIcon: () -> Unit = {},
     onClickSearchIcon: () -> Unit = {},
     onSearchTextChange: (text: String) -> Unit = {},
-    onClickAddLecture: () -> Unit = {},
+    onClickAddLecture: (lecture: Lecture) -> Unit = {},
+    onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
     onClickLecture: (events: List<TimetableEvent>) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onBottomSheetHeightChange: (height: Float) -> Unit = {},
@@ -72,12 +73,13 @@ fun TimetableBottomSheet(
             items(lectures.size) {
                 LectureBox(
                     position = it,
-                    colors = colors,
                     lecture = lectures[it],
                     selectedLecture = selectedLecture,
+                    timetableEvents = timetableEvents,
                     onClickLecture = onClickLecture,
                     onSelectedLecture = onSelectedLecture,
-                    onClickAddLecture = onClickAddLecture
+                    onClickAddLecture = onClickAddLecture,
+                    onClickRemoveLecture = onClickRemoveLecture
                 )
                 HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
             }
