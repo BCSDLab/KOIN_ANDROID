@@ -93,9 +93,8 @@ class TimetableViewModelTest {
         val semester = semesters.firstOrNull()?.semester.orEmpty()
         val lecture = getLectureUseCase(semester).firstOrNull().orEmpty()
 
-        advanceUntilIdle()
         assertEquals(currentTime, 1000)
-        assertEquals(lecture, SampleTimetable.lecture)
+        assertEquals(lecture, listOf(SampleTimetable.lecture))
         // 샘플 코드를 싱글톤을 사용해서 다른 곳에 있는데 이게 실질적으로 맞는가?
         // 위와 같은 질문을 한 이유는? 여기에다가 직접적으로 넣어서 테스트 해보는 것이 더 직관적일 것 같다는 생각이 든다.
     }
