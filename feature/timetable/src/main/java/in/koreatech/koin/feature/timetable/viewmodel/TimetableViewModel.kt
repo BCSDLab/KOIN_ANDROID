@@ -104,8 +104,17 @@ class TimetableViewModel @Inject constructor(
 
                 false -> {
                     // TODO : 로그인 시 시간표 수업 불러오기
-                    val timetableFrames = getTimetableFrames(semester)
-                    timetableRepository.getTimetableLectures(timetableFrames.firstOrNull()?.id ?: 0)
+                    val timetableFrames = getTimetableFrames(semester).ifEmpty {
+                        _uiState.value = _uiState.value.copy(loading = false)
+                        return@launch
+                    }
+                    val frameId = timetableFrames.find { it.isMain }?.id
+                    if (frameId == null) {
+                        _uiState.value = _uiState.value.copy(loading = false)
+                        return@launch
+                    }
+
+                    timetableRepository.getTimetableLectures(frameId)
                         .onSuccess { timetableLectures ->
                             _uiState.value = _uiState.value.copy(
                                 range = timetableLectures.formatTimeRange(),
