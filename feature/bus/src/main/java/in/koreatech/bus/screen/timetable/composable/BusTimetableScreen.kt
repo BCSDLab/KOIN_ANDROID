@@ -10,13 +10,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.screen.timetable.type.BusType
+import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
+import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -29,7 +34,8 @@ internal fun BusTimetableScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {}
 ) {
-    var selectedBusTypeTabIndex by remember { mutableIntStateOf(0) }
+
+    var selectedTimetableTypeTabIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Column(
         modifier = modifier
@@ -59,9 +65,13 @@ internal fun BusTimetableScreen(
             stickyHeader {
                 KoinTabRow(
                     titles = BusType.entries.map { stringResource(it.titleRes) },
-                    selectedTabIndex = 0,
-                    onTabSelected = { /* TODO */ }
+                    selectedTabIndex = selectedTimetableTypeTabIndex,
+                    onTabSelected = { selectedTimetableTypeTabIndex = it }
                 )
+            }
+
+            item {
+
             }
         }
     }
