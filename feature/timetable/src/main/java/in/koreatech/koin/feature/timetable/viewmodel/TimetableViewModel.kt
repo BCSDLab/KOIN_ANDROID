@@ -105,12 +105,19 @@ class TimetableViewModel @Inject constructor(
                 false -> {
                     // TODO : 로그인 시 시간표 수업 불러오기
                     val timetableFrames = getTimetableFrames(semester).ifEmpty {
-                        _uiState.value = _uiState.value.copy(loading = false)
+                        _uiState.value = _uiState.value.copy(
+                            semesters = semesters,
+                            currentSemester = semester,
+                            loading = false
+                        )
                         return@launch
                     }
                     val frameId = timetableFrames.find { it.isMain }?.id
                     if (frameId == null) {
-                        _uiState.value = _uiState.value.copy(loading = false)
+                        _uiState.value = _uiState.value.copy(
+                            semesters = semesters,
+                            currentSemester = semester, loading = false
+                        )
                         return@launch
                     }
 
@@ -204,6 +211,7 @@ class TimetableViewModel @Inject constructor(
                     true -> {
                         addTimetableLectures(lecture)
                     }
+
                     false -> {
                         // TODO : 로그인 시 강의 추가 (중복 X)
                     }
@@ -231,10 +239,11 @@ class TimetableViewModel @Inject constructor(
             timetable = updatedTimetableLectures
         )
 
-        when(_uiState.value.isAnonymous) {
+        when (_uiState.value.isAnonymous) {
             true -> {
                 postTimetableLectures(timetables)
             }
+
             false -> {
                 // TODO : 로그인 시 중복에 대한 강의 업데이트
             }
