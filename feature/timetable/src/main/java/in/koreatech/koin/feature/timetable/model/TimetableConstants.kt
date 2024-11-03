@@ -14,6 +14,7 @@ object TimetableConstants {
 
 val dummyEvent = TimetableEvent(
     id = 1,
+    lectureId = 1,
     name = "강의 제목",
     color = TimetableColor(Color(0xFF890000),Color(0x33890000)),
     dayOfWeek = DayOfWeek.FRIDAY,
