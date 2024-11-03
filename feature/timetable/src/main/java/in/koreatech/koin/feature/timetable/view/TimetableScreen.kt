@@ -63,7 +63,8 @@ fun TimetableScreen(
     onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onClickSettingIcon: () -> Unit = {},
-    onClickSearchIcon: () -> Unit = {}
+    onClickSearchIcon: () -> Unit = {},
+    onClickTimetableEvent: (event: TimetableEvent) -> Unit = {}
 ) {
     var bottomSheetHeight by remember { mutableStateOf(0f) }
     val scope = rememberCoroutineScope()
@@ -113,7 +114,8 @@ fun TimetableScreen(
                 range = range,
                 modifier = Modifier,
                 events = timetableEvents,
-                clickEvent = clickedTimetableEvents
+                clickEvent = clickedTimetableEvents,
+                onEventClick = onClickTimetableEvent
             )
         }
         CircleLoadingBar(loading = loading)

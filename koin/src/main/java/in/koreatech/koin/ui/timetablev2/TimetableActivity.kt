@@ -121,6 +121,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onSelectedLecture = viewModel::updateSelectedLecture,
                     onClickSettingIcon = viewModel::updateIsSelectDepartmentDialogVisible,
                     onClickSearchIcon = {}, // TODO : 검색 아이콘 클릭 (필요할까? 그냥 보여주기용이 좋아보임)
+                    onClickTimetableEvent = {}, // TODO : 추가된 시간표 클릭 후 이벤트 (id 파싱해서 삭제하면 됨)
                 )
             }
         }
