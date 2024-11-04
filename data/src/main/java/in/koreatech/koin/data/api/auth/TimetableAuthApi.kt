@@ -1,10 +1,14 @@
 package `in`.koreatech.koin.data.api.auth
 
+import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableLecturesQueryRequest
+import `in`.koreatech.koin.data.response.timetable.SemesterCheckResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
+import `in`.koreatech.koin.domain.model.timetable.request.LecturesQuery
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -14,6 +18,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TimetableAuthApi {
+    @GET("/semesters/check")
+    suspend fun getSemestersCheck(): SemesterCheckResponse
+
     @GET("/v2/timetables/lecture")
     suspend fun getTimetableLectures(
         @Query("timetable_frame_id") timetableFrameId: Int
@@ -26,7 +33,7 @@ interface TimetableAuthApi {
 
     @POST("/v2/timetables/lecture")
     suspend fun postTimetableLectures(
-        @Body lectures: TimetableLecturesQueryRequest
+        @Body lectures: LecturesQueryRequest
     ): TimetableLecturesResponse
 
     @PUT("/v2/timetables/frame/{id}")
@@ -52,6 +59,12 @@ interface TimetableAuthApi {
     suspend fun deleteTimetableLecture(
         @Path("id") id: Int
     )
+
+    @DELETE("/v2/timetables/frame/{frameId}/lecture/{lectureId}")
+    suspend fun deleteTimetableFrameLecture(
+        @Path("frameId") frameId: Int,
+        @Path("lectureId") lectureId: Int
+    ): Response<Unit>
 
     @DELETE("/v2/all/timetables/frame")
     suspend fun deleteAllTimetableFrame()
