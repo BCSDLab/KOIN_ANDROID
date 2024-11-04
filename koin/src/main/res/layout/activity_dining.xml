@@ -35,7 +35,7 @@
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/koin_base_app_bar_dark"
-                tools:itemCount="14"
+                tools:itemCount="7"
                 tools:listitem="@layout/item_dining_date" />
 
             <View

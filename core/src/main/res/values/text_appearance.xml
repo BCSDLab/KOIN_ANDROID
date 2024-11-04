@@ -71,7 +71,7 @@
     </style>
     <style name="TextAppearance.Koin.Bold.20">
         <item name="android:textSize">20sp</item>
-        <item name="lineHeight">12sp</item>
+        <item name="lineHeight">32sp</item>
     </style>
     <style name="TextAppearance.Koin.Bold.18">
         <item name="android:textSize">18sp</item>
