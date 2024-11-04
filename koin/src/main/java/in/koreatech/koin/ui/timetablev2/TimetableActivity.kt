@@ -45,7 +45,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
     private fun initView() {
         getUserExtra { isAnonymous ->
-            viewModel.getUser(isAnonymous)
+            viewModel.updateIsAnonymous(isAnonymous)
         }
         viewModel.getInitData()
         initComposeView()

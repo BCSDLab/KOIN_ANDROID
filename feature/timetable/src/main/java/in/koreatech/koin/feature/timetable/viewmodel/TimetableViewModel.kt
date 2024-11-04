@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
-import `in`.koreatech.koin.domain.model.timetable.response.Semester
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import `in`.koreatech.koin.domain.repository.TimetableRepository
+import `in`.koreatech.koin.domain.usecase.timetable.AddTimetableLectureUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableFrameLectureUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableLectureUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
@@ -31,6 +33,9 @@ class TimetableViewModel @Inject constructor(
     private val getLecturesUseCase: GetLecturesUseCase,
     private val getSemesterUseCase: GetSemesterUseCase,
     private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
+    private val addTimetableLectureUseCase: AddTimetableLectureUseCase,
+    private val deleteTimetableLectureUseCase: DeleteTimetableLectureUseCase,
+    private val deleteTimetableFrameLectureUseCase: DeleteTimetableFrameLectureUseCase,
     private val timetableRepository: TimetableRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<TimetableUiState>(TimetableUiState())
@@ -58,9 +63,7 @@ class TimetableViewModel @Inject constructor(
                 }
             } else {
                 lectures.filter { lecture ->
-                    lecture.doesMatchDepartmentSearchQuery(searchEngineState.department) && (searchEngineState.text.isBlank() || lecture.doesMatchSearchQuery(
-                        searchEngineState.text
-                    ))
+                    lecture.doesMatchDepartmentSearchQuery(searchEngineState.department) && (searchEngineState.text.isBlank() || lecture.doesMatchSearchQuery(searchEngineState.text))
                 }
             }
         }.stateIn(
@@ -69,20 +72,16 @@ class TimetableViewModel @Inject constructor(
             emptyList()
         )
 
-
-    fun getUser(isAnonymous: Boolean) {
-        _uiState.value = _uiState.value.copy(isAnonymous = isAnonymous)
-    }
-
     fun getInitData() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(loading = true)
-            val semesters = getSemester()
-            val semester = semesters.firstOrNull()?.semester.orEmpty()
-            val lectures = getLectures(semester)
-            _lectures.value = lectures
+            updateLoading(true)
+            val semesters = getSemester(uiState.value.isAnonymous)
+            val semester = semesters.firstOrNull().orEmpty()
+            // TODO: 로그인 시, 학기를 불러올 때 Empty 이면 학기 추가를 해야하는 경고문 추가하기 (디자인 없어서 추가해야 함)
 
-            when (_uiState.value.isAnonymous) {
+            _lectures.value = getLectures(semester)
+
+            when (uiState.value.isAnonymous) {
                 true -> {
                     timetableRepository.getTimetableLectures(semester)
                         .onSuccess { timetableLectures ->
@@ -95,9 +94,7 @@ class TimetableViewModel @Inject constructor(
                                 loading = false
                             )
                         }.onFailure {
-                            _uiState.value = _uiState.value.copy(
-                                loading = false
-                            )
+                            updateLoading(false)
                             Timber.e("getTimetableLectures Local Error Message : ${it.message}")
                         }
                 }
@@ -105,19 +102,12 @@ class TimetableViewModel @Inject constructor(
                 false -> {
                     // TODO : 로그인 시 시간표 수업 불러오기
                     val timetableFrames = getTimetableFrames(semester).ifEmpty {
-                        _uiState.value = _uiState.value.copy(
-                            semesters = semesters,
-                            currentSemester = semester,
-                            loading = false
-                        )
+                        updateSemesters(semesters, semester)
                         return@launch
                     }
                     val frameId = timetableFrames.find { it.isMain }?.id
                     if (frameId == null) {
-                        _uiState.value = _uiState.value.copy(
-                            semesters = semesters,
-                            currentSemester = semester, loading = false
-                        )
+                        updateSemesters(semesters, semester)
                         return@launch
                     }
 
@@ -125,6 +115,7 @@ class TimetableViewModel @Inject constructor(
                         .onSuccess { timetableLectures ->
                             _uiState.value = _uiState.value.copy(
                                 range = timetableLectures.formatTimeRange(),
+                                frameId = timetableLectures.timetableFrameId,
                                 semesters = semesters,
                                 timetableEvents = timetableLectures.getTimetableEvents(),
                                 currentSemester = semester,
@@ -132,9 +123,7 @@ class TimetableViewModel @Inject constructor(
                                 loading = false
                             )
                         }.onFailure {
-                            _uiState.value = _uiState.value.copy(
-                                loading = false
-                            )
+                            updateLoading(false)
                             Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
                         }
                 }
@@ -144,8 +133,8 @@ class TimetableViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getSemester(): List<Semester> {
-        return getSemesterUseCase().catch {
+    private suspend fun getSemester(isAnonymous: Boolean): List<String> {
+        return getSemesterUseCase(isAnonymous).catch {
             Timber.e("getSemester Error Message : ${it.message}")
         }.firstOrNull().orEmpty()
     }
@@ -162,15 +151,29 @@ class TimetableViewModel @Inject constructor(
         }.firstOrNull().orEmpty()
     }
 
+    private fun updateLoading(loading: Boolean) {
+        _uiState.value = _uiState.value.copy(loading = loading)
+    }
+
+    private fun updateSemesters(semesters: List<String>, semester: String) {
+        _uiState.value = _uiState.value.copy(
+            semesters = semesters,
+            currentSemester = semester,
+            loading = false
+        )
+    }
+
+    fun updateIsAnonymous(isAnonymous: Boolean) {
+        _uiState.value = _uiState.value.copy(isAnonymous = isAnonymous)
+    }
+
     fun updateSearchText(text: String) {
         _searchText.value = text
     }
 
     fun updateDepartment(text: String) {
         _department.value = text
-        _uiState.value = _uiState.value.copy(
-            isSelectDepartmentDialogVisible = false
-        )
+        updateIsSelectDepartmentDialogVisible()
     }
 
     fun updateClickedTimetableEvents(timetableEvents: List<TimetableEvent>) {
@@ -193,86 +196,138 @@ class TimetableViewModel @Inject constructor(
 
     fun updateIsLectureDuplicationDialogVisible() {
         _uiState.value = _uiState.value.copy(
-            isLectureDuplicationDialogVisible = false
+            isLectureDuplicationDialogVisible = !_uiState.value.isLectureDuplicationDialogVisible
+        )
+    }
+
+    fun updateIsLoginDialogVisible() {
+        _uiState.value = _uiState.value.copy(
+            isLoginDialogVisible = !_uiState.value.isLoginDialogVisible
         )
     }
 
     fun updateTimetableLectures(lecture: Lecture) {
         when (isDuplicateClassTime(lecture)) {
-            true -> {
+            true -> { // TODO : 강의 중복일 경우
                 _uiState.value = _uiState.value.copy(
                     duplicationLecture = lecture,
                     isLectureDuplicationDialogVisible = true
                 )
             }
 
-            false -> {
-                when (_uiState.value.isAnonymous) {
-                    true -> {
-                        addTimetableLectures(lecture)
-                    }
-
-                    false -> {
-                        // TODO : 로그인 시 강의 추가 (중복 X)
-                    }
-                }
+            false -> { // TODO : 강의 중복이 아니고 추가 되어야 할 경우
+                addTimetableLectures(lecture)
             }
         }
     }
 
 
     fun updateDuplicationTimetableLecture() {
-        val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
-
-        _uiState.value.duplicationLecture?.classTime?.forEach { time ->
-            _uiState.value.timetableLectures.timetable.filter { it.classTime.contains(time) }
-                .forEach { lecture ->
-                    updatedTimetableLectures.remove(lecture)
-                }
-        }
-
-        _uiState.value.duplicationLecture?.toTimetableLecture()?.let { timetableLecture ->
-            updatedTimetableLectures.add(timetableLecture)
-        }
-
-        val timetables = _uiState.value.timetableLectures.copy(
-            timetable = updatedTimetableLectures
-        )
-
-        when (_uiState.value.isAnonymous) {
+        when (uiState.value.isAnonymous) {
             true -> {
-                postTimetableLectures(timetables)
-            }
+                val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
 
+                uiState.value.duplicationLecture?.classTime?.forEach { time ->
+                    uiState.value.timetableLectures.timetable.filter { it.classTime.contains(time) }
+                        .forEach { lecture ->
+                            updatedTimetableLectures.remove(lecture)
+                        }
+                }
+
+                uiState.value.duplicationLecture?.toTimetableLecture()?.let { timetableLecture ->
+                    updatedTimetableLectures.add(timetableLecture)
+                }
+
+                val timetables = _uiState.value.timetableLectures.copy(
+                    timetable = updatedTimetableLectures
+                )
+
+                postLocalTimetableLectures(timetables)
+            }
             false -> {
-                // TODO : 로그인 시 중복에 대한 강의 업데이트
+                // TODO : 로그인 시 중복에 대한 강의 추가
             }
         }
     }
 
     fun addTimetableLectures(lecture: Lecture) {
-        val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
-        updatedTimetableLectures.add(lecture.toTimetableLecture())
-        val timetables = _uiState.value.timetableLectures.copy(
-            timetable = updatedTimetableLectures
-        )
+        when(uiState.value.isAnonymous) {
+            true -> {
+                val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
+                updatedTimetableLectures.add(lecture.toTimetableLecture())
+                val timetables = _uiState.value.timetableLectures.copy(
+                    timetable = updatedTimetableLectures
+                )
 
-        postTimetableLectures(timetables)
+                postLocalTimetableLectures(timetables)
+            }
+            false -> {
+                viewModelScope.launch {
+                    addTimetableLectureUseCase(
+                        frameId = uiState.value.frameId,
+                        lectures = listOf(lecture) // TODO : updateTimetableLectures 함수 파라미터 lecture를 리스트로 변경 필요
+                    ).onSuccess { timetableLectures ->
+                        _uiState.value = _uiState.value.copy(
+                            range = timetableLectures.formatTimeRange(),
+                            frameId = timetableLectures.timetableFrameId,
+                            timetableLectures = timetableLectures,
+                            timetableEvents = timetableLectures.getTimetableEvents(),
+                            clickedTimetableEvents = emptyList(),
+                            selectedLecture = null,
+                            loading = false
+                        )
+                    }.onFailure {
+                        // TODO : 강의 추가 실패
+                        Timber.e("addTimetableLecture Remote Error Message : ${it.message}")
+                        updateLoading(false)
+                    }
+                }
+            }
+        }
+
     }
 
     fun removeTimetableLectures(lecture: Lecture) {
-        val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
-        updatedTimetableLectures.remove(lecture.toTimetableLecture())
-        val timetables = _uiState.value.timetableLectures.copy(
-            timetable = updatedTimetableLectures
-        )
+        when (_uiState.value.isAnonymous) {
+            true -> {
+                val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
+                updatedTimetableLectures.remove(lecture.toTimetableLecture())
+                val timetables = _uiState.value.timetableLectures.copy(
+                    timetable = updatedTimetableLectures
+                )
 
-        postTimetableLectures(timetables)
+                postLocalTimetableLectures(timetables)
+            }
+
+            false -> {
+                // TODO : 로그인 시, 강의 삭제 액션
+                viewModelScope.launch {
+                    deleteTimetableFrameLectureUseCase(uiState.value.frameId, lecture.id).onSuccess {
+                        timetableRepository.getTimetableLectures(uiState.value.frameId)
+                            .onSuccess { timetableLectures ->
+                                _uiState.value = _uiState.value.copy(
+                                    range = timetableLectures.formatTimeRange(),
+                                    frameId = timetableLectures.timetableFrameId,
+                                    timetableEvents = timetableLectures.getTimetableEvents(),
+                                    timetableLectures = timetableLectures,
+                                )
+                            }.onFailure {
+                                // TODO : 강의 불러오기 실패
+                                Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
+                            }
+                    }.onFailure {
+                        // TODO : 강의 삭제 실패
+                        Timber.e("deleteTimetableLectureUseCase Remote Error Message : ${it.message}")
+                    }
+                }
+
+            }
+        }
     }
 
-    private fun postTimetableLectures(timetables: TimetableLectures) {
+    private fun postLocalTimetableLectures(timetables: TimetableLectures) {
         viewModelScope.launch {
-            timetableRepository.putTimetableLectures(_uiState.value.currentSemester, timetables)
+            timetableRepository.putTimetableLectures(uiState.value.currentSemester, timetables)
                 .onSuccess { timetableLectures ->
                     _uiState.value = _uiState.value.copy(
                         range = timetableLectures.formatTimeRange(),
@@ -294,7 +349,7 @@ class TimetableViewModel @Inject constructor(
 
     private fun isDuplicateClassTime(lecture: Lecture): Boolean {
         lecture.classTime.forEach { time ->
-            _uiState.value.timetableLectures.timetable.forEach { timetableLecture ->
+            uiState.value.timetableLectures.timetable.forEach { timetableLecture ->
                 if (timetableLecture.classTime.any { it == time }) return true
             }
         }
@@ -309,8 +364,9 @@ data class SearchEngineState(
 
 data class TimetableUiState(
     val range: Int = 9,
+    val frameId: Int = 0,
     val duplicationLecture: Lecture? = null,
-    val semesters: List<Semester> = emptyList(),
+    val semesters: List<String> = emptyList(),
     val currentSemester: String = "",
     val timetableEvents: List<TimetableEvent> = emptyList(),
     val clickedTimetableEvents: List<TimetableEvent> = emptyList(),
@@ -319,5 +375,6 @@ data class TimetableUiState(
     val loading: Boolean = false,
     val isLectureDuplicationDialogVisible: Boolean = false,
     val isSelectDepartmentDialogVisible: Boolean = false,
+    val isLoginDialogVisible: Boolean = false,
     val isAnonymous: Boolean = true,
 )
