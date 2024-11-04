@@ -24,15 +24,7 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
         val stringWriter = StringWriter()
-        if (throwable is HttpException) {
-            if (throwable.code() == HttpStatusCode.UNAUTHORIZED) {
-                goToLoginActivity()
-            } else {
-                createErrorMessage(throwable, stringWriter)
-            }
-        } else {
-            createErrorMessage(throwable, stringWriter)
-        }
+        createErrorMessage(throwable, stringWriter)
     }
 
     private fun createErrorMessage(throwable: Throwable, stringWriter: StringWriter) {

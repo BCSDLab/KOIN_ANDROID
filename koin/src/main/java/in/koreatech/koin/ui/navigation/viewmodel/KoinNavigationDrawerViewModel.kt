@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,10 +25,6 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     private val userLogoutUseCase: UserLogoutUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
-
-    private val _getUserInfoErrorMessage = SingleLiveEvent<String>()
-    val getUserInfoErrorMessage: LiveData<String> get() = _getUserInfoErrorMessage
-
     private val _menuEvent = SingleLiveEvent<MenuState>()
     val menuEvent: LiveData<MenuState> get() = _menuEvent
 
@@ -39,11 +36,11 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     }
 
     fun updateDeviceToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            viewModelScope.launch {
-                if (task.isSuccessful) {
-                    updateDeviceTokenUseCase(task.result)
-                }
+        viewModelScope.launch {
+            try {
+                updateDeviceTokenUseCase()
+            } catch (e:Exception) {
+                Timber.e("Failed Update Fcm Token : ${e.message}")
             }
         }
     }

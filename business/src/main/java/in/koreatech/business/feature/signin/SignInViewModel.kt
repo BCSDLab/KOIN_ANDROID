@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -26,11 +27,11 @@ class SignInViewModel @Inject constructor(
         SignInState()
     )
 
-    fun insertId(id: String) = intent{
+    fun insertId(id: String) = blockingIntent{
         reduce { state.copy(id = id) }
     }
 
-    fun insertPassword(password: String) = intent{
+    fun insertPassword(password: String) = blockingIntent{
         reduce { state.copy(password = password) }
     }
     fun navigateToSignUp() = intent {

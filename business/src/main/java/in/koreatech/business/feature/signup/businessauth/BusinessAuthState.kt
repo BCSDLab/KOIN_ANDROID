@@ -13,6 +13,7 @@ data class BusinessAuthState(
     val openAlertDialog: Boolean = false,
     val selectedImages :MutableList<AttachStore> = mutableListOf(),
     val dialogVisibility:Boolean = false,
+    val imageUriList: List<String> = emptyList(),
     val fileInfo: MutableList<StoreUrl> = mutableListOf(),
     val bitmap: MutableList<Bitmap> = mutableListOf(),
     val signupContinuationState: SignupContinuationState = SignupContinuationState.RequestedSmsValidation,

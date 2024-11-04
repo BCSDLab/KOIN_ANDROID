@@ -5,6 +5,9 @@ import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.mapper.toReportContent
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
+import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
+import `in`.koreatech.koin.data.response.store.BenefitCategoryResponse
+import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
@@ -95,5 +98,14 @@ class StoreRemoteDataSource @Inject constructor(
             StoreReviewReportsRequest(reportList.toReportContent())
         )
     }
+
+    suspend fun getStoreBenefitShopList(uid: Int): StoreBenefitResponse {
+        return storeApi.getBenefitShopList(uid)
+    }
+
+    suspend fun getStoreBenefitCategories(): BenefitCategoryListResponse {
+        return storeApi.getBenefitCategories()
+    }
+
 
 }

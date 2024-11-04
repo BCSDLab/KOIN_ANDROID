@@ -19,9 +19,11 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
@@ -110,15 +112,37 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CALL,
-                        (viewModel.store.value?.name
-                            ?: "Unknown") + ", duration_time: ${dialogElapsedTime / 1000}"
+                        viewModel.store.value?.name ?: "Unknown",
+                        EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
                     )
+
+                    if(intent.extras?.getBoolean(StoreDetailActivityContract.IS_BENEFIT) == true){
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.BENEFIT_SHOP_CALL,
+                            viewModel.store.value?.name ?: "Unknown",
+                            EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
+                        )
+                    }
+                    else{
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CALL,
+                            (viewModel.store.value?.name
+                                ?: "Unknown") ,
+                            EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
+
+                        )
+                    }
                     if (currentTab == 2) {// 리뷰탭에서 전화누르기까지 시간
+
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-                            (viewModel.store.value?.name
-                                ?: "Unknown") + ", previous_page: 리뷰" + ", current_page:" + currentPage + ", duration_time: ${reviewElapsedTime / 1000}"
+                            viewModel.store.value?.name ?: "Unknown",
+                            EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
+                            EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
+                            EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
                         )
                     }
                 }
@@ -168,8 +192,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             EventLogger.logClickEvent(
                                 EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-                                (viewModel.store.value?.name
-                                    ?: "Unknown") + ", previous_page: 리뷰" + ", current_page:" + currentPage + ", duration_time: ${reviewElapsedTime / 1000}"
+                                viewModel.store.value?.name ?: "Unknown",
+                                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
+                                EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
+                                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
                             )
                         }
                     }
@@ -183,19 +209,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                         )
                         if (currentTab == 2) {
                             reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
+
                             EventLogger.logClickEvent(
                                 EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-                                buildString {
-                                    append(
-                                        (viewModel.store.value?.name
-                                            ?: "Unknown")
-                                    )
-                                    append(", previous_page: 리뷰")
-                                    append(", current_page:")
-                                    append(currentPage)
-                                    append(", duration_time: ${reviewElapsedTime / 1000}")
-                                }
+                                viewModel.store.value?.name ?: "Unknown",
+                                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
+                                EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
+                                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
                             )
                         }
                     }
@@ -339,6 +360,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
                 binding.storeDetailImageview.apply {
                     adapter = StoreDetailImageViewpagerAdapter(it.imageUrls) {
+                        ImageZoomableDialog(context, it)
+                            .also {
+                                    zoomableDialog -> zoomableDialog.show()
+                            }
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_PICTURE,
@@ -367,15 +392,19 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             EventLogger.logSwipeEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
-                (viewModel.store.value?.name ?: "Unknown") + ", current_page: " + category + ", duration_time: ${storeElapsedTime / 1000}"
+                viewModel.store.value?.name ?: "Unknown" ,
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, category ?: "Unknown"),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0 ).toString()),
             )
 
         }
         else{
-            EventLogger.logClickEvent(
+            EventLogger.logSwipeEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
-                (viewModel.store.value?.name ?: "Unknown") + ", current_page: " + category + ", duration_time: ${storeElapsedTime / 1000}"
+                viewModel.store.value?.name ?: "Unknown" ,
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, category ?: "Unknown"),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0 ).toString()),
             )
         }
 
@@ -384,9 +413,12 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-                (viewModel.store.value?.name
-                    ?: "Unknown") +", previous_page: 리뷰" +", current_page:" +currentPage+ ", duration_time: ${reviewElapsedTime / 1000}"
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
             )
+
         }
         flyerDialogFragment?.dismiss()
         flyerDialogFragment = null

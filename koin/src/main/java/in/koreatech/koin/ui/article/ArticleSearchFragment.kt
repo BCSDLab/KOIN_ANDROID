@@ -59,11 +59,16 @@ class ArticleSearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if(_binding == null) {
+        if (_binding == null) {
             _binding = FragmentArticleSearchBinding.inflate(inflater, container, false)
             (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
             binding.textInputSearch.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
+                        "검색하기"
+                    )
                     viewModel.search()
                     true
                 } else false
@@ -73,6 +78,11 @@ class ArticleSearchFragment : Fragment() {
                 onSearchInputChanged(it.toString())
             }
             binding.imageSearch.setOnClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
+                    "검색하기"
+                )
                 viewModel.search()
             }
             binding.textViewRecentSearchedKeywordClear.setOnClickListener {
@@ -148,7 +158,7 @@ class ArticleSearchFragment : Fragment() {
                 viewModel.mostSearchedKeywords.collect {
                     binding.chipGroupMostSearchedKeyword.children.forEachIndexed { i, view ->
                         val chipText = it.getOrNull(i)
-                        (view as Chip).text = chipText
+                        (view as? Chip)?.text = chipText
                         view.setOnClickListener { _ ->
                             onSearchQueryClicked(chipText ?: "")
                         }
@@ -188,7 +198,7 @@ class ArticleSearchFragment : Fragment() {
     private fun onArticleClicked(article: ArticleHeaderState) {
         navController.navigate(
             R.id.action_articleSearchFragment_to_articleDetailFragment,
-            bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to BoardType.ALL.id)
+            bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id)
         )
     }
 }
