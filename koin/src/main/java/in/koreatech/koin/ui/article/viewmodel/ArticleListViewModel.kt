@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.repository.OnBoardingRepository
-import `in`.koreatech.koin.ui.article.BoardType
+import `in`.koreatech.koin.ui.article.ArticleBoardType
 import `in`.koreatech.koin.ui.article.state.ArticlePaginationState
 import `in`.koreatech.koin.ui.article.state.toArticlePaginationState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -26,15 +24,17 @@ import javax.inject.Inject
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    articleRepository: ArticleRepository,
-    private val onBoardingRepository: OnBoardingRepository
+    articleRepository: ArticleRepository
 ) : BaseViewModel() {
 
-    val currentBoard = savedStateHandle.getStateFlow(BOARD_TYPE, BoardType.ALL)
+    val currentBoard = savedStateHandle.getStateFlow(BOARD_TYPE, ArticleBoardType.ALL)
     val currentPage = savedStateHandle.getStateFlow(CURRENT_PAGE, 1)
     val selectedKeyword = savedStateHandle.getStateFlow(SELECTED_KEYWORD, "")
 
-    val pageNumbers = savedStateHandle.getStateFlow(PAGE_NUMBERS, IntArray(PAGE_NUMBER_COUNT))  // 값이 0일 경우 존재하지 않는 페이지
+    val pageNumbers = savedStateHandle.getStateFlow(
+        PAGE_NUMBERS,
+        IntArray(PAGE_NUMBER_COUNT)
+    )  // 값이 0일 경우 존재하지 않는 페이지
 
     val myKeywords: StateFlow<List<String>> = articleRepository.fetchMyKeyword()
         .stateIn(
@@ -43,33 +43,27 @@ class ArticleListViewModel @Inject constructor(
             initialValue = listOf()
         )
 
-    val articlePagination: StateFlow<ArticlePaginationState> = combine(currentBoard, currentPage, selectedKeyword) { board, page, query ->
-        _isLoading.value = true
-        if (query.isEmpty())
-            articleRepository.fetchArticlePagination(board.id, page, ARTICLES_PER_PAGE)
-        else
-            articleRepository.fetchSearchedArticles(query, board.id, page, ARTICLES_PER_PAGE)
-    }.debounce(10).flatMapLatest {
-        it.mapLatest { articlePagination ->
-            articlePagination.toArticlePaginationState()
-        }
-    }.onEach {
-        _isLoading.value = false
-        calculatePageNumber(it.totalPage)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ArticlePaginationState(emptyList(), 0, 0, 5, 1)
-    )
-
-    val shouldShowKeywordTooltip: StateFlow<Boolean> = onBoardingRepository.getShouldShowKeywordTooltip()
-        .stateIn(
+    val articlePagination: StateFlow<ArticlePaginationState> =
+        combine(currentBoard, currentPage, selectedKeyword) { board, page, query ->
+            _isLoading.value = true
+            if (query.isEmpty())
+                articleRepository.fetchArticlePagination(board.id, page, ARTICLES_PER_PAGE)
+            else
+                articleRepository.fetchSearchedArticles(query, board.id, page, ARTICLES_PER_PAGE)
+        }.debounce(10).flatMapLatest {
+            it.mapLatest { articlePagination ->
+                articlePagination.toArticlePaginationState()
+            }
+        }.onEach {
+            _isLoading.value = false
+            calculatePageNumber(it.totalPage)
+        }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = ArticlePaginationState(emptyList(), 0, 0, 5, 1)
         )
 
-    fun setCurrentBoard(board: BoardType) {
+    fun setCurrentBoard(board: ArticleBoardType) {
         if (currentBoard.value == board) return
         savedStateHandle[BOARD_TYPE] = board
         setCurrentPage(1)
@@ -88,7 +82,8 @@ class ArticleListViewModel @Inject constructor(
     private fun calculatePageNumber(totalPage: Int) {
         val newPageNumbers = pageNumbers.value.copyOf()
         repeat(PAGE_NUMBER_COUNT) { index ->
-            val pageNumber = ((currentPage.value - 1) / PAGE_NUMBER_COUNT) * PAGE_NUMBER_COUNT + index + 1
+            val pageNumber =
+                ((currentPage.value - 1) / PAGE_NUMBER_COUNT) * PAGE_NUMBER_COUNT + index + 1
             if (pageNumber <= totalPage) {
                 newPageNumbers[index] = pageNumber
             } else {
@@ -98,10 +93,6 @@ class ArticleListViewModel @Inject constructor(
 
         if (pageNumbers.value.contentEquals(newPageNumbers).not())
             savedStateHandle[PAGE_NUMBERS] = newPageNumbers
-    }
-
-    fun updateShouldShowKeywordTooltip(shouldShow: Boolean) {
-        onBoardingRepository.updateShouldShowKeywordTooltip(shouldShow).launchIn(viewModelScope)
     }
 
     companion object {

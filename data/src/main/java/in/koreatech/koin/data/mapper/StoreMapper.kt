@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
+import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
@@ -14,15 +15,17 @@ import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
-import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewContentResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewStatisticsResponse
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
+import `in`.koreatech.koin.domain.model.store.BenefitCategory
+import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -224,23 +227,24 @@ fun List<StoreDayOffResponse>.toOperatingTime(): List<OperatingTime> {
     return responseList
 }
 
-fun List<StoreMenuOptionPrice>.toOptionPriceList(): List<StoreMenuRegisterResponse.OptionPrice>{
+fun List<StoreMenuOptionPrice>.toOptionPriceList(): List<StoreMenuRegisterResponse.OptionPrice> {
     val responseList = ArrayList<StoreMenuRegisterResponse.OptionPrice>()
-    for (option in this){
+    for (option in this) {
         val response = StoreMenuRegisterResponse.OptionPrice(option.option, option.price.toInt())
 
         responseList.add(response)
     }
     return responseList
 }
-fun StoreMenuInfoResponse.toStoreMenuInfo(): StoreMenuInfo{
+
+fun StoreMenuInfoResponse.toStoreMenuInfo(): StoreMenuInfo {
     val responseList = ArrayList<StoreMenuOptionPrice>()
 
-    if (this.optionPrices != null){
-        for (priceOption in this.optionPrices){
+    if (this.optionPrices != null) {
+        for (priceOption in this.optionPrices) {
             val response = StoreMenuOptionPrice(
                 option = priceOption.option,
-                price =  priceOption.price.toString()
+                price = priceOption.price.toString()
             )
 
             responseList.add(response)
@@ -287,3 +291,17 @@ fun List<StoreReport>.toReportContent(): List<StoreReviewReportsRequest.ReportCo
     }
     return responseList
 }
+
+
+fun BenefitCategoryListResponse.toStoreBenefitCategory(): BenefitCategoryList =
+    BenefitCategoryList(this.benefitCategories.map {
+        BenefitCategory(
+            id = it.id,
+            title = it.title?: "",
+            detail = it.detail?: "",
+            onImageUrl = it.onImageUrl?: "",
+            offImageUrl = it.offImageUrl?: ""
+        )
+    })
+
+

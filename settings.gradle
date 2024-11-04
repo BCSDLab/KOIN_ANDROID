@@ -11,7 +11,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
-            url 'https://naver.jfrog.io/artifactory/maven/'
+            url 'https://repository.map.naver.com/archive/maven'
         }
         maven { url 'https://jitpack.io'}
         maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
@@ -22,3 +22,9 @@ include ':koin', ':core'
 include ':data'
 include ':domain'
 include ':business'
+include ':core:notification'
+include ':core:navigation'
+include ':core:onboarding'
+include ':feature:timetable'
+include ':core:designsystem'
+include ':feature:bus'

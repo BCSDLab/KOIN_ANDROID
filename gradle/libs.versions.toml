@@ -2,8 +2,9 @@
 activityComposeVersion = "1.8.2"
 activityKtxVersion = "1.5.0"
 cardviewVersion = "1.0.0"
+inAppUpdateVersion = "2.1.0"
 featureDeliveryKtxVersion = "2.1.0"
-firebaseBomVersion = "30.1.0"
+firebaseBomVersion = "32.5.0"
 fragmentKtxVersion = "1.5.0"
 jetbrainsAnnotationsVersion = "23.0.0"
 colorpickerVersion = "1.1.1"
@@ -65,6 +66,8 @@ ossLicensesPluginVersion = "0.10.4"
 ossLicensesVersion = "17.1.0"
 navigation = "2.7.7"
 jsoup = "1.18.1"
+timber = "5.0.1"
+
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -78,7 +81,13 @@ androidx-runner = { module = "androidx.test:runner", version.ref = "runnerVersio
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 
+
+# Google Play Core
+inApp-update = { group = "com.google.android.play", name = "app-update", version.ref = "inAppUpdateVersion" }
+inApp-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "inAppUpdateVersion" }
 feature-delivery-ktx = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "featureDeliveryKtxVersion" }
+
+
 napier = {module = "io.github.aakira:napier", version.ref="napier"}
 
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotationsVersion" }
@@ -157,6 +166,7 @@ markerman-roundedImageView = { module = "com.makeramen:roundedimageview", versio
 coil = { module = "io.coil-kt:coil", version.ref = "coilVersion" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilVersion" }
+coil-gif = {module = "io.coil-kt:coil-gif",  version.ref = "coilVersion" }
 
 compose-numberPicker = { module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion" }
 powerSpinner = { module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner" }
@@ -166,7 +176,9 @@ kakao-share = { module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare" }
 
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
-dataStore = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
+
+dataStore = { module = "androidx.datastore:datastore", version.ref = "dataStore" }
+dataStore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 
 nav-fragment-ktx = {module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation"}
 nav-ui-ktx = {module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation"}
@@ -177,6 +189,7 @@ jsoup = {module = "org.jsoup:jsoup", version.ref = "jsoup"}
 oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version.ref = "ossLicensesPluginVersion"}
 oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "ossLicensesVersion"}
 
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
@@ -198,6 +211,7 @@ koin-oss-license = { id = "in.koreatech.plugin.oss", version = "unspecified" }
 
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose", "compose-ui-tooling"]
+compose_m3 = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material3", "activity-compose", "compose-ui-tooling"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
 hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lecture_duplication_title">시간표가 중복돼요.</string>
+    <string name="lecture_duplication_cancellation">취소</string>
+    <string name="lecture_duplication_confirmation">대체하기</string>
+    <string-array name="lecture_duplication_description">
+        <item>추가하시려는 시간에 이미 다른 강의가 있어요.</item>
+        <item>" 새로운 강의로 대체"</item>
+        <item>하시겠어요?</item>
+    </string-array>
+
+    <string-array name="delete_lecture_title">
+        <item>%s을</item>
+        <item>" 삭제"</item>
+        <item>하시겠어요?</item>
+    </string-array>
+    <string-array name="delete_lecture_description">
+        <item>삭제한 강의는</item>
+        <item>" 수업추가"</item>
+        <item>에서 다시 추가할 수 있어요.</item>
+    </string-array>
+    <string name="delete_lecture_confirmation">삭제하기</string>
+
+    <string-array name="delete_schedule_title">
+        <item>%s을</item>
+        <item>" 삭제"</item>
+        <item>하시겠어요?</item>
+    </string-array>
+    <string name="delete_schedule_description">삭제한 개인 일정은 복구할 수 없어요.</string>
+    <string name="delete_schedule_confirmation">삭제하기</string>
+
+    <string name="request_login_title">로그인이 필요한 기능이에요.</string>
+    <string name="request_login_description">로그인 하시겠어요?</string>
+    <string name="request_login_confirmation">로그인하기</string>
+
+    <string name="select_department_title">전공선택</string>
+
+</resources>

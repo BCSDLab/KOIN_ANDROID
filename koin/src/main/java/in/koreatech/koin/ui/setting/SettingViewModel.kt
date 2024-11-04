@@ -7,9 +7,6 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetLatestVersionUseCase
 import `in`.koreatech.koin.domain.util.onSuccess
-import `in`.koreatech.koin.util.EventFlow
-import `in`.koreatech.koin.util.MutableEventFlow
-import `in`.koreatech.koin.util.asEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,9 +21,6 @@ class SettingViewModel @Inject constructor(
 
     private val _versionState: MutableStateFlow<VersionState> = MutableStateFlow(VersionState.Init)
     val versionState: StateFlow<VersionState> get() = _versionState.asStateFlow()
-
-    private val _versionError = MutableEventFlow<Unit>()
-    val versionError: EventFlow<Unit> = _versionError.asEventFlow()
 
     private val _userInfo: MutableStateFlow<User> = MutableStateFlow(User.Anonymous)
 
@@ -58,7 +52,7 @@ class SettingViewModel @Inject constructor(
                         }
                 }
                 .onFailure {
-                    _versionError.emit(Unit)
+                    _versionState.value = VersionState.Failure
                 }
         }
     }

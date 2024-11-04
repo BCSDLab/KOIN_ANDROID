@@ -41,7 +41,7 @@ class StoreDetailMenuFragment : Fragment() {
     private val storeRandomRecyclerAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
 
-            storeDetailActivityContract.launch(Pair(it.uid,null))
+            storeDetailActivityContract.launch(Triple(it.uid,null,false))
             requireActivity().finish()
         }
     }

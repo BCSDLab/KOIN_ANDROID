@@ -65,6 +65,8 @@
     <string name="koreatech_email_postfix">%1$s\u0040koreatech.ac.kr</string>
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
     <string name="koreatech_url">https://portal.koreatech.ac.kr/</string>
+    <string name="koreatech_operating_info_stage_url">https://stage.koreatech.in/webview/campusinfo</string>
+    <string name="koreatech_operating_info_production_url">https://koreatech.in/webview/campusinfo</string>
     <string name="koreatech_email_url">https://email.koreatech.ac.kr/</string>
 
     <!-- Required value in actionbardrawertoggle -->
@@ -367,7 +369,6 @@
     <string name="store_detail_wrong_store_id_message">잘못된 진입입니다.</string>
     <string name="store_last_updated_message">%1$s 업데이트됨</string>
     <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
-    <string name="dining_image_tooltip">식단 사진을 확인해보세요!</string>
 
     <!-- Dining Notice -->
     <string name="dining_notice_title_format">%1$s %2$s 운영시간</string>
@@ -390,7 +391,9 @@
 
     <string name="notification_event">이벤트 알림</string>
     <string name="notification_event_description">모든 주변상점의 이벤트 알림을 받습니다.</string>
+    <string name="notification_article_keyword_description">키워드가 포함된 글이 게시될 경우 알림을 받습니다.</string>
     <string name="notification_dining_photo_upload">식단 사진 업로드 알림</string>
+    <string name="notification_article_keyword">공지사항 키워드 알림</string>
     <string name="notification_dining_photo_upload_description">식단 사진이 업로드 될 경우 알림을 받습니다.</string>
 
     <!-- force update -->
@@ -547,16 +550,14 @@
     <string name="bus_timetable_city_pm">오후</string>
 
     <!-- Kakao link setting -->
-    <string name="kakao_app_key">056b03b730cafd51c05d7564f884b330</string>
-    <string name="kakao_scheme">kakao056b03b730cafd51c05d7564f884b330</string>
     <string name="kakaolink_host">kakaolink</string>
-    <string name="action_share">공유하기</string>
+    <string name="action_share">카카오톡으로 식단 공유하기</string>
     <string name="action_like">좋아요</string>
     <string name="dining_notification_on_boarding">알림 설정을 허용하고\n식단 품절 알림을 받아보세요!</string>
     <string name="set_dining_sold_out_notification">식단 품절 알림 받기</string>
     <string name="set_image_upload_notification">식단 사진 업로드 알림 받기</string>
     <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
-    
+
     <!-- Koreatech 공지사항 -->
     <string name="title_article">공지사항</string>
     <string name="navigation_title_article">공지사항</string>
@@ -574,7 +575,7 @@
     <string name="article_scholarship_simple">장학</string>
     <string name="article_recruit">취업공지</string>
     <string name="article_recruit_simple">취업</string>
-    <string name="article_koin">코인공지</string>
+    <string name="article_koin">코인</string>
     <string name="article_qna">질문게시판</string>
     <string name="article_promotion">홍보게시판</string>
     <string name="article_ipp">현장실습</string>
@@ -587,6 +588,9 @@
     <string name="list">목록</string>
     <string name="next_article">다음 글</string>
     <string name="prev_article">이전 글</string>
+    <string name="link_to_original_article">원본 글 바로가기</string>
+    <string name="link_to_portal">아우누리 바로가기</string>
+    <string name="link_to_stems">학생종합경력개발 바로가기</string>
     <string name="hot_articles">인기있는 게시글</string>
     <string name="see_all_article">모두보기</string>
     <string name="my_keyword">내 키워드</string>
@@ -616,8 +620,6 @@
     <string name="downloading">다운로드 중</string>
     <string name="start_download">파일을 다운로드합니다.</string>
     <string name="download_complete">다운로드가 완료되었습니다.</string>
-    <string name="keyword_tooltip">키워드를 추가하고 맞춤 알림을 받아보세요!</string>
-
 
 
     <!--리뷰 기능-->

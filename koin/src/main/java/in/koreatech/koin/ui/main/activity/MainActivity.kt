@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,19 +13,22 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.skydoves.balloon.ArrowOrientation
-import com.skydoves.balloon.ArrowOrientationRules
-import com.skydoves.balloon.ArrowPositionRules
-import com.skydoves.balloon.Balloon
-import com.skydoves.balloon.BalloonAnimation
-import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.abtest.Experiment
+import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.SchemeType
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
+import `in`.koreatech.koin.core.onboarding.ArrowDirection
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
+import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.core.viewpager.enableAutoScroll
@@ -36,11 +40,6 @@ import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAVIGATE_ACTION
-import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
-import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
-import `in`.koreatech.koin.ui.article.BoardType
-import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
@@ -49,26 +48,30 @@ import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Main
-    private var currentTime by Delegates.notNull<Long>()
-    private var elapsedTime by Delegates.notNull<Long>()
-
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
-    private lateinit var diningTooltip: Balloon
+
+    @Inject
+    lateinit var navigator: Navigator
+
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
 
     private val hotArticleAdapter = HotArticleAdapter(
         onClick = {
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
+                data =
+                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
             }
             startActivity(intent)
         }
@@ -123,7 +126,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
-            elapsedTime = System.currentTimeMillis() - currentTime
 
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
@@ -144,15 +146,31 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         initView()
         initDiningTooltip()
         initViewModel()
+        handleIntent()
     }
 
     override fun onResume() {
         super.onResume()
-        currentTime = System.currentTimeMillis()
         viewModel.updateDining()
     }
 
     private fun initView() = with(binding) {
+        viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
+        storeListButton.setOnClickListener {
+            gotoStoreActivity(0)
+        }
+        callBenefitStoreListButton.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                "전화주문혜택",
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+            )
+            val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
+            startActivity(intent)
+        }
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
         }
@@ -248,13 +266,41 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it.drop(1))
         }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                showDiningTooltip.collect {
-                    if (it) {
-                        diningTooltip.showAlignRight(binding.textViewDiningTitle)
-                        viewModel.updateShouldShowDiningTooltip(false)
-                    }
+        binding.recyclerViewStoreCategory.visibility = View.GONE
+        binding.storeButtonLayout.visibility = View.VISIBLE
+        observeLiveData(variableName) {
+            when (viewModel.variableName.value) {
+                ExperimentGroup.A -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                }
+
+                ExperimentGroup.B -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택O"
+                    )
+                    binding.storeButtonLayout.visibility = View.VISIBLE
+                    binding.recyclerViewStoreCategory.visibility = View.GONE
+                }
+
+                else -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
             }
         }
@@ -278,30 +324,53 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initDiningTooltip() {
-        diningTooltip = Balloon.Builder(this)
-            .setHeight(BalloonSizeSpec.WRAP)
-            .setWidth(BalloonSizeSpec.WRAP)
-            .setText(getString(R.string.dining_image_tooltip))
-            .setTextColorResource(R.color.black)
-            .setBackgroundColorResource(R.color.gray3)
-            .setTextSize(12f)
-            .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
-            .setArrowOrientation(ArrowOrientation.BOTTOM)
-            .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
-            .setArrowSize(10)
-            .setArrowPosition(0.85f)
-            .setPaddingVertical(4)
-            .setPaddingHorizontal(5)
-            .setMarginLeft(10)
-            .setCornerRadius(8f)
-            .setBalloonAnimation(BalloonAnimation.FADE)
-            .build()
+        with(onboardingManager) {
+            showOnboardingTooltipIfNeeded(
+                type = OnboardingType.DINING_IMAGE,
+                view = binding.textViewDiningTitle,
+                arrowDirection = ArrowDirection.LEFT
+            )
+        }
     }
 
     private fun gotoStoreActivity(position: Int) {
         val bundle = Bundle()
         bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
         callDrawerItem(R.id.navi_item_store, bundle)
+    }
+
+    private fun handleIntent() {
+        val targetId = intent.getIntExtra(EXTRA_ID, -1)
+        val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
+
+        when (type) {
+            SchemeType.SHOP.type -> {
+                val intent = navigator.navigateToShop(
+                    context = this,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
+
+            SchemeType.DINING.type -> {
+                val intent = navigator.navigateToDinging(
+                    context = this,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
+
+            SchemeType.ARTICLE.type -> {
+                val intent = navigator.navigateToArticle(
+                    context = this,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onDestroy() {

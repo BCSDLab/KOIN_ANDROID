@@ -12,6 +12,8 @@
     <string name="common_confirm">확인하기</string>
     <string name="common_negative">아니오</string>
     <string name="common_cancellation">취소</string>
+    <string name="common_do_cancellation">취소하기</string>
+    <string name="register">등록하기</string>
     <string name="common_complete">완료</string>
     <string name="common_edit">편집</string>
     <string name="common_save">저장</string>
@@ -46,7 +48,14 @@
     <string name="won">원</string>
     <string name="close">닫기</string>
     <string name="my_shop">내 상점</string>
-
+    <string name="image">사진</string>
+    <string name="title">제목</string>
+    <string name="start_date">시작일</string>
+    <string name="end_date">종료일</string>
+    <string name="text_should_inputted">필수 입력 항목입니다.</string>
+    <string name="delete">삭제</string>
+    <string name="register_image">사진 등록하기</string>
+    <string name="image_limit" formatted="true">이미지는 %d개까지만 등록 가능해요.</string>
 
     <!-- drawer menu -->
     <string name="home">홈</string>
@@ -76,6 +85,7 @@
     <string name="navigation_item_owner">코인 사장님</string>
     <string name="navigation_item_article">공지사항</string>
     <string name="navigation_item_ask_bcsd">문의하기</string>
+    <string name="navigation_item_koreatech_operating_information">교내 시설물 정보</string>
     <!--End left drawer menu -->
 
 
@@ -89,6 +99,7 @@
     <!-- URL -->
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
     <string name="koreatech_url">https://portal.koreatech.ac.kr/</string>
+    <string name="koreatech_stems_url">https://job.koreatech.ac.kr/</string>
     <string name="koreatech_email_url">https://email.koreatech.ac.kr/</string>
 
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.core.helpers.UserLockBottomSheetBehavior</string>
@@ -223,5 +234,20 @@
 
     <!-- 이벤트 로깅 -->
     <string name="event_set_notification">알림설정</string>
+    <string name="event_write">이벤트/공지 작성하기</string>
+    <string name="event_upload_image_instruction">이벤트/공지와 관련된 사진을 올려보세요.</string>
+    <string name="event_input_title_instruction">이벤트/공지 제목을 입력해주세요.</string>
+    <string name="event_content">이벤트/공지 내용</string>
+    <string name="event_input_content_instruction">이벤트/공지 내용을 입력해주세요.</string>
+    <string name="event_period">이벤트/공지 등록 기간</string>
 
+    <!-- force update -->
+    <string name="force_update_do_update">업데이트하기</string>
+    <string name="force_update_already_update">이미 업데이트를 하셨나요?</string>
+    <string name="force_update_already_update_u"><u>이미 업데이트를 하셨나요?</u></string>
+    <string name="force_update_dialog_content">업데이트 이후에도 이 화면이 나타나는\n경우에는 스토어에서 코인을\n삭제 후 재설치 해 주세요.</string>
+    <string name="force_update_go_store">스토어로 가기</string>
+
+    <!-- etc -->
+    <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>
 </resources>

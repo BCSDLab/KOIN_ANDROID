@@ -13,11 +13,13 @@ import `in`.koreatech.koin.ui.store.activity.StoreDetailActivity
 
 class StoreDetailActivityContract(
     private val storeCategoryFactory: StoreActivity.StoreCategoryFactory? = null
-) : ActivityResultContract<Pair<Int, String?>, Unit>() {
-    override fun createIntent(context: Context, input: Pair<Int, String?>): Intent {
+) : ActivityResultContract<Triple<Int, String?, Boolean>, Unit>() {
+    override fun createIntent(context: Context, input: Triple<Int, String?, Boolean>): Intent {
         return Intent(context, StoreDetailActivity::class.java).apply {
             putExtra(STORE_ID, input.first)
-            putExtra(CATEGORY, input.second)}
+            putExtra(CATEGORY, input.second)
+            putExtra(IS_BENEFIT, input.third)
+        }
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?) {
@@ -48,5 +50,6 @@ class StoreDetailActivityContract(
     companion object {
         const val STORE_ID = "STORE_ID"
         const val CATEGORY = "CATEGORY"
+        const val IS_BENEFIT = "IS_BENEFIT"
     }
 }

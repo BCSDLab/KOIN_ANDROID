@@ -1,7 +1,11 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
 import com.chargemap.compose.numberpicker.FullHours
+import com.chargemap.compose.numberpicker.Hours
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
+import `in`.koreatech.koin.domain.model.owner.SettingTime
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
+import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 
@@ -21,8 +25,9 @@ data class ModifyInfoState(
         bank = "",
         accountNumber = "",
     ),
+    val operatingTimeList: List<OperatingTime> = listOf(),
     val fileInfo: MutableList<StoreUrl> = mutableListOf(),
-    val dialogTimeState: OperatingTime = OperatingTime(FullHours(0, 0), FullHours(0, 0)),
     val showDialog: Boolean = false,
     val dayOfWeekIndex: Int = -1,
+    val isOpenTimeSetting: SettingTime = SettingTime.OPEN,
 )
