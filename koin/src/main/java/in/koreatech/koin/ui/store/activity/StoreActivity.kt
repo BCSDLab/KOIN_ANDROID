@@ -24,6 +24,9 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.onboarding.ArrowDirection
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
+import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
@@ -44,6 +47,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
 import `in`.koreatech.koin.util.ext.statusBarHeight
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
@@ -56,6 +60,9 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
     private val binding by dataBinding<StoreActivityMainBinding>(R.layout.store_activity_main)
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
+
+    @Inject
+    lateinit var onboardingManager: OnboardingManager
 
     fun interface StoreCategoryFactory {
         fun getCurrentCategory(): String
@@ -160,6 +167,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
         initViewModel()
         initView()
+        initSortingTooltip()
 
         val initStoreCategory =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
@@ -421,6 +429,17 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     storeAdapter.submitList(it)
                 }
             }
+        }
+    }
+
+    private fun initSortingTooltip() {
+        with(onboardingManager) {
+            showOnboardingTooltipIfNeeded(
+                type = OnboardingType.REVIEW_SORTING,
+                view = binding.storeManyReviewCheckbox,
+                arrowPosition = 0.1f,
+                arrowDirection = ArrowDirection.BOTTOM
+            )
         }
     }
 

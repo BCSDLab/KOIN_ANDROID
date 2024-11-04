@@ -126,7 +126,7 @@
                                     android:singleLine="true"
                                     android:textColor="@color/gray9"
                                     android:textSize="13sp"
-                                    app:fontName="Custom6"
+                                    android:textAppearance="@style/TextAppearance.Koin.Medium.16"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/search_image_view"
                                     app:layout_constraintHorizontal_bias="0.0"
@@ -184,7 +184,7 @@
                                     android:text="상점 목록"
                                     android:textColor="@color/gray9"
                                     android:textSize="13sp"
-                                    app:fontName="Custom6" />
+                                    android:textAppearance="@style/TextAppearance.Koin.Medium.16" />
 
 
                             </FrameLayout>
@@ -225,10 +225,11 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/store_high_rating_checkbox"
                                 android:paddingHorizontal="14dp"
-                                android:text="# 리뷰순  "
-                                android:textColor="@color/gray15"
+                                android:text="∨ 리뷰순  "
+                                android:textColor="@color/blue_alpha20"
                                 android:textSize="13sp"
                                 android:gravity="center"
+                                android:checked="true"
                                 />
 
                             <CheckBox
@@ -241,7 +242,7 @@
                                 app:layout_constraintTop_toTopOf="@id/store_high_rating_checkbox"
                                 app:layout_constraintEnd_toStartOf="@id/store_is_operating_checkbox"
                                 android:paddingHorizontal="14dp"
-                                android:text="# 별점순  "
+                                android:text="∨ 별점순  "
                                 android:textColor="@color/gray15"
                                 android:textSize="13sp"
                                 android:gravity="center">
