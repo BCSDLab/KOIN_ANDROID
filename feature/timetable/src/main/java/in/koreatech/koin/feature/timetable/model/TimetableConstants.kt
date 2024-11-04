@@ -44,7 +44,6 @@ val dummyLecture = Lecture(
     )
 )
 
-val dummySemester = Semester(id = 1, semester = "20242")
 
 val defaultColors = listOf(
     TimetableColor(Color(0xFF890000),Color(0x33890000)),
