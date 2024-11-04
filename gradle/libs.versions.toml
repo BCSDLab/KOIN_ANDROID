@@ -69,6 +69,7 @@ jsoup = "1.18.1"
 timber = "5.0.1"
 kotlinxCoroutinesTestVersion = "1.9.0"
 turbineVersion = "1.2.0"
+kotlinxCollectionsImmutableVersion = "0.3.8"
 
 
 [libraries]
@@ -196,6 +197,8 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber"}
 
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestVersion" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVersion" }
+
+kotlinx-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutableVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
