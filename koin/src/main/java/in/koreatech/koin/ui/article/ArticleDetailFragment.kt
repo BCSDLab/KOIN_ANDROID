@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.article
 
 import android.app.DownloadManager
+import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
@@ -17,7 +18,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -25,9 +28,9 @@ import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.download.FileDownloadManager
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.webview.loadKoreatechHtml
 import `in`.koreatech.koin.core.webview.setOnImageClickListener
+import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.databinding.FragmentArticleDetailBinding
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -40,6 +43,7 @@ import `in`.koreatech.koin.ui.article.viewmodel.ArticleDetailViewModel
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -98,6 +102,7 @@ class ArticleDetailFragment : Fragment() {
                     setHeader(it)
                     setContent(it)
                     setNavigateArticleButtonVisibility(it)
+                    initPortalLinkButton(it)
 
                     if (it.attachments.isEmpty())
                         binding.groupAttachment.visibility = View.GONE
@@ -133,6 +138,37 @@ class ArticleDetailFragment : Fragment() {
                     hotArticleAdapter.submitList(it)
                 }
             }
+        }
+    }
+
+    private fun initPortalLinkButton(article: ArticleState) {
+        var url = requireContext().getString(R.string.koreatech_url)
+        when(article.header.board.linkType) {
+            LinkType.NONE -> return
+            LinkType.ARTICLE -> {
+                url = article.url
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_original_article)
+            }
+            LinkType.PORTAL -> {
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_portal)
+            }
+            LinkType.STEMS -> {
+                url = requireContext().getString(R.string.koreatech_stems_url)
+                binding.buttonToPortal.visibility = View.VISIBLE
+                binding.buttonToPortal.text = getString(R.string.link_to_stems)
+            }
+        }
+        binding.buttonToPortal.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTICE_ORIGINAL_SHORTCUT,
+                binding.buttonToPortal.text.toString()
+            )
+            Intent(requireContext(), WebViewActivity::class.java).apply {
+                putExtra("url", url)
+            }.run(::startActivity)
         }
     }
 

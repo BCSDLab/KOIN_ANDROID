@@ -28,12 +28,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
 import `in`.koreatech.business.ui.theme.ColorTextBackgrond
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.domain.model.owner.SettingTime
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import org.orbitmvi.orbit.compose.collectAsState
@@ -41,7 +41,6 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun ModifyOperatingTimeScreen(
-    modifier: Modifier = Modifier,
     viewModel: ModifyInfoViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
 ) {
@@ -113,12 +112,14 @@ fun ModifyOperatingTimeScreen(
                     .padding(top = 25.dp)
                     .padding(horizontal = 6.dp)
             ) {
-                itemsIndexed(state.storeInfo.operatingTime) { index, item ->
+                itemsIndexed(state.operatingTimeList) { index, item ->
                     OperatingTimeSetting(
                         state = state,
                         onShowOpenTimeDialog = {
-                            viewModel.showAlertDialog(index)
-                            viewModel.initDialogTimeSetting(item.openTime, item.closeTime)
+                            viewModel.showOpenTimeDialog(index)
+                        },
+                        onShowCloseTimeDialog = {
+                            viewModel.showCloseTimeDialog(index)
                         },
                         operatingTime = item,
                         index = index,
@@ -127,14 +128,36 @@ fun ModifyOperatingTimeScreen(
                     }
                 }
             }
-            OperatingTimeSettingDialog(
-                onDismiss = viewModel::hideAlertDialog,
-                onSettingStoreTime = viewModel::onSettingStoreTime,
-                visibility = state.showDialog,
-                operatingTime = state.dialogTimeState
-            )
-        }
 
+            when(state.isOpenTimeSetting){
+                SettingTime.OPEN ->{
+                    OperatingTimeSettingDialog(
+                        title = stringResource(id = R.string.store_open_time),
+                        operatingTimeDialog = OperatingTimeDialog(
+                            state.showDialog,
+                            viewModel::hideAlertDialog,
+                            state.dayOfWeekIndex,
+                            onSettingStoreTime = {
+                                viewModel.settingStoreOpenTime(it.first, it.second)
+                            }
+                        )
+                    )
+                }
+                SettingTime.CLOSE ->{
+                    OperatingTimeSettingDialog(
+                        title = stringResource(id = R.string.store_close_time),
+                        operatingTimeDialog = OperatingTimeDialog(
+                            state.showDialog,
+                            viewModel::hideAlertDialog,
+                            state.dayOfWeekIndex,
+                            onSettingStoreTime = {
+                                viewModel.settingStoreCloseTime(it.first, it.second)
+                            }
+                        )
+                    )
+                }
+            }
+        }
     }
 
     viewModel.collectSideEffect {
@@ -154,6 +177,7 @@ fun OperatingTimeSetting(
     state: ModifyInfoState,
     operatingTime: OperatingTime,
     onShowOpenTimeDialog: (Int) -> Unit = {},
+    onShowCloseTimeDialog: (Int) -> Unit = {},
     index: Int = 0,
     onCheckBoxClicked: (Int) -> Unit = {}
 ) {
@@ -172,12 +196,22 @@ fun OperatingTimeSetting(
         Spacer(modifier = Modifier.weight(1f))
         Text(
             modifier = Modifier.clickable {
-                if (!state.storeInfo.operatingTime.get(index).closed)
-                    onShowOpenTimeDialog(index)
+                if(!state.storeInfo.operatingTime[index].closed) onShowOpenTimeDialog(index)
             },
-            text = "${state.storeInfo.operatingTime[index].openTime} ~ ${
-                state.storeInfo.operatingTime[index].closeTime
-            }",
+            text = state.operatingTimeList[index].openTime,
+            color = if (state.storeInfo.operatingTime[index].closed) ColorMinor else Color.Black,
+            fontSize = 15.sp
+        )
+        Text(
+            modifier = Modifier.padding(horizontal =  15.dp),
+            text = " ~ ",
+            fontSize = 15.sp
+        )
+        Text(
+            modifier = Modifier.clickable {
+                if(!operatingTime.closed) onShowCloseTimeDialog(index)
+            },
+            text = state.operatingTimeList[index].closeTime,
             color = if (state.storeInfo.operatingTime[index].closed) ColorMinor else Color.Black,
             fontSize = 15.sp
         )

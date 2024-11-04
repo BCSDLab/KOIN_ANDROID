@@ -1,4 +1,8 @@
 package `in`.koreatech.business.main
 
-class BusinessMainActivityState {
-}
+import `in`.koreatech.koin.domain.model.version.Version
+
+data class BusinessMainActivityState(
+    val destination: String = "",
+    val version: Version? = null
+)
