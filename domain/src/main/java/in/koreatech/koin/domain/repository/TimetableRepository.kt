@@ -1,16 +1,19 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.timetable.request.LecturesQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.Semester
+import `in`.koreatech.koin.domain.model.timetable.response.SemesterCheck
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import kotlinx.coroutines.flow.Flow
 
 interface TimetableRepository {
-    fun getSemesters(): Flow<List<Semester>>
+    fun getSemesters(): Flow<List<String>>
+    fun getSemesterCheck(): Flow<List<String>>
     fun getLectures(semesterDate: String): Flow<List<Lecture>>
     fun getTimetableFrames(semester: String): Flow<List<TimetableFrame>>
 
@@ -21,10 +24,12 @@ interface TimetableRepository {
     suspend fun putTimetableLectures(key: String, value: TimetableLectures): Result<TimetableLectures>
     suspend fun putTimetableFrame(id: Int, frame: TimetableFrameQuery): TimetableFrame
 
-    suspend fun postTimetableLectures(lectures: TimetableLecturesQuery): TimetableLectures
+    suspend fun postTimetableLectures(lectures: LecturesQuery): Result<TimetableLectures>
     suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): TimetableFrame
 
     suspend fun deleteTimetableFrame()
-    suspend fun deleteTimetableLecture(id: Int)
+    suspend fun deleteTimetableLecture(id: Int): Result<Unit>
+    suspend fun deleteTimetableFrameLecture(frameId: Int, lectureId: Int): Result<Unit>
+
     suspend fun deleteAllTimetableFrame()
 }

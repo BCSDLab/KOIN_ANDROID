@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.domain.model.timetable.response
 
+import `in`.koreatech.koin.domain.model.timetable.request.LectureQuery
+import `in`.koreatech.koin.domain.model.timetable.request.TimetableLectureQuery
 import java.time.DayOfWeek
 import java.time.LocalTime
 
@@ -18,9 +20,19 @@ data class Lecture(
     val isElearning: String = "",
     val classTime: List<Int>
 ) {
+    fun toLectureQuery() = LectureQuery(
+        lectureId = id,
+        classTitle = name,
+        classTime =classTime,
+        classPlace = "",
+        professor = professor,
+        grades = grades,
+        memo = ""
+    )
+
     fun toTimetableLecture() = TimetableLecture(
         id = id,
-        lectureId = 0,
+        lectureId = id,
         regularNumber = regularNumber,
         code = code,
         designScore = designScore,
