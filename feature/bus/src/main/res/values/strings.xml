@@ -10,6 +10,9 @@
     <string name="weekday_routes">주중노선</string>
     <string name="weekend_routes">주말노선</string>
     <string name="circulation_routes">순환노선</string>
+    <string name="weekday_routes_simple">주중</string>
+    <string name="weekend_routes_simple">주말</string>
+    <string name="circulation_routes_simple">순환</string>
 
     <!-- Content description -->
 
