@@ -25,7 +25,7 @@ class OwnerRegisterUseCase @Inject constructor(
                 attachments,
                 companyNumber,
                 name,
-                password.toSHA256(),
+                password,
                 phoneNumber,
                 shopId,
                 shopName
