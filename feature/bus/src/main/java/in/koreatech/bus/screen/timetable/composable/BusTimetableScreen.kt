@@ -24,8 +24,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.bus.screen.timetable.type.BusType
+import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
+import `in`.koreatech.bus.viewstate.ArrivalViewState
+import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
@@ -135,6 +138,80 @@ internal fun BusTimetableScreen(
                                         ShuttleTimetableOverviewViewState(
                                             routeType = ShuttleBusRouteType.WEEKEND,
                                             name = "대구-서울",
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    }
+                    BusType.EXPRESS.ordinal -> {
+                        ExpressTimetableScreen(
+                            modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+                            timetable = CommonTimetableViewState(
+                                updatedAt = "2024-09-21",
+                                arrivals = mapOf(
+                                    DaytimeType.AM to listOf(
+                                        ArrivalViewState(
+                                            arrivalTime = "09:00"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "09:30"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "10:00"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "10:30"
+                                        ),
+                                    ), DaytimeType.PM to listOf(
+                                        ArrivalViewState(
+                                            arrivalTime = "14:30"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "21:00"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "21:30"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "22:00"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "22:30"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "23:00"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "23:30"
+                                        )
+                                    ),
+                                )
+                            )
+                        )
+                    }
+                    BusType.CITY.ordinal -> {
+                        CityTimetableScreen(
+                            modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+                            timetable = CommonTimetableViewState(
+                                updatedAt = "2024-09-21",
+                                arrivals = mapOf(
+                                    DaytimeType.AM to listOf(
+                                        ArrivalViewState(
+                                            arrivalTime = "09:00"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "09:30"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "10:00"
+                                        ),
+                                        ArrivalViewState(
+                                            arrivalTime = "10:30"
+                                        ),
+                                    ), DaytimeType.PM to listOf(
+                                        ArrivalViewState(
+                                            arrivalTime = "14:30"
                                         )
                                     )
                                 )
