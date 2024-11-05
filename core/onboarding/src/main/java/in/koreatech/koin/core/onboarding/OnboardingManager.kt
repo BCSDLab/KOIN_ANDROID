@@ -99,6 +99,19 @@ class OnboardingManager @Inject internal constructor(
         }
     }
 
+    suspend fun getShouldOnboard(
+        type: OnboardingType,
+    ) : Boolean {
+        return onboardingRepository.getShouldOnboarding(type.name)
+    }
+
+    suspend fun updateShouldOnboard(
+        type: OnboardingType,
+        shouldShow: Boolean
+    ) {
+        onboardingRepository.updateShouldOnboarding(type.name, shouldShow)
+    }
+
     fun dismissTooltip() {
         if (::tooltip.isInitialized)
             tooltip.dismiss()
