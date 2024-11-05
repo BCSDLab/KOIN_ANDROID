@@ -1,12 +1,14 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,28 +21,16 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
-import `in`.koreatech.koin.core.dialog.AlertModalDialog
-import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.constant.BREAKFAST
 import `in`.koreatech.koin.domain.model.dining.Dining
-import `in`.koreatech.koin.domain.model.dining.LikeActionType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
-import `in`.koreatech.koin.ui.dining.DiningActivity
-import `in`.koreatech.koin.ui.login.LoginActivity
-import `in`.koreatech.koin.util.ext.toStringWithComma
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class DiningAdapter(
-    private val onLikeClickResult: suspend (Dining) -> LikeActionType,
     private val onShareClick: (Dining) -> Unit,
-    private val coroutineScope: CoroutineScope
 ) : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -48,10 +38,17 @@ class DiningAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return DiningViewHolder(ItemDiningBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return DiningViewHolder(
+            ItemDiningBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
-    inner class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class DiningViewHolder(private val binding: ItemDiningBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dining: Dining) {
             with(binding) {
@@ -61,9 +58,8 @@ class DiningAdapter(
                 setDiningData(context, dining)
                 setEmptyDataVisibility(dining)
                 initShareAction(dining)
-                initLikeAction(dining)
 
-                if(dining.imageUrl.isNotEmpty()) {
+                if (dining.imageUrl.isNotEmpty()) {
                     lottieImageLoading.visibility = View.VISIBLE
                     cardViewDining.strokeWidth = 0
                     textViewNoPhoto.visibility = View.INVISIBLE
@@ -108,8 +104,12 @@ class DiningAdapter(
                     }
                 } else {
                     cardViewDining.strokeWidth =
-                        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
-                    textViewNoPhoto.text = if(TimeUtil.isWeekend(dining.date)) context.getString(
+                        TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            1f,
+                            context.resources.displayMetrics
+                        ).toInt()
+                    textViewNoPhoto.text = if (TimeUtil.isWeekend(dining.date)) context.getString(
                         R.string.photo_not_provided_on_weekend
                     ) else context.getString(R.string.no_photo)
 
@@ -125,13 +125,13 @@ class DiningAdapter(
                     }
                 }
 
-                if(dining.changedAt.isNotEmpty()) {
+                if (dining.changedAt.isNotEmpty()) {
                     textViewDiningChanged.visibility = View.VISIBLE
                 } else {
                     textViewDiningChanged.visibility = View.INVISIBLE
                 }
 
-                if(dining.soldoutAt.isNotEmpty()) {
+                if (dining.soldOutAt.isNotEmpty()) {
                     groupSoldOut.visibility = View.VISIBLE
                     textViewDiningSoldOut.visibility = View.VISIBLE
                     textViewDiningChanged.visibility = View.INVISIBLE
@@ -161,85 +161,23 @@ class DiningAdapter(
             }
         }
 
-        private fun initLikeAction(dining: Dining) {
-            binding.linearLayoutLike.setOnClickListener {
-                coroutineScope.launch {
-                    withContext(Dispatchers.Main) {
-                        val result = onLikeClickResult(dining)
-                        when(result) {
-                            LikeActionType.LIKE -> {
-                                dining.isLiked = true
-                                ++dining.likes
-                                setLikeUI(dining)
-                            }
-
-                            LikeActionType.UNLIKE -> {
-                                dining.isLiked = false
-                                --dining.likes
-                                setLikeUI(dining)
-                            }
-
-                            LikeActionType.LOGIN_REQUIRED -> {
-                                val dialog =
-                                    AlertModalDialog(binding.root.context, AlertModalDialogData(
-                                        R.string.recommend_login_to_like_dining,
-                                        R.string.recommend_like_dining,
-                                        R.string.action_login,
-                                    ),
-                                        onPositiveButtonClicked = {
-                                            val intent = Intent(
-                                                binding.root.context,
-                                                LoginActivity::class.java
-                                            )
-                                            intent.putExtra("activity", DiningActivity::class.java)
-                                            binding.root.context.startActivity(intent)
-                                        },
-                                        onNegativeButtonClicked = {
-                                            it.dismiss()
-                                        }
-                                    )
-                                dialog.show()
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         private fun initShareAction(dining: Dining) {
             binding.linearLayoutShare.setOnClickListener {
                 onShareClick(dining)
             }
         }
 
-        private fun setLikeUI(dining: Dining) {
-            with(binding) {
-                if (dining.likes > 0) {
-                    textViewLike.visibility = View.INVISIBLE
-                    textViewLikeCount.visibility = View.VISIBLE
-                    textViewLikeCount.text = dining.likes.toStringWithComma()
-                } else {
-                    textViewLike.visibility = View.VISIBLE
-                    textViewLikeCount.visibility = View.INVISIBLE
-                }
-
-                if(dining.isLiked) {
-                    imageViewLike.setImageResource(R.drawable.ic_like_filled)
-                } else {
-                    imageViewLike.setImageResource(R.drawable.ic_like)
-                }
-            }
-        }
-
         private fun setDiningImageVisibility(context: Context, dining: Dining) {
-            when(dining.place) {
+            when (dining.place) {
                 context.getString(R.string.dining_nungsu),
-                context.getString(R.string.dining_2campus) -> binding.cardViewDining.visibility = View.GONE
+                context.getString(R.string.dining_2campus) -> binding.cardViewDining.visibility =
+                    View.GONE
+
                 else -> binding.cardViewDining.visibility = View.VISIBLE
             }
         }
 
-        private fun showDiningImage(context: Context, dining: Dining){
+        private fun showDiningImage(context: Context, dining: Dining) {
             with(binding) {
                 cardViewDining.visibility = View.VISIBLE
                 cardViewDining.strokeWidth = 0
@@ -266,10 +204,14 @@ class DiningAdapter(
         }
 
         private fun showEmptyDiningImage(context: Context, dining: Dining) {
-            with (binding) {
+            with(binding) {
                 cardViewDining.visibility = View.VISIBLE
                 cardViewDining.strokeWidth =
-                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        1f,
+                        context.resources.displayMetrics
+                    ).toInt()
                 textViewNoPhoto.visibility = View.VISIBLE
                 imageViewNoPhoto.visibility = View.VISIBLE
                 imageViewDining.visibility = View.INVISIBLE
@@ -291,23 +233,24 @@ class DiningAdapter(
                 dividerSlash.visibility = View.VISIBLE
                 textViewCardPrice.visibility = View.VISIBLE
 
-                if(dining.kcal.isEmpty() || dining.kcal == "0") {
+                if (dining.kcal.isEmpty() || dining.kcal == "0") {
                     textViewKcal.visibility = View.GONE
                     dividerDot.visibility = View.GONE
                 }
-                if(dining.priceCash.isEmpty() || dining.priceCash == "0") {
+                if (dining.priceCash.isEmpty() || dining.priceCash == "0") {
                     textViewCashPrice.visibility = View.GONE
                     dividerSlash.visibility = View.GONE
                 }
-                if(dining.priceCard.isEmpty() || dining.priceCard == "0") {
+                if (dining.priceCard.isEmpty() || dining.priceCard == "0") {
                     textViewCardPrice.visibility = View.GONE
                     dividerSlash.visibility = View.GONE
                 }
-                if((dining.priceCard.isEmpty() || dining.priceCard == "0") && (dining.priceCash.isEmpty() || dining.priceCash == "0")) {
+                if ((dining.priceCard.isEmpty() || dining.priceCard == "0") && (dining.priceCash.isEmpty() || dining.priceCash == "0")) {
                     dividerDot.visibility = View.GONE
                 }
             }
         }
+
         private fun setDiningData(context: Context, dining: Dining) {
             with(binding) {
                 textViewDiningCorner.text = dining.place
@@ -317,9 +260,10 @@ class DiningAdapter(
                     context.getString(R.string.price, dining.priceCash)
                 textViewCardPrice.text =
                     context.getString(R.string.price, dining.priceCard)
-                textViewDiningMenuItems1.text = dining.menu.subList(0, dining.menu.size / 2).joinToString("\n")
-                textViewDiningMenuItems2.text = dining.menu.subList(dining.menu.size / 2, dining.menu.size).joinToString("\n")
-                setLikeUI(dining)
+                textViewDiningMenuItems1.text =
+                    dining.menu.subList(0, dining.menu.size / 2).joinToString("\n")
+                textViewDiningMenuItems2.text =
+                    dining.menu.subList(dining.menu.size / 2, dining.menu.size).joinToString("\n")
             }
         }
     }

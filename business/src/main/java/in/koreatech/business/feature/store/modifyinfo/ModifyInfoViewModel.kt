@@ -6,12 +6,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chargemap.compose.numberpicker.FullHours
+import com.chargemap.compose.numberpicker.Hours
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.owner.SettingTime
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.business.store.ModifyShopInfoUseCase
-import `in`.koreatech.koin.domain.usecase.owner.GetPresignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -23,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ModifyInfoViewModel @Inject constructor(
-    private val getPresignedUrlUseCase: GetPresignedUrlUseCase,
+    private val getPresignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
     private val modifyInfoUseCase: ModifyShopInfoUseCase,
 ) : ViewModel(),
@@ -33,6 +35,43 @@ class ModifyInfoViewModel @Inject constructor(
     fun initStoreInfo(storeInfo: StoreDetailInfo) = intent {
         reduce {
             state.copy(storeInfo = storeInfo)
+        }
+        initStoreTimeList()
+    }
+
+    private fun initStoreTimeList() {
+        intent{
+            reduce{
+                val newList = state.storeInfo.operatingTime.toMutableList()
+                state.copy(
+                    operatingTimeList = newList
+                )
+            }
+        }
+    }
+
+    private fun isOpenTimeSetting(openTimeSetting: SettingTime) = intent{
+        reduce{
+            state.copy(isOpenTimeSetting = openTimeSetting)
+        }
+    }
+
+    private fun dayOfIndex(index: Int) = intent{
+        reduce{
+            state.copy(dayOfWeekIndex = index)
+        }
+    }
+
+    private fun modifyStoreTime(){
+        intent {
+            val newList = state.operatingTimeList.toMutableList()
+            reduce {
+                state.copy(
+                    storeInfo = state.storeInfo.copy(
+                        operatingTime = newList
+                    )
+                )
+            }
         }
     }
 
@@ -44,15 +83,6 @@ class ModifyInfoViewModel @Inject constructor(
         postSideEffect(ModifyInfoSideEffect.NavigateToSettingOperatingTime)
     }
 
-    fun showAlertDialog(index: Int) = intent {
-        reduce {
-            state.copy(
-                showDialog = true,
-                dayOfWeekIndex = index,
-            )
-        }
-    }
-
     fun hideAlertDialog() = intent {
         reduce {
             state.copy(
@@ -61,44 +91,57 @@ class ModifyInfoViewModel @Inject constructor(
         }
     }
 
-    fun initDialogTimeSetting(openTime: String, closeTime: String) = intent {
-        reduce {
-            if (state.dayOfWeekIndex < 0) return@reduce state
-            val openTimeParts = openTime.split(":").map { it.toInt() }
-            val closeTimeParts = closeTime.split(":").map { it.toInt() }
-            state.copy(
-                dialogTimeState = OperatingTime(
-                    FullHours(openTimeParts[0], openTimeParts[1]),
-                    FullHours(closeTimeParts[0], closeTimeParts[1])
-                )
-            )
+    fun settingStoreOpenTime(time: Hours, index: Int) {
+        intent {
+            if (index >= 0 && index < state.operatingTimeList.size) {
+                val newList = state.operatingTimeList.toMutableList()
+                val currentItem = newList[index]
+                newList[index] = currentItem.copy(openTime = time.toTimeString())
+
+                reduce {
+                    state.copy(operatingTimeList = newList)
+                }
+                modifyStoreTime()
+                closeDialog()
+            }
         }
     }
 
-    fun onSettingStoreTime(openTime: FullHours, closeTime: FullHours) = intent {
+    fun settingStoreCloseTime(time: Hours, index: Int) {
+        intent {
+            if (index >= 0 && index < state.operatingTimeList.size) {
+                val newList = state.operatingTimeList.toMutableList()
+                val currentItem = newList[index]
+                newList[index] = currentItem.copy(closeTime = time.toTimeString())
+
+                reduce {
+                    state.copy(operatingTimeList = newList)
+                }
+                modifyStoreTime()
+                closeDialog()
+            }
+        }
+    }
+
+    fun showOpenTimeDialog(index: Int) = intent{
         reduce {
-            state.copy(dialogTimeState = OperatingTime(openTime, closeTime),
-                storeInfo = state.storeInfo.copy(
-                    operatingTime = state.storeInfo.operatingTime.mapIndexed { index, operatingTime ->
-                        if (index == state.dayOfWeekIndex) {
-                            operatingTime.copy(
-                                openTime = String.format(
-                                    "%02d:%02d",
-                                    openTime.hours,
-                                    openTime.minutes
-                                ),
-                                closeTime = String.format(
-                                    "%02d:%02d",
-                                    closeTime.hours,
-                                    closeTime.minutes
-                                )
-                            )
-                        } else {
-                            operatingTime
-                        }
-                    }
-                )
-            )
+            state.copy(showDialog = true)
+        }
+        isOpenTimeSetting(SettingTime.OPEN)
+        dayOfIndex(index)
+    }
+
+    fun showCloseTimeDialog(index: Int) = intent{
+        reduce {
+            state.copy(showDialog = true)
+        }
+        isOpenTimeSetting(SettingTime.CLOSE)
+        dayOfIndex(index)
+    }
+
+    private fun closeDialog() = intent{
+        reduce{
+            state.copy(showDialog = false)
         }
     }
 
@@ -189,26 +232,31 @@ class ModifyInfoViewModel @Inject constructor(
         }
     }
 
+
     fun getPreSignedUrl(
-        uri: Uri,
         fileSize: Long,
         fileType: String,
         fileName: String,
+        imageUri: String
     ) {
         viewModelScope.launch {
             getPresignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
+                uploadImage(
+                    preSignedUrl = it.second,
+                    mediaType = fileType,
+                    mediaSize = fileSize,
+                    imageUri = imageUri,
+                    fileUrl = it.first,
+                )
                 intent {
                     reduce {
                         state.copy(
-                            storeInfo = state.storeInfo.copy(
-
-                            ),
                             fileInfo = state.fileInfo.toMutableList().apply {
                                 add(
                                     StoreUrl(
-                                        uri.toString(),
+                                        imageUri,
                                         it.first,
                                         fileName,
                                         fileType,
@@ -217,31 +265,72 @@ class ModifyInfoViewModel @Inject constructor(
                                     )
                                 )
                             },
-
                         )
                     }
                 }
             }.onFailure {
                 intent {
+                    postSideEffect(ModifyInfoSideEffect.ShowToastMessage)
                 }
             }
         }
     }
 
-    fun uploadImage(
-        url: String,
-        imageUri: String,
+    private fun uploadImage(
+        fileUrl: String,
+        preSignedUrl: String,
         mediaType: String,
-        mediaSize: Long
+        mediaSize: Long,
+        imageUri: String
     ) {
-        viewModelScope.launch{
-            uploadFilesUseCase(url, imageUri, mediaSize, mediaType).onSuccess {
-                intent {
-                }
+        viewModelScope.launch {
+            uploadFilesUseCase(
+                preSignedUrl,
+                mediaType,
+                mediaSize,
+                imageUri
+            ).onSuccess {
+                insertStoreFileUrl(fileUrl)
             }.onFailure {
                 intent {
+                    postSideEffect(ModifyInfoSideEffect.ShowToastMessage)
                 }
             }
         }
     }
+
+    private fun insertStoreFileUrl(url: String) {
+        intent {
+            reduce {
+                state.copy(
+                    storeInfo = state.storeInfo.copy(
+                        imageUrls = state.storeInfo.imageUrls.toMutableList().apply {
+                            add(url)
+                        }
+                    ),
+                )
+            }
+        }
+    }
+
+    fun initStoreImageUrls() = intent {
+        reduce {
+            state.copy(
+                storeInfo = state.storeInfo.copy(
+                    imageUrls = emptyList()
+                )
+            )
+        }
+    }
+}
+
+private fun Hours.toTimeString(): String {
+
+    val hoursString: String =
+        if (this.hours < 10) "0" + this.hours.toString() else this.hours.toString()
+
+    val minutesString: String =
+        if (this.minutes < 10) "0" + this.minutes.toString() else this.minutes.toString()
+
+    return "$hoursString:$minutesString"
 }
