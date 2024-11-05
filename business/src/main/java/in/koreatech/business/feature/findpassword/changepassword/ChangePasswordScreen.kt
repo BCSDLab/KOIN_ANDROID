@@ -210,9 +210,9 @@ fun ChangePasswordScreen(
                     color = if (fillAllPasswords && buttonEnabled) Color.White else Gray1
                 )
             }
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
-
 }
 
 @Composable
