@@ -19,10 +19,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
@@ -38,16 +40,23 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun BusTimetableScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
-    viewModel: BusTimetableViewModel = hiltViewModel()
+    viewModel: BusTimetableViewModel = hiltViewModel(),
+    previewTab: BusType = BusType.SHUTTLE
 ) {
 
     var selectedTimetableTypeTabIndex by rememberSaveable { mutableIntStateOf(0) }
+
+    val shuttleRegions by viewModel.shuttleRegions.collectAsStateWithLifecycle()
+    val expressTimetable by viewModel.expressTimetable.collectAsStateWithLifecycle()
+    val cityTimetable by viewModel.cityTimetable.collectAsStateWithLifecycle()
+
 
     Column(
         modifier = modifier
@@ -83,139 +92,26 @@ internal fun BusTimetableScreen(
             }
 
             item {
+                if (LocalInspectionMode.current)
+                    selectedTimetableTypeTabIndex = previewTab.ordinal
+
                 when(selectedTimetableTypeTabIndex) {
                     BusType.SHUTTLE.ordinal -> {
                         ShuttleTimetableScreen(
                             modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-                            regions = persistentListOf(
-                                ShuttleRegionViewState(
-                                    name = "서울",
-                                    timetableOverviews = listOf(
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.WEEKDAY,
-                                            name = "서울-대전",
-                                        ),
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.WEEKEND,
-                                            name = "서울-대전",
-                                        ),
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.CIRCULATION,
-                                            name = "서울-대전",
-                                        )
-                                    )
-                                ),
-                                ShuttleRegionViewState(
-                                    name = "대전",
-                                    timetableOverviews = listOf(
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.WEEKDAY,
-                                            name = "대전-서울",
-                                        ),
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.WEEKEND,
-                                            name = "대전-서울",
-                                            description = "대전에서 서울로 이동하는 노선입니다."
-                                        ),
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.CIRCULATION,
-                                            name = "대전-서울",
-                                            description = "대전에서 서울로 이동하는 노선입니다."
-                                        )
-                                    )
-                                ),
-                                ShuttleRegionViewState(
-                                    name = "대구",
-                                    timetableOverviews = listOf(
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.WEEKDAY,
-                                            name = "대구-서울",
-                                        ),
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.WEEKDAY,
-                                            name = "대구-서울",
-                                        ),
-                                        ShuttleTimetableOverviewViewState(
-                                            routeType = ShuttleBusRouteType.WEEKEND,
-                                            name = "대구-서울",
-                                        )
-                                    )
-                                )
-                            )
+                            regions = shuttleRegions.toPersistentList()
                         )
                     }
                     BusType.EXPRESS.ordinal -> {
                         ExpressTimetableScreen(
                             modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-                            timetable = CommonTimetableViewState(
-                                updatedAt = "2024-09-21",
-                                arrivals = mapOf(
-                                    DaytimeType.AM to listOf(
-                                        ArrivalViewState(
-                                            arrivalTime = "09:00"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "09:30"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "10:00"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "10:30"
-                                        ),
-                                    ), DaytimeType.PM to listOf(
-                                        ArrivalViewState(
-                                            arrivalTime = "14:30"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "21:00"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "21:30"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "22:00"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "22:30"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "23:00"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "23:30"
-                                        )
-                                    ),
-                                )
-                            )
+                            timetable = expressTimetable
                         )
                     }
                     BusType.CITY.ordinal -> {
                         CityTimetableScreen(
                             modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-                            timetable = CommonTimetableViewState(
-                                updatedAt = "2024-09-21",
-                                arrivals = mapOf(
-                                    DaytimeType.AM to listOf(
-                                        ArrivalViewState(
-                                            arrivalTime = "09:00"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "09:30"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "10:00"
-                                        ),
-                                        ArrivalViewState(
-                                            arrivalTime = "10:30"
-                                        ),
-                                    ), DaytimeType.PM to listOf(
-                                        ArrivalViewState(
-                                            arrivalTime = "14:30"
-                                        )
-                                    )
-                                )
-                            )
+                            timetable = cityTimetable
                         )
                     }
                 }
@@ -227,8 +123,25 @@ internal fun BusTimetableScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun BusTimetableScreenPreview() {
+private fun BusTimetableShuttleScreenPreview() {
     BusTimetableScreen(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        previewTab = BusType.SHUTTLE
+    )
+}
+@Preview(showBackground = true)
+@Composable
+private fun BusTimetableExpressScreenPreview() {
+    BusTimetableScreen(
+        modifier = Modifier.fillMaxSize(),
+        previewTab = BusType.EXPRESS
+    )
+}
+@Preview(showBackground = true)
+@Composable
+private fun BusTimetableCityScreenPreview() {
+    BusTimetableScreen(
+        modifier = Modifier.fillMaxSize(),
+        previewTab = BusType.CITY
     )
 }
