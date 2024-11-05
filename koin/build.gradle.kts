@@ -79,7 +79,7 @@ android {
 
 fun getPropertyKey(propertyKey: String): String {
     val nullableProperty: String? =
-        gradleLocalProperties(rootDir).getProperty(propertyKey)
+        gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
     return nullableProperty ?: "null"
 }
 
