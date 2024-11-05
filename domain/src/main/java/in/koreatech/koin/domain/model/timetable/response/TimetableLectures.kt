@@ -7,13 +7,30 @@ data class TimetableLectures(
     val totalGrades: Int,
 ){
     /**
-     * 기본 범위는 9시~18시로 range(범위) = 9
-     * 추가 범위는 24시까지 가능하기 때문에 range(범위)가 15까지 가능함.
-     *
-     * @return 9 ~ 15
+     * @reference : TimetableLecturesTest.kt 파일 참고
      */
-    fun timeRange(): Int {
-        return  1
+    fun formatTimeRange(): Int {
+        val a = timetable.map { it.classTime }
+        var maxItem = 0
+        a.forEach {items ->
+            items.forEach {
+                if (maxItem < it) {
+                    maxItem = it
+                }
+            }
+        }
+
+        val range = (maxItem % 100) - 9
+
+        return if (range < 9) {
+            9
+        } else {
+            if (range % 2 == 1) {
+                range + 1
+            } else {
+                range
+            }
+        }
     }
 }
 
