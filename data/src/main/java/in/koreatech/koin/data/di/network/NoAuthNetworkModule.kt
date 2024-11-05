@@ -126,4 +126,12 @@ object NoAuthNetworkModule {
     ): CoopShopApi {
         return retrofit.create(CoopShopApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideTimetableApi(
+        @NoAuth retrofit: Retrofit
+    ): TimetableApi {
+        return retrofit.create(TimetableApi::class.java)
+    }
 }

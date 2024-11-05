@@ -166,6 +166,7 @@ markerman-roundedImageView = { module = "com.makeramen:roundedimageview", versio
 coil = { module = "io.coil-kt:coil", version.ref = "coilVersion" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilVersion" }
+coil-gif = {module = "io.coil-kt:coil-gif",  version.ref = "coilVersion" }
 
 compose-numberPicker = { module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion" }
 powerSpinner = { module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner" }
@@ -210,6 +211,7 @@ koin-oss-license = { id = "in.koreatech.plugin.oss", version = "unspecified" }
 
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose", "compose-ui-tooling"]
+compose_m3 = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material3", "activity-compose", "compose-ui-tooling"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
 hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]

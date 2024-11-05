@@ -3,31 +3,70 @@ package `in`.koreatech.business.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
+import `in`.koreatech.koin.domain.model.version.Version
+import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.domain.usecase.owner.OwnerHasStoreUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerTokenIsValidUseCase
+import `in`.koreatech.koin.domain.usecase.version.GetVersionInformationUseCase
+import `in`.koreatech.koin.domain.usecase.version.OwnerGetVersionInformationUseCase
+import `in`.koreatech.koin.domain.usecase.version.UpdateLatestVersionUseCase
+import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
 class BusinessMainActivityViewModel @Inject constructor(
     private val ownerTokenIsValidUseCase: OwnerTokenIsValidUseCase,
     private val ownerHasStoreUseCase: OwnerHasStoreUseCase,
-): ViewModel() {
-
-    private val _destinationString = MutableLiveData<String>()
-    val destinationString: LiveData<String> get() = _destinationString
+    private val ownerGetVersionInformationUseCase: OwnerGetVersionInformationUseCase
+): ViewModel(), ContainerHost<BusinessMainActivityState, BusinessMainSideEffect> {
+    override val container = container<BusinessMainActivityState, BusinessMainSideEffect>(BusinessMainActivityState())
 
     init{
         ownerTokenIsValid()
+        checkUpdate()
+    }
+
+    private fun checkUpdate() {
+        intent{
+            viewModelScope.launch {
+                ownerGetVersionInformationUseCase()
+                    .onSuccess {
+                        reduce {
+                            state.copy(
+                                version = it
+                            )
+                        }
+                    }.onFailure {
+                        postSideEffect(BusinessMainSideEffect.NetWorkError)
+                    }
+
+            }
+        }
     }
 
     private fun ownerTokenIsValid() {
-        _destinationString.value = when {
-            !ownerTokenIsValidUseCase() -> SIGNINSCREEN
-            ownerHasStoreUseCase() -> REGISTERSTORESCREEN
-            else -> MYSTORESCREEN
+        intent{
+            reduce {
+                state.copy(
+                    destination = when {
+                        !ownerTokenIsValidUseCase() -> SIGNINSCREEN
+                        ownerHasStoreUseCase() -> REGISTERSTORESCREEN
+                        else -> MYSTORESCREEN
+                    }
+                )
+            }
         }
     }
+
+
 }
 
 const val SIGNINSCREEN = "sign_in_screen"

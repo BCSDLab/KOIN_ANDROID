@@ -138,7 +138,8 @@ fun CheckTermScreen(
         }
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
@@ -215,7 +216,7 @@ fun CheckTermScreen(
                     .height(143.dp)
                     .verticalScroll(scrollStatePrivacy)
             ) {
-                Text(text = stringResource(R.string.term_1), fontSize = 10.sp, color = Color.Black)
+                Text(text = state.privacyTerm, fontSize = 10.sp, color = Color.Black)
             }
 
             Spacer(modifier = Modifier.height(15.dp))
@@ -258,7 +259,7 @@ fun CheckTermScreen(
                     .height(143.dp)
                     .verticalScroll(scrollStateKoin)
             ) {
-                Text(text = stringResource(R.string.term_2), fontSize = 10.sp, color = Color.Black)
+                Text(text = state.koinTerm, fontSize = 10.sp, color = Color.Black)
             }
 
             Spacer(modifier = Modifier.weight(1f))
