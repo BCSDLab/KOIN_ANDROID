@@ -9,14 +9,17 @@ import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
+import `in`.koreatech.koin.core.onboarding.OnboardingManager
+import `in`.koreatech.koin.core.onboarding.OnboardingType
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BusTimetableViewModel @Inject constructor(
-
+    private val onboardingManager: OnboardingManager
 ) : ViewModel() {
 
     /** 임시 데이터 모음 */
@@ -244,11 +247,25 @@ class BusTimetableViewModel @Inject constructor(
             )
         )
     )
-    val headArticle = flow {
+    val notice = flow {
         emit("[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)")
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
     )
+
+    val shouldShowNotice = flow {
+        emit(onboardingManager.getShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE))
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = false
+    )
+
+    fun closeNotice() {
+        viewModelScope.launch {
+            onboardingManager.updateShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE, false)
+        }
+    }
 }
