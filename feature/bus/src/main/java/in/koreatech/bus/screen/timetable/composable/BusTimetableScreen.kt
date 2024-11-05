@@ -3,43 +3,42 @@ package `in`.koreatech.bus.screen.timetable.composable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.timetable.type.BusType
-import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
-import `in`.koreatech.bus.viewstate.ArrivalViewState
-import `in`.koreatech.bus.viewstate.CommonTimetableViewState
-import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
-import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -57,6 +56,7 @@ internal fun BusTimetableScreen(
     val expressTimetable by viewModel.expressTimetable.collectAsStateWithLifecycle()
     val cityTimetable by viewModel.cityTimetable.collectAsStateWithLifecycle()
 
+    val headArticle by viewModel.headArticle.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
@@ -69,7 +69,7 @@ internal fun BusTimetableScreen(
         LazyColumn {
             item {
                 Column(
-                    modifier = Modifier.fillMaxWidth().background(Color.White).padding(start = 24.dp)
+                    modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 24.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.shuttle_timetable),
@@ -80,6 +80,31 @@ internal fun BusTimetableScreen(
                         text = stringResource(R.string.request_for_incorrect_information),
                         iconRes = R.drawable.ic_caution
                     )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp)
+                            .background(
+                                color = KoinTheme.colors.info100,
+                                shape = RoundedCornerShape(8.dp)
+                            ).padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = headArticle,
+                            style = KoinTheme.typography.medium14,
+                            color = KoinTheme.colors.primary500,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Icon(
+                            modifier = Modifier.padding(start = 4.dp).size(16.dp),
+                            imageVector = Icons.Rounded.Close,
+                            contentDescription = headArticle,
+                            tint = KoinTheme.colors.neutral300
+                        )
+                    }
                 }
             }
 
