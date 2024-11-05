@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.timetable.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -65,7 +64,7 @@ fun TimetableBottomSheet(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.65f)
+            .height(400.dp)
             .background(Color.White)
             .onGloballyPositioned {
                 onBottomSheetHeightChange(it.size.height.toFloat())
