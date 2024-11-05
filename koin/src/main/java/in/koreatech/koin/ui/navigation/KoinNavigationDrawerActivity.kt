@@ -472,6 +472,29 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
+    /**
+     * 완성되면 아래 함수 주석 풀고 연결
+     */
+//    private fun goToTimetableActivity() {
+//        if (menuState != MenuState.Main) {
+//            goToActivityFinish(Intent(this, TimetableActivity::class.java))
+//        } else {
+//            val intent = Intent(this, TimetableActivity::class.java).apply {
+//                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
+//                    putExtra("isAnonymous", true)
+//                } else {
+//                    putExtra("isAnonymous", false)
+//                }
+//            }
+//            EventLogger.logClickEvent(
+//                action = EventAction.USER,
+//                label = "hamburger",
+//                value = "시간표"
+//            )
+//            startActivity(intent)
+//        }
+//    }
+
     private fun goToTimetableActivity() {
         if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, TimetableActivity::class.java))
