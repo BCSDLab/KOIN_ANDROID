@@ -37,6 +37,7 @@ import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.toPersistentList
@@ -101,7 +102,9 @@ internal fun BusTimetableScreen(
                                 overflow = TextOverflow.Ellipsis
                             )
                             Icon(
-                                modifier = Modifier.padding(start = 4.dp).size(16.dp),
+                                modifier = Modifier.padding(start = 4.dp).size(16.dp).noRippleClickable {
+                                    viewModel.closeNotice()
+                                },
                                 imageVector = Icons.Rounded.Close,
                                 contentDescription = notice,
                                 tint = KoinTheme.colors.neutral300
