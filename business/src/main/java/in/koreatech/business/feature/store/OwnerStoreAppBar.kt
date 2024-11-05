@@ -34,15 +34,12 @@ fun OwnerStoreAppBar(
             modifier = Modifier.align(Alignment.Center),
             style = TextStyle(color = Color.White, fontSize = 18.sp),
         )
-
         IconButton(
             modifier = Modifier
-                .align(Alignment.BottomEnd)
-            ,
+                .align(Alignment.BottomEnd),
             onClick = {
                 showDeleteUserDialog()
             }
-
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_delete),
