@@ -2,15 +2,18 @@ package `in`.koreatech.bus.screen.timetable.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,6 +26,7 @@ import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 internal fun CityTimetableScreen(
@@ -39,28 +43,52 @@ internal fun CityTimetableScreen(
     Column(
         modifier = modifier
     ) {
-        TextChipGroup(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 8.dp, bottom = 4.dp),
-            titles = CityBusNumberType.entries.map { stringResource(it.titleRes) },
-            onChipSelected = { title ->
-                selectedBusNumberTypeIndex = CityBusNumberType.entries.find { context.getString(it.titleRes) == title }?.ordinal ?: 0
-            },
-            selectedChipIndexes = intArrayOf(selectedBusNumberTypeIndex)
-        )
-        TextChipGroup(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.routes),
+                style = KoinTheme.typography.regular16,
+                color = KoinTheme.colors.neutral600
+            )
+            TextChipGroup(
+                modifier = Modifier.padding(start = 16.dp),
+                titles = CityBusNumberType.entries.map { stringResource(it.titleRes) },
+                onChipSelected = { title ->
+                    selectedBusNumberTypeIndex =
+                        CityBusNumberType.entries.find { context.getString(it.titleRes) == title }?.ordinal
+                            ?: 0
+                },
+                selectedChipIndexes = intArrayOf(selectedBusNumberTypeIndex)
+            )
+        }
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 4.dp, bottom = 8.dp),
-            titles = CommonDirectionType.entries.map { stringResource(it.titleRes) },
-            onChipSelected = { title ->
-                selectedDirectionTypeIndex = CommonDirectionType.entries.find { context.getString(it.titleRes) == title }?.ordinal ?: 0
-            },
-            selectedChipIndexes = intArrayOf(selectedDirectionTypeIndex)
-        )
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.operating),
+                style = KoinTheme.typography.regular16,
+                color = KoinTheme.colors.neutral600
+            )
+            TextChipGroup(
+                modifier = Modifier.padding(start = 16.dp),
+                titles = CommonDirectionType.entries.map { stringResource(it.titleRes) },
+                onChipSelected = { title ->
+                    selectedDirectionTypeIndex =
+                        CommonDirectionType.entries.find { context.getString(it.titleRes) == title }?.ordinal
+                            ?: 0
+                },
+                selectedChipIndexes = intArrayOf(selectedDirectionTypeIndex)
+            )
+        }
 
         CommonTimetableView(
             timetable = timetable,
