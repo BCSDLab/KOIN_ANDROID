@@ -3,7 +3,7 @@ package `in`.koreatech.bus.screen.timetable.type
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.bus.R
 
-enum class ExpressDirectionType(
+enum class CommonDirectionType(
     @StringRes val titleRes: Int
 ) {
     TO_BYEONGCHEON(R.string.to_byeongcheon),

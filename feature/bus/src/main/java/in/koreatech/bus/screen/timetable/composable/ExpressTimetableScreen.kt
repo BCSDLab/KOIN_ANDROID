@@ -17,20 +17,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.screen.timetable.type.ExpressDirectionType
+import `in`.koreatech.bus.screen.timetable.type.CommonDirectionType
 import `in`.koreatech.bus.viewstate.ArrivalViewState
-import `in`.koreatech.bus.viewstate.ExpressTimetableViewState
+import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 internal fun ExpressTimetableScreen(
-    timetable: ExpressTimetableViewState,
+    timetable: CommonTimetableViewState,
     modifier: Modifier = Modifier,
-    onDirectionChanged: (ExpressDirectionType) -> Unit = {}
+    onDirectionChanged: (CommonDirectionType) -> Unit = {}
 ) {
 
-    var selectedDirectionTypeIndex by rememberSaveable { mutableIntStateOf(ExpressDirectionType.TO_BYEONGCHEON.ordinal) }
+    var selectedDirectionTypeIndex by rememberSaveable { mutableIntStateOf(CommonDirectionType.TO_BYEONGCHEON.ordinal) }
     val context = LocalContext.current
 
     Column(
@@ -40,9 +40,9 @@ internal fun ExpressTimetableScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 24.dp),
-            titles = ExpressDirectionType.entries.map { stringResource(it.titleRes) },
+            titles = CommonDirectionType.entries.map { stringResource(it.titleRes) },
             onChipSelected = { title ->
-                selectedDirectionTypeIndex = ExpressDirectionType.entries.find { context.getString(it.titleRes) == title }?.ordinal ?: 0
+                selectedDirectionTypeIndex = CommonDirectionType.entries.find { context.getString(it.titleRes) == title }?.ordinal ?: 0
             },
             selectedChipIndexes = intArrayOf(selectedDirectionTypeIndex)
         )
@@ -54,7 +54,7 @@ internal fun ExpressTimetableScreen(
     }
 
     LaunchedEffect(selectedDirectionTypeIndex) {
-        onDirectionChanged(ExpressDirectionType.entries[selectedDirectionTypeIndex])
+        onDirectionChanged(CommonDirectionType.entries[selectedDirectionTypeIndex])
     }
 }
 
@@ -63,7 +63,7 @@ internal fun ExpressTimetableScreen(
 private fun ExpressTimetableScreenPreview() {
     ExpressTimetableScreen(
         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-        timetable = ExpressTimetableViewState(
+        timetable = CommonTimetableViewState(
             updatedAt = "2024-09-21",
             arrivals = mapOf(
                 DaytimeType.AM to listOf(

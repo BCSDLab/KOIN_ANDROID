@@ -13,14 +13,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.viewstate.ArrivalViewState
-import `in`.koreatech.bus.viewstate.ExpressTimetableViewState
+import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 internal fun CommonTimetableView(
-    timetable: ExpressTimetableViewState,
+    timetable: CommonTimetableViewState,
     modifier: Modifier = Modifier
 ) {
     KoinSurface(
@@ -88,7 +88,7 @@ internal fun CommonTimetableView(
 private fun CommonTimetableViewPreview() {
     CommonTimetableView(
         modifier = Modifier.fillMaxSize(),
-        timetable = ExpressTimetableViewState(
+        timetable = CommonTimetableViewState(
             updatedAt = "2024-09-21",
             arrivals = mapOf(
                 DaytimeType.AM to listOf(
