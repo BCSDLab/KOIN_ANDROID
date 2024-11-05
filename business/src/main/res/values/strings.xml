@@ -183,4 +183,7 @@
     <string name="select_store">상점 선택</string>
     <string name="register_store">상점 추가</string>
     <string name="register_menu">메뉴 추가</string>
+    <string name="delete_user">회원 탈퇴</string>
+    <string name="delete_user_detail">현재 로그인 되어 있는 계정을\n 탈퇴하시겠습니까?</string>
+    <string name="delete_user_success">탈퇴가 완료되었습니다.</string>
 </resources>
