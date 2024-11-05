@@ -55,31 +55,50 @@ fun User.Student.toUserRequestWithPassword(hashedPassword: String) = UserRequest
     hashedPassword = hashedPassword
 )
 
-fun Graduated.toBoolean(): Boolean{
+fun Graduated.toBoolean(): Boolean {
     return this == Graduated.Graduate
 }
 
 fun Gender.toInt(): Int? {
-    return when (this){
+    return when (this) {
         Gender.Man -> 0
         Gender.Woman -> 1
         else -> null
     }
 }
 
-fun String.toPhoneNumber() : String{
+fun String.toPhoneNumber(): String {
     val phoneNumberDigitsOnly = this.filter { it.isDigit() }
 
     return when (phoneNumberDigitsOnly.length) {
-        11 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${phoneNumberDigitsOnly.substring(3, 7)}-${phoneNumberDigitsOnly.substring(7)}"
-        10 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${phoneNumberDigitsOnly.substring(3, 6)}-${phoneNumberDigitsOnly.substring(6)}"
+        11 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${
+            phoneNumberDigitsOnly.substring(
+                3,
+                7
+            )
+        }-${phoneNumberDigitsOnly.substring(7)}"
+
+        10 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${
+            phoneNumberDigitsOnly.substring(
+                3,
+                6
+            )
+        }-${phoneNumberDigitsOnly.substring(6)}"
+
         else -> phoneNumberDigitsOnly
     }
 }
-fun String.toBusinessNumber() : String{
+
+fun String.toBusinessNumber(): String {
     val businessNumberDigitsOnly = this.filter { it.isDigit() }
     return when (businessNumberDigitsOnly.length) {
-      11->"${businessNumberDigitsOnly.substring(0, 3)}-${businessNumberDigitsOnly.substring(3, 5)}-${businessNumberDigitsOnly.substring(5)}"
+        11 -> "${businessNumberDigitsOnly.substring(0, 3)}-${
+            businessNumberDigitsOnly.substring(
+                3,
+                5
+            )
+        }-${businessNumberDigitsOnly.substring(5)}"
+
         else -> businessNumberDigitsOnly
     }
 }

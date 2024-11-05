@@ -4,7 +4,6 @@ import `in`.koreatech.koin.domain.error.owner.OwnerErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
-import `in`.koreatech.koin.domain.util.ext.toSHA256
 import javax.inject.Inject
 
 class OwnerRegisterUseCase @Inject constructor(
