@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.navigation.BusNavigation
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @AndroidEntryPoint
@@ -22,10 +23,9 @@ class Bus2Activity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_bus2)
         findViewById<ComposeView>(R.id.compose_view_bus).setContent {
-            MaterialTheme {
+            KoinTheme {
                 BusNavigation(
-                    modifier = Modifier.fillMaxSize(),
-                    navController = rememberNavController(),
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
