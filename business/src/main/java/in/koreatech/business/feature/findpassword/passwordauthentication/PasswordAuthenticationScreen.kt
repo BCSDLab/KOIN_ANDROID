@@ -208,7 +208,7 @@ fun PasswordAuthenticationScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 LinedTextField(
-                    modifier = Modifier.widthIn(max = 230.dp),
+                    modifier = Modifier.widthIn(max = 220.dp),
                     value = authCode,
                     onValueChange = insertAuthCode,
                     label = stringResource(R.string.input_auth_code),
@@ -222,7 +222,7 @@ fun PasswordAuthenticationScreen(
                         ColorAccent
                     ) else buttonColors(ColorPrimary),
                     modifier = modifier
-                        .width(124.dp)
+                        .width(135.dp)
                         .height(41.dp)
                         .clickableOnce { }
                 ) {

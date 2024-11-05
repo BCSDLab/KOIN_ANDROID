@@ -76,6 +76,13 @@ fun String.toPhoneNumber() : String{
         else -> phoneNumberDigitsOnly
     }
 }
+fun String.toBusinessNumber() : String{
+    val businessNumberDigitsOnly = this.filter { it.isDigit() }
+    return when (businessNumberDigitsOnly.length) {
+      11->"${businessNumberDigitsOnly.substring(0, 3)}-${businessNumberDigitsOnly.substring(3, 5)}-${businessNumberDigitsOnly.substring(5)}"
+        else -> businessNumberDigitsOnly
+    }
+}
 
 fun String.toSchoolEamil() = "$this@koreatech.ac.kr"
 

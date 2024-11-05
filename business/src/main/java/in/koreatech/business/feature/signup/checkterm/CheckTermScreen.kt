@@ -277,6 +277,8 @@ fun CheckTermScreen(
                 ) {
                 Text(text = stringResource(R.string.next))
             }
+            Spacer(modifier = Modifier.height(20.dp))
+
 
         }
     }
