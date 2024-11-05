@@ -44,6 +44,7 @@ import androidx.compose.ui.zIndex
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.OwnerStoreAppBar
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
+import `in`.koreatech.business.feature.store.storedetail.dialog.DeleteUserDialog
 import `in`.koreatech.business.feature.store.storedetail.dialog.MyStoreSelectDialog
 import `in`.koreatech.business.feature.store.storedetail.event.EventScreen
 import `in`.koreatech.business.feature.store.storedetail.menu.MenuScreen
@@ -84,7 +85,15 @@ fun MyStoreDetailScreen(
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        OwnerStoreAppBar(stringResource(R.string.my_shop))
+        OwnerStoreAppBar(
+            stringResource(R.string.my_shop),
+            viewModel::showDeleteUserDialog
+        )
+        DeleteUserDialog(
+            onClickCancel = viewModel::closeDeleteUserDialog,
+            deleteUser = viewModel::deleteUser,
+            dialogVisibility = state.deleteUserDialogVisibility,
+        )
         MyStoreSelectDialog(
             dialogVisibility = state.selectDialogVisibility,
             storeList = state.storeList,
@@ -130,6 +139,11 @@ fun MyStoreDetailScreen(
             MyStoreDetailSideEffect.ShowErrorModifyEventToast -> ToastUtil.getInstance().makeShort(
                 context.getString(R.string.error_modify_event)
             )
+
+            MyStoreDetailSideEffect.DeleteUser -> {
+                ToastUtil.getInstance().makeShort(context.getString(R.string.delete_user_success))
+                navigateToLoginScreen()
+            }
 
         }
     }

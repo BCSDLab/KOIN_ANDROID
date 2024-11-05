@@ -16,6 +16,7 @@ import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
+import `in`.koreatech.koin.domain.util.ext.toSHA256
 import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
 import java.io.EOFException
@@ -40,7 +41,7 @@ class OwnerRegisterRepositoryImpl(
                     companyNumber,
                     email,
                     name,
-                    password,
+                    password.toSHA256(),
                     phoneNumber,
                     shopId,
                     shopName
@@ -71,7 +72,7 @@ class OwnerRegisterRepositoryImpl(
                 attachments.toFileUrlList(),
                 companyNumber,
                 name,
-                password,
+                password.toSHA256(),
                 phoneNumber,
                 shopId,
                 shopName
