@@ -35,4 +35,15 @@
 
     <string name="select_department_title">전공선택</string>
 
+    <string name="edit_titletable_frame_title">시간표 설정</string>
+    <string name="edit_titletable_frame_main">기본 시간표로 설정하기</string>
+    <string name="edit_titletable_frame_delete">삭제</string>
+
+    <string-array name="delete_titletable_frame_title">
+        <item>%s을</item>
+        <item>" 삭제"</item>
+        <item>하시겠어요?</item>
+    </string-array>
+    <string name="delete_titletable_frame_confirmation">삭제하기</string>
+
 </resources>
