@@ -1,9 +1,12 @@
 package `in`.koreatech.business.feature.store.storedetail.dialog
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -13,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -32,11 +36,10 @@ import `in`.koreatech.business.R
 import `in`.koreatech.koin.domain.model.store.Store
 
 @Composable
-fun MyStoreSelectDialog(
+fun DeleteUserDialog(
     onClickCancel: () -> Unit = {},
+    deleteUser: () -> Unit = {},
     dialogVisibility: Boolean = true,
-    storeList: List<Store> = emptyList(),
-    selectStore: (Int) -> Unit = {}
 ) {
     if(dialogVisibility){
         Dialog(
@@ -61,7 +64,6 @@ fun MyStoreSelectDialog(
                         .wrapContentHeight(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                     Box(
                         modifier = Modifier
                             .padding(top = 16.dp)
@@ -80,35 +82,49 @@ fun MyStoreSelectDialog(
                     }
 
                     Text(
-                        text = stringResource(id = R.string.select_store),
+                        text = stringResource(id = R.string.delete_user),
                         textAlign = TextAlign.Center,
                         color = Color.Black,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
 
-                    LazyColumn(
+                    Text(
+                        modifier = Modifier.padding(top = 5.dp),
+                        text = stringResource(id = R.string.delete_user_detail),
+                        textAlign = TextAlign.Center,
+                        color = Color.Black,
+                        fontSize = 15.sp
+                    )
+
+                    Row(
                         modifier = Modifier
-                            .padding(top = 8.dp, bottom = 8.dp)
-                            .heightIn(max = 200.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                            .padding(top = 35.dp)
+                            .padding(horizontal = 40.dp)
+                            .fillMaxWidth()
+                        ,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ){
-                        itemsIndexed(storeList){ index, store ->
-                            Text(
-                                modifier = Modifier
-                                    .height(30.dp)
-                                    .padding(horizontal = 40.dp)
-                                    .clickable {
-                                        selectStore(store.uid)
-                                        onClickCancel()
-                                    }
-                                ,
-                                text = "${index + 1}. ${store.name}",
-                                fontSize = 15.sp,
-                                textAlign = TextAlign.Start
-                            )
+                        Button(
+                            modifier = Modifier.weight(1F),
+                            onClick = {
+                                onClickCancel()
+                            }
+                        ) {
+                            Text(text = stringResource(id = R.string.cancel))
+                        }
+
+                        Button(
+                            modifier = Modifier.weight(1F),
+                            onClick = {
+                                onClickCancel()
+                                deleteUser()
+                            }
+                        ) {
+                            Text(text = stringResource(id = R.string.check))
                         }
                     }
+
                 }
             }
         }
@@ -117,7 +133,6 @@ fun MyStoreSelectDialog(
 
 @Preview
 @Composable
-private fun PreviewMyStoreSelectDialog() {
-    MyStoreSelectDialog(
-    )
+private fun PreviewDeleteUserDialog() {
+    DeleteUserDialog()
 }
