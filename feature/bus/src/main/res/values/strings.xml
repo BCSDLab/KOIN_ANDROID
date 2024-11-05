@@ -22,6 +22,8 @@
     <string name="n405">405번</string>
     <string name="n495">495번</string>
     <string name="starting_point">기점</string>
+    <string name="routes">노선</string>
+    <string name="operating">운행</string>
 
     <!-- Content description -->
 
