@@ -71,7 +71,13 @@ internal fun BusTimetableScreen(
             }
 
             item {
-
+                when(selectedTimetableTypeTabIndex) {
+                    BusType.SHUTTLE.ordinal -> {
+                        ShuttleTimetableScreen(
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
             }
         }
     }

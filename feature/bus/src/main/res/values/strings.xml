@@ -6,6 +6,7 @@
     <string name="tab_shuttle">셔틀</string>
     <string name="tab_express">대성</string>
     <string name="tab_city">시내</string>
+    <string name="all_routes">전체</string>
     <string name="weekday_routes">주중노선</string>
     <string name="weekend_routes">주말노선</string>
     <string name="circulation_routes">순환노선</string>
