@@ -70,8 +70,9 @@ fun TimetableBottomSheet(
                 onBottomSheetHeightChange(it.size.height.toFloat())
             }
             .padding(
-                horizontal = 24.dp,
-                vertical = 10.dp
+                start = 24.dp,
+                end = 24.dp,
+                top = 10.dp
             ),
     ) {
         TimetableBottomSheetHeader(

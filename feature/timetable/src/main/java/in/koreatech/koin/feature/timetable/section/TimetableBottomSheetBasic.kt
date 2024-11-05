@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.timetable.section
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
@@ -44,7 +45,9 @@ fun TimetableBottomSheetBasic(
             onClickSettingIcon = onClickSettingIcon
         )
         HorizontalDivider(thickness = 2.dp, color = KoinTheme.colors.neutral300)
-        LazyColumn {
+        LazyColumn(
+            contentPadding = PaddingValues(bottom = 16.dp)
+        ) {
             items(lectures.size) {
                 LectureBox(
                     position = it,

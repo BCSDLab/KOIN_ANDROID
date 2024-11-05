@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.section
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +21,8 @@ fun TimetableBottomSheetCustom(
     val events: SnapshotStateList<CustomEventExtraData> = remember { mutableStateListOf() }
 
     LazyColumn(
-        modifier = modifier
+        modifier = modifier,
+        contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         item {
             BottomSheetCustomContent(
