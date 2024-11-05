@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 
 @Immutable
-data class ExpressTimetableViewState(
+data class CommonTimetableViewState(
     val arrivals: Map<DaytimeType, List<ArrivalViewState>>,
     val updatedAt: String
 )
