@@ -22,8 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
+import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
@@ -38,7 +40,8 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun BusTimetableScreen(
     modifier: Modifier = Modifier,
-    onNavigationIconClick: () -> Unit = {}
+    onNavigationIconClick: () -> Unit = {},
+    viewModel: BusTimetableViewModel = hiltViewModel()
 ) {
 
     var selectedTimetableTypeTabIndex by rememberSaveable { mutableIntStateOf(0) }
