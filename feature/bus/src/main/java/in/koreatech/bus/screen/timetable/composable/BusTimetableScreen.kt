@@ -56,7 +56,8 @@ internal fun BusTimetableScreen(
     val expressTimetable by viewModel.expressTimetable.collectAsStateWithLifecycle()
     val cityTimetable by viewModel.cityTimetable.collectAsStateWithLifecycle()
 
-    val headArticle by viewModel.headArticle.collectAsStateWithLifecycle()
+    val shouldShowNotice by viewModel.shouldShowNotice.collectAsStateWithLifecycle()
+    val notice by viewModel.notice.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
@@ -80,30 +81,32 @@ internal fun BusTimetableScreen(
                         text = stringResource(R.string.request_for_incorrect_information),
                         iconRes = R.drawable.ic_caution
                     )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp)
-                            .background(
-                                color = KoinTheme.colors.info100,
-                                shape = RoundedCornerShape(8.dp)
-                            ).padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            modifier = Modifier.weight(1f),
-                            text = headArticle,
-                            style = KoinTheme.typography.medium14,
-                            color = KoinTheme.colors.primary500,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Icon(
-                            modifier = Modifier.padding(start = 4.dp).size(16.dp),
-                            imageVector = Icons.Rounded.Close,
-                            contentDescription = headArticle,
-                            tint = KoinTheme.colors.neutral300
-                        )
+                    if (shouldShowNotice || LocalInspectionMode.current) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp)
+                                .background(
+                                    color = KoinTheme.colors.info100,
+                                    shape = RoundedCornerShape(8.dp)
+                                ).padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier.weight(1f),
+                                text = notice,
+                                style = KoinTheme.typography.medium14,
+                                color = KoinTheme.colors.primary500,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Icon(
+                                modifier = Modifier.padding(start = 4.dp).size(16.dp),
+                                imageVector = Icons.Rounded.Close,
+                                contentDescription = notice,
+                                tint = KoinTheme.colors.neutral300
+                            )
+                        }
                     }
                 }
             }
