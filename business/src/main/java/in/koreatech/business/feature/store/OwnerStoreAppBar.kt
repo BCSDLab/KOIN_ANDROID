@@ -3,6 +3,7 @@ package `in`.koreatech.business.feature.store
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -19,23 +20,32 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorPrimary
 
 @Composable
-fun OwnerStoreAppBar(title: String) {
+fun OwnerStoreAppBar(
+    title: String,
+    showDeleteUserDialog: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(ColorPrimary),
     ) {
-        IconButton(onClick = { /*TODO*/ }) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = stringResource(R.string.back),
-                colorFilter = ColorFilter.tint(Color.White),
-            )
-        }
         Text(
             text = title,
             modifier = Modifier.align(Alignment.Center),
             style = TextStyle(color = Color.White, fontSize = 18.sp),
         )
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd),
+            onClick = {
+                showDeleteUserDialog()
+            }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_delete),
+                contentDescription = stringResource(R.string.delete_user),
+                colorFilter = ColorFilter.tint(Color.White),
+            )
+        }
     }
 }

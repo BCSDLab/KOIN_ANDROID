@@ -11,4 +11,6 @@ sealed class MyStoreDetailSideEffect {
     data object NavigateToRegisterStoreScreen :  MyStoreDetailSideEffect()
     data class ShowErrorMessage(val errorMessage: String) : MyStoreDetailSideEffect()
     data object ShowErrorModifyEventToast : MyStoreDetailSideEffect()
+
+    data object DeleteUser : MyStoreDetailSideEffect()
 }
