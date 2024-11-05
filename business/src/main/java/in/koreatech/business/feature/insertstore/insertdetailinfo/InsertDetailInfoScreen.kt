@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -169,11 +171,23 @@ fun InsertDetailInfoScreenImpl(
         }
 
         item {
-            NameTextField(stringResource(id = R.string.calling_number), storePhoneNumber, onStorePhoneNumberChange, 32.dp)
+            NameTextField(
+                stringResource(id = R.string.calling_number),
+                storePhoneNumber,
+                onStorePhoneNumberChange,
+                32.dp,
+                KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
         }
 
         item {
-            NameTextField(stringResource(id = R.string.delivery_fee), storeDeliveryFee, onStoreDeliveryFeeChange, 24.dp)
+            NameTextField(
+                stringResource(id = R.string.delivery_fee),
+                storeDeliveryFee,
+                onStoreDeliveryFeeChange,
+                24.dp,
+                KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
         }
 
         item {
@@ -287,7 +301,8 @@ fun NameTextField(
     textString: String = "",
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
-    paddingTopValue: Dp = 10.dp
+    paddingTopValue: Dp = 10.dp,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ){
     Row(
         modifier = Modifier
@@ -303,7 +318,7 @@ fun NameTextField(
             fontWeight = FontWeight.Bold
         )
 
-        BorderTextField(inputString, onStringChange)
+        BorderTextField(inputString, onStringChange, keyboardOptions)
     }
 }
 
@@ -331,6 +346,7 @@ private fun HandleSideEffects(viewModel: InsertDetailInfoScreenViewModel, naviga
 fun BorderTextField(
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ){
     Box(
         modifier = Modifier
@@ -342,6 +358,7 @@ fun BorderTextField(
         BasicTextField(
             value = inputString,
             onValueChange = onStringChange,
+            keyboardOptions = keyboardOptions,
             textStyle = TextStyle(
                 color = Color.Black,
                 fontSize = 14.sp
