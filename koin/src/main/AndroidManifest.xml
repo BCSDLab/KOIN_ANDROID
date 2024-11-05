@@ -38,6 +38,7 @@
 
         <activity android:name=".ui.timetablev2.TimetableActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/KAPTheme.NoActionBar"/>
 
         <activity android:name=".ui.scheme.SchemeActivity"
