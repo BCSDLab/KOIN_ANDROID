@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.search.viewmodel.BusSearchViewModel
+import `in`.koreatech.bus.screen.search.viewmodel.SearchBusUiState
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -44,6 +46,7 @@ import `in`.koreatech.koin.feature.bus.R
 fun BusSearchScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
+    onSearchSuccess: (Unit) -> Unit = {},
     viewModel: BusSearchViewModel = hiltViewModel()
 ) {
 
@@ -68,6 +71,17 @@ fun BusSearchScreen(
             onSwapIconClicked = viewModel::swapDepartureAndArrival,
             onSearchClicked = viewModel::search
         )
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.searchBusUiState.collect {
+            when(it) {
+                is SearchBusUiState.Loading -> Unit
+                is SearchBusUiState.EmptyDeparture -> Unit
+                is SearchBusUiState.EmptyArrival -> Unit
+                is SearchBusUiState.Success -> onSearchSuccess(it.data) // TODO : data 타입
+            }
+        }
     }
 }
 

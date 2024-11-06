@@ -39,7 +39,10 @@ fun BusNavigation(
         composable<Routes.BusSearch> {
             BusSearchScreen(
                 modifier = Modifier.fillMaxSize(),
-                onNavigationIconClick = { navController.popBackStack() }
+                onNavigationIconClick = { navController.popBackStack() },
+                onSearchSuccess = {
+                    // navController.navigate(Routes.SearchedTimetable(it))
+                }
             )
         }
     }
