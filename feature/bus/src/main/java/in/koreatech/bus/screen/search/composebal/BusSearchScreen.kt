@@ -223,7 +223,54 @@ private fun BusSearchScreenPreview() {
 
         BusSearchContentView(
             departure = "",
-            arrival = "도착지",
+            arrival = "",
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp)
+                .padding(horizontal = 24.dp),
+            onSwapIconClicked = { }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+private fun BusSearchScreen2Preview() {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        KoinTopAppBar(
+            title = stringResource(R.string.title_bus_search),
+            onNavigationIconClick = { }
+        )
+
+        BusSearchContentView(
+            departure = "코리아텍",
+            arrival = "",
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp)
+                .padding(horizontal = 24.dp),
+            onSwapIconClicked = { }
+        )
+    }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+private fun BusSearchScreen3Preview() {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        KoinTopAppBar(
+            title = stringResource(R.string.title_bus_search),
+            onNavigationIconClick = { }
+        )
+
+        BusSearchContentView(
+            departure = "코리아텍",
+            arrival = "천안역",
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 16.dp)
