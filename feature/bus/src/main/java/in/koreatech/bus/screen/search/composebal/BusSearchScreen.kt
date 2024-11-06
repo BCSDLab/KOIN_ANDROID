@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -66,7 +65,8 @@ fun BusSearchScreen(
                 .padding(horizontal = 24.dp),
             departure = departure,
             arrival = arrival,
-            onSwapIconClicked = viewModel::swapDepartureAndArrival
+            onSwapIconClicked = viewModel::swapDepartureAndArrival,
+            onSearchClicked = viewModel::search
         )
     }
 }
@@ -77,6 +77,7 @@ private fun BusSearchContentView(
     arrival: String,
     modifier: Modifier = Modifier,
     onSwapIconClicked: () -> Unit = {},
+    onSearchClicked: () -> Unit = {}
 ) {
 
     KoinSurface {
@@ -178,7 +179,7 @@ private fun BusSearchContentView(
                     .padding(bottom = 30.dp),
                 text = stringResource(R.string.search),
                 contentPadding = PaddingValues(vertical = 12.dp),
-                onClick = { }
+                onClick = onSearchClicked
             )
         }
     }
