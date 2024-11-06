@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="semester_type_spring">1학기</string>
+    <string name="semester_type_summer">여름학기</string>
+    <string name="semester_type_fall">2학기</string>
+    <string name="semester_type_winter">겨울학기</string>
+
     <string name="lecture_duplication_title">시간표가 중복돼요.</string>
     <string name="lecture_duplication_cancellation">취소</string>
     <string name="lecture_duplication_confirmation">대체하기</string>
