@@ -20,6 +20,8 @@ import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetBasic
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetCustom
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetHeader
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.time.DayOfWeek
 import java.time.LocalTime
 
@@ -30,7 +32,7 @@ enum class TimetableBottomSheetContentMode {
 data class CustomEventData(
     val schedule: String = "",
     val professor: String? = "",
-    val data: List<CustomEventExtraData> = emptyList()
+    val data: ImmutableList<CustomEventExtraData> = persistentListOf()
 )
 
 data class CustomEventExtraData(
