@@ -150,6 +150,7 @@ fun FinishChangePasswordScreen(
                         color = Color.White,
                     )
                 }
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
