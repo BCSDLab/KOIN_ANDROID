@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.section
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -22,26 +23,23 @@ fun BottomSheetCustomContent(
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         TimetableInputField(
             title = stringResource(id = R.string.timetable_input_field_title_schedule),
             optional = false,
             onValueChange = onScheduleNameChange
         )
-        Spacer(modifier = Modifier.height(8.dp))
         TimetableInputField(
             title = stringResource(id = R.string.timetable_input_field_title_professor),
             onValueChange = onProfessorNameChange
         )
-        Spacer(modifier = Modifier.height(8.dp))
         TimetableTimeContentRow()
-        Spacer(modifier = Modifier.height(8.dp))
         TimetableInputField(
             title =  stringResource(id = R.string.timetable_input_field_title_place),
             onValueChange = onPlaceNameChange
         )
-        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 

@@ -30,6 +30,7 @@ fun TimetableBottomSheetCustom(
                 onProfessorNameChange = {}, // TODO : 교수명 추가
                 onPlaceNameChange = {} // TODO : 장소 추가
             )
+            Spacer(modifier = Modifier.height(8.dp))
         }
         items(events.size, key = { events[it].position }) { index ->
             BottomSheetCustomExtraContent(

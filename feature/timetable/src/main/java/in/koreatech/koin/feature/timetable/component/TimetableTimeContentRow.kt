@@ -47,21 +47,21 @@ fun TimetableTimeContentRow(
             )
         }
 
-        Row(modifier = Modifier) {
+        Row(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(11.dp)
+        ) {
             TimeEditBox(
                 text = "월요일"
             )
-            Spacer(modifier = Modifier.width(11.dp))
             TimeEditBox(
                 text = "09:00"
             )
-            Spacer(modifier = Modifier.width(11.dp))
             Text(
                 text = stringResource(id = R.string.timetable_input_field_wave_character),
                 style = KoinTheme.typography.medium18,
                 color = KoinTheme.colors.neutral800
             )
-            Spacer(modifier = Modifier.width(11.dp))
             TimeEditBox(
                 text = "11:00"
             )
