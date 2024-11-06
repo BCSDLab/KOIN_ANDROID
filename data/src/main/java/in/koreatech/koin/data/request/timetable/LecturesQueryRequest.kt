@@ -32,10 +32,10 @@ data class LectureQueryRequest(
 
 fun LecturesQuery.toLecturesQueryRequest() = LecturesQueryRequest(
     timetableFrameId = timetableFrameId,
-    timetableLecture = timetableLecture.map { it.toTLectureQueryRequest() }
+    timetableLecture = timetableLecture.map { it.toLectureQueryRequest() }
 )
 
-fun LectureQuery.toTLectureQueryRequest() = LectureQueryRequest(
+fun LectureQuery.toLectureQueryRequest() = LectureQueryRequest(
     lectureId = lectureId,
     classTitle = classTitle,
     classTime = classTime,
