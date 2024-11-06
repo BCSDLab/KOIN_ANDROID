@@ -197,7 +197,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
 
         binding.categoriesRecyclerview.apply {
-            layoutManager = GridLayoutManager(this@StoreActivity, 5)
+            layoutManager = GridLayoutManager(this@StoreActivity, 6)
             adapter = storeCategoriesAdapter
         }
 
