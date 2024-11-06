@@ -182,7 +182,7 @@ fun AccountSetupScreen(
                     .width(115.dp)
                     .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = state.phoneNumber.isNotEmpty() && state.phoneNumberState !is SignupContinuationState.RequestedSmsValidation,
+                    enabled = state.phoneNumber.isNotEmpty(),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = if(state.sendCodeError == null) ColorPrimary else ColorSecondary,
                         contentColor = Color.White,
@@ -192,7 +192,7 @@ fun AccountSetupScreen(
                     onClick = viewModel::checkExistsAccount
                     ) {
                     Text(
-                        text = stringResource(id = R.string.send_authentication_code),
+                        text = if(state.phoneNumberState is SignupContinuationState.RequestedSmsValidation) stringResource(id = R.string.resend_authentication_code) else stringResource(id = R.string.send_authentication_code),
                         fontWeight = Bold,
                         fontSize = 13.sp,
                     )
@@ -306,6 +306,7 @@ fun AccountSetupScreen(
                     fontWeight = Bold,
                 )
             }
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 
