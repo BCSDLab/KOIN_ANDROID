@@ -11,7 +11,6 @@ import `in`.koreatech.koin.data.response.timetable.SemesterCheckResponse
 import `in`.koreatech.koin.data.response.timetable.SemesterResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
-import `in`.koreatech.koin.domain.model.timetable.request.LecturesQuery
 import javax.inject.Inject
 
 class TimetableRemoteDataSource @Inject constructor(

@@ -2,11 +2,11 @@ package `in`.koreatech.koin.data.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import `in`.koreatech.koin.data.request.timetable.toLecturesQueryRequest
+import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
+import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
-import `in`.koreatech.koin.domain.model.timetable.request.LecturesQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
@@ -71,8 +71,11 @@ class TimetableRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun postTimetableLectures(lectures: LecturesQuery): Result<TimetableLectures> = runCatching {
-        timetableRemoteDataSource.postTimetableLectures(lectures.toLecturesQueryRequest()).toTimetableLectures()
+    override suspend fun postTimetableLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures> = runCatching {
+        timetableRemoteDataSource.postTimetableLectures(LecturesQueryRequest(
+            timetableFrameId = frameId,
+            timetableLecture = lectures.map { it.toLectureQueryRequest() }
+        )).toTimetableLectures()
     }
 
 
