@@ -2,6 +2,7 @@
 activityComposeVersion = "1.8.2"
 activityKtxVersion = "1.5.0"
 cardviewVersion = "1.0.0"
+constraintlayoutComposeVersion = "1.1.0"
 inAppUpdateVersion = "2.1.0"
 featureDeliveryKtxVersion = "2.1.0"
 firebaseBomVersion = "32.5.0"
@@ -76,6 +77,7 @@ kotlinxCollectionsImmutableVersion = "0.3.8"
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardviewVersion" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutComposeVersion" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtxVersion" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtxVersion" }
