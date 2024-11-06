@@ -23,7 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -37,6 +39,12 @@ fun TimetableInputField(
     onValueChange: (text: String) -> Unit = {},
 ) {
     var text by remember { mutableStateOf("") }
+    val textMeasurer = rememberTextMeasurer()
+    val textLayoutResult = textMeasurer.measure(
+        text = stringResource(id = R.string.timetable_input_field_option_character),
+        style = KoinTheme.typography.regular16,
+    )
+    val optionalCharacterWidth = textLayoutResult.size.width
     BasicTextField(
         value = text,
         onValueChange = {
@@ -65,14 +73,14 @@ fun TimetableInputField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (optional) {
+                    Spacer(modifier = Modifier.width(LocalDensity.current.run { optionalCharacterWidth.toDp() }))
+                } else {
                     Text(
                         text = stringResource(id = R.string.timetable_input_field_option_character),
                         style = KoinTheme.typography.regular16,
                         color = KoinTheme.colors.sub500,
-                        modifier = Modifier.padding(end = 1.dp, bottom = 1.dp)
+                        modifier = Modifier.padding(end = 1.dp, bottom = 1.dp),
                     )
-                } else {
-                    Spacer(modifier = Modifier.width(8.dp))
                 }
                 Text(
                     text = title,
@@ -89,7 +97,10 @@ fun TimetableInputField(
                 Box {
                     text.ifEmpty {
                         Text(
-                            text = stringResource(id = R.string.timetable_input_field_placeholder, title),
+                            text = stringResource(
+                                id = R.string.timetable_input_field_placeholder,
+                                title
+                            ),
                             style = KoinTheme.typography.regular12,
                             color = KoinTheme.colors.neutral500
                         )

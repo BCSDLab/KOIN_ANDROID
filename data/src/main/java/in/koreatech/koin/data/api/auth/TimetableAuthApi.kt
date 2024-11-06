@@ -7,7 +7,6 @@ import `in`.koreatech.koin.data.request.timetable.TimetableLecturesQueryRequest
 import `in`.koreatech.koin.data.response.timetable.SemesterCheckResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
-import `in`.koreatech.koin.domain.model.timetable.request.LecturesQuery
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
