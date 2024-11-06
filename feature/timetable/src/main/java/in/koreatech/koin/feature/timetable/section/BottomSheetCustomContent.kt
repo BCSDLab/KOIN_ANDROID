@@ -26,7 +26,7 @@ fun BottomSheetCustomContent(
     ) {
         TimetableInputField(
             title = stringResource(id = R.string.timetable_input_field_title_schedule),
-            optional = true,
+            optional = false,
             onValueChange = onScheduleNameChange
         )
         Spacer(modifier = Modifier.height(8.dp))

@@ -3,8 +3,10 @@ package `in`.koreatech.koin.feature.timetable.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -35,7 +37,7 @@ import `in`.koreatech.koin.feature.timetable.R
 fun TimetableInputField(
     title: String,
     modifier: Modifier = Modifier,
-    optional: Boolean = false,
+    optional: Boolean = true,
     onValueChange: (text: String) -> Unit = {},
 ) {
     var text by remember { mutableStateOf("") }
@@ -62,6 +64,7 @@ fun TimetableInputField(
         decorationBox = { innerTextField ->
             Row(
                 modifier = Modifier
+                    .height(IntrinsicSize.Min)
                     .fillMaxWidth()
                     .background(Color.White)
                     .border(
@@ -90,7 +93,7 @@ fun TimetableInputField(
                 Spacer(modifier = Modifier.width(7.dp))
                 VerticalDivider(
                     thickness = 2.dp,
-                    modifier = Modifier.heightIn(max = 25.dp),
+                    modifier = Modifier.fillMaxHeight(),
                     color = KoinTheme.colors.neutral300
                 )
                 Spacer(modifier = Modifier.width(20.dp))
