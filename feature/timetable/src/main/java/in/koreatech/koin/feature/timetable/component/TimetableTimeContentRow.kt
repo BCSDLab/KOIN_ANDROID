@@ -28,44 +28,35 @@ fun TimetableTimeContentRow(
             .background(Color.White)
             .padding(start = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(
-            modifier = Modifier,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = R.string.timetable_input_field_option_character),
-                style = KoinTheme.typography.regular16,
-                color = KoinTheme.colors.sub500,
-                modifier = Modifier.padding(end = 1.dp, bottom = 1.dp)
-            )
-            Text(
-                text = stringResource(id = R.string.timetable_input_field_title_time),
-                style = KoinTheme.typography.bold12,
-                color = KoinTheme.colors.neutral800
-            )
-        }
+        Text(
+            text = stringResource(id = R.string.timetable_input_field_option_character),
+            style = KoinTheme.typography.regular16,
+            color = KoinTheme.colors.sub500,
+            modifier = Modifier.padding(end = 1.dp, bottom = 1.dp)
+        )
+        Text(
+            text = stringResource(id = R.string.timetable_input_field_title_time),
+            style = KoinTheme.typography.bold12,
+            color = KoinTheme.colors.neutral800
+        )
 
-        Row(
-            modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(11.dp)
-        ) {
-            TimeEditBox(
-                text = "월요일"
-            )
-            TimeEditBox(
-                text = "09:00"
-            )
-            Text(
-                text = stringResource(id = R.string.timetable_input_field_wave_character),
-                style = KoinTheme.typography.medium18,
-                color = KoinTheme.colors.neutral800
-            )
-            TimeEditBox(
-                text = "11:00"
-            )
-        }
+        Spacer(modifier = Modifier.weight(1f))
+
+        TimeEditBox(
+            text = "월요일"
+        )
+        TimeEditBox(
+            text = "09:00"
+        )
+        Text(
+            text = stringResource(id = R.string.timetable_input_field_wave_character),
+            style = KoinTheme.typography.medium18,
+            color = KoinTheme.colors.neutral800
+        )
+        TimeEditBox(
+            text = "11:00"
+        )
     }
 }
 
