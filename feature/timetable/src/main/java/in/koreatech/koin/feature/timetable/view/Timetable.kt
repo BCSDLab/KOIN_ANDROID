@@ -61,10 +61,8 @@ fun Timetable(
         clickEvent = clickEvent,
         content = content,
         onEventClick = onEventClick,
-        onEventY = {y ->
-            if (scrollValue != y) {
-                scrollValue = y
-            }
+        onEventY = { y ->
+            scrollValue = y
         }
     )
 }
