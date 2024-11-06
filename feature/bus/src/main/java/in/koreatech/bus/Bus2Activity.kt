@@ -11,9 +11,11 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.navigation.BusNavigation
 import `in`.koreatech.koin.feature.bus.R
 
+@AndroidEntryPoint
 class Bus2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
