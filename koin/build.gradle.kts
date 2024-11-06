@@ -135,4 +135,6 @@ dependencies {
     implementation(libs.feature.delivery.ktx)
 
     implementation(libs.timber)
+
+    implementation(libs.compose.lifecycle)
 }

@@ -104,11 +104,11 @@ fun TimetableContent(
         },
         modifier = modifier
             .background(Color.White)
-            .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
+            .clip(RoundedCornerShape(10.dp))
             .border(
                 width = 1.dp,
                 color = KoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                shape = RoundedCornerShape(10.dp)
             )
             .drawBehind {
                 repeat(range * 2 + 1) { // 가로축

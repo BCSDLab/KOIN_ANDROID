@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ fun MenuBorderTextField(
     index: Int = 0,
     getStringResource: Int = 0,
     onStringChange: (Pair<Int, String>) -> Unit = {},
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ){
     Box(
         modifier = modifier
@@ -48,6 +50,7 @@ fun MenuBorderTextField(
                 color = Color.Black,
                 fontSize = 14.sp
             ),
+            keyboardOptions = keyboardOptions,
             decorationBox = { innerTextField ->
                 if ( inputString == stringResource(id = R.string.temp_price)) {
                     Text(

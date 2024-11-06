@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopInfoUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopListUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopMenusUseCase
+import `in`.koreatech.koin.domain.usecase.user.UserRemoveUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.collections.immutable.toImmutableList
@@ -28,6 +29,7 @@ class MyStoreDetailViewModel @Inject constructor(
     private val getOwnerShopEventsUseCase: GetOwnerShopEventsUseCase,
     private val getOwnerShopMenusUseCase: GetOwnerShopMenusUseCase,
     private val deleteOwnerShopEventsUseCase: DeleteOwnerEventsUseCase,
+    private val userRemoveUseCase: UserRemoveUseCase
 ) : ContainerHost<MyStoreDetailState, MyStoreDetailSideEffect>, ViewModel() {
     override val container =
         container<MyStoreDetailState, MyStoreDetailSideEffect>(MyStoreDetailState())
@@ -224,6 +226,22 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
+    fun showDeleteUserDialog() = intent{
+        reduce {
+            state.copy(
+                deleteUserDialogVisibility = true
+            )
+        }
+    }
+
+    fun closeDeleteUserDialog() = intent{
+        reduce {
+            state.copy(
+                deleteUserDialogVisibility = false
+            )
+        }
+    }
+
     fun navigateToModifyScreen() = intent {
         if (state.storeId == -1) return@intent
         postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen(state.storeId))
@@ -284,6 +302,20 @@ class MyStoreDetailViewModel @Inject constructor(
                     if (i == index) !isExpanded else isExpanded
                 }
             )
+        }
+    }
+
+    fun deleteUser() {
+        intent{
+            viewModelScope.launch {
+                userRemoveUseCase()
+                    .onSuccess {
+                        postSideEffect(MyStoreDetailSideEffect.DeleteUser)
+                    }
+                    .onFailure { errorHandler ->
+                        postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(errorHandler.message))
+                    }
+            }
         }
     }
 }

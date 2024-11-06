@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.IconButton
@@ -39,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -92,6 +94,7 @@ fun ModifyInfoScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(62.dp)
                 .background(ColorPrimary),
         ) {
             IconButton(onClick = viewModel::onBackButtonClicked) {
@@ -181,8 +184,9 @@ fun ModifyInfoScreen(
             item {
                 InputStoreInfo(
                     info = stringResource(R.string.telephone_number),
-                    data = state.storeInfo?.phone ?: "",
-                    onValueChange = { viewModel.onPhoneNumberChanged(it) }
+                    data = state.storeInfo?.phone?.replace("-", "") ?: "",
+                    onValueChange = { viewModel.onPhoneNumberChanged(it) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             }
             item {
@@ -253,7 +257,8 @@ fun ModifyInfoScreen(
                 InputStoreInfo(
                     info = stringResource(R.string.delivery_fee),
                     data = state.storeInfo?.deliveryPrice?.toString() ?: "",
-                    onValueChange = { viewModel.onDeliveryPriceChanged(it.toInt()) }
+                    onValueChange = { viewModel.onDeliveryPriceChanged(it.toInt()) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             }
 
@@ -340,7 +345,10 @@ fun ModifyInfoScreen(
 
 @Composable
 fun InputStoreInfo(
-    info: String, data: String, onValueChange: (String) -> Unit,
+    info: String,
+    data: String,
+    onValueChange: (String) -> Unit,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     Row(
         modifier = Modifier
@@ -371,6 +379,7 @@ fun InputStoreInfo(
                     .fillMaxWidth(),
                 value = data,
                 onValueChange = onValueChange,
+                keyboardOptions = keyboardOptions,
                 textStyle = TextStyle(color = Color.Black, fontSize = 15.sp)
             )
         }

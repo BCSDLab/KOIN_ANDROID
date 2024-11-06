@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
+import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import javax.inject.Singleton
 
 @Module
@@ -20,11 +21,23 @@ object DataStoreModule {
         name = "article_data_store"
     )
 
+    private val Context.timetableDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "timetables"
+    )
+
     @Provides
     @Singleton
     fun provideArticleDataStore(
         @ApplicationContext context: Context
     ): ArticleDataStore {
         return ArticleDataStore(context.articleDataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimetableDataStore(
+        @ApplicationContext context: Context
+    ): TimetableDataStore {
+        return TimetableDataStore(context.timetableDataStore)
     }
 }

@@ -16,8 +16,25 @@ data class Lecture(
     val isEnglish: String = "",
     val designScore: String = "",
     val isElearning: String = "",
-    val classTime: List<Int>,
+    val classTime: List<Int>
 ) {
+    fun toTimetableLecture() = TimetableLecture(
+        id = id,
+        lectureId = 0,
+        regularNumber = regularNumber,
+        code = code,
+        designScore = designScore,
+        classTime = classTime,
+        classPlace = "", // Lecture에 없는데 어쩌자고?
+        memo = "", // Lecture에 없다고.
+        grades = grades,
+        classTitle = name, // 데이터 이름이 다른거냐
+        lectureClass = lectureClass,
+        target = target,
+        professor = professor,
+        department = department
+    )
+
     fun findDayOfWeekAndTime(): Map<DayOfWeek?, List<LocalTime>> {
         return classTime.groupBy { it / 100 }
             .mapValues { entry ->
@@ -77,17 +94,15 @@ data class Lecture(
         }
     }
 
-    fun doesMatchDepartmentSearchQuery(departments: List<String>): Boolean {
-        val matchingCombination = department.toDepartmentString()
+    fun doesMatchDepartmentSearchQuery(query: String): Boolean {
+        val matchingCombination = query.toDepartmentString()
 
-        return departments.any {
-            it.contains(matchingCombination, ignoreCase = true)
-        }
+        return department.contains(matchingCombination, ignoreCase = true)
     }
 
     /**
      * 시간표 강의 중복
-     * @example : 강의 시간 겹침 + 완전 준복
+     * @example : 강의 시간 겹침 + 완전 중복
      */
     fun duplicate(lectures: List<Lecture>): Boolean {
         var flag = false
@@ -100,17 +115,17 @@ data class Lecture(
     }
 }
 
-fun String.toDepartmentString(): String = when(this) {
+fun String.toDepartmentString(): String = when (this) {
     "HRD학과" -> "HRD"
-    "고용서비스정책학과" -> "고용서비스"
+    "고용서비스정책학과" -> "고용서비스정책학과"
     "교양학부" -> "교양"
-    "디자인ㆍ건축공학부" -> "디자인"
-    "메카트로닉스공학부" -> "메카트로닉스"
-    "산업경영학부" -> "산업경영"
-    "에너지신소재화학공학부" -> "에너지신소재"
+    "디자인ㆍ건축공학부" -> "디자인공학부"
+    "메카트로닉스공학부" -> "메카트로닉스공학부"
+    "산업경영학부" -> "산업경영학부"
+    "에너지신소재화학공학부" -> "에너지신소재공학부"
     "융합학과" -> "융합"
     "전기ㆍ전자ㆍ통신공학부" -> "전기"
-    "컴퓨터공학부" -> "컴퓨터"
+    "컴퓨터공학부" -> "컴퓨터공학부"
     "안전공학과" -> "안전"
     "기계공학부" -> "기계"
     else -> ""

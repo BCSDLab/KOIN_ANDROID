@@ -52,7 +52,7 @@ class ChangePasswordViewModel  @Inject constructor(
         fillAllPasswords()
     }
 
-    fun insertPasswordChecked(passwordChecked: String) = intent{
+    fun insertPasswordChecked(passwordChecked: String) = blockingIntent{
         reduce { state.copy(passwordChecked = passwordChecked) }
         coincidePasswordReset()
         fillAllPasswords()
