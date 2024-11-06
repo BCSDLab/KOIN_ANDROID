@@ -1,6 +1,7 @@
 package `in`.koreatech.bus
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,8 +22,7 @@ class Bus2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_bus2)
-        findViewById<ComposeView>(R.id.compose_view_bus).setContent {
+        setContent {
             KoinTheme {
                 BusNavigation(
                     modifier = Modifier.fillMaxSize()
