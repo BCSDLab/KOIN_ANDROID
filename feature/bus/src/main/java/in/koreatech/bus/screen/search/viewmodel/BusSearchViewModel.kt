@@ -28,6 +28,10 @@ class BusSearchViewModel @Inject constructor(
         setArrival(currentDeparture)
     }
 
+    fun search() {
+        // TODO Search bus
+    }
+
     companion object {
         private const val KEY_DEPARTURE = "departure"
         private const val KEY_ARRIVAL = "arrival"
