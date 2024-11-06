@@ -52,6 +52,8 @@ fun BusSearchScreen(
 
     val departure by viewModel.departure.collectAsStateWithLifecycle()
     val arrival by viewModel.arrival.collectAsStateWithLifecycle()
+    
+    val searchButtonEnabled by remember { derivedStateOf { departure.isNotEmpty() && arrival.isNotEmpty() } }
 
     Column(
         modifier = modifier
@@ -68,6 +70,7 @@ fun BusSearchScreen(
                 .padding(horizontal = 24.dp),
             departure = departure,
             arrival = arrival,
+            searchButtonEnabled = searchButtonEnabled,
             onSwapIconClicked = viewModel::swapDepartureAndArrival,
             onSearchClicked = viewModel::search
         )
@@ -90,6 +93,7 @@ private fun BusSearchContentView(
     departure: String,
     arrival: String,
     modifier: Modifier = Modifier,
+    searchButtonEnabled: Boolean = false,
     onSwapIconClicked: () -> Unit = {},
     onSearchClicked: () -> Unit = {}
 ) {
@@ -191,6 +195,7 @@ private fun BusSearchContentView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
+                enabled = searchButtonEnabled,
                 text = stringResource(R.string.search),
                 contentPadding = PaddingValues(vertical = 12.dp),
                 onClick = onSearchClicked
@@ -304,7 +309,8 @@ private fun BusSearchScreen3Preview() {
                 .fillMaxSize()
                 .padding(top = 16.dp)
                 .padding(horizontal = 24.dp),
-            onSwapIconClicked = { }
+            onSwapIconClicked = { },
+            searchButtonEnabled = true
         )
     }
 }
