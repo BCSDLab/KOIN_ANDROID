@@ -2,10 +2,8 @@ package `in`.koreatech.koin.feature.timetable.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
@@ -30,16 +28,18 @@ fun TimetableBottomSheet(
     lectures: List<Lecture>,
     modifier: Modifier = Modifier,
     selectedLecture: Lecture? = null,
-    colors: List<Color> = defaultColors,
+    timetableEvents: List<TimetableEvent> = emptyList(),
+    onClickAddCustomLectureMode: () -> Unit = {},
+    onClickAddLectureMode: () -> Unit = {},
     onComplete: () -> Unit = {},
-    onAddLecture: () -> Unit = {},
-    onAddCustomLecture: () -> Unit = {},
+    onClickSettingIcon: () -> Unit = {},
+    onClickSearchIcon: () -> Unit = {},
     onSearchTextChange: (text: String) -> Unit = {},
+    onClickAddLecture: (lecture: Lecture) -> Unit = {},
+    onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
+    onClickLecture: (events: List<TimetableEvent>) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onBottomSheetHeightChange: (height: Float) -> Unit = {},
-    onClickLecture: (events: List<TimetableEvent>) -> Unit = {},
-    onClickSearchIcon: () -> Unit = {},
-    onClickSettingIcon: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -57,8 +57,8 @@ fun TimetableBottomSheet(
         TimetableBottomSheetHeader(
             modifier = Modifier.padding(bottom = 4.dp),
             onComplete = onComplete,
-            onAddLecture = onAddLecture,
-            onAddCustomLecture = onAddCustomLecture
+            onClickAddLectureMode = onClickAddLectureMode,
+            onClickAddCustomLectureMode = onClickAddCustomLectureMode
         )
         HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
         TimetableSearchBox(
@@ -73,12 +73,13 @@ fun TimetableBottomSheet(
             items(lectures.size) {
                 LectureBox(
                     position = it,
-                    colors = colors,
                     lecture = lectures[it],
                     selectedLecture = selectedLecture,
+                    timetableEvents = timetableEvents,
                     onClickLecture = onClickLecture,
                     onSelectedLecture = onSelectedLecture,
-                    onAddLecture = onAddLecture
+                    onClickAddLecture = onClickAddLecture,
+                    onClickRemoveLecture = onClickRemoveLecture
                 )
                 HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
             }

@@ -67,7 +67,7 @@ fun EventItem(
                 StoreUtil.generateOpenCloseTimeString(item.startDate, item.endDate)
             }
             val pagerState =
-                rememberPagerState { state.storeEvent[index].thumbnailImages?.size ?: 1 }
+                rememberPagerState { (state.storeEvent[index].thumbnailImages?.size ?: 0).takeIf { it > 0 } ?: 1 }
             if (state.isEventExpanded[index]) {
                 EventExpandedItem(state.storeEvent[index],
                     eventOpenCloseTime = eventOpenCloseTime,
@@ -113,7 +113,6 @@ fun EventFoldedItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        item.thumbnailImages?.getOrNull(0)?.let {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -128,7 +127,7 @@ fun EventFoldedItem(
                         .height(80.dp)
                         .clip(RoundedCornerShape(5.dp)),
                     contentScale = ContentScale.FillBounds,
-                    painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_image) else rememberAsyncImagePainter(
+                    painter = if (item.thumbnailImages.isNullOrEmpty()) painterResource(id = R.drawable.no_image) else rememberAsyncImagePainter(
                         model = item.thumbnailImages?.getOrNull(0)
                     ),
                     contentDescription = stringResource(R.string.event_default_image),
@@ -154,7 +153,7 @@ fun EventFoldedItem(
                         contentDescription = stringResource(R.string.check),
                     )
                 }
-            }
+
         }
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -171,7 +170,9 @@ fun EventFoldedItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Row(modifier = Modifier.weight(1f)) {
+                Row(modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center) {
                     Text(
                         text = stringResource(R.string.view_all),
                         fontWeight = FontWeight(500),
@@ -223,14 +224,13 @@ fun EventExpandedItem(
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
-                    painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else rememberAsyncImagePainter(
+                    painter = if (item.thumbnailImages.isNullOrEmpty()) painterResource(id = R.drawable.no_event_image) else rememberAsyncImagePainter(
                         model = item.thumbnailImages?.getOrNull(it)
                     ),
                     contentDescription = stringResource(R.string.event_default_image),
-                    contentScale = ContentScale.Inside
+                    contentScale = ContentScale.FillBounds,
                 )
             }
-
         }
         Column(
             modifier = Modifier.padding(vertical = 5.dp)
