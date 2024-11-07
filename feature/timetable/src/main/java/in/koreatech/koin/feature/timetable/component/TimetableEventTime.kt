@@ -25,6 +25,7 @@ import androidx.compose.ui.zIndex
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
+import java.time.DayOfWeek
 
 enum class TimetableEventType {
     BASIC, SELECTED
@@ -32,6 +33,7 @@ enum class TimetableEventType {
 
 @Composable
 fun TimetableEventTime(
+    range: Int,
     event: TimetableEvent,
     modifier: Modifier = Modifier,
     eventType: TimetableEventType = TimetableEventType.BASIC,
@@ -45,7 +47,14 @@ fun TimetableEventTime(
         )
 
         TimetableEventType.SELECTED -> TimetableSelectedEventTime(
-            modifier = modifier.padding(start = (0.5).dp , top = (0.5).dp, end = (0.6).dp, bottom = (0.65).dp)
+            range = range,
+            event = event,
+            modifier = modifier.padding(
+                start = (0.5).dp,
+                top = (0.5).dp,
+                end = (0.6).dp,
+                bottom = (0.65).dp
+            )
         )
     }
 }
@@ -81,15 +90,34 @@ private fun TimetableBasicEventTime(
 
 @Composable
 private fun TimetableSelectedEventTime(
+    range: Int,
+    event: TimetableEvent,
     modifier: Modifier = Modifier,
 ) {
+    val isEnd = if (event.dayOfWeek == DayOfWeek.FRIDAY) {
+        val timeRange = if (event.end.minute == 30) {
+            (event.end.hour - 9) + 1
+        } else {
+            (event.end.hour - 9)
+        }
+        if (range == timeRange) {
+            true
+        } else {
+            false
+        }
+    } else {
+        false
+    }
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Color.Transparent)
+            .background(
+                color = Color.Transparent,
+            )
             .border(
                 color = KoinTheme.colors.neutral500,
                 width = 1.dp,
+                shape = RoundedCornerShape(bottomEnd = if (isEnd) 10.dp else 0.dp)
             )
     )
 }
@@ -98,6 +126,7 @@ private fun TimetableSelectedEventTime(
 @Composable
 private fun TimetableEventTimePreview_Basic() {
     TimetableEventTime(
+        range = 9,
         event = dummyEvent,
         modifier = Modifier
             .sizeIn(maxHeight = 64.dp)
@@ -109,6 +138,7 @@ private fun TimetableEventTimePreview_Basic() {
 @Composable
 private fun TimetableEventTimePreview_Selected() {
     TimetableEventTime(
+        range = 9,
         event = dummyEvent,
         modifier = Modifier
             .sizeIn(maxHeight = 64.dp)
