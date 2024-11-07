@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.KeyboardUtils
@@ -26,6 +27,7 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TimetableActivity : KoinNavigationDrawerActivity() {
     override val screenTitle: String
         get() = SCREEN_TITLE

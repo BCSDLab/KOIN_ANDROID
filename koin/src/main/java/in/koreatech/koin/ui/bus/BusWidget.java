@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.bus;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -354,7 +356,7 @@ public class BusWidget extends AppWidgetProvider {
      */
     private static PendingIntent getPendingSelfIntent(Context context, int appWidgetId, String action) {
         Intent intent = new Intent(context, BusWidget.class).setAction(action);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, intent, FLAG_IMMUTABLE);
         return pendingIntent;
     }
 }
