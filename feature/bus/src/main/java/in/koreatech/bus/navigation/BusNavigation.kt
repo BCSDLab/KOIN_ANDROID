@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import `in`.koreatech.bus.screen.search.composable.BusSearchResultScreen
 import `in`.koreatech.bus.screen.search.composable.BusSearchScreen
 import `in`.koreatech.bus.screen.timetable.composable.BusTimetableScreen
 
@@ -21,7 +22,7 @@ fun BusNavigation(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Routes.BusTimetable,
+        startDestination = Routes.BusSearch,
         enterTransition = {
             EnterTransition.None
         }, exitTransition = {
@@ -41,8 +42,16 @@ fun BusNavigation(
                 modifier = Modifier.fillMaxSize(),
                 onNavigationIconClick = { navController.popBackStack() },
                 onSearchSuccess = {
-                    // navController.navigate(Routes.SearchedTimetable(it))
+                    navController.navigate(Routes.BusSearchResult(it))
                 }
+            )
+        }
+
+        composable<Routes.BusSearchResult> {
+            BusSearchResultScreen(
+                modifier = Modifier.fillMaxSize(),
+                onNavigationIconClick = { navController.popBackStack() }
+
             )
         }
     }

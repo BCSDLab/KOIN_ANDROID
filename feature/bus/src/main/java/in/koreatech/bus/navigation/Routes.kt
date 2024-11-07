@@ -5,5 +5,7 @@ import kotlinx.serialization.Serializable
 internal object Routes {
 
     @Serializable data object BusTimetable
+
     @Serializable data object BusSearch
+    @Serializable data class BusSearchResult(val data: Unit) // TODO : 타입
 }
