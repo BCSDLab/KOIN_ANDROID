@@ -33,7 +33,6 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 
-private val hourFormatter = DateTimeFormatter.ofPattern("HH")
 private val neutral300 = Color(0xFFE1E1E1)
 
 @Composable
@@ -59,6 +58,7 @@ fun TimetableContent(
     onEventY: (y: Int) -> Unit = {}
 ) {
     val width = measureEventWidth(horizontalPadding = horizontalPadding, dayCount = dayCount)
+    val initStartTime = LocalTime.of(9, 0)
 
     Layout(
         content = {
@@ -76,8 +76,7 @@ fun TimetableContent(
                 }
             }
             repeat(range) {
-                val initialStartTime = LocalTime.of(9 + it, 0)
-                val time = initialStartTime.format(hourFormatter)
+                val time = (initStartTime.hour + it).toString()
                 Box(modifier = Modifier.then(object : ParentDataModifier {
                     override fun Density.modifyParentData(parentData: Any?): String = time
                 })) {
@@ -227,7 +226,6 @@ fun TimetableContent(
 
             // 강의 이벤트 박스 배치
             placeablesWithEvents.forEachIndexed { index, (placeable, event) ->
-                val initStartTime = LocalTime.of(9, 0)
                 val eventOffsetMinutes =
                     ChronoUnit.MINUTES.between(initStartTime, event.start)
                 val eventY =
