@@ -16,7 +16,7 @@ fun TimetableLecture.toTimetableEvents(index: Int): List<TimetableEvent> {
     /**
      * @input : {MONDAY=[09:00, 09:30], TUESDAY=[09:00, 09:30]}
      */
-    findDayOfWeekAndTime().forEach { (key, value) ->
+    findDayOfWeekAndLocalTime().forEach { (key, value) ->
         val timetableEvent = TimetableEvent(
             id = id,
             lectureId = lectureId,
@@ -44,7 +44,7 @@ fun Lecture.toTimetableEvents(): List<TimetableEvent> {
     /**
      * @input : {MONDAY=[09:00, 09:30], TUESDAY=[09:00, 09:30]}
      */
-    findDayOfWeekAndTime().forEach { (key, value) ->
+    findDayOfWeekAndLocalTime().forEach { (key, value) ->
         val timetableEvent = TimetableEvent(
             id = id,
             lectureId = 1, // 상관 없음
