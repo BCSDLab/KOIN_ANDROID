@@ -20,11 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,11 +36,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import `in`.koreatech.bus.screen.search.type.PlaceSelectMode
 import `in`.koreatech.bus.screen.search.viewmodel.BusSearchViewModel
 import `in`.koreatech.bus.screen.search.viewmodel.SearchBusUiState
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
@@ -50,10 +55,14 @@ fun BusSearchScreen(
     viewModel: BusSearchViewModel = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
+
     val departure by viewModel.departure.collectAsStateWithLifecycle()
     val arrival by viewModel.arrival.collectAsStateWithLifecycle()
-    
+
     val searchButtonEnabled by remember { derivedStateOf { departure.isNotEmpty() && arrival.isNotEmpty() } }
+
+    var placeSelectMode by remember { mutableStateOf(PlaceSelectMode.NONE) }
 
     Column(
         modifier = modifier
@@ -72,9 +81,35 @@ fun BusSearchScreen(
             arrival = arrival,
             searchButtonEnabled = searchButtonEnabled,
             onSwapIconClicked = viewModel::swapDepartureAndArrival,
-            onSearchClicked = viewModel::search
+            onSearchClicked = viewModel::search,
+            onDepartureFieldClicked = { placeSelectMode = PlaceSelectMode.DEPARTURE },
+            onArrivalFieldClicked = { placeSelectMode = PlaceSelectMode.ARRIVAL }
         )
     }
+
+    if (placeSelectMode != PlaceSelectMode.NONE) {
+        SelectPlaceBottomSheet(
+            onDismissRequest = { placeSelectMode = PlaceSelectMode.NONE },
+            selectMode = placeSelectMode,
+            onConfirmSelection = {
+                when (placeSelectMode) {
+                    PlaceSelectMode.DEPARTURE -> {
+                        placeSelectMode = PlaceSelectMode.ARRIVAL
+                        viewModel.setDeparture(context.getString(it.titleRes))
+                    }
+
+                    PlaceSelectMode.ARRIVAL -> {
+                        placeSelectMode = PlaceSelectMode.NONE
+                        viewModel.setArrival(context.getString(it.titleRes))
+                    }
+
+                    PlaceSelectMode.NONE -> Unit
+                }
+            },
+            modifier = Modifier,
+        )
+    }
+
 
     LaunchedEffect(Unit) {
         viewModel.searchBusUiState.collect {
@@ -95,7 +130,9 @@ private fun BusSearchContentView(
     modifier: Modifier = Modifier,
     searchButtonEnabled: Boolean = false,
     onSwapIconClicked: () -> Unit = {},
-    onSearchClicked: () -> Unit = {}
+    onSearchClicked: () -> Unit = {},
+    onDepartureFieldClicked: () -> Unit = {},
+    onArrivalFieldClicked: () -> Unit = {}
 ) {
 
     KoinSurface {
@@ -146,15 +183,20 @@ private fun BusSearchContentView(
                 BusSearchInput(
                     place = departure,
                     placeholder = stringResource(R.string.select_departure),
-                    modifier = Modifier.padding(top = 10.dp).constrainAs(departureField) {
-                        top.linkTo(iconSwap.top)
-                        bottom.linkTo(iconSwap.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(iconSwap.start)
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .noRippleClickable {
+                            onDepartureFieldClicked()
+                        }
+                        .constrainAs(departureField) {
+                            top.linkTo(iconSwap.top)
+                            bottom.linkTo(iconSwap.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(iconSwap.start)
 
-                        width = Dimension.fillToConstraints
-                        height = Dimension.preferredWrapContent
-                    }
+                            width = Dimension.fillToConstraints
+                            height = Dimension.preferredWrapContent
+                        }
                 )
 
                 IconButton(
@@ -178,15 +220,20 @@ private fun BusSearchContentView(
                 BusSearchInput(
                     place = arrival,
                     placeholder = stringResource(R.string.select_arrival),
-                    modifier = Modifier.padding(top = 10.dp).constrainAs(arrivalField) {
-                        top.linkTo(iconSwap.top)
-                        bottom.linkTo(iconSwap.bottom)
-                        start.linkTo(iconSwap.end)
-                        end.linkTo(parent.end)
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .noRippleClickable {
+                            onArrivalFieldClicked()
+                        }
+                        .constrainAs(arrivalField) {
+                            top.linkTo(iconSwap.top)
+                            bottom.linkTo(iconSwap.bottom)
+                            start.linkTo(iconSwap.end)
+                            end.linkTo(parent.end)
 
-                        width = Dimension.fillToConstraints
-                        height = Dimension.preferredWrapContent
-                    }
+                            width = Dimension.fillToConstraints
+                            height = Dimension.preferredWrapContent
+                        }
                 )
             }
 
@@ -211,7 +258,7 @@ private fun BusSearchInput(
     modifier: Modifier = Modifier,
 ) {
 
-    val isPlaceDetermined by remember { derivedStateOf { place.isNotEmpty() } }
+    val isPlaceDetermined = place.isNotEmpty()
 
     Column(
         modifier = modifier,
