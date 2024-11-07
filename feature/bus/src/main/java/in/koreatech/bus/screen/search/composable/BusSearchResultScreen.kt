@@ -1,10 +1,11 @@
 package `in`.koreatech.bus.screen.search.composable
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +28,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun BusSearchResultScreen(
     modifier: Modifier = Modifier,
@@ -35,43 +36,49 @@ fun BusSearchResultScreen(
     viewModel: BusSearchResultViewModel = hiltViewModel()
 ) {
 
-    Column(
+    LazyColumn (
         modifier = modifier
     ) {
-        KoinTopAppBar(
-            title = "한기대 → 천안터미널", // TODO : 방향
-            onNavigationIconClick = onNavigationIconClick
-        )
+        item {
+            KoinTopAppBar(
+                title = "한기대 → 천안터미널", // TODO : 방향
+                onNavigationIconClick = onNavigationIconClick
+            )
+        }
 
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        stickyHeader {
             Row(
-                modifier = Modifier.noRippleClickable {
-                    // TODO : 타임 피커 오픈
-                }, verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = buildAnnotatedString {
-                        append("오늘 오전 10:30")
-                        withStyle(style = SpanStyle(
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Black
-                        )) {
-                            append(" 출발")
-                        }
-                    }, style = KoinTheme.typography.bold16,
-                    color = KoinTheme.colors.info700
-                )
-                Icon(
-                    modifier = Modifier.padding(start = 4.dp),
-                    imageVector = Icons.Rounded.KeyboardArrowDown,
-                    contentDescription = stringResource(R.string.set_time_content_description),
-                    tint = KoinTheme.colors.neutral500
-                )
+                Row(
+                    modifier = Modifier.noRippleClickable {
+                        // TODO : 타임 피커 오픈
+                    }, verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = buildAnnotatedString {
+                            append("오늘 오전 10:30")
+                            withStyle(
+                                style = SpanStyle(
+                                    fontWeight = FontWeight.Medium,
+                                    color = Color.Black
+                                )
+                            ) {
+                                append(" 출발")
+                            }
+                        }, style = KoinTheme.typography.bold16,
+                        color = KoinTheme.colors.info700
+                    )
+                    Icon(
+                        modifier = Modifier.padding(start = 4.dp),
+                        imageVector = Icons.Rounded.KeyboardArrowDown,
+                        contentDescription = stringResource(R.string.set_time_content_description),
+                        tint = KoinTheme.colors.neutral500
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
             }
-            Spacer(modifier = Modifier.weight(1f))
         }
     }
 
