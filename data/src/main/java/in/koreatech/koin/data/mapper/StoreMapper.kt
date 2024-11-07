@@ -39,7 +39,6 @@ import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
-import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
 
 fun StoreItemResponse.toStore(): Store = Store(
@@ -61,7 +60,7 @@ fun StoreItemResponse.toStore(): Store = Store(
             closeTime = it.closeTime ?: ""
         )
     }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
-    categoryIds = categoryIds?.map { it.toStoreCategory() }.orEmpty()
+    categoryIds = categoryIds
 )
 
 fun StoreEventItemReponse.toStoreEvent(): StoreEvent = StoreEvent(

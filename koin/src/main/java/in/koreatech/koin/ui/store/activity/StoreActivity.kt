@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.store.activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -30,9 +31,7 @@ import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
-import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreSorter
-import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreCategoriesRecyclerAdapter
@@ -68,7 +67,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         fun getCurrentCategory(): String
     }
     private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract {
-        viewModel.category.value?.let { getStoreCategoryName(it) } ?: "Unknown"
+        viewModel.category.value?.let { viewModel.category.value?.name } ?: "Unknown"
     }) {
 
     }
@@ -80,15 +79,19 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         setOnItemClickListener {
             storeElapsedTime = System.currentTimeMillis() - currentTime
 
-            storeDetailContract.launch(Triple(it.uid, getStoreCategoryName(viewModel.category.value), false))
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CLICK,
-                it.name,
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, getStoreCategoryName(viewModel.category.value)),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-            )
+            storeDetailContract.launch(Triple(it.uid, viewModel.category.value?.name, false))
+            val categoryName = viewModel.category.value?.name
+
+            if(categoryName != null){
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CLICK,
+                    it.name,
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, categoryName),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+                )
+            }
         }
     }
 
@@ -99,7 +102,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
                 it.shopName
             )
-            storeDetailContract.launch(Triple(it.shopId, getStoreCategoryName(viewModel.category.value), false))
+            storeDetailContract.launch(Triple(it.shopId, viewModel.category.value?.name, false))
         }
 
         setOnArrowClickListener {
@@ -110,21 +113,23 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
     private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener {
-            val previous = getStoreCategoryName(viewModel.category.value)
+            val previous = viewModel.category.value?.name
 
-            viewModel.setCategory(it.toStoreCategory())
+            viewModel.setCategory(it)
             binding.searchEditText.text.clear()
-            val current = getStoreCategoryName(viewModel.category.value)
+            val current = viewModel.category.value?.name
 
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CATEGORIES,
-                current,
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previous),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, current),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-            )
-            preCategories = it.toStoreCategory()
+            if (current != null && previous != null) {
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES,
+                    current,
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previous),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, current),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+                )
+            }
+            preCategories = it
             currentTime = System.currentTimeMillis()
         }
     }
@@ -170,7 +175,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         initSortingTooltip()
 
         val initStoreCategory =
-            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
+            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)
         storeCategoriesAdapter.selectPosition =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
         viewModel.setCategory(initStoreCategory)
@@ -212,7 +217,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                    "search in " + getStoreCategoryName(viewModel.category.value)
+                    "search in " + viewModel.category.value?.name
                 )
             }
             v.performClick()
@@ -278,7 +283,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logScrollEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CATEGORIES,
-                        "scroll in " + getStoreCategoryName(viewModel.category.value)
+                        "scroll in " + viewModel.category.value?.name
                     )
                 }
             }
@@ -291,7 +296,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
-                        "check_review_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                        "check_review_"+viewModel.category.value?.let { viewModel.category.value?.name }
                     )
                     storeManyReviewCheckbox.setTextColor(
                         ContextCompat.getColor(
@@ -324,7 +329,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
-                        "check_star_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                        "check_star_"+viewModel.category.value?.let { viewModel.category.value?.name }
                     )
                     storeHighRatingCheckbox.setTextColor(
                         ContextCompat.getColor(
@@ -358,7 +363,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_open_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                            "check_open_"+viewModel.category.value?.let { viewModel.category.value?.name }
                         )
                         ContextCompat.getColor(
                         this@StoreActivity,
@@ -376,7 +381,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_delivery_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                            "check_delivery_"+viewModel.category.value?.let { viewModel.category.value?.name }
                         )
                         ContextCompat.getColor(
                         this@StoreActivity,
@@ -419,7 +424,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
 
-        observeLiveData(viewModel.storeCategories) {
+        observeLiveData(viewModel.storeCategoryList) {
             storeCategoriesAdapter.submitList(it.drop(1))
         }
 
@@ -440,22 +445,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 arrowPosition = 0.1f,
                 arrowDirection = ArrowDirection.BOTTOM
             )
-        }
-    }
-
-
-    private fun getStoreCategoryName(category: StoreCategory?): String {
-        return when (category) {
-            StoreCategory.Chicken -> getString(R.string.chicken)
-            StoreCategory.Pizza -> getString(R.string.pizza)
-            StoreCategory.DOSIRAK -> getString(R.string.dorisak)
-            StoreCategory.PorkFeet -> getString(R.string.pork_feet)
-            StoreCategory.Chinese -> getString(R.string.chinese)
-            StoreCategory.NormalFood -> getString(R.string.normal_food)
-            StoreCategory.Cafe -> getString(R.string.cafe)
-            StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
-            StoreCategory.Etc -> getString(R.string.etc)
-            StoreCategory.All, null -> getString(R.string.see_all)
         }
     }
 

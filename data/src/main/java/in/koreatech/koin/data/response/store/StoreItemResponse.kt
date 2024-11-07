@@ -10,7 +10,7 @@ data class StoreItemResponse(
     @SerializedName("pay_card") val isCardOk: Boolean?,
     @SerializedName("pay_bank") val isBankOk: Boolean?,
     @SerializedName("open") val open: List<OpenResponseDTO>?,
-    @SerializedName("category_ids") val categoryIds: List<Int>?,
+    @SerializedName("category_ids") val categoryIds: List<Int>,
     @SerializedName("is_event") val  isEvent: Boolean?,
     @SerializedName("is_open") val  isOpen: Boolean?,
     @SerializedName("average_rate") val averageRate : Double,
