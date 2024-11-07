@@ -255,9 +255,9 @@ class BusTimetableViewModel @Inject constructor(
         initialValue = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
     )
 
-    val shouldShowNotice = flow {
-        emit(onboardingManager.getShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE))
-    }.stateIn(
+    val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
+        OnboardingType.SHOW_BUS_HEAD_ARTICLE
+    ).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = false
