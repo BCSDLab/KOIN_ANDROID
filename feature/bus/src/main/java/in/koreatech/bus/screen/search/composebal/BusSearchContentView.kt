@@ -120,7 +120,7 @@ internal fun BusSearchContentView(
                         }
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_swap),
+                        painter = painterResource(id = R.drawable.ic_swap), // TODO : 아이콘 깨짐
                         contentDescription = stringResource(R.string.swap_content_description),
                     )
                 }
