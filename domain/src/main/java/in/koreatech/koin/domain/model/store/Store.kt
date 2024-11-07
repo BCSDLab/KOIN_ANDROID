@@ -18,7 +18,7 @@ data class Store(
     val averageRate : Double,
     val reviewCount : Int,
     val open: OpenData,
-    val categoryIds: List<StoreCategory?>
+    val categoryIds: List<Int>
 ) {
     data class OpenData(
         val dayOfWeek: String,

@@ -1,16 +1,13 @@
 package `in`.koreatech.koin.ui.store.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.store.NeedSignUpStoreInfo
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
-import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
@@ -32,7 +29,7 @@ class StoreViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val search = MutableStateFlow("")
     private val refreshEvent = MutableSharedFlow<Unit>()
-    private val _category = MutableStateFlow<StoreCategory?>(null)
+    private val _category = MutableStateFlow<StoreCategories?>(StoreCategories(0, "", ""))
     private val _stores = MutableStateFlow<List<Store>>(emptyList())
     private val _store = MutableStateFlow<Store?>(null)
     private val _needToProceedStoreInfo = MutableSharedFlow<NeedSignUpStoreInfo>()
@@ -40,13 +37,13 @@ class StoreViewModel @Inject constructor(
     private val _storeEvents = MutableLiveData<List<StoreEvent>?>(emptyList())
     val storeEvents: LiveData<List<StoreEvent>?> get() = _storeEvents
 
-    val category: StateFlow<StoreCategory?> = _category.asStateFlow()
+    val category: StateFlow<StoreCategories?> = _category.asStateFlow()
     val stores: StateFlow<List<Store>> = _stores.asStateFlow()
     val store: StateFlow<Store?> = _store.asStateFlow()
     val needToProceedStoreInfo = _needToProceedStoreInfo.asSharedFlow()
 
-    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
-    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
+    private val _storeCategoryList = MutableLiveData<List<StoreCategories>>(emptyList())
+    val storeCategoryList: LiveData<List<StoreCategories>> get() = _storeCategoryList
 
     private val _storeSorter = MutableLiveData<StoreSorter>()
     val storeSorter: LiveData<StoreSorter> get() = _storeSorter
@@ -69,11 +66,11 @@ class StoreViewModel @Inject constructor(
         search.value = query
     }
 
-    fun setCategory(storeCategory: StoreCategory?) {
-        if(category.value == storeCategory) {
-            _category.value = StoreCategory.All
+    fun setCategory(storeCategoryId: Int?) {
+        if(category.value?.id == storeCategoryId) {
+            _category.value = _storeCategoryList.value?.get(0)
         } else {
-            _category.value = storeCategory
+            _category.value = storeCategoryId?.let { _storeCategoryList.value?.get(it - 1) }
         }
     }
 
@@ -171,7 +168,7 @@ class StoreViewModel @Inject constructor(
 
     private fun getStoreCategories(){
         viewModelScope.launchWithLoading {
-            _storeCategories.value = getStoreCategoriesUseCase()
+            _storeCategoryList.value = getStoreCategoriesUseCase()
         }
     }
 }
