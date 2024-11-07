@@ -8,7 +8,7 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 
 class TimetableLectureTest {
-    val dummyTimetableLecture = TimetableLecture(
+    private val dummyTimetableLecture = TimetableLecture(
         id = 1,
         lectureId = 1,
         code = "HRD011",
@@ -21,18 +21,16 @@ class TimetableLectureTest {
         target = "전기3",
         classPlace = "",
         designScore = "0",
-        classTime = listOf(
-            0, 1
-        )
+        classTime = emptyList()
     )
 
     @Test
-    fun `classTime이 0,1,101,102가 주어질때, map(월=list(9시,9시 30분), 화=list(9시,9시 30분))을 반환한다`() = runTest {
+    fun `0,1,100,101 주어질 때, {월 = 9시,9시 30분 | 화 = 9시,9시 30분}을 반환한다`() {
         val lecture = dummyTimetableLecture.copy(
             classTime = listOf(0, 1, 100, 101)
         )
 
-        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndTime()
+        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
 
         assertEquals(
             formatDayOfWeekAndClassTime, mapOf(
