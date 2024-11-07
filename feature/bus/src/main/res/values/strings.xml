@@ -37,6 +37,13 @@
     <string name="select_arrival">도착지 선택</string>
     <string name="swap_content_description">출발지와 도착지를 바꾸기</string>
     <string name="search">조회하기</string>
+    <string name="question_departure">어디서 출발하시나요?</string>
+    <string name="question_arrival">목적지가 어디인가요?</string>
+    <string name="action_select_arrival">도착지 선택하기</string>
+    <string name="confirm_selection">확인하기</string>
+    <string name="koreatech">코리아텍</string>
+    <string name="cheonan_station">천안역</string>
+    <string name="cheonan_terminal">천안터미널</string>
     <!-- Content description -->
 
 </resources>
