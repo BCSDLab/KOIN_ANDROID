@@ -1,4 +1,4 @@
-package `in`.koreatech.bus.screen.search.composebal
+package `in`.koreatech.bus.screen.search.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

@@ -1,4 +1,4 @@
-package `in`.koreatech.bus.screen.search.composebal
+package `in`.koreatech.bus.screen.search.composable
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
