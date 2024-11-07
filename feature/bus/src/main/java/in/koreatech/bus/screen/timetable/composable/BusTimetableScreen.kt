@@ -19,7 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -51,7 +51,12 @@ internal fun BusTimetableScreen(
     previewTab: BusType = BusType.SHUTTLE
 ) {
 
-    var selectedTimetableTypeTabIndex by rememberSaveable { mutableIntStateOf(0) }
+    var selectedTimetableTypeTab by rememberSaveable { mutableStateOf(BusType.SHUTTLE) }
+    val busTypeHeadTitle = when(selectedTimetableTypeTab) {
+        BusType.SHUTTLE -> stringResource(R.string.shuttle_timetable)
+        BusType.EXPRESS -> stringResource(R.string.express_timetable)
+        BusType.CITY -> stringResource(R.string.city_timetable)
+    }
 
     val shuttleRegions by viewModel.shuttleRegions.collectAsStateWithLifecycle()
     val expressTimetable by viewModel.expressTimetable.collectAsStateWithLifecycle()
@@ -74,7 +79,7 @@ internal fun BusTimetableScreen(
                     modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 24.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.shuttle_timetable),
+                        text = busTypeHeadTitle,
                         style = KoinTheme.typography.bold20
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -117,29 +122,29 @@ internal fun BusTimetableScreen(
             stickyHeader {
                 KoinTabRow(
                     titles = BusType.entries.map { stringResource(it.titleRes) },
-                    selectedTabIndex = selectedTimetableTypeTabIndex,
-                    onTabSelected = { selectedTimetableTypeTabIndex = it }
+                    selectedTabIndex = selectedTimetableTypeTab.ordinal,
+                    onTabSelected = { selectedTimetableTypeTab = BusType.entries[it] }
                 )
             }
 
             item {
                 if (LocalInspectionMode.current)
-                    selectedTimetableTypeTabIndex = previewTab.ordinal
+                    selectedTimetableTypeTab = previewTab
 
-                when(selectedTimetableTypeTabIndex) {
-                    BusType.SHUTTLE.ordinal -> {
+                when(selectedTimetableTypeTab) {
+                    BusType.SHUTTLE -> {
                         ShuttleTimetableScreen(
                             modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
                             regions = shuttleRegions.toPersistentList()
                         )
                     }
-                    BusType.EXPRESS.ordinal -> {
+                    BusType.EXPRESS -> {
                         ExpressTimetableScreen(
                             modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
                             timetable = expressTimetable
                         )
                     }
-                    BusType.CITY.ordinal -> {
+                    BusType.CITY -> {
                         CityTimetableScreen(
                             modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
                             timetable = cityTimetable

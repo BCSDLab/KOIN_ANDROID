@@ -1,7 +1,9 @@
 <resources>
 
     <string name="title_bus_timetable">버스 시간표</string>
-    <string name="shuttle_timetable">교내 셔틀 시간표</string>
+    <string name="shuttle_timetable">셔틀버스 시간표</string>
+    <string name="express_timetable">대성버스 시간표</string>
+    <string name="city_timetable">시내버스 시간표</string>
     <string name="request_for_incorrect_information">정보가 정확하지 않나요?</string>
     <string name="tab_shuttle">셔틀</string>
     <string name="tab_express">대성</string>
