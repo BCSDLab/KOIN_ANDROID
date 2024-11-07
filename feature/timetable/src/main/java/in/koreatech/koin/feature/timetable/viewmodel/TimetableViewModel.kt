@@ -187,9 +187,12 @@ class TimetableViewModel @Inject constructor(
                 range = uiState.value.timetableLectures.formatTimeRange()
             )
         } else {
+            val range = timetableEvents.formatTimeRange()
             _uiState.value = _uiState.value.copy(
                 clickedTimetableEvents = timetableEvents,
-                range = timetableEvents.formatTimeRange()
+                range = if (range < 9) {
+                    9
+                } else range
             )
         }
     }
@@ -385,9 +388,9 @@ class TimetableViewModel @Inject constructor(
     }
 
     private fun isDuplicateClassTime(lecture: Lecture): Boolean {
-        lecture.classTime.forEach { time ->
-            uiState.value.timetableLectures.timetable.forEach { timetableLecture ->
-                if (timetableLecture.classTime.any { it == time }) return true
+        uiState.value.timetableLectures.timetable.forEach { timetableLecture ->
+            timetableLecture.classTime.forEach { time ->
+                if (lecture.classTime.any { it == time }) return true
             }
         }
         return false
