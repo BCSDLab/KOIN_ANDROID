@@ -66,3 +66,14 @@ fun Lecture.toTimetableEvents(): List<TimetableEvent> {
      */
     return events
 }
+
+fun List<TimetableEvent>.formatTimeRange(): Int {
+    val maxEndEvent = this.maxBy { it.end }
+    return if (maxEndEvent.end.hour >= 18) {
+        if (maxEndEvent.end.minute == 30) {
+            (maxEndEvent.end.hour - 9) + 1
+        } else {
+            (maxEndEvent.end.hour - 9)
+        }
+    } else 9
+}

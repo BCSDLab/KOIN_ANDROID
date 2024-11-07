@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
+import `in`.koreatech.koin.feature.timetable.utils.formatTimeRange
 import `in`.koreatech.koin.feature.timetable.utils.getTimetableEvents
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.math.max
 
 @HiltViewModel
 class TimetableViewModel @Inject constructor(
@@ -63,7 +65,9 @@ class TimetableViewModel @Inject constructor(
                 }
             } else {
                 lectures.filter { lecture ->
-                    lecture.doesMatchDepartmentSearchQuery(searchEngineState.department) && (searchEngineState.text.isBlank() || lecture.doesMatchSearchQuery(searchEngineState.text))
+                    lecture.doesMatchDepartmentSearchQuery(searchEngineState.department) && (searchEngineState.text.isBlank() || lecture.doesMatchSearchQuery(
+                        searchEngineState.text
+                    ))
                 }
             }
         }.stateIn(
@@ -177,9 +181,17 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun updateClickedTimetableEvents(timetableEvents: List<TimetableEvent>) {
-        _uiState.value = _uiState.value.copy(
-            clickedTimetableEvents = timetableEvents
-        )
+        if (timetableEvents.isEmpty()) {
+            _uiState.value = _uiState.value.copy(
+                clickedTimetableEvents = emptyList(),
+                range = uiState.value.timetableLectures.formatTimeRange()
+            )
+        } else {
+            _uiState.value = _uiState.value.copy(
+                clickedTimetableEvents = timetableEvents,
+                range = timetableEvents.formatTimeRange()
+            )
+        }
     }
 
     fun updateSelectedLecture(lecture: Lecture?) {
@@ -225,7 +237,8 @@ class TimetableViewModel @Inject constructor(
     fun updateDuplicationTimetableLecture() {
         when (uiState.value.isAnonymous) {
             true -> {
-                val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
+                val updatedTimetableLectures =
+                    _uiState.value.timetableLectures.timetable.toMutableList()
 
                 uiState.value.duplicationLecture?.classTime?.forEach { time ->
                     uiState.value.timetableLectures.timetable.filter { it.classTime.contains(time) }
@@ -244,6 +257,7 @@ class TimetableViewModel @Inject constructor(
 
                 postLocalTimetableLectures(timetables)
             }
+
             false -> {
                 val ids = mutableSetOf<Int>()
                 uiState.value.duplicationLecture?.classTime?.forEach { time ->
@@ -267,9 +281,10 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun addTimetableLectures(lecture: Lecture) {
-        when(uiState.value.isAnonymous) {
+        when (uiState.value.isAnonymous) {
             true -> {
-                val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
+                val updatedTimetableLectures =
+                    _uiState.value.timetableLectures.timetable.toMutableList()
                 updatedTimetableLectures.add(lecture.toTimetableLecture())
                 val timetables = _uiState.value.timetableLectures.copy(
                     timetable = updatedTimetableLectures
@@ -277,6 +292,7 @@ class TimetableViewModel @Inject constructor(
 
                 postLocalTimetableLectures(timetables)
             }
+
             false -> {
                 viewModelScope.launch {
                     addTimetableLectureUseCase(
@@ -307,7 +323,8 @@ class TimetableViewModel @Inject constructor(
     fun removeTimetableLectures(lecture: Lecture) {
         when (_uiState.value.isAnonymous) {
             true -> {
-                val updatedTimetableLectures = _uiState.value.timetableLectures.timetable.toMutableList()
+                val updatedTimetableLectures =
+                    _uiState.value.timetableLectures.timetable.toMutableList()
                 updatedTimetableLectures.remove(lecture.toTimetableLecture())
                 val timetables = _uiState.value.timetableLectures.copy(
                     timetable = updatedTimetableLectures
@@ -319,7 +336,10 @@ class TimetableViewModel @Inject constructor(
             false -> {
                 // TODO : 로그인 시, 강의 삭제 액션
                 viewModelScope.launch {
-                    deleteTimetableFrameLectureUseCase(uiState.value.frameId, lecture.id).onSuccess {
+                    deleteTimetableFrameLectureUseCase(
+                        uiState.value.frameId,
+                        lecture.id
+                    ).onSuccess {
                         timetableRepository.getTimetableLectures(uiState.value.frameId)
                             .onSuccess { timetableLectures ->
                                 _uiState.value = _uiState.value.copy(
