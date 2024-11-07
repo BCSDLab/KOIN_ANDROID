@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -19,8 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.type.CommonDirectionType
+import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
@@ -34,7 +34,7 @@ internal fun ExpressTimetableScreen(
     onDirectionChanged: (CommonDirectionType) -> Unit = {}
 ) {
 
-    var selectedDirectionTypeIndex by rememberSaveable { mutableIntStateOf(CommonDirectionType.TO_BYEONGCHEON.ordinal) }
+    var selectedDirectionType by rememberSaveable { mutableStateOf(CommonDirectionType.TO_BYEONGCHEON) }
     val context = LocalContext.current
 
     Column(
@@ -56,11 +56,10 @@ internal fun ExpressTimetableScreen(
                 modifier = Modifier.padding(start = 16.dp),
                 titles = CommonDirectionType.entries.map { stringResource(it.titleRes) },
                 onChipSelected = { title ->
-                    selectedDirectionTypeIndex =
-                        CommonDirectionType.entries.find { context.getString(it.titleRes) == title }?.ordinal
-                            ?: 0
+                    selectedDirectionType =
+                        CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
                 },
-                selectedChipIndexes = intArrayOf(selectedDirectionTypeIndex)
+                selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal)
             )
         }
 
@@ -70,8 +69,8 @@ internal fun ExpressTimetableScreen(
         )
     }
 
-    LaunchedEffect(selectedDirectionTypeIndex) {
-        onDirectionChanged(CommonDirectionType.entries[selectedDirectionTypeIndex])
+    LaunchedEffect(selectedDirectionType) {
+        onDirectionChanged(selectedDirectionType)
     }
 }
 
