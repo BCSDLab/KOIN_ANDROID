@@ -102,6 +102,7 @@ fun KoinPicker(
         }.collect { middle ->
             selectedItemIndex = middle
             pickerState.selectedItem = newItems.getItem(middle)
+            pickerState.selectedItemIndex = middle % newItems.size - if (infiniteScroll.not()) visibleItemsMiddle else 0
         }
     }
 }
@@ -111,6 +112,7 @@ fun rememberPickerState() = remember { PickerState() }
 
 class PickerState internal constructor() {
     var selectedItem by mutableStateOf("")
+    var selectedItemIndex by mutableIntStateOf(0)
 }
 
 private fun List<String>.getItem(index: Int) = this[index % this.size]
