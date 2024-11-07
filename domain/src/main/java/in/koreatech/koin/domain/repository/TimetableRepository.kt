@@ -26,6 +26,7 @@ interface TimetableRepository {
 
     suspend fun deleteTimetableFrame()
     suspend fun deleteTimetableLecture(id: Int): Result<Unit>
+    suspend fun deleteTimetableLectures(lectureIds: List<Int>): Result<Unit>
     suspend fun deleteTimetableFrameLecture(frameId: Int, lectureId: Int): Result<Unit>
 
     suspend fun deleteAllTimetableFrame()

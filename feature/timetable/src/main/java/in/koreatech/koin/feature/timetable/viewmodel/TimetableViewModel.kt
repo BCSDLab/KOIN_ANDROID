@@ -245,23 +245,23 @@ class TimetableViewModel @Inject constructor(
                 postLocalTimetableLectures(timetables)
             }
             false -> {
-                // TODO : 로그인 시 중복에 대한 강의 추가
-                val ids = mutableListOf<Int>()
+                val ids = mutableSetOf<Int>()
                 uiState.value.duplicationLecture?.classTime?.forEach { time ->
                     uiState.value.timetableLectures.timetable.filter { it.classTime.contains(time) }
                         .forEach { lecture ->
                             ids.add(lecture.id)
                         }
                 }
-                // TODO : ids 요청 쿼리 파라미터로 삭제 API 연결
-//                 deleteTimetableLecturesUseCase(ids).onSuccess {
-                     // TODO : 삭제 후, duplicationLecture 강의 추가 API 연결
-//                     uiState.value.duplicationLecture?.let { lecture ->
-//                         addTimetableLectures(lecture)
-//                     } ?: return@onSuccess
-//                 }.onFailure {
-//                 }
-
+                viewModelScope.launch {
+                    timetableRepository.deleteTimetableLectures(ids.toList()).onSuccess {
+                        uiState.value.duplicationLecture?.let { lecture ->
+                            addTimetableLectures(lecture)
+                        } ?: return@onSuccess
+                    }.onFailure {
+                        // TODO : 로그인 시 중복 강의 삭제 실패
+                        Timber.e("Delete Lectures : ${it.message}")
+                    }
+                }
             }
         }
     }
@@ -289,6 +289,7 @@ class TimetableViewModel @Inject constructor(
                             timetableLectures = timetableLectures,
                             timetableEvents = timetableLectures.getTimetableEvents(),
                             clickedTimetableEvents = emptyList(),
+                            isLectureDuplicationDialogVisible = false,
                             selectedLecture = null,
                             loading = false
                         )

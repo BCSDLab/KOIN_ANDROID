@@ -65,6 +65,11 @@ interface TimetableAuthApi {
         @Path("lectureId") lectureId: Int
     ): Response<Unit>
 
+    @DELETE("/v2/timetables/lectures")
+    suspend fun deleteTimetableLectures(
+        @Query("timetable_lecture_ids") lectureIds : List<Int>
+    ): Response<Unit>
+
     @DELETE("/v2/all/timetables/frame")
     suspend fun deleteAllTimetableFrame()
 }

@@ -95,6 +95,10 @@ class TimetableRepositoryImpl @Inject constructor(
         timetableRemoteDataSource.deleteTimetableFrameLecture(frameId, lectureId)
     }
 
+    override suspend fun deleteTimetableLectures(lectureIds: List<Int>): Result<Unit> = runCatching {
+        timetableRemoteDataSource.deleteTimetableLectures(lectureIds)
+    }
+
     override suspend fun deleteAllTimetableFrame() {
         TODO("Not yet implemented")
     }
