@@ -2,6 +2,8 @@ package `in`.koreatech.koin.data.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
+import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
@@ -9,14 +11,12 @@ import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQu
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
-import `in`.koreatech.koin.domain.model.timetable.response.Semester
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
-import java.lang.NullPointerException
 import javax.inject.Inject
 
 class TimetableRepositoryImpl @Inject constructor(
@@ -25,8 +25,12 @@ class TimetableRepositoryImpl @Inject constructor(
 ) : TimetableRepository {
     private val gson = Gson()
 
-    override fun getSemesters(): Flow<List<Semester>> = flow {
-        emit(timetableRemoteDataSource.getSemesters().map { it.toSemester() })
+    override fun getSemesters(): Flow<List<String>> = flow {
+        emit(timetableRemoteDataSource.getSemesters().map { it.toSemester().semester })
+    }
+
+    override fun getSemesterCheck(): Flow<List<String>> = flow {
+        emit(timetableRemoteDataSource.getSemesterCheck().toSemesterCheck().semesters)
     }
 
     override fun getLectures(semesterDate: String): Flow<List<Lecture>> = flow {
@@ -52,8 +56,7 @@ class TimetableRepositoryImpl @Inject constructor(
     }
 
     override suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): TimetableLectures =
-        timetableRemoteDataSource.postTimetableLectures(lectures.toTimetableLecturesQueryRequest())
-            .toTimetableLectures()
+        timetableRemoteDataSource.putTimetableLectures(lectures.toTimetableLecturesQueryRequest()).toTimetableLectures()
 
     override suspend fun putTimetableLectures(key: String, value: TimetableLectures): Result<TimetableLectures> = runCatching {
         timetableDataStore.putString(key, gson.toJson(value))
@@ -68,8 +71,11 @@ class TimetableRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun postTimetableLectures(lectures: TimetableLecturesQuery): TimetableLectures {
-        TODO("Not yet implemented")
+    override suspend fun postTimetableLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures> = runCatching {
+        timetableRemoteDataSource.postTimetableLectures(LecturesQueryRequest(
+            timetableFrameId = frameId,
+            timetableLecture = lectures.map { it.toLectureQueryRequest() }
+        )).toTimetableLectures()
     }
 
 
@@ -81,8 +87,16 @@ class TimetableRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteTimetableLecture(id: Int) {
-        TODO("Not yet implemented")
+    override suspend fun deleteTimetableLecture(id: Int): Result<Unit> = runCatching {
+        timetableRemoteDataSource.deleteTimetableLecture(id)
+    }
+
+    override suspend fun deleteTimetableFrameLecture(frameId: Int, lectureId: Int): Result<Unit> = runCatching {
+        timetableRemoteDataSource.deleteTimetableFrameLecture(frameId, lectureId)
+    }
+
+    override suspend fun deleteTimetableLectures(lectureIds: List<Int>): Result<Unit> = runCatching {
+        timetableRemoteDataSource.deleteTimetableLectures(lectureIds)
     }
 
     override suspend fun deleteAllTimetableFrame() {

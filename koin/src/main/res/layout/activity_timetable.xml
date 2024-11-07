@@ -25,7 +25,7 @@
                 app:leftButtonBackground="@drawable/ic_back_arrow"
                 app:leftButtonHeight="14dp"
                 app:leftButtonWidth="14dp"
-                app:rightButtonBackground="@drawable/ic_hamburger_button"
+                app:rightButtonBackground="@drawable/ic_edit"
                 app:rightButtonHeight="18dp"
                 app:rightButtonWidth="12dp"
                 app:titleText="@string/navigation_item_timetable" />
