@@ -43,8 +43,6 @@ fun LectureBox(
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
 ) {
-//    val isSelected = selectedLecture == lecture
-//    val isAdded = timetableEvents.any { lecture.id == it.id }
     val events = lecture.toTimetableEvents()
     val isSelected by remember(lecture, selectedLecture) {
         derivedStateOf { selectedLecture == lecture }
