@@ -99,6 +99,10 @@ class OnboardingManager @Inject internal constructor(
         }
     }
 
+    fun getShouldOnboardFlow(
+        type: OnboardingType
+    ) = onboardingRepository.getShouldOnboardingFlow(type.name)
+
     suspend fun getShouldOnboard(
         type: OnboardingType,
     ) : Boolean {
