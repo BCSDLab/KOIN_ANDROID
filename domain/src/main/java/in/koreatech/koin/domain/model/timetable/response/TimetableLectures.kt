@@ -5,22 +5,22 @@ data class TimetableLectures(
     val timetable: List<TimetableLecture>,
     val grades: Int,
     val totalGrades: Int,
-){
+) {
     /**
      * @reference : TimetableLecturesTest.kt 파일 참고
      */
     fun formatTimeRange(): Int {
-        val a = timetable.map { it.classTime }
-        var maxItem = 0
-        a.forEach {items ->
-            items.forEach {
-                if (maxItem < it) {
-                    maxItem = it
+        val classTimes = timetable.map { it.classTime }
+        var maxTime = 0
+        classTimes.forEach { times ->
+            times.forEach {
+                if (maxTime < it) {
+                    maxTime = it
                 }
             }
         }
 
-        val range = (maxItem % 100) - 9
+        val range = (maxTime % 100) - 9
 
         return if (range < 9) {
             9
