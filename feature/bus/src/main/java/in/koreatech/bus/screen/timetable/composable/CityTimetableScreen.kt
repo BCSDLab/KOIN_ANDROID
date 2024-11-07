@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,8 +36,8 @@ internal fun CityTimetableScreen(
     onDirectionChanged: (CommonDirectionType) -> Unit = {}
 ) {
 
-    var selectedBusNumberTypeIndex by rememberSaveable { mutableIntStateOf(CityBusNumberType.N400.ordinal) }
-    var selectedDirectionTypeIndex by rememberSaveable { mutableIntStateOf(CommonDirectionType.TO_BYEONGCHEON.ordinal) }
+    var selectedBusNumberType by rememberSaveable { mutableStateOf(CityBusNumberType.N400) }
+    var selectedDirectionType by rememberSaveable { mutableStateOf(CommonDirectionType.TO_BYEONGCHEON) }
     val context = LocalContext.current
 
     Column(
@@ -59,11 +59,10 @@ internal fun CityTimetableScreen(
                 modifier = Modifier.padding(start = 16.dp),
                 titles = CityBusNumberType.entries.map { stringResource(it.titleRes) },
                 onChipSelected = { title ->
-                    selectedBusNumberTypeIndex =
-                        CityBusNumberType.entries.find { context.getString(it.titleRes) == title }?.ordinal
-                            ?: 0
+                    selectedBusNumberType =
+                        CityBusNumberType.entries.find { context.getString(it.titleRes) == title } ?: CityBusNumberType.N400
                 },
-                selectedChipIndexes = intArrayOf(selectedBusNumberTypeIndex)
+                selectedChipIndexes = intArrayOf(selectedBusNumberType.ordinal)
             )
         }
         Row(
@@ -82,11 +81,10 @@ internal fun CityTimetableScreen(
                 modifier = Modifier.padding(start = 16.dp),
                 titles = CommonDirectionType.entries.map { stringResource(it.titleRes) },
                 onChipSelected = { title ->
-                    selectedDirectionTypeIndex =
-                        CommonDirectionType.entries.find { context.getString(it.titleRes) == title }?.ordinal
-                            ?: 0
+                    selectedDirectionType =
+                        CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
                 },
-                selectedChipIndexes = intArrayOf(selectedDirectionTypeIndex)
+                selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal)
             )
         }
 
@@ -96,12 +94,12 @@ internal fun CityTimetableScreen(
         )
     }
 
-    LaunchedEffect(selectedBusNumberTypeIndex) {
-        onBusNumberChanged(CityBusNumberType.entries[selectedBusNumberTypeIndex])
+    LaunchedEffect(selectedBusNumberType) {
+        onBusNumberChanged(selectedBusNumberType)
     }
 
-    LaunchedEffect(selectedDirectionTypeIndex) {
-        onDirectionChanged(CommonDirectionType.entries[selectedDirectionTypeIndex])
+    LaunchedEffect(selectedDirectionType) {
+        onDirectionChanged(selectedDirectionType)
     }
 }
 
