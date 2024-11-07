@@ -53,11 +53,14 @@ fun KoinPicker(
     unselectedItemColor: Color = KoinTheme.colors.neutral500,
 ) {
 
+    val newItems = if (infiniteScroll) items
+        else List(visibleItemsCount / 2) { "" } + items + List(visibleItemsCount / 2) { "" }
+
     val visibleItemsMiddle = visibleItemsCount / 2
-    val listScrollCount = if (infiniteScroll) Int.MAX_VALUE else items.size
+    val listScrollCount = if (infiniteScroll) Int.MAX_VALUE else newItems.size
     val listScrollMiddle = listScrollCount / 2
     val listStartIndex =
-        listScrollMiddle - listScrollMiddle % items.size - visibleItemsMiddle + startIndex
+        (listScrollMiddle - listScrollMiddle % newItems.size - visibleItemsMiddle + startIndex).coerceAtLeast(startIndex)
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = listStartIndex)
     val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
@@ -74,16 +77,19 @@ fun KoinPicker(
     ) {
         items(listScrollCount) { index ->
             Text(
-                text = items.getItem(index),
+                text = newItems.getItem(index),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = textStyle,
                 color = if (selectedItemIndex == index) selectedItemColor else unselectedItemColor,
-                modifier = Modifier.fillMaxSize().onSizeChanged {
-                    itemHeight = with(density) {
-                        it.height.toDp()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .onSizeChanged {
+                        itemHeight = with(density) {
+                            it.height.toDp()
+                        }
                     }
-                }.padding(contentPadding)
+                    .padding(contentPadding)
             )
         }
     }
@@ -95,7 +101,7 @@ fun KoinPicker(
             index + visibleItemsMiddle
         }.collect { middle ->
             selectedItemIndex = middle
-            pickerState.selectedItem = items.getItem(middle)
+            pickerState.selectedItem = newItems.getItem(middle)
         }
     }
 }
