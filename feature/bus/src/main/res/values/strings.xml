@@ -45,6 +45,11 @@
     <string name="cheonan_station">천안역</string>
     <string name="cheonan_terminal">천안터미널</string>
     <string name="set_time_content_description">시간 설정하기</string>
+    <string name="set_departure_time">출발 시각 설정</string>
+    <string name="caution_timetable_period">현재는 정규학기(12월 20일까지)의 시간표를 제공하고 있어요.</string>
+    <string name="departure_now">지금 출발</string>
+    <string name="complete">완료</string>
+    <string name="today">오늘</string>
     <!-- Content description -->
 
 </resources>

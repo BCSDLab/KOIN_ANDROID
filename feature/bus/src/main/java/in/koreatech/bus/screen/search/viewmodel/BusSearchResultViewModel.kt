@@ -67,7 +67,7 @@ class BusSearchResultViewModel @Inject constructor(
         add("오늘")
         add("내일")
         for (i in 2 until EXTRA_DATE_COUNT) {
-            val date = today.plusDays(i)
+            val date = today.plusDays(i.toLong())
             val formattedDate = date.format(
                 DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
             ).replace("요일", "")
