@@ -60,5 +60,9 @@ class TimetableRemoteDataSource @Inject constructor(
         lectureId: Int
     ) = timetableAuthApi.deleteTimetableFrameLecture(frameId, lectureId)
 
+    suspend fun deleteTimetableLectures(
+        lectureIds: List<Int>
+    ) = timetableAuthApi.deleteTimetableLectures(lectureIds)
+
     suspend fun deleteAllTimetableFrame() = timetableAuthApi.deleteAllTimetableFrame()
 }
