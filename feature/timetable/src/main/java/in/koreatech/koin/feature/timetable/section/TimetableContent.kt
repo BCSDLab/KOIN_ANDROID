@@ -48,6 +48,7 @@ fun TimetableContent(
     clickEvent: List<TimetableEvent> = emptyList(),
     content: @Composable (event: TimetableEvent, eventType: TimetableEventType, onEventTimeClick: (TimetableEvent) -> Unit) -> Unit = { event, eventType, onClick ->
         TimetableEventTime(
+            range = range,
             event = event,
             modifier = modifier,
             eventType = eventType,

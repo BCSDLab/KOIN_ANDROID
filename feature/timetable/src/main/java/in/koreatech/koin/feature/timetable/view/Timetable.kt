@@ -34,6 +34,7 @@ fun Timetable(
     content: @Composable
         (event: TimetableEvent, eventType: TimetableEventType, onEventTimeClick: (TimetableEvent) -> Unit) -> Unit = { event, eventType, onEventTimeClick ->
         TimetableEventTime(
+            range = range,
             event = event,
             modifier = Modifier,
             eventType = eventType,
