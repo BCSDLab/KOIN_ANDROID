@@ -20,7 +20,7 @@ data class Lecture(
 ) {
     fun toTimetableLecture() = TimetableLecture(
         id = id,
-        lectureId = 0,
+        lectureId = id,
         regularNumber = regularNumber,
         code = code,
         designScore = designScore,

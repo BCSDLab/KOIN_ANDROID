@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.timetable.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetState
@@ -18,7 +16,6 @@ import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,13 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.util.pxToDp
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
-import `in`.koreatech.koin.domain.model.timetable.response.Semester
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
-import `in`.koreatech.koin.feature.timetable.model.dummySemester
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -47,9 +42,11 @@ fun TimetableScreen(
     loading: Boolean,
     range: Int,
     lectures: List<Lecture>,
-    semesters: List<Semester>,
+    semesters: List<String>,
+    currentSemester: String,
     selectedLecture: Lecture?,
     searchText: String,
+    bottomSheetContentMode: TimetableBottomSheetContentMode,
     sheetState: BottomSheetState,
     scaffoldState: BottomSheetScaffoldState,
     modifier: Modifier = Modifier,
@@ -63,7 +60,10 @@ fun TimetableScreen(
     onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onClickSettingIcon: () -> Unit = {},
-    onClickSearchIcon: () -> Unit = {}
+    onClickSearchIcon: () -> Unit = {},
+    onClickTimetableEvent: (event: TimetableEvent) -> Unit = {},
+    onClickAddLectureMode: () -> Unit = {},
+    onClickAddCustomLectureMode: () -> Unit = {},
 ) {
     var bottomSheetHeight by remember { mutableStateOf(0f) }
     val scope = rememberCoroutineScope()
@@ -76,8 +76,10 @@ fun TimetableScreen(
                 lectures = lectures,
                 selectedLecture = selectedLecture,
                 searchText = searchText,
+                bottomSheetContentMode = bottomSheetContentMode,
                 timetableEvents = timetableEvents,
-                onClickAddLectureMode = {},
+                onClickAddLectureMode = onClickAddLectureMode,
+                onClickAddCustomLectureMode = onClickAddCustomLectureMode,
                 onComplete = { scope.launch { sheetState.collapse() } },
                 onClickSettingIcon = onClickSettingIcon,
                 onClickSearchIcon = onClickSearchIcon,
@@ -113,7 +115,8 @@ fun TimetableScreen(
                 range = range,
                 modifier = Modifier,
                 events = timetableEvents,
-                clickEvent = clickedTimetableEvents
+                clickEvent = clickedTimetableEvents,
+                onEventClick = onClickTimetableEvent
             )
         }
         CircleLoadingBar(loading = loading)
@@ -150,9 +153,11 @@ private fun TimetableScreenPreview() {
         loading = false,
         range = 9,
         lectures = listOf(dummyLecture),
-        semesters = listOf(dummySemester),
+        semesters = listOf("20242"),
+        currentSemester = "20242",
         selectedLecture = null,
         searchText = "",
+        bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
         sheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed
         ),

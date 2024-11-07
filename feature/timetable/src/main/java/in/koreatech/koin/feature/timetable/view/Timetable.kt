@@ -7,6 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +43,13 @@ fun Timetable(
     onEventClick: (TimetableEvent) -> Unit = {},
 ) {
     val verticalScrollState: ScrollState = rememberScrollState()
+    var scrollValue by remember { mutableStateOf(0) }
+
+    LaunchedEffect(key1 = scrollValue) {
+        if (clickEvent.isNotEmpty()) {
+            verticalScrollState.scrollTo(scrollValue)
+        }
+    }
 
     TimetableContent(
         modifier = modifier
@@ -48,7 +60,10 @@ fun Timetable(
         events = events,
         clickEvent = clickEvent,
         content = content,
-        onEventClick = onEventClick
+        onEventClick = onEventClick,
+        onEventY = { y ->
+            scrollValue = y
+        }
     )
 }
 

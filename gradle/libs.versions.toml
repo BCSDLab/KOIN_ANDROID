@@ -69,6 +69,7 @@ jsoup = "1.18.1"
 timber = "5.0.1"
 kotlinxCoroutinesTestVersion = "1.9.0"
 turbineVersion = "1.2.0"
+kotlinxCollectionsImmutableVersion = "0.3.8"
 
 
 [libraries]
@@ -138,7 +139,7 @@ lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", v
 map-sdk = { module = "com.naver.maps:map-sdk", version.ref = "mapSdkVersion" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoviewVersion" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
-kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version = "0.3.6" }
+kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutableVersion" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }

@@ -7,14 +7,19 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
+import `in`.koreatech.koin.feature.timetable.view.TimetableBottomSheetContentMode
 import `in`.koreatech.koin.feature.timetable.view.TimetableScreen
 import `in`.koreatech.koin.feature.timetable.view.dialog.LectureDuplicationDialog
+import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.SelectDepartmentDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
@@ -40,7 +45,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
     private fun initView() {
         getUserExtra { isAnonymous ->
-            viewModel.getUser(isAnonymous)
+            viewModel.updateIsAnonymous(isAnonymous)
         }
         viewModel.getInitData()
         initComposeView()
@@ -61,6 +66,8 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 bottomSheetState = sheetState
             )
             val scope = rememberCoroutineScope()
+
+            var bottomSheetContentMode by remember { mutableStateOf(TimetableBottomSheetContentMode.BASIC) }
 
             hideKeyboard(sheetState.isCollapsed)
 
@@ -101,26 +108,44 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     )
                 }
 
+                if (uiState.isLoginDialogVisible) {
+                    RequestLoginDialog(
+                        onConfirm = {}, // TODO : 로그인 화면으로 연결
+                        onDismiss = viewModel::updateIsLoginDialogVisible
+                    )
+                }
+
                 TimetableScreen(
                     loading = uiState.loading,
                     range = uiState.range,
                     lectures = lectures,
                     semesters = uiState.semesters,
+                    currentSemester = uiState.currentSemester,
                     selectedLecture = uiState.selectedLecture,
                     timetableEvents = uiState.timetableEvents,
                     clickedTimetableEvents = uiState.clickedTimetableEvents,
                     searchText = searchText,
+                    bottomSheetContentMode = bottomSheetContentMode,
                     sheetState = sheetState,
                     scaffoldState = scaffoldState,
                     onSearchTextChange = viewModel::updateSearchText,
                     onClickTimetableSchedule = {}, // TODO : 학기 시간표 선택
                     onClickDownloadTimetable = {}, // TODO : 시간표 다운로드
+                    onClickAddLectureMode = {
+                        bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC
+                    },
+                    onClickAddCustomLectureMode = {
+                        handleAddCustomLectureMode(uiState.isAnonymous) {
+                            bottomSheetContentMode = TimetableBottomSheetContentMode.CUSTOM
+                        }
+                    },
                     onClickAddLecture = viewModel::updateTimetableLectures,
                     onClickRemoveLecture = viewModel::removeTimetableLectures,
                     onClickLecture = viewModel::updateClickedTimetableEvents,
                     onSelectedLecture = viewModel::updateSelectedLecture,
                     onClickSettingIcon = viewModel::updateIsSelectDepartmentDialogVisible,
                     onClickSearchIcon = {}, // TODO : 검색 아이콘 클릭 (필요할까? 그냥 보여주기용이 좋아보임)
+                    onClickTimetableEvent = {}, // TODO : 추가된 시간표 클릭 후 이벤트 (id 파싱해서 삭제하면 됨)
                 )
             }
         }
@@ -128,6 +153,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
     private fun initEvent() {
         setAppbarEvent()
+    }
+
+    private fun handleAddCustomLectureMode(isAnonymous: Boolean, callback: () -> Unit) {
+        if (isAnonymous) {
+            viewModel.updateIsLoginDialogVisible()
+        } else {
+            callback()
+        }
     }
 
     private fun getUserExtra(callback: (isAnonymous: Boolean) -> Unit) {
