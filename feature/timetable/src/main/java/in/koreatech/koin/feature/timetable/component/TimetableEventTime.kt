@@ -16,12 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
@@ -59,6 +56,7 @@ fun TimetableEventTime(
     }
 }
 
+
 @Composable
 private fun TimetableBasicEventTime(
     event: TimetableEvent,
@@ -94,20 +92,7 @@ private fun TimetableSelectedEventTime(
     event: TimetableEvent,
     modifier: Modifier = Modifier,
 ) {
-    val isEnd = if (event.dayOfWeek == DayOfWeek.FRIDAY) {
-        val timeRange = if (event.end.minute == 30) {
-            (event.end.hour - 9) + 1
-        } else {
-            (event.end.hour - 9)
-        }
-        if (range == timeRange) {
-            true
-        } else {
-            false
-        }
-    } else {
-        false
-    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -117,9 +102,32 @@ private fun TimetableSelectedEventTime(
             .border(
                 color = KoinTheme.colors.neutral500,
                 width = 1.dp,
-                shape = RoundedCornerShape(bottomEnd = if (isEnd) 10.dp else 0.dp)
+                shape = RoundedCornerShape(
+                    bottomEnd = timetableSelectedEventTimeBottomEndRound(
+                        range,
+                        event
+                    )
+                )
             )
     )
+}
+
+fun timetableSelectedEventTimeBottomEndRound(
+    range: Int,
+    event: TimetableEvent
+): Dp {
+    if (event.dayOfWeek == DayOfWeek.FRIDAY) {
+        val timeRange = if (event.end.minute == 30) {
+            (event.end.hour - 9) + 1
+        } else {
+            (event.end.hour - 9)
+        }
+        if (range == timeRange) {
+            return 10.dp
+            true
+        }
+    }
+    return 0.dp
 }
 
 @Preview(showBackground = true)
