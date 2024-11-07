@@ -44,6 +44,7 @@
     <string name="koreatech">코리아텍</string>
     <string name="cheonan_station">천안역</string>
     <string name="cheonan_terminal">천안터미널</string>
+    <string name="set_time_content_description">시간 설정하기</string>
     <!-- Content description -->
 
 </resources>
