@@ -14,7 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,7 +40,7 @@ internal fun ShuttleTimetableScreen(
     regions: ImmutableList<ShuttleRegionViewState>
 ) {
 
-    var selectedRouteTypeIndex by rememberSaveable { mutableIntStateOf(ShuttleBusRouteType.ALL.ordinal) }
+    var selectedRouteType by rememberSaveable { mutableStateOf(ShuttleBusRouteType.ALL) }
     val context = LocalContext.current
 
     Column(
@@ -50,9 +50,9 @@ internal fun ShuttleTimetableScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 24.dp),
             titles = ShuttleBusRouteType.entries.map { stringResource(it.titleRes) },
             onChipSelected = { title ->
-                selectedRouteTypeIndex = ShuttleBusRouteType.entries.find { context.getString(it.titleRes) == title }?.ordinal ?: 0
+                selectedRouteType = ShuttleBusRouteType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusRouteType.ALL
             },
-            selectedChipIndexes = intArrayOf(selectedRouteTypeIndex)
+            selectedChipIndexes = intArrayOf(selectedRouteType.ordinal)
         )
         regions.forEach {
             ShuttleRegionView(
