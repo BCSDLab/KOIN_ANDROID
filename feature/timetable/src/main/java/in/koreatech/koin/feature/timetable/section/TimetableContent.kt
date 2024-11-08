@@ -27,6 +27,7 @@ import `in`.koreatech.koin.feature.timetable.component.TimetableEventType
 import `in`.koreatech.koin.feature.timetable.model.TimetableConstants
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
+import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -46,6 +47,7 @@ fun TimetableContent(
     dayCount: Int = TimetableConstants.days.size,
     height: Dp = (TimetableConstants.eventHeight).dp,
     clickEvent: List<TimetableEvent> = emptyList(),
+    etcClickEvent: List<TimetableEvent> = emptyList(),
     content: @Composable (event: TimetableEvent, eventType: TimetableEventType, onEventTimeClick: (TimetableEvent) -> Unit) -> Unit = { event, eventType, onClick ->
         TimetableEventTime(
             range = range,
@@ -95,10 +97,17 @@ fun TimetableContent(
                     content(event, TimetableEventType.BASIC, onEventClick)
                 }
             }
+            if (etcClickEvent.isNotEmpty()) {
+                etcClickEvent.sortedBy(TimetableEvent::start).forEach { event ->
+                    Box(modifier = Modifier.eventData(event)) {
+                        content(event, TimetableEventType.ETC_SELECTED, {})
+                    }
+                }
+            }
             if (clickEvent.isNotEmpty()) {
                 clickEvent.sortedBy(TimetableEvent::start).forEach { event ->
                     Box(modifier = Modifier.eventData(event)) {
-                        content(event, TimetableEventType.SELECTED, onEventClick)
+                        content(event, TimetableEventType.SELECTED, {})
                     }
                 }
             }
@@ -243,7 +252,7 @@ fun TimetableContent(
                     else -> -1
                 }
                 val eventX = eventOffsetDays * innerWidth + timeWidth.roundToPx()
-                if (index == placeablesWithEvents.size - 1) {
+                if(event in clickEvent) {
                     onEventY(eventY)
                 }
                 placeable.place(eventX, eventY)

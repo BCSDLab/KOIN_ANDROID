@@ -52,6 +52,7 @@ fun TimetableScreen(
     modifier: Modifier = Modifier,
     timetableEvents: List<TimetableEvent> = emptyList(),
     clickedTimetableEvents: List<TimetableEvent> = emptyList(),
+    etcClickedTimetableEvents: List<TimetableEvent> = emptyList(),
     onSearchTextChange: (text: String) -> Unit = {},
     onClickTimetableSchedule: () -> Unit = {},
     onClickDownloadTimetable: () -> Unit = {},
@@ -116,13 +117,13 @@ fun TimetableScreen(
                 modifier = Modifier,
                 events = timetableEvents,
                 clickEvent = clickedTimetableEvents,
+                etcClickEvent = etcClickedTimetableEvents,
                 onEventClick = onClickTimetableEvent
             )
         }
         CircleLoadingBar(loading = loading)
     }
 }
-
 
 
 @OptIn(ExperimentalMaterialApi::class)

@@ -19,13 +19,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.dashedBorder
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
 import java.time.DayOfWeek
 
 enum class TimetableEventType {
-    BASIC, SELECTED
+    BASIC, SELECTED, ETC_SELECTED
 }
 
 @Composable
@@ -52,6 +53,12 @@ fun TimetableEventTime(
                 end = (0.6).dp,
                 bottom = (0.65).dp
             )
+        )
+
+        TimetableEventType.ETC_SELECTED -> TimetableEtcSelectedEventTime(
+            range = range,
+            event = event,
+            modifier = modifier.padding(1.dp)
         )
     }
 }
@@ -92,7 +99,6 @@ private fun TimetableSelectedEventTime(
     event: TimetableEvent,
     modifier: Modifier = Modifier,
 ) {
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -103,16 +109,37 @@ private fun TimetableSelectedEventTime(
                 color = KoinTheme.colors.neutral500,
                 width = 1.dp,
                 shape = RoundedCornerShape(
-                    bottomEnd = timetableSelectedEventTimeBottomEndRound(
-                        range,
-                        event
-                    )
+                    bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event)
                 )
             )
     )
 }
 
-fun timetableSelectedEventTimeBottomEndRound(
+@Composable
+private fun TimetableEtcSelectedEventTime(
+    range: Int,
+    event: TimetableEvent,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                color = Color.Transparent,
+            )
+            .dashedBorder(
+                color = KoinTheme.colors.neutral500,
+                shape = RoundedCornerShape(
+                    topStart = 0.dp,
+                    topEnd = 0.dp,
+                    bottomStart = 0.dp,
+                    bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event)
+                )
+            )
+    )
+}
+
+private fun timetableSelectedEventTimeBottomEndRound(
     range: Int,
     event: TimetableEvent
 ): Dp {
@@ -124,7 +151,6 @@ fun timetableSelectedEventTimeBottomEndRound(
         }
         if (range == timeRange) {
             return 10.dp
-            true
         }
     }
     return 0.dp
@@ -152,5 +178,18 @@ private fun TimetableEventTimePreview_Selected() {
             .sizeIn(maxHeight = 64.dp)
             .padding(10.dp),
         eventType = TimetableEventType.SELECTED
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TimetableEventTimePreview_Etc_Selected() {
+    TimetableEventTime(
+        range = 9,
+        event = dummyEvent,
+        modifier = Modifier
+            .sizeIn(maxHeight = 64.dp)
+            .padding(10.dp),
+        eventType = TimetableEventType.ETC_SELECTED
     )
 }
