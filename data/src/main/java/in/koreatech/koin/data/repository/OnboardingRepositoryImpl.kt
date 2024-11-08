@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.source.local.OnboardingLocalDataSource
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class OnboardingRepositoryImpl @Inject constructor(
@@ -15,4 +16,7 @@ class OnboardingRepositoryImpl @Inject constructor(
     override suspend fun updateShouldOnboarding(onboardingType: String, shouldShow: Boolean) {
         onboardingLocalDataSource.updateShouldOnboarding(onboardingType, shouldShow)
     }
+
+    override fun getShouldOnboardingFlow(onboardingType: String): Flow<Boolean> =
+        onboardingLocalDataSource.getShouldOnboardingFlow(onboardingType)
 }
