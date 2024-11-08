@@ -18,6 +18,7 @@ import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.utils.formatTimeRange
 import `in`.koreatech.koin.feature.timetable.utils.getTimetableEvents
 import `in`.koreatech.koin.feature.timetable.utils.toTimetableEvents
+import `in`.koreatech.koin.feature.timetable.view.TimetableBottomSheetContentMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -44,6 +45,9 @@ class TimetableViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<TimetableUiState>(TimetableUiState())
     val uiState: StateFlow<TimetableUiState> = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableStateFlow<TimetableSideEffect>(TimetableSideEffect.Nothing)
+    val sideEffect: StateFlow<TimetableSideEffect> = _sideEffect.asStateFlow()
 
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
@@ -147,7 +151,7 @@ class TimetableViewModel @Inject constructor(
 
     private suspend fun getLectures(semester: String): List<Lecture> {
         return getLecturesUseCase(semester).catch {
-            Timber.e("Get Lectures Error Message : ${it.message}")
+            _lectures.value = emptyList()
         }.firstOrNull().orEmpty()
     }
 
@@ -180,6 +184,14 @@ class TimetableViewModel @Inject constructor(
     fun updateDepartment(text: String) {
         _department.value = text
         updateIsSelectDepartmentDialogVisible()
+    }
+
+    fun updateSideEffect(sideEffect: TimetableSideEffect) {
+        _sideEffect.value = sideEffect
+    }
+
+    fun updateTimetableBottomSheetMode(mode: TimetableBottomSheetContentMode) {
+        _uiState.value = _uiState.value.copy(bottomSheetMode = mode)
     }
 
     fun updateClickedTimetableEvents(timetableEvents: List<TimetableEvent>) {
@@ -453,4 +465,12 @@ data class TimetableUiState(
     val isSelectDepartmentDialogVisible: Boolean = false,
     val isLoginDialogVisible: Boolean = false,
     val isAnonymous: Boolean = true,
+    val bottomSheetMode: TimetableBottomSheetContentMode = TimetableBottomSheetContentMode.BASIC
 )
+
+sealed class TimetableSideEffect {
+    data class Toast(
+        val message: String
+    ): TimetableSideEffect()
+    data object Nothing: TimetableSideEffect()
+}

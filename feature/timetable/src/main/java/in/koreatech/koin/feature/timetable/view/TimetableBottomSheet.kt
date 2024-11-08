@@ -52,7 +52,7 @@ fun TimetableBottomSheet(
     selectedLecture: Lecture? = null,
     timetableEvents: List<TimetableEvent> = emptyList(),
     onClickAddCustomLectureMode: () -> Unit = {},
-    onClickAddLectureMode: () -> Unit = {},
+    onClickAddLectureMode: (mode: TimetableBottomSheetContentMode) -> Unit = {},
     onComplete: () -> Unit = {},
     onClickSettingIcon: () -> Unit = {},
     onClickSearchIcon: () -> Unit = {},
