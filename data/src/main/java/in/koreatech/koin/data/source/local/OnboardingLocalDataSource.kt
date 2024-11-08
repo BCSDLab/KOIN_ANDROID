@@ -27,4 +27,10 @@ class OnboardingLocalDataSource @Inject constructor(
             preferences[booleanPreferencesKey(onboardingType)] = shouldShow
         }
     }
+
+    fun getShouldOnboardingFlow(onboardingType: String) = dataStore.data.catch {
+        emit(emptyPreferences())
+    }.map { preferences ->
+        preferences[booleanPreferencesKey(onboardingType)] ?: true
+    }
 }

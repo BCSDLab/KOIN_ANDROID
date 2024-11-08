@@ -6,10 +6,9 @@ import `in`.koreatech.koin.feature.bus.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-internal enum class BusType(
+enum class CommonDirectionType(
     @StringRes val titleRes: Int
 ) : Parcelable {
-    SHUTTLE(R.string.tab_shuttle),
-    EXPRESS(R.string.tab_express),
-    CITY(R.string.tab_city),
+    TO_BYEONGCHEON(R.string.to_byeongcheon),
+    TO_CHEONAN(R.string.to_cheonan),
 }
