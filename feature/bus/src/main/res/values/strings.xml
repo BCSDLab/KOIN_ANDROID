@@ -19,7 +19,7 @@
     <string name="to_cheonan">천안방면</string>
     <string name="am">오전</string>
     <string name="pm">오후</string>
-    <string name="updated_at">업데이트 날짜 :</string>
+    <string name="updated_at">업데이트 날짜 : %s</string>
     <string name="n400">400번</string>
     <string name="n405">405번</string>
     <string name="n495">495번</string>
