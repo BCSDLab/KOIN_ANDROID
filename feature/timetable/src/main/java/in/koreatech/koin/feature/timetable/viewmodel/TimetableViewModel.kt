@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import `in`.koreatech.koin.domain.usecase.timetable.AddTimetableLectureUseCase
@@ -16,6 +17,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.utils.formatTimeRange
 import `in`.koreatech.koin.feature.timetable.utils.getTimetableEvents
+import `in`.koreatech.koin.feature.timetable.utils.toTimetableEvents
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -184,15 +186,44 @@ class TimetableViewModel @Inject constructor(
         if (timetableEvents.isEmpty()) {
             _uiState.value = _uiState.value.copy(
                 clickedTimetableEvents = emptyList(),
+                etcClickedTimetableEvents = emptyList(),
                 range = uiState.value.timetableLectures.formatTimeRange()
             )
         } else {
-            val range = timetableEvents.formatTimeRange()
+            val events =
+                lectures.value.filter { it.name == timetableEvents.firstOrNull()?.name.orEmpty() }
+                    .flatMap { timetableLecture ->
+                        timetableLecture.toTimetableEvents()
+                    }
+
+            val adaptRange = uiState.value.timetableLectures.formatTimeRange()
+            val eventRange = events.formatTimeRange()
+
+            val etcClickedTimetableEvents = events.toMutableList()
+            events.forEach { etcTimetableEvent ->
+                timetableEvents.forEach { timetableEvent ->
+                    if (etcTimetableEvent.start == timetableEvent.start && etcTimetableEvent.end == timetableEvent.end) {
+                        etcClickedTimetableEvents.remove(etcTimetableEvent)
+                    }
+                }
+            }
+
             _uiState.value = _uiState.value.copy(
                 clickedTimetableEvents = timetableEvents,
-                range = if (range < 9) {
-                    9
-                } else range
+                etcClickedTimetableEvents = etcClickedTimetableEvents,
+                range = if (eventRange > 9) {
+                    if (adaptRange > eventRange) {
+                        adaptRange
+                    } else {
+                        eventRange
+                    }
+                } else {
+                    if (adaptRange > 9) {
+                        adaptRange
+                    } else {
+                        9
+                    }
+                }
             )
         }
     }
@@ -308,6 +339,7 @@ class TimetableViewModel @Inject constructor(
                             timetableLectures = timetableLectures,
                             timetableEvents = timetableLectures.getTimetableEvents(),
                             clickedTimetableEvents = emptyList(),
+                            etcClickedTimetableEvents = emptyList(),
                             isLectureDuplicationDialogVisible = false,
                             selectedLecture = null,
                             loading = false
@@ -349,6 +381,9 @@ class TimetableViewModel @Inject constructor(
                                     range = timetableLectures.formatTimeRange(),
                                     frameId = timetableLectures.timetableFrameId,
                                     timetableEvents = timetableLectures.getTimetableEvents(),
+                                    clickedTimetableEvents = emptyList(),
+                                    etcClickedTimetableEvents = emptyList(),
+                                    selectedLecture = null,
                                     timetableLectures = timetableLectures,
                                 )
                             }.onFailure {
@@ -410,6 +445,7 @@ data class TimetableUiState(
     val currentSemester: String = "",
     val timetableEvents: List<TimetableEvent> = emptyList(),
     val clickedTimetableEvents: List<TimetableEvent> = emptyList(),
+    val etcClickedTimetableEvents: List<TimetableEvent> = emptyList(),
     val selectedLecture: Lecture? = null,
     val timetableLectures: TimetableLectures = TimetableLectures(0, emptyList(), 0, 0),
     val loading: Boolean = false,

@@ -31,6 +31,7 @@ fun Timetable(
     events: List<TimetableEvent>,
     modifier: Modifier = Modifier,
     clickEvent: List<TimetableEvent> = emptyList(),
+    etcClickEvent: List<TimetableEvent> = emptyList(),
     content: @Composable
         (event: TimetableEvent, eventType: TimetableEventType, onEventTimeClick: (TimetableEvent) -> Unit) -> Unit = { event, eventType, onEventTimeClick ->
         TimetableEventTime(
@@ -60,6 +61,7 @@ fun Timetable(
         horizontalPadding = 48.dp,
         events = events,
         clickEvent = clickEvent,
+        etcClickEvent = etcClickEvent,
         content = content,
         onEventClick = onEventClick,
         onEventY = { y ->
