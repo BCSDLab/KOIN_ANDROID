@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import `in`.koreatech.bus.screen.search.composable.BusSearchScreen
 import `in`.koreatech.bus.screen.timetable.composable.BusTimetableScreen
 
 @Composable
@@ -32,6 +33,16 @@ fun BusTimetableNavigation(
             BusTimetableScreen(
                 modifier = Modifier.fillMaxSize(),
                 onNavigationIconClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Routes.BusSearch> {
+            BusSearchScreen(
+                modifier = Modifier.fillMaxSize(),
+                onNavigationIconClick = { navController.popBackStack() },
+                onSearchSuccess = {
+                    // navController.navigate(Routes.SearchedTimetable(it))
+                }
             )
         }
     }
