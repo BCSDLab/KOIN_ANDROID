@@ -63,8 +63,9 @@ fun TimetableScreen(
     onClickSettingIcon: () -> Unit = {},
     onClickSearchIcon: () -> Unit = {},
     onClickTimetableEvent: (event: TimetableEvent) -> Unit = {},
-    onClickAddLectureMode: () -> Unit = {},
+    onClickAddLectureMode: (mode: TimetableBottomSheetContentMode) -> Unit = {},
     onClickAddCustomLectureMode: () -> Unit = {},
+    onClickBottomSheetComplete: () -> Unit = {}
 ) {
     var bottomSheetHeight by remember { mutableStateOf(0f) }
     val scope = rememberCoroutineScope()
@@ -81,7 +82,7 @@ fun TimetableScreen(
                 timetableEvents = timetableEvents,
                 onClickAddLectureMode = onClickAddLectureMode,
                 onClickAddCustomLectureMode = onClickAddCustomLectureMode,
-                onComplete = { scope.launch { sheetState.collapse() } },
+                onComplete = onClickBottomSheetComplete,
                 onClickSettingIcon = onClickSettingIcon,
                 onClickSearchIcon = onClickSearchIcon,
                 onSearchTextChange = onSearchTextChange,
