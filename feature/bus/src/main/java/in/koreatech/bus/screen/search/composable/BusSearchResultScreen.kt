@@ -1,12 +1,13 @@
 package `in`.koreatech.bus.screen.search.composable
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
@@ -36,7 +37,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.toImmutableList
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusSearchResultScreen(
     modifier: Modifier = Modifier,
@@ -47,51 +48,58 @@ fun BusSearchResultScreen(
     var showSelectDialog by remember { mutableStateOf(false) }
 
     val departureTimeText by viewModel.departureTimeText.collectAsStateWithLifecycle()
+    val searchResults by viewModel.searchResults.collectAsStateWithLifecycle()
 
-    LazyColumn (
+
+    Column(
         modifier = modifier
     ) {
-        item {
-            KoinTopAppBar(
-                title = "한기대 → 천안터미널", // TODO : 방향
-                onNavigationIconClick = onNavigationIconClick
-            )
+        KoinTopAppBar(
+            title = "한기대 → 천안터미널", // TODO : 방향
+            onNavigationIconClick = onNavigationIconClick
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp, horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                modifier = Modifier.noRippleClickable {
+                    showSelectDialog = true
+                }, verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = buildAnnotatedString {
+                        append(departureTimeText)
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black
+                            )
+                        ) {
+                            append(" " + stringResource(R.string.departure))
+                        }
+                    }, style = KoinTheme.typography.bold16,
+                    color = KoinTheme.colors.info700
+                )
+                Icon(
+                    modifier = Modifier.padding(start = 4.dp),
+                    imageVector = Icons.Rounded.KeyboardArrowDown,
+                    contentDescription = stringResource(R.string.set_time_content_description),
+                    tint = KoinTheme.colors.neutral500
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
         }
 
-        stickyHeader {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp, horizontal = 24.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    modifier = Modifier.noRippleClickable {
-                        showSelectDialog = true
-                    }, verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = buildAnnotatedString {
-                            append(departureTimeText)
-                            withStyle(
-                                style = SpanStyle(
-                                    fontWeight = FontWeight.Medium,
-                                    color = Color.Black
-                                )
-                            ) {
-                                append(" " + stringResource(R.string.departure))
-                            }
-                        }, style = KoinTheme.typography.bold16,
-                        color = KoinTheme.colors.info700
-                    )
-                    Icon(
-                        modifier = Modifier.padding(start = 4.dp),
-                        imageVector = Icons.Rounded.KeyboardArrowDown,
-                        contentDescription = stringResource(R.string.set_time_content_description),
-                        tint = KoinTheme.colors.neutral500
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
+        LazyColumn {
+            items(searchResults) { info ->
+                BusSearchResultItem(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 8.dp),
+                    info = info
+                )
             }
         }
     }
