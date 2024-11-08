@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinx.serialization)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -20,6 +21,7 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":domain"))
+    implementation(project(":core:onboarding"))
     implementation(project(":core:designsystem"))
 
     implementation(libs.core.ktx)
