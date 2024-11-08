@@ -7,6 +7,7 @@ import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDateTime
@@ -39,63 +40,9 @@ class BusSearchResultViewModel @Inject constructor(
     )
 
     val searchResults = flow {
-        emit(listOf(
-            BusDepartureInfoViewState(
-                type = BusType.SHUTTLE,
-                departureTime = "10:00"
-            ), BusDepartureInfoViewState(
-                type = BusType.EXPRESS,
-                departureTime = "10:10"
-            ), BusDepartureInfoViewState(
-                type = BusType.CITY,
-                departureTime = "10:20"
-            ), BusDepartureInfoViewState(
-                type = BusType.SHUTTLE,
-                departureTime = "10:30"
-            ), BusDepartureInfoViewState(
-                type = BusType.EXPRESS,
-                departureTime = "10:40"
-            ), BusDepartureInfoViewState(
-                type = BusType.CITY,
-                departureTime = "10:50"
-            ), BusDepartureInfoViewState(
-                type = BusType.SHUTTLE,
-                departureTime = "11:00"
-            ), BusDepartureInfoViewState(
-                type = BusType.EXPRESS,
-                departureTime = "11:10"
-            ), BusDepartureInfoViewState(
-                type = BusType.CITY,
-                departureTime = "11:20"
-            ), BusDepartureInfoViewState(
-                type = BusType.SHUTTLE,
-                departureTime = "11:30"
-            ), BusDepartureInfoViewState(
-                type = BusType.EXPRESS,
-                departureTime = "11:40"
-            ), BusDepartureInfoViewState(
-                type = BusType.CITY,
-                departureTime = "11:50"
-            ), BusDepartureInfoViewState(
-                type = BusType.SHUTTLE,
-                departureTime = "12:00"
-            ), BusDepartureInfoViewState(
-                type = BusType.EXPRESS,
-                departureTime = "12:10"
-            ), BusDepartureInfoViewState(
-                type = BusType.CITY,
-                departureTime = "12:20"
-            ), BusDepartureInfoViewState(
-                type = BusType.SHUTTLE,
-                departureTime = "12:30"
-            ), BusDepartureInfoViewState(
-                type = BusType.EXPRESS,
-                departureTime = "12:40"
-            ), BusDepartureInfoViewState(
-                type = BusType.CITY,
-                departureTime = "12:50"
-            )
-        ))
+        emit(tempData)
+    }.combine(departureTimeText) { results, _ ->
+        results.filter { true } // TODO : 필터링
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -152,3 +99,84 @@ class BusSearchResultViewModel @Inject constructor(
         private const val EXTRA_DATE_COUNT = 365
     }
 }
+
+private val tempData = listOf(
+    BusDepartureInfoViewState(
+        type = BusType.SHUTTLE,
+        departureHour = 9,
+        departureMinute = 0,
+        remainingTime = 0
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.EXPRESS,
+        departureHour = 9,
+        departureMinute = 10,
+        remainingTime = 10
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.CITY,
+        departureHour = 9,
+        departureMinute = 20,
+        remainingTime = 20
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.SHUTTLE,
+        departureHour = 9,
+        departureMinute = 30,
+        remainingTime = 30
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.EXPRESS,
+        departureHour = 9,
+        departureMinute = 40,
+        remainingTime = 40
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.CITY,
+        departureHour = 9,
+        departureMinute = 50,
+        remainingTime = 50
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.SHUTTLE,
+        departureHour = 10,
+        departureMinute = 0,
+        remainingTime = 60
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.EXPRESS,
+        departureHour = 10,
+        departureMinute = 10,
+        remainingTime = 70
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.CITY,
+        departureHour = 10,
+        departureMinute = 20,
+        remainingTime = 80
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.SHUTTLE,
+        departureHour = 10,
+        departureMinute = 30,
+        remainingTime = 90
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.EXPRESS,
+        departureHour = 10,
+        departureMinute = 40,
+        remainingTime = 100
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.CITY,
+        departureHour = 10,
+        departureMinute = 50,
+        remainingTime = 110
+    ),
+    BusDepartureInfoViewState(
+        type = BusType.SHUTTLE,
+        departureHour = 11,
+        departureMinute = 0,
+        remainingTime = 120
+    )
+)

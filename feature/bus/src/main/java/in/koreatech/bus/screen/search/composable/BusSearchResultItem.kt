@@ -35,12 +35,12 @@ fun BusSearchResultItem(
             )
             Text(
                 modifier = Modifier.padding(top = 4.dp),
-                text = info.departureTime,
+                text = info.departureHour.toString() + ":" + info.departureMinute.toString().padStart(2, '0'), // TODO : 출발 시간
                 style = KoinTheme.typography.bold20
             )
         }
         Text(
-            text = "10분 전", // TODO : 남은 시간
+            text = "${info.remainingTime}분 전", // TODO : 남은 시간
             style = KoinTheme.typography.bold16.copy(
                 color = KoinTheme.colors.info700
             )
