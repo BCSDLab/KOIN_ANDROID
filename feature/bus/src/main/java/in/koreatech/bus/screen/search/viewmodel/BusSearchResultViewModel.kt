@@ -82,6 +82,6 @@ class BusSearchResultViewModel @Inject constructor(
     }
 
     companion object {
-        private const val EXTRA_DATE_COUNT = 12
+        private const val EXTRA_DATE_COUNT = 365
     }
 }
