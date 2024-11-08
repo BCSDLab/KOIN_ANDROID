@@ -75,7 +75,7 @@ internal fun CommonTimetableView(
 
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = stringResource(R.string.updated_at) + " " + timetable.updatedAt,
+                text = stringResource(R.string.updated_at, timetable.updatedAt),
                 style = KoinTheme.typography.regular14,
                 color = KoinTheme.colors.neutral500
             )
