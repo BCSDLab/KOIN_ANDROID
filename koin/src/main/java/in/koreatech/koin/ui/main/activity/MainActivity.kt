@@ -14,16 +14,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.bus.Bus2Activity
+import `in`.koreatech.bus.BusSearchActivity
+import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.bus.MainEntryView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
-import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -36,18 +35,11 @@ import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.core.viewpager.enableAutoScroll
-import `in`.koreatech.koin.data.constant.URLConstant
-import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
-import `in`.koreatech.koin.domain.model.bus.BusType
-import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.bus.BusActivity
-import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
@@ -150,6 +142,15 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         busComposeView.apply {
             setContent {
                 MainEntryView(
+                    onShuttleTicketClicked = {
+                    // TODO : 유니버스 바로가기
+                    }, onTimetableCardClicked = {
+                        val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
+                        startActivity(intent)
+                    }, onSearchCardClicked = {
+                        val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
+                        startActivity(intent)
+                    },
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
                 )
             }

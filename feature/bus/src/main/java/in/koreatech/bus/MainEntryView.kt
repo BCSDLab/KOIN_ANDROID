@@ -27,6 +27,9 @@ import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 fun MainEntryView(
+    onShuttleTicketClicked: () -> Unit,
+    onTimetableCardClicked: () -> Unit,
+    onSearchCardClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val unibusInteractionSource = remember { MutableInteractionSource() }
@@ -53,7 +56,7 @@ fun MainEntryView(
                         interactionSource = unibusInteractionSource,
                         indication = ripple(bounded = false)
                     ) {
-                        // TODO : Unibus 바로가기
+                        onShuttleTicketClicked()
                     }
                     .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -84,7 +87,7 @@ fun MainEntryView(
                         interactionSource = timetableInteractionSource,
                         indication = ripple(bounded = false)
                     ) {
-
+                        onTimetableCardClicked()
                     }.padding(horizontal = 16.dp)
                     .weight(1f)
             )
@@ -100,7 +103,7 @@ fun MainEntryView(
                         interactionSource = searchInteractionSource,
                         indication = ripple(bounded = false)
                     ) {
-
+                        onSearchCardClicked()
                     }.padding(horizontal = 16.dp)
                     .weight(1f)
             )
