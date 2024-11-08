@@ -129,26 +129,11 @@
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
-                                android:layout_marginTop="22dp"
-                                android:text="버스/교통"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <androidx.viewpager2.widget.ViewPager2
-                                android:id="@+id/bus_view_pager"
+                            <androidx.compose.ui.platform.ComposeView
+                                android:id="@+id/bus_compose_view"
                                 android:layout_width="match_parent"
-                                android:layout_height="173dp"
-                                android:layout_marginTop="12dp"
-                                android:clipToPadding="false"
-                                tools:paddingBottom="8dp"
-                                tools:paddingEnd="40dp"
-                                tools:paddingStart="40dp"
-                                tools:paddingTop="8dp" />
+                                android:layout_marginTop="16dp"
+                                android:layout_height="wrap_content" />
 
                             <TextView
                                 android:layout_width="wrap_content"

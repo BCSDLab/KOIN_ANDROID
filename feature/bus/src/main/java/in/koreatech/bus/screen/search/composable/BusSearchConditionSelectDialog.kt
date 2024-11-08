@@ -24,7 +24,6 @@ import `in`.koreatech.koin.core.designsystem.component.picker.rememberPickerStat
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
-import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
