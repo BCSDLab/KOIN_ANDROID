@@ -50,6 +50,13 @@
     <string name="departure_now">지금 출발</string>
     <string name="complete">완료</string>
     <string name="today">오늘</string>
-    <!-- Content description -->
 
+    <!-- Main -->
+    <string name="main_title_bus_timetable">버스 시간표</string>
+    <string name="main_title_bus_search">가장 빠른 버스</string>
+    <string name="shortcut">바로가기</string>
+    <string name="see">조회하기</string>
+    <string name="bus">버스</string>
+    <string name="unibus_shortcut_content_description">유니버스 바로가기</string>
+    <string name="shuttle_ticket">셔틀 승차권</string>
 </resources>
