@@ -21,6 +21,7 @@ fun TimetableLecture.toTimetableEvents(index: Int): List<TimetableEvent> {
     findDayOfWeekAndTime().forEach { (key, value) ->
         val timetableEvent = TimetableEvent(
             id = id,
+            lectureId = lectureId,
             name = classTitle,
             color = defaultColors[index % defaultColors.size],
             dayOfWeek = key,
@@ -48,6 +49,7 @@ fun Lecture.toTimetableEvents(): List<TimetableEvent> {
     findDayOfWeekAndTime().forEach { (key, value) ->
         val timetableEvent = TimetableEvent(
             id = id,
+            lectureId = 1, // 상관 없음
             name = name,
             color = TimetableColor(Color(0xFFFFFF), Color(0xFFFFFF)),
             dayOfWeek = key,

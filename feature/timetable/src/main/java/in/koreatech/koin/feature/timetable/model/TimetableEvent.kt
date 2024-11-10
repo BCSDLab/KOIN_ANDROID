@@ -24,6 +24,7 @@ data class TimetableColor(
 
 data class TimetableEvent(
     val id: Int,
+    val lectureId: Int,
     val name: String,
     val color: TimetableColor,
     val dayOfWeek: DayOfWeek? = null,
