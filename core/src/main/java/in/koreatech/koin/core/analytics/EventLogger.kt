@@ -54,9 +54,13 @@ object EventLogger {
      * @sample logEvent("force_update", "page_view", "forced_update_page_view", "v4.0.0")
      */
     fun logCustomEvent(action: String, category: String, label: String, value: String) {
-        if (BuildConfig.IS_DEBUG)
-            Log.d("EventLogger", "[action: ${action}, category: ${category}, label: $label, value: $value " + "]")
-        else {
+        if (BuildConfig.IS_DEBUG) {
+            Firebase.analytics.logEvent("${action}_debug") {
+                param(EVENT_CATEGORY, "${category}_debug")
+                param(EVENT_LABEL, "$label (debug)")
+                param(VALUE, value)
+            }
+        } else {
             Firebase.analytics.logEvent(action) {
                 param(EVENT_CATEGORY, category)
                 param(EVENT_LABEL, label)
@@ -64,7 +68,6 @@ object EventLogger {
             }
         }
     }
-
     /**
      * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
      * @param category: 이벤트 종류(click, scroll, ...)
@@ -73,9 +76,16 @@ object EventLogger {
      * @sample logEvent("BUSINESS", "click", "main_shop_categories", "전체보기")
      */
     private fun logEvent(action: EventAction, category: EventCategory, label: String, value: String, vararg extras: EventExtra) {
-        if (BuildConfig.IS_DEBUG)
-            Log.d("EventLogger", "[action: ${action.value}, category: ${category.value}, label: $label, value: $value " + extras.joinToString { it.toString() } + "]")
-        else {
+        if (BuildConfig.IS_DEBUG) {
+            Firebase.analytics.logEvent("${action.value}_debug") {
+                param(EVENT_CATEGORY, "${category.value}_debug")
+                param(EVENT_LABEL, "$label (debug)")
+                param(VALUE, value)
+                extras.forEach {
+                    param("${it.key}_debug", it.value)
+                }
+            }
+        } else {
             Firebase.analytics.logEvent(action.value) {
                 param(EVENT_CATEGORY, category.value)
                 param(EVENT_LABEL, label)
