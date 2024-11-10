@@ -27,6 +27,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material2)
     implementation(libs.bundles.compose.m3)
+    implementation(libs.kotlinxCollectionsImmutable)
 
     implementation(libs.timber)
 

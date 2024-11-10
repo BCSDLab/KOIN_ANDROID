@@ -50,7 +50,7 @@ fun LectureBox(
         derivedStateOf { selectedLecture == lecture }
     }
     val isAdded by remember(lecture, timetableEvents) {
-        derivedStateOf { timetableEvents.any {lecture.id == it.id} }
+        derivedStateOf { timetableEvents.any {lecture.id == it.lectureId} }
     }
 
     Row(
