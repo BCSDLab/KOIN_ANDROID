@@ -54,7 +54,7 @@ fun MenuScreen(
             scrollState.scrollTo(0)
         }
     }
-    LazyRow(
+    /*LazyRow(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 9.dp)
             .fillMaxWidth()
@@ -80,7 +80,7 @@ fun MenuScreen(
                 )
             }
         }
-    }
+    }*/
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
