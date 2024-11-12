@@ -76,7 +76,9 @@ internal fun BusSearchConditionSelectDialog(
                     visibleItemsCount = VISIBLE_ITEMS_COUNT,
                     infiniteScroll = false,
                     contentPadding = PaddingValues(vertical = 3.dp),
-                    textStyle = KoinTheme.typography.medium16.copy(
+                    selectedTextStyle = KoinTheme.typography.medium16.copy(
+                        textAlign = TextAlign.End
+                    ), unselectedTextStyle = KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.45f)
@@ -88,7 +90,9 @@ internal fun BusSearchConditionSelectDialog(
                     visibleItemsCount = VISIBLE_ITEMS_COUNT,
                     infiniteScroll = false,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 18.dp),
-                    textStyle = KoinTheme.typography.medium16.copy(
+                    selectedTextStyle = KoinTheme.typography.medium16.copy(
+                        textAlign = TextAlign.End
+                    ), unselectedTextStyle = KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.25f)
@@ -100,7 +104,9 @@ internal fun BusSearchConditionSelectDialog(
                     visibleItemsCount = VISIBLE_ITEMS_COUNT,
                     infiniteScroll = true,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 10.dp),
-                    textStyle = KoinTheme.typography.medium16.copy(
+                    selectedTextStyle = KoinTheme.typography.medium16.copy(
+                        textAlign = TextAlign.End
+                    ), unselectedTextStyle = KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.2f)
@@ -112,7 +118,9 @@ internal fun BusSearchConditionSelectDialog(
                     visibleItemsCount = VISIBLE_ITEMS_COUNT,
                     infiniteScroll = true,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 10.dp),
-                    textStyle = KoinTheme.typography.medium16.copy(
+                    selectedTextStyle = KoinTheme.typography.medium16.copy(
+                        textAlign = TextAlign.End
+                    ), unselectedTextStyle = KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.2f)
