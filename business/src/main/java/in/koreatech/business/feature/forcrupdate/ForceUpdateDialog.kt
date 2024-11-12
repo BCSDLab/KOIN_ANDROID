@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.forcrupdate
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,12 +31,15 @@ import androidx.compose.ui.window.Dialog
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray500
+import `in`.koreatech.business.util.ext.navigateToPlayStore
 import `in`.koreatech.koin.core.R
+import org.checkerframework.checker.units.qual.Current
 
 @Composable
 fun ForceUpdateDialog(
     isShow :MutableState<Boolean> = remember { mutableStateOf(true) }
 ) {
+    val context = LocalContext.current
     if(isShow.value){
         Dialog(
             onDismissRequest = { isShow.value = false }
@@ -96,7 +101,7 @@ fun ForceUpdateDialog(
                         Button(
                             onClick = {
                                 isShow.value = false
-                                //Todo: 플레이스토어 링크 넣기
+                                context.navigateToPlayStore()
                                       },
                             shape = RoundedCornerShape(4.dp),
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
@@ -120,5 +125,5 @@ fun ForceUpdateDialog(
 @Preview
 @Composable
 fun PreviewForceUpdateDialog(){
-    ForceUpdateDialog()
+    //ForceUpdateDialog()
 }
