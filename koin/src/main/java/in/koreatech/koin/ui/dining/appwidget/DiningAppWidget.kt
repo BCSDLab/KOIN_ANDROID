@@ -7,6 +7,7 @@ import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -216,7 +217,7 @@ class DiningAppWidget : AppWidgetProvider() {
         viewNum: Int
     ) {
         val intent = Intent(context, DiningAppWidget::class.java).setAction(name)
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, FLAG_IMMUTABLE)
         remoteViews.setOnClickPendingIntent(viewNum, pendingIntent)
     }
 

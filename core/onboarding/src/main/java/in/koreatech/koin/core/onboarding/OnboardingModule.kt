@@ -7,14 +7,16 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityScoped
+import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 object OnboardingModule {
 
     @Provides
-    @ActivityScoped
+    @Singleton
     fun provideOnboardingManager(
         onboardingRepository: OnboardingRepository,
         @ApplicationContext context: Context

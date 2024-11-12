@@ -20,6 +20,7 @@ import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailScreen
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
+import `in`.koreatech.business.navigation.SIGNINSCREEN
 import `in`.koreatech.business.navigation.navigate
 import `in`.koreatech.business.navigation.sharedHiltViewModel
 import `in`.koreatech.business.navigation.toNavigateModifyMenuScreen
@@ -40,6 +41,13 @@ fun NavGraphBuilder.myStoreScreen(
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
             MyStoreDetailScreen(
                 modifier = Modifier.fillMaxSize(),
+                navigateToLoginScreen = {
+                    navController.navigate(SIGNINSCREEN){
+                        popUpTo(MYSTORESCREEN){
+                            inclusive = true
+                        }
+                    }
+                },
                 navigateToModifyScreen = {storeId ->
                     navController.navigate(StoreRoute.MODIFY_INFO.name)
                                          },
