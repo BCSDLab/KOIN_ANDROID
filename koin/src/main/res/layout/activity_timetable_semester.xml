@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <in.koreatech.koin.core.appbar.AppBarBase
+            android:id="@+id/timetable_list_appbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:leftButtonBackground="@drawable/ic_back_arrow"
+            app:leftButtonHeight="14dp"
+            app:leftButtonWidth="14dp"
+            app:rightButtonBackground="@drawable/ic_edit"
+            app:rightButtonHeight="18dp"
+            app:rightButtonWidth="12dp"
+            app:titleText="@string/navigation_item_timetable" />
+
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/timetable_list_compose_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timetable_list_appbar" />
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
