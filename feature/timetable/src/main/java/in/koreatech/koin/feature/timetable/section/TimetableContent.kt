@@ -56,6 +56,7 @@ fun TimetableContent(
         )
     },
     onEventClick: (event: TimetableEvent) -> Unit = {},
+    onEventY: (y: Int) -> Unit = {}
 ) {
     val width = measureEventWidth(horizontalPadding = horizontalPadding, dayCount = dayCount)
 
@@ -104,11 +105,11 @@ fun TimetableContent(
         },
         modifier = modifier
             .background(Color.White)
-            .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
+            .clip(RoundedCornerShape(10.dp))
             .border(
                 width = 1.dp,
                 color = KoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                shape = RoundedCornerShape(10.dp)
             )
             .drawBehind {
                 repeat(range * 2 + 1) { // 가로축
@@ -225,7 +226,7 @@ fun TimetableContent(
             }
 
             // 강의 이벤트 박스 배치
-            placeablesWithEvents.forEach { (placeable, event) ->
+            placeablesWithEvents.forEachIndexed { index, (placeable, event) ->
                 val initStartTime = LocalTime.of(9, 0)
                 val eventOffsetMinutes =
                     ChronoUnit.MINUTES.between(initStartTime, event.start)
@@ -243,6 +244,9 @@ fun TimetableContent(
                     else -> -1
                 }
                 val eventX = eventOffsetDays * innerWidth + timeWidth.roundToPx()
+                if (index == placeablesWithEvents.size - 1) {
+                    onEventY(eventY)
+                }
                 placeable.place(eventX, eventY)
             }
         }

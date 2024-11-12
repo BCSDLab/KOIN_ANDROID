@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,8 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,19 +34,24 @@ import `in`.koreatech.koin.feature.timetable.utils.toTimetableEvents
 @Composable
 fun LectureBox(
     position: Int,
-    colors: List<Color>,
     lecture: Lecture,
     selectedLecture: Lecture?,
     modifier: Modifier = Modifier,
-    onAddLecture: () -> Unit = {},
+    timetableEvents: List<TimetableEvent> = emptyList(),
+    onClickAddLecture: (lecture: Lecture) -> Unit = {},
+    onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
 ) {
-    val isSelected = selectedLecture == lecture
-//    val isSelected by remember(lecture, selectedLecture) {
-//        derivedStateOf { selectedLecture == lecture }
-//    }
-    val events = lecture.toTimetableEvents(colors = colors)
+//    val isSelected = selectedLecture == lecture
+//    val isAdded = timetableEvents.any { lecture.id == it.id }
+    val events = lecture.toTimetableEvents()
+    val isSelected by remember(lecture, selectedLecture) {
+        derivedStateOf { selectedLecture == lecture }
+    }
+    val isAdded by remember(lecture, timetableEvents) {
+        derivedStateOf { timetableEvents.any {lecture.id == it.lectureId} }
+    }
 
     Row(
         modifier = modifier
@@ -51,10 +59,11 @@ fun LectureBox(
             .selectable(
                 selected = isSelected,
                 onClick = {
-                    onClickLecture(events)
                     if (isSelected) {
+                        onClickLecture(emptyList())
                         onSelectedLecture(null)
                     } else {
+                        onClickLecture(events)
                         onSelectedLecture(lecture)
                     }
                 }
@@ -109,12 +118,15 @@ fun LectureBox(
             Spacer(modifier = Modifier.height(4.dp))
         }
 
-        StableIcon(
-            drawableResId = R.drawable.ic_plus,
-            tint = KoinTheme.colors.primary500,
-            modifier = Modifier
-                .size(24.dp)
-                .clickable { onAddLecture() })
+        IconButton(onClick = {
+            if (isAdded) onClickRemoveLecture(lecture) else onClickAddLecture(lecture)
+        }) {
+            StableIcon(
+                drawableResId = if (isAdded) R.drawable.ic_minus else R.drawable.ic_plus,
+                tint = if (isAdded) KoinTheme.colors.danger700 else KoinTheme.colors.primary500,
+                modifier = Modifier.size(if (isAdded) 20.dp else 24.dp)
+            )
+        }
     }
 }
 
@@ -124,7 +136,6 @@ private fun LectureBoxPreview() {
     KoinTheme {
         LectureBox(
             position = 1,
-            colors = listOf(Color.Blue),
             lecture = dummyLecture.copy(
                 classTime = listOf(310, 311, 312, 313, 410, 411, 412, 413)
             ),
@@ -135,11 +146,23 @@ private fun LectureBoxPreview() {
 
 @Preview
 @Composable
+private fun LectureBoxPreview_Added() {
+    KoinTheme {
+        LectureBox(
+            position = 2,
+            lecture = dummyLecture,
+            timetableEvents = dummyLecture.toTimetableEvents(),
+            selectedLecture = dummyLecture,
+        )
+    }
+}
+
+@Preview
+@Composable
 private fun LectureBoxPreview_Selected() {
     KoinTheme {
         LectureBox(
             position = 2,
-            colors = listOf(Color.Blue),
             lecture = dummyLecture,
             selectedLecture = dummyLecture,
         )

@@ -54,7 +54,7 @@ fun MenuScreen(
             scrollState.scrollTo(0)
         }
     }
-    LazyRow(
+    /*LazyRow(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 9.dp)
             .fillMaxWidth()
@@ -72,15 +72,15 @@ fun MenuScreen(
 
             ) {
                 Text(
-                    modifier = Modifier.padding(13.dp),
+                    modifier = Modifier.padding(8.dp),
                     text = categories[it],
                     fontSize = 12.sp,
-                    style = TextStyle(color = Gray6, fontSize = 15.sp),
+                    style = TextStyle(color = Gray6, fontSize = 13.sp),
                     fontWeight = FontWeight(500),
                 )
             }
         }
-    }
+    }*/
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
