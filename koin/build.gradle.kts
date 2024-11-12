@@ -122,7 +122,6 @@ dependencies {
     implementation(libs.markerman.roundedImageView)
     implementation(libs.powerSpinner)
     implementation(libs.viewpager2)
-    implementation(libs.napier)
 
     implementation(libs.kakao.share)
     implementation(libs.lottie)
