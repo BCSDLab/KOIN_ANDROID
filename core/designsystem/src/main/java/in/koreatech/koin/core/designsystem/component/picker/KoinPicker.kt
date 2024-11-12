@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.core.designsystem.component.picker
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,10 +36,12 @@ import kotlinx.coroutines.flow.map
  * @param infiniteScroll 무한 스크롤 여부
  * @param startIndex 시작 인덱스
  * @param contentPadding 아이템 내부 Padding
- * @param textStyle 텍스트 스타일
+ * @param selectedTextStyle 선택 아이템 텍스트 스타일
+ * @param unselectedTextStyle 선택되지 않은 아이템 텍스트 스타일
  * @param selectedItemColor 선택 아이템 색상
  * @param unselectedItemColor 선택되지 않은 아이템 색상
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun KoinPicker(
     items: List<String>,
@@ -48,7 +51,8 @@ fun KoinPicker(
     infiniteScroll: Boolean = true,
     startIndex: Int = 0,
     contentPadding: PaddingValues = PaddingValues(vertical = 2.dp),
-    textStyle: TextStyle = KoinTheme.typography.medium16,
+    selectedTextStyle: TextStyle = KoinTheme.typography.medium16,
+    unselectedTextStyle: TextStyle = KoinTheme.typography.medium16,
     selectedItemColor: Color = KoinTheme.colors.primary500,
     unselectedItemColor: Color = KoinTheme.colors.neutral500,
 ) {
@@ -80,7 +84,7 @@ fun KoinPicker(
                 text = newItems.getItem(index),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = textStyle,
+                style = if (selectedItemIndex == index) selectedTextStyle else unselectedTextStyle,
                 color = if (selectedItemIndex == index) selectedItemColor else unselectedItemColor,
                 modifier = Modifier
                     .fillMaxSize()
