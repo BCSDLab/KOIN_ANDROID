@@ -71,14 +71,14 @@ fun Lecture.toTimetableEvents(): List<TimetableEvent> {
 
 // TODO::UseCase 에서 변환하는게 좋아보이네
 fun String.toSemesterModel(): SemesterModel = SemesterModel(
-    year = substring(0, 3).toInt(),
+    year = substring(0, 4).toInt(),
     type = substring(4).toSemesterType()
 )
 
 fun String.toSemesterType(): SemesterType = when (this) {
     "1" -> SemesterType.Spring
-    "여름" -> SemesterType.Summer
+    "-여름" -> SemesterType.Summer
     "2" -> SemesterType.Fall
-    "겨울" -> SemesterType.Winter
-    else -> throw (Exception())
+    "-겨울" -> SemesterType.Winter
+    else -> throw (Exception("\"$this\""))
 }
