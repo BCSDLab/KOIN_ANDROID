@@ -32,12 +32,13 @@ import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectDepartmentDialog(
+    department: String,
     departments: List<String>,
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedDepartment by remember { mutableStateOf("") }
+    var selectedDepartment by remember { mutableStateOf(department) }
 
     BasicAlertDialog(
         modifier = modifier,
@@ -120,6 +121,7 @@ fun DepartmentRadioButtons(
 private fun SelectDepartmentDialogPreview() {
     KoinTheme {
         SelectDepartmentDialog(
+            department = "",
             departments = listOf(
                 "건축공학부",
                 "고용서비스정책학과",

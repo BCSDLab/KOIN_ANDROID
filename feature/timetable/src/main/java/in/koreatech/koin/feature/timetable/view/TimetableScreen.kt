@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,36 +28,67 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.util.pxToDp
+import `in`.koreatech.koin.domain.model.timetable.response.Lecture
+import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
-import `in`.koreatech.koin.feature.timetable.model.dummyEvent
+import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TimetableScreen(
+    loading: Boolean,
+    range: Int,
+    lectures: List<Lecture>,
+    semesters: List<String>,
+    currentSemester: String,
+    selectedLecture: Lecture?,
     searchText: String,
+    bottomSheetContentMode: TimetableBottomSheetContentMode,
     sheetState: BottomSheetState,
     scaffoldState: BottomSheetScaffoldState,
     modifier: Modifier = Modifier,
+    timetableEvents: List<TimetableEvent> = emptyList(),
+    clickedTimetableEvents: List<TimetableEvent> = emptyList(),
     onSearchTextChange: (text: String) -> Unit = {},
     onClickTimetableSchedule: () -> Unit = {},
-    onClickDownloadTimetable: () -> Unit = {}
+    onClickDownloadTimetable: () -> Unit = {},
+    onClickAddLecture: (lecture: Lecture) -> Unit = {},
+    onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
+    onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
+    onSelectedLecture: (lecture: Lecture?) -> Unit = {},
+    onClickSettingIcon: () -> Unit = {},
+    onClickSearchIcon: () -> Unit = {},
+    onClickTimetableEvent: (event: TimetableEvent) -> Unit = {},
+    onClickAddLectureMode: () -> Unit = {},
+    onClickAddCustomLectureMode: () -> Unit = {},
 ) {
     var bottomSheetHeight by remember { mutableStateOf(0f) }
+    val scope = rememberCoroutineScope()
 
     BottomSheetScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
         sheetContent = {
             TimetableBottomSheet(
-                lectures = listOf(dummyLecture, dummyLecture.copy(name = "컴퓨터개발"),dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture,dummyLecture),
-                selectedLecture = dummyLecture,
+                lectures = lectures,
+                selectedLecture = selectedLecture,
                 searchText = searchText,
+                bottomSheetContentMode = bottomSheetContentMode,
+                timetableEvents = timetableEvents,
+                onClickAddLectureMode = onClickAddLectureMode,
+                onClickAddCustomLectureMode = onClickAddCustomLectureMode,
+                onComplete = { scope.launch { sheetState.collapse() } },
+                onClickSettingIcon = onClickSettingIcon,
+                onClickSearchIcon = onClickSearchIcon,
                 onSearchTextChange = onSearchTextChange,
+                onClickAddLecture = onClickAddLecture,
+                onClickRemoveLecture = onClickRemoveLecture,
+                onClickLecture = onClickLecture,
+                onSelectedLecture = onSelectedLecture,
                 onBottomSheetHeightChange = { bottomSheetHeight = it },
-                onClickSettingIcon = {},
-                onClickSearchIcon = {}
             )
         },
         sheetPeekHeight = 0.dp,
@@ -80,13 +112,18 @@ fun TimetableScreen(
                 TimetableDownloadBox(onClick = onClickDownloadTimetable)
             }
             Timetable(
-                range = 15,
-                events = listOf(dummyEvent)
+                range = range,
+                modifier = Modifier,
+                events = timetableEvents,
+                clickEvent = clickedTimetableEvents,
+                onEventClick = onClickTimetableEvent
             )
         }
+        CircleLoadingBar(loading = loading)
     }
-
 }
+
+
 
 @OptIn(ExperimentalMaterialApi::class)
 private fun Modifier.dynamicPadding(
@@ -113,7 +150,14 @@ private fun Modifier.dynamicPadding(
 @Composable
 private fun TimetableScreenPreview() {
     TimetableScreen(
+        loading = false,
+        range = 9,
+        lectures = listOf(dummyLecture),
+        semesters = listOf("20242"),
+        currentSemester = "20242",
+        selectedLecture = null,
         searchText = "",
+        bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
         sheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed
         ),

@@ -90,3 +90,6 @@
 -keep class com.kakao.sdk.**.model.* { <fields>; }
 -keep class * extends com.google.gson.TypeAdapter
 #}
+
+-dontwarn org.jspecify.annotations.NullMarked
+-dontwarn top.defaults.checkerboarddrawable.CheckerboardDrawable

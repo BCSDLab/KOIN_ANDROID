@@ -40,12 +40,12 @@ fun TimetableEventTime(
     when (eventType) {
         TimetableEventType.BASIC -> TimetableBasicEventTime(
             event = event,
-            modifier = modifier,
+            modifier = modifier.padding((0.5).dp),
             onEventTimeClick = onEventTimeClick
         )
 
         TimetableEventType.SELECTED -> TimetableSelectedEventTime(
-            modifier = modifier
+            modifier = modifier.padding(start = (0.5).dp , top = (0.5).dp, end = (0.6).dp, bottom = (0.65).dp)
         )
     }
 }
@@ -59,10 +59,10 @@ private fun TimetableBasicEventTime(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = event.color)
+            .background(color = event.color.content)
             .clickable { onEventTimeClick(event) }
     ) {
-        HorizontalDivider(color = KoinTheme.colors.neutral800, thickness = 2.dp)
+        HorizontalDivider(color = event.color.header, thickness = 2.dp)
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = event.name,

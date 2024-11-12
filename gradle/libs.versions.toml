@@ -2,6 +2,7 @@
 activityComposeVersion = "1.8.2"
 activityKtxVersion = "1.5.0"
 cardviewVersion = "1.0.0"
+constraintlayoutComposeVersion = "1.1.0"
 inAppUpdateVersion = "2.1.0"
 featureDeliveryKtxVersion = "2.1.0"
 firebaseBomVersion = "32.5.0"
@@ -15,8 +16,8 @@ firebaseAppdistributionGradleVersion = "4.2.0"
 javaxInjectVersion = "1"
 jsr250ApiVersion = "1.0"
 kotlinVersion = "1.9.22"
-androidGradleVersion = "7.2.1"
-firebaseGradleVersion = "2.4.1"
+androidGradleVersion = "8.4.1"
+firebaseGradleVersion = "2.5.2"
 hiltVersion = "2.50"
 kotlinxCoroutinesAndroidVersion = "1.6.3"
 kotlinxCoroutinesCoreVersion = "1.6.3"
@@ -67,12 +68,16 @@ ossLicensesVersion = "17.1.0"
 navigation = "2.7.7"
 jsoup = "1.18.1"
 timber = "5.0.1"
+kotlinxCoroutinesTestVersion = "1.9.0"
+turbineVersion = "1.2.0"
+kotlinxCollectionsImmutableVersion = "0.3.8"
 
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardviewVersion" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutComposeVersion" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtxVersion" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtxVersion" }
@@ -101,6 +106,7 @@ compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion" }
+compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtxVersion" }
 security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 
 android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradleVersion" }
@@ -135,7 +141,7 @@ lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", v
 map-sdk = { module = "com.naver.maps:map-sdk", version.ref = "mapSdkVersion" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoviewVersion" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
-kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version = "0.3.6" }
+kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutableVersion" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
@@ -190,6 +196,9 @@ oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", v
 oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "ossLicensesVersion"}
 
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber"}
+
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestVersion" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

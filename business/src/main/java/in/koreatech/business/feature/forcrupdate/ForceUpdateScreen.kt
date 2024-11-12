@@ -39,6 +39,7 @@ import coil.size.Size
 import `in`.koreatech.business.ui.theme.ColorPrimary600
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.util.GifImage
+import `in`.koreatech.business.util.ext.navigateToPlayStore
 import `in`.koreatech.business.util.getDrawableResSize
 import `in`.koreatech.koin.core.R
 
@@ -118,7 +119,7 @@ fun ForceUpdateScreen(
 
         Button(
             onClick = {
-                      //Todo: 플레이스토어 링크 넣기
+                      context.navigateToPlayStore()
             },
             colors = ButtonDefaults.buttonColors(ColorSecondary),
             shape = RoundedCornerShape(4.dp),

@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailState
@@ -20,6 +21,7 @@ fun EventScreen(
     state: MyStoreDetailState,
     onDeleteEvent: () -> Unit
 ) {
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
         verticalOffset, scrollState.value
@@ -39,7 +41,7 @@ fun EventScreen(
     if (state.isEditMode) {
         EventEditToolbar(viewModel, state)
     } else {
-        EventToolbar()
+        EventToolbar(context)
     }
     EventItem(enabledScroll, scrollState, viewModel, state)
     OwnerStoreDialog(

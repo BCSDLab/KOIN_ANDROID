@@ -6,7 +6,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
 internal fun Project.configureAndroidLibrary(
-    commonExtension: CommonExtension<*, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     (commonExtension as? LibraryExtension)?.let {
         it.defaultConfig.targetSdk = 34
@@ -26,12 +26,12 @@ internal fun Project.configureAndroidLibrary(
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
 
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
+            jvmTarget = JavaVersion.VERSION_17.toString()
         }
 
         packagingOptions {
