@@ -16,7 +16,7 @@ data class SemesterModel(
 @Stable
 enum class SemesterType(@StringRes val stringRes: Int, val format: String) {
     Spring(R.string.semester_type_spring, "1"),
-    Summer(R.string.semester_type_summer, "여름"),
+    Summer(R.string.semester_type_summer, "-여름"),
     Fall(R.string.semester_type_fall, "2"),
-    Winter(R.string.semester_type_winter, "겨울");
+    Winter(R.string.semester_type_winter, "-겨울");
 }
