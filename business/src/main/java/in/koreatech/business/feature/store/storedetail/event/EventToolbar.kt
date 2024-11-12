@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.store.storedetail.event
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +32,7 @@ import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray4
 import `in`.koreatech.business.ui.theme.Gray6
+import `in`.koreatech.koin.core.toast.ToastUtil
 
 
 @Composable
@@ -119,7 +121,9 @@ fun EventEditToolbar(viewModel: MyStoreDetailViewModel, state: MyStoreDetailStat
 }
 
 @Composable
-fun EventToolbar() {
+fun EventToolbar(
+    context: Context
+) {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
     Row(
         modifier = Modifier
@@ -127,7 +131,12 @@ fun EventToolbar() {
             .height(52.dp)
     ) {
         Button(
-            onClick = { viewModel.onChangeEditMode() },
+            onClick = {
+                //viewModel.onChangeEditMode()
+                ToastUtil.getInstance().makeShort(
+                    context.getString(R.string.update_soon)
+                )
+            },
             modifier = Modifier
                 .weight(1f)
                 .padding(8.dp),
@@ -143,7 +152,11 @@ fun EventToolbar() {
             Text(text = stringResource(R.string.edit), color= Gray1)
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                ToastUtil.getInstance().makeShort(
+                    context.getString(R.string.update_soon)
+                )
+            },
             modifier = Modifier
                 .weight(1f)
                 .padding(8.dp),

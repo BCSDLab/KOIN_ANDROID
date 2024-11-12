@@ -35,4 +35,17 @@
 
     <string name="select_department_title">전공선택</string>
 
+    <string name="timetable_input_field_wave_character">~</string>
+    <string name="timetable_input_field_option_character">*</string>
+    <string name="timetable_input_field_placeholder">%s을 입력하세요.</string>
+    <string name="timetable_input_field_title_schedule">일정명</string>
+    <string name="timetable_input_field_title_professor">교수명</string>
+    <string name="timetable_input_field_title_time">시간</string>
+    <string name="timetable_input_field_title_place">장소</string>
+    <string name="timetable_add_time_and_place">시간 및 장소 추가</string>
+
+    <string name="timetable_bottom_sheet_extra_lecture">수업추가</string>
+    <string name="timetable_bottom_sheet_extra_custom_lecture">직접추가</string>
+    <string name="timetable_bottom_sheet_complete">완료</string>
+
 </resources>

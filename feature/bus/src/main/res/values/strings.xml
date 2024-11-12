@@ -1,1 +1,49 @@
-<resources></resources>
+<resources>
+
+    <string name="title_bus_timetable">버스 시간표</string>
+    <string name="shuttle_timetable">셔틀버스 시간표</string>
+    <string name="express_timetable">대성버스 시간표</string>
+    <string name="city_timetable">시내버스 시간표</string>
+    <string name="request_for_incorrect_information">정보가 정확하지 않나요?</string>
+    <string name="tab_shuttle">셔틀</string>
+    <string name="tab_express">대성</string>
+    <string name="tab_city">시내</string>
+    <string name="all_routes">전체</string>
+    <string name="weekday_routes">주중노선</string>
+    <string name="weekend_routes">주말노선</string>
+    <string name="circulation_routes">순환노선</string>
+    <string name="weekday_routes_simple">주중</string>
+    <string name="weekend_routes_simple">주말</string>
+    <string name="circulation_routes_simple">순환</string>
+    <string name="to_byeongcheon">병천방면</string>
+    <string name="to_cheonan">천안방면</string>
+    <string name="am">오전</string>
+    <string name="pm">오후</string>
+    <string name="updated_at">업데이트 날짜 : %s</string>
+    <string name="n400">400번</string>
+    <string name="n405">405번</string>
+    <string name="n495">495번</string>
+    <string name="starting_point">기점</string>
+    <string name="routes">노선</string>
+    <string name="operating">운행</string>
+
+    <!-- 교통편 조회 -->
+    <string name="title_bus_search">교통편 조회하기</string>
+    <string name="introduce_bus_search">목적지까지 가장 빠른 교통편을 알려드릴게요.</string>
+    <string name="caution_possibly_inaccurate">학기 중 시간표와 다를 수 있습니다.</string>
+    <string name="departure">출발</string>
+    <string name="arrival">도착</string>
+    <string name="select_departure">출발지 선택</string>
+    <string name="select_arrival">도착지 선택</string>
+    <string name="swap_content_description">출발지와 도착지를 바꾸기</string>
+    <string name="search">조회하기</string>
+    <string name="question_departure">어디서 출발하시나요?</string>
+    <string name="question_arrival">목적지가 어디인가요?</string>
+    <string name="action_select_arrival">도착지 선택하기</string>
+    <string name="confirm_selection">확인하기</string>
+    <string name="koreatech">코리아텍</string>
+    <string name="cheonan_station">천안역</string>
+    <string name="cheonan_terminal">천안터미널</string>
+    <!-- Content description -->
+
+</resources>

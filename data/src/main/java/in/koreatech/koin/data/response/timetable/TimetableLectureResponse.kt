@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.response.timetable
 
 import com.google.gson.annotations.SerializedName
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 
 data class TimetableLectureResponse(
     @SerializedName("id")
@@ -31,4 +32,21 @@ data class TimetableLectureResponse(
     val professor: String?,
     @SerializedName("department") // "디자인ㆍ건축공학부"
     val department: String?,
-)
+) {
+    fun toTimetableLecture() = TimetableLecture(
+        id = id,
+        lectureId = lectureId,
+        regularNumber = regularNumber.orEmpty(),
+        code = code.orEmpty(),
+        designScore = designScore.orEmpty(),
+        classTime = classTime,
+        classPlace = classPlace.orEmpty(),
+        memo = memo.orEmpty(),
+        grades = grades.orEmpty(),
+        classTitle = classTitle.orEmpty(),
+        lectureClass = lectureClass.orEmpty(),
+        target = target.orEmpty(),
+        professor = professor.orEmpty(),
+        department = department.orEmpty()
+    )
+}

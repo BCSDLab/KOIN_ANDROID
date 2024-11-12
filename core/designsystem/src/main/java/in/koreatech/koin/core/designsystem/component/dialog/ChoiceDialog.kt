@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.core.designsystem.component
+package `in`.koreatech.koin.core.designsystem.component.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
