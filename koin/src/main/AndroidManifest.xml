@@ -36,15 +36,23 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
 
-        <activity android:name=".ui.timetablev2.TimetableActivity"
+        <activity
+            android:name=".ui.timetablev2.TimetableActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/KAPTheme.NoActionBar"/>
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".ui.scheme.SchemeActivity"
+        <activity
+            android:name=".ui.timetablev2.TimetableSemesterActivity"
+            android:exported="false"
+            android:label="시간표 설정"
+            android:theme="@style/KAPTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.scheme.SchemeActivity"
             android:exported="false"
             android:launchMode="singleTop"
-            android:theme="@style/KAPTheme.NoActionBar"/>
+            android:theme="@style/KAPTheme.NoActionBar" />
 
         <activity
             android:name=".ui.operating.OperatingInfoActivity"
@@ -78,9 +86,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.forceupdate.ForceUpdateActivity"
+        <activity
+            android:name=".ui.forceupdate.ForceUpdateActivity"
             android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar"/>
+            android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.notification.NotificationActivity"
             android:exported="false"
@@ -203,7 +212,7 @@
             android:name=".ui.store.activity.StoreActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar"/>
+            android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.dining.DiningActivity"
             android:exported="true"
