@@ -2,20 +2,20 @@ package `in`.koreatech.bus.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import `in`.koreatech.bus.screen.timetable.viewmodel.BusViewModel
+import `in`.koreatech.bus.screen.search.composable.BusSearchScreen
+import `in`.koreatech.bus.screen.timetable.composable.BusTimetableScreen
 
 @Composable
-fun BusNavigation(
+fun BusTimetableNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    viewModel: BusViewModel = hiltViewModel()
 ) {
 
     NavHost(
@@ -30,7 +30,20 @@ fun BusNavigation(
     ) {
 
         composable<Routes.BusTimetable> {
+            BusTimetableScreen(
+                modifier = Modifier.fillMaxSize(),
+                onNavigationIconClick = { navController.popBackStack() }
+            )
+        }
 
+        composable<Routes.BusSearch> {
+            BusSearchScreen(
+                modifier = Modifier.fillMaxSize(),
+                onNavigationIconClick = { navController.popBackStack() },
+                onSearchSuccess = {
+                    // navController.navigate(Routes.SearchedTimetable(it))
+                }
+            )
         }
     }
 }

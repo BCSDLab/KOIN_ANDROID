@@ -21,6 +21,7 @@ enum class FilledButtonColors {
     Primary,
     Warning,
     Danger,
+    Success
 }
 
 @Composable
@@ -95,6 +96,13 @@ internal fun filledButtonColorByType(type: FilledButtonColors): ButtonColors = w
 
     FilledButtonColors.Danger -> ButtonColors(
         containerColor = KoinTheme.colors.danger700,
+        contentColor = KoinTheme.colors.neutral0,
+        disabledContainerColor = KoinTheme.colors.neutral300,
+        disabledContentColor = KoinTheme.colors.neutral600
+    )
+
+    FilledButtonColors.Success -> ButtonColors(
+        containerColor = KoinTheme.colors.success700,
         contentColor = KoinTheme.colors.neutral0,
         disabledContainerColor = KoinTheme.colors.neutral300,
         disabledContentColor = KoinTheme.colors.neutral600

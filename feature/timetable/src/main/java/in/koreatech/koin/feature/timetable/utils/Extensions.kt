@@ -4,6 +4,8 @@ import androidx.compose.ui.graphics.Color
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
+import `in`.koreatech.koin.feature.timetable.model.SemesterModel
+import `in`.koreatech.koin.feature.timetable.model.SemesterType
 import `in`.koreatech.koin.feature.timetable.model.TimetableColor
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.defaultColors
@@ -89,4 +91,17 @@ fun List<TimetableEvent>.formatTimeRange(): Int {
             (maxEndEvent.end.hour - 9)
         }
     } else 9
+}
+// TODO::UseCase 에서 변환하는게 좋아보이네
+fun String.toSemesterModel(): SemesterModel = SemesterModel(
+    year = substring(0, 4).toInt(),
+    type = substring(4).toSemesterType()
+)
+
+fun String.toSemesterType(): SemesterType = when (this) {
+    "1" -> SemesterType.Spring
+    "-여름" -> SemesterType.Summer
+    "2" -> SemesterType.Fall
+    "-겨울" -> SemesterType.Winter
+    else -> throw (Exception("\"$this\""))
 }
