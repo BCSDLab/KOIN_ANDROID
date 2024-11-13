@@ -25,7 +25,7 @@ class TimetableLectureTest {
     )
 
     @Test
-    fun `0,1,100,101 주어질 때, {월 = 9시,9시 30분 | 화 = 9시,9시 30분}을 반환한다`() {
+    fun `0,1,100,101 주어질 때, listOf((월, list(9시,9시 30분)), (화, list(9시,9시 30분)))을 반환한다`() {
         val lecture = dummyTimetableLecture.copy(
             classTime = listOf(0, 1, 100, 101)
         )
@@ -33,7 +33,39 @@ class TimetableLectureTest {
         val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
 
         assertEquals(
-            formatDayOfWeekAndClassTime, mapOf(
+            formatDayOfWeekAndClassTime, listOf(
+                DayOfWeek.MONDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)),
+                DayOfWeek.TUESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30))
+            )
+        )
+    }
+
+    @Test
+    fun `0,1,-1,100,101 주어질 때, listOf((월, list(9시,9시 30분)), (화, list(9시,9시 30분)))을 반환한다`() {
+        val lecture = dummyTimetableLecture.copy(
+            classTime = listOf(0, 1, -1, 100, 101)
+        )
+
+        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
+
+        assertEquals(
+            formatDayOfWeekAndClassTime, listOf(
+                DayOfWeek.MONDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)),
+                DayOfWeek.TUESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30))
+            )
+        )
+    }
+
+    @Test
+    fun `0,1,-1,100,101,-1 주어질 때, listOf((월, list(9시,9시 30분)), (화, list(9시,9시 30분)))을 반환한다`() {
+        val lecture = dummyTimetableLecture.copy(
+            classTime = listOf(0, 1, -1, 100, 101,-1)
+        )
+
+        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
+
+        assertEquals(
+            formatDayOfWeekAndClassTime, listOf(
                 DayOfWeek.MONDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)),
                 DayOfWeek.TUESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30))
             )
