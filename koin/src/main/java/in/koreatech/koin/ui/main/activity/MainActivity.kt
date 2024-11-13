@@ -5,6 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,6 +18,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.bus.BusSearchActivity
+import `in`.koreatech.bus.BusTimetableActivity
+import `in`.koreatech.bus.MainEntryView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
@@ -200,6 +207,23 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     R.dimen.view_pager_item_margin
                 )
             )
+        }
+
+        busComposeView.apply {
+            setContent {
+                MainEntryView(
+                    onShuttleTicketClicked = {
+                        // TODO : 유니버스 바로가기
+                    }, onTimetableCardClicked = {
+                        val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
+                        startActivity(intent)
+                    }, onSearchCardClicked = {
+                        val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
+                        startActivity(intent)
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                )
+            }
         }
 
         recyclerViewStoreCategory.apply {
