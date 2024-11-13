@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
@@ -23,13 +25,17 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.TimetableInputField
 import `in`.koreatech.koin.feature.timetable.component.TimetableTimeContentRow
+import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
 @Composable
 fun BottomSheetCustomExtraContent(
-    position: Int,
+    customContent: CustomExtraContentState,
     modifier: Modifier = Modifier,
-    onClickCancel: (position: Int) -> Unit = {},
-    onPlaceNameChange: (text: String) -> Unit
+    onClickCancel: (id: Int) -> Unit = {},
+    onPlaceNameChange: (id: Int, text: String) -> Unit,
+    onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
+    onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
 ) {
     Column(
         modifier = modifier
@@ -43,7 +49,7 @@ fun BottomSheetCustomExtraContent(
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             IconButton(
-                onClick = { onClickCancel(position) },
+                onClick = { onClickCancel(customContent.id) },
                 modifier = Modifier
                     .padding(5.dp)
                     .size(24.dp)
@@ -58,11 +64,28 @@ fun BottomSheetCustomExtraContent(
             modifier = Modifier.padding(horizontal = 13.dp)
         ) {
             Spacer(modifier = Modifier.height(4.dp))
-            TimetableTimeContentRow()
+            TimetableTimeContentRow(
+                customContent = customContent,
+                onDayOfWeekChange = onDayOfWeekChange,
+                onClickStartTime = onClickStartTime,
+                onClickEndTime = onClickEndTime,
+            )
+            if (customContent.isError) {
+                Text(
+                    text = stringResource(R.string.timetable_error_input_field_duplication_time),
+                    style = KoinTheme.typography.regular12,
+                    color = KoinTheme.colors.sub500,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.End
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             TimetableInputField(
+                text = customContent.place,
                 title = stringResource(id = R.string.timetable_input_field_title_place),
-                onValueChange = onPlaceNameChange
+                onValueChange = {
+                    onPlaceNameChange(customContent.id, it)
+                }
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -73,8 +96,8 @@ fun BottomSheetCustomExtraContent(
 @Composable
 private fun BottomSheetCustomExtraContentPreview() {
     BottomSheetCustomExtraContent(
-        position = 1,
+        customContent = CustomExtraContentState(),
         modifier = Modifier.padding(10.dp),
-        onPlaceNameChange = {  }
+        onPlaceNameChange = { _, _ -> }
     )
 }
