@@ -33,11 +33,11 @@ import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 @Composable
 fun RequestLoginDialog(
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: (visible: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
-        onDismissRequest = { onDismiss() },
+        onDismissRequest = { onDismiss(false) },
         modifier = modifier,
     ) {
         Surface(
@@ -86,7 +86,7 @@ fun RequestLoginDialog(
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
-                        onClick = { onDismiss() }
+                        onClick = { onDismiss(false) }
                     ) {
                         Text(text = stringResource(id = R.string.lecture_duplication_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
                     }
