@@ -92,7 +92,8 @@ fun TimetableTimePickerDialog(
         modifier = modifier
     ) {
         Surface(
-            shape = KoinTheme.shapes.extraSmall
+            shape = KoinTheme.shapes.extraSmall,
+            color = Color.White
         ) {
             Column(
                 modifier = Modifier
