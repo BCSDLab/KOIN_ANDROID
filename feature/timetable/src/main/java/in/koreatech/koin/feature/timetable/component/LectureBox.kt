@@ -87,7 +87,7 @@ fun LectureBox(
                 color = KoinTheme.colors.neutral800,
             )
             Text(
-                text = lecture.professor,
+                text = lecture.professor.ifEmpty { "미배정" },
                 style = KoinTheme.typography.regular12,
                 color = KoinTheme.colors.neutral800
             )
