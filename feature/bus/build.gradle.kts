@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinx.serialization)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -20,6 +21,7 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":domain"))
+    implementation(project(":core:onboarding"))
     implementation(project(":core:designsystem"))
 
     implementation(libs.core.ktx)
@@ -35,4 +37,6 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.8.3")
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.androidx.constraintlayout.compose)
 }

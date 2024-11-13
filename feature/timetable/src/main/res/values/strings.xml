@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="semester_type_spring">1학기</string>
+    <string name="semester_type_summer">여름학기</string>
+    <string name="semester_type_fall">2학기</string>
+    <string name="semester_type_winter">겨울학기</string>
+
     <string name="lecture_duplication_title">시간표가 중복돼요.</string>
     <string name="lecture_duplication_cancellation">취소</string>
     <string name="lecture_duplication_confirmation">대체하기</string>
@@ -54,6 +59,22 @@
     <string name="timetable_bottom_sheet_lecture_delete">삭제</string>
     <string name="timetable_bottom_sheet_complete">완료</string>
 
+    <string name="edit_titletable_frame_title">시간표 설정</string>
+    <string name="edit_titletable_frame_main">기본 시간표로 설정하기</string>
+    <string name="edit_titletable_frame_delete">삭제</string>
+
+    <string-array name="delete_titletable_frame_title">
+        <item>%s을</item>
+        <item>" 삭제"</item>
+        <item>하시겠어요?</item>
+    </string-array>
+    <string name="delete_titletable_frame_confirmation">삭제하기</string>
+
+    <string-array name="semester_anonymous_login">
+        <item>로그인</item>
+        <item>을 통해 학기를 편집하고 계절학기와 예비 시간표를 작성할 수 있어요.</item>
+    </string-array>
+    <string name="semester_edit_timetable">설정</string>
     <string name="timetable_error_no_semester">학기가 존재하지 않습니다. 학기를 추가해주세요.</string>
     <string name="timetable_error_input_field_duplication_time">중복된 시간입니다.</string>
 

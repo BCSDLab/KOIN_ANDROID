@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.compose.lifecycle)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material2)
