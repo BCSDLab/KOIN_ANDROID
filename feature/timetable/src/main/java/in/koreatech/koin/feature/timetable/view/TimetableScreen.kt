@@ -20,35 +20,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.layer.GraphicsLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.util.pxToDp
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
-import kotlinx.coroutines.launch
+import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
+import `in`.koreatech.koin.feature.timetable.state.CustomContentState
+import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TimetableScreen(
     loading: Boolean,
     range: Int,
     lectures: List<Lecture>,
+    detailLecture: TimetableLecture?,
     semesters: List<String>,
     currentSemester: String,
+    customContents: CustomContentState,
     selectedLecture: Lecture?,
     searchText: String,
     bottomSheetContentMode: TimetableBottomSheetContentMode,
+    bottomSheetUI: BottomSheetUI,
     sheetState: BottomSheetState,
     scaffoldState: BottomSheetScaffoldState,
+    graphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
     modifier: Modifier = Modifier,
     timetableEvents: List<TimetableEvent> = emptyList(),
     clickedTimetableEvents: List<TimetableEvent> = emptyList(),
@@ -60,38 +67,71 @@ fun TimetableScreen(
     onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
     onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
-    onClickSettingIcon: () -> Unit = {},
+    onClickSettingIcon: (visible: Boolean) -> Unit = {},
     onClickSearchIcon: () -> Unit = {},
     onClickTimetableEvent: (event: TimetableEvent) -> Unit = {},
     onClickAddLectureMode: (mode: TimetableBottomSheetContentMode) -> Unit = {},
     onClickAddCustomLectureMode: () -> Unit = {},
-    onClickBottomSheetComplete: () -> Unit = {}
+    onClickBottomSheetComplete: () -> Unit = {},
+    onClickBottomSheetDetailComplete: () -> Unit = {},
+    onClickBottomSheetDetailDelete: (TimetableLecture) -> Unit = {},
+    onScheduleNameChange: (text: String) -> Unit = {},
+    onProfessorNameChange: (text: String) -> Unit = {},
+    onPlaceNameChange: (text: String) -> Unit = {},
+    onExtraPlaceNameChange: (id: Int, text: String) -> Unit = { _, _ -> },
+    onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
+    onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickAddCustomContent: () -> Unit = {},
+    onClickRemoveCustomContent: (id: Int) -> Unit = {},
 ) {
     var bottomSheetHeight by remember { mutableStateOf(0f) }
-    val scope = rememberCoroutineScope()
 
     BottomSheetScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
         sheetContent = {
-            TimetableBottomSheet(
-                lectures = lectures,
-                selectedLecture = selectedLecture,
-                searchText = searchText,
-                bottomSheetContentMode = bottomSheetContentMode,
-                timetableEvents = timetableEvents,
-                onClickAddLectureMode = onClickAddLectureMode,
-                onClickAddCustomLectureMode = onClickAddCustomLectureMode,
-                onComplete = onClickBottomSheetComplete,
-                onClickSettingIcon = onClickSettingIcon,
-                onClickSearchIcon = onClickSearchIcon,
-                onSearchTextChange = onSearchTextChange,
-                onClickAddLecture = onClickAddLecture,
-                onClickRemoveLecture = onClickRemoveLecture,
-                onClickLecture = onClickLecture,
-                onSelectedLecture = onSelectedLecture,
-                onBottomSheetHeightChange = { bottomSheetHeight = it },
-            )
+            when (bottomSheetUI) {
+                BottomSheetUI.DEFAULT -> {
+                    TimetableBottomSheet(
+                        lectures = lectures,
+                        selectedLecture = selectedLecture,
+                        searchText = searchText,
+                        customContents = customContents,
+                        bottomSheetContentMode = bottomSheetContentMode,
+                        timetableEvents = timetableEvents,
+                        onClickAddLectureMode = onClickAddLectureMode,
+                        onClickAddCustomLectureMode = onClickAddCustomLectureMode,
+                        onComplete = onClickBottomSheetComplete,
+                        onClickSettingIcon = onClickSettingIcon,
+                        onClickSearchIcon = onClickSearchIcon,
+                        onSearchTextChange = onSearchTextChange,
+                        onClickAddLecture = onClickAddLecture,
+                        onClickRemoveLecture = onClickRemoveLecture,
+                        onClickLecture = onClickLecture,
+                        onSelectedLecture = onSelectedLecture,
+                        onBottomSheetHeightChange = { bottomSheetHeight = it },
+                        onScheduleNameChange = onScheduleNameChange,
+                        onProfessorNameChange = onProfessorNameChange,
+                        onPlaceNameChange = onPlaceNameChange,
+                        onExtraPlaceNameChange = onExtraPlaceNameChange,
+                        onDayOfWeekChange = onDayOfWeekChange,
+                        onClickStartTime = onClickStartTime,
+                        onClickEndTime = onClickEndTime,
+                        onClickAddCustomContent = onClickAddCustomContent,
+                        onClickRemoveCustomContent = onClickRemoveCustomContent
+                    )
+                }
+
+                BottomSheetUI.DETAIL -> {
+                    LectureBottomSheet(
+                        lecture = detailLecture,
+                        onBottomSheetHeightChange = { bottomSheetHeight = it },
+                        onClickLectureDelete = onClickBottomSheetDetailDelete,
+                        onClickComplete = onClickBottomSheetDetailComplete,
+                    )
+                }
+            }
         },
         sheetPeekHeight = 0.dp,
         sheetElevation = 20.dp
@@ -115,6 +155,7 @@ fun TimetableScreen(
             }
             Timetable(
                 range = range,
+                graphicsLayer = graphicsLayer,
                 modifier = Modifier,
                 events = timetableEvents,
                 clickEvent = clickedTimetableEvents,
@@ -147,22 +188,24 @@ private fun Modifier.dynamicPadding(
     }
 )
 
-@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun TimetableScreenPreview() {
     TimetableScreen(
         loading = false,
         range = 9,
+        customContents = CustomContentState(),
         lectures = listOf(dummyLecture),
+        detailLecture = dummyLecture.toTimetableLecture(),
         semesters = listOf("20242"),
         currentSemester = "20242",
         selectedLecture = null,
         searchText = "",
         bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
+        bottomSheetUI = BottomSheetUI.DEFAULT,
         sheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed
         ),
-        scaffoldState = rememberBottomSheetScaffoldState()
+        scaffoldState = rememberBottomSheetScaffoldState(),
     )
 }
