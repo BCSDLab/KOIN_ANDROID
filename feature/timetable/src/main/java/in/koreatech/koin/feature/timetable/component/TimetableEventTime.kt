@@ -5,17 +5,29 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -23,6 +35,7 @@ import `in`.koreatech.koin.core.designsystem.dashedBorder
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
+import timber.log.Timber
 import java.time.DayOfWeek
 
 enum class TimetableEventType {
@@ -39,6 +52,7 @@ fun TimetableEventTime(
 ) {
     when (eventType) {
         TimetableEventType.BASIC -> TimetableBasicEventTime(
+            range = range,
             event = event,
             modifier = modifier.padding((0.5).dp),
             onEventTimeClick = onEventTimeClick
@@ -66,29 +80,72 @@ fun TimetableEventTime(
 
 @Composable
 private fun TimetableBasicEventTime(
+    range: Int,
     event: TimetableEvent,
     modifier: Modifier = Modifier,
     onEventTimeClick: (event: TimetableEvent) -> Unit = {}
 ) {
+    var height by rememberSaveable { mutableIntStateOf(0) }
+    var titleMaxLine by rememberSaveable { mutableIntStateOf(Int.MAX_VALUE) }
+    var titleHeight by rememberSaveable { mutableIntStateOf(0) }
+    var titleLineCount by rememberSaveable { mutableIntStateOf(0) }
+    var contentMaxLine by rememberSaveable { mutableIntStateOf(Int.MAX_VALUE) }
+    var contentHeight by rememberSaveable { mutableIntStateOf(0) }
+    var contentLineCount by rememberSaveable { mutableIntStateOf(0) }
+
+    // 1시간 30분이상일 경우 professor text 가 내려가서 보이지 않는 오류 해결해보자..
+    if (height < titleHeight + contentHeight) {
+        titleMaxLine = titleLineCount - 1
+        contentMaxLine = if (contentLineCount == 1) {
+            contentLineCount
+        } else {
+            contentLineCount - 1
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = event.color.content)
+            .border(
+                color = Color.Transparent,
+                width = 1.dp,
+                shape = RoundedCornerShape(
+                    bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event)
+                )
+            )
             .clickable { onEventTimeClick(event) }
+            .onGloballyPositioned {
+                height = it.size.height
+            }
     ) {
         HorizontalDivider(color = event.color.header, thickness = 2.dp)
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = event.name,
-            modifier = Modifier.padding(1.dp),
+            modifier = Modifier
+                .padding(1.dp),
             style = KoinTheme.typography.regular12,
-            color = KoinTheme.colors.neutral800
+            color = KoinTheme.colors.neutral800,
+            maxLines = titleMaxLine,
+            overflow = TextOverflow.Ellipsis,
+            onTextLayout = {
+                titleLineCount = it.lineCount
+                titleHeight = it.size.height
+            }
         )
         Text(
-            text = event.description.orEmpty(),
-            modifier = Modifier.padding(1.dp),
+            text = event.professor,
+            modifier = Modifier
+                .padding(1.dp),
             style = KoinTheme.typography.regular10,
-            color = KoinTheme.colors.neutral800
+            color = KoinTheme.colors.neutral800,
+            maxLines = contentMaxLine,
+            overflow = TextOverflow.Ellipsis,
+            onTextLayout = {
+                contentLineCount = it.lineCount
+                contentHeight = it.size.height
+            }
         )
     }
 }
@@ -128,6 +185,7 @@ private fun TimetableEtcSelectedEventTime(
                 color = Color.Transparent,
             )
             .dashedBorder(
+                gapLength = 5.dp,
                 color = KoinTheme.colors.neutral500,
                 shape = RoundedCornerShape(
                     topStart = 0.dp,
@@ -156,15 +214,14 @@ private fun timetableSelectedEventTimeBottomEndRound(
     return 0.dp
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 68)
 @Composable
 private fun TimetableEventTimePreview_Basic() {
     TimetableEventTime(
         range = 9,
-        event = dummyEvent,
+        event = dummyEvent.copy(name = "dafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdaf", professor = "dafdafdafdafdafdafdafdafdaf"),
         modifier = Modifier
-            .sizeIn(maxHeight = 64.dp)
-            .padding(10.dp),
+            .sizeIn(maxHeight = (64 * 2).dp),
     )
 }
 
