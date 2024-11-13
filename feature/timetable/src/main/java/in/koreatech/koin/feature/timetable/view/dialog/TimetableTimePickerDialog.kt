@@ -25,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -136,8 +137,12 @@ fun TimetableTimePickerDialog(
                             color = KoinTheme.colors.neutral500,
                             textAlign = TextAlign.End
                         ),
+                        brushVerticalGradient = Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.5f to Color.Black,
+                            1f to Color.Transparent
+                        ),
                         modifier = Modifier.weight(.45f),
-                        isFadingEdgeGradient = true
                     )
                     Text(
                         text = ":",
@@ -170,7 +175,11 @@ fun TimetableTimePickerDialog(
                             color = KoinTheme.colors.neutral500
                         ),
                         modifier = Modifier.weight(.45f),
-                        isFadingEdgeGradient = true,
+                        brushVerticalGradient = Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.5f to Color.Black,
+                            1f to Color.Transparent
+                        ),
                         infiniteScroll = false
                     )
                 }
