@@ -16,7 +16,8 @@ data class Lecture(
     val isEnglish: String = "",
     val designScore: String = "",
     val isElearning: String = "",
-    val classTime: List<Int>
+    val classTime: List<Int>,
+    val place: String? = null
 ) {
     fun toTimetableLecture() = TimetableLecture(
         id = id,
@@ -75,16 +76,50 @@ data class Lecture(
             }
         }
 
-        val groupedByPrefix = classTime.groupBy { it / 100 }
-        val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
-        for ((key, values) in groupedByPrefix) {
-            val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
-            for (group in consecutiveGroups) {
-                result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
-            }
+        fun splitClassTime(): List<List<Int>> {
+            return classTime.fold(mutableListOf<MutableList<Int>>()) { acc, num ->
+                if (num == -1) {
+                    acc.add(mutableListOf())
+                } else {
+                    if (acc.isEmpty()) {
+                        acc.add(mutableListOf(num))
+                    } else {
+                        acc.last().add(num)
+                    }
+                }
+                acc
+            }.filter { it.isNotEmpty() }
         }
 
-        return result
+        if (classTime.contains(-1)) {
+            val classTimes = splitClassTime()
+            val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
+
+            classTimes.forEach { times ->
+                val groupedByPrefix = times.groupBy { it / 100 }
+
+                for ((key, values) in groupedByPrefix) {
+                    val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
+                    for (group in consecutiveGroups) {
+                        result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
+                    }
+                }
+
+            }
+
+            return result
+        } else {
+            val groupedByPrefix = classTime.groupBy { it / 100 }
+            val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
+            for ((key, values) in groupedByPrefix) {
+                val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
+                for (group in consecutiveGroups) {
+                    result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
+                }
+            }
+
+            return result
+        }
     }
 
     fun formatDescription(): String {
@@ -105,8 +140,10 @@ data class Lecture(
 
     fun doesMatchSearchQuery(query: String): Boolean {
         val matchingCombinations = listOf(
-            "$name",
-            "${name?.first()}"
+            name,
+            name.take(0),
+            professor,
+            professor.take(0),
         )
 
         return matchingCombinations.any {
@@ -115,7 +152,7 @@ data class Lecture(
     }
 
     fun doesMatchDepartmentSearchQuery(query: String): Boolean {
-        val matchingCombination = query.toDepartmentString()
+        val matchingCombination = query
 
         return department.contains(matchingCombination, ignoreCase = true)
     }
@@ -133,20 +170,4 @@ data class Lecture(
         }
         return flag
     }
-}
-
-fun String.toDepartmentString(): String = when (this) {
-    "HRD학과" -> "HRD"
-    "고용서비스정책학과" -> "고용서비스정책학과"
-    "교양학부" -> "교양"
-    "디자인ㆍ건축공학부" -> "디자인공학부"
-    "메카트로닉스공학부" -> "메카트로닉스공학부"
-    "산업경영학부" -> "산업경영학부"
-    "에너지신소재화학공학부" -> "에너지신소재공학부"
-    "융합학과" -> "융합"
-    "전기ㆍ전자ㆍ통신공학부" -> "전기"
-    "컴퓨터공학부" -> "컴퓨터공학부"
-    "안전공학과" -> "안전"
-    "기계공학부" -> "기계"
-    else -> ""
 }
