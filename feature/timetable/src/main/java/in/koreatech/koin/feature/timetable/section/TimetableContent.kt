@@ -1,21 +1,17 @@
 package `in`.koreatech.koin.feature.timetable.section
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
@@ -27,10 +23,8 @@ import `in`.koreatech.koin.feature.timetable.component.TimetableEventType
 import `in`.koreatech.koin.feature.timetable.model.TimetableConstants
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
-import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 
@@ -52,7 +46,7 @@ fun TimetableContent(
         TimetableEventTime(
             range = range,
             event = event,
-            modifier = modifier,
+            modifier = Modifier,
             eventType = eventType,
             onEventTimeClick = onClick
         )
@@ -114,12 +108,6 @@ fun TimetableContent(
         },
         modifier = modifier
             .background(Color.White)
-            .clip(RoundedCornerShape(10.dp))
-            .border(
-                width = 1.dp,
-                color = KoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(10.dp)
-            )
             .drawBehind {
                 repeat(range * 2 + 1) { // 가로축
                     val innerHeight = (height / 2).toPx()
@@ -210,7 +198,12 @@ fun TimetableContent(
         // 강의 이벤트 박스 측정
         val placeablesWithEvents = measureables.drop(dayCount + range).map { measurable ->
             val event = measurable.parentData as TimetableEvent
-            val eventDurationMinutes = ChronoUnit.MINUTES.between(event.start, event.end)
+
+            val eventDurationMinutes = if (event.end == LocalTime.of(23, 59)) {
+                ChronoUnit.MINUTES.between(event.start, event.end) + 1L
+            } else {
+                ChronoUnit.MINUTES.between(event.start, event.end)
+            }
             val eventHeight = ((eventDurationMinutes / 60f) * height.toPx()).roundToInt()
             val placeable = measurable.measure(
                 constraints.copy(
@@ -282,9 +275,10 @@ private fun TimetableContentPreview() {
         horizontalPadding = 24.dp,
         events = listOf(
             dummyEvent,
-            dummyEvent.copy(dayOfWeek = DayOfWeek.MONDAY),
+            dummyEvent.copy(name = "asfdf", professor = "asdfasdf", dayOfWeek = DayOfWeek.MONDAY),
             dummyEvent.copy(start = LocalTime.of(9, 0), dayOfWeek = DayOfWeek.WEDNESDAY),
-            dummyEvent.copy(end = LocalTime.of(16, 30), dayOfWeek = DayOfWeek.THURSDAY),
+            dummyEvent.copy(
+                end = LocalTime.of(17, 0), dayOfWeek = DayOfWeek.THURSDAY),
             dummyEvent.copy(
                 start = LocalTime.of(9, 0),
                 end = LocalTime.of(16, 30),
