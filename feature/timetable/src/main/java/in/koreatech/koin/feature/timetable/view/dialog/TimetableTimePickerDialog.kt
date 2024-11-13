@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.view.dialog
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,11 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.component.picker.KoinPicker
+import `in`.koreatech.koin.core.designsystem.component.picker.rememberPickerState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
-import `in`.koreatech.koin.feature.timetable.component.KoinPicker
-import `in`.koreatech.koin.feature.timetable.component.rememberPickerState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 import timber.log.Timber
 import java.time.LocalTime
@@ -127,7 +128,7 @@ fun TimetableTimePickerDialog(
                                 (customContent.endTime.hour - 9)
                             }
                         },
-                        textStyle = KoinTheme.typography.bold20.copy(
+                        selectedTextStyle = KoinTheme.typography.bold20.copy(
                             color = KoinTheme.colors.neutral700,
                             textAlign = TextAlign.End
                         ),
@@ -162,7 +163,7 @@ fun TimetableTimePickerDialog(
                                 1
                             }
                         },
-                        textStyle = KoinTheme.typography.bold20.copy(
+                        selectedTextStyle = KoinTheme.typography.bold20.copy(
                             color = KoinTheme.colors.neutral700
                         ),
                         unselectedTextStyle = KoinTheme.typography.bold20.copy(

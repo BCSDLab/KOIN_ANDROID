@@ -18,7 +18,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
@@ -41,7 +46,6 @@ import kotlinx.coroutines.flow.map
  * @param selectedItemColor 선택 아이템 색상
  * @param unselectedItemColor 선택되지 않은 아이템 색상
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun KoinPicker(
     items: List<String>,
@@ -49,6 +53,7 @@ fun KoinPicker(
     visibleItemsCount: Int,
     modifier: Modifier = Modifier,
     infiniteScroll: Boolean = true,
+    isFadingEdgeGradient: Boolean= false,
     startIndex: Int = 0,
     contentPadding: PaddingValues = PaddingValues(vertical = 2.dp),
     selectedTextStyle: TextStyle = KoinTheme.typography.medium16,
@@ -74,10 +79,23 @@ fun KoinPicker(
     var itemHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
+    val fadingEdgeGradient = remember {
+        if (isFadingEdgeGradient) {
+            Brush.verticalGradient(
+                0f to Color.Transparent,
+                0.5f to Color.Black,
+                1f to Color.Transparent
+            )
+        } else {
+            Brush.verticalGradient()
+        }
+    }
+
     LazyColumn(
         state = listState,
         flingBehavior = flingBehavior,
         modifier = modifier.height(itemHeight * visibleItemsCount)
+            .fadingEdge(fadingEdgeGradient),
     ) {
         items(listScrollCount) { index ->
             Text(
@@ -118,5 +136,13 @@ class PickerState internal constructor() {
     var selectedItem by mutableStateOf("")
     var selectedItemIndex by mutableIntStateOf(0)
 }
+
+private fun Modifier.fadingEdge(brush: Brush) = this
+    .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+    .drawWithContent {
+        drawContent()
+        drawRect(brush = brush, blendMode = BlendMode.DstIn)
+    }
+
 
 private fun List<String>.getItem(index: Int) = this[index % this.size]
