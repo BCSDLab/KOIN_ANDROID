@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.ui.timetablev2
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.rememberBottomSheetScaffoldState
@@ -15,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -50,6 +53,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
     private lateinit var binding: ActivityTimetableBinding
     private val viewModel: TimetableViewModel by viewModels()
+
+    private val registerTimetableSemesterActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            // handle activity result api
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -197,7 +205,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     scaffoldState = bottomSheetScaffoldState,
                     graphicsLayer = graphicsLayer,
                     onSearchTextChange = viewModel::updateSearchText,
-                    onClickTimetableSchedule = {}, // TODO : 학기 시간표 선택
+                    onClickTimetableSchedule = {
+                        startToTimetableSemesterActivity()
+                    }, // TODO : 학기 시간표 선택
                     onClickDownloadTimetable = {
                         scope.launch {
                             saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap())
@@ -302,7 +312,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun getUserExtra(callback: (isAnonymous: Boolean) -> Unit) {
-        callback(intent.getBooleanExtra("isAnonymous", false))
+        callback(intent.getBooleanExtra("isAnonymous", true))
+    }
+
+    private fun startToTimetableSemesterActivity() {
+        val intent = Intent(this, TimetableSemesterActivity::class.java).apply {
+            putExtra(BUNDLE_EXTRA_KEY, bundleOf(IS_ANONYMOUS to viewModel.state.value.isAnonymous))
+        }
+        registerTimetableSemesterActivityResult.launch(intent)
     }
 
     private fun saveTimetable(bitmap: Bitmap) {
@@ -332,5 +349,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
     companion object {
         private const val SCREEN_TITLE = "시간표"
+        const val BUNDLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
+        const val IS_ANONYMOUS = "isAnonymous"
     }
 }
