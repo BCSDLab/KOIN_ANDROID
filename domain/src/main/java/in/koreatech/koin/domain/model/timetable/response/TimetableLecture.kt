@@ -59,15 +59,91 @@ data class TimetableLecture(
             }
         }
 
-        val groupedByPrefix = classTime.groupBy { it / 100 }
-        val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
-        for ((key, values) in groupedByPrefix) {
-            val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
-            for (group in consecutiveGroups) {
-                result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
+        fun splitClassTime(): List<List<Int>> {
+            return classTime.fold(mutableListOf<MutableList<Int>>()) { acc, num ->
+                if (num == -1) {
+                    acc.add(mutableListOf())
+                } else {
+                    if (acc.isEmpty()) {
+                        acc.add(mutableListOf(num))
+                    } else {
+                        acc.last().add(num)
+                    }
+                }
+                acc
+            }.filter { it.isNotEmpty() }
+        }
+
+        if (classTime.contains(-1)) {
+            val classTimes = splitClassTime()
+            val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
+
+            classTimes.forEach { times ->
+                val groupedByPrefix = times.groupBy { it / 100 }
+
+                for ((key, values) in groupedByPrefix) {
+                    val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
+                    for (group in consecutiveGroups) {
+                        result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
+                    }
+                }
+
+            }
+
+            return result
+        } else {
+            val groupedByPrefix = classTime.groupBy { it / 100 }
+            val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
+            for ((key, values) in groupedByPrefix) {
+                val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
+                for (group in consecutiveGroups) {
+                    result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
+                }
+            }
+
+            return result
+        }
+    }
+
+    fun getDetailTime(): String {
+        val times = findDayOfWeekAndLocalTime()
+
+        val timeContent = StringBuilder()
+
+        times.forEachIndexed { index, (dayOfWeekContent, localTimes) ->
+            if (index > 0) timeContent.append(", ")
+            val dayOfWeekText = when (dayOfWeekContent) {
+                DayOfWeek.MONDAY -> "월"
+                DayOfWeek.TUESDAY -> "화"
+                DayOfWeek.WEDNESDAY -> "수"
+                DayOfWeek.THURSDAY -> "목"
+                DayOfWeek.FRIDAY -> "금"
+                else -> ""
+            }
+            timeContent.append(dayOfWeekText)
+
+            fun localTimeToString(localTime: LocalTime): String {
+                val hour = if (localTime.hour - 8 < 10) {
+                    "0${(localTime.hour - 8)}"
+                } else {
+                    (localTime.hour - 8).toString()
+                }
+                val minutes = if (localTime.minute == 0) "A" else "B"
+                return hour + minutes
+            }
+
+            if (localTimes.isNotEmpty()) {
+                localTimes.firstOrNull()?.let {
+                    timeContent.append(localTimeToString(it))
+                }
+
+                localTimes.lastOrNull()?.let {
+                    timeContent.append("~")
+                    timeContent.append(localTimeToString(it))
+                }
             }
         }
 
-        return result
+        return timeContent.toString()
     }
 }
