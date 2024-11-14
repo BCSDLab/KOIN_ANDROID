@@ -30,9 +30,12 @@ class SemesterViewModel @Inject constructor(
     private val _dialogUiState: MutableStateFlow<SemesterDialogUiState> =  MutableStateFlow(SemesterDialogUiState())
     val dialogUiState: StateFlow<SemesterDialogUiState> get() = _dialogUiState.asStateFlow()
 
-    val isAnonymous: StateFlow<Boolean> = getUserStatusUseCase()
-        .map { it.isAnonymous }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
+    private val _isAnonymous: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isAnonymous: StateFlow<Boolean> =  _isAnonymous.asStateFlow()
+
+    val semesters: StateFlow<List<SemesterModel>> = getSemestersUseCase()
+        .map { it.map { it.toSemesterModel() }}
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
     val userSemesters: StateFlow<List<SemesterModel>> = isAnonymous
         .flatMapLatest { getUserSemestersUseCase(it) }
@@ -44,6 +47,21 @@ class SemesterViewModel @Inject constructor(
         .map { it.mapKeys { it.key.toSemesterModel() } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyMap())
 
+    val years: StateFlow<List<Int>> = semesters
+        .map { it.map { it.year }.distinct() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+
+    fun updateIsAnonymous(isAnonymous: Boolean) {
+        _isAnonymous.value = isAnonymous
+    }
+
+    fun updateEditTimetableDialogVisibility(isVisible: Boolean) {
+        _dialogUiState.value = _dialogUiState.value.copy(isEditTimetableDialogVisible = isVisible)
+    }
+
+    fun updateEditSemesterDialogVisible(isVisible: Boolean) {
+        _dialogUiState.value = _dialogUiState.value.copy(isEditSemesterDialogVisible = isVisible)
+    }
 
     fun onClickTimetable(timetableFrame: TimetableFrame) {
         // TODO::hyeok 시간표로 이동
@@ -57,6 +75,10 @@ class SemesterViewModel @Inject constructor(
         _dialogUiState.value = _dialogUiState.value.copy(
             isEditTimetableDialogVisible = true
         )
+    }
+
+    fun onEditSemesters(semesterModels: List<SemesterModel>) {
+        // 학기 추가 및 삭제
     }
 }
 
