@@ -10,7 +10,19 @@ data class LecturesQueryRequest(
     val timetableLecture: List<LectureQueryRequest>,
 )
 
+data class LecturesCustomQueryRequest(
+    @SerializedName("timetable_frame_id")
+    val timetableFrameId: Int,
+    @SerializedName("timetable_lecture")
+    val timetableLecture: List<LectureCustomQueryRequest>,
+)
+
 data class LectureQueryRequest(
+    @SerializedName("lecture_id")
+    val lectureId: Int,
+)
+
+data class LectureCustomQueryRequest(
     @SerializedName("lecture_id")
     val lectureId: Int?,
     @SerializedName("class_title")
@@ -27,7 +39,7 @@ data class LectureQueryRequest(
     val memo: String?,
 )
 
-fun Lecture.toCustomLectureQueryRequest() = LectureQueryRequest(
+fun Lecture.toCustomLectureQueryRequest() = LectureCustomQueryRequest(
     classTitle = name,
     classTime = classTime,
     classPlace = place ?: "",
@@ -39,11 +51,5 @@ fun Lecture.toCustomLectureQueryRequest() = LectureQueryRequest(
 
 
 fun Lecture.toLectureQueryRequest() = LectureQueryRequest(
-    lectureId = id,
-    classTitle = name,
-    classTime = classTime,
-    classPlace = "",
-    professor = professor,
-    grades = grades,
-    memo = ""
+    lectureId = id
 )
