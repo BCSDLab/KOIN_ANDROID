@@ -131,13 +131,13 @@ fun TimetableTimePickerDialog(
                             }
                         },
                         selectedTextStyle = KoinTheme.typography.bold20.copy(
-                            color = KoinTheme.colors.neutral700,
                             textAlign = TextAlign.End
                         ),
                         unselectedTextStyle = KoinTheme.typography.bold20.copy(
-                            color = KoinTheme.colors.neutral500,
                             textAlign = TextAlign.End
                         ),
+                        selectedItemColor = KoinTheme.colors.neutral700,
+                        unselectedItemColor = KoinTheme.colors.neutral500,
                         brushVerticalGradient = Brush.verticalGradient(
                             0f to Color.Transparent,
                             0.5f to Color.Black,
@@ -169,12 +169,10 @@ fun TimetableTimePickerDialog(
                                 1
                             }
                         },
-                        selectedTextStyle = KoinTheme.typography.bold20.copy(
-                            color = KoinTheme.colors.neutral700
-                        ),
-                        unselectedTextStyle = KoinTheme.typography.bold20.copy(
-                            color = KoinTheme.colors.neutral500
-                        ),
+                        selectedTextStyle = KoinTheme.typography.bold20,
+                        unselectedTextStyle = KoinTheme.typography.bold20,
+                        selectedItemColor = KoinTheme.colors.neutral700,
+                        unselectedItemColor = KoinTheme.colors.neutral500,
                         modifier = Modifier.weight(.45f),
                         brushVerticalGradient = Brush.verticalGradient(
                             0f to Color.Transparent,

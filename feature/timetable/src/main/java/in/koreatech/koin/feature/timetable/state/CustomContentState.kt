@@ -44,10 +44,10 @@ data class CustomContentState(
         }
         Lecture(
             id = 0,
-            name = schedule,
-            professor = professor,
+            name = schedule.trim(),
+            professor = professor.trim(),
             classTime = classTimes,
-            place = places
+            place = places.trim()
         ).let { lectures.add(it) }
 
         return lectures

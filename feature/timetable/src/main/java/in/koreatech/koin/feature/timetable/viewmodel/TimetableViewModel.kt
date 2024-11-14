@@ -514,6 +514,7 @@ class TimetableViewModel @Inject constructor(
                     clickedTimetableEvents = emptyList(),
                     etcClickedTimetableEvents = emptyList(),
                     selectedLecture = null,
+                    bottomSheetCollapse = true,
                     loading = false
                 )
                 _customContentState.value = CustomContentState()
@@ -574,6 +575,10 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun addCustomExtraContent() {
+        if (customContentState.value.data.size >= 5) {
+            _sideEffect.value = TimetableSideEffect.SnackBar(""""시간 및 장소 추가" 는 최대 5개까지 가능합니다.""")
+            return
+        }
         val editContent = customContentState.value.data.toMutableList()
         if (customContentState.value.data.isEmpty()) {
             editContent.add(CustomExtraContentState(id = 0))
@@ -780,6 +785,7 @@ class TimetableViewModel @Inject constructor(
                         timetableLectures = timetableLectures,
                         timetableEvents = timetableLectures.getTimetableEvents(),
                         clickedTimetableEvents = emptyList(),
+                        etcClickedTimetableEvents = emptyList(),
                         selectedLecture = null,
                     )
                     updateIsLectureDuplicationDialogVisible(false)
