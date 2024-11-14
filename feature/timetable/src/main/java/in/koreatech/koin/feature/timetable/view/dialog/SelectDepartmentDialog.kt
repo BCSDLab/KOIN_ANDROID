@@ -21,13 +21,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.DepartmentRadioButton
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
+import `in`.koreatech.koin.feature.timetable.model.dummyDepartment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,17 +38,23 @@ fun SelectDepartmentDialog(
     department: String,
     departments: List<String>,
     onConfirm: (String) -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: (visible: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedDepartment by remember { mutableStateOf(department) }
 
     BasicAlertDialog(
-        modifier = modifier,
-        onDismissRequest = onDismiss
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        onDismissRequest = { onDismiss(false) },
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        )
     ) {
         Surface(
-            shape = KoinTheme.shapes.extraSmall
+            shape = KoinTheme.shapes.extraSmall,
+            color = Color.White
         ) {
             Column(
                 modifier = Modifier
@@ -64,14 +73,21 @@ fun SelectDepartmentDialog(
                 DepartmentRadioButtons(
                     departments = departments,
                     selectedDepartment = selectedDepartment,
-                    onClickDepartment = { selectedDepartment = it }
+                    onClickDepartment = {
+                        if (selectedDepartment == it) {
+                            selectedDepartment = ""
+                        } else {
+                            selectedDepartment = it
+                        }
+                    }
                 )
                 FilledTextButton(
                     modifier = Modifier
                         .height(30.dp)
                         .width(60.dp)
                         .align(Alignment.End),
-                    text = stringResource(id = R.string.common_complete), onClick = { onConfirm(selectedDepartment) }
+                    text = stringResource(id = R.string.common_complete),
+                    onClick = { onConfirm(selectedDepartment) }
                 )
             }
         }
@@ -122,18 +138,7 @@ private fun SelectDepartmentDialogPreview() {
     KoinTheme {
         SelectDepartmentDialog(
             department = "",
-            departments = listOf(
-                "건축공학부",
-                "고용서비스정책학과",
-                "기계공학부",
-                "디자인공학부",
-                "메카트로닉스공학부",
-                "산업경영학부",
-                "전기전자통신공학부",
-                "컴퓨터공학부",
-                "화학생명공학부",
-//                "에너지신소재공학부",
-            ),
+            departments = dummyDepartment,
             onConfirm = {},
             onDismiss = {},
         )
