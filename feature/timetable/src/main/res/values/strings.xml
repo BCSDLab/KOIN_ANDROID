@@ -74,7 +74,11 @@
         <item>로그인</item>
         <item>을 통해 학기를 편집하고 계절학기와 예비 시간표를 작성할 수 있어요.</item>
     </string-array>
-    <string name="semester_edit_timetable">설정</string>
+    <string name="semester_semester_format">%d %s</string>
+    <string name="semester_edit_timetable_frame">설정</string>
+    <string name="semester_edit_year">%d년도</string>
+    <string name="semester_edit_apply">적용하기</string>
+
     <string name="timetable_error_no_semester">학기가 존재하지 않습니다. 학기를 추가해주세요.</string>
     <string name="timetable_error_input_field_duplication_time">중복된 시간입니다.</string>
 
