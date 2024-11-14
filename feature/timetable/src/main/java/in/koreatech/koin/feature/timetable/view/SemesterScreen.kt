@@ -175,7 +175,7 @@ private fun LazyListScope.TimetableFrameBlock(
             if (!isAnonymous) {
                 Text(
                     modifier = Modifier.noRippleClickable { onClickEditTimetable() },
-                    text = stringResource(id = R.string.semester_edit_timetable),
+                    text = stringResource(id = R.string.semester_edit_timetable_frame),
                     style = KoinTheme.typography.bold16
                 )
             }

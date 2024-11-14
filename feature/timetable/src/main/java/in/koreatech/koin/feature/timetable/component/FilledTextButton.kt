@@ -22,7 +22,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 enum class FilledButtonType {
     Normal,
-    Danger
+    Danger,
+    Neutral
 }
 
 @Composable
@@ -41,6 +42,13 @@ private fun buttonStyleByType(type: FilledButtonType): ButtonColors = when (type
         disabledContainerColor = KoinTheme.colors.neutral300,
         disabledContentColor = KoinTheme.colors.neutral600
     )
+
+    FilledButtonType.Neutral -> ButtonColors(
+        containerColor = KoinTheme.colors.neutral300,
+        contentColor = KoinTheme.colors.neutral0,
+        disabledContainerColor = KoinTheme.colors.neutral300,
+        disabledContentColor = KoinTheme.colors.neutral600
+    )
 }
 
 @Composable
@@ -52,6 +60,7 @@ fun FilledTextButton(
     buttonStyle: FilledButtonType = FilledButtonType.Normal,
     buttonShape: Shape = FilledTextButtonDefaults.shape,
     textStyle: TextStyle = FilledTextButtonDefaults.textStyle,
+    contentPadding: PaddingValues = FilledTextButtonDefaults.contentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     val buttonColors = buttonStyleByType(type = buttonStyle)
@@ -63,7 +72,7 @@ fun FilledTextButton(
         colors = buttonColors,
         elevation = null,
         border = null,
-        contentPadding = FilledTextButtonDefaults.contentPadding,
+        contentPadding = contentPadding,
         interactionSource = interactionSource
     ) {
         Text(text = text, style = textStyle)
