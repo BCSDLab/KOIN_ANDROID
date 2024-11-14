@@ -104,8 +104,13 @@ private fun LazyListScope.SemesterBlock(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 Text(
-                    text = semesterModel.year.toString() + " " + stringResource(id = semesterModel.type.stringRes),
+                    text = stringResource(
+                        id = R.string.semester_semester_format,
+                        semesterModel.year,
+                        stringResource(id = semesterModel.type.stringRes)
+                    ),
                     style = KoinTheme.typography.bold20.copy(
                         color = KoinTheme.colors.neutral800
                     )
