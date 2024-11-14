@@ -22,10 +22,21 @@ data class LectureQueryRequest(
     @SerializedName("professor")
     val professor: String,
     @SerializedName("grades")
-    val grades: String,
+    val grades: String?,
     @SerializedName("memo")
-    val memo: String,
+    val memo: String?,
 )
+
+fun Lecture.toCustomLectureQueryRequest() = LectureQueryRequest(
+    classTitle = name,
+    classTime = classTime,
+    classPlace = place ?: "",
+    professor = professor,
+    lectureId = null,
+    grades = null,
+    memo = null
+)
+
 
 fun Lecture.toLectureQueryRequest() = LectureQueryRequest(
     lectureId = id,

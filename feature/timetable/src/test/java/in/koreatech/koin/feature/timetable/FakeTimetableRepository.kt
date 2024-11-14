@@ -1,19 +1,5 @@
 package `in`.koreatech.koin.feature.timetable
 
-import `in`.koreatech.koin.domain.model.timetable.request.LecturesQuery
-import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
-import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
-import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
-import `in`.koreatech.koin.domain.model.timetable.response.Lecture
-import `in`.koreatech.koin.domain.model.timetable.response.Semester
-import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
-import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
-import `in`.koreatech.koin.domain.repository.TimetableRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-
-
 
 //class FakeTimetableRepository() : TimetableRepository {
 //    override fun getSemesters(): Flow<List<String>> = flow {
