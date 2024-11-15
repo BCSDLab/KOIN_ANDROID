@@ -2,8 +2,6 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
-import `in`.koreatech.koin.data.request.timetable.LectureCustomQueryRequest
-import `in`.koreatech.koin.data.request.timetable.LecturesCustomQueryRequest
 import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
@@ -43,11 +41,6 @@ class TimetableRemoteDataSource @Inject constructor(
 
     suspend fun postTimetableLectures(
         lectures: LecturesQueryRequest
-    ): TimetableLecturesResponse = timetableAuthApi.postTimetableLectures(lectures)
-
-
-    suspend fun postTimetableLectures(
-        lectures: LecturesCustomQueryRequest
     ): TimetableLecturesResponse = timetableAuthApi.postTimetableLectures(lectures)
 
     suspend fun postTimetableFrame(
