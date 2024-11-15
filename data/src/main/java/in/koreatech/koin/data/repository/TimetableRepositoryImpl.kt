@@ -2,7 +2,6 @@ package `in`.koreatech.koin.data.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import `in`.koreatech.koin.data.request.timetable.LecturesCustomQueryRequest
 import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toCustomLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
@@ -81,7 +80,7 @@ class TimetableRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postTimetableCustomLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures> = runCatching {
-        timetableRemoteDataSource.postTimetableLectures(LecturesCustomQueryRequest(
+        timetableRemoteDataSource.postTimetableLectures(LecturesQueryRequest(
             timetableFrameId = frameId,
             timetableLecture = lectures.map { it.toCustomLectureQueryRequest() }
         )).toTimetableLectures()

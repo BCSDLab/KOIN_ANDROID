@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api.auth
 
-import `in`.koreatech.koin.data.request.timetable.LecturesCustomQueryRequest
 import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
@@ -34,11 +33,6 @@ interface TimetableAuthApi {
     @POST("/v2/timetables/lecture")
     suspend fun postTimetableLectures(
         @Body lectures: LecturesQueryRequest
-    ): TimetableLecturesResponse
-
-    @POST("/v2/timetables/lecture")
-    suspend fun postTimetableLectures(
-        @Body lectures: LecturesCustomQueryRequest
     ): TimetableLecturesResponse
 
     @PUT("/v2/timetables/frame/{id}")

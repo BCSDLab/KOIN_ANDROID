@@ -10,46 +10,41 @@ data class LecturesQueryRequest(
     val timetableLecture: List<LectureQueryRequest>,
 )
 
-data class LecturesCustomQueryRequest(
-    @SerializedName("timetable_frame_id")
-    val timetableFrameId: Int,
-    @SerializedName("timetable_lecture")
-    val timetableLecture: List<LectureCustomQueryRequest>,
-)
-
 data class LectureQueryRequest(
-    @SerializedName("lecture_id")
-    val lectureId: Int,
-)
-
-data class LectureCustomQueryRequest(
     @SerializedName("lecture_id")
     val lectureId: Int?,
     @SerializedName("class_title")
-    val classTitle: String,
+    val classTitle: String?,
     @SerializedName("class_time")
-    val classTime: List<Int>,
+    val classTime: List<Int>?,
     @SerializedName("class_place")
     val classPlace: String,
     @SerializedName("professor")
-    val professor: String,
+    val professor: String?,
     @SerializedName("grades")
-    val grades: String?,
+    val grades: String,
     @SerializedName("memo")
-    val memo: String?,
+    val memo: String,
 )
 
-fun Lecture.toCustomLectureQueryRequest() = LectureCustomQueryRequest(
+
+fun Lecture.toCustomLectureQueryRequest() = LectureQueryRequest(
     classTitle = name,
     classTime = classTime,
     classPlace = place ?: "",
     professor = professor,
     lectureId = null,
-    grades = null,
-    memo = null
+    grades = grades,
+    memo = ""
 )
 
 
 fun Lecture.toLectureQueryRequest() = LectureQueryRequest(
-    lectureId = id
+    classTitle = null,
+    classTime = null,
+    classPlace = place ?: "",
+    professor = null,
+    lectureId = id,
+    grades = "0",
+    memo = ""
 )
