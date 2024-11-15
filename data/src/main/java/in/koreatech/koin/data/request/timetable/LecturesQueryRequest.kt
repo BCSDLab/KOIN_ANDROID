@@ -34,7 +34,7 @@ fun Lecture.toCustomLectureQueryRequest() = LectureQueryRequest(
     classPlace = place ?: "",
     professor = professor,
     lectureId = null,
-    grades = grades,
+    grades = "0",
     memo = ""
 )
 
