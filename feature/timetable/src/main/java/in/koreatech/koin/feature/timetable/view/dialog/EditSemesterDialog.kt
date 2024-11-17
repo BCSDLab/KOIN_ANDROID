@@ -60,7 +60,9 @@ fun EditSemesterDialogImpl(
     var isShowingSelectYearDialog by remember { mutableStateOf(false) }
 
     // TODO::hyeok 연도 눌렀을 때 깜빡거림
-    Box {
+    Box(
+        modifier = modifier
+    ) {
         if (isShowingSelectYearDialog) {
             SelectYearDialog(
                 currentYear = currentYear,

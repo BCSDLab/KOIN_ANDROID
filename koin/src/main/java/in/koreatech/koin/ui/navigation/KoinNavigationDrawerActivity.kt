@@ -45,6 +45,7 @@ import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
 import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
+import `in`.koreatech.koin.ui.timetablev2.TimetableSemesterActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.closeDrawer
@@ -314,7 +315,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Article -> goToArticleActivity()
 
                 MenuState.Contact -> {
-                    goToContactWebActivity()
+                    startActivity(Intent(this@KoinNavigationDrawerActivity, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
+//                    goToContactWebActivity()
                 }
 
                 else -> Unit

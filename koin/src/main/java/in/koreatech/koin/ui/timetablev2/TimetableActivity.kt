@@ -319,7 +319,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun getUserExtra(callback: (isAnonymous: Boolean) -> Unit) {
-        callback(intent.getBooleanExtra("isAnonymous", true))
+        callback(intent.getBooleanExtra("isAnonymous", false))
     }
 
     private fun startToTimetableSemesterActivity() {

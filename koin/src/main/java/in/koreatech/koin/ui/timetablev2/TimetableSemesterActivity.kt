@@ -1,21 +1,23 @@
 package `in`.koreatech.koin.ui.timetablev2
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityTimetableSemesterBinding
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.view.SemesterScreen
+import `in`.koreatech.koin.feature.timetable.view.dialog.DeleteSemesterDialog
+import `in`.koreatech.koin.feature.timetable.view.dialog.EditSemesterDialogImpl
+import `in`.koreatech.koin.feature.timetable.view.dialog.EditTimetableFrameDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.SemesterViewModel
 import timber.log.Timber
 
@@ -26,23 +28,74 @@ class TimetableSemesterActivity : ActivityBase() {
     private val binding by dataBinding<ActivityTimetableSemesterBinding>()
     private val viewModel by viewModels<SemesterViewModel>()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timetable_semester)
         getIntentBundle { isAnonymous ->
             Timber.e("isAnonymous : $isAnonymous")
-            viewModel.updateIsAnonymous(isAnonymous)
+            viewModel.updateIsAnonymous(false)
         }
+        viewModel.initData()
 
         binding.timetableListComposeView.setContent {
             KoinTheme {
                 val dialogUiState by viewModel.dialogUiState.collectAsStateWithLifecycle()
                 val isAnonymous by viewModel.isAnonymous.collectAsStateWithLifecycle()
-                val userTimetables by viewModel.userTimetableFrames.collectAsStateWithLifecycle()
+                val userTimetables by viewModel.userTimetableFrames2.collectAsStateWithLifecycle()
 
-                val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
+                val userSemesters by viewModel.userSemesters2.collectAsStateWithLifecycle()
                 val years by viewModel.years.collectAsStateWithLifecycle()
+
+                if (dialogUiState.isEditSemesterDialogVisible) {
+                    EditSemesterDialogImpl(
+                        years = years,
+                        userSemesters = userSemesters,
+                        onConfirm = { selectedSemesters ->
+                            viewModel.updateSelectedSemesters(selectedSemesters)
+                            var isLectureExist = false
+                            selectedSemesters.forEach {
+                                // TODO::hyeok 강의 유무 확인해서 띄우기
+                                if(userTimetables.contains(it) && userTimetables[it]?.isEmpty() == true)
+                                    isLectureExist = true
+                            }
+
+                            if(isLectureExist) {
+                                viewModel.updateDeleteSemesterDialogVisible(true)
+                            } else {
+                                viewModel.updateUserSemesters()
+                            }
+                        },
+                        onDismiss = { viewModel.updateEditSemesterDialogVisible(false) }
+                    )
+                }
+                if (dialogUiState.isEditTimetableDialogVisible) {
+                    EditTimetableFrameDialog(
+                        timetableFrameState = dialogUiState.editedTimetableFrame,
+                        onDismiss = { viewModel.updateEditTimetableDialogVisibility(false) },
+                        onConfirmEdit = {
+                            viewModel.editTimetableFrame(it)
+                            viewModel.updateEditTimetableDialogVisibility(false)
+                        },
+                        onDeleteFrame = {
+                            viewModel.deleteTimetableFrame()
+                            viewModel.updateEditTimetableDialogVisibility(false)
+                        }
+                    )
+                }
+                if (dialogUiState.isDeleteSemesterDialogVisible) {
+                    DeleteSemesterDialog(
+                        onDismiss = {
+                            viewModel.updateDeleteSemesterDialogVisible(false)
+                            viewModel.updateEditSemesterDialogVisible(false)
+                        },
+                        onConfirm = {
+                            viewModel.updateUserSemesters()
+                            viewModel.updateDeleteSemesterDialogVisible(false)
+                            viewModel.updateEditSemesterDialogVisible(false)
+
+                        }
+                    )
+                }
 
                 SemesterScreen(
                     userTimetables = userTimetables,
@@ -52,17 +105,13 @@ class TimetableSemesterActivity : ActivityBase() {
                     onClickEditTimetable = viewModel::onClickEditTimetable
                 )
 
-                if (dialogUiState.isEditSemesterDialogVisible) {
-                    // TODO::hyeok 학기 수정 다이얼로그
-//                    EditSemesterDialogImpl(
-//                        years = years,
-//                        userSemesters = userSemesters,
-//                        onConfirm = viewModel::onEditSemesters,
-//                        onDismiss = { viewModel.updateEditSemesterDialogVisible(false) }
-//                    )
-                } else if (dialogUiState.isEditTimetableDialogVisible) {
-                    // TODO::hyeok  시간표 수정 다이얼로그
-                }
+            }
+        }
+
+        binding.timetableListAppbar.setOnClickListener {
+            when (it.id) {
+                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getRightButtonId() -> viewModel.updateEditSemesterDialogVisible(true)
             }
         }
     }

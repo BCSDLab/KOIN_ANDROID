@@ -36,28 +36,24 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 import `in`.koreatech.koin.feature.timetable.component.TextCheckbox
 
-data class TimeTableFrameState(
-    val id: Int,
-    val timetableName: String,
-    val isMain: Boolean
-)
 
 @Composable
 fun EditTimetableFrameDialog(
-    timetableFrameState: TimeTableFrameState,
+    timetableFrameState: TimetableFrame?,
     onDismiss: () -> Unit,
-    onConfirmEdit: (TimeTableFrameState) -> Unit,
-    onDeleteFrame: (TimeTableFrameState) -> Unit,
+    onConfirmEdit: (TimetableFrame) -> Unit,
+    onDeleteFrame: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isMain by remember { mutableStateOf(timetableFrameState.isMain) }
-    var timetableName by remember { mutableStateOf(timetableFrameState.timetableName) }
+    var isMain by remember { mutableStateOf(timetableFrameState?.isMain ?: false) }
+    var timetableName by remember { mutableStateOf(timetableFrameState?.timetableName ?: "") }
     var showingDeleteDialog by remember { mutableStateOf(false) }
 
     EditTimetableFrameDialog(
@@ -66,12 +62,15 @@ fun EditTimetableFrameDialog(
         isMain = isMain,
         onDismiss = onDismiss,
         onConfirm = {
-            onConfirmEdit(
-                timetableFrameState.copy(
-                    timetableName = timetableName,
-                    isMain = isMain
+            timetableFrameState?.let {
+                onConfirmEdit(
+                    it.copy(
+                        timetableName = timetableName,
+                        isMain = isMain
+                    )
                 )
-            )
+            }
+
         },
         onClickDelete = { showingDeleteDialog = true },
         onValueChanged = {
@@ -87,7 +86,9 @@ fun EditTimetableFrameDialog(
             timetableName = timetableName,
             onDismiss = { showingDeleteDialog = false },
             onConfirm = {
-                onDeleteFrame(timetableFrameState)
+                timetableFrameState?.let {
+                    onDeleteFrame()
+                }
             }
         )
     }
@@ -268,7 +269,7 @@ private fun DeleteTimetableFrameDialog(
 private fun EditTimetableFrameDialogPreview() {
     KoinTheme {
         EditTimetableFrameDialog(
-            timetableFrameState = TimeTableFrameState(
+            timetableFrameState = TimetableFrame(
                 id = 1,
                 timetableName = "시간표1",
                 isMain = true

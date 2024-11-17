@@ -19,16 +19,16 @@ interface TimetableRepository {
 
     suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): TimetableLectures
     suspend fun putTimetableLectures(key: String, value: TimetableLectures): Result<TimetableLectures>
-    suspend fun putTimetableFrame(id: Int, frame: TimetableFrameQuery): TimetableFrame
+    suspend fun putTimetableFrame(id: Int, frame: TimetableFrameQuery): Result<TimetableFrame>
 
     suspend fun postTimetableLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures>
     suspend fun postTimetableCustomLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures>
-    suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): TimetableFrame
+    suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame>
 
-    suspend fun deleteTimetableFrame()
+    suspend fun deleteTimetableFrame(frameId: Int): Result<Unit>
     suspend fun deleteTimetableLecture(id: Int): Result<Unit>
     suspend fun deleteTimetableLectures(lectureIds: List<Int>): Result<Unit>
     suspend fun deleteTimetableFrameLecture(frameId: Int, lectureId: Int): Result<Unit>
 
-    suspend fun deleteAllTimetableFrame()
+    suspend fun deleteAllTimetableFrame(semester: String): Result<Unit>
 }

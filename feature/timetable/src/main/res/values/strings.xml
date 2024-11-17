@@ -34,6 +34,13 @@
     <string name="delete_schedule_description">삭제한 개인 일정은 복구할 수 없어요.</string>
     <string name="delete_schedule_confirmation">삭제하기</string>
 
+    <string-array name="delete_semester_title">
+        <item>시간표가 작성되어 있는 학기가있어요. 해당 학기를 제외할 경우</item>
+        <item>" 학기 내 시간표도 함께 삭제"</item>
+        <item>돼요.</item>
+    </string-array>
+    <string name="delete_semester_confirmation">삭제하기</string>
+
     <string name="request_login_title">로그인이 필요한 기능이에요.</string>
     <string name="request_login_description">로그인 하시겠어요?</string>
     <string name="request_login_confirmation">로그인하기</string>
