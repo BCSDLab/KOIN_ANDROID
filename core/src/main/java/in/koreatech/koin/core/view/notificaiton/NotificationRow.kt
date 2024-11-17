@@ -30,7 +30,6 @@ class NotificationRow @JvmOverloads constructor(
                 binding.btnSwitchFake.isVisible = true
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding.btnSwitch.isChecked = true
-                    onSwitchClickListener?.onSwitch(true)
                     binding.btnSwitchFake.isVisible = false
                 }, 300)
             } else {
