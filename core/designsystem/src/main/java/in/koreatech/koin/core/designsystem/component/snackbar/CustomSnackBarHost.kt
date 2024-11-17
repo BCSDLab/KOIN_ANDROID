@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -32,6 +30,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 fun CustomSnackBarHost(
     hotState: SnackbarHostState,
+    modifier: Modifier = Modifier,
     radius: Dp = 0.dp,
     messageTextStyle: TextStyle = KoinTheme.typography.regular12.copy(
         color = Color.White
@@ -44,23 +43,27 @@ fun CustomSnackBarHost(
     paddingValues: PaddingValues = PaddingValues(bottom = 20.dp, start = 10.dp, end = 10.dp),
     innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp)
 ) {
-    SnackbarHost(
-        hostState = hotState,
-    ) { snackbarData ->
-        SnackBarContent(
-            messageText = snackbarData.visuals.message,
-            actionLabelText = snackbarData.visuals.actionLabel ?: "",
-            radius = radius,
-            background = background,
-            messageTextStyle = messageTextStyle,
-            actionLabelTextStyle = actionLabelTextStyle,
-            alignment = alignment,
-            paddingValues = paddingValues,
-            innerPaddingValues = innerPaddingValues,
-            onAction = { snackbarData.dismiss() }
-        )
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        contentAlignment = alignment
+    ) {
+        SnackbarHost(
+            hostState = hotState,
+        ) { snackbarData ->
+            SnackBarContent(
+                messageText = snackbarData.visuals.message,
+                actionLabelText = snackbarData.visuals.actionLabel ?: "",
+                radius = radius,
+                background = background,
+                messageTextStyle = messageTextStyle,
+                actionLabelTextStyle = actionLabelTextStyle,
+                innerPaddingValues = innerPaddingValues,
+                onAction = { snackbarData.dismiss() }
+            )
+        }
     }
-
 }
 
 @Composable
@@ -76,43 +79,36 @@ private fun SnackBarContent(
     actionLabelTextStyle: TextStyle = KoinTheme.typography.regular12.copy(
         color = Color.White
     ),
-    alignment: Alignment = Alignment.BottomCenter,
-    paddingValues: PaddingValues = PaddingValues(bottom = 20.dp, start = 10.dp, end = 10.dp),
     innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp),
     onAction: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        contentAlignment = alignment
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(radius))
+            .background(background)
+            .padding(innerPaddingValues)
     ) {
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(radius))
-                .background(background)
-                .padding(innerPaddingValues)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = messageText,
+                style = messageTextStyle,
+                modifier = Modifier.weight(1f),
+            )
+            Spacer(modifier = Modifier.weight(0.05f))
+            if (actionLabelText.isNotEmpty()) {
                 Text(
-                    text = messageText,
-                    style = messageTextStyle,
-                    modifier = Modifier.weight(1f),
+                    text = actionLabelText,
+                    style = actionLabelTextStyle,
+                    modifier = Modifier
+                        .weight(0.1f)
+                        .noRippleClickable { onAction() }
                 )
-                Spacer(modifier = Modifier.weight(0.05f))
-                if (actionLabelText.isNotEmpty()) {
-                    Text(
-                        text = actionLabelText,
-                        style = actionLabelTextStyle,
-                        modifier = Modifier.weight(0.1f).noRippleClickable { onAction() }
-                    )
-                }
-
             }
+
         }
     }
 }
