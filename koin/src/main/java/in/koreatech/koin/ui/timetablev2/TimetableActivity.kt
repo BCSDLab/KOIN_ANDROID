@@ -43,6 +43,7 @@ import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class TimetableActivity : KoinNavigationDrawerActivity() {
@@ -57,6 +58,12 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     private val registerTimetableSemesterActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // handle activity result api
+            if(it.resultCode == RESULT_OK) {
+                it.data?.getBundleExtra(TimetableSemesterActivity.BUNDLE_EXTRA_KEY)?.let {
+                    Timber.d("Timetable frame ID: ${it.getInt(TimetableSemesterActivity.TIMETABLE_FRAME_ID)}")
+                    Timber.d("Semester string: ${it.getString(TimetableSemesterActivity.SEMESTER)}")
+                }
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -312,7 +319,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun getUserExtra(callback: (isAnonymous: Boolean) -> Unit) {
-        callback(intent.getBooleanExtra("isAnonymous", true))
+        callback(intent.getBooleanExtra("isAnonymous", false))
     }
 
     private fun startToTimetableSemesterActivity() {
