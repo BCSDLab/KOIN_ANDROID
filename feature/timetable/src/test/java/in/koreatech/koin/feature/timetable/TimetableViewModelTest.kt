@@ -10,7 +10,6 @@ import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
-import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
 import kotlinx.coroutines.Dispatchers
