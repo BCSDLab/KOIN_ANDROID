@@ -10,6 +10,7 @@ data class TimetableState(
     val range: Int = 9, // 강의 시간 범위 (9시~18시 : 9(최소), 9시~24시 : 15(최대))
     val frameId: Int = 0, // 시간표 프레임 ID
     val currentSemester: String = "", // 현재 선택된 학기
+    val timetableName: String = "", // 현재 선택된 학기의 시간표 이름
     val semesters: List<String> = emptyList(), // 전체 학기
     val detailLecture: TimetableLecture? = null, // 선택된 강의 클릭 후 나오는 강의 상세 데이터
     val deleteLecture: TimetableLecture? = null,
