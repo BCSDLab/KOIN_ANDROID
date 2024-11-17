@@ -3,6 +3,8 @@ package `in`.koreatech.koin.data.repository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
+import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
+import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toCustomLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
@@ -46,7 +48,7 @@ class TimetableRepositoryImpl @Inject constructor(
         timetableRemoteDataSource.getTimetableLectures(timetableFrameId).toTimetableLectures()
     }
 
-    override suspend fun getTimetableLectures(semester: String): Result<TimetableLectures> = runCatching{
+    override suspend fun getTimetableLectures(semester: String): Result<TimetableLectures> = runCatching {
         val timetableLecturesString = timetableDataStore.getString(semester).firstOrNull().orEmpty()
         val timetableLecturesType = object : TypeToken<TimetableLectures>() {}.type
         try {
@@ -68,8 +70,14 @@ class TimetableRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun putTimetableFrame(id: Int, frame: TimetableFrameQuery): TimetableFrame {
-        TODO("Not yet implemented")
+    override suspend fun putTimetableFrame(id: Int, frame: TimetableFrameQuery): Result<TimetableFrame> = runCatching {
+        timetableRemoteDataSource.putTimetableFrame(
+            id,
+            TimetableFrameQueryRequest(
+                frame.timetableName,
+                frame.isMain
+            )
+        ).toTimetableFrameResponse()
     }
 
     override suspend fun postTimetableLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures> = runCatching {
@@ -87,12 +95,18 @@ class TimetableRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): TimetableFrame {
-        TODO("Not yet implemented")
+    override suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame> = runCatching {
+        timetableRemoteDataSource.postTimetableFrame(
+            TimetableFrameCreateQueryRequest(
+                semester = frame.semester,
+                timetableName = frame.timetableName
+            )
+        ).toTimetableFrameResponse()
     }
 
-    override suspend fun deleteTimetableFrame() {
-        TODO("Not yet implemented")
+
+    override suspend fun deleteTimetableFrame(frameId: Int): Result<Unit> = runCatching {
+        timetableRemoteDataSource.deleteTimetableFrame(frameId)
     }
 
     override suspend fun deleteTimetableLecture(id: Int): Result<Unit> = runCatching {
@@ -107,7 +121,7 @@ class TimetableRepositoryImpl @Inject constructor(
         timetableRemoteDataSource.deleteTimetableLectures(lectureIds)
     }
 
-    override suspend fun deleteAllTimetableFrame() {
-        TODO("Not yet implemented")
+    override suspend fun deleteAllTimetableFrame(semester: String): Result<Unit> = runCatching {
+        timetableRemoteDataSource.deleteAllTimetableFrame(semester)
     }
 }

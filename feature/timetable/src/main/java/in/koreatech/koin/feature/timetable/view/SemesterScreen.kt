@@ -38,9 +38,9 @@ fun SemesterScreen(
     userTimetables: Map<SemesterModel, List<TimetableFrame>>,
     isAnonymous: Boolean,
     modifier: Modifier = Modifier,
-    onClickTimetable: (TimetableFrame) -> Unit = {},
-    onClickAddTimetable: () -> Unit = {},
-    onClickEditTimetable: () -> Unit = {},
+    onClickTimetable: (SemesterModel, TimetableFrame) -> Unit = { _, _ -> },
+    onClickAddTimetable: (SemesterModel) -> Unit = {},
+    onClickEditTimetable: (SemesterModel, TimetableFrame) -> Unit = {_, _ -> },
 ) {
     Box(
         modifier = modifier
@@ -70,9 +70,15 @@ fun SemesterScreen(
                         semesterModel = semesterModel,
                         timetableFrames = timetableFrames,
                         isAnonymous = isAnonymous,
-                        onClickTimetable = onClickTimetable,
-                        onClickAddTimetable = onClickAddTimetable,
-                        onClickEditTimetable = onClickEditTimetable
+                        onClickTimetable = { timetableFrame ->
+                            onClickTimetable(semesterModel, timetableFrame)
+                        },
+                        onClickAddTimetable = {
+                            onClickAddTimetable(semesterModel)
+                        },
+                        onClickEditTimetable = {
+                            onClickEditTimetable(semesterModel, it)
+                        }
                     )
                 }
             }
@@ -87,7 +93,7 @@ private fun LazyListScope.SemesterBlock(
     isAnonymous: Boolean,
     onClickTimetable: (TimetableFrame) -> Unit = {},
     onClickAddTimetable: () -> Unit = {},
-    onClickEditTimetable: () -> Unit = {}
+    onClickEditTimetable: (TimetableFrame) -> Unit = {}
 ) {
     item {
         Column(
@@ -134,7 +140,7 @@ private fun LazyListScope.SemesterBlock(
             timetableFrame = frame,
             isAnonymous = isAnonymous,
             onClickTimetable = onClickTimetable,
-            onClickEditTimetable = onClickAddTimetable
+            onClickEditTimetable = onClickEditTimetable
         )
     }
 }
@@ -143,7 +149,7 @@ private fun LazyListScope.TimetableFrameBlock(
     timetableFrame: TimetableFrame,
     isAnonymous: Boolean,
     onClickTimetable: (TimetableFrame) -> Unit = {},
-    onClickEditTimetable: () -> Unit
+    onClickEditTimetable: (TimetableFrame) -> Unit
 ) {
     item {
         HorizontalDivider(
@@ -179,7 +185,9 @@ private fun LazyListScope.TimetableFrameBlock(
 
             if (!isAnonymous) {
                 Text(
-                    modifier = Modifier.noRippleClickable { onClickEditTimetable() },
+                    modifier = Modifier.noRippleClickable {
+                        onClickEditTimetable(timetableFrame)
+                    },
                     text = stringResource(id = R.string.semester_edit_timetable_frame),
                     style = KoinTheme.typography.bold16
                 )
