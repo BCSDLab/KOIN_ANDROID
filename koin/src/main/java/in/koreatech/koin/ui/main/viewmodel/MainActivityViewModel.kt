@@ -75,10 +75,8 @@ class MainActivityViewModel @Inject constructor(
     val diningABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
             emit(it)
-            println("dddd222" + it)
         }.onFailure {
             emit(Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first())
-            println("dddddd  " + it)
         }
     }.stateIn(
         scope = viewModelScope,
