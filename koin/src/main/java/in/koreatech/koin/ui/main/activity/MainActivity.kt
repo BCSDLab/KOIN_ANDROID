@@ -28,6 +28,7 @@ import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
@@ -68,6 +69,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
+
+    private var scrollPercentage = 0.0f
 
     @Inject
     lateinit var navigator: Navigator
@@ -164,6 +167,25 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun initView() = with(binding) {
         initDiningABTest()
+        binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
+            val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
+            val range = binding.nestedScrollViewMain.computeVerticalScrollRange()
+
+            val newScrollPercentage = 100.0f * offset / (range - extent)
+            if (EventUtils.didCrossedScrollThreshold(
+                    scrollPercentage,
+                    newScrollPercentage
+                ) && scrollPercentage.toDouble() != .0
+            ) {
+                EventLogger.logScrollEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.MAIN_SCROLL,
+                    "70%"
+                )
+            }
+            scrollPercentage = 100.0f * offset / (range - extent)
+        }
         viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
         storeListButton.setOnClickListener {
             gotoStoreActivity(0)
