@@ -48,6 +48,7 @@ import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.bus.BusActivity
+import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
@@ -162,6 +163,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initView() = with(binding) {
+        initDiningABTest()
         viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
         storeListButton.setOnClickListener {
             gotoStoreActivity(0)
@@ -393,6 +395,28 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     type = Pair(EXTRA_TYPE, type),
                 )
                 startActivity(intent)
+            }
+        }
+    }
+
+    private fun initDiningABTest() {
+        binding.textSeeMoreDining.setOnClickListener {
+            Intent(this, DiningActivity::class.java).run {
+                 startActivity(this)
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.diningABTestExperimentGroup.collect {
+                    when (it) {
+                        ExperimentGroup.MAIN_DINING_NEW -> {
+                            binding.textSeeMoreDining.visibility = View.VISIBLE
+                        }
+                        ExperimentGroup.MAIN_DINING_ORIGINAL -> {
+                            binding.textSeeMoreDining.visibility = View.GONE
+                        }
+                    }
+                }
             }
         }
     }
