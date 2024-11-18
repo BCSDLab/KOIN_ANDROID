@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,10 +16,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
+import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
 @Composable
 fun TimetableTimeContentRow(
-    modifier: Modifier = Modifier
+    customContent: CustomExtraContentState,
+    modifier: Modifier = Modifier,
+    onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
+    onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
 ) {
     Row(
         modifier = modifier
@@ -43,19 +47,27 @@ fun TimetableTimeContentRow(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        TimeEditBox(
-            text = "월요일"
+        DayOfWeekEditBox(
+            customContent = customContent,
+            onDayOfWeekChange = onDayOfWeekChange
         )
+        Spacer(modifier = Modifier.width(11.dp))
         TimeEditBox(
-            text = "09:00"
+            content = customContent,
+            localTime = customContent.startTime,
+            onClick = onClickStartTime
         )
+        Spacer(modifier = Modifier.width(11.dp))
         Text(
             text = stringResource(id = R.string.timetable_input_field_wave_character),
             style = KoinTheme.typography.medium18,
             color = KoinTheme.colors.neutral800
         )
+        Spacer(modifier = Modifier.width(11.dp))
         TimeEditBox(
-            text = "11:00"
+            content = customContent,
+            localTime = customContent.endTime,
+            onClick = onClickEndTime
         )
     }
 }
@@ -63,5 +75,7 @@ fun TimetableTimeContentRow(
 @Preview
 @Composable
 private fun TimetableTimeContentRowPreview() {
-    TimetableTimeContentRow()
+    TimetableTimeContentRow(
+        customContent = CustomExtraContentState()
+    )
 }

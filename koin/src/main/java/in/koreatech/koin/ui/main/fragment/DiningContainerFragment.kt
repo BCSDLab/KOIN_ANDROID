@@ -46,7 +46,7 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.MAIN_MENU_MOVEDETAILVIEW,
-                if (type == DiningType.NextBreakfast) "내일 " else "오늘 " + requireContext().getString(R.string.navigation_item_dining)
+                (if (type == DiningType.NextBreakfast) "내일 " else "오늘 ") + requireContext().getString(R.string.navigation_item_dining)
             )
         }
     }
