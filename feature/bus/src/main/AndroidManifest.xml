@@ -3,7 +3,11 @@
 
     <application>
         <activity
-            android:name="in.koreatech.bus.Bus2Activity"
+            android:name="in.koreatech.bus.BusTimetableActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="in.koreatech.bus.BusSearchActivity"
             android:exported="false" />
     </application>
 

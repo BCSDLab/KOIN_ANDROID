@@ -10,8 +10,6 @@ import `in`.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference
 import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
-import io.github.aakira.napier.DebugAntilog
-import io.github.aakira.napier.Napier
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,7 +24,6 @@ class KoinApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Napier.base(DebugAntilog())
         init()
     }
 

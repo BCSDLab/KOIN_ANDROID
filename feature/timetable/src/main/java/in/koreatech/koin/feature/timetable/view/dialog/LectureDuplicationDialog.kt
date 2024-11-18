@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -39,18 +40,19 @@ import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 @Composable
 fun LectureDuplicationDialog(
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: (visible: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
-        onDismissRequest = { onDismiss() },
+        onDismissRequest = { onDismiss(false) },
         modifier = modifier,
     ) {
         Surface(
             modifier = Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
-            shape = KoinTheme.shapes.extraSmall
+            shape = KoinTheme.shapes.extraSmall,
+            color = Color.White
         ) {
             Column(
                 modifier = Modifier
@@ -96,7 +98,7 @@ fun LectureDuplicationDialog(
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
-                        onClick = { onDismiss() }
+                        onClick = { onDismiss(false) }
                     ) {
                         Text(text = stringResource(id = R.string.common_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
                     }

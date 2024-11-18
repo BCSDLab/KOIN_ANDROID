@@ -57,7 +57,7 @@ interface TimetableAuthApi {
     @DELETE("/v2/timetables/lecture/{id}")
     suspend fun deleteTimetableLecture(
         @Path("id") id: Int
-    )
+    ): Response<Unit>
 
     @DELETE("/v2/timetables/frame/{frameId}/lecture/{lectureId}")
     suspend fun deleteTimetableFrameLecture(
