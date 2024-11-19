@@ -41,9 +41,9 @@ class TimetableSemesterActivity : ActivityBase() {
             KoinTheme {
                 val dialogUiState by viewModel.dialogUiState.collectAsStateWithLifecycle()
                 val isAnonymous by viewModel.isAnonymous.collectAsStateWithLifecycle()
-                val userTimetables by viewModel.userTimetableFrames2.collectAsStateWithLifecycle()
+                val userTimetables by viewModel.userTimetableFrames.collectAsStateWithLifecycle()
 
-                val userSemesters by viewModel.userSemesters2.collectAsStateWithLifecycle()
+                val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
                 val years by viewModel.years.collectAsStateWithLifecycle()
 
                 if (dialogUiState.isEditSemesterDialogVisible) {

@@ -50,10 +50,10 @@ class SemesterViewModel @Inject constructor(
     val isAnonymous: StateFlow<Boolean> = _isAnonymous.asStateFlow()
 
     private val _userSemester: MutableStateFlow<List<SemesterModel>> = MutableStateFlow(emptyList())
-    val userSemesters2: StateFlow<List<SemesterModel>> = _userSemester.asStateFlow()
+    val userSemesters: StateFlow<List<SemesterModel>> = _userSemester.asStateFlow()
 
     private val _userTimetableFrames: MutableStateFlow<Map<SemesterModel, List<TimetableFrame>>> = MutableStateFlow(emptyMap())
-    val userTimetableFrames2: StateFlow<Map<SemesterModel, List<TimetableFrame>>> = _userTimetableFrames.asStateFlow()
+    val userTimetableFrames: StateFlow<Map<SemesterModel, List<TimetableFrame>>> = _userTimetableFrames.asStateFlow()
 
     val semesters: StateFlow<List<SemesterModel>> = getSemestersUseCase()
         .map { it.map { it.toSemesterModel() } }
@@ -73,7 +73,7 @@ class SemesterViewModel @Inject constructor(
                 }
             // scan
             val tmp = mutableMapOf<SemesterModel, List<TimetableFrame>>()
-            userSemesters2.value
+            userSemesters.value
                 .map { it.toSemester() }
                 .forEach { semester ->
                     getTimetableFramesUseCase(semester)
@@ -112,7 +112,7 @@ class SemesterViewModel @Inject constructor(
         viewModelScope.launch {
             addTimetableFrameUseCase(
                 semester = target.toSemester(),
-                timetableName = "시간표${(userTimetableFrames2.value[target]?.size ?: 1) + 1}"
+                timetableName = "시간표${(userTimetableFrames.value[target]?.size ?: 1) + 1}"
             ).onSuccess { addedFrame ->
                 _userTimetableFrames.update { it ->
                     it.mapValues {
@@ -142,7 +142,7 @@ class SemesterViewModel @Inject constructor(
     fun updateUserSemesters() {
         viewModelScope.launch {
             dialogUiState.value.selectedSemesters.forEach { semester ->
-                if (userSemesters2.value.contains(semester)) {
+                if (userSemesters.value.contains(semester)) {
                     deleteSemesterUseCase(semester.toSemester()).onSuccess {
                         _userSemester.update {
                             it - semester
@@ -157,7 +157,7 @@ class SemesterViewModel @Inject constructor(
                             it + semester
                         }
                         _userTimetableFrames.update {
-                            it + (semester to listOf(addedFrame))
+                            (it + (semester to listOf(addedFrame))).toSortedMap()
                         }
                     }
                 }
