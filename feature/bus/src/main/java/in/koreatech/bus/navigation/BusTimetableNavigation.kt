@@ -13,7 +13,7 @@ import `in`.koreatech.bus.screen.search.composable.BusSearchScreen
 import `in`.koreatech.bus.screen.timetable.composable.BusTimetableScreen
 
 @Composable
-fun BusNavigation(
+fun BusTimetableNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {

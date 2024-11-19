@@ -20,41 +20,26 @@ import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetBasic
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetCustom
 import `in`.koreatech.koin.feature.timetable.section.TimetableBottomSheetHeader
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import java.time.DayOfWeek
-import java.time.LocalTime
+import `in`.koreatech.koin.feature.timetable.state.CustomContentState
+import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
 enum class TimetableBottomSheetContentMode {
     CUSTOM, BASIC
 }
 
-data class CustomEventData(
-    val schedule: String = "",
-    val professor: String? = "",
-    val data: ImmutableList<CustomEventExtraData> = persistentListOf()
-)
-
-data class CustomEventExtraData(
-    val position: Int = 0,
-    val dayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
-    val startTime: LocalTime = LocalTime.of(9, 0),
-    val endTime: LocalTime = LocalTime.of(10, 0),
-    val place: String = ""
-)
-
 @Composable
 fun TimetableBottomSheet(
     searchText: String,
     lectures: List<Lecture>,
+    customContents: CustomContentState,
     bottomSheetContentMode: TimetableBottomSheetContentMode,
     modifier: Modifier = Modifier,
     selectedLecture: Lecture? = null,
     timetableEvents: List<TimetableEvent> = emptyList(),
     onClickAddCustomLectureMode: () -> Unit = {},
-    onClickAddLectureMode: () -> Unit = {},
+    onClickAddLectureMode: (mode: TimetableBottomSheetContentMode) -> Unit = {},
     onComplete: () -> Unit = {},
-    onClickSettingIcon: () -> Unit = {},
+    onClickSettingIcon: (visible: Boolean) -> Unit = {},
     onClickSearchIcon: () -> Unit = {},
     onSearchTextChange: (text: String) -> Unit = {},
     onClickAddLecture: (lecture: Lecture) -> Unit = {},
@@ -62,6 +47,15 @@ fun TimetableBottomSheet(
     onClickLecture: (events: List<TimetableEvent>) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
     onBottomSheetHeightChange: (height: Float) -> Unit = {},
+    onScheduleNameChange: (text: String) -> Unit = {},
+    onProfessorNameChange: (text: String) -> Unit = {},
+    onPlaceNameChange: (text: String) -> Unit = {},
+    onExtraPlaceNameChange: (id: Int, text: String) -> Unit = { _, _ -> },
+    onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
+    onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickAddCustomContent: () -> Unit = {},
+    onClickRemoveCustomContent: (id: Int) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -79,10 +73,10 @@ fun TimetableBottomSheet(
     ) {
         TimetableBottomSheetHeader(
             modifier = Modifier.padding(bottom = 4.dp),
-            onComplete = onComplete,
             mode = bottomSheetContentMode,
             onClickAddLectureMode = onClickAddLectureMode,
-            onClickAddCustomLectureMode = onClickAddCustomLectureMode
+            onClickAddCustomLectureMode = onClickAddCustomLectureMode,
+            onComplete = onComplete,
         )
         HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
         Spacer(modifier = Modifier.height(8.dp))
@@ -105,7 +99,18 @@ fun TimetableBottomSheet(
             }
 
             TimetableBottomSheetContentMode.CUSTOM -> {
-                TimetableBottomSheetCustom()
+                TimetableBottomSheetCustom(
+                    customContents = customContents,
+                    onScheduleNameChange = onScheduleNameChange,
+                    onProfessorNameChange = onProfessorNameChange,
+                    onPlaceNameChange = onPlaceNameChange,
+                    onExtraPlaceNameChange = onExtraPlaceNameChange,
+                    onDayOfWeekChange = onDayOfWeekChange,
+                    onClickStartTime = onClickStartTime,
+                    onClickEndTime = onClickEndTime,
+                    onClickAddCustomContent = onClickAddCustomContent,
+                    onClickRemoveCustomContent = onClickRemoveCustomContent
+                )
             }
         }
 
@@ -119,6 +124,7 @@ private fun TimetableBottomSheetPreview() {
         TimetableBottomSheet(
             searchText = "",
             lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),
+            customContents = CustomContentState(),
             bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
             selectedLecture = null,
         )
@@ -132,6 +138,7 @@ private fun TimetableBottomSheetPreview_Custom() {
         TimetableBottomSheet(
             searchText = "",
             lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),
+            customContents = CustomContentState(),
             bottomSheetContentMode = TimetableBottomSheetContentMode.CUSTOM,
             selectedLecture = null,
         )
