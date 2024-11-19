@@ -21,6 +21,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.state.TimetableSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.toSemesterModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -72,6 +73,8 @@ class SemesterViewModel @Inject constructor(
         .map { it.map { it.year }.distinct() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
+    private var _isRestorePerformed = false
+
     fun initData() {
         viewModelScope.launch {
             getUserSemestersUseCase(_isAnonymous.value)
@@ -118,6 +121,10 @@ class SemesterViewModel @Inject constructor(
 
     fun updateSelectedSemesters(semesterModels: List<SemesterModel>) {
         _dialogUiState.value = _dialogUiState.value.copy(selectedSemesters = semesterModels)
+    }
+
+    fun updateSideEffect(sideEffect: TimetableSideEffect) {
+        _sideEffect.value = sideEffect
     }
 
     fun onClickAddTimetable(target: SemesterModel) {
@@ -228,77 +235,83 @@ class SemesterViewModel @Inject constructor(
      * 학기의 마지막 시간표를 지웠으면 학기도 같이 사라지기 때문에, 새로 추가를 해야함
      */
     fun restoreTimetableFrame() {
-        viewModelScope.launch {
-            dialogUiState.value.takeIf {
-                it.editedSemester != null
-                        && it.editedTimetableFrame != null
-                        && it.deletedTimetableLectures != null
-            }?.let { uiState ->
-                var targetFrame: TimetableFrame? = null
-                var isRestoredSemester: Boolean = false
+        if (!_isRestorePerformed)
+            _isRestorePerformed = true
+            viewModelScope.launch {
+                delay(500L)
+                _isRestorePerformed = false
+            }
+            viewModelScope.launch {
+                dialogUiState.value.takeIf {
+                    it.editedSemester != null
+                            && it.editedTimetableFrame != null
+                            && it.deletedTimetableLectures != null
+                }?.let { uiState ->
+                    var targetFrame: TimetableFrame? = null
+                    var isRestoredSemester: Boolean = false
 
-                // 학기가 함께 삭제되었는지 확인
-                if (userSemesters.value.contains(uiState.editedSemester)) {
-                    // 학기가 삭제되지 않았다면, 바로 프레임 추가
-                    addTimetableFrameUseCase(
-                        uiState.editedSemester!!.toSemester(),
-                        uiState.editedTimetableFrame!!.timetableName
-                    ).onSuccess {
-                        updateTimetableFrameUseCase(
-                            it.id,
-                            uiState.editedTimetableFrame!!.timetableName,
-                            uiState.editedTimetableFrame!!.isMain
+                    // 학기가 함께 삭제되었는지 확인
+                    if (userSemesters.value.contains(uiState.editedSemester)) {
+                        // 학기가 삭제되지 않았다면, 바로 프레임 추가
+                        addTimetableFrameUseCase(
+                            uiState.editedSemester!!.toSemester(),
+                            uiState.editedTimetableFrame!!.timetableName
                         ).onSuccess {
-                            targetFrame = it
-                        }
-                    }
-                } else {
-                    // 학기가 삭제되었다면, 새로 학기를 새로 추가하고 추가된 학기를 변경
-                    addSemesterUseCase(
-                        uiState.editedSemester!!.toSemester()
-                    ).onSuccess {
-                        isRestoredSemester = true
-                        updateTimetableFrameUseCase(
-                            it.id,
-                            uiState.editedTimetableFrame!!.timetableName,
-                            uiState.editedTimetableFrame!!.isMain
-                        ).onSuccess {
-                            targetFrame = it
-                        }
-                    }
-                }
-
-                // 학기 추가 or 프레임 추가가 정상적으로 동작한 경우 강의들 복구
-                targetFrame?.let { targetFrame ->
-                    timetableRepository.putTimetableLectures(
-                        TimetableLecturesQuery(
-                            timetableFrameId = targetFrame.id,
-                            timetableLecture = uiState.deletedTimetableLectures!!.timetable.map {
-                                TimetableLectureQuery(
-                                    id = it.id,
-                                    lectureId = it.lectureId,
-                                    classTitle = it.classTitle,
-                                    classTime = it.classTime,
-                                    classPlace = it.classPlace,
-                                    professor = it.professor,
-                                    grades = it.grades,
-                                    memo = it.memo
-                                )
+                            updateTimetableFrameUseCase(
+                                it.id,
+                                uiState.editedTimetableFrame!!.timetableName,
+                                uiState.editedTimetableFrame!!.isMain
+                            ).onSuccess {
+                                targetFrame = it
                             }
-                        )
-                    ).onSuccess {
-
-                    }.onFailure {
-                        if (isRestoredSemester) {
-                            deleteSemesterUseCase(uiState.editedSemester!!.toSemester())
-                        } else {
-                            deleteTimetableFrameUseCase(targetFrame.id)
+                        }
+                    } else {
+                        // 학기가 삭제되었다면, 새로 학기를 새로 추가하고 추가된 학기를 변경
+                        addSemesterUseCase(
+                            uiState.editedSemester!!.toSemester()
+                        ).onSuccess {
+                            isRestoredSemester = true
+                            updateTimetableFrameUseCase(
+                                it.id,
+                                uiState.editedTimetableFrame!!.timetableName,
+                                uiState.editedTimetableFrame!!.isMain
+                            ).onSuccess {
+                                targetFrame = it
+                            }
                         }
                     }
-                    refreshSemesterTimetableFrames(semester = uiState.editedSemester)
+
+                    // 학기 추가 or 프레임 추가가 정상적으로 동작한 경우 강의들 복구
+                    targetFrame?.let { targetFrame ->
+                        timetableRepository.putTimetableLectures(
+                            TimetableLecturesQuery(
+                                timetableFrameId = targetFrame.id,
+                                timetableLecture = uiState.deletedTimetableLectures!!.timetable.map {
+                                    TimetableLectureQuery(
+                                        id = it.id,
+                                        lectureId = it.lectureId,
+                                        classTitle = it.classTitle,
+                                        classTime = it.classTime,
+                                        classPlace = it.classPlace,
+                                        professor = it.professor,
+                                        grades = it.grades,
+                                        memo = it.memo
+                                    )
+                                }
+                            )
+                        ).onSuccess {
+
+                        }.onFailure {
+                            if (isRestoredSemester) {
+                                deleteSemesterUseCase(uiState.editedSemester!!.toSemester())
+                            } else {
+                                deleteTimetableFrameUseCase(targetFrame.id)
+                            }
+                        }
+                        refreshSemesterTimetableFrames(semester = uiState.editedSemester)
+                    }
                 }
             }
-        }
     }
 
 
