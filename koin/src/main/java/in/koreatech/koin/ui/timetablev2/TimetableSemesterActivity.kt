@@ -2,11 +2,13 @@ package `in`.koreatech.koin.ui.timetablev2
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -141,6 +143,15 @@ class TimetableSemesterActivity : ActivityBase() {
 
                 CustomSnackBarHost(
                     hotState = snackBarHost,
+                    radius = 6.dp,
+                    messageTextStyle = KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.neutral0
+                    ),
+                    actionLabelTextStyle = KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.sub500
+                    ),
+                    background = KoinTheme.colors.primary700,
+                    innerPaddingValues = PaddingValues(horizontal = 16.dp, vertical = 20.dp),
                     onAction = {
                         viewModel.restoreTimetableFrame()
                     }
