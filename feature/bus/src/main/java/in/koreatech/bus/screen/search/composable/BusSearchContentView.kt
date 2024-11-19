@@ -1,6 +1,7 @@
 package `in`.koreatech.bus.screen.search.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -112,16 +114,23 @@ internal fun BusSearchContentView(
                     modifier = Modifier
                         .padding(top = 10.dp)
                         .padding(horizontal = 16.dp, vertical = 12.dp)
-                        .size(32.dp)
                         .constrainAs(iconSwap) {
                             top.linkTo(departureText.bottom)
                             start.linkTo(departureField.end)
                             end.linkTo(arrivalField.start)
-                        }
+                        }.border(
+                            width = 1.dp,
+                            color = KoinTheme.colors.neutral300,
+                            shape = CircleShape
+                        ).background(
+                            color = KoinTheme.colors.neutral50,
+                            shape = CircleShape
+                        ).size(32.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_swap), // TODO : 아이콘 깨짐
+                        painter = painterResource(id = R.drawable.ic_swap),
                         contentDescription = stringResource(R.string.swap_content_description),
+                        tint = KoinTheme.colors.primary500
                     )
                 }
 

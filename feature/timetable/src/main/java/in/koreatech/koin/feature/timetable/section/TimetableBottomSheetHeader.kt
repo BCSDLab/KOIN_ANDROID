@@ -18,7 +18,7 @@ fun TimetableBottomSheetHeader(
     modifier: Modifier = Modifier,
     mode: TimetableBottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
     onComplete: () -> Unit = {},
-    onClickAddLectureMode: () -> Unit = {},
+    onClickAddLectureMode: (mode: TimetableBottomSheetContentMode) -> Unit = {},
     onClickAddCustomLectureMode: () -> Unit = {},
 ) {
     Row(
@@ -43,7 +43,7 @@ fun TimetableBottomSheetHeader(
                 TimetableBottomSheetContentMode.CUSTOM -> KoinTheme.typography.medium18.copy(color = KoinTheme.colors.primary500)
             },
             modifier = Modifier.clickable {
-                onClickAddLectureMode()
+                onClickAddLectureMode(TimetableBottomSheetContentMode.BASIC)
             }
         )
         Text(

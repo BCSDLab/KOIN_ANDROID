@@ -17,6 +17,16 @@ enum class DayOfWeekKorean(
     SUNDAY("일")
 }
 
+fun DayOfWeek.toKorean():String= when (this) {
+    DayOfWeek.MONDAY -> "월요일"
+    DayOfWeek.TUESDAY -> "화요일"
+    DayOfWeek.WEDNESDAY-> "수요일"
+    DayOfWeek.THURSDAY -> "목요일"
+    DayOfWeek.FRIDAY -> "금요일"
+    DayOfWeek.SATURDAY -> "토요일"
+    DayOfWeek.SUNDAY -> "일요일"
+}
+
 data class TimetableColor(
     val header: Color,
     val content: Color
@@ -26,6 +36,8 @@ data class TimetableEvent(
     val id: Int,
     val lectureId: Int,
     val name: String,
+    val place: String = "",
+    val professor: String = "",
     val color: TimetableColor,
     val dayOfWeek: DayOfWeek? = null,
     val start: LocalTime,

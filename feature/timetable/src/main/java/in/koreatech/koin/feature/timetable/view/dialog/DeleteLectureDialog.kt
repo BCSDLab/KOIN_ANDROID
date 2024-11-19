@@ -20,21 +20,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.component.HighlightedText
+import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeleteLectureDialog(
-    lectureName: String,
-    onConfirm: () -> Unit,
+    lecture: TimetableLecture?,
+    onConfirm: (id: Int) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -43,7 +46,8 @@ fun DeleteLectureDialog(
         onDismissRequest = onDismiss
     ) {
         Surface(
-            shape = KoinTheme.shapes.extraSmall
+            shape = KoinTheme.shapes.extraSmall,
+            color = Color.White
         ) {
             Column(
                 modifier = Modifier
@@ -55,7 +59,7 @@ fun DeleteLectureDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val title = stringArrayResource(id = R.array.delete_lecture_title).apply {
-                    this[0] = String.format(this[0], lectureName)
+                    this[0] = String.format(this[0], lecture?.classTitle)
                 }
                 HighlightedText(
                     texts = title,
@@ -106,7 +110,11 @@ fun DeleteLectureDialog(
                             .weight(1.0F),
                         text = stringResource(id = R.string.delete_lecture_confirmation),
                         buttonStyle = FilledButtonType.Danger,
-                        onClick = { onConfirm() }
+                        onClick = {
+                            lecture?.let {
+                                onConfirm(it.id)
+                            }
+                        }
                     )
                 }
             }
@@ -120,7 +128,7 @@ fun DeleteLectureDialog(
 private fun DeleteLectureDialogPreview() {
     KoinTheme {
         DeleteLectureDialog(
-            lectureName = "강의명",
+            lecture = dummyLecture.toTimetableLecture(),
             onConfirm = {},
             onDismiss = {},
         )

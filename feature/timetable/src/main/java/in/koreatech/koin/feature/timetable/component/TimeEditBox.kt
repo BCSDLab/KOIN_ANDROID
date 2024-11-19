@@ -18,19 +18,25 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
+import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+
+private val hourFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 @Composable
 fun TimeEditBox(
-    text: String,
+    localTime: LocalTime,
+    content: CustomExtraContentState,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ ->}
 ) {
     Row(
         modifier = modifier
             .background(Color.White)
             .border(
                 width = 1.dp,
-                color = KoinTheme.colors.neutral300,
+                color = if (content.isError)KoinTheme.colors.sub500 else KoinTheme.colors.neutral300,
                 shape = RoundedCornerShape(4.dp)
             )
             .padding((5.5).dp),
@@ -38,18 +44,22 @@ fun TimeEditBox(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = text,
+            text = if (localTime == LocalTime.of(23,59)) {
+                "24:00"
+            } else {
+                localTime.format(hourFormatter)
+            },
             style = KoinTheme.typography.bold12,
             color = KoinTheme.colors.neutral800,
             modifier = Modifier.padding(start = (3.5).dp)
         )
 
         IconButton(
-            onClick = onClick,
-            modifier = Modifier.size(24.dp)
+            onClick = { onClick(content, true) },
+            modifier = Modifier.size(20.dp)
         ) {
             StableIcon(
-                drawableResId = R.drawable.ic_arrow_down
+                drawableResId = R.drawable.ic_arrow_up_down
             )
         }
 
@@ -58,12 +68,9 @@ fun TimeEditBox(
 
 @Preview
 @Composable
-fun TimeEditBoxPreview() {
-    TimeEditBox("월요일")
-}
-
-@Preview
-@Composable
-fun TimeEditBoxPreview_time() {
-    TimeEditBox("09:00")
+private fun TimeEditBoxPreview() {
+    TimeEditBox(
+        localTime = LocalTime.of(9, 0),
+        content = CustomExtraContentState()
+    )
 }

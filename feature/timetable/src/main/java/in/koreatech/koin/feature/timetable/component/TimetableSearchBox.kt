@@ -32,14 +32,14 @@ fun TimetableSearchBox(
     searchText: String,
     modifier: Modifier = Modifier,
     onSearchTextChange: (String) -> Unit = {},
-    onClickSettingIcon: () -> Unit = {},
+    onClickSettingIcon: (visible: Boolean) -> Unit = {},
     onClickSearchIcon: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconButton(onClick = onClickSettingIcon) {
+        IconButton(onClick = { onClickSettingIcon(true) }) {
             StableIcon(
                 drawableResId = R.drawable.ic_filter,
                 tint = Color(0xFFB5C1CD),
