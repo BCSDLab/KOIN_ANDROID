@@ -42,7 +42,8 @@ fun CustomSnackBarHost(
     background: Color = Color.Black,
     alignment: Alignment = Alignment.BottomCenter,
     paddingValues: PaddingValues = PaddingValues(bottom = 20.dp, start = 10.dp, end = 10.dp),
-    innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp)
+    innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp),
+    onAction: (() -> Unit)? = null
 ) {
     SnackbarHost(
         hostState = hotState,
@@ -57,7 +58,10 @@ fun CustomSnackBarHost(
             alignment = alignment,
             paddingValues = paddingValues,
             innerPaddingValues = innerPaddingValues,
-            onAction = { snackbarData.dismiss() }
+            onAction = {
+                onAction?.invoke()
+                snackbarData.dismiss()
+            }
         )
     }
 
