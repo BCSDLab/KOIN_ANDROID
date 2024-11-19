@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -110,9 +111,10 @@ private fun SnackBarContent(
                 Spacer(modifier = Modifier.weight(0.05f))
                 if (actionLabelText.isNotEmpty()) {
                     Text(
+                        modifier = Modifier.weight(0.2f).noRippleClickable { onAction() },
                         text = actionLabelText,
                         style = actionLabelTextStyle,
-                        modifier = Modifier.weight(0.1f).noRippleClickable { onAction() }
+                        textAlign = TextAlign.End
                     )
                 }
 
@@ -146,5 +148,15 @@ private fun SnackBarContentPreview() {
     SnackBarContent(
         messageText = "스낵바 메시지",
         actionLabelText = "닫기",
+    )
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun SnackBarContentPreview2() {
+    SnackBarContent(
+        messageText = "스낵바 메시지",
+        actionLabelText = "되돌리기",
+        paddingValues = PaddingValues(bottom = 0.dp, start = 10.dp, end = 10.dp),
     )
 }
