@@ -25,6 +25,7 @@ import `in`.koreatech.koin.feature.timetable.view.SemesterScreen
 import `in`.koreatech.koin.feature.timetable.view.dialog.DeleteSemesterDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditSemesterDialogImpl
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditTimetableFrameDialog
+import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.SemesterViewModel
 import timber.log.Timber
 
@@ -99,13 +100,43 @@ class TimetableSemesterActivity : ActivityBase() {
                         }
                     )
                 }
+                if (dialogUiState.isRequestLoginDialogVisible) {
+                    RequestLoginDialog(
+                        onConfirm = {
+                            // TODO::Hyeok 로그인 화면으로 이동
+                            Timber.d("로그인 화면으로 이동")
+                            viewModel.updateRequestLoginDialogVisible(false)
+                        },
+                        onDismiss = {
+                            viewModel.updateRequestLoginDialogVisible(false)
+                        }
+                    )
+                }
 
                 SemesterScreen(
                     userTimetables = userTimetables,
                     isAnonymous = isAnonymous,
                     onClickTimetable = ::finishActivityWithResult,
-                    onClickAddTimetable = viewModel::onClickAddTimetable,
-                    onClickEditTimetable = viewModel::onClickEditTimetable
+                    onClickAddTimetable = {
+                        if (viewModel.isAnonymous.value) {
+                            viewModel.updateRequestLoginDialogVisible(true)
+                        } else {
+                            viewModel.onClickAddTimetable(it)
+                        }
+                    },
+                    onClickEditTimetable = { semester, frame ->
+                        if (viewModel.isAnonymous.value) {
+                            viewModel.updateRequestLoginDialogVisible(true)
+                        } else {
+                            viewModel.onClickEditTimetable(
+                                semester,
+                                frame
+                            )
+                        }
+                    },
+                    onClickLoginText = {
+                        viewModel.updateRequestLoginDialogVisible(true)
+                    }
                 )
 
                 CustomSnackBarHost(
@@ -135,7 +166,13 @@ class TimetableSemesterActivity : ActivityBase() {
         binding.timetableListAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
-                AppBarBase.getRightButtonId() -> viewModel.updateEditSemesterDialogVisible(true)
+                AppBarBase.getRightButtonId() -> {
+                    if (viewModel.isAnonymous.value) {
+                        viewModel.updateRequestLoginDialogVisible(true)
+                    } else {
+                        viewModel.updateEditSemesterDialogVisible(true)
+                    }
+                }
             }
         }
     }

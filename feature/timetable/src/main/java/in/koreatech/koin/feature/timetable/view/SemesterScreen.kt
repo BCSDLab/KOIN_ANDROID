@@ -40,7 +40,8 @@ fun SemesterScreen(
     modifier: Modifier = Modifier,
     onClickTimetable: (SemesterModel, TimetableFrame) -> Unit = { _, _ -> },
     onClickAddTimetable: (SemesterModel) -> Unit = {},
-    onClickEditTimetable: (SemesterModel, TimetableFrame) -> Unit = {_, _ -> },
+    onClickEditTimetable: (SemesterModel, TimetableFrame) -> Unit = { _, _ -> },
+    onClickLoginText: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -55,6 +56,9 @@ fun SemesterScreen(
         ) {
             if (isAnonymous) {
                 HighlightedText(
+                    modifier = Modifier
+                        .padding(vertical = 6.dp)
+                        .noRippleClickable { onClickLoginText() },
                     texts = stringArrayResource(id = R.array.semester_anonymous_login),
                     highlightIndices = listOf(0),
                     defaultStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral500),
