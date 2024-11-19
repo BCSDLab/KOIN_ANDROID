@@ -78,7 +78,6 @@ class TimetableSemesterActivity : ActivityBase() {
                         },
                         onDeleteFrame = {
                             viewModel.deleteTimetableFrame()
-                            viewModel.updateEditTimetableDialogVisibility(false)
                         }
                     )
                 }
@@ -92,7 +91,6 @@ class TimetableSemesterActivity : ActivityBase() {
                             viewModel.updateUserSemesters()
                             viewModel.updateDeleteSemesterDialogVisible(false)
                             viewModel.updateEditSemesterDialogVisible(false)
-
                         }
                     )
                 }
@@ -124,13 +122,14 @@ class TimetableSemesterActivity : ActivityBase() {
     }
 
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
-        intent?.putExtra(
-            BUNDLE_EXTRA_KEY,
-            bundleOf(
-                SEMESTER to semester.toSemester(),
-                TIMETABLE_FRAME_ID to timetableFrame.id
-            )
-        )
+        bundleOf().apply {
+            putString(SEMESTER, semester.toSemester())
+            if(!viewModel.isAnonymous.value) {
+                putInt(TIMETABLE_FRAME_ID, timetableFrame.id)
+                putString(TIMETABLE_FRAME_NAME, timetableFrame.timetableName)
+            }
+        }
+
         setResult(RESULT_OK, intent)
         finish()
     }
@@ -140,5 +139,6 @@ class TimetableSemesterActivity : ActivityBase() {
         const val BUNDLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
         const val SEMESTER = "semester"
         const val TIMETABLE_FRAME_ID = "timetableFrameId"
+        const val TIMETABLE_FRAME_NAME = "timetableFrameName"
     }
 }
