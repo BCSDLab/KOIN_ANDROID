@@ -86,6 +86,7 @@ fun EditTimetableFrameDialog(
             timetableName = timetableName,
             onDismiss = { showingDeleteDialog = false },
             onConfirm = {
+                showingDeleteDialog = false
                 timetableFrameState?.let {
                     onDeleteFrame()
                 }
