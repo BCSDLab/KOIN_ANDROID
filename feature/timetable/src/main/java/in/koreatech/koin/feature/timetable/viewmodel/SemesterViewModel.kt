@@ -77,25 +77,33 @@ class SemesterViewModel @Inject constructor(
 
     fun initData() {
         viewModelScope.launch {
+            // 유저가 추가한 학기 불러옴
             getUserSemestersUseCase(_isAnonymous.value)
                 .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
                 .map { it.map { it.toSemesterModel() } }
                 .collect {
                     _userSemester.value = it
                 }
-            // scan
+
+            // 유저가 추가한 학기의 프레임 불러옴
             val tmp = mutableMapOf<SemesterModel, List<TimetableFrame>>()
             userSemesters.value
                 .map { it.toSemester() }
                 .forEach { semester ->
-                    getTimetableFramesUseCase(semester)
-                        .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
-                        .collect {
-                            // 기본 시간표가 첫 번째에 오도록 정렬
-                            it.sortedByDescending { it.isMain }.also { sortedFrames ->
-                                tmp.put(semester.toSemesterModel(), sortedFrames)
+                    if(isAnonymous.value) {
+                        // 익명이면 모든 프레임의 이름은 '시간표1'
+                        tmp.put(semester.toSemesterModel(), listOf(TimetableFrame(0, "시간표1", isMain = true)))
+                    } else {
+                        getTimetableFramesUseCase(semester)
+                            .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
+                            .collect {
+                                // 기본 시간표가 첫 번째에 오도록 정렬
+                                it.sortedByDescending { it.isMain }.also { sortedFrames ->
+                                    tmp.put(semester.toSemesterModel(), sortedFrames)
+                                }
                             }
-                        }
+                    }
+
                 }
             _userTimetableFrames.value = tmp
         }
@@ -117,6 +125,10 @@ class SemesterViewModel @Inject constructor(
 
     fun updateDeleteSemesterDialogVisible(isVisible: Boolean) {
         _dialogUiState.value = _dialogUiState.value.copy(isDeleteSemesterDialogVisible = isVisible)
+    }
+
+    fun updateRequestLoginDialogVisible(isVisible: Boolean) {
+        _dialogUiState.value = _dialogUiState.value.copy(isRequestLoginDialogVisible = isVisible)
     }
 
     fun updateSelectedSemesters(semesterModels: List<SemesterModel>) {
@@ -364,5 +376,6 @@ data class SemesterDialogUiState(
     val selectedSemesters: List<SemesterModel> = emptyList(),
     val isEditTimetableDialogVisible: Boolean = false,
     val isEditSemesterDialogVisible: Boolean = false,
-    val isDeleteSemesterDialogVisible: Boolean = false
+    val isDeleteSemesterDialogVisible: Boolean = false,
+    val isRequestLoginDialogVisible: Boolean = false
 )
