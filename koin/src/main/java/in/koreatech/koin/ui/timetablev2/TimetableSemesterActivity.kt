@@ -52,16 +52,10 @@ class TimetableSemesterActivity : ActivityBase() {
                         userSemesters = userSemesters,
                         onConfirm = { selectedSemesters ->
                             viewModel.updateSelectedSemesters(selectedSemesters)
-                            var isLectureExist = false
-                            selectedSemesters.forEach {
-                                // TODO::hyeok 강의 유무 확인해서 띄우기
-                                if(userTimetables.contains(it) && userTimetables[it]?.isEmpty() == true)
-                                    isLectureExist = true
-                            }
-
-                            if(isLectureExist) {
+                            if(selectedSemesters.any { it in userSemesters})
                                 viewModel.updateDeleteSemesterDialogVisible(true)
-                            } else {
+                            else {
+                                viewModel.updateEditSemesterDialogVisible(false)
                                 viewModel.updateUserSemesters()
                             }
                         },
