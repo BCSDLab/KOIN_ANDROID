@@ -58,8 +58,9 @@ class TimetableRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): TimetableLectures =
+    override suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): Result<TimetableLectures> = runCatching {
         timetableRemoteDataSource.putTimetableLectures(lectures.toTimetableLecturesQueryRequest()).toTimetableLectures()
+    }
 
     override suspend fun putTimetableLectures(key: String, value: TimetableLectures): Result<TimetableLectures> = runCatching {
         timetableDataStore.putString(key, gson.toJson(value))

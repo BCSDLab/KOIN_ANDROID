@@ -18,7 +18,6 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityTimetableSemesterBinding
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
-import `in`.koreatech.koin.feature.timetable.state.TimetableSideEffect
 import `in`.koreatech.koin.feature.timetable.view.SemesterScreen
 import `in`.koreatech.koin.feature.timetable.view.dialog.DeleteSemesterDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditSemesterDialogImpl
@@ -59,7 +58,7 @@ class TimetableSemesterActivity : ActivityBase() {
                         userSemesters = userSemesters,
                         onConfirm = { selectedSemesters ->
                             viewModel.updateSelectedSemesters(selectedSemesters)
-                            if(selectedSemesters.any { it in userSemesters})
+                            if (selectedSemesters.any { it in userSemesters })
                                 viewModel.updateDeleteSemesterDialogVisible(true)
                             else {
                                 viewModel.updateEditSemesterDialogVisible(false)
@@ -130,7 +129,7 @@ class TimetableSemesterActivity : ActivityBase() {
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
         bundleOf().apply {
             putString(SEMESTER, semester.toSemester())
-            if(!viewModel.isAnonymous.value) {
+            if (!viewModel.isAnonymous.value) {
                 putInt(TIMETABLE_FRAME_ID, timetableFrame.id)
                 putString(TIMETABLE_FRAME_NAME, timetableFrame.timetableName)
             }

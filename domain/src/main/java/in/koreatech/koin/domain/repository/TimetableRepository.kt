@@ -17,7 +17,7 @@ interface TimetableRepository {
     suspend fun getTimetableLectures(timetableFrameId: Int): Result<TimetableLectures>
     suspend fun getTimetableLectures(semester: String): Result<TimetableLectures>
 
-    suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): TimetableLectures
+    suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): Result<TimetableLectures>
     suspend fun putTimetableLectures(key: String, value: TimetableLectures): Result<TimetableLectures>
     suspend fun putTimetableFrame(id: Int, frame: TimetableFrameQuery): Result<TimetableFrame>
 
