@@ -41,9 +41,21 @@ class TimetableSemesterActivity : ActivityBase() {
     private val binding by dataBinding<ActivityTimetableSemesterBinding>()
     private val viewModel by viewModels<SemesterViewModel>()
 
-    val onBackPressedCallback = object : OnBackPressedCallback(true){
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            finishActivityWithResult()
+            if (viewModel.userTimetableFrames.value.isEmpty()) {
+                finishActivityWithResult(
+                    semester = "",
+                    frameId = -1,
+                    timetableName = ""
+                )
+            } else {
+                finishActivityWithResult(
+                    semester = viewModel.currentTimetableSemester.value,
+                    frameId = viewModel.currentTimetableId.value,
+                    timetableName = viewModel.currentTimetableName.value
+                )
+            }
         }
     }
 
@@ -197,6 +209,7 @@ class TimetableSemesterActivity : ActivityBase() {
                 AppBarBase.getLeftButtonId() -> {
                     onBackPressedDispatcher.onBackPressed()
                 }
+
                 AppBarBase.getRightButtonId() -> {
                     if (viewModel.isAnonymous.value) {
                         viewModel.updateRequestLoginDialogVisible(true)
@@ -235,27 +248,27 @@ class TimetableSemesterActivity : ActivityBase() {
         finish()
     }
 
-    private fun finishActivityWithResult() {
+    private fun finishActivityWithResult(semester: String, frameId: Int, timetableName: String) {
         Timber.d("semester: ${viewModel.currentTimetableSemester.value}")
         Timber.d("Timetable frame id: ${viewModel.currentTimetableId.value}")
         Timber.d("timetable frame name: ${viewModel.currentTimetableName.value}")
-//        val intent = Intent().apply{
-//            val bundle = if (!viewModel.isAnonymous.value) {
-//                bundleOf(
-//                    SEMESTER to viewModel.currentTimetableSemester.value,
-//                    TIMETABLE_FRAME_ID to viewModel.currentTimetableId.value,
-//                    TIMETABLE_FRAME_NAME to viewModel.currentTimetableName.value,
-//                )
-//            } else {
-//                bundleOf(
-//                    SEMESTER to viewModel.currentTimetableSemester.value
-//                )
-//            }
-//            putExtra(BUNDLE_EXTRA_KEY, bundle)
-//        }
-//
-//        setResult(RESULT_OK, intent)
-//        finish()
+        val intent = Intent().apply {
+            val bundle = if (!viewModel.isAnonymous.value) {
+                bundleOf(
+                    SEMESTER to semester,
+                    TIMETABLE_FRAME_ID to frameId,
+                    TIMETABLE_FRAME_NAME to timetableName,
+                )
+            } else {
+                bundleOf(
+                    SEMESTER to viewModel.currentTimetableSemester.value
+                )
+            }
+            putExtra(BUNDLE_EXTRA_KEY, bundle)
+        }
+
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     companion object {

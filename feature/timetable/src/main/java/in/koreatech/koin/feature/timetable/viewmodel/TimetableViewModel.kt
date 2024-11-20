@@ -162,6 +162,7 @@ class TimetableViewModel @Inject constructor(
                                 timetableEvents = timetableLectures.getTimetableEvents(),
                                 currentSemester = semester,
                                 timetableLectures = timetableLectures,
+                                bottomSheetCollapse = true,
                                 loading = false
                             )
                         }.onFailure {
@@ -174,6 +175,16 @@ class TimetableViewModel @Inject constructor(
                         updateLoading(false)
                         return@launch
                     }
+                    val semesters = getSemester(state.value.isAnonymous)
+                    if (frameId == -1) {
+                        _state.value = TimetableState().copy(
+                            isAnonymous = state.value.isAnonymous,
+                            semesters = semesters,
+                            bottomSheetCollapse = true,
+                            loading = false
+                        )
+                        return@launch
+                    }
                     timetableRepository.getTimetableLectures(frameId)
                         .onSuccess { timetableLectures ->
                             _state.value = _state.value.copy(
@@ -182,6 +193,8 @@ class TimetableViewModel @Inject constructor(
                                 timetableName = frameName,
                                 timetableEvents = timetableLectures.getTimetableEvents(),
                                 currentSemester = semester,
+                                semesters = semesters,
+                                bottomSheetCollapse = true,
                                 timetableLectures = timetableLectures,
                                 loading = false
                             )
