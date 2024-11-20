@@ -62,12 +62,13 @@ fun CustomSnackBarHost(
                 messageTextStyle = messageTextStyle,
                 actionLabelTextStyle = actionLabelTextStyle,
                 innerPaddingValues = innerPaddingValues,
+                onAction = {
+                    onAction?.invoke()
+                    snackbarData.dismiss()
+                }
             )
         }
-                onAction?.invoke()
-                snackbarData.dismiss()
-            onAction = {
-            }
+
     }
 }
 
@@ -106,24 +107,14 @@ private fun SnackBarContent(
             Spacer(modifier = Modifier.weight(0.05f))
             if (actionLabelText.isNotEmpty()) {
                 Text(
+                    modifier = Modifier
+                        .weight(0.2f)
+                        .noRippleClickable { onAction() },
                     text = actionLabelText,
                     style = actionLabelTextStyle,
-                    modifier = Modifier
-                        .weight(0.1f)
-                        .noRippleClickable { onAction() }
+                    textAlign = TextAlign.End
                 )
-                Spacer(modifier = Modifier.weight(0.05f))
-                if (actionLabelText.isNotEmpty()) {
-                    Text(
-                        modifier = Modifier.weight(0.2f).noRippleClickable { onAction() },
-                        text = actionLabelText,
-                        style = actionLabelTextStyle,
-                        textAlign = TextAlign.End
-                    )
-                }
-
             }
-
         }
     }
 }
@@ -153,15 +144,5 @@ private fun SnackBarContentPreview() {
     SnackBarContent(
         messageText = "스낵바 메시지",
         actionLabelText = "닫기",
-    )
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun SnackBarContentPreview2() {
-    SnackBarContent(
-        messageText = "스낵바 메시지",
-        actionLabelText = "되돌리기",
-        paddingValues = PaddingValues(bottom = 0.dp, start = 10.dp, end = 10.dp),
     )
 }
