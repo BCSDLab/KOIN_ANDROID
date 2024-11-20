@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.ui.timetablev2
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarDuration
@@ -39,12 +41,20 @@ class TimetableSemesterActivity : ActivityBase() {
     private val binding by dataBinding<ActivityTimetableSemesterBinding>()
     private val viewModel by viewModels<SemesterViewModel>()
 
+//    val onBackPressedCallback = object : OnBackPressedCallback(true){
+//        override fun handleOnBackPressed() {
+//            // handle event
+//            finishActivityWithResult(viewModel.semesters.value.to)
+//        }
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timetable_semester)
-        getIntentBundle { isAnonymous ->
-            Timber.e("isAnonymous : $isAnonymous")
-            viewModel.updateIsAnonymous(false)
+        getIntentBundle { bundle ->
+            val isAnonymous = bundle.getBoolean(TimetableActivity.IS_ANONYMOUS, false)
+            val semester = bundle.getString(TimetableActivity.SEMESTER).orEmpty()
+            viewModel.updateIntentData(isAnonymous)
         }
         viewModel.initData()
 
@@ -194,20 +204,27 @@ class TimetableSemesterActivity : ActivityBase() {
         }
     }
 
-    private fun getIntentBundle(callback: (isAnonymous: Boolean) -> Unit) {
-        val bundle = intent.getBundleExtra(TimetableActivity.BUNDLE_EXTRA_KEY)
-        bundle?.getBoolean(TimetableActivity.IS_ANONYMOUS)?.let {
+
+    private fun getIntentBundle(callback: (bundle: Bundle) -> Unit) {
+        intent.getBundleExtra(TimetableActivity.BUNDLE_EXTRA_KEY)?.let {
             callback(it)
-        }
+        } ?: return
     }
 
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
-        bundleOf().apply {
-            putString(SEMESTER, semester.toSemester())
-            putString(TIMETABLE_FRAME_NAME, timetableFrame.timetableName)
-            if (!viewModel.isAnonymous.value) {
-                putInt(TIMETABLE_FRAME_ID, timetableFrame.id)
+        val intent = Intent().apply {
+            val bundle = if (!viewModel.isAnonymous.value) {
+                bundleOf(
+                    SEMESTER to semester.toSemester(),
+                    TIMETABLE_FRAME_ID to timetableFrame.id,
+                    TIMETABLE_FRAME_NAME to timetableFrame.timetableName
+                )
+            } else {
+                bundleOf(
+                    SEMESTER to semester.toSemester()
+                )
             }
+            putExtra(BUNDLE_EXTRA_KEY, bundle)
         }
 
         setResult(RESULT_OK, intent)
