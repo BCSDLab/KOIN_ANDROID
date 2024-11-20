@@ -160,6 +160,8 @@ class StoreViewModel @Inject constructor(
         }
     }
 
+    fun getEventListSize() = storeEvents.value?.size
+
     private fun getStoreEvents(){
         viewModelScope.launch {
             _storeEvents.value = getStoreEventUseCase()
