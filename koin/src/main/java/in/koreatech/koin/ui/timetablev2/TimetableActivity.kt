@@ -335,7 +335,8 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 BUNDLE_EXTRA_KEY, bundleOf(
                     IS_ANONYMOUS to viewModel.state.value.isAnonymous,
                     SEMESTER to viewModel.state.value.currentSemester,
-                    FRAME_ID to viewModel.state.value.frameId
+                    FRAME_ID to viewModel.state.value.frameId,
+                    FRAME_NAME to viewModel.state.value.timetableName
                 )
             )
         }
@@ -382,5 +383,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         const val IS_ANONYMOUS = "isAnonymous"
         const val SEMESTER = "semester"
         const val FRAME_ID = "frameId"
+        const val FRAME_NAME = "frameName"
     }
 }

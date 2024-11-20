@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,8 +56,17 @@ class SemesterViewModel @Inject constructor(
     private val _sideEffect: MutableStateFlow<SemesterSideEffect> = MutableStateFlow(SemesterSideEffect.Nothing)
     val sideEffect: StateFlow<SemesterSideEffect> = _sideEffect.asStateFlow()
 
-    private val _timetableSemester: MutableStateFlow<String> = MutableStateFlow("")
-    val timetableSemester: StateFlow<String> = _timetableSemester.asStateFlow()
+    private val _currentTimetableSemester: MutableStateFlow<String> = MutableStateFlow("")
+    val currentTimetableSemester: StateFlow<String> = _currentTimetableSemester.asStateFlow()
+
+    private val _currentTimetableId: MutableStateFlow<Int> = MutableStateFlow(-1)
+    val currentTimetableId: StateFlow<Int> = _currentTimetableId.asStateFlow()
+
+    private val _currentTimetableName: MutableStateFlow<String> = MutableStateFlow("")
+    val currentTimetableName: StateFlow<String> = _currentTimetableName.asStateFlow()
+
+    private val _originalTimetableId: MutableStateFlow<Int> = MutableStateFlow(-1)
+    val originalTimetableId: StateFlow<Int> = _currentTimetableId.asStateFlow()
 
     private val _isAnonymous: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isAnonymous: StateFlow<Boolean> = _isAnonymous.asStateFlow()
@@ -94,7 +102,7 @@ class SemesterViewModel @Inject constructor(
             userSemesters.value
                 .map { it.toSemester() }
                 .forEach { semester ->
-                    if(isAnonymous.value) {
+                    if (isAnonymous.value) {
                         // 익명이면 모든 프레임의 이름은 '시간표1'
                         tmp.put(semester.toSemesterModel(), listOf(TimetableFrame(0, "시간표1", isMain = true)))
                     } else {
@@ -113,10 +121,13 @@ class SemesterViewModel @Inject constructor(
         }
     }
 
-    fun updateIntentData(isAnonymous: Boolean) {
+    fun updateIntentData(isAnonymous: Boolean, timetableFrameId: Int, semester: String, frameName: String) {
         viewModelScope.launch {
             _isAnonymous.value = isAnonymous
-            _timetableSemester.value =
+            _currentTimetableId.value = timetableFrameId
+            _originalTimetableId.value = timetableFrameId
+            _currentTimetableSemester.value = semester
+            _currentTimetableName.value = frameName
         }
     }
 
@@ -202,6 +213,14 @@ class SemesterViewModel @Inject constructor(
                     }
                 }
             }
+
+            // 시간표에서 진입한 학기가 삭제된 경우
+            if (!userSemesters.value.contains(_currentTimetableSemester.value.toSemesterModel())) {
+                Timber.d("userSemesters: ${userSemesters.value}")
+                Timber.d("userTimetableFrames: ${userTimetableFrames.value}")
+                // 가장 최근 학기의 기본 시간표로 설정
+                updateCurrentTimetableDataToLatest()
+            }
         }
     }
 
@@ -216,6 +235,12 @@ class SemesterViewModel @Inject constructor(
                 dialogUiState.value.editedSemester?.let {
                     refreshSemesterTimetableFrames(it)
                 }
+
+                // 시간표에 보여지고 있는 프레임인 경우, 같이 이름 변경
+                if (timetableFrame.id == currentTimetableId.value) {
+                    _currentTimetableName.value = timetableFrame.timetableName
+                }
+
             }.onFailure {
                 Timber.d("시간표 프레임 수정 실패")
             }
@@ -244,6 +269,25 @@ class SemesterViewModel @Inject constructor(
                 ).onSuccess {
                     dialogUiState.value.editedSemester?.let {
                         refreshSemesterTimetableFrames(it)
+                    }
+
+                    // 시간표에서 선택한 프레임이 삭제된 경우..
+                    if (currentTimetableId.value == target.id) {
+                        // 학기가 함께 삭제된 경우 가장 최근 학기의 기본 시간표로 이동
+                        if (!userSemesters.value.contains(dialogUiState.value.editedSemester)) {
+                            updateCurrentTimetableDataToLatest()
+                            return@onSuccess
+                        }
+
+                        // 학기가 함께 삭제되지 않는 경우엔, 삭제된 시간표 대신 그 학기의 기본 시간표로 이동
+                        // 학기를 찾을 수 없으면, 가장 최근 시간표로 이동
+                        userTimetableFrames.value
+                            .get(currentTimetableSemester.value.toSemesterModel())
+                            ?.find { it.isMain}
+                            ?.let {
+                                _currentTimetableId.value = it.id
+                                _currentTimetableName.value = it.timetableName
+                            } ?: updateCurrentTimetableDataToLatest()
                     }
                 }.onFailure {
                     Timber.d("시간표 프레임 삭제 실패")
@@ -321,10 +365,23 @@ class SemesterViewModel @Inject constructor(
                                 }
                             )
                         ).onSuccess {
+                            // _originalTimetableId 랑 editedTimetableFrame.id 이랑 같다면
+                            // 시간표에 보여지고 있는 시간표가 삭제 후 복구된 경우
+                            if (_originalTimetableId.value == dialogUiState.value.editedTimetableFrame!!.id) {
 
+                                // 복구된 frame 으로 변경
+                                _currentTimetableId.value = targetFrame.id
+                                _originalTimetableId.value = targetFrame.id
+                                _currentTimetableName.value = targetFrame.timetableName
+
+                                // 학기도 복구된 경우 변경
+                                if(isRestoredSemester) {
+                                    _currentTimetableSemester.value = uiState.editedSemester.toSemester()
+                                }
+                            }
                         }.onFailure {
                             if (isRestoredSemester) {
-                                deleteSemesterUseCase(uiState.editedSemester!!.toSemester())
+                                deleteSemesterUseCase(uiState.editedSemester.toSemester())
                             } else {
                                 deleteTimetableFrameUseCase(targetFrame.id)
                             }
@@ -376,6 +433,27 @@ class SemesterViewModel @Inject constructor(
                     }
                 }
             }
+    }
+
+    /**
+     * 가장 최근 학기의 기본 시간표로 전부 갱신
+     */
+    private fun updateCurrentTimetableDataToLatest() {
+        if(userSemesters.value.isEmpty() || userTimetableFrames.value.isEmpty()) {
+            // 학기가 비어있는 상태
+            _currentTimetableSemester.value = ""
+            _currentTimetableName.value = ""
+            _currentTimetableId.value = -1
+        }
+        userSemesters.value.first().let {
+            _currentTimetableSemester.value = it.toSemester()
+            userTimetableFrames.value.get(it)?.find { it.isMain }.let {
+                it!!
+            }.let {
+                _currentTimetableName.value = it.timetableName
+                _currentTimetableId.value = it.id
+            }
+        }
     }
 }
 
