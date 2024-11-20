@@ -15,6 +15,10 @@ class NotificationRepositoryImpl @Inject constructor(
         return notificationRemoteDataSource.getPermissionInfo().toNotificationPermissionInfo()
     }
 
+    override suspend fun postReviewPromptNotification(storeId: Int) {
+        notificationRemoteDataSource.postReviewPromptNotification(storeId)
+    }
+
     override suspend fun updateSubscription(type: SubscribesType) {
         notificationRemoteDataSource.updateSubscription(type.toString())
     }

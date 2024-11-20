@@ -452,6 +452,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             builder.setMessage(message)
 
             builder.setPositiveButton(getString(R.string.store_dialog_call)) { _, _ ->
+                viewModel.postReviewPromptNotification(viewModel.store.value!!.uid)
                 callPermission.launch(Manifest.permission.CALL_PHONE)
             }
             builder.setNegativeButton(getString(R.string.store_dialog_call_cancel)) { dialog, _ ->
