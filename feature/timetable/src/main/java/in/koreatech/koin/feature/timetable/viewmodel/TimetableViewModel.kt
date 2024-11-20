@@ -163,6 +163,11 @@ class TimetableViewModel @Inject constructor(
                                 currentSemester = semester,
                                 timetableLectures = timetableLectures,
                                 bottomSheetCollapse = true,
+                                selectedLecture = null,
+                                etcClickedTimetableEvents = emptyList(),
+                                clickedTimetableEvents = emptyList(),
+                                bottomSheetUI = BottomSheetUI.DEFAULT,
+                                bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
                                 loading = false
                             )
                         }.onFailure {
