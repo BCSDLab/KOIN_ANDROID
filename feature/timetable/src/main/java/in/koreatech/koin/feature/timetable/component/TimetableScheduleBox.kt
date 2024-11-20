@@ -37,7 +37,7 @@ fun TimetableScheduleBox(
             .padding(5.dp)
     ) {
         Text(
-            text = if (currentSemester.isEmpty()) "" else currentSemester.toSemesterTitle(
+            text = if (currentSemester.isEmpty()) "학기 추가하기" else currentSemester.toSemesterTitle(
                 timetableName
             ),
             style = KoinTheme.typography.regular14,
