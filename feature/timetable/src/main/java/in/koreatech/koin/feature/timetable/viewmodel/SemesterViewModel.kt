@@ -446,10 +446,11 @@ class SemesterViewModel @Inject constructor(
         }
 
         // 학기와 시간표가 비어있지 않은 경우
-        userSemesters.value.first().let {
-            _currentTimetableSemester.value = it.toSemester()
-            userTimetableFrames.value.get(it)?.find { it.isMain }.let {
-                it!!
+        userTimetableFrames.value.entries.first().let { entry ->
+            _currentTimetableSemester.value = entry.key.toSemester()
+            entry.value.find { it.isMain }.let {
+                Timber.d("메인이 없는 시간표가 존재함!!")
+                it ?: entry.value.first()
             }.let {
                 _currentTimetableName.value = it.timetableName
                 _currentTimetableId.value = it.id
