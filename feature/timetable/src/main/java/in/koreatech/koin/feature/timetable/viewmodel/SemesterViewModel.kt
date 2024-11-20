@@ -215,7 +215,7 @@ class SemesterViewModel @Inject constructor(
             }
 
             // 시간표에서 진입한 학기가 삭제된 경우
-            if (!userSemesters.value.contains(_currentTimetableSemester.value.toSemesterModel())) {
+            if (_currentTimetableSemester.value.isEmpty() || !userSemesters.value.contains(_currentTimetableSemester.value.toSemesterModel())) {
                 Timber.d("userSemesters: ${userSemesters.value}")
                 Timber.d("userTimetableFrames: ${userTimetableFrames.value}")
                 // 가장 최근 학기의 기본 시간표로 설정
