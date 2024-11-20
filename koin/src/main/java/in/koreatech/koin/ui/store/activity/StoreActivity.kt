@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -31,6 +30,7 @@ import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
+import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -62,6 +62,8 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
     @Inject
     lateinit var onboardingManager: OnboardingManager
+
+    private var eventListSize by Delegates.notNull<Int>()
 
     fun interface StoreCategoryFactory {
         fun getCurrentCategory(): String
@@ -103,11 +105,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 it.shopName
             )
             storeDetailContract.launch(Triple(it.shopId, viewModel.category.value?.name, false))
-        }
-
-        setOnArrowClickListener {
-            binding.eventViewPager.setCurrentItem(it, true)
-            startAutoScroll()
         }
     }
 
@@ -223,6 +220,19 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             v.performClick()
         }
 
+        binding.leftEventArrow.setOnClickListener {
+            val currentPosition = binding.eventViewPager.currentItem
+            val previousPosition = if (currentPosition - 1 >= 1 ) currentPosition - 1 else eventListSize - 2
+            binding.eventViewPager.setCurrentItem(previousPosition, true)
+            startAutoScroll()
+        }
+
+        binding.rightEventArrow.setOnClickListener {
+            val currentPosition = binding.eventViewPager.currentItem
+            val nextPosition = if(currentPosition + 1 <= eventListSize - 2) currentPosition + 1 else 1
+            binding.eventViewPager.setCurrentItem(nextPosition, true)
+            startAutoScroll()
+        }
 
         binding.storeRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@StoreActivity)
@@ -239,8 +249,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
 
         binding.eventViewPager.apply {
-
-            currentItem = Int.MAX_VALUE / 2
             adapter = storeEventPagerAdapter
 
             addItemDecoration(
@@ -250,6 +258,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 )
             )
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+
                 override fun onPageScrolled(
                     position: Int,
                     positionOffset: Float,
@@ -262,7 +271,17 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {
-                    if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+                    if(state == ViewPager2.SCROLL_STATE_IDLE){
+                        if(binding.eventViewPager.currentItem == eventListSize - 1){
+                            binding.eventViewPager.setCurrentItem(1, false)
+                            binding.eventPageCounterTextView.text = "1/${eventListSize - 2}"
+                        }
+
+                        if(binding.eventViewPager.currentItem == 0){
+                            binding.eventViewPager.setCurrentItem(eventListSize - 2, false)
+                            binding.eventPageCounterTextView.text = "${eventListSize - 2}/${eventListSize - 2}"
+                        }
+                        binding.eventPageCounterTextView.text = "${binding.eventViewPager.currentItem}/${eventListSize - 2}"
                         startAutoScroll()
                     }
                 }
@@ -398,9 +417,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
     private val runnable = object : Runnable {
         override fun run() {
             var currentPosition = binding.eventViewPager.currentItem
-            val itemCount = binding.eventViewPager.adapter?.itemCount ?: 0
-
-            currentPosition = if (currentPosition >= itemCount - 1) 0 else currentPosition + 1
+            currentPosition = if (currentPosition >= eventListSize - 1) 0 else currentPosition + 1
 
             binding.eventViewPager.setCurrentItem(currentPosition, true)
             viewPagerHandler.postDelayed(this, viewPagerDelayTime)
@@ -420,7 +437,18 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         observeLiveData(viewModel.storeEvents) {
-            storeEventPagerAdapter.submitList(it)
+            if (!it.isNullOrEmpty()) {
+                val augmentedList = mutableListOf<StoreEvent>().apply {
+                    add(it.last())
+                    addAll(it)
+                    add(it.first())
+                }
+                binding.eventPageCounterTextView.text = "1/${augmentedList.size - 2}"
+                eventListSize = augmentedList.size
+                storeEventPagerAdapter.submitList(augmentedList)
+
+                binding.eventViewPager.setCurrentItem(1, false)
+            }
             binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
 

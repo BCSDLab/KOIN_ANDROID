@@ -80,9 +80,6 @@ class StoreDetailViewModel @Inject constructor(
     fun postReviewPromptNotification(storeId: Int){
         viewModelScope.launch {
             reviewPromptUscCase(storeId)
-                .onSuccess {
-
-                }
                 .onFailure {
                     ToastUtil.getInstance().makeShort(it.message)
                 }
