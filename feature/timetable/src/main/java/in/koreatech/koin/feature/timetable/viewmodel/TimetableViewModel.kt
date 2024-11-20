@@ -170,7 +170,10 @@ class TimetableViewModel @Inject constructor(
                         }
                 }
                 false -> {
-                    if (state.value.frameId == frameId) return@launch
+                    if (state.value.frameId == frameId) {
+                        updateLoading(false)
+                        return@launch
+                    }
                     timetableRepository.getTimetableLectures(frameId)
                         .onSuccess { timetableLectures ->
                             _state.value = _state.value.copy(
