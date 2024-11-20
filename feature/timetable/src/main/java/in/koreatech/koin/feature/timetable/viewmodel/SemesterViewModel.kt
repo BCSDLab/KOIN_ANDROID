@@ -439,12 +439,13 @@ class SemesterViewModel @Inject constructor(
      * 가장 최근 학기의 기본 시간표로 전부 갱신
      */
     private fun updateCurrentTimetableDataToLatest() {
+        // 학기가 비어있는 경우 기본 값 전달
         if(userSemesters.value.isEmpty() || userTimetableFrames.value.isEmpty()) {
-            // 학기가 비어있는 상태
-            _currentTimetableSemester.value = ""
-            _currentTimetableName.value = ""
-            _currentTimetableId.value = -1
+            updateCurrentTimetableDataToEmpty()
+            return
         }
+
+        // 학기와 시간표가 비어있지 않은 경우
         userSemesters.value.first().let {
             _currentTimetableSemester.value = it.toSemester()
             userTimetableFrames.value.get(it)?.find { it.isMain }.let {
@@ -454,6 +455,12 @@ class SemesterViewModel @Inject constructor(
                 _currentTimetableId.value = it.id
             }
         }
+    }
+
+    private fun updateCurrentTimetableDataToEmpty() {
+        _currentTimetableSemester.value = ""
+        _currentTimetableName.value = ""
+        _currentTimetableId.value = -1
     }
 }
 
