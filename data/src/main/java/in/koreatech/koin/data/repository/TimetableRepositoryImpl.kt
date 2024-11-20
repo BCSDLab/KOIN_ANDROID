@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
+import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
@@ -20,6 +21,7 @@ import `in`.koreatech.koin.domain.repository.TimetableRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class TimetableRepositoryImpl @Inject constructor(
@@ -58,8 +60,9 @@ class TimetableRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): TimetableLectures =
+    override suspend fun putTimetableLectures(lectures: TimetableLecturesQuery): Result<TimetableLectures> = runCatching {
         timetableRemoteDataSource.putTimetableLectures(lectures.toTimetableLecturesQueryRequest()).toTimetableLectures()
+    }
 
     override suspend fun putTimetableLectures(key: String, value: TimetableLectures): Result<TimetableLectures> = runCatching {
         timetableDataStore.putString(key, gson.toJson(value))
@@ -102,6 +105,9 @@ class TimetableRepositoryImpl @Inject constructor(
                 timetableName = frame.timetableName
             )
         ).toTimetableFrameResponse()
+    }.recoverCatching {
+        if(it is HttpException) throw Exception(it.getErrorResponse().message ?: "")
+        else throw it
     }
 
 

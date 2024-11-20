@@ -2,22 +2,33 @@ package `in`.koreatech.koin.ui.timetablev2
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
+import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityTimetableSemesterBinding
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
+import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
 import `in`.koreatech.koin.feature.timetable.view.SemesterScreen
 import `in`.koreatech.koin.feature.timetable.view.dialog.DeleteSemesterDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditSemesterDialogImpl
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditTimetableFrameDialog
+import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.SemesterViewModel
 import timber.log.Timber
 
@@ -40,10 +51,12 @@ class TimetableSemesterActivity : ActivityBase() {
         binding.timetableListComposeView.setContent {
             KoinTheme {
                 val dialogUiState by viewModel.dialogUiState.collectAsStateWithLifecycle()
-                val isAnonymous by viewModel.isAnonymous.collectAsStateWithLifecycle()
-                val userTimetables by viewModel.userTimetableFrames2.collectAsStateWithLifecycle()
+                val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle()
+                val snackBarHost = remember { SnackbarHostState() }
 
-                val userSemesters by viewModel.userSemesters2.collectAsStateWithLifecycle()
+                val isAnonymous by viewModel.isAnonymous.collectAsStateWithLifecycle()
+                val userTimetables by viewModel.userTimetableFrames.collectAsStateWithLifecycle()
+                val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
                 val years by viewModel.years.collectAsStateWithLifecycle()
 
                 if (dialogUiState.isEditSemesterDialogVisible) {
@@ -52,16 +65,10 @@ class TimetableSemesterActivity : ActivityBase() {
                         userSemesters = userSemesters,
                         onConfirm = { selectedSemesters ->
                             viewModel.updateSelectedSemesters(selectedSemesters)
-                            var isLectureExist = false
-                            selectedSemesters.forEach {
-                                // TODO::hyeok 강의 유무 확인해서 띄우기
-                                if(userTimetables.contains(it) && userTimetables[it]?.isEmpty() == true)
-                                    isLectureExist = true
-                            }
-
-                            if(isLectureExist) {
+                            if (selectedSemesters.any { it in userSemesters })
                                 viewModel.updateDeleteSemesterDialogVisible(true)
-                            } else {
+                            else {
+                                viewModel.updateEditSemesterDialogVisible(false)
                                 viewModel.updateUserSemesters()
                             }
                         },
@@ -79,6 +86,7 @@ class TimetableSemesterActivity : ActivityBase() {
                         onDeleteFrame = {
                             viewModel.deleteTimetableFrame()
                             viewModel.updateEditTimetableDialogVisibility(false)
+                            viewModel.updateSideEffect(SemesterSideEffect.SnackBar("${dialogUiState.editedTimetableFrame?.timetableName}가 삭제되었어요"))
                         }
                     )
                 }
@@ -92,7 +100,18 @@ class TimetableSemesterActivity : ActivityBase() {
                             viewModel.updateUserSemesters()
                             viewModel.updateDeleteSemesterDialogVisible(false)
                             viewModel.updateEditSemesterDialogVisible(false)
-
+                        }
+                    )
+                }
+                if (dialogUiState.isRequestLoginDialogVisible) {
+                    RequestLoginDialog(
+                        onConfirm = {
+                            // TODO::Hyeok 로그인 화면으로 이동
+                            Timber.d("로그인 화면으로 이동")
+                            viewModel.updateRequestLoginDialogVisible(false)
+                        },
+                        onDismiss = {
+                            viewModel.updateRequestLoginDialogVisible(false)
                         }
                     )
                 }
@@ -101,17 +120,76 @@ class TimetableSemesterActivity : ActivityBase() {
                     userTimetables = userTimetables,
                     isAnonymous = isAnonymous,
                     onClickTimetable = ::finishActivityWithResult,
-                    onClickAddTimetable = viewModel::onClickAddTimetable,
-                    onClickEditTimetable = viewModel::onClickEditTimetable
+                    onClickAddTimetable = {
+                        if (viewModel.isAnonymous.value) {
+                            viewModel.updateRequestLoginDialogVisible(true)
+                        } else {
+                            viewModel.onClickAddTimetable(it)
+                        }
+                    },
+                    onClickEditTimetable = { semester, frame ->
+                        if (viewModel.isAnonymous.value) {
+                            viewModel.updateRequestLoginDialogVisible(true)
+                        } else {
+                            viewModel.onClickEditTimetable(
+                                semester,
+                                frame
+                            )
+                        }
+                    },
+                    onClickLoginText = {
+                        viewModel.updateRequestLoginDialogVisible(true)
+                    }
                 )
 
+                CustomSnackBarHost(
+                    hotState = snackBarHost,
+                    radius = 6.dp,
+                    messageTextStyle = KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.neutral0
+                    ),
+                    actionLabelTextStyle = KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.sub500
+                    ),
+                    background = KoinTheme.colors.primary700,
+                    innerPaddingValues = PaddingValues(horizontal = 16.dp, vertical = 20.dp),
+                    onAction = {
+                        viewModel.restoreTimetableFrame()
+                    }
+                )
+
+                LaunchedEffect(sideEffect) {
+                    when (val effect = sideEffect) {
+                        is SemesterSideEffect.SnackBar -> {
+                            snackBarHost.showSnackBarWithDismiss(
+                                message = effect.message,
+                                actionLabel = "되돌리기",
+                                duration = SnackbarDuration.Short
+                            )
+                            viewModel.updateSideEffect(SemesterSideEffect.Nothing)
+                        }
+
+                        is SemesterSideEffect.Toast -> {
+                            ToastUtil.getInstance().makeShort(effect.message)
+                            viewModel.updateSideEffect(SemesterSideEffect.Nothing)
+                        }
+
+                        is SemesterSideEffect.Nothing -> Unit
+                    }
+                }
             }
         }
 
         binding.timetableListAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
-                AppBarBase.getRightButtonId() -> viewModel.updateEditSemesterDialogVisible(true)
+                AppBarBase.getRightButtonId() -> {
+                    if (viewModel.isAnonymous.value) {
+                        viewModel.updateRequestLoginDialogVisible(true)
+                    } else {
+                        viewModel.updateEditSemesterDialogVisible(true)
+                    }
+                }
             }
         }
     }
@@ -124,13 +202,14 @@ class TimetableSemesterActivity : ActivityBase() {
     }
 
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
-        intent?.putExtra(
-            BUNDLE_EXTRA_KEY,
-            bundleOf(
-                SEMESTER to semester.toSemester(),
-                TIMETABLE_FRAME_ID to timetableFrame.id
-            )
-        )
+        bundleOf().apply {
+            putString(SEMESTER, semester.toSemester())
+            putString(TIMETABLE_FRAME_NAME, timetableFrame.timetableName)
+            if (!viewModel.isAnonymous.value) {
+                putInt(TIMETABLE_FRAME_ID, timetableFrame.id)
+            }
+        }
+
         setResult(RESULT_OK, intent)
         finish()
     }
@@ -140,5 +219,6 @@ class TimetableSemesterActivity : ActivityBase() {
         const val BUNDLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
         const val SEMESTER = "semester"
         const val TIMETABLE_FRAME_ID = "timetableFrameId"
+        const val TIMETABLE_FRAME_NAME = "timetableFrameName"
     }
 }

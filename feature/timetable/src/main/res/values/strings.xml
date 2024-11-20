@@ -35,9 +35,9 @@
     <string name="delete_schedule_confirmation">삭제하기</string>
 
     <string-array name="delete_semester_title">
-        <item>시간표가 작성되어 있는 학기가있어요. 해당 학기를 제외할 경우</item>
-        <item>" 학기 내 시간표도 함께 삭제"</item>
-        <item>돼요.</item>
+        <item>시간표가 작성되어 있는 학기를 제외할 경우</item>
+        <item>" 학기 내 시간표도 함께 "</item>
+        <item>삭제돼요.</item>
     </string-array>
     <string name="delete_semester_confirmation">삭제하기</string>
 

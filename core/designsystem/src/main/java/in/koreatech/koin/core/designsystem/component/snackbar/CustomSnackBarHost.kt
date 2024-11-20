@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,8 @@ fun CustomSnackBarHost(
     background: Color = Color.Black,
     alignment: Alignment = Alignment.BottomCenter,
     paddingValues: PaddingValues = PaddingValues(bottom = 20.dp, start = 10.dp, end = 10.dp),
-    innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp)
+    innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp),
+    onAction: (() -> Unit)? = null
 ) {
     Box(
         modifier = modifier
@@ -60,9 +62,12 @@ fun CustomSnackBarHost(
                 messageTextStyle = messageTextStyle,
                 actionLabelTextStyle = actionLabelTextStyle,
                 innerPaddingValues = innerPaddingValues,
-                onAction = { snackbarData.dismiss() }
             )
         }
+                onAction?.invoke()
+                snackbarData.dismiss()
+            onAction = {
+            }
     }
 }
 
@@ -107,6 +112,16 @@ private fun SnackBarContent(
                         .weight(0.1f)
                         .noRippleClickable { onAction() }
                 )
+                Spacer(modifier = Modifier.weight(0.05f))
+                if (actionLabelText.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.weight(0.2f).noRippleClickable { onAction() },
+                        text = actionLabelText,
+                        style = actionLabelTextStyle,
+                        textAlign = TextAlign.End
+                    )
+                }
+
             }
 
         }
@@ -138,5 +153,15 @@ private fun SnackBarContentPreview() {
     SnackBarContent(
         messageText = "스낵바 메시지",
         actionLabelText = "닫기",
+    )
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun SnackBarContentPreview2() {
+    SnackBarContent(
+        messageText = "스낵바 메시지",
+        actionLabelText = "되돌리기",
+        paddingValues = PaddingValues(bottom = 0.dp, start = 10.dp, end = 10.dp),
     )
 }
