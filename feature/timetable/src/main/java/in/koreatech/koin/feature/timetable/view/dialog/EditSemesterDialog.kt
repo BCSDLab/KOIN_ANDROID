@@ -44,8 +44,7 @@ import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.model.SemesterType
 import java.time.LocalDate
 
-// TODO::hyeok minsdk 올라가면 제거
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun EditSemesterDialogImpl(
     years: List<Int>,
@@ -59,7 +58,6 @@ fun EditSemesterDialogImpl(
 
     var isShowingSelectYearDialog by remember { mutableStateOf(false) }
 
-    // TODO::hyeok 연도 눌렀을 때 깜빡거림
     Box(
         modifier = modifier
     ) {
