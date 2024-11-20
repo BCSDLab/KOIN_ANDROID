@@ -16,6 +16,7 @@ import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import kotlinx.coroutines.flow.Flow
@@ -94,6 +95,21 @@ class TimetableRepositoryImpl @Inject constructor(
         timetableRemoteDataSource.postTimetableLectures(LecturesQueryRequest(
             timetableFrameId = frameId,
             timetableLecture = lectures.map { it.toCustomLectureQueryRequest() }
+        )).toTimetableLectures()
+    }
+
+    override suspend fun postTimetableBasicLectures(frameId: Int, lectures: List<TimetableLecture>): Result<TimetableLectures> = runCatching {
+        val queryLectures = lectures.map {
+            if (it.lectureId == 0) {
+                it.toCustomLectureQueryRequest()
+            } else {
+                it.toLectureQueryRequest()
+            }
+        }
+
+        timetableRemoteDataSource.postTimetableLectures(LecturesQueryRequest(
+            timetableFrameId = frameId,
+            timetableLecture = queryLectures
         )).toTimetableLectures()
     }
 

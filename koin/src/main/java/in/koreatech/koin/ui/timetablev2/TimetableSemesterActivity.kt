@@ -32,6 +32,9 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.EditSemesterDialogImpl
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditTimetableFrameDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.SemesterViewModel
+import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.BUNDLE_LOGIN_EXTRA_KEY
+import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.NAV_TIMETABLE
 import timber.log.Timber
 
 
@@ -130,8 +133,7 @@ class TimetableSemesterActivity : ActivityBase() {
                 if (dialogUiState.isRequestLoginDialogVisible) {
                     RequestLoginDialog(
                         onConfirm = {
-                            // TODO::Hyeok 로그인 화면으로 이동
-                            Timber.d("로그인 화면으로 이동")
+                            startToLoginActivity()
                             viewModel.updateRequestLoginDialogVisible(false)
                         },
                         onDismiss = {
@@ -226,6 +228,13 @@ class TimetableSemesterActivity : ActivityBase() {
         intent.getBundleExtra(TimetableActivity.BUNDLE_EXTRA_KEY)?.let {
             callback(it)
         } ?: return
+    }
+
+    private fun startToLoginActivity() {
+        Intent(this, LoginActivity::class.java).apply {
+            putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
+        }.let(::startActivity)
+        finish()
     }
 
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
