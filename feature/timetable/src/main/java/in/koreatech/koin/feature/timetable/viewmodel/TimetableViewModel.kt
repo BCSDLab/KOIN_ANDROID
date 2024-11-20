@@ -181,6 +181,11 @@ class TimetableViewModel @Inject constructor(
                             isAnonymous = state.value.isAnonymous,
                             semesters = semesters,
                             bottomSheetCollapse = true,
+                            selectedLecture = null,
+                            etcClickedTimetableEvents = emptyList(),
+                            clickedTimetableEvents = emptyList(),
+                            bottomSheetUI = BottomSheetUI.DEFAULT,
+                            bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
                             loading = false
                         )
                         return@launch
@@ -194,8 +199,13 @@ class TimetableViewModel @Inject constructor(
                                 timetableEvents = timetableLectures.getTimetableEvents(),
                                 currentSemester = semester,
                                 semesters = semesters,
+                                selectedLecture = null,
+                                etcClickedTimetableEvents = emptyList(),
+                                clickedTimetableEvents = emptyList(),
                                 bottomSheetCollapse = true,
                                 timetableLectures = timetableLectures,
+                                bottomSheetUI = BottomSheetUI.DEFAULT,
+                                bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
                                 loading = false
                             )
                         }.onFailure {
