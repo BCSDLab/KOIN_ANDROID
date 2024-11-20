@@ -27,11 +27,12 @@ fun TextCheckbox(
     textStyle: TextStyle,
     isChecked: Boolean,
     onCheckChanged: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Row(
         modifier = modifier.noRippleClickable {
-            onCheckChanged(!isChecked)
+            if(enabled) onCheckChanged(!isChecked)
         },
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -40,13 +41,16 @@ fun TextCheckbox(
             TriStateCheckbox(
                 state = ToggleableState(isChecked),
                 onClick = null,
+                enabled = enabled,
                 colors = CheckboxDefaults.colors().copy(
                     checkedBoxColor = KoinTheme.colors.primary500,
                     checkedCheckmarkColor = KoinTheme.colors.neutral0,
                     checkedBorderColor = KoinTheme.colors.primary500,
                     uncheckedBoxColor = KoinTheme.colors.neutral0,
                     uncheckedCheckmarkColor = KoinTheme.colors.neutral0,
-                    uncheckedBorderColor = KoinTheme.colors.neutral400
+                    uncheckedBorderColor = KoinTheme.colors.neutral400,
+                    disabledCheckedBoxColor = KoinTheme.colors.primary300,
+                    disabledBorderColor = KoinTheme.colors.primary300,
                 )
             )
         }
@@ -81,6 +85,20 @@ private fun TextCheckboxUncheckedPreview() {
             textStyle = KoinTheme.typography.regular15,
             isChecked = false,
             onCheckChanged = {}
+        )
+    }
+}
+@Preview()
+@Composable
+private fun TextCheckboxDisabledPreview() {
+    KoinTheme {
+        TextCheckbox(
+            modifier = Modifier.background(KoinTheme.colors.neutral0),
+            text = "체크박스",
+            textStyle = KoinTheme.typography.regular15,
+            isChecked = true,
+            onCheckChanged = {},
+            enabled = false
         )
     }
 }

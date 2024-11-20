@@ -316,8 +316,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Article -> goToArticleActivity()
 
                 MenuState.Contact -> {
-                    startActivity(Intent(this@KoinNavigationDrawerActivity, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
-//                    goToContactWebActivity()
+                    goToContactWebActivity()
                 }
 
                 else -> Unit

@@ -60,6 +60,7 @@ fun EditTimetableFrameDialog(
         modifier = modifier,
         timetableName = timetableName,
         isMain = isMain,
+        isCheckboxEnabled = timetableFrameState?.let{ !it.isMain } ?: true,
         onDismiss = onDismiss,
         onConfirm = {
             timetableFrameState?.let {
@@ -86,6 +87,7 @@ fun EditTimetableFrameDialog(
             timetableName = timetableName,
             onDismiss = { showingDeleteDialog = false },
             onConfirm = {
+                showingDeleteDialog = false
                 timetableFrameState?.let {
                     onDeleteFrame()
                 }
@@ -99,6 +101,7 @@ fun EditTimetableFrameDialog(
 private fun EditTimetableFrameDialog(
     timetableName: String,
     isMain: Boolean,
+    isCheckboxEnabled: Boolean,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
     onClickDelete: () -> Unit,
@@ -167,6 +170,7 @@ private fun EditTimetableFrameDialog(
                     text = stringResource(id = R.string.edit_titletable_frame_main),
                     textStyle = KoinTheme.typography.medium14,
                     isChecked = isMain,
+                    enabled = isCheckboxEnabled,
                     onCheckChanged = onCheckChanged
                 )
                 Row(
