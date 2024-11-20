@@ -41,12 +41,11 @@ class TimetableSemesterActivity : ActivityBase() {
     private val binding by dataBinding<ActivityTimetableSemesterBinding>()
     private val viewModel by viewModels<SemesterViewModel>()
 
-//    val onBackPressedCallback = object : OnBackPressedCallback(true){
-//        override fun handleOnBackPressed() {
-//            // handle event
-//            finishActivityWithResult(viewModel.semesters.value.to)
-//        }
-//    }
+    val onBackPressedCallback = object : OnBackPressedCallback(true){
+        override fun handleOnBackPressed() {
+            finishActivityWithResult()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +53,12 @@ class TimetableSemesterActivity : ActivityBase() {
         getIntentBundle { bundle ->
             val isAnonymous = bundle.getBoolean(TimetableActivity.IS_ANONYMOUS, false)
             val semester = bundle.getString(TimetableActivity.SEMESTER).orEmpty()
-            viewModel.updateIntentData(isAnonymous)
+            val frameId = bundle.getInt(TimetableActivity.FRAME_ID)
+            val frameName = bundle.getString(TimetableActivity.FRAME_NAME).orEmpty()
+            viewModel.updateIntentData(isAnonymous, frameId, semester, frameName)
         }
         viewModel.initData()
+        onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
         binding.timetableListComposeView.setContent {
             KoinTheme {
@@ -192,7 +194,9 @@ class TimetableSemesterActivity : ActivityBase() {
 
         binding.timetableListAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> {
+                    onBackPressedDispatcher.onBackPressed()
+                }
                 AppBarBase.getRightButtonId() -> {
                     if (viewModel.isAnonymous.value) {
                         viewModel.updateRequestLoginDialogVisible(true)
@@ -229,6 +233,29 @@ class TimetableSemesterActivity : ActivityBase() {
 
         setResult(RESULT_OK, intent)
         finish()
+    }
+
+    private fun finishActivityWithResult() {
+        Timber.d("semester: ${viewModel.currentTimetableSemester.value}")
+        Timber.d("Timetable frame id: ${viewModel.currentTimetableId.value}")
+        Timber.d("timetable frame name: ${viewModel.currentTimetableName.value}")
+//        val intent = Intent().apply{
+//            val bundle = if (!viewModel.isAnonymous.value) {
+//                bundleOf(
+//                    SEMESTER to viewModel.currentTimetableSemester.value,
+//                    TIMETABLE_FRAME_ID to viewModel.currentTimetableId.value,
+//                    TIMETABLE_FRAME_NAME to viewModel.currentTimetableName.value,
+//                )
+//            } else {
+//                bundleOf(
+//                    SEMESTER to viewModel.currentTimetableSemester.value
+//                )
+//            }
+//            putExtra(BUNDLE_EXTRA_KEY, bundle)
+//        }
+//
+//        setResult(RESULT_OK, intent)
+//        finish()
     }
 
     companion object {
