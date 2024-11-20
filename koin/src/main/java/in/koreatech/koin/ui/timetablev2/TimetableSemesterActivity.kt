@@ -18,11 +18,12 @@ import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWithDismiss
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityTimetableSemesterBinding
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
-import `in`.koreatech.koin.feature.timetable.state.TimetableSideEffect
+import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
 import `in`.koreatech.koin.feature.timetable.view.SemesterScreen
 import `in`.koreatech.koin.feature.timetable.view.dialog.DeleteSemesterDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditSemesterDialogImpl
@@ -85,7 +86,7 @@ class TimetableSemesterActivity : ActivityBase() {
                         onDeleteFrame = {
                             viewModel.deleteTimetableFrame()
                             viewModel.updateEditTimetableDialogVisibility(false)
-                            viewModel.updateSideEffect(TimetableSideEffect.SnackBar("${dialogUiState.editedTimetableFrame?.timetableName}가 삭제되었어요"))
+                            viewModel.updateSideEffect(SemesterSideEffect.SnackBar("${dialogUiState.editedTimetableFrame?.timetableName}가 삭제되었어요"))
                         }
                     )
                 }
@@ -159,16 +160,21 @@ class TimetableSemesterActivity : ActivityBase() {
 
                 LaunchedEffect(sideEffect) {
                     when (val effect = sideEffect) {
-                        is TimetableSideEffect.SnackBar -> {
+                        is SemesterSideEffect.SnackBar -> {
                             snackBarHost.showSnackBarWithDismiss(
                                 message = effect.message,
                                 actionLabel = "되돌리기",
                                 duration = SnackbarDuration.Short
                             )
-                            viewModel.updateSideEffect(TimetableSideEffect.Nothing)
+                            viewModel.updateSideEffect(SemesterSideEffect.Nothing)
                         }
 
-                        is TimetableSideEffect.Nothing -> Unit
+                        is SemesterSideEffect.Toast -> {
+                            ToastUtil.getInstance().makeShort(effect.message)
+                            viewModel.updateSideEffect(SemesterSideEffect.Nothing)
+                        }
+
+                        is SemesterSideEffect.Nothing -> Unit
                     }
                 }
             }
@@ -198,9 +204,9 @@ class TimetableSemesterActivity : ActivityBase() {
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
         bundleOf().apply {
             putString(SEMESTER, semester.toSemester())
+            putString(TIMETABLE_FRAME_NAME, timetableFrame.timetableName)
             if (!viewModel.isAnonymous.value) {
                 putInt(TIMETABLE_FRAME_ID, timetableFrame.id)
-                putString(TIMETABLE_FRAME_NAME, timetableFrame.timetableName)
             }
         }
 

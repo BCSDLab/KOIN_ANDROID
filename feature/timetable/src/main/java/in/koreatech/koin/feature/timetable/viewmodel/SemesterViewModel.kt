@@ -19,7 +19,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.UpdateTimetableFrameUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
-import `in`.koreatech.koin.feature.timetable.state.TimetableSideEffect
+import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.toSemesterModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,8 +53,8 @@ class SemesterViewModel @Inject constructor(
     private val _dialogUiState: MutableStateFlow<SemesterDialogUiState> = MutableStateFlow(SemesterDialogUiState())
     val dialogUiState: StateFlow<SemesterDialogUiState> = _dialogUiState.asStateFlow()
 
-    private val _sideEffect: MutableStateFlow<TimetableSideEffect> = MutableStateFlow(TimetableSideEffect.Nothing)
-    val sideEffect: StateFlow<TimetableSideEffect> = _sideEffect.asStateFlow()
+    private val _sideEffect: MutableStateFlow<SemesterSideEffect> = MutableStateFlow(SemesterSideEffect.Nothing)
+    val sideEffect: StateFlow<SemesterSideEffect> = _sideEffect.asStateFlow()
 
     private val _isAnonymous: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isAnonymous: StateFlow<Boolean> = _isAnonymous.asStateFlow()
@@ -135,7 +135,7 @@ class SemesterViewModel @Inject constructor(
         _dialogUiState.value = _dialogUiState.value.copy(selectedSemesters = semesterModels)
     }
 
-    fun updateSideEffect(sideEffect: TimetableSideEffect) {
+    fun updateSideEffect(sideEffect: SemesterSideEffect) {
         _sideEffect.value = sideEffect
     }
 
@@ -189,6 +189,10 @@ class SemesterViewModel @Inject constructor(
                         }
                         _userTimetableFrames.update {
                             (it + (semester to listOf(addedFrame))).toSortedMap()
+                        }
+                    }.onFailure {
+                        it.message?.let { errorMessage ->
+                            _sideEffect.value = SemesterSideEffect.Toast(errorMessage)
                         }
                     }
                 }
@@ -247,7 +251,7 @@ class SemesterViewModel @Inject constructor(
      * 학기의 마지막 시간표를 지웠으면 학기도 같이 사라지기 때문에, 새로 추가를 해야함
      */
     fun restoreTimetableFrame() {
-        if (!_isRestorePerformed)
+        if (!_isRestorePerformed) {
             _isRestorePerformed = true
             viewModelScope.launch {
                 delay(500L)
@@ -324,6 +328,7 @@ class SemesterViewModel @Inject constructor(
                     }
                 }
             }
+        }
     }
 
 
