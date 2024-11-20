@@ -170,15 +170,6 @@ class TimetableSemesterActivity : ActivityBase() {
 
                 CustomSnackBarHost(
                     hotState = snackBarHost,
-                    radius = 6.dp,
-                    messageTextStyle = KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.neutral0
-                    ),
-                    actionLabelTextStyle = KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.sub500
-                    ),
-                    background = KoinTheme.colors.primary700,
-                    innerPaddingValues = PaddingValues(horizontal = 16.dp, vertical = 20.dp),
                     onAction = {
                         viewModel.restoreTimetableFrame()
                     }
