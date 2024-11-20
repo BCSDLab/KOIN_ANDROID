@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLectureQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
+import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import `in`.koreatech.koin.domain.repository.TimetableRepository
@@ -348,22 +349,9 @@ class SemesterViewModel @Inject constructor(
 
                     // 학기 추가 or 프레임 추가가 정상적으로 동작한 경우 강의들 복구
                     targetFrame?.let { targetFrame ->
-                        timetableRepository.putTimetableLectures(
-                            TimetableLecturesQuery(
-                                timetableFrameId = targetFrame.id,
-                                timetableLecture = uiState.deletedTimetableLectures!!.timetable.map {
-                                    TimetableLectureQuery(
-                                        id = it.id,
-                                        lectureId = it.lectureId,
-                                        classTitle = it.classTitle,
-                                        classTime = it.classTime,
-                                        classPlace = it.classPlace,
-                                        professor = it.professor,
-                                        grades = it.grades,
-                                        memo = it.memo
-                                    )
-                                }
-                            )
+                        timetableRepository.postTimetableBasicLectures(
+                            frameId = targetFrame.id,
+                            lectures = uiState.deletedTimetableLectures!!.timetable
                         ).onSuccess {
                             // _originalTimetableId 랑 editedTimetableFrame.id 이랑 같다면
                             // 시간표에 보여지고 있는 시간표가 삭제 후 복구된 경우

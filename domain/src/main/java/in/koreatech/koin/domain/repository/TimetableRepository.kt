@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import kotlinx.coroutines.flow.Flow
 
@@ -23,6 +24,7 @@ interface TimetableRepository {
 
     suspend fun postTimetableLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures>
     suspend fun postTimetableCustomLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures>
+    suspend fun postTimetableBasicLectures(frameId: Int, lectures: List<TimetableLecture>): Result<TimetableLectures>
     suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame>
 
     suspend fun deleteTimetableFrame(frameId: Int): Result<Unit>
