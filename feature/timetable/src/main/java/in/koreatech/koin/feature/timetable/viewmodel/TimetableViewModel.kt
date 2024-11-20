@@ -149,16 +149,28 @@ class TimetableViewModel @Inject constructor(
         }
     }
 
-    fun getRefreshData(frameId: Int, semester: String, frameName: String) { // TODO : 시간표 제목도 보내주쇼..
-        if (state.value.frameId == frameId) return
+    fun getRefreshData(frameId: Int, semester: String, frameName: String) {
         viewModelScope.launch {
             updateLoading(true)
             _lectures.value = getLectures(semester)
             when (state.value.isAnonymous) {
                 true -> {
-
+                    timetableRepository.getTimetableLectures(semester)
+                        .onSuccess { timetableLectures ->
+                            _state.value = _state.value.copy(
+                                range = timetableLectures.formatTimeRange(),
+                                timetableEvents = timetableLectures.getTimetableEvents(),
+                                currentSemester = semester,
+                                timetableLectures = timetableLectures,
+                                loading = false
+                            )
+                        }.onFailure {
+                            updateLoading(false)
+                            Timber.e("getTimetableLectures Local Error Message : ${it.message}")
+                        }
                 }
                 false -> {
+                    if (state.value.frameId == frameId) return@launch
                     timetableRepository.getTimetableLectures(frameId)
                         .onSuccess { timetableLectures ->
                             _state.value = _state.value.copy(

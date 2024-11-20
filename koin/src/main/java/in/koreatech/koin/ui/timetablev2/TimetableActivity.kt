@@ -63,8 +63,10 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             if (it.resultCode == RESULT_OK) {
                 it.data?.getBundleExtra(TimetableSemesterActivity.BUNDLE_EXTRA_KEY)?.let {
                     val frameId = it.getInt(TimetableSemesterActivity.TIMETABLE_FRAME_ID)
-                    val semester = it.getString(TimetableSemesterActivity.SEMESTER)
-                    viewModel.getRefreshData(frameId, semester.orEmpty(), "")
+                    val semester = it.getString(TimetableSemesterActivity.SEMESTER).orEmpty()
+                    val frameName =
+                        it.getString(TimetableSemesterActivity.TIMETABLE_FRAME_NAME).orEmpty()
+                    viewModel.getRefreshData(frameId, semester, frameName)
                 }
             }
         }
@@ -102,7 +104,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             hideKeyboard(sheetState.isCollapsed)
 
             setAppbarEvent {
-                lectures.ifEmpty {
+                state.semesters.ifEmpty {
                     viewModel.updateSideEffect(TimetableSideEffect.SnackBar(getString(R.string.timetable_error_no_semester)))
                     return@setAppbarEvent
                 }
@@ -329,7 +331,13 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
     private fun startToTimetableSemesterActivity() {
         val intent = Intent(this, TimetableSemesterActivity::class.java).apply {
-            putExtra(BUNDLE_EXTRA_KEY, bundleOf(IS_ANONYMOUS to viewModel.state.value.isAnonymous))
+            putExtra(
+                BUNDLE_EXTRA_KEY, bundleOf(
+                    IS_ANONYMOUS to viewModel.state.value.isAnonymous,
+                    SEMESTER to viewModel.state.value.currentSemester,
+                    FRAME_ID to viewModel.state.value.frameId
+                )
+            )
         }
         registerTimetableSemesterActivityResult.launch(intent)
     }
@@ -372,5 +380,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         const val BUNDLE_LOGIN_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
         const val NAV_TIMETABLE = "timetable"
         const val IS_ANONYMOUS = "isAnonymous"
+        const val SEMESTER = "semester"
+        const val FRAME_ID = "frameId"
     }
 }

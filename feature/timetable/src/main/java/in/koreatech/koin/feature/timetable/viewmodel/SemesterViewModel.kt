@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,6 +56,9 @@ class SemesterViewModel @Inject constructor(
 
     private val _sideEffect: MutableStateFlow<SemesterSideEffect> = MutableStateFlow(SemesterSideEffect.Nothing)
     val sideEffect: StateFlow<SemesterSideEffect> = _sideEffect.asStateFlow()
+
+    private val _timetableSemester: MutableStateFlow<String> = MutableStateFlow("")
+    val timetableSemester: StateFlow<String> = _timetableSemester.asStateFlow()
 
     private val _isAnonymous: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isAnonymous: StateFlow<Boolean> = _isAnonymous.asStateFlow()
@@ -109,9 +113,10 @@ class SemesterViewModel @Inject constructor(
         }
     }
 
-    fun updateIsAnonymous(isAnonymous: Boolean) {
+    fun updateIntentData(isAnonymous: Boolean) {
         viewModelScope.launch {
             _isAnonymous.value = isAnonymous
+            _timetableSemester.value =
         }
     }
 
