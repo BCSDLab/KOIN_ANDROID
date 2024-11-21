@@ -54,6 +54,7 @@ import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
+import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -79,10 +80,16 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     lateinit var onboardingManager: OnboardingManager
 
     private val hotArticleAdapter = HotArticleAdapter(
-        onClick = {
+        onNotiClick = {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_keyword")
+            }
+            startActivity(intent)
+        },
+        onArticleClick = {
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data =
-                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
+                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
             }
             startActivity(intent)
         }
@@ -245,7 +252,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
                         startActivity(intent)
                     },
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
                 )
             }
         }
@@ -292,7 +301,16 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.hotArticles.collect {
-                    hotArticleAdapter.submitList(it)
+                    hotArticleAdapter.submitList(
+                        listOf(
+                            ArticleMainState.KeywordNoti(
+                                "자취방 양도글, 가장 먼저 확인하고 싶을 때?",
+                                "공지가 업로드 되면 바로 알려주는\n키워드 알림 설정하러가기"
+                            ),
+                        ) + it.map {
+                            ArticleMainState.Content(it.title, it.id, it.board.id)
+                        }
+                    )
                 }
             }
         }
@@ -424,7 +442,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initDiningABTest() {
         binding.textSeeMoreDining.setOnClickListener {
             Intent(this, DiningActivity::class.java).run {
-                 startActivity(this)
+                startActivity(this)
             }
         }
         lifecycleScope.launch {
@@ -434,6 +452,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         ExperimentGroup.MAIN_DINING_NEW -> {
                             binding.textSeeMoreDining.visibility = View.VISIBLE
                         }
+
                         ExperimentGroup.MAIN_DINING_ORIGINAL -> {
                             binding.textSeeMoreDining.visibility = View.GONE
                         }

@@ -6,51 +6,97 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.MainCardArticleBinding
-import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
+import `in`.koreatech.koin.databinding.MainCardArticleNotiBinding
+import `in`.koreatech.koin.ui.article.viewmodel.KeywordInputUiState
+import `in`.koreatech.koin.ui.main.state.ArticleMainState
 
 class HotArticleAdapter(
-    private val onClick: (ArticleHeaderState) -> Unit
+    private val onNotiClick: () -> Unit,
+    private val onArticleClick: (ArticleMainState.Content) -> Unit
 ) :
-    ListAdapter<ArticleHeaderState, HotArticleAdapter.HotArticleViewHolder>(diffCallback) {
+    ListAdapter<ArticleMainState, RecyclerView.ViewHolder>(diffCallback) {
+
+    inner class KeywordNotiViewHolder(
+        private val binding: MainCardArticleNotiBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(content: ArticleMainState.KeywordNoti) {
+            binding.textHotNotiTitle.text = content.title
+            binding.textHotNotiSub.text = content.sub
+            binding.cardViewArticleHeader.setOnClickListener { onNotiClick() }
+        }
+    }
 
     inner class HotArticleViewHolder(
         private val binding: MainCardArticleBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(articleHeader: ArticleHeaderState) {
-            binding.textArticleTitle.text = articleHeader.title
-            binding.cardViewArticleHeader.setOnClickListener { onClick(articleHeader) }
+        fun bind(content: ArticleMainState.Content) {
+            binding.textArticleTitle.text = content.title
+            binding.cardViewArticleHeader.setOnClickListener { onArticleClick(content) }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is ArticleMainState.KeywordNoti -> TYPE_NOTI
+            is ArticleMainState.Content -> TYPE_ARTICLE
+            else -> throw IllegalArgumentException("Invalid type of data - $position")
         }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): HotArticleViewHolder {
-        val binding = MainCardArticleBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return HotArticleViewHolder(binding)
+    ): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_NOTI -> {
+                KeywordNotiViewHolder(
+                    MainCardArticleNotiBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            TYPE_ARTICLE -> {
+                HotArticleViewHolder(
+                    MainCardArticleBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            else -> throw IllegalArgumentException("Invalid type of view type $viewType")
+        }
     }
 
-    override fun onBindViewHolder(holder: HotArticleViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val item = getItem(position)) {
+            is ArticleMainState.KeywordNoti -> (holder as KeywordNotiViewHolder).bind(item)
+            is ArticleMainState.Content -> (holder as HotArticleViewHolder).bind(item)
+        }
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<ArticleHeaderState>() {
+        const val TYPE_NOTI = 0
+        const val TYPE_ARTICLE = 1
+
+        private val diffCallback = object : DiffUtil.ItemCallback<ArticleMainState>() {
             override fun areItemsTheSame(
-                oldItem: ArticleHeaderState,
-                newItem: ArticleHeaderState
+                oldItem: ArticleMainState,
+                newItem: ArticleMainState
             ): Boolean {
-                return oldItem.id == newItem.id
+                return when {
+                    oldItem is ArticleMainState.KeywordNoti && newItem is ArticleMainState.KeywordNoti -> oldItem.title == newItem.title
+                    oldItem is ArticleMainState.Content && newItem is ArticleMainState.Content -> oldItem.id == newItem.id
+                    else -> false
+                }
             }
 
             override fun areContentsTheSame(
-                oldItem: ArticleHeaderState,
-                newItem: ArticleHeaderState
+                oldItem: ArticleMainState,
+                newItem: ArticleMainState
             ): Boolean {
                 return oldItem == newItem
             }
