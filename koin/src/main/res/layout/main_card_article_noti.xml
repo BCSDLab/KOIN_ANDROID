@@ -9,7 +9,7 @@
         android:layout_marginHorizontal="20dp">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_view_article_header"
+            android:id="@+id/card_view_article_noti"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/neutral_100"
@@ -24,7 +24,7 @@
                 android:paddingVertical="16dp">
 
                 <ImageView
-                    android:id="@+id/ic_hot_noti"
+                    android:id="@+id/ic_article_noti"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_main_article_bell"
@@ -33,7 +33,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/text_hot_noti_title"
+                    android:id="@+id/text_article_noti_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -42,21 +42,21 @@
                     android:text="@string/hot_article_noti_title"
                     android:textAppearance="@style/TextAppearance.Koin.Bold.14"
                     android:textColor="@color/sub_sub600"
-                    app:layout_constraintEnd_toStartOf="@id/ic_hot_noti"
+                    app:layout_constraintEnd_toStartOf="@id/ic_article_noti"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/ic_hot_noti" />
+                    app:layout_constraintTop_toTopOf="@id/ic_article_noti" />
 
                 <TextView
-                    android:id="@+id/text_hot_noti_sub"
+                    android:id="@+id/text_article_noti_sub"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:textAppearance="@style/TextAppearance.Koin.Medium.12"
                     android:textColor="@color/neutral_600"
-                    app:layout_constraintEnd_toEndOf="@id/text_hot_noti_title"
-                    app:layout_constraintStart_toStartOf="@id/text_hot_noti_title"
-                    app:layout_constraintTop_toBottomOf="@id/text_hot_noti_title"
+                    app:layout_constraintEnd_toEndOf="@id/text_article_noti_title"
+                    app:layout_constraintStart_toStartOf="@id/text_article_noti_title"
+                    app:layout_constraintTop_toBottomOf="@id/text_article_noti_title"
                     tools:text="@string/hot_article_noti_sub" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

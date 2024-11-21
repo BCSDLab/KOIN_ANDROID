@@ -52,7 +52,7 @@ import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
-import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
+import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
@@ -79,7 +79,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
-    private val hotArticleAdapter = HotArticleAdapter(
+    private val articleMainAdapter = ArticleMainAdapter(
         onNotiClick = {
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("koin://article/activity?fragment=article_keyword")
@@ -214,7 +214,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         viewPagerHotArticle.apply {
-            adapter = hotArticleAdapter
+            adapter = articleMainAdapter
             offscreenPageLimit = 3
             enableAutoScroll(this@MainActivity, 5_000)
         }
@@ -301,9 +301,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.hotArticles.collect {
-                    hotArticleAdapter.submitList(
+                    articleMainAdapter.submitList(
                         listOf(
-                            ArticleMainState.KeywordNoti(
+                            ArticleMainState.Noti(
                                 "자취방 양도글, 가장 먼저 확인하고 싶을 때?",
                                 "공지가 업로드 되면 바로 알려주는\n키워드 알림 설정하러가기"
                             ),
