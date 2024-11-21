@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.store.NeedSignUpStoreInfo
+import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreCategory
@@ -18,7 +18,18 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreEventUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.InvalidateStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.SearchStoreUseCase
-import kotlinx.coroutines.flow.*
+import `in`.koreatech.koin.domain.usecase.store.search.GetRelatedStoreUseCase
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,9 +39,10 @@ class StoreViewModel @Inject constructor(
     private val searchStoreUseCase: SearchStoreUseCase,
     private val invalidateStoresUseCase: InvalidateStoresUseCase,
     private val getStoreEventUseCase: GetStoreEventUseCase,
-    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
+    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
+    private val getStoreWithMenuUseCase: GetRelatedStoreUseCase,
 ) : BaseViewModel() {
-    private val search = MutableStateFlow("")
+    private val _search = MutableStateFlow("")
     private val refreshEvent = MutableSharedFlow<Unit>()
     private val _category = MutableStateFlow<StoreCategory?>(null)
     private val _stores = MutableStateFlow<List<Store>>(emptyList())
@@ -38,8 +50,12 @@ class StoreViewModel @Inject constructor(
     private val _needToProceedStoreInfo = MutableSharedFlow<NeedSignUpStoreInfo>()
 
     private val _storeEvents = MutableLiveData<List<StoreEvent>?>(emptyList())
-    val storeEvents: LiveData<List<StoreEvent>?> get() = _storeEvents
+    private val _searchRelated = MutableLiveData<ShopSearchRelatedList>()
 
+    val storeEvents: LiveData<List<StoreEvent>?> get() = _storeEvents
+    val searchRelated get() = _searchRelated
+
+    val search: StateFlow<String> = _search.asStateFlow()
     val category: StateFlow<StoreCategory?> = _category.asStateFlow()
     val stores: StateFlow<List<Store>> = _stores.asStateFlow()
     val store: StateFlow<Store?> = _store.asStateFlow()
@@ -63,21 +79,26 @@ class StoreViewModel @Inject constructor(
         getStoreEvents()
         //changeCategory()
         searchStore()
+        viewModelScope.launch {
+            search.collectLatest {
+                refreshStores()
+            }
+        }
     }
 
     fun updateSearchQuery(query: String) {
-        search.value = query
+        _search.value = query
     }
 
     fun setCategory(storeCategory: StoreCategory?) {
-        if(category.value == storeCategory) {
+        if (category.value == storeCategory) {
             _category.value = StoreCategory.All
         } else {
             _category.value = storeCategory
         }
     }
 
-    private fun changeCategory(){
+    private fun changeCategory() {
         viewModelScope.launch {
             category
                 .combine(refreshEvent) { value, _ ->
@@ -98,7 +119,7 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    private fun searchStore(){
+    private fun searchStore() {
         viewModelScope.launch {
             search
                 .debounce(100)
@@ -124,6 +145,7 @@ class StoreViewModel @Inject constructor(
     }
 
     fun refreshStores() = viewModelScope.launch {
+        delay(100)
         invalidateStoresUseCase()
         refreshEvent.emit(Unit)
     }
@@ -134,9 +156,14 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    fun setNeedToProceedStoreInfo(check: Boolean, storeName: String, storeId: Int, storeNumber: String) {
+    fun setNeedToProceedStoreInfo(
+        check: Boolean,
+        storeName: String,
+        storeId: Int,
+        storeNumber: String
+    ) {
         viewModelScope.launch {
-            _needToProceedStoreInfo.emit(NeedSignUpStoreInfo(check,  storeName, storeId))
+            _needToProceedStoreInfo.emit(NeedSignUpStoreInfo(check, storeName, storeId))
         }
     }
 
@@ -155,6 +182,7 @@ class StoreViewModel @Inject constructor(
             refreshEvent.emit(Unit)
         }
     }
+
     fun filterStoreIsDelivery(isDelivery: Boolean) {
         _isDelivery.value = isDelivery
         viewModelScope.launch {
@@ -163,15 +191,21 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    private fun getStoreEvents(){
+    private fun getStoreEvents() {
         viewModelScope.launch {
             _storeEvents.value = getStoreEventUseCase()
         }
     }
 
-    private fun getStoreCategories(){
+    private fun getStoreCategories() {
         viewModelScope.launchWithLoading {
             _storeCategories.value = getStoreCategoriesUseCase()
+        }
+    }
+
+    fun getRelatedStore() {
+        viewModelScope.launch {
+            _searchRelated.value = getStoreWithMenuUseCase(_search.value)
         }
     }
 }

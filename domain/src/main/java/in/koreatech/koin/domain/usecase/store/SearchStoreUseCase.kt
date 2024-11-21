@@ -23,11 +23,13 @@ class SearchStoreUseCase constructor(
             storeRepository.getStores(
                 storeSorter = storeSorter,
                 isOperating = isOperating,
-                isDelivery = isDelivery
+                isDelivery = isDelivery,
+                query = search
             )
                 .filter {
-                    if (search == "") category in it.categoryIds else it.name.contains(search)
+                    if (search == "") category in it.categoryIds else true
                 }
+            
         }
     }
 }
