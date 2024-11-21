@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
+import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreDayOffResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
@@ -29,6 +30,8 @@ import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.ShopSearchRelated
+import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
@@ -297,11 +300,22 @@ fun BenefitCategoryListResponse.toStoreBenefitCategory(): BenefitCategoryList =
     BenefitCategoryList(this.benefitCategories.map {
         BenefitCategory(
             id = it.id,
-            title = it.title?: "",
-            detail = it.detail?: "",
-            onImageUrl = it.onImageUrl?: "",
-            offImageUrl = it.offImageUrl?: ""
+            title = it.title ?: "",
+            detail = it.detail ?: "",
+            onImageUrl = it.onImageUrl ?: "",
+            offImageUrl = it.offImageUrl ?: ""
         )
     })
+
+fun ShopRelatedListResponse.toShopSearchRelatedList(): ShopSearchRelatedList =
+    ShopSearchRelatedList(
+        keywords = keywords.map {
+            ShopSearchRelated(
+                keyword = it.keyword?: "",
+                shopIds = it.shopIds ?: emptyList(),
+                shopId = it.shopId
+            )
+        }
+    )
 
 

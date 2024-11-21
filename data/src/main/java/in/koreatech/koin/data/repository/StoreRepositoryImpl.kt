@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toCategory
+import `in`.koreatech.koin.data.mapper.toShopSearchRelatedList
 import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreCategories
 import `in`.koreatech.koin.data.mapper.toStoreDetailEvents
@@ -17,6 +18,7 @@ import `in`.koreatech.koin.domain.model.store.BenefitCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ShopEvents
+import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreBenefit
 import `in`.koreatech.koin.domain.model.store.StoreCategories
@@ -28,6 +30,7 @@ import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import retrofit2.HttpException
+import retrofit2.http.Query
 import javax.inject.Inject
 
 class StoreRepositoryImpl @Inject constructor(
@@ -40,17 +43,17 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun getStores(
         storeSorter: StoreSorter?,
         isOperating: Boolean?,
-        isDelivery: Boolean?
+        isDelivery: Boolean?,
+        query: String?,
     ): List<Store> {
-
         if (stores == null) {
             stores = if(isOperating == true && isDelivery == true){
-                storeRemoteDataSource.getStoreItemsWithTwoFilter(storeSorter).map { it.toStore() }
+                storeRemoteDataSource.getStoreItemsWithTwoFilter(storeSorter, query).map { it.toStore() }
             } else if(isOperating == false && isDelivery == false) {
-                storeRemoteDataSource.getStoreItemsWithSorting(storeSorter).map { it.toStore() }
+                storeRemoteDataSource.getStoreItemsWithSorting(storeSorter, query).map { it.toStore() }
             } else{
-                if(isOperating == true) storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "OPEN").map { it.toStore() }
-                else storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "DELIVERY").map { it.toStore() }
+                if(isOperating == true) storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "OPEN", query).map { it.toStore() }
+                else storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "DELIVERY", query).map { it.toStore() }
             }
         }
 
@@ -150,7 +153,12 @@ class StoreRepositoryImpl @Inject constructor(
             return StoreBenefit(count?:0, shops?.map { it.toStore() } ?: emptyList())
         }
     }
+
     override suspend fun getStoreBenefitCategories() : BenefitCategoryList {
         return storeRemoteDataSource.getStoreBenefitCategories().toStoreBenefitCategory()
+    }
+
+    override suspend fun getShopSearchRelatedList(query: String) : ShopSearchRelatedList {
+        return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
     }
 }
