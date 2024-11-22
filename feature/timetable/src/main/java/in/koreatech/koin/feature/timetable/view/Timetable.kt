@@ -50,36 +50,26 @@ fun Timetable(
         }
     }
 
-    Column {
-        TimetableContent(
-            modifier = modifier
-                .verticalScroll(verticalScrollState)
-                .padding(vertical = 14.dp)
-                .background(Color.White)
-                .clip(RoundedCornerShape(10.dp))
-                .border(
-                    width = 1.dp,
-                    color = KoinTheme.colors.neutral300,
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .drawWithContent {
-                    graphicsLayer.record {
-                        this@drawWithContent.drawContent()
-                    }
-                    drawLayer(graphicsLayer)
+    TimetableContent(
+        modifier = modifier
+            .verticalScroll(verticalScrollState)
+            .padding(vertical = 14.dp)
+            .drawWithContent {
+                graphicsLayer.record {
+                    this@drawWithContent.drawContent()
                 }
-            ,
-            range = range,
-            horizontalPadding = 48.dp,
-            events = events,
-            clickEvent = clickEvent,
-            etcClickEvent = etcClickEvent,
-            onEventClick = onEventClick,
-            onEventY = { y ->
-                scrollValue = y
-            }
-        )
-    }
+                drawLayer(graphicsLayer)
+            },
+        range = range,
+        horizontalPadding = 48.dp,
+        events = events,
+        clickEvent = clickEvent,
+        etcClickEvent = etcClickEvent,
+        onEventClick = onEventClick,
+        onEventY = { y ->
+            scrollValue = y
+        }
+    )
 }
 
 
