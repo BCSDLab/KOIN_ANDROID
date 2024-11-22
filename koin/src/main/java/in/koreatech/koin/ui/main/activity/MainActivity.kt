@@ -173,6 +173,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initView() = with(binding) {
+        initArticleBannerABTest()
         initDiningABTest()
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
@@ -298,13 +299,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.articleMain.collect {
-                    articleMainAdapter.submitList(it)
-                }
-            }
-        }
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
@@ -426,6 +420,27 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     type = Pair(EXTRA_TYPE, type),
                 )
                 startActivity(intent)
+            }
+        }
+    }
+
+    private fun initArticleBannerABTest() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.bannerABTestExperimentGroup.collect {
+                    when (it) {
+                        ExperimentGroup.MAIN_BANNER_NEW -> {
+                            viewModel.articleMain.collect {
+                                articleMainAdapter.submitList(it)
+                            }
+                        }
+                        ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
+                            viewModel.hotArticles.collect {
+                                articleMainAdapter.submitList(it)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

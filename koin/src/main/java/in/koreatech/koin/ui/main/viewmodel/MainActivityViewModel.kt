@@ -101,6 +101,18 @@ class MainActivityViewModel @Inject constructor(
     private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
 
+    val bannerABTestExperimentGroup = flow {
+        abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
+            emit(it)
+        }.onFailure {
+            emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first()
+    )
+
     val diningABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
             emit(it)
