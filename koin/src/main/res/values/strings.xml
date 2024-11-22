@@ -162,6 +162,7 @@
 
     <!--Timetable-->
     <string name="timetable_semester">시간표 수정</string>
+    <string name="timetable_semester_title">시간표 목록</string>
     <string name="timetable_saved">저장되었습니다.</string>
     <string name="timetable_saved_fail">저장에 실패했습니다.</string>
     <string name="timetable_delete_class_message">해당 수업을 삭제하시겠습니까?</string>
