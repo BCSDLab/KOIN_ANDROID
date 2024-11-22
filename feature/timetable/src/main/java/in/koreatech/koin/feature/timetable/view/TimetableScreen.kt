@@ -18,6 +18,7 @@ import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.util.pxToDp
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
-import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
@@ -42,12 +42,12 @@ import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
 @Composable
 fun TimetableScreen(
-    loading: Boolean,
     range: Int,
     lectures: List<Lecture>,
     detailLecture: TimetableLecture?,
     semesters: List<String>,
     currentSemester: String,
+    timetableName: String,
     customContents: CustomContentState,
     selectedLecture: Lecture?,
     searchText: String,
@@ -85,7 +85,7 @@ fun TimetableScreen(
     onClickAddCustomContent: () -> Unit = {},
     onClickRemoveCustomContent: (id: Int) -> Unit = {},
 ) {
-    var bottomSheetHeight by remember { mutableStateOf(0f) }
+    var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
 
     BottomSheetScaffold(
         modifier = modifier,
@@ -150,7 +150,11 @@ fun TimetableScreen(
                     .padding(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                TimetableScheduleBox(onClick = onClickTimetableSchedule)
+                TimetableScheduleBox(
+                    currentSemester = currentSemester,
+                    timetableName = timetableName,
+                    onClick = onClickTimetableSchedule
+                )
                 TimetableDownloadBox(onClick = onClickDownloadTimetable)
             }
             Timetable(
@@ -163,7 +167,6 @@ fun TimetableScreen(
                 onEventClick = onClickTimetableEvent
             )
         }
-        CircleLoadingBar(loading = loading)
     }
 }
 
@@ -192,13 +195,13 @@ private fun Modifier.dynamicPadding(
 @Composable
 private fun TimetableScreenPreview() {
     TimetableScreen(
-        loading = false,
         range = 9,
         customContents = CustomContentState(),
         lectures = listOf(dummyLecture),
         detailLecture = dummyLecture.toTimetableLecture(),
         semesters = listOf("20242"),
         currentSemester = "20242",
+        timetableName = "시간표1",
         selectedLecture = null,
         searchText = "",
         bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,

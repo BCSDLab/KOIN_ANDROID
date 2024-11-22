@@ -13,5 +13,5 @@ data class TimetableFrameCreateQueryRequest(
     @SerializedName("semester")
     val semester: String,
     @SerializedName("timetable_name")
-    val timetableName: Boolean,
+    val timetableName: String?,
 )

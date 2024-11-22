@@ -7,5 +7,5 @@ data class TimetableFrameQuery(
 
 data class TimetableFrameCreateQuery(
     val semester: String,
-    val timetableName: Boolean,
+    val timetableName: String?,
 )
