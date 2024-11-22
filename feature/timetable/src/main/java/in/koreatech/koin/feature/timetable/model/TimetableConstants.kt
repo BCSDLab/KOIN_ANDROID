@@ -9,6 +9,20 @@ import java.time.LocalTime
 
 object TimetableConstants {
     val days = listOf("월", "화", "수", "목", "금")
+    val departments = listOf(
+        "디자인ㆍ건축공학부",
+        "고용서비스정책학과",
+        "기계공학부",
+        "메카트로닉스공학부",
+        "산업경영학부",
+        "전기ㆍ전자ㆍ통신공학부",
+        "컴퓨터공학부",
+        "에너지신소재화학공학부",
+        "HRD학과",
+        "교양학부",
+        "안전공학과",
+        "융합학과",
+    )
     const val eventHeight = 64
 }
 
@@ -44,18 +58,7 @@ val dummyLecture = Lecture(
     )
 )
 
-val dummyDepartment = listOf(
-    "디자인ㆍ건축공학부",
-    "고용서비스정책학과",
-    "기계공학부",
-    "메카트로닉스공학부",
-    "산업경영학부",
-    "전기ㆍ전자ㆍ통신공학부",
-    "컴퓨터공학부",
-    "에너지신소재화학공학부",
-    "HRD학과",
-    "교양학부",
-)
+
 
 
 val defaultColors = listOf(

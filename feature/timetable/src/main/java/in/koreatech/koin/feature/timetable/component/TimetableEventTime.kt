@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.dashedBorder
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
@@ -93,7 +94,7 @@ private fun TimetableBasicEventTime(
     var contentHeight by rememberSaveable { mutableIntStateOf(0) }
     var contentLineCount by rememberSaveable { mutableIntStateOf(0) }
 
-    // 1시간 30분이상일 경우 professor text 가 내려가서 보이지 않는 오류 해결해보자..
+    // TODO : 1시간 30분이상일 경우 professor text 가 내려가서 보이지 않는 오류 해결해보자..
     if (height < titleHeight + contentHeight) {
         titleMaxLine = titleLineCount - 1
         contentMaxLine = if (contentLineCount == 1) {
@@ -114,7 +115,7 @@ private fun TimetableBasicEventTime(
                     bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event)
                 )
             )
-            .clickable { onEventTimeClick(event) }
+            .noRippleClickable { onEventTimeClick(event) }
             .onGloballyPositioned {
                 height = it.size.height
             }
