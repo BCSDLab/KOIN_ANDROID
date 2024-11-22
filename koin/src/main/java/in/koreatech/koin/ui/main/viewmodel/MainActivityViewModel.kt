@@ -13,6 +13,8 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
+import `in`.koreatech.koin.domain.model.article.ArticleNoti
+import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
@@ -28,11 +30,15 @@ import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
+import `in`.koreatech.koin.ui.main.state.ArticleMainState
+import `in`.koreatech.koin.ui.main.state.toContent
+import `in`.koreatech.koin.ui.main.state.toNoti
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
@@ -55,10 +61,10 @@ class MainActivityViewModel @Inject constructor(
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
 
-    val hotArticles: StateFlow<List<ArticleHeaderState>> =
+    val hotArticles: StateFlow<List<ArticleMainState.Content>> =
         articleRepository.fetchHotArticleHeaders()
             .map {
-                it.take(HOT_ARTICLE_COUNT).map { article -> article.toArticleHeaderState() }
+                it.take(HOT_ARTICLE_COUNT).map { article -> article.toContent() }
             }.catch {
 
             }.stateIn(
@@ -66,6 +72,24 @@ class MainActivityViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = emptyList()
             )
+    val articleNoti: StateFlow<ArticleMainState.Noti> =
+        articleRepository.fetchKeywordNoti()
+            .map { it.toNoti() }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = articleNotiContent.first().toNoti()
+            )
+
+    val articleMain: StateFlow<List<ArticleMainState>> = combine(
+        articleNoti, hotArticles
+    ) { noti, article ->
+        listOf(noti) + article
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = emptyList()
+    )
 
     private val _selectedPosition = MutableLiveData(0)
     val selectedPosition: LiveData<Int> get() = _selectedPosition

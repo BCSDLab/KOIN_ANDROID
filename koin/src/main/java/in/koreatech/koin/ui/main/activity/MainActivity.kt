@@ -300,17 +300,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initViewModel() = with(viewModel) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.hotArticles.collect {
-                    articleMainAdapter.submitList(
-                        listOf(
-                            ArticleMainState.Noti(
-                                "자취방 양도글, 가장 먼저 확인하고 싶을 때?",
-                                "공지가 업로드 되면 바로 알려주는\n키워드 알림 설정하러가기"
-                            ),
-                        ) + it.map {
-                            ArticleMainState.Content(it.title, it.id, it.board.id)
-                        }
-                    )
+                viewModel.articleMain.collect {
+                    articleMainAdapter.submitList(it)
                 }
             }
         }
