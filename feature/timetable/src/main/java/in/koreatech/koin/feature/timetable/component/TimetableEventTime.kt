@@ -62,12 +62,7 @@ fun TimetableEventTime(
         TimetableEventType.SELECTED -> TimetableSelectedEventTime(
             range = range,
             event = event,
-            modifier = modifier.padding(
-                start = (0.5).dp,
-                top = (0.5).dp,
-                end = (0.6).dp,
-                bottom = (0.65).dp
-            )
+            modifier = modifier.padding(0.5.dp)
         )
 
         TimetableEventType.ETC_SELECTED -> TimetableEtcSelectedEventTime(
