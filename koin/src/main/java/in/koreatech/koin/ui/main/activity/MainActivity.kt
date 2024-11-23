@@ -61,6 +61,7 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -429,15 +430,15 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initArticleBannerABTest() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.bannerABTestExperimentGroup.collect {
+                viewModel.bannerABTestExperimentGroup.collectLatest {
                     when (it) {
                         ExperimentGroup.MAIN_BANNER_NEW -> {
-                            viewModel.articleMain.collect {
+                            viewModel.articleMain.collectLatest {
                                 articleMainAdapter.submitList(it)
                             }
                         }
                         ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
-                            viewModel.hotArticles.collect {
+                            viewModel.hotArticles.collectLatest {
                                 articleMainAdapter.submitList(it)
                             }
                         }
