@@ -69,6 +69,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     viewModel.getRefreshData(frameId, semester, frameName)
                 }
             }
+
+            if (it.resultCode == TimetableSemesterActivity.REQUEST_CODE_LOGIN_ACTIVITY) {
+                it.data?.getBundleExtra(BUNDLE_LOGIN_EXTRA_KEY)?.let { bundle ->
+                    bundle.getBoolean(NAV_TIMETABLE).let {
+                        if (it) startToLoginActivity()
+                    }
+                }
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -352,8 +360,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     private fun startToLoginActivity() {
         Intent(this, LoginActivity::class.java).apply {
             putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            finish()
         }.let(::startActivity)
-        finish()
     }
 
     private fun saveTimetable(bitmap: Bitmap) {
