@@ -13,7 +13,6 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
-import `in`.koreatech.koin.domain.model.article.ArticleNoti
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -28,8 +27,6 @@ import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
-import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
-import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.state.toContent
 import `in`.koreatech.koin.ui.main.state.toNoti
@@ -44,7 +41,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -104,6 +100,25 @@ class MainActivityViewModel @Inject constructor(
     val bannerABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
             emit(it)
+            when (it) {
+                ExperimentGroup.MAIN_BANNER_NEW -> {
+                    EventLogger.logCustomEvent(
+                        "AB_TEST",
+                        "a/b test 로깅(키워드관리 진입 배너)",
+                        AnalyticsConstant.Label.CAMPUS_NOTICE_1,
+                        "진입점O"
+                    )
+                }
+
+                ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
+                    EventLogger.logCustomEvent(
+                        "AB_TEST",
+                        "a/b test 로깅(키워드관리 진입 배너)",
+                        AnalyticsConstant.Label.CAMPUS_NOTICE_1,
+                        "진입점X"
+                    )
+                }
+            }
         }.onFailure {
             emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
         }
@@ -118,10 +133,19 @@ class MainActivityViewModel @Inject constructor(
             emit(it)
             when (it) {
                 ExperimentGroup.MAIN_DINING_NEW -> {
-                    EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.CAMPUS_DINING_1, "더보기O")
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.CAMPUS_DINING_1,
+                        "더보기O"
+                    )
                 }
+
                 ExperimentGroup.MAIN_DINING_ORIGINAL -> {
-                    EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.CAMPUS_DINING_1, "더보기X")
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.CAMPUS_DINING_1,
+                        "더보기X"
+                    )
                 }
             }
         }.onFailure {
