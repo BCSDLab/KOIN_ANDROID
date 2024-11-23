@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.timetablev2
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material.BottomSheetValue
@@ -45,7 +46,6 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TimetableActivity : KoinNavigationDrawerActivity() {
@@ -295,6 +295,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 CircleLoadingBar(loading = state.loading)
             }
 
+            BackHandler(enabled = bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                scope.launch {
+                    bottomSheetScaffoldState.bottomSheetState.collapse()
+                }
+            }
             CustomSnackBarHost(snackBarHost)
             LaunchedEffect(sideEffect) {
                 when (val effect = sideEffect) {
@@ -312,6 +317,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             }
         }
     }
+
 
     private fun initEvent() {
         setAppbarEvent()
