@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
@@ -15,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -46,6 +48,7 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class TimetableActivity : KoinNavigationDrawerActivity() {
@@ -105,6 +108,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             val lectures by viewModel.lectures.collectAsStateWithLifecycle()
             val sheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(sheetState)
+            val scrollState = rememberLazyListState()
             val snackBarHost = remember { SnackbarHostState() }
             val graphicsLayer = rememberGraphicsLayer()
             val scope = rememberCoroutineScope()
@@ -223,6 +227,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     bottomSheetContentMode = state.bottomSheetMode,
                     sheetState = sheetState,
                     scaffoldState = bottomSheetScaffoldState,
+                    sheetLazyListState = scrollState,
                     graphicsLayer = graphicsLayer,
                     onSearchTextChange = viewModel::updateSearchText,
                     onClickTimetableSchedule = {

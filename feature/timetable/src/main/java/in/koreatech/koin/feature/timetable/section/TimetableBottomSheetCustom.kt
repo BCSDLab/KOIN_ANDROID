@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -17,6 +19,7 @@ import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 @Composable
 fun TimetableBottomSheetCustom(
     customContents: CustomContentState,
+    sheetLazyListState: LazyListState,
     modifier: Modifier = Modifier,
     onScheduleNameChange: (text: String) -> Unit = {},
     onProfessorNameChange: (text: String) -> Unit = {},
@@ -32,6 +35,7 @@ fun TimetableBottomSheetCustom(
     LazyColumn(
         modifier = modifier
             .nestedScroll(nestedScroll),
+        state = sheetLazyListState,
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         item {
@@ -71,6 +75,7 @@ fun TimetableBottomSheetCustom(
 fun TimetableBottomSheetCustomPreview() {
     TimetableBottomSheetCustom(
         customContents = CustomContentState(),
+        sheetLazyListState = rememberLazyListState()
     )
 }
 

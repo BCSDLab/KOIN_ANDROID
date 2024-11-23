@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetState
@@ -57,6 +59,7 @@ fun TimetableScreen(
     bottomSheetContentMode: TimetableBottomSheetContentMode,
     bottomSheetUI: BottomSheetUI,
     sheetState: BottomSheetState,
+    sheetLazyListState: LazyListState,
     scaffoldState: BottomSheetScaffoldState,
     graphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
     modifier: Modifier = Modifier,
@@ -93,6 +96,7 @@ fun TimetableScreen(
     BottomSheetScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
+        sheetGesturesEnabled = !sheetLazyListState.isScrollInProgress,
         sheetContent = {
             when (bottomSheetUI) {
                 BottomSheetUI.DEFAULT -> {
@@ -103,6 +107,7 @@ fun TimetableScreen(
                         customContents = customContents,
                         bottomSheetContentMode = bottomSheetContentMode,
                         timetableEvents = timetableEvents,
+                        sheetLazyListState = sheetLazyListState,
                         onClickAddLectureMode = onClickAddLectureMode,
                         onClickAddCustomLectureMode = onClickAddCustomLectureMode,
                         onComplete = onClickBottomSheetComplete,
@@ -215,6 +220,7 @@ private fun TimetableScreenPreview() {
         sheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed
         ),
+        sheetLazyListState = rememberLazyListState(),
         scaffoldState = rememberBottomSheetScaffoldState(),
     )
 }
