@@ -222,9 +222,10 @@ class TimetableSemesterActivity : ActivityBase() {
     }
 
     private fun startToLoginActivity() {
-        Intent(this, LoginActivity::class.java).apply {
+        val intent = Intent().apply {
             putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
-        }.let(::startActivity)
+        }
+        setResult(REQUEST_CODE_LOGIN_ACTIVITY, intent)
         finish()
     }
 
@@ -277,5 +278,6 @@ class TimetableSemesterActivity : ActivityBase() {
         const val SEMESTER = "semester"
         const val TIMETABLE_FRAME_ID = "timetableFrameId"
         const val TIMETABLE_FRAME_NAME = "timetableFrameName"
+        const val REQUEST_CODE_LOGIN_ACTIVITY = 1001
     }
 }
