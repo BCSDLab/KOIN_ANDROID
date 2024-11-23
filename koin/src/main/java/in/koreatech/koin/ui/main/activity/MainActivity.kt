@@ -82,7 +82,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private val articleMainAdapter = ArticleMainAdapter(
         onNotiClick = {
-//            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.TO_MANAGE_KEYWORD, "noti click")
+            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.TO_MANAGE_KEYWORD, it.value)
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("koin://article/activity?fragment=article_keyword")
             }

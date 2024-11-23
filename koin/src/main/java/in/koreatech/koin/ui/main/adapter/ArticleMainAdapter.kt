@@ -10,7 +10,7 @@ import `in`.koreatech.koin.databinding.MainCardArticleNotiBinding
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 
 class ArticleMainAdapter(
-    private val onNotiClick: () -> Unit,
+    private val onNotiClick: (ArticleMainState.Noti) -> Unit,
     private val onArticleClick: (ArticleMainState.Content) -> Unit
 ) :
     ListAdapter<ArticleMainState, RecyclerView.ViewHolder>(diffCallback) {
@@ -21,7 +21,7 @@ class ArticleMainAdapter(
         fun bind(content: ArticleMainState.Noti) {
             binding.textArticleNotiTitle.text = content.title
             binding.textArticleNotiSub.text = content.sub
-            binding.cardViewArticleNoti.setOnClickListener { onNotiClick() }
+            binding.cardViewArticleNoti.setOnClickListener { onNotiClick(content) }
         }
     }
 
