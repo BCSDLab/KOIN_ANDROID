@@ -56,7 +56,11 @@ fun TimetableInputField(
         BasicTextField(
             value = text,
             onValueChange = {
-                onValueChange(it)
+                if (title != "일정명") {
+                    if (it.length <= 29) onValueChange(it)
+                } else {
+                    onValueChange(it)
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
