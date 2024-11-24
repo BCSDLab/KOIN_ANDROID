@@ -72,7 +72,7 @@ fun TimetableBottomSheet(
             ),
     ) {
         TimetableBottomSheetHeader(
-            modifier = Modifier.padding(bottom = 4.dp),
+            modifier = Modifier.padding(bottom = 10.dp),
             mode = bottomSheetContentMode,
             onClickAddLectureMode = onClickAddLectureMode,
             onClickAddCustomLectureMode = onClickAddCustomLectureMode,

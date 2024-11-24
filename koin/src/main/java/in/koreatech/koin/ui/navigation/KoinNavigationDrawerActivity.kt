@@ -45,6 +45,7 @@ import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
 import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
+import `in`.koreatech.koin.ui.timetablev2.TimetableSemesterActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.closeDrawer
@@ -297,6 +298,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.Timetable -> {
+//                    goToTimetableActivity()
                     if (userInfoFlow.value.isAnonymous) {
                         goToAnonymousTimeTableActivity()
                     } else {
@@ -477,9 +479,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
      */
 //    private fun goToTimetableActivity() {
 //        if (menuState != MenuState.Main) {
-//            goToActivityFinish(Intent(this, TimetableActivity::class.java))
+//            goToActivityFinish(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
 //        } else {
-//            val intent = Intent(this, TimetableActivity::class.java).apply {
+//            val intent = Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
 //                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
 //                    putExtra("isAnonymous", true)
 //                } else {
