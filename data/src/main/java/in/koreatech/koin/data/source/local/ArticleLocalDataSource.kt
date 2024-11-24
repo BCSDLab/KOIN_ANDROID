@@ -35,4 +35,12 @@ class ArticleLocalDataSource @Inject constructor(
     suspend fun deleteKeyword(keyword: String) {
         articleDataStore.deleteKeyword(keyword)
     }
+
+    suspend fun fetchKeywordNotiIndex(): Int {
+        return articleDataStore.fetchKeywordNotiIndex()
+    }
+
+    suspend fun saveKeywordNotiIndex() {
+        articleDataStore.saveKeywordNotiIndex()
+    }
 }
