@@ -50,7 +50,7 @@ class MainActivityViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val abTestUseCase: ABTestUseCase,
-    articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
@@ -69,8 +69,8 @@ class MainActivityViewModel @Inject constructor(
                 initialValue = emptyList()
             )
     val articleNoti: StateFlow<ArticleMainState.Noti> =
-        articleRepository.fetchKeywordNoti()
-            .map { it.toNoti() }
+        articleRepository.fetchKeywordNotiIndex()
+            .map { articleNotiContent[it].toNoti() }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
@@ -187,6 +187,12 @@ class MainActivityViewModel @Inject constructor(
                     _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
                 }
             }
+    }
+
+    fun checkKeywordNotiContent() {
+        viewModelScope.launchWithLoading {
+            articleRepository.saveKeywordNotiIndex()
+        }
     }
 
     fun switchBusNode() {

@@ -172,10 +172,12 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.checkKeywordNotiContent()
         viewModel.updateDining()
     }
 
     private fun initView() = with(binding) {
+        viewModel.checkKeywordNotiContent()
         initArticleBannerABTest()
         initDiningABTest()
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->

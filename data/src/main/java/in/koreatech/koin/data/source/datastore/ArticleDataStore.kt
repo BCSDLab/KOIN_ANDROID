@@ -94,7 +94,7 @@ class ArticleDataStore @Inject constructor(
             if (currentTime - lastUpdateTime >= WEEK_IN_MILLIS) {
                 notiIndex = (notiIndex + 1) % articleNotiContent.size
                 preferences[KEY_NOTI_INDEX] = notiIndex
-                preferences[KEY_NOTI_LAST_UPDATE] = lastUpdateTime
+                preferences[KEY_NOTI_LAST_UPDATE] = currentTime
             }
         }
     }
