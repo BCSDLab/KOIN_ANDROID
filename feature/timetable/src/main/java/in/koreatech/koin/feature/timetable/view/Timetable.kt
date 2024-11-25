@@ -3,7 +3,9 @@ package `in`.koreatech.koin.feature.timetable.view
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +25,7 @@ import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
@@ -50,26 +53,41 @@ fun Timetable(
         }
     }
 
-    TimetableContent(
-        modifier = modifier
-            .verticalScroll(verticalScrollState)
-            .padding(vertical = 14.dp)
-            .drawWithContent {
-                graphicsLayer.record {
-                    this@drawWithContent.drawContent()
-                }
-                drawLayer(graphicsLayer)
-            },
-        range = range,
-        horizontalPadding = 48.dp,
-        events = events,
-        clickEvent = clickEvent,
-        etcClickEvent = etcClickEvent,
-        onEventClick = onEventClick,
-        onEventY = { y ->
-            scrollValue = y
-        }
-    )
+    Box(modifier = Modifier) {
+        TimetableContent( // 다운로드 용 시간표 화면
+            modifier = modifier.zIndex(0f)
+                .verticalScroll(verticalScrollState)
+                .padding(vertical = 14.dp)
+                .drawWithContent {
+                    graphicsLayer.record {
+                        this@drawWithContent.drawContent()
+                    }
+                    drawLayer(graphicsLayer)
+                },
+            range = range,
+            horizontalPadding = 48.dp,
+            events = events,
+            clickEvent = emptyList(),
+            etcClickEvent = emptyList(),
+        )
+
+        TimetableContent(
+            modifier = modifier
+                .verticalScroll(verticalScrollState)
+                .padding(vertical = 14.dp),
+            range = range,
+            horizontalPadding = 48.dp,
+            events = events,
+            clickEvent = clickEvent,
+            etcClickEvent = etcClickEvent,
+            onEventClick = onEventClick,
+            onEventY = { y ->
+                scrollValue = y
+            }
+        )
+    }
+
+
 }
 
 
