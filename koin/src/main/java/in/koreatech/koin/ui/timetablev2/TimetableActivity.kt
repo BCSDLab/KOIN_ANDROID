@@ -296,7 +296,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     },
                     onScheduleNameChange = viewModel::updateScheduleTextChange,
                     onProfessorNameChange = viewModel::updateProfessorTextChange,
-                    onPlaceNameChange = viewModel::updatePlaceTextChange,
                     onExtraPlaceNameChange = viewModel::updateExtraPlaceByIdTextChange,
                     onDayOfWeekChange = viewModel::updateDayOfWeekChange,
                     onClickStartTime = viewModel::updateIsStartTimePickerDialogVisible,
