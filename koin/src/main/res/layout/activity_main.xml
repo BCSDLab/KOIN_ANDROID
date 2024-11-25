@@ -69,6 +69,7 @@
                     android:layout_marginTop="-24dp">
 
                     <androidx.core.widget.NestedScrollView
+                        android:id="@+id/nested_scroll_view_main"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fillViewport="true">
@@ -295,6 +296,18 @@
                                     app:layout_constraintStart_toEndOf="@id/text_view_dining_today_or_tomorrow"
                                     app:layout_constraintTop_toTopOf="@id/text_view_dining_today_or_tomorrow" />
 
+                                <TextView
+                                    android:id="@+id/text_see_more_dining"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="더보기"
+                                    android:textColor="@color/neutral_500"
+                                    android:textSize="14sp"
+                                    android:gravity="center_vertical"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@id/text_view_dining_today_or_tomorrow"
+                                    android:layout_marginEnd="20dp"
+                                    app:drawableEndCompat="@drawable/ic_arrow_right" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 

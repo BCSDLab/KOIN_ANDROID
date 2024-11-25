@@ -7,7 +7,7 @@ data class TimetableLectureResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("lecture_id")
-    val lectureId: Int,
+    val lectureId: Int?,
     @SerializedName("regular_number") // "38"
     val regularNumber: String?,
     @SerializedName("code") // "ARB244"
@@ -35,7 +35,7 @@ data class TimetableLectureResponse(
 ) {
     fun toTimetableLecture() = TimetableLecture(
         id = id,
-        lectureId = lectureId,
+        lectureId = lectureId ?: 0,
         regularNumber = regularNumber.orEmpty(),
         code = code.orEmpty(),
         designScore = designScore.orEmpty(),

@@ -9,6 +9,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -25,7 +27,7 @@ fun TimetableBottomSheetBasic(
     modifier: Modifier = Modifier,
     selectedLecture: Lecture? = null,
     timetableEvents: List<TimetableEvent> = emptyList(),
-    onClickSettingIcon: () -> Unit = {},
+    onClickSettingIcon: (visible: Boolean) -> Unit = {},
     onClickSearchIcon: () -> Unit = {},
     onSearchTextChange: (text: String) -> Unit = {},
     onClickAddLecture: (lecture: Lecture) -> Unit = {},
@@ -33,6 +35,7 @@ fun TimetableBottomSheetBasic(
     onClickLecture: (events: List<TimetableEvent>) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
 ) {
+    val nestedScroll = rememberNestedScrollInteropConnection()
     Column(
         modifier = modifier
             .background(Color.White)
@@ -46,6 +49,7 @@ fun TimetableBottomSheetBasic(
         )
         HorizontalDivider(thickness = 2.dp, color = KoinTheme.colors.neutral300)
         LazyColumn(
+            modifier = Modifier.nestedScroll(nestedScroll),
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(lectures.size) {
