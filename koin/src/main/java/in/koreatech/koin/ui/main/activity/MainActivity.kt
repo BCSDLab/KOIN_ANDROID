@@ -432,19 +432,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initArticleBannerABTest() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.bannerABTestExperimentGroup.collectLatest {
-                    when (it) {
-                        ExperimentGroup.MAIN_BANNER_NEW -> {
-                            viewModel.articleMain.collectLatest {
-                                articleMainAdapter.submitList(it)
-                            }
-                        }
-                        ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
-                            viewModel.hotArticles.collectLatest {
-                                articleMainAdapter.submitList(it)
-                            }
-                        }
-                    }
+                viewModel.articleMain.collectLatest {
+                    articleMainAdapter.submitList(it)
                 }
             }
         }
