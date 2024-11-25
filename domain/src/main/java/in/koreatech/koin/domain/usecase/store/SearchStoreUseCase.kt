@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.domain.usecase.store
 
 import `in`.koreatech.koin.domain.model.store.Store
-import `in`.koreatech.koin.domain.model.store.StoreCategory
+import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,7 +13,7 @@ class SearchStoreUseCase constructor(
 ) {
     suspend operator fun invoke(
         search: String = "",
-        category: StoreCategory? = null,
+        category: StoreCategories? = null,
         storeSorter: StoreSorter? = null,
         isOperating: Boolean? = null,
         isDelivery: Boolean? = null
@@ -27,7 +27,7 @@ class SearchStoreUseCase constructor(
                 query = search
             )
                 .filter {
-                    if (search == "") category in it.categoryIds else true
+                    if (search == "") category?.id in it.categoryIds else true
                 }
             
         }

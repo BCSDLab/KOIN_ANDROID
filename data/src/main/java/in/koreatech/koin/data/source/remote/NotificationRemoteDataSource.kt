@@ -10,6 +10,10 @@ class NotificationRemoteDataSource @Inject constructor(
     suspend fun getPermissionInfo(): NotificationPermissionInfoResponse =
         userAuthApi.getNotificationPermissionInfo()
 
+    suspend fun postReviewPromptNotification(storeId: Int) {
+        userAuthApi.postReviewPromptNotification(storeId)
+    }
+
     suspend fun updateSubscription(type: String) {
         userAuthApi.updateSubscription(type)
     }
