@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.store.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -44,7 +43,7 @@ class StoreViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val _search = MutableStateFlow("")
     private val refreshEvent = MutableSharedFlow<Unit>()
-    private val _category = MutableStateFlow<StoreCategory?>(null)
+    private val _category = MutableStateFlow<StoreCategories?>(StoreCategories(0, "", ""))
     private val _stores = MutableStateFlow<List<Store>>(emptyList())
     private val _store = MutableStateFlow<Store?>(null)
     private val _needToProceedStoreInfo = MutableSharedFlow<NeedSignUpStoreInfo>()
@@ -56,13 +55,13 @@ class StoreViewModel @Inject constructor(
     val searchRelated get() = _searchRelated
 
     val search: StateFlow<String> = _search.asStateFlow()
-    val category: StateFlow<StoreCategory?> = _category.asStateFlow()
+    val category: StateFlow<StoreCategories?> = _category.asStateFlow()
     val stores: StateFlow<List<Store>> = _stores.asStateFlow()
     val store: StateFlow<Store?> = _store.asStateFlow()
     val needToProceedStoreInfo = _needToProceedStoreInfo.asSharedFlow()
 
-    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
-    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
+    private val _storeCategoryList = MutableLiveData<List<StoreCategories>>(emptyList())
+    val storeCategoryList: LiveData<List<StoreCategories>> get() = _storeCategoryList
 
     private val _storeSorter = MutableLiveData<StoreSorter>()
     val storeSorter: LiveData<StoreSorter> get() = _storeSorter
@@ -74,7 +73,7 @@ class StoreViewModel @Inject constructor(
     val isDelivery: LiveData<Boolean> get() = _isDelivery
 
     init {
-        _storeSorter.value = StoreSorter.NONE
+        _storeSorter.value = StoreSorter.COUNT
         getStoreCategories()
         getStoreEvents()
         //changeCategory()
@@ -90,11 +89,11 @@ class StoreViewModel @Inject constructor(
         _search.value = query
     }
 
-    fun setCategory(storeCategory: StoreCategory?) {
-        if (category.value == storeCategory) {
-            _category.value = StoreCategory.All
+    fun setCategory(storeCategoryId: Int?) {
+        if(category.value?.id == storeCategoryId) {
+            _category.value = _storeCategoryList.value?.get(0)
         } else {
-            _category.value = storeCategory
+            _category.value = storeCategoryId?.let { _storeCategoryList.value?.get(it - 1) }
         }
     }
 
@@ -191,7 +190,9 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    private fun getStoreEvents() {
+    fun getEventListSize() = storeEvents.value?.size
+
+    private fun getStoreEvents(){
         viewModelScope.launch {
             _storeEvents.value = getStoreEventUseCase()
         }
@@ -199,7 +200,7 @@ class StoreViewModel @Inject constructor(
 
     private fun getStoreCategories() {
         viewModelScope.launchWithLoading {
-            _storeCategories.value = getStoreCategoriesUseCase()
+            _storeCategoryList.value = getStoreCategoriesUseCase()
         }
     }
 
