@@ -11,6 +11,7 @@ import java.time.LocalTime
 class TimetableEventTest {
     val sampleEvent = TimetableEvent( // given
         id = 1,
+        lectureId = 1,
         name = "강의 제목",
         color = TimetableColor(Color(0xFFAFBBF2),Color(0xFFAFBBF2)),
         dayOfWeek = DayOfWeek.FRIDAY,

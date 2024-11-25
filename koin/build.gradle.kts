@@ -136,4 +136,8 @@ dependencies {
     implementation(libs.timber)
 
     implementation(libs.compose.lifecycle)
+    implementation(libs.kotlinxCollectionsImmutable)
+
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose.m3)
 }
