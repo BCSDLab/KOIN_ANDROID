@@ -11,7 +11,6 @@ import `in`.koreatech.koin.data.constant.WEEK_IN_MILLIS
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -87,7 +86,7 @@ class ArticleDataStore @Inject constructor(
 
     suspend fun saveKeywordNotiIndex() {
         dataStore.edit { preferences ->
-            var notiIndex = preferences[KEY_NOTI_INDEX] ?: 0
+            var notiIndex = preferences[KEY_NOTI_INDEX] ?: -1
             val lastUpdateTime = preferences[KEY_NOTI_LAST_UPDATE] ?: 0L
             val currentTime = System.currentTimeMillis()
 
