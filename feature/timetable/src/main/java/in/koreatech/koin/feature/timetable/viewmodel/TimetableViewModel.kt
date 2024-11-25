@@ -25,7 +25,6 @@ import `in`.koreatech.koin.feature.timetable.state.TimetableState
 import `in`.koreatech.koin.feature.timetable.utils.calculateEndTime
 import `in`.koreatech.koin.feature.timetable.utils.calculateStartTime
 import `in`.koreatech.koin.feature.timetable.utils.duplicationByTimeTableEvents
-import `in`.koreatech.koin.feature.timetable.utils.duplicationLecture
 import `in`.koreatech.koin.feature.timetable.utils.formatTimeRange
 import `in`.koreatech.koin.feature.timetable.utils.getTimetableEvents
 import `in`.koreatech.koin.feature.timetable.utils.isValidationPlace
@@ -312,14 +311,6 @@ class TimetableViewModel @Inject constructor(
         _customContentState.value = _customContentState.value.copy(professor = text)
     }
 
-    fun updatePlaceTextChange(text: String) {
-        _customContentState.value = _customContentState.value.copy(
-            time = _customContentState.value.time.copy(
-                place = text
-            )
-        )
-    }
-
     fun updateExtraPlaceByIdTextChange(id: Int, text: String) {
         var editContents = customContentState.value.data.toMutableList()
 
@@ -336,26 +327,18 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun updateDayOfWeekChange(content: CustomExtraContentState) {
-        if (content.id == -1) {
-            val editContent = customContentState.value.time
-            val timeContent = editContent.copy(dayOfWeek = content.dayOfWeek)
-            _customContentState.value = _customContentState.value.copy(
-                time = timeContent
-            )
-        } else {
-            var editContents = customContentState.value.data.toMutableList()
+        var editContents = customContentState.value.data.toMutableList()
 
-            editContents = editContents.map { event ->
-                if (event.id == content.id) {
-                    event.copy(dayOfWeek = content.dayOfWeek, isError = false)
-                } else {
-                    event
-                }
-            }.toMutableList()
+        editContents = editContents.map { event ->
+            if (event.id == content.id) {
+                event.copy(dayOfWeek = content.dayOfWeek, isError = false)
+            } else {
+                event
+            }
+        }.toMutableList()
 
-            _customContentState.value =
-                _customContentState.value.copy(data = editContents.toImmutableList())
-        }
+        _customContentState.value =
+            _customContentState.value.copy(data = editContents.toImmutableList())
 
         val updateClickedEvents = mutableListOf<TimetableEvent>()
         updateClickedEvents.add(customContentState.value.toTimetableEvent())
@@ -450,32 +433,22 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun updateStarTimeContent(content: CustomExtraContentState) {
-        if (content.id == -1) {
-            _customContentState.value = _customContentState.value.copy(
-                time = content.copy(
+        var editContents = customContentState.value.data.toMutableList()
+
+        editContents = editContents.map { event ->
+            if (event.id == content.id) {
+                event.copy(
                     startTime = content.startTime,
                     endTime = content.calculateEndTime(),
                     isError = false,
                 )
-            )
-        } else {
-            var editContents = customContentState.value.data.toMutableList()
+            } else {
+                event
+            }
+        }.toMutableList()
 
-            editContents = editContents.map { event ->
-                if (event.id == content.id) {
-                    event.copy(
-                        startTime = content.startTime,
-                        endTime = content.calculateEndTime(),
-                        isError = false,
-                    )
-                } else {
-                    event
-                }
-            }.toMutableList()
-
-            _customContentState.value =
-                _customContentState.value.copy(data = editContents.toImmutableList())
-        }
+        _customContentState.value =
+            _customContentState.value.copy(data = editContents.toImmutableList())
 
         val updateClickedEvents = mutableListOf<TimetableEvent>()
         updateClickedEvents.add(customContentState.value.toTimetableEvent())
@@ -488,32 +461,22 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun updateEndTimeContent(content: CustomExtraContentState) {
-        if (content.id == -1) {
-            _customContentState.value = _customContentState.value.copy(
-                time = content.copy(
+        var editContents = customContentState.value.data.toMutableList()
+
+        editContents = editContents.map { event ->
+            if (event.id == content.id) {
+                event.copy(
                     startTime = content.calculateStartTime(),
                     endTime = content.endTime,
                     isError = false,
                 )
-            )
-        } else {
-            var editContents = customContentState.value.data.toMutableList()
+            } else {
+                event
+            }
+        }.toMutableList()
 
-            editContents = editContents.map { event ->
-                if (event.id == content.id) {
-                    event.copy(
-                        startTime = content.calculateStartTime(),
-                        endTime = content.endTime,
-                        isError = false,
-                    )
-                } else {
-                    event
-                }
-            }.toMutableList()
-
-            _customContentState.value =
-                _customContentState.value.copy(data = editContents.toImmutableList())
-        }
+        _customContentState.value =
+            _customContentState.value.copy(data = editContents.toImmutableList())
 
         val updateClickedEvents = mutableListOf<TimetableEvent>()
         updateClickedEvents.add(customContentState.value.toTimetableEvent())
@@ -527,12 +490,12 @@ class TimetableViewModel @Inject constructor(
 
     fun updateTimetableLectures(lecture: Lecture) {
         when (isDuplicateClassTime(lecture)) {
-            true -> { // TODO : 강의 중복일 경우
+            true -> {
                 _state.value = _state.value.copy(duplicationLecture = lecture)
                 updateIsLectureDuplicationDialogVisible(true)
             }
 
-            false -> { // TODO : 강의 중복이 아니고 추가 되어야 할 경우
+            false -> {
                 addTimetableLectures(lecture)
             }
         }
@@ -541,12 +504,6 @@ class TimetableViewModel @Inject constructor(
     fun updateCustomContent() {
         customContentState.value.schedule.ifEmpty {
             _customContentState.value = _customContentState.value.copy(isScheduleError = true)
-            return
-        }
-
-        customContentState.value.duplicationLecture()?.let {
-            _customContentState.value = _customContentState.value.copy(data = it.toImmutableList())
-            _sideEffect.value = TimetableSideEffect.SnackBar("시간이 중복됩니다.")
             return
         }
 
@@ -590,7 +547,6 @@ class TimetableViewModel @Inject constructor(
                 _customContentState.value = CustomContentState()
                 updateIsLectureDuplicationDialogVisible(false)
             }.onFailure {
-                // TODO : 강의 추가 실패
                 Timber.e("addTimetableLecture Remote Error Message : ${it.message}")
                 updateLoading(false)
             }
@@ -636,7 +592,6 @@ class TimetableViewModel @Inject constructor(
                             addTimetableLectures(lecture)
                         } ?: return@onSuccess
                     }.onFailure {
-                        // TODO : 로그인 시 중복 강의 삭제 실패
                         Timber.e("Delete Lectures : ${it.message}")
                     }
                 }
@@ -723,7 +678,6 @@ class TimetableViewModel @Inject constructor(
                         )
                         updateIsLectureDuplicationDialogVisible(false)
                     }.onFailure {
-                        // TODO : 강의 추가 실패
                         Timber.e("addTimetableLecture Remote Error Message : ${it.message}")
                         updateLoading(false)
                     }
@@ -781,12 +735,10 @@ class TimetableViewModel @Inject constructor(
                                     loading = false
                                 )
                             }.onFailure {
-                                // TODO : 강의 불러오기 실패
                                 updateLoading(false)
                                 Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
                             }
                     }.onFailure {
-                        // TODO : 강의 삭제 실패
                         updateLoading(false)
                         Timber.e("deleteTimetableLectureUseCase Remote Error Message : ${it.message}")
                     }
