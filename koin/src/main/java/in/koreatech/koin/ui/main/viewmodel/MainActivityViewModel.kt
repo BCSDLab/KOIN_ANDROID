@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -191,7 +192,7 @@ class MainActivityViewModel @Inject constructor(
 
     fun checkKeywordNotiContent() {
         viewModelScope.launchWithLoading {
-            articleRepository.saveKeywordNotiIndex()
+            articleRepository.saveKeywordNotiIndex().launchIn(viewModelScope)
         }
     }
 
