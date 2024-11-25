@@ -57,7 +57,7 @@ fun EditTimetableFrameDialog(
     var showingDeleteDialog by remember { mutableStateOf(false) }
 
     // TODO:: 최대 길이에 관련된 명세 추가되면 수정
-    val maxTimetableFrameNameLength = remember { 10 }
+    val maxTimetableFrameNameLength = remember { 200 }
 
     EditTimetableFrameDialog(
         modifier = modifier,
@@ -172,6 +172,7 @@ private fun EditTimetableFrameDialog(
                         cursorColor = Color.Black, // 클릭 시, 커서색
                         focusedTextColor = Color.Black // 클릭 시, 입력 텍스트 색
                     ),
+                    singleLine = true,
                     onValueChange = onValueChanged
                 )
                 TextCheckbox(
