@@ -1,8 +1,11 @@
 package `in`.koreatech.bus.screen.search.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +23,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BusSearchResultViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val arguments = savedStateHandle.toRoute<Routes.BusSearchResult>()
+    val departure = arguments.departure
+    val arrival = arguments.arrival
 
     private val entryTime = LocalDateTime.now()
 

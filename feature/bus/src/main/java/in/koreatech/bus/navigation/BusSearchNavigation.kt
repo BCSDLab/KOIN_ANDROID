@@ -33,8 +33,8 @@ fun BusSearchNavigation(
             BusSearchScreen(
                 modifier = Modifier.fillMaxSize(),
                 onNavigationIconClick = { navController.popBackStack() },
-                onSearchSuccess = {
-                    navController.navigate(Routes.BusSearchResult)
+                onSearch = { departure, arrival ->
+                    navController.navigate(Routes.BusSearchResult(departure, arrival))
                 }
             )
         }
