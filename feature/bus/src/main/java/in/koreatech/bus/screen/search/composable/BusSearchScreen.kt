@@ -51,7 +51,7 @@ fun BusSearchScreen(
             onNavigationIconClick = onNavigationIconClick
         )
 
-        BusSearchContentView(
+        BusSearchView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 16.dp)
@@ -114,7 +114,7 @@ private fun BusSearchScreenPreview() {
             onNavigationIconClick = { }
         )
 
-        BusSearchContentView(
+        BusSearchView(
             departure = "",
             arrival = "",
             modifier = Modifier
@@ -138,7 +138,7 @@ private fun BusSearchScreen2Preview() {
             onNavigationIconClick = { }
         )
 
-        BusSearchContentView(
+        BusSearchView(
             departure = "코리아텍",
             arrival = "",
             modifier = Modifier
@@ -161,7 +161,7 @@ private fun BusSearchScreen3Preview() {
             onNavigationIconClick = { }
         )
 
-        BusSearchContentView(
+        BusSearchView(
             departure = "코리아텍",
             arrival = "천안역",
             modifier = Modifier
