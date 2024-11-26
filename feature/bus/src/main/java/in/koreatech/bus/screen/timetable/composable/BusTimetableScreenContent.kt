@@ -87,7 +87,7 @@ internal fun BusTimetableScreenContent(
                         text = stringResource(R.string.request_for_incorrect_information),
                         iconRes = R.drawable.ic_caution
                     )
-                    if (shouldShowNotice || LocalInspectionMode.current) {
+                    if (shouldShowNotice) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -150,7 +150,7 @@ internal fun BusTimetableScreenContent(
                         }
 
                         BusType.CITY -> {
-                            CityTimetableScreen(
+                            CityTimetableContent(
                                 modifier = Modifier.fillMaxSize()
                                     .background(KoinTheme.colors.neutral100),
                                 timetable = uiState.cityTimetable
