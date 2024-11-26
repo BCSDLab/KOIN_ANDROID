@@ -7,14 +7,16 @@ import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject
-import kotlin.text.replace
 
 @HiltViewModel
 class BusSearchResultViewModel @Inject constructor(
@@ -32,21 +34,24 @@ class BusSearchResultViewModel @Inject constructor(
     var selectedHourIndex = (LocalDateTime.now().hour + 11) % 12
     var selectedMinuteIndex = LocalDateTime.now().minute
 
-    private val _departureTimeText = MutableStateFlow(getEntryTime())
-    val departureTimeText = _departureTimeText.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = getEntryTime()
-    )
+    private val _minDepartureTime = MutableStateFlow(entryTime)
+    val minDepartureTime = _minDepartureTime.asStateFlow()
 
-    val searchResults = flow {
-        emit(tempData)
-    }.combine(departureTimeText) { results, _ ->
+    private val _minDepartureTimeText = MutableStateFlow(getEntryTimeText())
+    val minDepartureTimeText = _minDepartureTimeText.asStateFlow()
+
+    val searchResultUiState = flow {
+        emit(tempData) // TODO API
+    }.combine(minDepartureTime) { results, _ ->
         results.filter { true } // TODO : 필터링
+    }.map<List<BusDepartureInfoViewState>, BusSearchResultUiState> {
+        BusSearchResultUiState.Success(it)
+    }.catch {
+        emit(BusSearchResultUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
+        initialValue = BusSearchResultUiState.Loading
     )
 
     fun setDepartureTimeToNow() {
@@ -57,7 +62,6 @@ class BusSearchResultViewModel @Inject constructor(
             hourIndex = (now.hour + 11) % 12,
             minuteIndex = now.minute
         )
-        setDepartureTimeText()
     }
 
     fun setDepartureTime(dateIndex: Int, daytimeIndex: Int, hourIndex: Int, minuteIndex: Int) {
@@ -69,7 +73,7 @@ class BusSearchResultViewModel @Inject constructor(
     }
 
     private fun setDepartureTimeText() {
-        _departureTimeText.value =
+        _minDepartureTimeText.value =
             "${dateList[selectedDateIndex]} ${daytimeList[selectedDaytimeIndex]} ${hourList[selectedHourIndex]}:${
                 minuteList[selectedMinuteIndex].padStart(2, '0')
             }"
@@ -90,7 +94,7 @@ class BusSearchResultViewModel @Inject constructor(
     }
 
     // TODO : 모듈화?
-    private fun getEntryTime(): String {
+    private fun getEntryTimeText(): String {
         val formatter = DateTimeFormatter.ofPattern("a h:mm", Locale.KOREA)
         return "오늘 " + entryTime.format(formatter)
     }
@@ -98,6 +102,12 @@ class BusSearchResultViewModel @Inject constructor(
     companion object {
         private const val EXTRA_DATE_COUNT = 365
     }
+}
+
+sealed interface BusSearchResultUiState {
+    data class Success(val departureInfos: List<BusDepartureInfoViewState>) : BusSearchResultUiState
+    data object Loading : BusSearchResultUiState
+    data object LoadFailed : BusSearchResultUiState
 }
 
 private val tempData = listOf(
