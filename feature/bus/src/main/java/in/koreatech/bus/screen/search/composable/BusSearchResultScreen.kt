@@ -32,6 +32,8 @@ fun BusSearchResultScreen(
         selectedHourIndex = viewModel.selectedHourIndex,
         selectedMinuteIndex = viewModel.selectedMinuteIndex,
         onMinDepartureTimeSetToNow = viewModel::setDepartureTimeToNow,
-        onCompleteMinDepartureTime = viewModel::setDepartureTime
+        onCompleteMinDepartureTime = viewModel::setDepartureTime,
+        departure = viewModel.departure,
+        arrival = viewModel.arrival,
     )
 }

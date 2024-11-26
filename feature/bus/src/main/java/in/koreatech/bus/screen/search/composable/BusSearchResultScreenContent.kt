@@ -47,6 +47,8 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BusSearchResultScreenContent(
+    departure: String,
+    arrival: String,
     searchResultUiState: BusSearchResultUiState,
     minDepartureTimeText: String,
     dateList: ImmutableList<String>,
@@ -69,7 +71,7 @@ internal fun BusSearchResultScreenContent(
         modifier = modifier
     ) {
         KoinTopAppBar(
-            title = "한기대 → 천안터미널", // TODO : 방향
+            title = stringResource(R.string.search_result_direction_title, departure, arrival),
             onNavigationIconClick = onNavigationIconClick
         )
 
@@ -181,6 +183,8 @@ private fun BusSearchResultScreenPreview() {
         selectedDaytimeIndex = 0,
         selectedHourIndex = 0,
         selectedMinuteIndex = 0,
+        departure = "코리아텍",
+        arrival = "청주"
     )
 }
 
@@ -211,6 +215,8 @@ private fun BusSearchResultScreenLoadingPreview() {
         selectedDaytimeIndex = 0,
         selectedHourIndex = 0,
         selectedMinuteIndex = 0,
+        departure = "교대역",
+        arrival = "코리아텍"
     )
 }
 
