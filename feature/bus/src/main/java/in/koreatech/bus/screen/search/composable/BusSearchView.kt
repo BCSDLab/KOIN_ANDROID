@@ -34,7 +34,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
-internal fun BusSearchContentView(
+internal fun BusSearchView(
     departure: String,
     arrival: String,
     modifier: Modifier = Modifier,
