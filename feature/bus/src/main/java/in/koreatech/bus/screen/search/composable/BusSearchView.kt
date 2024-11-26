@@ -160,7 +160,7 @@ internal fun BusSearchView(
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
                 enabled = searchButtonEnabled,
-                text = stringResource(R.string.search),
+                text = stringResource(R.string.action_search),
                 contentPadding = PaddingValues(vertical = 12.dp),
                 onClick = onSearchClicked
             )

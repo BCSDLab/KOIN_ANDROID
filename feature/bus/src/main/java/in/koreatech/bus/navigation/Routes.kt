@@ -7,5 +7,5 @@ internal object Routes {
     @Serializable data object BusTimetable
 
     @Serializable data object BusSearch
-    @Serializable data object BusSearchResult // TODO : 타입
+    @Serializable data class BusSearchResult(val departure: String, val arrival: String) // TODO : 타입
 }
