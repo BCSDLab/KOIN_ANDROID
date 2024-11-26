@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
@@ -131,13 +132,13 @@ internal fun BusTimetableScreenContent(
                 if (LocalInspectionMode.current)
                     selectedTimetableTypeTab = previewTab
 
-                when (val uiState = busTimetableUiState) {
+                when (busTimetableUiState) {
                     is BusTimetableUiState.Success -> when (selectedTimetableTypeTab) {
                         BusType.SHUTTLE -> {
                             ShuttleTimetableScreen(
                                 modifier = Modifier.fillMaxSize()
                                     .background(KoinTheme.colors.neutral100),
-                                regions = uiState.shuttleRegions.toPersistentList()
+                                regions = busTimetableUiState.shuttleRegions.toPersistentList()
                             )
                         }
 
@@ -145,7 +146,7 @@ internal fun BusTimetableScreenContent(
                             ExpressTimetableScreen(
                                 modifier = Modifier.fillMaxSize()
                                     .background(KoinTheme.colors.neutral100),
-                                timetable = uiState.expressTimetable
+                                timetable = busTimetableUiState.expressTimetable
                             )
                         }
 
@@ -153,12 +154,12 @@ internal fun BusTimetableScreenContent(
                             CityTimetableContent(
                                 modifier = Modifier.fillMaxSize()
                                     .background(KoinTheme.colors.neutral100),
-                                timetable = uiState.cityTimetable
+                                timetable = busTimetableUiState.cityTimetable
                             )
                         }
                     }
                     is BusTimetableUiState.Loading -> {
-                        // TODO 로딩뷰
+                        CommonLoadingView(modifier = Modifier.fillMaxSize().padding(top = 100.dp))
                     }
                     is BusTimetableUiState.LoadFailed -> {
                         // TODO 로드 실패, Pull To Refresh 있으면 좋을 듯.
@@ -198,6 +199,17 @@ private fun BusTimetableCityScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.CITY,
         busTimetableUiState = previewUiState,
+        shouldShowNotice = true,
+        notice = "나랏말싸미 중국에 달라 어쩌구저쩌구 킹종대왕 갓종대왕"
+    )
+}
+@Preview(showBackground = true)
+@Composable
+private fun BusTimetableLoadingScreenPreview() {
+    BusTimetableScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        previewTab = BusType.CITY,
+        busTimetableUiState = BusTimetableUiState.Loading,
         shouldShowNotice = true,
         notice = "나랏말싸미 중국에 달라 어쩌구저쩌구 킹종대왕 갓종대왕"
     )
