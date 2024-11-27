@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import `in`.koreatech.bus.screen.search.composable.BusSearchResultScreen
+import `in`.koreatech.bus.screen.searchresult.composable.BusSearchResultScreen
 import `in`.koreatech.bus.screen.search.composable.BusSearchScreen
 
 @Composable
