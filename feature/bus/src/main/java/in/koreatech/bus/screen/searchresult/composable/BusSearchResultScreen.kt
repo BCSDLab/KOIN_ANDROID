@@ -1,11 +1,11 @@
-package `in`.koreatech.bus.screen.search.composable
+package `in`.koreatech.bus.screen.searchresult.composable
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import `in`.koreatech.bus.screen.search.viewmodel.BusSearchResultViewModel
+import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultViewModel
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

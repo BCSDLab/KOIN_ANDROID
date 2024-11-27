@@ -1,4 +1,4 @@
-package `in`.koreatech.bus.screen.search.composable
+package `in`.koreatech.bus.screen.searchresult.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
