@@ -38,7 +38,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -50,52 +52,12 @@ class MainActivityViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val abTestUseCase: ABTestUseCase,
-    articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
-
-    val hotArticles: StateFlow<List<ArticleMainState.Content>> =
-        articleRepository.fetchHotArticleHeaders()
-            .map {
-                it.take(HOT_ARTICLE_COUNT).map { article -> article.toContent() }
-            }.catch {
-
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = emptyList()
-            )
-    val articleNoti: StateFlow<ArticleMainState.Noti> =
-        articleRepository.fetchKeywordNoti()
-            .map { it.toNoti() }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = articleNotiContent.first().toNoti()
-            )
-
-    val articleMain: StateFlow<List<ArticleMainState>> = combine(
-        articleNoti, hotArticles
-    ) { noti, article ->
-        listOf(noti) + article
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
-    )
-
-    private val _selectedPosition = MutableLiveData(0)
-    val selectedPosition: LiveData<Int> get() = _selectedPosition
-    private val _diningData = MutableLiveData<List<Dining>>(listOf())
-    val diningData: LiveData<List<Dining>> get() = _diningData
-    private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
-    val selectedType: LiveData<DiningType> get() = _selectedType
-
-    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
-    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
 
     val bannerABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
@@ -125,8 +87,8 @@ class MainActivityViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first()
-    )
+        initialValue = null
+    ).filterNotNull()
 
     val diningABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
@@ -156,6 +118,50 @@ class MainActivityViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first()
     )
+
+    val hotArticles: StateFlow<List<ArticleMainState.Content>> =
+        articleRepository.fetchHotArticleHeaders()
+            .map {
+                it.take(HOT_ARTICLE_COUNT).map { article -> article.toContent() }
+            }.catch {
+
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
+    val articleNoti: StateFlow<ArticleMainState.Noti> =
+        articleRepository.fetchKeywordNotiIndex()
+            .map { articleNotiContent[it].toNoti() }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = articleNotiContent.first().toNoti()
+            )
+
+    val articleMain: StateFlow<List<ArticleMainState>> = combine(
+        bannerABTestExperimentGroup, articleNoti, hotArticles
+    ) { experimentGroup, noti, articles ->
+        when (experimentGroup) {
+            ExperimentGroup.MAIN_BANNER_NEW -> listOf(noti) + articles
+            ExperimentGroup.MAIN_BANNER_ORIGINAL -> articles
+            else -> articles
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = emptyList()
+    )
+
+    private val _selectedPosition = MutableLiveData(0)
+    val selectedPosition: LiveData<Int> get() = _selectedPosition
+    private val _diningData = MutableLiveData<List<Dining>>(listOf())
+    val diningData: LiveData<List<Dining>> get() = _diningData
+    private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
+    val selectedType: LiveData<DiningType> get() = _selectedType
+
+    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
+    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
 
     init {
         updateDining()
@@ -187,6 +193,12 @@ class MainActivityViewModel @Inject constructor(
                     _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
                 }
             }
+    }
+
+    fun checkKeywordNotiContent() {
+        viewModelScope.launchWithLoading {
+            articleRepository.saveKeywordNotiIndex().launchIn(viewModelScope)
+        }
     }
 
     fun switchBusNode() {
