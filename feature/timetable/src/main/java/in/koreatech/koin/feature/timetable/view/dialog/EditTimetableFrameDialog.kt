@@ -36,42 +36,42 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledButtonType
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 import `in`.koreatech.koin.feature.timetable.component.TextCheckbox
 
-data class TimeTableFrameState(
-    val id: Int,
-    val timetableName: String,
-    val isMain: Boolean
-)
 
 @Composable
 fun EditTimetableFrameDialog(
-    timetableFrameState: TimeTableFrameState,
+    timetableFrameState: TimetableFrame?,
     onDismiss: () -> Unit,
-    onConfirmEdit: (TimeTableFrameState) -> Unit,
-    onDeleteFrame: (TimeTableFrameState) -> Unit,
+    onConfirmEdit: (TimetableFrame) -> Unit,
+    onDeleteFrame: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isMain by remember { mutableStateOf(timetableFrameState.isMain) }
-    var timetableName by remember { mutableStateOf(timetableFrameState.timetableName) }
+    var isMain by remember { mutableStateOf(timetableFrameState?.isMain ?: false) }
+    var timetableName by remember { mutableStateOf(timetableFrameState?.timetableName ?: "") }
     var showingDeleteDialog by remember { mutableStateOf(false) }
 
     EditTimetableFrameDialog(
         modifier = modifier,
         timetableName = timetableName,
         isMain = isMain,
+        isCheckboxEnabled = timetableFrameState?.let{ !it.isMain } ?: true,
         onDismiss = onDismiss,
         onConfirm = {
-            onConfirmEdit(
-                timetableFrameState.copy(
-                    timetableName = timetableName,
-                    isMain = isMain
+            timetableFrameState?.let {
+                onConfirmEdit(
+                    it.copy(
+                        timetableName = timetableName,
+                        isMain = isMain
+                    )
                 )
-            )
+            }
+
         },
         onClickDelete = { showingDeleteDialog = true },
         onValueChanged = {
@@ -87,7 +87,10 @@ fun EditTimetableFrameDialog(
             timetableName = timetableName,
             onDismiss = { showingDeleteDialog = false },
             onConfirm = {
-                onDeleteFrame(timetableFrameState)
+                showingDeleteDialog = false
+                timetableFrameState?.let {
+                    onDeleteFrame()
+                }
             }
         )
     }
@@ -98,6 +101,7 @@ fun EditTimetableFrameDialog(
 private fun EditTimetableFrameDialog(
     timetableName: String,
     isMain: Boolean,
+    isCheckboxEnabled: Boolean,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
     onClickDelete: () -> Unit,
@@ -166,6 +170,7 @@ private fun EditTimetableFrameDialog(
                     text = stringResource(id = R.string.edit_titletable_frame_main),
                     textStyle = KoinTheme.typography.medium14,
                     isChecked = isMain,
+                    enabled = isCheckboxEnabled,
                     onCheckChanged = onCheckChanged
                 )
                 Row(
@@ -214,7 +219,8 @@ private fun DeleteTimetableFrameDialog(
             modifier = Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
-            shape = KoinTheme.shapes.extraSmall
+            shape = KoinTheme.shapes.extraSmall,
+            color = Color.White
         ) {
             Column(
                 modifier = Modifier
@@ -268,7 +274,7 @@ private fun DeleteTimetableFrameDialog(
 private fun EditTimetableFrameDialogPreview() {
     KoinTheme {
         EditTimetableFrameDialog(
-            timetableFrameState = TimeTableFrameState(
+            timetableFrameState = TimetableFrame(
                 id = 1,
                 timetableName = "시간표1",
                 isMain = true
