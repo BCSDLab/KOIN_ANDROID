@@ -52,14 +52,16 @@ import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
-import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
+import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
+import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -78,11 +80,19 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
-    private val hotArticleAdapter = HotArticleAdapter(
-        onClick = {
+    private val articleMainAdapter = ArticleMainAdapter(
+        onNotiClick = {
+            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.TO_MANAGE_KEYWORD, it.value)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_keyword")
+            }
+            startActivity(intent)
+        },
+        onArticleClick = {
+            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.POPULAR_NOTICE_BANNER, it.title)
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data =
-                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
+                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
             }
             startActivity(intent)
         }
@@ -162,10 +172,13 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.checkKeywordNotiContent()
         viewModel.updateDining()
     }
 
     private fun initView() = with(binding) {
+        viewModel.checkKeywordNotiContent()
+        initArticleBannerABTest()
         initDiningABTest()
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
@@ -207,7 +220,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         viewPagerHotArticle.apply {
-            adapter = hotArticleAdapter
+            adapter = articleMainAdapter
             offscreenPageLimit = 3
             enableAutoScroll(this@MainActivity, 5_000)
         }
@@ -245,7 +258,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
                         startActivity(intent)
                     },
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
                 )
             }
         }
@@ -289,13 +304,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.hotArticles.collect {
-                    hotArticleAdapter.submitList(it)
-                }
-            }
-        }
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
@@ -421,10 +429,20 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
     }
 
+    private fun initArticleBannerABTest() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.articleMain.collectLatest {
+                    articleMainAdapter.submitList(it)
+                }
+            }
+        }
+    }
+
     private fun initDiningABTest() {
         binding.textSeeMoreDining.setOnClickListener {
             Intent(this, DiningActivity::class.java).run {
-                 startActivity(this)
+                startActivity(this)
             }
         }
         lifecycleScope.launch {
@@ -434,6 +452,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         ExperimentGroup.MAIN_DINING_NEW -> {
                             binding.textSeeMoreDining.visibility = View.VISIBLE
                         }
+
                         ExperimentGroup.MAIN_DINING_ORIGINAL -> {
                             binding.textSeeMoreDining.visibility = View.GONE
                         }

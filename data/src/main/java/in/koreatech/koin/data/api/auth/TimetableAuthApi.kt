@@ -47,7 +47,9 @@ interface TimetableAuthApi {
     ): TimetableFrameResponse
 
     @DELETE("/v2/timetables/frame")
-    suspend fun deleteTimetableFrame()
+    suspend fun deleteTimetableFrame(
+        @Query("id") frameId: Int
+    ): Response<Unit>
 
     @GET("/v2/timetables/frames")
     suspend fun getTimetableFrames(
@@ -71,5 +73,7 @@ interface TimetableAuthApi {
     ): Response<Unit>
 
     @DELETE("/v2/all/timetables/frame")
-    suspend fun deleteAllTimetableFrame()
+    suspend fun deleteAllTimetableFrame(
+        @Query("semester") semester: String,
+    ): Response<Unit>
 }

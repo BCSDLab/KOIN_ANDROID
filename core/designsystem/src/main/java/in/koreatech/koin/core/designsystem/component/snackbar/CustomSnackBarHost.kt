@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -22,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -32,35 +31,46 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 fun CustomSnackBarHost(
     hotState: SnackbarHostState,
-    radius: Dp = 0.dp,
-    messageTextStyle: TextStyle = KoinTheme.typography.regular12.copy(
-        color = Color.White
+    modifier: Modifier = Modifier,
+    radius: Dp = 6.dp,
+
+    messageTextStyle: TextStyle =KoinTheme.typography.regular14.copy(
+        color = KoinTheme.colors.neutral0
     ),
-    actionLabelTextStyle: TextStyle = KoinTheme.typography.regular12.copy(
-        color = Color.White
+    actionLabelTextStyle: TextStyle = KoinTheme.typography.regular14.copy(
+        color = KoinTheme.colors.sub500
     ),
-    background: Color = Color.Black,
+    background: Color = KoinTheme.colors.primary700,
     alignment: Alignment = Alignment.BottomCenter,
     paddingValues: PaddingValues = PaddingValues(bottom = 20.dp, start = 10.dp, end = 10.dp),
-    innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp)
+    innerPaddingValues: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 20.dp),
+    onAction: (() -> Unit)? = null
 ) {
-    SnackbarHost(
-        hostState = hotState,
-    ) { snackbarData ->
-        SnackBarContent(
-            messageText = snackbarData.visuals.message,
-            actionLabelText = snackbarData.visuals.actionLabel ?: "",
-            radius = radius,
-            background = background,
-            messageTextStyle = messageTextStyle,
-            actionLabelTextStyle = actionLabelTextStyle,
-            alignment = alignment,
-            paddingValues = paddingValues,
-            innerPaddingValues = innerPaddingValues,
-            onAction = { snackbarData.dismiss() }
-        )
-    }
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        contentAlignment = alignment
+    ) {
+        SnackbarHost(
+            hostState = hotState,
+        ) { snackbarData ->
+            SnackBarContent(
+                messageText = snackbarData.visuals.message,
+                actionLabelText = snackbarData.visuals.actionLabel ?: "",
+                radius = radius,
+                background = background,
+                messageTextStyle = messageTextStyle,
+                actionLabelTextStyle = actionLabelTextStyle,
+                innerPaddingValues = innerPaddingValues,
+                onAction = {
+                    onAction?.invoke()
+                    snackbarData.dismiss()
+                }
+            )
+        }
 
+    }
 }
 
 @Composable
@@ -76,42 +86,35 @@ private fun SnackBarContent(
     actionLabelTextStyle: TextStyle = KoinTheme.typography.regular12.copy(
         color = Color.White
     ),
-    alignment: Alignment = Alignment.BottomCenter,
-    paddingValues: PaddingValues = PaddingValues(bottom = 20.dp, start = 10.dp, end = 10.dp),
     innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp),
     onAction: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        contentAlignment = alignment
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(radius))
+            .background(background)
+            .padding(innerPaddingValues)
     ) {
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(radius))
-                .background(background)
-                .padding(innerPaddingValues)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = messageText,
+                style = messageTextStyle,
+                modifier = Modifier.weight(1f),
+            )
+            Spacer(modifier = Modifier.weight(0.05f))
+            if (actionLabelText.isNotEmpty()) {
                 Text(
-                    text = messageText,
-                    style = messageTextStyle,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(0.2f)
+                        .noRippleClickable { onAction() },
+                    text = actionLabelText,
+                    style = actionLabelTextStyle,
+                    textAlign = TextAlign.End
                 )
-                Spacer(modifier = Modifier.weight(0.05f))
-                if (actionLabelText.isNotEmpty()) {
-                    Text(
-                        text = actionLabelText,
-                        style = actionLabelTextStyle,
-                        modifier = Modifier.weight(0.1f).noRippleClickable { onAction() }
-                    )
-                }
-
             }
         }
     }

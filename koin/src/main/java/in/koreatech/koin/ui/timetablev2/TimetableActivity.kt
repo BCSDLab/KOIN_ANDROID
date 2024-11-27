@@ -27,7 +27,8 @@ import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWith
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
-import `in`.koreatech.koin.feature.timetable.model.dummyDepartment
+import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
+import `in`.koreatech.koin.feature.timetable.model.TimetableConstants.departments
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
 import `in`.koreatech.koin.feature.timetable.state.TimetableSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.BitmapUtils
@@ -40,9 +41,11 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDial
 import `in`.koreatech.koin.feature.timetable.view.dialog.SelectDepartmentDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.TimetableTimePickerDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
+import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class TimetableActivity : KoinNavigationDrawerActivity() {
@@ -57,6 +60,15 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     private val registerTimetableSemesterActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // handle activity result api
+            if (it.resultCode == RESULT_OK) {
+                it.data?.getBundleExtra(TimetableSemesterActivity.BUNDLE_EXTRA_KEY)?.let {
+                    val frameId = it.getInt(TimetableSemesterActivity.TIMETABLE_FRAME_ID)
+                    val semester = it.getString(TimetableSemesterActivity.SEMESTER).orEmpty()
+                    val frameName =
+                        it.getString(TimetableSemesterActivity.TIMETABLE_FRAME_NAME).orEmpty()
+                    viewModel.getRefreshData(frameId, semester, frameName)
+                }
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +104,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             hideKeyboard(sheetState.isCollapsed)
 
             setAppbarEvent {
-                lectures.ifEmpty {
+                state.semesters.ifEmpty {
                     viewModel.updateSideEffect(TimetableSideEffect.SnackBar(getString(R.string.timetable_error_no_semester)))
                     return@setAppbarEvent
                 }
@@ -140,7 +152,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 if (dialogState.isSelectDepartmentVisible) {
                     SelectDepartmentDialog(
                         department = searchEngineState.department,
-                        departments = dummyDepartment,
+                        departments = departments,
                         onConfirm = viewModel::updateDepartment,
                         onDismiss = viewModel::updateIsSelectDepartmentDialogVisible
                     )
@@ -148,7 +160,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
                 if (dialogState.isLoginVisible) {
                     RequestLoginDialog(
-                        onConfirm = {}, // TODO : 로그인 화면으로 연결
+                        onConfirm = ::startToLoginActivity, // TODO : 로그인 화면으로 연결
                         onDismiss = viewModel::updateIsLoginDialogVisible
                     )
                 }
@@ -188,11 +200,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
                 TimetableScreen(
                     range = state.range,
-                    loading = state.loading,
                     lectures = lectures,
                     detailLecture = state.detailLecture,
                     semesters = state.semesters,
                     currentSemester = state.currentSemester,
+                    timetableName = state.timetableName,
                     selectedLecture = state.selectedLecture,
                     timetableEvents = state.timetableEvents,
                     clickedTimetableEvents = state.clickedTimetableEvents,
@@ -207,7 +219,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onSearchTextChange = viewModel::updateSearchText,
                     onClickTimetableSchedule = {
                         startToTimetableSemesterActivity()
-                    }, // TODO : 학기 시간표 선택
+                    },
                     onClickDownloadTimetable = {
                         scope.launch {
                             saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap())
@@ -279,6 +291,8 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickAddCustomContent = viewModel::addCustomExtraContent,
                     onClickRemoveCustomContent = viewModel::removeCustomExtraContent
                 )
+
+                CircleLoadingBar(loading = state.loading)
             }
 
             CustomSnackBarHost(snackBarHost)
@@ -312,14 +326,28 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun getUserExtra(callback: (isAnonymous: Boolean) -> Unit) {
-        callback(intent.getBooleanExtra("isAnonymous", true))
+        callback(intent.getBooleanExtra("isAnonymous", false))
     }
 
     private fun startToTimetableSemesterActivity() {
         val intent = Intent(this, TimetableSemesterActivity::class.java).apply {
-            putExtra(BUNDLE_EXTRA_KEY, bundleOf(IS_ANONYMOUS to viewModel.state.value.isAnonymous))
+            putExtra(
+                BUNDLE_EXTRA_KEY, bundleOf(
+                    IS_ANONYMOUS to viewModel.state.value.isAnonymous,
+                    SEMESTER to viewModel.state.value.currentSemester,
+                    FRAME_ID to viewModel.state.value.frameId,
+                    FRAME_NAME to viewModel.state.value.timetableName
+                )
+            )
         }
         registerTimetableSemesterActivityResult.launch(intent)
+    }
+
+    private fun startToLoginActivity() {
+        Intent(this, LoginActivity::class.java).apply {
+            putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
+        }.let(::startActivity)
+        finish()
     }
 
     private fun saveTimetable(bitmap: Bitmap) {
@@ -350,6 +378,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     companion object {
         private const val SCREEN_TITLE = "시간표"
         const val BUNDLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
+        const val BUNDLE_LOGIN_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
+        const val NAV_TIMETABLE = "timetable"
         const val IS_ANONYMOUS = "isAnonymous"
+        const val SEMESTER = "semester"
+        const val FRAME_ID = "frameId"
+        const val FRAME_NAME = "frameName"
     }
 }

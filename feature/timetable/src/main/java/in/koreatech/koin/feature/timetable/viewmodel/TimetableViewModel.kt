@@ -12,8 +12,8 @@ import `in`.koreatech.koin.domain.usecase.timetable.AddTimetableLectureUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableFrameLectureUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableLectureUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
-import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
 import `in`.koreatech.koin.feature.timetable.state.CustomContentState
@@ -43,13 +43,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
 class TimetableViewModel @Inject constructor(
     private val getLecturesUseCase: GetLecturesUseCase,
-    private val getSemesterUseCase: GetSemesterUseCase,
+    private val getSemesterUseCase: GetUserSemestersUseCase,
     private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
     private val addTimetableLectureUseCase: AddTimetableLectureUseCase,
     private val deleteTimetableLectureUseCase: DeleteTimetableLectureUseCase,
@@ -97,7 +96,6 @@ class TimetableViewModel @Inject constructor(
             updateLoading(true)
             val semesters = getSemester(state.value.isAnonymous)
             val semester = semesters.firstOrNull().orEmpty()
-            // TODO: 로그인 시, 학기를 불러올 때 Empty 이면 학기 추가를 해야하는 경고문 추가하기 (디자인 없어서 추가해야 함)
 
             _lectures.value = getLectures(semester)
 
@@ -120,22 +118,22 @@ class TimetableViewModel @Inject constructor(
                 }
 
                 false -> {
-                    // TODO : 로그인 시 시간표 수업 불러오기
                     val timetableFrames = getTimetableFrames(semester).ifEmpty {
                         updateSemesters(semesters, semester)
                         return@launch
                     }
-                    val frameId = timetableFrames.find { it.isMain }?.id
-                    if (frameId == null) {
+                    val frame = timetableFrames.find { it.isMain }
+                    if (frame == null) {
                         updateSemesters(semesters, semester)
                         return@launch
                     }
 
-                    timetableRepository.getTimetableLectures(frameId)
+                    timetableRepository.getTimetableLectures(frame.id)
                         .onSuccess { timetableLectures ->
                             _state.value = _state.value.copy(
                                 range = timetableLectures.formatTimeRange(),
                                 frameId = timetableLectures.timetableFrameId,
+                                timetableName = frame.timetableName,
                                 semesters = semesters,
                                 timetableEvents = timetableLectures.getTimetableEvents(),
                                 currentSemester = semester,
@@ -148,8 +146,79 @@ class TimetableViewModel @Inject constructor(
                         }
                 }
             }
+        }
+    }
 
-
+    fun getRefreshData(frameId: Int, semester: String, frameName: String) {
+        viewModelScope.launch {
+            updateLoading(true)
+            _lectures.value = getLectures(semester)
+            when (state.value.isAnonymous) {
+                true -> {
+                    timetableRepository.getTimetableLectures(semester)
+                        .onSuccess { timetableLectures ->
+                            _state.value = _state.value.copy(
+                                range = timetableLectures.formatTimeRange(),
+                                timetableEvents = timetableLectures.getTimetableEvents(),
+                                currentSemester = semester,
+                                timetableLectures = timetableLectures,
+                                bottomSheetCollapse = true,
+                                selectedLecture = null,
+                                etcClickedTimetableEvents = emptyList(),
+                                clickedTimetableEvents = emptyList(),
+                                bottomSheetUI = BottomSheetUI.DEFAULT,
+                                bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
+                                loading = false
+                            )
+                        }.onFailure {
+                            updateLoading(false)
+                            Timber.e("getTimetableLectures Local Error Message : ${it.message}")
+                        }
+                }
+                false -> {
+                    if (state.value.frameId == frameId) {
+                        updateLoading(false)
+                        return@launch
+                    }
+                    val semesters = getSemester(state.value.isAnonymous)
+                    if (frameId == -1) {
+                        _state.value = TimetableState().copy(
+                            isAnonymous = state.value.isAnonymous,
+                            semesters = semesters,
+                            bottomSheetCollapse = true,
+                            selectedLecture = null,
+                            etcClickedTimetableEvents = emptyList(),
+                            clickedTimetableEvents = emptyList(),
+                            bottomSheetUI = BottomSheetUI.DEFAULT,
+                            bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
+                            loading = false
+                        )
+                        return@launch
+                    }
+                    timetableRepository.getTimetableLectures(frameId)
+                        .onSuccess { timetableLectures ->
+                            _state.value = _state.value.copy(
+                                range = timetableLectures.formatTimeRange(),
+                                frameId = timetableLectures.timetableFrameId,
+                                timetableName = frameName,
+                                timetableEvents = timetableLectures.getTimetableEvents(),
+                                currentSemester = semester,
+                                semesters = semesters,
+                                selectedLecture = null,
+                                etcClickedTimetableEvents = emptyList(),
+                                clickedTimetableEvents = emptyList(),
+                                bottomSheetCollapse = true,
+                                timetableLectures = timetableLectures,
+                                bottomSheetUI = BottomSheetUI.DEFAULT,
+                                bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
+                                loading = false
+                            )
+                        }.onFailure {
+                            updateLoading(false)
+                            Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
+                        }
+                }
+            }
         }
     }
 
@@ -501,6 +570,7 @@ class TimetableViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
+            updateLoading(true)
             timetableRepository.postTimetableCustomLectures(
                 frameId = state.value.frameId,
                 lectures = customContentState.value.toLectures()
@@ -514,6 +584,7 @@ class TimetableViewModel @Inject constructor(
                     clickedTimetableEvents = emptyList(),
                     etcClickedTimetableEvents = emptyList(),
                     selectedLecture = null,
+                    bottomSheetCollapse = true,
                     loading = false
                 )
                 _customContentState.value = CustomContentState()
@@ -574,6 +645,10 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun addCustomExtraContent() {
+        if (customContentState.value.data.size >= 5) {
+            _sideEffect.value = TimetableSideEffect.SnackBar(""""시간 및 장소 추가" 는 최대 5개까지 가능합니다.""")
+            return
+        }
         val editContent = customContentState.value.data.toMutableList()
         if (customContentState.value.data.isEmpty()) {
             editContent.add(CustomExtraContentState(id = 0))
@@ -631,9 +706,10 @@ class TimetableViewModel @Inject constructor(
 
             false -> {
                 viewModelScope.launch {
+                    updateLoading(true)
                     addTimetableLectureUseCase(
                         frameId = state.value.frameId,
-                        lectures = listOf(lecture) // TODO : updateTimetableLectures 함수 파라미터 lecture를 리스트로 변경 필요
+                        lectures = listOf(lecture)
                     ).onSuccess { timetableLectures ->
                         _state.value = _state.value.copy(
                             range = timetableLectures.formatTimeRange(),
@@ -686,8 +762,8 @@ class TimetableViewModel @Inject constructor(
             }
 
             false -> {
-                // TODO : 로그인 시, 강의 삭제 액션
                 viewModelScope.launch {
+                    updateLoading(true)
                     deleteTimetableFrameLectureUseCase(
                         state.value.frameId,
                         lecture.id
@@ -702,13 +778,16 @@ class TimetableViewModel @Inject constructor(
                                     etcClickedTimetableEvents = emptyList(),
                                     selectedLecture = null,
                                     timetableLectures = timetableLectures,
+                                    loading = false
                                 )
                             }.onFailure {
                                 // TODO : 강의 불러오기 실패
+                                updateLoading(false)
                                 Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
                             }
                     }.onFailure {
                         // TODO : 강의 삭제 실패
+                        updateLoading(false)
                         Timber.e("deleteTimetableLectureUseCase Remote Error Message : ${it.message}")
                     }
                 }
@@ -726,6 +805,7 @@ class TimetableViewModel @Inject constructor(
             )
 
             viewModelScope.launch {
+                updateLoading(true)
                 timetableRepository.putTimetableLectures(state.value.currentSemester, timetables)
                     .onSuccess { timetableLectures ->
                         _state.value = _state.value.copy(
@@ -736,6 +816,7 @@ class TimetableViewModel @Inject constructor(
                             etcClickedTimetableEvents = emptyList(),
                             bottomSheetCollapse = true,
                             selectedLecture = null,
+                            loading = false
                         )
                         updateIsLectureDuplicationDialogVisible(false)
                     }.onFailure {
@@ -746,6 +827,7 @@ class TimetableViewModel @Inject constructor(
             }
         } else {
             viewModelScope.launch {
+                updateLoading(true)
                 deleteTimetableLectureUseCase(id).onSuccess {
                     timetableRepository.getTimetableLectures(state.value.frameId)
                         .onSuccess { timetableLectures ->
@@ -758,13 +840,14 @@ class TimetableViewModel @Inject constructor(
                                 bottomSheetCollapse = true,
                                 selectedLecture = null,
                                 timetableLectures = timetableLectures,
+                                loading = false,
                             )
                         }.onFailure {
-                            // TODO : 강의 불러오기 실패
+                            updateLoading(false)
                             Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
                         }
                 }.onFailure {
-                    // TODO : 강의 삭제 실패
+                    updateLoading(false)
                     Timber.e("removeTimetableLectureById Remote Error Message : ${it.message}")
                 }
             }
@@ -773,6 +856,7 @@ class TimetableViewModel @Inject constructor(
 
     private fun postLocalTimetableLectures(timetables: TimetableLectures) {
         viewModelScope.launch {
+            updateLoading(true)
             timetableRepository.putTimetableLectures(state.value.currentSemester, timetables)
                 .onSuccess { timetableLectures ->
                     _state.value = _state.value.copy(
@@ -780,7 +864,9 @@ class TimetableViewModel @Inject constructor(
                         timetableLectures = timetableLectures,
                         timetableEvents = timetableLectures.getTimetableEvents(),
                         clickedTimetableEvents = emptyList(),
+                        etcClickedTimetableEvents = emptyList(),
                         selectedLecture = null,
+                        loading = false
                     )
                     updateIsLectureDuplicationDialogVisible(false)
                 }.onFailure {
