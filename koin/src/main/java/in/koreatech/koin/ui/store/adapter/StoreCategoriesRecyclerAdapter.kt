@@ -40,7 +40,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
         val events = getItem(position)
         with(holder){
             container.setOnClickListener {
-                onItemClickListener?.onItemClick(events.id)
+                onItemClickListener?.onItemClick(position)
                 if(selectPosition == position){
                     isDoubleClick = !isDoubleClick
                 }
@@ -66,7 +66,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
         fun onItemClick(id: Int)
     }
 
-    inline fun setOnItemClickListener(crossinline onItemClick: (Id: Int) -> Unit) {
+    inline fun setOnItemClickListener(crossinline onItemClick: (id: Int) -> Unit) {
         onItemClickListener = object : StoreCategoriesRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(id: Int) {
                 onItemClick(id)
@@ -76,6 +76,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
     }
 
     fun initCategory(id: Int?){
+        selectPosition = id
         preCategories = id
     }
 

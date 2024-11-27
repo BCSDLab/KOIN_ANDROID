@@ -23,6 +23,7 @@ import `in`.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.signup.SignupActivity
+import `in`.koreatech.koin.ui.timetablev2.TimetableActivity
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
@@ -80,6 +81,11 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                 finish()
             }
         } else {
+            if (handleTimetableIntent()) {
+                startActivity(Intent(this@LoginActivity, TimetableActivity::class.java))
+                finish()
+                return
+            }
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
@@ -151,6 +157,12 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         isBusinessButton.setOnClickListener {
             startActivity(Intent(this@LoginActivity, BusinessLoginActivity::class.java))
         }
+
+    }
+
+    private fun handleTimetableIntent(): Boolean {
+        val bundle = intent.getBundleExtra(TimetableActivity.BUNDLE_LOGIN_EXTRA_KEY)
+        return bundle?.getBoolean(TimetableActivity.NAV_TIMETABLE, false) ?: false
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

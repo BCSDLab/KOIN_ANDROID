@@ -31,12 +31,12 @@ import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy
  */
 @Composable
 fun TextChipGroup(
-    modifier: Modifier = Modifier,
-    chipOverflowStrategy: ChipOverflowStrategy = Flow(),
     titles: List<String>,
-    shape: Shape = RoundedCornerShape(50),
     vararg selectedChipIndexes: Int,
     onChipSelected: (title: String) -> Unit,
+    modifier: Modifier = Modifier,
+    chipOverflowStrategy: ChipOverflowStrategy = Flow(),
+    shape: Shape = RoundedCornerShape(50),
     showClickRipple: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(6.dp),

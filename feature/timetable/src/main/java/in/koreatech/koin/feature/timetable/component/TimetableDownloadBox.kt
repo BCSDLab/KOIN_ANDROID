@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 
@@ -35,7 +36,7 @@ fun TimetableDownloadBox(
                 color = KoinTheme.colors.neutral300,
                 shape = RoundedCornerShape(10.dp)
             )
-            .clickable { onClick() }
+            .noRippleClickable { onClick() }
             .padding(5.dp),
     ) {
         Text(

@@ -12,7 +12,6 @@ import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.toStringL
 import `in`.koreatech.business.util.getImageInfo
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.constant.SIGN_UP_IMAGE_MAX
-import `in`.koreatech.koin.domain.constant.STORE_MENU_IMAGE_MAX
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
@@ -61,8 +60,15 @@ class BusinessAuthViewModel @Inject constructor(
     fun onStoreNumberChanged(storeNumber: String) = blockingIntent {
         reduce {
             state.copy(
-                shopNumber = storeNumber,
-                signupContinuationState = if (storeNumber.length != 10) SignupContinuationState.BusinessNumberIsNotValidate
+                shopNumber = if (storeNumber.length <=10) storeNumber else state.shopNumber,
+            )
+        }
+    }
+
+    fun storeNumberCheck() = intent {
+        reduce {
+            state.copy(
+                signupContinuationState = if (state.shopNumber.length != 10) SignupContinuationState.BusinessNumberIsNotValidate
                 else SignupContinuationState.RequestedSmsValidation
             )
         }
@@ -92,32 +98,35 @@ class BusinessAuthViewModel @Inject constructor(
         postSideEffect(BusinessAuthSideEffect.NavigateToNextScreen)
     }
 
-    fun changeImageUri(uriList: List<Uri>){
+    fun changeImageUri(context: Context, phoneNumber: String, password: String, uriList: List<Uri>) {
         intent {
             reduce {
-                if(uriList.size < SIGN_UP_IMAGE_MAX){
+                if (uriList.size <= SIGN_UP_IMAGE_MAX) {
                     val newMenuUriList = state.imageUriList.toMutableList()
-                    for(imageUri in uriList) {
+                    for (imageUri in uriList) {
                         newMenuUriList.add(imageUri.toString())
-                        insertStoreFileUrl(imageUri.toString().substringAfterLast("/"), imageUri.toString())
+                        insertStoreFileUrl(
+                            imageUri.toString().substringAfterLast("/"),
+                            imageUri.toString()
+                        )
                     }
-                    if(newMenuUriList.size != SIGN_UP_IMAGE_MAX)newMenuUriList.add(ImageHolder.TempUri.toString())
+                    if (newMenuUriList.size <= SIGN_UP_IMAGE_MAX) newMenuUriList.add(ImageHolder.TempUri.toString())
 
                     state.copy(
                         imageUriList = newMenuUriList
                     )
-                }
-                else{
+                } else {
                     state.copy(
                         imageUriList = uriList.toStringList()
                     )
                 }
             }
+            uploadImageList(context)
         }
     }
 
 
-    fun onPositiveButtonClicked(context: Context, phoneNumber: String, password: String) {
+    private fun uploadImageList(context: Context) {
         intent {
             viewModelScope.launch {
                 state.imageUriList.forEach { uriString ->
@@ -134,15 +143,6 @@ class BusinessAuthViewModel @Inject constructor(
                         }
                     }
                 }
-               sendRegisterRequest(
-                    fileUrls = state.fileInfo.map { it.resultUrl },
-                    companyNumber = state.shopNumber,
-                    phoneNumber = phoneNumber,
-                    name = state.name,
-                    password = password,
-                    shopId = state.shopId,
-                    shopName = state.shopName,
-                )
             }
         }
     }
@@ -216,7 +216,7 @@ class BusinessAuthViewModel @Inject constructor(
         }
     }
 
-    private fun sendRegisterRequest(
+     fun sendRegisterRequest(
         fileUrls: List<String>,
         companyNumber: String,
         phoneNumber: String,
