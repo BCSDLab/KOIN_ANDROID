@@ -1,4 +1,4 @@
-package `in`.koreatech.bus.screen.search.viewmodel
+package `in`.koreatech.bus.screen.searchresult.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
