@@ -47,6 +47,17 @@ object EventLogger {
     }
 
     /**
+     * 푸시알림 접속 이벤트 로깅
+     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param label: 이벤트 소분류
+     * @param value: 이벤트 값
+     * @param extras: 추가 이벤트 값
+     */
+    fun logNotificationEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
+        logEvent(action, EventCategory.NOTIFICATION, label, value, *extras)
+    }
+
+    /**
      * @param action: 커스텀 이벤트 발생(EventAction 이외에 action)
      * @param category: 커스텀 이벤트 종류(EventCategory 이외에 category)
      * @param label: 이벤트 소분류
@@ -107,7 +118,8 @@ enum class EventAction(val value: String) {
 enum class EventCategory(val value: String) {
     CLICK("click"),
     SCROLL("scroll"),
-    SWIPE("swipe")      // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
+    SWIPE("swipe"),     // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
+    NOTIFICATION("notification")
 }
 
 data class EventExtra(val key: String, val value: String)
