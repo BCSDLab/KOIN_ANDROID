@@ -172,10 +172,12 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.checkKeywordNotiContent()
         viewModel.updateDining()
     }
 
     private fun initView() = with(binding) {
+        viewModel.checkKeywordNotiContent()
         initArticleBannerABTest()
         initDiningABTest()
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
@@ -430,19 +432,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initArticleBannerABTest() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.bannerABTestExperimentGroup.collectLatest {
-                    when (it) {
-                        ExperimentGroup.MAIN_BANNER_NEW -> {
-                            viewModel.articleMain.collectLatest {
-                                articleMainAdapter.submitList(it)
-                            }
-                        }
-                        ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
-                            viewModel.hotArticles.collectLatest {
-                                articleMainAdapter.submitList(it)
-                            }
-                        }
-                    }
+                viewModel.articleMain.collectLatest {
+                    articleMainAdapter.submitList(it)
                 }
             }
         }

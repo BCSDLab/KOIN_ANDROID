@@ -151,9 +151,9 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchKeywordNoti(): Flow<ArticleNoti> {
+    override fun fetchKeywordNotiIndex(): Flow<Int> {
         return flow {
-            emit(articleNotiContent[articleLocalDataSource.fetchKeywordNotiIndex()])
+            emit(articleLocalDataSource.fetchKeywordNotiIndex())
         }
     }
 
