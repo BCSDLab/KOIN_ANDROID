@@ -92,4 +92,7 @@
     <string name="timetable_time_picker_start_title">시작시간을 선택해주세요.</string>
     <string name="timetable_time_picker_end_title">종료시간을 선택해주세요.</string>
 
+    <string name="download">다운로드</string>
+    <string name="download_description">다운로드 하시겠어요?</string>
+
 </resources>

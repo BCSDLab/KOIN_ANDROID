@@ -16,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -38,6 +37,7 @@ import `in`.koreatech.koin.feature.timetable.utils.BitmapUtils
 import `in`.koreatech.koin.feature.timetable.view.TimetableBottomSheetContentMode
 import `in`.koreatech.koin.feature.timetable.view.TimetableScreen
 import `in`.koreatech.koin.feature.timetable.view.dialog.DeleteLectureDialog
+import `in`.koreatech.koin.feature.timetable.view.dialog.DownloadDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.LectureDuplicationDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDialog
@@ -48,7 +48,6 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TimetableActivity : KoinNavigationDrawerActivity() {
@@ -210,6 +209,24 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     )
                 }
 
+                if (dialogState.isDownloadVisible) {
+                    DownloadDialog(
+                        onConfirm = {
+                            scope.launch {
+                                saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap()) {
+                                    if (it) {
+                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장되었어요."))
+                                    } else {
+                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장을 실패했어요."))
+                                    }
+                                    viewModel.updateIsDownloadDialogVisible(false)
+                                }
+                            }
+                        },
+                        onDismiss = viewModel::updateIsDownloadDialogVisible
+                    )
+                }
+
                 TimetableScreen(
                     range = state.range,
                     lectures = lectures,
@@ -234,9 +251,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         startToTimetableSemesterActivity()
                     },
                     onClickDownloadTimetable = {
-                        scope.launch {
-                            saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap())
-                        }
+                        viewModel.updateIsDownloadDialogVisible(true)
                     },
                     onClickAddLectureMode = viewModel::updateTimetableBottomSheetMode,
                     onClickAddCustomLectureMode = {
@@ -369,13 +384,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         }.let(::startActivity)
     }
 
-    private fun saveTimetable(bitmap: Bitmap) {
+    private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {
         BitmapUtils(this).saveBitmapImage(bitmap).let {
-            if (it) {
-                viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장중"))
-            } else {
-                viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장 실패"))
-            }
+            callback(it)
         }
     }
 
