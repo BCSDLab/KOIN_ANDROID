@@ -401,6 +401,10 @@ class TimetableViewModel @Inject constructor(
         )
     }
 
+    fun updateIsDownloadDialogVisible(visible: Boolean) {
+        _dialogState.value = _dialogState.value.copy(isDownloadVisible = visible)
+    }
+
     fun updateIsSelectDepartmentDialogVisible(visible: Boolean) {
         _dialogState.value = _dialogState.value.copy(isSelectDepartmentVisible = visible)
     }
