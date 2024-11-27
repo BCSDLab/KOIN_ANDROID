@@ -1,4 +1,4 @@
-package `in`.koreatech.bus.screen.search.composable
+package `in`.koreatech.bus.screen.searchresult.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -31,7 +31,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.screen.CommonLoadingView
-import `in`.koreatech.bus.screen.search.viewmodel.BusSearchResultUiState
+import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
+import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -64,7 +65,7 @@ internal fun BusSearchResultScreenContent(
     onMinDepartureTimeSetToNow: () -> Unit = {},
     onCompleteMinDepartureTime: (dateIndex: Int, daytimeIndex: Int, hourIndex: Int, minuteIndex: Int) -> Unit = { _, _, _, _ -> },
 
-) {
+    ) {
     var showSelectDialog by remember { mutableStateOf(false) }
 
     Column(
