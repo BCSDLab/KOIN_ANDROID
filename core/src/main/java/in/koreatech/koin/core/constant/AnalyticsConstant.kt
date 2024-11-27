@@ -9,6 +9,7 @@ object AnalyticsConstant {
     }
 
     object Label {
+        const val MAIN_SCROLL = "main_scroll"
         const val MAIN_SHOP_CATEGORIES = "main_shop_categories"
         const val MAIN_SHOP_BENEFIT = "main_shop_benefit"
         const val SHOP_CATEGORIES = "shop_categories"
@@ -95,6 +96,11 @@ object AnalyticsConstant {
         const val BENEFIT_SHOP_CALL = "benefit_shop_call"
 
         const val MENU_SHARE = "menu_share"
+
+        const val CAMPUS_DINING_1 = "CAMPUS_dining_1"
+        const val CAMPUS_NOTICE_1 = "CAMPUS_notice_1"
+        const val POPULAR_NOTICE_BANNER = "popular_notice_banner"
+        const val TO_MANAGE_KEYWORD = "to_manage_keyword"
     }
 
     const val PREVIOUS_PAGE = "previous_page"

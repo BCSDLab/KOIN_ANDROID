@@ -45,6 +45,7 @@ import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
 import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
+import `in`.koreatech.koin.ui.timetablev2.TimetableSemesterActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.closeDrawer
@@ -297,6 +298,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.Timetable -> {
+//                    goToTimetableActivity()
                     if (userInfoFlow.value.isAnonymous) {
                         goToAnonymousTimeTableActivity()
                     } else {
@@ -471,6 +473,29 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             startActivity(intent)
         }
     }
+
+    /**
+     * 완성되면 아래 함수 주석 풀고 연결
+     */
+//    private fun goToTimetableActivity() {
+//        if (menuState != MenuState.Main) {
+//            goToActivityFinish(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
+//        } else {
+//            val intent = Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
+//                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
+//                    putExtra("isAnonymous", true)
+//                } else {
+//                    putExtra("isAnonymous", false)
+//                }
+//            }
+//            EventLogger.logClickEvent(
+//                action = EventAction.USER,
+//                label = "hamburger",
+//                value = "시간표"
+//            )
+//            startActivity(intent)
+//        }
+//    }
 
     private fun goToTimetableActivity() {
         if (menuState != MenuState.Main) {

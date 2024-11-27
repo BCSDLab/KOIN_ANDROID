@@ -14,16 +14,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KoinTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = KoinTheme.typography.medium18,
     onNavigationIconClick: () -> Unit = {},
     actions: @Composable() (RowScope.() -> Unit) = {},
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -35,7 +38,10 @@ fun KoinTopAppBar(
 ) {
     CenterAlignedTopAppBar(
         title = {
-            Text(title)
+            Text(
+                text = title,
+                style = textStyle,
+            )
         },
         modifier = modifier,
         navigationIcon = {

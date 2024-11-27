@@ -42,15 +42,15 @@ fun TextChip(
     Box(
         modifier = modifier
             .clip(shape)
-            .background(if(isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
-            .padding(contentPadding)
             .then(
                 if (showClickRipple) Modifier.clickable {
                     onSelect()
                 } else Modifier.noRippleClickable {
                     onSelect()
                 }
-            ),
+            )
+            .background(if(isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
+            .padding(contentPadding),
         contentAlignment = Alignment.Center
     ) {
         Text(

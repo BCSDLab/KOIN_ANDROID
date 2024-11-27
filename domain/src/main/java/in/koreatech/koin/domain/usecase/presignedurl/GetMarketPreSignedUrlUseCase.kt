@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.domain.usecase.presignedurl
 
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

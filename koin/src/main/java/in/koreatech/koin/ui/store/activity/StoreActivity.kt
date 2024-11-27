@@ -111,8 +111,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
     private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener {
             val previous = viewModel.category.value?.name
-
-            viewModel.setCategory(it)
+            viewModel.setCategory(it + 1)
             binding.searchEditText.text.clear()
             val current = viewModel.category.value?.name
 
@@ -171,13 +170,12 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         initView()
         initSortingTooltip()
 
-        val initStoreCategory =
-            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)
-        storeCategoriesAdapter.selectPosition =
-            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
-        viewModel.setCategory(initStoreCategory)
+        val initStoreCategory = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY , 0)
+        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
 
+        viewModel.setCategory(initStoreCategory!! + 1)
         storeCategoriesAdapter.initCategory(initStoreCategory)
+
     }
 
     override fun onBackPressed() {

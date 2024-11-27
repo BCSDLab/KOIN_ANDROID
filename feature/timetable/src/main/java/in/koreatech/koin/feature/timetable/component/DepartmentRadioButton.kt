@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.timetable.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Surface
@@ -24,11 +26,12 @@ fun DepartmentRadioButton(
     val borderColor = if (isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral500
     val textColor = if (isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral500
     Surface(
-        modifier = modifier.selectable(
-            selected = isSelected,
-            role = null,
-            onClick = onClick
-        ),
+        modifier = modifier
+            .selectable(
+                selected = isSelected,
+                role = null,
+                onClick = onClick
+            ),
         shape = KoinTheme.shapes.extraSmall,
         color = containerColor,
         border = BorderStroke(0.5.dp, borderColor)

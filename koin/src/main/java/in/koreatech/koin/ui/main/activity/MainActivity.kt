@@ -3,8 +3,13 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,6 +19,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.bus.BusSearchActivity
+import `in`.koreatech.bus.BusTimetableActivity
+import `in`.koreatech.bus.MainEntryView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
@@ -21,6 +29,7 @@ import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
@@ -41,16 +50,19 @@ import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.bus.BusActivity
+import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
-import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
+import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
+import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -61,17 +73,27 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
 
+    private var scrollPercentage = 0.0f
+
     @Inject
     lateinit var navigator: Navigator
 
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
-    private val hotArticleAdapter = HotArticleAdapter(
-        onClick = {
+    private val articleMainAdapter = ArticleMainAdapter(
+        onNotiClick = {
+            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.TO_MANAGE_KEYWORD, it.value)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_keyword")
+            }
+            startActivity(intent)
+        },
+        onArticleClick = {
+            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.POPULAR_NOTICE_BANNER, it.title)
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data =
-                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.board.id}")
+                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
             }
             startActivity(intent)
         }
@@ -126,7 +148,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
-
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
@@ -155,6 +176,27 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initView() = with(binding) {
+        initArticleBannerABTest()
+        initDiningABTest()
+        binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
+            val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
+            val range = binding.nestedScrollViewMain.computeVerticalScrollRange()
+
+            val newScrollPercentage = 100.0f * offset / (range - extent)
+            if (EventUtils.didCrossedScrollThreshold(
+                    scrollPercentage,
+                    newScrollPercentage
+                ) && scrollPercentage.toDouble() != .0
+            ) {
+                EventLogger.logScrollEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.MAIN_SCROLL,
+                    "70%"
+                )
+            }
+            scrollPercentage = 100.0f * offset / (range - extent)
+        }
         viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
         storeListButton.setOnClickListener {
             gotoStoreActivity(0)
@@ -176,7 +218,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         viewPagerHotArticle.apply {
-            adapter = hotArticleAdapter
+            adapter = articleMainAdapter
             offscreenPageLimit = 3
             enableAutoScroll(this@MainActivity, 5_000)
         }
@@ -200,6 +242,25 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     R.dimen.view_pager_item_margin
                 )
             )
+        }
+
+        busComposeView.apply {
+            setContent {
+                MainEntryView(
+                    onShuttleTicketClicked = {
+                        // TODO : 유니버스 바로가기
+                    }, onTimetableCardClicked = {
+                        val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
+                        startActivity(intent)
+                    }, onSearchCardClicked = {
+                        val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
+                        startActivity(intent)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                )
+            }
         }
 
         recyclerViewStoreCategory.apply {
@@ -241,13 +302,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.hotArticles.collect {
-                    hotArticleAdapter.submitList(it)
-                }
-            }
-        }
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
@@ -333,9 +387,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
     }
 
-    private fun gotoStoreActivity(position: Int) {
+    private fun gotoStoreActivity(id: Int) {
         val bundle = Bundle()
-        bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
+        bundle.putInt(StoreActivityContract.STORE_CATEGORY, id)
         callDrawerItem(R.id.navi_item_store, bundle)
     }
 
@@ -369,6 +423,50 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     type = Pair(EXTRA_TYPE, type),
                 )
                 startActivity(intent)
+            }
+        }
+    }
+
+    private fun initArticleBannerABTest() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.bannerABTestExperimentGroup.collectLatest {
+                    when (it) {
+                        ExperimentGroup.MAIN_BANNER_NEW -> {
+                            viewModel.articleMain.collectLatest {
+                                articleMainAdapter.submitList(it)
+                            }
+                        }
+                        ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
+                            viewModel.hotArticles.collectLatest {
+                                articleMainAdapter.submitList(it)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initDiningABTest() {
+        binding.textSeeMoreDining.setOnClickListener {
+            Intent(this, DiningActivity::class.java).run {
+                startActivity(this)
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.diningABTestExperimentGroup.collect {
+                    when (it) {
+                        ExperimentGroup.MAIN_DINING_NEW -> {
+                            binding.textSeeMoreDining.visibility = View.VISIBLE
+                        }
+
+                        ExperimentGroup.MAIN_DINING_ORIGINAL -> {
+                            binding.textSeeMoreDining.visibility = View.GONE
+                        }
+                    }
+                }
             }
         }
     }

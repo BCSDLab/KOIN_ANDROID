@@ -161,6 +161,7 @@
     <string name="forgotpassword_sent_email_message">학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?</string>
 
     <!--Timetable-->
+    <string name="timetable_semester">시간표 수정</string>
     <string name="timetable_saved">저장되었습니다.</string>
     <string name="timetable_saved_fail">저장에 실패했습니다.</string>
     <string name="timetable_delete_class_message">해당 수업을 삭제하시겠습니까?</string>
@@ -619,6 +620,8 @@
     <string name="search_input_required">검색어를 입력해주세요.</string>
     <string name="empty_search_result">일치하는 공지글이 없습니다.\n다른 키워드로 다시 시도해주세요.</string>
     <string name="now_hot_article">지금 인기있는 공지</string>
+    <string name="hot_article_noti_title">자취방 양도글, 가장 먼저 확인하고 싶을 때?</string>
+    <string name="hot_article_noti_sub">공지가 업로드 되면 바로 알려주는\n키워드 알림 설정하러가기</string>
     <string name="attachment">첨부파일</string>
     <string name="downloading">다운로드 중</string>
     <string name="start_download">파일을 다운로드합니다.</string>

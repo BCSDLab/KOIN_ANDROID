@@ -79,7 +79,7 @@ android {
 
 fun getPropertyKey(propertyKey: String): String {
     val nullableProperty: String? =
-        gradleLocalProperties(rootDir).getProperty(propertyKey)
+        gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
     return nullableProperty ?: "null"
 }
 
@@ -122,7 +122,6 @@ dependencies {
     implementation(libs.markerman.roundedImageView)
     implementation(libs.powerSpinner)
     implementation(libs.viewpager2)
-    implementation(libs.napier)
 
     implementation(libs.kakao.share)
     implementation(libs.lottie)
@@ -135,4 +134,10 @@ dependencies {
     implementation(libs.feature.delivery.ktx)
 
     implementation(libs.timber)
+
+    implementation(libs.compose.lifecycle)
+    implementation(libs.kotlinxCollectionsImmutable)
+
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose.m3)
 }

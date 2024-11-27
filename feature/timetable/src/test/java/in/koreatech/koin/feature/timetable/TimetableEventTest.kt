@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.timetable
 
 import androidx.compose.ui.graphics.Color
+import `in`.koreatech.koin.feature.timetable.model.TimetableColor
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -10,8 +11,9 @@ import java.time.LocalTime
 class TimetableEventTest {
     val sampleEvent = TimetableEvent( // given
         id = 1,
+        lectureId = 1,
         name = "강의 제목",
-        color = Color(0xFFAFBBF2),
+        color = TimetableColor(Color(0xFFAFBBF2),Color(0xFFAFBBF2)),
         dayOfWeek = DayOfWeek.FRIDAY,
         start = LocalTime.of(9, 30),
         end = LocalTime.of(10, 30),

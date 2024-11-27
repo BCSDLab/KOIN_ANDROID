@@ -2,18 +2,35 @@ package `in`.koreatech.koin.feature.timetable.model
 
 import androidx.compose.ui.graphics.Color
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
+import `in`.koreatech.koin.domain.model.timetable.response.Semester
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import java.time.DayOfWeek
 import java.time.LocalTime
 
 object TimetableConstants {
     val days = listOf("월", "화", "수", "목", "금")
+    val departments = listOf(
+        "디자인ㆍ건축공학부",
+        "고용서비스정책학과",
+        "기계공학부",
+        "메카트로닉스공학부",
+        "산업경영학부",
+        "전기ㆍ전자ㆍ통신공학부",
+        "컴퓨터공학부",
+        "에너지신소재화학공학부",
+        "HRD학과",
+        "교양학부",
+        "안전공학과",
+        "융합학과",
+    )
     const val eventHeight = 64
 }
 
 val dummyEvent = TimetableEvent(
     id = 1,
+    lectureId = 1,
     name = "강의 제목",
-    color = Color(0xFFAFBBF2),
+    color = TimetableColor(Color(0xFF890000),Color(0x33890000)),
     dayOfWeek = DayOfWeek.FRIDAY,
     start = LocalTime.of(16, 0),
     end = LocalTime.of(18, 0),
@@ -41,16 +58,23 @@ val dummyLecture = Lecture(
     )
 )
 
+
+
+
 val defaultColors = listOf(
-    Color(0xfffdbcf5),
-    Color(0xfffdbcf5),
-    Color(0xfffedb8f),
-    Color(0xffc2eead),
-    Color(0xffffb588),
-    Color(0xffffa9b7),
-    Color(0xff8ae9ff),
-    Color(0xff60e4c1),
-    Color(0xffb4bfff),
-    Color(0xff72b0ff),
-    Color(0xffe0e5eb)
+    TimetableColor(Color(0xFF890000),Color(0xFFE7CCCC)),
+    TimetableColor(Color(0xFFFF4444),Color(0xFFFFDADA)),
+    TimetableColor(Color(0xFFFF993B),Color(0xFFFFEBD8)),
+    TimetableColor(Color(0xFFE8D52A),Color(0xFFFAF7D4)),
+    TimetableColor(Color(0xFFD0AE00),Color(0xFFF6EFCC)),
+    TimetableColor(Color(0xFF513A00),Color(0xFFDCD8CC)),
+    TimetableColor(Color(0xFF0C9D61),Color(0xFFCEEBDF)),
+    TimetableColor(Color(0xFF7ABA78),Color(0xFFE4F1E4)),
+    TimetableColor(Color(0xFF366718),Color(0xFFD7E1D1)),
+    TimetableColor(Color(0xFF80C4E9),Color(0xFFE6F3FB)),
+    TimetableColor(Color(0xFF1679AB),Color(0xFFD0E4EE)),
+    TimetableColor(Color(0xFF074173),Color(0xFFCDD9E3)),
+    TimetableColor(Color(0xFF523AE2),Color(0xFFDCD8F9)),
+    TimetableColor(Color(0xFF6F6F6F),Color(0xFFE2E2E2)),
+    TimetableColor(Color(0xFFCBCBCB),Color(0xFFF5F5F5)),
 )
