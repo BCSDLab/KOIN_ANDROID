@@ -7,33 +7,21 @@ data class TimetableLectures(
     val totalGrades: Int,
 ) {
     /**
-     * @reference : TimetableLecturesTest.kt 파일 참고
+     * @test : TimetableLecturesTest.kt
      */
     fun formatTimeRange(): Int {
-        val classTimes = timetable.map { it.classTime.map { it % 100 } }
-        var maxTime = 0
-        classTimes.forEach { times ->
-            times.forEach {
-                if (maxTime < it) {
-                    maxTime = it
-                }
-            }
-        }
+        val maxTime = timetable.flatMap { it.classInfos }
+            .flatMap { it.classTime }
+            .maxOfOrNull { it % 100 } ?: 0
 
-        return  if (maxTime in 18..19) {
-            10
-        } else if (maxTime in 20..21) {
-            11
-        } else if (maxTime in 22..23) {
-            12
-        } else if (maxTime in 24..25) {
-            13
-        } else if (maxTime in 26..27) {
-            14
-        } else if (maxTime in 28..29) {
-            15
-        } else {
-            9
+        return when(maxTime) {
+            in 18..19 -> 10
+            in 20..21 -> 11
+            in 22..23 -> 12
+            in 24..25 -> 13
+            in 26..27 -> 14
+            in 28..29 -> 15
+            else -> 9
         }
     }
 }

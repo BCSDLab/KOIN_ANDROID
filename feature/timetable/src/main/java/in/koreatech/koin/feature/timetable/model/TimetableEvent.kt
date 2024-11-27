@@ -17,10 +17,10 @@ enum class DayOfWeekKorean(
     SUNDAY("일")
 }
 
-fun DayOfWeek.toKorean():String= when (this) {
+fun DayOfWeek.toKorean(): String = when (this) {
     DayOfWeek.MONDAY -> "월요일"
     DayOfWeek.TUESDAY -> "화요일"
-    DayOfWeek.WEDNESDAY-> "수요일"
+    DayOfWeek.WEDNESDAY -> "수요일"
     DayOfWeek.THURSDAY -> "목요일"
     DayOfWeek.FRIDAY -> "금요일"
     DayOfWeek.SATURDAY -> "토요일"
@@ -45,15 +45,15 @@ data class TimetableEvent(
     val description: String? = null,
 ) {
     /**
-     * @test : TimetableEventTest 확인하기
+     * @test : TimetableEventTest.kt
      */
     fun formatClassTimeCode(): Pair<String, String> {
-        val startPrefix = if("${start.hour - 8}".length == 1) "0${start.hour - 8}" else "${start.hour - 8}"
-        val endPrefix = if("${end.hour - 8}".length == 1) "0${end.hour - 8}" else "${end.hour - 8}"
+        val startPrefix = if ("${start.hour - 8}".length == 1) "0${start.hour - 8}" else "${start.hour - 8}"
+        val endPrefix = if ("${end.hour - 8}".length == 1) "0${end.hour - 8}" else "${end.hour - 8}"
         val startSuffix = if ((start.minute == 0)) "A" else "B"
         val endSuffix = if ((end.minute == 0)) "A" else "B"
 
-        return Pair(startPrefix+startSuffix, endPrefix +endSuffix)
+        return Pair(startPrefix + startSuffix, endPrefix + endSuffix)
     }
 
     fun dayOfWeekToKorean(): String =

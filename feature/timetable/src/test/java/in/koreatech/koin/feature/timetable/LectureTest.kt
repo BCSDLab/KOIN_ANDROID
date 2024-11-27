@@ -7,7 +7,7 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 
 class LectureTest {
-    private val lecture = Lecture(
+    private val dummpyLecture = Lecture(
         id = 1,
         code = "HRD011",
         name = "직업능력개발훈련평가",
@@ -24,21 +24,23 @@ class LectureTest {
     )
 
     @Test
-    fun `emptyList 주어질 때, emptyList을 반환한다`() {
-        val lecture1 = lecture
+    fun `강의 시간이 없을 때, 빈 리스트를 반환한다`() {
+        val lecture = dummpyLecture.copy(
+            classTime = emptyList()
+        )
 
-        val result = lecture1.findDayOfWeekAndLocalTime() // when
+        val result = lecture.findDayOfWeekAndLocalTime() // when
 
         assertEquals(emptyList<Pair<DayOfWeek?, List<LocalTime>>>(), result)
     }
 
     @Test
-    fun `0,1,100,101 주어질 때, {월 = 9시,9시 30분 | 화 = 9시,9시 30분}을 반환한다`() {
-        val lecture1 = lecture.copy( // given
+    fun `강의 시간이 0,1,100,101 일 때, 월요일 9시,9시30분, 화요일 9시,9시30분을 반환한다`() {
+        val lecture = dummpyLecture.copy( // given
             classTime = listOf(0, 1, 100, 101)
         )
 
-        val result = lecture1.findDayOfWeekAndLocalTime() // when
+        val result = lecture.findDayOfWeekAndLocalTime() // when
 
         assertEquals(
             listOf(
@@ -50,12 +52,12 @@ class LectureTest {
     }
 
     @Test
-    fun `200,201,210,211 주어질 때, {수=9시,9시30분 | 수 =14시,14시30분}을 반환한다`() {
-        val lecture1 = lecture.copy( // given
+    fun `강의 시간이 200,201,210,211 일 때, 수요일 9시,9시30분, 수요일 14시,14시30분을 반환한다`() {
+        val lecture = dummpyLecture.copy( // given
             classTime = listOf(200, 201, 210, 211)
         )
 
-        val result = lecture1.findDayOfWeekAndLocalTime() // when
+        val result = lecture.findDayOfWeekAndLocalTime() // when
 
         assertEquals(
             listOf(
