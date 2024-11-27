@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.timetable.viewmodel
 
+import androidx.compose.ui.util.fastFilter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -564,12 +565,20 @@ class TimetableViewModel @Inject constructor(
                 val updatedTimetableLectures =
                     _state.value.timetableLectures.timetable.toMutableList()
 
-                state.value.duplicationLecture?.classTime?.forEach { time ->
-                    state.value.timetableLectures.timetable.filter { it.classTime.contains(time) }
-                        .forEach { lecture ->
-                            updatedTimetableLectures.remove(lecture)
-                        }
+                state.value.duplicationLecture?.classTime?.forEach { duplicationTime ->
+                    state.value.timetableLectures.timetable.filter {
+                        it.classInfos.flatMap { it.classTime }.contains(duplicationTime)
+                    }.forEach {  lecture ->
+                        updatedTimetableLectures.remove(lecture)
+                    }
                 }
+
+//                state.value.duplicationLecture?.classTime?.forEach { time ->
+//                    state.value.timetableLectures.timetable.filter { it.classTime.contains(time) }
+//                        .forEach { lecture ->
+//                            updatedTimetableLectures.remove(lecture)
+//                        }
+//                }
 
                 state.value.duplicationLecture?.toTimetableLecture()?.let { timetableLecture ->
                     updatedTimetableLectures.add(timetableLecture)
@@ -584,12 +593,20 @@ class TimetableViewModel @Inject constructor(
 
             false -> {
                 val ids = mutableSetOf<Int>()
-                state.value.duplicationLecture?.classTime?.forEach { time ->
-                    state.value.timetableLectures.timetable.filter { it.classTime.contains(time) }
-                        .forEach { lecture ->
-                            ids.add(lecture.id)
-                        }
+//                state.value.duplicationLecture?.classTime?.forEach { time ->
+//                    state.value.timetableLectures.timetable.filter { it.classTime.contains(time) }
+//                        .forEach { lecture ->
+//                            ids.add(lecture.id)
+//                        }
+//                }
+                state.value.duplicationLecture?.classTime?.forEach { duplicationTime ->
+                    state.value.timetableLectures.timetable.filter {
+                        it.classInfos.flatMap { it.classTime }.contains(duplicationTime)
+                    }.forEach {  lecture ->
+                        ids.add(lecture.id)
+                    }
                 }
+
                 viewModelScope.launch {
                     timetableRepository.deleteTimetableLectures(ids.toList()).onSuccess {
                         state.value.duplicationLecture?.let { lecture ->
@@ -835,10 +852,15 @@ class TimetableViewModel @Inject constructor(
 
     private fun isDuplicateClassTime(lecture: Lecture): Boolean {
         state.value.timetableLectures.timetable.forEach { timetableLecture ->
-            timetableLecture.classTime.forEach { time ->
-                if (lecture.classTime.any { it == time }) return true
+            timetableLecture.classInfos.flatMap { it.classTime }.forEach { time ->
+                if (lecture.classTime.any {it == time}) return true
             }
         }
+//        state.value.timetableLectures.timetable.forEach { timetableLecture ->
+//            timetableLecture.classTime.forEach { time ->
+//                if (lecture.classTime.any { it == time }) return true
+//            }
+//        }
         return false
     }
 }
