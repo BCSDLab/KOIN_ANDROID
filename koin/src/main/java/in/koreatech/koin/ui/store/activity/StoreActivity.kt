@@ -244,6 +244,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     binding.searchResultTextView.visibility = View.GONE
                     binding.suggestionsLayout.visibility = View.VISIBLE
                     binding.categoriesRecyclerview.visibility = View.VISIBLE
+                    binding.borderFrameLayout.visibility = View.VISIBLE
                     binding.searchEditText.text.clear()
                 }
                 else -> {
@@ -586,8 +587,9 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                             hideSoftKeyboard()
                             binding.searchResultTextView.visibility = View.VISIBLE
                             binding.suggestionsLayout.visibility = View.GONE
-                            binding.searchResultTextView.text = "${"(검색 내용)"}관련 가게가 총 ${viewModel.stores.value.size}개 있어요."
+                            binding.searchResultTextView.text = "${"${binding.searchEditText.text}"} 관련 가게가 총 ${it.size}개 있어요."
                             binding.categoriesRecyclerview.visibility = View.GONE
+                            binding.borderFrameLayout.visibility = View.GONE
                             return@setOnEditorActionListener true
                         }
                         false
