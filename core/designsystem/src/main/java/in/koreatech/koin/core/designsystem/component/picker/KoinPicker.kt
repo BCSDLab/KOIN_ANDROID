@@ -64,7 +64,7 @@ fun KoinPicker(
 ) {
 
     val newItems = if (infiniteScroll) items
-        else List(visibleItemsCount / 2) { "" } + items + List(visibleItemsCount / 2) { "" }
+    else List(visibleItemsCount / 2) { "" } + items + List(visibleItemsCount / 2) { "" }
 
     val visibleItemsMiddle = visibleItemsCount / 2
     val listScrollCount = if (infiniteScroll) Int.MAX_VALUE else newItems.size
@@ -129,12 +129,16 @@ class PickerState internal constructor() {
     var selectedItemIndex by mutableIntStateOf(0)
 }
 
-private fun Modifier.fadingEdge(brush: Brush) = this
-    .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-    .drawWithContent {
-        drawContent()
-        drawRect(brush = brush, blendMode = BlendMode.DstIn)
-    }
+private fun Modifier.fadingEdge(brush: Brush) = if (brush == verticalGradient()) {
+    this
+} else {
+    this
+        .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+        .drawWithContent {
+            drawContent()
+            drawRect(brush = brush, blendMode = BlendMode.DstIn)
+        }
+}
 
 
 private fun List<String>.getItem(index: Int) = this[index % this.size]
