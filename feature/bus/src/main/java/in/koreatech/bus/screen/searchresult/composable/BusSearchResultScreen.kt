@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultViewModel
+import `in`.koreatech.bus.util.formatDateValue
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -15,15 +16,13 @@ fun BusSearchResultScreen(
     viewModel: BusSearchResultViewModel = hiltViewModel()
 ) {
 
-    val minDepartureTimeText by viewModel.minDepartureTimeText.collectAsStateWithLifecycle()
     val searchResultUiState by viewModel.searchResultUiState.collectAsStateWithLifecycle()
 
     BusSearchResultScreenContent(
         modifier = modifier,
         searchResultUiState = searchResultUiState,
-        minDepartureTimeText = minDepartureTimeText,
         onNavigationIconClick = onNavigationIconClick,
-        dateList = viewModel.dateList.toImmutableList(),
+        dateList = viewModel.localDates.map { it.formatDateValue() }.toImmutableList(),
         daytimeList = viewModel.daytimeList.toImmutableList(),
         hourList = viewModel.hourList.toImmutableList(),
         minuteList = viewModel.minuteList.toImmutableList(),
