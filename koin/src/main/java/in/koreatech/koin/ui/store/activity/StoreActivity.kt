@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
-import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -27,9 +28,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
-import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
-import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
@@ -134,6 +133,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
     private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener {
             val previous = viewModel.category.value?.name
+            viewModel.setCategory(it + 1)
             binding.searchEditText.text.clear()
             val current = viewModel.category.value?.name
             viewModel.setCategory(it)
@@ -209,18 +209,19 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         initViewModel()
         initView()
 
-        val initStoreCategory =
-            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)
-        storeCategoriesAdapter.selectPosition =
-            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
-        viewModel.setCategory(initStoreCategory)
+        val initStoreCategory = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY , 0)
+        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
 
+        viewModel.setCategory(initStoreCategory!! + 1)
         storeCategoriesAdapter.initCategory(initStoreCategory)
+
     }
 
 
     private fun initView() {
         currentTime = System.currentTimeMillis()
+
+        binding.searchResultTextView.visibility = View.GONE
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
@@ -234,13 +235,24 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         onBackPressedDispatcher.addCallback(this) {
-            if (binding.searchEditText.hasFocus()) {
-                binding.searchEditText.clearFocus()
-            } else {
-                isEnabled = false
-                onBackPressed()
+            when {
+                binding.searchEditText.hasFocus() -> {
+                    binding.searchEditText.clearFocus()
+                    hideSoftKeyboard()
+                }
+                binding.searchResultTextView.visibility == View.VISIBLE -> {
+                    binding.searchResultTextView.visibility = View.GONE
+                    binding.suggestionsLayout.visibility = View.VISIBLE
+                    binding.categoriesRecyclerview.visibility = View.VISIBLE
+                    binding.searchEditText.text.clear()
+                }
+                else -> {
+                    isEnabled = false
+                    onBackPressed()
+                }
             }
         }
+
 
         binding.containerScrollView.setOnTouchListener { view, event ->
             if (view.id != R.id.search_constraint_layout && binding.suggestionsRecyclerView.visibility == View.VISIBLE) {
@@ -320,6 +332,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 override fun afterTextChanged(p0: Editable) {
                     viewModel.updateSearchQuery(p0.toString())
                     viewModel.getRelatedStore()
+                    binding.suggestionsLayout.visibility = if(p0.isEmpty()) View.GONE else View.VISIBLE
                 }
             }
         )
@@ -336,6 +349,8 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         /*    binding.searchImageView.setOnClickListener {
                 if (showRemoveQueryButton) binding.searchEditText.setText("")
             }*/
+
+
 
 
         binding.eventViewPager.apply {
@@ -555,10 +570,30 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stores.collect {
-                    Log.e("으아아아왜안대", "searchStore")
-
                     storeAdapter.submitList(it)
+                    if(it.isEmpty() && binding.searchEditText.text.isNotEmpty()){
+                        binding.noResultTextView.visibility = View.VISIBLE
+                        binding.suggestionsRecyclerView.visibility = View.GONE
+                    }
+                    else{
+                        binding.noResultTextView.visibility = View.GONE
+                        binding.suggestionsRecyclerView.visibility = View.VISIBLE
+                    }
+
+                    binding.searchEditText.setOnEditorActionListener { v, actionId, event ->
+                        if (actionId === EditorInfo.IME_ACTION_DONE ||
+                            (event != null && event.getKeyCode() === KeyEvent.KEYCODE_ENTER && event.getAction() === KeyEvent.ACTION_DOWN)) {
+                            hideSoftKeyboard()
+                            binding.searchResultTextView.visibility = View.VISIBLE
+                            binding.suggestionsLayout.visibility = View.GONE
+                            binding.searchResultTextView.text = "${"(검색 내용)"}관련 가게가 총 ${viewModel.stores.value.size}개 있어요."
+                            binding.categoriesRecyclerview.visibility = View.GONE
+                            return@setOnEditorActionListener true
+                        }
+                        false
+                    }
                 }
+
             }
         }
     }

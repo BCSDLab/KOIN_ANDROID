@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -60,6 +61,9 @@ class StoreViewModel @Inject constructor(
     val store: StateFlow<Store?> = _store.asStateFlow()
     val needToProceedStoreInfo = _needToProceedStoreInfo.asSharedFlow()
 
+    private val _categoryPosition = MutableLiveData(-1)
+    val categoryPosition: LiveData<Int> get() = _categoryPosition
+
     private val _storeCategoryList = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategoryList: LiveData<List<StoreCategories>> get() = _storeCategoryList
 
@@ -89,11 +93,13 @@ class StoreViewModel @Inject constructor(
         _search.value = query
     }
 
-    fun setCategory(storeCategoryId: Int?) {
-        if(category.value?.id == storeCategoryId) {
+    fun setCategory(categoryPosition: Int?) {
+        if(_categoryPosition.value == categoryPosition) {
+            _categoryPosition.value = 0
             _category.value = _storeCategoryList.value?.get(0)
         } else {
-            _category.value = storeCategoryId?.let { _storeCategoryList.value?.get(it - 1) }
+            _categoryPosition.value = categoryPosition
+            _category.value = categoryPosition?.let { _storeCategoryList.value?.get(it) }
         }
     }
 
@@ -189,8 +195,6 @@ class StoreViewModel @Inject constructor(
             refreshEvent.emit(Unit)
         }
     }
-
-    fun getEventListSize() = storeEvents.value?.size
 
     private fun getStoreEvents(){
         viewModelScope.launch {
