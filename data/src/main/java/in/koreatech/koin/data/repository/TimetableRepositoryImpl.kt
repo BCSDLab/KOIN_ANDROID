@@ -2,9 +2,11 @@ package `in`.koreatech.koin.data.repository
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import `in`.koreatech.koin.data.request.timetable.LectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
+import `in`.koreatech.koin.data.request.timetable.TimetableLectureClassInfoRequest
 import `in`.koreatech.koin.data.request.timetable.toCustomLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
@@ -92,9 +94,22 @@ class TimetableRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postTimetableCustomLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures> = runCatching {
+        val info = lectures.map { it.classTime to it.place }.map { (classTime, place) ->
+            TimetableLectureClassInfoRequest(classTime = classTime, classPlace = place)
+        }
+
+        val query = LectureQueryRequest(
+            classTitle = lectures.firstOrNull()?.name.orEmpty(),
+            classInfos = info,
+            professor = lectures.firstOrNull()?.professor.orEmpty(),
+            lectureId = null,
+            grades = "0",
+            memo = ""
+        )
+
         timetableRemoteDataSource.postTimetableLectures(LecturesQueryRequest(
             timetableFrameId = frameId,
-            timetableLecture = lectures.map { it.toCustomLectureQueryRequest() }
+            timetableLecture = listOf(query)
         )).toTimetableLectures()
     }
 
@@ -140,7 +155,10 @@ class TimetableRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteTimetableLectures(lectureIds: List<Int>): Result<Unit> = runCatching {
-        timetableRemoteDataSource.deleteTimetableLectures(lectureIds)
+        val response = timetableRemoteDataSource.deleteTimetableLectures(lectureIds)
+        if (!response.isSuccessful) {
+            throw HttpException(response)
+        }
     }
 
     override suspend fun deleteAllTimetableFrame(semester: String): Result<Unit> = runCatching {

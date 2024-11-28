@@ -120,18 +120,21 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     return@setAppbarEvent
                 }
                 scope.launch {
-                    if (state.bottomSheetUI == BottomSheetUI.DETAIL) {
-                        if (sheetState.isExpanded) {
-                            sheetState.collapse()
+                    when (state.bottomSheetUI) {
+                        BottomSheetUI.DEFAULT -> {
                             viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                            sheetState.expand()
-                        } else {
-                            viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                            sheetState.expand()
+                            if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
                         }
-                    } else {
-                        viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                        if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
+                        BottomSheetUI.DETAIL -> {
+                            if (sheetState.isExpanded) {
+                                sheetState.collapse()
+                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                sheetState.expand()
+                            } else {
+                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                sheetState.expand()
+                            }
+                        }
                     }
                 }
             }
@@ -171,7 +174,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
                 if (dialogState.isLoginVisible) {
                     RequestLoginDialog(
-                        onConfirm = ::startToLoginActivity, // TODO : 로그인 화면으로 연결
+                        onConfirm = ::startToLoginActivity,
                         onDismiss = viewModel::updateIsLoginDialogVisible
                     )
                 }
@@ -284,7 +287,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickLecture = viewModel::updateClickedTimetableEvents,
                     onSelectedLecture = viewModel::updateSelectedLecture,
                     onClickSettingIcon = viewModel::updateIsSelectDepartmentDialogVisible,
-                    onClickSearchIcon = {}, // TODO : 검색 아이콘 클릭 (필요할까? 그냥 보여주기용이 좋아보임)
+                    onClickSearchIcon = {},
                     onClickTimetableEvent = {
                         scope.launch {
                             if (state.bottomSheetUI == BottomSheetUI.DEFAULT) {

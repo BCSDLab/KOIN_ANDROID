@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.request.timetable
 import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLectureQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectureClassInfo
 
 data class TimetableLecturesQueryRequest(
     @SerializedName("timetable_frame_id")
@@ -18,10 +19,8 @@ data class TimetableLectureQueryRequest(
     val lectureId: Int,
     @SerializedName("class_title")
     val classTitle: String,
-    @SerializedName("class_time")
-    val classTime: List<Int>,
-    @SerializedName("class_place")
-    val classPlace: String,
+    @SerializedName("class_infos")
+    val classInfos: List<TimetableLectureClassInfoRequest>,
     @SerializedName("professor")
     val professor: String,
     @SerializedName("grades")
@@ -39,8 +38,7 @@ fun TimetableLectureQuery.toTimetableLectureQueryRequest() = TimetableLectureQue
     id = id,
     lectureId = lectureId,
     classTitle = classTitle,
-    classTime = classTime,
-    classPlace = classPlace,
+    classInfos = classInfos.map { it.toClassInfoRequest() },
     professor = professor,
     grades = grades,
     memo = memo
