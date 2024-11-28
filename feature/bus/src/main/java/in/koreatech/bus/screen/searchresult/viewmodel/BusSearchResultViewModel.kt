@@ -30,13 +30,7 @@ class BusSearchResultViewModel @Inject constructor(
     val departure = arguments.departure
     val arrival = arguments.arrival
 
-    val localDates = buildList<LocalDate> {
-        val today = LocalDate.now()
-
-        for (i in 0L until EXTRA_DATE_COUNT) {
-            add(today.plusDays(i))
-        }
-    }
+    val localDates = List(TOTAL_DATE_COUNT) { LocalDate.now().plusDays(it.toLong()) }
     val daytimeList = listOf("오전", "오후")
     val hourList = (1..12).map { it.toString() }
     val minuteList = (0..59).map { it.toString() }
@@ -94,7 +88,7 @@ class BusSearchResultViewModel @Inject constructor(
     }
 
     companion object {
-        private const val EXTRA_DATE_COUNT = 365
+        private const val TOTAL_DATE_COUNT = 365
     }
 }
 
