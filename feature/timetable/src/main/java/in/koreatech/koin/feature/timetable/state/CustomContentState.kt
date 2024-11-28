@@ -25,31 +25,20 @@ data class CustomContentState(
         end = LocalTime.of(10, 0)
     )
 
-
-    // place 구분자 : ,
-    // classTimes 구분자 : -1
     fun toLectures(): List<Lecture> {
         val lectures = mutableListOf<Lecture>()
 
-        var places = ""
-        val classTimes = mutableListOf<Int>()
-        repeat(data.size + 1) { index ->
-            if (index == 0) {
-                places += data[0].place
-                classTimes.addAll(data[0].toClassTime())
-            } else {
-                places += ", ${data[index -1].place}"
-                classTimes.addAll(data[index - 1].toClassTime())
-            }
-            classTimes.add(-1)
+        data.forEach { lecture ->
+            lectures.add(
+                Lecture(
+                    id = 0,
+                    name = schedule.trim(),
+                    professor = professor.trim(),
+                    classTime = lecture.toClassTime(),
+                    place = lecture.place.trim()
+                )
+            )
         }
-        Lecture(
-            id = 0,
-            name = schedule.trim(),
-            professor = professor.trim(),
-            classTime = classTimes,
-            place = places.trim()
-        ).let { lectures.add(it) }
 
         return lectures
     }

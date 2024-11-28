@@ -286,7 +286,7 @@ private fun TimetableContentPreview() {
         horizontalPadding = 24.dp,
         events = listOf(
             dummyEvent,
-            dummyEvent.copy(name = "asfdf", professor = "asdfasdf", dayOfWeek = DayOfWeek.MONDAY),
+            dummyEvent.copy(name = "제목제목제목제목제목제목제목제목제목제목", professor = "교수교수교수교수교수교수교수교수", place = "장소", dayOfWeek = DayOfWeek.MONDAY, start = LocalTime.of(15, 0), end = LocalTime.of(18, 0)),
             dummyEvent.copy(start = LocalTime.of(9, 0), dayOfWeek = DayOfWeek.WEDNESDAY),
             dummyEvent.copy(
                 end = LocalTime.of(17, 0), dayOfWeek = DayOfWeek.THURSDAY),
