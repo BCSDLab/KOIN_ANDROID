@@ -218,7 +218,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                             scope.launch {
                                 saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap()) {
                                     if (it) {
-                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장되었어요."))
+                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지가 저장되었어요."))
                                     } else {
                                         viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장을 실패했어요."))
                                     }
