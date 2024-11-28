@@ -34,6 +34,7 @@ import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
 import `in`.koreatech.bus.screen.timetable.type.BusType
+import `in`.koreatech.bus.util.formatDepartureTime
 import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -51,7 +52,6 @@ internal fun BusSearchResultScreenContent(
     departure: String,
     arrival: String,
     searchResultUiState: BusSearchResultUiState,
-    minDepartureTimeText: String,
     dateList: ImmutableList<String>,
     daytimeList: ImmutableList<String>,
     hourList: ImmutableList<String>,
@@ -89,7 +89,12 @@ internal fun BusSearchResultScreenContent(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        append(minDepartureTimeText)
+                        append(formatDepartureTime(
+                            date = dateList[selectedDateIndex],
+                            daytime = daytimeList[selectedDaytimeIndex],
+                            hour = hourList[selectedHourIndex],
+                            minute = minuteList[selectedMinuteIndex]
+                        ))
                         withStyle(
                             style = SpanStyle(
                                 fontWeight = FontWeight.Medium,
@@ -163,7 +168,6 @@ private fun BusSearchResultScreenPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = previewSearchResultUiState,
-        minDepartureTimeText = "오늘 오전 10:35",
         dateList = buildList {
             val today = LocalDateTime.now()
 
@@ -195,7 +199,6 @@ private fun BusSearchResultScreenLoadingPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = BusSearchResultUiState.Loading,
-        minDepartureTimeText = "오늘 오전 10:35",
         dateList = buildList {
             val today = LocalDateTime.now()
 
