@@ -218,7 +218,7 @@ fun TimetableContent(
             val eventHeight = ((eventDurationMinutes / 60f) * height.toPx()).roundToInt()
             val placeable = measurable.measure(
                 constraints.copy(
-                    minWidth = innerWidth, maxWidth = innerWidth,
+                    minWidth = innerWidth + 1, maxWidth = innerWidth + 1,
                     minHeight = eventHeight, maxHeight = eventHeight
                 )
             )
