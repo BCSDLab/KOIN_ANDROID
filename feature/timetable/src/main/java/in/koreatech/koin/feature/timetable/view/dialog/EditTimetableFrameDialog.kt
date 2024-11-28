@@ -56,11 +56,14 @@ fun EditTimetableFrameDialog(
     var timetableName by remember { mutableStateOf(timetableFrameState?.timetableName ?: "") }
     var showingDeleteDialog by remember { mutableStateOf(false) }
 
+    // TODO:: 최대 길이에 관련된 명세 추가되면 수정
+    val maxTimetableFrameNameLength = remember { 200 }
+
     EditTimetableFrameDialog(
         modifier = modifier,
         timetableName = timetableName,
         isMain = isMain,
-        isCheckboxEnabled = timetableFrameState?.let{ !it.isMain } ?: true,
+        isCheckboxEnabled = timetableFrameState?.let { !it.isMain } ?: true,
         onDismiss = onDismiss,
         onConfirm = {
             timetableFrameState?.let {
@@ -75,7 +78,12 @@ fun EditTimetableFrameDialog(
         },
         onClickDelete = { showingDeleteDialog = true },
         onValueChanged = {
-            timetableName = it
+            // 텍스트를 지우거나 최대 길이보다 짧다면 갱신
+            if (it.length < maxTimetableFrameNameLength ||
+                it.length < timetableName.length
+            ) {
+                timetableName = it
+            }
         },
         onCheckChanged = {
             isMain = it
@@ -84,7 +92,7 @@ fun EditTimetableFrameDialog(
 
     if (showingDeleteDialog) {
         DeleteTimetableFrameDialog(
-            timetableName = timetableName,
+            timetableName = timetableFrameState?.timetableName ?: "",
             onDismiss = { showingDeleteDialog = false },
             onConfirm = {
                 showingDeleteDialog = false
@@ -164,6 +172,7 @@ private fun EditTimetableFrameDialog(
                         cursorColor = Color.Black, // 클릭 시, 커서색
                         focusedTextColor = Color.Black // 클릭 시, 입력 텍스트 색
                     ),
+                    singleLine = true,
                     onValueChange = onValueChanged
                 )
                 TextCheckbox(

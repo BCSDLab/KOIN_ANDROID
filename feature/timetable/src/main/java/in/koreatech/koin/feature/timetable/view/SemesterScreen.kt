@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -24,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,44 +51,57 @@ fun SemesterScreen(
             .fillMaxSize()
             .background(KoinTheme.colors.neutral0)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(horizontal = 24.dp)
-        ) {
-            if (isAnonymous) {
-                HighlightedText(
-                    modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .noRippleClickable { onClickLoginText() },
-                    texts = stringArrayResource(id = R.array.semester_anonymous_login),
-                    highlightIndices = listOf(0),
-                    defaultStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral500),
-                    highlightStyle = KoinTheme.typography.bold14.copy(color = KoinTheme.colors.info600)
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-            }
-            LazyColumn(
+        if (userTimetables.isNotEmpty()) {
+            Column(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(horizontal = 24.dp)
             ) {
-                userTimetables.forEach { semesterModel, timetableFrames ->
-                    SemesterBlock(
-                        semesterModel = semesterModel,
-                        timetableFrames = timetableFrames,
-                        isAnonymous = isAnonymous,
-                        onClickTimetable = { timetableFrame ->
-                            onClickTimetable(semesterModel, timetableFrame)
-                        },
-                        onClickAddTimetable = {
-                            onClickAddTimetable(semesterModel)
-                        },
-                        onClickEditTimetable = {
-                            onClickEditTimetable(semesterModel, it)
-                        }
+                if (isAnonymous) {
+                    HighlightedText(
+                        modifier = Modifier
+                            .padding(vertical = 6.dp)
+                            .noRippleClickable { onClickLoginText() },
+                        texts = stringArrayResource(id = R.array.semester_anonymous_login),
+                        highlightIndices = listOf(0),
+                        defaultStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral500),
+                        highlightStyle = KoinTheme.typography.bold14.copy(color = KoinTheme.colors.info600)
                     )
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+                LazyColumn(
+                    modifier = Modifier
+                ) {
+                    userTimetables.forEach { semesterModel, timetableFrames ->
+                        SemesterBlock(
+                            semesterModel = semesterModel,
+                            timetableFrames = timetableFrames,
+                            isAnonymous = isAnonymous,
+                            onClickTimetable = { timetableFrame ->
+                                onClickTimetable(semesterModel, timetableFrame)
+                            },
+                            onClickAddTimetable = {
+                                onClickAddTimetable(semesterModel)
+                            },
+                            onClickEditTimetable = {
+                                onClickEditTimetable(semesterModel, it)
+                            }
+                        )
+                    }
                 }
             }
+        } else {
+            // 유저의 학기가 없는 경우
+            Text(
+                modifier = Modifier
+                    .align(Alignment.Center),
+                text = stringResource(id = R.string.semester_empty),
+                textAlign = TextAlign.Center,
+                style = KoinTheme.typography.medium13.copy(
+                    color = KoinTheme.colors.neutral600
+                )
+            )
         }
     }
 
@@ -243,5 +256,14 @@ private fun SemesterScreenAnonymousPreview() {
             ),
         ),
         isAnonymous = true,
+    )
+}
+
+@Preview
+@Composable
+private fun SemesterScreenEmptyPreview() {
+    SemesterScreen(
+        userTimetables = mapOf(),
+        isAnonymous = false
     )
 }
