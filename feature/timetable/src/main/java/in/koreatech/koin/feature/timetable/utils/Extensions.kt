@@ -19,27 +19,26 @@ fun TimetableLecture.toTimetableEvents(index: Int): List<TimetableEvent> {
     /**
      * @input : {MONDAY=[09:00, 09:30], TUESDAY=[09:00, 09:30]}
      */
-    findDayOfWeekAndLocalTime().forEach { (key, value) ->
-        classInfos.forEach { info ->
-            val timetableEvent = TimetableEvent(
-                id = id,
-                lectureId = lectureId,
-                name = classTitle,
-                professor = professor,
-                place = info.classPlace,
-                color = defaultColors[index % defaultColors.size],
-                dayOfWeek = key,
-                start = value.firstOrNull() ?: return@forEach,
-                end = if (value.lastOrNull() == LocalTime.of(23, 30)) {
-                    LocalTime.of(23, 59)
-                } else {
-                    value.lastOrNull()?.plusMinutes(30) ?: return@forEach
-                },
-                description = ""
-            )
+    formatTimetableEventContent().forEach { (key, value, place) ->
+        val timetableEvent = TimetableEvent(
+            id = id,
+            lectureId = lectureId,
+            name = classTitle,
+            professor = professor,
+            place = place,
+            color = defaultColors[index % defaultColors.size],
+            dayOfWeek = key,
+            start = value.firstOrNull() ?: return@forEach,
+            end = if (value.lastOrNull() == LocalTime.of(23, 30)) {
+                LocalTime.of(23, 59)
+            } else {
+                value.lastOrNull()?.plusMinutes(30) ?: return@forEach
+            },
+            description = ""
+        )
         events.add(timetableEvent)
-        }
     }
+
     /**
      * @output :
      * [
@@ -94,6 +93,7 @@ fun List<TimetableEvent>.formatTimeRange(): Int {
         }
     } else 9
 }
+
 // TODO::UseCase 에서 변환하는게 좋아보이네
 fun String.toSemesterModel(): SemesterModel = SemesterModel(
     year = substring(0, 4).toInt(),

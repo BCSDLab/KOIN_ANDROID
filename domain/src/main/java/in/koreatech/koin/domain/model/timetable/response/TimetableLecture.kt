@@ -21,11 +21,11 @@ data class TimetableLecture(
     /**
      * @test : TimetableLectureTest.kt
      */
-    fun findDayOfWeekAndLocalTime(): List<Pair<DayOfWeek?, List<LocalTime>>> {
+    fun formatTimetableEventContent(): List<Triple<DayOfWeek?, List<LocalTime>, String>> {
         return classInfos.flatMap { classInfo ->
             classInfo.classTime.groupBy { it / 100 }.flatMap { (dayOfWeekKey, times) ->
                 groupConsecutiveTimes(times.sorted()).map { timeGroup ->
-                    Pair(dayOfWeekKey.toDayOfWeek(), timeGroup.toLocalTimes())
+                    Triple(dayOfWeekKey.toDayOfWeek(), timeGroup.toLocalTimes(), classInfo.classPlace)
                 }
             }
         }
@@ -64,11 +64,11 @@ data class TimetableLecture(
     }
 
     fun getDetailTime(): String {
-        val times = findDayOfWeekAndLocalTime()
+        val times = formatTimetableEventContent()
 
         val timeContent = StringBuilder()
 
-        times.forEachIndexed { index, (dayOfWeekContent, localTimes) ->
+        times.forEachIndexed { index, (dayOfWeekContent, localTimes, place) ->
             if (index > 0) timeContent.append(", ")
             val dayOfWeekText = when (dayOfWeekContent) {
                 DayOfWeek.MONDAY -> "월"
