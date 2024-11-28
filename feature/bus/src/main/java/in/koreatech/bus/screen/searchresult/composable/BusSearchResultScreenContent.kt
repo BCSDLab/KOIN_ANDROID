@@ -64,9 +64,14 @@ internal fun BusSearchResultScreenContent(
     onNavigationIconClick: () -> Unit = {},
     onMinDepartureTimeSetToNow: () -> Unit = {},
     onCompleteMinDepartureTime: (dateIndex: Int, daytimeIndex: Int, hourIndex: Int, minuteIndex: Int) -> Unit = { _, _, _, _ -> },
-
-    ) {
+) {
     var showSelectDialog by remember { mutableStateOf(false) }
+    val departureTime by remember(selectedDateIndex, selectedDaytimeIndex, selectedHourIndex, selectedMinuteIndex) { mutableStateOf(formatDepartureTime(
+        dateList[selectedDateIndex],
+        daytimeList[selectedDaytimeIndex],
+        hourList[selectedHourIndex],
+        minuteList[selectedMinuteIndex]
+    )) }
 
     Column(
         modifier = modifier
@@ -89,12 +94,7 @@ internal fun BusSearchResultScreenContent(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        append(formatDepartureTime(
-                            date = dateList[selectedDateIndex],
-                            daytime = daytimeList[selectedDaytimeIndex],
-                            hour = hourList[selectedHourIndex],
-                            minute = minuteList[selectedMinuteIndex]
-                        ))
+                        append(departureTime)
                         withStyle(
                             style = SpanStyle(
                                 fontWeight = FontWeight.Medium,
