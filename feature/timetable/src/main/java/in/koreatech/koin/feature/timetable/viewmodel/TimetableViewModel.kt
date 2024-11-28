@@ -181,6 +181,9 @@ class TimetableViewModel @Inject constructor(
                 }
                 false -> {
                     if (state.value.frameId == frameId) {
+                        _state.value = _state.value.copy(
+                            timetableName = frameName
+                        )
                         updateLoading(false)
                         return@launch
                     }
