@@ -280,6 +280,7 @@
                             android:id="@+id/store_filter_constraint_layout"
                             android:layout_width="match_parent"
                             android:layout_height="32dp"
+                            android:layout_marginTop="5dp"
                             android:layout_marginHorizontal="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
