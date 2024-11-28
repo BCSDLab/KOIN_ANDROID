@@ -626,29 +626,14 @@ class TimetableViewModel @Inject constructor(
             return
         }
         val editContent = customContentState.value.data.toMutableList()
-        if (customContentState.value.data.isEmpty()) {
-            editContent.add(CustomExtraContentState(id = 0))
-            _customContentState.value = _customContentState.value.copy(
-                data = editContent.toImmutableList()
-            )
-            val updateContent = mutableListOf<TimetableEvent>()
-            updateContent.add(_customContentState.value.toTimetableEvent())
-            updateContent.addAll(_customContentState.value.data.map { it.toTimetableEvent() })
-            _state.value = _state.value.copy(
-                clickedTimetableEvents = updateContent
-            )
-        } else {
-            editContent.add(CustomExtraContentState(id = editContent.last().id + 1))
-            _customContentState.value = _customContentState.value.copy(
-                data = editContent.toImmutableList()
-            )
-            val updateContent = mutableListOf<TimetableEvent>()
-            updateContent.add(_customContentState.value.toTimetableEvent())
-            updateContent.addAll(_customContentState.value.data.map { it.toTimetableEvent() })
-            _state.value = _state.value.copy(
-                clickedTimetableEvents = updateContent
-            )
-        }
+        editContent.add(CustomExtraContentState(id = editContent.last().id + 1))
+        _customContentState.value = _customContentState.value.copy(
+            data = editContent.toImmutableList()
+        )
+
+        _state.value = _state.value.copy(
+            clickedTimetableEvents = _customContentState.value.data.map { it.toTimetableEvent() }
+        )
     }
 
     fun updateDetailLectures(timetableEvent: TimetableEvent) {
@@ -721,11 +706,9 @@ class TimetableViewModel @Inject constructor(
             data = editContents.toImmutableList(),
         )
 
-        val updateClickedEvents = mutableListOf<TimetableEvent>()
-        updateClickedEvents.add(customContentState.value.toTimetableEvent())
-        updateClickedEvents.addAll(editContents.map { it.toTimetableEvent() })
         _state.value = _state.value.copy(
-            clickedTimetableEvents = updateClickedEvents
+            range = _customContentState.value.formatTimeRange(),
+            clickedTimetableEvents = editContents.map { it.toTimetableEvent() }
         )
     }
 

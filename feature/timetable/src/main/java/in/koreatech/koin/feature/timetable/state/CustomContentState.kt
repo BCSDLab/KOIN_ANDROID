@@ -42,4 +42,21 @@ data class CustomContentState(
 
         return lectures
     }
+
+    fun formatTimeRange(): Int {
+        val endTime = data.maxOf { it.endTime }
+        val hour = endTime.hour
+        val minutes = endTime.minute
+
+        return when (hour) {
+            in 9..17 -> 9
+            18 -> if (minutes == 0) 9 else 10
+            19 -> if (minutes == 0) 10 else 11
+            20 -> if (minutes == 0) 11 else 12
+            21 -> if (minutes == 0) 12 else 13
+            22 -> if (minutes == 0) 13 else 14
+            23 -> if (minutes == 0) 14 else 15
+            else -> 10
+        }
+    }
 }
