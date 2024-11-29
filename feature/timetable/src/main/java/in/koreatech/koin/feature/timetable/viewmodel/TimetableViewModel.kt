@@ -113,7 +113,7 @@ class TimetableViewModel @Inject constructor(
                             )
                         }.onFailure {
                             updateLoading(false)
-                            Timber.e("getTimetableLectures Local Error Message : ${it.message}")
+                            _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
                         }
                 }
 
@@ -142,7 +142,7 @@ class TimetableViewModel @Inject constructor(
                             )
                         }.onFailure {
                             updateLoading(false)
-                            Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
+                            _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
                         }
                 }
             }
@@ -176,7 +176,7 @@ class TimetableViewModel @Inject constructor(
                             )
                         }.onFailure {
                             updateLoading(false)
-                            Timber.e("getTimetableLectures Local Error Message : ${it.message}")
+                            _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
                         }
                 }
                 false -> {
@@ -223,7 +223,7 @@ class TimetableViewModel @Inject constructor(
                             )
                         }.onFailure {
                             updateLoading(false)
-                            Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
+                            _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
                         }
                 }
             }
@@ -232,7 +232,7 @@ class TimetableViewModel @Inject constructor(
 
     private suspend fun getSemester(isAnonymous: Boolean): List<String> {
         return getSemesterUseCase(isAnonymous).catch {
-            Timber.e("getSemester Error Message : ${it.message}")
+            _sideEffect.value = TimetableSideEffect.Toast("Failed get semester : " + it.message.orEmpty())
         }.firstOrNull().orEmpty()
     }
 
@@ -244,7 +244,7 @@ class TimetableViewModel @Inject constructor(
 
     private suspend fun getTimetableFrames(semester: String): List<TimetableFrame> {
         return getTimetableFramesUseCase(semester).catch {
-            Timber.e("Get TimetableFrames Error Message : ${it.message}")
+            _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable frame : " + it.message.orEmpty())
         }.firstOrNull().orEmpty()
     }
 
@@ -560,8 +560,8 @@ class TimetableViewModel @Inject constructor(
                 _customContentState.value = CustomContentState()
                 updateIsLectureDuplicationDialogVisible(false)
             }.onFailure {
-                Timber.e("addTimetableLecture Remote Error Message : ${it.message}")
                 updateLoading(false)
+                _sideEffect.value = TimetableSideEffect.Toast("Failed add timetable lectures : " + it.message.orEmpty())
             }
         }
     }
@@ -609,11 +609,10 @@ class TimetableViewModel @Inject constructor(
                             addTimetableLectures(lecture)
                         } ?: return@onSuccess
                     }.onFailure {
-                        Timber.e("Delete Lectures : ${it.message}")
                         _dialogState.value = _dialogState.value.copy(
                             isLectureDuplicationVisible = false
                         )
-                        _sideEffect.value = TimetableSideEffect.SnackBar(it.message.orEmpty())
+                        _sideEffect.value = TimetableSideEffect.Toast("Failed delete timetable lectures : " + it.message.orEmpty())
                     }
                 }
             }
@@ -684,8 +683,8 @@ class TimetableViewModel @Inject constructor(
                         )
                         updateIsLectureDuplicationDialogVisible(false)
                     }.onFailure {
-                        Timber.e("addTimetableLecture Remote Error Message : ${it.message}")
                         updateLoading(false)
+                        _sideEffect.value = TimetableSideEffect.Toast("Failed add timetable lectures : " + it.message.orEmpty())
                     }
                 }
             }
@@ -746,11 +745,11 @@ class TimetableViewModel @Inject constructor(
                                 )
                             }.onFailure {
                                 updateLoading(false)
-                                Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
+                                _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
                             }
                     }.onFailure {
                         updateLoading(false)
-                        Timber.e("deleteTimetableLectureUseCase Remote Error Message : ${it.message}")
+                        _sideEffect.value = TimetableSideEffect.Toast("Failed delete timetable lectures : " + it.message.orEmpty())
                     }
                 }
 
@@ -784,7 +783,7 @@ class TimetableViewModel @Inject constructor(
                     }.onFailure {
                         updateLoading(false)
                         updateIsLectureDuplicationDialogVisible(false)
-                        Timber.e("putTimetableLectures Local Error Message : ${it.message}")
+                        _sideEffect.value = TimetableSideEffect.Toast("Failed put timetable lectures : " + it.message.orEmpty())
                     }
             }
         } else {
@@ -806,11 +805,11 @@ class TimetableViewModel @Inject constructor(
                             )
                         }.onFailure {
                             updateLoading(false)
-                            Timber.e("getTimetableLectures Remote Error Message : ${it.message}")
+                            _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
                         }
                 }.onFailure {
                     updateLoading(false)
-                    Timber.e("removeTimetableLectureById Remote Error Message : ${it.message}")
+                    _sideEffect.value = TimetableSideEffect.Toast("Failed delete timetable lectures by id : " + it.message.orEmpty())
                 }
             }
         }
@@ -834,7 +833,7 @@ class TimetableViewModel @Inject constructor(
                 }.onFailure {
                     updateLoading(false)
                     updateIsLectureDuplicationDialogVisible(false)
-                    Timber.e("putTimetableLectures Local Error Message : ${it.message}")
+                    _sideEffect.value = TimetableSideEffect.Toast("Failed put timetable lectures : " + it.message.orEmpty())
                 }
         }
     }

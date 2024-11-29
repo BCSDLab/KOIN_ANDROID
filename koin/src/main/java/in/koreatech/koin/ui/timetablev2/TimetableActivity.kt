@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.timetablev2
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -18,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -340,6 +342,10 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                             duration = SnackbarDuration.Short
                         )
                         viewModel.updateSideEffect(TimetableSideEffect.Nothing)
+                    }
+
+                    is TimetableSideEffect.Toast -> {
+                        Toast.makeText(this@TimetableActivity, effect.message, Toast.LENGTH_SHORT).show()
                     }
 
                     is TimetableSideEffect.Nothing -> Unit
