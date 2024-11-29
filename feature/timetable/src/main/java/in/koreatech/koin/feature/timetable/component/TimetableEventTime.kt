@@ -93,16 +93,22 @@ private fun TimetableBasicEventTime(
     var placeLineCount by rememberSaveable { mutableIntStateOf(0) }
 
     if (height < titleHeight + professorHeight + placeHeight) {
-        titleMaxLine = titleLineCount - 1
+        titleMaxLine = (titleLineCount - 1).let {
+            if(it < 1) 1 else it
+        }
         professorMaxLine = if (professorLineCount == 1) {
             professorLineCount
         } else {
-            professorLineCount - 1
+            (professorLineCount - 1).let {
+                if(it < 1) 1 else it
+            }
         }
         placeMaxLine = if (placeLineCount == 1) {
             placeMaxLine
         } else {
-            placeMaxLine - 1
+            (placeMaxLine - 1).let {
+                if(it < 1) 1 else it
+            }
         }
     }
 
