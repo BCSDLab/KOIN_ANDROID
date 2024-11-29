@@ -29,9 +29,9 @@ class TimetableLectureTest {
             classInfos = emptyList()
         )
 
-        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
+        val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
 
-        val actual: List<Pair<DayOfWeek?, List<LocalTime>>> = emptyList()
+        val actual: List<Triple<DayOfWeek?, List<LocalTime>, String>> = emptyList()
         assertEquals(formatDayOfWeekAndClassTime, actual)
     }
 
@@ -46,12 +46,12 @@ class TimetableLectureTest {
             )
         )
 
-        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
+        val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
 
         assertEquals(
             formatDayOfWeekAndClassTime, listOf(
-                DayOfWeek.MONDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)),
-                DayOfWeek.TUESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30))
+                Triple(DayOfWeek.MONDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
+                Triple(DayOfWeek.TUESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), "")
             )
         )
     }
@@ -71,12 +71,12 @@ class TimetableLectureTest {
             )
         )
 
-        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
+        val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
 
         assertEquals(
             formatDayOfWeekAndClassTime, listOf(
-                DayOfWeek.TUESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)),
-                DayOfWeek.WEDNESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30))
+                Triple(DayOfWeek.TUESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
+                Triple(DayOfWeek.WEDNESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
             )
         )
     }
