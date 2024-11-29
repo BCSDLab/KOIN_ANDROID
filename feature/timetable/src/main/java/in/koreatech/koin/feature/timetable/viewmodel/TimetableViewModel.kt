@@ -281,7 +281,7 @@ class TimetableViewModel @Inject constructor(
         _state.value = _state.value.copy(bottomSheetUI = bottomSheetUI)
         if (bottomSheetUI == BottomSheetUI.DEFAULT && state.value.bottomSheetMode == TimetableBottomSheetContentMode.CUSTOM) {
             _state.value = _state.value.copy(
-                clickedTimetableEvents = listOf(customContentState.value.toTimetableEvent()),
+                clickedTimetableEvents = customContentState.value.data.map { it.toTimetableEvent() },
             )
         }
     }
@@ -295,7 +295,7 @@ class TimetableViewModel @Inject constructor(
             TimetableBottomSheetContentMode.CUSTOM -> {
                 _state.value = _state.value.copy(
                     bottomSheetMode = mode,
-                    clickedTimetableEvents = listOf(customContentState.value.toTimetableEvent()),
+                    clickedTimetableEvents = customContentState.value.data.map { it.toTimetableEvent() },
                     etcClickedTimetableEvents = emptyList(),
                     selectedLecture = null
                 )

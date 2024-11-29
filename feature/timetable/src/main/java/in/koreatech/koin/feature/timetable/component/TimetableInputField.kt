@@ -57,7 +57,7 @@ fun TimetableInputField(
             value = text,
             onValueChange = {
                 when (title) {
-                    "일정명" -> onValueChange(it)
+                    "일정명" -> if (it.length <= 100) onValueChange(it)
                     "교수명" -> if (it.length <= 30) onValueChange(it)
                     "장소" -> if (it.length <= 30) onValueChange(it)
                 }
