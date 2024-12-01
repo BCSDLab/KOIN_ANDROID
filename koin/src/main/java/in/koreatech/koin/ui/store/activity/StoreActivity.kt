@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -48,6 +49,7 @@ import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
 import `in`.koreatech.koin.util.ext.statusBarHeight
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -88,7 +90,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             storeDetailContract.launch(Triple(it.uid, viewModel.category.value?.name, false))
             val categoryName = viewModel.category.value?.name
 
-            if(categoryName != null){
+            if (categoryName != null) {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CLICK,
@@ -154,7 +156,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
     private var searchRelatedAdapter = SearchRelatedRecyclerAdapter(
         onItemClick = {
-            binding.suggestionsRecyclerView.visibility = View.GONE
             storeDetailContract.launch(
                 Triple(
                     it,
@@ -165,18 +166,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         },
 
         )
-
-    private var isSearchMode: Boolean = false
-        set(value) {
-            if (value) {
-                showSoftKeyboard()
-                binding.searchEditText.requestFocus()
-            } else {
-                binding.searchEditText.clearFocus()
-                hideSoftKeyboard()
-            }
-            field = value
-        }
 
     private var showRemoveQueryButton: Boolean = false
         set(value) {
@@ -209,8 +198,9 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         initViewModel()
         initView()
 
-        val initStoreCategory = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY , 0)
-        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
+        val initStoreCategory = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY, 0)
+        storeCategoriesAdapter.selectPosition =
+            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
 
         viewModel.setCategory(initStoreCategory!! + 1)
         storeCategoriesAdapter.initCategory(initStoreCategory)
@@ -238,31 +228,22 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             when {
                 binding.searchEditText.hasFocus() -> {
                     binding.searchEditText.clearFocus()
-                    hideSoftKeyboard()
                 }
+
                 binding.searchResultTextView.visibility == View.VISIBLE -> {
                     binding.searchResultTextView.visibility = View.GONE
-                    binding.suggestionsLayout.visibility = View.VISIBLE
+                    binding.suggestionsLayout.visibility = View.GONE
                     binding.categoriesRecyclerview.visibility = View.VISIBLE
                     binding.borderFrameLayout.visibility = View.VISIBLE
                     binding.searchEditText.text.clear()
                 }
+
                 else -> {
                     isEnabled = false
                     onBackPressed()
                 }
             }
         }
-
-
-        binding.containerScrollView.setOnTouchListener { view, event ->
-            if (view.id != R.id.search_constraint_layout && binding.suggestionsRecyclerView.visibility == View.VISIBLE) {
-                binding.suggestionsRecyclerView.visibility = View.GONE
-            }
-            false
-        }
-
-
 
         binding.searchConstraintLayout.setOnTouchListener { v, event ->
             binding.suggestionsRecyclerView.visibility = View.VISIBLE
@@ -278,19 +259,18 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
         binding.leftEventArrow.setOnClickListener {
             val currentPosition = binding.eventViewPager.currentItem
-            val previousPosition = if (currentPosition - 1 >= 1 ) currentPosition - 1 else eventListSize - 2
+            val previousPosition =
+                if (currentPosition - 1 >= 1) currentPosition - 1 else eventListSize - 2
             binding.eventViewPager.setCurrentItem(previousPosition, true)
             startAutoScroll()
         }
 
         binding.rightEventArrow.setOnClickListener {
             val currentPosition = binding.eventViewPager.currentItem
-            val nextPosition = if(currentPosition + 1 <= eventListSize - 2) currentPosition + 1 else 1
+            val nextPosition =
+                if (currentPosition + 1 <= eventListSize - 2) currentPosition + 1 else 1
             binding.eventViewPager.setCurrentItem(nextPosition, true)
             startAutoScroll()
-        }
-        binding.searchConstraintLayout.setOnClickListener {
-            isSearchMode = true
         }
 
         binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
@@ -300,19 +280,9 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 binding.suggestionsRecyclerView.visibility = View.GONE
             }
         }
-
         binding.suggestionsRecyclerView.adapter = searchRelatedAdapter
-        /* binding.searchConstraintLayout.setSearchText {
-            viewModel.updateSearchQuery(it.toString())
 
-             showRemoveQueryButton = !it.isNullOrEmpty()
-         }
-         binding.searchConstraintLayout.setAdapter(searchRelatedAdapter)
 
-           binding.searchEditText.addTextChangedListener {
-               viewModel.updateSearchQuery(it.toString())
-               showRemoveQueryButton = !it.isNullOrEmpty()
-           }*/
 
         binding.searchEditText.setOnTouchListener { v, event ->
             binding.suggestionsRecyclerView.visibility = View.VISIBLE
@@ -324,7 +294,19 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 )
             }
             v.performClick()
+        }
 
+        binding.searchImageView.setOnClickListener {
+            handleSearchAction()
+        }
+
+        binding.searchEditText.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                handleSearchAction()
+            } else {
+                false
+            }
         }
 
         binding.searchEditText.addTextChangedListener(
@@ -333,7 +315,8 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 override fun afterTextChanged(p0: Editable) {
                     viewModel.updateSearchQuery(p0.toString())
                     viewModel.getRelatedStore()
-                    binding.suggestionsLayout.visibility = if(p0.isEmpty()) View.GONE else View.VISIBLE
+                    binding.suggestionsLayout.visibility =
+                        if (p0.isEmpty()) View.GONE else View.VISIBLE
                 }
             }
         )
@@ -346,13 +329,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         binding.storeSwiperefreshlayout.setOnRefreshListener {
             viewModel.refreshStores()
         }
-
-        /*    binding.searchImageView.setOnClickListener {
-                if (showRemoveQueryButton) binding.searchEditText.setText("")
-            }*/
-
-
-
 
         binding.eventViewPager.apply {
             adapter = storeEventPagerAdapter
@@ -377,17 +353,19 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {
-                    if(state == ViewPager2.SCROLL_STATE_IDLE){
-                        if(binding.eventViewPager.currentItem == eventListSize - 1){
+                    if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                        if (binding.eventViewPager.currentItem == eventListSize - 1) {
                             binding.eventViewPager.setCurrentItem(1, false)
                             binding.eventPageCounterTextView.text = "1/${eventListSize - 2}"
                         }
 
-                        if(binding.eventViewPager.currentItem == 0){
+                        if (binding.eventViewPager.currentItem == 0) {
                             binding.eventViewPager.setCurrentItem(eventListSize - 2, false)
-                            binding.eventPageCounterTextView.text = "${eventListSize - 2}/${eventListSize - 2}"
+                            binding.eventPageCounterTextView.text =
+                                "${eventListSize - 2}/${eventListSize - 2}"
                         }
-                        binding.eventPageCounterTextView.text = "${binding.eventViewPager.currentItem}/${eventListSize - 2}"
+                        binding.eventPageCounterTextView.text =
+                            "${binding.eventViewPager.currentItem}/${eventListSize - 2}"
                         startAutoScroll()
                     }
                 }
@@ -423,7 +401,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
-                        "check_review_"+viewModel.category.value?.let { viewModel.category.value?.name }
+                        "check_review_" + viewModel.category.value?.let { viewModel.category.value?.name }
                     )
                     storeManyReviewCheckbox.setTextColor(
                         ContextCompat.getColor(
@@ -456,7 +434,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
-                        "check_star_"+viewModel.category.value?.let { viewModel.category.value?.name }
+                        "check_star_" + viewModel.category.value?.let { viewModel.category.value?.name }
                     )
                     storeHighRatingCheckbox.setTextColor(
                         ContextCompat.getColor(
@@ -490,7 +468,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_open_"+viewModel.category.value?.let { viewModel.category.value?.name }
+                            "check_open_" + viewModel.category.value?.let { viewModel.category.value?.name }
                         )
                         ContextCompat.getColor(
                             this@StoreActivity,
@@ -508,7 +486,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_delivery_"+viewModel.category.value?.let { viewModel.category.value?.name }
+                            "check_delivery_" + viewModel.category.value?.let { viewModel.category.value?.name }
                         )
                         ContextCompat.getColor(
                             this@StoreActivity,
@@ -520,6 +498,21 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 viewModel.filterStoreIsDelivery(storeIsDeliveryCheckbox.isChecked)
             }
         }
+    }
+
+    private fun handleSearchAction(): Boolean {
+        if (binding.searchEditText.text.isNullOrEmpty()) {
+            return true
+        }
+
+        hideSoftKeyboard()
+        viewModel.refreshStores()
+        binding.searchResultTextView.visibility = View.VISIBLE
+        binding.suggestionsLayout.visibility = View.GONE
+        binding.categoriesRecyclerview.visibility = View.GONE
+        binding.borderFrameLayout.visibility = View.GONE
+
+        return true
     }
 
     private val runnable = object : Runnable {
@@ -564,36 +557,30 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             storeCategoriesAdapter.submitList(it.drop(1))
         }
 
+
         observeLiveData(viewModel.searchRelated) {
             searchRelatedAdapter.submitList(it.keywords)
+            if (it.keywords.isNullOrEmpty() && binding.searchEditText.text.isNotEmpty()) {
+                binding.noResultTextView.visibility = View.VISIBLE
+                binding.suggestionsRecyclerView.visibility = View.GONE
+            } else {
+                binding.noResultTextView.visibility = View.GONE
+                binding.suggestionsRecyclerView.visibility = View.VISIBLE
+            }
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stores.collect {
-                    storeAdapter.submitList(it)
-                    if(it.isEmpty() && binding.searchEditText.text.isNotEmpty()){
-                        binding.noResultTextView.visibility = View.VISIBLE
-                        binding.suggestionsRecyclerView.visibility = View.GONE
-                    }
-                    else{
-                        binding.noResultTextView.visibility = View.GONE
-                        binding.suggestionsRecyclerView.visibility = View.VISIBLE
-                    }
+                    binding.storeSwiperefreshlayout.isRefreshing = true
 
-                    binding.searchEditText.setOnEditorActionListener { v, actionId, event ->
-                        if (actionId === EditorInfo.IME_ACTION_DONE ||
-                            (event != null && event.getKeyCode() === KeyEvent.KEYCODE_ENTER && event.getAction() === KeyEvent.ACTION_DOWN)) {
-                            hideSoftKeyboard()
-                            binding.searchResultTextView.visibility = View.VISIBLE
-                            binding.suggestionsLayout.visibility = View.GONE
-                            binding.searchResultTextView.text = "${"${binding.searchEditText.text}"} 관련 가게가 총 ${it.size}개 있어요."
-                            binding.categoriesRecyclerview.visibility = View.GONE
-                            binding.borderFrameLayout.visibility = View.GONE
-                            return@setOnEditorActionListener true
-                        }
-                        false
-                    }
+                    storeAdapter.submitList(it)
+                    viewModel.refreshStores()
+
+                    binding.storeSwiperefreshlayout.isRefreshing = false
+                    binding.searchResultTextView.text =
+                        "\"${binding.searchEditText.text}\" 관련 가게가 총 ${it.size}개 있어요."
+
                 }
 
             }

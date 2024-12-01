@@ -35,6 +35,7 @@ class SearchRelatedRecyclerAdapter(val onItemClick: (Int) -> Unit) :
                     itemView.setOnClickListener {
                         onItemClick(currentList[bindingAdapterPosition].shopId ?: 0)
                     }
+                    itemArrow.visibility = RecyclerView.VISIBLE
                 }
                 searchTv.text = shopSearchRelated.keyword
             }
