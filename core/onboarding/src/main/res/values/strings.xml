@@ -3,4 +3,5 @@
     <string name="dining_image_tooltip">식단 사진을 확인해보세요!</string>
     <string name="dining_share_tooltip">식단이 마음에 들었다면 공유하기!</string>
     <string name="article_keyword_tooltip">키워드를 추가하고 맞춤 알림을 받아보세요!</string>
+    <string name="store_review_sorting_tooltip">지금 리뷰가 가장 많은 상점을 확인해보세요!</string>
 </resources>

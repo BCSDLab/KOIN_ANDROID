@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
+import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreDayOffResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
@@ -29,6 +30,8 @@ import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.ShopSearchRelated
+import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
@@ -39,7 +42,6 @@ import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
-import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
 
 fun StoreItemResponse.toStore(): Store = Store(
@@ -61,7 +63,7 @@ fun StoreItemResponse.toStore(): Store = Store(
             closeTime = it.closeTime ?: ""
         )
     }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
-    categoryIds = categoryIds?.map { it.toStoreCategory() }.orEmpty()
+    categoryIds = categoryIds
 )
 
 fun StoreEventItemReponse.toStoreEvent(): StoreEvent = StoreEvent(
@@ -297,11 +299,22 @@ fun BenefitCategoryListResponse.toStoreBenefitCategory(): BenefitCategoryList =
     BenefitCategoryList(this.benefitCategories.map {
         BenefitCategory(
             id = it.id,
-            title = it.title?: "",
-            detail = it.detail?: "",
-            onImageUrl = it.onImageUrl?: "",
-            offImageUrl = it.offImageUrl?: ""
+            title = it.title ?: "",
+            detail = it.detail ?: "",
+            onImageUrl = it.onImageUrl ?: "",
+            offImageUrl = it.offImageUrl ?: ""
         )
     })
+
+fun ShopRelatedListResponse.toShopSearchRelatedList(): ShopSearchRelatedList =
+    ShopSearchRelatedList(
+        keywords = keywords.map {
+            ShopSearchRelated(
+                keyword = it.keyword?: "",
+                shopIds = it.shopIds ?: emptyList(),
+                shopId = it.shopId
+            )
+        }
+    )
 
 
