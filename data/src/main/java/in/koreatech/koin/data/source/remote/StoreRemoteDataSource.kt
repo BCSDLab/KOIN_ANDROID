@@ -6,11 +6,11 @@ import `in`.koreatech.koin.data.mapper.toReportContent
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
-import `in`.koreatech.koin.data.response.store.BenefitCategoryResponse
+import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
-import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
+import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
@@ -28,27 +28,27 @@ class StoreRemoteDataSource @Inject constructor(
         return storeApi.getShopList().shops
     }
 
-    suspend fun getStoreItemsWithSorting(storeSorter: StoreSorter?) : List<StoreItemResponse> {
+    suspend fun getStoreItemsWithSorting(storeSorter: StoreSorter?, query: String?) : List<StoreItemResponse> {
         return if (storeSorter != null) {
-            storeApi.getShopListWithSorting(storeSorter.name).shops
+            storeApi.getShopListWithSorting(storeSorter.name, query).shops
         } else{
-            storeApi.getShopListWithSorting(StoreSorter.NONE.name).shops
+            storeApi.getShopListWithSorting(StoreSorter.NONE.name, query).shops
         }
     }
 
-    suspend fun getStoreItemsWithOneFilter(storeSorter: StoreSorter?, filter: String) : List<StoreItemResponse> {
+    suspend fun getStoreItemsWithOneFilter(storeSorter: StoreSorter?, filter: String, query: String?) : List<StoreItemResponse> {
         return if (storeSorter != null) {
-            storeApi.getShopListWithOneFilter(storeSorter.name, filter).shops
+            storeApi.getShopListWithOneFilter(storeSorter.name, filter, query).shops
         } else{
-            storeApi.getShopListWithOneFilter(StoreSorter.NONE.name, filter).shops
+            storeApi.getShopListWithOneFilter(StoreSorter.NONE.name, filter, query).shops
         }
     }
 
-    suspend fun getStoreItemsWithTwoFilter(storeSorter: StoreSorter?) : List<StoreItemResponse> {
+    suspend fun getStoreItemsWithTwoFilter(storeSorter: StoreSorter?, query: String?) : List<StoreItemResponse> {
         return if (storeSorter != null) {
-            storeApi.getShopListWithTwoFilter(storeSorter.name).shops
+            storeApi.getShopListWithTwoFilter(storeSorter.name, query= query).shops
         } else{
-            storeApi.getShopListWithTwoFilter(StoreSorter.NONE.name).shops
+            storeApi.getShopListWithTwoFilter(StoreSorter.NONE.name,  query= query).shops
         }
     }
 
@@ -107,5 +107,8 @@ class StoreRemoteDataSource @Inject constructor(
         return storeApi.getBenefitCategories()
     }
 
+    suspend fun getShopSearchRelated(query: String): ShopRelatedListResponse {
+        return storeApi.getShopSearchRelated(query)
+    }
 
 }
