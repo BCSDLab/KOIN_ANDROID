@@ -42,6 +42,7 @@ class StoreViewModel @Inject constructor(
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val getStoreWithMenuUseCase: GetRelatedStoreUseCase,
 ) : BaseViewModel() {
+    private val _isSearchMode = MutableStateFlow<Boolean>(false)
     private val _search = MutableStateFlow("")
     private val refreshEvent = MutableSharedFlow<Unit>()
     private val _category = MutableStateFlow<StoreCategories?>(StoreCategories(0, "", ""))
@@ -55,6 +56,7 @@ class StoreViewModel @Inject constructor(
     val storeEvents: LiveData<List<StoreEvent>?> get() = _storeEvents
     val searchRelated get() = _searchRelated
 
+    val isSearchMode: StateFlow<Boolean> = _isSearchMode
     val search: StateFlow<String> = _search.asStateFlow()
     val category: StateFlow<StoreCategories?> = _category.asStateFlow()
     val stores: StateFlow<List<Store>> = _stores.asStateFlow()
@@ -82,6 +84,10 @@ class StoreViewModel @Inject constructor(
         getStoreEvents()
         //changeCategory()
         searchStore()
+
+    }
+
+    fun searchResult() {
         viewModelScope.launch {
             search.collectLatest {
                 refreshStores()
