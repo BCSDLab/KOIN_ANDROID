@@ -210,7 +210,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun initView() {
         currentTime = System.currentTimeMillis()
-
+        viewModel.searchStore()
         binding.searchResultTextView.visibility = View.GONE
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
@@ -231,6 +231,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 }
 
                 binding.searchResultTextView.visibility == View.VISIBLE -> {
+                    viewModel.refreshStores()
                     binding.searchResultTextView.visibility = View.GONE
                     binding.suggestionsLayout.visibility = View.GONE
                     binding.categoriesRecyclerview.visibility = View.VISIBLE
@@ -239,6 +240,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 }
 
                 else -> {
+                    viewModel.refreshStores()
                     isEnabled = false
                     onBackPressed()
                 }
@@ -282,8 +284,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         }
         binding.suggestionsRecyclerView.adapter = searchRelatedAdapter
 
-
-
         binding.searchEditText.setOnTouchListener { v, event ->
             binding.suggestionsRecyclerView.visibility = View.VISIBLE
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -313,7 +313,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             @SuppressLint("RestrictedApi")
             object : TextWatcherAdapter() {
                 override fun afterTextChanged(p0: Editable) {
-                    viewModel.updateSearchQuery(p0.toString())
                     viewModel.getRelatedStore()
                     binding.suggestionsLayout.visibility =
                         if (p0.isEmpty()) View.GONE else View.VISIBLE
@@ -504,9 +503,12 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         if (binding.searchEditText.text.isNullOrEmpty()) {
             return true
         }
-
+        viewModel.updateSearchQuery(binding.searchEditText.text.toString())
+        binding.searchResultTextView.text =
+            "\"${binding.searchEditText.text}\" 관련 가게가 총 ${storeAdapter.itemCount}개 있어요."
         hideSoftKeyboard()
         viewModel.refreshStores()
+        viewModel.searchStore()
         binding.searchResultTextView.visibility = View.VISIBLE
         binding.suggestionsLayout.visibility = View.GONE
         binding.categoriesRecyclerview.visibility = View.GONE
@@ -573,16 +575,13 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stores.collect {
                     binding.storeSwiperefreshlayout.isRefreshing = true
-
                     storeAdapter.submitList(it)
                     viewModel.refreshStores()
-
                     binding.storeSwiperefreshlayout.isRefreshing = false
                     binding.searchResultTextView.text =
-                        "\"${binding.searchEditText.text}\" 관련 가게가 총 ${it.size}개 있어요."
+                        "\"${viewModel.search.value}\" 관련 가게가 총 ${it.size}개 있어요."
 
                 }
-
             }
         }
     }
@@ -601,5 +600,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         currentTime = System.currentTimeMillis()
         super.onResume()
         startAutoScroll()
+
     }
 }
