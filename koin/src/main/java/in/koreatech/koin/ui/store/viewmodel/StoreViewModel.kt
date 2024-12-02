@@ -99,12 +99,13 @@ class StoreViewModel @Inject constructor(
     }
 
     fun setCategory(categoryPosition: Int?) {
-        if(_categoryPosition.value == categoryPosition) {
+        if(categoryPosition == null || _categoryPosition.value == categoryPosition){
             _categoryPosition.value = 0
             _category.value = _storeCategoryList.value?.get(0)
-        } else {
+        }
+        else{
             _categoryPosition.value = categoryPosition
-            _category.value = categoryPosition?.let { _storeCategoryList.value?.get(it) }
+            _category.value =_storeCategoryList.value?.get(categoryPosition)
         }
     }
 
