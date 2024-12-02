@@ -250,6 +250,7 @@
                             tools:listitem="@layout/store_event_card" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/event_item_button"
                             android:layout_width="80dp"
                             android:layout_height="24dp"
                             android:layout_marginEnd="28dp"
