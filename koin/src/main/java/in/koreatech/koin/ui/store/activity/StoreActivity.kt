@@ -138,7 +138,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             viewModel.setCategory(it + 1)
             binding.searchEditText.text.clear()
             val current = viewModel.category.value?.name
-            viewModel.setCategory(it)
+
             if (current != null && previous != null) {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
