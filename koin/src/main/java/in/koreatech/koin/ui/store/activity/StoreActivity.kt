@@ -68,7 +68,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
-    private var eventListSize by Delegates.notNull<Int>()
+    var eventListSize = -1
 
     fun interface StoreCategoryFactory {
         fun getCurrentCategory(): String
@@ -202,9 +202,8 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         storeCategoriesAdapter.selectPosition =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
 
-        viewModel.setCategory(initStoreCategory!! + 1)
+        viewModel.setCategory(initStoreCategory)
         storeCategoriesAdapter.initCategory(initStoreCategory)
-
     }
 
 
@@ -553,6 +552,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 binding.eventViewPager.setCurrentItem(1, false)
             }
             binding.eventViewPager.isGone = it.isNullOrEmpty()
+            binding.eventItemButton.isGone = it.isNullOrEmpty()
         }
 
         observeLiveData(viewModel.storeCategoryList) {
