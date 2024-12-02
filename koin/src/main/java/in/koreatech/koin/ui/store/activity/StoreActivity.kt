@@ -138,7 +138,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             viewModel.setCategory(it + 1)
             binding.searchEditText.text.clear()
             val current = viewModel.category.value?.name
-            viewModel.setCategory(it)
+
             if (current != null && previous != null) {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
@@ -313,6 +313,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             @SuppressLint("RestrictedApi")
             object : TextWatcherAdapter() {
                 override fun afterTextChanged(p0: Editable) {
+                    if(p0.isNotEmpty()) viewModel.updateSearchQuery(binding.searchEditText.text.toString())
                     viewModel.getRelatedStore()
                     binding.suggestionsLayout.visibility =
                         if (p0.isEmpty()) View.GONE else View.VISIBLE
@@ -503,7 +504,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         if (binding.searchEditText.text.isNullOrEmpty()) {
             return true
         }
-        viewModel.updateSearchQuery(binding.searchEditText.text.toString())
         binding.searchResultTextView.text =
             "\"${binding.searchEditText.text}\" 관련 가게가 총 ${storeAdapter.itemCount}개 있어요."
         hideSoftKeyboard()
@@ -562,7 +562,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
         observeLiveData(viewModel.searchRelated) {
             searchRelatedAdapter.submitList(it.keywords)
-            if (it.keywords.isNullOrEmpty() && binding.searchEditText.text.isNotEmpty()) {
+            if (it.keywords.isEmpty() && binding.searchEditText.text.isNotEmpty()) {
                 binding.noResultTextView.visibility = View.VISIBLE
                 binding.suggestionsRecyclerView.visibility = View.GONE
             } else {

@@ -81,7 +81,8 @@ class StoreViewModel @Inject constructor(
         getStoreCategories()
         getStoreEvents()
         //changeCategory()
-      //  searchStore()
+        searchStore()
+        getRelatedStore()
 
     }
 
