@@ -100,13 +100,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
                 )
             }
-            storeDetailContract.launch(
-                Triple(
-                    it.uid,
-                    viewModel.category.value?.name,
-                    false
-                )
-            )
+            
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CLICK,
