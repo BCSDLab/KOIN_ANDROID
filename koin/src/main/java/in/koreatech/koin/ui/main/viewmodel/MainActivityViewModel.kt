@@ -96,16 +96,18 @@ class MainActivityViewModel @Inject constructor(
             emit(it)
             when (it) {
                 ExperimentGroup.MAIN_DINING_NEW -> {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
+                    EventLogger.logCustomEvent(
+                        "AB_TEST",
+                        "a/b test 로깅(식단 메인 진입점)",
                         AnalyticsConstant.Label.CAMPUS_DINING_1,
                         "더보기O"
                     )
                 }
 
                 ExperimentGroup.MAIN_DINING_ORIGINAL -> {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
+                    EventLogger.logCustomEvent(
+                        "AB_TEST",
+                        "a/b test 로깅(식단 메인 진입점)",
                         AnalyticsConstant.Label.CAMPUS_DINING_1,
                         "더보기X"
                     )
