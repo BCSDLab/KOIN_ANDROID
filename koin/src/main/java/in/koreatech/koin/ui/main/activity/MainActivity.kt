@@ -156,7 +156,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
                 EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
-            gotoStoreActivity(id)
+            gotoStoreActivity(id + 1)
         }
     }
 
