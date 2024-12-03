@@ -1,6 +1,7 @@
 package `in`.koreatech.bus.screen.timetable.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,8 +37,9 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ShuttleTimetableScreen(
+    regions: ImmutableList<ShuttleRegionViewState>,
     modifier: Modifier = Modifier,
-    regions: ImmutableList<ShuttleRegionViewState>
+    onItemClicked: (String) -> Unit = {}
 ) {
 
     var selectedRouteType by rememberSaveable { mutableStateOf(ShuttleBusRouteType.ALL) }
@@ -47,7 +49,9 @@ internal fun ShuttleTimetableScreen(
         modifier = modifier
     ) {
         TextChipGroup(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 24.dp),
             titles = ShuttleBusRouteType.entries.map { stringResource(it.titleRes) },
             onChipSelected = { title ->
                 selectedRouteType = ShuttleBusRouteType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusRouteType.ALL
@@ -57,7 +61,8 @@ internal fun ShuttleTimetableScreen(
         regions.forEach {
             ShuttleRegionView(
                 modifier = Modifier,
-                region = it
+                region = it,
+                onItemClicked = onItemClicked
             )
             if (it != regions.last()) {
                 Spacer(modifier = Modifier.height(10.dp))
@@ -69,13 +74,16 @@ internal fun ShuttleTimetableScreen(
 @Composable
 private fun ShuttleRegionView(
     modifier: Modifier = Modifier,
-    region: ShuttleRegionViewState
+    region: ShuttleRegionViewState,
+    onItemClicked: (String) -> Unit = {}
 ) {
     KoinSurface(
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 24.dp).padding(top = 16.dp, bottom = 4.dp)
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .padding(top = 16.dp, bottom = 4.dp)
         ) {
             Text(
                 text = region.name,
@@ -83,8 +91,13 @@ private fun ShuttleRegionView(
             )
             region.timetableOverviews.forEach {
                 ShuttleRouteItem(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 10.dp),
-                    timetableOverview = it
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                             onItemClicked(it.name)
+                        }
+                        .padding(horizontal = 8.dp, vertical = 10.dp),
+                    timetableOverview = it,
                 )
             }
         }
@@ -93,8 +106,8 @@ private fun ShuttleRegionView(
 
 @Composable
 private fun ShuttleRouteItem(
+    timetableOverview: ShuttleTimetableOverviewViewState,
     modifier: Modifier = Modifier,
-    timetableOverview: ShuttleTimetableOverviewViewState
 ) {
     Column(
         modifier = modifier
@@ -139,7 +152,9 @@ private fun ShuttleRouteItem(
 @Composable
 private fun ShuttleTimetableScreenPreview() {
     ShuttleTimetableScreen(
-        modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(KoinTheme.colors.neutral100),
         regions = persistentListOf(
             ShuttleRegionViewState(
                 name = "서울",
