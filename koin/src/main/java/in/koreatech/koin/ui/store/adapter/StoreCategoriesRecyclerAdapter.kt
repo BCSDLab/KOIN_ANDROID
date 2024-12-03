@@ -76,8 +76,10 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
     }
 
     fun initCategory(id: Int?){
-        selectPosition = id
-        preCategories = id
+        if(id != null){
+            selectPosition = id - 1
+            preCategories = id - 1
+        }
     }
 
     companion object {
