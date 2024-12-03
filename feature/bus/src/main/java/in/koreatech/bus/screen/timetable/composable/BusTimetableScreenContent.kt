@@ -54,6 +54,7 @@ internal fun BusTimetableScreenContent(
     shouldShowNotice: Boolean,
     notice: String,
     modifier: Modifier = Modifier,
+    onNavigateToShuttleTimetableDetailScreen: (route: String) -> Unit = {},
     onNavigationIconClick: () -> Unit = {},
     onCloseNotice: () -> Unit = {},
     previewTab: BusType = BusType.SHUTTLE
@@ -138,7 +139,8 @@ internal fun BusTimetableScreenContent(
                             ShuttleTimetableScreen(
                                 modifier = Modifier.fillMaxSize()
                                     .background(KoinTheme.colors.neutral100),
-                                regions = busTimetableUiState.shuttleRegions.toPersistentList()
+                                regions = busTimetableUiState.shuttleRegions.toPersistentList(),
+                                onItemClicked = onNavigateToShuttleTimetableDetailScreen
                             )
                         }
 

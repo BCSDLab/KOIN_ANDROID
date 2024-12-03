@@ -11,6 +11,7 @@ import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
 internal fun BusTimetableScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
+    onNavigateToShuttleTimetableDetailScreen: (route: String) -> Unit = {},
     viewModel: BusTimetableViewModel = hiltViewModel(),
 ) {
 
@@ -23,6 +24,7 @@ internal fun BusTimetableScreen(
         modifier = modifier,
         busTimetableUiState = busTimetableUiState,
         onNavigationIconClick = onNavigationIconClick,
+        onNavigateToShuttleTimetableDetailScreen = onNavigateToShuttleTimetableDetailScreen,
         shouldShowNotice = shouldShowNotice,
         notice = notice,
         onCloseNotice = viewModel::closeNotice
