@@ -65,18 +65,15 @@ internal fun BusSearchScreenContent(
             onDismissRequest = { placeSelectMode = PlaceSelectMode.NONE },
             selectMode = placeSelectMode,
             onConfirmSelection = {
-                when (placeSelectMode) {
-                    PlaceSelectMode.DEPARTURE -> {
-                        placeSelectMode = PlaceSelectMode.ARRIVAL
-                        onDepartureSet(context.getString(it.titleRes))
-                    }
-
-                    PlaceSelectMode.ARRIVAL -> {
-                        placeSelectMode = PlaceSelectMode.NONE
-                        onArrivalSet(context.getString(it.titleRes))
-                    }
-
-                    PlaceSelectMode.NONE -> Unit
+                if (placeSelectMode == PlaceSelectMode.DEPARTURE) {
+                    placeSelectMode =
+                        if (arrival.isEmpty()) PlaceSelectMode.ARRIVAL else PlaceSelectMode.NONE
+                    onDepartureSet(context.getString(it.titleRes))
+                }
+                else if(placeSelectMode == PlaceSelectMode.ARRIVAL) {
+                    placeSelectMode =
+                        if (departure.isEmpty()) PlaceSelectMode.DEPARTURE else PlaceSelectMode.NONE
+                    onArrivalSet(context.getString(it.titleRes))
                 }
             },
             modifier = Modifier,
