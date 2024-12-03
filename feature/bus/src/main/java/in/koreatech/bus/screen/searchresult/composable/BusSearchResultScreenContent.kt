@@ -117,14 +117,16 @@ internal fun BusSearchResultScreenContent(
         }
 
         when (searchResultUiState) {
-            is BusSearchResultUiState.Success -> LazyColumn {
-                items(searchResultUiState.departureInfos) { info ->
-                    BusSearchResultItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 32.dp, vertical = 8.dp),
-                        info = info
-                    )
+            is BusSearchResultUiState.Success -> {
+                LazyColumn {
+                    items(searchResultUiState.departureInfos) { info ->
+                        BusSearchResultItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 32.dp, vertical = 8.dp),
+                            info = info
+                        )
+                    }
                 }
             }
             is BusSearchResultUiState.Loading -> {
