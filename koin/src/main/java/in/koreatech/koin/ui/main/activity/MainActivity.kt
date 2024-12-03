@@ -3,7 +3,6 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -242,6 +241,11 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         TabLayoutMediator(tabHotArticle, viewPagerHotArticle) { _, _ -> }.attach()
 
         textSeeMoreArticle.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.APP_MAIN_NOTICE_DETAIL,
+                getString(R.string.article_more)
+            )
             startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
         }
 
