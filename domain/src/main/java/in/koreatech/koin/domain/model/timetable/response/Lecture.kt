@@ -25,11 +25,15 @@ data class Lecture(
         regularNumber = regularNumber,
         code = code,
         designScore = designScore,
-        classTime = classTime,
-        classPlace = "", // Lecture에 없는데 어쩌자고?
-        memo = "", // Lecture에 없다고.
+        classInfos = listOf(
+            TimetableLectureClassInfo(
+                classTime = classTime,
+                classPlace = place ?: ""
+            )
+        ),
+        memo = "",
         grades = grades,
-        classTitle = name, // 데이터 이름이 다른거냐
+        classTitle = name,
         lectureClass = lectureClass,
         target = target,
         professor = professor,
@@ -37,7 +41,7 @@ data class Lecture(
     )
 
     /**
-     * @reference : LectureTest.kt
+     * @test : LectureTest.kt
      */
     fun findDayOfWeekAndLocalTime(): List<Pair<DayOfWeek?, List<LocalTime>>> {
         fun groupConsecutiveNumbers(numbers: List<Int>): List<List<Int>> {
@@ -76,50 +80,16 @@ data class Lecture(
             }
         }
 
-        fun splitClassTime(): List<List<Int>> {
-            return classTime.fold(mutableListOf<MutableList<Int>>()) { acc, num ->
-                if (num == -1) {
-                    acc.add(mutableListOf())
-                } else {
-                    if (acc.isEmpty()) {
-                        acc.add(mutableListOf(num))
-                    } else {
-                        acc.last().add(num)
-                    }
-                }
-                acc
-            }.filter { it.isNotEmpty() }
+        val groupedByPrefix = classTime.groupBy { it / 100 }
+        val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
+        for ((key, values) in groupedByPrefix) {
+            val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
+            for (group in consecutiveGroups) {
+                result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
+            }
         }
 
-        if (classTime.contains(-1)) {
-            val classTimes = splitClassTime()
-            val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
-
-            classTimes.forEach { times ->
-                val groupedByPrefix = times.groupBy { it / 100 }
-
-                for ((key, values) in groupedByPrefix) {
-                    val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
-                    for (group in consecutiveGroups) {
-                        result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
-                    }
-                }
-
-            }
-
-            return result
-        } else {
-            val groupedByPrefix = classTime.groupBy { it / 100 }
-            val result = mutableListOf<Pair<DayOfWeek?, List<LocalTime>>>()
-            for ((key, values) in groupedByPrefix) {
-                val consecutiveGroups = groupConsecutiveNumbers(values.sorted())
-                for (group in consecutiveGroups) {
-                    result.add(Pair(getDayOfWeek(key), getLocalTimeGroup(group)))
-                }
-            }
-
-            return result
-        }
+        return result
     }
 
     fun formatDescription(): String {

@@ -24,7 +24,6 @@ import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
-import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -39,13 +38,9 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
-import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.operating.OperatingInfoActivity
 import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
-import `in`.koreatech.koin.ui.timetable.TimetableActivity
-import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
-import `in`.koreatech.koin.ui.timetablev2.TimetableSemesterActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.closeDrawer
@@ -298,12 +293,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.Timetable -> {
-//                    goToTimetableActivity()
-                    if (userInfoFlow.value.isAnonymous) {
-                        goToAnonymousTimeTableActivity()
-                    } else {
-                        goToTimetableActivity()
-                    }
+                    goToTimetableActivity()
                 }
 
                 MenuState.LoginOrLogout -> {
@@ -474,39 +464,23 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
-    /**
-     * 완성되면 아래 함수 주석 풀고 연결
-     */
-//    private fun goToTimetableActivity() {
-//        if (menuState != MenuState.Main) {
-//            goToActivityFinish(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
-//        } else {
-//            val intent = Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
-//                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
-//                    putExtra("isAnonymous", true)
-//                } else {
-//                    putExtra("isAnonymous", false)
-//                }
-//            }
-//            EventLogger.logClickEvent(
-//                action = EventAction.USER,
-//                label = "hamburger",
-//                value = "시간표"
-//            )
-//            startActivity(intent)
-//        }
-//    }
-
     private fun goToTimetableActivity() {
         if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, TimetableActivity::class.java))
+            goToActivityFinish(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
         } else {
+            val intent = Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
+                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
+                    putExtra("isAnonymous", true)
+                } else {
+                    putExtra("isAnonymous", false)
+                }
+            }
             EventLogger.logClickEvent(
                 action = EventAction.USER,
                 label = "hamburger",
                 value = "시간표"
             )
-            startActivity(Intent(this, TimetableActivity::class.java))
+            startActivity(intent)
         }
     }
 
@@ -525,14 +499,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             goToActivityFinish(Intent(this, LandActivity::class.java))
         } else {
             startActivity(Intent(this, LandActivity::class.java))
-        }
-    }
-
-    private fun goToAnonymousTimeTableActivity() {
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, TimetableAnonymousActivity::class.java))
-        } else {
-            startActivity(Intent(this, TimetableAnonymousActivity::class.java))
         }
     }
 

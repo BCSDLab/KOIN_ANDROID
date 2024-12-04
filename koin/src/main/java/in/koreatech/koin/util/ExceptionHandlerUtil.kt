@@ -5,11 +5,9 @@ import android.content.Intent
 import android.os.Looper
 import androidx.core.os.HandlerCompat
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.constant.HttpStatusCode
 import `in`.koreatech.koin.ui.error.ErrorActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.util.ext.showToast
-import retrofit2.HttpException
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer

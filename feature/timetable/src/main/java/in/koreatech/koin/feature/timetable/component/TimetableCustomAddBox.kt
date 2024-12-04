@@ -47,7 +47,7 @@ fun TimetableCustomAddBox(
             color = KoinTheme.colors.primary500
         )
         IconButton(
-            onClick = onClick, // TODO : 시간 및 장소 추가 클릭 처리
+            onClick = onClick,
             modifier = Modifier.size(24.dp)
         ) {
             StableIcon(

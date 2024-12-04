@@ -5,6 +5,8 @@
     <string name="semester_type_fall">2학기</string>
     <string name="semester_type_winter">겨울학기</string>
 
+    <string name="timetable_semester_title">시간표 목록</string>
+    <string name="timetable_semester">시간표 수정</string>
     <string name="lecture_duplication_title">시간표가 중복돼요.</string>
     <string name="lecture_duplication_cancellation">취소</string>
     <string name="lecture_duplication_confirmation">대체하기</string>
@@ -81,6 +83,7 @@
         <item>로그인</item>
         <item>을 통해 학기를 편집하고 계절학기와 예비 시간표를 작성할 수 있어요.</item>
     </string-array>
+    <string name="semester_empty">우측 상단의 버튼으로 학기를 추가해 \n시간표 기능을 사용해 보세요!</string>
     <string name="semester_semester_format">%d %s</string>
     <string name="semester_edit_timetable_frame">설정</string>
     <string name="semester_edit_year">%d년도</string>
@@ -91,5 +94,8 @@
 
     <string name="timetable_time_picker_start_title">시작시간을 선택해주세요.</string>
     <string name="timetable_time_picker_end_title">종료시간을 선택해주세요.</string>
+
+    <string name="download">다운로드</string>
+    <string name="download_description">다운로드 하시겠어요?</string>
 
 </resources>

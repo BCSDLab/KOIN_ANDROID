@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.timetable
 
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
-import kotlinx.coroutines.test.runTest
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectureClassInfo
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.DayOfWeek
@@ -19,55 +19,64 @@ class TimetableLectureTest {
         regularNumber = "40",
         department = "HRD학과",
         target = "전기3",
-        classPlace = "",
+        classInfos = emptyList(),
         designScore = "0",
-        classTime = emptyList()
     )
 
     @Test
-    fun `0,1,100,101 주어질 때, listOf((월, list(9시,9시 30분)), (화, list(9시,9시 30분)))을 반환한다`() {
+    fun `강의 시간이 없을 때, 빈 리스트를 반환한다`() {
         val lecture = dummyTimetableLecture.copy(
-            classTime = listOf(0, 1, 100, 101)
+            classInfos = emptyList()
         )
 
-        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
+        val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
+
+        val actual: List<Triple<DayOfWeek?, List<LocalTime>, String>> = emptyList()
+        assertEquals(formatDayOfWeekAndClassTime, actual)
+    }
+
+    @Test
+    fun `강의 시간 0,1,100,101 일 때, 월요일 9시,9시30분, 화요일 9시,9시30분 반환된다`() {
+        val lecture = dummyTimetableLecture.copy(
+            classInfos = listOf(
+                TimetableLectureClassInfo(
+                    classTime = listOf(0, 1, 100, 101),
+                    classPlace = ""
+                )
+            )
+        )
+
+        val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
 
         assertEquals(
             formatDayOfWeekAndClassTime, listOf(
-                DayOfWeek.MONDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)),
-                DayOfWeek.TUESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30))
+                Triple(DayOfWeek.MONDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
+                Triple(DayOfWeek.TUESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), "")
             )
         )
     }
 
     @Test
-    fun `0,1,-1,100,101 주어질 때, listOf((월, list(9시,9시 30분)), (화, list(9시,9시 30분)))을 반환한다`() {
+    fun `강의 시간 100,101,200,201 일 때, 화요일 9시,9시30분, 수요일 9시,9시30분 반환된다`() {
         val lecture = dummyTimetableLecture.copy(
-            classTime = listOf(0, 1, -1, 100, 101)
-        )
-
-        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
-
-        assertEquals(
-            formatDayOfWeekAndClassTime, listOf(
-                DayOfWeek.MONDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)),
-                DayOfWeek.TUESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30))
+            classInfos = listOf(
+                TimetableLectureClassInfo(
+                    classTime = listOf(100, 101),
+                    classPlace = ""
+                ),
+                TimetableLectureClassInfo(
+                    classTime = listOf(200, 201),
+                    classPlace = ""
+                ),
             )
         )
-    }
 
-    @Test
-    fun `0,1,-1,100,101,-1 주어질 때, listOf((월, list(9시,9시 30분)), (화, list(9시,9시 30분)))을 반환한다`() {
-        val lecture = dummyTimetableLecture.copy(
-            classTime = listOf(0, 1, -1, 100, 101,-1)
-        )
-
-        val formatDayOfWeekAndClassTime = lecture.findDayOfWeekAndLocalTime()
+        val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
 
         assertEquals(
             formatDayOfWeekAndClassTime, listOf(
-                DayOfWeek.MONDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)),
-                DayOfWeek.TUESDAY to listOf(LocalTime.of(9, 0), LocalTime.of(9, 30))
+                Triple(DayOfWeek.TUESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
+                Triple(DayOfWeek.WEDNESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
             )
         )
     }

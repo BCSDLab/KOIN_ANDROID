@@ -62,12 +62,7 @@ fun TimetableEventTime(
         TimetableEventType.SELECTED -> TimetableSelectedEventTime(
             range = range,
             event = event,
-            modifier = modifier.padding(
-                start = (0.5).dp,
-                top = (0.5).dp,
-                end = (0.6).dp,
-                bottom = (0.65).dp
-            )
+            modifier = modifier.padding(0.5.dp)
         )
 
         TimetableEventType.ETC_SELECTED -> TimetableEtcSelectedEventTime(
@@ -90,17 +85,30 @@ private fun TimetableBasicEventTime(
     var titleMaxLine by rememberSaveable { mutableIntStateOf(Int.MAX_VALUE) }
     var titleHeight by rememberSaveable { mutableIntStateOf(0) }
     var titleLineCount by rememberSaveable { mutableIntStateOf(0) }
-    var contentMaxLine by rememberSaveable { mutableIntStateOf(Int.MAX_VALUE) }
-    var contentHeight by rememberSaveable { mutableIntStateOf(0) }
-    var contentLineCount by rememberSaveable { mutableIntStateOf(0) }
+    var professorMaxLine by rememberSaveable { mutableIntStateOf(Int.MAX_VALUE) }
+    var professorHeight by rememberSaveable { mutableIntStateOf(0) }
+    var professorLineCount by rememberSaveable { mutableIntStateOf(0) }
+    var placeMaxLine by rememberSaveable { mutableIntStateOf(Int.MAX_VALUE) }
+    var placeHeight by rememberSaveable { mutableIntStateOf(0) }
+    var placeLineCount by rememberSaveable { mutableIntStateOf(0) }
 
-    // TODO : 1시간 30분이상일 경우 professor text 가 내려가서 보이지 않는 오류 해결해보자..
-    if (height < titleHeight + contentHeight) {
-        titleMaxLine = titleLineCount - 1
-        contentMaxLine = if (contentLineCount == 1) {
-            contentLineCount
+    if (height < titleHeight + professorHeight + placeHeight) {
+        titleMaxLine = (titleLineCount - 1).let {
+            if(it < 1) 1 else it
+        }
+        professorMaxLine = if (professorLineCount == 1) {
+            professorLineCount
         } else {
-            contentLineCount - 1
+            (professorLineCount - 1).let {
+                if(it < 1) 1 else it
+            }
+        }
+        placeMaxLine = if (placeLineCount == 1) {
+            placeMaxLine
+        } else {
+            (placeMaxLine - 1).let {
+                if(it < 1) 1 else it
+            }
         }
     }
 
@@ -135,19 +143,36 @@ private fun TimetableBasicEventTime(
                 titleHeight = it.size.height
             }
         )
-        Text(
-            text = event.professor,
-            modifier = Modifier
-                .padding(1.dp),
-            style = KoinTheme.typography.regular10,
-            color = KoinTheme.colors.neutral800,
-            maxLines = contentMaxLine,
-            overflow = TextOverflow.Ellipsis,
-            onTextLayout = {
-                contentLineCount = it.lineCount
-                contentHeight = it.size.height
-            }
-        )
+        if (event.professor.isNotEmpty()) {
+            Text(
+                text = event.professor,
+                modifier = Modifier
+                    .padding(1.dp),
+                style = KoinTheme.typography.regular10,
+                color = KoinTheme.colors.neutral800,
+                maxLines = professorMaxLine,
+                overflow = TextOverflow.Ellipsis,
+                onTextLayout = {
+                    professorLineCount = it.lineCount
+                    professorHeight = it.size.height
+                }
+            )
+        }
+        if (event.place.isNotEmpty()) {
+            Text(
+                text = event.place,
+                modifier = Modifier
+                    .padding(1.dp),
+                style = KoinTheme.typography.regular10,
+                color = KoinTheme.colors.neutral800,
+                maxLines = placeMaxLine,
+                overflow = TextOverflow.Ellipsis,
+                onTextLayout = {
+                    placeLineCount = it.lineCount
+                    placeHeight = it.size.height
+                }
+            )
+        }
     }
 }
 
@@ -220,7 +245,11 @@ private fun timetableSelectedEventTimeBottomEndRound(
 private fun TimetableEventTimePreview_Basic() {
     TimetableEventTime(
         range = 9,
-        event = dummyEvent.copy(name = "dafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdafdaf", professor = "dafdafdafdafdafdafdafdafdaf"),
+        event = dummyEvent.copy(
+            name = "asdfsadfsadfsadfadfasdfsadfsdfassadf",
+            professor = "dafdafdafdafdafdafdafdafdafsdfaasdfasd",
+            place = "qqqqqqqqqqqqqqqqqqqqq"
+        ),
         modifier = Modifier
             .sizeIn(maxHeight = (64 * 2).dp),
     )

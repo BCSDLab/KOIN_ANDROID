@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetState
@@ -35,10 +38,12 @@ import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.feature.timetable.component.TimetableDownloadBox
 import `in`.koreatech.koin.feature.timetable.component.TimetableScheduleBox
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
+import `in`.koreatech.koin.feature.timetable.model.dummyEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
 import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
+import java.time.DayOfWeek
 
 @Composable
 fun TimetableScreen(
@@ -54,6 +59,7 @@ fun TimetableScreen(
     bottomSheetContentMode: TimetableBottomSheetContentMode,
     bottomSheetUI: BottomSheetUI,
     sheetState: BottomSheetState,
+    sheetLazyListState: LazyListState,
     scaffoldState: BottomSheetScaffoldState,
     graphicsLayer: GraphicsLayer = rememberGraphicsLayer(),
     modifier: Modifier = Modifier,
@@ -77,7 +83,6 @@ fun TimetableScreen(
     onClickBottomSheetDetailDelete: (TimetableLecture) -> Unit = {},
     onScheduleNameChange: (text: String) -> Unit = {},
     onProfessorNameChange: (text: String) -> Unit = {},
-    onPlaceNameChange: (text: String) -> Unit = {},
     onExtraPlaceNameChange: (id: Int, text: String) -> Unit = { _, _ -> },
     onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
@@ -90,6 +95,7 @@ fun TimetableScreen(
     BottomSheetScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
+        sheetGesturesEnabled = !sheetLazyListState.isScrollInProgress,
         sheetContent = {
             when (bottomSheetUI) {
                 BottomSheetUI.DEFAULT -> {
@@ -100,6 +106,7 @@ fun TimetableScreen(
                         customContents = customContents,
                         bottomSheetContentMode = bottomSheetContentMode,
                         timetableEvents = timetableEvents,
+                        sheetLazyListState = sheetLazyListState,
                         onClickAddLectureMode = onClickAddLectureMode,
                         onClickAddCustomLectureMode = onClickAddCustomLectureMode,
                         onComplete = onClickBottomSheetComplete,
@@ -113,7 +120,6 @@ fun TimetableScreen(
                         onBottomSheetHeightChange = { bottomSheetHeight = it },
                         onScheduleNameChange = onScheduleNameChange,
                         onProfessorNameChange = onProfessorNameChange,
-                        onPlaceNameChange = onPlaceNameChange,
                         onExtraPlaceNameChange = onExtraPlaceNameChange,
                         onDayOfWeekChange = onDayOfWeekChange,
                         onClickStartTime = onClickStartTime,
@@ -139,6 +145,7 @@ fun TimetableScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .fillMaxHeight()
                 .background(Color.White)
                 .dynamicPadding(sheetState, bottomSheetHeight),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -200,6 +207,8 @@ private fun TimetableScreenPreview() {
         lectures = listOf(dummyLecture),
         detailLecture = dummyLecture.toTimetableLecture(),
         semesters = listOf("20242"),
+        timetableEvents = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.MONDAY)),
+        clickedTimetableEvents = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.THURSDAY)),
         currentSemester = "20242",
         timetableName = "시간표1",
         selectedLecture = null,
@@ -209,6 +218,7 @@ private fun TimetableScreenPreview() {
         sheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed
         ),
+        sheetLazyListState = rememberLazyListState(),
         scaffoldState = rememberBottomSheetScaffoldState(),
     )
 }

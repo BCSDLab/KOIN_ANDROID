@@ -11,16 +11,13 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.TimetableInputField
 import `in`.koreatech.koin.feature.timetable.component.TimetableTimeContentRow
-import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
 @Composable
 fun BottomSheetCustomContent(
-    customContents: CustomContentState,
+    customExtraContentState: CustomExtraContentState,
     modifier: Modifier = Modifier,
-    onScheduleNameChange: (text: String) -> Unit = {},
-    onProfessorNameChange: (text: String) -> Unit = {},
-    onPlaceNameChange: (text: String) -> Unit = {},
+    onPlaceNameChange: (id: Int, text: String) -> Unit = { _, _ -> },
     onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = {},
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
@@ -30,28 +27,18 @@ fun BottomSheetCustomContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        TimetableInputField(
-            text = customContents.schedule,
-            title = stringResource(id = R.string.timetable_input_field_title_schedule),
-            optional = false,
-            isError = customContents.isScheduleError,
-            onValueChange = onScheduleNameChange
-        )
-        TimetableInputField(
-            text = customContents.professor,
-            title = stringResource(id = R.string.timetable_input_field_title_professor),
-            onValueChange = onProfessorNameChange
-        )
         TimetableTimeContentRow(
-            customContent = customContents.time,
+            customContent = customExtraContentState,
             onDayOfWeekChange = onDayOfWeekChange,
             onClickStartTime = onClickStartTime,
             onClickEndTime = onClickEndTime,
         )
         TimetableInputField(
-            text = customContents.time.place,
+            text = customExtraContentState.place,
             title = stringResource(id = R.string.timetable_input_field_title_place),
-            onValueChange = onPlaceNameChange
+            onValueChange = {
+                onPlaceNameChange(customExtraContentState.id, it)
+            }
         )
     }
 }
@@ -60,6 +47,6 @@ fun BottomSheetCustomContent(
 @Composable
 private fun BottomSheetCustomContentPreview() {
     BottomSheetCustomContent(
-        customContents = CustomContentState(),
+        customExtraContentState = CustomExtraContentState()
     )
 }
