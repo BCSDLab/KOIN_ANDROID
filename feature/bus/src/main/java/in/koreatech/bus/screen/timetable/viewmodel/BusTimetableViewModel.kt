@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
+import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
@@ -32,15 +32,15 @@ class BusTimetableViewModel @Inject constructor(
                     name = "서울",
                     timetableOverviews = listOf(
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.WEEKDAY,
+                            routeType = ShuttleBusOperationType.WEEKDAY,
                             name = "서울-대전",
                         ),
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.WEEKEND,
+                            routeType = ShuttleBusOperationType.WEEKEND,
                             name = "서울-대전",
                         ),
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.CIRCULATION,
+                            routeType = ShuttleBusOperationType.CIRCULATION,
                             name = "서울-대전",
                         )
                     )
@@ -49,16 +49,16 @@ class BusTimetableViewModel @Inject constructor(
                     name = "대전",
                     timetableOverviews = listOf(
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.WEEKDAY,
+                            routeType = ShuttleBusOperationType.WEEKDAY,
                             name = "대전-서울",
                         ),
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.WEEKEND,
+                            routeType = ShuttleBusOperationType.WEEKEND,
                             name = "대전-서울",
                             description = "토요일, 일요일 운행"
                         ),
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.CIRCULATION,
+                            routeType = ShuttleBusOperationType.CIRCULATION,
                             name = "대전-서울",
                             description = "토요일, 천안아산역"
                         )
@@ -68,15 +68,15 @@ class BusTimetableViewModel @Inject constructor(
                     name = "대구",
                     timetableOverviews = listOf(
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.WEEKDAY,
+                            routeType = ShuttleBusOperationType.WEEKDAY,
                             name = "대구-서울",
                         ),
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.WEEKDAY,
+                            routeType = ShuttleBusOperationType.WEEKDAY,
                             name = "대구-서울",
                         ),
                         ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusRouteType.WEEKEND,
+                            routeType = ShuttleBusOperationType.WEEKEND,
                             name = "대구-서울",
                             description = "금요일 하교 추가"
                         )

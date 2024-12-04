@@ -38,7 +38,7 @@ fun ShuttleTimetableDetailItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 4.dp)
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
         ) {
             Text(
                 text = "천안역",

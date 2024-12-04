@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
+import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
@@ -223,15 +223,15 @@ private val previewUiState = BusTimetableUiState.Success(
             name = "서울",
             timetableOverviews = listOf(
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.WEEKDAY,
+                    routeType = ShuttleBusOperationType.WEEKDAY,
                     name = "서울-대전",
                 ),
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.WEEKEND,
+                    routeType = ShuttleBusOperationType.WEEKEND,
                     name = "서울-대전",
                 ),
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.CIRCULATION,
+                    routeType = ShuttleBusOperationType.CIRCULATION,
                     name = "서울-대전",
                 )
             )
@@ -240,16 +240,16 @@ private val previewUiState = BusTimetableUiState.Success(
             name = "대전",
             timetableOverviews = listOf(
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.WEEKDAY,
+                    routeType = ShuttleBusOperationType.WEEKDAY,
                     name = "대전-서울",
                 ),
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.WEEKEND,
+                    routeType = ShuttleBusOperationType.WEEKEND,
                     name = "대전-서울",
                     description = "토요일, 일요일 운행"
                 ),
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.CIRCULATION,
+                    routeType = ShuttleBusOperationType.CIRCULATION,
                     name = "대전-서울",
                     description = "토요일, 천안아산역"
                 )
@@ -259,15 +259,15 @@ private val previewUiState = BusTimetableUiState.Success(
             name = "대구",
             timetableOverviews = listOf(
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.WEEKDAY,
+                    routeType = ShuttleBusOperationType.WEEKDAY,
                     name = "대구-서울",
                 ),
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.WEEKDAY,
+                    routeType = ShuttleBusOperationType.WEEKDAY,
                     name = "대구-서울",
                 ),
                 ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusRouteType.WEEKEND,
+                    routeType = ShuttleBusOperationType.WEEKEND,
                     name = "대구-서울",
                     description = "금요일 하교 추가"
                 )
