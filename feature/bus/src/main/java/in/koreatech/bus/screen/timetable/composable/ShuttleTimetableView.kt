@@ -20,15 +20,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
+import `in`.koreatech.bus.component.ShuttleBusOperationChip
+import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
-import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -42,7 +41,7 @@ internal fun ShuttleTimetableScreen(
     onItemClicked: (String) -> Unit = {}
 ) {
 
-    var selectedRouteType by rememberSaveable { mutableStateOf(ShuttleBusRouteType.ALL) }
+    var selectedRouteType by rememberSaveable { mutableStateOf(ShuttleBusOperationType.ALL) }
     val context = LocalContext.current
 
     Column(
@@ -52,9 +51,9 @@ internal fun ShuttleTimetableScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 24.dp),
-            titles = ShuttleBusRouteType.entries.map { stringResource(it.titleRes) },
+            titles = ShuttleBusOperationType.entries.map { stringResource(it.titleRes) },
             onChipSelected = { title ->
-                selectedRouteType = ShuttleBusRouteType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusRouteType.ALL
+                selectedRouteType = ShuttleBusOperationType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusOperationType.ALL
             },
             selectedChipIndexes = intArrayOf(selectedRouteType.ordinal)
         )
@@ -116,15 +115,8 @@ private fun ShuttleRouteItem(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ReadOnlyTextChip(
-                title = stringResource(timetableOverview.routeType.simpleTitleRes),
-                containerColor = when (timetableOverview.routeType) {        // TODO : 색상 정리
-                    ShuttleBusRouteType.WEEKDAY -> Color(0xFF34ADFF)
-                    ShuttleBusRouteType.WEEKEND -> Color(0xFFFFB443)
-                    ShuttleBusRouteType.CIRCULATION -> Color(0xFF4ED92C)
-                    else -> Color.Transparent
-                },
-                textStyle = KoinTheme.typography.regular12.copy(color = Color.White)
+            ShuttleBusOperationChip(
+                operationType = timetableOverview.routeType,
             )
 
             Text(
@@ -160,15 +152,15 @@ private fun ShuttleTimetableScreenPreview() {
                 name = "서울",
                 timetableOverviews = listOf(
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.WEEKDAY,
+                        routeType = ShuttleBusOperationType.WEEKDAY,
                         name = "서울-대전",
                     ),
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.WEEKEND,
+                        routeType = ShuttleBusOperationType.WEEKEND,
                         name = "서울-대전",
                     ),
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.CIRCULATION,
+                        routeType = ShuttleBusOperationType.CIRCULATION,
                         name = "서울-대전",
                     )
                 )
@@ -177,16 +169,16 @@ private fun ShuttleTimetableScreenPreview() {
                 name = "대전",
                 timetableOverviews = listOf(
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.WEEKDAY,
+                        routeType = ShuttleBusOperationType.WEEKDAY,
                         name = "대전-서울",
                     ),
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.WEEKEND,
+                        routeType = ShuttleBusOperationType.WEEKEND,
                         name = "대전-서울",
                         description = "대전에서 서울로 이동하는 노선입니다."
                     ),
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.CIRCULATION,
+                        routeType = ShuttleBusOperationType.CIRCULATION,
                         name = "대전-서울",
                         description = "대전에서 서울로 이동하는 노선입니다."
                     )
@@ -196,15 +188,15 @@ private fun ShuttleTimetableScreenPreview() {
                 name = "대구",
                 timetableOverviews = listOf(
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.WEEKDAY,
+                        routeType = ShuttleBusOperationType.WEEKDAY,
                         name = "대구-서울",
                     ),
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.WEEKDAY,
+                        routeType = ShuttleBusOperationType.WEEKDAY,
                         name = "대구-서울",
                     ),
                     ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusRouteType.WEEKEND,
+                        routeType = ShuttleBusOperationType.WEEKEND,
                         name = "대구-서울",
                     )
                 )

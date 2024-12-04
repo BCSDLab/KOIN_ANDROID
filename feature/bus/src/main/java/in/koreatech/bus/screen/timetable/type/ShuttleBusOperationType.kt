@@ -6,7 +6,7 @@ import `in`.koreatech.koin.feature.bus.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-enum class ShuttleBusRouteType(
+enum class ShuttleBusOperationType(
     @StringRes val titleRes: Int,
     @StringRes val simpleTitleRes: Int
 ) : Parcelable {

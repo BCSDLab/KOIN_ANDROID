@@ -1,11 +1,11 @@
 package `in`.koreatech.bus.viewstate
 
 import androidx.compose.runtime.Immutable
-import `in`.koreatech.bus.screen.timetable.type.ShuttleBusRouteType
+import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 
 @Immutable
 data class ShuttleTimetableOverviewViewState(
-    val routeType: ShuttleBusRouteType,
+    val routeType: ShuttleBusOperationType,
     val name: String,
     val description: String = "",
 )
