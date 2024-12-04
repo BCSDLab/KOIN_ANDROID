@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,6 +29,7 @@ fun TimetableBottomSheetBasic(
     modifier: Modifier = Modifier,
     selectedLecture: Lecture? = null,
     timetableEvents: List<TimetableEvent> = emptyList(),
+    sheetLazyListState: LazyListState,
     onClickSettingIcon: (visible: Boolean) -> Unit = {},
     onClickSearchIcon: () -> Unit = {},
     onSearchTextChange: (text: String) -> Unit = {},
@@ -50,6 +53,7 @@ fun TimetableBottomSheetBasic(
         HorizontalDivider(thickness = 2.dp, color = KoinTheme.colors.neutral300)
         LazyColumn(
             modifier = Modifier.nestedScroll(nestedScroll),
+            state = sheetLazyListState,
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(lectures.size) {
@@ -74,7 +78,8 @@ fun TimetableBottomSheetBasic(
 fun TimetableBottomSheetBasicPreview() {
     TimetableBottomSheetBasic(
         searchText = "",
-        lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발"))
+        lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),
+        sheetLazyListState = rememberLazyListState()
     )
 }
 

@@ -6,50 +6,57 @@ import `in`.koreatech.koin.feature.timetable.model.TimetableColor
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import java.time.DayOfWeek
+import java.time.LocalTime
 
 data class CustomContentState(
     val schedule: String = "",
     val professor: String = "",
     val isScheduleError: Boolean = false,
-    val time: CustomExtraContentState = CustomExtraContentState(id = -1),
-    val data: ImmutableList<CustomExtraContentState> = persistentListOf()
+    val data: ImmutableList<CustomExtraContentState> = persistentListOf(CustomExtraContentState())
 ) {
     fun toTimetableEvent() = TimetableEvent(
         id = 0,
         lectureId = 0,
         name = "",
         color = TimetableColor(Color.White, Color.White),
-        dayOfWeek = time.dayOfWeek,
-        start = time.startTime,
-        end = time.endTime
+        dayOfWeek = DayOfWeek.MONDAY,
+        start = LocalTime.of(9, 0),
+        end = LocalTime.of(10, 0)
     )
 
-
-    // place 구분자 : ,
-    // classTimes 구분자 : -1
     fun toLectures(): List<Lecture> {
         val lectures = mutableListOf<Lecture>()
 
-        var places = ""
-        val classTimes = mutableListOf<Int>()
-        repeat(data.size + 1) { index ->
-            if (index == 0) {
-                places += time.place
-                classTimes.addAll(time.toClassTime())
-            } else {
-                places += ", ${data[index -1].place}"
-                classTimes.addAll(data[index - 1].toClassTime())
-            }
-            classTimes.add(-1)
+        data.forEach { lecture ->
+            lectures.add(
+                Lecture(
+                    id = 0,
+                    name = schedule.trim(),
+                    professor = professor.trim(),
+                    classTime = lecture.toClassTime(),
+                    place = lecture.place.trim()
+                )
+            )
         }
-        Lecture(
-            id = 0,
-            name = schedule.trim(),
-            professor = professor.trim(),
-            classTime = classTimes,
-            place = places.trim()
-        ).let { lectures.add(it) }
 
         return lectures
+    }
+
+    fun formatTimeRange(): Int {
+        val endTime = data.maxOf { it.endTime }
+        val hour = endTime.hour
+        val minutes = endTime.minute
+
+        return when (hour) {
+            in 9..17 -> 9
+            18 -> if (minutes == 0) 9 else 10
+            19 -> if (minutes == 0) 10 else 11
+            20 -> if (minutes == 0) 11 else 12
+            21 -> if (minutes == 0) 12 else 13
+            22 -> if (minutes == 0) 13 else 14
+            23 -> if (minutes == 0) 14 else 15
+            else -> 10
+        }
     }
 }

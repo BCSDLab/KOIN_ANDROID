@@ -5,5 +5,9 @@ sealed class TimetableSideEffect {
         val message: String
     ) : TimetableSideEffect()
 
+    data class Toast(
+        val message: String
+    ): TimetableSideEffect()
+
     data object Nothing : TimetableSideEffect()
 }

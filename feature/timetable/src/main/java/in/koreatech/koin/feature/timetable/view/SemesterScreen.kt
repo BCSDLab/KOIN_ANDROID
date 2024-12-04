@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -24,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,9 +35,12 @@ import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.model.SemesterType
+import `in`.koreatech.koin.feature.timetable.viewmodel.ScreenState
+import `in`.koreatech.koin.feature.timetable.viewmodel.ScreenStateUIMode
 
 @Composable
 fun SemesterScreen(
+    state: ScreenState,
     userTimetables: Map<SemesterModel, List<TimetableFrame>>,
     isAnonymous: Boolean,
     modifier: Modifier = Modifier,
@@ -51,44 +54,60 @@ fun SemesterScreen(
             .fillMaxSize()
             .background(KoinTheme.colors.neutral0)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(horizontal = 24.dp)
-        ) {
-            if (isAnonymous) {
-                HighlightedText(
+        when (state.mode) {
+            ScreenStateUIMode.BASIC -> {
+                Column(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .noRippleClickable { onClickLoginText() },
-                    texts = stringArrayResource(id = R.array.semester_anonymous_login),
-                    highlightIndices = listOf(0),
-                    defaultStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral500),
-                    highlightStyle = KoinTheme.typography.bold14.copy(color = KoinTheme.colors.info600)
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-            }
-            LazyColumn(
-                modifier = Modifier
-            ) {
-                userTimetables.forEach { semesterModel, timetableFrames ->
-                    SemesterBlock(
-                        semesterModel = semesterModel,
-                        timetableFrames = timetableFrames,
-                        isAnonymous = isAnonymous,
-                        onClickTimetable = { timetableFrame ->
-                            onClickTimetable(semesterModel, timetableFrame)
-                        },
-                        onClickAddTimetable = {
-                            onClickAddTimetable(semesterModel)
-                        },
-                        onClickEditTimetable = {
-                            onClickEditTimetable(semesterModel, it)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(horizontal = 24.dp)
+                ) {
+                    if (isAnonymous) {
+                        HighlightedText(
+                            modifier = Modifier
+                                .padding(vertical = 6.dp)
+                                .noRippleClickable { onClickLoginText() },
+                            texts = stringArrayResource(id = R.array.semester_anonymous_login),
+                            highlightIndices = listOf(0),
+                            defaultStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral500),
+                            highlightStyle = KoinTheme.typography.bold14.copy(color = KoinTheme.colors.info600)
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                    }
+                    LazyColumn(
+                        modifier = Modifier
+                    ) {
+                        userTimetables.forEach { semesterModel, timetableFrames ->
+                            SemesterBlock(
+                                semesterModel = semesterModel,
+                                timetableFrames = timetableFrames,
+                                isAnonymous = isAnonymous,
+                                onClickTimetable = { timetableFrame ->
+                                    onClickTimetable(semesterModel, timetableFrame)
+                                },
+                                onClickAddTimetable = {
+                                    onClickAddTimetable(semesterModel)
+                                },
+                                onClickEditTimetable = {
+                                    onClickEditTimetable(semesterModel, it)
+                                }
+                            )
                         }
-                    )
+                    }
                 }
             }
+            ScreenStateUIMode.EMPTY -> { // 유저의 학기가 없는 경우
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    text = stringResource(id = R.string.semester_empty),
+                    textAlign = TextAlign.Center,
+                    style = KoinTheme.typography.medium13.copy(
+                        color = KoinTheme.colors.neutral600
+                    )
+                )
+            }
+            ScreenStateUIMode.IDLE -> {}
         }
     }
 
@@ -213,6 +232,7 @@ private fun LazyListScope.TimetableFrameBlock(
 @Composable
 private fun SemesterScreenPreview() {
     SemesterScreen(
+        state = ScreenState(mode = ScreenStateUIMode.BASIC),
         userTimetables = mutableMapOf(
             SemesterModel(2024, SemesterType.Fall) to listOf(
                 TimetableFrame(0, "시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3", true),
@@ -233,6 +253,7 @@ private fun SemesterScreenPreview() {
 @Composable
 private fun SemesterScreenAnonymousPreview() {
     SemesterScreen(
+        state = ScreenState(mode = ScreenStateUIMode.BASIC),
         userTimetables = mutableMapOf(
             SemesterModel(2024, SemesterType.Fall) to listOf(
                 TimetableFrame(0, "시간표1", true),
@@ -243,5 +264,15 @@ private fun SemesterScreenAnonymousPreview() {
             ),
         ),
         isAnonymous = true,
+    )
+}
+
+@Preview
+@Composable
+private fun SemesterScreenEmptyPreview() {
+    SemesterScreen(
+        state = ScreenState(),
+        userTimetables = mapOf(),
+        isAnonymous = false
     )
 }
