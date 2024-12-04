@@ -71,6 +71,7 @@ class NotificationActivity : ActivityBase() {
             textViewNotificationSetting.isVisible = false
             notificationDiningSoldOut.isEnabled = true
             notificationShopEvent.isEnabled = true
+            notificationReviewPrompt.isEnabled = true
             notificationDiningImageUpload.isEnabled = true
         }
     }
@@ -81,6 +82,7 @@ class NotificationActivity : ActivityBase() {
             textViewNotificationSetting.isVisible = true
             notificationDiningSoldOut.disableAll()
             notificationShopEvent.disableAll()
+            notificationReviewPrompt.disableAll()
             notificationDiningImageUpload.disableAll()
         }
     }
@@ -109,6 +111,13 @@ class NotificationActivity : ActivityBase() {
                                     }
 
                                     SubscribesType.DINING_IMAGE_UPLOAD -> with(binding.notificationDiningImageUpload) {
+                                        if (isChecked != it.isPermit) {
+                                            fakeChecked = it.isPermit
+                                            isChecked = it.isPermit
+                                        }
+                                    }
+
+                                    SubscribesType.REVIEW_PROMPT -> with(binding.notificationReviewPrompt) {
                                         if (isChecked != it.isPermit) {
                                             fakeChecked = it.isPermit
                                             isChecked = it.isPermit
@@ -176,6 +185,11 @@ class NotificationActivity : ActivityBase() {
         binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
         }
+
+        binding.notificationReviewPrompt.setOnSwitchClickListener { isChecked ->
+            handleSubscription(isChecked, SubscribesType.REVIEW_PROMPT)
+        }
+
         binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,

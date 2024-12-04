@@ -5,7 +5,9 @@ import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
+import `in`.koreatech.koin.domain.model.article.ArticleNoti
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -146,6 +148,18 @@ class ArticleRepositoryImpl @Inject constructor(
                         add(it)
                 }
             })
+        }
+    }
+
+    override fun fetchKeywordNotiIndex(): Flow<Int> {
+        return flow {
+            emit(articleLocalDataSource.fetchKeywordNotiIndex())
+        }
+    }
+
+    override fun saveKeywordNotiIndex(): Flow<Unit> {
+        return flow {
+            emit(articleLocalDataSource.saveKeywordNotiIndex())
         }
     }
 

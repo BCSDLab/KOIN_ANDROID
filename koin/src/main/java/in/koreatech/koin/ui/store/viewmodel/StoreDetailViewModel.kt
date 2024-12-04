@@ -1,9 +1,11 @@
 package `in`.koreatech.koin.ui.store.viewmodel
 
+import android.Manifest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
@@ -21,9 +23,13 @@ import `in`.koreatech.koin.domain.usecase.store.GetShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
+import `in`.koreatech.koin.domain.usecase.store.ReviewPromptUscCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.splash.state.TokenState
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +41,7 @@ class StoreDetailViewModel @Inject constructor(
     private val getStoreEventsUseCase: GetShopEventsUseCase,
     private val deleteReviewUseCase: DeleteReviewUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val reviewPromptUscCase: ReviewPromptUscCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
 ) : BaseViewModel() {
     val store: LiveData<StoreWithMenu> get() = _store
@@ -67,6 +74,15 @@ class StoreDetailViewModel @Inject constructor(
         getStoreWithMenuUseCase(storeId).also { store ->
             _store.value = store
             _recommendStores.value = getRecommendStoresUseCase(store)
+        }
+    }
+
+    fun postReviewPromptNotification(storeId: Int){
+        viewModelScope.launch {
+            reviewPromptUscCase(storeId)
+                .onFailure {
+                    ToastUtil.getInstance().makeShort(it.message)
+                }
         }
     }
 

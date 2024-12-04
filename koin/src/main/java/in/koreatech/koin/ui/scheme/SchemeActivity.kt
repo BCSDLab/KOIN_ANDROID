@@ -2,10 +2,14 @@ package `in`.koreatech.koin.ui.scheme
 
 import android.app.ActivityManager
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.core.content.getSystemService
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
 import `in`.koreatech.koin.core.navigation.SchemeType
@@ -101,6 +105,11 @@ class SchemeActivity : ActivityBase() {
                         }
 
                         SchemeType.ARTICLE.type -> {
+                            EventLogger.logNotificationEvent(
+                                EventAction.CAMPUS,
+                                AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
+                                getKeywordFromUrl(url)
+                            )
                             val intent = navigator.navigateToArticle(
                                 context = this,
                                 targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
@@ -125,7 +134,11 @@ class SchemeActivity : ActivityBase() {
     }
 
     private fun getIdFromUrl(url: String): Int {
-        return url.substringAfterLast("=").toIntOrNull() ?: -1
+        return Uri.parse(url).getQueryParameter("id")?.toIntOrNull() ?: -1
+    }
+
+    private fun getKeywordFromUrl(url: String): String {
+        return Uri.parse(url).getQueryParameter("keyword") ?: ""
     }
 
     private fun navigateToActivity(intent: Intent) {

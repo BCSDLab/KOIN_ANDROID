@@ -92,4 +92,8 @@ interface UserAuthApi {
 
     @POST("abtest/assign")
     suspend fun postABTestAssign(@Body abTestRequest: ABTestRequest): ABTestResponse
+
+    @POST(URLConstant.SHOPS.SHOPS + "/{storeId}/call-notification")
+    suspend fun postReviewPromptNotification(@Path("storeId") storeId: Int)
+
 }
