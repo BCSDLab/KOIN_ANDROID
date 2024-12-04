@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,6 +38,7 @@ fun TimetableBottomSheet(
     modifier: Modifier = Modifier,
     selectedLecture: Lecture? = null,
     timetableEvents: List<TimetableEvent> = emptyList(),
+    sheetLazyListState: LazyListState,
     onClickAddCustomLectureMode: () -> Unit = {},
     onClickAddLectureMode: (mode: TimetableBottomSheetContentMode) -> Unit = {},
     onComplete: () -> Unit = {},
@@ -49,7 +52,6 @@ fun TimetableBottomSheet(
     onBottomSheetHeightChange: (height: Float) -> Unit = {},
     onScheduleNameChange: (text: String) -> Unit = {},
     onProfessorNameChange: (text: String) -> Unit = {},
-    onPlaceNameChange: (text: String) -> Unit = {},
     onExtraPlaceNameChange: (id: Int, text: String) -> Unit = { _, _ -> },
     onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
@@ -88,6 +90,7 @@ fun TimetableBottomSheet(
                     lectures = lectures,
                     selectedLecture = selectedLecture,
                     timetableEvents = timetableEvents,
+                    sheetLazyListState = sheetLazyListState,
                     onClickSettingIcon = onClickSettingIcon,
                     onClickSearchIcon = onClickSearchIcon,
                     onSearchTextChange = onSearchTextChange,
@@ -101,9 +104,9 @@ fun TimetableBottomSheet(
             TimetableBottomSheetContentMode.CUSTOM -> {
                 TimetableBottomSheetCustom(
                     customContents = customContents,
+                    sheetLazyListState = sheetLazyListState,
                     onScheduleNameChange = onScheduleNameChange,
                     onProfessorNameChange = onProfessorNameChange,
-                    onPlaceNameChange = onPlaceNameChange,
                     onExtraPlaceNameChange = onExtraPlaceNameChange,
                     onDayOfWeekChange = onDayOfWeekChange,
                     onClickStartTime = onClickStartTime,
@@ -127,6 +130,7 @@ private fun TimetableBottomSheetPreview() {
             customContents = CustomContentState(),
             bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
             selectedLecture = null,
+            sheetLazyListState = rememberLazyListState(),
         )
     }
 }
@@ -141,6 +145,7 @@ private fun TimetableBottomSheetPreview_Custom() {
             customContents = CustomContentState(),
             bottomSheetContentMode = TimetableBottomSheetContentMode.CUSTOM,
             selectedLecture = null,
+            sheetLazyListState = rememberLazyListState(),
         )
     }
 }

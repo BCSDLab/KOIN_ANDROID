@@ -5,36 +5,7 @@ import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
 
-// 직접 강의 추가 시, 처음 직접 강의 추가와 시간 중복 검증
-internal fun CustomContentState.duplicationLecture(): List<CustomExtraContentState>? {
-    val firstContent = this.time
-
-    this.data.forEachIndexed { index, content ->
-        duplicate(firstContent, content).let {
-            if (it) {
-                var editContents = this.data.toMutableList()
-
-                editContents = editContents.map {
-                    if (it.id == content.id) {
-                        it.copy(isError = true)
-                    } else {
-                        it
-                    }
-                }.toMutableList()
-
-                return editContents
-            }
-        }
-    }
-    return null
-}
-
 internal fun CustomContentState.isValidationPlace(): Boolean {
-
-    this.time.place.contains(",").let {
-        if (it) return false
-    }
-
     val content = this.data
     content.forEach { it ->
         it.place.contains(",").let { isContain -> if (isContain) return false }
@@ -70,14 +41,6 @@ internal fun CustomContentState.permuteDuplicationLecture(): List<CustomExtraCon
 
 // 직접 강의 추가 시, 기존 강의와 중복 검증
 internal fun CustomContentState.duplicationByTimeTableEvents(events: List<TimetableEvent>): TimetableEvent? {
-    events.forEach { event ->
-        duplicateWithTimetableEvent(event, this.time).let {
-            if (it) {
-                return event
-            }
-        }
-    }
-
     events.forEach { event ->
         this.data.forEach {content ->
             duplicateWithTimetableEvent(event, content).let {

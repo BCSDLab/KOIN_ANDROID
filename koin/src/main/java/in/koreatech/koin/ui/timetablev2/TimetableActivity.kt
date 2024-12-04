@@ -3,8 +3,11 @@ package `in`.koreatech.koin.ui.timetablev2
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
@@ -16,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,6 +39,7 @@ import `in`.koreatech.koin.feature.timetable.utils.BitmapUtils
 import `in`.koreatech.koin.feature.timetable.view.TimetableBottomSheetContentMode
 import `in`.koreatech.koin.feature.timetable.view.TimetableScreen
 import `in`.koreatech.koin.feature.timetable.view.dialog.DeleteLectureDialog
+import `in`.koreatech.koin.feature.timetable.view.dialog.DownloadDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.LectureDuplicationDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDialog
@@ -45,7 +50,6 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TimetableActivity : KoinNavigationDrawerActivity() {
@@ -67,6 +71,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     val frameName =
                         it.getString(TimetableSemesterActivity.TIMETABLE_FRAME_NAME).orEmpty()
                     viewModel.getRefreshData(frameId, semester, frameName)
+                }
+            }
+
+            if (it.resultCode == TimetableSemesterActivity.REQUEST_CODE_LOGIN_ACTIVITY) {
+                it.data?.getBundleExtra(BUNDLE_LOGIN_EXTRA_KEY)?.let { bundle ->
+                    bundle.getBoolean(NAV_TIMETABLE).let {
+                        if (it) startToLoginActivity()
+                    }
                 }
             }
         }
@@ -97,6 +109,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             val lectures by viewModel.lectures.collectAsStateWithLifecycle()
             val sheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(sheetState)
+            val scrollState = rememberLazyListState()
             val snackBarHost = remember { SnackbarHostState() }
             val graphicsLayer = rememberGraphicsLayer()
             val scope = rememberCoroutineScope()
@@ -109,18 +122,21 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     return@setAppbarEvent
                 }
                 scope.launch {
-                    if (state.bottomSheetUI == BottomSheetUI.DETAIL) {
-                        if (sheetState.isExpanded) {
-                            sheetState.collapse()
+                    when (state.bottomSheetUI) {
+                        BottomSheetUI.DEFAULT -> {
                             viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                            sheetState.expand()
-                        } else {
-                            viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                            sheetState.expand()
+                            if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
                         }
-                    } else {
-                        viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
-                        if (sheetState.isExpanded) sheetState.collapse() else sheetState.expand()
+                        BottomSheetUI.DETAIL -> {
+                            if (sheetState.isExpanded) {
+                                sheetState.collapse()
+                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                sheetState.expand()
+                            } else {
+                                viewModel.updateBottomSheetUI(BottomSheetUI.DEFAULT)
+                                sheetState.expand()
+                            }
+                        }
                     }
                 }
             }
@@ -160,7 +176,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
                 if (dialogState.isLoginVisible) {
                     RequestLoginDialog(
-                        onConfirm = ::startToLoginActivity, // TODO : 로그인 화면으로 연결
+                        onConfirm = ::startToLoginActivity,
                         onDismiss = viewModel::updateIsLoginDialogVisible
                     )
                 }
@@ -198,6 +214,24 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     )
                 }
 
+                if (dialogState.isDownloadVisible) {
+                    DownloadDialog(
+                        onConfirm = {
+                            scope.launch {
+                                saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap()) {
+                                    if (it) {
+                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지가 저장되었어요."))
+                                    } else {
+                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장을 실패했어요."))
+                                    }
+                                    viewModel.updateIsDownloadDialogVisible(false)
+                                }
+                            }
+                        },
+                        onDismiss = viewModel::updateIsDownloadDialogVisible
+                    )
+                }
+
                 TimetableScreen(
                     range = state.range,
                     lectures = lectures,
@@ -215,15 +249,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     bottomSheetContentMode = state.bottomSheetMode,
                     sheetState = sheetState,
                     scaffoldState = bottomSheetScaffoldState,
+                    sheetLazyListState = scrollState,
                     graphicsLayer = graphicsLayer,
                     onSearchTextChange = viewModel::updateSearchText,
                     onClickTimetableSchedule = {
                         startToTimetableSemesterActivity()
                     },
                     onClickDownloadTimetable = {
-                        scope.launch {
-                            saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap())
-                        }
+                        viewModel.updateIsDownloadDialogVisible(true)
                     },
                     onClickAddLectureMode = viewModel::updateTimetableBottomSheetMode,
                     onClickAddCustomLectureMode = {
@@ -256,7 +289,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickLecture = viewModel::updateClickedTimetableEvents,
                     onSelectedLecture = viewModel::updateSelectedLecture,
                     onClickSettingIcon = viewModel::updateIsSelectDepartmentDialogVisible,
-                    onClickSearchIcon = {}, // TODO : 검색 아이콘 클릭 (필요할까? 그냥 보여주기용이 좋아보임)
+                    onClickSearchIcon = {},
                     onClickTimetableEvent = {
                         scope.launch {
                             if (state.bottomSheetUI == BottomSheetUI.DEFAULT) {
@@ -283,7 +316,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     },
                     onScheduleNameChange = viewModel::updateScheduleTextChange,
                     onProfessorNameChange = viewModel::updateProfessorTextChange,
-                    onPlaceNameChange = viewModel::updatePlaceTextChange,
                     onExtraPlaceNameChange = viewModel::updateExtraPlaceByIdTextChange,
                     onDayOfWeekChange = viewModel::updateDayOfWeekChange,
                     onClickStartTime = viewModel::updateIsStartTimePickerDialogVisible,
@@ -295,6 +327,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 CircleLoadingBar(loading = state.loading)
             }
 
+            BackHandler(enabled = bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                scope.launch {
+                    bottomSheetScaffoldState.bottomSheetState.collapse()
+                }
+            }
             CustomSnackBarHost(snackBarHost)
             LaunchedEffect(sideEffect) {
                 when (val effect = sideEffect) {
@@ -307,11 +344,16 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         viewModel.updateSideEffect(TimetableSideEffect.Nothing)
                     }
 
+                    is TimetableSideEffect.Toast -> {
+                        Toast.makeText(this@TimetableActivity, effect.message, Toast.LENGTH_SHORT).show()
+                    }
+
                     is TimetableSideEffect.Nothing -> Unit
                 }
             }
         }
     }
+
 
     private fun initEvent() {
         setAppbarEvent()
@@ -346,17 +388,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     private fun startToLoginActivity() {
         Intent(this, LoginActivity::class.java).apply {
             putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            finish()
         }.let(::startActivity)
-        finish()
     }
 
-    private fun saveTimetable(bitmap: Bitmap) {
+    private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {
         BitmapUtils(this).saveBitmapImage(bitmap).let {
-            if (it) {
-                viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장중"))
-            } else {
-                viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장 실패"))
-            }
+            callback(it)
         }
     }
 
