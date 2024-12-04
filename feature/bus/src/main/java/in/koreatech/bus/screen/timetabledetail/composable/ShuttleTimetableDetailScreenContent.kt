@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,12 +18,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
@@ -62,7 +60,7 @@ fun ShuttleTimetableDetailScreenContent(
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier.fillMaxSize()
         ) {
             KoinTopAppBar(
                 title = stringResource(R.string.title_bus_timetable),
@@ -70,68 +68,77 @@ fun ShuttleTimetableDetailScreenContent(
             )
 
             Column(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
-                ShuttleBusOperationChip(
-                    operationType = ShuttleBusOperationType.CIRCULATION
-                )
-
-                Text(
-                    text = "천안 셔틀 시간표",
-                    style = KoinTheme.typography.bold20,
-                    modifier = Modifier.padding(top = 6.dp)
-                )
-            }
-
-            when(timetableUiState) {
-                is ShuttleTimetableUiState.Success -> {
-                    HorizontalDivider(
-                        color = KoinTheme.colors.neutral400
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
+                ) {
+                    ShuttleBusOperationChip(
+                        operationType = ShuttleBusOperationType.CIRCULATION
                     )
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(14.dp)
-                            .background(color = KoinTheme.colors.neutral100)
+                    Text(
+                        text = "천안 셔틀 시간표",
+                        style = KoinTheme.typography.bold20,
+                        modifier = Modifier.padding(top = 6.dp)
                     )
+                }
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Min),
-                    ) {
-                        ShuttleTimetableNodeItem(
-                            nodeItemHeightDp = nodeItemHeightDp,
-                            nodes = timetableUiState.timetable.nodes.toPersistentList()
+                when (timetableUiState) {
+                    is ShuttleTimetableUiState.Success -> {
+                        HorizontalDivider(
+                            color = KoinTheme.colors.neutral400
                         )
 
-                        VerticalDivider(
-                            modifier = Modifier.fillMaxHeight(),
-                            color = KoinTheme.colors.neutral300
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(14.dp)
+                                .background(color = KoinTheme.colors.neutral100)
                         )
 
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .horizontalScroll(rememberScrollState())
+                                .height(IntrinsicSize.Min),
                         ) {
-                            timetableUiState.timetable.routes.fastForEach { route ->
-                                ShuttleTimetableRouteItem(
-                                    route = route,
-                                    nodeItemHeightDp = nodeItemHeightDp,
-                                )
+                            ShuttleTimetableNodeItem(
+                                nodeItemHeightDp = nodeItemHeightDp,
+                                nodes = timetableUiState.timetable.nodes.toPersistentList()
+                            )
+
+                            VerticalDivider(
+                                modifier = Modifier.fillMaxHeight(),
+                                color = KoinTheme.colors.neutral300
+                            )
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .horizontalScroll(rememberScrollState())
+                            ) {
+                                timetableUiState.timetable.routes.fastForEach { route ->
+                                    ShuttleTimetableRouteItem(
+                                        route = route,
+                                        nodeItemHeightDp = nodeItemHeightDp,
+                                    )
+                                }
                             }
                         }
                     }
-                }
 
-                is ShuttleTimetableUiState.Loading -> {
-                    CommonLoadingView()
-                }
+                    is ShuttleTimetableUiState.Loading -> {
+                        CommonLoadingView(
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
 
-                is ShuttleTimetableUiState.LoadFailed -> {
-                    //
+                    is ShuttleTimetableUiState.LoadFailed -> {
+                        //
+                    }
                 }
             }
         }
@@ -145,5 +152,14 @@ private fun ShuttleTimetableDetailScreenContentPreview() {
         timetableUiState = ShuttleTimetableUiState.Success(
             timetable = ShuttleTimetableViewState(emptyList(), emptyList())
         )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShuttleTimetableDetailScreenContentLoadingPreview() {
+    ShuttleTimetableDetailScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        timetableUiState = ShuttleTimetableUiState.Loading
     )
 }

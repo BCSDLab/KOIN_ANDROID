@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.viewstate.ShuttleNodeViewState
 import `in`.koreatech.bus.viewstate.ShuttleRouteViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableViewState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -19,6 +20,7 @@ class ShuttleTimetableDetailViewModel @Inject constructor(
 
     val timetableUiState = flow<ShuttleTimetableUiState> {
         // TODO API
+        delay(2000)
         emit(
             ShuttleTimetableUiState.Success(
                 ShuttleTimetableViewState(
