@@ -1,5 +1,6 @@
 <resources>
 
+    <!-- 시간표 -->
     <string name="title_bus_timetable">버스 시간표</string>
     <string name="shuttle_timetable">셔틀버스 시간표</string>
     <string name="express_timetable">대성버스 시간표</string>
@@ -26,6 +27,7 @@
     <string name="starting_point">기점</string>
     <string name="routes">노선</string>
     <string name="operating">운행</string>
+    <string name="node_name">승하차장명</string>
 
     <!-- 교통편 조회 -->
     <string name="title_bus_search">교통편 조회하기</string>

@@ -1,6 +1,8 @@
 package `in`.koreatech.bus.screen.timetabledetail.composable
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.bus.screen.timetabledetail.viewmodel.ShuttleTimetableDetailViewModel
@@ -12,8 +14,11 @@ fun ShuttleTimetableDetailScreen(
     onNavigationIconClick: () -> Unit = {}
 ) {
 
+    val timetableUiState by viewModel.timetableUiState.collectAsState()
+
     ShuttleTimetableDetailScreenContent(
         modifier = modifier,
-        onNavigationIconClick = onNavigationIconClick
+        onNavigationIconClick = onNavigationIconClick,
+        timetableUiState = timetableUiState
     )
 }
