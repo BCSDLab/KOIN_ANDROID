@@ -5,6 +5,8 @@
     <string name="semester_type_fall">2학기</string>
     <string name="semester_type_winter">겨울학기</string>
 
+    <string name="timetable_semester_title">시간표 목록</string>
+    <string name="timetable_semester">시간표 수정</string>
     <string name="lecture_duplication_title">시간표가 중복돼요.</string>
     <string name="lecture_duplication_cancellation">취소</string>
     <string name="lecture_duplication_confirmation">대체하기</string>
