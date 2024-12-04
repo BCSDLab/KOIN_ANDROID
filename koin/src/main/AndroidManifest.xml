@@ -19,9 +19,6 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission
-        android:name="android.permission.READ_MEDIA_IMAGES"
-        android:minSdkVersion="33" />
 
     <application
         android:name=".KoinApplication"
@@ -142,19 +139,6 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
 
-        <receiver
-            android:name=".ui.timetable.TimetableWidget"
-            android:exported="false"
-            android:label="@string/navigation_item_timetable">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/timetable_widget_info" />
-        </receiver>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="in.koreatech.koin.provider"
@@ -265,16 +249,6 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-        <activity
-            android:name=".ui.timetable.TimetableActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.timetable.TimetableAnonymousActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.land.LandActivity"
             android:exported="false"

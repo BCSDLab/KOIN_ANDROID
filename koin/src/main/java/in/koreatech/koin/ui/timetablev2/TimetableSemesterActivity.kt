@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.DeleteSemesterDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditSemesterDialogImpl
 import `in`.koreatech.koin.feature.timetable.view.dialog.EditTimetableFrameDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
+import `in`.koreatech.koin.feature.timetable.viewmodel.ScreenStateUIMode
 import `in`.koreatech.koin.feature.timetable.viewmodel.SemesterViewModel
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.BUNDLE_LOGIN_EXTRA_KEY
@@ -85,6 +86,17 @@ class TimetableSemesterActivity : ActivityBase() {
                 val userTimetables by viewModel.userTimetableFrames.collectAsStateWithLifecycle()
                 val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
                 val years by viewModel.years.collectAsStateWithLifecycle()
+
+                val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+                LaunchedEffect(userTimetables) {
+                    if (screenState.mode == ScreenStateUIMode.IDLE) return@LaunchedEffect
+                    if (userTimetables.isEmpty()) {
+                        viewModel.updateScreenState(ScreenStateUIMode.EMPTY)
+                    } else {
+                        viewModel.updateScreenState(ScreenStateUIMode.BASIC)
+                    }
+                }
 
                 if (dialogUiState.isEditSemesterDialogVisible) {
                     EditSemesterDialogImpl(
@@ -143,6 +155,7 @@ class TimetableSemesterActivity : ActivityBase() {
                 }
 
                 SemesterScreen(
+                    state = screenState,
                     userTimetables = userTimetables,
                     isAnonymous = isAnonymous,
                     onClickTimetable = ::finishActivityWithResult,
@@ -222,9 +235,10 @@ class TimetableSemesterActivity : ActivityBase() {
     }
 
     private fun startToLoginActivity() {
-        Intent(this, LoginActivity::class.java).apply {
+        val intent = Intent().apply {
             putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
-        }.let(::startActivity)
+        }
+        setResult(REQUEST_CODE_LOGIN_ACTIVITY, intent)
         finish()
     }
 
@@ -277,5 +291,6 @@ class TimetableSemesterActivity : ActivityBase() {
         const val SEMESTER = "semester"
         const val TIMETABLE_FRAME_ID = "timetableFrameId"
         const val TIMETABLE_FRAME_NAME = "timetableFrameName"
+        const val REQUEST_CODE_LOGIN_ACTIVITY = 1001
     }
 }
