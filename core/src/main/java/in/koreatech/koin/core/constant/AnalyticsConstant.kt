@@ -99,6 +99,8 @@ object AnalyticsConstant {
 
         const val CAMPUS_DINING_1 = "CAMPUS_dining_1"
         const val CAMPUS_NOTICE_1 = "CAMPUS_notice_1"
+        const val POPULAR_NOTICE_BANNER = "popular_notice_banner"
+        const val TO_MANAGE_KEYWORD = "to_manage_keyword"
     }
 
     const val PREVIOUS_PAGE = "previous_page"

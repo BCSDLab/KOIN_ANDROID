@@ -9,23 +9,18 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.ActivityCallBenefitStoreMainBinding
-import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreBenefitRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreEventPagerAdapter
@@ -62,7 +57,7 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
                 EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
-            storeDetailContract.launch(Triple(it.uid, getStoreCategoryName(StoreCategory.All), true))
+            storeDetailContract.launch(Triple(it.uid, viewModel.category.value?.name, true))
         }
     }
     private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
@@ -75,7 +70,7 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
             storeDetailContract.launch(
                 Triple(
                     it.shopId,
-                    getStoreCategoryName(viewModel.category.value),
+                    viewModel.category.value?.name,
                     false
                 )
             )
@@ -196,21 +191,6 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
          //   binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
         viewModel.settingStoreSorter(StoreSorter.NONE)
-    }
-
-    private fun getStoreCategoryName(category: StoreCategory?): String {
-        return when (category) {
-            StoreCategory.Chicken -> getString(R.string.chicken)
-            StoreCategory.Pizza -> getString(R.string.pizza)
-            StoreCategory.DOSIRAK -> getString(R.string.dorisak)
-            StoreCategory.PorkFeet -> getString(R.string.pork_feet)
-            StoreCategory.Chinese -> getString(R.string.chinese)
-            StoreCategory.NormalFood -> getString(R.string.normal_food)
-            StoreCategory.Cafe -> getString(R.string.cafe)
-            StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
-            StoreCategory.Etc -> getString(R.string.etc)
-            StoreCategory.All, null -> getString(R.string.see_all)
-        }
     }
 
     private fun initOnRefreshDiningList() {

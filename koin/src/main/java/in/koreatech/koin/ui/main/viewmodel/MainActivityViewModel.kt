@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
@@ -13,6 +14,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
+import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
@@ -26,19 +28,22 @@ import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
-import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
-import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
+import `in`.koreatech.koin.ui.main.state.ArticleMainState
+import `in`.koreatech.koin.ui.main.state.toContent
+import `in`.koreatech.koin.ui.main.state.toNoti
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,44 +53,62 @@ class MainActivityViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val abTestUseCase: ABTestUseCase,
-    articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
 
-    val hotArticles: StateFlow<List<ArticleHeaderState>> =
-        articleRepository.fetchHotArticleHeaders()
-            .map {
-                it.take(HOT_ARTICLE_COUNT).map { article -> article.toArticleHeaderState() }
-            }.catch {
+    val bannerABTestExperimentGroup = flow {
+        abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
+            emit(it)
+            when (it) {
+                ExperimentGroup.MAIN_BANNER_NEW -> {
+                    EventLogger.logCustomEvent(
+                        "AB_TEST",
+                        "a/b test 로깅(키워드관리 진입 배너)",
+                        AnalyticsConstant.Label.CAMPUS_NOTICE_1,
+                        "진입점O"
+                    )
+                }
 
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = emptyList()
-            )
-
-    private val _selectedPosition = MutableLiveData(0)
-    val selectedPosition: LiveData<Int> get() = _selectedPosition
-    private val _diningData = MutableLiveData<List<Dining>>(listOf())
-    val diningData: LiveData<List<Dining>> get() = _diningData
-    private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
-    val selectedType: LiveData<DiningType> get() = _selectedType
-
-    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
-    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
+                ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
+                    EventLogger.logCustomEvent(
+                        "AB_TEST",
+                        "a/b test 로깅(키워드관리 진입 배너)",
+                        AnalyticsConstant.Label.CAMPUS_NOTICE_1,
+                        "진입점X"
+                    )
+                }
+            }
+        }.onFailure {
+            emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = null
+    ).filterNotNull()
 
     val diningABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
             emit(it)
             when (it) {
                 ExperimentGroup.MAIN_DINING_NEW -> {
-                    EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.CAMPUS_DINING_1, "더보기O")
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.CAMPUS_DINING_1,
+                        "더보기O"
+                    )
                 }
+
                 ExperimentGroup.MAIN_DINING_ORIGINAL -> {
-                    EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.CAMPUS_DINING_1, "더보기X")
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.CAMPUS_DINING_1,
+                        "더보기X"
+                    )
                 }
             }
         }.onFailure {
@@ -96,6 +119,50 @@ class MainActivityViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first()
     )
+
+    val hotArticles: StateFlow<List<ArticleMainState.Content>> =
+        articleRepository.fetchHotArticleHeaders()
+            .map {
+                it.take(HOT_ARTICLE_COUNT).map { article -> article.toContent() }
+            }.catch {
+
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
+    val articleNoti: StateFlow<ArticleMainState.Noti> =
+        articleRepository.fetchKeywordNotiIndex()
+            .map { articleNotiContent[it].toNoti() }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = articleNotiContent.first().toNoti()
+            )
+
+    val articleMain: StateFlow<List<ArticleMainState>> = combine(
+        bannerABTestExperimentGroup, articleNoti, hotArticles
+    ) { experimentGroup, noti, articles ->
+        when (experimentGroup) {
+            ExperimentGroup.MAIN_BANNER_NEW -> listOf(noti) + articles
+            ExperimentGroup.MAIN_BANNER_ORIGINAL -> articles
+            else -> articles
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = emptyList()
+    )
+
+    private val _selectedPosition = MutableLiveData(0)
+    val selectedPosition: LiveData<Int> get() = _selectedPosition
+    private val _diningData = MutableLiveData<List<Dining>>(listOf())
+    val diningData: LiveData<List<Dining>> get() = _diningData
+    private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
+    val selectedType: LiveData<DiningType> get() = _selectedType
+
+    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
+    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
 
     init {
         updateDining()
@@ -127,6 +194,12 @@ class MainActivityViewModel @Inject constructor(
                     _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
                 }
             }
+    }
+
+    fun checkKeywordNotiContent() {
+        viewModelScope.launchWithLoading {
+            articleRepository.saveKeywordNotiIndex().launchIn(viewModelScope)
+        }
     }
 
     fun switchBusNode() {

@@ -379,6 +379,9 @@
     <string name="notification_dining_photo">식단사진 업로드 알림</string>
     <string name="notification_dining_photo_description">식단사진이 업로드 될 경우 알림을 받습니다.</string>
 
+    <string name="notification_review">리뷰 작성 요청 알림</string>
+    <string name="notification_review_description">전화 주문 시 리뷰 작성 요청 알림을 받습니다.</string>
+
     <string name="notification_event">이벤트 알림</string>
     <string name="notification_event_description">모든 주변상점의 이벤트 알림을 받습니다.</string>
     <string name="notification_article_keyword_description">키워드가 포함된 글이 게시될 경우 알림을 받습니다.</string>
@@ -529,7 +532,7 @@
     <string name="card_available">#카드가능</string>
     <string name="account_transfer_avilable">#계좌이체가능</string>
     <string name="menu_info">메뉴 소개</string>
-    <string name="nearby_store">주변 상점</string>
+    <string name="nearby_store">주변상점</string>
     <string name="main_menu">메인 메뉴</string>
     <string name="view_all">전체보기</string>
     <string name="menu">메뉴</string>
@@ -606,6 +609,8 @@
     <string name="search_input_required">검색어를 입력해주세요.</string>
     <string name="empty_search_result">일치하는 공지글이 없습니다.\n다른 키워드로 다시 시도해주세요.</string>
     <string name="now_hot_article">지금 인기있는 공지</string>
+    <string name="hot_article_noti_title">자취방 양도글, 가장 먼저 확인하고 싶을 때?</string>
+    <string name="hot_article_noti_sub">공지가 업로드 되면 바로 알려주는\n키워드 알림 설정하러가기</string>
     <string name="attachment">첨부파일</string>
     <string name="downloading">다운로드 중</string>
     <string name="start_download">파일을 다운로드합니다.</string>

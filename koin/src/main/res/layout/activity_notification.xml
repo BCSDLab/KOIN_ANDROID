@@ -173,12 +173,22 @@
                             app:layout_constraintTop_toBottomOf="@id/text_view_store"
                             app:text="@string/notification_event" />
 
+                        <in.koreatech.koin.core.view.notificaiton.NotificationHeader
+                            android:id="@+id/notification_review_prompt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:description="@string/notification_review_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/notification_shop_event"
+                            app:text="@string/notification_review" />
+
                         <View
                             android:id="@+id/view2"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@color/gray2"
-                            app:layout_constraintTop_toBottomOf="@id/notification_shop_event" />
+                            app:layout_constraintTop_toBottomOf="@id/notification_review_prompt" />
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
