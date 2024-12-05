@@ -16,17 +16,14 @@ internal fun BusTimetableScreen(
 ) {
 
     val busTimetableUiState by viewModel.timetableUiState.collectAsStateWithLifecycle()
-
-    val shouldShowNotice by viewModel.shouldShowNotice.collectAsStateWithLifecycle()
-    val notice by viewModel.notice.collectAsStateWithLifecycle()
+    val busNoticeUiState by viewModel.noticeUiState.collectAsStateWithLifecycle()
 
     BusTimetableScreenContent(
         modifier = modifier,
         busTimetableUiState = busTimetableUiState,
+        busNoticeUiState = busNoticeUiState,
         onNavigationIconClick = onNavigationIconClick,
         onNavigateToShuttleTimetableDetailScreen = onNavigateToShuttleTimetableDetailScreen,
-        shouldShowNotice = shouldShowNotice,
-        notice = notice,
         onCloseNotice = viewModel::closeNotice
     )
 }

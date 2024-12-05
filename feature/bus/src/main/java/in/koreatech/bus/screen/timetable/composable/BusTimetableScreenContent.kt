@@ -30,13 +30,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.bus.component.NoticeItem
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
+import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
+import `in`.koreatech.bus.viewstate.NoticeViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
@@ -51,8 +54,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun BusTimetableScreenContent(
     busTimetableUiState: BusTimetableUiState,
-    shouldShowNotice: Boolean,
-    notice: String,
+    busNoticeUiState: BusNoticeUiState,
     modifier: Modifier = Modifier,
     onNavigateToShuttleTimetableDetailScreen: (route: String) -> Unit = {},
     onNavigationIconClick: () -> Unit = {},
@@ -78,7 +80,10 @@ internal fun BusTimetableScreenContent(
         LazyColumn {
             item {
                 Column(
-                    modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 24.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .padding(horizontal = 24.dp)
                 ) {
                     Text(
                         text = busTypeHeadTitle,
@@ -89,34 +94,11 @@ internal fun BusTimetableScreenContent(
                         text = stringResource(R.string.request_for_incorrect_information),
                         iconRes = R.drawable.ic_caution
                     )
-                    if (shouldShowNotice) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp)
-                                .background(
-                                    color = KoinTheme.colors.info100,
-                                    shape = RoundedCornerShape(8.dp)
-                                ).padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                modifier = Modifier.weight(1f),
-                                text = notice,
-                                style = KoinTheme.typography.medium14,
-                                color = KoinTheme.colors.primary500,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Icon(
-                                modifier = Modifier.padding(start = 4.dp).size(16.dp).noRippleClickable {
-                                    onCloseNotice()
-                                },
-                                imageVector = Icons.Rounded.Close,
-                                contentDescription = notice,
-                                tint = KoinTheme.colors.neutral300
-                            )
-                        }
+                    if (busNoticeUiState is BusNoticeUiState.Show) {
+                        NoticeItem(
+                            notice = busNoticeUiState.notice,
+                            onCloseIconClick = onCloseNotice
+                        )
                     }
                 }
             }
@@ -137,7 +119,8 @@ internal fun BusTimetableScreenContent(
                     is BusTimetableUiState.Success -> when (selectedTimetableTypeTab) {
                         BusType.SHUTTLE -> {
                             ShuttleTimetableScreen(
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxSize()
                                     .background(KoinTheme.colors.neutral100),
                                 regions = busTimetableUiState.shuttleRegions.toPersistentList(),
                                 onItemClicked = onNavigateToShuttleTimetableDetailScreen
@@ -146,7 +129,8 @@ internal fun BusTimetableScreenContent(
 
                         BusType.EXPRESS -> {
                             ExpressTimetableScreen(
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxSize()
                                     .background(KoinTheme.colors.neutral100),
                                 timetable = busTimetableUiState.expressTimetable
                             )
@@ -154,14 +138,17 @@ internal fun BusTimetableScreenContent(
 
                         BusType.CITY -> {
                             CityTimetableContent(
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxSize()
                                     .background(KoinTheme.colors.neutral100),
                                 timetable = busTimetableUiState.cityTimetable
                             )
                         }
                     }
                     is BusTimetableUiState.Loading -> {
-                        CommonLoadingView(modifier = Modifier.fillMaxSize().padding(top = 100.dp))
+                        CommonLoadingView(modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 100.dp))
                     }
                     is BusTimetableUiState.LoadFailed -> {
                         // TODO 로드 실패, Pull To Refresh 있으면 좋을 듯.
@@ -179,8 +166,12 @@ private fun BusTimetableShuttleScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.SHUTTLE,
         busTimetableUiState = previewUiState,
-        shouldShowNotice = true,
-        notice = "나랏말싸미 중국에 달라 어쩌구저쩌구 킹종대왕 갓종대왕"
+        busNoticeUiState = BusNoticeUiState.Show(
+            NoticeViewState(
+                id = 1,
+                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
+            )
+        )
     )
 }
 @Preview(showBackground = true)
@@ -190,8 +181,12 @@ private fun BusTimetableExpressScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.EXPRESS,
         busTimetableUiState = previewUiState,
-        shouldShowNotice = true,
-        notice = "나랏말싸미 중국에 달라 어쩌구저쩌구 킹종대왕 갓종대왕"
+        busNoticeUiState = BusNoticeUiState.Show(
+            NoticeViewState(
+                id = 1,
+                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
+            )
+        )
     )
 }
 @Preview(showBackground = true)
@@ -201,8 +196,12 @@ private fun BusTimetableCityScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.CITY,
         busTimetableUiState = previewUiState,
-        shouldShowNotice = true,
-        notice = "나랏말싸미 중국에 달라 어쩌구저쩌구 킹종대왕 갓종대왕"
+        busNoticeUiState = BusNoticeUiState.Show(
+            NoticeViewState(
+                id = 1,
+                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
+            )
+        )
     )
 }
 @Preview(showBackground = true)
@@ -212,8 +211,12 @@ private fun BusTimetableLoadingScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.CITY,
         busTimetableUiState = BusTimetableUiState.Loading,
-        shouldShowNotice = true,
-        notice = "나랏말싸미 중국에 달라 어쩌구저쩌구 킹종대왕 갓종대왕"
+        busNoticeUiState = BusNoticeUiState.Show(
+            NoticeViewState(
+                id = 1,
+                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
+            )
+        )
     )
 }
 
