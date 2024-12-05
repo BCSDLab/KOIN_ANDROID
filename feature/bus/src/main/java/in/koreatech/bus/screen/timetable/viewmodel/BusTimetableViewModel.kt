@@ -7,15 +7,21 @@ import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
+import `in`.koreatech.bus.viewstate.NoticeViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -164,20 +170,26 @@ class BusTimetableViewModel @Inject constructor(
         initialValue = BusTimetableUiState.Loading
     )
 
-    val notice = flow {
-        emit("[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)")
+    private val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
+        OnboardingType.SHOW_BUS_HEAD_ARTICLE
+    ).shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+    )
+
+    val noticeUiState: StateFlow<BusNoticeUiState> = shouldShowNotice.transform { shouldShow ->
+        if (shouldShow)
+            emit(BusNoticeUiState.Show(NoticeViewState(
+                id = 1,
+                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
+            )))
+        else emit(BusNoticeUiState.NotShow)
+    }.catch {
+        emit(BusNoticeUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
-    )
-
-    val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
-        OnboardingType.SHOW_BUS_HEAD_ARTICLE
-    ).stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = false
+        initialValue = BusNoticeUiState.Loading
     )
 
     fun closeNotice() {
@@ -195,4 +207,11 @@ sealed interface BusTimetableUiState {
     ) : BusTimetableUiState
     data object Loading : BusTimetableUiState
     data object LoadFailed: BusTimetableUiState
+}
+
+sealed interface BusNoticeUiState {
+    data class Show(val notice: NoticeViewState) : BusNoticeUiState
+    data object Loading : BusNoticeUiState
+    data object LoadFailed : BusNoticeUiState
+    data object NotShow : BusNoticeUiState
 }
