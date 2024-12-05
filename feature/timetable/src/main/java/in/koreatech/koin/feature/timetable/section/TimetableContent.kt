@@ -1,11 +1,16 @@
 package `in`.koreatech.koin.feature.timetable.section
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -17,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.component.TimetableEventTime
 import `in`.koreatech.koin.feature.timetable.component.TimetableEventType
@@ -107,7 +113,12 @@ fun TimetableContent(
             }
         },
         modifier = modifier
-            .background(Color.White)
+            .background(Color.White, shape = RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(10.dp))
+            .border(
+                border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
+                shape = RoundedCornerShape(10.dp)
+            )
             .drawBehind {
                 repeat(range * 2 + 1) { // 가로축
                     val innerHeight = (height / 2).toPx()
@@ -207,14 +218,14 @@ fun TimetableContent(
             val eventHeight = ((eventDurationMinutes / 60f) * height.toPx()).roundToInt()
             val placeable = measurable.measure(
                 constraints.copy(
-                    minWidth = innerWidth, maxWidth = innerWidth,
+                    minWidth = innerWidth + 1, maxWidth = innerWidth + 1,
                     minHeight = eventHeight, maxHeight = eventHeight
                 )
             )
             Pair(placeable, event)
         }
 
-        layout(timetableWidth, timetableHeight) {
+        layout(timetableWidth + 1, timetableHeight + 1) {
             // 요일 배치
             placeablesWithDays.forEachIndexed { index, placeable ->
                 val dayX = index * innerWidth + timeWidth.roundToPx()
@@ -275,7 +286,7 @@ private fun TimetableContentPreview() {
         horizontalPadding = 24.dp,
         events = listOf(
             dummyEvent,
-            dummyEvent.copy(name = "asfdf", professor = "asdfasdf", dayOfWeek = DayOfWeek.MONDAY),
+            dummyEvent.copy(name = "제목제목제목제목제목제목제목제목제목제목", professor = "교수교수교수교수교수교수교수교수", place = "장소", dayOfWeek = DayOfWeek.MONDAY, start = LocalTime.of(15, 0), end = LocalTime.of(18, 0)),
             dummyEvent.copy(start = LocalTime.of(9, 0), dayOfWeek = DayOfWeek.WEDNESDAY),
             dummyEvent.copy(
                 end = LocalTime.of(17, 0), dayOfWeek = DayOfWeek.THURSDAY),
@@ -285,6 +296,7 @@ private fun TimetableContentPreview() {
                 dayOfWeek = DayOfWeek.TUESDAY
             )
         ),
-        clickEvent = listOf(dummyEvent)
+        clickEvent = listOf(dummyEvent),
+        modifier = Modifier.padding(10.dp)
     )
 }

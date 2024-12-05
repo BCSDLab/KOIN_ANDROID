@@ -7,16 +7,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.databinding.MainItemStoreBinding
 import `in`.koreatech.koin.databinding.StoreCategoryItemBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategories
-import `in`.koreatech.koin.domain.model.store.StoreCategory
-import `in`.koreatech.koin.domain.model.store.toStoreCategory
 
 class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder>(
     diffCallback
@@ -25,7 +21,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
     var isDoubleClick: Boolean = false
-    var preCategories: StoreCategory? = null
+    var preCategories: Int? = null
 
     inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(binding.root){
         val container = binding.container
@@ -44,7 +40,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
         val events = getItem(position)
         with(holder){
             container.setOnClickListener {
-                onItemClickListener?.onItemClick(events.id)
+                onItemClickListener?.onItemClick(position)
                 if(selectPosition == position){
                     isDoubleClick = !isDoubleClick
                 }
@@ -70,17 +66,20 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
         fun onItemClick(id: Int)
     }
 
-    inline fun setOnItemClickListener(crossinline onItemClick: (Id: Int) -> Unit) {
+    inline fun setOnItemClickListener(crossinline onItemClick: (id: Int) -> Unit) {
         onItemClickListener = object : StoreCategoriesRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(id: Int) {
                 onItemClick(id)
-                preCategories = id.toStoreCategory()
+                preCategories = id
             }
         }
     }
 
-    fun initCategory(id: StoreCategory?){
-        preCategories = id
+    fun initCategory(id: Int?){
+        if(id != null){
+            selectPosition = id - 1
+            preCategories = id - 1
+        }
     }
 
     companion object {

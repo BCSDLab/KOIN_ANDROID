@@ -135,8 +135,8 @@ private fun Modifier.fadingEdge(brush: Brush) = if (brush == verticalGradient())
     this
         .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
         .drawWithContent {
-            drawContent()
-            drawRect(brush = brush, blendMode = BlendMode.DstIn)
+                drawContent()
+                drawRect(brush = brush, blendMode = BlendMode.DstIn)
         }
 }
 

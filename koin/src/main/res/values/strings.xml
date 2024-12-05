@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" tools:ignore="DuplicateDefinition">코인 커뮤니티</string>
+    <string name="app_name" tools:ignore="DuplicateDefinition">코인</string>
 
     <string name="sign_up">회원가입</string>
     <string name="login_complete">로그인완료</string>
@@ -160,16 +160,6 @@
     <string name="forgotpassword_sent_email_title">KOREATECH E-mail 인증</string>
     <string name="forgotpassword_sent_email_message">학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?</string>
 
-    <!--Timetable-->
-    <string name="timetable_semester">시간표 수정</string>
-    <string name="timetable_saved">저장되었습니다.</string>
-    <string name="timetable_saved_fail">저장에 실패했습니다.</string>
-    <string name="timetable_delete_class_message">해당 수업을 삭제하시겠습니까?</string>
-    <string name="timetable_duplicate_warning_message">과목 중복 / 시간 중복</string>
-    <string name="timetable_want_to_change_message">바꾸시겠습니까?</string>
-    <string name="timetable_update_message">업데이트</string>
-    <string name="timetable_select_success">완료</string>
-
     <!--lost and found-->
     <string name="lost_and_found_created">생성되었습니다.</string>
     <string name="lost_and_found_edited">수정되었습니다.</string>
@@ -195,7 +185,6 @@
 
 
     <string name="file_path_base">/Pictures/koin/</string>
-    <string name="file_path_timetable">/Pictures/koin/timetable</string>
 
     <string name="font_kr_bold">fonts/notosanscjkkr_bold.otf</string>
     <string name="font_regular">fonts/notosans_regular.ttf</string>
@@ -390,6 +379,9 @@
     <string name="notification_dining_photo">식단사진 업로드 알림</string>
     <string name="notification_dining_photo_description">식단사진이 업로드 될 경우 알림을 받습니다.</string>
 
+    <string name="notification_review">리뷰 작성 요청 알림</string>
+    <string name="notification_review_description">전화 주문 시 리뷰 작성 요청 알림을 받습니다.</string>
+
     <string name="notification_event">이벤트 알림</string>
     <string name="notification_event_description">모든 주변상점의 이벤트 알림을 받습니다.</string>
     <string name="notification_article_keyword_description">키워드가 포함된 글이 게시될 경우 알림을 받습니다.</string>
@@ -540,7 +532,7 @@
     <string name="card_available">#카드가능</string>
     <string name="account_transfer_avilable">#계좌이체가능</string>
     <string name="menu_info">메뉴 소개</string>
-    <string name="nearby_store">주변 상점</string>
+    <string name="nearby_store">주변상점</string>
     <string name="main_menu">메인 메뉴</string>
     <string name="view_all">전체보기</string>
     <string name="menu">메뉴</string>

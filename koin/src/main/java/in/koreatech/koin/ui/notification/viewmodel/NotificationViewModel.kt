@@ -70,8 +70,7 @@ class NotificationViewModel @Inject constructor(
 }
 
 sealed class NotificationUiState {
-    data class Success(val notificationPermissionInfo: NotificationPermissionInfo) :
-        NotificationUiState()
+    data class Success(val notificationPermissionInfo: NotificationPermissionInfo) : NotificationUiState()
 
     data object Failed : NotificationUiState()
     data object Nothing : NotificationUiState()

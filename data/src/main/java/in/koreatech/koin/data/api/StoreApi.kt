@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
+import `in`.koreatech.koin.data.response.store.ShopRelatedListResponse
 import `in`.koreatech.koin.data.response.store.StoreBenefitResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
@@ -21,19 +22,21 @@ interface StoreApi {
     suspend fun getShopList(): StoreResponse
 
     @GET(URLConstant.SHOPS.SHOPS_V2)
-    suspend fun getShopListWithSorting(@Query("sorter") sorter: String): StoreResponse
+    suspend fun getShopListWithSorting(@Query("sorter") sorter: String, @Query("query") query: String?): StoreResponse
 
     @GET(URLConstant.SHOPS.SHOPS_V2)
     suspend fun getShopListWithOneFilter(
         @Query("sorter") sorter: String,
-        @Query("filter") filter: String
+        @Query("filter") filter: String,
+        @Query("query") query: String?
     ): StoreResponse
 
     @GET(URLConstant.SHOPS.SHOPS_V2)
     suspend fun getShopListWithTwoFilter(
         @Query("sorter") sorter: String,
         @Query("filter") OPEN: String = "OPEN",
-        @Query("filter") DELIVERY: String = "DELIVERY"
+        @Query("filter") DELIVERY: String = "DELIVERY",
+        @Query("query") query: String?
     ): StoreResponse
 
     @GET(URLConstant.SHOPS.EVENTS)
@@ -63,4 +66,7 @@ interface StoreApi {
 
     @GET("benefit/categories")
     suspend fun getBenefitCategories(): BenefitCategoryListResponse
+
+    @GET("/shops/search/related/{query}")
+    suspend fun getShopSearchRelated(@Path("query") query: String): ShopRelatedListResponse
 }

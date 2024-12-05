@@ -36,6 +36,15 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+data class ScreenState(
+    val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE
+)
+
+enum class ScreenStateUIMode{
+    BASIC, EMPTY, IDLE
+}
+
+
 @HiltViewModel
 class SemesterViewModel @Inject constructor(
     private val timetableRepository: TimetableRepository,
@@ -78,6 +87,9 @@ class SemesterViewModel @Inject constructor(
     private val _userTimetableFrames: MutableStateFlow<Map<SemesterModel, List<TimetableFrame>>> = MutableStateFlow(emptyMap())
     val userTimetableFrames: StateFlow<Map<SemesterModel, List<TimetableFrame>>> = _userTimetableFrames.asStateFlow()
 
+    private val _screenState =  MutableStateFlow<ScreenState>(ScreenState())
+    val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
+
     val semesters: StateFlow<List<SemesterModel>> = getSemestersUseCase()
         .map { it.map { it.toSemesterModel() } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
@@ -118,7 +130,13 @@ class SemesterViewModel @Inject constructor(
                     }
 
                 }
+
             _userTimetableFrames.value = tmp
+            if (tmp.isEmpty()) {
+                _screenState.value = _screenState.value.copy(mode = ScreenStateUIMode.EMPTY)
+            } else {
+                _screenState.value = _screenState.value.copy(mode = ScreenStateUIMode.BASIC)
+            }
         }
     }
 
@@ -154,6 +172,12 @@ class SemesterViewModel @Inject constructor(
 
     fun updateSideEffect(sideEffect: SemesterSideEffect) {
         _sideEffect.value = sideEffect
+    }
+
+    fun updateScreenState(mode: ScreenStateUIMode) {
+        _screenState.value = _screenState.value.copy(
+            mode = mode
+        )
     }
 
     fun onClickAddTimetable(target: SemesterModel) {

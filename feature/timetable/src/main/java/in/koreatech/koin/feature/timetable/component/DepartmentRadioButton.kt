@@ -39,7 +39,7 @@ fun DepartmentRadioButton(
         Text(
             modifier = Modifier.wrapContentSize(),
             text = text,
-            style = KoinTheme.typography.regular15.copy(
+            style = KoinTheme.typography.regular14.copy(
                 color = textColor
             )
         )

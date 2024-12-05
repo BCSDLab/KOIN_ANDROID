@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
