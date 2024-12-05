@@ -17,15 +17,18 @@ fun BusSearchScreen(
 
     val departure by viewModel.departure.collectAsStateWithLifecycle()
     val arrival by viewModel.arrival.collectAsStateWithLifecycle()
+    val busNoticeUiState by viewModel.noticeUiState.collectAsStateWithLifecycle()
 
     BusSearchScreenContent(
         departure = departure,
         arrival = arrival,
+        busNoticeUiState = busNoticeUiState,
         modifier = modifier,
         onNavigationIconClick = onNavigationIconClick,
         onSwapIconClicked = viewModel::swapDepartureAndArrival,
         onSearchClicked = { onSearch(departure, arrival) },
         onDepartureSet = viewModel::setDeparture,
-        onArrivalSet = viewModel::setArrival
+        onArrivalSet = viewModel::setArrival,
+        onCloseNotice = viewModel::closeNotice
     )
 }
