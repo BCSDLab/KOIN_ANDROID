@@ -23,11 +23,10 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
     ): RecyclerView.ViewHolder(binding.root){
         val container = binding.storeEventContainer
         val eventStoreImage = binding.eventImageView
-        val eventStoreName = binding.evnetStoreNameTv
+        val eventStoreName = binding.eventStoreNameTv
         fun bind(storeEvent: StoreEvent) {
             binding.root.setOnClickListener {
                 onItemClickListener?.onItemClick(storeEvent)
-
             }
         }
     }
@@ -49,7 +48,7 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
             eventStoreName.text = event.shopName
 
             if(event.thumbnailImages?.isEmpty() == true){
-                eventStoreImage.setImageResource(R.drawable.event_default)
+                eventStoreImage.setImageResource(R.drawable.default_event_image)
             }
             else{
                 Glide.with(eventStoreImage)

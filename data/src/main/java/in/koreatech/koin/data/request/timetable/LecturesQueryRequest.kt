@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.data.request.timetable
 
 import com.google.gson.annotations.SerializedName
+import `in`.koreatech.koin.data.response.timetable.TimetableLectureClassInfoResponse
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
+import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectureClassInfo
 
 data class LecturesQueryRequest(
     @SerializedName("timetable_frame_id")
@@ -16,10 +18,8 @@ data class LectureQueryRequest(
     val lectureId: Int?,
     @SerializedName("class_title")
     val classTitle: String?,
-    @SerializedName("class_time")
-    val classTime: List<Int>?,
-    @SerializedName("class_place")
-    val classPlace: String,
+    @SerializedName("class_infos")
+    val classInfos: List<TimetableLectureClassInfoRequest>?,
     @SerializedName("professor")
     val professor: String?,
     @SerializedName("grades")
@@ -29,8 +29,7 @@ data class LectureQueryRequest(
 )
 fun TimetableLecture.toCustomLectureQueryRequest() = LectureQueryRequest(
     classTitle = classTitle,
-    classTime = classTime,
-    classPlace = classPlace,
+    classInfos = classInfos.map { it.toClassInfoRequest() },
     professor = professor,
     lectureId = null,
     grades = "0",
@@ -39,18 +38,16 @@ fun TimetableLecture.toCustomLectureQueryRequest() = LectureQueryRequest(
 
 fun TimetableLecture.toLectureQueryRequest() = LectureQueryRequest(
     classTitle = null,
-    classTime = null,
-    classPlace = classPlace,
+    classInfos = null,
     professor = null,
     lectureId = lectureId,
     grades = "0",
     memo = ""
 )
 
-fun Lecture.toCustomLectureQueryRequest() = LectureQueryRequest(
+fun Lecture.toCustomLectureQueryRequest(classInfos: List<TimetableLectureClassInfoRequest>) = LectureQueryRequest(
     classTitle = name,
-    classTime = classTime,
-    classPlace = place ?: "",
+    classInfos = classInfos,
     professor = professor,
     lectureId = null,
     grades = "0",
@@ -60,8 +57,7 @@ fun Lecture.toCustomLectureQueryRequest() = LectureQueryRequest(
 
 fun Lecture.toLectureQueryRequest() = LectureQueryRequest(
     classTitle = null,
-    classTime = null,
-    classPlace = place ?: "",
+    classInfos = null,
     professor = null,
     lectureId = id,
     grades = "0",

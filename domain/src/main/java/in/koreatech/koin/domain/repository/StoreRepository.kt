@@ -2,10 +2,10 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
-import `in`.koreatech.koin.domain.model.store.BenefitCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ShopEvents
+import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreBenefit
 import `in`.koreatech.koin.domain.model.store.StoreCategories
@@ -20,8 +20,10 @@ interface StoreRepository {
     suspend fun getStores(
         storeSorter: StoreSorter? = null,
         isOperating: Boolean? = null,
-        isDelivery: Boolean? = null
+        isDelivery: Boolean? = null,
+        query: String? = null
     ): List<Store>
+
     suspend fun getStoreEvents(): List<StoreEvent>
     suspend fun getStoreCategories(): List<StoreCategories>
     suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu
@@ -45,4 +47,5 @@ interface StoreRepository {
     suspend fun getStoreBenefitShopList(uid: Int): StoreBenefit
 
     suspend fun getStoreBenefitCategories(): BenefitCategoryList
+    suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList
 }

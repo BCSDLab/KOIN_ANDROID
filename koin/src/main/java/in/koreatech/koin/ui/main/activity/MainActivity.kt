@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -146,7 +147,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
-
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
@@ -155,7 +155,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
                 EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
-            gotoStoreActivity(id)
+            gotoStoreActivity(id + 1)
         }
     }
 
@@ -388,9 +388,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
     }
 
-    private fun gotoStoreActivity(position: Int) {
+    private fun gotoStoreActivity(id: Int) {
         val bundle = Bundle()
-        bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
+        bundle.putInt(StoreActivityContract.STORE_CATEGORY, id)
         callDrawerItem(R.id.navi_item_store, bundle)
     }
 

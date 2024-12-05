@@ -33,7 +33,7 @@ diffCallback
 
         with(holder){
             container.setOnClickListener {
-                onItemClickListener?.onItemClick(event.id, event.name)
+                onItemClickListener?.onItemClick(position, event.name)
             }
 
             Glide.with(storeCategoryImage)
@@ -50,7 +50,7 @@ diffCallback
         fun onItemClick(id: Int, name: String)
     }
 
-    inline fun setOnItemClickListener(crossinline onItemClick: (Id: Int, name: String) -> Unit) {
+    inline fun setOnItemClickListener(crossinline onItemClick: (id: Int, name: String) -> Unit) {
         onItemClickListener = object : StoreCategoriesRecyclerAdapter.OnItemClickListener {
             override fun onItemClick(id: Int, name: String) {
                 onItemClick(id, name)

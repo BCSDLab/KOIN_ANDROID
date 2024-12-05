@@ -14,10 +14,8 @@ data class TimetableLectureResponse(
     val code: String?,
     @SerializedName("design_score") // "0"
     val designScore: String?,
-    @SerializedName("class_time")
-    val classTime: List<Int>,
-    @SerializedName("class_place") // "2공학관"
-    val classPlace: String?,
+    @SerializedName("class_infos")
+    val classInfos: List<TimetableLectureClassInfoResponse>,
     @SerializedName("memo")
     val memo: String?,
     @SerializedName("grades") // "3"
@@ -39,8 +37,7 @@ data class TimetableLectureResponse(
         regularNumber = regularNumber.orEmpty(),
         code = code.orEmpty(),
         designScore = designScore.orEmpty(),
-        classTime = classTime,
-        classPlace = classPlace.orEmpty(),
+        classInfos = classInfos.map { it.toTimetableLectureClassInfo() },
         memo = memo.orEmpty(),
         grades = grades.orEmpty(),
         classTitle = classTitle.orEmpty(),

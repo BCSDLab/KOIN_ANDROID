@@ -59,9 +59,9 @@ private fun String.toSemesterTitle(timetableName: String): String {
                     ""
                 } else {
                     if (semester.isEmpty()) {
-                        "${year}학년"
+                        "${year}년"
                     } else {
-                        "${year}학년 ${semester}학기"
+                        "${year}년 ${semester}학기"
                     }
                 }
             }
@@ -73,9 +73,9 @@ private fun String.toSemesterTitle(timetableName: String): String {
                     ""
                 } else {
                     if (semester.isEmpty()) {
-                        "${year}학년"
+                        "${year}년"
                     } else {
-                        "${year}학년 ${semester}학기"
+                        "${year}년 ${semester}학기"
                     }
                 }
             }
