@@ -13,11 +13,9 @@ import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
