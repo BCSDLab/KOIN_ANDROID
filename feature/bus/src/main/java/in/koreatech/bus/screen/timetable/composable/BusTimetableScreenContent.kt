@@ -3,31 +3,23 @@ package `in`.koreatech.bus.screen.timetable.composable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.component.NoticeItem
@@ -39,13 +31,12 @@ import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
-import `in`.koreatech.bus.viewstate.NoticeViewState
+import `in`.koreatech.bus.viewstate.BusNoticeViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.toPersistentList
@@ -167,7 +158,7 @@ private fun BusTimetableShuttleScreenPreview() {
         previewTab = BusType.SHUTTLE,
         busTimetableUiState = previewUiState,
         busNoticeUiState = BusNoticeUiState.Show(
-            NoticeViewState(
+            BusNoticeViewState(
                 id = 1,
                 title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
             )
@@ -182,7 +173,7 @@ private fun BusTimetableExpressScreenPreview() {
         previewTab = BusType.EXPRESS,
         busTimetableUiState = previewUiState,
         busNoticeUiState = BusNoticeUiState.Show(
-            NoticeViewState(
+            BusNoticeViewState(
                 id = 1,
                 title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
             )
@@ -197,7 +188,7 @@ private fun BusTimetableCityScreenPreview() {
         previewTab = BusType.CITY,
         busTimetableUiState = previewUiState,
         busNoticeUiState = BusNoticeUiState.Show(
-            NoticeViewState(
+            BusNoticeViewState(
                 id = 1,
                 title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
             )
@@ -212,7 +203,7 @@ private fun BusTimetableLoadingScreenPreview() {
         previewTab = BusType.CITY,
         busTimetableUiState = BusTimetableUiState.Loading,
         busNoticeUiState = BusNoticeUiState.Show(
-            NoticeViewState(
+            BusNoticeViewState(
                 id = 1,
                 title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
             )

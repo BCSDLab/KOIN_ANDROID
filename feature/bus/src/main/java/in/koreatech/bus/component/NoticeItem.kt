@@ -17,14 +17,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.viewstate.NoticeViewState
+import `in`.koreatech.bus.viewstate.BusNoticeViewState
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 
 @Composable
 internal fun NoticeItem(
-    notice: NoticeViewState,
+    notice: BusNoticeViewState,
     modifier: Modifier = Modifier,
     onCloseIconClick: () -> Unit,
     noticeMaxLines: Int = 1,
@@ -66,7 +66,7 @@ internal fun NoticeItem(
 private fun NoticeItemPreview() {
     KoinTheme {
         NoticeItem(
-            notice = NoticeViewState(
+            notice = BusNoticeViewState(
                 id = 1,
                 title = "[긴급][총무팀]2024.11.27.(수, 오늘) 천안, 청주 야간 셔틀 20시 지연운행"
             ),
@@ -80,7 +80,7 @@ private fun NoticeItemPreview() {
 private fun NoticeItem2Preview() {
     KoinTheme {
         NoticeItem(
-            notice = NoticeViewState(
+            notice = BusNoticeViewState(
                 id = 1,
                 title = "[긴급][총무팀]2024.11.27.(수, 오늘) 천안, 청주 야간 셔틀 20시 지연운행"
             ),
