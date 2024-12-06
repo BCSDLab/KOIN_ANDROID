@@ -1,11 +1,11 @@
 package `in`.koreatech.koin.data.response.bus.v2
 
-import `in`.koreatech.koin.domain.model.bus.v2.ShuttleTimetableDetail
+import `in`.koreatech.koin.domain.model.bus.v2.ShuttleTimetable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ShuttleTimetableDetailResponse(
+data class ShuttleTimetableResponse(
     @SerialName("region") val region: String?,
     @SerialName("route_type") val routeType: String?,
     @SerialName("route_name") val routeName: String?,
@@ -13,7 +13,7 @@ data class ShuttleTimetableDetailResponse(
     @SerialName("node_info") val nodeInfo: List<ShuttleTimetableNodeInfoResponse>?,
     @SerialName("route_info") val routeInfo: List<ShuttleTimetableRouteInfoResponse>?,
 ) {
-    fun toShuttleTimetableDetail() = ShuttleTimetableDetail(
+    fun toShuttleTimetable() = ShuttleTimetable(
         region = region.orEmpty(),
         routeType = routeType.orEmpty(),
         routeName = routeName.orEmpty(),
