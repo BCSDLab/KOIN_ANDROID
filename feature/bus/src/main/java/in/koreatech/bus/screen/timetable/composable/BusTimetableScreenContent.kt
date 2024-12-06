@@ -31,6 +31,7 @@ import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.viewstate.ArrivalViewState
+import `in`.koreatech.bus.viewstate.BusNoticeViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
@@ -50,6 +51,7 @@ internal fun BusTimetableScreenContent(
     onNavigateToShuttleTimetableDetailScreen: (route: String) -> Unit = {},
     onNavigationIconClick: () -> Unit = {},
     onCloseNotice: () -> Unit = {},
+    onNoticeClick: (BusNoticeViewState) -> Unit = {},
     previewTab: BusType = BusType.SHUTTLE
 ) {
 
@@ -88,7 +90,8 @@ internal fun BusTimetableScreenContent(
                     if (busNoticeUiState is BusNoticeUiState.Show) {
                         NoticeItem(
                             notice = busNoticeUiState.notice,
-                            onCloseIconClick = onCloseNotice
+                            onCloseIconClick = onCloseNotice,
+                            onNoticeClick = onNoticeClick
                         )
                     }
                 }

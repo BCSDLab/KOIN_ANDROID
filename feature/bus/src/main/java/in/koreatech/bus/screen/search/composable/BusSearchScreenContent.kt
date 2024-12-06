@@ -20,6 +20,7 @@ import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
 import `in`.koreatech.bus.screen.search.type.PlaceSelectMode
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
+import `in`.koreatech.bus.viewstate.BusNoticeViewState
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.feature.bus.R
 
@@ -31,11 +32,12 @@ internal fun BusSearchScreenContent(
     busNoticeUiState: BusNoticeUiState,
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
-    onSwapIconClicked: () -> Unit = {},
-    onSearchClicked: () -> Unit = {},
+    onSwapIconClick: () -> Unit = {},
+    onSearchClick: () -> Unit = {},
     onDepartureSet: (String) -> Unit = {},
     onArrivalSet: (String) -> Unit = {},
-    onCloseNotice: () -> Unit = {}
+    onCloseNotice: () -> Unit = {},
+    onNoticeClick: (BusNoticeViewState) -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -55,6 +57,7 @@ internal fun BusSearchScreenContent(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 notice = busNoticeUiState.notice,
                 onCloseIconClick = onCloseNotice,
+                onNoticeClick = onNoticeClick,
                 noticeMaxLines = 2
             )
         }
@@ -67,8 +70,8 @@ internal fun BusSearchScreenContent(
             departure = departure,
             arrival = arrival,
             searchButtonEnabled = searchButtonEnabled,
-            onSwapIconClicked = onSwapIconClicked,
-            onSearchClicked = onSearchClicked,
+            onSwapIconClicked = onSwapIconClick,
+            onSearchClicked = onSearchClick,
             onDepartureFieldClicked = { placeSelectMode = PlaceSelectMode.DEPARTURE },
             onArrivalFieldClicked = { placeSelectMode = PlaceSelectMode.ARRIVAL }
         )
