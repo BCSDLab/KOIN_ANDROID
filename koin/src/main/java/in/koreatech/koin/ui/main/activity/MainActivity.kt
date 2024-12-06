@@ -22,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.bus.screen.MainEntryView
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
@@ -246,6 +247,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         busComposeView.apply {
+            visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
             setContent {
                 MainEntryView(
                     onShuttleTicketClicked = {
