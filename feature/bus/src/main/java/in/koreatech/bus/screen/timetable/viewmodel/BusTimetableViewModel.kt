@@ -3,6 +3,7 @@ package `in`.koreatech.bus.screen.timetable.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.viewstate.ArrivalViewState
@@ -185,10 +186,7 @@ class BusTimetableViewModel @Inject constructor(
                 emit(BusNoticeUiState.Show(it.toBusNoticeViewState()))
             }.onFailure {
                 if (BuildConfig.DEBUG)  // TODO : Remove this line
-                    emit(BusNoticeUiState.Show(BusNoticeViewState(
-                        id = 1,
-                        title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"))
-                    )
+                    emit(busNoticeUiStateMock)
                 else emit(BusNoticeUiState.LoadFailed)
             }
         }

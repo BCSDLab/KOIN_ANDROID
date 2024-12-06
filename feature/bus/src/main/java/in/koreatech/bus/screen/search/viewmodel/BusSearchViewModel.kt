@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
-import `in`.koreatech.bus.viewstate.BusNoticeViewState
 import `in`.koreatech.bus.viewstate.toBusNoticeViewState
 import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
@@ -40,10 +40,7 @@ class BusSearchViewModel @Inject constructor(
                 emit(BusNoticeUiState.Show(it.toBusNoticeViewState()))
             }.onFailure {
                 if (BuildConfig.DEBUG)  // TODO : Remove this line
-                    emit(BusNoticeUiState.Show(BusNoticeViewState(
-                        id = 1,
-                        title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"))
-                    )
+                    emit(busNoticeUiStateMock)
                 else emit(BusNoticeUiState.LoadFailed)
             }
         }

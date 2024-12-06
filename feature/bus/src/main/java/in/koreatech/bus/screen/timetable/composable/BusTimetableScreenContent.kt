@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.type.BusType
@@ -31,7 +32,6 @@ import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
-import `in`.koreatech.bus.viewstate.BusNoticeViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
@@ -157,12 +157,7 @@ private fun BusTimetableShuttleScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.SHUTTLE,
         busTimetableUiState = previewUiState,
-        busNoticeUiState = BusNoticeUiState.Show(
-            BusNoticeViewState(
-                id = 1,
-                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
-            )
-        )
+        busNoticeUiState = busNoticeUiStateMock
     )
 }
 @Preview(showBackground = true)
@@ -172,12 +167,7 @@ private fun BusTimetableExpressScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.EXPRESS,
         busTimetableUiState = previewUiState,
-        busNoticeUiState = BusNoticeUiState.Show(
-            BusNoticeViewState(
-                id = 1,
-                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
-            )
-        )
+        busNoticeUiState = busNoticeUiStateMock
     )
 }
 @Preview(showBackground = true)
@@ -187,12 +177,7 @@ private fun BusTimetableCityScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.CITY,
         busTimetableUiState = previewUiState,
-        busNoticeUiState = BusNoticeUiState.Show(
-            BusNoticeViewState(
-                id = 1,
-                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
-            )
-        )
+        busNoticeUiState = busNoticeUiStateMock
     )
 }
 @Preview(showBackground = true)
@@ -202,12 +187,7 @@ private fun BusTimetableLoadingScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         previewTab = BusType.CITY,
         busTimetableUiState = BusTimetableUiState.Loading,
-        busNoticeUiState = BusNoticeUiState.Show(
-            BusNoticeViewState(
-                id = 1,
-                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
-            )
-        )
+        busNoticeUiState = busNoticeUiStateMock
     )
 }
 
