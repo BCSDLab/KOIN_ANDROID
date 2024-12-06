@@ -1,6 +1,7 @@
 package `in`.koreatech.bus.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,8 +27,9 @@ import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 @Composable
 internal fun NoticeItem(
     notice: BusNoticeViewState,
-    modifier: Modifier = Modifier,
+    onNoticeClick: (BusNoticeViewState) -> Unit,
     onCloseIconClick: () -> Unit,
+    modifier: Modifier = Modifier,
     noticeMaxLines: Int = 1,
     textStyle: TextStyle = KoinTheme.typography.medium14
 ) {
@@ -37,6 +39,7 @@ internal fun NoticeItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
+            .clickable { onNoticeClick(notice) }
             .background(
                 color = KoinTheme.colors.info100,
                 shape = RoundedCornerShape(8.dp)
@@ -68,7 +71,8 @@ private fun NoticeItemPreview() {
     KoinTheme {
         NoticeItem(
             notice = busNoticeUiStateMock.notice,
-            onCloseIconClick = {}
+            onCloseIconClick = {},
+            onNoticeClick = {}
         )
     }
 }
@@ -80,6 +84,7 @@ private fun NoticeItem2Preview() {
         NoticeItem(
             notice = busNoticeUiStateMock.notice,
             onCloseIconClick = {},
+            onNoticeClick = {},
             noticeMaxLines = 2
         )
     }

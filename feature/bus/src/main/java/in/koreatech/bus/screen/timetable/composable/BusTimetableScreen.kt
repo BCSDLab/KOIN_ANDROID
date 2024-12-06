@@ -3,9 +3,11 @@ package `in`.koreatech.bus.screen.timetable.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
+import `in`.koreatech.bus.util.goToArticle
 
 @Composable
 internal fun BusTimetableScreen(
@@ -18,12 +20,15 @@ internal fun BusTimetableScreen(
     val busTimetableUiState by viewModel.timetableUiState.collectAsStateWithLifecycle()
     val busNoticeUiState by viewModel.noticeUiState.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
+
     BusTimetableScreenContent(
         modifier = modifier,
         busTimetableUiState = busTimetableUiState,
         busNoticeUiState = busNoticeUiState,
         onNavigationIconClick = onNavigationIconClick,
         onNavigateToShuttleTimetableDetailScreen = onNavigateToShuttleTimetableDetailScreen,
-        onCloseNotice = viewModel::closeNotice
+        onCloseNotice = viewModel::closeNotice,
+        onNoticeClick = { context.goToArticle(it.id) }
     )
 }
