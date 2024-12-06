@@ -21,7 +21,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
-import `in`.koreatech.bus.MainEntryView
+import `in`.koreatech.bus.screen.MainEntryView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
@@ -55,7 +55,6 @@ import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
-import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState

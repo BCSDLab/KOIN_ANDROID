@@ -29,7 +29,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
-internal fun CityTimetableScreen(
+internal fun CityTimetableContent(
     timetable: CommonTimetableViewState,
     modifier: Modifier = Modifier,
     onBusNumberChanged: (CityBusNumberType) -> Unit = {},
@@ -106,7 +106,7 @@ internal fun CityTimetableScreen(
 @Preview
 @Composable
 private fun CityTimetableScreenPreview() {
-    CityTimetableScreen(
+    CityTimetableContent(
         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
         timetable = CommonTimetableViewState(
             updatedAt = "2024-09-21",

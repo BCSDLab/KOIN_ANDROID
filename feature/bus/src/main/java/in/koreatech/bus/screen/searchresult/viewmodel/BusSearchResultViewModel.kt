@@ -1,52 +1,73 @@
-package `in`.koreatech.bus.screen.search.viewmodel
+package `in`.koreatech.bus.screen.searchresult.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
+import `in`.koreatech.koin.domain.usecase.busv2.SearchBusV2UseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transform
+import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.time.LocalTime
 import javax.inject.Inject
-import kotlin.text.replace
 
 @HiltViewModel
 class BusSearchResultViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val searchBusV2UseCase: SearchBusV2UseCase
 ) : ViewModel() {
 
-    private val entryTime = LocalDateTime.now()
+    private val arguments = savedStateHandle.toRoute<Routes.BusSearchResult>()
+    val departure = arguments.departure
+    val arrival = arguments.arrival
 
-    val dateList = makeDateList()
+    val localDates = List(TOTAL_DATE_COUNT) { LocalDate.now().plusDays(it.toLong()) }
     val daytimeList = listOf("오전", "오후")
     val hourList = (1..12).map { it.toString() }
     val minuteList = (0..59).map { it.toString() }
 
-    var selectedDateIndex = 0
-    var selectedDaytimeIndex = if (LocalDateTime.now().hour < 12) 0 else 1
-    var selectedHourIndex = (LocalDateTime.now().hour + 11) % 12
-    var selectedMinuteIndex = LocalDateTime.now().minute
+    private val _selectedDateIndex = MutableStateFlow(0)
+    val selectedDateIndex = _selectedDateIndex.asStateFlow()
+    private val _selectedDaytimeIndex = MutableStateFlow(if (LocalDateTime.now().hour < 12) 0 else 1)
+    val selectedDaytimeIndex = _selectedDaytimeIndex.asStateFlow()
+    private val _selectedHourIndex = MutableStateFlow((LocalDateTime.now().hour + 11) % 12)
+    val selectedHourIndex = _selectedHourIndex.asStateFlow()
+    private val _selectedMinuteIndex = MutableStateFlow(LocalDateTime.now().minute)
+    val selectedMinuteIndex = _selectedMinuteIndex.asStateFlow()
 
-    private val _departureTimeText = MutableStateFlow(getEntryTime())
-    val departureTimeText = _departureTimeText.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = getEntryTime()
-    )
-
-    val searchResults = flow {
-        emit(tempData)
-    }.combine(departureTimeText) { results, _ ->
-        results.filter { true } // TODO : 필터링
+    val searchResultUiState = combine(
+        selectedDateIndex,
+        selectedDaytimeIndex,
+        selectedHourIndex,
+        selectedMinuteIndex
+    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex ->
+        LocalDateTime.of(
+            localDates[dateIndex],
+            LocalTime.of(
+                if (daytimeList[daytimeIndex] == "오전") hourList[hourIndex].toInt()
+                else hourList[hourIndex].toInt() + 12,
+                minuteList[minuteIndex].toInt()
+            )
+        )
+    }.transform {
+        searchBusV2UseCase(departure, arrival).onSuccess {
+            emit(BusSearchResultUiState.Success(tempData))
+        }.onFailure {
+            emit(BusSearchResultUiState.LoadFailed)
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
+        initialValue = BusSearchResultUiState.Loading
     )
 
     fun setDepartureTimeToNow() {
@@ -57,47 +78,24 @@ class BusSearchResultViewModel @Inject constructor(
             hourIndex = (now.hour + 11) % 12,
             minuteIndex = now.minute
         )
-        setDepartureTimeText()
     }
 
     fun setDepartureTime(dateIndex: Int, daytimeIndex: Int, hourIndex: Int, minuteIndex: Int) {
-        selectedDateIndex = dateIndex
-        selectedDaytimeIndex = daytimeIndex
-        selectedHourIndex = hourIndex
-        selectedMinuteIndex = minuteIndex
-        setDepartureTimeText()
-    }
-
-    private fun setDepartureTimeText() {
-        _departureTimeText.value =
-            "${dateList[selectedDateIndex]} ${daytimeList[selectedDaytimeIndex]} ${hourList[selectedHourIndex]}:${
-                minuteList[selectedMinuteIndex].padStart(2, '0')
-            }"
-    }
-
-    private fun makeDateList(): List<String> = buildList {
-        val today = LocalDateTime.now()
-
-        add("오늘")
-        add("내일")
-        for (i in 2 until EXTRA_DATE_COUNT) {
-            val date = today.plusDays(i.toLong())
-            val formattedDate = date.format(
-                DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
-            ).replace("요일", "")
-            add(formattedDate)
-        }
-    }
-
-    // TODO : 모듈화?
-    private fun getEntryTime(): String {
-        val formatter = DateTimeFormatter.ofPattern("a h:mm", Locale.KOREA)
-        return "오늘 " + entryTime.format(formatter)
+        _selectedDateIndex.value = dateIndex
+        _selectedDaytimeIndex.value = daytimeIndex
+        _selectedHourIndex.value = hourIndex
+        _selectedMinuteIndex.value = minuteIndex
     }
 
     companion object {
-        private const val EXTRA_DATE_COUNT = 365
+        private const val TOTAL_DATE_COUNT = 365
     }
+}
+
+sealed interface BusSearchResultUiState {
+    data class Success(val departureInfos: List<BusDepartureInfoViewState>) : BusSearchResultUiState
+    data object Loading : BusSearchResultUiState
+    data object LoadFailed : BusSearchResultUiState
 }
 
 private val tempData = listOf(
