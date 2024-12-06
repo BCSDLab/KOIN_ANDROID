@@ -15,7 +15,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
-import `in`.koreatech.bus.viewstate.ShuttleNodeViewState
+import `in`.koreatech.bus.shuttleTimetableNodeInfoMock1
+import `in`.koreatech.bus.shuttleTimetableNodeInfoMock2
+import `in`.koreatech.bus.shuttleTimetableNodeInfoMock3
+import `in`.koreatech.bus.shuttleTimetableNodeInfoMock4
+import `in`.koreatech.bus.shuttleTimetableNodeInfoMock5
+import `in`.koreatech.bus.viewstate.ShuttleTimetableNodeInfoState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
@@ -23,7 +28,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ShuttleTimetableNodeItem(
-    nodes: ImmutableList<ShuttleNodeViewState>,
+    nodes: ImmutableList<ShuttleTimetableNodeInfoState>,
     nodeItemHeightDp: Dp,
     modifier: Modifier = Modifier,
 ) {
@@ -42,8 +47,8 @@ internal fun ShuttleTimetableNodeItem(
 
         nodes.fastForEach { node ->
             NodeItem(
-                nodeTitle = node.title,
-                nodeDescription = node.description,
+                nodeTitle = node.name,
+                nodeDescription = node.detail,
                 modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 4.dp)
                     .height(nodeItemHeightDp)
@@ -57,22 +62,12 @@ internal fun ShuttleTimetableNodeItem(
 private fun ShuttleTimetableNodeItemPreview() {
     ShuttleTimetableNodeItem(
         persistentListOf(
-            ShuttleNodeViewState(
-                title = "천안역",
-                description = "학화호두과자 앞"
-            ), ShuttleNodeViewState(
-                title = "2캠퍼스",
-                description = ""
-            ), ShuttleNodeViewState(
-                title = "천안터미널",
-                description = "신세계 BS"
-            ), ShuttleNodeViewState(
-                title = "천안역",
-                description = ""
-            ), ShuttleNodeViewState(
-                title = "한기대",
-                description = ""
-            ),
+            shuttleTimetableNodeInfoMock1,
+            shuttleTimetableNodeInfoMock2,
+            shuttleTimetableNodeInfoMock3,
+            shuttleTimetableNodeInfoMock4,
+            shuttleTimetableNodeInfoMock5
+
         ),
         nodeItemHeightDp = 40.dp
     )

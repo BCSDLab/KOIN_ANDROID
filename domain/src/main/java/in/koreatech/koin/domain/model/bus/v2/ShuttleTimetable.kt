@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.model.bus.v2
 
-data class ShuttleTimetableDetail(
+data class ShuttleTimetable(
     val region: String,
     val routeType: String,
     val routeName: String,

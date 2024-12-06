@@ -17,12 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
-import `in`.koreatech.bus.viewstate.ShuttleRouteViewState
+import `in`.koreatech.bus.shuttleTimetableRouteInfoMock1
+import `in`.koreatech.bus.viewstate.ShuttleTimetableRouteInfoState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 fun ShuttleTimetableRouteItem(
-    route: ShuttleRouteViewState,
+    route: ShuttleTimetableRouteInfoState,
     nodeItemHeightDp: Dp,
     modifier: Modifier = Modifier,
 ) {
@@ -62,10 +63,7 @@ fun ShuttleTimetableRouteItem(
 @Composable
 private fun ShuttleTimetableDetailItemPreview() {
     ShuttleTimetableRouteItem(
-        route = ShuttleRouteViewState(
-            name = "1회",
-            arrivalTimes = listOf("11:10", "11:20", "11:30", "11:40", "11:50")
-        ),
+        route = shuttleTimetableRouteInfoMock1,
         nodeItemHeightDp = 40.dp
     )
 }

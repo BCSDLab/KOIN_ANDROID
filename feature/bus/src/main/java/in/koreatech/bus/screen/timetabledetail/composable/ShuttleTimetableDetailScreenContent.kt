@@ -29,7 +29,7 @@ import `in`.koreatech.bus.component.ShuttleBusOperationChip
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.screen.timetabledetail.viewmodel.ShuttleTimetableUiState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableViewState
+import `in`.koreatech.bus.shuttleTimetableUiStateMock
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -107,7 +107,7 @@ fun ShuttleTimetableDetailScreenContent(
                         ) {
                             ShuttleTimetableNodeItem(
                                 nodeItemHeightDp = nodeItemHeightDp,
-                                nodes = timetableUiState.timetable.nodes.toPersistentList()
+                                nodes = timetableUiState.timetable.nodeInfo.toPersistentList()
                             )
 
                             VerticalDivider(
@@ -120,7 +120,7 @@ fun ShuttleTimetableDetailScreenContent(
                                     .fillMaxWidth()
                                     .horizontalScroll(rememberScrollState())
                             ) {
-                                timetableUiState.timetable.routes.fastForEach { route ->
+                                timetableUiState.timetable.routeInfo.fastForEach { route ->
                                     ShuttleTimetableRouteItem(
                                         route = route,
                                         nodeItemHeightDp = nodeItemHeightDp,
@@ -149,9 +149,7 @@ fun ShuttleTimetableDetailScreenContent(
 @Composable
 private fun ShuttleTimetableDetailScreenContentPreview() {
     ShuttleTimetableDetailScreenContent(
-        timetableUiState = ShuttleTimetableUiState.Success(
-            timetable = ShuttleTimetableViewState(emptyList(), emptyList())
-        )
+        timetableUiState = shuttleTimetableUiStateMock
     )
 }
 
