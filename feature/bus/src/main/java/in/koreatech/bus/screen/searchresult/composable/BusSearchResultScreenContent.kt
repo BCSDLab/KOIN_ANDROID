@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,17 +57,22 @@ internal fun BusSearchResultScreenContent(
     daytimeList: ImmutableList<String>,
     hourList: ImmutableList<String>,
     minuteList: ImmutableList<String>,
+    modifier: Modifier = Modifier,
     selectedDateIndex: Int,
     selectedDaytimeIndex: Int,
     selectedHourIndex: Int,
     selectedMinuteIndex: Int,
-    modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
     onMinDepartureTimeSetToNow: () -> Unit = {},
     onCompleteMinDepartureTime: (dateIndex: Int, daytimeIndex: Int, hourIndex: Int, minuteIndex: Int) -> Unit = { _, _, _, _ -> },
-
-    ) {
-    var showSelectDialog by remember { mutableStateOf(false) }
+) {
+    var showSelectDialog by rememberSaveable { mutableStateOf(false) }
+    val departureTime by remember(selectedDateIndex, selectedDaytimeIndex, selectedHourIndex, selectedMinuteIndex) { mutableStateOf(formatDepartureTime(
+        dateList[selectedDateIndex],
+        daytimeList[selectedDaytimeIndex],
+        hourList[selectedHourIndex],
+        minuteList[selectedMinuteIndex]
+    )) }
 
     Column(
         modifier = modifier
@@ -89,12 +95,7 @@ internal fun BusSearchResultScreenContent(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        append(formatDepartureTime(
-                            date = dateList[selectedDateIndex],
-                            daytime = daytimeList[selectedDaytimeIndex],
-                            hour = hourList[selectedHourIndex],
-                            minute = minuteList[selectedMinuteIndex]
-                        ))
+                        append(departureTime)
                         withStyle(
                             style = SpanStyle(
                                 fontWeight = FontWeight.Medium,
@@ -117,16 +118,14 @@ internal fun BusSearchResultScreenContent(
         }
 
         when (searchResultUiState) {
-            is BusSearchResultUiState.Success -> {
-                LazyColumn {
-                    items(searchResultUiState.departureInfos) { info ->
-                        BusSearchResultItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 32.dp, vertical = 8.dp),
-                            info = info
-                        )
-                    }
+            is BusSearchResultUiState.Success -> LazyColumn {
+                items(searchResultUiState.departureInfos) { info ->
+                    BusSearchResultItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp, vertical = 8.dp),
+                        info = info
+                    )
                 }
             }
             is BusSearchResultUiState.Loading -> {
