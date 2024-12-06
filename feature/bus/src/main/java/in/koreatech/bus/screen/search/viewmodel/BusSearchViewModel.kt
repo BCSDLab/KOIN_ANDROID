@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
-import `in`.koreatech.bus.viewstate.NoticeViewState
+import `in`.koreatech.bus.viewstate.BusNoticeViewState
+import `in`.koreatech.bus.viewstate.toBusNoticeViewState
+import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
+import `in`.koreatech.koin.domain.repository.BusV2Repository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -20,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BusSearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val onboardingManager: OnboardingManager
+    private val onboardingManager: OnboardingManager,
+    private val busRepository: BusV2Repository
 ) : ViewModel() {
 
     private val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
@@ -31,13 +35,18 @@ class BusSearchViewModel @Inject constructor(
     )
 
     val noticeUiState: StateFlow<BusNoticeUiState> = shouldShowNotice.transform { shouldShow ->
-        if (shouldShow)
-            emit(
-                BusNoticeUiState.Show(
-                    NoticeViewState(
-                id = 1,
-                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
-            )))
+        if (shouldShow) {
+            busRepository.fetchBusNotice().onSuccess {
+                emit(BusNoticeUiState.Show(it.toBusNoticeViewState()))
+            }.onFailure {
+                if (BuildConfig.DEBUG)  // TODO : Remove this line
+                    emit(BusNoticeUiState.Show(BusNoticeViewState(
+                        id = 1,
+                        title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"))
+                    )
+                else emit(BusNoticeUiState.LoadFailed)
+            }
+        }
         else emit(BusNoticeUiState.NotShow)
     }.catch {
         emit(BusNoticeUiState.LoadFailed)

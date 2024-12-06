@@ -7,11 +7,14 @@ import `in`.koreatech.bus.screen.timetable.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
-import `in`.koreatech.bus.viewstate.NoticeViewState
+import `in`.koreatech.bus.viewstate.BusNoticeViewState
 import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
+import `in`.koreatech.bus.viewstate.toBusNoticeViewState
+import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
+import `in`.koreatech.koin.domain.repository.BusV2Repository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +28,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BusTimetableViewModel @Inject constructor(
-    private val onboardingManager: OnboardingManager
+    private val onboardingManager: OnboardingManager,
+    private val busRepository: BusV2Repository
 ) : ViewModel() {
 
     /** 임시 데이터 모음 */
@@ -176,11 +180,18 @@ class BusTimetableViewModel @Inject constructor(
     )
 
     val noticeUiState: StateFlow<BusNoticeUiState> = shouldShowNotice.transform { shouldShow ->
-        if (shouldShow)
-            emit(BusNoticeUiState.Show(NoticeViewState(
-                id = 1,
-                title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"
-            )))
+        if (shouldShow) {
+            busRepository.fetchBusNotice().onSuccess {
+                emit(BusNoticeUiState.Show(it.toBusNoticeViewState()))
+            }.onFailure {
+                if (BuildConfig.DEBUG)  // TODO : Remove this line
+                    emit(BusNoticeUiState.Show(BusNoticeViewState(
+                        id = 1,
+                        title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)"))
+                    )
+                else emit(BusNoticeUiState.LoadFailed)
+            }
+        }
         else emit(BusNoticeUiState.NotShow)
     }.catch {
         emit(BusNoticeUiState.LoadFailed)
@@ -208,7 +219,7 @@ sealed interface BusTimetableUiState {
 }
 
 sealed interface BusNoticeUiState {
-    data class Show(val notice: NoticeViewState) : BusNoticeUiState
+    data class Show(val notice: BusNoticeViewState) : BusNoticeUiState
     data object Loading : BusNoticeUiState
     data object LoadFailed : BusNoticeUiState
     data object NotShow : BusNoticeUiState
