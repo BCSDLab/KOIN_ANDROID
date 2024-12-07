@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -77,46 +79,43 @@ internal fun BusTimetableScreenContent(
             onNavigationIconClick = onNavigationIconClick
         )
 
-        LazyColumn {
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White)
-                        .padding(horizontal = 24.dp)
-                ) {
-                    Text(
-                        text = busTypeHeadTitle,
-                        style = KoinTheme.typography.bold20
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(horizontal = 24.dp)
+            ) {
+                Text(
+                    text = busTypeHeadTitle,
+                    style = KoinTheme.typography.bold20
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                LeadingIconText(
+                    text = stringResource(R.string.request_for_incorrect_information),
+                    iconRes = R.drawable.ic_caution
+                )
+                if (busNoticeUiState is BusNoticeUiState.Show) {
+                    NoticeItem(
+                        notice = busNoticeUiState.notice,
+                        onCloseIconClick = onCloseNotice,
+                        onNoticeClick = onNoticeClick
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    LeadingIconText(
-                        text = stringResource(R.string.request_for_incorrect_information),
-                        iconRes = R.drawable.ic_caution
-                    )
-                    if (busNoticeUiState is BusNoticeUiState.Show) {
-                        NoticeItem(
-                            notice = busNoticeUiState.notice,
-                            onCloseIconClick = onCloseNotice,
-                            onNoticeClick = onNoticeClick
-                        )
-                    }
                 }
             }
 
-            stickyHeader {
-                KoinTabRow(
-                    titles = BusType.entries.map { stringResource(it.titleRes) },
-                    selectedTabIndex = pagerState.currentPage,
-                    onTabSelected = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(it)
-                        }
+            KoinTabRow(
+                titles = BusType.entries.map { stringResource(it.titleRes) },
+                selectedTabIndex = pagerState.currentPage,
+                onTabSelected = {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(it)
                     }
-                )
-            }
+                }
+            )
 
-            item {
                 if (LocalInspectionMode.current)
                     selectedTimetableTypeTab = previewTab
 
@@ -130,7 +129,7 @@ internal fun BusTimetableScreenContent(
                             when (page) {
                                 BusType.SHUTTLE.ordinal -> {
                                     ShuttleCoursesScreenContent(
-                                        modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+                                        modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
                                         shuttleCourses = busTimetableUiState.shuttleCourses,
                                         onItemClicked = onShuttleCourseRouteClick,
                                     )
@@ -138,14 +137,14 @@ internal fun BusTimetableScreenContent(
 
                                 BusType.EXPRESS.ordinal -> {
                                     ExpressTimetableScreenContent(
-                                        modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+                                        modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
                                         timetable = busTimetableUiState.expressTimetable
                                     )
                                 }
 
                                 BusType.CITY.ordinal -> {
                                     CityTimetableScreenContent(
-                                        modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+                                        modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
                                         timetable = busTimetableUiState.cityTimetable
                                     )
                                 }
@@ -165,7 +164,7 @@ internal fun BusTimetableScreenContent(
                         // TODO 로드 실패, Pull To Refresh 있으면 좋을 듯.
                     }
                 }
-            }
+
         }
     }
 
