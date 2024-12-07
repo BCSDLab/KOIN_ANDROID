@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ExpressTimetableItemResponse(
-    @SerialName("arrival") val arrival: String?,
-    @SerialName("departure") val departure: String?,
+    @SerialName("arrival") val arrivalTime: String?,
+    @SerialName("departure") val departureTime: String?,
     @SerialName("charge") val charge: Int?,
 ) {
     fun toExpressTimetableItem() = ExpressTimetableItem(
-        arrival = arrival ?: "",
-        departure = departure ?: "",
+        arrivalTime = arrivalTime ?: "",
+        departureTime = departureTime ?: "",
         charge = charge ?: 0,
     )
 }

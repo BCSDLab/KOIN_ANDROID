@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.busNoticeUiStateMock
+import `in`.koreatech.bus.mock.commonTimetableMock
+import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
-import `in`.koreatech.bus.type.DaytimeType
-import `in`.koreatech.bus.state.ArrivalViewState
-import `in`.koreatech.bus.state.CommonTimetableViewState
+import `in`.koreatech.bus.state.ArrivalState
+import `in`.koreatech.bus.state.CommonTimetableState
 import `in`.koreatech.bus.state.BusNoticeState
+import `in`.koreatech.bus.state.ExpressTimetableState
 import `in`.koreatech.bus.state.ShuttleCoursesState
 import `in`.koreatech.bus.state.toBusNoticeViewState
 import `in`.koreatech.bus.state.toShuttleCoursesState
@@ -43,72 +45,10 @@ class BusTimetableViewModel @Inject constructor(
             }
         }
         val expressTimetable = viewModelScope.async {
-            CommonTimetableViewState(
-                updatedAt = "2024-09-21",
-                arrivals = mapOf(
-                    DaytimeType.AM to listOf(
-                        ArrivalViewState(
-                            arrivalTime = "09:00"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "09:30"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "10:00"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "10:30"
-                        ),
-                    ), DaytimeType.PM to listOf(
-                        ArrivalViewState(
-                            arrivalTime = "14:30"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "21:00"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "21:30"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "22:00"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "22:30"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "23:00"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "23:30"
-                        )
-                    ),
-                )
-            )
+            expressTimetableMock
         }
         val cityTimetable = viewModelScope.async {
-            CommonTimetableViewState(
-                updatedAt = "2024-09-21",
-                arrivals = mapOf(
-                    DaytimeType.AM to listOf(
-                        ArrivalViewState(
-                            arrivalTime = "09:00"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "09:30"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "10:00"
-                        ),
-                        ArrivalViewState(
-                            arrivalTime = "10:30"
-                        ),
-                    ), DaytimeType.PM to listOf(
-                        ArrivalViewState(
-                            arrivalTime = "14:30"
-                        )
-                    )
-                )
-            )
+            commonTimetableMock
         }
 
         emit(BusTimetableUiState.Success(
@@ -158,8 +98,8 @@ class BusTimetableViewModel @Inject constructor(
 sealed interface BusTimetableUiState {
     data class Success(
         val shuttleCourses: ShuttleCoursesState,
-        val expressTimetable: CommonTimetableViewState,
-        val cityTimetable: CommonTimetableViewState
+        val expressTimetable: ExpressTimetableState,
+        val cityTimetable: CommonTimetableState
     ) : BusTimetableUiState
     data object Loading : BusTimetableUiState
     data object LoadFailed: BusTimetableUiState
