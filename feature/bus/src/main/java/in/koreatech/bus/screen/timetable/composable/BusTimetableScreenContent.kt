@@ -48,7 +48,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BusTimetableScreenContent(
     busTimetableUiState: BusTimetableUiState,
@@ -168,8 +168,8 @@ internal fun BusTimetableScreenContent(
         }
     }
 
-    LaunchedEffect(pagerState.currentPage) {
-        selectedTimetableTypeTab = BusType.entries[pagerState.currentPage]
+    LaunchedEffect(pagerState.targetPage) {
+        selectedTimetableTypeTab = BusType.entries[pagerState.targetPage]
     }
 }
 
