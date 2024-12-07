@@ -59,18 +59,22 @@ internal fun ShuttleCoursesScreenContent(
             },
             selectedChipIndexes = intArrayOf(selectedRouteType.ordinal)
         )
-        shuttleCourses.courses.forEach {
-            ShuttleCourseView(
-                modifier = Modifier,
-                region = it.key,
-                shuttleCourseRoutes = it.value.filter { courseRouteState ->
-                    if (selectedRouteType == ShuttleBusOperationType.ALL) true
-                    else courseRouteState.type == selectedRouteType
-                }.toImmutableList(),
-                onItemClicked = onItemClicked
-            )
-            if (it.key != shuttleCourses.courses.keys.last()) {
-                Spacer(modifier = Modifier.height(10.dp))
+        shuttleCourses.courses.forEach { courseEntry ->
+            val filteredValue = courseEntry.value.filter { courseRouteState ->
+                if (selectedRouteType == ShuttleBusOperationType.ALL) true
+                else courseRouteState.type == selectedRouteType
+            }.toImmutableList()
+
+            if (filteredValue.isNotEmpty()) {
+                if (courseEntry.key != shuttleCourses.courses.keys.first())
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                ShuttleCourseView(
+                    modifier = Modifier,
+                    region = courseEntry.key,
+                    shuttleCourseRoutes = filteredValue,
+                    onItemClicked = onItemClicked
+                )
             }
         }
     }
@@ -101,7 +105,7 @@ private fun ShuttleCourseView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                             onItemClicked(it)
+                            onItemClicked(it)
                         }
                         .padding(horizontal = 8.dp, vertical = 10.dp),
                     shuttleCourseRoute = it,
