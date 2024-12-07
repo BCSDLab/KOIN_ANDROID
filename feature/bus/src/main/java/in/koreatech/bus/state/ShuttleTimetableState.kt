@@ -1,12 +1,15 @@
 package `in`.koreatech.bus.state
 
 import androidx.compose.runtime.Immutable
+import `in`.koreatech.bus.type.ShuttleBusOperationType
+import `in`.koreatech.bus.util.CIRCULATION
+import `in`.koreatech.bus.util.WEEKEND
 import `in`.koreatech.koin.domain.model.bus.v2.ShuttleTimetable
 
 @Immutable
 data class ShuttleTimetableState(
     val region: String,
-    val routeType: String,
+    val routeType: ShuttleBusOperationType,
     val routeName: String,
     val subTitle: String,
     val nodeInfo: List<ShuttleTimetableNodeInfoState>,
@@ -15,7 +18,11 @@ data class ShuttleTimetableState(
 
 fun ShuttleTimetable.toShuttleTimetableState() = ShuttleTimetableState(
     region = region,
-    routeType = routeType,
+    routeType = when (routeType) {
+        CIRCULATION -> ShuttleBusOperationType.CIRCULATION
+        WEEKEND -> ShuttleBusOperationType.WEEKEND
+        else -> ShuttleBusOperationType.WEEKDAY
+    },
     routeName = routeName,
     subTitle = subTitle,
     nodeInfo = nodeInfo.map { it.toShuttleTimetableNodeInfoState() },

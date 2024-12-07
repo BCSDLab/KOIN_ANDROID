@@ -1,6 +1,7 @@
 <resources>
 
     <!-- 시간표 -->
+    <string name="timetable">%s 시간표</string>
     <string name="title_bus_timetable">버스 시간표</string>
     <string name="shuttle_timetable">셔틀버스 시간표</string>
     <string name="express_timetable">대성버스 시간표</string>
