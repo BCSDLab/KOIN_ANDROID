@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
 import `in`.koreatech.bus.util.goToArticle
-import `in`.koreatech.bus.viewstate.ShuttleCourseRouteState
+import `in`.koreatech.bus.state.ShuttleCourseRouteState
 
 @Composable
 internal fun BusTimetableScreen(

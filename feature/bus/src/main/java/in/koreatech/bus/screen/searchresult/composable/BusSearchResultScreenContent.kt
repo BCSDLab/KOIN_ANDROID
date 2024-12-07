@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
-import `in`.koreatech.bus.screen.timetable.type.BusType
+import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.util.formatDepartureTime
-import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
+import `in`.koreatech.bus.state.BusDepartureInfoViewState
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme

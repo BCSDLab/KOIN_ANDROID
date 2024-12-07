@@ -19,15 +19,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.busNoticeUiStateMock
-import `in`.koreatech.bus.viewstate.BusNoticeViewState
+import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.getMeasuredKoreanHeightDp
 
 @Composable
 internal fun NoticeItem(
-    notice: BusNoticeViewState,
-    onNoticeClick: (BusNoticeViewState) -> Unit,
+    notice: BusNoticeState,
+    onNoticeClick: (BusNoticeState) -> Unit,
     onCloseIconClick: () -> Unit,
     modifier: Modifier = Modifier,
     noticeMaxLines: Int = 1,

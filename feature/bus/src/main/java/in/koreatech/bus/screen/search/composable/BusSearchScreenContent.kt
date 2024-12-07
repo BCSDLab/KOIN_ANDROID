@@ -18,9 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
-import `in`.koreatech.bus.screen.search.type.PlaceSelectMode
+import `in`.koreatech.bus.type.PlaceSelectMode
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
-import `in`.koreatech.bus.viewstate.BusNoticeViewState
+import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.feature.bus.R
 
@@ -37,7 +37,7 @@ internal fun BusSearchScreenContent(
     onDepartureSet: (String) -> Unit = {},
     onArrivalSet: (String) -> Unit = {},
     onCloseNotice: () -> Unit = {},
-    onNoticeClick: (BusNoticeViewState) -> Unit = {}
+    onNoticeClick: (BusNoticeState) -> Unit = {}
 ) {
     val context = LocalContext.current
 
