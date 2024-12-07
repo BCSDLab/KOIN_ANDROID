@@ -49,6 +49,10 @@ class TimetableRepositoryImpl @Inject constructor(
         emit(timetableRemoteDataSource.getTimetableFrames(semester).map { it.toTimetableFrame() })
     }
 
+    override fun getAllFrames(): Flow<Map<String, List<TimetableFrame>>> = flow {
+        emit(timetableRemoteDataSource.getAllFrames().mapValues { it.value.map { it.toTimetableFrame() } })
+    }
+
     override suspend fun getTimetableLectures(timetableFrameId: Int): Result<TimetableLectures> = runCatching {
         timetableRemoteDataSource.getTimetableLectures(timetableFrameId).toTimetableLectures()
     }
