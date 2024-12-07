@@ -6,6 +6,7 @@ import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.state.ShuttleTimetableNodeInfoState
 import `in`.koreatech.bus.state.ShuttleTimetableRouteInfoState
 import `in`.koreatech.bus.state.ShuttleTimetableState
+import `in`.koreatech.bus.type.ShuttleBusOperationType
 
 internal val busNoticeUiStateMock = BusNoticeUiState.Show(
     BusNoticeState(
@@ -107,7 +108,7 @@ internal val shuttleTimetableRouteInfoMock7 = ShuttleTimetableRouteInfoState(
 internal val shuttleTimetableUiStateMock = ShuttleTimetableUiState.Success(
     ShuttleTimetableState(
         region = "천안",
-        routeType = "순환",
+        routeType = ShuttleBusOperationType.CIRCULATION,
         routeName = "천안 셔틀",
         subTitle = "토요일",
         nodeInfo = listOf(

@@ -62,23 +62,24 @@ fun ShuttleTimetableScreenContent(
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 24.dp, vertical = 16.dp)
-                ) {
-                    ShuttleBusOperationChip(
-                        operationType = ShuttleBusOperationType.CIRCULATION
-                    )
-
-                    Text(
-                        text = "천안 셔틀 시간표",
-                        style = KoinTheme.typography.bold20,
-                        modifier = Modifier.padding(top = 6.dp)
-                    )
-                }
 
                 when (timetableUiState) {
                     is ShuttleTimetableUiState.Success -> {
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = 24.dp, vertical = 16.dp)
+                        ) {
+                            ShuttleBusOperationChip(
+                                operationType = timetableUiState.timetable.routeType
+                            )
+
+                            Text(
+                                text = stringResource(R.string.timetable, timetableUiState.timetable.routeName),
+                                style = KoinTheme.typography.bold20,
+                                modifier = Modifier.padding(top = 6.dp)
+                            )
+                        }
+
                         HorizontalDivider(
                             color = KoinTheme.colors.neutral400
                         )
