@@ -51,10 +51,21 @@ interface TimetableAuthApi {
         @Query("id") frameId: Int
     ): Response<Unit>
 
+    /**
+     * @param semester 학기명
+     * @return 학기의 프레임 리스트
+     */
     @GET("/v2/timetables/frames")
     suspend fun getTimetableFrames(
         @Query("semester") semester: String
     ): List<TimetableFrameResponse>
+
+    /**
+     * 학생이 추가한 모든 학기의 프레임을 불러옴
+     * @return 학생이 추가한 모든 시간표 프레임
+     */
+    @GET("/v2/timetables/frames")
+    suspend fun getAllFrames(): Map<String, List<TimetableFrameResponse>>
 
     @DELETE("/v2/timetables/lecture/{id}")
     suspend fun deleteTimetableLecture(

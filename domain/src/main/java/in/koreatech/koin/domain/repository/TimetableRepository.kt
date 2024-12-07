@@ -14,6 +14,8 @@ interface TimetableRepository {
     fun getSemesterCheck(): Flow<List<String>>
     fun getLectures(semesterDate: String): Flow<List<Lecture>>
     fun getTimetableFrames(semester: String): Flow<List<TimetableFrame>>
+    fun getAllFrames(): Flow<Map<String, List<TimetableFrame>>>
+
 
     suspend fun getTimetableLectures(timetableFrameId: Int): Result<TimetableLectures>
     suspend fun getTimetableLectures(semester: String): Result<TimetableLectures>
