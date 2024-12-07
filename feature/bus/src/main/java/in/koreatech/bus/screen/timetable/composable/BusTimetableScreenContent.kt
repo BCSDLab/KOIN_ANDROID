@@ -31,14 +31,14 @@ import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
 import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.screen.CommonLoadingView
-import `in`.koreatech.bus.type.BusType
-import `in`.koreatech.bus.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.state.ArrivalViewState
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.state.CommonTimetableViewState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
+import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.bus.type.DaytimeType
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -132,7 +132,7 @@ internal fun BusTimetableScreenContent(
                                     ShuttleCoursesScreenContent(
                                         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
                                         shuttleCourses = busTimetableUiState.shuttleCourses,
-                                        onItemClicked = onShuttleCourseRouteClick
+                                        onItemClicked = onShuttleCourseRouteClick,
                                     )
                                 }
 

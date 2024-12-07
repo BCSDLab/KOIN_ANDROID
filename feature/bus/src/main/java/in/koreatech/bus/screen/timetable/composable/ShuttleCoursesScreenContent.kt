@@ -40,7 +40,7 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun ShuttleCoursesScreenContent(
     shuttleCourses: ShuttleCoursesState,
     modifier: Modifier = Modifier,
-    onItemClicked: (ShuttleCourseRouteState) -> Unit = {}
+    onItemClicked: (ShuttleCourseRouteState) -> Unit = {},
 ) {
 
     var selectedRouteType by rememberSaveable { mutableStateOf(ShuttleBusOperationType.ALL) }
@@ -63,7 +63,10 @@ internal fun ShuttleCoursesScreenContent(
             ShuttleCourseView(
                 modifier = Modifier,
                 region = it.key,
-                shuttleCourseRoutes = it.value.toImmutableList(),
+                shuttleCourseRoutes = it.value.filter { courseRouteState ->
+                    if (selectedRouteType == ShuttleBusOperationType.ALL) true
+                    else courseRouteState.type == selectedRouteType
+                }.toImmutableList(),
                 onItemClicked = onItemClicked
             )
             if (it.key != shuttleCourses.courses.keys.last()) {
@@ -85,6 +88,7 @@ private fun ShuttleCourseView(
     ) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 16.dp, bottom = 4.dp)
         ) {
