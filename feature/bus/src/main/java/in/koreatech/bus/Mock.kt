@@ -1,14 +1,14 @@
 package `in`.koreatech.bus
 
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
-import `in`.koreatech.bus.screen.timetabledetail.viewmodel.ShuttleTimetableUiState
-import `in`.koreatech.bus.viewstate.BusNoticeViewState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableNodeInfoState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableRouteInfoState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableState
+import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableUiState
+import `in`.koreatech.bus.state.BusNoticeState
+import `in`.koreatech.bus.state.ShuttleTimetableNodeInfoState
+import `in`.koreatech.bus.state.ShuttleTimetableRouteInfoState
+import `in`.koreatech.bus.state.ShuttleTimetableState
 
 internal val busNoticeUiStateMock = BusNoticeUiState.Show(
-    BusNoticeViewState(
+    BusNoticeState(
     id = 17153,
     title = "[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)")
 )

@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
-import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.viewstate.ArrivalViewState
-import `in`.koreatech.bus.viewstate.CommonTimetableViewState
-import `in`.koreatech.bus.viewstate.BusNoticeViewState
-import `in`.koreatech.bus.viewstate.ShuttleCoursesState
-import `in`.koreatech.bus.viewstate.toBusNoticeViewState
-import `in`.koreatech.bus.viewstate.toShuttleCoursesState
+import `in`.koreatech.bus.type.DaytimeType
+import `in`.koreatech.bus.state.ArrivalViewState
+import `in`.koreatech.bus.state.CommonTimetableViewState
+import `in`.koreatech.bus.state.BusNoticeState
+import `in`.koreatech.bus.state.ShuttleCoursesState
+import `in`.koreatech.bus.state.toBusNoticeViewState
+import `in`.koreatech.bus.state.toShuttleCoursesState
 import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
@@ -166,7 +166,7 @@ sealed interface BusTimetableUiState {
 }
 
 sealed interface BusNoticeUiState {
-    data class Show(val notice: BusNoticeViewState) : BusNoticeUiState
+    data class Show(val notice: BusNoticeState) : BusNoticeUiState
     data object Loading : BusNoticeUiState
     data object LoadFailed : BusNoticeUiState
     data object NotShow : BusNoticeUiState

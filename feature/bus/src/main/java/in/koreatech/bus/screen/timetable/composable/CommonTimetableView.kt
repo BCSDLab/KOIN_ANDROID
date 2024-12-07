@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.viewstate.ArrivalViewState
-import `in`.koreatech.bus.viewstate.CommonTimetableViewState
+import `in`.koreatech.bus.type.DaytimeType
+import `in`.koreatech.bus.state.ArrivalViewState
+import `in`.koreatech.bus.state.CommonTimetableViewState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R

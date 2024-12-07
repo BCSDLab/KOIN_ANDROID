@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
-import `in`.koreatech.bus.viewstate.toBusNoticeViewState
+import `in`.koreatech.bus.state.toBusNoticeViewState
 import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType

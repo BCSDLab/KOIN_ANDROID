@@ -31,14 +31,14 @@ import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
 import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.screen.CommonLoadingView
-import `in`.koreatech.bus.screen.timetable.type.BusType
-import `in`.koreatech.bus.screen.timetable.type.DaytimeType
+import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.bus.type.DaytimeType
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
-import `in`.koreatech.bus.viewstate.ArrivalViewState
-import `in`.koreatech.bus.viewstate.BusNoticeViewState
-import `in`.koreatech.bus.viewstate.CommonTimetableViewState
-import `in`.koreatech.bus.viewstate.ShuttleCourseRouteState
+import `in`.koreatech.bus.state.ArrivalViewState
+import `in`.koreatech.bus.state.BusNoticeState
+import `in`.koreatech.bus.state.CommonTimetableViewState
+import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -55,7 +55,7 @@ internal fun BusTimetableScreenContent(
     onShuttleCourseRouteClick: (ShuttleCourseRouteState) -> Unit = {},
     onNavigationIconClick: () -> Unit = {},
     onCloseNotice: () -> Unit = {},
-    onNoticeClick: (BusNoticeViewState) -> Unit = {},
+    onNoticeClick: (BusNoticeState) -> Unit = {},
     previewTab: BusType = BusType.SHUTTLE
 ) {
 
@@ -129,7 +129,7 @@ internal fun BusTimetableScreenContent(
                         ) { page ->
                             when (page) {
                                 BusType.SHUTTLE.ordinal -> {
-                                    ShuttleCoursesScreen(
+                                    ShuttleCoursesScreenContent(
                                         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
                                         shuttleCourses = busTimetableUiState.shuttleCourses,
                                         onItemClicked = onShuttleCourseRouteClick
@@ -137,14 +137,14 @@ internal fun BusTimetableScreenContent(
                                 }
 
                                 BusType.EXPRESS.ordinal -> {
-                                    ExpressTimetableScreen(
+                                    ExpressTimetableScreenContent(
                                         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
                                         timetable = busTimetableUiState.expressTimetable
                                     )
                                 }
 
                                 BusType.CITY.ordinal -> {
-                                    CityTimetableContent(
+                                    CityTimetableScreenContent(
                                         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
                                         timetable = busTimetableUiState.cityTimetable
                                     )

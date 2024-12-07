@@ -1,10 +1,10 @@
 package `in`.koreatech.bus.mock
 
-import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
-import `in`.koreatech.bus.viewstate.ShuttleCourseRegionState
-import `in`.koreatech.bus.viewstate.ShuttleCourseRouteState
-import `in`.koreatech.bus.viewstate.ShuttleCoursesState
-import `in`.koreatech.bus.viewstate.ShuttleSemesterState
+import `in`.koreatech.bus.type.ShuttleBusOperationType
+import `in`.koreatech.bus.state.ShuttleCourseRegionState
+import `in`.koreatech.bus.state.ShuttleCourseRouteState
+import `in`.koreatech.bus.state.ShuttleCoursesState
+import `in`.koreatech.bus.state.ShuttleSemesterState
 
 internal val shuttleSemesterMock = ShuttleSemesterState(
     name = "정규학기",

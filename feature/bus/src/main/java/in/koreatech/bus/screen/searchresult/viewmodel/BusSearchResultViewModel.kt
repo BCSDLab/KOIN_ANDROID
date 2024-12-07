@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.navigation.Routes
-import `in`.koreatech.bus.screen.timetable.type.BusType
-import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
+import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.bus.state.BusDepartureInfoViewState
 import `in`.koreatech.koin.domain.usecase.busv2.SearchBusV2UseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
+import `in`.koreatech.bus.state.BusDepartureInfoViewState
 import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 

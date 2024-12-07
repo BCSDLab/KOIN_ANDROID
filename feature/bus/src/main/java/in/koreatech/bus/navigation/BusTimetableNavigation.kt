@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import `in`.koreatech.bus.screen.timetable.composable.BusTimetableScreen
-import `in`.koreatech.bus.screen.timetabledetail.composable.ShuttleTimetableDetailScreen
+import `in`.koreatech.bus.screen.shuttle_timetable.composable.ShuttleTimetableScreen
 
 @Composable
 fun BusTimetableNavigation(
@@ -40,7 +40,7 @@ fun BusTimetableNavigation(
         }
 
         composable<Routes.ShuttleTimetableDetail> {
-            ShuttleTimetableDetailScreen(
+            ShuttleTimetableScreen(
                 modifier = Modifier.fillMaxSize(),
                 onNavigationIconClick = navController::popBackStack
             )
