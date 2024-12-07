@@ -22,17 +22,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.state.ArrivalViewState
-import `in`.koreatech.bus.state.CommonTimetableViewState
+import `in`.koreatech.bus.mock.expressTimetableMock
+import `in`.koreatech.bus.state.ExpressTimetableState
 import `in`.koreatech.bus.type.CommonDirectionType
-import `in`.koreatech.bus.type.DaytimeType
+import `in`.koreatech.bus.util.formatUpdateTime
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 internal fun ExpressTimetableScreenContent(
-    timetable: CommonTimetableViewState,
+    expressTimetable: ExpressTimetableState,
     modifier: Modifier = Modifier,
     onDirectionChanged: (CommonDirectionType) -> Unit = {}
 ) {
@@ -67,7 +67,8 @@ internal fun ExpressTimetableScreenContent(
         }
 
         CommonTimetableView(
-            timetable = timetable,
+            timetable = expressTimetable.timetable,
+            updatedAt = expressTimetable.updatedAt.formatUpdateTime(),
             modifier = Modifier.fillMaxSize()
         )
 
@@ -84,46 +85,6 @@ internal fun ExpressTimetableScreenContent(
 private fun ExpressTimetableScreenPreview() {
     ExpressTimetableScreenContent(
         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-        timetable = CommonTimetableViewState(
-            updatedAt = "2024-09-21",
-            arrivals = mapOf(
-                DaytimeType.AM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "09:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "09:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:30"
-                    ),
-                ), DaytimeType.PM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "14:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "21:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "21:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "22:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "22:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "23:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "23:30"
-                    )
-                ),
-            )
-        )
+        expressTimetable = expressTimetableMock
     )
 }

@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.state.ArrivalViewState
+import `in`.koreatech.bus.state.ArrivalState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 internal fun CommonTimetableItem(
-    arrival: ArrivalViewState,
+    arrival: ArrivalState,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
 ) {
@@ -36,7 +36,7 @@ internal fun CommonTimetableItem(
 @Composable
 private fun CommonTimetableItemPreview() {
     CommonTimetableItem(
-        arrival = ArrivalViewState(
+        arrival = ArrivalState(
             arrivalTime = "09:00"
         ),
         textStyle = KoinTheme.typography.bold18.copy(

@@ -1,6 +1,7 @@
 package `in`.koreatech.bus.util
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -32,4 +33,15 @@ internal fun formatDepartureTime(
     minute: String
 ): String {
     return "$date $daytime ${hour}:${minute.padStart(2, '0')}"
+}
+
+/**
+ * [LocalDateTime]을 yyyy-MM-dd 형식으로 변환.
+ *
+ * ex) 2024-11-11
+ */
+internal fun LocalDateTime.formatUpdateTime(): String {
+    return this.format(
+        DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    )
 }

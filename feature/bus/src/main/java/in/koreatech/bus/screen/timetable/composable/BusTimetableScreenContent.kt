@@ -1,6 +1,5 @@
 package `in`.koreatech.bus.screen.timetable.composable
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -31,16 +29,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
+import `in`.koreatech.bus.mock.commonTimetableMock
+import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
-import `in`.koreatech.bus.state.ArrivalViewState
 import `in`.koreatech.bus.state.BusNoticeState
-import `in`.koreatech.bus.state.CommonTimetableViewState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.type.BusType
-import `in`.koreatech.bus.type.DaytimeType
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -138,7 +135,7 @@ internal fun BusTimetableScreenContent(
                                 BusType.EXPRESS.ordinal -> {
                                     ExpressTimetableScreenContent(
                                         modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
-                                        timetable = busTimetableUiState.expressTimetable
+                                        expressTimetable = busTimetableUiState.expressTimetable
                                     )
                                 }
 
@@ -216,68 +213,6 @@ private fun BusTimetableLoadingScreenPreview() {
 
 private val previewUiState = BusTimetableUiState.Success(
     shuttleCourses = shuttleCoursesMock,
-    expressTimetable = CommonTimetableViewState(
-        updatedAt = "2024-09-21",
-        arrivals = mapOf(
-            DaytimeType.AM to listOf(
-                ArrivalViewState(
-                    arrivalTime = "09:00"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "09:30"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "10:00"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "10:30"
-                ),
-            ), DaytimeType.PM to listOf(
-                ArrivalViewState(
-                    arrivalTime = "14:30"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "21:00"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "21:30"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "22:00"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "22:30"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "23:00"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "23:30"
-                )
-            ),
-        )
-    ),
-    cityTimetable = CommonTimetableViewState(
-        updatedAt = "2024-09-21",
-        arrivals = mapOf(
-            DaytimeType.AM to listOf(
-                ArrivalViewState(
-                    arrivalTime = "09:00"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "09:30"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "10:00"
-                ),
-                ArrivalViewState(
-                    arrivalTime = "10:30"
-                ),
-            ), DaytimeType.PM to listOf(
-                ArrivalViewState(
-                    arrivalTime = "14:30"
-                )
-            )
-        )
-    )
+    expressTimetable = expressTimetableMock,
+    cityTimetable = commonTimetableMock
 )

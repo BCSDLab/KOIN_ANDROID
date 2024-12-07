@@ -22,18 +22,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.state.ArrivalViewState
-import `in`.koreatech.bus.state.CommonTimetableViewState
+import `in`.koreatech.bus.mock.commonTimetableMock
+import `in`.koreatech.bus.state.ArrivalState
+import `in`.koreatech.bus.state.CommonTimetableState
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
-import `in`.koreatech.bus.type.DaytimeType
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 internal fun CityTimetableScreenContent(
-    timetable: CommonTimetableViewState,
+    timetable: CommonTimetableState,
     modifier: Modifier = Modifier,
     onBusNumberChanged: (CityBusNumberType) -> Unit = {},
     onDirectionChanged: (CommonDirectionType) -> Unit = {}
@@ -93,7 +93,8 @@ internal fun CityTimetableScreenContent(
 
         CommonTimetableView(
             timetable = timetable,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            updatedAt = "2021-09-01"
         )
 
         Box(modifier = Modifier.background(Color.White).fillMaxWidth().height(115.dp))
@@ -113,28 +114,6 @@ internal fun CityTimetableScreenContent(
 private fun CityTimetableScreenPreview() {
     CityTimetableScreenContent(
         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-        timetable = CommonTimetableViewState(
-            updatedAt = "2024-09-21",
-            arrivals = mapOf(
-                DaytimeType.AM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "09:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "09:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:30"
-                    ),
-                ), DaytimeType.PM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "14:30"
-                    )
-                )
-            )
-        )
+        timetable = commonTimetableMock
     )
 }
