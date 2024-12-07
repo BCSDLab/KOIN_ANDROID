@@ -3,9 +3,6 @@ package `in`.koreatech.koin.feature.timetable.viewmodel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.timetable.request.TimetableLectureQuery
-import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
-import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import `in`.koreatech.koin.domain.repository.TimetableRepository
@@ -13,12 +10,10 @@ import `in`.koreatech.koin.domain.usecase.timetable.AddSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.AddTimetableFrameUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableFrameUseCase
-import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.UpdateTimetableFrameUseCase
-import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.toSemesterModel
@@ -50,8 +45,6 @@ class SemesterViewModel @Inject constructor(
     private val timetableRepository: TimetableRepository,
     private val getUserSemestersUseCase: GetUserSemestersUseCase,
     private val getSemestersUseCase: GetSemestersUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getSemesterTimetableFramesUseCase: GetSemesterTimetableFramesUseCase,
     private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
     private val deleteSemesterUseCase: DeleteSemesterUseCase,
     private val addSemesterUseCase: AddSemesterUseCase,
