@@ -7,7 +7,15 @@ import `in`.koreatech.koin.domain.model.bus.v2.ShuttleCourses
 data class ShuttleCoursesState(
     val courses: Map<ShuttleCourseRegionState, List<ShuttleCourseRouteState>>,
     val semester: ShuttleSemesterState
-)
+) {
+
+    companion object {
+        val EMPTY = ShuttleCoursesState(
+            courses = emptyMap(),
+            semester = ShuttleSemesterState.EMPTY
+        )
+    }
+}
 
 fun ShuttleCourses.toShuttleCoursesState() = ShuttleCoursesState(
     courses = courses.associate { shuttleCourse ->
