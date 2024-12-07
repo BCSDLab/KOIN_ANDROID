@@ -17,8 +17,8 @@ internal fun ShuttleBusOperationChip(
         modifier = modifier,
         title = stringResource(operationType.simpleTitleRes),
         containerColor = when (operationType) {
-            ShuttleBusOperationType.WEEKDAY -> Color(0xFF34ADFF)
-            ShuttleBusOperationType.WEEKEND -> Color(0xFFFFB443)
+            ShuttleBusOperationType.WEEKEND -> Color(0xFF34ADFF)
+            ShuttleBusOperationType.WEEKDAY -> Color(0xFFFFB443)
             ShuttleBusOperationType.CIRCULATION -> Color(0xFF4ED92C)
             else -> Color.Transparent
         },
