@@ -2,6 +2,7 @@ package `in`.koreatech.bus.screen.timetable.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,16 +21,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.component.ShuttleBusOperationChip
 import `in`.koreatech.bus.mock.shuttleCoursesMock
-import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.bus.state.ShuttleCourseRegionState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.state.ShuttleCoursesState
+import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -63,7 +65,7 @@ internal fun ShuttleCoursesScreenContent(
             val filteredValue = courseEntry.value.filter { courseRouteState ->
                 if (selectedRouteType == ShuttleBusOperationType.ALL) true
                 else courseRouteState.type == selectedRouteType
-            }.toImmutableList()
+            }
 
             if (filteredValue.isNotEmpty()) {
                 if (courseEntry.key != shuttleCourses.courses.keys.first())
@@ -72,11 +74,13 @@ internal fun ShuttleCoursesScreenContent(
                 ShuttleCourseView(
                     modifier = Modifier,
                     region = courseEntry.key,
-                    shuttleCourseRoutes = filteredValue,
+                    shuttleCourseRoutes = filteredValue.toImmutableList(),
                     onItemClicked = onItemClicked
                 )
             }
         }
+
+        Box(modifier = Modifier.background(Color.White).fillMaxWidth().height(115.dp))
     }
 }
 
