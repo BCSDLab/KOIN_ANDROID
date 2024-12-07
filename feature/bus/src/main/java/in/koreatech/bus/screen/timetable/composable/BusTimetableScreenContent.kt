@@ -29,23 +29,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
+import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.type.BusType
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.BusNoticeViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
-import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
+import `in`.koreatech.bus.viewstate.ShuttleCourseRouteState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -54,7 +52,7 @@ internal fun BusTimetableScreenContent(
     busTimetableUiState: BusTimetableUiState,
     busNoticeUiState: BusNoticeUiState,
     modifier: Modifier = Modifier,
-    onNavigateToShuttleTimetableDetailScreen: (route: String) -> Unit = {},
+    onShuttleCourseRouteClick: (ShuttleCourseRouteState) -> Unit = {},
     onNavigationIconClick: () -> Unit = {},
     onCloseNotice: () -> Unit = {},
     onNoticeClick: (BusNoticeViewState) -> Unit = {},
@@ -131,10 +129,10 @@ internal fun BusTimetableScreenContent(
                         ) { page ->
                             when (page) {
                                 BusType.SHUTTLE.ordinal -> {
-                                    ShuttleTimetableScreen(
+                                    ShuttleCoursesScreen(
                                         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-                                        regions = busTimetableUiState.shuttleRegions.toPersistentList(),
-                                        onItemClicked = onNavigateToShuttleTimetableDetailScreen
+                                        shuttleCourses = busTimetableUiState.shuttleCourses,
+                                        onItemClicked = onShuttleCourseRouteClick
                                     )
                                 }
 
@@ -218,62 +216,7 @@ private fun BusTimetableLoadingScreenPreview() {
 }
 
 private val previewUiState = BusTimetableUiState.Success(
-    shuttleRegions = listOf(
-        ShuttleRegionViewState(
-            name = "서울",
-            timetableOverviews = listOf(
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.WEEKDAY,
-                    name = "서울-대전",
-                ),
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.WEEKEND,
-                    name = "서울-대전",
-                ),
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.CIRCULATION,
-                    name = "서울-대전",
-                )
-            )
-        ),
-        ShuttleRegionViewState(
-            name = "대전",
-            timetableOverviews = listOf(
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.WEEKDAY,
-                    name = "대전-서울",
-                ),
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.WEEKEND,
-                    name = "대전-서울",
-                    description = "토요일, 일요일 운행"
-                ),
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.CIRCULATION,
-                    name = "대전-서울",
-                    description = "토요일, 천안아산역"
-                )
-            )
-        ),
-        ShuttleRegionViewState(
-            name = "대구",
-            timetableOverviews = listOf(
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.WEEKDAY,
-                    name = "대구-서울",
-                ),
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.WEEKDAY,
-                    name = "대구-서울",
-                ),
-                ShuttleTimetableOverviewViewState(
-                    routeType = ShuttleBusOperationType.WEEKEND,
-                    name = "대구-서울",
-                    description = "금요일 하교 추가"
-                )
-            )
-        )
-    ),
+    shuttleCourses = shuttleCoursesMock,
     expressTimetable = CommonTimetableViewState(
         updatedAt = "2024-09-21",
         arrivals = mapOf(

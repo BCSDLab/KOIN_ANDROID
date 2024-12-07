@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.busNoticeUiStateMock
+import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
 import `in`.koreatech.bus.viewstate.ArrivalViewState
 import `in`.koreatech.bus.viewstate.CommonTimetableViewState
 import `in`.koreatech.bus.viewstate.BusNoticeViewState
-import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
+import `in`.koreatech.bus.viewstate.ShuttleCoursesState
 import `in`.koreatech.bus.viewstate.toBusNoticeViewState
+import `in`.koreatech.bus.viewstate.toShuttleCoursesState
 import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
@@ -35,63 +35,12 @@ class BusTimetableViewModel @Inject constructor(
 
     /** 임시 데이터 모음 */
     val timetableUiState = flow<BusTimetableUiState> {
-        val shuttleRegions = viewModelScope.async {
-            listOf(
-                ShuttleRegionViewState(
-                    name = "서울",
-                    timetableOverviews = listOf(
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.WEEKDAY,
-                            name = "서울-대전",
-                        ),
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.WEEKEND,
-                            name = "서울-대전",
-                        ),
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.CIRCULATION,
-                            name = "서울-대전",
-                        )
-                    )
-                ),
-                ShuttleRegionViewState(
-                    name = "대전",
-                    timetableOverviews = listOf(
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.WEEKDAY,
-                            name = "대전-서울",
-                        ),
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.WEEKEND,
-                            name = "대전-서울",
-                            description = "토요일, 일요일 운행"
-                        ),
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.CIRCULATION,
-                            name = "대전-서울",
-                            description = "토요일, 천안아산역"
-                        )
-                    )
-                ),
-                ShuttleRegionViewState(
-                    name = "대구",
-                    timetableOverviews = listOf(
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.WEEKDAY,
-                            name = "대구-서울",
-                        ),
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.WEEKDAY,
-                            name = "대구-서울",
-                        ),
-                        ShuttleTimetableOverviewViewState(
-                            routeType = ShuttleBusOperationType.WEEKEND,
-                            name = "대구-서울",
-                            description = "금요일 하교 추가"
-                        )
-                    )
-                )
-            )
+        val shuttleCourses = viewModelScope.async {
+            try {
+                busRepository.fetchShuttleCourses().getOrThrow().toShuttleCoursesState()
+            } catch (e: Exception) {
+                if (BuildConfig.DEBUG) shuttleCoursesMock else throw e
+            }
         }
         val expressTimetable = viewModelScope.async {
             CommonTimetableViewState(
@@ -163,7 +112,7 @@ class BusTimetableViewModel @Inject constructor(
         }
 
         emit(BusTimetableUiState.Success(
-            shuttleRegions.await(), expressTimetable.await(), cityTimetable.await()
+            shuttleCourses.await(), expressTimetable.await(), cityTimetable.await()
         ))
     }.catch {
         emit(BusTimetableUiState.LoadFailed)
@@ -208,7 +157,7 @@ class BusTimetableViewModel @Inject constructor(
 
 sealed interface BusTimetableUiState {
     data class Success(
-        val shuttleRegions: List<ShuttleRegionViewState>,
+        val shuttleCourses: ShuttleCoursesState,
         val expressTimetable: CommonTimetableViewState,
         val cityTimetable: CommonTimetableViewState
     ) : BusTimetableUiState

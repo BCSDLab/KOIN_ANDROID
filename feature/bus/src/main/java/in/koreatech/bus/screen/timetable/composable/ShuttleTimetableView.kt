@@ -25,20 +25,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.component.ShuttleBusOperationChip
+import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.screen.timetable.type.ShuttleBusOperationType
-import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
+import `in`.koreatech.bus.viewstate.ShuttleCourseRegionState
+import `in`.koreatech.bus.viewstate.ShuttleCourseRouteState
+import `in`.koreatech.bus.viewstate.ShuttleCoursesState
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-internal fun ShuttleTimetableScreen(
-    regions: ImmutableList<ShuttleRegionViewState>,
+internal fun ShuttleCoursesScreen(
+    shuttleCourses: ShuttleCoursesState,
     modifier: Modifier = Modifier,
-    onItemClicked: (String) -> Unit = {}
+    onItemClicked: (ShuttleCourseRouteState) -> Unit = {}
 ) {
 
     var selectedRouteType by rememberSaveable { mutableStateOf(ShuttleBusOperationType.ALL) }
@@ -57,13 +60,14 @@ internal fun ShuttleTimetableScreen(
             },
             selectedChipIndexes = intArrayOf(selectedRouteType.ordinal)
         )
-        regions.forEach {
-            ShuttleRegionView(
+        shuttleCourses.courses.forEach {
+            ShuttleCourseView(
                 modifier = Modifier,
-                region = it,
+                region = it.key,
+                shuttleCourseRoutes = it.value.toImmutableList(),
                 onItemClicked = onItemClicked
             )
-            if (it != regions.last()) {
+            if (it.key != shuttleCourses.courses.keys.last()) {
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
@@ -71,10 +75,11 @@ internal fun ShuttleTimetableScreen(
 }
 
 @Composable
-private fun ShuttleRegionView(
+private fun ShuttleCourseView(
     modifier: Modifier = Modifier,
-    region: ShuttleRegionViewState,
-    onItemClicked: (String) -> Unit = {}
+    region: ShuttleCourseRegionState,
+    shuttleCourseRoutes: ImmutableList<ShuttleCourseRouteState>,
+    onItemClicked: (ShuttleCourseRouteState) -> Unit = {}
 ) {
     KoinSurface(
         modifier = modifier
@@ -88,15 +93,15 @@ private fun ShuttleRegionView(
                 text = region.name,
                 style = KoinTheme.typography.bold18,
             )
-            region.timetableOverviews.forEach {
+            shuttleCourseRoutes.forEach {
                 ShuttleRouteItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                             onItemClicked(it.name)
+                             onItemClicked(it)
                         }
                         .padding(horizontal = 8.dp, vertical = 10.dp),
-                    timetableOverview = it,
+                    shuttleCourseRoute = it,
                 )
             }
         }
@@ -105,7 +110,7 @@ private fun ShuttleRegionView(
 
 @Composable
 private fun ShuttleRouteItem(
-    timetableOverview: ShuttleTimetableOverviewViewState,
+    shuttleCourseRoute: ShuttleCourseRouteState,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -116,24 +121,24 @@ private fun ShuttleRouteItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ShuttleBusOperationChip(
-                operationType = timetableOverview.routeType,
+                operationType = shuttleCourseRoute.type,
             )
 
             Text(
-                text = timetableOverview.name,
+                text = shuttleCourseRoute.routeName,
                 style = KoinTheme.typography.medium16,
                 modifier = Modifier.padding(start = 8.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                contentDescription = timetableOverview.name,
+                contentDescription = shuttleCourseRoute.routeName,
                 tint = KoinTheme.colors.neutral400
             )
         }
-        if (timetableOverview.description.isNotEmpty())
+        if (shuttleCourseRoute.subName.isNotEmpty())
             Text(
-                text = timetableOverview.description,
+                text = shuttleCourseRoute.subName,
                 style = KoinTheme.typography.regular12,
                 color = KoinTheme.colors.neutral500,
             )
@@ -142,65 +147,11 @@ private fun ShuttleRouteItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun ShuttleTimetableScreenPreview() {
-    ShuttleTimetableScreen(
+private fun ShuttleCoursesScreenPreview() {
+    ShuttleCoursesScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(KoinTheme.colors.neutral100),
-        regions = persistentListOf(
-            ShuttleRegionViewState(
-                name = "서울",
-                timetableOverviews = listOf(
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.WEEKDAY,
-                        name = "서울-대전",
-                    ),
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.WEEKEND,
-                        name = "서울-대전",
-                    ),
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.CIRCULATION,
-                        name = "서울-대전",
-                    )
-                )
-            ),
-            ShuttleRegionViewState(
-                name = "대전",
-                timetableOverviews = listOf(
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.WEEKDAY,
-                        name = "대전-서울",
-                    ),
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.WEEKEND,
-                        name = "대전-서울",
-                        description = "대전에서 서울로 이동하는 노선입니다."
-                    ),
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.CIRCULATION,
-                        name = "대전-서울",
-                        description = "대전에서 서울로 이동하는 노선입니다."
-                    )
-                )
-            ),
-            ShuttleRegionViewState(
-                name = "대구",
-                timetableOverviews = listOf(
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.WEEKDAY,
-                        name = "대구-서울",
-                    ),
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.WEEKDAY,
-                        name = "대구-서울",
-                    ),
-                    ShuttleTimetableOverviewViewState(
-                        routeType = ShuttleBusOperationType.WEEKEND,
-                        name = "대구-서울",
-                    )
-                )
-            )
-        )
+        shuttleCourses = shuttleCoursesMock
     )
 }

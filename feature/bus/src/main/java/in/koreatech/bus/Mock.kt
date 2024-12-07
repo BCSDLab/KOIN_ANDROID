@@ -3,9 +3,9 @@ package `in`.koreatech.bus
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetabledetail.viewmodel.ShuttleTimetableUiState
 import `in`.koreatech.bus.viewstate.BusNoticeViewState
-import `in`.koreatech.bus.viewstate.ShuttleTimetableState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableNodeInfoState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableRouteInfoState
+import `in`.koreatech.bus.viewstate.ShuttleTimetableState
 
 internal val busNoticeUiStateMock = BusNoticeUiState.Show(
     BusNoticeViewState(
@@ -128,4 +128,3 @@ internal val shuttleTimetableUiStateMock = ShuttleTimetableUiState.Success(
         )
     )
 )
-

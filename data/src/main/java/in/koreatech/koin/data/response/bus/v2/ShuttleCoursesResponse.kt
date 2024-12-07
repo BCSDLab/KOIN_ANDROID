@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ShuttleCoursesResponse(
-    @SerialName("courses") val courses: List<ShuttleCourseResponse>?,
+    @SerialName("route_categories") val courses: List<ShuttleCourseResponse>?,
     @SerialName("semester") val semester: ShuttleSemesterResponse?,
 ) {
     fun toShuttleCourses() = ShuttleCourses(
@@ -32,11 +32,13 @@ data class ShuttleCourseResponse(
 @Serializable
 data class ShuttleCourseRouteResponse(
     @SerialName("id") val id: String?,
+    @SerialName("type") val type: String?,
     @SerialName("route_name") val routeName: String?,
     @SerialName("sub_name") val subName: String?,
 ) {
     fun toShuttleCourseRoute() = ShuttleCourseRoute(
         id = id.orEmpty(),
+        type = type.orEmpty(),
         routeName = routeName.orEmpty(),
         subName = subName.orEmpty()
     )
