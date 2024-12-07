@@ -9,13 +9,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -41,6 +46,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -61,6 +67,9 @@ internal fun BusTimetableScreenContent(
         BusType.EXPRESS -> stringResource(R.string.express_timetable)
         BusType.CITY -> stringResource(R.string.city_timetable)
     }
+
+    val coroutineScope = rememberCoroutineScope()
+    val pagerState = rememberPagerState { BusType.entries.size }
 
     Column(
         modifier = modifier
@@ -100,8 +109,12 @@ internal fun BusTimetableScreenContent(
             stickyHeader {
                 KoinTabRow(
                     titles = BusType.entries.map { stringResource(it.titleRes) },
-                    selectedTabIndex = selectedTimetableTypeTab.ordinal,
-                    onTabSelected = { selectedTimetableTypeTab = BusType.entries[it] }
+                    selectedTabIndex = pagerState.currentPage,
+                    onTabSelected = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(it)
+                        }
+                    }
                 )
             }
 
@@ -110,46 +123,56 @@ internal fun BusTimetableScreenContent(
                     selectedTimetableTypeTab = previewTab
 
                 when (busTimetableUiState) {
-                    is BusTimetableUiState.Success -> when (selectedTimetableTypeTab) {
-                        BusType.SHUTTLE -> {
-                            ShuttleTimetableScreen(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(KoinTheme.colors.neutral100),
-                                regions = busTimetableUiState.shuttleRegions.toPersistentList(),
-                                onItemClicked = onNavigateToShuttleTimetableDetailScreen
-                            )
-                        }
+                    is BusTimetableUiState.Success -> {
+                        HorizontalPager(
+                            modifier = Modifier.fillMaxSize().background(Color.White),
+                            state = pagerState,
+                            verticalAlignment = Alignment.Top
+                        ) { page ->
+                            when (page) {
+                                BusType.SHUTTLE.ordinal -> {
+                                    ShuttleTimetableScreen(
+                                        modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+                                        regions = busTimetableUiState.shuttleRegions.toPersistentList(),
+                                        onItemClicked = onNavigateToShuttleTimetableDetailScreen
+                                    )
+                                }
 
-                        BusType.EXPRESS -> {
-                            ExpressTimetableScreen(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(KoinTheme.colors.neutral100),
-                                timetable = busTimetableUiState.expressTimetable
-                            )
-                        }
+                                BusType.EXPRESS.ordinal -> {
+                                    ExpressTimetableScreen(
+                                        modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+                                        timetable = busTimetableUiState.expressTimetable
+                                    )
+                                }
 
-                        BusType.CITY -> {
-                            CityTimetableContent(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(KoinTheme.colors.neutral100),
-                                timetable = busTimetableUiState.cityTimetable
-                            )
+                                BusType.CITY.ordinal -> {
+                                    CityTimetableContent(
+                                        modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
+                                        timetable = busTimetableUiState.cityTimetable
+                                    )
+                                }
+                            }
                         }
                     }
+
                     is BusTimetableUiState.Loading -> {
-                        CommonLoadingView(modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = 100.dp))
+                        CommonLoadingView(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = 100.dp)
+                        )
                     }
+
                     is BusTimetableUiState.LoadFailed -> {
                         // TODO 로드 실패, Pull To Refresh 있으면 좋을 듯.
                     }
                 }
             }
         }
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        selectedTimetableTypeTab = BusType.entries[pagerState.currentPage]
     }
 }
 
