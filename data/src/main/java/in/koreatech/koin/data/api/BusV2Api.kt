@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.response.bus.v2.BusNoticeResponse
+import `in`.koreatech.koin.data.response.bus.v2.CityTimetableResponse
 import `in`.koreatech.koin.data.response.bus.v2.ExpressTimetableResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleCoursesResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleTimetableResponse
@@ -24,5 +25,10 @@ interface BusV2Api {
     @GET("bus/timetable/v2?bus_type=EXPRESS&region=null")
     suspend fun fetchExpressTimetable(
         @Query("direction") direction: String,
-    ) : ExpressTimetableResponse
+    ): ExpressTimetableResponse
+
+    @GET("bus/timetable/city?direction=종합터미널")
+    suspend fun fetchCityTimetable(
+        @Query("bus_number") busNumber: Int,
+    ): CityTimetableResponse
 }
