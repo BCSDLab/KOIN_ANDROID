@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,11 +40,12 @@ internal fun NoticeItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
-            .clickable { onNoticeClick(notice) }
+            .clip(RoundedCornerShape(8.dp))
             .background(
                 color = KoinTheme.colors.info100,
                 shape = RoundedCornerShape(8.dp)
-            ).padding(16.dp),
+            ).clickable { onNoticeClick(notice) }
+            .padding(16.dp),
         verticalAlignment = if (noticeMaxLines == 1) Alignment.CenterVertically else Alignment.Top
     ) {
         Text(
