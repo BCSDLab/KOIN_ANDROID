@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
-import `in`.koreatech.bus.shuttleTimetableRouteInfoMock1
+import `in`.koreatech.bus.mock.shuttleTimetableRouteInfoMock1
 import `in`.koreatech.bus.state.ShuttleTimetableRouteInfoState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 

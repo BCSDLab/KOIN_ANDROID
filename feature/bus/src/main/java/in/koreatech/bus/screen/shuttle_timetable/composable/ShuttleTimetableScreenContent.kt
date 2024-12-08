@@ -25,9 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import `in`.koreatech.bus.component.ShuttleBusOperationChip
 import `in`.koreatech.bus.screen.CommonLoadingView
-import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableUiState
-import `in`.koreatech.bus.shuttleTimetableUiStateMock
+import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme

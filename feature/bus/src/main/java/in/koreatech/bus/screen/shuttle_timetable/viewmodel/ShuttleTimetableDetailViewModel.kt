@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.navigation.Routes
-import `in`.koreatech.bus.shuttleTimetableUiStateMock
+import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock
 import `in`.koreatech.bus.state.ShuttleTimetableState
 import `in`.koreatech.bus.state.toShuttleTimetableState
 import `in`.koreatech.koin.core.onboarding.BuildConfig

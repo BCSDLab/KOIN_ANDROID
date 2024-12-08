@@ -4,12 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.bus.busNoticeUiStateMock
+import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.mock.cityTimetableMock
-import `in`.koreatech.bus.mock.commonTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
-import `in`.koreatech.bus.state.CommonTimetableState
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.state.CityTimetableState
 import `in`.koreatech.bus.state.ExpressTimetableState
@@ -21,7 +19,6 @@ import `in`.koreatech.bus.state.toShuttleCoursesState
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.bus.util.withMock
-import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.repository.BusV2Repository
