@@ -38,6 +38,7 @@ import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -52,6 +53,7 @@ internal fun BusTimetableScreenContent(
     busNoticeUiState: BusNoticeUiState,
     modifier: Modifier = Modifier,
     onShuttleCourseRouteClick: (ShuttleCourseRouteState) -> Unit = {},
+    onExpressDirectionChange: (CommonDirectionType) -> Unit = {},
     onNavigationIconClick: () -> Unit = {},
     onCloseNotice: () -> Unit = {},
     onNoticeClick: (BusNoticeState) -> Unit = {},
@@ -135,7 +137,8 @@ internal fun BusTimetableScreenContent(
                                 BusType.EXPRESS.ordinal -> {
                                     ExpressTimetableScreenContent(
                                         modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
-                                        expressTimetable = busTimetableUiState.expressTimetable
+                                        expressTimetable = busTimetableUiState.expressTimetable,
+                                        onDirectionChanged = onExpressDirectionChange
                                     )
                                 }
 

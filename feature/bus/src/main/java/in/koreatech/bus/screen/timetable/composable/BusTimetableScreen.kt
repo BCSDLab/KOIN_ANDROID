@@ -29,6 +29,7 @@ internal fun BusTimetableScreen(
         busNoticeUiState = busNoticeUiState,
         onNavigationIconClick = onNavigationIconClick,
         onShuttleCourseRouteClick = onNavigateToShuttleTimetableDetailScreen,
+        onExpressDirectionChange = viewModel::onExpressDirectionChanged,
         onCloseNotice = viewModel::closeNotice,
         onNoticeClick = { context.goToArticle(it.id) }
     )
