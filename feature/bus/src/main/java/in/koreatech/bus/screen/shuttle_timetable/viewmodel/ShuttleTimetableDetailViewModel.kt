@@ -9,6 +9,7 @@ import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock
 import `in`.koreatech.bus.state.ShuttleTimetableState
 import `in`.koreatech.bus.state.toShuttleTimetableState
+import `in`.koreatech.bus.util.withMock
 import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.domain.repository.BusV2Repository
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,15 +26,11 @@ class ShuttleTimetableDetailViewModel @Inject constructor(
 
     private val arguments = savedStateHandle.toRoute<Routes.ShuttleTimetableDetail>()
 
-    val timetableUiState = flow {
-        busRepository.fetchShuttleTimetable(arguments.id).onSuccess {
-            emit(ShuttleTimetableUiState.Success(it.toShuttleTimetableState()))
-        }.onFailure {
-            if (BuildConfig.DEBUG)
-                emit(shuttleTimetableUiStateMock)
-            else emit(ShuttleTimetableUiState.LoadFailed)
-        }
-    }.catch {
+    val timetableUiState = flow<ShuttleTimetableUiState> {
+        emit(ShuttleTimetableUiState
+            .Success(busRepository.fetchShuttleTimetable(arguments.id).getOrThrow().toShuttleTimetableState())
+        )
+    }.withMock(shuttleTimetableUiStateMock) .catch {
         emit(ShuttleTimetableUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,
