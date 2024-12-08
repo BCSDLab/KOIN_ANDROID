@@ -40,4 +40,6 @@ dependencies {
 
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.lottie.compose)
+
+    implementation(libs.timber)
 }
