@@ -1,17 +1,17 @@
 package `in`.koreatech.koin.data.response.bus.v2
 
+import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.bus.v2.ShuttleTimetable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
 data class ShuttleTimetableResponse(
-    @SerialName("region") val region: String?,
-    @SerialName("route_type") val routeType: String?,
-    @SerialName("route_name") val routeName: String?,
-    @SerialName("sub_name") val subTitle: String?,
-    @SerialName("node_info") val nodeInfo: List<ShuttleTimetableNodeInfoResponse>?,
-    @SerialName("route_info") val routeInfo: List<ShuttleTimetableRouteInfoResponse>?,
+    @SerializedName("region") val region: String?,
+    @SerializedName("route_type") val routeType: String?,
+    @SerializedName("route_name") val routeName: String?,
+    @SerializedName("sub_name") val subTitle: String?,
+    @SerializedName("node_info") val nodeInfo: List<ShuttleTimetableNodeInfoResponse>?,
+    @SerializedName("route_info") val routeInfo: List<ShuttleTimetableRouteInfoResponse>?,
 ) {
     fun toShuttleTimetable() = ShuttleTimetable(
         region = region.orEmpty(),
