@@ -60,24 +60,19 @@ class BusTimetableViewModel @Inject constructor(
         commonTimetableMock
     }
 
-    val timetableUiState =
-        combine(
-            shuttleCourses,
-            expressTimetable,
-            cityTimetable
-        ) { shuttleCourses, expressTimetable, cityTimetable ->
-            BusTimetableUiState.Success(
-                shuttleCourses,
-                expressTimetable,
-                cityTimetable
-            )
-        }.catch {
-            BusTimetableUiState.LoadFailed
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = BusTimetableUiState.Loading
-        )
+    val timetableUiState = combine(
+        shuttleCourses,
+        expressTimetable,
+        cityTimetable
+    ) { shuttleCourses, expressTimetable, cityTimetable ->
+        BusTimetableUiState.Success(shuttleCourses, expressTimetable, cityTimetable)
+    }.catch<BusTimetableUiState> {
+        emit(BusTimetableUiState.LoadFailed)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = BusTimetableUiState.Loading
+    )
 
     private val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
         OnboardingType.SHOW_BUS_HEAD_ARTICLE
@@ -97,6 +92,10 @@ class BusTimetableViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = BusNoticeUiState.Loading
     )
+
+    fun onExpressDirectionChanged(direction: CommonDirectionType) {
+        savedStateHandle[KEY_EXPRESS_DIRECTION] = direction
+    }
 
     fun closeNotice() {
         viewModelScope.launch {
