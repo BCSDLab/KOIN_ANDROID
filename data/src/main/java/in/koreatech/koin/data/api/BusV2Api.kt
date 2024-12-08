@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.response.bus.v2.BusNoticeResponse
+import `in`.koreatech.koin.data.response.bus.v2.ExpressTimetableResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleCoursesResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleTimetableResponse
 import retrofit2.http.Body
@@ -19,4 +20,9 @@ interface BusV2Api {
 
     @GET("bus/courses/shuttle")
     suspend fun fetchShuttleCourses(): ShuttleCoursesResponse
+
+    @GET("bus/timetable/v2?bus_type=EXPRESS&region=null")
+    suspend fun fetchExpressTimetable(
+        @Query("direction") direction: String,
+    ) : ExpressTimetableResponse
 }
