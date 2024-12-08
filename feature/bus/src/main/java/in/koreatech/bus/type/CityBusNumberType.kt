@@ -7,7 +7,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 enum class CityBusNumberType(
-    @StringRes val titleRes: Int
+    @StringRes val titleRes: Int,
+    val numberQuery: Int
 ) : Parcelable {
-    N400(R.string.n400), N405(R.string.n405), N495(R.string.n495)
+    N400(R.string.n400, 400),
+    N405(R.string.n405, 405),
+    N495(R.string.n495, 495),
 }

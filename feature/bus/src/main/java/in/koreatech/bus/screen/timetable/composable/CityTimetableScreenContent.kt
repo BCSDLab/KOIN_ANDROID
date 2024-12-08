@@ -22,8 +22,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.mock.commonTimetableMock
-import `in`.koreatech.bus.state.CommonTimetableState
+import `in`.koreatech.bus.mock.cityTimetableMock
+import `in`.koreatech.bus.state.CityTimetableState
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
@@ -32,7 +32,7 @@ import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 internal fun CityTimetableScreenContent(
-    timetable: CommonTimetableState,
+    timetable: CityTimetableState,
     modifier: Modifier = Modifier,
     onBusNumberChanged: (CityBusNumberType) -> Unit = {},
     onDirectionChanged: (CommonDirectionType) -> Unit = {}
@@ -91,7 +91,7 @@ internal fun CityTimetableScreenContent(
         }
 
         CommonTimetableView(
-            timetable = timetable,
+            timetable = timetable.departureTimes,
             modifier = Modifier.fillMaxSize(),
             updatedAt = "2021-09-01"
         )
@@ -113,6 +113,6 @@ internal fun CityTimetableScreenContent(
 private fun CityTimetableScreenPreview() {
     CityTimetableScreenContent(
         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-        timetable = commonTimetableMock
+        timetable = cityTimetableMock
     )
 }

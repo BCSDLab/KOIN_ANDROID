@@ -5,14 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.busNoticeUiStateMock
+import `in`.koreatech.bus.mock.cityTimetableMock
 import `in`.koreatech.bus.mock.commonTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.state.CommonTimetableState
 import `in`.koreatech.bus.state.BusNoticeState
+import `in`.koreatech.bus.state.CityTimetableState
 import `in`.koreatech.bus.state.ExpressTimetableState
 import `in`.koreatech.bus.state.ShuttleCoursesState
 import `in`.koreatech.bus.state.toBusNoticeState
+import `in`.koreatech.bus.state.toCityTimetableState
 import `in`.koreatech.bus.state.toExpressTimetableState
 import `in`.koreatech.bus.state.toShuttleCoursesState
 import `in`.koreatech.bus.type.CityBusNumberType
@@ -57,8 +60,8 @@ class BusTimetableViewModel @Inject constructor(
     }.withMock(expressTimetableMock)
 
     private val cityTimetable = combine(cityNumber, cityDirection) { number, direction ->
-        commonTimetableMock
-    }
+        busRepository.fetchCityTimetable(number.numberQuery).getOrThrow().toCityTimetableState()
+    }.withMock(cityTimetableMock)
 
     val timetableUiState = combine(
         shuttleCourses,
@@ -114,7 +117,7 @@ sealed interface BusTimetableUiState {
     data class Success(
         val shuttleCourses: ShuttleCoursesState,
         val expressTimetable: ExpressTimetableState,
-        val cityTimetable: CommonTimetableState
+        val cityTimetable: CityTimetableState
     ) : BusTimetableUiState
     data object Loading : BusTimetableUiState
     data object LoadFailed: BusTimetableUiState
