@@ -37,9 +37,9 @@ class BusV2RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchCityTimetable(number: Int): Result<CityTimetable> {
+    override suspend fun fetchCityTimetable(number: Int, direction: String): Result<CityTimetable> {
         return runCatching {
-            busRemoteDataSource.fetchCityTimetable(number).toCityTimetable()
+            busRemoteDataSource.fetchCityTimetable(number, direction).toCityTimetable()
         }
     }
 }
