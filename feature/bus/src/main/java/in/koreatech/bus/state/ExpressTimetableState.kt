@@ -17,6 +17,6 @@ fun ExpressTimetable.toExpressTimetableState() = ExpressTimetableState(
 )
 
 private fun List<ExpressTimetableItem>.mapToCommonTimetableState() = CommonTimetableState(
-    amArrivals = this.filter { it.arrivalTime.split(":")[0].toInt() < 12 }.map { ArrivalState(it.arrivalTime) },
-    pmArrivals = this.filter { it.arrivalTime.split(":")[0].toInt() >= 12 }.map { ArrivalState(it.arrivalTime) },
+    amDepartures = this.filter { it.departureTime.split(":")[0].toInt() < 12 }.map { DepartureState(it.departureTime) },
+    pmDepartures = this.filter { it.departureTime.split(":")[0].toInt() >= 12 }.map { DepartureState(it.departureTime) },
 )

@@ -4,11 +4,11 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class CommonTimetableState(
-    val amArrivals: List<ArrivalState>,
-    val pmArrivals: List<ArrivalState>,
+    val amDepartures: List<DepartureState>,
+    val pmDepartures: List<DepartureState>,
 )
 
 @JvmInline
-value class ArrivalState(
-    val arrivalTime: String,
+value class DepartureState(
+    val departureTime: String,
 )

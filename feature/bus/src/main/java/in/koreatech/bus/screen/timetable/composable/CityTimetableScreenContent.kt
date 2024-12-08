@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.mock.commonTimetableMock
-import `in`.koreatech.bus.state.ArrivalState
 import `in`.koreatech.bus.state.CommonTimetableState
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
