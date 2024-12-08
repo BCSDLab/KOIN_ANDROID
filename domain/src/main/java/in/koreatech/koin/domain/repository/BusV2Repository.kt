@@ -11,5 +11,5 @@ interface BusV2Repository {
     suspend fun fetchShuttleTimetable(id: String): Result<ShuttleTimetable>
     suspend fun fetchShuttleCourses(): Result<ShuttleCourses>
     suspend fun fetchExpressTimetable(direction: String): Result<ExpressTimetable>
-    suspend fun fetchCityTimetable(number: Int): Result<CityTimetable>
+    suspend fun fetchCityTimetable(number: Int, direction: String): Result<CityTimetable>
 }

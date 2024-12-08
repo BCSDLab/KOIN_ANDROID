@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
 import `in`.koreatech.bus.mock.cityTimetableMock
-import `in`.koreatech.bus.mock.commonTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.screen.CommonLoadingView
@@ -39,6 +38,7 @@ import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
@@ -55,6 +55,8 @@ internal fun BusTimetableScreenContent(
     modifier: Modifier = Modifier,
     onShuttleCourseRouteClick: (ShuttleCourseRouteState) -> Unit = {},
     onExpressDirectionChange: (CommonDirectionType) -> Unit = {},
+    onCityBusNumberChange: (CityBusNumberType) -> Unit = {},
+    onCityDirectionChange: (CommonDirectionType) -> Unit = {},
     onNavigationIconClick: () -> Unit = {},
     onCloseNotice: () -> Unit = {},
     onNoticeClick: (BusNoticeState) -> Unit = {},
@@ -146,7 +148,9 @@ internal fun BusTimetableScreenContent(
                                 BusType.CITY.ordinal -> {
                                     CityTimetableScreenContent(
                                         modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
-                                        timetable = busTimetableUiState.cityTimetable
+                                        timetable = busTimetableUiState.cityTimetable,
+                                        onBusNumberChanged = onCityBusNumberChange,
+                                        onDirectionChanged = onCityDirectionChange
                                     )
                                 }
                             }

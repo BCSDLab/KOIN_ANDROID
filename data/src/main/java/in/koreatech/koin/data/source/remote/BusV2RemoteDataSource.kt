@@ -28,7 +28,7 @@ class BusV2RemoteDataSource @Inject constructor(
         return busApi.fetchExpressTimetable(direction)
     }
 
-    suspend fun fetchCityTimetable(busNumber: Int): CityTimetableResponse {
-        return busApi.fetchCityTimetable(busNumber)
+    suspend fun fetchCityTimetable(busNumber: Int, direction: String): CityTimetableResponse {
+        return busApi.fetchCityTimetable(busNumber, direction)
     }
 }

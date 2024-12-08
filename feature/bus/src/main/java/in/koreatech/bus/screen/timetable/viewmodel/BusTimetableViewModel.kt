@@ -43,6 +43,7 @@ class BusTimetableViewModel @Inject constructor(
     private val busRepository: BusV2Repository
 ) : ViewModel() {
 
+    // 셔틀버스 노선 필터링은 Composable 내에서 처리 중 [ShuttleCoursesScreenContent.kt]
     private val expressDirection = savedStateHandle.getStateFlow(KEY_EXPRESS_DIRECTION, CommonDirectionType.TO_BYEONGCHEON)
     private val cityNumber = savedStateHandle.getStateFlow(KEY_CITY_NUMBER, CityBusNumberType.N400)
     private val cityDirection = savedStateHandle.getStateFlow(KEY_CITY_DIRECTION, CommonDirectionType.TO_BYEONGCHEON)
@@ -60,7 +61,11 @@ class BusTimetableViewModel @Inject constructor(
     }.withMock(expressTimetableMock)
 
     private val cityTimetable = combine(cityNumber, cityDirection) { number, direction ->
-        busRepository.fetchCityTimetable(number.numberQuery).getOrThrow().toCityTimetableState()
+        val directionQuery = when(direction) {
+            CommonDirectionType.TO_BYEONGCHEON -> "병천3리"
+            CommonDirectionType.TO_CHEONAN -> "종합터미널"
+        }
+        busRepository.fetchCityTimetable(number.numberQuery, directionQuery).getOrThrow().toCityTimetableState()
     }.withMock(cityTimetableMock)
 
     val timetableUiState = combine(
@@ -98,6 +103,14 @@ class BusTimetableViewModel @Inject constructor(
 
     fun onExpressDirectionChanged(direction: CommonDirectionType) {
         savedStateHandle[KEY_EXPRESS_DIRECTION] = direction
+    }
+
+    fun onCityBusNumberChanged(number: CityBusNumberType) {
+        savedStateHandle[KEY_CITY_NUMBER] = number
+    }
+
+    fun onCityDirectionChanged(direction: CommonDirectionType) {
+        savedStateHandle[KEY_CITY_DIRECTION] = direction
     }
 
     fun closeNotice() {
