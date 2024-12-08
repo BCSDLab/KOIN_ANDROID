@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
+import `in`.koreatech.bus.mock.cityTimetableMock
 import `in`.koreatech.bus.mock.commonTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
@@ -217,5 +218,5 @@ private fun BusTimetableLoadingScreenPreview() {
 private val previewUiState = BusTimetableUiState.Success(
     shuttleCourses = shuttleCoursesMock,
     expressTimetable = expressTimetableMock,
-    cityTimetable = commonTimetableMock
+    cityTimetable = cityTimetableMock
 )
