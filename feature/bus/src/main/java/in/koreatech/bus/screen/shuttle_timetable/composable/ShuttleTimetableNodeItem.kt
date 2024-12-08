@@ -15,11 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
-import `in`.koreatech.bus.shuttleTimetableNodeInfoMock1
-import `in`.koreatech.bus.shuttleTimetableNodeInfoMock2
-import `in`.koreatech.bus.shuttleTimetableNodeInfoMock3
-import `in`.koreatech.bus.shuttleTimetableNodeInfoMock4
-import `in`.koreatech.bus.shuttleTimetableNodeInfoMock5
+import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock1
+import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock2
+import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock3
+import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock4
+import `in`.koreatech.bus.mock.shuttleTimetableNodeInfoMock5
 import `in`.koreatech.bus.state.ShuttleTimetableNodeInfoState
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R

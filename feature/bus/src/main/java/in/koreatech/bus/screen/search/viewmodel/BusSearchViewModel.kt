@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.bus.busNoticeUiStateMock
+import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.state.toBusNoticeState
 import `in`.koreatech.koin.core.onboarding.BuildConfig
