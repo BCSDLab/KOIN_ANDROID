@@ -1,9 +1,11 @@
 package `in`.koreatech.bus.state
 
+import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.domain.model.bus.v2.CityTimetable
 import `in`.koreatech.koin.domain.model.bus.v2.CityTimetableItem
 import java.time.LocalDateTime
 
+@Immutable
 data class CityTimetableState(
     val departureTimes: CommonTimetableState,
     val updatedAt: LocalDateTime
