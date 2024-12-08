@@ -1,7 +1,5 @@
 package `in`.koreatech.bus.screen.search.composable
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
