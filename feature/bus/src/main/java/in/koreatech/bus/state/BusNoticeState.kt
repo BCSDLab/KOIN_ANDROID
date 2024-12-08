@@ -7,7 +7,7 @@ data class BusNoticeState(
     val title: String,
 )
 
-fun BusNotice.toBusNoticeViewState() = BusNoticeState(
+fun BusNotice.toBusNoticeState() = BusNoticeState(
     id = id,
     title = title,
 )
