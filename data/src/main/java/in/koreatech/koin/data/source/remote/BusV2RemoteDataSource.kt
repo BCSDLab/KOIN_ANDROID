@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.BusV2Api
 import `in`.koreatech.koin.data.response.bus.v2.BusNoticeResponse
+import `in`.koreatech.koin.data.response.bus.v2.CityTimetableResponse
 import `in`.koreatech.koin.data.response.bus.v2.ExpressTimetableResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleCoursesResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleTimetableResponse
@@ -25,5 +26,9 @@ class BusV2RemoteDataSource @Inject constructor(
 
     suspend fun fetchExpressTimetable(direction: String): ExpressTimetableResponse {
         return busApi.fetchExpressTimetable(direction)
+    }
+
+    suspend fun fetchCityTimetable(busNumber: Int): CityTimetableResponse {
+        return busApi.fetchCityTimetable(busNumber)
     }
 }
