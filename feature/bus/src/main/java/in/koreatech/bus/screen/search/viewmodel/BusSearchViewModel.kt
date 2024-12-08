@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.state.toBusNoticeState
+import `in`.koreatech.bus.util.withMock
 import `in`.koreatech.koin.core.onboarding.BuildConfig
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
@@ -35,17 +36,10 @@ class BusSearchViewModel @Inject constructor(
     )
 
     val noticeUiState: StateFlow<BusNoticeUiState> = shouldShowNotice.transform { shouldShow ->
-        if (shouldShow) {
-            busRepository.fetchBusNotice().onSuccess {
-                emit(BusNoticeUiState.Show(it.toBusNoticeState()))
-            }.onFailure {
-                if (BuildConfig.DEBUG)  // TODO : Remove this line
-                    emit(busNoticeUiStateMock)
-                else emit(BusNoticeUiState.LoadFailed)
-            }
-        }
+        if (shouldShow)
+            emit(BusNoticeUiState.Show(busRepository.fetchBusNotice().getOrThrow().toBusNoticeState()))
         else emit(BusNoticeUiState.NotShow)
-    }.catch {
+    }.withMock(busNoticeUiStateMock).catch {
         emit(BusNoticeUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,
