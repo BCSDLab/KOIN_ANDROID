@@ -1,0 +1,9 @@
+package `in`.koreatech.koin.domain.model.bus.v2
+
+import java.time.LocalTime
+
+data class BusSearchResult(
+    val busType: String,
+    val routeName: String,
+    val departureTime: LocalTime
+)
