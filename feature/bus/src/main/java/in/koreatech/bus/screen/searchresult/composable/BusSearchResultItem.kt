@@ -10,13 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.state.BusDepartureInfoViewState
+import `in`.koreatech.bus.state.BusSearchResultState
+import `in`.koreatech.bus.util.formatTime
 import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 fun BusSearchResultItem(
-    info: BusDepartureInfoViewState,
+    result: BusSearchResultState,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -27,7 +28,7 @@ fun BusSearchResultItem(
             modifier = Modifier.weight(1f)
         ) {
             ReadOnlyTextChip(
-                title = stringResource(info.type.titleRes),   // TODO : 버스 종류
+                title = stringResource(result.busType.titleRes),   // TODO : 버스 종류
                 containerColor = Color(0xFFFBEBD7),
                 textStyle = KoinTheme.typography.regular12.copy(
                     color = KoinTheme.colors.neutral600
@@ -35,12 +36,12 @@ fun BusSearchResultItem(
             )
             Text(
                 modifier = Modifier.padding(top = 4.dp),
-                text = info.departureHour.toString() + ":" + info.departureMinute.toString().padStart(2, '0'), // TODO : 출발 시간
+                text = result.departureTime.formatTime(), // TODO : 출발 시간
                 style = KoinTheme.typography.bold20
             )
         }
         Text(
-            text = "${info.remainingTime}분 전", // TODO : 남은 시간
+            text = "TODO분 전", // TODO : 남은 시간
             style = KoinTheme.typography.bold16.copy(
                 color = KoinTheme.colors.info700
             )

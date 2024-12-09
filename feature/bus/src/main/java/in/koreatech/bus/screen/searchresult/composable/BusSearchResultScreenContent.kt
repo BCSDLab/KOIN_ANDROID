@@ -31,12 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.bus.mock.busSearchResultsMock
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
-import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.util.formatDepartureTime
-import `in`.koreatech.bus.state.BusDepartureInfoViewState
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -119,12 +118,12 @@ internal fun BusSearchResultScreenContent(
 
         when (searchResultUiState) {
             is BusSearchResultUiState.Success -> LazyColumn {
-                items(searchResultUiState.departureInfos) { info ->
+                items(searchResultUiState.results) { result ->
                     BusSearchResultItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 32.dp, vertical = 8.dp),
-                        info = info
+                        result = result
                     )
                 }
             }
@@ -168,7 +167,7 @@ internal fun BusSearchResultScreenContent(
 private fun BusSearchResultScreenPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
-        searchResultUiState = previewSearchResultUiState,
+        searchResultUiState = BusSearchResultUiState.Success(busSearchResultsMock),
         dateList = buildList {
             val today = LocalDateTime.now()
 
@@ -224,84 +223,3 @@ private fun BusSearchResultScreenLoadingPreview() {
         arrival = "코리아텍"
     )
 }
-
-private val previewSearchResultUiState = BusSearchResultUiState.Success(listOf(
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 9,
-        departureMinute = 0,
-        remainingTime = 0
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 9,
-        departureMinute = 10,
-        remainingTime = 10
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 9,
-        departureMinute = 20,
-        remainingTime = 20
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 9,
-        departureMinute = 30,
-        remainingTime = 30
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 9,
-        departureMinute = 40,
-        remainingTime = 40
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 9,
-        departureMinute = 50,
-        remainingTime = 50
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 10,
-        departureMinute = 0,
-        remainingTime = 60
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 10,
-        departureMinute = 10,
-        remainingTime = 70
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 10,
-        departureMinute = 20,
-        remainingTime = 80
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 10,
-        departureMinute = 30,
-        remainingTime = 90
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 10,
-        departureMinute = 40,
-        remainingTime = 100
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 10,
-        departureMinute = 50,
-        remainingTime = 110
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 11,
-        departureMinute = 0,
-        remainingTime = 120
-    )
-))

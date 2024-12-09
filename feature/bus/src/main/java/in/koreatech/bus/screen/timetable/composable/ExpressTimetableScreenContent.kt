@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.state.ExpressTimetableState
 import `in`.koreatech.bus.type.CommonDirectionType
-import `in`.koreatech.bus.util.formatUpdateTime
+import `in`.koreatech.bus.util.formatUpdatedTime
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
@@ -68,7 +68,7 @@ internal fun ExpressTimetableScreenContent(
 
         CommonTimetableView(
             timetable = expressTimetable.timetable,
-            updatedAt = expressTimetable.updatedAt.formatUpdateTime(),
+            updatedAt = expressTimetable.updatedAt.formatUpdatedTime(),
             modifier = Modifier.fillMaxSize()
         )
 
