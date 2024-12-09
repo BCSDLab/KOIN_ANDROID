@@ -2,6 +2,7 @@ package `in`.koreatech.bus.util
 
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -40,8 +41,19 @@ internal fun formatDepartureTime(
  *
  * ex) 2024-11-11
  */
-internal fun LocalDateTime.formatUpdateTime(): String {
+internal fun LocalDateTime.formatUpdatedTime(): String {
     return this.format(
         DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    )
+}
+
+/**
+ * [LocalTime]을 HH:mm 형식으로 변환.
+ *
+ * ex) 10:30
+ */
+internal fun LocalTime.formatTime(): String {
+    return this.format(
+        DateTimeFormatter.ofPattern("HH:mm")
     )
 }

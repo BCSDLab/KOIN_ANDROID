@@ -18,14 +18,15 @@ import `in`.koreatech.bus.state.toExpressTimetableState
 import `in`.koreatech.bus.state.toShuttleCoursesState
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
-import `in`.koreatech.bus.util.withMock
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.repository.BusV2Repository
+import `in`.koreatech.koin.feature.bus.BuildConfig
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
@@ -46,32 +47,49 @@ class BusTimetableViewModel @Inject constructor(
     private val cityDirection = savedStateHandle.getStateFlow(KEY_CITY_DIRECTION, CommonDirectionType.TO_BYEONGCHEON)
 
     private val shuttleCourses = flow {
-        emit(busRepository.fetchShuttleCourses().getOrThrow().toShuttleCoursesState())
-    }.withMock(shuttleCoursesMock)
+        busRepository.fetchShuttleCourses().onSuccess {
+            emit(it.toShuttleCoursesState())
+        }.onFailure {
+            if (BuildConfig.DEBUG) emit(shuttleCoursesMock)
+            else emit(null)
+        }
+    }
 
     private val expressTimetable = expressDirection.transform { direction ->
         val directionQuery = when (direction) {
             CommonDirectionType.TO_BYEONGCHEON -> "to"
             CommonDirectionType.TO_CHEONAN -> "from"
         }
-        emit(busRepository.fetchExpressTimetable(directionQuery).getOrThrow().toExpressTimetableState())
-    }.withMock(expressTimetableMock)
+        busRepository.fetchExpressTimetable(directionQuery).onSuccess {
+            emit(it.toExpressTimetableState())
+        }.onFailure {
+            if (BuildConfig.DEBUG) emit(expressTimetableMock)
+            else emit(null)
+        }
+    }
 
-    private val cityTimetable = combine(cityNumber, cityDirection) { number, direction ->
+    private val cityTimetable = combineTransform(cityNumber, cityDirection) { number, direction ->
         val directionQuery = when(direction) {
             CommonDirectionType.TO_BYEONGCHEON -> "병천3리"
             CommonDirectionType.TO_CHEONAN -> "종합터미널"
         }
-        busRepository.fetchCityTimetable(number.numberQuery, directionQuery).getOrThrow().toCityTimetableState()
-    }.withMock(cityTimetableMock)
+        busRepository.fetchCityTimetable(number.numberQuery, directionQuery).onSuccess {
+            emit(it.toCityTimetableState())
+        }.onFailure {
+            if (BuildConfig.DEBUG) emit(cityTimetableMock)
+            else emit(null)
+        }
+    }
 
     val timetableUiState = combine(
         shuttleCourses,
         expressTimetable,
         cityTimetable
     ) { shuttleCourses, expressTimetable, cityTimetable ->
-        BusTimetableUiState.Success(shuttleCourses, expressTimetable, cityTimetable)
-    }.catch<BusTimetableUiState> {
+        if (shuttleCourses == null || expressTimetable == null || cityTimetable == null)
+            BusTimetableUiState.LoadFailed
+        else BusTimetableUiState.Success(shuttleCourses, expressTimetable, cityTimetable)
+    }.catch {
         emit(BusTimetableUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,
@@ -88,9 +106,14 @@ class BusTimetableViewModel @Inject constructor(
 
     val noticeUiState: StateFlow<BusNoticeUiState> = shouldShowNotice.transform { shouldShow ->
         if (shouldShow)
-            emit(BusNoticeUiState.Show(busRepository.fetchBusNotice().getOrThrow().toBusNoticeState()))
+            busRepository.fetchBusNotice().onSuccess {
+                emit(BusNoticeUiState.Show(it.toBusNoticeState()))
+            }.onFailure {
+                if (BuildConfig.DEBUG) emit(busNoticeUiStateMock)
+                else emit(BusNoticeUiState.LoadFailed)
+            }
         else emit(BusNoticeUiState.NotShow)
-    }.withMock(busNoticeUiStateMock).catch {
+    }.catch {
         emit(BusNoticeUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,

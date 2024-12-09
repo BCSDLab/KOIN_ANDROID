@@ -5,13 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.mock.busSearchResultsMock
 import `in`.koreatech.bus.navigation.Routes
-import `in`.koreatech.bus.type.BusType
-import `in`.koreatech.bus.state.BusDepartureInfoViewState
-import `in`.koreatech.koin.domain.usecase.busv2.SearchBusV2UseCase
+import `in`.koreatech.bus.state.BusSearchResultState
+import `in`.koreatech.bus.state.toBusSearchResultState
+import `in`.koreatech.koin.feature.bus.BuildConfig
+import `in`.koreatech.koin.domain.repository.BusV2Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
@@ -23,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BusSearchResultViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val searchBusV2UseCase: SearchBusV2UseCase
+    private val busRepository: BusV2Repository
 ) : ViewModel() {
 
     private val arguments = savedStateHandle.toRoute<Routes.BusSearchResult>()
@@ -58,12 +61,22 @@ class BusSearchResultViewModel @Inject constructor(
                 minuteList[minuteIndex].toInt()
             )
         )
-    }.transform {
-        searchBusV2UseCase(departure, arrival).onSuccess {
-            emit(BusSearchResultUiState.Success(tempData))
+    }.transform { localDateTime ->
+        emit(BusSearchResultUiState.Loading)
+        busRepository.fetchBusSearchResult(
+            date = localDateTime.toLocalDate(),
+            time = localDateTime.toLocalTime(),
+            busType = "",
+            departure = departure,
+            arrival = arrival
+        ).onSuccess {
+            emit(BusSearchResultUiState.Success(it.map { it.toBusSearchResultState() }))
         }.onFailure {
-            emit(BusSearchResultUiState.LoadFailed)
+            if (BuildConfig.DEBUG) emit(BusSearchResultUiState.Success(busSearchResultsMock))
+            else emit(BusSearchResultUiState.LoadFailed)
         }
+    }.catch {
+        emit(BusSearchResultUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -93,88 +106,7 @@ class BusSearchResultViewModel @Inject constructor(
 }
 
 sealed interface BusSearchResultUiState {
-    data class Success(val departureInfos: List<BusDepartureInfoViewState>) : BusSearchResultUiState
+    data class Success(val results: List<BusSearchResultState>) : BusSearchResultUiState
     data object Loading : BusSearchResultUiState
     data object LoadFailed : BusSearchResultUiState
 }
-
-private val tempData = listOf(
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 9,
-        departureMinute = 0,
-        remainingTime = 0
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 9,
-        departureMinute = 10,
-        remainingTime = 10
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 9,
-        departureMinute = 20,
-        remainingTime = 20
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 9,
-        departureMinute = 30,
-        remainingTime = 30
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 9,
-        departureMinute = 40,
-        remainingTime = 40
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 9,
-        departureMinute = 50,
-        remainingTime = 50
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 10,
-        departureMinute = 0,
-        remainingTime = 60
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 10,
-        departureMinute = 10,
-        remainingTime = 70
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 10,
-        departureMinute = 20,
-        remainingTime = 80
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 10,
-        departureMinute = 30,
-        remainingTime = 90
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 10,
-        departureMinute = 40,
-        remainingTime = 100
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 10,
-        departureMinute = 50,
-        remainingTime = 110
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 11,
-        departureMinute = 0,
-        remainingTime = 120
-    )
-)
