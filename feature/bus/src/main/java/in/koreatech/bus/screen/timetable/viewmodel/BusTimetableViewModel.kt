@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.mock.busNoticeMock
 import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.mock.cityTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
@@ -99,22 +100,32 @@ class BusTimetableViewModel @Inject constructor(
 
     private val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
         OnboardingType.SHOW_BUS_HEAD_ARTICLE
-    ).shareIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
     )
 
-    val noticeUiState: StateFlow<BusNoticeUiState> = shouldShowNotice.transform { shouldShow ->
-        if (shouldShow)
-            busRepository.fetchBusNotice().onSuccess {
-                emit(BusNoticeUiState.Show(it.toBusNoticeState()))
-            }.onFailure {
-                if (BuildConfig.DEBUG) emit(busNoticeUiStateMock)
-                else emit(BusNoticeUiState.LoadFailed)
+    private val notice = flow {
+        busRepository.fetchBusNotice().onSuccess {
+            emit(it.toBusNoticeState())
+        }.onFailure {
+            if (BuildConfig.DEBUG) emit(busNoticeMock)
+            else emit(null)
+        }
+    }
+
+    val noticeUiState = combine(notice, shouldShowNotice) { notice, shouldShow ->
+        if (notice == null)
+            BusNoticeUiState.LoadFailed
+        else {
+            busRepository.saveLastShownNoticeId(notice.id).getOrNull() ?: return@combine BusNoticeUiState.LoadFailed
+            val lastNoticeId = busRepository.getLastShownNoticeId().getOrElse { -1 }
+            if (notice.id == lastNoticeId) {
+                if (shouldShow)
+                    BusNoticeUiState.Show(notice)
+                else
+                    BusNoticeUiState.NotShow
+            } else {
+                BusNoticeUiState.Show(notice)
             }
-        else emit(BusNoticeUiState.NotShow)
-    }.catch {
-        emit(BusNoticeUiState.LoadFailed)
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

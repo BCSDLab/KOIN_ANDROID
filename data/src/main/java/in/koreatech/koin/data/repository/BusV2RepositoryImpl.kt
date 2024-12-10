@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.request.bus.BusSearchRequest
+import `in`.koreatech.koin.data.source.local.BusV2LocalDataSource
 import `in`.koreatech.koin.data.source.remote.BusV2RemoteDataSource
 import `in`.koreatech.koin.domain.model.bus.v2.BusNotice
 import `in`.koreatech.koin.domain.model.bus.v2.BusSearchResult
@@ -15,7 +16,8 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class BusV2RepositoryImpl @Inject constructor(
-    private val busRemoteDataSource: BusV2RemoteDataSource
+    private val busRemoteDataSource: BusV2RemoteDataSource,
+    private val busLocalDataSource: BusV2LocalDataSource
 ) : BusV2Repository {
 
     override suspend fun fetchBusNotice(): Result<BusNotice> {
@@ -65,6 +67,18 @@ class BusV2RepositoryImpl @Inject constructor(
                     arrival = arrival
                 )
             ).schedules?.map { it.toBusSearchResult() }.orEmpty()
+        }
+    }
+
+    override suspend fun getLastShownNoticeId(): Result<Int> {
+        return runCatching {
+            busLocalDataSource.getLastShownNoticeId()
+        }
+    }
+
+    override suspend fun saveLastShownNoticeId(id: Int): Result<Unit> {
+        return runCatching {
+            busLocalDataSource.saveLastShownNoticeId(id)
         }
     }
 }

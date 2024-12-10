@@ -22,4 +22,7 @@ interface BusV2Repository {
         departure: String,
         arrival: String
     ): Result<List<BusSearchResult>>
+
+    suspend fun getLastShownNoticeId(): Result<Int>
+    suspend fun saveLastShownNoticeId(id: Int): Result<Unit>
 }
