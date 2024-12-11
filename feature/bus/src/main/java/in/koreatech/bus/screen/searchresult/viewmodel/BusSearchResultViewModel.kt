@@ -77,8 +77,8 @@ class BusSearchResultViewModel @Inject constructor(
         LocalDateTime.of(
             localDates[dateIndex],
             LocalTime.of(
-                if (daytimeList[daytimeIndex] == "오전") hourList[hourIndex].toInt()
-                else hourList[hourIndex].toInt() + 12,
+                if (daytimeList[daytimeIndex] == "오전") (hourList[hourIndex].toInt() + 11) % 12
+                else hourList[hourIndex].toInt() + 11,
                 minuteList[minuteIndex].toInt()
             )
         )
