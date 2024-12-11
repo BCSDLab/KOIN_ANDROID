@@ -57,3 +57,20 @@ internal fun LocalTime.formatTime(): String {
         DateTimeFormatter.ofPattern("HH:mm")
     )
 }
+
+/**
+ * [LocalTime] 비교하여 지난 시간을 표시.
+ *
+ * ex) 14분 전
+ * ex) 2시간 33분 전
+ */
+internal fun LocalTime.formatBeforeTime(compareTo: LocalTime): String {
+    val (hour, minute) = this.minusHours(compareTo.hour.toLong()).minusMinutes(compareTo.minute.toLong()).let {
+        it.hour to it.minute
+    }
+
+    return if (hour == 0)
+        "${minute}분 전"
+    else
+        "${hour}시간 ${minute.coerceAtLeast(0)}분 전"
+}
