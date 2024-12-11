@@ -32,6 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.mock.busSearchResultsMock
+import `in`.koreatech.bus.screen.CommonFailureView
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
@@ -135,7 +136,9 @@ internal fun BusSearchResultScreenContent(
                 CommonLoadingView(modifier = Modifier.fillMaxSize())
             }
             is BusSearchResultUiState.LoadFailed -> {
-                // TODO : 에러 화면, Pull to refresh
+                CommonFailureView(
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

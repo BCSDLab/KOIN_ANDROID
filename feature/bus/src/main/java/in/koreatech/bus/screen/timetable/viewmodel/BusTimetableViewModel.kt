@@ -1,11 +1,10 @@
 package `in`.koreatech.bus.screen.timetable.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.BaseBusViewModel
 import `in`.koreatech.bus.mock.busNoticeMock
-import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.mock.cityTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
@@ -24,12 +23,10 @@ import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.repository.BusV2Repository
 import `in`.koreatech.koin.feature.bus.BuildConfig
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
@@ -40,7 +37,7 @@ class BusTimetableViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val onboardingManager: OnboardingManager,
     private val busRepository: BusV2Repository
-) : ViewModel() {
+) : BaseBusViewModel() {
 
     // 셔틀버스 노선 필터링은 Composable 내에서 처리 중 [ShuttleCoursesScreenContent.kt]
     private val expressDirection = savedStateHandle.getStateFlow(KEY_EXPRESS_DIRECTION, CommonDirectionType.TO_BYEONGCHEON)
@@ -85,8 +82,9 @@ class BusTimetableViewModel @Inject constructor(
     val timetableUiState = combine(
         shuttleCourses,
         expressTimetable,
-        cityTimetable
-    ) { shuttleCourses, expressTimetable, cityTimetable ->
+        cityTimetable,
+        refreshToggle
+    ) { shuttleCourses, expressTimetable, cityTimetable, _ ->
         if (shuttleCourses == null || expressTimetable == null || cityTimetable == null)
             BusTimetableUiState.LoadFailed
         else BusTimetableUiState.Success(shuttleCourses, expressTimetable, cityTimetable)

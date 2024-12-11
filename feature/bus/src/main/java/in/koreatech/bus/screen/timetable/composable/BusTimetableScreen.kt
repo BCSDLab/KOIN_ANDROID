@@ -1,6 +1,7 @@
 package `in`.koreatech.bus.screen.timetable.composable
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -9,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
 import `in`.koreatech.bus.util.goToArticle
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
+import `in`.koreatech.bus.util.LocalOnRefreshComposition
 
 @Composable
 internal fun BusTimetableScreen(
@@ -23,16 +25,18 @@ internal fun BusTimetableScreen(
 
     val context = LocalContext.current
 
-    BusTimetableScreenContent(
-        modifier = modifier,
-        busTimetableUiState = busTimetableUiState,
-        busNoticeUiState = busNoticeUiState,
-        onNavigationIconClick = onNavigationIconClick,
-        onShuttleCourseRouteClick = onNavigateToShuttleTimetableDetailScreen,
-        onExpressDirectionChange = viewModel::onExpressDirectionChanged,
-        onCityBusNumberChange = viewModel::onCityBusNumberChanged,
-        onCityDirectionChange = viewModel::onCityDirectionChanged,
-        onCloseNotice = viewModel::closeNotice,
-        onNoticeClick = { context.goToArticle(it.id) }
-    )
+    CompositionLocalProvider(LocalOnRefreshComposition provides viewModel::refresh) {
+        BusTimetableScreenContent(
+            modifier = modifier,
+            busTimetableUiState = busTimetableUiState,
+            busNoticeUiState = busNoticeUiState,
+            onNavigationIconClick = onNavigationIconClick,
+            onShuttleCourseRouteClick = onNavigateToShuttleTimetableDetailScreen,
+            onExpressDirectionChange = viewModel::onExpressDirectionChanged,
+            onCityBusNumberChange = viewModel::onCityBusNumberChanged,
+            onCityDirectionChange = viewModel::onCityDirectionChanged,
+            onCloseNotice = viewModel::closeNotice,
+            onNoticeClick = { context.goToArticle(it.id) }
+        )
+    }
 }

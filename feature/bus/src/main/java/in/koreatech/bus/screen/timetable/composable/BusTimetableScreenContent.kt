@@ -32,6 +32,7 @@ import `in`.koreatech.bus.component.NoticeItem
 import `in`.koreatech.bus.mock.cityTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
+import `in`.koreatech.bus.screen.CommonFailureView
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
@@ -166,7 +167,9 @@ internal fun BusTimetableScreenContent(
                     }
 
                     is BusTimetableUiState.LoadFailed -> {
-                        // TODO 로드 실패, Pull To Refresh 있으면 좋을 듯.
+                        CommonFailureView(
+                            modifier = Modifier.fillMaxSize()
+                        )
                     }
                 }
 
