@@ -8,7 +8,8 @@ enum class Experiment(
     BENEFIT_STORE("Benefit", ExperimentGroup.A, ExperimentGroup.B),
     DINING_SHARE("campus_share_v1", ExperimentGroup.SHARE_ORIGINAL, ExperimentGroup.SHARE_NEW),
     MAIN_DINING_SEE_MORE("c_main_dining_v1", ExperimentGroup.MAIN_DINING_ORIGINAL, ExperimentGroup.MAIN_DINING_NEW),
-    MAIN_ARTICLE_KEYWORD_BANNER("c_keyword_ banner_v1", ExperimentGroup.MAIN_BANNER_ORIGINAL, ExperimentGroup.MAIN_BANNER_NEW);
+    MAIN_ARTICLE_KEYWORD_BANNER("c_keyword_ banner_v1", ExperimentGroup.MAIN_BANNER_ORIGINAL, ExperimentGroup.MAIN_BANNER_NEW),
+    BUSINESS_CALL("business_call", ExperimentGroup.CALL_NUMBER, ExperimentGroup.CALL_FLOATING);
 
     init {
         require(experimentGroups.isNotEmpty()) { "Experiment should have at least one group" }
@@ -27,4 +28,7 @@ object ExperimentGroup {
 
     const val MAIN_BANNER_ORIGINAL = "banner_original"
     const val MAIN_BANNER_NEW = "banner_new"
+
+    const val CALL_NUMBER = "call_number"
+    const val CALL_FLOATING = "call_floating"
 }

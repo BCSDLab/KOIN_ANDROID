@@ -5,6 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.abtest.Experiment
+import `in`.koreatech.koin.core.abtest.ExperimentGroup
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
@@ -25,10 +30,14 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.store.ReviewPromptUscCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
+import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.splash.state.TokenState
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,6 +52,7 @@ class StoreDetailViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val reviewPromptUscCase: ReviewPromptUscCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
+    private val abTestUseCase: ABTestUseCase
 ) : BaseViewModel() {
     val store: LiveData<StoreWithMenu> get() = _store
     private val _store = MutableLiveData<StoreWithMenu>()
@@ -69,6 +79,35 @@ class StoreDetailViewModel @Inject constructor(
 
     private val _tokenState = SingleLiveEvent<TokenState>()
     val tokenState: LiveData<TokenState> get() = _tokenState
+
+    val callABTestExperimentGroup = flow {
+        abTestUseCase(Experiment.BUSINESS_CALL.experimentTitle).onSuccess {
+            emit(it)
+            when (it) {
+                ExperimentGroup.CALL_NUMBER -> {
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.BUSINESS_CALL_NUMBER,
+                        "전화하기버튼 우측위치"
+                    )
+                }
+
+                ExperimentGroup.CALL_NUMBER -> {
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.BUSINESS_CALL_FLOATING,
+                        "전화하기버튼 플로팅"
+                    )
+                }
+            }
+        }.onFailure {
+            emit(Experiment.BUSINESS_CALL.experimentGroups.first())
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = Experiment.BUSINESS_CALL.experimentGroups.first()
+    )
 
     fun getStoreWithMenu(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreWithMenuUseCase(storeId).also { store ->
