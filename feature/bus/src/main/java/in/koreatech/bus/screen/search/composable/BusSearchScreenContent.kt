@@ -17,11 +17,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.component.NoticeItem
-import `in`.koreatech.bus.type.PlaceSelectMode
+import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.state.BusNoticeState
+import `in`.koreatech.bus.type.PlaceSelectMode
+import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.feature.bus.R
 
@@ -44,6 +45,18 @@ internal fun BusSearchScreenContent(
 
     val searchButtonEnabled by remember(departure, arrival) { derivedStateOf { departure.isNotEmpty() && arrival.isNotEmpty() } }
     var placeSelectMode by rememberSaveable { mutableStateOf(PlaceSelectMode.NONE) }
+
+    val disabledArrival by remember(departure) {
+        mutableStateOf(PlaceType.entries.find { type ->
+            context.getString(type.titleRes) == departure
+        })
+    }
+
+    val disabledDeparture by remember(arrival) {
+        mutableStateOf(PlaceType.entries.find { type ->
+            context.getString(type.titleRes) == arrival
+        })
+    }
 
     Column(
         modifier = modifier
@@ -95,6 +108,7 @@ internal fun BusSearchScreenContent(
                 }
             },
             modifier = Modifier,
+            disabledPlace = if (placeSelectMode == PlaceSelectMode.DEPARTURE) disabledDeparture else disabledArrival
         )
     }
 }
