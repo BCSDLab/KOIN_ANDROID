@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
 import java.time.LocalDate
@@ -53,11 +54,13 @@ class BusSearchResultViewModel @Inject constructor(
 
     val currentTime = flow {
         while(true) {
-            emit(ImmutableLocalTime(LocalTime.now()))
+            emit(LocalTime.now())
             delay(1000L)
         }
     }.distinctUntilChangedBy {
-        it.localTime.minute
+        it.minute
+    }.map {
+        ImmutableLocalTime(it)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -118,7 +121,7 @@ class BusSearchResultViewModel @Inject constructor(
     }
 
     companion object {
-        private const val TOTAL_DATE_COUNT = 365
+        private const val TOTAL_DATE_COUNT = 120
     }
 }
 

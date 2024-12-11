@@ -62,7 +62,8 @@ internal fun ExpressTimetableScreenContent(
                     selectedDirectionType =
                         CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
                 },
-                selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal)
+                selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal),
+                showClickRipple = false
             )
         }
 
