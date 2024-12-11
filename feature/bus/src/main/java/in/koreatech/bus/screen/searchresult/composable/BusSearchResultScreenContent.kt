@@ -35,6 +35,8 @@ import `in`.koreatech.bus.mock.busSearchResultsMock
 import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
+import `in`.koreatech.bus.state.ImmutableLocalTime
+import `in`.koreatech.bus.util.formatDateValue
 import `in`.koreatech.bus.util.formatDepartureTime
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -42,9 +44,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.time.LocalDate
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,6 +57,7 @@ internal fun BusSearchResultScreenContent(
     daytimeList: ImmutableList<String>,
     hourList: ImmutableList<String>,
     minuteList: ImmutableList<String>,
+    currentTime: ImmutableLocalTime,
     modifier: Modifier = Modifier,
     selectedDateIndex: Int,
     selectedDaytimeIndex: Int,
@@ -123,7 +125,9 @@ internal fun BusSearchResultScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 32.dp, vertical = 8.dp),
-                        result = result
+                        result = result,
+                        currentTime = currentTime,
+                        showBeforeTime = selectedDateIndex == 0
                     )
                 }
             }
@@ -168,22 +172,11 @@ private fun BusSearchResultScreenPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = BusSearchResultUiState.Success(busSearchResultsMock),
-        dateList = buildList {
-            val today = LocalDateTime.now()
-
-            add("오늘")
-            add("내일")
-            for (i in 2 until 365) {
-                val date = today.plusDays(i.toLong())
-                val formattedDate = date.format(
-                    DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
-                ).replace("요일", "")
-                add(formattedDate)
-            }
-        }.toImmutableList(),
+        dateList = List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }.toImmutableList(),
         daytimeList = listOf("오전", "오후").toImmutableList(),
         hourList = (1..12).map { it.toString() }.toImmutableList(),
         minuteList = (0..59).map { it.toString() }.toImmutableList(),
+        currentTime = ImmutableLocalTime(LocalTime.now()),
         selectedDateIndex = 0,
         selectedDaytimeIndex = 0,
         selectedHourIndex = 0,
@@ -199,22 +192,11 @@ private fun BusSearchResultScreenLoadingPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = BusSearchResultUiState.Loading,
-        dateList = buildList {
-            val today = LocalDateTime.now()
-
-            add("오늘")
-            add("내일")
-            for (i in 2 until 365) {
-                val date = today.plusDays(i.toLong())
-                val formattedDate = date.format(
-                    DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
-                ).replace("요일", "")
-                add(formattedDate)
-            }
-        }.toImmutableList(),
+        dateList = List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }.toImmutableList(),
         daytimeList = listOf("오전", "오후").toImmutableList(),
         hourList = (1..12).map { it.toString() }.toImmutableList(),
         minuteList = (0..59).map { it.toString() }.toImmutableList(),
+        currentTime = ImmutableLocalTime(LocalTime.now()),
         selectedDateIndex = 0,
         selectedDaytimeIndex = 0,
         selectedHourIndex = 0,

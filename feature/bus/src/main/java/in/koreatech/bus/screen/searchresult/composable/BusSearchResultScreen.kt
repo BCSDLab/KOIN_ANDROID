@@ -21,6 +21,7 @@ fun BusSearchResultScreen(
     val selectedDaytimeIndex by viewModel.selectedDaytimeIndex.collectAsStateWithLifecycle()
     val selectedHourIndex by viewModel.selectedHourIndex.collectAsStateWithLifecycle()
     val selectedMinuteIndex by viewModel.selectedMinuteIndex.collectAsStateWithLifecycle()
+    val currentTime by viewModel.currentTime.collectAsStateWithLifecycle()
 
     BusSearchResultScreenContent(
         modifier = modifier,
@@ -30,6 +31,7 @@ fun BusSearchResultScreen(
         daytimeList = viewModel.daytimeList.toImmutableList(),
         hourList = viewModel.hourList.toImmutableList(),
         minuteList = viewModel.minuteList.toImmutableList(),
+        currentTime = currentTime,
         selectedDateIndex = selectedDateIndex,
         selectedDaytimeIndex = selectedDaytimeIndex,
         selectedHourIndex = selectedHourIndex,
