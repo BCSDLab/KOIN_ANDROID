@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.state.BusSearchResultState
+import `in`.koreatech.bus.state.ImmutableLocalTime
+import `in`.koreatech.bus.util.formatBeforeTime
 import `in`.koreatech.bus.util.formatTime
 import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -18,6 +20,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 fun BusSearchResultItem(
     result: BusSearchResultState,
+    currentTime: ImmutableLocalTime,
+    showBeforeTime: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -40,11 +44,12 @@ fun BusSearchResultItem(
                 style = KoinTheme.typography.bold20
             )
         }
-        Text(
-            text = "TODO분 전", // TODO : 남은 시간
-            style = KoinTheme.typography.bold16.copy(
-                color = KoinTheme.colors.info700
+        if (showBeforeTime)
+            Text(
+                text = result.departureTime.formatBeforeTime(currentTime.localTime), // TODO : 남은 시간
+                style = KoinTheme.typography.bold16.copy(
+                    color = KoinTheme.colors.info700
+                )
             )
-        )
     }
 }

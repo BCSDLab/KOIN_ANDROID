@@ -8,14 +8,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.mock.busSearchResultsMock
 import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.state.BusSearchResultState
+import `in`.koreatech.bus.state.ImmutableLocalTime
 import `in`.koreatech.bus.state.toBusSearchResultState
-import `in`.koreatech.koin.feature.bus.BuildConfig
 import `in`.koreatech.koin.domain.repository.BusV2Repository
+import `in`.koreatech.koin.feature.bus.BuildConfig
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
 import java.time.LocalDate
@@ -46,6 +50,19 @@ class BusSearchResultViewModel @Inject constructor(
     val selectedHourIndex = _selectedHourIndex.asStateFlow()
     private val _selectedMinuteIndex = MutableStateFlow(LocalDateTime.now().minute)
     val selectedMinuteIndex = _selectedMinuteIndex.asStateFlow()
+
+    val currentTime = flow {
+        while(true) {
+            emit(ImmutableLocalTime(LocalTime.now()))
+            delay(1000L)
+        }
+    }.distinctUntilChangedBy {
+        it.localTime.minute
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = ImmutableLocalTime(LocalTime.now())
+    )
 
     val searchResultUiState = combine(
         selectedDateIndex,
