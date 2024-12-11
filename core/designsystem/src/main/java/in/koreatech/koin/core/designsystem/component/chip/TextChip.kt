@@ -30,8 +30,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
  */
 @Composable
 fun TextChip(
-    modifier: Modifier = Modifier,
     title: String,
+    modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     shape: Shape = RoundedCornerShape(50),
     showClickRipple: Boolean = true,
