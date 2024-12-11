@@ -7,6 +7,7 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,11 +15,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -137,7 +141,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                         )
                     }
                     if (currentTab == 2) {// 리뷰탭에서 전화누르기까지 시간
-
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
@@ -266,6 +269,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         viewModel.getShopEvents(storeId)
         viewModel.getShopReviews(storeId)
 
+        initCallFunction()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -282,6 +286,45 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             return
         }
         super.onBackPressed()
+    }
+
+    private fun initCallFunction(){
+
+        binding.storeDetailPhoneImage.setOnClickListener {
+            dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
+
+            showCallDialog()
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
+            )
+        }
+
+        binding.storeDetailPhoneTextview.setOnClickListener{
+            dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
+
+            showCallDialog()
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
+            )
+        }
+
+        binding.callFloatingButton.setOnClickListener {
+            dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
+
+            showCallDialog()
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
+            )
+        }
     }
 
 
@@ -371,6 +414,23 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             AnalyticsConstant.Label.SHOP_PICTURE,
                             viewModel.store.value?.name ?: "Unknown"
                         )
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.callABTestExperimentGroup.collect {
+                    when (it) {
+                        ExperimentGroup.CALL_NUMBER-> {
+                            binding.callFloatingButton.visibility = View.GONE
+                            binding.storeDetailPhoneTextview.setTextColor(getResources().getColor(R.color.colorPrimary))
+                        }
+                        ExperimentGroup.CALL_FLOATING -> {
+                            binding.scrollUpButton.visibility = View.GONE
+                            binding.storeDetailPhoneImage.visibility = View.GONE
+                        }
                     }
                 }
             }

@@ -108,19 +108,31 @@
                                     android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/gray9"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview" />
+                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview"/>
 
                                 <TextView
                                     android:id="@+id/store_detail_phone_textview"
-                                    android:layout_width="0dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
                                     android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/black"
                                     app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_phone_num"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                                    app:layout_constraintHorizontal_bias="0"
                                     app:layout_constraintStart_toEndOf="@+id/store_detail_const_phone_num"
                                     tools:text="010-5181-1203" />
+
+                                <ImageView
+                                    android:id="@+id/store_detail_phone_image"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_marginStart="10dp"
+                                    android:src="@drawable/ic_call"
+                                    app:layout_constraintBottom_toBottomOf="@id/store_detail_phone_textview"
+                                    app:layout_constraintStart_toEndOf="@id/store_detail_phone_textview"
+                                    app:layout_constraintTop_toTopOf="@id/store_detail_phone_textview"
+                                    app:tint="@color/colorPrimary" />
 
                                 <androidx.constraintlayout.widget.Barrier
                                     android:id="@+id/barrier_phone"
@@ -415,6 +427,22 @@
                 app:borderWidth="0dp"
                 app:fabSize="mini"
                 android:src="@drawable/ic_arrow_up"
+                app:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/call_floating_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/colorPrimary"
+                app:borderWidth="0dp"
+                app:fabSize="mini"
+                android:src="@drawable/ic_call"
                 app:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
