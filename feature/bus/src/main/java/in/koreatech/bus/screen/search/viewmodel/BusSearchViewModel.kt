@@ -1,9 +1,9 @@
 package `in`.koreatech.bus.screen.search.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.BaseBusViewModel
 import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.state.toBusNoticeState
@@ -25,7 +25,7 @@ class BusSearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val onboardingManager: OnboardingManager,
     private val busRepository: BusV2Repository
-) : ViewModel() {
+) : BaseBusViewModel() {
 
     private val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
         OnboardingType.SHOW_BUS_HEAD_ARTICLE
@@ -41,6 +41,7 @@ class BusSearchViewModel @Inject constructor(
             }.onFailure {
                 if (BuildConfig.DEBUG) emit(busNoticeUiStateMock)
                 else emit(BusNoticeUiState.LoadFailed)
+                emit(BusNoticeUiState.LoadFailed)
             }
         else emit(BusNoticeUiState.NotShow)
     }.catch {

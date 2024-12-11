@@ -1,10 +1,10 @@
 package `in`.koreatech.bus.screen.searchresult.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.BaseBusViewModel
 import `in`.koreatech.bus.mock.busSearchResultsMock
 import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.state.BusSearchResultState
@@ -32,7 +32,7 @@ import javax.inject.Inject
 class BusSearchResultViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val busRepository: BusV2Repository
-) : ViewModel() {
+) : BaseBusViewModel() {
 
     private val arguments = savedStateHandle.toRoute<Routes.BusSearchResult>()
     val departure = arguments.departure
@@ -71,8 +71,9 @@ class BusSearchResultViewModel @Inject constructor(
         selectedDateIndex,
         selectedDaytimeIndex,
         selectedHourIndex,
-        selectedMinuteIndex
-    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex ->
+        selectedMinuteIndex,
+        refreshToggle
+    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex, _ ->
         LocalDateTime.of(
             localDates[dateIndex],
             LocalTime.of(
