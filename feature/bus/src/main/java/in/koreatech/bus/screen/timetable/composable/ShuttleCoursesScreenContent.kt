@@ -59,7 +59,8 @@ internal fun ShuttleCoursesScreenContent(
             onChipSelected = { title ->
                 selectedRouteType = ShuttleBusOperationType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusOperationType.ALL
             },
-            selectedChipIndexes = intArrayOf(selectedRouteType.ordinal)
+            selectedChipIndexes = intArrayOf(selectedRouteType.ordinal),
+            showClickRipple = false
         )
         shuttleCourses.courses.forEach { courseEntry ->
             val filteredValue = courseEntry.value.filter { courseRouteState ->
