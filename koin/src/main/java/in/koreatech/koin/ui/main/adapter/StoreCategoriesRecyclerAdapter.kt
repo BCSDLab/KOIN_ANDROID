@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.databinding.MainItemStoreBinding
+import `in`.koreatech.koin.databinding.StoreCategoryItemBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 
 class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories,StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder>(
@@ -16,7 +17,7 @@ diffCallback
 ){
     var onItemClickListener: OnItemClickListener? = null
 
-    inner class StoreCategoriesViewHolder(val binding: MainItemStoreBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(binding.root){
         val container = binding.container
         val storeCategoryImage = binding.imageViewStoreCategory
         val storeCategoryName = binding.textViewStoreCategory
@@ -24,7 +25,7 @@ diffCallback
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = MainItemStoreBinding.inflate(inflater, parent, false)
+        val binding = StoreCategoryItemBinding.inflate(inflater, parent, false)
         return StoreCategoriesViewHolder(binding)
     }
 
