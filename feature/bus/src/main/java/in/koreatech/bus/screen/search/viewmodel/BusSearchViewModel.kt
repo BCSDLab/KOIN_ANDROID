@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.BaseBusViewModel
 import `in`.koreatech.bus.mock.busNoticeMock
-import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.state.toBusNoticeState
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
@@ -13,13 +12,9 @@ import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.repository.BusV2Repository
 import `in`.koreatech.koin.feature.bus.BuildConfig
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
