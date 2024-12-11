@@ -114,7 +114,7 @@ class BusTimetableViewModel @Inject constructor(
             BusNoticeUiState.LoadFailed
         else {
             val lastNoticeId = busRepository.getLastShownNoticeId().getOrElse { -1 }
-            
+
             busRepository.saveLastShownNoticeId(notice.id).getOrNull() ?: return@combine BusNoticeUiState.LoadFailed
             if (notice.id == lastNoticeId) {
                 if (shouldShow)
