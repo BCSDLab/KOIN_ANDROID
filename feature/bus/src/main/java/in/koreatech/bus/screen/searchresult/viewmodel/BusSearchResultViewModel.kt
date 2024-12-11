@@ -90,8 +90,8 @@ class BusSearchResultViewModel @Inject constructor(
             busType = "",
             departure = departure,
             arrival = arrival
-        ).onSuccess {
-            emit(BusSearchResultUiState.Success(it.map { it.toBusSearchResultState() }))
+        ).onSuccess { results ->
+            emit(BusSearchResultUiState.Success(results.map { it.toBusSearchResultState() }))
         }.onFailure {
             if (BuildConfig.DEBUG) emit(BusSearchResultUiState.Success(busSearchResultsMock))
             else emit(BusSearchResultUiState.LoadFailed)

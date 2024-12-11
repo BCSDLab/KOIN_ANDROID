@@ -172,7 +172,6 @@ internal fun BusTimetableScreenContent(
                         )
                     }
                 }
-
         }
     }
 
