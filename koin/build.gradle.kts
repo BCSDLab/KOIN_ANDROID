@@ -36,11 +36,14 @@ android {
 
     buildTypes {
         getByName("debug") {
+            applicationIdSuffix = ".dev"
             isDebuggable = true
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+            manifestPlaceholders["appName"] = "@string/app_name_dev"
+            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
             buildConfigField("Boolean", "IS_DEBUG", "true")
             buildConfigField(
                 "String",
@@ -57,6 +60,8 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+            manifestPlaceholders["appName"] = "@string/app_name"
+            manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
             buildConfigField("Boolean", "IS_DEBUG", "false")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField(
