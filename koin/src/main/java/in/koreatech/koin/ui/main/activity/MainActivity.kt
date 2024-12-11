@@ -251,7 +251,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             setContent {
                 MainEntryView(
                     onShuttleTicketClicked = {
-                        // TODO : 유니버스 바로가기
+                        val intent = Intent(this@MainActivity, WebViewActivity::class.java)
+                        intent.putExtra("url", "https://koreatech.unibus.kr/")
+                        startActivity(intent)
                     }, onTimetableCardClicked = {
                         val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
                         startActivity(intent)

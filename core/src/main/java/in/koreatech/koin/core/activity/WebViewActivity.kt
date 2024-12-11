@@ -47,7 +47,6 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun init(title: String?, url: String?) {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setTitle(title)
 
         binding.webView.apply {
