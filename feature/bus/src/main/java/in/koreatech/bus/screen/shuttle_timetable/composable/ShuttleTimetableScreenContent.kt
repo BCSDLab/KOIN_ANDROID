@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,8 +28,9 @@ import androidx.compose.ui.util.fastForEach
 import `in`.koreatech.bus.component.ShuttleBusOperationChip
 import `in`.koreatech.bus.component.CommonLoadingView
 import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableUiState
-import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock
+import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock1
 import `in`.koreatech.bus.component.CommonFailureView
+import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock2
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -90,7 +93,6 @@ fun ShuttleTimetableScreenContent(
                                 .height(14.dp)
                                 .background(color = KoinTheme.colors.neutral100)
                         )
-
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -117,19 +119,31 @@ fun ShuttleTimetableScreenContent(
                                         nodeItemHeightDp = nodeItemHeightDp,
                                     )
                                 }
+
+                                /** 시간표가 화면을 못 채울 때, 상단의 회색 배경을 채우기 위함 (프리뷰 참조)
+                                * 더 좋은 방법을 모르겠음... */
+                                Spacer(modifier = Modifier.weight(1f).height(
+                                    KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp
+                                ).background(KoinTheme.colors.neutral100))
                             }
                         }
+                        
+                        Spacer(modifier = Modifier.height(120.dp))
                     }
 
                     is ShuttleTimetableUiState.Loading -> {
                         CommonLoadingView(
-                            modifier = Modifier.padding(top = 200.dp).fillMaxSize()
+                            modifier = Modifier
+                                .padding(top = 200.dp)
+                                .fillMaxSize()
                         )
                     }
 
                     is ShuttleTimetableUiState.LoadFailed -> {
                         CommonFailureView(
-                            modifier = Modifier.padding(top = 200.dp).fillMaxSize()
+                            modifier = Modifier
+                                .padding(top = 200.dp)
+                                .fillMaxSize()
                         )
                     }
                 }
@@ -142,7 +156,15 @@ fun ShuttleTimetableScreenContent(
 @Composable
 private fun ShuttleTimetableScreenContentPreview() {
     ShuttleTimetableScreenContent(
-        timetableUiState = shuttleTimetableUiStateMock
+        timetableUiState = shuttleTimetableUiStateMock1
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShuttleTimetableScreenContent2Preview() {
+    ShuttleTimetableScreenContent(
+        timetableUiState = shuttleTimetableUiStateMock2
     )
 }
 
