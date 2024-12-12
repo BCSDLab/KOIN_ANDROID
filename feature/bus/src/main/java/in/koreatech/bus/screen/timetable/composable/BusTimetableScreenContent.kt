@@ -69,6 +69,7 @@ internal fun BusTimetableScreenContent(
         BusType.SHUTTLE -> stringResource(R.string.shuttle_timetable)
         BusType.EXPRESS -> stringResource(R.string.express_timetable)
         BusType.CITY -> stringResource(R.string.city_timetable)
+        else -> ""
     }
 
     val coroutineScope = rememberCoroutineScope()

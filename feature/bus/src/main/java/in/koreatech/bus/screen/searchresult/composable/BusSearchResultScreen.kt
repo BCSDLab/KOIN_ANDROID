@@ -24,6 +24,7 @@ fun BusSearchResultScreen(
     val selectedHourIndex by viewModel.selectedHourIndex.collectAsStateWithLifecycle()
     val selectedMinuteIndex by viewModel.selectedMinuteIndex.collectAsStateWithLifecycle()
     val currentTime by viewModel.currentTime.collectAsStateWithLifecycle()
+    val selectedBusMenu by viewModel.selectedBusTypeMenu.collectAsStateWithLifecycle()
 
     CompositionLocalProvider(LocalOnRefreshComposition provides viewModel::refresh) {
         BusSearchResultScreenContent(
@@ -43,6 +44,8 @@ fun BusSearchResultScreen(
             onCompleteMinDepartureTime = viewModel::setDepartureTime,
             departure = viewModel.departure,
             arrival = viewModel.arrival,
+            onBusTypeChange = viewModel::onBusTypeMenuChanged,
+            selectedBusType = selectedBusMenu,
         )
     }
 }

@@ -22,6 +22,7 @@ internal fun BusTypeChip(
             BusType.SHUTTLE -> Color(0xFFFBEBD7)
             BusType.EXPRESS -> Color(0xFFD7E6FB)
             BusType.CITY -> Color(0xFFD7FBEB)
+            else -> Color.Transparent
         },
         textStyle = KoinTheme.typography.regular12.copy(
             color = KoinTheme.colors.neutral600,
