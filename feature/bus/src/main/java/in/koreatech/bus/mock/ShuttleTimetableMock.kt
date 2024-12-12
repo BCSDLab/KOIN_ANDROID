@@ -97,7 +97,7 @@ internal val shuttleTimetableRouteInfoMock7 = ShuttleTimetableRouteInfoState(
         "15:10/17:30"
     )
 )
-internal val shuttleTimetableUiStateMock = ShuttleTimetableUiState.Success(
+internal val shuttleTimetableUiStateMock1 = ShuttleTimetableUiState.Success(
     ShuttleTimetableState(
         region = "천안",
         routeType = ShuttleBusOperationType.CIRCULATION,
@@ -118,6 +118,26 @@ internal val shuttleTimetableUiStateMock = ShuttleTimetableUiState.Success(
             shuttleTimetableRouteInfoMock5,
             shuttleTimetableRouteInfoMock6,
             shuttleTimetableRouteInfoMock7
+        )
+    )
+)
+
+internal val shuttleTimetableUiStateMock2 = ShuttleTimetableUiState.Success(
+    ShuttleTimetableState(
+        region = "천안",
+        routeType = ShuttleBusOperationType.CIRCULATION,
+        routeName = "대학원",
+        subTitle = "",
+        nodeInfo = listOf(
+            shuttleTimetableNodeInfoMock1,
+            shuttleTimetableNodeInfoMock2,
+            shuttleTimetableNodeInfoMock3,
+            shuttleTimetableNodeInfoMock4,
+            shuttleTimetableNodeInfoMock5
+        ),
+        routeInfo = listOf(
+            shuttleTimetableRouteInfoMock1,
+            shuttleTimetableRouteInfoMock2
         )
     )
 )

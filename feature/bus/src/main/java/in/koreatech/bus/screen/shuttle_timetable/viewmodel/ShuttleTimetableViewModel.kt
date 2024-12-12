@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.BaseBusViewModel
-import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock
+import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock1
 import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.state.ShuttleTimetableState
 import `in`.koreatech.bus.state.toShuttleTimetableState
@@ -30,7 +30,7 @@ class ShuttleTimetableViewModel @Inject constructor(
         busRepository.fetchShuttleTimetable(arguments.id).onSuccess {
             emit(ShuttleTimetableUiState.Success(it.toShuttleTimetableState()))
         }.onFailure {
-            if (BuildConfig.DEBUG) emit(shuttleTimetableUiStateMock)
+            if (BuildConfig.DEBUG) emit(shuttleTimetableUiStateMock1)
             else emit(ShuttleTimetableUiState.LoadFailed)
         }
     }.catch {
