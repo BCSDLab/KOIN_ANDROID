@@ -24,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import `in`.koreatech.bus.component.ShuttleBusOperationChip
-import `in`.koreatech.bus.screen.CommonLoadingView
+import `in`.koreatech.bus.component.CommonLoadingView
 import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableUiState
 import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock
-import `in`.koreatech.bus.screen.CommonFailureView
+import `in`.koreatech.bus.component.CommonFailureView
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme

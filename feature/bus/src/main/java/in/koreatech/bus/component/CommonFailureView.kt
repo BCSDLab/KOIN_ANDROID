@@ -1,4 +1,4 @@
-package `in`.koreatech.bus.screen
+package `in`.koreatech.bus.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -17,7 +17,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +46,7 @@ fun CommonFailureView(
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             modifier = Modifier,
-            text = stringResource(R.string.fail_to_load_screen),
+            text = stringResource(R.string.fail_to_load_screen_description),
             style = KoinTheme.typography.bold15,
             fontWeight = FontWeight.SemiBold
         )
