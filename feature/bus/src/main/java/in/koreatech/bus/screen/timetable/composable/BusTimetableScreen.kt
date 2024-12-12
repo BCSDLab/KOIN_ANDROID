@@ -16,7 +16,7 @@ import `in`.koreatech.bus.util.LocalOnRefreshComposition
 internal fun BusTimetableScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
-    onNavigateToShuttleTimetableDetailScreen: (ShuttleCourseRouteState) -> Unit = {},
+    onNavigateToShuttleTimetableScreen: (ShuttleCourseRouteState) -> Unit = {},
     viewModel: BusTimetableViewModel = hiltViewModel(),
 ) {
 
@@ -31,7 +31,7 @@ internal fun BusTimetableScreen(
             busTimetableUiState = busTimetableUiState,
             busNoticeUiState = busNoticeUiState,
             onNavigationIconClick = onNavigationIconClick,
-            onShuttleCourseRouteClick = onNavigateToShuttleTimetableDetailScreen,
+            onShuttleCourseRouteClick = onNavigateToShuttleTimetableScreen,
             onExpressDirectionChange = viewModel::onExpressDirectionChanged,
             onCityBusNumberChange = viewModel::onCityBusNumberChanged,
             onCityDirectionChange = viewModel::onCityDirectionChanged,

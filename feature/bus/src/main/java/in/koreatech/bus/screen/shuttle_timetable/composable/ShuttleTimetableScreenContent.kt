@@ -140,7 +140,7 @@ fun ShuttleTimetableScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun ShuttleTimetableDetailScreenContentPreview() {
+private fun ShuttleTimetableScreenContentPreview() {
     ShuttleTimetableScreenContent(
         timetableUiState = shuttleTimetableUiStateMock
     )
@@ -148,7 +148,7 @@ private fun ShuttleTimetableDetailScreenContentPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ShuttleTimetableDetailScreenContentLoadingPreview() {
+private fun ShuttleTimetableScreenContentLoadingPreview() {
     ShuttleTimetableScreenContent(
         modifier = Modifier.fillMaxSize(),
         timetableUiState = ShuttleTimetableUiState.Loading

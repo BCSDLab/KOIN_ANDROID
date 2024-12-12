@@ -6,13 +6,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableDetailViewModel
+import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableViewModel
 import `in`.koreatech.bus.util.LocalOnRefreshComposition
 
 @Composable
 fun ShuttleTimetableScreen(
     modifier: Modifier = Modifier,
-    viewModel: ShuttleTimetableDetailViewModel = hiltViewModel(),
+    viewModel: ShuttleTimetableViewModel = hiltViewModel(),
     onNavigationIconClick: () -> Unit = {}
 ) {
 

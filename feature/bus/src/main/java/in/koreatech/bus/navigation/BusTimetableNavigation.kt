@@ -33,13 +33,13 @@ fun BusTimetableNavigation(
             BusTimetableScreen(
                 modifier = Modifier.fillMaxSize(),
                 onNavigationIconClick = navController::popBackStack,
-                onNavigateToShuttleTimetableDetailScreen = {
-                    navController.navigate(Routes.ShuttleTimetableDetail(it.id))
+                onNavigateToShuttleTimetableScreen = {
+                    navController.navigate(Routes.ShuttleTimetable(it.id))
                 }
             )
         }
 
-        composable<Routes.ShuttleTimetableDetail> {
+        composable<Routes.ShuttleTimetable> {
             ShuttleTimetableScreen(
                 modifier = Modifier.fillMaxSize(),
                 onNavigationIconClick = navController::popBackStack
