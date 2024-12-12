@@ -26,6 +26,7 @@ import `in`.koreatech.bus.mock.cityTimetableMock
 import `in`.koreatech.bus.state.CityTimetableState
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
+import `in`.koreatech.bus.util.formatUpdatedTime
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
@@ -95,7 +96,7 @@ internal fun CityTimetableScreenContent(
         CommonTimetableView(
             timetable = timetable.departureTimes,
             modifier = Modifier.fillMaxSize(),
-            updatedAt = "2021-09-01"
+            updatedAt = timetable.updatedAt.formatUpdatedTime()
         )
 
         Box(modifier = Modifier.background(Color.White).fillMaxWidth().height(115.dp))

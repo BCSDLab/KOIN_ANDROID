@@ -74,3 +74,14 @@ internal fun LocalTime.formatBeforeTime(compareTo: LocalTime): String {
     else
         "${hour}시간 ${minute.coerceAtLeast(0)}분 전"
 }
+
+/**
+ * [LocalDate]를 안내 기간으로 변환.
+ *
+ * ex) 2024년 9월 2일
+ */
+internal fun LocalDate.formatPeriod(): String {
+    return this.format(
+        DateTimeFormatter.ofPattern("yyyy년 M월 d일")
+    )
+}
