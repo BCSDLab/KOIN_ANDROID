@@ -32,9 +32,11 @@ import `in`.koreatech.bus.state.ShuttleCourseRegionState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.state.ShuttleCoursesState
 import `in`.koreatech.bus.type.ShuttleBusOperationType
+import `in`.koreatech.bus.util.formatPeriod
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -81,7 +83,18 @@ internal fun ShuttleCoursesScreenContent(
             }
         }
 
-        Box(modifier = Modifier.background(Color.White).fillMaxWidth().height(115.dp))
+        Column(modifier = Modifier.background(Color.White).padding(top = 8.dp).fillMaxWidth()) {
+            Text(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                text = stringResource(R.string.timetable_semester_information,
+                    shuttleCourses.semester.name,
+                    shuttleCourses.semester.from.formatPeriod(),
+                    shuttleCourses.semester.to.formatPeriod()
+                ), style = KoinTheme.typography.regular14,
+                color = KoinTheme.colors.neutral500,
+            )
+            Spacer(modifier = Modifier.fillMaxWidth().height(120.dp))
+        }
     }
 }
 
