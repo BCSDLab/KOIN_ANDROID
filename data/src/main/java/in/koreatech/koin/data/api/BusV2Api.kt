@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.request.bus.BusSearchRequest
 import `in`.koreatech.koin.data.response.bus.v2.BusNoticeResponse
 import `in`.koreatech.koin.data.response.bus.v2.BusSearchResultWrapperResponse
 import `in`.koreatech.koin.data.response.bus.v2.CityTimetableResponse
@@ -9,7 +8,6 @@ import `in`.koreatech.koin.data.response.bus.v2.ShuttleCoursesResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleTimetableResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface BusV2Api {
@@ -36,8 +34,12 @@ interface BusV2Api {
         @Query("direction") direction: String,
     ): CityTimetableResponse
 
-    @POST("bus/route")
+    @GET("bus/route")
     suspend fun fetchBusSearchResult(
-        @Body searchRequest: BusSearchRequest
+        @Query("date") date: String,
+        @Query("time") time: String,
+        @Query("bus_type") busType: String,
+        @Query("depart") departure: String,
+        @Query("arrival") arrival: String
     ): BusSearchResultWrapperResponse
 }

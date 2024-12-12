@@ -8,12 +8,12 @@ import java.time.LocalTime
 @Immutable
 data class BusSearchResultState(
     val busType: BusType,
-    val routeName: String,
+    val busName: String,
     val departureTime: LocalTime
 )
 
 fun BusSearchResult.toBusSearchResultState() = BusSearchResultState(
     busType = BusType.valueOf(busType.uppercase()),
-    routeName = routeName,
+    busName = busName,
     departureTime = departureTime
 )

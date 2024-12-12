@@ -126,6 +126,6 @@ private fun SelectPlaceBottomSheetPreview() {
         onDismissRequest = {},
         selectMode = PlaceSelectMode.DEPARTURE,
         onConfirmSelection = {},
-        disabledPlace = PlaceType.CHEONAN_TERMINAL
+        disabledPlace = PlaceType.TERMINAL
     )
 }

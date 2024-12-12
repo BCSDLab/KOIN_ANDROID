@@ -38,6 +38,7 @@ import `in`.koreatech.bus.screen.CommonLoadingView
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
 import `in`.koreatech.bus.state.ImmutableLocalTime
+import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.bus.util.formatDateValue
 import `in`.koreatech.bus.util.formatDepartureTime
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -52,8 +53,8 @@ import java.time.LocalTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BusSearchResultScreenContent(
-    departure: String,
-    arrival: String,
+    departure: PlaceType,
+    arrival: PlaceType,
     searchResultUiState: BusSearchResultUiState,
     dateList: ImmutableList<String>,
     daytimeList: ImmutableList<String>,
@@ -81,7 +82,7 @@ internal fun BusSearchResultScreenContent(
         modifier = modifier
     ) {
         KoinTopAppBar(
-            title = stringResource(R.string.search_result_direction_title, departure, arrival),
+            title = stringResource(R.string.search_result_direction_title, stringResource(departure.titleRes), stringResource(arrival.titleRes)),
             onNavigationIconClick = onNavigationIconClick
         )
 
@@ -186,8 +187,8 @@ private fun BusSearchResultScreenPreview() {
         selectedDaytimeIndex = 0,
         selectedHourIndex = 0,
         selectedMinuteIndex = 0,
-        departure = "코리아텍",
-        arrival = "청주"
+        departure = PlaceType.KOREATECH,
+        arrival = PlaceType.STATION
     )
 }
 
@@ -206,7 +207,7 @@ private fun BusSearchResultScreenLoadingPreview() {
         selectedDaytimeIndex = 0,
         selectedHourIndex = 0,
         selectedMinuteIndex = 0,
-        departure = "교대역",
-        arrival = "코리아텍"
+        departure = PlaceType.TERMINAL,
+        arrival = PlaceType.KOREATECH
     )
 }

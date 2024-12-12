@@ -13,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,33 +28,28 @@ import `in`.koreatech.koin.feature.bus.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BusSearchScreenContent(
-    departure: String,
-    arrival: String,
+    departure: PlaceType?,
+    arrival: PlaceType?,
     busNoticeUiState: BusNoticeUiState,
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
     onSwapIconClick: () -> Unit = {},
     onSearchClick: () -> Unit = {},
-    onDepartureSet: (String) -> Unit = {},
-    onArrivalSet: (String) -> Unit = {},
+    onDepartureSet: (PlaceType) -> Unit = {},
+    onArrivalSet: (PlaceType) -> Unit = {},
     onCloseNotice: () -> Unit = {},
     onNoticeClick: (BusNoticeState) -> Unit = {}
 ) {
-    val context = LocalContext.current
 
-    val searchButtonEnabled by remember(departure, arrival) { derivedStateOf { departure.isNotEmpty() && arrival.isNotEmpty() } }
+    val searchButtonEnabled by remember(departure, arrival) { derivedStateOf { departure != null && arrival != null } }
     var placeSelectMode by rememberSaveable { mutableStateOf(PlaceSelectMode.NONE) }
 
     val disabledArrival by remember(departure) {
-        mutableStateOf(PlaceType.entries.find { type ->
-            context.getString(type.titleRes) == departure
-        })
+        mutableStateOf(departure)
     }
 
     val disabledDeparture by remember(arrival) {
-        mutableStateOf(PlaceType.entries.find { type ->
-            context.getString(type.titleRes) == arrival
-        })
+        mutableStateOf(arrival)
     }
 
     Column(
@@ -81,8 +75,8 @@ internal fun BusSearchScreenContent(
                 .fillMaxSize()
                 .padding(top = 16.dp)
                 .padding(horizontal = 24.dp),
-            departure = departure,
-            arrival = arrival,
+            departure = departure?.titleRes?.let { stringResource(it) } ?: "",
+            arrival = arrival?.titleRes?.let { stringResource(it) } ?: "",
             searchButtonEnabled = searchButtonEnabled,
             onSwapIconClicked = onSwapIconClick,
             onSearchClicked = onSearchClick,
@@ -98,13 +92,13 @@ internal fun BusSearchScreenContent(
             onConfirmSelection = {
                 if (placeSelectMode == PlaceSelectMode.DEPARTURE) {
                     placeSelectMode =
-                        if (arrival.isEmpty()) PlaceSelectMode.ARRIVAL else PlaceSelectMode.NONE
-                    onDepartureSet(context.getString(it.titleRes))
+                        if (arrival == null) PlaceSelectMode.ARRIVAL else PlaceSelectMode.NONE
+                    onDepartureSet(it)
                 }
                 else if(placeSelectMode == PlaceSelectMode.ARRIVAL) {
                     placeSelectMode =
-                        if (departure.isEmpty()) PlaceSelectMode.DEPARTURE else PlaceSelectMode.NONE
-                    onArrivalSet(context.getString(it.titleRes))
+                        if (departure == null) PlaceSelectMode.DEPARTURE else PlaceSelectMode.NONE
+                    onArrivalSet(it)
                 }
             },
             modifier = Modifier,
@@ -118,8 +112,8 @@ internal fun BusSearchScreenContent(
 @Composable
 private fun BusSearchScreenPreview() {
     BusSearchScreenContent(
-        departure = "",
-        arrival = "",
+        departure = null,
+        arrival = null,
         modifier = Modifier.fillMaxWidth(),
         busNoticeUiState = busNoticeUiStateMock
     )
@@ -129,8 +123,8 @@ private fun BusSearchScreenPreview() {
 @Composable
 private fun BusSearchScreen2Preview() {
     BusSearchScreenContent(
-        departure = "코리아텍",
-        arrival = "",
+        departure = PlaceType.KOREATECH,
+        arrival = null,
         modifier = Modifier.fillMaxWidth(),
         busNoticeUiState = busNoticeUiStateMock
     )
@@ -139,8 +133,8 @@ private fun BusSearchScreen2Preview() {
 @Composable
 private fun BusSearchScreen3Preview() {
     BusSearchScreenContent(
-        departure = "",
-        arrival = "천안역",
+        departure = null,
+        arrival = PlaceType.STATION,
         modifier = Modifier.fillMaxWidth(),
         busNoticeUiState = BusNoticeUiState.NotShow
     )
@@ -150,8 +144,8 @@ private fun BusSearchScreen3Preview() {
 @Composable
 private fun BusSearchScreen4Preview() {
     BusSearchScreenContent(
-        departure = "코리아텍",
-        arrival = "천안역",
+        departure = PlaceType.KOREATECH,
+        arrival = PlaceType.STATION,
         modifier = Modifier.fillMaxWidth(),
         busNoticeUiState = busNoticeUiStateMock
     )

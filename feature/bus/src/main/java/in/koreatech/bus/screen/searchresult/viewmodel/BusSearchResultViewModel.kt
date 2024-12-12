@@ -10,6 +10,7 @@ import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.state.BusSearchResultState
 import `in`.koreatech.bus.state.ImmutableLocalTime
 import `in`.koreatech.bus.state.toBusSearchResultState
+import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.koin.domain.repository.BusV2Repository
 import `in`.koreatech.koin.feature.bus.BuildConfig
 import kotlinx.coroutines.delay
@@ -77,8 +78,8 @@ class BusSearchResultViewModel @Inject constructor(
         LocalDateTime.of(
             localDates[dateIndex],
             LocalTime.of(
-                if (daytimeList[daytimeIndex] == "오전") (hourList[hourIndex].toInt() + 11) % 12
-                else hourList[hourIndex].toInt() + 11,
+                if (daytimeList[daytimeIndex] == "오전") (hourList[hourIndex].toInt() + 12) % 12
+                else (hourList[hourIndex].toInt() % 12) + 12,
                 minuteList[minuteIndex].toInt()
             )
         )
@@ -87,9 +88,9 @@ class BusSearchResultViewModel @Inject constructor(
         busRepository.fetchBusSearchResult(
             date = localDateTime.toLocalDate(),
             time = localDateTime.toLocalTime(),
-            busType = "",
-            departure = departure,
-            arrival = arrival
+            busType = "ALL", // TODO busType
+            departure = departure.name,
+            arrival = arrival.name
         ).onSuccess { results ->
             emit(BusSearchResultUiState.Success(results.map { it.toBusSearchResultState() }))
         }.onFailure {

@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.search.viewmodel.BusSearchViewModel
+import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.bus.util.LocalOnRefreshComposition
 import `in`.koreatech.bus.util.goToArticle
 
@@ -15,7 +16,7 @@ import `in`.koreatech.bus.util.goToArticle
 fun BusSearchScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
-    onSearch: (departure: String, arrival: String) -> Unit = { _, _ -> },
+    onSearch: (departure: PlaceType, arrival: PlaceType) -> Unit = { _, _ -> },
     viewModel: BusSearchViewModel = hiltViewModel()
 ) {
 
@@ -33,7 +34,10 @@ fun BusSearchScreen(
             modifier = modifier,
             onNavigationIconClick = onNavigationIconClick,
             onSwapIconClick = viewModel::swapDepartureAndArrival,
-            onSearchClick = { onSearch(departure, arrival) },
+            onSearchClick = {
+                if (departure != null && arrival != null)
+                    onSearch(departure!!, arrival!!)
+            },
             onDepartureSet = viewModel::setDeparture,
             onArrivalSet = viewModel::setArrival,
             onCloseNotice = viewModel::closeNotice,

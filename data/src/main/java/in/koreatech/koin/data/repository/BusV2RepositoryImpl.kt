@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.request.bus.BusSearchRequest
 import `in`.koreatech.koin.data.source.local.BusV2LocalDataSource
 import `in`.koreatech.koin.data.source.remote.BusV2RemoteDataSource
 import `in`.koreatech.koin.domain.model.bus.v2.BusNotice
@@ -59,13 +58,11 @@ class BusV2RepositoryImpl @Inject constructor(
     ): Result<List<BusSearchResult>> {
         return runCatching {
             busRemoteDataSource.fetchBusSearchResult(
-                BusSearchRequest(
-                    date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date),
-                    time = DateTimeFormatter.ofPattern("HH:mm").format(time),
-                    busType = busType,
-                    departure = departure,
-                    arrival = arrival
-                )
+                date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date),
+                time = DateTimeFormatter.ofPattern("HH:mm").format(time),
+                busType = busType,
+                departure = departure,
+                arrival = arrival
             ).schedules?.map { it.toBusSearchResult() }.orEmpty()
         }
     }

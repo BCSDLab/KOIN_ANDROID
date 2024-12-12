@@ -14,12 +14,12 @@ data class BusSearchResultWrapperResponse(
 
 data class BusSearchResultResponse(
     @SerializedName("bus_type") val busType: String?,
-    @SerializedName("route_name") val routeName: String?,
+    @SerializedName("bus_name") val busName: String?,
     @SerializedName("depart_time") val departureTime: String?,
 ) {
     fun toBusSearchResult() = BusSearchResult(
         busType = busType.orEmpty(),
-        routeName = routeName.orEmpty(),
+        busName = busName.orEmpty(),
         departureTime = LocalTime.parse(departureTime)
     )
 }
