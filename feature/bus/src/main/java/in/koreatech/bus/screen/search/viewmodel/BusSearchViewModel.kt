@@ -7,6 +7,7 @@ import `in`.koreatech.bus.BaseBusViewModel
 import `in`.koreatech.bus.mock.busNoticeMock
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.state.toBusNoticeState
+import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.repository.BusV2Repository
@@ -67,14 +68,14 @@ class BusSearchViewModel @Inject constructor(
         }
     }
 
-    val departure = savedStateHandle.getStateFlow(KEY_DEPARTURE, "")
-    val arrival = savedStateHandle.getStateFlow(KEY_ARRIVAL, "")
+    val departure = savedStateHandle.getStateFlow<PlaceType?>(KEY_DEPARTURE, null)
+    val arrival = savedStateHandle.getStateFlow<PlaceType?>(KEY_ARRIVAL, null)
 
-    fun setDeparture(departure: String) {
+    fun setDeparture(departure: PlaceType?) {
         savedStateHandle[KEY_DEPARTURE] = departure
     }
 
-    fun setArrival(arrival: String) {
+    fun setArrival(arrival: PlaceType?) {
         savedStateHandle[KEY_ARRIVAL] = arrival
     }
 

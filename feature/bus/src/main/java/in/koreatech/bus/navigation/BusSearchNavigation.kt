@@ -11,6 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import `in`.koreatech.bus.screen.searchresult.composable.BusSearchResultScreen
 import `in`.koreatech.bus.screen.search.composable.BusSearchScreen
+import `in`.koreatech.bus.type.PlaceType
+import kotlin.reflect.typeOf
 
 @Composable
 fun BusSearchNavigation(
@@ -29,7 +31,11 @@ fun BusSearchNavigation(
         }
     ) {
 
-        composable<Routes.BusSearch> {
+        composable<Routes.BusSearch>(
+            typeMap = mapOf(
+                typeOf<PlaceType>() to PlaceTypeNavType
+            )
+        ) {
             BusSearchScreen(
                 modifier = Modifier.fillMaxSize(),
                 onNavigationIconClick = { navController.popBackStack() },

@@ -2,11 +2,13 @@ package `in`.koreatech.bus.type
 
 import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.bus.R
+import kotlinx.serialization.Serializable
 
-internal enum class PlaceType(
+@Serializable
+enum class PlaceType(
     @StringRes val titleRes: Int
 ) {
     KOREATECH(R.string.koreatech),
-    CHEONAN_STATION(R.string.cheonan_station),
-    CHEONAN_TERMINAL(R.string.cheonan_terminal),
+    STATION(R.string.cheonan_station),
+    TERMINAL(R.string.cheonan_terminal);
 }

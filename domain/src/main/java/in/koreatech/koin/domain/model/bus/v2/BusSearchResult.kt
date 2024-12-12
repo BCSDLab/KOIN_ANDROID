@@ -4,6 +4,6 @@ import java.time.LocalTime
 
 data class BusSearchResult(
     val busType: String,
-    val routeName: String,
+    val busName: String,
     val departureTime: LocalTime
 )
