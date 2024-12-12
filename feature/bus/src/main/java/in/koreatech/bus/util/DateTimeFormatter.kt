@@ -48,13 +48,13 @@ internal fun LocalDateTime.formatUpdatedTime(): String {
 }
 
 /**
- * [LocalTime]을 HH:mm 형식으로 변환.
+ * [LocalTime]을 a hh:mm 형식으로 변환.
  *
- * ex) 10:30
+ * ex) 오후 10:30
  */
 internal fun LocalTime.formatTime(): String {
     return this.format(
-        DateTimeFormatter.ofPattern("HH:mm")
+        DateTimeFormatter.ofPattern("a hh:mm")
     )
 }
 
