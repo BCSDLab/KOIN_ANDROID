@@ -18,12 +18,12 @@ import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
 
 @HiltViewModel
-class ShuttleTimetableDetailViewModel @Inject constructor(
+class ShuttleTimetableViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val busRepository: BusV2Repository
 ) : BaseBusViewModel() {
 
-    private val arguments = savedStateHandle.toRoute<Routes.ShuttleTimetableDetail>()
+    private val arguments = savedStateHandle.toRoute<Routes.ShuttleTimetable>()
 
     val timetableUiState = refreshToggle.transform {
         emit(ShuttleTimetableUiState.Loading)

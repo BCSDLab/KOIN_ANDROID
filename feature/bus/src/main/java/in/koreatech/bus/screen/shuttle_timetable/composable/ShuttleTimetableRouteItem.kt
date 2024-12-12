@@ -61,7 +61,7 @@ fun ShuttleTimetableRouteItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun ShuttleTimetableDetailItemPreview() {
+private fun ShuttleTimetableItemPreview() {
     ShuttleTimetableRouteItem(
         route = shuttleTimetableRouteInfoMock1,
         nodeItemHeightDp = 40.dp
