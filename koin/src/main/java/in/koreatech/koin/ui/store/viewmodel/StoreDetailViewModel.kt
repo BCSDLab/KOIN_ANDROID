@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -92,7 +93,7 @@ class StoreDetailViewModel @Inject constructor(
                     )
                 }
 
-                ExperimentGroup.CALL_NUMBER -> {
+                ExperimentGroup.CALL_FLOATING -> {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.BUSINESS_CALL_FLOATING,
@@ -102,6 +103,7 @@ class StoreDetailViewModel @Inject constructor(
             }
         }.onFailure {
             emit(Experiment.BUSINESS_CALL.experimentGroups.first())
+            Timber.d("Fail to get A/b Test Data")
         }
     }.stateIn(
         scope = viewModelScope,

@@ -289,42 +289,29 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun initCallFunction(){
-
         binding.storeDetailPhoneImage.setOnClickListener {
-            dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
-
-            showCallDialog()
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CALL,
-                viewModel.store.value?.name ?: "Unknown",
-                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
-            )
+            callingLogic()
         }
 
         binding.storeDetailPhoneTextview.setOnClickListener{
-            dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
-
-            showCallDialog()
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CALL,
-                viewModel.store.value?.name ?: "Unknown",
-                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
-            )
+            callingLogic()
         }
 
         binding.callFloatingButton.setOnClickListener {
-            dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
-
-            showCallDialog()
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CALL,
-                viewModel.store.value?.name ?: "Unknown",
-                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
-            )
+            callingLogic()
         }
+    }
+
+    private fun callingLogic(){
+        dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
+
+        showCallDialog()
+        EventLogger.logClickEvent(
+            EventAction.BUSINESS,
+            AnalyticsConstant.Label.SHOP_CALL,
+            viewModel.store.value?.name ?: "Unknown",
+            EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
+        )
     }
 
 
@@ -425,7 +412,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     when (it) {
                         ExperimentGroup.CALL_NUMBER-> {
                             binding.callFloatingButton.visibility = View.GONE
-                            binding.storeDetailPhoneTextview.setTextColor(getResources().getColor(R.color.colorPrimary))
+                            binding.storeDetailPhoneTextview.setTextColor(ContextCompat.getColor(this@StoreDetailActivity, R.color.colorPrimary))
                         }
                         ExperimentGroup.CALL_FLOATING -> {
                             binding.scrollUpButton.visibility = View.GONE
