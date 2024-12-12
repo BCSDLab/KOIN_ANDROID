@@ -6,8 +6,8 @@ import `in`.koreatech.koin.data.response.bus.v2.CityTimetableResponse
 import `in`.koreatech.koin.data.response.bus.v2.ExpressTimetableResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleCoursesResponse
 import `in`.koreatech.koin.data.response.bus.v2.ShuttleTimetableResponse
-import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BusV2Api {
@@ -15,9 +15,9 @@ interface BusV2Api {
     @GET("bus/notice")
     suspend fun fetchBusNotice(): BusNoticeResponse
 
-    @GET("bus/timetable/shuttle")
+    @GET("bus/timetable/shuttle/{id}")
     suspend fun fetchShuttleTimetable(
-        @Query("id") id: String
+        @Path("id") id: String
     ): ShuttleTimetableResponse
 
     @GET("bus/courses/shuttle")

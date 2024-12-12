@@ -5,10 +5,12 @@ import `in`.koreatech.bus.state.ShuttleCourseRegionState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.state.ShuttleCoursesState
 import `in`.koreatech.bus.state.ShuttleSemesterState
+import java.time.LocalDate
 
 internal val shuttleSemesterMock = ShuttleSemesterState(
     name = "정규학기",
-    term = "2024-09-02 ~ 2024-12-20"
+    from = LocalDate.parse("2024-09-01"),
+    to = LocalDate.parse("2024-12-21")
 )
 
 internal val shuttleCourseRouteMock1 = ShuttleCourseRouteState(
