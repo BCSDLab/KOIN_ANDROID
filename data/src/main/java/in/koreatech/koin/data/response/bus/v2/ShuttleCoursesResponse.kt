@@ -5,13 +5,14 @@ import `in`.koreatech.koin.domain.model.bus.v2.ShuttleCourses
 import `in`.koreatech.koin.domain.model.bus.v2.ShuttleSemester
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
 
 data class ShuttleCoursesResponse(
-    @SerializedName("route_categories") val courses: List<ShuttleCourseResponse>?,
-    @SerializedName("semester") val semester: ShuttleSemesterResponse?,
+    @SerializedName("route_regions") val courses: List<ShuttleCourseResponse>?,
+    @SerializedName("semester_info") val semester: ShuttleSemesterResponse?,
 ) {
     fun toShuttleCourses() = ShuttleCourses(
         courses = courses?.map { it.toShuttleCourse() }.orEmpty(),
-        semester = semester?.toShuttleSemester() ?: ShuttleSemester("", "")
+        semester = semester?.toShuttleSemester() ?: ShuttleSemester("", LocalDate.MIN, LocalDate.MIN)
     )
 }
