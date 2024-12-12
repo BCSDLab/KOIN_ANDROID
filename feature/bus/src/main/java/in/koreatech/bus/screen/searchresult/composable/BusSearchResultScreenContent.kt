@@ -32,9 +32,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.bus.component.CommonEmptyView
 import `in`.koreatech.bus.mock.busSearchResultsMock
-import `in`.koreatech.bus.screen.CommonFailureView
-import `in`.koreatech.bus.screen.CommonLoadingView
+import `in`.koreatech.bus.component.CommonFailureView
+import `in`.koreatech.bus.component.CommonLoadingView
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
 import `in`.koreatech.bus.state.ImmutableLocalTime
@@ -136,6 +137,9 @@ internal fun BusSearchResultScreenContent(
                 item {
                     Spacer(modifier = Modifier.fillMaxWidth().height(120.dp))
                 }
+            }
+            is BusSearchResultUiState.ResultEmpty -> {
+                CommonEmptyView(modifier = Modifier.fillMaxSize())
             }
             is BusSearchResultUiState.Loading -> {
                 CommonLoadingView(modifier = Modifier.fillMaxSize())

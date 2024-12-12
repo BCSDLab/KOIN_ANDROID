@@ -96,6 +96,12 @@ class BusSearchResultViewModel @Inject constructor(
             if (BuildConfig.DEBUG) emit(BusSearchResultUiState.Success(busSearchResultsMock))
             else emit(BusSearchResultUiState.LoadFailed)
         }
+    }.map { uiState ->
+        if (uiState is BusSearchResultUiState.Success) {
+            if (uiState.results.isEmpty()) {
+                BusSearchResultUiState.ResultEmpty
+            } else uiState
+        } else uiState
     }.catch {
         emit(BusSearchResultUiState.LoadFailed)
     }.stateIn(
@@ -130,4 +136,5 @@ sealed interface BusSearchResultUiState {
     data class Success(val results: List<BusSearchResultState>) : BusSearchResultUiState
     data object Loading : BusSearchResultUiState
     data object LoadFailed : BusSearchResultUiState
+    data object ResultEmpty : BusSearchResultUiState
 }

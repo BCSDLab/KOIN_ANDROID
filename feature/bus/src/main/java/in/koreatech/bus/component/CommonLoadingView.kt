@@ -1,4 +1,4 @@
-package `in`.koreatech.bus.screen
+package `in`.koreatech.bus.component
 
 import androidx.annotation.RawRes
 import androidx.compose.foundation.layout.Box

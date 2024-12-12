@@ -66,6 +66,8 @@
 
     <!-- Common -->
     <string name="error">오류</string>
-    <string name="fail_to_load_screen">화면을 불러오지 못했어요</string>
+    <string name="fail_to_load_screen_description">화면을 불러오지 못했어요</string>
     <string name="refresh">다시 시도하기</string>
+    <string name="no_result">결과 없음</string>
+    <string name="empty_description">검색 결과가 없어요</string>
 </resources>

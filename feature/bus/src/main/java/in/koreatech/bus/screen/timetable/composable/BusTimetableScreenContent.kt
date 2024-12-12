@@ -32,8 +32,8 @@ import `in`.koreatech.bus.component.NoticeItem
 import `in`.koreatech.bus.mock.cityTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
-import `in`.koreatech.bus.screen.CommonFailureView
-import `in`.koreatech.bus.screen.CommonLoadingView
+import `in`.koreatech.bus.component.CommonFailureView
+import `in`.koreatech.bus.component.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.state.BusNoticeState
