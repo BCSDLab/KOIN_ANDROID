@@ -73,7 +73,7 @@ internal fun BusTimetableScreenContent(
     }
 
     val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState { BusType.entries.size }
+    val pagerState = rememberPagerState { BusType.entriesExceptAll.size }
 
     Column(
         modifier = modifier
@@ -111,7 +111,7 @@ internal fun BusTimetableScreenContent(
             }
 
             KoinTabRow(
-                titles = BusType.entries.map { stringResource(it.titleRes) },
+                titles = BusType.entriesExceptAll.map { stringResource(it.titleRes) },
                 selectedTabIndex = pagerState.currentPage,
                 onTabSelected = {
                     coroutineScope.launch {
@@ -130,7 +130,7 @@ internal fun BusTimetableScreenContent(
                             state = pagerState,
                             verticalAlignment = Alignment.Top
                         ) { page ->
-                            when (page) {
+                            when (page + 1) {
                                 BusType.SHUTTLE.ordinal -> {
                                     ShuttleCoursesScreenContent(
                                         modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
@@ -177,7 +177,7 @@ internal fun BusTimetableScreenContent(
     }
 
     LaunchedEffect(pagerState.targetPage) {
-        selectedTimetableTypeTab = BusType.entries[pagerState.targetPage]
+        selectedTimetableTypeTab = BusType.entriesExceptAll[pagerState.targetPage]
     }
 }
 
