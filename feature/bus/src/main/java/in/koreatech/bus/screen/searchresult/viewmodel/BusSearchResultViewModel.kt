@@ -91,7 +91,11 @@ class BusSearchResultViewModel @Inject constructor(
             departure = departure.name,
             arrival = arrival.name
         ).onSuccess { results ->
-            emit(BusSearchResultUiState.Success(results.map { it.toBusSearchResultState() }.filter { it.departureTime.isAfter(LocalTime.now()) }))
+            emit(BusSearchResultUiState.Success(results.map { it.toBusSearchResultState() }.filter {
+                if (localDateTime.dayOfYear == LocalDateTime.now().dayOfYear)
+                    it.departureTime.isAfter(LocalTime.now())
+                else true
+            }))
         }.onFailure {
             if (BuildConfig.DEBUG) emit(BusSearchResultUiState.Success(busSearchResultsMock))
             else emit(BusSearchResultUiState.LoadFailed)
