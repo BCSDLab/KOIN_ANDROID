@@ -7,6 +7,7 @@
     <string name="express_timetable">대성버스 시간표</string>
     <string name="city_timetable">시내버스 시간표</string>
     <string name="request_for_incorrect_information">정보가 정확하지 않나요?</string>
+    <string name="all_bus_type">모든 차종</string>
     <string name="tab_shuttle">셔틀</string>
     <string name="tab_express">대성</string>
     <string name="tab_city">시내</string>
@@ -55,6 +56,7 @@
     <string name="complete">완료</string>
     <string name="today">오늘</string>
     <string name="search_result_direction_title">%s → %s</string>
+    <string name="select_bus_type_content_description">버스 종류 선택하기</string>
 
     <!-- Main -->
     <string name="main_title_bus_timetable">버스 시간표</string>

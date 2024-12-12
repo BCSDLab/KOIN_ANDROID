@@ -10,6 +10,7 @@ import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.state.BusSearchResultState
 import `in`.koreatech.bus.state.ImmutableLocalTime
 import `in`.koreatech.bus.state.toBusSearchResultState
+import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.koin.domain.repository.BusV2Repository
 import `in`.koreatech.koin.feature.bus.BuildConfig
 import kotlinx.coroutines.delay
@@ -30,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BusSearchResultViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val busRepository: BusV2Repository
 ) : BaseBusViewModel() {
 
@@ -51,6 +52,8 @@ class BusSearchResultViewModel @Inject constructor(
     val selectedHourIndex = _selectedHourIndex.asStateFlow()
     private val _selectedMinuteIndex = MutableStateFlow(LocalDateTime.now().minute)
     val selectedMinuteIndex = _selectedMinuteIndex.asStateFlow()
+
+    val selectedBusTypeMenu = savedStateHandle.getStateFlow(KEY_SELECTED_BUS_TYPE_MENU, BusType.ALL)
 
     val currentTime = flow {
         while(true) {
@@ -82,17 +85,17 @@ class BusSearchResultViewModel @Inject constructor(
                 minuteList[minuteIndex].toInt()
             )
         )
-    }.transform { localDateTime ->
+    }.transform { requestLocalDateTime ->
         emit(BusSearchResultUiState.Loading)
         busRepository.fetchBusSearchResult(
-            date = localDateTime.toLocalDate(),
-            time = localDateTime.toLocalTime(),
+            date = requestLocalDateTime.toLocalDate(),
+            time = requestLocalDateTime.toLocalTime(),
             busType = "ALL", // TODO busType
             departure = departure.name,
             arrival = arrival.name
         ).onSuccess { results ->
             emit(BusSearchResultUiState.Success(results.map { it.toBusSearchResultState() }.filter {
-                if (localDateTime.dayOfYear == LocalDateTime.now().dayOfYear)
+                if (requestLocalDateTime.isBefore(LocalDateTime.now()))
                     it.departureTime.isAfter(LocalTime.now())
                 else true
             }))
@@ -131,8 +134,13 @@ class BusSearchResultViewModel @Inject constructor(
         _selectedMinuteIndex.value = minuteIndex
     }
 
+    fun onBusTypeMenuChanged(busType: BusType) {
+        savedStateHandle[KEY_SELECTED_BUS_TYPE_MENU] = busType
+    }
+
     companion object {
         private const val TOTAL_DATE_COUNT = 120
+        private const val KEY_SELECTED_BUS_TYPE_MENU = "selectedBusTypeMenu"
     }
 }
 
