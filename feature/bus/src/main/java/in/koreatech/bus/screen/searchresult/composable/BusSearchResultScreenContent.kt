@@ -172,7 +172,10 @@ internal fun BusSearchResultScreenContent(
                 ) {
                     BusType.entries.fastForEach { busType ->
                         DropdownMenuItem(
-                            text = { Text(stringResource(busType.titleRes)) },
+                            text = { Text(
+                                text = stringResource(busType.titleRes),
+                                style = KoinTheme.typography.medium14,
+                            ) },
                             onClick = {
                                 isDropdownExpanded = false
                                 onBusTypeChange(busType)
