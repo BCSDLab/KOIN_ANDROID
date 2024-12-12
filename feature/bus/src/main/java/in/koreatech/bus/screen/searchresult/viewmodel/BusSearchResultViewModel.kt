@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -53,7 +54,66 @@ class BusSearchResultViewModel @Inject constructor(
     private val _selectedMinuteIndex = MutableStateFlow(LocalDateTime.now().minute)
     val selectedMinuteIndex = _selectedMinuteIndex.asStateFlow()
 
+    val determinedDepartureTime = combine(
+        selectedDateIndex,
+        selectedDaytimeIndex,
+        selectedHourIndex,
+        selectedMinuteIndex
+    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex ->
+        LocalDateTime.of(
+            localDates[dateIndex],
+            LocalTime.of(
+                if (daytimeList[daytimeIndex] == "오전") (hourList[hourIndex].toInt() + 12) % 12
+                else (hourList[hourIndex].toInt() % 12) + 12,
+                minuteList[minuteIndex].toInt()
+            )
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = LocalDateTime.now()
+    )
+
     val selectedBusTypeMenu = savedStateHandle.getStateFlow(KEY_SELECTED_BUS_TYPE_MENU, BusType.ALL)
+
+    private val searchResult = combineTransform(
+        determinedDepartureTime, selectedBusTypeMenu, refreshToggle
+    ) { requestLocalDateTime, busType, _ ->
+        busRepository.fetchBusSearchResult(
+            date = requestLocalDateTime.toLocalDate(),
+            time = requestLocalDateTime.toLocalTime(),
+            busType = busType.name,
+            departure = departure.name,
+            arrival = arrival.name
+        ).onSuccess { searchResults ->
+            emit(searchResults.map { searchResult -> searchResult.toBusSearchResultState() })
+        }.onFailure {
+            emit(
+                if (BuildConfig.DEBUG) busSearchResultsMock
+                else null
+            )
+        }
+    }
+
+    val searchResultUiState = searchResult.transform { searchResultStates ->
+        if (searchResultStates == null)
+            emit(BusSearchResultUiState.LoadFailed)
+        else if (searchResultStates.isEmpty())
+            emit(BusSearchResultUiState.ResultEmpty)
+        else {
+            emit(BusSearchResultUiState.Success(searchResultStates.filter {
+                if (determinedDepartureTime.value.isBefore(LocalDateTime.now()))
+                    it.departureTime.isAfter(LocalTime.now())
+                else true
+            }))
+        }
+    }.catch {
+        emit(BusSearchResultUiState.LoadFailed)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = BusSearchResultUiState.Loading
+    )
 
     val currentTime = flow {
         while(true) {
@@ -68,53 +128,6 @@ class BusSearchResultViewModel @Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ImmutableLocalTime(LocalTime.now())
-    )
-
-    val searchResultUiState = combine(
-        selectedDateIndex,
-        selectedDaytimeIndex,
-        selectedHourIndex,
-        selectedMinuteIndex,
-        refreshToggle
-    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex, _ ->
-        LocalDateTime.of(
-            localDates[dateIndex],
-            LocalTime.of(
-                if (daytimeList[daytimeIndex] == "오전") (hourList[hourIndex].toInt() + 12) % 12
-                else (hourList[hourIndex].toInt() % 12) + 12,
-                minuteList[minuteIndex].toInt()
-            )
-        )
-    }.transform { requestLocalDateTime ->
-        emit(BusSearchResultUiState.Loading)
-        busRepository.fetchBusSearchResult(
-            date = requestLocalDateTime.toLocalDate(),
-            time = requestLocalDateTime.toLocalTime(),
-            busType = "ALL", // TODO busType
-            departure = departure.name,
-            arrival = arrival.name
-        ).onSuccess { results ->
-            emit(BusSearchResultUiState.Success(results.map { it.toBusSearchResultState() }.filter {
-                if (requestLocalDateTime.isBefore(LocalDateTime.now()))
-                    it.departureTime.isAfter(LocalTime.now())
-                else true
-            }))
-        }.onFailure {
-            if (BuildConfig.DEBUG) emit(BusSearchResultUiState.Success(busSearchResultsMock))
-            else emit(BusSearchResultUiState.LoadFailed)
-        }
-    }.map { uiState ->
-        if (uiState is BusSearchResultUiState.Success) {
-            if (uiState.results.isEmpty()) {
-                BusSearchResultUiState.ResultEmpty
-            } else uiState
-        } else uiState
-    }.catch {
-        emit(BusSearchResultUiState.LoadFailed)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = BusSearchResultUiState.Loading
     )
 
     fun setDepartureTimeToNow() {
