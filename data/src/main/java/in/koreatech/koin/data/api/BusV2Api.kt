@@ -28,7 +28,7 @@ interface BusV2Api {
         @Query("direction") direction: String,
     ): ExpressTimetableResponse
 
-    @GET("bus/timetable/city?direction=종합터미널")
+    @GET("bus/timetable/city")
     suspend fun fetchCityTimetable(
         @Query("bus_number") busNumber: Int,
         @Query("direction") direction: String,
