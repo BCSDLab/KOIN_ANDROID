@@ -89,7 +89,7 @@ class StoreDetailViewModel @Inject constructor(
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.BUSINESS_CALL_NUMBER,
-                        "전화하기버튼 우측위치"
+                        "number"
                     )
                 }
 
@@ -97,7 +97,7 @@ class StoreDetailViewModel @Inject constructor(
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.BUSINESS_CALL_FLOATING,
-                        "전화하기버튼 플로팅"
+                        "floating"
                     )
                 }
             }

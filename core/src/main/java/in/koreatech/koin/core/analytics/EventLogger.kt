@@ -96,6 +96,7 @@ object EventLogger {
                     param("${it.key}_debug", it.value)
                 }
             }
+            println("EventLogger: ${action.value}_debug, ${category.value}_debug, $label (debug), $value")
         } else {
             Firebase.analytics.logEvent(action.value) {
                 param(EVENT_CATEGORY, category.value)
