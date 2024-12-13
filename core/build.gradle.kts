@@ -64,10 +64,6 @@ dependencies {
     api(libs.glide)
     kapt(libs.glide.compiler)
 
-    /* Dependency - butterknife */
-    api(libs.butterknife)
-    kapt(libs.butterknife.compiler)
-
     /* Dependency - sticky scroll view */
     api(libs.stickyScrollView)
 

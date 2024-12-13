@@ -107,10 +107,6 @@ dependencies {
     implementation(libs.coil)
     kapt(libs.glide.compiler)
 
-    /* Dependency - butterknife api */
-    implementation(libs.butterknife)
-    kapt(libs.butterknife.compiler)
-
     /* Dependency - naver api */
     implementation(libs.map.sdk)
 
