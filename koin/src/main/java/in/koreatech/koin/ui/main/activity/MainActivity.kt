@@ -151,6 +151,14 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         setOnItemClickListener { id, name ->
             if(id == 0){
                 startActivity(Intent(this@MainActivity, CallBenefitStoreActivity::class.java))
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                    name,
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+                )
             }
             else{
                 EventLogger.logClickEvent(

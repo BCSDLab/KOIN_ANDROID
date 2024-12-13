@@ -24,6 +24,13 @@ object EventLogger {
         logEvent(action, EventCategory.CLICK, label, value, *extras)
     }
 
+    fun logClickABTestEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
+        logEvent(action, EventCategory.ABTEST, label, value, *extras)
+    }
+
+
+
+
     /**
      * 스크롤 이벤트 로깅
      * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
@@ -96,7 +103,7 @@ object EventLogger {
                     param("${it.key}_debug", it.value)
                 }
             }
-            println("EventLogger: ${action.value}_debug, ${category.value}_debug, $label (debug), $value")
+            println("EventLogger: ${action.value}, ${category.value}, $label, $value,  ${extras.joinToString { ", ${it.key}: ${it.value}" }}")
         } else {
             Firebase.analytics.logEvent(action.value) {
                 param(EVENT_CATEGORY, category.value)
@@ -113,14 +120,15 @@ object EventLogger {
 enum class EventAction(val value: String) {
     BUSINESS("BUSINESS"),
     CAMPUS("CAMPUS"),
-    USER("USER")
+    USER("USER"),
 }
 
 enum class EventCategory(val value: String) {
     CLICK("click"),
     SCROLL("scroll"),
     SWIPE("swipe"),     // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
-    NOTIFICATION("notification")
+    NOTIFICATION("notification"),
+    ABTEST("a/b test 로깅(전화하기)")
 }
 
 data class EventExtra(val key: String, val value: String)
