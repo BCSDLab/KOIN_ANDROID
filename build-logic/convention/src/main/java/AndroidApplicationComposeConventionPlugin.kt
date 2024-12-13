@@ -10,7 +10,6 @@ internal class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
-                apply("kotlin-kapt")
                 apply("kotlin-parcelize")
                 apply("com.google.devtools.ksp")
             }
