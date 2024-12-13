@@ -214,6 +214,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             scrollPercentage = 100.0f * offset / (range - extent)
         }
         viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
+
         storeListButton.setOnClickListener {
             gotoStoreActivity(0)
         }
@@ -319,6 +320,42 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initViewModel() = with(viewModel) {
         getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
 
+        observeLiveData(variableName) {
+            when (viewModel.variableName.value) {
+                ExperimentGroup.A -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                }
+
+                ExperimentGroup.B -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택O"
+                    )
+                    binding.storeButtonLayout.visibility = View.VISIBLE
+                    binding.recyclerViewStoreCategory.visibility = View.GONE
+                }
+
+                else -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                }
+            }
+        }
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
