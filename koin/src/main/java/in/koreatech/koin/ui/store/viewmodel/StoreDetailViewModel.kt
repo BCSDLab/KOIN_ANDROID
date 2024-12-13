@@ -1,15 +1,9 @@
 package `in`.koreatech.koin.ui.store.viewmodel
 
-import android.Manifest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.abtest.Experiment
-import `in`.koreatech.koin.core.abtest.ExperimentGroup
-import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
@@ -35,11 +29,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.splash.state.TokenState
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,8 +43,10 @@ class StoreDetailViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val reviewPromptUscCase: ReviewPromptUscCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
-    private val abTestUseCase: ABTestUseCase
+    private val abTestUseCase: ABTestUseCase,
 ) : BaseViewModel() {
+
+
     val store: LiveData<StoreWithMenu> get() = _store
     private val _store = MutableLiveData<StoreWithMenu>()
     val categories: LiveData<StoreMenu> get() = _categories
@@ -81,35 +73,16 @@ class StoreDetailViewModel @Inject constructor(
     private val _tokenState = SingleLiveEvent<TokenState>()
     val tokenState: LiveData<TokenState> get() = _tokenState
 
-    val callABTestExperimentGroup = flow {
-        abTestUseCase(Experiment.BUSINESS_CALL.experimentTitle).onSuccess {
-            emit(it)
-            when (it) {
-                ExperimentGroup.CALL_NUMBER -> {
-                    EventLogger.logClickABTestEvent(
-                        EventAction.ABTEST,
-                        AnalyticsConstant.Label.BUSINESS_CALL_NUMBER,
-                        "number"
-                    )
-                }
+    private val _variableName = MutableLiveData<String>()
+    val variableName: LiveData<String> get() = _variableName
 
-                ExperimentGroup.CALL_FLOATING -> {
-                    EventLogger.logClickABTestEvent(
-                        EventAction.ABTEST,
-                        AnalyticsConstant.Label.BUSINESS_CALL_FLOATING,
-                        "floating"
-                    )
-                }
-            }
-        }.onFailure {
-            emit(Experiment.BUSINESS_CALL.experimentGroups.first())
-            Timber.d("Fail to get A/b Test Data")
+
+    fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
+        abTestUseCase(title).onSuccess {
+            _variableName.value = it
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = Experiment.BUSINESS_CALL.experimentGroups.first()
-    )
+    }
+
 
     fun getStoreWithMenu(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreWithMenuUseCase(storeId).also { store ->
@@ -118,7 +91,7 @@ class StoreDetailViewModel @Inject constructor(
         }
     }
 
-    fun postReviewPromptNotification(storeId: Int){
+    fun postReviewPromptNotification(storeId: Int) {
         viewModelScope.launch {
             reviewPromptUscCase(storeId)
                 .onFailure {
