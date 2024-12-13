@@ -105,7 +105,7 @@ dependencies {
     /* Dependency - glide & coil */
     implementation(libs.glide)
     implementation(libs.coil)
-    kapt(libs.glide.compiler)
+    ksp(libs.glide.ksp)
 
     /* Dependency - naver api */
     implementation(libs.map.sdk)

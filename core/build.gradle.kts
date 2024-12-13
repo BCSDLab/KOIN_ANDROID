@@ -62,7 +62,7 @@ dependencies {
 
     /* Dependency - glide */
     api(libs.glide)
-    kapt(libs.glide.compiler)
+    ksp(libs.glide.ksp)
 
     /* Dependency - sticky scroll view */
     api(libs.stickyScrollView)
