@@ -306,12 +306,22 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
 
         showCallDialog()
-        EventLogger.logClickEvent(
-            EventAction.BUSINESS,
-            AnalyticsConstant.Label.SHOP_CALL,
-            viewModel.store.value?.name ?: "Unknown",
-            EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
-        )
+        if(intent.extras?.getBoolean(StoreDetailActivityContract.IS_BENEFIT) == true){
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.BENEFIT_SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
+            )
+        }
+        else {
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0).toString())
+            )
+        }
     }
 
 

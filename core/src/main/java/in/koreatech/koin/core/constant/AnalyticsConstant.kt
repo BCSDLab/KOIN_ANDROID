@@ -102,8 +102,8 @@ object AnalyticsConstant {
         const val POPULAR_NOTICE_BANNER = "popular_notice_banner"
         const val TO_MANAGE_KEYWORD = "to_manage_keyword"
 
-        const val BUSINESS_CALL_NUMBER = " BUSINESS_call_number"
-        const val BUSINESS_CALL_FLOATING = "BUSINESS_call_floating"
+        const val BUSINESS_CALL_NUMBER = " BUSINESS_call_1"
+        const val BUSINESS_CALL_FLOATING = "BUSINESS_call_1"
     }
 
     const val PREVIOUS_PAGE = "previous_page"

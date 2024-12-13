@@ -102,18 +102,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
                 )
             }
-            
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CLICK,
-                it.name,
-                EventExtra(
-                    AnalyticsConstant.PREVIOUS_PAGE,
-                    viewModel.category.value?.name ?: "Unknown"
-                ),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-            )
         }
     }
 

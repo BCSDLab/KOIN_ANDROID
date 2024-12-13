@@ -86,16 +86,16 @@ class StoreDetailViewModel @Inject constructor(
             emit(it)
             when (it) {
                 ExperimentGroup.CALL_NUMBER -> {
-                    EventLogger.logClickEvent(
-                        EventAction.BUSINESS,
+                    EventLogger.logClickABTestEvent(
+                        EventAction.ABTEST,
                         AnalyticsConstant.Label.BUSINESS_CALL_NUMBER,
                         "number"
                     )
                 }
 
                 ExperimentGroup.CALL_FLOATING -> {
-                    EventLogger.logClickEvent(
-                        EventAction.BUSINESS,
+                    EventLogger.logClickABTestEvent(
+                        EventAction.ABTEST,
                         AnalyticsConstant.Label.BUSINESS_CALL_FLOATING,
                         "floating"
                     )
