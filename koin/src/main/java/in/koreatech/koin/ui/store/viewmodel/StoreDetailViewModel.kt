@@ -76,13 +76,11 @@ class StoreDetailViewModel @Inject constructor(
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
 
-
     fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
         abTestUseCase(title).onSuccess {
             _variableName.value = it
         }
     }
-
 
     fun getStoreWithMenu(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreWithMenuUseCase(storeId).also { store ->
