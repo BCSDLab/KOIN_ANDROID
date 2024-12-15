@@ -31,6 +31,7 @@ import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableUiS
 import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock1
 import `in`.koreatech.bus.component.CommonFailureView
 import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock2
+import `in`.koreatech.bus.screen.shuttle_timetable.composable.loading.ShuttleTimetableLoading
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -127,15 +128,14 @@ fun ShuttleTimetableScreenContent(
                                 ).background(KoinTheme.colors.neutral100))
                             }
                         }
-                        
+
                         Spacer(modifier = Modifier.height(120.dp))
                     }
 
                     is ShuttleTimetableUiState.Loading -> {
-                        CommonLoadingView(
+                        ShuttleTimetableLoading(
                             modifier = Modifier
-                                .padding(top = 200.dp)
-                                .fillMaxSize()
+                                .padding(horizontal = 24.dp, vertical = 16.dp)
                         )
                     }
 
