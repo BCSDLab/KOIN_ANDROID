@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.store.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -35,6 +36,7 @@ import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreSorter
+import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCheckActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreCategoriesRecyclerAdapter
@@ -100,18 +102,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
                 )
             }
-            
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CLICK,
-                it.name,
-                EventExtra(
-                    AnalyticsConstant.PREVIOUS_PAGE,
-                    viewModel.category.value?.name ?: "Unknown"
-                ),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-            )
         }
     }
 
@@ -389,7 +379,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
         with(binding) {
             storeManyReviewCheckbox.setOnClickListener {
-
                 if (storeManyReviewCheckbox.isChecked) {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
@@ -489,6 +478,10 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 )
 
                 viewModel.filterStoreIsDelivery(storeIsDeliveryCheckbox.isChecked)
+            }
+
+            goToBenefitActivityButton.setOnClickListener {
+                startActivity(Intent(this@StoreActivity, CallBenefitStoreActivity::class.java))
             }
         }
     }
