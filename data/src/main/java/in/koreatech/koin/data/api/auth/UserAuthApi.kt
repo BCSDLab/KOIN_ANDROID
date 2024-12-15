@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
+import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import retrofit2.Response
@@ -89,6 +90,9 @@ interface UserAuthApi {
 
     @GET(URLConstant.OWNER.OWNER)
     suspend fun getOwnerTokenIsValid()
+
+    @POST("abtest/assign/token")
+    suspend fun updateABTestToken(): ABTestTokenResponse
 
     @POST("abtest/assign")
     suspend fun postABTestAssign(@Body abTestRequest: ABTestRequest): ABTestResponse
