@@ -61,7 +61,7 @@ dependencies {
     debugImplementation(libs.leakcanary.android)
 
     /* Dependency - glide */
-    api(libs.glide)
+    implementation(libs.glide)
     ksp(libs.glide.ksp)
 
     /* Dependency - sticky scroll view */
