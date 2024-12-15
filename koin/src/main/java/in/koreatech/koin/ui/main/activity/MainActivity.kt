@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -21,7 +22,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
-import `in`.koreatech.bus.MainEntryView
+import `in`.koreatech.bus.screen.MainEntryView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
@@ -48,6 +49,7 @@ import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
+import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
@@ -55,7 +57,6 @@ import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
-import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -148,15 +149,28 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                name,
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-            )
-            gotoStoreActivity(id + 1)
+            if(id == 0){
+                startActivity(Intent(this@MainActivity, CallBenefitStoreActivity::class.java))
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                    name,
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+                )
+            }
+            else{
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
+                    name,
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+                )
+                gotoStoreActivity(id)
+            }
         }
     }
 
@@ -200,6 +214,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             scrollPercentage = 100.0f * offset / (range - extent)
         }
         viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
+
         storeListButton.setOnClickListener {
             gotoStoreActivity(0)
         }
@@ -266,8 +281,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         recyclerViewStoreCategory.apply {
-            layoutManager =
-                LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(this@MainActivity, 6)
             adapter = storeCategoriesRecyclerAdapter
         }
 
@@ -304,6 +318,44 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
+        getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
+
+        observeLiveData(variableName) {
+            when (viewModel.variableName.value) {
+                ExperimentGroup.A -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                }
+
+                ExperimentGroup.B -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택O"
+                    )
+                    binding.storeButtonLayout.visibility = View.VISIBLE
+                    binding.recyclerViewStoreCategory.visibility = View.GONE
+                }
+
+                else -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        label = "BUSINESS_benefit_1",
+                        value = "혜택X"
+                    )
+                    binding.storeButtonLayout.visibility = View.GONE
+                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                }
+            }
+        }
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
@@ -320,7 +372,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
         }
         observeLiveData(storeCategories) {
-            storeCategoriesRecyclerAdapter.submitList(it.drop(1))
+            storeCategoriesRecyclerAdapter.submitList(it)
         }
         binding.recyclerViewStoreCategory.visibility = View.GONE
         binding.storeButtonLayout.visibility = View.VISIBLE

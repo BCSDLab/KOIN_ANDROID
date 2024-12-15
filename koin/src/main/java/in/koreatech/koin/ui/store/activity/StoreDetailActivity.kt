@@ -4,21 +4,25 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.abtest.Experiment
+import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -97,6 +101,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         setContentView(binding.root)
         initViewModel()
 
+        if (!isABTestAssigned) {
+            viewModel.postABTestAssign(Experiment.BUSINESS_CALL.experimentTitle)
+            isABTestAssigned = true
+        }
 
         binding.koinBaseAppbar.storeDetailClickListener {
             when (it.id) {
@@ -107,46 +115,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 }
 
                 AppBarBase.getRightButtonId() -> {
-                    dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
-                    reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
-
-                    showCallDialog()
-                    EventLogger.logClickEvent(
-                        EventAction.BUSINESS,
-                        AnalyticsConstant.Label.SHOP_CALL,
-                        viewModel.store.value?.name ?: "Unknown",
-                        EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
-                    )
-
-                    if(intent.extras?.getBoolean(StoreDetailActivityContract.IS_BENEFIT) == true){
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.BENEFIT_SHOP_CALL,
-                            viewModel.store.value?.name ?: "Unknown",
-                            EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
-                        )
-                    }
-                    else{
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_CALL,
-                            (viewModel.store.value?.name
-                                ?: "Unknown") ,
-                            EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0 ).toString())
-
-                        )
-                    }
-                    if (currentTab == 2) {// 리뷰탭에서 전화누르기까지 시간
-
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-                            viewModel.store.value?.name ?: "Unknown",
-                            EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
-                            EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                            EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
-                        )
-                    }
+                    toggleNavigationDrawer()
                 }
             }
         }
@@ -197,7 +166,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                                 viewModel.store.value?.name ?: "Unknown",
                                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
                                 EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
+                                EventExtra(
+                                    AnalyticsConstant.DURATION_TIME,
+                                    (reviewElapsedTime / 1000.0).toString()
+                                )
                             )
                         }
                     }
@@ -218,7 +190,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                                 viewModel.store.value?.name ?: "Unknown",
                                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
                                 EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
+                                EventExtra(
+                                    AnalyticsConstant.DURATION_TIME,
+                                    (reviewElapsedTime / 1000.0).toString()
+                                )
                             )
                         }
                     }
@@ -261,11 +236,30 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 .makeShort(getString(R.string.store_detail_wrong_store_id_message))
             finish()
         }
+
+        when (abtestName) {
+            ExperimentGroup.CALL_NUMBER -> {
+                binding.callFloatingButton.visibility = View.GONE
+                binding.storeDetailPhoneTextview.setTextColor(
+                    ContextCompat.getColor(
+                        this@StoreDetailActivity,
+                        R.color.colorPrimary
+                    )
+                )
+            }
+
+            ExperimentGroup.CALL_FLOATING -> {
+                binding.scrollUpButton.visibility = View.GONE
+                binding.storeDetailPhoneImage.visibility = View.GONE
+            }
+        }
+
         viewModel.getStoreWithMenu(storeId!!)
         viewModel.getShopMenus(storeId)
         viewModel.getShopEvents(storeId)
         viewModel.getShopReviews(storeId)
 
+        initCallFunction()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -284,9 +278,76 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         super.onBackPressed()
     }
 
+    private fun initCallFunction() {
+        binding.storeDetailPhoneImage.setOnClickListener {
+            callingLogic()
+        }
+
+        binding.storeDetailPhoneTextview.setOnClickListener {
+            callingLogic()
+        }
+
+        binding.callFloatingButton.setOnClickListener {
+            callingLogic()
+        }
+    }
+
+    private fun callingLogic() {
+        dialogElapsedTime = System.currentTimeMillis() - dialogCurrentTime
+
+        showCallDialog()
+        if (intent.extras?.getBoolean(StoreDetailActivityContract.IS_BENEFIT) == true) {
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.BENEFIT_SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0).toString())
+            )
+        } else {
+            EventLogger.logClickEvent(
+                EventAction.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0).toString())
+            )
+        }
+    }
+
 
     private fun initViewModel() {
         withLoading(this@StoreDetailActivity, viewModel)
+
+        observeLiveData(viewModel.variableName) {
+            abtestName = it
+            when (viewModel.variableName.value) {
+                ExperimentGroup.CALL_NUMBER -> {
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(전화하기)",
+                        label = AnalyticsConstant.Label.BUSINESS_CALL_NUMBER,
+                        value = "number"
+                    )
+                    binding.callFloatingButton.visibility = View.GONE
+                    binding.storeDetailPhoneTextview.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreDetailActivity,
+                            R.color.colorPrimary
+                        )
+                    )
+                }
+
+                ExperimentGroup.CALL_FLOATING -> {
+                    binding.scrollUpButton.visibility = View.GONE
+                    binding.storeDetailPhoneImage.visibility = View.GONE
+                    EventLogger.logCustomEvent(
+                        action = "AB_TEST",
+                        category = "a/b test 로깅(전화하기)",
+                        label = AnalyticsConstant.Label.BUSINESS_CALL_FLOATING,
+                        value = "floating"
+                    )
+                }
+            }
+        }
 
         observeLiveData(viewModel.storeReview) {
             binding.storeDetailTabLayout.getTabAt(2)?.text =
@@ -363,8 +424,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 binding.storeDetailImageview.apply {
                     adapter = StoreDetailImageViewpagerAdapter(it.imageUrls) {
                         ImageZoomableDialog(context, it)
-                            .also {
-                                    zoomableDialog -> zoomableDialog.show()
+                            .also { zoomableDialog ->
+                                zoomableDialog.show()
                             }
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
@@ -375,6 +436,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 }
             }
         }
+
 
     }
 
@@ -390,35 +452,36 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         val category = intent.extras?.getString(StoreDetailActivityContract.CATEGORY)
         storeElapsedTime = System.currentTimeMillis() - storeCurrentTime
         currentPage = "카테고리($category)"
-        if ( isSwipeGesture) {
+        if (isSwipeGesture) {
             EventLogger.logSwipeEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
-                viewModel.store.value?.name ?: "Unknown" ,
+                viewModel.store.value?.name ?: "Unknown",
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, category ?: "Unknown"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0 ).toString()),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0).toString()),
             )
 
-        }
-        else{
+        } else {
             EventLogger.logSwipeEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
-                viewModel.store.value?.name ?: "Unknown" ,
+                viewModel.store.value?.name ?: "Unknown",
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, category ?: "Unknown"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0 ).toString()),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0).toString()),
             )
         }
 
-        if(currentTab == 2){
+        if (currentTab == 2) {
             reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
+
+
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
                 viewModel.store.value?.name ?: "Unknown",
                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0 ).toString())
+                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0).toString())
             )
 
         }
@@ -496,5 +559,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         const val ELAPSED_TIME = "elapsedTime"
         const val STORE_NAME = "storeName"
         const val BACK_ACTION = "back_action"
+        var isABTestAssigned = false
+        var abtestName = ""
     }
 }

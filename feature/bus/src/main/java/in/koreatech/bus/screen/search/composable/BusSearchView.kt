@@ -34,7 +34,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
-internal fun BusSearchContentView(
+internal fun BusSearchView(
     departure: String,
     arrival: String,
     modifier: Modifier = Modifier,
@@ -160,7 +160,7 @@ internal fun BusSearchContentView(
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
                 enabled = searchButtonEnabled,
-                text = stringResource(R.string.search),
+                text = stringResource(R.string.action_search),
                 contentPadding = PaddingValues(vertical = 12.dp),
                 onClick = onSearchClicked
             )

@@ -63,7 +63,9 @@ fun StoreItemResponse.toStore(): Store = Store(
             closeTime = it.closeTime ?: ""
         )
     }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
-    categoryIds = categoryIds
+    categoryIds = categoryIds,
+    benefitDetails = benefitDetails ?: benefitDetail?.toStringArray() ?: emptyList(),
+
 )
 
 fun StoreEventItemReponse.toStoreEvent(): StoreEvent = StoreEvent(

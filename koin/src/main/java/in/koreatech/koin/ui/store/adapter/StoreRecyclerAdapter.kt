@@ -42,25 +42,28 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
         fun bind(store: Store) {
             binding.storeNameTextview.text = store.name
             binding.storeNameTextview.setStoreNameState(store.isOpen)
-            binding.storeRatingScoreTextview.text =  String.format("%.1f", store.averageRate)
+            binding.storeRatingScoreTextview.text = String.format("%.1f", store.averageRate)
 
             binding.isRatingImageview.setImageResource(
-                if(store.reviewCount > 0)
+                if (store.reviewCount > 0)
                     R.drawable.ic_rating
                 else
                     R.drawable.ic_no_rating
             )
 
             binding.storeReviewTextview.text = (
-                    if(store.reviewCount == 0) itemView.context.getString(R.string.store_no_review)
+                    if (store.reviewCount == 0) itemView.context.getString(R.string.store_no_review)
                     else if (store.reviewCount > 10) itemView.context.getString(R.string.store_many_review)
-                    else itemView.context.getString(R.string.store_review_count, store.reviewCount.toString())
+                    else itemView.context.getString(
+                        R.string.store_review_count,
+                        store.reviewCount.toString()
+                    )
                     ).toString()
 
 
-            if(!store.isOpen){
+            if (!store.isOpen) {
                 binding.readyStoreFrameLayout.isVisible = true
-                if(store.name.hasJongSungAtLastChar()){
+                if (store.name.hasJongSungAtLastChar()) {
                     val fullText = itemView.context.getString(R.string.store_eun, store.name)
                     val spannableString = SpannableString(fullText)
 
@@ -99,9 +102,37 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
 
                     binding.storeDoesNotOpenTextView.text = spannableString
                 }
-            }
-            else{
+            } else {
                 binding.readyStoreFrameLayout.isInvisible = true
+                if (store.benefitDetails.isEmpty()) {
+                    binding.viewFlipper.isInvisible = true
+                } else {
+                    binding.viewFlipper.isInvisible = false
+                    binding.viewFlipper.removeAllViews()
+                }
+
+            }
+
+            for (text in store.benefitDetails) {
+                val newTextView = TextView(binding.root.context)
+                newTextView.text = text
+                newTextView.setTextColor(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        R.color.blue_alpha20
+                    )
+                )
+                newTextView.layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+
+                binding.viewFlipper.addView(newTextView)
+            }
+
+            binding.viewFlipper.post {
+                binding.viewFlipper.startFlipping()
+                binding.viewFlipper.flipInterval = 2500
             }
 
             binding.eventImageView.isVisible = store.isEvent
