@@ -166,7 +166,6 @@ class MainActivityViewModel @Inject constructor(
 
     init {
         updateDining()
-        getStoreCategories()
     }
 
     fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
@@ -234,9 +233,11 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getStoreCategories() {
+    fun getStoreCategories(storeCategory: StoreCategories) {
         viewModelScope.launchWithLoading {
-            _storeCategories.value = getStoreCategoriesUseCase()
+            val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
+            categoryList.add(0, storeCategory)
+            _storeCategories.value = categoryList
         }
     }
 
