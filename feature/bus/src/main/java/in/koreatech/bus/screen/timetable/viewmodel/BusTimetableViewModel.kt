@@ -11,7 +11,9 @@ import `in`.koreatech.bus.viewstate.ShuttleRegionViewState
 import `in`.koreatech.bus.viewstate.ShuttleTimetableOverviewViewState
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -23,8 +25,8 @@ class BusTimetableViewModel @Inject constructor(
 ) : ViewModel() {
 
     /** 임시 데이터 모음 */
-    val shuttleRegions = flow {
-        emit(
+    val timetableUiState = flow<BusTimetableUiState> {
+        val shuttleRegions = viewModelScope.async {
             listOf(
                 ShuttleRegionViewState(
                     name = "서울",
@@ -81,14 +83,8 @@ class BusTimetableViewModel @Inject constructor(
                     )
                 )
             )
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
-    )
-    val expressTimetable = flow {
-        emit(
+        }
+        val expressTimetable = viewModelScope.async {
             CommonTimetableViewState(
                 updatedAt = "2024-09-21",
                 arrivals = mapOf(
@@ -130,54 +126,8 @@ class BusTimetableViewModel @Inject constructor(
                     ),
                 )
             )
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = CommonTimetableViewState(
-            updatedAt = "2024-09-21",
-            arrivals = mapOf(
-                DaytimeType.AM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "09:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "09:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:30"
-                    ),
-                ), DaytimeType.PM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "14:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "21:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "21:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "22:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "22:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "23:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "23:30"
-                    )
-                ),
-            )
-        )
-    )
-    val cityTimetable = flow {
-        emit(
+        }
+        val cityTimetable = viewModelScope.async {
             CommonTimetableViewState(
                 updatedAt = "2024-09-21",
                 arrivals = mapOf(
@@ -201,52 +151,19 @@ class BusTimetableViewModel @Inject constructor(
                     )
                 )
             )
-        )
+        }
+
+        emit(BusTimetableUiState.Success(
+            shuttleRegions.await(), expressTimetable.await(), cityTimetable.await()
+        ))
+    }.catch {
+        emit(BusTimetableUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = CommonTimetableViewState(
-            updatedAt = "2024-09-21",
-            arrivals = mapOf(
-                DaytimeType.AM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "09:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "09:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:30"
-                    ),
-                ), DaytimeType.PM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "14:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "21:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "21:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "22:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "22:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "23:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "23:30"
-                    )
-                ),
-            )
-        )
+        initialValue = BusTimetableUiState.Loading
     )
+
     val notice = flow {
         emit("[긴급] 9.27(금) 대학등교방향 천안셔틀버스 터미널 미정차 알림(천안역에서 승차바람)")
     }.stateIn(
@@ -268,4 +185,14 @@ class BusTimetableViewModel @Inject constructor(
             onboardingManager.updateShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE, false)
         }
     }
+}
+
+sealed interface BusTimetableUiState {
+    data class Success(
+        val shuttleRegions: List<ShuttleRegionViewState>,
+        val expressTimetable: CommonTimetableViewState,
+        val cityTimetable: CommonTimetableViewState
+    ) : BusTimetableUiState
+    data object Loading : BusTimetableUiState
+    data object LoadFailed: BusTimetableUiState
 }

@@ -36,7 +36,7 @@
     <string name="select_departure">출발지 선택</string>
     <string name="select_arrival">도착지 선택</string>
     <string name="swap_content_description">출발지와 도착지를 바꾸기</string>
-    <string name="search">조회하기</string>
+    <string name="action_search">조회하기</string>
     <string name="question_departure">어디서 출발하시나요?</string>
     <string name="question_arrival">목적지가 어디인가요?</string>
     <string name="action_select_arrival">도착지 선택하기</string>
@@ -50,6 +50,7 @@
     <string name="departure_now">지금 출발</string>
     <string name="complete">완료</string>
     <string name="today">오늘</string>
+    <string name="search_result_direction_title">%s → %s</string>
 
     <!-- Main -->
     <string name="main_title_bus_timetable">버스 시간표</string>

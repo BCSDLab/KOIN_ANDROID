@@ -177,6 +177,7 @@ guava = { module = "com.google.guava:guava", version.ref = "guavaVersion" }
 kakao-share = { module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare" }
 
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
 
 dataStore = { module = "androidx.datastore:datastore", version.ref = "dataStore" }
