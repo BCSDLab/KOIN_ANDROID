@@ -76,6 +76,11 @@ class UserRemoteDataSource(
     suspend fun verifyPassword(passwordRequest: PasswordRequest) {
         userAuthApi.checkPassword(passwordRequest)
     }
+
+    suspend fun updateABTestToken(): ABTestTokenResponse {
+        return userAuthApi.updateABTestToken()
+    }
+
     suspend fun postABTestAssign(abTestRequest: ABTestRequest): ABTestResponse {
         return userAuthApi.postABTestAssign(abTestRequest)
     }
