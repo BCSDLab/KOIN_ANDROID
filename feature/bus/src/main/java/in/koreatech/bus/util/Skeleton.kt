@@ -25,9 +25,12 @@ internal object Skeleton {
 }
 
 @Composable
-internal fun Modifier.skeleton() = this.background(
-    brush = Skeleton.brush,
-    shape = Skeleton.shape
+internal fun Modifier.skeleton(
+    brush: Brush = Skeleton.brush,
+    shape: Shape = Skeleton.shape
+) = this.background(
+    brush = brush,
+    shape = shape
 )
 
 @Composable
