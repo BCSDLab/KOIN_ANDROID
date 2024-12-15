@@ -115,8 +115,6 @@ dependencies {
     implementation(libs.inApp.update.ktx)
     implementation(libs.feature.delivery.ktx)
 
-    // https://github.com/irshuLx/Android-WYSIWYG-Editor
-    implementation(libs.laser.native.editor)
     implementation(libs.colorpicker)
     implementation(libs.photoview)
 
