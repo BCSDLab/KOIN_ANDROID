@@ -47,6 +47,7 @@ import `in`.koreatech.bus.component.CommonFailureView
 import `in`.koreatech.bus.component.CommonLoadingView
 import `in`.koreatech.bus.mock.busSearchResultsMock
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
+import `in`.koreatech.bus.screen.searchresult.composable.loading.BusSearchResultLoadingItem
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
 import `in`.koreatech.bus.state.ImmutableLocalTime
 import `in`.koreatech.bus.type.BusType
@@ -206,7 +207,12 @@ internal fun BusSearchResultScreenContent(
                 CommonEmptyView(modifier = Modifier.fillMaxSize())
             }
             is BusSearchResultUiState.Loading -> {
-                CommonLoadingView(modifier = Modifier.fillMaxSize())
+                repeat(25) {
+                    BusSearchResultLoadingItem(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp, vertical = 8.dp)
+                    )
+                }
             }
             is BusSearchResultUiState.LoadFailed -> {
                 CommonFailureView(modifier = Modifier.fillMaxSize())
