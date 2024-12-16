@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
@@ -47,7 +48,8 @@ fun MainEntryView(
             Text(
                 text = stringResource(R.string.bus),
                 style = KoinTheme.typography.bold18,
-                color = KoinTheme.colors.primary500
+                color = KoinTheme.colors.primary500,
+                fontSize = 15.sp
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(

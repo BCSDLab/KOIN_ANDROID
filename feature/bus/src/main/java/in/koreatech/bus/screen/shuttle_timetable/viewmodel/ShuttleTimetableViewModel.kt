@@ -30,8 +30,7 @@ class ShuttleTimetableViewModel @Inject constructor(
         busRepository.fetchShuttleTimetable(arguments.id).onSuccess {
             emit(ShuttleTimetableUiState.Success(it.toShuttleTimetableState()))
         }.onFailure {
-            if (BuildConfig.DEBUG) emit(shuttleTimetableUiStateMock1)
-            else emit(ShuttleTimetableUiState.LoadFailed)
+            emit(ShuttleTimetableUiState.LoadFailed)
         }
     }.catch {
         emit(ShuttleTimetableUiState.LoadFailed)

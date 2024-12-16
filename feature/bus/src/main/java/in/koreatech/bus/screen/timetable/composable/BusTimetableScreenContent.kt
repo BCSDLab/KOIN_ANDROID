@@ -123,38 +123,40 @@ internal fun BusTimetableScreenContent(
                 if (LocalInspectionMode.current)
                     selectedTimetableTypeTab = previewTab
 
+            HorizontalPager(
+                modifier = Modifier.fillMaxSize().background(Color.White),
+                state = pagerState,
+                verticalAlignment = Alignment.Top
+            ) { page ->
                 when (busTimetableUiState) {
                     is BusTimetableUiState.Success -> {
-                        HorizontalPager(
-                            modifier = Modifier.fillMaxSize().background(Color.White),
-                            state = pagerState,
-                            verticalAlignment = Alignment.Top
-                        ) { page ->
-                            when (page + 1) {
-                                BusType.SHUTTLE.ordinal -> {
-                                    ShuttleCoursesScreenContent(
-                                        modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
-                                        shuttleCourses = busTimetableUiState.shuttleCourses,
-                                        onItemClicked = onShuttleCourseRouteClick,
-                                    )
-                                }
+                        when (page + 1) {
+                            BusType.SHUTTLE.ordinal -> {
+                                ShuttleCoursesScreenContent(
+                                    modifier = Modifier.background(KoinTheme.colors.neutral100)
+                                        .verticalScroll(rememberScrollState()),
+                                    shuttleCourses = busTimetableUiState.shuttleCourses,
+                                    onItemClicked = onShuttleCourseRouteClick,
+                                )
+                            }
 
-                                BusType.EXPRESS.ordinal -> {
-                                    ExpressTimetableScreenContent(
-                                        modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
-                                        expressTimetable = busTimetableUiState.expressTimetable,
-                                        onDirectionChanged = onExpressDirectionChange
-                                    )
-                                }
+                            BusType.EXPRESS.ordinal -> {
+                                ExpressTimetableScreenContent(
+                                    modifier = Modifier.background(KoinTheme.colors.neutral100)
+                                        .verticalScroll(rememberScrollState()),
+                                    expressTimetable = busTimetableUiState.expressTimetable,
+                                    onDirectionChanged = onExpressDirectionChange
+                                )
+                            }
 
-                                BusType.CITY.ordinal -> {
-                                    CityTimetableScreenContent(
-                                        modifier = Modifier.background(KoinTheme.colors.neutral100).verticalScroll(rememberScrollState()),
-                                        timetable = busTimetableUiState.cityTimetable,
-                                        onBusNumberChanged = onCityBusNumberChange,
-                                        onDirectionChanged = onCityDirectionChange
-                                    )
-                                }
+                            BusType.CITY.ordinal -> {
+                                CityTimetableScreenContent(
+                                    modifier = Modifier.background(KoinTheme.colors.neutral100)
+                                        .verticalScroll(rememberScrollState()),
+                                    timetable = busTimetableUiState.cityTimetable,
+                                    onBusNumberChanged = onCityBusNumberChange,
+                                    onDirectionChanged = onCityDirectionChange
+                                )
                             }
                         }
                     }
@@ -173,6 +175,7 @@ internal fun BusTimetableScreenContent(
                         )
                     }
                 }
+            }
         }
     }
 
