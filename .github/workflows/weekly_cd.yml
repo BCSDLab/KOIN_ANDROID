@@ -1,10 +1,8 @@
 name: Weekly CD
 
 on:
-  push:
-    branches: [ "fix/weekly_cd" ]
-#  schedule:
-#    - cron: '0 15 * * 0'
+  schedule:
+    - cron: '0 15 * * 0'
 
 jobs:
   deploy:
@@ -95,12 +93,12 @@ jobs:
             --release-notes "${{ steps.date.outputs.time }} - develop" \
             --debug
 
-#     - name: Upload to Slack
-#       uses: 8398a7/action-slack@v3
-#       with:
-#         status: ${{ job.status }}
-#         author_name: Android Weekly Dev Deploy
-#         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-#       env:
-#         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-#       if: always()
+     - name: Upload to Slack
+       uses: 8398a7/action-slack@v3
+       with:
+         status: ${{ job.status }}
+         author_name: Android Weekly Dev Deploy
+         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+       env:
+         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+       if: always()
