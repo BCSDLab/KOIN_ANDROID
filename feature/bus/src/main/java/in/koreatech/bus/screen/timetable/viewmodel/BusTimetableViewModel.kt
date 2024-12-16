@@ -44,16 +44,15 @@ class BusTimetableViewModel @Inject constructor(
     private val cityNumber = savedStateHandle.getStateFlow(KEY_CITY_NUMBER, CityBusNumberType.N400)
     private val cityDirection = savedStateHandle.getStateFlow(KEY_CITY_DIRECTION, CommonDirectionType.TO_BYEONGCHEON)
 
-    private val shuttleCourses = flow {
+    private val shuttleCourses = refreshToggle.transform {
         busRepository.fetchShuttleCourses().onSuccess {
             emit(it.toShuttleCoursesState())
         }.onFailure {
-            if (BuildConfig.DEBUG) emit(shuttleCoursesMock)
-            else emit(null)
+            emit(null)
         }
     }
 
-    private val expressTimetable = expressDirection.transform { direction ->
+    private val expressTimetable = combineTransform(expressDirection, refreshToggle) { direction, _ ->
         val directionQuery = when (direction) {
             CommonDirectionType.TO_BYEONGCHEON -> "to"
             CommonDirectionType.TO_CHEONAN -> "from"
@@ -61,12 +60,11 @@ class BusTimetableViewModel @Inject constructor(
         busRepository.fetchExpressTimetable(directionQuery).onSuccess {
             emit(it.toExpressTimetableState())
         }.onFailure {
-            if (BuildConfig.DEBUG) emit(expressTimetableMock)
-            else emit(null)
+            emit(null)
         }
     }
 
-    private val cityTimetable = combineTransform(cityNumber, cityDirection) { number, direction ->
+    private val cityTimetable = combineTransform(cityNumber, cityDirection, refreshToggle) { number, direction, _ ->
         val directionQuery = when(direction) {
             CommonDirectionType.TO_BYEONGCHEON -> "병천3리"
             CommonDirectionType.TO_CHEONAN -> "종합터미널"
@@ -74,8 +72,7 @@ class BusTimetableViewModel @Inject constructor(
         busRepository.fetchCityTimetable(number.numberQuery, directionQuery).onSuccess {
             emit(it.toCityTimetableState())
         }.onFailure {
-            if (BuildConfig.DEBUG) emit(cityTimetableMock)
-            else emit(null)
+            emit(null)
         }
     }
 
@@ -83,8 +80,7 @@ class BusTimetableViewModel @Inject constructor(
         shuttleCourses,
         expressTimetable,
         cityTimetable,
-        refreshToggle
-    ) { shuttleCourses, expressTimetable, cityTimetable, _ ->
+    ) { shuttleCourses, expressTimetable, cityTimetable ->
         if (shuttleCourses == null || expressTimetable == null || cityTimetable == null)
             BusTimetableUiState.LoadFailed
         else BusTimetableUiState.Success(shuttleCourses, expressTimetable, cityTimetable)
