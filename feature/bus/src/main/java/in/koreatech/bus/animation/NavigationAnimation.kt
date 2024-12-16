@@ -11,7 +11,8 @@ import androidx.compose.ui.graphics.Color
 
 private const val TRANSITION_DURATION = 400
 private const val FADE_RATIO = .55f
-private const val SLIDE_RATIO = .85f
+private const val SCALE_RATIO = .9f
+private const val SLIDE_DIVIDE_RATIO = 3
 
 internal val defaultOutsideColor = Color(0xFF282828)
 
@@ -25,11 +26,11 @@ internal fun<S> AnimatedContentTransitionScope<S>.defaultExitTransition() = fade
     targetAlpha = FADE_RATIO
 ) + scaleOut(
     animationSpec = tween(TRANSITION_DURATION),
-    targetScale = SLIDE_RATIO
+    targetScale = SCALE_RATIO
 ) + slideOutOfContainer(
     towards = AnimatedContentTransitionScope.SlideDirection.Left,
     animationSpec = tween(TRANSITION_DURATION),
-    targetOffset = { it / 4 }
+    targetOffset = { it / SLIDE_DIVIDE_RATIO }
 )
 
 internal fun<S> AnimatedContentTransitionScope<S>.defaultPopEnterTransition() = fadeIn(
@@ -37,11 +38,11 @@ internal fun<S> AnimatedContentTransitionScope<S>.defaultPopEnterTransition() = 
     initialAlpha = FADE_RATIO
 ) + scaleIn(
     animationSpec = tween(TRANSITION_DURATION),
-    initialScale = SLIDE_RATIO
+    initialScale = SCALE_RATIO
 ) + slideIntoContainer(
     towards = AnimatedContentTransitionScope.SlideDirection.Right,
     animationSpec = tween(TRANSITION_DURATION),
-    initialOffset = { it / 4 }
+    initialOffset = { it / SLIDE_DIVIDE_RATIO }
 )
 
 internal fun<S> AnimatedContentTransitionScope<S>.defaultPopExitTransition() = slideOutOfContainer(
