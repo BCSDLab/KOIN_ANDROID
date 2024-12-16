@@ -1,4 +1,4 @@
-package `in`.koreatech.bus.util
+package `in`.koreatech.bus.animation
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode

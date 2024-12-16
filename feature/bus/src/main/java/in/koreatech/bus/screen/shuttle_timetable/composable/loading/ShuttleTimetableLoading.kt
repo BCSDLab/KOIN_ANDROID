@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.util.skeleton
+import `in`.koreatech.bus.animation.skeleton
 
 @Composable
 internal fun ShuttleTimetableLoading(
