@@ -1,5 +1,4 @@
 import `in`.koreatech.convention.implementation
-import `in`.koreatech.convention.kapt
 import `in`.koreatech.convention.ksp
 import `in`.koreatech.convention.libs
 import org.gradle.api.Plugin
