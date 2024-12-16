@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -58,8 +59,9 @@ class BusSearchResultViewModel @Inject constructor(
         selectedDateIndex,
         selectedDaytimeIndex,
         selectedHourIndex,
-        selectedMinuteIndex
-    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex ->
+        selectedMinuteIndex,
+        refreshToggle
+    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex, _ ->
         LocalDateTime.of(
             localDates[dateIndex],
             LocalTime.of(
@@ -68,7 +70,7 @@ class BusSearchResultViewModel @Inject constructor(
                 minuteList[minuteIndex].toInt()
             )
         )
-    }.stateIn(
+    }.debounce(30L).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = LocalDateTime.now()
@@ -145,6 +147,7 @@ class BusSearchResultViewModel @Inject constructor(
         _selectedDaytimeIndex.value = daytimeIndex
         _selectedHourIndex.value = hourIndex
         _selectedMinuteIndex.value = minuteIndex
+        refresh()
     }
 
     fun onBusTypeMenuChanged(busType: BusType) {
