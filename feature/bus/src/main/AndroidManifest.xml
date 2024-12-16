@@ -4,10 +4,12 @@
     <application>
         <activity
             android:name="in.koreatech.bus.BusTimetableActivity"
+            android:hardwareAccelerated="true"
             android:exported="false" />
 
         <activity
             android:name="in.koreatech.bus.BusSearchActivity"
+            android:hardwareAccelerated="true"
             android:exported="false" />
     </application>
 
