@@ -1,5 +1,5 @@
 import `in`.koreatech.convention.implementation
-import `in`.koreatech.convention.kapt
+import `in`.koreatech.convention.ksp
 import `in`.koreatech.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,7 +13,7 @@ internal class AndroidApplicationHiltConventionPlugin : Plugin<Project> {
             }
             dependencies {
                 implementation(libs.findBundle("hilt").get())
-                kapt(libs.findLibrary("hilt-compiler").get())
+                ksp(libs.findLibrary("hilt-compiler").get())
             }
         }
     }
