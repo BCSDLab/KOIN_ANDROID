@@ -34,6 +34,7 @@ plugins {
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.google.service) apply false
     alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.ksp) apply false
 }
 
 tasks.register<Delete>("clean") {
