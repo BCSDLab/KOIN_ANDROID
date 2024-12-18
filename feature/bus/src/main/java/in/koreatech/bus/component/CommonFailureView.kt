@@ -26,7 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.util.LocalOnRefreshComposition
+import `in`.koreatech.bus.util.LocalOnRefresh
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
@@ -53,7 +53,7 @@ fun CommonFailureView(
         )
         Spacer(modifier = Modifier.height(12.dp))
         Button(
-            onClick = LocalOnRefreshComposition.current,
+            onClick = LocalOnRefresh.current,
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White,

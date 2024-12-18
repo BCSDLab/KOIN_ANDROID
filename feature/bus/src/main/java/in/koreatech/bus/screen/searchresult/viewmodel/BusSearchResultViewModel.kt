@@ -103,11 +103,7 @@ class BusSearchResultViewModel @Inject constructor(
         else if (searchResultStates.isEmpty())
             emit(BusSearchResultUiState.ResultEmpty)
         else {
-            emit(BusSearchResultUiState.Success(searchResultStates.filter {
-                if (determinedDepartureTime.value.isBefore(LocalDateTime.now()))
-                    it.departureTime.isAfter(LocalTime.now())
-                else true
-            }))
+            emit(BusSearchResultUiState.Success(searchResultStates))
         }
     }.catch {
         emit(BusSearchResultUiState.LoadFailed)

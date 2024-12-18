@@ -9,7 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.search.viewmodel.BusSearchViewModel
 import `in`.koreatech.bus.type.PlaceType
-import `in`.koreatech.bus.util.LocalOnRefreshComposition
+import `in`.koreatech.bus.util.LocalOnRefresh
 import `in`.koreatech.bus.util.goToArticle
 
 @Composable
@@ -26,7 +26,7 @@ fun BusSearchScreen(
 
     val context = LocalContext.current
 
-    CompositionLocalProvider(LocalOnRefreshComposition provides viewModel::refresh) {
+    CompositionLocalProvider(LocalOnRefresh provides viewModel::refresh) {
         BusSearchScreenContent(
             departure = departure,
             arrival = arrival,
