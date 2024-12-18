@@ -61,8 +61,7 @@ class MainActivityViewModel @Inject constructor(
             emit(it)
             when (it) {
                 ExperimentGroup.MAIN_BANNER_NEW -> {
-                    EventLogger.logCustomEvent(
-                        "AB_TEST",
+                    EventLogger.logABTestEvent(
                         "a/b test 로깅(키워드관리 진입 배너)",
                         AnalyticsConstant.Label.CAMPUS_NOTICE_1,
                         "진입점O"
@@ -70,8 +69,7 @@ class MainActivityViewModel @Inject constructor(
                 }
 
                 ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
-                    EventLogger.logCustomEvent(
-                        "AB_TEST",
+                    EventLogger.logABTestEvent(
                         "a/b test 로깅(키워드관리 진입 배너)",
                         AnalyticsConstant.Label.CAMPUS_NOTICE_1,
                         "진입점X"
@@ -92,8 +90,7 @@ class MainActivityViewModel @Inject constructor(
             emit(it)
             when (it) {
                 ExperimentGroup.MAIN_DINING_NEW -> {
-                    EventLogger.logCustomEvent(
-                        "AB_TEST",
+                    EventLogger.logABTestEvent(
                         "a/b test 로깅(식단 메인 진입점)",
                         AnalyticsConstant.Label.CAMPUS_DINING_1,
                         "더보기O"
@@ -101,8 +98,7 @@ class MainActivityViewModel @Inject constructor(
                 }
 
                 ExperimentGroup.MAIN_DINING_ORIGINAL -> {
-                    EventLogger.logCustomEvent(
-                        "AB_TEST",
+                    EventLogger.logABTestEvent(
                         "a/b test 로깅(식단 메인 진입점)",
                         AnalyticsConstant.Label.CAMPUS_DINING_1,
                         "더보기X"

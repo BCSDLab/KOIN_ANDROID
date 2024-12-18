@@ -327,33 +327,30 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(variableName) {
             when (viewModel.variableName.value) {
                 ExperimentGroup.A -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택X"
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
+                        "혜택X"
                     )
                     binding.storeButtonLayout.visibility = View.GONE
                     binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
 
                 ExperimentGroup.B -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택O"
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
+                        "혜택O"
                     )
                     binding.storeButtonLayout.visibility = View.VISIBLE
                     binding.recyclerViewStoreCategory.visibility = View.GONE
                 }
 
                 else -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택X"
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
+                        "혜택X"
                     )
                     binding.storeButtonLayout.visibility = View.GONE
                     binding.recyclerViewStoreCategory.visibility = View.VISIBLE
@@ -380,42 +377,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
         binding.recyclerViewStoreCategory.visibility = View.GONE
         binding.storeButtonLayout.visibility = View.VISIBLE
-        observeLiveData(variableName) {
-            when (viewModel.variableName.value) {
-                ExperimentGroup.A -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택X"
-                    )
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
-                }
-
-                ExperimentGroup.B -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택O"
-                    )
-                    binding.storeButtonLayout.visibility = View.VISIBLE
-                    binding.recyclerViewStoreCategory.visibility = View.GONE
-                }
-
-                else -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택X"
-                    )
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
-                }
-            }
-        }
     }
 
     private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {
