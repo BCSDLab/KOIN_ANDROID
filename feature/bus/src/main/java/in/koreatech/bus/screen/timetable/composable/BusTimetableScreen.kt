@@ -10,7 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
 import `in`.koreatech.bus.util.goToArticle
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
-import `in`.koreatech.bus.util.LocalOnRefreshComposition
+import `in`.koreatech.bus.util.LocalOnRefresh
 
 @Composable
 internal fun BusTimetableScreen(
@@ -25,7 +25,7 @@ internal fun BusTimetableScreen(
 
     val context = LocalContext.current
 
-    CompositionLocalProvider(LocalOnRefreshComposition provides viewModel::refresh) {
+    CompositionLocalProvider(LocalOnRefresh provides viewModel::refresh) {
         BusTimetableScreenContent(
             modifier = modifier,
             busTimetableUiState = busTimetableUiState,

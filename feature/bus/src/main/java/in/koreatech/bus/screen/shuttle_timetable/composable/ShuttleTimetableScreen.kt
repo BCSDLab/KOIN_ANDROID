@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableViewModel
-import `in`.koreatech.bus.util.LocalOnRefreshComposition
+import `in`.koreatech.bus.util.LocalOnRefresh
 
 @Composable
 fun ShuttleTimetableScreen(
@@ -18,7 +18,7 @@ fun ShuttleTimetableScreen(
 
     val timetableUiState by viewModel.timetableUiState.collectAsState()
 
-    CompositionLocalProvider(LocalOnRefreshComposition provides viewModel::refresh) {
+    CompositionLocalProvider(LocalOnRefresh provides viewModel::refresh) {
         ShuttleTimetableScreenContent(
             modifier = modifier,
             onNavigationIconClick = onNavigationIconClick,

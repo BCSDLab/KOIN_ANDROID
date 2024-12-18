@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultViewModel
-import `in`.koreatech.bus.util.LocalOnRefreshComposition
+import `in`.koreatech.bus.util.LocalOnRefresh
 import `in`.koreatech.bus.util.formatDateValue
 import kotlinx.collections.immutable.toImmutableList
 
@@ -26,7 +26,7 @@ fun BusSearchResultScreen(
     val currentTime by viewModel.currentTime.collectAsStateWithLifecycle()
     val selectedBusMenu by viewModel.selectedBusTypeMenu.collectAsStateWithLifecycle()
 
-    CompositionLocalProvider(LocalOnRefreshComposition provides viewModel::refresh) {
+    CompositionLocalProvider(LocalOnRefresh provides viewModel::refresh) {
         BusSearchResultScreenContent(
             modifier = modifier,
             searchResultUiState = searchResultUiState,
