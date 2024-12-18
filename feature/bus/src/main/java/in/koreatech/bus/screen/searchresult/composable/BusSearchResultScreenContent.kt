@@ -200,7 +200,7 @@ internal fun BusSearchResultScreenContent(
                     BusSearchResultItem(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 32.dp, vertical = 8.dp),
+                            .padding(horizontal = 32.dp, vertical = 10.dp),
                         result = result,
                         currentTime = currentTime,
                         showBeforeTime = (selectedDateIndex == 0 && result.departureTime.isAfter(currentTime.localTime)),

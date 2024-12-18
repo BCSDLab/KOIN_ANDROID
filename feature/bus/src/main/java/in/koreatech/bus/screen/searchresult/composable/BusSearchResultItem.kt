@@ -15,6 +15,7 @@ import `in`.koreatech.bus.component.BusTypeChip
 import `in`.koreatech.bus.mock.busSearchResultMock1
 import `in`.koreatech.bus.state.BusSearchResultState
 import `in`.koreatech.bus.state.ImmutableLocalTime
+import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.util.formatBeforeTime
 import `in`.koreatech.bus.util.formatTime
 import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
@@ -35,7 +36,16 @@ fun BusSearchResultItem(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            BusTypeChip(busType = result.busType)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                BusTypeChip(busType = result.busType)
+                if (result.busType == BusType.CITY)
+                    Text(
+                        modifier = Modifier.padding(start = 6.dp),
+                        text = result.busName + "번",
+                        style = KoinTheme.typography.medium14,
+                        color = KoinTheme.colors.neutral800
+                    )
+            }
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 text = result.departureTime.formatTime(),
