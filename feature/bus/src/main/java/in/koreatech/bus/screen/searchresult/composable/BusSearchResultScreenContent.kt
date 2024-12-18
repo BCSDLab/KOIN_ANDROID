@@ -142,16 +142,21 @@ internal fun BusSearchResultScreenContent(
                 modifier = Modifier.width(IntrinsicSize.Max)
             ) {
                 Row(
-                    modifier = Modifier.clip(RoundedCornerShape(12.dp)).fillMaxWidth().clickable {
-                        isDropdownExpanded = !isDropdownExpanded
-                    }.background(
-                        color = KoinTheme.colors.neutral50,
-                        shape = RoundedCornerShape(12.dp)
-                    ).padding(8.dp),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .fillMaxWidth()
+                        .clickable {
+                            isDropdownExpanded = !isDropdownExpanded
+                        }
+                        .background(
+                            color = KoinTheme.colors.neutral50,
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(selectedBusType.titleRes),
+                        text = stringResource(selectedBusType.titleRes) + if (selectedBusType != BusType.ALL) stringResource(R.string.bus) else "",
                         style = KoinTheme.typography.medium14,
                         color = KoinTheme.colors.neutral800,
                         modifier = Modifier.padding(start = 8.dp),
@@ -173,10 +178,12 @@ internal fun BusSearchResultScreenContent(
                 ) {
                     BusType.entries.fastForEach { busType ->
                         DropdownMenuItem(
-                            text = { Text(
-                                text = stringResource(busType.titleRes),
-                                style = KoinTheme.typography.medium14,
-                            ) },
+                            text = {
+                                Text(
+                                    text = stringResource(busType.titleRes) + if (busType != BusType.ALL) stringResource(R.string.bus) else "",
+                                    style = KoinTheme.typography.medium14,
+                                )
+                            },
                             onClick = {
                                 isDropdownExpanded = false
                                 onBusTypeChange(busType)
@@ -196,11 +203,13 @@ internal fun BusSearchResultScreenContent(
                             .padding(horizontal = 32.dp, vertical = 8.dp),
                         result = result,
                         currentTime = currentTime,
-                        showBeforeTime = selectedDateIndex == 0
+                        showBeforeTime = (selectedDateIndex == 0 && result.departureTime.isAfter(currentTime.localTime)),
                     )
                 }
                 item {
-                    Spacer(modifier = Modifier.fillMaxWidth().height(120.dp))
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp))
                 }
             }
             is BusSearchResultUiState.ResultEmpty -> {
