@@ -98,8 +98,9 @@ internal fun BusTimetableScreenContent(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 LeadingIconText(
-                    text = stringResource(R.string.request_for_incorrect_information),
-                    iconRes = R.drawable.ic_caution
+                    text = stringResource(R.string.guide_from_cheonan_to_byeongcheon),
+                    iconRes = R.drawable.ic_bus_station,
+                    textStyle = KoinTheme.typography.regular13.copy(color = KoinTheme.colors.primary500)
                 )
                 if (busNoticeUiState is BusNoticeUiState.Show) {
                     NoticeItem(
@@ -111,6 +112,7 @@ internal fun BusTimetableScreenContent(
             }
 
             KoinTabRow(
+                modifier = Modifier.padding(top = 8.dp),
                 titles = BusType.entriesExceptAll.map { stringResource(it.titleRes) },
                 selectedTabIndex = pagerState.currentPage,
                 onTabSelected = {

@@ -12,9 +12,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import `in`.koreatech.bus.component.WrongInformationText
 import `in`.koreatech.bus.mock.commonTimetableMock
 import `in`.koreatech.bus.state.CommonTimetableState
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
+import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
@@ -79,6 +81,10 @@ internal fun CommonTimetableView(
                 text = stringResource(R.string.updated_at, updatedAt),
                 style = KoinTheme.typography.regular14,
                 color = KoinTheme.colors.neutral500
+            )
+
+            WrongInformationText(
+                modifier = Modifier.padding(top = 4.dp)
             )
         }
     }

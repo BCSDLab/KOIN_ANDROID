@@ -2,7 +2,6 @@ package `in`.koreatech.bus.screen.timetable.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.component.ShuttleBusOperationChip
+import `in`.koreatech.bus.component.WrongInformationText
 import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.state.ShuttleCourseRegionState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
@@ -35,6 +35,7 @@ import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.bus.util.formatPeriod
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
+import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
@@ -92,6 +93,9 @@ internal fun ShuttleCoursesScreenContent(
                     shuttleCourses.semester.to.formatPeriod()
                 ), style = KoinTheme.typography.regular14,
                 color = KoinTheme.colors.neutral500,
+            )
+            WrongInformationText(
+                modifier = Modifier.padding(top = 4.dp, start = 24.dp)
             )
             Spacer(modifier = Modifier.fillMaxWidth().height(120.dp))
         }
