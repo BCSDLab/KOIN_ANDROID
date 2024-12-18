@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,12 +17,15 @@ import `in`.koreatech.bus.animation.defaultPopEnterTransition
 import `in`.koreatech.bus.animation.defaultPopExitTransition
 import `in`.koreatech.bus.screen.shuttle_timetable.composable.ShuttleTimetableScreen
 import `in`.koreatech.bus.screen.timetable.composable.BusTimetableScreen
+import `in`.koreatech.bus.util.findActivity
 
 @Composable
 fun BusTimetableNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
+
+    val context = LocalContext.current
 
     NavHost(
         modifier = modifier.background(defaultOutsideColor),
@@ -41,7 +45,9 @@ fun BusTimetableNavigation(
         composable<Routes.BusTimetable> {
             BusTimetableScreen(
                 modifier = Modifier.fillMaxSize().background(Color.White),
-                onNavigationIconClick = navController::popBackStack,
+                onNavigationIconClick = {
+                    context.findActivity()?.finish()
+                },
                 onNavigateToShuttleTimetableScreen = {
                     navController.navigate(Routes.ShuttleTimetable(it.id))
                 }
