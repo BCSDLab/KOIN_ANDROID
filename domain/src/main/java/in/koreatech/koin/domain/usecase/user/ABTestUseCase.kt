@@ -1,24 +1,25 @@
 package `in`.koreatech.koin.domain.usecase.user
 
-import `in`.koreatech.koin.domain.error.user.UserErrorHandler
-import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 class ABTestUseCase @Inject constructor(
     private val userRepository: UserRepository,
-    private val tokenRepository: TokenRepository,
-    private val userErrorHandler: UserErrorHandler
+    private val tokenRepository: TokenRepository
 ) {
-    suspend operator fun invoke(title: String): Pair<String?, ErrorHandler?> {
-        return try {
-            val accessHistory = userRepository.postABTestAssign(title)
-            val accessHistoryId = accessHistory.accessHistoryId
-            tokenRepository.saveAccessHistoryId(accessHistoryId)
-            accessHistory.variableName to null
-        } catch (t: Throwable) {
-            null to userErrorHandler.handleVerifyUserPasswordError(t)
+    private val mutex = Mutex()
+
+    suspend operator fun invoke(title: String): Result<String> {
+        return runCatching {
+            mutex.withLock {
+                if (tokenRepository.getAccessHistoryId() == null) {
+                    userRepository.updateABTestToken()
+                }
+            }
+            userRepository.postABTestAssign(title).variableName
         }
     }
 }

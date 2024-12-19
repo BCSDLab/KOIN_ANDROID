@@ -130,17 +130,17 @@ class HtmlView @JvmOverloads constructor(
             override fun onLoadFailed(
                 e: GlideException?,
                 model: Any?,
-                target: com.bumptech.glide.request.target.Target<Drawable>?,
+                target: com.bumptech.glide.request.target.Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
                 return false
             }
 
             override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
-                target: com.bumptech.glide.request.target.Target<Drawable>?,
-                dataSource: DataSource?,
+                resource: Drawable,
+                model: Any,
+                target: com.bumptech.glide.request.target.Target<Drawable>,
+                dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
                 val dialog = ImageZoomableDialog(context, model as String)
