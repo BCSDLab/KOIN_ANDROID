@@ -2,6 +2,7 @@ package `in`.koreatech.bus.screen.timetable.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,9 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.mock.busNoticeUiStateMock
@@ -78,10 +82,10 @@ internal fun BusTimetableScreenContent(
     val pagerState = rememberPagerState { BusType.entriesExceptAll.size }
 
     var expressDirectionGuideText by rememberSaveable { mutableStateOf(
-        context.getString(R.string.guide_from_byeongcheon_to_cheonan)
+        context.getString(R.string.guide_koreatech_station)
     ) }
     var cityDirectionGuideText by rememberSaveable { mutableStateOf(
-        context.getString(R.string.guide_from_byeongcheon_to_cheonan)
+        context.getString(R.string.guide_koreatech_station)
     ) }
 
     Column(
@@ -101,21 +105,30 @@ internal fun BusTimetableScreenContent(
                     .background(Color.White)
                     .padding(horizontal = 24.dp)
             ) {
-                Text(
-                    text = busTypeHeadTitle,
-                    style = KoinTheme.typography.bold20
-                )
+                Row {
+                    Text(
+                        text = busTypeHeadTitle,
+                        style = KoinTheme.typography.bold20
+                    )
+                    if (pagerState.currentPage + 1 != BusType.SHUTTLE.ordinal) {
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            text = when (pagerState.currentPage + 1) {
+                                BusType.EXPRESS.ordinal -> expressDirectionGuideText
+                                BusType.CITY.ordinal -> cityDirectionGuideText
+                                else -> ""
+                            },
+                            style = KoinTheme.typography.regular13.copy(color = KoinTheme.colors.primary500)
+                        )
+                        Icon(
+                            modifier = Modifier.padding(start = 4.dp),
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_bus_station),
+                            tint = KoinTheme.colors.primary500,
+                            contentDescription = null
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(8.dp))
-                LeadingIconText(
-                    text = when(pagerState.currentPage + 1) {
-                        BusType.EXPRESS.ordinal -> expressDirectionGuideText
-                        BusType.CITY.ordinal -> cityDirectionGuideText
-                        else -> ""
-                    },
-                    iconRes = R.drawable.ic_bus_station,
-                    iconTint = if (pagerState.currentPage + 1 == BusType.SHUTTLE.ordinal) Color.Transparent else KoinTheme.colors.primary500,
-                    textStyle = KoinTheme.typography.regular13.copy(color = KoinTheme.colors.primary500)
-                )
                 if (busNoticeUiState is BusNoticeUiState.Show) {
                     NoticeItem(
                         notice = busNoticeUiState.notice,
@@ -128,7 +141,9 @@ internal fun BusTimetableScreenContent(
             KoinTabRow(
                 modifier = Modifier.padding(top = 8.dp),
                 titles = BusType.entriesExceptAll.map { stringResource(it.titleRes) },
-                selectedTabIndex = pagerState.currentPage,
+                selectedTabIndex = if (LocalInspectionMode.current)
+                        previewTab.ordinal
+                    else pagerState.currentPage,
                 onTabSelected = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(it)
@@ -168,8 +183,8 @@ internal fun BusTimetableScreenContent(
                                     onDirectionChanged = {
                                         expressDirectionGuideText =
                                             if (it == CommonDirectionType.TO_CHEONAN) context.getString(
-                                                R.string.guide_from_byeongcheon_to_cheonan
-                                            ) else context.getString(R.string.guide_from_cheonan_to_byeongcheon)
+                                                R.string.guide_koreatech_station
+                                            ) else context.getString(R.string.guide_cheonan_station)
 
                                         onExpressDirectionChange(it)
                                     }
@@ -186,8 +201,8 @@ internal fun BusTimetableScreenContent(
                                     onDirectionChanged = {
                                         cityDirectionGuideText =
                                             if (it == CommonDirectionType.TO_CHEONAN)
-                                                context.getString(R.string.guide_from_byeongcheon_to_cheonan)
-                                            else context.getString(R.string.guide_from_cheonan_to_byeongcheon)
+                                                context.getString(R.string.guide_koreatech_station)
+                                            else context.getString(R.string.guide_cheonan_station)
 
                                         onCityDirectionChange(it)
                                     }
