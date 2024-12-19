@@ -7,8 +7,8 @@
     <string name="express_timetable">대성버스 시간표</string>
     <string name="city_timetable">시내버스 시간표</string>
     <string name="request_for_incorrect_information">정보가 정확하지 않나요?</string>
-    <string name="guide_from_cheonan_to_byeongcheon">천안 터미널 승차 → 코리아텍 하차</string>
-    <string name="guide_from_byeongcheon_to_cheonan">코리아텍 승차 → 천안 터미널 하차</string>
+    <string name="guide_cheonan_station">천안 터미널 승차</string>
+    <string name="guide_koreatech_station">코리아텍 승차</string>
     <string name="all_bus_type">모든 차종</string>
     <string name="tab_shuttle">셔틀</string>
     <string name="tab_express">대성</string>
