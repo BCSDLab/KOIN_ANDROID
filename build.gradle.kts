@@ -7,8 +7,8 @@ buildscript {
     }
 
     extra.apply {
-        set("versionName", "4.1.5")
-        set("versionCode", 40105)
+        set("versionName", "4.1.6")
+        set("versionCode", 40106)
         // 코인 버전 관리
 
         set("versionBusinessName", "1.0.1")
