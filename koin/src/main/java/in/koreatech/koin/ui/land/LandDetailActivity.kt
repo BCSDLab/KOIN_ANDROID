@@ -1,15 +1,5 @@
 package `in`.koreatech.koin.ui.land
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.constant.LAND
-import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.databinding.LandActivityDetailBinding
-import `in`.koreatech.koin.domain.model.land.LandDetail
-import `in`.koreatech.koin.ui.land.adapter.LandDetailViewPagerAdapter
-import `in`.koreatech.koin.ui.land.viewmodel.LandDetailViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.util.ext.dpToIntPx
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
@@ -29,6 +19,16 @@ import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.LAND
+import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.databinding.LandActivityDetailBinding
+import `in`.koreatech.koin.domain.model.land.LandDetail
+import `in`.koreatech.koin.ui.land.adapter.LandDetailViewPagerAdapter
+import `in`.koreatech.koin.ui.land.viewmodel.LandDetailViewModel
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.util.ext.dpToIntPx
 
 class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
     override val menuState = MenuState.Land
@@ -204,8 +204,10 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
         if (mapFragment == null) {
             mapFragment = NaverMapFragment().newInstance(options)
         }
-        supportFragmentManager.beginTransaction()
-            .add(R.id.activity_land_detail_navermap, mapFragment!!).commit()
+        if (!mapFragment!!.isAdded) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.activity_land_detail_navermap, mapFragment!!).commit()
+        }
         mapFragment.getMapAsync(this)
     }
 
