@@ -120,6 +120,12 @@ class UserRepositoryImpl @Inject constructor(
         userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
     }
 
+    override suspend fun updateABTestToken() {
+        userRemoteDataSource.updateABTestToken().accessHistoryId.also {
+            tokenLocalDataSource.saveAccessHistoryId(it)
+        }
+    }
+
     override suspend fun postABTestAssign(title: String): ABTest {
         userRemoteDataSource.postABTestAssign(ABTestRequest(title)).let {
             return ABTest(it.variableName, it.accessHistoryId)
