@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -14,9 +13,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -321,11 +318,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             abtestName = it
             when (viewModel.variableName.value) {
                 ExperimentGroup.CALL_NUMBER -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(전화하기)",
-                        label = AnalyticsConstant.Label.BUSINESS_CALL_NUMBER,
-                        value = "number"
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(전화하기)",
+                        AnalyticsConstant.Label.BUSINESS_CALL_1,
+                        "number"
                     )
                     binding.callFloatingButton.visibility = View.GONE
                     binding.storeDetailPhoneTextview.setTextColor(
@@ -339,11 +335,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 ExperimentGroup.CALL_FLOATING -> {
                     binding.scrollUpButton.visibility = View.GONE
                     binding.storeDetailPhoneImage.visibility = View.GONE
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(전화하기)",
-                        label = AnalyticsConstant.Label.BUSINESS_CALL_FLOATING,
-                        value = "floating"
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(전화하기)",
+                        AnalyticsConstant.Label.BUSINESS_CALL_1,
+                        "floating"
                     )
                 }
             }

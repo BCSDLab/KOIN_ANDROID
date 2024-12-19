@@ -3,7 +3,6 @@ package `in`.koreatech.koin.ui.main.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -242,6 +241,11 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         TabLayoutMediator(tabHotArticle, viewPagerHotArticle) { _, _ -> }.attach()
 
         textSeeMoreArticle.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.APP_MAIN_NOTICE_DETAIL,
+                getString(R.string.article_more)
+            )
             startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
         }
 
@@ -323,33 +327,30 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(variableName) {
             when (viewModel.variableName.value) {
                 ExperimentGroup.A -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택X"
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
+                        "혜택X"
                     )
                     binding.storeButtonLayout.visibility = View.GONE
                     binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
 
                 ExperimentGroup.B -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택O"
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
+                        "혜택O"
                     )
                     binding.storeButtonLayout.visibility = View.VISIBLE
                     binding.recyclerViewStoreCategory.visibility = View.GONE
                 }
 
                 else -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택X"
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
+                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
+                        "혜택X"
                     )
                     binding.storeButtonLayout.visibility = View.GONE
                     binding.recyclerViewStoreCategory.visibility = View.VISIBLE
@@ -376,42 +377,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
         binding.recyclerViewStoreCategory.visibility = View.GONE
         binding.storeButtonLayout.visibility = View.VISIBLE
-        observeLiveData(variableName) {
-            when (viewModel.variableName.value) {
-                ExperimentGroup.A -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택X"
-                    )
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
-                }
-
-                ExperimentGroup.B -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택O"
-                    )
-                    binding.storeButtonLayout.visibility = View.VISIBLE
-                    binding.recyclerViewStoreCategory.visibility = View.GONE
-                }
-
-                else -> {
-                    EventLogger.logCustomEvent(
-                        action = "AB_TEST",
-                        category = "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        label = "BUSINESS_benefit_1",
-                        value = "혜택X"
-                    )
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
-                }
-            }
-        }
     }
 
     private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {

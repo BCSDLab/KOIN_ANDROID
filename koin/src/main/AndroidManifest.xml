@@ -29,7 +29,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
+        android:theme="@style/KAPTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="icon,label">
 
