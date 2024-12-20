@@ -26,10 +26,13 @@ gradlePlugin {
             id = "in.koreatech.plugin.hilt"
             implementationClass = "AndroidApplicationHiltConventionPlugin"
         }
-
         register("AndroidApplicationOrbitPlugin"){
             id = "in.koreatech.plugin.orbit"
             implementationClass = "AndroidApplicationOrbitConventionPlugin"
+        }
+        register("AndroidLibraryOrbitPlugin"){
+            id = "in.koreatech.plugin.library.orbit"
+            implementationClass = "AndroidLibraryOrbitConventionPlugin"
         }
         register("AndroidLibraryPlugin") {
             id = "in.koreatech.plugin.library"
@@ -47,5 +50,6 @@ gradlePlugin {
             id = "in.koreatech.plugin.oss"
             implementationClass = "OssLicensePlugin"
         }
+
     }
 }
