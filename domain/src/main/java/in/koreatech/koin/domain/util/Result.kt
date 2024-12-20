@@ -1,22 +1,8 @@
 package `in`.koreatech.koin.domain.util
 
-sealed class Result<T> {
-    data class Success<T>(val data: T) : Result<T>()
-    data class Failure(
-        val t: Throwable,
-        val errorMessage: String,
-    ) : Result<Nothing>()
+typealias RootError = Error
 
-    val isSuccess get() = this is Success<T>
-    val isFailure get() = !isSuccess
-
-    inline fun onSuccess(block: (T) -> Unit): Result<T> {
-        (this as? Success<T>)?.data?.let { block(it) }
-        return this
-    }
-
-    inline fun onFailure(block: (Throwable, String) -> Unit): Result<T> {
-        (this as? Failure)?.let { block(it.t, it.errorMessage) }
-        return this
-    }
+sealed interface Result<out DATA, out ERROR : RootError> {
+    data class Success<out DATA, out ERROR : RootError>(val data: DATA) : Result<DATA, ERROR>
+    data class Error<out DATA, out ERROR : RootError>(val error: ERROR) : Result<DATA, ERROR>
 }
