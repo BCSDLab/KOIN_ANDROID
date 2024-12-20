@@ -26,8 +26,8 @@
     <string name="pm">오후</string>
     <string name="updated_at">업데이트 날짜 : %s</string>
     <string name="n400">400번</string>
+    <string name="n402">402번</string>
     <string name="n405">405번</string>
-    <string name="n495">495번</string>
     <string name="starting_point">기점</string>
     <string name="routes">노선</string>
     <string name="operating">운행</string>
