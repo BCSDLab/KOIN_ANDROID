@@ -208,6 +208,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
 koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
 koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
+koin-library-orbit = { id = "in.koreatech.plugin.library.orbit", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 koin-library = { id = "in.koreatech.plugin.library", version = "unspecified" }
 koin-firebase = { id = "in.koreatech.plugin.firebase", version = "unspecified" }
