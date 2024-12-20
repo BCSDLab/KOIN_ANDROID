@@ -98,4 +98,13 @@
     <string name="download">다운로드</string>
     <string name="download_description">다운로드 하시겠어요?</string>
 
+    <string name="network_error_too_many_request">요청이 너무 많습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="network_error_payload_too_large">요청 페이로드가 너무 큽니다. 다시 시도해주세요.</string>
+    <string name="network_error_request_timeout">요청 시간이 초과되었습니다. 네트워크 연결을 확인하고 다시 시도해주세요.</string>
+    <string name="network_error_no_internet">인터넷에 연결되어 있지 않습니다. 네트워크 연결을 확인하고 다시 시도해주세요.</string>
+    <string name="network_error_server_error">서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="network_error_unknown">알 수 없는 네트워크 오류가 발생했습니다.</string>
+
+    <string name="local_error_disk_full">저장 공간이 부족합니다.</string>
+    <string name="local_error_unknown">알 수 없는 로컬 오류가 발생했습니다.</string>
 </resources>
