@@ -64,12 +64,12 @@ class BusTimetableViewModel @Inject constructor(
         }
     }
 
-    private val cityTimetable = combineTransform(cityNumber, cityDirection, refreshToggle) { number, direction, _ ->
+    private val cityTimetable = combineTransform(cityNumber, cityDirection, refreshToggle) { busNumber, direction, _ ->
         val directionQuery = when(direction) {
-            CommonDirectionType.TO_BYEONGCHEON -> "병천3리"
-            CommonDirectionType.TO_CHEONAN -> "종합터미널"
+            CommonDirectionType.TO_BYEONGCHEON -> busNumber.toByeongcheonQuery
+            CommonDirectionType.TO_CHEONAN -> busNumber.toCheonanQuery
         }
-        busRepository.fetchCityTimetable(number.numberQuery, directionQuery).onSuccess {
+        busRepository.fetchCityTimetable(busNumber.numberQuery, directionQuery).onSuccess {
             emit(it.toCityTimetableState())
         }.onFailure {
             emit(null)
