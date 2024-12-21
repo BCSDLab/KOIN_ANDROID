@@ -31,7 +31,6 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
@@ -274,7 +273,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
         observeLiveData(menuEvent) { menuState ->
             when (menuState) {
-                MenuState.Bus -> goToBusActivity()
+                MenuState.Bus -> Unit // TODO : Bus 삭제
                 MenuState.Dining -> goToDiningActivity()
                 MenuState.OperatingInfo -> goToOperatingInfoActivity()
                 MenuState.Land -> goToLandActivity()
@@ -402,7 +401,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         if (itemId == R.id.navi_item_store) {
             goToStoreActivity(bundle)
         } else if (itemId == R.id.navi_item_bus) {
-            goToBusActivity(bundle)
         }
     }
 
@@ -434,27 +432,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
-    private fun goToBusActivity() {
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, BusActivity::class.java))
-        } else {
-            startActivity(Intent(this, BusActivity::class.java))
-        }
-    }
-
     private fun goToStoreActivity(bundle: Bundle?) {
         val intent = Intent(this, StoreActivity::class.java)
-        intent.putExtras(bundle!!)
-
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(intent)
-        } else {
-            startActivity(intent)
-        }
-    }
-
-    private fun goToBusActivity(bundle: Bundle?) {
-        val intent = Intent(this, BusActivity::class.java)
         intent.putExtras(bundle!!)
 
         if (menuState != MenuState.Main) {
