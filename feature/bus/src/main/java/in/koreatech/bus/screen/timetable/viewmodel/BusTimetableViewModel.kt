@@ -5,9 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.BaseBusViewModel
 import `in`.koreatech.bus.mock.busNoticeMock
-import `in`.koreatech.bus.mock.cityTimetableMock
-import `in`.koreatech.bus.mock.expressTimetableMock
-import `in`.koreatech.bus.mock.shuttleCoursesMock
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.state.CityTimetableState
 import `in`.koreatech.bus.state.ExpressTimetableState
@@ -20,7 +17,7 @@ import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
-import `in`.koreatech.koin.domain.repository.BusV2Repository
+import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.feature.bus.BuildConfig
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
@@ -36,7 +33,7 @@ import javax.inject.Inject
 class BusTimetableViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val onboardingManager: OnboardingManager,
-    private val busRepository: BusV2Repository
+    private val busRepository: BusRepository
 ) : BaseBusViewModel() {
 
     // 셔틀버스 노선 필터링은 Composable 내에서 처리 중 [ShuttleCoursesScreenContent.kt]

@@ -7,7 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.ArticleApi
-import `in`.koreatech.koin.data.api.BusV2Api
+import `in`.koreatech.koin.data.api.BusApi
 import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
@@ -98,10 +98,10 @@ object NoAuthNetworkModule {
 
     @Provides
     @Singleton
-    fun provideBusV2Api(
+    fun provideBusApi(
         @NoAuth retrofit: Retrofit
-    ): BusV2Api {
-        return retrofit.create(BusV2Api::class.java)
+    ): BusApi {
+        return retrofit.create(BusApi::class.java)
     }
 
     @Provides

@@ -1,7 +1,7 @@
 package `in`.koreatech.bus.state
 
 import androidx.compose.runtime.Immutable
-import `in`.koreatech.koin.domain.model.bus.v2.ShuttleTimetableRouteInfo
+import `in`.koreatech.koin.domain.model.bus.ShuttleTimetableRouteInfo
 
 @Immutable
 data class ShuttleTimetableRouteInfoState(

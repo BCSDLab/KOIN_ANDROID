@@ -11,7 +11,7 @@ import `in`.koreatech.bus.state.BusSearchResultState
 import `in`.koreatech.bus.state.ImmutableLocalTime
 import `in`.koreatech.bus.state.toBusSearchResultState
 import `in`.koreatech.bus.type.BusType
-import `in`.koreatech.koin.domain.repository.BusV2Repository
+import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.feature.bus.BuildConfig
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +34,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BusSearchResultViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val busRepository: BusV2Repository
+    private val busRepository: BusRepository
 ) : BaseBusViewModel() {
 
     private val arguments = savedStateHandle.toRoute<Routes.BusSearchResult>()
