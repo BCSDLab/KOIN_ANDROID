@@ -20,6 +20,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.bus.BusSearchActivity
+import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
@@ -73,7 +75,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             R.id.navi_item_setting,
             R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
-            R.id.navi_item_bus,
+            R.id.navi_item_bus_timetable,
+            R.id.navi_item_bus_search,
             R.id.navi_item_dining,
             R.id.navi_item_operating_information,
             R.id.navi_item_timetable,
@@ -88,7 +91,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Setting,
                 MenuState.LoginOrLogout,
                 MenuState.Store,
-                MenuState.Bus,
+                MenuState.BusTimetable,
+                MenuState.BusSearch,
                 MenuState.Dining,
                 MenuState.OperatingInfo,
                 MenuState.Timetable,
@@ -172,14 +176,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.HAMBURGER_SHOP,
                                     getString(R.string.nearby_stores)
-                                )
-                            }
-
-                            MenuState.Bus -> {
-                                EventLogger.logClickEvent(
-                                    EventAction.CAMPUS,
-                                    AnalyticsConstant.Label.HAMBURGER_BUS,
-                                    getString(R.string.bus)
                                 )
                             }
 
@@ -273,7 +269,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
         observeLiveData(menuEvent) { menuState ->
             when (menuState) {
-                MenuState.Bus -> Unit // TODO : Bus 삭제
+                MenuState.BusTimetable -> goToBusTimetableActivity()
+                MenuState.BusSearch -> goToBusSearchActivity()
                 MenuState.Dining -> goToDiningActivity()
                 MenuState.OperatingInfo -> goToOperatingInfoActivity()
                 MenuState.Land -> goToLandActivity()
@@ -383,10 +380,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 koinNavigationDrawerViewModel.selectMenu(MenuState.OperatingInfo)
             }
 
-            R.id.navi_item_bus -> {
-                koinNavigationDrawerViewModel.selectMenu(MenuState.Bus)
-            }
-
             R.id.navi_item_land -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Land)
             }
@@ -400,7 +393,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     open fun callDrawerItem(itemId: Int, bundle: Bundle?) {
         if (itemId == R.id.navi_item_store) {
             goToStoreActivity(bundle)
-        } else if (itemId == R.id.navi_item_bus) {
         }
     }
 
@@ -413,6 +405,22 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             goToActivityFinish(Intent(this, StoreActivity::class.java))
         } else {
             startActivity(Intent(this, StoreActivity::class.java))
+        }
+    }
+
+    private fun goToBusTimetableActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, BusTimetableActivity::class.java))
+        } else {
+            startActivity(Intent(this, BusTimetableActivity::class.java))
+        }
+    }
+
+    private fun goToBusSearchActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, BusSearchActivity::class.java))
+        } else {
+            startActivity(Intent(this, BusSearchActivity::class.java))
         }
     }
 
