@@ -1,8 +1,8 @@
 package `in`.koreatech.bus.state
 
 import androidx.compose.runtime.Immutable
-import `in`.koreatech.koin.domain.model.bus.v2.CityTimetable
-import `in`.koreatech.koin.domain.model.bus.v2.CityTimetableItem
+import `in`.koreatech.koin.domain.model.bus.CityTimetable
+import `in`.koreatech.koin.domain.model.bus.CityTimetableItem
 import java.time.LocalDateTime
 
 @Immutable
