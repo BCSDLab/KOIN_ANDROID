@@ -1,14 +1,11 @@
 package `in`.koreatech.koin.data.di.repository
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.repository.ArticleRepositoryImpl
-import `in`.koreatech.koin.data.repository.BusRepositoryImpl
 import `in`.koreatech.koin.data.repository.CoopShopRepositoryImpl
 import `in`.koreatech.koin.data.repository.DeptRepositoryImpl
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
@@ -27,7 +24,6 @@ import `in`.koreatech.koin.data.repository.UploadUrlRepositoryImpl
 import `in`.koreatech.koin.data.repository.UserRepositoryImpl
 import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
-import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
@@ -35,7 +31,6 @@ import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
-import `in`.koreatech.koin.data.source.remote.BusRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
@@ -48,7 +43,6 @@ import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.domain.repository.CoopShopRepository
 import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.DiningRepository
@@ -173,16 +167,6 @@ object RepositoryModule {
         diningRemoteDataSource: DiningRemoteDataSource
     ): DiningRepository {
         return DiningRepositoryImpl(diningRemoteDataSource)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBusRepository(
-        @ApplicationContext applicationContext: Context,
-        busLocalDataSource: BusLocalDataSource,
-        busRemoteDataSource: BusRemoteDataSource
-    ): BusRepository {
-        return BusRepositoryImpl(applicationContext, busLocalDataSource, busRemoteDataSource)
     }
 
     @Provides
