@@ -5,6 +5,9 @@ sealed interface Error
 sealed interface DataError : Error {
     sealed interface Network {
         data class ServerErrorWithMessage(val message: String) : DataError, Network
+        data object BadRequest : DataError, Network
+        data object Forbidden : DataError, Network
+        data object NotFound : DataError, Network
         data object RequestTimeout : DataError, Network
         data object TooManyRequest : DataError, Network
         data object NoInternet : DataError, Network
