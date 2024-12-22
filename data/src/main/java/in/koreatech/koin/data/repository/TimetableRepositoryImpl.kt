@@ -145,6 +145,9 @@ class TimetableRepositoryImpl @Inject constructor(
         else throw it
     }
 
+    override suspend fun postRollbackFrame(frameId: Int): Result<TimetableLectures> = runCatching {
+        timetableRemoteDataSource.postRollbackFrame(frameId).toTimetableLectures()
+    }
 
     override suspend fun deleteTimetableFrame(frameId: Int): Result<Unit> = runCatching {
         timetableRemoteDataSource.deleteTimetableFrame(frameId)
