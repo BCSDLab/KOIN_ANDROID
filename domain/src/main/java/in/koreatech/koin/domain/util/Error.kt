@@ -4,17 +4,17 @@ sealed interface Error
 
 sealed interface DataError : Error {
     sealed interface Network {
-        data class ServerErrorWithMessage(val message: String) : DataError
-        data object RequestTimeout : DataError
-        data object TooManyRequest : DataError
-        data object NoInternet : DataError
-        data object PayloadTooLarge : DataError
-        data object ServerError : DataError
-        data object Unknown : DataError
+        data class ServerErrorWithMessage(val message: String) : DataError, Network
+        data object RequestTimeout : DataError, Network
+        data object TooManyRequest : DataError, Network
+        data object NoInternet : DataError, Network
+        data object PayloadTooLarge : DataError, Network
+        data object ServerError : DataError, Network
+        data object Unknown : DataError, Network
     }
 
     sealed interface Local {
-        data object DiskFull : DataError
-        data object Unknown : DataError
+        data object DiskFull : DataError, Local
+        data object Unknown : DataError, Local
     }
 }
