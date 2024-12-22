@@ -50,6 +50,10 @@ class TimetableRemoteDataSource @Inject constructor(
         frame: TimetableFrameCreateQueryRequest
     ): TimetableFrameResponse = timetableAuthApi.postTimetableFrame(frame)
 
+    suspend fun postRollbackFrame(
+        frameId: Int
+    ): TimetableLecturesResponse = timetableAuthApi.postRollbackFrame(frameId)
+
     suspend fun deleteTimetableFrame(
         frameId: Int
     ) = timetableAuthApi.deleteTimetableFrame(frameId)

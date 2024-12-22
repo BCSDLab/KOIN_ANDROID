@@ -28,11 +28,11 @@ interface TimetableRepository {
     suspend fun postTimetableCustomLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures>
     suspend fun postTimetableBasicLectures(frameId: Int, lectures: List<TimetableLecture>): Result<TimetableLectures>
     suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame>
+    suspend fun postRollbackFrame(frameId: Int): Result<TimetableLectures>
 
     suspend fun deleteTimetableFrame(frameId: Int): Result<Unit>
     suspend fun deleteTimetableLecture(id: Int): Result<Unit>
     suspend fun deleteTimetableLectures(lectureIds: List<Int>): Result<Unit>
     suspend fun deleteTimetableFrameLecture(frameId: Int, lectureId: Int): Result<Unit>
-
     suspend fun deleteAllTimetableFrame(semester: String): Result<Unit>
 }

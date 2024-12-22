@@ -46,6 +46,11 @@ interface TimetableAuthApi {
         @Body frame: TimetableFrameCreateQueryRequest
     ): TimetableFrameResponse
 
+    @POST("/v2/timetables/frame/rollback")
+    suspend fun postRollbackFrame(
+        @Query("timetable_frame_id") frameId: Int
+    ): TimetableLecturesResponse
+
     @DELETE("/v2/timetables/frame")
     suspend fun deleteTimetableFrame(
         @Query("id") frameId: Int
