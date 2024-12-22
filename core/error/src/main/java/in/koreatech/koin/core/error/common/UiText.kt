@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.timetable.utils
+package `in`.koreatech.koin.core.error.common
 
 import android.content.Context
 import androidx.annotation.StringRes

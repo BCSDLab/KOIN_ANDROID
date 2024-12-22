@@ -1,8 +1,7 @@
-package `in`.koreatech.koin.feature.timetable.utils.mapper
+package `in`.koreatech.koin.core.error.common
 
+import `in`.koreatech.koin.core.error.R
 import `in`.koreatech.koin.domain.util.DataError
-import `in`.koreatech.koin.feature.timetable.R
-import `in`.koreatech.koin.feature.timetable.utils.UiText
 
 fun DataError.asUiText(): UiText {
     return when (this) {
