@@ -7,6 +7,9 @@ import `in`.koreatech.koin.feature.timetable.utils.UiText
 fun DataError.asUiText(): UiText {
     return when (this) {
         is DataError.Network.ServerErrorWithMessage -> UiText.DynamicString(this.message)
+        DataError.Network.BadRequest -> UiText.StringResource(R.string.network_error_bad_request)
+        DataError.Network.Forbidden -> UiText.StringResource(R.string.network_error_forbidden)
+        DataError.Network.NotFound -> UiText.StringResource(R.string.network_error_not_found)
         DataError.Network.TooManyRequest -> UiText.StringResource(R.string.network_error_too_many_request)
         DataError.Network.PayloadTooLarge -> UiText.StringResource(R.string.network_error_payload_too_large)
         DataError.Network.RequestTimeout -> UiText.StringResource(R.string.network_error_request_timeout)
