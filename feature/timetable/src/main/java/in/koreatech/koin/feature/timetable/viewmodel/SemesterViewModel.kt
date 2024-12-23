@@ -13,6 +13,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableFrameUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.RollbackFrameUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.UpdateTimetableFrameUseCase
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
@@ -35,10 +36,10 @@ data class ScreenState(
     val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE
 )
 
+// 학기가 비었을 때 상태
 enum class ScreenStateUIMode{
     BASIC, EMPTY, IDLE
 }
-
 
 @HiltViewModel
 class SemesterViewModel @Inject constructor(
@@ -59,6 +60,7 @@ class SemesterViewModel @Inject constructor(
     private val _sideEffect: MutableStateFlow<SemesterSideEffect> = MutableStateFlow(SemesterSideEffect.Nothing)
     val sideEffect: StateFlow<SemesterSideEffect> = _sideEffect.asStateFlow()
 
+    //_currentXXXX 변수들은 시간표로 이동할 때 전달하는 정보
     private val _currentTimetableSemester: MutableStateFlow<String> = MutableStateFlow("")
     val currentTimetableSemester: StateFlow<String> = _currentTimetableSemester.asStateFlow()
 
@@ -68,6 +70,12 @@ class SemesterViewModel @Inject constructor(
     private val _currentTimetableName: MutableStateFlow<String> = MutableStateFlow("")
     val currentTimetableName: StateFlow<String> = _currentTimetableName.asStateFlow()
 
+    /**
+     * 시간표에서 현재 보여지고 있는 테이블 Id
+     * 기존 복구 로직에선, 테이블 Id가 변경되기 때문에 갱신을 위해 필요 했음
+     *
+     * 삭제해도 되는 필드
+     */
     private val _originalTimetableId: MutableStateFlow<Int> = MutableStateFlow(-1)
     val originalTimetableId: StateFlow<Int> = _currentTimetableId.asStateFlow()
 
@@ -115,10 +123,7 @@ class SemesterViewModel @Inject constructor(
                         getTimetableFramesUseCase(semester)
                             .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
                             .collect {
-                                // 기본 시간표가 첫 번째에 오도록 정렬
-                                it.sortedByDescending { it.isMain }.also { sortedFrames ->
-                                    tmp.put(semester.toSemesterModel(), sortedFrames)
-                                }
+                                tmp.put(semester.toSemesterModel(), it)
                             }
                     }
 
@@ -429,11 +434,6 @@ class SemesterViewModel @Inject constructor(
                             } else {
                                 it + (semester to emptyList())
                             }
-                        }.mapValues {
-                            if (it.key == semester) {
-                                newFrames.sortedByDescending { it.isMain }
-                            } else
-                                it.value
                         }.toSortedMap()
                     }
                 }
