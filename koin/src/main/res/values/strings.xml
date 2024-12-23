@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:ignore="DuplicateDefinition">코인</string>
+    <string name="app_name_dev" tools:ignore="DuplicateDefinition">코인D</string>
 
     <string name="sign_up">회원가입</string>
     <string name="login_complete">로그인완료</string>
@@ -556,6 +557,7 @@
     <string name="navigation_title_article">공지사항</string>
     <string name="navigation_title_article_search">공지글 검색</string>
     <string name="navigation_title_article_keyword">키워드 관리</string>
+    <string name="article_more">더보기</string>
     <string name="article_free">자유게시판</string>
     <string name="article_employment">취업게시판</string>
     <string name="article_anonymous">익명게시판</string>

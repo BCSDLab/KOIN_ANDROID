@@ -19,7 +19,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:padding="8dp"
-            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:src="@drawable/ic_arrow_back_black_24"
             app:layout_constraintBottom_toBottomOf="@id/tv_dining_notice_topbar"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="parent"
