@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
@@ -9,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
-import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
@@ -26,8 +24,6 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
-import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.state.toContent
 import `in`.koreatech.koin.ui.main.state.toNoti
@@ -65,8 +61,7 @@ class MainActivityViewModel @Inject constructor(
             emit(it)
             when (it) {
                 ExperimentGroup.MAIN_BANNER_NEW -> {
-                    EventLogger.logCustomEvent(
-                        "AB_TEST",
+                    EventLogger.logABTestEvent(
                         "a/b test 로깅(키워드관리 진입 배너)",
                         AnalyticsConstant.Label.CAMPUS_NOTICE_1,
                         "진입점O"
@@ -74,8 +69,7 @@ class MainActivityViewModel @Inject constructor(
                 }
 
                 ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
-                    EventLogger.logCustomEvent(
-                        "AB_TEST",
+                    EventLogger.logABTestEvent(
                         "a/b test 로깅(키워드관리 진입 배너)",
                         AnalyticsConstant.Label.CAMPUS_NOTICE_1,
                         "진입점X"
@@ -96,16 +90,16 @@ class MainActivityViewModel @Inject constructor(
             emit(it)
             when (it) {
                 ExperimentGroup.MAIN_DINING_NEW -> {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(식단 메인 진입점)",
                         AnalyticsConstant.Label.CAMPUS_DINING_1,
                         "더보기O"
                     )
                 }
 
                 ExperimentGroup.MAIN_DINING_ORIGINAL -> {
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
+                    EventLogger.logABTestEvent(
+                        "a/b test 로깅(식단 메인 진입점)",
                         AnalyticsConstant.Label.CAMPUS_DINING_1,
                         "더보기X"
                     )
@@ -166,7 +160,6 @@ class MainActivityViewModel @Inject constructor(
 
     init {
         updateDining()
-        getStoreCategories()
     }
 
     fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
@@ -234,9 +227,11 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getStoreCategories() {
+    fun getStoreCategories(storeCategory: StoreCategories) {
         viewModelScope.launchWithLoading {
-            _storeCategories.value = getStoreCategoriesUseCase()
+            val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
+            categoryList.add(0, storeCategory)
+            _storeCategories.value = categoryList
         }
     }
 

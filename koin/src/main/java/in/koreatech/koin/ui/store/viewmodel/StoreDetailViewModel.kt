@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.store.viewmodel
 
-import android.Manifest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -25,6 +24,7 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.store.ReviewPromptUscCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
+import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
@@ -43,7 +43,10 @@ class StoreDetailViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val reviewPromptUscCase: ReviewPromptUscCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
+    private val abTestUseCase: ABTestUseCase,
 ) : BaseViewModel() {
+
+
     val store: LiveData<StoreWithMenu> get() = _store
     private val _store = MutableLiveData<StoreWithMenu>()
     val categories: LiveData<StoreMenu> get() = _categories
@@ -70,6 +73,15 @@ class StoreDetailViewModel @Inject constructor(
     private val _tokenState = SingleLiveEvent<TokenState>()
     val tokenState: LiveData<TokenState> get() = _tokenState
 
+    private val _variableName = MutableLiveData<String>()
+    val variableName: LiveData<String> get() = _variableName
+
+    fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
+        abTestUseCase(title).onSuccess {
+            _variableName.value = it
+        }
+    }
+
     fun getStoreWithMenu(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreWithMenuUseCase(storeId).also { store ->
             _store.value = store
@@ -77,7 +89,7 @@ class StoreDetailViewModel @Inject constructor(
         }
     }
 
-    fun postReviewPromptNotification(storeId: Int){
+    fun postReviewPromptNotification(storeId: Int) {
         viewModelScope.launch {
             reviewPromptUscCase(storeId)
                 .onFailure {

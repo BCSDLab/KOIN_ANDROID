@@ -104,8 +104,12 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
         if (mapFragment == null) {
             mapFragment = NaverMapFragment().newInstance(options)
         }
-        supportFragmentManager.beginTransaction().add(R.id.activity_land_navermap, mapFragment!!)
-            .commit()
+
+        if (!mapFragment!!.isAdded) {
+            supportFragmentManager.beginTransaction().add(R.id.activity_land_navermap, mapFragment!!)
+                .commit()
+        }
+
         mapFragment.getMapAsync(this)
     }
 
