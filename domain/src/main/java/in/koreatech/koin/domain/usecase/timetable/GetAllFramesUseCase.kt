@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.repository.TimetableRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllTimetableFrames @Inject constructor(
+class GetAllFramesUseCase @Inject constructor(
     private val timetableRepository: TimetableRepository
 ) {
     suspend operator fun invoke(): Flow<Map<String, List<TimetableFrame>>> =

@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.AddSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.AddTimetableFrameUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableFrameUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.GetAllFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
@@ -49,7 +50,8 @@ class SemesterViewModel @Inject constructor(
     private val addTimetableFrameUseCase: AddTimetableFrameUseCase,
     private val updateTimetableFrameUseCase: UpdateTimetableFrameUseCase,
     private val deleteTimetableFrameUseCase: DeleteTimetableFrameUseCase,
-    private val rollbackFrameUseCase: RollbackFrameUseCase
+    private val rollbackFrameUseCase: RollbackFrameUseCase,
+    private val getAllFramesUseCase: GetAllFramesUseCase
 ) : BaseViewModel() {
 
     private val _dialogUiState: MutableStateFlow<SemesterDialogUiState> = MutableStateFlow(SemesterDialogUiState())
@@ -81,12 +83,14 @@ class SemesterViewModel @Inject constructor(
     private val _isAnonymous: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isAnonymous: StateFlow<Boolean> = _isAnonymous.asStateFlow()
 
-    // TODO::hyeok _userTimetableFrames 랑 목적 겹침, 삭제 필요
-    private val _userSemester: MutableStateFlow<List<SemesterModel>> = MutableStateFlow(emptyList())
-    val userSemesters: StateFlow<List<SemesterModel>> = _userSemester.asStateFlow()
-
     private val _userTimetableFrames: MutableStateFlow<Map<SemesterModel, List<TimetableFrame>>> = MutableStateFlow(emptyMap())
     val userTimetableFrames: StateFlow<Map<SemesterModel, List<TimetableFrame>>> = _userTimetableFrames.asStateFlow()
+
+    // TODO::hyeok _userTimetableFrames 랑 목적 겹침, 삭제 필요
+    private val _userSemester: MutableStateFlow<List<SemesterModel>> = MutableStateFlow(emptyList())
+    val userSemesters: StateFlow<List<SemesterModel>> = _userTimetableFrames
+        .map { it.keys.toList() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
     private val _screenState =  MutableStateFlow<ScreenState>(ScreenState())
     val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
@@ -103,37 +107,27 @@ class SemesterViewModel @Inject constructor(
 
     fun initData() {
         viewModelScope.launch {
-            // 유저가 추가한 학기 불러옴
-            getUserSemestersUseCase(_isAnonymous.value)
-                .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
-                .map { it.map { it.toSemesterModel() } }
-                .collect {
-                    _userSemester.value = it
-                }
-
-            // 유저가 추가한 학기의 프레임 불러옴
-            val tmp = mutableMapOf<SemesterModel, List<TimetableFrame>>()
-            userSemesters.value
-                .map { it.toSemester() }
-                .forEach { semester ->
-                    if (isAnonymous.value) {
-                        // 익명이면 모든 프레임의 이름은 '시간표1'
-                        tmp.put(semester.toSemesterModel(), listOf(TimetableFrame(0, "시간표1", isMain = true)))
-                    } else {
-                        getTimetableFramesUseCase(semester)
-                            .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
-                            .collect {
-                                tmp.put(semester.toSemesterModel(), it)
-                            }
+            if(isAnonymous.value) {
+                getUserSemestersUseCase(_isAnonymous.value)
+                    .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
+                    .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) }}
+                    .collect {
+                        _userTimetableFrames.value = it
+                        updateScreenState(ScreenStateUIMode.BASIC)
                     }
-
-                }
-
-            _userTimetableFrames.value = tmp
-            if (tmp.isEmpty()) {
-                _screenState.value = _screenState.value.copy(mode = ScreenStateUIMode.EMPTY)
             } else {
-                _screenState.value = _screenState.value.copy(mode = ScreenStateUIMode.BASIC)
+                getAllFramesUseCase()
+                    .catch { Timber.d("Fail to getAllFramesUseCase on initData()| message: ${it.message}") }
+                    .map { it.mapKeys { it.key.toSemesterModel() } }
+                    .collect {
+                        _userTimetableFrames.value = it
+
+                        if(it.isEmpty()) {
+                            updateScreenState(ScreenStateUIMode.EMPTY)
+                        } else {
+                            updateScreenState(ScreenStateUIMode.BASIC)
+                        }
+                    }
             }
         }
     }
