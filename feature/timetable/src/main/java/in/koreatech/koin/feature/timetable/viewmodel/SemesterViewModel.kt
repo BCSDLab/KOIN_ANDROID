@@ -4,8 +4,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
-import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
-import `in`.koreatech.koin.domain.repository.TimetableRepository
 import `in`.koreatech.koin.domain.usecase.timetable.AddSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.AddTimetableFrameUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteSemesterUseCase
@@ -43,7 +41,6 @@ enum class ScreenStateUIMode{
 
 @HiltViewModel
 class SemesterViewModel @Inject constructor(
-    private val timetableRepository: TimetableRepository,
     private val getUserSemestersUseCase: GetUserSemestersUseCase,
     private val getSemestersUseCase: GetSemestersUseCase,
     private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
@@ -76,7 +73,6 @@ class SemesterViewModel @Inject constructor(
      * 프레임을 복구 할 때 보여지고 있는 프레임인지 학인 후 currentTimetableId 를 변경해야 하기에 필요함
      */
     private val _originalTimetableId: MutableStateFlow<Int> = MutableStateFlow(-1)
-    val originalTimetableId: StateFlow<Int> = _currentTimetableId.asStateFlow()
 
     // 가장 최근 삭제한 프레임과 프레임의 학기
     private val _deletedFrame: MutableStateFlow<TimetableFrame?> = MutableStateFlow(null)
@@ -271,20 +267,6 @@ class SemesterViewModel @Inject constructor(
 
     fun deleteTimetableFrame() {
         viewModelScope.launch {
-            // 삭제된 시간표에 담긴 강의 캐싱
-            dialogUiState.value.takeIf {
-                it.editedSemester != null && it.editedTimetableFrame != null
-            }?.let { uiState ->
-                timetableRepository.getTimetableLectures(
-                    uiState.editedTimetableFrame!!.id
-                ).onSuccess {
-                    _dialogUiState.value = _dialogUiState.value.copy(
-                        deletedTimetableLectures = it
-                    )
-                }
-            }
-
-            // 강의 삭제
             dialogUiState.value.editedTimetableFrame?.let { target ->
                 deleteTimetableFrameUseCase(
                     frameId = target.id
@@ -435,7 +417,6 @@ class SemesterViewModel @Inject constructor(
 data class SemesterDialogUiState(
     val editedSemester: SemesterModel? = null,
     val editedTimetableFrame: TimetableFrame? = null,
-    val deletedTimetableLectures: TimetableLectures? = null,
     val selectedSemesters: List<SemesterModel> = emptyList(),
     val isEditTimetableDialogVisible: Boolean = false,
     val isEditSemesterDialogVisible: Boolean = false,
