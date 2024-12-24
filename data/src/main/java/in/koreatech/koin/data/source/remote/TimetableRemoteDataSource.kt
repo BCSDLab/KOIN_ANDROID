@@ -32,7 +32,7 @@ class TimetableRemoteDataSource @Inject constructor(
     ): List<TimetableFrameResponse> = timetableAuthApi.getTimetableFrames(semester)
 
     suspend fun getAllFrames(): Map<String, List<TimetableFrameResponse>> =
-        timetableAuthApi.getAllFrames()
+        timetableAuthApi.getAllFrames().semesterFrames
 
     suspend fun putTimetableLectures(
         lectures: TimetableLecturesQueryRequest
