@@ -35,6 +35,7 @@ data class ScreenState(
     val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE,
     val isEditTimetableDialogVisible: Boolean = false,
     val isEditSemesterDialogVisible: Boolean = false,
+    val isSelectYearDialogVisible: Boolean = false,
     val isDeleteSemesterDialogVisible: Boolean = false,
     val isRequestLoginDialogVisible: Boolean = false
 )
@@ -151,6 +152,10 @@ class SemesterViewModel @Inject constructor(
 
     fun updateEditSemesterDialogVisible(isVisible: Boolean) {
         _screenState.value = _screenState.value.copy(isEditSemesterDialogVisible = isVisible)
+    }
+
+    fun updateSelectYearDialogVisible(isVisible: Boolean) {
+        _screenState.value = _screenState.value.copy(isSelectYearDialogVisible = isVisible)
     }
 
     fun updateDeleteSemesterDialogVisible(isVisible: Boolean) {
