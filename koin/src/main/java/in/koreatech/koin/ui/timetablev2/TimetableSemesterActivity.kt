@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +31,6 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.EditTimetableFrameDialo
 import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.ScreenStateUIMode
 import `in`.koreatech.koin.feature.timetable.viewmodel.SemesterViewModel
-import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.BUNDLE_LOGIN_EXTRA_KEY
 import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.NAV_TIMETABLE
 import timber.log.Timber
@@ -98,7 +95,7 @@ class TimetableSemesterActivity : ActivityBase() {
                     }
                 }
 
-                if (dialogUiState.isEditSemesterDialogVisible) {
+                if (screenState.isEditSemesterDialogVisible) {
                     EditSemesterDialogImpl(
                         years = years,
                         userSemesters = userSemesters,
@@ -114,22 +111,22 @@ class TimetableSemesterActivity : ActivityBase() {
                         onDismiss = { viewModel.updateEditSemesterDialogVisible(false) }
                     )
                 }
-                if (dialogUiState.isEditTimetableDialogVisible) {
+                if (screenState.isEditTimetableDialogVisible) {
                     EditTimetableFrameDialog(
                         timetableFrameState = dialogUiState.editedTimetableFrame,
-                        onDismiss = { viewModel.updateEditTimetableDialogVisibility(false) },
+                        onDismiss = { viewModel.updateEditTimetableDialogVisible(false) },
                         onConfirmEdit = {
                             viewModel.editTimetableFrame(it)
-                            viewModel.updateEditTimetableDialogVisibility(false)
+                            viewModel.updateEditTimetableDialogVisible(false)
                         },
                         onDeleteFrame = {
                             viewModel.deleteTimetableFrame()
-                            viewModel.updateEditTimetableDialogVisibility(false)
+                            viewModel.updateEditTimetableDialogVisible(false)
                             viewModel.updateSideEffect(SemesterSideEffect.SnackBar("${dialogUiState.editedTimetableFrame?.timetableName}가 삭제되었어요"))
                         }
                     )
                 }
-                if (dialogUiState.isDeleteSemesterDialogVisible) {
+                if (screenState.isDeleteSemesterDialogVisible) {
                     DeleteSemesterDialog(
                         onDismiss = {
                             viewModel.updateDeleteSemesterDialogVisible(false)
@@ -142,7 +139,7 @@ class TimetableSemesterActivity : ActivityBase() {
                         }
                     )
                 }
-                if (dialogUiState.isRequestLoginDialogVisible) {
+                if (screenState.isRequestLoginDialogVisible) {
                     RequestLoginDialog(
                         onConfirm = {
                             startToLoginActivity()
