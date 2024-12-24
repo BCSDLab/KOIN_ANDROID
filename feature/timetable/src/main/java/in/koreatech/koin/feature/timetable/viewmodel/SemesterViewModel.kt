@@ -32,7 +32,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 data class ScreenState(
-    val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE
+    val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE,
+    val isEditTimetableDialogVisible: Boolean = false,
+    val isEditSemesterDialogVisible: Boolean = false,
+    val isDeleteSemesterDialogVisible: Boolean = false,
+    val isRequestLoginDialogVisible: Boolean = false
 )
 
 // 학기가 비었을 때 상태
@@ -141,20 +145,20 @@ class SemesterViewModel @Inject constructor(
         }
     }
 
-    fun updateEditTimetableDialogVisibility(isVisible: Boolean) {
-        _dialogUiState.value = _dialogUiState.value.copy(isEditTimetableDialogVisible = isVisible)
+    fun updateEditTimetableDialogVisible(isVisible: Boolean) {
+        _screenState.value = _screenState.value.copy(isEditTimetableDialogVisible = isVisible)
     }
 
     fun updateEditSemesterDialogVisible(isVisible: Boolean) {
-        _dialogUiState.value = _dialogUiState.value.copy(isEditSemesterDialogVisible = isVisible)
+        _screenState.value = _screenState.value.copy(isEditSemesterDialogVisible = isVisible)
     }
 
     fun updateDeleteSemesterDialogVisible(isVisible: Boolean) {
-        _dialogUiState.value = _dialogUiState.value.copy(isDeleteSemesterDialogVisible = isVisible)
+        _screenState.value = _screenState.value.copy(isDeleteSemesterDialogVisible = isVisible)
     }
 
     fun updateRequestLoginDialogVisible(isVisible: Boolean) {
-        _dialogUiState.value = _dialogUiState.value.copy(isRequestLoginDialogVisible = isVisible)
+        _screenState.value = _screenState.value.copy(isRequestLoginDialogVisible = isVisible)
     }
 
     fun updateSelectedSemesters(semesterModels: List<SemesterModel>) {
@@ -192,8 +196,8 @@ class SemesterViewModel @Inject constructor(
     }
 
     fun onClickEditTimetable(targetSemester: SemesterModel, targetFrame: TimetableFrame) {
+        _screenState.value = _screenState.value.copy(isEditTimetableDialogVisible = true)
         _dialogUiState.value = _dialogUiState.value.copy(
-            isEditTimetableDialogVisible = true,
             editedSemester = targetSemester,
             editedTimetableFrame = targetFrame
         )
@@ -395,9 +399,5 @@ class SemesterViewModel @Inject constructor(
 data class SemesterDialogUiState(
     val editedSemester: SemesterModel? = null,
     val editedTimetableFrame: TimetableFrame? = null,
-    val selectedSemesters: List<SemesterModel> = emptyList(),
-    val isEditTimetableDialogVisible: Boolean = false,
-    val isEditSemesterDialogVisible: Boolean = false,
-    val isDeleteSemesterDialogVisible: Boolean = false,
-    val isRequestLoginDialogVisible: Boolean = false
+    val selectedSemesters: List<SemesterModel> = emptyList()
 )
