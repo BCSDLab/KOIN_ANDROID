@@ -87,7 +87,6 @@ class SemesterViewModel @Inject constructor(
     val userTimetableFrames: StateFlow<Map<SemesterModel, List<TimetableFrame>>> = _userTimetableFrames.asStateFlow()
 
     // TODO::hyeok _userTimetableFrames 랑 목적 겹침, 삭제 필요
-    private val _userSemester: MutableStateFlow<List<SemesterModel>> = MutableStateFlow(emptyList())
     val userSemesters: StateFlow<List<SemesterModel>> = _userTimetableFrames
         .map { it.keys.toList() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
@@ -205,18 +204,12 @@ class SemesterViewModel @Inject constructor(
             dialogUiState.value.selectedSemesters.forEach { semester ->
                 if (userSemesters.value.contains(semester)) {
                     deleteSemesterUseCase(semester.toSemester()).onSuccess {
-                        _userSemester.update {
-                            it - semester
-                        }
                         _userTimetableFrames.update {
                             it - semester
                         }
                     }
                 } else {
                     addSemesterUseCase(semester.toSemester()).onSuccess { addedFrame ->
-                        _userSemester.update {
-                            it + semester
-                        }
                         _userTimetableFrames.update {
                             (it + (semester to listOf(addedFrame))).toSortedMap()
                         }
@@ -350,19 +343,10 @@ class SemesterViewModel @Inject constructor(
             .firstOrNull()
             .let { newFrames ->
                 if (newFrames.isNullOrEmpty()) {
-                    _userSemester.update {
-                        it - semester
-                    }
                     _userTimetableFrames.update {
                         it - semester
                     }
                 } else {
-                    _userSemester.update {
-                        if (it.contains(semester))
-                            it
-                        else
-                            it + semester
-                    }
                     _userTimetableFrames.update {
                         it.let {
                             if (it.containsKey(semester)) {
