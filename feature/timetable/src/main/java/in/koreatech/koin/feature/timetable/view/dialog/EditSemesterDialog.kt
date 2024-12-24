@@ -60,19 +60,17 @@ fun EditSemesterDialogImpl(
     var currentYear by remember { mutableStateOf(LocalDate.now().year) }
     var selectedSemesters by remember(currentYear, userSemesters) { mutableStateOf(listOf<SemesterType>()) }
 
-    var isShowingSelectYearDialog by remember { mutableStateOf(false) }
-
     Box(
         modifier = modifier
     ) {
-        if (isShowingSelectYearDialog) {
+        if (isSelectYearDialogVisible) {
             SelectYearDialog(
                 currentYear = currentYear,
                 yearList = years,
-                onDismiss = { isShowingSelectYearDialog = false },
+                onDismiss = onDismissSelectYear,
                 onSelectYear = {
                     currentYear = it
-                    isShowingSelectYearDialog = false
+                    onConfirmSelectYear()
                 }
             )
         } else {
@@ -87,7 +85,7 @@ fun EditSemesterDialogImpl(
                     else
                         selectedSemesters = selectedSemesters + clickedSemester
                 },
-                onClickYear = { isShowingSelectYearDialog = true },
+                onClickYear = onClickSelectYear,
                 onConfirm = { onConfirm(selectedSemesters.map { SemesterModel(currentYear, it) }) },
                 onDismiss = onDismiss
             )
