@@ -49,7 +49,11 @@ import java.time.LocalDate
 fun EditSemesterDialogImpl(
     years: List<Int>,
     userSemesters: List<SemesterModel>,
+    isSelectYearDialogVisible: Boolean,
     modifier: Modifier = Modifier,
+    onConfirmSelectYear: () -> Unit = {},
+    onDismissSelectYear: () -> Unit = {},
+    onClickSelectYear: () -> Unit = {},
     onConfirm: (List<SemesterModel>) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
@@ -280,6 +284,7 @@ private fun EditSemesterDialogImplPreview() {
     EditSemesterDialogImpl(
         years = listOf(2019, 2020, 2021, 2022, 2023, 2024),
         userSemesters = userSemesters,
+        isSelectYearDialogVisible = false,
         onConfirm = { selectedSemester ->
             userSemesters = userSemesters.toMutableList().apply {
                 selectedSemester.forEach {

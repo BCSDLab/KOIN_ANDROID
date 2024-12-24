@@ -99,6 +99,10 @@ class TimetableSemesterActivity : ActivityBase() {
                     EditSemesterDialogImpl(
                         years = years,
                         userSemesters = userSemesters,
+                        isSelectYearDialogVisible = screenState.isSelectYearDialogVisible,
+                        onConfirmSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
+                        onDismissSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
+                        onClickSelectYear = { viewModel.updateSelectYearDialogVisible(true) },
                         onConfirm = { selectedSemesters ->
                             viewModel.updateSelectedSemesters(selectedSemesters)
                             if (selectedSemesters.any { it in userSemesters })
