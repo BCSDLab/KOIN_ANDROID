@@ -3,7 +3,6 @@ package `in`.koreatech.koin.core.analytics
 import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
 import com.google.firebase.Firebase
-import `in`.koreatech.koin.core.analytics.EventLogger.logEvent
 
 object EventLogger {
 
@@ -13,10 +12,10 @@ object EventLogger {
 
     /**
      * 클릭 이벤트 로깅
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     * @param extras: 추가 이벤트 값
+     * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     * @param extras 추가 이벤트 값
      */
     fun logClickEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
         logEvent(action, EventCategory.CLICK, label, value, *extras)
@@ -24,10 +23,10 @@ object EventLogger {
 
     /**
      * 스크롤 이벤트 로깅
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     * @param extras: 추가 이벤트 값
+     * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     * @param extras 추가 이벤트 값
      */
     fun logScrollEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
         logEvent(action, EventCategory.SCROLL, label, value, *extras)
@@ -35,10 +34,10 @@ object EventLogger {
 
     /**
      * 하단 뒤로가기 이벤트 로깅
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     * @param extras: 추가 이벤트 값
+     * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     * @param extras 추가 이벤트 값
      */
     fun logSwipeEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
         logEvent(action, EventCategory.SWIPE, label, value, *extras)
@@ -46,10 +45,10 @@ object EventLogger {
 
     /**
      * 푸시알림 접속 이벤트 로깅
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     * @param extras: 추가 이벤트 값
+     * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     * @param extras 추가 이벤트 값
      */
     fun logNotificationEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
         logEvent(action, EventCategory.NOTIFICATION, label, value, *extras)
@@ -57,20 +56,23 @@ object EventLogger {
 
     /**
      * AB테스트 이벤트 로깅
-     * @param category: 이벤트 종류
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
+     * @param category 이벤트 종류
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
      */
     fun logABTestEvent(category: String, label: String, value: String) {
         logCustomEvent(EventAction.ABTEST.value, category, label, value)
     }
 
     /**
-     * @param action: 커스텀 이벤트 발생(EventAction 이외에 action)
-     * @param category: 커스텀 이벤트 종류(EventCategory 이외에 category)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     * @sample logEvent("force_update", "page_view", "forced_update_page_view", "v4.0.0")
+     * @param action 커스텀 이벤트 발생(EventAction 이외에 action)
+     * @param category 커스텀 이벤트 종류(EventCategory 이외에 category)
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     *
+     * ```
+     * logEvent("force_update", "page_view", "forced_update_page_view", "v4.0.0")
+     * ```
      */
     fun logCustomEvent(action: String, category: String, label: String, value: String) {
         if (BuildConfig.IS_DEBUG) {
@@ -90,11 +92,15 @@ object EventLogger {
         }
     }
     /**
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param category: 이벤트 종류(click, scroll, ...)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     * @sample logEvent("BUSINESS", "click", "main_shop_categories", "전체보기")
+     * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param category 이벤트 종류(click, scroll, ...)
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     * @param extras 추가 이벤트 값
+     *
+     * ```
+     * logEvent(EventAction.CAMPUS, EventCategory.CLICK, "main_shop_categories", "전체보기")
+     * ```
      */
     private fun logEvent(action: EventAction, category: EventCategory, label: String, value: String, vararg extras: EventExtra) {
         if (BuildConfig.IS_DEBUG) {
