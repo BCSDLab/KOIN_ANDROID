@@ -1,5 +1,6 @@
 package `in`.koreatech.bus.mock
 
+import `in`.koreatech.bus.state.CityBusInfoState
 import `in`.koreatech.bus.state.CityTimetableState
 import `in`.koreatech.bus.state.DepartureState
 import `in`.koreatech.bus.state.CommonTimetableState
@@ -31,5 +32,10 @@ internal val expressTimetableMock = ExpressTimetableState(
 
 internal val cityTimetableMock = CityTimetableState(
     departureTimes = commonTimetableMock,
+    busInfo = CityBusInfoState(
+        number = 0,
+        departNode = "",
+        arriveNode = "",
+    ),
     updatedAt = LocalDateTime.parse("2024-11-11T00:00:00"),
 )

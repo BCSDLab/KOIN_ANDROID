@@ -8,11 +8,13 @@ import java.time.LocalDateTime
 @Immutable
 data class CityTimetableState(
     val departureTimes: CommonTimetableState,
+    val busInfo: CityBusInfoState,
     val updatedAt: LocalDateTime
 )
 
 fun CityTimetable.toCityTimetableState() = CityTimetableState(
     departureTimes = timetable[0].mapToCommonTimetableState(),
+    busInfo = busInfo.toCityBusInfoState(),
     updatedAt = updatedAt
 )
 
