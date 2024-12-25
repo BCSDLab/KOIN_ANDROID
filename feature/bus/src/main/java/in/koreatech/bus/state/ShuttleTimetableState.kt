@@ -14,7 +14,15 @@ data class ShuttleTimetableState(
     val subTitle: String,
     val nodeInfo: List<ShuttleTimetableNodeInfoState>,
     val routeInfo: List<ShuttleTimetableRouteInfoState>,
-)
+) {
+
+    /**
+     * 등교 하교 시간표가 모두 있는 경우에만 탭 표시
+     */
+    fun showTabs(): Boolean {
+        return routeType == ShuttleBusOperationType.WEEKDAY && routeInfo.size == 2
+    }
+}
 
 fun ShuttleTimetable.toShuttleTimetableState() = ShuttleTimetableState(
     region = region,
