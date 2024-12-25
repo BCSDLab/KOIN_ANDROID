@@ -34,6 +34,8 @@
     <string name="operating">운행</string>
     <string name="node_name">승하차장명</string>
     <string name="timetable_semester_information">%s(%s ~ %s)의 시간표가 제공됩니다.</string>
+    <string name="tab_title_going">등교</string>
+    <string name="tab_title_return">하교</string>
 
     <!-- 교통편 조회 -->
     <string name="title_bus_search">교통편 조회하기</string>
