@@ -1,18 +1,29 @@
 package `in`.koreatech.bus.screen.searchresult.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.bus.BaseBusViewModel
+import `in`.koreatech.bus.mock.busSearchResultsMock
 import `in`.koreatech.bus.navigation.Routes
-import `in`.koreatech.bus.screen.timetable.type.BusType
-import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
-import `in`.koreatech.koin.domain.usecase.busv2.SearchBusV2UseCase
+import `in`.koreatech.bus.state.BusSearchResultState
+import `in`.koreatech.bus.state.ImmutableLocalTime
+import `in`.koreatech.bus.state.toBusSearchResultState
+import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.koin.domain.repository.BusV2Repository
+import `in`.koreatech.koin.feature.bus.BuildConfig
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
 import java.time.LocalDate
@@ -22,9 +33,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BusSearchResultViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val searchBusV2UseCase: SearchBusV2UseCase
-) : ViewModel() {
+    private val savedStateHandle: SavedStateHandle,
+    private val busRepository: BusV2Repository
+) : BaseBusViewModel() {
 
     private val arguments = savedStateHandle.toRoute<Routes.BusSearchResult>()
     val departure = arguments.departure
@@ -44,30 +55,77 @@ class BusSearchResultViewModel @Inject constructor(
     private val _selectedMinuteIndex = MutableStateFlow(LocalDateTime.now().minute)
     val selectedMinuteIndex = _selectedMinuteIndex.asStateFlow()
 
-    val searchResultUiState = combine(
+    val determinedDepartureTime = combine(
         selectedDateIndex,
         selectedDaytimeIndex,
         selectedHourIndex,
-        selectedMinuteIndex
-    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex ->
+        selectedMinuteIndex,
+        refreshToggle
+    ) { dateIndex, daytimeIndex, hourIndex, minuteIndex, _ ->
         LocalDateTime.of(
             localDates[dateIndex],
             LocalTime.of(
-                if (daytimeList[daytimeIndex] == "오전") hourList[hourIndex].toInt()
-                else hourList[hourIndex].toInt() + 12,
+                if (daytimeList[daytimeIndex] == "오전") (hourList[hourIndex].toInt() + 12) % 12
+                else (hourList[hourIndex].toInt() % 12) + 12,
                 minuteList[minuteIndex].toInt()
             )
         )
-    }.transform {
-        searchBusV2UseCase(departure, arrival).onSuccess {
-            emit(BusSearchResultUiState.Success(tempData))
+    }.debounce(30L).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = LocalDateTime.now()
+    )
+
+    val selectedBusTypeMenu = savedStateHandle.getStateFlow(KEY_SELECTED_BUS_TYPE_MENU, BusType.ALL)
+
+    private val searchResult = combineTransform(
+        determinedDepartureTime, selectedBusTypeMenu, refreshToggle
+    ) { requestLocalDateTime, busType, _ ->
+        busRepository.fetchBusSearchResult(
+            date = requestLocalDateTime.toLocalDate(),
+            time = requestLocalDateTime.toLocalTime(),
+            busType = busType.name,
+            departure = departure.name,
+            arrival = arrival.name
+        ).onSuccess { searchResults ->
+            emit(searchResults.map { searchResult -> searchResult.toBusSearchResultState() })
         }.onFailure {
-            emit(BusSearchResultUiState.LoadFailed)
+            emit(
+                if (BuildConfig.DEBUG) busSearchResultsMock
+                else null
+            )
         }
+    }
+
+    val searchResultUiState = searchResult.transform { searchResultStates ->
+        if (searchResultStates == null)
+            emit(BusSearchResultUiState.LoadFailed)
+        else if (searchResultStates.isEmpty())
+            emit(BusSearchResultUiState.ResultEmpty)
+        else {
+            emit(BusSearchResultUiState.Success(searchResultStates))
+        }
+    }.catch {
+        emit(BusSearchResultUiState.LoadFailed)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = BusSearchResultUiState.Loading
+    )
+
+    val currentTime = flow {
+        while(true) {
+            emit(LocalTime.now())
+            delay(1000L)
+        }
+    }.distinctUntilChangedBy {
+        it.minute
+    }.map {
+        ImmutableLocalTime(it)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = ImmutableLocalTime(LocalTime.now())
     )
 
     fun setDepartureTimeToNow() {
@@ -85,96 +143,22 @@ class BusSearchResultViewModel @Inject constructor(
         _selectedDaytimeIndex.value = daytimeIndex
         _selectedHourIndex.value = hourIndex
         _selectedMinuteIndex.value = minuteIndex
+        refresh()
+    }
+
+    fun onBusTypeMenuChanged(busType: BusType) {
+        savedStateHandle[KEY_SELECTED_BUS_TYPE_MENU] = busType
     }
 
     companion object {
-        private const val TOTAL_DATE_COUNT = 365
+        private const val TOTAL_DATE_COUNT = 120
+        private const val KEY_SELECTED_BUS_TYPE_MENU = "selectedBusTypeMenu"
     }
 }
 
 sealed interface BusSearchResultUiState {
-    data class Success(val departureInfos: List<BusDepartureInfoViewState>) : BusSearchResultUiState
+    data class Success(val results: List<BusSearchResultState>) : BusSearchResultUiState
     data object Loading : BusSearchResultUiState
     data object LoadFailed : BusSearchResultUiState
+    data object ResultEmpty : BusSearchResultUiState
 }
-
-private val tempData = listOf(
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 9,
-        departureMinute = 0,
-        remainingTime = 0
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 9,
-        departureMinute = 10,
-        remainingTime = 10
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 9,
-        departureMinute = 20,
-        remainingTime = 20
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 9,
-        departureMinute = 30,
-        remainingTime = 30
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 9,
-        departureMinute = 40,
-        remainingTime = 40
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 9,
-        departureMinute = 50,
-        remainingTime = 50
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 10,
-        departureMinute = 0,
-        remainingTime = 60
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 10,
-        departureMinute = 10,
-        remainingTime = 70
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 10,
-        departureMinute = 20,
-        remainingTime = 80
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 10,
-        departureMinute = 30,
-        remainingTime = 90
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 10,
-        departureMinute = 40,
-        remainingTime = 100
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 10,
-        departureMinute = 50,
-        remainingTime = 110
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 11,
-        departureMinute = 0,
-        remainingTime = 120
-    )
-)

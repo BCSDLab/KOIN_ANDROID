@@ -22,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.bus.screen.MainEntryView
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
@@ -266,10 +267,13 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         busComposeView.apply {
+            visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
             setContent {
                 MainEntryView(
                     onShuttleTicketClicked = {
-                        // TODO : 유니버스 바로가기
+                        val intent = Intent(this@MainActivity, WebViewActivity::class.java)
+                        intent.putExtra("url", "https://koreatech.unibus.kr/")
+                        startActivity(intent)
                     }, onTimetableCardClicked = {
                         val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
                         startActivity(intent)
