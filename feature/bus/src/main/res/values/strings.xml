@@ -29,7 +29,6 @@
     <string name="n400">400번</string>
     <string name="n402">402번</string>
     <string name="n405">405번</string>
-    <string name="starting_point">기점</string>
     <string name="routes">노선</string>
     <string name="operating">운행</string>
     <string name="node_name">승하차장명</string>

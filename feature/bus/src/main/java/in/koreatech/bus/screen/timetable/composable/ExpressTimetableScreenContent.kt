@@ -50,7 +50,7 @@ internal fun ExpressTimetableScreenContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(R.string.starting_point),
+                text = stringResource(R.string.operating),
                 style = KoinTheme.typography.regular16,
                 color = KoinTheme.colors.neutral600
             )
