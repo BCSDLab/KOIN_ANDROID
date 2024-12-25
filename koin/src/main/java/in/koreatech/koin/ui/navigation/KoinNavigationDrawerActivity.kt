@@ -227,6 +227,20 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 )
                             }
 
+                            MenuState.BusTimetable -> {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "버스 시간표"
+                                )
+                            }
+
+                            MenuState.BusSearch -> {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "교통편 조회하기"
+                                )
+                            }
+
                             else -> Unit
                         }
                     }
