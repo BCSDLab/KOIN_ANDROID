@@ -22,7 +22,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.download.FileDownloadManager
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
