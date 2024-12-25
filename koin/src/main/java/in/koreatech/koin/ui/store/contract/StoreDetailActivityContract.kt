@@ -7,7 +7,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.store.activity.StoreDetailActivity
 

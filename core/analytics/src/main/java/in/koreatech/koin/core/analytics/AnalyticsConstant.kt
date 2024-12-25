@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.core.constant
+package `in`.koreatech.koin.core.analytics
 
 object AnalyticsConstant {
 
@@ -18,8 +18,8 @@ object AnalyticsConstant {
         const val CAFETERIA_INFO = "cafeteria_info"
         const val HAMBURGER = "hamburger"
         const val HAMBURGER_SHOP = HAMBURGER
-        const val HAMBURGER_DINING = "${HAMBURGER}"
-        const val HAMBURGER_BUS = "${HAMBURGER}"
+        const val HAMBURGER_DINING = "$HAMBURGER"
+        const val HAMBURGER_BUS = "$HAMBURGER"
         const val MAIN_MENU_MOVEDETAILVIEW = "main_menu_moveDetailView"
         const val MAIN_MENU_CORNER = "main_menu_corner"
         const val MENU_TIME = "menu_time"

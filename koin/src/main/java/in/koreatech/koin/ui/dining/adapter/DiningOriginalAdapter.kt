@@ -17,7 +17,7 @@ import com.bumptech.glide.request.target.Target
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningOriginalBinding
 import `in`.koreatech.koin.domain.constant.BREAKFAST
