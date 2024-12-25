@@ -22,6 +22,16 @@ object EventLogger {
     }
 
     /**
+     * CAPMUS 클릭 이벤트 로깅
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     * @param extras 추가 이벤트 값
+     */
+    fun logCampusClickEvent(label: String, value: String, vararg extras: EventExtra) {
+        logClickEvent(EventAction.CAMPUS, label, value, *extras)
+    }
+
+    /**
      * 스크롤 이벤트 로깅
      * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
      * @param label 이벤트 소분류

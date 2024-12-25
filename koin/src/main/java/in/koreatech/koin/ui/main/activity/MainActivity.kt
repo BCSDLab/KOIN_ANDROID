@@ -200,13 +200,25 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             setContent {
                 MainEntryView(
                     onShuttleTicketClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "shuttle_ticket",
+                            "셔틀 탑승권"
+                        )
                         val intent = Intent(this@MainActivity, WebViewActivity::class.java)
                         intent.putExtra("url", "https://koreatech.unibus.kr/")
                         startActivity(intent)
                     }, onTimetableCardClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "main_bus_timetable",
+                            "버스 시간표 바로가기"
+                        )
                         val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
                         startActivity(intent)
                     }, onSearchCardClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "main_bus_search",
+                            "가장 빠른 버스 조회하기"
+                        )
                         val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
                         startActivity(intent)
                     },
