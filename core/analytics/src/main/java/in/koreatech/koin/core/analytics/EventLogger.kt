@@ -1,10 +1,8 @@
 package `in`.koreatech.koin.core.analytics
 
-import android.util.Log
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
-import com.google.firebase.ktx.Firebase
-import `in`.koreatech.koin.core.BuildConfig
+import com.google.firebase.analytics.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.Firebase
 import `in`.koreatech.koin.core.analytics.EventLogger.logEvent
 
 object EventLogger {
@@ -23,8 +21,6 @@ object EventLogger {
     fun logClickEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
         logEvent(action, EventCategory.CLICK, label, value, *extras)
     }
-
-
 
     /**
      * 스크롤 이벤트 로깅
