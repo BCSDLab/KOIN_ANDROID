@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.response.bus
 
 import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.bus.CityBusInfo
-import `in`.koreatech.koin.domain.model.bus.v2.CityTimetable
+import `in`.koreatech.koin.domain.model.bus.CityTimetable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
