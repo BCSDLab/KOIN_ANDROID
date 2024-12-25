@@ -117,10 +117,6 @@ fun ShuttleTimetableScreenContent(
                                 Column(
                                     modifier = Modifier.fillMaxSize()
                                 ) {
-                                    HorizontalDivider(
-                                        color = KoinTheme.colors.neutral400
-                                    )
-
                                     Box(
                                         modifier = Modifier
                                             .fillMaxWidth()
