@@ -89,8 +89,10 @@ internal fun SelectPlaceBottomSheet(
                     showClickRipple = false,
                     title = stringResource(it.titleRes),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
-                    chipColors = if (disabledPlace == it) TextChipDefaults.chipColors()
-                    else TextChipDefaults.chipColors(
+                    chipColors = if (disabledPlace == it) TextChipDefaults.chipColors(
+                        unselectedContainerColor = KoinTheme.colors.neutral50,
+                        unselectedContentColor = KoinTheme.colors.neutral300
+                    ) else TextChipDefaults.chipColors(
                         unselectedContainerColor = KoinTheme.colors.neutral200,
                         unselectedContentColor = KoinTheme.colors.neutral600
                     ),
