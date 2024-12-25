@@ -32,13 +32,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.mock.busNoticeUiStateMock
+import `in`.koreatech.bus.component.CommonFailureView
+import `in`.koreatech.bus.component.CommonLoadingView
 import `in`.koreatech.bus.component.NoticeItem
+import `in`.koreatech.bus.mock.busNoticeUiStateMock
 import `in`.koreatech.bus.mock.cityTimetableMock
 import `in`.koreatech.bus.mock.expressTimetableMock
 import `in`.koreatech.bus.mock.shuttleCoursesMock
-import `in`.koreatech.bus.component.CommonFailureView
-import `in`.koreatech.bus.component.CommonLoadingView
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableUiState
 import `in`.koreatech.bus.state.BusNoticeState
@@ -47,7 +47,6 @@ import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
-import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
@@ -81,12 +80,7 @@ internal fun BusTimetableScreenContent(
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState { BusType.entriesExceptAll.size }
 
-    var expressDirectionGuideText by rememberSaveable { mutableStateOf(
-        context.getString(R.string.guide_koreatech_station)
-    ) }
-    var cityDirectionGuideText by rememberSaveable { mutableStateOf(
-        context.getString(R.string.guide_koreatech_station)
-    ) }
+    var expressDirectionGuideText by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -111,21 +105,26 @@ internal fun BusTimetableScreenContent(
                         style = KoinTheme.typography.bold20
                     )
                     if (pagerState.currentPage + 1 != BusType.SHUTTLE.ordinal) {
-                        Spacer(modifier = Modifier.weight(1f))
-                        Text(
-                            text = when (pagerState.currentPage + 1) {
-                                BusType.EXPRESS.ordinal -> expressDirectionGuideText
-                                BusType.CITY.ordinal -> cityDirectionGuideText
-                                else -> ""
-                            },
-                            style = KoinTheme.typography.regular13.copy(color = KoinTheme.colors.primary500)
-                        )
-                        Icon(
-                            modifier = Modifier.padding(start = 4.dp),
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_bus_station),
-                            tint = KoinTheme.colors.primary500,
-                            contentDescription = null
-                        )
+                        if (busTimetableUiState is BusTimetableUiState.Success) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                text = when (pagerState.currentPage + 1) {
+                                    BusType.EXPRESS.ordinal -> expressDirectionGuideText
+                                    BusType.CITY.ordinal -> context.getString(
+                                        R.string.ride,
+                                        busTimetableUiState.cityTimetable.busInfo.departNode
+                                    )
+                                    else -> ""
+                                },
+                                style = KoinTheme.typography.regular13.copy(color = KoinTheme.colors.primary500)
+                            )
+                            Icon(
+                                modifier = Modifier.padding(start = 4.dp),
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_bus_station),
+                                tint = KoinTheme.colors.primary500,
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -197,15 +196,8 @@ internal fun BusTimetableScreenContent(
                                         .background(KoinTheme.colors.neutral100)
                                         .verticalScroll(rememberScrollState()),
                                     timetable = busTimetableUiState.cityTimetable,
-                                    onBusNumberChanged = onCityBusNumberChange,
-                                    onDirectionChanged = {
-                                        cityDirectionGuideText =
-                                            if (it == CommonDirectionType.TO_CHEONAN)
-                                                context.getString(R.string.guide_koreatech_station)
-                                            else context.getString(R.string.guide_cheonan_station)
-
-                                        onCityDirectionChange(it)
-                                    }
+                                    onBusNumberChanged = { onCityBusNumberChange(it) },
+                                    onDirectionChanged = { onCityDirectionChange(it) },
                                 )
                             }
                         }

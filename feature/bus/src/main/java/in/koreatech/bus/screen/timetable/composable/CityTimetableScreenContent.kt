@@ -36,7 +36,7 @@ internal fun CityTimetableScreenContent(
     timetable: CityTimetableState,
     modifier: Modifier = Modifier,
     onBusNumberChanged: (CityBusNumberType) -> Unit = {},
-    onDirectionChanged: (CommonDirectionType) -> Unit = {}
+    onDirectionChanged: (CommonDirectionType) -> Unit = {},
 ) {
 
     var selectedBusNumberType by rememberSaveable { mutableStateOf(CityBusNumberType.N400) }

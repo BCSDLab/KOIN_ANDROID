@@ -9,6 +9,7 @@
     <string name="request_for_incorrect_information">정보가 정확하지 않나요?</string>
     <string name="guide_cheonan_station">천안 터미널 승차</string>
     <string name="guide_koreatech_station">코리아텍 승차</string>
+    <string name="ride">%s 승차</string>
     <string name="all_bus_type">모든 차종</string>
     <string name="tab_shuttle">셔틀</string>
     <string name="tab_express">대성</string>
