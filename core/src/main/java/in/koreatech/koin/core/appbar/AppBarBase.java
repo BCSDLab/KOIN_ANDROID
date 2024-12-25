@@ -12,16 +12,10 @@ import com.google.android.material.appbar.AppBarLayout;
 import android.view.View;
 import android.widget.TextView;
 
-
 import android.util.AttributeSet;
 
-
 import in.koreatech.koin.core.R;
-import in.koreatech.koin.core.analytics.EventAction;
-import in.koreatech.koin.core.analytics.EventLogger;
-import in.koreatech.koin.core.constant.AnalyticsConstant;
 import in.koreatech.koin.core.util.FontManager;
-
 
 public class AppBarBase extends AppBarLayout {
     public AppBarLayout background;

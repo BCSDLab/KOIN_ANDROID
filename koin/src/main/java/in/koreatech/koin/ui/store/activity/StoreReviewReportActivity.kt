@@ -1,13 +1,9 @@
 package `in`.koreatech.koin.ui.store.activity
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -22,15 +18,10 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.databinding.ActivitySignupCompleteBinding
 import `in`.koreatech.koin.databinding.StoreActivityReportReviewBinding
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.state.store.StoreReviewExceptionState
 import `in`.koreatech.koin.domain.state.store.StoreReviewState
-import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.viewmodel.StoreReviewReportViewModel
-import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
 
