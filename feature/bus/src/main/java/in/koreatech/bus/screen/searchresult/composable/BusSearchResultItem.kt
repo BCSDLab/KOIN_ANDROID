@@ -9,14 +9,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
+import `in`.koreatech.bus.component.BusTypeChip
+import `in`.koreatech.bus.mock.busSearchResultMock1
+import `in`.koreatech.bus.state.BusSearchResultState
+import `in`.koreatech.bus.state.ImmutableLocalTime
+import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.bus.util.formatBeforeTime
+import `in`.koreatech.bus.util.formatTime
 import `in`.koreatech.koin.core.designsystem.component.chip.ReadOnlyTextChip
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import java.time.LocalTime
 
 @Composable
 fun BusSearchResultItem(
-    info: BusDepartureInfoViewState,
+    result: BusSearchResultState,
+    currentTime: ImmutableLocalTime,
+    showBeforeTime: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -26,24 +36,38 @@ fun BusSearchResultItem(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            ReadOnlyTextChip(
-                title = stringResource(info.type.titleRes),   // TODO : 버스 종류
-                containerColor = Color(0xFFFBEBD7),
-                textStyle = KoinTheme.typography.regular12.copy(
-                    color = KoinTheme.colors.neutral600
-                )
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                BusTypeChip(busType = result.busType)
+                if (result.busType == BusType.CITY)
+                    Text(
+                        modifier = Modifier.padding(start = 6.dp),
+                        text = result.busName + "번",
+                        style = KoinTheme.typography.medium14,
+                        color = KoinTheme.colors.neutral800
+                    )
+            }
             Text(
                 modifier = Modifier.padding(top = 4.dp),
-                text = info.departureHour.toString() + ":" + info.departureMinute.toString().padStart(2, '0'), // TODO : 출발 시간
+                text = result.departureTime.formatTime(),
                 style = KoinTheme.typography.bold20
             )
         }
-        Text(
-            text = "${info.remainingTime}분 전", // TODO : 남은 시간
-            style = KoinTheme.typography.bold16.copy(
-                color = KoinTheme.colors.info700
+        if (showBeforeTime)
+            Text(
+                text = result.departureTime.formatBeforeTime(currentTime.localTime),
+                style = KoinTheme.typography.bold16.copy(
+                    color = KoinTheme.colors.info700
+                )
             )
-        )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BusSearchResultItemPreview() {
+    BusSearchResultItem(
+        result = busSearchResultMock1,
+        currentTime = ImmutableLocalTime(LocalTime.now()),
+        showBeforeTime = true
+    )
 }

@@ -22,8 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -128,7 +129,7 @@ internal fun BusSearchView(
                         ).size(32.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_swap),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_swap),
                         contentDescription = stringResource(R.string.swap_content_description),
                         tint = KoinTheme.colors.primary500
                     )
