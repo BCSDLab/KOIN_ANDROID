@@ -22,6 +22,7 @@ import `in`.koreatech.bus.screen.timetable.viewmodel.BusNoticeUiState
 import `in`.koreatech.bus.state.BusNoticeState
 import `in`.koreatech.bus.type.PlaceSelectMode
 import `in`.koreatech.bus.type.PlaceType
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.feature.bus.R
 
@@ -64,8 +65,20 @@ internal fun BusSearchScreenContent(
             NoticeItem(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 notice = busNoticeUiState.notice,
-                onCloseIconClick = onCloseNotice,
-                onNoticeClick = onNoticeClick,
+                onCloseIconClick = {
+                    onCloseNotice()
+                    EventLogger.logCampusClickEvent(
+                        "bus_announcement_close",
+                        "교통편 조회하기"
+                    )
+                },
+                onNoticeClick = {
+                    onNoticeClick(busNoticeUiState.notice)
+                    EventLogger.logCampusClickEvent(
+                        "bus_announcement",
+                        "교통편 조회하기"
+                    )
+                },
                 noticeMaxLines = 2
             )
         }
