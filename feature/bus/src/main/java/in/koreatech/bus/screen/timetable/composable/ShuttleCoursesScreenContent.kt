@@ -33,6 +33,7 @@ import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.state.ShuttleCoursesState
 import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.bus.util.formatPeriod
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
@@ -61,6 +62,10 @@ internal fun ShuttleCoursesScreenContent(
             titles = ShuttleBusOperationType.entries.map { stringResource(it.titleRes) },
             onChipSelected = { title ->
                 selectedRouteType = ShuttleBusOperationType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusOperationType.ALL
+                EventLogger.logCampusClickEvent(
+                    "shuttle_bus_route",
+                    context.getString(selectedRouteType.titleRes)
+                )
             },
             selectedChipIndexes = intArrayOf(selectedRouteType.ordinal),
             showClickRipple = false
@@ -79,12 +84,21 @@ internal fun ShuttleCoursesScreenContent(
                     modifier = Modifier,
                     region = courseEntry.key,
                     shuttleCourseRoutes = filteredValue.toImmutableList(),
-                    onItemClicked = onItemClicked
+                    onItemClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "area_specific_route",
+                            "${context.getString(it.type.simpleTitleRes)}_${it.routeName}"
+                        )
+                        onItemClicked(it)
+                    }
                 )
             }
         }
 
-        Column(modifier = Modifier.background(Color.White).padding(top = 8.dp).fillMaxWidth()) {
+        Column(modifier = Modifier
+            .background(Color.White)
+            .padding(top = 8.dp)
+            .fillMaxWidth()) {
             Text(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 text = stringResource(R.string.timetable_semester_information,
@@ -97,7 +111,9 @@ internal fun ShuttleCoursesScreenContent(
             WrongInformationText(
                 modifier = Modifier.padding(top = 4.dp, start = 24.dp)
             )
-            Spacer(modifier = Modifier.fillMaxWidth().height(120.dp))
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp))
         }
     }
 }
