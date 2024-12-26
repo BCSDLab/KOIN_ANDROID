@@ -44,7 +44,7 @@ class TimetableSemesterActivity : ActivityBase() {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (viewModel.userTimetableFrames.value.isEmpty()) {
+            if (viewModel.screenState.value.userTimetableFrames.isEmpty()) {
                 finishActivityWithResult(
                     semester = "",
                     frameId = -1,
