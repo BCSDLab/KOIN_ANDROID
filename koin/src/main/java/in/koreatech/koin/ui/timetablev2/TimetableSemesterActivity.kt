@@ -88,9 +88,9 @@ class TimetableSemesterActivity : ActivityBase() {
                 LaunchedEffect(userTimetables) {
                     if (screenState.mode == ScreenStateUIMode.IDLE) return@LaunchedEffect
                     if (userTimetables.isEmpty()) {
-                        viewModel.updateScreenState(ScreenStateUIMode.EMPTY)
+                        viewModel.updateScreenMode(ScreenStateUIMode.EMPTY)
                     } else {
-                        viewModel.updateScreenState(ScreenStateUIMode.BASIC)
+                        viewModel.updateScreenMode(ScreenStateUIMode.BASIC)
                     }
                 }
 

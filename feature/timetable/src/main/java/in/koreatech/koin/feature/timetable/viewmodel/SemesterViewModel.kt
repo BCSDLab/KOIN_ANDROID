@@ -120,7 +120,7 @@ class SemesterViewModel @Inject constructor(
                     .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) }}
                     .collect {
                         _userTimetableFrames.value = it
-                        updateScreenState(ScreenStateUIMode.BASIC)
+                        updateScreenMode(ScreenStateUIMode.BASIC)
                     }
             } else {
                 getAllFramesUseCase()
@@ -130,9 +130,9 @@ class SemesterViewModel @Inject constructor(
                         _userTimetableFrames.value = it
 
                         if(it.isEmpty()) {
-                            updateScreenState(ScreenStateUIMode.EMPTY)
+                            updateScreenMode(ScreenStateUIMode.EMPTY)
                         } else {
-                            updateScreenState(ScreenStateUIMode.BASIC)
+                            updateScreenMode(ScreenStateUIMode.BASIC)
                         }
                     }
             }
@@ -177,7 +177,7 @@ class SemesterViewModel @Inject constructor(
         _sideEffect.value = sideEffect
     }
 
-    fun updateScreenState(mode: ScreenStateUIMode) {
+    fun updateScreenMode(mode: ScreenStateUIMode) {
         _screenState.value = _screenState.value.copy(
             mode = mode
         )
