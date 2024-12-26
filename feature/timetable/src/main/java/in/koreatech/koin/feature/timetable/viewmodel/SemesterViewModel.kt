@@ -18,11 +18,13 @@ import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.toSemesterModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -33,6 +35,7 @@ import javax.inject.Inject
 
 data class ScreenState(
     val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE,
+    val availableYears: List<Int> = emptyList(),
     val isEditTimetableDialogVisible: Boolean = false,
     val isEditSemesterDialogVisible: Boolean = false,
     val isSelectYearDialogVisible: Boolean = false,
@@ -41,7 +44,7 @@ data class ScreenState(
 )
 
 // 학기가 비었을 때 상태
-enum class ScreenStateUIMode{
+enum class ScreenStateUIMode {
     BASIC, EMPTY, IDLE
 }
 
@@ -96,16 +99,16 @@ class SemesterViewModel @Inject constructor(
         .map { it.keys.toList() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
-    private val _screenState =  MutableStateFlow<ScreenState>(ScreenState())
-    val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
+    private val availableYears: Flow<List<Int>> = getSemestersUseCase()
+        .map { it.map { it.toSemesterModel().year }.distinct() }
 
-    val semesters: StateFlow<List<SemesterModel>> = getSemestersUseCase()
-        .map { it.map { it.toSemesterModel() } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
-
-    val years: StateFlow<List<Int>> = semesters
-        .map { it.map { it.year }.distinct() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+    private val _screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState())
+    val screenState: StateFlow<ScreenState> = combine(
+        _screenState,
+        availableYears
+    ) { screenState, availableYears ->
+        screenState.copy(availableYears = availableYears)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), ScreenState())
 
     private var _isRestorePerformed = false
 
