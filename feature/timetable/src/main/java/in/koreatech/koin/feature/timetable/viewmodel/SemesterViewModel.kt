@@ -36,6 +36,7 @@ import javax.inject.Inject
 data class ScreenState(
     val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE,
     val availableYears: List<Int> = emptyList(),
+    val userTimetableFrames: Map<SemesterModel, List<TimetableFrame>> = emptyMap(),
     val isEditTimetableDialogVisible: Boolean = false,
     val isEditSemesterDialogVisible: Boolean = false,
     val isSelectYearDialogVisible: Boolean = false,
@@ -119,6 +120,7 @@ class SemesterViewModel @Inject constructor(
                     .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
                     .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) }}
                     .collect {
+                        updateUserTimetableFrames(it)
                         _userTimetableFrames.value = it
                         updateScreenMode(ScreenStateUIMode.BASIC)
                     }
@@ -127,6 +129,7 @@ class SemesterViewModel @Inject constructor(
                     .catch { Timber.d("Fail to getAllFramesUseCase on initData()| message: ${it.message}") }
                     .map { it.mapKeys { it.key.toSemesterModel() } }
                     .collect {
+                        updateUserTimetableFrames(it)
                         _userTimetableFrames.value = it
 
                         if(it.isEmpty()) {
@@ -173,6 +176,10 @@ class SemesterViewModel @Inject constructor(
         _dialogUiState.value = _dialogUiState.value.copy(selectedSemesters = semesterModels)
     }
 
+    fun updateUserTimetableFrames(userTimetableFrames: Map<SemesterModel, List<TimetableFrame>>) {
+        _screenState.value = _screenState.value.copy(userTimetableFrames = userTimetableFrames)
+    }
+
     fun updateSideEffect(sideEffect: SemesterSideEffect) {
         _sideEffect.value = sideEffect
     }
@@ -189,6 +196,14 @@ class SemesterViewModel @Inject constructor(
                 semester = target.toSemester(),
                 timetableName = "시간표${(userTimetableFrames.value[target]?.size ?: 1) + 1}"
             ).onSuccess { addedFrame ->
+                updateUserTimetableFrames(
+                    screenState.value.userTimetableFrames.mapValues {
+                        if (it.key == target)
+                            it.value + addedFrame
+                        else
+                            it.value
+                    }
+                )
                 _userTimetableFrames.update { it ->
                     it.mapValues {
                         if (it.key == target)
@@ -216,12 +231,18 @@ class SemesterViewModel @Inject constructor(
             dialogUiState.value.selectedSemesters.forEach { semester ->
                 if (userSemesters.value.contains(semester)) {
                     deleteSemesterUseCase(semester.toSemester()).onSuccess {
+                        updateUserTimetableFrames(
+                            screenState.value.userTimetableFrames - semester
+                        )
                         _userTimetableFrames.update {
                             it - semester
                         }
                     }
                 } else {
                     addSemesterUseCase(semester.toSemester()).onSuccess { addedFrame ->
+                        updateUserTimetableFrames(
+                            (screenState.value.userTimetableFrames + (semester to listOf(addedFrame))).toSortedMap()
+                        )
                         _userTimetableFrames.update {
                             (it + (semester to listOf(addedFrame))).toSortedMap()
                         }
@@ -355,10 +376,25 @@ class SemesterViewModel @Inject constructor(
             .firstOrNull()
             .let { newFrames ->
                 if (newFrames.isNullOrEmpty()) {
+                    updateUserTimetableFrames(
+                        screenState.value.userTimetableFrames - semester
+                    )
                     _userTimetableFrames.update {
                         it - semester
                     }
                 } else {
+
+                    updateUserTimetableFrames(
+                        screenState.value.userTimetableFrames.let {
+                            if (it.containsKey(semester)) {
+                                it.toMutableMap().apply {
+                                    replace(semester, newFrames)
+                                }
+                            } else {
+                                it + (semester to newFrames)
+                            }
+                        }.toSortedMap()
+                    )
                     _userTimetableFrames.update {
                         it.let {
                             if (it.containsKey(semester)) {
