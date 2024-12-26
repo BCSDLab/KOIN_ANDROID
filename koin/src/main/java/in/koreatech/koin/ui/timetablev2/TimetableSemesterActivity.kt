@@ -80,14 +80,14 @@ class TimetableSemesterActivity : ActivityBase() {
                 val snackBarHost = remember { SnackbarHostState() }
 
                 val isAnonymous by viewModel.isAnonymous.collectAsStateWithLifecycle()
-                val userTimetables by viewModel.userTimetableFrames.collectAsStateWithLifecycle()
                 val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
 
                 val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-                LaunchedEffect(userTimetables) {
+                // TODO::hyeok viewmodel 로 이전
+                LaunchedEffect(screenState.userTimetableFrames) {
                     if (screenState.mode == ScreenStateUIMode.IDLE) return@LaunchedEffect
-                    if (userTimetables.isEmpty()) {
+                    if (screenState.userTimetableFrames.isEmpty()) {
                         viewModel.updateScreenMode(ScreenStateUIMode.EMPTY)
                     } else {
                         viewModel.updateScreenMode(ScreenStateUIMode.BASIC)
@@ -156,7 +156,7 @@ class TimetableSemesterActivity : ActivityBase() {
 
                 SemesterScreen(
                     state = screenState,
-                    userTimetables = userTimetables,
+                    userTimetables = screenState.userTimetableFrames,
                     isAnonymous = isAnonymous,
                     onClickTimetable = ::finishActivityWithResult,
                     onClickAddTimetable = {
