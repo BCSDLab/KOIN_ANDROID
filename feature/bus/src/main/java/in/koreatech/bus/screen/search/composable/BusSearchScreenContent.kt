@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,12 @@ internal fun BusSearchScreenContent(
     onNoticeClick: (BusNoticeState) -> Unit = {}
 ) {
 
-    val searchButtonEnabled by remember(departure, arrival) { derivedStateOf { departure != null && arrival != null } }
+    val context = LocalContext.current
+
+    val searchButtonEnabled by remember(
+        departure,
+        arrival
+    ) { derivedStateOf { departure != null && arrival != null } }
     var placeSelectMode by rememberSaveable { mutableStateOf(PlaceSelectMode.NONE) }
 
     val disabledArrival by remember(departure) {
@@ -91,10 +97,34 @@ internal fun BusSearchScreenContent(
             departure = departure?.titleRes?.let { stringResource(it) } ?: "",
             arrival = arrival?.titleRes?.let { stringResource(it) } ?: "",
             searchButtonEnabled = searchButtonEnabled,
-            onSwapIconClicked = onSwapIconClick,
-            onSearchClicked = onSearchClick,
-            onDepartureFieldClicked = { placeSelectMode = PlaceSelectMode.DEPARTURE },
-            onArrivalFieldClicked = { placeSelectMode = PlaceSelectMode.ARRIVAL }
+            onSwapIconClicked = {
+                EventLogger.logCampusClickEvent(
+                    "swap_destination",
+                    "스왑 버튼"
+                )
+                onSwapIconClick()
+            },
+            onSearchClicked = {
+                EventLogger.logCampusClickEvent(
+                    "search_bus",
+                    "조회하기"
+                )
+                onSearchClick()
+            },
+            onDepartureFieldClicked = {
+                EventLogger.logCampusClickEvent(
+                    "departure_box",
+                    "출발지 선택"
+                )
+                placeSelectMode = PlaceSelectMode.DEPARTURE
+            },
+            onArrivalFieldClicked = {
+                EventLogger.logCampusClickEvent(
+                    "arrival_box",
+                    "목적지 선택"
+                )
+                placeSelectMode = PlaceSelectMode.ARRIVAL
+            }
         )
     }
 
@@ -104,11 +134,18 @@ internal fun BusSearchScreenContent(
             selectMode = placeSelectMode,
             onConfirmSelection = {
                 if (placeSelectMode == PlaceSelectMode.DEPARTURE) {
+                    EventLogger.logCampusClickEvent(
+                        "departure_location_confirm",
+                        context.getString(it.titleRes)
+                    )
                     placeSelectMode =
                         if (arrival == null) PlaceSelectMode.ARRIVAL else PlaceSelectMode.NONE
                     onDepartureSet(it)
-                }
-                else if(placeSelectMode == PlaceSelectMode.ARRIVAL) {
+                } else if (placeSelectMode == PlaceSelectMode.ARRIVAL) {
+                    EventLogger.logCampusClickEvent(
+                        "arrival_location_confirm",
+                        context.getString(it.titleRes)
+                    )
                     placeSelectMode =
                         if (departure == null) PlaceSelectMode.DEPARTURE else PlaceSelectMode.NONE
                     onArrivalSet(it)
@@ -142,6 +179,7 @@ private fun BusSearchScreen2Preview() {
         busNoticeUiState = busNoticeUiStateMock
     )
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun BusSearchScreen3Preview() {

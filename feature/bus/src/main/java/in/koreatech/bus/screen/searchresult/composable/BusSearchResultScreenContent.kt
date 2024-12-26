@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -58,6 +59,7 @@ import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.bus.util.formatDateValue
 import `in`.koreatech.bus.util.formatDepartureTime
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -89,6 +91,7 @@ internal fun BusSearchResultScreenContent(
     selectedBusType: BusType,
     onBusTypeChange: (BusType) -> Unit = {}
 ) {
+    val context = LocalContext.current
     var showSelectDialog by rememberSaveable { mutableStateOf(false) }
     val departureTime by remember(
         selectedDateIndex,
@@ -183,6 +186,10 @@ internal fun BusSearchResultScreenContent(
                                         )
                                     },
                                     onClick = {
+                                        EventLogger.logCampusClickEvent(
+                                            "search_result_bus_type",
+                                            context.getString(busType.titleRes)
+                                        )
                                         isDropdownExpanded = false
                                         onBusTypeChange(busType)
                                     }
@@ -194,6 +201,10 @@ internal fun BusSearchResultScreenContent(
 
                 Row(
                     modifier = Modifier.noRippleClickable {
+                        EventLogger.logCampusClickEvent(
+                            "search_result_departure_time",
+                            "출발 시각 설정"
+                        )
                         showSelectDialog = true
                     }, verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -278,10 +289,23 @@ internal fun BusSearchResultScreenContent(
             ),
             onDismissRequest = { showSelectDialog = false },
             onDepartureNow = {
+                EventLogger.logCampusClickEvent(
+                    "departure_now",
+                    "지금 출발"
+                )
                 onMinDepartureTimeSetToNow()
                 showSelectDialog = false
             },
             onComplete = { date, daytime, hour, minute ->
+                EventLogger.logCampusClickEvent(
+                    "departure_time_setting_done",
+                    "시간설정 " + if (selectedDateIndex == date
+                        && selectedDaytimeIndex == daytime
+                        && selectedHourIndex == hour
+                        && selectedMinuteIndex == minute
+                    )
+                        "N" else "Y"
+                )
                 onCompleteMinDepartureTime(date, daytime, hour, minute)
                 showSelectDialog = false
             }, dateList = dateList,
