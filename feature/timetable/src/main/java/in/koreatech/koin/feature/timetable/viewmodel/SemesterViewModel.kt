@@ -194,7 +194,7 @@ class SemesterViewModel @Inject constructor(
         viewModelScope.launch {
             addTimetableFrameUseCase(
                 semester = target.toSemester(),
-                timetableName = "시간표${(userTimetableFrames.value[target]?.size ?: 1) + 1}"
+                timetableName = "시간표${(screenState.value.userTimetableFrames[target]?.size ?: 1) + 1}"
             ).onSuccess { addedFrame ->
                 updateUserTimetableFrames(
                     screenState.value.userTimetableFrames.mapValues {
@@ -309,7 +309,7 @@ class SemesterViewModel @Inject constructor(
 
                         // 학기가 함께 삭제되지 않는 경우엔, 삭제된 시간표 대신 그 학기의 기본 시간표로 이동
                         // 학기를 찾을 수 없으면, 가장 최근 시간표로 이동
-                        userTimetableFrames.value
+                        screenState.value.userTimetableFrames
                             .get(currentTimetableSemester.value.toSemesterModel())
                             ?.find { it.isMain}
                             ?.let {
@@ -341,7 +341,7 @@ class SemesterViewModel @Inject constructor(
                     rollbackFrameUseCase(_deletedFrame.value!!.id)
                         .onSuccess {
                             val restoredFrame: TimetableFrame = _deletedFrame.value!!
-                            val isRestoredSemester: Boolean = userTimetableFrames.value[_deletedFrameSemester.value].isNullOrEmpty()
+                            val isRestoredSemester: Boolean = screenState.value.userTimetableFrames[_deletedFrameSemester.value].isNullOrEmpty()
 
                             refreshSemesterTimetableFrames(_deletedFrameSemester.value!!)
 
@@ -415,13 +415,13 @@ class SemesterViewModel @Inject constructor(
      */
     private fun updateCurrentTimetableDataToLatest() {
         // 학기가 비어있는 경우 기본 값 전달
-        if (userSemesters.value.isEmpty() || userTimetableFrames.value.isEmpty()) {
+        if (userSemesters.value.isEmpty() || screenState.value.userTimetableFrames.isEmpty()) {
             updateCurrentTimetableDataToEmpty()
             return
         }
 
         // 학기와 시간표가 비어있지 않은 경우
-        userTimetableFrames.value.entries.first().let { entry ->
+        screenState.value.userTimetableFrames.entries.first().let { entry ->
             _currentTimetableSemester.value = entry.key.toSemester()
             entry.value.find { it.isMain }.let {
                 Timber.d("메인이 없는 시간표가 존재함!!")
