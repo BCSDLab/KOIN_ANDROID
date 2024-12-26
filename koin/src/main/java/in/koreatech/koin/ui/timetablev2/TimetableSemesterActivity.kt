@@ -82,7 +82,6 @@ class TimetableSemesterActivity : ActivityBase() {
                 val isAnonymous by viewModel.isAnonymous.collectAsStateWithLifecycle()
                 val userTimetables by viewModel.userTimetableFrames.collectAsStateWithLifecycle()
                 val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
-                val years by viewModel.years.collectAsStateWithLifecycle()
 
                 val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -97,7 +96,7 @@ class TimetableSemesterActivity : ActivityBase() {
 
                 if (screenState.isEditSemesterDialogVisible) {
                     EditSemesterDialogImpl(
-                        years = years,
+                        years = screenState.availableYears,
                         userSemesters = userSemesters,
                         isSelectYearDialogVisible = screenState.isSelectYearDialogVisible,
                         onConfirmSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
