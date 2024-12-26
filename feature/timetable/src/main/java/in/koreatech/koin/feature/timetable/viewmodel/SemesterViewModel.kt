@@ -26,9 +26,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -92,14 +92,6 @@ class SemesterViewModel @Inject constructor(
     private val _isAnonymous: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val isAnonymous: StateFlow<Boolean> = _isAnonymous.asStateFlow()
 
-    private val _userTimetableFrames: MutableStateFlow<Map<SemesterModel, List<TimetableFrame>>> = MutableStateFlow(emptyMap())
-    val userTimetableFrames: StateFlow<Map<SemesterModel, List<TimetableFrame>>> = _userTimetableFrames.asStateFlow()
-
-    // TODO::hyeok _userTimetableFrames 랑 목적 겹침, 삭제 필요
-    val userSemesters: StateFlow<List<SemesterModel>> = _userTimetableFrames
-        .map { it.keys.toList() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
-
     private val availableYears: Flow<List<Int>> = getSemestersUseCase()
         .map { it.map { it.toSemesterModel().year }.distinct() }
 
@@ -111,17 +103,21 @@ class SemesterViewModel @Inject constructor(
         screenState.copy(availableYears = availableYears)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), ScreenState())
 
+    // TODO::hyeok _userTimetableFrames 랑 목적 겹침, 삭제 필요
+    val userSemesters: StateFlow<List<SemesterModel>> = screenState
+        .map { it.userTimetableFrames.keys.toList() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+
     private var _isRestorePerformed = false
 
     fun initData() {
         viewModelScope.launch {
-            if(isAnonymous.value) {
+            if (isAnonymous.value) {
                 getUserSemestersUseCase(_isAnonymous.value)
                     .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
-                    .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) }}
+                    .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) } }
                     .collect {
                         updateUserTimetableFrames(it)
-                        _userTimetableFrames.value = it
                         updateScreenMode(ScreenStateUIMode.BASIC)
                     }
             } else {
@@ -130,9 +126,8 @@ class SemesterViewModel @Inject constructor(
                     .map { it.mapKeys { it.key.toSemesterModel() } }
                     .collect {
                         updateUserTimetableFrames(it)
-                        _userTimetableFrames.value = it
 
-                        if(it.isEmpty()) {
+                        if (it.isEmpty()) {
                             updateScreenMode(ScreenStateUIMode.EMPTY)
                         } else {
                             updateScreenMode(ScreenStateUIMode.BASIC)
@@ -204,14 +199,6 @@ class SemesterViewModel @Inject constructor(
                             it.value
                     }
                 )
-                _userTimetableFrames.update { it ->
-                    it.mapValues {
-                        if (it.key == target)
-                            it.value + addedFrame
-                        else
-                            it.value
-                    }
-                }
             }.onFailure {
                 Timber.d("시간표 추가 실패")
             }
@@ -234,18 +221,12 @@ class SemesterViewModel @Inject constructor(
                         updateUserTimetableFrames(
                             screenState.value.userTimetableFrames - semester
                         )
-                        _userTimetableFrames.update {
-                            it - semester
-                        }
                     }
                 } else {
                     addSemesterUseCase(semester.toSemester()).onSuccess { addedFrame ->
                         updateUserTimetableFrames(
                             (screenState.value.userTimetableFrames + (semester to listOf(addedFrame))).toSortedMap()
                         )
-                        _userTimetableFrames.update {
-                            (it + (semester to listOf(addedFrame))).toSortedMap()
-                        }
                     }.onFailure {
                         it.message?.let { errorMessage ->
                             _sideEffect.value = SemesterSideEffect.Toast(errorMessage)
@@ -311,7 +292,7 @@ class SemesterViewModel @Inject constructor(
                         // 학기를 찾을 수 없으면, 가장 최근 시간표로 이동
                         screenState.value.userTimetableFrames
                             .get(currentTimetableSemester.value.toSemesterModel())
-                            ?.find { it.isMain}
+                            ?.find { it.isMain }
                             ?.let {
                                 _currentTimetableId.value = it.id
                                 _currentTimetableName.value = it.timetableName
@@ -346,11 +327,11 @@ class SemesterViewModel @Inject constructor(
                             refreshSemesterTimetableFrames(_deletedFrameSemester.value!!)
 
                             // 시간표에서 보여주던 프레임이 복구된 경우 변경
-                            if(_originalTimetableId.value == restoredFrame.id) {
+                            if (_originalTimetableId.value == restoredFrame.id) {
                                 _currentTimetableId.value = restoredFrame.id
                                 _currentTimetableName.value = restoredFrame.timetableName
 
-                                if(isRestoredSemester)
+                                if (isRestoredSemester)
                                     _currentTimetableSemester.value = _deletedFrameSemester.value!!.toSemester()
                             }
 
@@ -379,9 +360,6 @@ class SemesterViewModel @Inject constructor(
                     updateUserTimetableFrames(
                         screenState.value.userTimetableFrames - semester
                     )
-                    _userTimetableFrames.update {
-                        it - semester
-                    }
                 } else {
 
                     updateUserTimetableFrames(
@@ -395,17 +373,6 @@ class SemesterViewModel @Inject constructor(
                             }
                         }.toSortedMap()
                     )
-                    _userTimetableFrames.update {
-                        it.let {
-                            if (it.containsKey(semester)) {
-                                it.toMutableMap().apply {
-                                    replace(semester, newFrames)
-                                }
-                            } else {
-                                it + (semester to newFrames)
-                            }
-                        }.toSortedMap()
-                    }
                 }
             }
     }
