@@ -139,11 +139,6 @@ class SemesterViewModel @Inject constructor(
         emitAll(_screenState)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), ScreenState())
 
-    // TODO::hyeok _userTimetableFrames 랑 목적 겹침, 삭제 필요
-    val userSemesters: StateFlow<List<SemesterModel>> = screenState
-        .map { it.userTimetableFrames.keys.toList() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
-
     private var _isRestorePerformed = false
 
     fun updateIntentData(isAnonymous: Boolean, timetableFrameId: Int, semester: String, frameName: String) {
@@ -224,7 +219,7 @@ class SemesterViewModel @Inject constructor(
     fun updateUserSemesters() {
         viewModelScope.launch {
             dialogUiState.value.selectedSemesters.forEach { semester ->
-                if (userSemesters.value.contains(semester)) {
+                if (screenState.value.userSemesters.contains(semester)) {
                     deleteSemesterUseCase(semester.toSemester()).onSuccess {
                         updateUserTimetableFrames(
                             screenState.value.userTimetableFrames - semester
@@ -244,7 +239,7 @@ class SemesterViewModel @Inject constructor(
             }
 
             // 시간표에서 진입한 학기가 삭제된 경우
-            if (_currentTimetableSemester.value.isEmpty() || !userSemesters.value.contains(_currentTimetableSemester.value.toSemesterModel())) {
+            if (_currentTimetableSemester.value.isEmpty() || !screenState.value.userSemesters.contains(_currentTimetableSemester.value.toSemesterModel())) {
                 // 가장 최근 학기의 기본 시간표로 설정
                 updateCurrentTimetableDataToLatest()
             }
@@ -291,7 +286,7 @@ class SemesterViewModel @Inject constructor(
                     // 시간표에서 선택한 프레임이 삭제된 경우..
                     if (currentTimetableId.value == target.id) {
                         // 학기가 함께 삭제된 경우 가장 최근 학기의 기본 시간표로 이동
-                        if (!userSemesters.value.contains(dialogUiState.value.editedSemester)) {
+                        if (!screenState.value.userSemesters.contains(dialogUiState.value.editedSemester)) {
                             updateCurrentTimetableDataToLatest()
                             return@onSuccess
                         }
@@ -390,7 +385,7 @@ class SemesterViewModel @Inject constructor(
      */
     private fun updateCurrentTimetableDataToLatest() {
         // 학기가 비어있는 경우 기본 값 전달
-        if (userSemesters.value.isEmpty() || screenState.value.userTimetableFrames.isEmpty()) {
+        if (screenState.value.userSemesters.isEmpty() || screenState.value.userTimetableFrames.isEmpty()) {
             updateCurrentTimetableDataToEmpty()
             return
         }
