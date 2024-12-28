@@ -140,33 +140,6 @@ class SemesterViewModel @Inject constructor(
 
     private var _isRestorePerformed = false
 
-    fun initData() {
-        viewModelScope.launch {
-            if (isAnonymous.value) {
-                getUserSemestersUseCase(_isAnonymous.value)
-                    .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
-                    .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) } }
-                    .collect {
-                        updateUserTimetableFrames(it)
-                        updateScreenMode(ScreenStateUIMode.BASIC)
-                    }
-            } else {
-                getAllFramesUseCase()
-                    .catch { Timber.d("Fail to getAllFramesUseCase on initData()| message: ${it.message}") }
-                    .map { it.mapKeys { it.key.toSemesterModel() } }
-                    .collect {
-                        updateUserTimetableFrames(it)
-
-                        if (it.isEmpty()) {
-                            updateScreenMode(ScreenStateUIMode.EMPTY)
-                        } else {
-                            updateScreenMode(ScreenStateUIMode.BASIC)
-                        }
-                    }
-            }
-        }
-    }
-
     fun updateIntentData(isAnonymous: Boolean, timetableFrameId: Int, semester: String, frameName: String) {
         viewModelScope.launch {
             _isAnonymous.value = isAnonymous
