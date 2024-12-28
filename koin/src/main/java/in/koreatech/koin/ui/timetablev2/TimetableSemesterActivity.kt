@@ -78,8 +78,6 @@ class TimetableSemesterActivity : ActivityBase() {
                 val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle()
                 val snackBarHost = remember { SnackbarHostState() }
 
-                val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
-
                 val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
                 // TODO::hyeok viewmodel 로 이전
@@ -95,14 +93,14 @@ class TimetableSemesterActivity : ActivityBase() {
                 if (screenState.isEditSemesterDialogVisible) {
                     EditSemesterDialogImpl(
                         years = screenState.availableYears,
-                        userSemesters = userSemesters,
+                        userSemesters = screenState.userSemesters,
                         isSelectYearDialogVisible = screenState.isSelectYearDialogVisible,
                         onConfirmSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
                         onDismissSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
                         onClickSelectYear = { viewModel.updateSelectYearDialogVisible(true) },
                         onConfirm = { selectedSemesters ->
                             viewModel.updateSelectedSemesters(selectedSemesters)
-                            if (selectedSemesters.any { it in userSemesters })
+                            if (selectedSemesters.any { it in screenState.userSemesters })
                                 viewModel.updateDeleteSemesterDialogVisible(true)
                             else {
                                 viewModel.updateEditSemesterDialogVisible(false)
