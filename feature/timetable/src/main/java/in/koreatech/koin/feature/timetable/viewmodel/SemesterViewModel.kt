@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.RollbackFrameUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.UpdateTimetableFrameUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.toSemesterModel
@@ -24,7 +25,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -60,7 +62,8 @@ class SemesterViewModel @Inject constructor(
     private val updateTimetableFrameUseCase: UpdateTimetableFrameUseCase,
     private val deleteTimetableFrameUseCase: DeleteTimetableFrameUseCase,
     private val rollbackFrameUseCase: RollbackFrameUseCase,
-    private val getAllFramesUseCase: GetAllFramesUseCase
+    private val getAllFramesUseCase: GetAllFramesUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
 
     private val _dialogUiState: MutableStateFlow<SemesterDialogUiState> = MutableStateFlow(SemesterDialogUiState())
@@ -95,12 +98,39 @@ class SemesterViewModel @Inject constructor(
     private val availableYears: Flow<List<Int>> = getSemestersUseCase()
         .map { it.map { it.toSemesterModel().year }.distinct() }
 
+    // TODO::hyeok 리프래시 로직 추가
+    private val initialScreenState = flow {
+        Timber.d("dhk| initialScreenState")
+        val availableYears = availableYears.first()
+        val isAnonymous = getUserStatusUseCase().first().isAnonymous
+        val userFrames = if (isAnonymous) {
+            getUserSemestersUseCase(isAnonymous)
+                .catch { Timber.d("Fail to getUserSemestersUseCase on initialScreenState| message: ${it.message}") }
+                .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) } }
+                .first()
+        } else {
+            getAllFramesUseCase()
+                .catch { Timber.d("Fail to getAllFramesUseCase on initialScreenState| message: ${it.message}") }
+                .map { it.mapKeys { it.key.toSemesterModel() } }
+                .first()
+        }
+        emit(ScreenState(
+            availableYears = availableYears,
+            userTimetableFrames = userFrames,
+            mode = if(userFrames.isEmpty()) ScreenStateUIMode.EMPTY else ScreenStateUIMode.BASIC
+        ))
+    }.catch {
+        // TODO::hyeok Error 상태 추가
+        emit(ScreenState())
+    }
+
     private val _screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState())
-    val screenState: StateFlow<ScreenState> = combine(
-        _screenState,
-        availableYears
-    ) { screenState, availableYears ->
-        screenState.copy(availableYears = availableYears)
+
+    val screenState: StateFlow<ScreenState> = flow {
+        val initialState = initialScreenState.first()
+        _screenState.value = initialState
+        emit(initialState)
+        emitAll(_screenState)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), ScreenState())
 
     // TODO::hyeok _userTimetableFrames 랑 목적 겹침, 삭제 필요
