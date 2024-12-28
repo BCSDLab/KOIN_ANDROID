@@ -26,33 +26,6 @@
     <string name="error_gender_not_checked">성별을 체크해 주세요</string>
     <string name="error_failed_logout">로그아웃에 실패했습니다.</string>
 
-    <!-- bus -->
-    <string name="bus_end_information">금일 운영 종료 되었습니다.</string>
-    <string name="bus_citybus_timetable_terminal_node">시간표(터미널)</string>
-    <string name="bus_citybus_timetable_terminal_time">6:00(첫) - 22:30(막) (10분간격)</string>
-    <string name="bus_citybus_timetable_byeongcheon_node">시간표(병천)</string>
-    <string name="bus_citybus_timetable_byeongcheon_time">6:10(첫) - 22:45(막) (10분간격)</string>
-    <string name="bus_citybus_timetable_require_time">소요시간</string>
-    <string name="bus_citybus_timetable_require_time_value">약 40분</string>
-    <string name="bus_course_shuttle_to_koreatech">셔틀 등교</string>
-    <string name="bus_course_shuttle_from_koreatech">셔틀 하교</string>
-    <string name="bus_course_commuting_to_koreatech">등교</string>
-    <string name="bus_course_commuting_from_koreatech">하교</string>
-    <string name="bus_course_express_to_koreatech"><![CDATA[야우리 → 한기대]]></string>
-    <string name="bus_course_express_from_koreatech"><![CDATA[한기대 → 야우리]]></string>
-    <string name="bus_remain_time_format">H시간 mm분 ss초 전</string>
-    <string name="bus_no_remain_time">운행정보없음</string>
-    <string name="bus_arrival_time_format">H:mm 출발</string>
-    <string name="bus_node_koreatech">한기대</string>
-    <string name="bus_node_station">천안역</string>
-    <string name="bus_node_terminal">야우리</string>
-    <string name="bus_name_city">시내버스</string>
-    <string name="bus_name_commuting">통학버스</string>
-    <string name="bus_name_express">대성고속</string>
-    <string name="bus_name_shuttle">셔틀버스</string>
-    <string name="bus_name_school_shuttle">학교셔틀</string>
-    <string name="city_bus_number_format">%1$d번 버스</string>
-
     <!-- dept -->
     <string name="dept_mechanical_engineering">기계공학부</string>
     <string name="dept_mechatronics_engineering">메카트로닉스공학부</string>

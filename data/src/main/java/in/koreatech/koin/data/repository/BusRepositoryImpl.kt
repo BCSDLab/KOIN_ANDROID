@@ -1,123 +1,81 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.constant.BUS_REQUEST_DATE_FORMAT
-import `in`.koreatech.koin.data.constant.BUS_REQUEST_TIME_FORMAT
-import `in`.koreatech.koin.data.mapper.*
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.remote.BusRemoteDataSource
-import `in`.koreatech.koin.domain.model.bus.*
-import `in`.koreatech.koin.domain.model.bus.course.BusCourse
-import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
-import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
-import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
+import `in`.koreatech.koin.domain.model.bus.BusNotice
+import `in`.koreatech.koin.domain.model.bus.BusSearchResult
+import `in`.koreatech.koin.domain.model.bus.CityTimetable
+import `in`.koreatech.koin.domain.model.bus.ExpressTimetable
+import `in`.koreatech.koin.domain.model.bus.ShuttleCourses
+import `in`.koreatech.koin.domain.model.bus.ShuttleTimetable
 import `in`.koreatech.koin.domain.repository.BusRepository
-import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
-import `in`.koreatech.koin.domain.model.bus.city.CityBusInfo
-import `in`.koreatech.koin.domain.model.bus.timetable.BusTimetable
-import java.time.LocalDateTime
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class BusRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val busLocalDataSource: BusLocalDataSource,
-    private val busRemoteDataSource: BusRemoteDataSource
+    private val busRemoteDataSource: BusRemoteDataSource,
+    private val busLocalDataSource: BusLocalDataSource
 ) : BusRepository {
 
-    override suspend fun getShuttleBusCourses(): List<Pair<BusCourse, String>> {
-        return busRemoteDataSource.getBusCourses()
-            .map { it.toBusCourse().let { it to it.toCourseNameString(context) } }
+    override suspend fun fetchBusNotice(): Result<BusNotice> {
+        return runCatching {
+            busRemoteDataSource.fetchBusNotice().toBusNotice()
+        }
     }
 
-    override suspend fun getExpressBusCourses(): List<Pair<BusCourse, String>> {
-        return busLocalDataSource.getExpressCourses()
-            .map { it to it.toCourseNameString(context) }
+    override suspend fun fetchShuttleTimetable(id: String): Result<ShuttleTimetable> {
+        return runCatching {
+            busRemoteDataSource.fetchShuttleTimetable(id).toShuttleTimetable()
+        }
     }
 
-    override suspend fun getShuttleBusTimetable(busCourse: BusCourse): BusTimetable.ShuttleBusTimetable {
-        return if (busCourse.busType == BusType.Shuttle) {
-            busRemoteDataSource.getShuttleBusTimetable(
-                busDirection = busCourse.direction.busDirectionString,
-                region = busCourse.region
-            )
-        } else {
-            busRemoteDataSource.getCommutingBusTimetable(
-                busDirection = busCourse.direction.busDirectionString,
-                region = busCourse.region
-            )
-        }.toShuttleBusTimetable()
+    override suspend fun fetchShuttleCourses(): Result<ShuttleCourses> {
+        return runCatching {
+            busRemoteDataSource.fetchShuttleCourses().toShuttleCourses()
+        }
     }
 
-    override suspend fun getExpressBusTimetable(busCourse: BusCourse): BusTimetable.ExpressBusTimetable {
-        return busRemoteDataSource.getExpressBusTimetable(
-            busDirection = busCourse.direction.busDirectionString
-        ).toExpressBusTimetable()
+    override suspend fun fetchExpressTimetable(direction: String): Result<ExpressTimetable> {
+        return runCatching {
+            busRemoteDataSource.fetchExpressTimetable(direction).toExpressTimetable()
+        }
     }
 
-    override suspend fun getCityBusTimetable(cityBusInfo: CityBusInfo): BusTimetable.CityBusTimetable {
-        return busRemoteDataSource.getCityBusTimetable(
-            number = cityBusInfo.busNumber,
-            direction = cityBusInfo.direction
-        ).toCityBusTimetable()
+    override suspend fun fetchCityTimetable(number: Int, direction: String): Result<CityTimetable> {
+        return runCatching {
+            busRemoteDataSource.fetchCityTimetable(number, direction).toCityTimetable()
+        }
     }
 
-    override suspend fun getShuttleBusRemainTime(
-        departure: BusNode,
-        arrival: BusNode
-    ): BusArrivalInfo.ShuttleBusArrivalInfo {
-        return busRemoteDataSource.getBuses(
-            busType = BusType.Shuttle.busTypeString,
-            departure = departure.busNodeString,
-            arrival = arrival.busNodeString
-        ).toShuttleBusArrivalInfo(departure, arrival)
+    override suspend fun fetchBusSearchResult(
+        date: LocalDate,
+        time: LocalTime,
+        busType: String,
+        departure: String,
+        arrival: String
+    ): Result<List<BusSearchResult>> {
+        return runCatching {
+            busRemoteDataSource.fetchBusSearchResult(
+                date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date),
+                time = DateTimeFormatter.ofPattern("HH:mm").format(time),
+                busType = busType,
+                departure = departure,
+                arrival = arrival
+            ).schedules?.map { it.toBusSearchResult() }.orEmpty()
+        }
     }
 
-    override suspend fun getExpressBusRemainTime(
-        departure: BusNode,
-        arrival: BusNode
-    ): BusArrivalInfo.ExpressBusArrivalInfo {
-        return busRemoteDataSource.getBuses(
-            busType = BusType.Express.busTypeString,
-            departure = departure.busNodeString,
-            arrival = arrival.busNodeString
-        ).toExpressBusRemainTimePair(departure, arrival)
+    override suspend fun getLastShownNoticeId(): Result<Int> {
+        return runCatching {
+            busLocalDataSource.getLastShownNoticeId()
+        }
     }
 
-    override suspend fun getCommutingBusRemainTime(
-        departure: BusNode,
-        arrival: BusNode
-    ): BusArrivalInfo.CommutingBusArrivalInfo {
-        return busRemoteDataSource.getBuses(
-            busType = BusType.Commuting.busTypeString,
-            departure = departure.busNodeString,
-            arrival = arrival.busNodeString
-        ).toCommutingBusRemainTimePair(departure, arrival)
-    }
-
-    override suspend fun getCityBusRemainTime(
-        departure: BusNode,
-        arrival: BusNode
-    ): BusArrivalInfo.CityBusArrivalInfo {
-        return busRemoteDataSource.getBuses(
-            busType = BusType.City.busTypeString,
-            departure = departure.busNodeString,
-            arrival = arrival.busNodeString
-        ).toCityBusRemainTimePair(departure, arrival)
-    }
-
-    override suspend fun searchBus(
-        time: LocalDateTime,
-        departure: BusNode,
-        arrival: BusNode
-    ): List<BusSearchResult> {
-        return busRemoteDataSource.searchBus(
-            date = time.format(DateTimeFormatter.ofPattern(BUS_REQUEST_DATE_FORMAT)),
-            time = time.format(DateTimeFormatter.ofPattern(BUS_REQUEST_TIME_FORMAT)),
-            departure = departure.busNodeString,
-            arrival = arrival.busNodeString
-        ).map {
-            it.toBusSearchResult(context)
+    override suspend fun saveLastShownNoticeId(id: Int): Result<Unit> {
+        return runCatching {
+            busLocalDataSource.saveLastShownNoticeId(id)
         }
     }
 }

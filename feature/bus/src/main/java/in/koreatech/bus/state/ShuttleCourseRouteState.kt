@@ -3,7 +3,7 @@ package `in`.koreatech.bus.state
 import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.bus.util.CIRCULATION
 import `in`.koreatech.bus.util.WEEKEND
-import `in`.koreatech.koin.domain.model.bus.v2.ShuttleCourseRoute
+import `in`.koreatech.koin.domain.model.bus.ShuttleCourseRoute
 
 data class ShuttleCourseRouteState(
     val id: String,

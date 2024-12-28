@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import `in`.koreatech.bus.type.ShuttleBusOperationType
 import `in`.koreatech.bus.util.CIRCULATION
 import `in`.koreatech.bus.util.WEEKEND
-import `in`.koreatech.koin.domain.model.bus.v2.ShuttleTimetable
+import `in`.koreatech.koin.domain.model.bus.ShuttleTimetable
 
 @Immutable
 data class ShuttleTimetableState(
