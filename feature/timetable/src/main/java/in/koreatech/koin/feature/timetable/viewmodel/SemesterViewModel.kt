@@ -39,6 +39,7 @@ data class ScreenState(
     val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE,
     val availableYears: List<Int> = emptyList(),
     val userTimetableFrames: Map<SemesterModel, List<TimetableFrame>> = emptyMap(),
+    val isAnonymous: Boolean = true,
     val isEditTimetableDialogVisible: Boolean = false,
     val isEditSemesterDialogVisible: Boolean = false,
     val isSelectYearDialogVisible: Boolean = false,
@@ -117,7 +118,8 @@ class SemesterViewModel @Inject constructor(
         emit(ScreenState(
             availableYears = availableYears,
             userTimetableFrames = userFrames,
-            mode = if(userFrames.isEmpty()) ScreenStateUIMode.EMPTY else ScreenStateUIMode.BASIC
+            mode = if(userFrames.isEmpty()) ScreenStateUIMode.EMPTY else ScreenStateUIMode.BASIC,
+            isAnonymous = isAnonymous
         ))
     }.catch {
         // TODO::hyeok Error 상태 추가
