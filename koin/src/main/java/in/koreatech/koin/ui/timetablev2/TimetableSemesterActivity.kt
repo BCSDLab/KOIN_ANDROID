@@ -70,7 +70,6 @@ class TimetableSemesterActivity : ActivityBase() {
             val frameName = bundle.getString(TimetableActivity.FRAME_NAME).orEmpty()
             viewModel.updateIntentData(isAnonymous, frameId, semester, frameName)
         }
-//        viewModel.initData()
         onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
         binding.timetableListComposeView.setContent {
