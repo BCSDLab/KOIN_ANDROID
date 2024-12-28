@@ -93,9 +93,6 @@ class SemesterViewModel @Inject constructor(
     private val _deletedFrame: MutableStateFlow<TimetableFrame?> = MutableStateFlow(null)
     private val _deletedFrameSemester: MutableStateFlow<SemesterModel?> = MutableStateFlow(null)
 
-    private val _isAnonymous: MutableStateFlow<Boolean> = MutableStateFlow(true)
-    val isAnonymous: StateFlow<Boolean> = _isAnonymous.asStateFlow()
-
     private val availableYears: Flow<List<Int>> = getSemestersUseCase()
         .map { it.map { it.toSemesterModel().year }.distinct() }
 
@@ -144,7 +141,6 @@ class SemesterViewModel @Inject constructor(
 
     fun updateIntentData(isAnonymous: Boolean, timetableFrameId: Int, semester: String, frameName: String) {
         viewModelScope.launch {
-            _isAnonymous.value = isAnonymous
             _currentTimetableId.value = timetableFrameId
             _originalTimetableId.value = timetableFrameId
             _currentTimetableSemester.value = semester

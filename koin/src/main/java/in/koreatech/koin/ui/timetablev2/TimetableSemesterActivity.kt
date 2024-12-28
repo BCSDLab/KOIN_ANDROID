@@ -78,7 +78,6 @@ class TimetableSemesterActivity : ActivityBase() {
                 val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle()
                 val snackBarHost = remember { SnackbarHostState() }
 
-                val isAnonymous by viewModel.isAnonymous.collectAsStateWithLifecycle()
                 val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
 
                 val screenState by viewModel.screenState.collectAsStateWithLifecycle()
@@ -156,17 +155,17 @@ class TimetableSemesterActivity : ActivityBase() {
                 SemesterScreen(
                     state = screenState,
                     userTimetables = screenState.userTimetableFrames,
-                    isAnonymous = isAnonymous,
+                    isAnonymous = screenState.isAnonymous,
                     onClickTimetable = ::finishActivityWithResult,
                     onClickAddTimetable = {
-                        if (viewModel.isAnonymous.value) {
+                        if (screenState.isAnonymous) {
                             viewModel.updateRequestLoginDialogVisible(true)
                         } else {
                             viewModel.onClickAddTimetable(it)
                         }
                     },
                     onClickEditTimetable = { semester, frame ->
-                        if (viewModel.isAnonymous.value) {
+                        if (screenState.isAnonymous) {
                             viewModel.updateRequestLoginDialogVisible(true)
                         } else {
                             viewModel.onClickEditTimetable(
@@ -216,7 +215,7 @@ class TimetableSemesterActivity : ActivityBase() {
                 }
 
                 AppBarBase.getRightButtonId() -> {
-                    if (viewModel.isAnonymous.value) {
+                    if (viewModel.screenState.value.isAnonymous) {
                         viewModel.updateRequestLoginDialogVisible(true)
                     } else {
                         viewModel.updateEditSemesterDialogVisible(true)
@@ -243,7 +242,7 @@ class TimetableSemesterActivity : ActivityBase() {
 
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
         val intent = Intent().apply {
-            val bundle = if (!viewModel.isAnonymous.value) {
+            val bundle = if (!viewModel.screenState.value.isAnonymous) {
                 bundleOf(
                     SEMESTER to semester.toSemester(),
                     TIMETABLE_FRAME_ID to timetableFrame.id,
@@ -266,7 +265,7 @@ class TimetableSemesterActivity : ActivityBase() {
         Timber.d("Timetable frame id: ${viewModel.currentTimetableId.value}")
         Timber.d("timetable frame name: ${viewModel.currentTimetableName.value}")
         val intent = Intent().apply {
-            val bundle = if (!viewModel.isAnonymous.value) {
+            val bundle = if (!viewModel.screenState.value.isAnonymous) {
                 bundleOf(
                     SEMESTER to semester,
                     TIMETABLE_FRAME_ID to frameId,
