@@ -5,12 +5,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.bus.BaseBusViewModel
-import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock1
 import `in`.koreatech.bus.navigation.Routes
 import `in`.koreatech.bus.state.ShuttleTimetableState
 import `in`.koreatech.bus.state.toShuttleTimetableState
-import `in`.koreatech.koin.domain.repository.BusV2Repository
-import `in`.koreatech.koin.feature.bus.BuildConfig
+import `in`.koreatech.koin.domain.repository.BusRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.stateIn
@@ -20,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ShuttleTimetableViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val busRepository: BusV2Repository
+    private val busRepository: BusRepository
 ) : BaseBusViewModel() {
 
     private val arguments = savedStateHandle.toRoute<Routes.ShuttleTimetable>()

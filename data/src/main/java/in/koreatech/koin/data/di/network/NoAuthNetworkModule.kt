@@ -1,19 +1,28 @@
 package `in`.koreatech.koin.data.di.network
 
-import `in`.koreatech.koin.core.qualifier.NoAuth
-import `in`.koreatech.koin.core.qualifier.ServerUrl
-import `in`.koreatech.koin.data.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.qualifier.NoAuth
+import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.ArticleApi
-import javax.inject.Singleton
+import `in`.koreatech.koin.data.api.BusApi
+import `in`.koreatech.koin.data.api.CoopShopApi
+import `in`.koreatech.koin.data.api.DeptApi
+import `in`.koreatech.koin.data.api.DiningApi
+import `in`.koreatech.koin.data.api.LandApi
+import `in`.koreatech.koin.data.api.OwnerApi
+import `in`.koreatech.koin.data.api.StoreApi
+import `in`.koreatech.koin.data.api.TimetableApi
+import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.api.VersionApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -93,14 +102,6 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): BusApi {
         return retrofit.create(BusApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBusV2Api(
-        @NoAuth retrofit: Retrofit
-    ): BusV2Api {
-        return retrofit.create(BusV2Api::class.java)
     }
 
     @Provides

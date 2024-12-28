@@ -1,6 +1,6 @@
 package `in`.koreatech.bus.state
 
-import `in`.koreatech.koin.domain.model.bus.v2.BusNotice
+import `in`.koreatech.koin.domain.model.bus.BusNotice
 
 data class BusNoticeState(
     val id: Int,

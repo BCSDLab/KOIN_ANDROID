@@ -1,6 +1,6 @@
 package `in`.koreatech.bus.state
 
-import `in`.koreatech.koin.domain.model.bus.v2.ShuttleSemester
+import `in`.koreatech.koin.domain.model.bus.ShuttleSemester
 import java.time.LocalDate
 
 data class ShuttleSemesterState(

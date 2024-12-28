@@ -10,7 +10,7 @@ import `in`.koreatech.bus.state.toBusNoticeState
 import `in`.koreatech.bus.type.PlaceType
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
-import `in`.koreatech.koin.domain.repository.BusV2Repository
+import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.feature.bus.BuildConfig
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class BusSearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val onboardingManager: OnboardingManager,
-    private val busRepository: BusV2Repository
+    private val busRepository: BusRepository
 ) : BaseBusViewModel() {
 
     private val shouldShowNotice = onboardingManager.getShouldOnboardFlow(

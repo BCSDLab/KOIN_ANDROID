@@ -2,8 +2,6 @@ package `in`.koreatech.koin.ui.main.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
@@ -11,14 +9,11 @@ import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
-import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
@@ -27,14 +22,10 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.state.toContent
 import `in`.koreatech.koin.ui.main.state.toNoti
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
@@ -44,8 +35,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val getBusTimerUseCase: GetBusTimerUseCase,
-    private val busErrorHandler: BusErrorHandler,
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val abTestUseCase: ABTestUseCase,
@@ -53,8 +42,6 @@ class MainActivityViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
-    private val _busNode =
-        MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
 
     val bannerABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
@@ -168,37 +155,10 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    val busTimer = liveData {
-        _busNode.asFlow()
-            .distinctUntilChanged()
-            .collectLatest { (departure, arrival) ->
-                _isLoading.value = false
-                try {
-                    if (departure != arrival) {
-                        getBusTimerUseCase(departure, arrival)
-                            .conflate()
-                            .collect { result ->
-                                emit(result)
-                            }
-                    }
-
-                } catch (_: CancellationException) {
-                } catch (e: Exception) {
-                    _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
-                }
-            }
-    }
-
     fun checkKeywordNotiContent() {
         viewModelScope.launchWithLoading {
             articleRepository.saveKeywordNotiIndex().launchIn(viewModelScope)
         }
-    }
-
-    fun switchBusNode() {
-        _busNode.value = _busNode.value?.let { (departure, arrival) ->
-            arrival to departure
-        } ?: (BusNode.Koreatech to BusNode.Terminal)
     }
 
     fun setDiningType(diningType: DiningType) {
