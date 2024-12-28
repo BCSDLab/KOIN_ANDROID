@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.timetable.viewmodel
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.bottomsheet.BottomSheetBehavior.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
@@ -35,6 +37,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@Stable
 data class ScreenState(
     val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE,
     val availableYears: List<Int> = emptyList(),
@@ -45,9 +48,13 @@ data class ScreenState(
     val isSelectYearDialogVisible: Boolean = false,
     val isDeleteSemesterDialogVisible: Boolean = false,
     val isRequestLoginDialogVisible: Boolean = false
-)
+) {
+    val userSemesters: List<SemesterModel>
+        get() = userTimetableFrames.keys.toList()
+}
 
 // 학기가 비었을 때 상태
+@Stable
 enum class ScreenStateUIMode {
     BASIC, EMPTY, IDLE
 }
