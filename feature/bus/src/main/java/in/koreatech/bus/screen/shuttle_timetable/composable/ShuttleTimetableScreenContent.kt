@@ -22,19 +22,23 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import `in`.koreatech.bus.component.CommonFailureView
 import `in`.koreatech.bus.component.ShuttleBusOperationChip
+import `in`.koreatech.bus.component.WrongInformationText
 import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock1
 import `in`.koreatech.bus.mock.shuttleTimetableUiStateMock2
 import `in`.koreatech.bus.screen.shuttle_timetable.composable.loading.ShuttleTimetableLoading
 import `in`.koreatech.bus.screen.shuttle_timetable.viewmodel.ShuttleTimetableUiState
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
@@ -58,6 +62,7 @@ fun ShuttleTimetableScreenContent(
     val pagerState = rememberPagerState { 2 }
     val scope = rememberCoroutineScope()
 
+    val context = LocalContext.current
     KoinSurface(
         modifier = modifier
     ) {
@@ -72,11 +77,10 @@ fun ShuttleTimetableScreenContent(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
             ) {
-
                 when (timetableUiState) {
                     is ShuttleTimetableUiState.Success -> {
+                        val eventValue = "${stringResource(timetableUiState.timetable.routeType.simpleTitleRes)}_${timetableUiState.timetable.routeName}"
                         Column(
                             modifier = Modifier
                                 .padding(horizontal = 24.dp, vertical = 16.dp)
@@ -116,6 +120,7 @@ fun ShuttleTimetableScreenContent(
                             ) { page ->
                                 Column(
                                     modifier = Modifier.fillMaxSize()
+                                        .verticalScroll(rememberScrollState())
                                 ) {
                                     Box(
                                         modifier = Modifier
@@ -161,58 +166,82 @@ fun ShuttleTimetableScreenContent(
                                             )
                                         }
                                     }
+                                    WrongInformationText(
+                                        modifier = Modifier.padding(top = 16.dp, start = 24.dp),
+                                        loggingEventValue = eventValue
+                                    )
                                     Spacer(modifier = Modifier.height(120.dp))
                                 }
                             }
+
+                            LaunchedEffect(pagerState.currentPage) {
+                                EventLogger.logCampusClickEvent(
+                                    when(pagerState.currentPage) {
+                                        0 -> "go_to_school"
+                                        1 -> "go_home"
+                                        else -> "unknown"
+                                    },
+                                    eventValue
+                                )
+                            }
+
                         } else {
-                            HorizontalDivider(
-                                color = KoinTheme.colors.neutral400
-                            )
-
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(14.dp)
-                                    .background(color = KoinTheme.colors.neutral100)
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(IntrinsicSize.Min),
+                            Column(
+                                modifier = Modifier.fillMaxSize()
+                                    .verticalScroll(rememberScrollState())
                             ) {
-                                ShuttleTimetableNodeItem(
-                                    nodeItemHeightDp = nodeItemHeightDp,
-                                    nodes = timetableUiState.timetable.nodeInfo.toPersistentList()
+                                HorizontalDivider(
+                                    color = KoinTheme.colors.neutral400
                                 )
 
-                                VerticalDivider(
-                                    modifier = Modifier.fillMaxHeight(),
-                                    color = KoinTheme.colors.neutral300
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(14.dp)
+                                        .background(color = KoinTheme.colors.neutral100)
                                 )
-
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .horizontalScroll(rememberScrollState())
+                                        .height(IntrinsicSize.Min),
                                 ) {
-                                    timetableUiState.timetable.routeInfo.fastForEach { route ->
-                                        ShuttleTimetableRouteItem(
-                                            route = route,
-                                            nodeItemHeightDp = nodeItemHeightDp,
+                                    ShuttleTimetableNodeItem(
+                                        nodeItemHeightDp = nodeItemHeightDp,
+                                        nodes = timetableUiState.timetable.nodeInfo.toPersistentList()
+                                    )
+
+                                    VerticalDivider(
+                                        modifier = Modifier.fillMaxHeight(),
+                                        color = KoinTheme.colors.neutral300
+                                    )
+
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .horizontalScroll(rememberScrollState())
+                                    ) {
+                                        timetableUiState.timetable.routeInfo.fastForEach { route ->
+                                            ShuttleTimetableRouteItem(
+                                                route = route,
+                                                nodeItemHeightDp = nodeItemHeightDp,
+                                            )
+                                        }
+
+                                        /** 시간표가 화면을 못 채울 때, 상단의 회색 배경을 채우기 위함 (프리뷰 참조)
+                                         * 더 좋은 방법을 모르겠음... */
+                                        Spacer(
+                                            modifier = Modifier.weight(1f).height(
+                                                KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp
+                                            ).background(KoinTheme.colors.neutral100)
                                         )
                                     }
-
-                                    /** 시간표가 화면을 못 채울 때, 상단의 회색 배경을 채우기 위함 (프리뷰 참조)
-                                     * 더 좋은 방법을 모르겠음... */
-                                    Spacer(
-                                        modifier = Modifier.weight(1f).height(
-                                            KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp
-                                        ).background(KoinTheme.colors.neutral100)
-                                    )
                                 }
+                                WrongInformationText(
+                                    modifier = Modifier.padding(top = 16.dp, start = 24.dp),
+                                    loggingEventValue = eventValue
+                                )
+                                Spacer(modifier = Modifier.height(120.dp))
                             }
-
-                            Spacer(modifier = Modifier.height(120.dp))
                         }
                     }
 

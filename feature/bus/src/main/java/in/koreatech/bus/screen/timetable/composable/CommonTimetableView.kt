@@ -15,8 +15,8 @@ import androidx.compose.ui.util.fastForEach
 import `in`.koreatech.bus.component.WrongInformationText
 import `in`.koreatech.bus.mock.commonTimetableMock
 import `in`.koreatech.bus.state.CommonTimetableState
+import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
-import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
@@ -84,7 +84,8 @@ internal fun CommonTimetableView(
             )
 
             WrongInformationText(
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier.padding(top = 4.dp),
+                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
             )
         }
     }

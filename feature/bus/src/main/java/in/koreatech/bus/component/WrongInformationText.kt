@@ -18,16 +18,16 @@ import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 internal fun WrongInformationText(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loggingEventValue: String = ""
 ) {
     val context = LocalContext.current
-    val eventValue = LocalSelectedTimetableTab.current.getEventValue()
 
     LeadingIconText(
         modifier = modifier.noRippleClickable {
             EventLogger.logCampusClickEvent(
                 "error_feedback_button",
-                eventValue
+                loggingEventValue
             )
             val url = GOOGLE_FORM_URL
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

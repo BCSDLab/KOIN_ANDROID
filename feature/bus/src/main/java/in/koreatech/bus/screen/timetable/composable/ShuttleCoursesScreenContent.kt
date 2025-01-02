@@ -32,6 +32,7 @@ import `in`.koreatech.bus.state.ShuttleCourseRegionState
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.state.ShuttleCoursesState
 import `in`.koreatech.bus.type.ShuttleBusOperationType
+import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.bus.util.formatPeriod
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
@@ -109,7 +110,8 @@ internal fun ShuttleCoursesScreenContent(
                 color = KoinTheme.colors.neutral500,
             )
             WrongInformationText(
-                modifier = Modifier.padding(top = 4.dp, start = 24.dp)
+                modifier = Modifier.padding(top = 4.dp, start = 24.dp),
+                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
