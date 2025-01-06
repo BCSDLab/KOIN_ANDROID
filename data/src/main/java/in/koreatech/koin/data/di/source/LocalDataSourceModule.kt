@@ -9,7 +9,6 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
-import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
@@ -45,14 +44,6 @@ object LocalDataSourceModule {
         @ApplicationContext applicationContext: Context
     ): VersionLocalDataSource {
         return VersionLocalDataSource(applicationContext)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBusLocalDataSource(
-        @ApplicationContext applicationContext: Context
-    ): BusLocalDataSource {
-        return BusLocalDataSource(applicationContext)
     }
 
     @Provides

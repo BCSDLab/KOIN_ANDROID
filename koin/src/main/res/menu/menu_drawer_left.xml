@@ -14,9 +14,6 @@
                 android:id="@+id/navi_item_store"
                 android:title="@string/navigation_item_store" />
             <item
-                android:id="@+id/navi_item_bus"
-                android:title="@string/navigation_item_bus" />
-            <item
                 android:id="@+id/navi_item_dining"
                 android:title="@string/navigation_item_dining" />
             <item

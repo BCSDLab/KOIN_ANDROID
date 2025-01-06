@@ -1,21 +1,28 @@
 package `in`.koreatech.bus.screen.searchresult.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,40 +30,52 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.screen.CommonLoadingView
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastForEach
+import `in`.koreatech.bus.component.CommonEmptyView
+import `in`.koreatech.bus.component.CommonFailureView
+import `in`.koreatech.bus.mock.busSearchResultsMock
 import `in`.koreatech.bus.screen.search.composable.BusSearchConditionSelectDialog
+import `in`.koreatech.bus.screen.searchresult.composable.loading.BusSearchResultLoadingItem
 import `in`.koreatech.bus.screen.searchresult.viewmodel.BusSearchResultUiState
-import `in`.koreatech.bus.screen.timetable.type.BusType
+import `in`.koreatech.bus.state.ImmutableLocalTime
+import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.bus.type.PlaceType
+import `in`.koreatech.bus.util.formatDateValue
 import `in`.koreatech.bus.util.formatDepartureTime
-import `in`.koreatech.bus.viewstate.BusDepartureInfoViewState
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.time.LocalDate
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BusSearchResultScreenContent(
-    departure: String,
-    arrival: String,
+    departure: PlaceType,
+    arrival: PlaceType,
     searchResultUiState: BusSearchResultUiState,
     dateList: ImmutableList<String>,
     daytimeList: ImmutableList<String>,
     hourList: ImmutableList<String>,
     minuteList: ImmutableList<String>,
+    currentTime: ImmutableLocalTime,
     modifier: Modifier = Modifier,
     selectedDateIndex: Int,
     selectedDaytimeIndex: Int,
@@ -65,74 +84,195 @@ internal fun BusSearchResultScreenContent(
     onNavigationIconClick: () -> Unit = {},
     onMinDepartureTimeSetToNow: () -> Unit = {},
     onCompleteMinDepartureTime: (dateIndex: Int, daytimeIndex: Int, hourIndex: Int, minuteIndex: Int) -> Unit = { _, _, _, _ -> },
+    selectedBusType: BusType,
+    onBusTypeChange: (BusType) -> Unit = {}
 ) {
+    val context = LocalContext.current
     var showSelectDialog by rememberSaveable { mutableStateOf(false) }
-    val departureTime by remember(selectedDateIndex, selectedDaytimeIndex, selectedHourIndex, selectedMinuteIndex) { mutableStateOf(formatDepartureTime(
-        dateList[selectedDateIndex],
-        daytimeList[selectedDaytimeIndex],
-        hourList[selectedHourIndex],
-        minuteList[selectedMinuteIndex]
-    )) }
+    val departureTime by remember(
+        selectedDateIndex,
+        selectedDaytimeIndex,
+        selectedHourIndex,
+        selectedMinuteIndex
+    ) {
+        mutableStateOf(
+            formatDepartureTime(
+                dateList[selectedDateIndex],
+                daytimeList[selectedDaytimeIndex],
+                hourList[selectedHourIndex],
+                minuteList[selectedMinuteIndex]
+            )
+        )
+    }
+
+    val initialDepartureTimeTextSize = 16.sp
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+    var departureTimeTextSize by remember { mutableStateOf(initialDepartureTimeTextSize) }
 
     Column(
         modifier = modifier
     ) {
         KoinTopAppBar(
-            title = stringResource(R.string.search_result_direction_title, departure, arrival),
+            title = stringResource(
+                R.string.search_result_direction_title,
+                stringResource(departure.titleRes),
+                stringResource(arrival.titleRes)
+            ),
             onNavigationIconClick = onNavigationIconClick
         )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 24.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Row(
-                modifier = Modifier.noRippleClickable {
-                    showSelectDialog = true
-                }, verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp, horizontal = 24.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = buildAnnotatedString {
-                        append(departureTime)
-                        withStyle(
-                            style = SpanStyle(
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Black
-                            )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                ) {
+                    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                        Row(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(12.dp))
+                                .clickable {
+                                    isDropdownExpanded = !isDropdownExpanded
+                                }
+                                .background(
+                                    color = KoinTheme.colors.neutral50,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            append(" " + stringResource(R.string.departure))
+                            Text(
+                                text = stringResource(selectedBusType.titleRes) + if (selectedBusType != BusType.ALL) stringResource(
+                                    R.string.bus
+                                ) else "",
+                                style = KoinTheme.typography.medium14,
+                                color = KoinTheme.colors.neutral800,
+                                modifier = Modifier.padding(start = 8.dp),
+                                maxLines = 1
+                            )
+
+                            Icon(
+                                modifier = Modifier.padding(start = 4.dp),
+                                imageVector = Icons.Rounded.KeyboardArrowDown,
+                                contentDescription = stringResource(R.string.select_bus_type_content_description),
+                            )
                         }
-                    }, style = KoinTheme.typography.bold16,
-                    color = KoinTheme.colors.info700
-                )
-                Icon(
-                    modifier = Modifier.padding(start = 4.dp),
-                    imageVector = Icons.Rounded.KeyboardArrowDown,
-                    contentDescription = stringResource(R.string.set_time_content_description),
-                    tint = KoinTheme.colors.neutral500
-                )
+
+                        DropdownMenu(
+                            modifier = Modifier,
+                            expanded = isDropdownExpanded,
+                            onDismissRequest = { isDropdownExpanded = false },
+                            shape = RoundedCornerShape(12.dp),
+                            containerColor = KoinTheme.colors.neutral50,
+                        ) {
+                            BusType.entries.fastForEach { busType ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            text = stringResource(busType.titleRes) + if (busType != BusType.ALL) stringResource(
+                                                R.string.bus
+                                            ) else "",
+                                            style = KoinTheme.typography.medium14,
+                                        )
+                                    },
+                                    onClick = {
+                                        EventLogger.logCampusClickEvent(
+                                            "search_result_bus_type",
+                                            context.getString(busType.titleRes)
+                                        )
+                                        isDropdownExpanded = false
+                                        onBusTypeChange(busType)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.noRippleClickable {
+                        EventLogger.logCampusClickEvent(
+                            "search_result_departure_time",
+                            "출발 시각 설정"
+                        )
+                        showSelectDialog = true
+                    }, verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier.padding(start = 4.dp),
+                        imageVector = Icons.Rounded.KeyboardArrowDown,
+                        contentDescription = stringResource(R.string.set_time_content_description),
+                        tint = KoinTheme.colors.neutral500
+                    )
+                    Text(
+                        text = buildAnnotatedString {
+                            append(departureTime)
+                            withStyle(
+                                style = SpanStyle(
+                                    fontWeight = FontWeight.Medium,
+                                    color = Color.Black
+                                )
+                            ) {
+                                append(" " + stringResource(R.string.departure))
+                            }
+                        }, style = KoinTheme.typography.bold16,
+                        color = KoinTheme.colors.info700,
+                        fontSize = departureTimeTextSize,
+                        maxLines = 1,
+                        onTextLayout = {
+                            if (it.didOverflowWidth)
+                                departureTimeTextSize = (departureTimeTextSize.value - .25f).sp
+                        }, softWrap = false
+                    )
+                }
             }
-            Spacer(modifier = Modifier.weight(1f))
         }
 
         when (searchResultUiState) {
             is BusSearchResultUiState.Success -> LazyColumn {
-                items(searchResultUiState.departureInfos) { info ->
+                items(searchResultUiState.results) { result ->
                     BusSearchResultItem(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 32.dp, vertical = 8.dp),
-                        info = info
+                            .padding(horizontal = 32.dp, vertical = 10.dp),
+                        result = result,
+                        currentTime = currentTime,
+                        showBeforeTime = (selectedDateIndex == 0 && result.departureTime.isAfter(
+                            currentTime.localTime
+                        )),
+                    )
+                }
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp)
                     )
                 }
             }
-            is BusSearchResultUiState.Loading -> {
-                CommonLoadingView(modifier = Modifier.fillMaxSize())
+
+            is BusSearchResultUiState.ResultEmpty -> {
+                CommonEmptyView(modifier = Modifier.fillMaxSize())
             }
+
+            is BusSearchResultUiState.Loading -> {
+                repeat(25) {
+                    BusSearchResultLoadingItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp, vertical = 8.dp)
+                    )
+                }
+            }
+
             is BusSearchResultUiState.LoadFailed -> {
-                // TODO : 에러 화면, Pull to refresh
+                CommonFailureView(modifier = Modifier.fillMaxSize())
             }
         }
     }
@@ -145,10 +285,23 @@ internal fun BusSearchResultScreenContent(
             ),
             onDismissRequest = { showSelectDialog = false },
             onDepartureNow = {
+                EventLogger.logCampusClickEvent(
+                    "departure_now",
+                    "지금 출발"
+                )
                 onMinDepartureTimeSetToNow()
                 showSelectDialog = false
             },
             onComplete = { date, daytime, hour, minute ->
+                EventLogger.logCampusClickEvent(
+                    "departure_time_setting_done",
+                    "시간설정: " + if (selectedDateIndex == date
+                        && selectedDaytimeIndex == daytime
+                        && selectedHourIndex == hour
+                        && selectedMinuteIndex == minute
+                    )
+                        "N" else "Y"
+                )
                 onCompleteMinDepartureTime(date, daytime, hour, minute)
                 showSelectDialog = false
             }, dateList = dateList,
@@ -168,29 +321,20 @@ internal fun BusSearchResultScreenContent(
 private fun BusSearchResultScreenPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
-        searchResultUiState = previewSearchResultUiState,
-        dateList = buildList {
-            val today = LocalDateTime.now()
-
-            add("오늘")
-            add("내일")
-            for (i in 2 until 365) {
-                val date = today.plusDays(i.toLong())
-                val formattedDate = date.format(
-                    DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
-                ).replace("요일", "")
-                add(formattedDate)
-            }
-        }.toImmutableList(),
+        searchResultUiState = BusSearchResultUiState.Success(busSearchResultsMock),
+        dateList = List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }
+            .toImmutableList(),
         daytimeList = listOf("오전", "오후").toImmutableList(),
         hourList = (1..12).map { it.toString() }.toImmutableList(),
         minuteList = (0..59).map { it.toString() }.toImmutableList(),
+        currentTime = ImmutableLocalTime(LocalTime.now()),
         selectedDateIndex = 0,
         selectedDaytimeIndex = 0,
         selectedHourIndex = 0,
         selectedMinuteIndex = 0,
-        departure = "코리아텍",
-        arrival = "청주"
+        departure = PlaceType.KOREATECH,
+        arrival = PlaceType.STATION,
+        selectedBusType = BusType.ALL
     )
 }
 
@@ -200,108 +344,18 @@ private fun BusSearchResultScreenLoadingPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = BusSearchResultUiState.Loading,
-        dateList = buildList {
-            val today = LocalDateTime.now()
-
-            add("오늘")
-            add("내일")
-            for (i in 2 until 365) {
-                val date = today.plusDays(i.toLong())
-                val formattedDate = date.format(
-                    DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
-                ).replace("요일", "")
-                add(formattedDate)
-            }
-        }.toImmutableList(),
+        dateList = List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }
+            .toImmutableList(),
         daytimeList = listOf("오전", "오후").toImmutableList(),
         hourList = (1..12).map { it.toString() }.toImmutableList(),
         minuteList = (0..59).map { it.toString() }.toImmutableList(),
+        currentTime = ImmutableLocalTime(LocalTime.now()),
         selectedDateIndex = 0,
         selectedDaytimeIndex = 0,
         selectedHourIndex = 0,
         selectedMinuteIndex = 0,
-        departure = "교대역",
-        arrival = "코리아텍"
+        departure = PlaceType.TERMINAL,
+        arrival = PlaceType.KOREATECH,
+        selectedBusType = BusType.ALL
     )
 }
-
-private val previewSearchResultUiState = BusSearchResultUiState.Success(listOf(
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 9,
-        departureMinute = 0,
-        remainingTime = 0
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 9,
-        departureMinute = 10,
-        remainingTime = 10
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 9,
-        departureMinute = 20,
-        remainingTime = 20
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 9,
-        departureMinute = 30,
-        remainingTime = 30
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 9,
-        departureMinute = 40,
-        remainingTime = 40
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 9,
-        departureMinute = 50,
-        remainingTime = 50
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 10,
-        departureMinute = 0,
-        remainingTime = 60
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 10,
-        departureMinute = 10,
-        remainingTime = 70
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 10,
-        departureMinute = 20,
-        remainingTime = 80
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 10,
-        departureMinute = 30,
-        remainingTime = 90
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.EXPRESS,
-        departureHour = 10,
-        departureMinute = 40,
-        remainingTime = 100
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.CITY,
-        departureHour = 10,
-        departureMinute = 50,
-        remainingTime = 110
-    ),
-    BusDepartureInfoViewState(
-        type = BusType.SHUTTLE,
-        departureHour = 11,
-        departureMinute = 0,
-        remainingTime = 120
-    )
-))

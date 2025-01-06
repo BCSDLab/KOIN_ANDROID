@@ -1,12 +1,13 @@
 package `in`.koreatech.koin.data.di.repository
 
 import dagger.Binds
-import dagger.BindsInstance
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.repository.BusRepositoryImpl
 import `in`.koreatech.koin.data.repository.TimetableRepositoryImpl
 import `in`.koreatech.koin.data.repository.firebase.messaging.FirebaseMessagingRepositoryImpl
+import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
 import javax.inject.Singleton
@@ -25,4 +26,10 @@ abstract class BindsRepositoryModule {
     abstract fun bindsTimetableRepository(
         timetableRepositoryImpl: TimetableRepositoryImpl
     ): TimetableRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsBusV2Repository(
+        busV2RepositoryImpl: BusRepositoryImpl
+    ): BusRepository
 }

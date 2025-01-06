@@ -7,10 +7,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
-import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 
 class StoreDetailImageViewpagerAdapter(
     private val images: List<String>?,
