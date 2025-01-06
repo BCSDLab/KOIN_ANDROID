@@ -27,6 +27,7 @@ import `in`.koreatech.bus.state.CityTimetableState
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
 import `in`.koreatech.bus.util.formatUpdatedTime
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
@@ -64,6 +65,10 @@ internal fun CityTimetableScreenContent(
                 onChipSelected = { title ->
                     selectedBusNumberType =
                         CityBusNumberType.entries.find { context.getString(it.titleRes) == title } ?: CityBusNumberType.N400
+                    EventLogger.logCampusClickEvent(
+                        "city_bus_route",
+                        context.getString(selectedBusNumberType.titleRes)
+                    )
                 },
                 selectedChipIndexes = intArrayOf(selectedBusNumberType.ordinal),
                 showClickRipple = false
@@ -87,6 +92,10 @@ internal fun CityTimetableScreenContent(
                 onChipSelected = { title ->
                     selectedDirectionType =
                         CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
+                    EventLogger.logCampusClickEvent(
+                        "city_bus_direction",
+                        context.getString(selectedDirectionType.titleRes)
+                    )
                 },
                 selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal),
                 showClickRipple = false

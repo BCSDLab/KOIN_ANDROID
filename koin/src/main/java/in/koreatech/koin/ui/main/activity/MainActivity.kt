@@ -13,8 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +28,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
@@ -202,13 +200,25 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             setContent {
                 MainEntryView(
                     onShuttleTicketClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "shuttle_ticket",
+                            "셔틀 탑승권"
+                        )
                         val intent = Intent(this@MainActivity, WebViewActivity::class.java)
                         intent.putExtra("url", "https://koreatech.unibus.kr/")
                         startActivity(intent)
                     }, onTimetableCardClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "main_bus_timetable",
+                            "버스 시간표 바로가기"
+                        )
                         val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
                         startActivity(intent)
                     }, onSearchCardClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "main_bus_search",
+                            "가장 빠른 버스 조회하기"
+                        )
                         val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
                         startActivity(intent)
                     },

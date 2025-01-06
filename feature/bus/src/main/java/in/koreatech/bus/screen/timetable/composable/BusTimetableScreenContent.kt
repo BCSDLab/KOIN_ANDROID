@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +47,8 @@ import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.type.CityBusNumberType
 import `in`.koreatech.bus.type.CommonDirectionType
+import `in`.koreatech.bus.util.LocalSelectedTimetableTab
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -129,10 +132,23 @@ internal fun BusTimetableScreenContent(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 if (busNoticeUiState is BusNoticeUiState.Show) {
+                    val eventValue = selectedTimetableTypeTab.getEventValue()
                     NoticeItem(
                         notice = busNoticeUiState.notice,
-                        onCloseIconClick = onCloseNotice,
-                        onNoticeClick = onNoticeClick
+                        onCloseIconClick = {
+                            onCloseNotice()
+                            EventLogger.logCampusClickEvent(
+                                "bus_announcement_close",
+                                eventValue
+                            )
+                        },
+                        onNoticeClick = {
+                            EventLogger.logCampusClickEvent(
+                                "bus_announcement",
+                                eventValue
+                            )
+                            onNoticeClick(busNoticeUiState.notice)
+                        }
                     )
                 }
             }
@@ -164,41 +180,47 @@ internal fun BusTimetableScreenContent(
                     is BusTimetableUiState.Success -> {
                         when (page + 1) {   // BusType.ALL 때문에 +1
                             BusType.SHUTTLE.ordinal -> {
-                                ShuttleCoursesScreenContent(
-                                    modifier = Modifier
-                                        .background(KoinTheme.colors.neutral100)
-                                        .verticalScroll(rememberScrollState()),
-                                    shuttleCourses = busTimetableUiState.shuttleCourses,
-                                    onItemClicked = onShuttleCourseRouteClick,
-                                )
+                                CompositionLocalProvider(LocalSelectedTimetableTab provides BusType.SHUTTLE) {
+                                    ShuttleCoursesScreenContent(
+                                        modifier = Modifier
+                                            .background(KoinTheme.colors.neutral100)
+                                            .verticalScroll(rememberScrollState()),
+                                        shuttleCourses = busTimetableUiState.shuttleCourses,
+                                        onItemClicked = onShuttleCourseRouteClick,
+                                    )
+                                }
                             }
 
                             BusType.EXPRESS.ordinal -> {
-                                ExpressTimetableScreenContent(
-                                    modifier = Modifier
-                                        .background(KoinTheme.colors.neutral100)
-                                        .verticalScroll(rememberScrollState()),
-                                    expressTimetable = busTimetableUiState.expressTimetable,
-                                    onDirectionChanged = {
-                                        expressDirectionGuideText =
-                                            if (it == CommonDirectionType.TO_CHEONAN) context.getString(
-                                                R.string.guide_koreatech_station
-                                            ) else context.getString(R.string.guide_cheonan_station)
+                                CompositionLocalProvider(LocalSelectedTimetableTab provides BusType.EXPRESS) {
+                                    ExpressTimetableScreenContent(
+                                        modifier = Modifier
+                                            .background(KoinTheme.colors.neutral100)
+                                            .verticalScroll(rememberScrollState()),
+                                        expressTimetable = busTimetableUiState.expressTimetable,
+                                        onDirectionChanged = {
+                                            expressDirectionGuideText =
+                                                if (it == CommonDirectionType.TO_CHEONAN) context.getString(
+                                                    R.string.guide_koreatech_station
+                                                ) else context.getString(R.string.guide_cheonan_station)
 
-                                        onExpressDirectionChange(it)
-                                    }
-                                )
+                                            onExpressDirectionChange(it)
+                                        }
+                                    )
+                                }
                             }
 
                             BusType.CITY.ordinal -> {
-                                CityTimetableScreenContent(
-                                    modifier = Modifier
-                                        .background(KoinTheme.colors.neutral100)
-                                        .verticalScroll(rememberScrollState()),
-                                    timetable = busTimetableUiState.cityTimetable,
-                                    onBusNumberChanged = { onCityBusNumberChange(it) },
-                                    onDirectionChanged = { onCityDirectionChange(it) },
-                                )
+                                CompositionLocalProvider(LocalSelectedTimetableTab provides BusType.CITY) {
+                                    CityTimetableScreenContent(
+                                        modifier = Modifier
+                                            .background(KoinTheme.colors.neutral100)
+                                            .verticalScroll(rememberScrollState()),
+                                        timetable = busTimetableUiState.cityTimetable,
+                                        onBusNumberChanged = { onCityBusNumberChange(it) },
+                                        onDirectionChanged = { onCityDirectionChange(it) },
+                                    )
+                                }
                             }
                         }
                     }
@@ -223,6 +245,13 @@ internal fun BusTimetableScreenContent(
 
     LaunchedEffect(pagerState.targetPage) {
         selectedTimetableTypeTab = BusType.entriesExceptAll[pagerState.targetPage]
+    }
+
+    LaunchedEffect(selectedTimetableTypeTab) {
+        EventLogger.logCampusClickEvent(
+            "timetable_bus_type_tab",
+            context.getString(selectedTimetableTypeTab.titleRes)
+        )
     }
 }
 
