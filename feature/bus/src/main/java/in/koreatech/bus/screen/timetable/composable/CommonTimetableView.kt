@@ -11,16 +11,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.screen.timetable.type.DaytimeType
-import `in`.koreatech.bus.viewstate.ArrivalViewState
-import `in`.koreatech.bus.viewstate.CommonTimetableViewState
+import androidx.compose.ui.util.fastForEach
+import `in`.koreatech.bus.component.WrongInformationText
+import `in`.koreatech.bus.mock.commonTimetableMock
+import `in`.koreatech.bus.state.CommonTimetableState
+import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 internal fun CommonTimetableView(
-    timetable: CommonTimetableViewState,
+    updatedAt: String,
+    timetable: CommonTimetableState,
     modifier: Modifier = Modifier
 ) {
     KoinSurface(
@@ -41,7 +44,7 @@ internal fun CommonTimetableView(
                         color = KoinTheme.colors.neutral600
                     )
 
-                    timetable.arrivals[DaytimeType.AM]?.forEach {
+                    timetable.amDepartures.fastForEach {
                         CommonTimetableItem(
                             arrival = it,
                             textStyle = KoinTheme.typography.bold18.copy(
@@ -61,7 +64,7 @@ internal fun CommonTimetableView(
                         color = KoinTheme.colors.neutral600
                     )
 
-                    timetable.arrivals[DaytimeType.PM]?.forEach {
+                    timetable.pmDepartures.fastForEach {
                         CommonTimetableItem(
                             arrival = it,
                             textStyle = KoinTheme.typography.bold18.copy(
@@ -75,9 +78,14 @@ internal fun CommonTimetableView(
 
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = stringResource(R.string.updated_at, timetable.updatedAt),
+                text = stringResource(R.string.updated_at, updatedAt),
                 style = KoinTheme.typography.regular14,
                 color = KoinTheme.colors.neutral500
+            )
+
+            WrongInformationText(
+                modifier = Modifier.padding(top = 4.dp),
+                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
             )
         }
     }
@@ -88,40 +96,7 @@ internal fun CommonTimetableView(
 private fun CommonTimetableViewPreview() {
     CommonTimetableView(
         modifier = Modifier.fillMaxSize(),
-        timetable = CommonTimetableViewState(
-            updatedAt = "2024-09-21",
-            arrivals = mapOf(
-                DaytimeType.AM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "09:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "09:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "10:30"
-                    ),
-                ), DaytimeType.PM to listOf(
-                    ArrivalViewState(
-                        arrivalTime = "14:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "21:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "21:30"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "22:00"
-                    ),
-                    ArrivalViewState(
-                        arrivalTime = "22:30"
-                    ),
-                )
-            )
-        )
+        timetable = commonTimetableMock,
+        updatedAt = "2024-11-11"
     )
 }

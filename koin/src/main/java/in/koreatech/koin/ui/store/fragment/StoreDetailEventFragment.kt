@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailEventBinding
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter

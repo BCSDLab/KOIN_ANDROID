@@ -20,18 +20,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.bus.BusSearchActivity
+import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
@@ -74,7 +75,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             R.id.navi_item_setting,
             R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
-            R.id.navi_item_bus,
+            R.id.navi_item_bus_timetable,
+            R.id.navi_item_bus_search,
             R.id.navi_item_dining,
             R.id.navi_item_operating_information,
             R.id.navi_item_timetable,
@@ -89,7 +91,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Setting,
                 MenuState.LoginOrLogout,
                 MenuState.Store,
-                MenuState.Bus,
+                MenuState.BusTimetable,
+                MenuState.BusSearch,
                 MenuState.Dining,
                 MenuState.OperatingInfo,
                 MenuState.Timetable,
@@ -176,14 +179,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 )
                             }
 
-                            MenuState.Bus -> {
-                                EventLogger.logClickEvent(
-                                    EventAction.CAMPUS,
-                                    AnalyticsConstant.Label.HAMBURGER_BUS,
-                                    getString(R.string.bus)
-                                )
-                            }
-
                             MenuState.Dining -> {
                                 EventLogger.logClickEvent(
                                     EventAction.CAMPUS,
@@ -232,6 +227,20 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 )
                             }
 
+                            MenuState.BusTimetable -> {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "버스 시간표"
+                                )
+                            }
+
+                            MenuState.BusSearch -> {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "교통편 조회하기"
+                                )
+                            }
+
                             else -> Unit
                         }
                     }
@@ -274,7 +283,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
         observeLiveData(menuEvent) { menuState ->
             when (menuState) {
-                MenuState.Bus -> goToBusActivity()
+                MenuState.BusTimetable -> goToBusTimetableActivity()
+                MenuState.BusSearch -> goToBusSearchActivity()
                 MenuState.Dining -> goToDiningActivity()
                 MenuState.OperatingInfo -> goToOperatingInfoActivity()
                 MenuState.Land -> goToLandActivity()
@@ -384,10 +394,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 koinNavigationDrawerViewModel.selectMenu(MenuState.OperatingInfo)
             }
 
-            R.id.navi_item_bus -> {
-                koinNavigationDrawerViewModel.selectMenu(MenuState.Bus)
-            }
-
             R.id.navi_item_land -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Land)
             }
@@ -401,8 +407,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     open fun callDrawerItem(itemId: Int, bundle: Bundle?) {
         if (itemId == R.id.navi_item_store) {
             goToStoreActivity(bundle)
-        } else if (itemId == R.id.navi_item_bus) {
-            goToBusActivity(bundle)
         }
     }
 
@@ -415,6 +419,22 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             goToActivityFinish(Intent(this, StoreActivity::class.java))
         } else {
             startActivity(Intent(this, StoreActivity::class.java))
+        }
+    }
+
+    private fun goToBusTimetableActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, BusTimetableActivity::class.java))
+        } else {
+            startActivity(Intent(this, BusTimetableActivity::class.java))
+        }
+    }
+
+    private fun goToBusSearchActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, BusSearchActivity::class.java))
+        } else {
+            startActivity(Intent(this, BusSearchActivity::class.java))
         }
     }
 
@@ -434,27 +454,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
-    private fun goToBusActivity() {
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, BusActivity::class.java))
-        } else {
-            startActivity(Intent(this, BusActivity::class.java))
-        }
-    }
-
     private fun goToStoreActivity(bundle: Bundle?) {
         val intent = Intent(this, StoreActivity::class.java)
-        intent.putExtras(bundle!!)
-
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(intent)
-        } else {
-            startActivity(intent)
-        }
-    }
-
-    private fun goToBusActivity(bundle: Bundle?) {
-        val intent = Intent(this, BusActivity::class.java)
         intent.putExtras(bundle!!)
 
         if (menuState != MenuState.Main) {

@@ -17,6 +17,7 @@ interface UserRepository {
     ): AuthToken
 
     fun ownerTokenIsValid(): Boolean
+    suspend fun fetchUserInfo()
     suspend fun getUserInfo(): User
     fun getUserInfoFlow(): Flow<User>
     suspend fun requestPasswordResetEmail(email: String)

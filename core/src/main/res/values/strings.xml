@@ -78,6 +78,8 @@
 
     <string name="navigation_item_store">주변 상점</string>
     <string name="navigation_item_bus">버스 / 교통</string>
+    <string name="navigation_item_bus_timetable">버스 시간표</string>
+    <string name="navigation_item_bus_search">교통편 조회하기</string>
     <string name="navigation_item_dining">식단</string>
     <string name="navigation_item_land">복덕방</string>
     <string name="navigation_item_timetable">시간표</string>

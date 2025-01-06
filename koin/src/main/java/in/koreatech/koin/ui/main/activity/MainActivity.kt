@@ -13,15 +13,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.bus.screen.MainEntryView
+import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
@@ -30,7 +28,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
@@ -39,22 +37,15 @@ import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.core.viewpager.enableAutoScroll
-import `in`.koreatech.koin.data.constant.URLConstant
-import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
-import `in`.koreatech.koin.domain.model.bus.BusType
-import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
-import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
-import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
+import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
@@ -98,51 +89,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             startActivity(intent)
         }
     )
-
-    private val busPagerAdapter = BusPagerAdapter().apply {
-        setOnCardClickListener {
-            callDrawerItem(R.id.navi_item_bus, Bundle())
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.MAIN_BUS,
-                getString(R.string.bus)
-            )
-        }
-        setOnSwitchClickListener {
-            viewModel.switchBusNode()
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.MAIN_BUS_CHANGETOFROM,
-                it.localized(this@MainActivity)
-            )
-        }
-        setOnGotoClickListener { type ->
-            when (type) {
-                BusType.Shuttle -> {
-                    Intent(this@MainActivity, WebViewActivity::class.java).apply {
-                        putExtra("url", URLConstant.UNIBUS)
-                    }.run(::startActivity)
-                }
-
-                BusType.Express -> {
-                    Intent(this@MainActivity, BusActivity::class.java).apply {
-                        putExtra("tab", 2)
-                        putExtra("timetableMenu", type.busTypeString)
-                    }.run(::startActivity)
-                }
-
-                BusType.City -> {
-                    Intent(this@MainActivity, BusActivity::class.java).apply {
-                        putExtra("tab", 2)
-                        putExtra("timetableMenu", type.busTypeString)
-                    }.run(::startActivity)
-                }
-
-                else -> {}
-            }
-        }
-    }
-    private lateinit var busViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
 
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
@@ -249,31 +195,29 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
         }
 
-        busViewPager.apply {
-            adapter = busPagerAdapter
-            offscreenPageLimit = 3
-            currentItem = Int.MAX_VALUE / 2
-
-            val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
-            val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
-
-            addItemDecoration(
-                HorizontalMarginItemDecoration(
-                    this@MainActivity,
-                    R.dimen.view_pager_item_margin
-                )
-            )
-        }
-
         busComposeView.apply {
             setContent {
                 MainEntryView(
                     onShuttleTicketClicked = {
-                        // TODO : 유니버스 바로가기
+                        EventLogger.logCampusClickEvent(
+                            "shuttle_ticket",
+                            "셔틀 탑승권"
+                        )
+                        val intent = Intent(this@MainActivity, WebViewActivity::class.java)
+                        intent.putExtra("url", "https://koreatech.unibus.kr/")
+                        startActivity(intent)
                     }, onTimetableCardClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "main_bus_timetable",
+                            "버스 시간표 바로가기"
+                        )
                         val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
                         startActivity(intent)
                     }, onSearchCardClicked = {
+                        EventLogger.logCampusClickEvent(
+                            "main_bus_search",
+                            "가장 빠른 버스 조회하기"
+                        )
                         val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
                         startActivity(intent)
                     },
@@ -365,35 +309,11 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
         }
 
-
-        observeLiveData(busTimer) {
-            busPagerAdapter.setBusTimerItems(it)
-            if (this@MainActivity::busViewPagerScrollCallback.isInitialized.not()) {
-                initBusViewPagerScrollCallback(it)
-            }
-        }
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it)
         }
         binding.recyclerViewStoreCategory.visibility = View.GONE
         binding.storeButtonLayout.visibility = View.VISIBLE
-    }
-
-    private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {
-        busViewPagerScrollCallback = object : ViewPager2.OnPageChangeCallback() {
-            var prev = 0
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                EventLogger.logScrollEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MAIN_BUS_SCROLL,
-                    busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(
-                        this@MainActivity
-                    )
-                )
-                prev = position
-            }
-        }.also { binding.busViewPager.registerOnPageChangeCallback(it) }
     }
 
     private fun initDiningTooltip() {
@@ -477,11 +397,5 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (this@MainActivity::busViewPagerScrollCallback.isInitialized)
-            binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
     }
 }
