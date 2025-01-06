@@ -28,7 +28,7 @@ import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
@@ -224,6 +224,20 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                     EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER,
                                     getString(R.string.navigation_item_article)
+                                )
+                            }
+
+                            MenuState.BusTimetable -> {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "버스 시간표"
+                                )
+                            }
+
+                            MenuState.BusSearch -> {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "교통편 조회하기"
                                 )
                             }
 

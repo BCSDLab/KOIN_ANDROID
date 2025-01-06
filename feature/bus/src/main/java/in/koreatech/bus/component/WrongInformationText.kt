@@ -8,6 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.bus.type.BusType
+import `in`.koreatech.bus.util.LocalSelectedTimetableTab
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -15,11 +18,17 @@ import `in`.koreatech.koin.feature.bus.R
 
 @Composable
 internal fun WrongInformationText(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loggingEventValue: String = ""
 ) {
     val context = LocalContext.current
+
     LeadingIconText(
         modifier = modifier.noRippleClickable {
+            EventLogger.logCampusClickEvent(
+                "error_feedback_button",
+                loggingEventValue
+            )
             val url = GOOGLE_FORM_URL
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context.startActivity(intent)

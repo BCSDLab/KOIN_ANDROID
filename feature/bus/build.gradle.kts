@@ -23,6 +23,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":core:onboarding"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:analytics"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

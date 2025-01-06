@@ -94,6 +94,7 @@ dependencies {
     implementation(project(":core:notification"))
     implementation(project(":core:navigation"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:analytics"))
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":core:onboarding"))
