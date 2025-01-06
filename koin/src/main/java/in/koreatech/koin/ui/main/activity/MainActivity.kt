@@ -196,7 +196,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         busComposeView.apply {
-            visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
             setContent {
                 MainEntryView(
                     onShuttleTicketClicked = {
