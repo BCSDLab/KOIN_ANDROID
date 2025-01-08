@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +31,6 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.EditTimetableFrameDialo
 import `in`.koreatech.koin.feature.timetable.view.dialog.RequestLoginDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.ScreenStateUIMode
 import `in`.koreatech.koin.feature.timetable.viewmodel.SemesterViewModel
-import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.BUNDLE_LOGIN_EXTRA_KEY
 import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.NAV_TIMETABLE
 import timber.log.Timber
@@ -47,7 +44,7 @@ class TimetableSemesterActivity : ActivityBase() {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (viewModel.userTimetableFrames.value.isEmpty()) {
+            if (viewModel.screenState.value.userTimetableFrames.isEmpty()) {
                 finishActivityWithResult(
                     semester = "",
                     frameId = -1,
@@ -73,7 +70,6 @@ class TimetableSemesterActivity : ActivityBase() {
             val frameName = bundle.getString(TimetableActivity.FRAME_NAME).orEmpty()
             viewModel.updateIntentData(isAnonymous, frameId, semester, frameName)
         }
-        viewModel.initData()
         onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
         binding.timetableListComposeView.setContent {
@@ -82,29 +78,29 @@ class TimetableSemesterActivity : ActivityBase() {
                 val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle()
                 val snackBarHost = remember { SnackbarHostState() }
 
-                val isAnonymous by viewModel.isAnonymous.collectAsStateWithLifecycle()
-                val userTimetables by viewModel.userTimetableFrames.collectAsStateWithLifecycle()
-                val userSemesters by viewModel.userSemesters.collectAsStateWithLifecycle()
-                val years by viewModel.years.collectAsStateWithLifecycle()
-
                 val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-                LaunchedEffect(userTimetables) {
+                // TODO::hyeok viewmodel 로 이전
+                LaunchedEffect(screenState.userTimetableFrames) {
                     if (screenState.mode == ScreenStateUIMode.IDLE) return@LaunchedEffect
-                    if (userTimetables.isEmpty()) {
-                        viewModel.updateScreenState(ScreenStateUIMode.EMPTY)
+                    if (screenState.userTimetableFrames.isEmpty()) {
+                        viewModel.updateScreenMode(ScreenStateUIMode.EMPTY)
                     } else {
-                        viewModel.updateScreenState(ScreenStateUIMode.BASIC)
+                        viewModel.updateScreenMode(ScreenStateUIMode.BASIC)
                     }
                 }
 
-                if (dialogUiState.isEditSemesterDialogVisible) {
+                if (screenState.isEditSemesterDialogVisible) {
                     EditSemesterDialogImpl(
-                        years = years,
-                        userSemesters = userSemesters,
+                        years = screenState.availableYears,
+                        userSemesters = screenState.userSemesters,
+                        isSelectYearDialogVisible = screenState.isSelectYearDialogVisible,
+                        onConfirmSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
+                        onDismissSelectYear = { viewModel.updateSelectYearDialogVisible(false) },
+                        onClickSelectYear = { viewModel.updateSelectYearDialogVisible(true) },
                         onConfirm = { selectedSemesters ->
                             viewModel.updateSelectedSemesters(selectedSemesters)
-                            if (selectedSemesters.any { it in userSemesters })
+                            if (selectedSemesters.any { it in screenState.userSemesters })
                                 viewModel.updateDeleteSemesterDialogVisible(true)
                             else {
                                 viewModel.updateEditSemesterDialogVisible(false)
@@ -114,22 +110,22 @@ class TimetableSemesterActivity : ActivityBase() {
                         onDismiss = { viewModel.updateEditSemesterDialogVisible(false) }
                     )
                 }
-                if (dialogUiState.isEditTimetableDialogVisible) {
+                if (screenState.isEditTimetableDialogVisible) {
                     EditTimetableFrameDialog(
                         timetableFrameState = dialogUiState.editedTimetableFrame,
-                        onDismiss = { viewModel.updateEditTimetableDialogVisibility(false) },
+                        onDismiss = { viewModel.updateEditTimetableDialogVisible(false) },
                         onConfirmEdit = {
                             viewModel.editTimetableFrame(it)
-                            viewModel.updateEditTimetableDialogVisibility(false)
+                            viewModel.updateEditTimetableDialogVisible(false)
                         },
                         onDeleteFrame = {
                             viewModel.deleteTimetableFrame()
-                            viewModel.updateEditTimetableDialogVisibility(false)
+                            viewModel.updateEditTimetableDialogVisible(false)
                             viewModel.updateSideEffect(SemesterSideEffect.SnackBar("${dialogUiState.editedTimetableFrame?.timetableName}가 삭제되었어요"))
                         }
                     )
                 }
-                if (dialogUiState.isDeleteSemesterDialogVisible) {
+                if (screenState.isDeleteSemesterDialogVisible) {
                     DeleteSemesterDialog(
                         onDismiss = {
                             viewModel.updateDeleteSemesterDialogVisible(false)
@@ -142,7 +138,7 @@ class TimetableSemesterActivity : ActivityBase() {
                         }
                     )
                 }
-                if (dialogUiState.isRequestLoginDialogVisible) {
+                if (screenState.isRequestLoginDialogVisible) {
                     RequestLoginDialog(
                         onConfirm = {
                             startToLoginActivity()
@@ -156,18 +152,18 @@ class TimetableSemesterActivity : ActivityBase() {
 
                 SemesterScreen(
                     state = screenState,
-                    userTimetables = userTimetables,
-                    isAnonymous = isAnonymous,
+                    userTimetables = screenState.userTimetableFrames,
+                    isAnonymous = screenState.isAnonymous,
                     onClickTimetable = ::finishActivityWithResult,
                     onClickAddTimetable = {
-                        if (viewModel.isAnonymous.value) {
+                        if (screenState.isAnonymous) {
                             viewModel.updateRequestLoginDialogVisible(true)
                         } else {
                             viewModel.onClickAddTimetable(it)
                         }
                     },
                     onClickEditTimetable = { semester, frame ->
-                        if (viewModel.isAnonymous.value) {
+                        if (screenState.isAnonymous) {
                             viewModel.updateRequestLoginDialogVisible(true)
                         } else {
                             viewModel.onClickEditTimetable(
@@ -217,7 +213,7 @@ class TimetableSemesterActivity : ActivityBase() {
                 }
 
                 AppBarBase.getRightButtonId() -> {
-                    if (viewModel.isAnonymous.value) {
+                    if (viewModel.screenState.value.isAnonymous) {
                         viewModel.updateRequestLoginDialogVisible(true)
                     } else {
                         viewModel.updateEditSemesterDialogVisible(true)
@@ -244,7 +240,7 @@ class TimetableSemesterActivity : ActivityBase() {
 
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
         val intent = Intent().apply {
-            val bundle = if (!viewModel.isAnonymous.value) {
+            val bundle = if (!viewModel.screenState.value.isAnonymous) {
                 bundleOf(
                     SEMESTER to semester.toSemester(),
                     TIMETABLE_FRAME_ID to timetableFrame.id,
@@ -267,7 +263,7 @@ class TimetableSemesterActivity : ActivityBase() {
         Timber.d("Timetable frame id: ${viewModel.currentTimetableId.value}")
         Timber.d("timetable frame name: ${viewModel.currentTimetableName.value}")
         val intent = Intent().apply {
-            val bundle = if (!viewModel.isAnonymous.value) {
+            val bundle = if (!viewModel.screenState.value.isAnonymous) {
                 bundleOf(
                     SEMESTER to semester,
                     TIMETABLE_FRAME_ID to frameId,
