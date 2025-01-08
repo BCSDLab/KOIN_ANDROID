@@ -49,26 +49,28 @@ import java.time.LocalDate
 fun EditSemesterDialogImpl(
     years: List<Int>,
     userSemesters: List<SemesterModel>,
+    isSelectYearDialogVisible: Boolean,
     modifier: Modifier = Modifier,
+    onConfirmSelectYear: () -> Unit = {},
+    onDismissSelectYear: () -> Unit = {},
+    onClickSelectYear: () -> Unit = {},
     onConfirm: (List<SemesterModel>) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
     var currentYear by remember { mutableStateOf(LocalDate.now().year) }
     var selectedSemesters by remember(currentYear, userSemesters) { mutableStateOf(listOf<SemesterType>()) }
 
-    var isShowingSelectYearDialog by remember { mutableStateOf(false) }
-
     Box(
         modifier = modifier
     ) {
-        if (isShowingSelectYearDialog) {
+        if (isSelectYearDialogVisible) {
             SelectYearDialog(
                 currentYear = currentYear,
                 yearList = years,
-                onDismiss = { isShowingSelectYearDialog = false },
+                onDismiss = onDismissSelectYear,
                 onSelectYear = {
                     currentYear = it
-                    isShowingSelectYearDialog = false
+                    onConfirmSelectYear()
                 }
             )
         } else {
@@ -83,7 +85,7 @@ fun EditSemesterDialogImpl(
                     else
                         selectedSemesters = selectedSemesters + clickedSemester
                 },
-                onClickYear = { isShowingSelectYearDialog = true },
+                onClickYear = onClickSelectYear,
                 onConfirm = { onConfirm(selectedSemesters.map { SemesterModel(currentYear, it) }) },
                 onDismiss = onDismiss
             )
@@ -280,6 +282,7 @@ private fun EditSemesterDialogImplPreview() {
     EditSemesterDialogImpl(
         years = listOf(2019, 2020, 2021, 2022, 2023, 2024),
         userSemesters = userSemesters,
+        isSelectYearDialogVisible = false,
         onConfirm = { selectedSemester ->
             userSemesters = userSemesters.toMutableList().apply {
                 selectedSemester.forEach {
