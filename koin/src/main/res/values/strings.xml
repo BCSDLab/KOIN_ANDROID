@@ -561,6 +561,7 @@
     <string name="article_employment">취업게시판</string>
     <string name="article_anonymous">익명게시판</string>
     <string name="article_all">전체공지</string>
+    <string name="article_lost_and_found">분실물</string>
     <string name="article_normal">일반공지</string>
     <string name="article_normal_simple">일반</string>
     <string name="article_school">학사공지</string>

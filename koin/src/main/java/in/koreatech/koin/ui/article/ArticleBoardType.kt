@@ -14,6 +14,7 @@ enum class ArticleBoardType(
     // EMPLOYMENT(2, R.string.article_employment),  // NOT USED
     // ANONYMOUS(3, R.string.article_anonymous),    // NOT USED
     ALL(4, R.string.article_all, R.string.article_all, LinkType.NONE),
+    LOSTANDFOUND(14, R.string.article_lost_and_found, R.string.article_lost_and_found, LinkType.NONE),
     NORMAL(5, R.string.article_normal, R.string.article_normal_simple, LinkType.ARTICLE),
     SCHOLARSHIP(6, R.string.article_scholarship, R.string.article_scholarship_simple, LinkType.ARTICLE),
     SCHOOL(7, R.string.article_school, R.string.article_school_simple, LinkType.ARTICLE),
