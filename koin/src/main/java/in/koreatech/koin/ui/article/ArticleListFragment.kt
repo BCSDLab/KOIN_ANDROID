@@ -83,7 +83,7 @@ class ArticleListFragment : Fragment() {
                         val bundle = Bundle()
                         bundle.putInt("boardId", board.id)
                         articleListNoticeFragment.arguments = bundle
-                        parentFragmentManager.beginTransaction()
+                        childFragmentManager.beginTransaction()
                             .replace(R.id.frame_layout_article_list, articleListNoticeFragment)
                             .commit()
                     }
