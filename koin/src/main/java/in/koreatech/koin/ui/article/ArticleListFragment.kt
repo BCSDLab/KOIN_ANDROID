@@ -49,6 +49,11 @@ class ArticleListFragment : Fragment() {
 
     private val viewModel by viewModels<ArticleListViewModel>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStartBoard()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,7 +61,6 @@ class ArticleListFragment : Fragment() {
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleListBinding.inflate(inflater, container, false)
-            setStartBoard()
             addCategoryTabs()
             collectData()
             observeBoard()
