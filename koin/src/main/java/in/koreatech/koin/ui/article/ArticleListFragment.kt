@@ -17,6 +17,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
+import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
@@ -55,6 +56,7 @@ class ArticleListFragment : Fragment() {
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleListBinding.inflate(inflater, container, false)
+            setStartBoard()
             addCategoryTabs()
             collectData()
             observeBoard()
@@ -65,6 +67,11 @@ class ArticleListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
+    }
+
+    private fun setStartBoard() {
+        val startBoard = arguments?.getInt(START_BOARD) ?: ArticleBoardType.ALL.id
+        viewModel.setCurrentBoard(ArticleBoardType.fromId(startBoard))
     }
 
     private fun observeBoard() {
@@ -87,12 +94,10 @@ class ArticleListFragment : Fragment() {
                             .replace(R.id.frame_layout_article_list, articleListNoticeFragment)
                             .commit()
                     }
-
                     ArticleBoardType.LOSTANDFOUND -> {
                         //TODO: Add LostAndFoundFragment
                     }
                 }
-
             }
         }
     }
