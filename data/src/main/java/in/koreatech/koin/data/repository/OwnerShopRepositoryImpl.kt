@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toMyStoreDayOffResponse
+import `in`.koreatech.koin.data.mapper.toOwnerGetStore
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreDetailEvents
@@ -9,6 +10,7 @@ import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreMenuInfo
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
+import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
 import `in`.koreatech.koin.domain.model.store.ShopEvents
@@ -21,8 +23,8 @@ import javax.inject.Inject
 class OwnerShopRepositoryImpl @Inject constructor(
     private val ownerRemoteDataSource: OwnerRemoteDataSource,
 ) : OwnerShopRepository {
-    override suspend fun getMyShopList(): List<Store> {
-        return ownerRemoteDataSource.getMyShopList().map { it.toStore() }
+    override suspend fun getMyShopList(): List<OwnerGetStore> {
+        return ownerRemoteDataSource.getMyShopList().map { it.toOwnerGetStore() }
     }
 
     override suspend fun getOwnerShopInfo(storeId: Int): StoreDetailInfo {
