@@ -51,12 +51,24 @@ class ArticleActivity : ActivityBase() {
                 R.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD)
             }
         }
+
+        val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
+        bundle?.getInt(START_BOARD)?.let {
+            setNavigationGraph(it)
+        } ?: setNavigationGraph()
+
         navigateToDetailFragment()
     }
 
     override fun onNewIntent(intent: Intent?) {
         navigateToArticleDetail(intent)
         super.onNewIntent(intent)
+    }
+
+    private fun setNavigationGraph(
+        startBoard: Int = ArticleBoardType.ALL.id
+    ) {
+        navController.setGraph(R.navigation.nav_graph_article, bundleOf(START_BOARD to startBoard))
     }
 
     // 지정된 프래그먼트로 이동 (extra로 전달받은 경우에만)
@@ -122,5 +134,8 @@ class ArticleActivity : ActivityBase() {
 
     companion object {
         const val NAVIGATE_ACTION = "navigate_action"
+        const val NAV_ARTICLE = "article"
+        const val START_BOARD = "start_board"
+        const val BUNDLE_ARTICLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
     }
 }
