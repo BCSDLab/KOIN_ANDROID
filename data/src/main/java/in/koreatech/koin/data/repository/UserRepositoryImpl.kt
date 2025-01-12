@@ -55,14 +55,16 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchUserInfo() {
-        userRemoteDataSource.getUserInfo().toUser().also {
+    override suspend fun fetchUserInfo(userType: String) {
+        userRemoteDataSource.getUserInfo().toUser(userType).also {
             userLocalDataSource.updateUserInfo(it)
         }
     }
 
     override suspend fun getUserInfo(): User {
-        return userRemoteDataSource.getUserInfo().toUser().also {
+        val userType = userRemoteDataSource.getUserType()
+
+        return userRemoteDataSource.getUserInfo().toUser(userType.userType).also {
             userLocalDataSource.updateUserInfo(it)
         }
     }

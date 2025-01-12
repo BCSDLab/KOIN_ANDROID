@@ -20,7 +20,7 @@ class UserLoginUseCase @Inject constructor(
             val authToken = userRepository.getToken(email, password.toSHA256())
             tokenRepository.saveAccessToken(authToken.token)
             tokenRepository.saveRefreshToken(authToken.refreshToken)
-            userRepository.fetchUserInfo()
+            userRepository.fetchUserInfo(authToken.userType ?: "Anonymous")
             Unit to null
         } catch (throwable: Throwable) {
             null to userErrorHandler.handleGetTokenError(throwable)
