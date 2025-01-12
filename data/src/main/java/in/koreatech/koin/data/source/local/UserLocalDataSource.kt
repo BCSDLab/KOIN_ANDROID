@@ -30,7 +30,8 @@ class UserLocalDataSource @Inject constructor(
     val user: Flow<User?> = userDataStore.data.map { pref ->
         try {
             if (pref[PREF_KEY_IS_LOGIN] == true) {
-                return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], UserResponse::class.java).toUser()
+                return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], UserResponse::class.java)
+                    .toUser(pref[PREF_KEY_USER_TYPE] ?: "Anonymous")
             } else {
                 return@map User.Anonymous
             }
@@ -64,6 +65,12 @@ class UserLocalDataSource @Inject constructor(
             } else {
                 "Anonymous"
             }
+
+            pref[PREF_KEY_USER_TYPE] = if (user is User.Student) {
+                user.userType
+            } else {
+                "Anonymous"
+            }
         }
     }
 
@@ -71,5 +78,6 @@ class UserLocalDataSource @Inject constructor(
         const val PREF_NAME = "PREF_USER_NAME"
         val PREF_KEY_IS_LOGIN = booleanPreferencesKey("KEY_USER_IS_LOGIN")
         val PREF_KEY_USER_INFO = stringPreferencesKey("KEY_USER_INFO")
+        val PREF_KEY_USER_TYPE = stringPreferencesKey("KEY_USER_TYPE")
     }
 }

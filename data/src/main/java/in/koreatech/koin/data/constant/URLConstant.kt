@@ -64,6 +64,7 @@ object URLConstant {
         const val CHECKEMAIL: String = "$USER/check/email"
         const val CHECKPASSWORD: String = "$USER/check/password"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
+        const val AUTH: String = "$USER/auth"
         const val ID = "portal_account"
         const val EMAIL = "email"
         const val PW = "password"
