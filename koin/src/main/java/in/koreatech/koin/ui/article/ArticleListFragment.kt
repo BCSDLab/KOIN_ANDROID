@@ -18,6 +18,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
+import `in`.koreatech.koin.ui.article.lostandfound.ArticleListLostAndFoundFragment
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
@@ -99,7 +100,12 @@ class ArticleListFragment : Fragment() {
                             .commit()
                     }
                     ArticleBoardType.LOSTANDFOUND -> {
-                        //TODO: Add LostAndFoundFragment
+                        childFragmentManager.beginTransaction()
+                            .replace(
+                                R.id.frame_layout_article_list,
+                                ArticleListLostAndFoundFragment()
+                            )
+                            .commit()
                     }
                 }
             }
