@@ -100,6 +100,7 @@ dependencies {
     implementation(project(":core:onboarding"))
     implementation(project(":feature:timetable"))
     implementation(project(":feature:bus"))
+    implementation(project(":feature:lostandfound"))
 
     implementation(libs.guava)
 
