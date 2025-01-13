@@ -31,7 +31,7 @@ class UserLocalDataSource @Inject constructor(
         try {
             if (pref[PREF_KEY_IS_LOGIN] == true) {
                 return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], UserResponse::class.java)
-                    .toUser(pref[PREF_KEY_USER_TYPE] ?: "Anonymous")
+                    .toUser(pref[PREF_KEY_USER_TYPE] ?: "STUDENT") // Set default userType to STUDENT if logged in
             } else {
                 return@map User.Anonymous
             }
@@ -63,13 +63,13 @@ class UserLocalDataSource @Inject constructor(
                     )
                 )
             } else {
-                "Anonymous"
+                ""
             }
 
             pref[PREF_KEY_USER_TYPE] = if (user is User.Student) {
                 user.userType
             } else {
-                "Anonymous"
+                ""
             }
         }
     }
