@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
 import `in`.koreatech.koin.data.request.upload.UploadUrlRequest
 import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
@@ -9,7 +8,7 @@ import javax.inject.Inject
 
 class UploadUrlRepositoryImpl @Inject constructor(
     private val uploadUrlRemoteDataSource: UploadUrlRemoteDataSource
-): UploadUrlRepository {
+) : UploadUrlRepository {
     override suspend fun getUploadUrlResult(
         contentLength: Long,
         contentType: String,
@@ -53,4 +52,24 @@ class UploadUrlRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getUploadLostAndFoundUrlResult(
+        contentLength: Long,
+        contentType: String,
+        fileName: String
+    ): Result<Pair<String, String>> {
+        return try {
+            val dataSource = uploadUrlRemoteDataSource.postUploadLostAndFoundUrl(
+                UploadUrlRequest(contentLength, contentType, fileName)
+            )
+
+            val preSignedUrl = dataSource.preSignedUrl
+            val fileUrl = dataSource.fileUrl
+
+            Result.success(Pair(fileUrl, preSignedUrl))
+        } catch (e: HttpException) {
+            Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
+    }
 }

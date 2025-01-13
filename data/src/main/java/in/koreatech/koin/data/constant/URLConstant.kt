@@ -156,5 +156,6 @@ object URLConstant {
         const val url = "/{domain}/upload/url"
         const val OWNERURL = "/owners/upload/url"
         const val MARKETURL = "/market/upload/url"
+        const val LOSTANDFOUNDURL = "/lostitem/upload/url" //TODO: Placeholder, change when api complete
     }
 }
