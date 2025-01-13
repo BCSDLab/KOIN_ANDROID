@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lost_item">분실물</string>
+    <string name="found_item">습득물</string>
+
+    <string name="header_lost_title">잃어버렸어요</string>
+    <string name="header_found_title">주인을 찾아요</string>
+    <string name="header_lost_description">분실한 물건을 자세히 설명해주세요!</string>
+    <string name="header_found_description">습득한 물건을 자세히 설명해주세요!</string>
+
+    <string name="item_type_electronic_device">전자제품</string>
+    <string name="item_type_card">카드</string>
+    <string name="item_type_wallet">지갑</string>
+    <string name="item_type_id">신분증</string>
+    <string name="item_type_other">그 외</string>
+    <string name="item_type_none" />
+
+    <string name="dropdown_type_all">물품 전체</string>
+
+    <string name="upload_image_of_found_item">습득물 사진을 업로드해주세요.</string>
+    <string name="upload_image_of_lost_item">분실물 사진을 업로드해주세요.</string>
+    <string name="upload_image">사진 등록하기</string>
+    <string name="upload_image_failed">사진 업로드에 실패했습니다.</string>
+
+    <string name="item_type">품목</string>
+    <string name="item_type_description">품목을 선택해주세요.</string>
+    <string name="item_type_required">품목이 선택되지 않았습니다.</string>
+
+    <string name="found_date">습득 일자</string>
+    <string name="found_date_hint">습득 일자를 입력해주세요.</string>
+    <string name="found_date_required">습득일자가 입력되지 않았습니다.</string>
+
+    <string name="lost_date">분실 일자</string>
+    <string name="lost_date_hint">분실 일자를 입력해주세요.</string>
+    <string name="lost_date_required">분실일자가 입력되지 않았습니다.</string>
+
+    <string name="found_location">습득 장소</string>
+    <string name="found_location_hint">습득 장소를 입력해주세요.</string>
+    <string name="found_location_required">습득장소가 입력되지 않았습니다.</string>
+
+    <string name="lost_location">분실 장소</string>
+    <string name="lost_location_hint">예상되는 분실 장소가 있다면 입력해주세요.</string>
+    <string name="lost_location_required" />
+
+    <string name="more_description">내용</string>
+    <string name="more_description_hint">물품이나 습득 장소에 대한 추가 설명이 있다면 작성해주세요.</string>
+
+    <string name="add_item">물품 추가</string>
+    <string name="write_done">작성 완료</string>
+    <string name="write_failed">글 작성에 실패했습니다.</string>
+
+    <string name="detail_student_association_info_1">분실물 수령을 희망하시는 분은 재실 시간 내에\n</string>
+    <string name="detail_student_association_info_2">학생회관 320호 총학생회 사무실</string>
+    <string name="detail_student_association_info_3">로 방문해 주시기 바랍니다.\n재실 시간은 공지 사항을 참고해 주시기 바랍니다.</string>
+
+    <string name="detail_article_list_button">목록</string>
+    <string name="detail_delete_button">삭제</string>
+    <string name="detail_delete_dialog_title">게시글을 삭제하시겠습니까?</string>
+    <string name="detail_delete_toast">게시글이 삭제되었습니다.</string>
+    <string name="detail_delete_failed_toast">게시글 삭제에 실패했습니다.</string>
+
+    <string name="hot_article_title">인기있는 공지</string>
+
+    <string name="article_more">더보기</string>
+    <string name="article_free">자유게시판</string>
+    <string name="article_employment">취업게시판</string>
+    <string name="article_anonymous">익명게시판</string>
+    <string name="article_all">전체공지</string>
+    <string name="article_lost_and_found">분실물</string>
+    <string name="article_normal">일반공지</string>
+    <string name="article_normal_simple">일반</string>
+    <string name="article_school">학사공지</string>
+    <string name="article_school_simple">학사</string>
+    <string name="article_scholarship">장학공지</string>
+    <string name="article_scholarship_simple">장학</string>
+    <string name="article_recruit">취업공지</string>
+    <string name="article_recruit_simple">취업</string>
+    <string name="article_koin">코인</string>
+    <string name="article_qna">질문게시판</string>
+    <string name="article_promotion">홍보게시판</string>
+    <string name="article_ipp">현장실습</string>
+    <string name="article_ipp_simple">현장실습</string>
+    <string name="article_student">학생생활</string>
+    <string name="article_student_simple">학생</string>
+    <string name="request_login_dialog_title">게시글을 작성 하려면\n로그인이 필요해요.</string>
+    <string name="request_login_dialog_description">로그인 후 분실물 주인을 찾아주세요!</string>
+
+    <string name="fab_write">글쓰기</string>
+    <string name="fab_found">주인을 찾아요</string>
+    <string name="fab_lost">잃어버렸어요</string>
+</resources>
