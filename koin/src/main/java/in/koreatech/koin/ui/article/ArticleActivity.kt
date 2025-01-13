@@ -49,6 +49,7 @@ class ArticleActivity : ActivityBase() {
                 R.id.articleDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
                 R.id.articleSearchFragment -> setToolbar(ArticleToolbarState.ARTICLE_SEARCH)
                 R.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD)
+                R.id.articleLostAndFoundWriteFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM)
             }
         }
 
