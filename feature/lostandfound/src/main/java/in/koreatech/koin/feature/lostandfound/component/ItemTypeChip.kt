@@ -1,0 +1,31 @@
+package `in`.koreatech.koin.feature.lostandfound.component
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
+
+@Composable
+fun ItemTypeChip(
+    chipItemList: List<LostItemCategory>,
+    selectedChipIndexes: Int? = null,
+    modifier: Modifier = Modifier,
+    onChipSelected: (index: Int) -> Unit = {}
+) {
+    LostAndFoundTextChipFlowGroup(
+        titles = chipItemList.map { stringResource(it.stringRes) },
+        selectedChipIndexes = if (selectedChipIndexes != null) IntArray(1) { selectedChipIndexes } else IntArray(0),
+        onChipSelected = { onChipSelected(it) },
+        showClickRipple = false,
+        shape = RoundedCornerShape(50),
+        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        chipColors = keywordChipColors(),
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    )
+}
