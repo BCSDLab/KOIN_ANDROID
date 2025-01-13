@@ -7,7 +7,15 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
+import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
+import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 
 @AndroidEntryPoint
 class ArticleLostAndFoundDetailFragment : Fragment() {
@@ -16,10 +24,36 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val navController = findNavController()
+
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
+                LostAndFoundDetail(
+                    articleId = requireArguments().getInt(ARTICLE_ID),
+                    navigateToArticleList = {
+                        navController.popBackStack(R.id.articleListFragment, false)
+                    },
+                    navigateToHotArticle = { articleTitle, articleId, boardId ->
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.POPULAR_NOTICE,
+                            articleTitle
+                        )
+                        navController.navigate(
+                            R.id.articleLostAndFoundDetailFragment_to_articleDetailFragment,
+                            Bundle().apply {
+                                putInt(ARTICLE_ID, articleId)
+                                putInt(NAVIGATED_BOARD_ID, boardId)
+                            }
+                        )
+                    }
+                )
             }
         }
+    }
+
+    companion object {
+        const val ARTICLE_ID = "article_id"
     }
 }
