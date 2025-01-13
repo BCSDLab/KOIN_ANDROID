@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
+import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundRequest
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -22,4 +23,14 @@ interface ArticleAuthApi {
 
     @DELETE("articles/keyword/{id}")
     suspend fun deleteKeyword(@Path("id") keywordId: Int): Response<Unit>
+
+    @POST("articles/lostitem")
+    suspend fun uploadArticleLostAndFound(
+        @Body request: ArticleLostAndFoundRequest
+    ): Response<Unit>
+
+    @DELETE("articles/lostitem/{id}")
+    suspend fun deleteArticleLostAndFound(
+        @Path("id") id: Int
+    ): Response<Unit>
 }
