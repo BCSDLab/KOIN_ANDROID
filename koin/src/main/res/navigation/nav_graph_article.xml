@@ -56,4 +56,10 @@
             android:id="@+id/action_articleSearchFragment_to_articleDetailFragment"
             app:destination="@id/articleDetailFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/articleLostAndFoundWriteFragment"
+        android:name="in.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundWriteFragment"
+        android:label="ArticleLostAndFoundWriteFragment">
+    </fragment>
 </navigation>
