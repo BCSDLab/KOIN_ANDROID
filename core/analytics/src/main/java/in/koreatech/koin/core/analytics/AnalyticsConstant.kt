@@ -105,6 +105,20 @@ object AnalyticsConstant {
 
         const val BUSINESS_BENEFIT_1 = "BUSINESS_benefit_1"
         const val BUSINESS_CALL_1 = "BUSINESS_call_1"
+
+        object LOST_AND_FOUND {
+            const val LOST_ITEM_ADD_ITEM = "lost_item_add_item"
+            const val FIND_USER_ADD_ITEM = "find_user_add_item"
+            const val LOST_ITEM_CATEGORY = "lost_item_category"
+            const val FIND_USER_CATEGORY = "find_user_category"
+            const val LOST_WRITE = "item_lost_write"
+            const val FOUND_WRITE = "find_user_write"
+            const val ITEM_WRITE = "item_write"
+            const val LOST_ITEM_WRITE_CONFIRM = "lost_item_write_confirm"
+            const val FIND_USER_WRITE_CONFIRM = "find_user_write_confirm"
+            const val FIND_USER_DELETE = "find_user_delete"
+            const val FIND_USER_DELETE_CONFIRM = "find_user_delete_confirm"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"

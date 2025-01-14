@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
@@ -38,6 +40,10 @@ fun DetailButtonGroup(
             title = stringResource(R.string.detail_delete_dialog_title),
             titleStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral600),
             onPositive = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_DELETE,
+                    "확인"
+                )
                 onDeleteArticleClick()
                 showDeleteDialog = false
             },
@@ -74,6 +80,10 @@ fun DetailButtonGroup(
                 contentPadding = PaddingValues(10.dp, 6.dp),
                 onClick = {
                     showDeleteDialog = true
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_DELETE,
+                        "삭제"
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = KoinTheme.colors.neutral300,
