@@ -20,6 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -60,10 +62,16 @@ fun LostAndFoundList(
         Scaffold(
             containerColor = if (isDialogExpanded) Color(0xB2000000) else KoinTheme.colors.neutral0,
             floatingActionButton = {
+                val fabWrite = stringResource(R.string.fab_write)
+
                 when (uiState.userType) {
                     "COUNCIL" -> { // If userType is COUNCIL, show FAB for write article
                         LostAndFoundFAB(
                             mainOnClick = {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_WRITE,
+                                    fabWrite
+                                )
                                 navigateToWriteFoundItem()
                             }
                         )
@@ -74,19 +82,25 @@ fun LostAndFoundList(
                 }
 
                 /* TODO: 2차 배포
+                val fabFoundText = stringResource(R.string.fab_found)
+                val fabLostText = stringResource(R.string.fab_lost)
                 LostAndFoundFAB(
                     modifier = Modifier,
                     isDialogExpanded = isDialogExpanded,
-                    dialogExpandButtonText = stringResource(R.string.fab_write),
+                    dialogExpandButtonText = fabWrite,
                     dialogExpandButtonPainter = painterResource(id = R.drawable.ic_fab_write),
-                    firstButtonText = stringResource(R.string.fab_found),
+                    firstButtonText = fabFoundText,
                     firstButtonPainter = painterResource(id = R.drawable.ic_found),
-                    secondButtonText = stringResource(R.string.fab_lost),
+                    secondButtonText = fabLostText,
                     secondButtonPainter = painterResource(id = R.drawable.ic_lost),
                     onFirstButtonClick = {
                         if (isAnonymous) {
                             showLoginRequestDialog = true
                         } else {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LOST_AND_FOUND.FOUND_WRITE,
+                                fabFoundText
+                            )
                             navigateToWriteFoundItem()
                         }
                     },
@@ -94,10 +108,20 @@ fun LostAndFoundList(
                         if (isAnonymous) {
                             showLoginRequestDialog = true
                         } else {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LOST_AND_FOUND.LOST_WRITE,
+                                fabLostText
+                            )
                             navigateToWriteFoundItem()
                         }
                     },
-                    onDialogExpandedChange = { isDialogExpanded = it },
+                    onDialogExpandedChange = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_WRITE,
+                            fabWrite
+                        )
+                        isDialogExpanded = it
+                    }
                 )
                  */
             }
