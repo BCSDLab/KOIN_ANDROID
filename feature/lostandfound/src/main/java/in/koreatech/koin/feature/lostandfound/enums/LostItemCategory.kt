@@ -13,7 +13,7 @@ enum class LostItemCategory(val id: Int, @StringRes val stringRes: Int) {
     
     companion object {
         fun safeValueOf(value: String): LostItemCategory {
-            return when (value) {
+            return when (value.trim()) {
                 "카드" -> CARD
                 "신분증" -> ID
                 "지갑" -> WALLET
