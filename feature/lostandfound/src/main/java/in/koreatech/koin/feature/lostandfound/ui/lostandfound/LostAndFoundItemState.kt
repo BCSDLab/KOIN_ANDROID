@@ -1,13 +1,11 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.lostandfound
 
 import android.os.Parcelable
-import android.util.Log
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundHeader
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import kotlinx.parcelize.Parcelize
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -39,7 +37,6 @@ fun ArticleLostAndFoundHeader.toLostAndFoundItemState() = LostAndFoundItemState(
 )
 
 fun ArticleHeader.toLostAndFoundItemState(): LostAndFoundItemState {
-    Timber.d("title: $title")
     val title = title.split("|") // Backend saves title as "category|foundPlace|foundDate"
     val titleDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yy.MM.dd")
 
