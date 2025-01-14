@@ -16,7 +16,7 @@ data class ArticleLostAndFoundResponse(
     @SerializedName("prev_id") val prevArticleId: Int?,
     @SerializedName("next_id") val nextArticleId: Int?,
     @SerializedName("registered_at") val registeredAt: String,
-    @SerializedName("updated_at") val updatedAt: String,
+    @SerializedName("updated_at") val updatedAt: String?,
 ) {
     data class ArticleLostAndFoundImageResponse(
         @SerializedName("id") val id: Int,
@@ -37,7 +37,7 @@ data class ArticleLostAndFoundResponse(
         content = content,
         author = author,
         registeredAt = registeredAt,
-        updatedAt = updatedAt,
+        updatedAt = updatedAt ?: "", // updatedAt is not available on /articles/lost-item API
     )
 
     fun toArticleLostAndFound() = ArticleLostAndFound(
@@ -50,6 +50,6 @@ data class ArticleLostAndFoundResponse(
         author = author,
         images = images?.map { it.toArticleLostAndFoundImage() },
         registeredAt = registeredAt,
-        updatedAt = updatedAt,
+        updatedAt = updatedAt ?: "", // updatedAt is not available on /articles/lost-item API
     )
 }
