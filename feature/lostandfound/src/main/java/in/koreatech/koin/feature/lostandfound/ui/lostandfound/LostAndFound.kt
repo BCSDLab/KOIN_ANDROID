@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +51,10 @@ fun LostAndFoundList(
     val isLoading = uiState.isLoading
     var showLoginRequestDialog by remember { mutableStateOf(false) }
     var isDialogExpanded by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiState.selectedKeyword) {
+        viewModel.fetchLostAndFoundList()
+    }
 
     KoinTheme {
         Scaffold(

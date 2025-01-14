@@ -33,7 +33,6 @@ class LostAndFoundViewModel @Inject constructor(
     init {
         fetchMyKeyword()
         getUserType()
-        fetchLostAndFoundList()
     }
 
     fun fetchLostAndFoundList() = viewModelScope.launch {
