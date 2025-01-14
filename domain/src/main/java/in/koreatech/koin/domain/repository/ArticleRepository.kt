@@ -28,6 +28,6 @@ interface ArticleRepository {
     fun clearSearchHistory(): Flow<Unit>
     fun fetchArticleLostAndFoundPagination(page: Int, limit: Int): Flow<ArticleLostAndFoundPagination>
     fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
-    suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<Unit>
+    suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound>
     suspend fun deleteArticleLostAndFound(articleId: Int): Result<Unit>
 }

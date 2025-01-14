@@ -216,7 +216,7 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
             articleRepository.uploadArticleLostAndFound(state.itemList.map {
                 it.toArticleLostAndFoundUpload()
             }).onSuccess {
-                postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle(0)) //TODO: change article id after API complete
+                postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle(it.id))
             } .onFailure {
                 postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticleFailed)
             }
