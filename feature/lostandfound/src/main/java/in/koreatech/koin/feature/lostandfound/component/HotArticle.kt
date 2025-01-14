@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,16 +33,15 @@ fun HotArticle(
             style = KoinTheme.typography.bold16,
             text = stringResource(R.string.hot_article_title),
         )
-        LazyColumn {
-            items(hotArticleList) { hotArticle ->
-                HotArticleItem(
-                    id = hotArticle.id,
-                    board = hotArticle.board,
-                    title = hotArticle.title,
-                    navigateToHotArticle = navigateToHotArticle
-                )
-                HorizontalDivider(color = KoinTheme.colors.neutral100)
-            }
+
+        hotArticleList.forEach { hotArticle ->
+            HotArticleItem(
+                id = hotArticle.id,
+                board = hotArticle.board,
+                title = hotArticle.title,
+                navigateToHotArticle = navigateToHotArticle
+            )
+            HorizontalDivider(color = KoinTheme.colors.neutral100)
         }
     }
 }
