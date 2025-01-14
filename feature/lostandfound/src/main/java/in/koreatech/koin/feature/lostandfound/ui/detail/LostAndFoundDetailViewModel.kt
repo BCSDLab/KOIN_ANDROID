@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.feature.lostandfound.model.toArticleHeaderState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,28 +29,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
         container<LostAndFoundDetailState, LostAndFoundDetailSideEffect>(LostAndFoundDetailState())
 
     init {
-        fetchUserInfo()
         fetchHotArticles()
-    }
-
-    fun fetchUserInfo() = viewModelScope.launch {
-        intent {
-            userRepository.getUserInfoFlow().collectLatest {
-                if (it is User.Student) {
-                    reduce {
-                        state.copy(
-                            currentLoggedInUser = it.name ?: ""
-                        )
-                    }
-                } else {
-                    reduce {
-                        state.copy(
-                            currentLoggedInUser = ""
-                        )
-                    }
-                }
-            }
-        }
     }
 
     fun fetchLostAndFoundDetail(articleId: Int) = viewModelScope.launch {
@@ -59,27 +39,31 @@ class LostAndFoundDetailViewModel @Inject constructor(
                     isLoading = true
                 )
             }
-            articleRepository.fetchArticleLostAndFound(articleId).map {
-                it.toLostAndFoundDetailState()
-            }.collectLatest {
-                reduce {
-                    state.copy(
-                        canDelete = it.currentLoggedInUser == it.author,
-                        lostOrFound = it.lostOrFound,
-                        id = it.id,
-                        category = it.category,
-                        foundPlace = it.foundPlace,
-                        foundDate = it.foundDate,
-                        content = it.content,
-                        author = it.author,
-                        images = it.images,
-                        registeredAt = it.registeredAt,
-                        updatedAt = it.updatedAt,
-                        // isWriterCouncil = it.isWriterCouncil,
-                        isLoading = false
-                    )
+
+            userRepository.getUserInfoFlow()
+                .combine(articleRepository.fetchArticleLostAndFound(articleId).map {
+                    it.toLostAndFoundDetailState()
+                }) { user, article ->
+                    user to article
+                }.collectLatest { (user, article) ->
+                    reduce {
+                        state.copy(
+                            currentLoggedInUser = if (user is User.Student) user.name ?: "" else "",
+                            canDelete = state.currentLoggedInUser == article.author,
+                            lostOrFound = article.lostOrFound,
+                            id = article.id,
+                            category = article.category,
+                            foundPlace = article.foundPlace,
+                            foundDate = article.foundDate,
+                            content = article.content,
+                            author = article.author,
+                            images = article.images,
+                            registeredAt = article.registeredAt,
+                            updatedAt = article.updatedAt,
+                            isLoading = false
+                        )
+                    }
                 }
-            }
         }
     }
 
@@ -103,9 +87,10 @@ class LostAndFoundDetailViewModel @Inject constructor(
     }
 
     fun deleteArticle() = viewModelScope.launch {
-        intent { articleRepository.deleteArticleLostAndFound(state.id).onSuccess {
+        intent {
+            articleRepository.deleteArticleLostAndFound(state.id).onSuccess {
                 postSideEffect(LostAndFoundDetailSideEffect.DeleteArticle(state.id))
-            } .onFailure {
+            }.onFailure {
                 postSideEffect(LostAndFoundDetailSideEffect.DeleteArticleFailed)
             }
         }
