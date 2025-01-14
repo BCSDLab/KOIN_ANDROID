@@ -272,6 +272,7 @@ fun handleSideEffect(
             }
 
             val itemIndex = sideEffect.itemIndex
+            val imageIndex = sideEffect.imageIndex
             val imageContextUri = sideEffect.imageUri
 
             val cursor = context.contentResolver.query(imageContextUri, null, null, null, null)
@@ -285,7 +286,14 @@ fun handleSideEffect(
                         val fileSize = cursor.getLong(fileSizeIndex)
                         val fileType = context.contentResolver.getType(imageContextUri) ?: "image/${fileName.split(".").last()}"
 
-                        viewModel.getPreSignedUrl(fileSize, fileType, fileName, imageContextUri, itemIndex)
+                        viewModel.getPreSignedUrl(
+                            fileSize,
+                            fileType,
+                            fileName,
+                            imageContextUri,
+                            itemIndex,
+                            imageIndex
+                        )
                     }
                 }
             }
