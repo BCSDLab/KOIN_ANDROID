@@ -9,7 +9,6 @@ import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationRe
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
-import `in`.koreatech.koin.data.response.article.AttachmentResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import javax.inject.Inject
@@ -18,7 +17,11 @@ class ArticleRemoteDataSource @Inject constructor(
     private val articleApi: ArticleApi,
     private val articleAuthApi: ArticleAuthApi
 ) {
-    suspend fun fetchArticlePagination(boardId: Int, page: Int, limit: Int): ArticlePaginationResponse {
+    suspend fun fetchArticlePagination(
+        boardId: Int,
+        page: Int,
+        limit: Int
+    ): ArticlePaginationResponse {
         return articleApi.fetchArticlePagination(boardId, page, limit)
     }
 
@@ -54,7 +57,12 @@ class ArticleRemoteDataSource @Inject constructor(
         articleAuthApi.deleteKeyword(id)
     }
 
-    suspend fun fetchSearchedArticles(query: String, boardId: Int, page: Int, limit: Int): ArticlePaginationResponse {
+    suspend fun fetchSearchedArticles(
+        query: String,
+        boardId: Int,
+        page: Int,
+        limit: Int
+    ): ArticlePaginationResponse {
         return articleApi.fetchSearchedArticles(query, boardId, page, limit)
     }
 
@@ -62,7 +70,10 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchMostSearchedKeywords(count)
     }
 
-    suspend fun fetchArticleLostAndFoundPagination(page: Int, limit: Int): ArticleLostAndFoundPaginationResponse {
+    suspend fun fetchArticleLostAndFoundPagination(
+        page: Int,
+        limit: Int
+    ): ArticleLostAndFoundPaginationResponse {
         return articleApi.fetchArticleLostAndFoundPagination(page, limit)
     }
 
@@ -70,10 +81,15 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchArticleLostAndFound(articleId)
     }
 
-    suspend fun uploadArticleLostAndFound(articleLostAndFound: List<ArticleLostAndFoundUpload>): Result<Unit> {
+    suspend fun uploadArticleLostAndFound(articleLostAndFound: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFoundResponse> {
         return try {
-            articleAuthApi.uploadArticleLostAndFound(articleLostAndFound.toArticleLostAndFoundRequest())
-            Result.success(Unit)
+            val response = articleAuthApi.uploadArticleLostAndFound(articleLostAndFound.toArticleLostAndFoundRequest())
+
+            if (response.code() == 201) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Failed to upload article"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         } catch (t: Throwable) {

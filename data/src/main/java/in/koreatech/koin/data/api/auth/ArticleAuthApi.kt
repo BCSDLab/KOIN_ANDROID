@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundRequest
+import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -27,7 +28,7 @@ interface ArticleAuthApi {
     @POST("articles/lost-item")
     suspend fun uploadArticleLostAndFound(
         @Body request: ArticleLostAndFoundRequest
-    ): Response<Unit>
+    ): Response<ArticleLostAndFoundResponse>
 
     @DELETE("articles/lost-item/{id}")
     suspend fun deleteArticleLostAndFound(
