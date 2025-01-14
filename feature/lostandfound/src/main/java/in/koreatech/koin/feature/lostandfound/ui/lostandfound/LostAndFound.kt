@@ -64,15 +64,6 @@ fun LostAndFoundList(
                         )
                     }
                     else -> {
-                        LostAndFoundFAB(
-                            mainOnClick = {
-                                if (isAnonymous) {
-                                    showLoginRequestDialog = true
-                                } else {
-                                    navigateToWriteFoundItem()
-                                }
-                            }
-                        )
                         // Do nothing
                     }
                 }
