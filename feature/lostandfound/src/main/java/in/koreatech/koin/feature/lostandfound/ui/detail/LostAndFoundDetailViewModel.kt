@@ -46,24 +46,37 @@ class LostAndFoundDetailViewModel @Inject constructor(
                 }) { user, article ->
                     user to article
                 }.collectLatest { (user, article) ->
+                if (user is User.Student) {
                     reduce {
                         state.copy(
-                            currentLoggedInUser = if (user is User.Student) user.name ?: "" else "",
-                            canDelete = state.currentLoggedInUser == article.author,
-                            lostOrFound = article.lostOrFound,
-                            id = article.id,
-                            category = article.category,
-                            foundPlace = article.foundPlace,
-                            foundDate = article.foundDate,
-                            content = article.content,
-                            author = article.author,
-                            images = article.images,
-                            registeredAt = article.registeredAt,
-                            updatedAt = article.updatedAt,
-                            isLoading = false
+                            currentLoggedInUser = user.name ?: ""
+                        )
+                    }
+                } else {
+                    reduce {
+                        state.copy(
+                            currentLoggedInUser = ""
                         )
                     }
                 }
+
+                reduce {
+                    state.copy(
+                        canDelete = state.currentLoggedInUser == article.author,
+                        lostOrFound = article.lostOrFound,
+                        id = article.id,
+                        category = article.category,
+                        foundPlace = article.foundPlace,
+                        foundDate = article.foundDate,
+                        content = article.content,
+                        author = article.author,
+                        images = article.images,
+                        registeredAt = article.registeredAt,
+                        updatedAt = article.updatedAt,
+                        isLoading = false
+                    )
+                }
+            }
         }
     }
 
