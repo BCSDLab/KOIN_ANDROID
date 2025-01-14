@@ -3,6 +3,8 @@ package `in`.koreatech.koin.feature.lostandfound.ui.detail
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,7 +46,7 @@ fun LostAndFoundDetail(
             handleSideEffect(it, context, navigateToArticleList)
         }
         Column(
-            modifier = modifier
+            modifier = modifier.verticalScroll(rememberScrollState())
         ) {
             DetailHeader(
                 lostOrFound = uiState.lostOrFound,
@@ -91,17 +93,25 @@ private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
     navigateToArticleList: () -> Unit,
-    ) {
+) {
     when (sideEffect) {
         is LostAndFoundDetailSideEffect.FetchDetail -> {}
         LostAndFoundDetailSideEffect.FetchHotArticles -> {}
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
-            Toast.makeText(context, context.getString(R.string.detail_delete_toast), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.detail_delete_toast),
+                Toast.LENGTH_SHORT
+            ).show()
             navigateToArticleList()
         }
 
         LostAndFoundDetailSideEffect.DeleteArticleFailed -> {
-            Toast.makeText(context, context.getString(R.string.detail_delete_failed_toast), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.detail_delete_failed_toast),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
