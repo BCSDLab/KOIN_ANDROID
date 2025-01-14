@@ -21,10 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,6 +56,7 @@ fun DetailContent(
                 state = pagerState
             ) { page ->
                 SubcomposeAsyncImage(
+                    modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(imageUris[page])
                         .crossfade(true)
