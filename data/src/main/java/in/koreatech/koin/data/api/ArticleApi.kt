@@ -64,7 +64,7 @@ interface ArticleApi {
      * @param page 페이지 번호
      * @param limit 페이지 당 게시글 수
      */
-    @GET("articles/lostitem")
+    @GET("articles/lost-item")
     suspend fun fetchArticleLostAndFoundPagination(
         @Query("page") page: Int,
         @Query("limit") limit: Int
@@ -74,7 +74,7 @@ interface ArticleApi {
      * 분실물 게시글 조회
      * @param id 게시글 아이디
      */
-    @GET("articles/lostitem/{id}")
+    @GET("articles/lost-item/{id}")
     suspend fun fetchArticleLostAndFound(
         @Path("id") id: Int
     ): ArticleLostAndFoundResponse

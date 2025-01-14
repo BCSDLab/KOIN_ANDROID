@@ -24,12 +24,12 @@ interface ArticleAuthApi {
     @DELETE("articles/keyword/{id}")
     suspend fun deleteKeyword(@Path("id") keywordId: Int): Response<Unit>
 
-    @POST("articles/lostitem")
+    @POST("articles/lost-item")
     suspend fun uploadArticleLostAndFound(
         @Body request: ArticleLostAndFoundRequest
     ): Response<Unit>
 
-    @DELETE("articles/lostitem/{id}")
+    @DELETE("articles/lost-item/{id}")
     suspend fun deleteArticleLostAndFound(
         @Path("id") id: Int
     ): Response<Unit>
