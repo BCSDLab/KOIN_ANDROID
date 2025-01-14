@@ -8,7 +8,7 @@ sealed class LostAndFoundWriteArticleSideEffect {
     data class AddItem(val item: LostAndFoundWriteArticleItemState) : LostAndFoundWriteArticleSideEffect()
     data class RemoveItem(val index: Int) : LostAndFoundWriteArticleSideEffect()
     data class UpdateItemType(val index: Int, val itemType: LostItemCategory) : LostAndFoundWriteArticleSideEffect()
-    data class AddImage(val itemIndex: Int, val imageUri: Uri, val tooManyImage: Boolean) : LostAndFoundWriteArticleSideEffect()
+    data class AddImage(val itemIndex: Int, val imageIndex: Int, val imageUri: Uri, val tooManyImage: Boolean) : LostAndFoundWriteArticleSideEffect()
     data class RemoveImage(val itemIndex: Int, val imageIndex: Int) : LostAndFoundWriteArticleSideEffect()
     data object FailedToUploadImage : LostAndFoundWriteArticleSideEffect()
     data class UpdateDescription(val itemIndex: Int, val description: String) : LostAndFoundWriteArticleSideEffect()

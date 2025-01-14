@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
@@ -17,7 +16,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -76,7 +74,8 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         mediaType: String,
         mediaSize: Long,
         imageUri: Uri,
-        itemIndex: Int
+        itemIndex: Int,
+        imageIndex: Int
     ) = viewModelScope.launch {
         uploadFilesUseCase(
             preSignedUrl,
@@ -89,7 +88,13 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
                     state.copy(
                         itemList = state.itemList.mapIndexed { i, item ->
                             if (i == itemIndex) {
-                                item.copy(images = item.images + fileUrl)
+                                item.copy(images = item.images.mapIndexed { j, currentValue ->
+                                    if (j == imageIndex) {
+                                        fileUrl // Replace placeholder to real image url
+                                    } else {
+                                        currentValue
+                                    }
+                                })
                             } else {
                                 item
                             }
@@ -109,7 +114,8 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         fileType: String,
         fileName: String,
         imageUri: Uri,
-        itemIndex: Int
+        itemIndex: Int,
+        imageIndex: Int
     ) = viewModelScope.launch {
         getLostAndFoundPreSignedUrlUseCase(
             fileSize, fileType, fileName
@@ -120,7 +126,8 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
                 mediaType = fileType,
                 mediaSize = fileSize,
                 imageUri = imageUri,
-                itemIndex = itemIndex
+                itemIndex = itemIndex,
+                imageIndex = imageIndex
             )
         }.onFailure {
             intent {
@@ -138,9 +145,20 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
             return@intent
         }
 
+        reduce {
+            state.copy(itemList = state.itemList.mapIndexed { i, item ->
+                if (i == itemIndex) {
+                    item.copy(images = item.images + "") // Add empty string as placeholder
+                } else {
+                    item
+                }
+            })
+        }
+
         postSideEffect(
             LostAndFoundWriteArticleSideEffect.AddImage(
                 itemIndex,
+                state.itemList[itemIndex].images.lastIndex,
                 imageUri,
                 state.itemList[itemIndex].images.size + 1 > IMAGE_MAX_COUNT
             )
@@ -217,7 +235,7 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
                 it.toArticleLostAndFoundUpload()
             }).onSuccess {
                 postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle(it.id))
-            } .onFailure {
+            }.onFailure {
                 postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticleFailed)
             }
         }

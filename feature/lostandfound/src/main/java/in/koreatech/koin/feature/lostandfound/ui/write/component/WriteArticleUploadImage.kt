@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -20,12 +21,14 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -37,7 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -45,7 +48,6 @@ import `in`.koreatech.koin.core.util.pxToDp
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
-import timber.log.Timber
 
 @Composable
 fun WriteArticleUploadImage(
@@ -144,32 +146,49 @@ fun WriteArticleUploadImageThumbnail(
     var removeButtonPosition by remember { mutableStateOf(Offset.Zero) }
 
     Box(modifier = modifier.fillMaxWidth()) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
-                .crossfade(true)
-                .build(),
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-            modifier = modifier.onGloballyPositioned {
-                removeButtonPosition = it.positionInParent() + Offset(
-                    it.size.width.toFloat(),
-                    0f
-                )
+        if (imageUrl == Uri.EMPTY) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
-        )
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_delete_image),
-            contentDescription = null,
-            modifier = Modifier
-                .offset(
-                    x = removeButtonPosition.x.pxToDp - 8.dp,
-                    y = removeButtonPosition.y.pxToDp - 8.dp
-                )
-                .noRippleClickable {
-                    removeImage(index)
+        } else {
+            SubcomposeAsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(true)
+                    .build(),
+                loading = {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                },
+                contentScale = ContentScale.Fit,
+                contentDescription = null,
+                modifier = modifier.onGloballyPositioned {
+                    removeButtonPosition = it.positionInParent() + Offset(
+                        it.size.width.toFloat(),
+                        0f
+                    )
                 }
-        )
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_delete_image),
+                contentDescription = null,
+                modifier = Modifier
+                    .offset(
+                        x = removeButtonPosition.x.pxToDp - 8.dp,
+                        y = removeButtonPosition.y.pxToDp - 8.dp
+                    )
+                    .noRippleClickable {
+                        removeImage(index)
+                    }
+            )
+        }
     }
 }
