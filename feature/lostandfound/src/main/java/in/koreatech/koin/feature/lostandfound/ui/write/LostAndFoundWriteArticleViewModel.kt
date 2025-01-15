@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.UploadLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LostAndFoundWriteArticleViewModel @Inject constructor(
-    private val articleRepository: ArticleRepository,
+    private val uploadLostAndFoundArticleUseCase: UploadLostAndFoundArticleUseCase,
     private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
 ) : ViewModel(),
@@ -229,7 +229,7 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
 
     fun writeArticle() = viewModelScope.launch {
         intent {
-            articleRepository.uploadArticleLostAndFound(state.itemList.map {
+            uploadLostAndFoundArticleUseCase(state.itemList.map {
                 it.toArticleLostAndFoundUpload()
             }).onSuccess {
                 postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle(it.id))
