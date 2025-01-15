@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -95,7 +96,7 @@ fun LostAndFoundKeywordGroup(
         var selectedKeywordIndex by remember { mutableIntStateOf(0) }
 
         LostAndFoundTextChip(
-            title = "모두보기",
+            title = stringResource(R.string.keyword_see_all),
             isSelected = selectedKeywordIndex == 0,
             textStyle = textStyle,
             onSelect = {
@@ -126,7 +127,7 @@ fun LostAndFoundKeywordGroup(
 
         if (keyWords.isEmpty()) {
             LostAndFoundTextChip(
-                title = "새 키워드 추가",
+                title = stringResource(R.string.keyword_add_new),
                 isSelected = false,
                 textStyle = textStyle,
                 onSelect = {

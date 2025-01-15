@@ -90,4 +90,12 @@
     <string name="fab_write">글쓰기</string>
     <string name="fab_found">주인을 찾아요</string>
     <string name="fab_lost">잃어버렸어요</string>
+
+    <string name="keyword_see_all">모두보기</string>
+    <string name="keyword_add_new">새 키워드 추가</string>
+
+    <string name="dialog_loading">로딩 중…</string>
+
+    <string name="pagination_prev">이전</string>
+    <string name="pagination_next">다음</string>
 </resources>
