@@ -2,8 +2,11 @@ package `in`.koreatech.koin.feature.lostandfound.ui.lostandfound
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -61,6 +64,7 @@ fun LostAndFoundList(
 
     KoinTheme {
         Scaffold(
+            modifier = Modifier.fillMaxSize(),
             containerColor = if (isDialogExpanded) Color(0xB2000000) else KoinTheme.colors.neutral0,
             floatingActionButton = {
                 val fabWrite = stringResource(R.string.fab_write)
@@ -125,19 +129,14 @@ fun LostAndFoundList(
                     }
                 )
                  */
-            }
+            },
+            contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) { contentPadding ->
-            val correctedPadding = PaddingValues(
-                // Hardcode top padding value to 0.dp because contentPadding returns wrong top padding value
-                top = 0.dp,
-                bottom = contentPadding.calculateBottomPadding(),
-                // TODO: Get correct layout direction from device settings
-                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
-                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-            )
-
             val myKeywords = uiState.myKeywords
-            Column(modifier = modifier.padding(correctedPadding)) {
+            Column(
+                modifier = modifier.padding(contentPadding)
+                    .consumeWindowInsets(contentPadding)
+            ) {
                 LostAndFoundKeywordGroup(
                     keyWords = myKeywords,
                     navigateToKeywordFragment = navigateToKeywordFragment
