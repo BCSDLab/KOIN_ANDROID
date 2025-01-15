@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.FetchSearchedArticlesUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType
 import kotlinx.coroutines.flow.collectLatest
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LostAndFoundViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
+    private val fetchLostAndFoundArticlePaginationUseCase: FetchLostAndFoundArticlePaginationUseCase,
     private val fetchSearchedArticlesUseCase: FetchSearchedArticlesUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     savedStateHandle: SavedStateHandle
@@ -44,7 +46,7 @@ class LostAndFoundViewModel @Inject constructor(
             }
 
             if (state.selectedKeyword.isEmpty()) {
-                articleRepository.fetchArticleLostAndFoundPagination(
+                fetchLostAndFoundArticlePaginationUseCase(
                     state.currentPage,
                     ARTICLES_PER_PAGE
                 ).collectLatest {
