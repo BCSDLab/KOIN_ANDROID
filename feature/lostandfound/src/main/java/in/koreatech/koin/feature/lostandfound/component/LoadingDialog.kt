@@ -10,11 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
 fun LoadingDialog() {
@@ -31,7 +33,7 @@ fun LoadingDialog() {
             CircularProgressIndicator(color = KoinTheme.colors.neutral0)
             Spacer(modifier = Modifier.width(32.dp))
             Text(
-                text = "로딩 중...",
+                text = stringResource(R.string.dialog_loading),
                 color = KoinTheme.colors.neutral0
             )
         }

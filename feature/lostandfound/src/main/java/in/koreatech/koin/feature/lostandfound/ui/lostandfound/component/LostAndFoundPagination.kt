@@ -13,10 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
 fun LostAndFoundPagination(
@@ -34,7 +36,7 @@ fun LostAndFoundPagination(
         horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
     ) {
         LostAndFoundPaginationButton(
-            text = "이전",
+            text = stringResource(R.string.pagination_prev),
             isClickable = showPrevButton
         ) {
             onPageChange(currentPage - 1)
@@ -52,7 +54,7 @@ fun LostAndFoundPagination(
         }
 
         LostAndFoundPaginationButton(
-            text = "다음",
+            text = stringResource(R.string.pagination_next),
             isClickable = showNextButton
         ) {
             onPageChange(currentPage + 1)
