@@ -6,12 +6,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.repository.UserRepository
+import `in`.koreatech.koin.domain.usecase.article.FetchSearchedArticlesUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -23,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LostAndFoundViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
+    private val fetchSearchedArticlesUseCase: FetchSearchedArticlesUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ContainerHost<LostAndFoundState, LostAndFoundSideEffect> {
@@ -61,7 +60,7 @@ class LostAndFoundViewModel @Inject constructor(
                     }
                 }
             } else {
-                articleRepository.fetchSearchedArticles(
+                fetchSearchedArticlesUseCase(
                     state.selectedKeyword,
                     ArticleBoardType.LOSTANDFOUND.id,
                     state.currentPage,
