@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -22,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LostAndFoundViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
-    private val userRepository: UserRepository,
+    private val getUserStatusUseCase: GetUserStatusUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ContainerHost<LostAndFoundState, LostAndFoundSideEffect> {
     override val container = container<LostAndFoundState, LostAndFoundSideEffect>(
@@ -128,7 +129,7 @@ class LostAndFoundViewModel @Inject constructor(
     }
 
     fun getUserType() = viewModelScope.launch {
-        userRepository.getUserInfoFlow().collectLatest { user ->
+        getUserStatusUseCase().collectLatest { user ->
             intent {
                 reduce {
                     if (user is User.Student) {
