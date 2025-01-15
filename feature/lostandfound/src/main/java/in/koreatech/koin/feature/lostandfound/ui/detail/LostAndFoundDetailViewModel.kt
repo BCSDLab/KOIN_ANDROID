@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.model.toArticleHeaderState
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LostAndFoundDetailViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
+    private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<LostAndFoundDetailState, LostAndFoundDetailSideEffect> {
     override val container =
@@ -42,7 +44,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
             }
 
             getUserStatusUseCase()
-                .combine(articleRepository.fetchArticleLostAndFound(articleId).map {
+                .combine(fetchLostAndFoundArticleUseCase(articleId).map {
                     it.toLostAndFoundDetailState()
                 }) { user, article ->
                     user to article
