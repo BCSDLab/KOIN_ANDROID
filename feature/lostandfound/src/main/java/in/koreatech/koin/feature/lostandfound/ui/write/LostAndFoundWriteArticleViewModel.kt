@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
@@ -22,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LostAndFoundWriteArticleViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
-    private val userRepository: UserRepository,
     private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
 ) : ViewModel(),
