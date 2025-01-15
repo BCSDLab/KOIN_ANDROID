@@ -49,7 +49,6 @@ fun LostAndFoundList(
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, viewModel)
     }
-    val isAnonymous = uiState.isAnonymous
     val isLoading = uiState.isLoading
     var showLoginRequestDialog by remember { mutableStateOf(false) }
     var isDialogExpanded by remember { mutableStateOf(false) }
