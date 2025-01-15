@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.domain.repository.UserRepository
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLostAndFoundUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchHotArticlesUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
@@ -25,9 +24,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LostAndFoundDetailViewModel @Inject constructor(
-    private val articleRepository: ArticleRepository,
     private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
     private val fetchHotArticlesUseCase: FetchHotArticlesUseCase,
+    private val deleteArticleLostAndFoundUseCase: DeleteArticleLostAndFoundUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<LostAndFoundDetailState, LostAndFoundDetailSideEffect> {
     override val container =
@@ -105,7 +104,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
 
     fun deleteArticle() = viewModelScope.launch {
         intent {
-            articleRepository.deleteArticleLostAndFound(state.id).onSuccess {
+            deleteArticleLostAndFoundUseCase(state.id).onSuccess {
                 postSideEffect(LostAndFoundDetailSideEffect.DeleteArticle(state.id))
             }.onFailure {
                 postSideEffect(LostAndFoundDetailSideEffect.DeleteArticleFailed)
