@@ -54,6 +54,11 @@ fun LostAndFoundList(
     var showLoginRequestDialog by remember { mutableStateOf(false) }
     var isDialogExpanded by remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        viewModel.fetchMyKeyword()
+        viewModel.getUserType()
+    }
+
     LaunchedEffect(uiState.selectedKeyword) {
         viewModel.fetchLostAndFoundList()
     }
