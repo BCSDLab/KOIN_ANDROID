@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.usecase.article.FetchMyKeywordUseCase
 import `in`.koreatech.koin.domain.usecase.article.FetchSearchedArticlesUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
@@ -22,10 +22,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LostAndFoundViewModel @Inject constructor(
-    private val articleRepository: ArticleRepository,
     private val fetchLostAndFoundArticlePaginationUseCase: FetchLostAndFoundArticlePaginationUseCase,
     private val fetchSearchedArticlesUseCase: FetchSearchedArticlesUseCase,
     private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
+    private val fetchMyKeywordUseCase: FetchMyKeywordUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ContainerHost<LostAndFoundState, LostAndFoundSideEffect> {
@@ -110,7 +110,7 @@ class LostAndFoundViewModel @Inject constructor(
     }
 
     fun fetchMyKeyword() = viewModelScope.launch {
-        articleRepository.fetchMyKeyword().collectLatest {
+        fetchMyKeywordUseCase().collectLatest {
             intent {
                 reduce {
                     state.copy(
