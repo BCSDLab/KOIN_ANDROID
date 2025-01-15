@@ -39,6 +39,7 @@ fun LostAndFoundDetail(
         val isLoading = uiState.isLoading
 
         LaunchedEffect(Unit) {
+            viewModel.fetchHotArticles()
             viewModel.fetchLostAndFoundDetail(articleId)
         }
 

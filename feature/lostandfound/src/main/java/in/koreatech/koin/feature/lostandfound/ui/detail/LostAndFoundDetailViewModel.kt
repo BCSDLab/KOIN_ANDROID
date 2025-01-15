@@ -32,10 +32,6 @@ class LostAndFoundDetailViewModel @Inject constructor(
     override val container =
         container<LostAndFoundDetailState, LostAndFoundDetailSideEffect>(LostAndFoundDetailState())
 
-    init {
-        fetchHotArticles()
-    }
-
     fun fetchLostAndFoundDetail(articleId: Int) = viewModelScope.launch {
         intent {
             reduce {
