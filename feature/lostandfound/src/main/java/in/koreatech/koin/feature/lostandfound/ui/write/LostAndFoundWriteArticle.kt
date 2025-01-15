@@ -8,12 +8,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -30,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -66,6 +63,7 @@ fun LostAndFoundWriteArticle(
 
     KoinTheme {
         Scaffold(
+            modifier = Modifier.fillMaxSize(),
             containerColor = KoinTheme.colors.neutral0,
             bottomBar = {
                 WriteArticleDoneButton {
@@ -81,19 +79,10 @@ fun LostAndFoundWriteArticle(
                     }
                     viewModel.checkAllFieldValid()
                 }
-            }
+            },
+            // Fix wrong top padding value
+            contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) { contentPadding ->
-            val isKeyboardVisible by keyboardAsState()
-
-            val correctedPadding = PaddingValues(
-                // Hardcode top padding value to 0.dp because contentPadding returns wrong top padding value
-                top = 0.dp,
-                // TODO: Fix wrong large bottom padding when keyboard is visible
-                bottom = if (isKeyboardVisible) 0.dp else contentPadding.calculateBottomPadding(),
-                // TODO: Get correct layout direction from device settings
-                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
-                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
-            )
             val itemList = uiState.itemList
             var shouldShowItemRemoveButton by remember { mutableStateOf(false) }
             var shouldShowItemAddButton by remember { mutableStateOf(true) }
@@ -111,11 +100,10 @@ fun LostAndFoundWriteArticle(
                 shouldShowItemAddButton = itemList.size < MAX_ITEM_COUNT
             }
 
-
             LazyColumn(
                 modifier = Modifier
-                    .padding(correctedPadding)
-                    .imePadding()
+                    .padding(contentPadding)
+                    .consumeWindowInsets(contentPadding)
             ) {
                 item {
                     WriteArticleHeader(type = lostOrFoundType)
@@ -284,7 +272,8 @@ fun handleSideEffect(
                     if (fileNameIndex != -1 && fileSizeIndex != -1) {
                         val fileName = cursor.getString(fileNameIndex)
                         val fileSize = cursor.getLong(fileSizeIndex)
-                        val fileType = context.contentResolver.getType(imageContextUri) ?: "image/${fileName.split(".").last()}"
+                        val fileType = context.contentResolver.getType(imageContextUri)
+                            ?: "image/${fileName.split(".").last()}"
 
                         viewModel.getPreSignedUrl(
                             fileSize,
@@ -306,6 +295,7 @@ fun handleSideEffect(
         is LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle -> {
             onWriteComplete(sideEffect.articleId)
         }
+
         is LostAndFoundWriteArticleSideEffect.CheckAllFieldValid -> {
             var isAllFieldValid = true
             sideEffect.itemList.forEachIndexed { index, it ->
@@ -329,11 +319,16 @@ fun handleSideEffect(
         }
 
         LostAndFoundWriteArticleSideEffect.FailedToUploadImage -> {
-            Toast.makeText(context, context.getString(R.string.upload_image_failed), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.upload_image_failed),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticleFailed -> {
-            Toast.makeText(context, context.getString(R.string.write_failed), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.write_failed), Toast.LENGTH_SHORT)
+                .show()
         }
     }
 }

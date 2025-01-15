@@ -2,10 +2,12 @@ package `in`.koreatech.koin.ui.article
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.enableEdgeToEdge
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,8 +36,11 @@ class ArticleActivity : ActivityBase() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_article)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, if (imeVisible) imeInsets.bottom else systemBars.bottom)
             insets
         }
 
