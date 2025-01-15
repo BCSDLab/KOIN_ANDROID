@@ -23,18 +23,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundDialog
-import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundDropdownGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundFAB
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundItemList
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundKeywordGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundPagination
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import timber.log.Timber
 
 @Composable
 fun LostAndFoundList(
