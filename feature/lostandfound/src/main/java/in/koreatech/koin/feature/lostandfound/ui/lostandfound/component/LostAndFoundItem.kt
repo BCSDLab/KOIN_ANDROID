@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.util.getKoreanDayOfWeekShortName
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
@@ -48,7 +48,7 @@ fun LostAndFoundItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) = Column(
-    modifier = Modifier.clickable {
+    modifier = Modifier.noRippleClickable {
         onClick()
     }
 ) {
