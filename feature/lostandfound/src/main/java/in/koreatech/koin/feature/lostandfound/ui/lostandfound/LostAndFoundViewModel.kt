@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.FetchSearchedArticlesUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType
 import kotlinx.coroutines.flow.collectLatest
@@ -24,6 +25,7 @@ class LostAndFoundViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
     private val fetchLostAndFoundArticlePaginationUseCase: FetchLostAndFoundArticlePaginationUseCase,
     private val fetchSearchedArticlesUseCase: FetchSearchedArticlesUseCase,
+    private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ContainerHost<LostAndFoundState, LostAndFoundSideEffect> {
@@ -81,7 +83,7 @@ class LostAndFoundViewModel @Inject constructor(
 
                 // Fetch content by id because our search API doesn't return content value
                 state.lostAndFoundList.forEachIndexed { index, lostAndFoundItemState ->
-                    articleRepository.fetchArticleLostAndFound(lostAndFoundItemState.id).collect {
+                    fetchLostAndFoundArticleUseCase(lostAndFoundItemState.id).collect {
                         reduce {
                             state.copy(
                                 lostAndFoundList = state.lostAndFoundList.mapIndexed { i, item ->
