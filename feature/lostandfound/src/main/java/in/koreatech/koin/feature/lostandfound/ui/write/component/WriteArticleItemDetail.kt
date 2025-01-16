@@ -54,6 +54,8 @@ fun WriteArticleItemDetail(
     onMoreDescriptionChange: (String) -> Unit = {},
     date: LocalDate?,
     dateRequired: Boolean = false,
+    showDatePicker: Boolean = false,
+    onShowDatePickerChange: (Boolean) -> Unit = {},
     onDateChange: (date: LocalDate) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -110,7 +112,6 @@ fun WriteArticleItemDetail(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        var showDatePicker by remember { mutableStateOf(false) }
         var dateComposablePosition by remember { mutableStateOf(Offset.Zero) }
 
         Box(
@@ -119,7 +120,7 @@ fun WriteArticleItemDetail(
                 .background(KoinTheme.colors.neutral100)
                 .padding(vertical = 8.dp, horizontal = 16.dp)
                 .noRippleClickable {
-                    showDatePicker = !showDatePicker
+                    onShowDatePickerChange(!showDatePicker)
                 }
                 .onGloballyPositioned {
                     dateComposablePosition = it.positionInParent() + Offset(

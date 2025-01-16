@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -100,7 +101,18 @@ fun LostAndFoundWriteArticle(
                 shouldShowItemAddButton = itemList.size < MAX_ITEM_COUNT
             }
 
+            var shouldShowDatePicker by remember { mutableStateOf(false) }
+
+            val lazyColumnState = rememberLazyListState()
+
+            LaunchedEffect(lazyColumnState.isScrollInProgress) {
+                if (lazyColumnState.isScrollInProgress) {
+                    shouldShowDatePicker = false
+                }
+            }
+
             LazyColumn(
+                state = lazyColumnState,
                 modifier = Modifier
                     .padding(contentPadding)
                     .consumeWindowInsets(contentPadding)
@@ -115,6 +127,7 @@ fun LostAndFoundWriteArticle(
                         shouldShowDelete = shouldShowItemRemoveButton,
                         articleData = item,
                         lostOrFoundType = lostOrFoundType,
+                        showDatePicker = shouldShowDatePicker,
                         onAddImageClick = { uri ->
                             viewModel.addImage(itemIndex, uri)
                         },
@@ -139,6 +152,9 @@ fun LostAndFoundWriteArticle(
                         },
                         onUpdateLocation = { location ->
                             viewModel.updateLocation(itemIndex, location)
+                        },
+                        onShowDatePickerChange = { showDatePicker ->
+                            shouldShowDatePicker = showDatePicker
                         },
                         onDateChange = { date ->
                             viewModel.updateDate(itemIndex, date)
@@ -177,6 +193,7 @@ fun WriteFoundItemArticleImpl(
     shouldShowDelete: Boolean = false,
     articleData: LostAndFoundWriteArticleItemState,
     lostOrFoundType: LostOrFoundType,
+    showDatePicker: Boolean,
     modifier: Modifier = Modifier,
     onAddImageClick: (uri: Uri) -> Unit,
     onRemoveImageClick: (index: Int) -> Unit,
@@ -184,6 +201,7 @@ fun WriteFoundItemArticleImpl(
     onChangeItemType: (itemType: LostItemCategory) -> Unit,
     onUpdateDescription: (description: String) -> Unit,
     onUpdateLocation: (location: String) -> Unit,
+    onShowDatePickerChange: (showDatePicker: Boolean) -> Unit,
     onDateChange: (date: LocalDate?) -> Unit
 ) {
     val pickMultipleMedia =
@@ -239,6 +257,8 @@ fun WriteFoundItemArticleImpl(
             onLocationChange = { onUpdateLocation(it) },
             date = articleData.foundDate,
             dateRequired = articleData.dateRequired,
+            showDatePicker = showDatePicker,
+            onShowDatePickerChange = onShowDatePickerChange,
             onDateChange = { onDateChange(it) }
         )
     }
