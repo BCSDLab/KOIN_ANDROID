@@ -2,12 +2,11 @@ package `in`.koreatech.koin.ui.article
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +21,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityArticleBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
+import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -30,6 +30,8 @@ class ArticleActivity : ActivityBase() {
     private val binding by dataBinding<ActivityArticleBinding>()
     private lateinit var navController: NavController
     override val screenTitle: String = "공지사항"
+
+    private val viewModel by viewModels<ArticleListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
