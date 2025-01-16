@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -88,6 +89,7 @@ fun LostAndFoundFABButton(
 ) = Box(
     modifier = modifier
         .border(width = 1.dp, color = KoinTheme.colors.neutral300, shape = RoundedCornerShape(50))
+        .background(color = KoinTheme.colors.neutral0, shape = RoundedCornerShape(50))
         .padding(vertical = 8.dp, horizontal = 12.dp)
         .noRippleClickable { onClick() }
 ) {
