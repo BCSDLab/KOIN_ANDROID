@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -19,7 +19,7 @@ import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
 import `in`.koreatech.koin.ui.article.lostandfound.ArticleListLostAndFoundFragment
-import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
+import `in`.koreatech.koin.ui.article.viewmodel.ArticleViewModel
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,7 +40,7 @@ class ArticleListFragment : Fragment() {
                         AnalyticsConstant.Label.NOTICE_TAB,
                         it.text.toString()
                     )
-                    viewModel.setCurrentBoard(ArticleBoardType.entries[it.position])
+                    activityViewModel.setCurrentBoard(ArticleBoardType.entries[it.position])
                 }
             }
 
@@ -48,7 +48,7 @@ class ArticleListFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         }
 
-    private val viewModel by viewModels<ArticleListViewModel>()
+    private val activityViewModel by activityViewModels<ArticleViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,12 +76,12 @@ class ArticleListFragment : Fragment() {
 
     private fun setStartBoard() {
         val startBoard = arguments?.getInt(START_BOARD) ?: ArticleBoardType.ALL.id
-        viewModel.setCurrentBoard(ArticleBoardType.fromId(startBoard))
+        activityViewModel.setCurrentBoard(ArticleBoardType.fromId(startBoard))
     }
 
     private fun observeBoard() {
         lifecycleScope.launch {
-            viewModel.currentBoard.collectLatest { board ->
+            activityViewModel.currentBoard.collectLatest { board ->
                 when (board) {
                     ArticleBoardType.ALL,
                     ArticleBoardType.NORMAL,
@@ -91,6 +91,7 @@ class ArticleListFragment : Fragment() {
                     ArticleBoardType.IPP,
                     ArticleBoardType.STUDENT,
                     ArticleBoardType.KOIN -> {
+                        activityViewModel.setCurrentBoard(ArticleBoardType.ALL)
                         val articleListNoticeFragment = ArticleListNoticeFragment()
                         val bundle = Bundle()
                         bundle.putInt("boardId", board.id)
@@ -100,6 +101,7 @@ class ArticleListFragment : Fragment() {
                             .commit()
                     }
                     ArticleBoardType.LOSTANDFOUND -> {
+                        activityViewModel.setCurrentBoard(ArticleBoardType.LOSTANDFOUND)
                         childFragmentManager.beginTransaction()
                             .replace(
                                 R.id.frame_layout_article_list,
@@ -122,11 +124,11 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun collectData() {
-        (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
+        (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, activityViewModel)
         viewLifecycleOwner.lifecycleScope.run {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.currentBoard.collect { board ->
+                    activityViewModel.currentBoard.collect { board ->
                         binding.tabLayoutArticleBoard.getTabAt(
                             ArticleBoardType.entries.indexOf(
                                 board
