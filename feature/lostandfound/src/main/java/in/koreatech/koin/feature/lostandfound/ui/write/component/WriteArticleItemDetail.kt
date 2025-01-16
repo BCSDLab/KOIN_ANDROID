@@ -168,11 +168,15 @@ fun WriteArticleItemDetail(
             yearPickerState.selectedItem
         ) {
             if (yearPickerState.selectedItem != "" && monthPickerState.selectedItem != "" && dayPickerState.selectedItem != "") {
+                val selectedYear = Integer.parseInt(yearPickerState.selectedItem)
+                val selectedMonth = Integer.parseInt(monthPickerState.selectedItem)
+                val selectedDay = Integer.parseInt(dayPickerState.selectedItem)
+                val lastDayOfMonth = getLastDayOfMonth(selectedYear, selectedMonth)
                 onDateChange(
                     LocalDate.of(
-                        Integer.parseInt(yearPickerState.selectedItem),
-                        Integer.parseInt(monthPickerState.selectedItem),
-                        Integer.parseInt(dayPickerState.selectedItem)
+                        selectedYear,
+                        selectedMonth,
+                        if (selectedDay > lastDayOfMonth) lastDayOfMonth else selectedDay
                     )
                 )
             }
