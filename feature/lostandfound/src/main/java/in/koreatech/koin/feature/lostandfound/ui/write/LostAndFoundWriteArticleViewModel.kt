@@ -158,7 +158,7 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
                 itemIndex,
                 state.itemList[itemIndex].images.lastIndex,
                 imageUri,
-                state.itemList[itemIndex].images.size + 1 > IMAGE_MAX_COUNT
+                state.itemList[itemIndex].images.size > IMAGE_MAX_COUNT
             )
         )
     }
