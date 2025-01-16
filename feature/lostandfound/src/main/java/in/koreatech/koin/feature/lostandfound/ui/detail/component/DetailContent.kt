@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail.component
 
 import android.net.Uri
+import android.webkit.URLUtil
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,14 +43,16 @@ fun DetailContent(
     isWriterAdmin: Boolean,
     modifier: Modifier = Modifier
 ) {
+    // Check image url is valid
+    val filteredImageUrls = imageUris?.filter { URLUtil.isValidUrl(it.toString()) }
     Column(
         modifier = modifier
             .padding(vertical = 24.dp, horizontal = 24.dp)
             .fillMaxWidth()
     ) {
-        if (imageUris != null) {
+        if (filteredImageUrls != null) {
             val pagerState = rememberPagerState(pageCount = {
-                imageUris.size
+                filteredImageUrls.size
             })
             HorizontalPager(
                 modifier = Modifier.fillMaxWidth(),
@@ -58,7 +61,7 @@ fun DetailContent(
                 SubcomposeAsyncImage(
                     modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(imageUris[page])
+                        .data(filteredImageUrls[page])
                         .crossfade(true)
                         .build(),
                     loading = {
@@ -83,7 +86,7 @@ fun DetailContent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                imageUris.indices.forEach { index ->
+                filteredImageUrls.indices.forEach { index ->
                     Image(
                         modifier = if (index == pagerState.currentPage) Modifier.size(6.dp) else Modifier.size(
                             4.dp
