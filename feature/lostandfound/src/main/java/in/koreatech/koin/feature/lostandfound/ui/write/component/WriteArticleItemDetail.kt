@@ -194,6 +194,7 @@ fun WriteArticleItemDetail(
         if (showDatePicker) {
             LaunchedEffect(yearPickerState.selectedItem, monthPickerState.selectedItem) {
                 if (yearPickerState.selectedItem == "") return@LaunchedEffect
+                if (monthPickerState.selectedItem == "") return@LaunchedEffect
                 if (yearPickerState.selectedItem == now.year.toString()) {
                     monthList = (1..now.monthValue).map { it.toString() }
 
