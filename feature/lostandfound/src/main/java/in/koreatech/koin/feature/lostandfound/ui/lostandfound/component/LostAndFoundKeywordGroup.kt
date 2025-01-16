@@ -23,6 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,14 +52,16 @@ fun LostAndFoundKeywordGroup(
      */
     val textStyle = TextStyle(
         fontSize = 14.sp,
+        fontStyle = FontStyle.Normal,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.None
         ),
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false
-        ),
-        letterSpacing = 0.2.sp
+        letterSpacing = 0.2.sp,
+        lineHeight = 20.sp,
     )
 
     Row(
