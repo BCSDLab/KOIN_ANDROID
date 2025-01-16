@@ -5,9 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,7 +30,7 @@ fun WriteArticleAddItemButton(
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Button(
-            modifier = Modifier.width(100.dp).height(38.dp).align(Alignment.CenterEnd),
+            modifier = Modifier.align(Alignment.CenterEnd),
             onClick = onItemAdd,
             colors = ButtonDefaults.buttonColors(
                 containerColor = KoinTheme.colors.info200
@@ -40,7 +39,7 @@ fun WriteArticleAddItemButton(
             contentPadding = PaddingValues(12.dp, 8.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxHeight(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
