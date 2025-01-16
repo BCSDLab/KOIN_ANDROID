@@ -10,7 +10,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +29,6 @@ import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.adapter.RecentSearchedHistoryAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleSearchViewModel
-import `in`.koreatech.koin.ui.article.viewmodel.ArticleViewModel
 import `in`.koreatech.koin.ui.article.viewmodel.SearchUiState
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.withLoading
@@ -43,7 +41,6 @@ class ArticleSearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ArticleSearchViewModel by viewModels()
-    private val activityViewModel by activityViewModels<ArticleViewModel>()
     private val navController by lazy { findNavController() }
 
     private val recentSearchedHistoryAdapter: RecentSearchedHistoryAdapter by lazy {
@@ -72,7 +69,7 @@ class ArticleSearchFragment : Fragment() {
                         AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
                         "검색하기"
                     )
-                    viewModel.search(activityViewModel.currentBoard.value.id)
+                    viewModel.search()
                     true
                 } else false
             }
@@ -86,7 +83,7 @@ class ArticleSearchFragment : Fragment() {
                     AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
                     "검색하기"
                 )
-                viewModel.search(activityViewModel.currentBoard.value.id)
+                viewModel.search()
             }
             binding.textViewRecentSearchedKeywordClear.setOnClickListener {
                 viewModel.clearSearchHistory()
@@ -191,7 +188,7 @@ class ArticleSearchFragment : Fragment() {
         )
         binding.textInputSearch.setText(query)
         binding.textInputSearch.setSelection(query.length)
-        viewModel.search(activityViewModel.currentBoard.value.id)
+        viewModel.search()
     }
 
     private fun onRecentSearchHistoryDeleteClicked(query: String) {
