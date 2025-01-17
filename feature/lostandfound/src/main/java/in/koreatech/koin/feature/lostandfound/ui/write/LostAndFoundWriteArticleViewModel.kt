@@ -161,7 +161,6 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
     }
 
     fun removeImage(itemIndex: Int, imageIndex: Int) = intent {
-        postSideEffect(LostAndFoundWriteArticleSideEffect.RemoveImage(itemIndex, imageIndex))
         reduce {
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
