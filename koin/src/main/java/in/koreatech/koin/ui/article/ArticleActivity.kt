@@ -61,11 +61,6 @@ class ArticleActivity : ActivityBase() {
             }
         }
 
-        val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
-        bundle?.getInt(START_BOARD)?.let {
-            setNavigationGraph(it)
-        } ?: setNavigationGraph()
-
         navigateToDetailFragment()
     }
 
@@ -88,8 +83,12 @@ class ArticleActivity : ActivityBase() {
         navigateToArticleDetail(intent)
 
         when (link) {
-            "article_keyword" -> navController.navigate(R.id.articleKeywordFragment)    // See ArticleKeywordFragment, LoginActivity
+            "article_keyword" -> {
+                setNavigationGraph()
+                navController.navigate(R.id.articleKeywordFragment)    // See ArticleKeywordFragment, LoginActivity
+            }
             "article_detail" -> {
+                setNavigationGraph()
                 val articleId = uri.getQueryParameter("article_id")?.toIntOrNull() ?: 0
                 val boardId = uri.getQueryParameter("board_id")?.toIntOrNull() ?: 0
                 navController.navigate(
@@ -99,6 +98,15 @@ class ArticleActivity : ActivityBase() {
                         NAVIGATED_BOARD_ID to boardId
                     )
                 )
+            }
+            "article_lost_and_found" -> {
+                setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
+            }
+            null -> {
+                val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
+                bundle?.getInt(START_BOARD)?.let {
+                    setNavigationGraph(it)
+                } ?: setNavigationGraph()
             }
         }
     }
