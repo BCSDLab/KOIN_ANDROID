@@ -33,14 +33,12 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
 
 
     fun addItem(item: LostAndFoundWriteArticleItemState) = intent {
-        postSideEffect(LostAndFoundWriteArticleSideEffect.AddItem(item))
         reduce {
             state.copy(itemList = state.itemList + item)
         }
     }
 
     fun removeItem(index: Int) = intent {
-        postSideEffect(LostAndFoundWriteArticleSideEffect.RemoveItem(index))
         reduce {
             state.copy(itemList = state.itemList.filterIndexed { i, _ -> i != index })
         }
@@ -48,7 +46,6 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
 
     fun updateItemType(index: Int, category: LostItemCategory) {
         intent {
-            postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateItemType(index, category))
             reduce {
                 state.copy(
                     itemList = state.itemList.mapIndexed { i, item ->
@@ -179,7 +176,6 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
     }
 
     fun updateDescription(itemIndex: Int, content: String) = intent {
-        postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateDescription(itemIndex, content))
         reduce {
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
@@ -194,7 +190,6 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
     }
 
     fun updateLocation(itemIndex: Int, location: String) = intent {
-        postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateLocation(itemIndex, location))
         reduce {
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
@@ -209,7 +204,6 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
     }
 
     fun updateDate(itemIndex: Int, date: LocalDate?) = intent {
-        postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateDate(itemIndex, date))
         reduce {
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->

@@ -271,9 +271,6 @@ fun handleSideEffect(
     onWriteComplete: (articleId: Int) -> Unit
 ) {
     when (sideEffect) {
-        is LostAndFoundWriteArticleSideEffect.AddItem -> {}
-        is LostAndFoundWriteArticleSideEffect.RemoveItem -> {}
-        is LostAndFoundWriteArticleSideEffect.UpdateItemType -> {}
         is LostAndFoundWriteArticleSideEffect.AddImage -> {
             if (sideEffect.tooManyImage) {
                 return
@@ -308,10 +305,6 @@ fun handleSideEffect(
             }
         }
 
-        is LostAndFoundWriteArticleSideEffect.RemoveImage -> {}
-        is LostAndFoundWriteArticleSideEffect.UpdateDescription -> {}
-        is LostAndFoundWriteArticleSideEffect.UpdateLocation -> {}
-        is LostAndFoundWriteArticleSideEffect.UpdateDate -> {}
         is LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle -> {
             onWriteComplete(sideEffect.articleId)
         }
