@@ -24,6 +24,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.lostandfound.R
 
 /**
  * @see in.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
@@ -45,8 +46,8 @@ fun DetailDialog(
     onNegative: () -> Unit,
     modifier: Modifier = Modifier,
     titleStyle: TextStyle = KoinTheme.typography.medium14,
-    positiveButtonText: String = stringResource(id = `in`.koreatech.koin.core.designsystem.R.string.common_confirmation),
-    negativeButtonText: String = stringResource(id = `in`.koreatech.koin.core.designsystem.R.string.common_cancellation),
+    positiveButtonText: String = stringResource(id = R.string.common_confirmation),
+    negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
 ) {
