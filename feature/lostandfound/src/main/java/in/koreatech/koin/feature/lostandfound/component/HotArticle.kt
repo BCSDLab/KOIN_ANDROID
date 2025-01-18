@@ -26,7 +26,7 @@ import `in`.koreatech.koin.feature.lostandfound.model.ArticleHeaderState
 fun HotArticle(
     hotArticleList: List<ArticleHeaderState>,
     modifier: Modifier = Modifier,
-    navigateToHotArticle: (articleTitle: String, articleId: Int, boardId: Int) -> Unit
+    navigateToHotArticle: (HotArticleData) -> Unit
 ) {
     Column(modifier = modifier) {
         Text(
@@ -37,9 +37,11 @@ fun HotArticle(
 
         hotArticleList.forEach { hotArticle ->
             HotArticleItem(
-                id = hotArticle.id,
-                board = hotArticle.board,
-                title = hotArticle.title,
+                hotArticleData = HotArticleData(
+                    articleId = hotArticle.id,
+                    articleTitle = hotArticle.title,
+                    board = hotArticle.board
+                ),
                 navigateToHotArticle = navigateToHotArticle
             )
             HorizontalDivider(color = KoinTheme.colors.neutral100)
@@ -49,21 +51,19 @@ fun HotArticle(
 
 @Composable
 fun HotArticleItem(
-    id: Int,
-    board: ArticleBoardType,
-    title: String,
+    hotArticleData: HotArticleData,
     modifier: Modifier = Modifier,
-    navigateToHotArticle: (articleTitle: String, articleId: Int, boardId: Int) -> Unit
+    navigateToHotArticle: (HotArticleData) -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .noRippleClickable { navigateToHotArticle(title, id, board.id) }
+            .noRippleClickable { navigateToHotArticle(hotArticleData) }
             .padding(vertical = 12.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(board.koreanName),
+            text = stringResource(hotArticleData.board.koreanName),
             style = KoinTheme.typography.bold12.copy(
                 fontWeight = FontWeight.SemiBold,
                 color = KoinTheme.colors.primary600
@@ -71,7 +71,7 @@ fun HotArticleItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = title,
+            text = hotArticleData.articleTitle,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = KoinTheme.typography.bold14.copy(
@@ -81,3 +81,9 @@ fun HotArticleItem(
         )
     }
 }
+
+data class HotArticleData(
+    val articleId: Int,
+    val articleTitle: String,
+    val board: ArticleBoardType
+)
