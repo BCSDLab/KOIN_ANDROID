@@ -12,10 +12,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -28,13 +24,13 @@ import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
 fun DetailButtonGroup(
-    showDeleteButton: Boolean = false,
     modifier: Modifier = Modifier,
+    showDeleteButton: Boolean = false,
+    showDeleteDialog: Boolean = false,
+    onShowDeleteDialogChange: (Boolean) -> Unit,
     onArticleListClick: () -> Unit,
     onDeleteArticleClick: () -> Unit
 ) {
-    var showDeleteDialog by remember { mutableStateOf(false) }
-
     if (showDeleteDialog) {
         DetailDialog(
             title = stringResource(R.string.detail_delete_dialog_title),
@@ -45,10 +41,10 @@ fun DetailButtonGroup(
                     "확인"
                 )
                 onDeleteArticleClick()
-                showDeleteDialog = false
+                onShowDeleteDialogChange(false)
             },
             onNegative = {
-                showDeleteDialog = false
+                onShowDeleteDialogChange(false)
             }
         )
     }
@@ -79,7 +75,7 @@ fun DetailButtonGroup(
             Button(
                 contentPadding = PaddingValues(10.dp, 6.dp),
                 onClick = {
-                    showDeleteDialog = true
+                    onShowDeleteDialogChange(true)
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_DELETE,
                         "삭제"

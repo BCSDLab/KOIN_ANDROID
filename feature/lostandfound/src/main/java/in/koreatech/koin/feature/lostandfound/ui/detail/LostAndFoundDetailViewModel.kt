@@ -46,37 +46,37 @@ class LostAndFoundDetailViewModel @Inject constructor(
                 }) { user, article ->
                     user to article
                 }.collectLatest { (user, article) ->
-                if (user is User.Student) {
-                    reduce {
-                        state.copy(
-                            currentLoggedInUser = user.name ?: ""
-                        )
+                    if (user is User.Student) {
+                        reduce {
+                            state.copy(
+                                currentLoggedInUser = user.name ?: ""
+                            )
+                        }
+                    } else {
+                        reduce {
+                            state.copy(
+                                currentLoggedInUser = ""
+                            )
+                        }
                     }
-                } else {
-                    reduce {
-                        state.copy(
-                            currentLoggedInUser = ""
-                        )
-                    }
-                }
 
-                reduce {
-                    state.copy(
-                        canDelete = state.currentLoggedInUser == article.author,
-                        lostOrFound = article.lostOrFound,
-                        id = article.id,
-                        category = article.category,
-                        foundPlace = article.foundPlace,
-                        foundDate = article.foundDate,
-                        content = article.content,
-                        author = article.author,
-                        images = article.images,
-                        registeredAt = article.registeredAt,
-                        updatedAt = article.updatedAt,
-                        isLoading = false
-                    )
+                    reduce {
+                        state.copy(
+                            canDelete = state.currentLoggedInUser == article.author,
+                            lostOrFound = article.lostOrFound,
+                            id = article.id,
+                            category = article.category,
+                            foundPlace = article.foundPlace,
+                            foundDate = article.foundDate,
+                            content = article.content,
+                            author = article.author,
+                            images = article.images,
+                            registeredAt = article.registeredAt,
+                            updatedAt = article.updatedAt,
+                            isLoading = false
+                        )
+                    }
                 }
-            }
         }
     }
 
@@ -85,14 +85,14 @@ class LostAndFoundDetailViewModel @Inject constructor(
             reduce {
                 state.copy(
                     hotArticles = fetchHotArticlesUseCase().map {
-                            it.filterIndexed { index, _ ->
-                                index < HOT_ARTICLE_COUNT
-                            }.map { it.toArticleHeaderState() }
-                        }.stateIn(
-                            scope = viewModelScope,
-                            started = SharingStarted.WhileSubscribed(5_000),
-                            initialValue = listOf()
-                        )
+                        it.filterIndexed { index, _ ->
+                            index < HOT_ARTICLE_COUNT
+                        }.map { it.toArticleHeaderState() }
+                    }.stateIn(
+                        scope = viewModelScope,
+                        started = SharingStarted.WhileSubscribed(5_000),
+                        initialValue = listOf()
+                    )
                 )
             }
         }
@@ -105,6 +105,14 @@ class LostAndFoundDetailViewModel @Inject constructor(
             }.onFailure {
                 postSideEffect(LostAndFoundDetailSideEffect.DeleteArticleFailed)
             }
+        }
+    }
+
+    fun setShowDeleteDialog(show: Boolean) = intent {
+        reduce {
+            state.copy(
+                showDeleteDialog = show
+            )
         }
     }
 
