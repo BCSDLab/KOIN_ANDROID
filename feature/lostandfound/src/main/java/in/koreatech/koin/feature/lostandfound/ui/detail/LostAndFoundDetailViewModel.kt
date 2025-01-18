@@ -9,11 +9,9 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchHotArticlesU
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.model.toArticleHeaderState
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -82,18 +80,13 @@ class LostAndFoundDetailViewModel @Inject constructor(
 
     fun fetchHotArticles() = viewModelScope.launch {
         intent {
-            reduce {
-                state.copy(
-                    hotArticles = fetchHotArticlesUseCase().map {
-                        it.filterIndexed { index, _ ->
-                            index < HOT_ARTICLE_COUNT
-                        }.map { it.toArticleHeaderState() }
-                    }.stateIn(
-                        scope = viewModelScope,
-                        started = SharingStarted.WhileSubscribed(5_000),
-                        initialValue = listOf()
+            fetchHotArticlesUseCase().collectLatest {
+                reduce {
+                    state.copy(
+                        hotArticles = it.filterIndexed { index, _ -> index < HOT_ARTICLE_COUNT }
+                            .map { it.toArticleHeaderState() }
                     )
-                )
+                }
             }
         }
     }

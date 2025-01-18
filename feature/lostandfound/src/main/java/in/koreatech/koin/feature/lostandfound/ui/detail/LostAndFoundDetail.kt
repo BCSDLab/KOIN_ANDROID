@@ -34,7 +34,7 @@ fun LostAndFoundDetail(
 ) {
     KoinTheme {
         val uiState by viewModel.collectAsState()
-        val hotArticle by uiState.hotArticles.collectAsStateWithLifecycle()
+        val hotArticle = uiState.hotArticles
         val context = LocalContext.current
         val isLoading = uiState.isLoading
 

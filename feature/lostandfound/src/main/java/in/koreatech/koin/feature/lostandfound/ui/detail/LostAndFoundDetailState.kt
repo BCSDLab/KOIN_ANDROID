@@ -25,7 +25,7 @@ data class LostAndFoundDetailState(
     val registeredAt: LocalDate = LocalDate.MIN,
     val updatedAt: String = "",
     val isWriterCouncil: Boolean = true,
-    val hotArticles: StateFlow<List<ArticleHeaderState>> = MutableStateFlow(emptyList()),
+    val hotArticles: List<ArticleHeaderState> = emptyList(),
 )
 
 fun ArticleLostAndFound.toLostAndFoundDetailState(): LostAndFoundDetailState {
