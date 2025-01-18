@@ -56,6 +56,7 @@ class ArticleListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStartBoard()
+        observeBoard()
     }
 
     override fun onCreateView(
@@ -67,7 +68,6 @@ class ArticleListFragment : Fragment() {
             _binding = FragmentArticleListBinding.inflate(inflater, container, false)
             addCategoryTabs()
             collectData()
-            observeBoard()
         }
         return binding.root
     }
