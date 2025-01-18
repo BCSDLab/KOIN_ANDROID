@@ -60,7 +60,7 @@ fun LostAndFoundTextChipFlowGroup(
     onChipSelected: (index: Int) -> Unit,
     vararg selectedChipIndexes: Int,
     showClickRipple: Boolean,
-    contentPadding: PaddingValues,
+    contentPadding: PaddingValues = PaddingValues(vertical = 0.dp, horizontal = 0.dp),
     horizontalArrangement: Arrangement.Horizontal,
     verticalArrangement: Arrangement.Vertical,
     chipColors: TextChipColors
