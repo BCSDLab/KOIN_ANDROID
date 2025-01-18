@@ -88,7 +88,7 @@ class LostAndFoundViewModel @Inject constructor(
                             state.copy(
                                 lostAndFoundList = state.lostAndFoundList.mapIndexed { i, item ->
                                     if (i == index) {
-                                        item.copy(
+                                        return@mapIndexed item.copy(
                                             content = it.content ?: "",
                                         )
                                     } else {

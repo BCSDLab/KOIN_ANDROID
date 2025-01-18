@@ -69,7 +69,7 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
                 state.copy(
                     itemList = state.itemList.mapIndexed { i, item ->
                         if (i == index) {
-                            item.copy(
+                            return@mapIndexed item.copy(
                                 category = category,
                                 itemTypeRequired = category == LostItemCategory.NONE
                             )
@@ -163,7 +163,7 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
         reduce {
             state.copy(itemList = state.itemList.mapIndexed { i, item ->
                 if (i == itemIndex) {
-                    item.copy(images = item.images + "") // Add empty string as placeholder
+                    return@mapIndexed item.copy(images = item.images + "") // Add empty string as placeholder
                 } else {
                     item
                 }
@@ -185,7 +185,7 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
-                        item.copy(images = item.images.filterIndexed { j, _ -> j != imageIndex })
+                        return@mapIndexed item.copy(images = item.images.filterIndexed { j, _ -> j != imageIndex })
                     } else {
                         item
                     }
@@ -199,7 +199,7 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
-                        item.copy(content = content)
+                        return@mapIndexed item.copy(content = content)
                     } else {
                         item
                     }
@@ -213,7 +213,7 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
-                        item.copy(location = location, locationRequired = location.isEmpty())
+                        return@mapIndexed item.copy(location = location, locationRequired = location.isEmpty())
                     } else {
                         item
                     }
@@ -227,7 +227,7 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
-                        item.copy(foundDate = date, dateRequired = date == null)
+                        return@mapIndexed item.copy(foundDate = date, dateRequired = date == null)
                     } else {
                         item
                     }
