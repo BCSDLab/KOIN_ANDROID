@@ -50,8 +50,6 @@ fun LostAndFoundList(
         handleSideEffect(sideEffect, viewModel)
     }
     val isLoading = uiState.isLoading
-    var showLoginRequestDialog by remember { mutableStateOf(false) }
-    var isDialogExpanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.fetchMyKeyword()
@@ -65,7 +63,7 @@ fun LostAndFoundList(
     KoinTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            containerColor = if (isDialogExpanded) Color(0xB2000000) else KoinTheme.colors.neutral0,
+            containerColor = if (uiState.isFabDialogExpanded) Color(0xB2000000) else KoinTheme.colors.neutral0,
             floatingActionButton = {
                 val fabWrite = stringResource(R.string.fab_write)
 
@@ -91,7 +89,7 @@ fun LostAndFoundList(
                 val fabLostText = stringResource(R.string.fab_lost)
                 LostAndFoundFAB(
                     modifier = Modifier,
-                    isDialogExpanded = isDialogExpanded,
+                    isDialogExpanded = { viewModel.setFabDialogExpanded(it) },
                     dialogExpandButtonText = fabWrite,
                     dialogExpandButtonPainter = painterResource(id = R.drawable.ic_fab_write),
                     firstButtonText = fabFoundText,
@@ -100,7 +98,7 @@ fun LostAndFoundList(
                     secondButtonPainter = painterResource(id = R.drawable.ic_lost),
                     onFirstButtonClick = {
                         if (isAnonymous) {
-                            showLoginRequestDialog = true
+                            viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
                                 AnalyticsConstant.Label.LOST_AND_FOUND.FOUND_WRITE,
@@ -111,7 +109,7 @@ fun LostAndFoundList(
                     },
                     onSecondButtonClick = {
                         if (isAnonymous) {
-                            showLoginRequestDialog = true
+                            viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
                                 AnalyticsConstant.Label.LOST_AND_FOUND.LOST_WRITE,
@@ -125,7 +123,7 @@ fun LostAndFoundList(
                             AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_WRITE,
                             fabWrite
                         )
-                        isDialogExpanded = it
+                        viewModel.setFabDialogExpanded(it)
                     }
                 )
                  */
@@ -134,7 +132,8 @@ fun LostAndFoundList(
         ) { contentPadding ->
             val myKeywords = uiState.myKeywords
             Column(
-                modifier = modifier.padding(contentPadding)
+                modifier = modifier
+                    .padding(contentPadding)
                     .consumeWindowInsets(contentPadding)
             ) {
                 LazyColumn(
@@ -154,7 +153,9 @@ fun LostAndFoundList(
                     if (uiState.lostAndFoundList.isEmpty()) {
                         item {
                             Text(
-                                modifier = modifier.fillMaxWidth().padding(top = 16.dp),
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 16.dp),
                                 textAlign = TextAlign.Center,
                                 fontSize = 16.sp,
                                 text = stringResource(R.string.empty_articles)
@@ -191,7 +192,7 @@ fun LostAndFoundList(
                     LoadingDialog()
                 }
 
-                if (showLoginRequestDialog) {
+                if (uiState.showLoginRequestDialog) {
                     LostAndFoundDialog(
                         title = stringResource(R.string.request_login_dialog_title),
                         titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
@@ -199,10 +200,10 @@ fun LostAndFoundList(
                         descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center),
                         onPositive = {
                             navigateToLoginActivity()
-                            showLoginRequestDialog = false
+                            viewModel.setShowLoginRequestDialog(false)
                         },
                         onNegative = {
-                            showLoginRequestDialog = false
+                            viewModel.setShowLoginRequestDialog(false)
                         },
                     )
                 }

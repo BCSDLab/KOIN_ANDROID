@@ -6,6 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class LostAndFoundState(
     val isLoading: Boolean = false,
+    val showLoginRequestDialog: Boolean = false,
+    val isFabDialogExpanded: Boolean = false,
     val myKeywords: List<String> = emptyList(),
     val selectedKeyword: String = "",
     val isAnonymous: Boolean = false,

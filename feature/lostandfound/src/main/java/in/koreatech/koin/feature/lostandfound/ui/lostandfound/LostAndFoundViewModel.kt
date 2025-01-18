@@ -157,6 +157,22 @@ class LostAndFoundViewModel @Inject constructor(
         }
     }
 
+    fun setShowLoginRequestDialog(showDialog: Boolean) = intent {
+        reduce {
+            state.copy(
+                showLoginRequestDialog = showDialog
+            )
+        }
+    }
+
+    fun setFabDialogExpanded(isExpanded: Boolean) = intent {
+        reduce {
+            state.copy(
+                isFabDialogExpanded = isExpanded
+            )
+        }
+    }
+
     companion object {
         private const val ARTICLES_PER_PAGE = 10
     }
