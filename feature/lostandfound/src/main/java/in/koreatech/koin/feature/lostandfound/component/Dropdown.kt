@@ -13,10 +13,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -81,7 +77,7 @@ fun Dropdown(
             .width(96.dp)
             .padding(0.dp),
         expanded = isDropdownExpanded,
-        onDismissRequest = { isDropdownExpanded = false },
+        onDismissRequest = { onDropdownExpandChange(false) },
         containerColor = Color.Transparent,
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -104,7 +100,7 @@ fun Dropdown(
                             .fillMaxWidth()
                             .noRippleClickable {
                                 onItemSelected(index)
-                                isDropdownExpanded = false
+                                onDropdownExpandChange(false)
                             }
                             .padding(vertical = 8.dp, horizontal = 12.dp),
                         maxLines = 1,
