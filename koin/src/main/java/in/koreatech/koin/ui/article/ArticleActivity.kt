@@ -38,11 +38,10 @@ class ArticleActivity : ActivityBase() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_article)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
             val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, if (imeVisible) imeInsets.bottom else systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, imeInsets.bottom or systemBars.bottom)
             WindowInsetsCompat.CONSUMED
         }
 
