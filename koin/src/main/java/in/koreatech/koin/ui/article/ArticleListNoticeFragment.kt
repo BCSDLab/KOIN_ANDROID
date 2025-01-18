@@ -116,7 +116,7 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun initKeywordTooltip() {
         with(onboardingManager) {
-            viewLifecycleOwner.showOnboardingTooltipIfNeeded(
+            showOnboardingTooltipIfNeeded(
                 type = `in`.koreatech.koin.core.onboarding.OnboardingType.ARTICLE_KEYWORD,
                 view = binding.imageViewToKeywordAddPage,
                 arrowPosition = 0.135f,
@@ -170,7 +170,7 @@ class ArticleListNoticeFragment : Fragment() {
             )
             viewModel.selectKeyword("")
         }
-        viewLifecycleOwner.lifecycleScope.run {
+        lifecycleScope.run {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.myKeywords.collect { keywords ->
@@ -263,8 +263,8 @@ class ArticleListNoticeFragment : Fragment() {
     }
 
     private fun collectData() {
-        (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
-        viewLifecycleOwner.lifecycleScope.run {
+        (requireActivity() as IProgressDialog).withLoading(this, viewModel)
+        lifecycleScope.run {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.articlePagination.collectLatest {
@@ -345,4 +345,8 @@ class ArticleListNoticeFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
