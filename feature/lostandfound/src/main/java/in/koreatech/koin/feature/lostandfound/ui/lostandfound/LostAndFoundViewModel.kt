@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFound
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -18,6 +19,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -110,7 +112,17 @@ class LostAndFoundViewModel @Inject constructor(
     }
 
     fun fetchMyKeyword() = viewModelScope.launch {
-        fetchMyKeywordUseCase().collectLatest {
+        fetchMyKeywordUseCase().catch {
+            intent {
+                reduce {
+                    state.copy(
+                        myKeywords = emptyList()
+                    )
+                }
+                Timber.d("Failed to fetch my keywords $it")
+            }
+            throw it
+        }.collectLatest {
             intent {
                 reduce {
                     state.copy(
