@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.request.upload.UploadUrlRequest
 import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
+import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -66,8 +67,8 @@ class UploadUrlRepositoryImpl @Inject constructor(
             val fileUrl = dataSource.fileUrl
 
             Result.success(Pair(fileUrl, preSignedUrl))
-        } catch (e: HttpException) {
-            Result.failure(e)
+        } catch (e: CancellationException) {
+            throw e
         } catch (t: Throwable) {
             Result.failure(t)
         }
