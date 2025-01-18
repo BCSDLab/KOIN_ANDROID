@@ -27,13 +27,12 @@ fun LostAndFoundFAB(
     mainOnClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Column {
-        LostAndFoundFABButton(
-            painter = painterResource(id = R.drawable.ic_fab_write),
-            text = stringResource(id = R.string.fab_write),
-        ) {
-            mainOnClick()
-        }
+    LostAndFoundFABButton(
+        modifier = modifier,
+        painter = painterResource(id = R.drawable.ic_fab_write),
+        text = stringResource(id = R.string.fab_write),
+    ) {
+        mainOnClick()
     }
 }
 
