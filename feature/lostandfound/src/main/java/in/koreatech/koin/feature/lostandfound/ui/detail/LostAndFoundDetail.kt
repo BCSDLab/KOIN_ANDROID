@@ -7,13 +7,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.HasDefaultViewModelProviderFactory
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.lifecycle.withCreationCallback
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.HotArticle
@@ -26,22 +27,24 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun LostAndFoundDetail(
-    viewModel: LostAndFoundDetailViewModel = hiltViewModel(),
     articleId: Int,
     modifier: Modifier = Modifier,
     navigateToArticleList: () -> Unit,
     navigateToHotArticle: (articleTitle: String, articleId: Int, boardId: Int) -> Unit
 ) {
+    val viewModelStoreOwner = requireNotNull(
+        LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
+    )
+    val viewModel: LostAndFoundDetailViewModel = viewModel(
+        extras = viewModelStoreOwner.defaultViewModelCreationExtras.withCreationCallback<LostAndFoundDetailViewModel.Factory> {
+            it.create(articleId = articleId)
+        }
+    )
     KoinTheme {
         val uiState by viewModel.collectAsState()
         val hotArticle = uiState.hotArticles
         val context = LocalContext.current
         val isLoading = uiState.isLoading
-
-        LaunchedEffect(Unit) {
-            viewModel.fetchHotArticles()
-            viewModel.fetchLostAndFoundDetail(articleId)
-        }
 
         viewModel.collectSideEffect {
             handleSideEffect(it, context, navigateToArticleList)

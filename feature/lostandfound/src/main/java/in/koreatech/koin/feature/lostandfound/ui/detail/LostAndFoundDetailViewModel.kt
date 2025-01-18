@@ -2,6 +2,9 @@ package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLostAndFoundUseCase
@@ -18,10 +21,10 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
-@HiltViewModel
-class LostAndFoundDetailViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = LostAndFoundDetailViewModel.Factory::class)
+class LostAndFoundDetailViewModel @AssistedInject constructor(
+    @Assisted articleId: Int,
     private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
     private val fetchHotArticlesUseCase: FetchHotArticlesUseCase,
     private val deleteArticleLostAndFoundUseCase: DeleteArticleLostAndFoundUseCase,
@@ -29,6 +32,16 @@ class LostAndFoundDetailViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<LostAndFoundDetailState, LostAndFoundDetailSideEffect> {
     override val container =
         container<LostAndFoundDetailState, LostAndFoundDetailSideEffect>(LostAndFoundDetailState())
+
+    init {
+        fetchHotArticles()
+        fetchLostAndFoundDetail(articleId)
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(articleId: Int): LostAndFoundDetailViewModel
+    }
 
     fun fetchLostAndFoundDetail(articleId: Int) = viewModelScope.launch {
         intent {
