@@ -17,7 +17,7 @@ fun WriteArticleTextField(
     hint: String,
     modifier: Modifier = Modifier,
     textPaddingValues: PaddingValues = PaddingValues(0.dp),
-    onValueChange: (String) -> Unit,
+    onValueChange: (String) -> Unit = {},
 ) {
     Box(modifier = modifier) {
         if (value.isEmpty()) {

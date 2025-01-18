@@ -46,8 +46,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun LostAndFoundDialog(
     title: String,
     description: String,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,

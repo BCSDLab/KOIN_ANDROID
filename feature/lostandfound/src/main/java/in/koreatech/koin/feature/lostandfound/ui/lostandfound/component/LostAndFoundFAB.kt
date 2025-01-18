@@ -24,7 +24,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
 fun LostAndFoundFAB(
-    mainOnClick: () -> Unit,
+    mainOnClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column {
@@ -43,13 +43,13 @@ fun LostAndFoundFAB(
     isDialogExpanded: Boolean,
     dialogExpandButtonText: String,
     dialogExpandButtonPainter: Painter,
-    onDialogExpandedChange: (Boolean) -> Unit,
+    onDialogExpandedChange: (Boolean) -> Unit = {},
     firstButtonText: String,
     firstButtonPainter: Painter,
-    onFirstButtonClick: () -> Unit,
+    onFirstButtonClick: () -> Unit = {},
     secondButtonText: String,
     secondButtonPainter: Painter,
-    onSecondButtonClick: () -> Unit
+    onSecondButtonClick: () -> Unit = {}
 ) = Column(modifier = modifier) {
 
     if (isDialogExpanded) {
@@ -85,7 +85,7 @@ fun LostAndFoundFABButton(
     painter: Painter,
     text: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) = Box(
     modifier = modifier
         .border(width = 1.dp, color = KoinTheme.colors.neutral300, shape = RoundedCornerShape(50))

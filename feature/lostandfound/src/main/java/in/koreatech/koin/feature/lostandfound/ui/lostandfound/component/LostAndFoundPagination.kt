@@ -25,7 +25,7 @@ fun LostAndFoundPagination(
     currentPage: Int,
     totalPage: Int,
     modifier: Modifier = Modifier,
-    onPageChange: (Int) -> Unit
+    onPageChange: (Int) -> Unit = {}
 ) {
     val showPrevButton = currentPage > 1
     val showNextButton = currentPage < totalPage
@@ -67,7 +67,7 @@ fun LostAndFoundPaginationButton(
     text: String,
     modifier: Modifier = Modifier,
     isClickable: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
     Text(
         modifier = modifier
@@ -87,7 +87,7 @@ fun LostAndFoundPaginationPageButton(
     page: Int,
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit = {}
 ) {
     Box(
         modifier = modifier

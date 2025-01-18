@@ -40,9 +40,9 @@ import `in`.koreatech.koin.feature.lostandfound.util.horizontalFadingEdge
 @Composable
 fun LostAndFoundKeywordGroup(
     keyWords: List<String>,
-    navigateToKeywordFragment: () -> Unit,
+    navigateToKeywordFragment: () -> Unit = {},
     modifier: Modifier = Modifier,
-    selectKeyword: (keyword: String) -> Unit
+    selectKeyword: (keyword: String) -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
 

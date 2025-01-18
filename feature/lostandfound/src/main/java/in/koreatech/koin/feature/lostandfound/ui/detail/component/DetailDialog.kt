@@ -42,8 +42,8 @@ import `in`.koreatech.koin.feature.lostandfound.R
 @Composable
 fun DetailDialog(
     title: String,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
     titleStyle: TextStyle = KoinTheme.typography.medium14,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),

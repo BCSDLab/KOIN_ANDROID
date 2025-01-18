@@ -27,9 +27,9 @@ fun DetailButtonGroup(
     modifier: Modifier = Modifier,
     showDeleteButton: Boolean = false,
     showDeleteDialog: Boolean = false,
-    onShowDeleteDialogChange: (Boolean) -> Unit,
-    onArticleListClick: () -> Unit,
-    onDeleteArticleClick: () -> Unit
+    onShowDeleteDialogChange: (Boolean) -> Unit = {},
+    onArticleListClick: () -> Unit = {},
+    onDeleteArticleClick: () -> Unit = {}
 ) {
     if (showDeleteDialog) {
         DetailDialog(
