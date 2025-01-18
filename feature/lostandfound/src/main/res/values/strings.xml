@@ -17,6 +17,10 @@
 
     <string name="dropdown_type_all">물품 전체</string>
 
+    <string name="dropdown_item_all">모두보기</string>
+    <string name="dropdown_item_lost">분실물</string>
+    <string name="dropdown_item_found">습득물</string>
+
     <string name="upload_image_of_found_item">습득물 사진을 업로드해주세요.</string>
     <string name="upload_image_of_lost_item">분실물 사진을 업로드해주세요.</string>
     <string name="upload_image">사진 등록하기</string>
