@@ -25,9 +25,10 @@ import `in`.koreatech.koin.feature.lostandfound.model.ArticleHeaderState
 @Composable
 fun HotArticle(
     hotArticleList: List<ArticleHeaderState>,
+    modifier: Modifier = Modifier,
     navigateToHotArticle: (articleTitle: String, articleId: Int, boardId: Int) -> Unit
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(vertical = 14.dp, horizontal = 24.dp),
             style = KoinTheme.typography.bold16,
@@ -51,10 +52,11 @@ fun HotArticleItem(
     id: Int,
     board: ArticleBoardType,
     title: String,
+    modifier: Modifier = Modifier,
     navigateToHotArticle: (articleTitle: String, articleId: Int, boardId: Int) -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .noRippleClickable { navigateToHotArticle(title, id, board.id) }
             .padding(vertical = 12.dp, horizontal = 24.dp),
