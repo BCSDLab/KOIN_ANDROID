@@ -101,11 +101,11 @@ fun LostAndFoundTextChipFlowGroup(
 @Composable
 internal fun LostAndFoundTextChipScrollGroup(
     titles: List<String>,
-    shape: Shape,
-    onChipSelected: (index: Int) -> Unit = {},
-    selectedChipIndexes: List<Int>,
-    showClickRipple: Boolean,
     modifier: Modifier = Modifier,
+    shape: Shape = RoundedCornerShape(50),
+    onChipSelected: (index: Int) -> Unit = {},
+    selectedChipIndexes: List<Int> = emptyList(),
+    showClickRipple: Boolean = false,
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
     horizontalArrangement: Arrangement.Horizontal,
     chipColors: TextChipColors = TextChipDefaults.chipColors()
