@@ -51,11 +51,6 @@ fun LostAndFoundList(
     }
     val isLoading = uiState.isLoading
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchMyKeyword()
-        viewModel.getUserType()
-    }
-
     LaunchedEffect(uiState.selectedKeyword) {
         viewModel.fetchLostAndFoundList()
     }

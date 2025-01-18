@@ -3,12 +3,16 @@ package `in`.koreatech.koin.feature.lostandfound.ui.write
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.UploadLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -16,10 +20,10 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import java.time.LocalDate
-import javax.inject.Inject
 
-@HiltViewModel
-class LostAndFoundWriteArticleViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = LostAndFoundWriteArticleViewModel.Factory::class)
+class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
+    @Assisted lostOrFoundType: LostOrFoundType,
     private val uploadLostAndFoundArticleUseCase: UploadLostAndFoundArticleUseCase,
     private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
@@ -30,6 +34,21 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         container<LostAndFoundWriteArticleState, LostAndFoundWriteArticleSideEffect>(
             LostAndFoundWriteArticleState()
         )
+
+    @AssistedFactory
+    interface Factory {
+        fun create(lostOrFoundType: LostOrFoundType): LostAndFoundWriteArticleViewModel
+    }
+
+    init {
+        intent {
+            addItem(
+                LostAndFoundWriteArticleItemState(
+                    lostOrFoundType = lostOrFoundType,
+                )
+            )
+        }
+    }
 
 
     fun addItem(item: LostAndFoundWriteArticleItemState) = intent {

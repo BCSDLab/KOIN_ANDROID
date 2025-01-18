@@ -34,6 +34,11 @@ class LostAndFoundViewModel @Inject constructor(
         savedStateHandle = savedStateHandle
     )
 
+    init {
+        fetchMyKeyword()
+        getUserType()
+    }
+
     fun fetchLostAndFoundList() = viewModelScope.launch {
         intent {
             reduce {

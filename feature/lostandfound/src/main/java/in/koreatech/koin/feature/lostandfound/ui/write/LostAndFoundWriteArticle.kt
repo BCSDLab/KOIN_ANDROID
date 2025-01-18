@@ -30,7 +30,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.HasDefaultViewModelProviderFactory
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.lifecycle.withCreationCallback
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -52,10 +55,17 @@ import java.time.LocalDate
 
 @Composable
 fun LostAndFoundWriteArticle(
-    viewModel: LostAndFoundWriteArticleViewModel = hiltViewModel(),
     lostOrFoundType: LostOrFoundType = LostOrFoundType.FOUND,
     onWriteComplete: (articleId: Int) -> Unit
 ) {
+    val viewModelStoreOwner = requireNotNull(
+        LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
+    )
+    val viewModel: LostAndFoundWriteArticleViewModel = viewModel(
+        extras = viewModelStoreOwner.defaultViewModelCreationExtras.withCreationCallback<LostAndFoundWriteArticleViewModel.Factory> {
+            it.create(lostOrFoundType = lostOrFoundType)
+        }
+    )
     val context = LocalContext.current
     viewModel.collectSideEffect {
         handleSideEffect(it, viewModel, context, onWriteComplete)
@@ -87,14 +97,6 @@ fun LostAndFoundWriteArticle(
             val itemList = uiState.itemList
             var shouldShowItemRemoveButton by remember { mutableStateOf(false) }
             var shouldShowItemAddButton by remember { mutableStateOf(true) }
-
-            LaunchedEffect(Unit) {
-                viewModel.addItem(
-                    LostAndFoundWriteArticleItemState(
-                        lostOrFoundType = lostOrFoundType,
-                    )
-                )
-            }
 
             LaunchedEffect(itemList) {
                 shouldShowItemRemoveButton = itemList.size > 1
