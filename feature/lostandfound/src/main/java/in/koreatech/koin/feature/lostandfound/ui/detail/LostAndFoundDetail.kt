@@ -18,6 +18,7 @@ import dagger.hilt.android.lifecycle.withCreationCallback
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.HotArticle
+import `in`.koreatech.koin.feature.lostandfound.component.HotArticleData
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
@@ -30,7 +31,7 @@ fun LostAndFoundDetail(
     articleId: Int,
     modifier: Modifier = Modifier,
     navigateToArticleList: () -> Unit = {},
-    navigateToHotArticle: (articleTitle: String, articleId: Int, boardId: Int) -> Unit
+    navigateToHotArticle: (HotArticleData) -> Unit
 ) {
     val viewModelStoreOwner = requireNotNull(
         LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory

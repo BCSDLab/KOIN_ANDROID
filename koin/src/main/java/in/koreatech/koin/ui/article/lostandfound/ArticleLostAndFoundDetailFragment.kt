@@ -34,17 +34,17 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                     navigateToArticleList = {
                         navController.popBackStack(R.id.articleListFragment, false)
                     },
-                    navigateToHotArticle = { articleTitle, articleId, boardId ->
+                    navigateToHotArticle = { hotArticleData ->
                         EventLogger.logClickEvent(
                             EventAction.CAMPUS,
                             AnalyticsConstant.Label.POPULAR_NOTICE,
-                            articleTitle
+                            hotArticleData.articleTitle
                         )
                         navController.navigate(
                             R.id.articleLostAndFoundDetailFragment_to_articleDetailFragment,
                             Bundle().apply {
-                                putInt(ARTICLE_ID, articleId)
-                                putInt(NAVIGATED_BOARD_ID, boardId)
+                                putInt(ARTICLE_ID, hotArticleData.articleId)
+                                putInt(NAVIGATED_BOARD_ID, hotArticleData.board.id)
                             }
                         )
                     }
