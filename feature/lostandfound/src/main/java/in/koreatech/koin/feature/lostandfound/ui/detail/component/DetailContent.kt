@@ -43,16 +43,14 @@ fun DetailContent(
     isWriterAdmin: Boolean,
     modifier: Modifier = Modifier
 ) {
-    // Check image url is valid
-    val filteredImageUrls = imageUris?.filter { URLUtil.isValidUrl(it.toString()) }
     Column(
         modifier = modifier
             .padding(vertical = 24.dp, horizontal = 24.dp)
             .fillMaxWidth()
     ) {
-        if (filteredImageUrls != null) {
+        if (imageUris != null) {
             val pagerState = rememberPagerState(pageCount = {
-                filteredImageUrls.size
+                imageUris.size
             })
             HorizontalPager(
                 modifier = Modifier.fillMaxWidth(),
@@ -61,7 +59,7 @@ fun DetailContent(
                 SubcomposeAsyncImage(
                     modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(filteredImageUrls[page])
+                        .data(imageUris[page])
                         .crossfade(true)
                         .build(),
                     loading = {
@@ -86,7 +84,7 @@ fun DetailContent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                filteredImageUrls.indices.forEach { index ->
+                imageUris.indices.forEach { index ->
                     Image(
                         modifier = if (index == pagerState.currentPage) Modifier.size(6.dp) else Modifier.size(
                             4.dp

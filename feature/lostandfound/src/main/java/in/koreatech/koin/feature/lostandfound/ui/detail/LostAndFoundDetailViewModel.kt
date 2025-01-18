@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
+import android.webkit.URLUtil
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -81,7 +82,7 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
                             foundDate = article.foundDate,
                             content = article.content,
                             author = article.author,
-                            images = article.images,
+                            images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
                             registeredAt = article.registeredAt,
                             updatedAt = article.updatedAt,
                             isLoading = false
