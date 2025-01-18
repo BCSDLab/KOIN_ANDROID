@@ -18,7 +18,7 @@ fun ItemTypeChip(
 ) {
     LostAndFoundTextChipFlowGroup(
         titles = chipItemList.map { stringResource(it.stringRes) },
-        selectedChipIndexes = if (selectedChipIndexes != null) IntArray(1) { selectedChipIndexes } else IntArray(0),
+        selectedChipIndexes = if (selectedChipIndexes != null) listOf(selectedChipIndexes) else listOf(),
         onChipSelected = { onChipSelected(it) },
         showClickRipple = false,
         shape = RoundedCornerShape(50),
