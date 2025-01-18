@@ -43,7 +43,7 @@ class ArticleActivity : ActivityBase() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, if (imeVisible) imeInsets.bottom else systemBars.bottom)
-            insets
+            WindowInsetsCompat.CONSUMED
         }
 
         val navHostFragment =
