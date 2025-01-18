@@ -15,8 +15,8 @@ import `in`.koreatech.koin.feature.lostandfound.component.Dropdown
 fun LostAndFoundDropdownGroup(
     isDropdownExpanded: Boolean,
     modifier: Modifier = Modifier,
-    onDropdownExpandChange: (Boolean) -> Unit,
-    onItemSelected: (Int) -> Unit
+    onDropdownExpandChange: (Boolean) -> Unit = {},
+    onItemSelected: (Int) -> Unit = {}
 ) = Box(
     modifier = modifier
         .fillMaxWidth()

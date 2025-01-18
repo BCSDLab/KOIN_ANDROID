@@ -26,7 +26,7 @@ fun WriteArticleItemType(
     selectedChipIndex: Int,
     modifier: Modifier = Modifier,
     itemTypeRequired: Boolean = false,
-    onItemSelected: (Int) -> Unit
+    onItemSelected: (Int) -> Unit = {}
 ) {
     Column(
         modifier = modifier

@@ -27,7 +27,7 @@ fun WriteArticleItemChip(
     index: Int,
     modifier: Modifier = Modifier,
     shouldShowDelete: Boolean = false,
-    onDeleteItemClick: () -> Unit
+    onDeleteItemClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.padding(bottom = 16.dp),

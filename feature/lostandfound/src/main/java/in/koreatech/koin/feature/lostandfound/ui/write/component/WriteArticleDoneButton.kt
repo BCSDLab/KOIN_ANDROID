@@ -22,7 +22,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 @Composable
 fun WriteArticleDoneButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) = Column(
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {

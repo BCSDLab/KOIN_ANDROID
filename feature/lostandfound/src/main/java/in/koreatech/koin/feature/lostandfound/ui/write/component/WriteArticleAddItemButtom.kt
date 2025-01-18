@@ -26,7 +26,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 @Composable
 fun WriteArticleAddItemButton(
     modifier: Modifier = Modifier,
-    onItemAdd: () -> Unit
+    onItemAdd: () -> Unit = {}
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Button(

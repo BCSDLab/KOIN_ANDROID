@@ -55,8 +55,8 @@ fun WriteArticleUploadImage(
     uploadedImageCount: Int = 0,
     imageList: List<String> = listOf(),
     modifier: Modifier = Modifier,
-    onUploadImage: () -> Unit,
-    onRemoveImage: (index: Int) -> Unit
+    onUploadImage: () -> Unit = {},
+    onRemoveImage: (index: Int) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -141,7 +141,7 @@ fun WriteArticleUploadImageThumbnail(
     index: Int,
     imageUrl: Uri,
     modifier: Modifier = Modifier,
-    removeImage: (index: Int) -> Unit
+    removeImage: (index: Int) -> Unit = {}
 ) {
     var removeButtonPosition by remember { mutableStateOf(Offset.Zero) }
 

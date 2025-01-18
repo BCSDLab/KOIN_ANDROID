@@ -36,7 +36,7 @@ fun KeywordChipGroup(
     chipTextList: List<String>,
     vararg selectedChipIndexes: Int,
     modifier: Modifier = Modifier,
-    onSelect: (index: Int) -> Unit
+    onSelect: (index: Int) -> Unit = {}
 ) {
     LostAndFoundTextChipScrollGroup(
         titles = chipTextList,
@@ -57,7 +57,7 @@ fun LostAndFoundTextChipFlowGroup(
     modifier: Modifier = Modifier,
     titles: List<String>,
     shape: Shape,
-    onChipSelected: (index: Int) -> Unit,
+    onChipSelected: (index: Int) -> Unit = {},
     vararg selectedChipIndexes: Int,
     showClickRipple: Boolean,
     contentPadding: PaddingValues = PaddingValues(vertical = 0.dp, horizontal = 0.dp),
@@ -102,7 +102,7 @@ fun LostAndFoundTextChipFlowGroup(
 internal fun LostAndFoundTextChipScrollGroup(
     titles: List<String>,
     shape: Shape,
-    onChipSelected: (index: Int) -> Unit,
+    onChipSelected: (index: Int) -> Unit = {},
     vararg selectedChipIndexes: Int,
     showClickRipple: Boolean,
     modifier: Modifier = Modifier,

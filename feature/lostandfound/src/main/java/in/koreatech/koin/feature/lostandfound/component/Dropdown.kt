@@ -38,8 +38,8 @@ fun Dropdown(
     isDropdownExpanded: Boolean,
     vararg items: String,
     modifier: Modifier = Modifier,
-    onDropdownExpandChange: (Boolean) -> Unit,
-    onItemSelected: (Int) -> Unit
+    onDropdownExpandChange: (Boolean) -> Unit = {},
+    onItemSelected: (Int) -> Unit = {}
 ) = Column(modifier = modifier) {
     Row(
         modifier = Modifier

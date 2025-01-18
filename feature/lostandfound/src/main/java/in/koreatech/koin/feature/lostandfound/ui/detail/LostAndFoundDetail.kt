@@ -29,7 +29,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun LostAndFoundDetail(
     articleId: Int,
     modifier: Modifier = Modifier,
-    navigateToArticleList: () -> Unit,
+    navigateToArticleList: () -> Unit = {},
     navigateToHotArticle: (articleTitle: String, articleId: Int, boardId: Int) -> Unit
 ) {
     val viewModelStoreOwner = requireNotNull(
@@ -100,7 +100,7 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit,
+    navigateToArticleList: () -> Unit = {},
 ) {
     when (sideEffect) {
         is LostAndFoundDetailSideEffect.DeleteArticle -> {

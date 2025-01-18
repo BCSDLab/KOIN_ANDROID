@@ -56,7 +56,7 @@ import java.time.LocalDate
 @Composable
 fun LostAndFoundWriteArticle(
     lostOrFoundType: LostOrFoundType = LostOrFoundType.FOUND,
-    onWriteComplete: (articleId: Int) -> Unit
+    onWriteComplete: (articleId: Int) -> Unit = {}
 ) {
     val viewModelStoreOwner = requireNotNull(
         LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
@@ -197,14 +197,14 @@ fun WriteFoundItemArticleImpl(
     lostOrFoundType: LostOrFoundType,
     showDatePicker: Boolean,
     modifier: Modifier = Modifier,
-    onAddImageClick: (uri: Uri) -> Unit,
-    onRemoveImageClick: (index: Int) -> Unit,
-    onRemoveItemClick: (index: Int) -> Unit,
-    onChangeItemType: (itemType: LostItemCategory) -> Unit,
-    onUpdateDescription: (description: String) -> Unit,
-    onUpdateLocation: (location: String) -> Unit,
-    onShowDatePickerChange: (showDatePicker: Boolean) -> Unit,
-    onDateChange: (date: LocalDate?) -> Unit
+    onAddImageClick: (uri: Uri) -> Unit = {},
+    onRemoveImageClick: (index: Int) -> Unit = {},
+    onRemoveItemClick: (index: Int) -> Unit = {},
+    onChangeItemType: (itemType: LostItemCategory) -> Unit = {},
+    onUpdateDescription: (description: String) -> Unit = {},
+    onUpdateLocation: (location: String) -> Unit = {},
+    onShowDatePickerChange: (showDatePicker: Boolean) -> Unit = {},
+    onDateChange: (date: LocalDate?) -> Unit = {}
 ) {
     val pickMultipleMedia =
         rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
@@ -270,7 +270,7 @@ fun handleSideEffect(
     sideEffect: LostAndFoundWriteArticleSideEffect,
     viewModel: LostAndFoundWriteArticleViewModel,
     context: Context,
-    onWriteComplete: (articleId: Int) -> Unit
+    onWriteComplete: (articleId: Int) -> Unit = {}
 ) {
     when (sideEffect) {
         is LostAndFoundWriteArticleSideEffect.AddImage -> {
