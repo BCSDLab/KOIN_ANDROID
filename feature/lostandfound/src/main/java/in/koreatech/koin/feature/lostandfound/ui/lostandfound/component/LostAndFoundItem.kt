@@ -48,7 +48,7 @@ fun LostAndFoundItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) = Column(
-    modifier = Modifier.noRippleClickable {
+    modifier = modifier.noRippleClickable {
         onClick()
     }
 ) {
@@ -58,7 +58,7 @@ fun LostAndFoundItem(
     val foundDateFormatType = DateTimeFormatter.ofPattern("yy.MM.dd")
 
     Column(
-        modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp)
+        modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp)
     ) {
         Text(
             modifier = Modifier.padding(bottom = 2.dp),
