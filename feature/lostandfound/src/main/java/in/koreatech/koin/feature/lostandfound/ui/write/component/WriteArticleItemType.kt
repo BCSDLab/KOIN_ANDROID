@@ -24,8 +24,8 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 @Composable
 fun WriteArticleItemType(
     selectedChipIndex: Int,
-    itemTypeRequired: Boolean = false,
     modifier: Modifier = Modifier,
+    itemTypeRequired: Boolean = false,
     onItemSelected: (Int) -> Unit
 ) {
     Column(
