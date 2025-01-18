@@ -81,23 +81,23 @@ class LostAndFoundViewModel @Inject constructor(
                             totalPage = it.totalPage
                         )
                     }
-                }
 
-                // Fetch content by id because our search API doesn't return content value
-                state.lostAndFoundList.forEachIndexed { index, lostAndFoundItemState ->
-                    fetchLostAndFoundArticleUseCase(lostAndFoundItemState.id).collect {
-                        reduce {
-                            state.copy(
-                                lostAndFoundList = state.lostAndFoundList.mapIndexed { i, item ->
-                                    if (i == index) {
-                                        return@mapIndexed item.copy(
-                                            content = it.content ?: "",
-                                        )
-                                    } else {
-                                        item
+                    // Fetch content by id because our search API doesn't return content value
+                    state.lostAndFoundList.forEachIndexed { index, lostAndFoundItemState ->
+                        fetchLostAndFoundArticleUseCase(lostAndFoundItemState.id).collect {
+                            reduce {
+                                state.copy(
+                                    lostAndFoundList = state.lostAndFoundList.mapIndexed { i, item ->
+                                        if (i == index) {
+                                            return@mapIndexed item.copy(
+                                                content = it.content ?: "",
+                                            )
+                                        } else {
+                                            item
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
                         }
                     }
                 }
