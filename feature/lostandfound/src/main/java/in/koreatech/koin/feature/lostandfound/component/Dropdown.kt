@@ -36,7 +36,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 fun Dropdown(
     title: String,
     isDropdownExpanded: Boolean,
-    vararg items: String,
+    items: List<String>,
     modifier: Modifier = Modifier,
     onDropdownExpandChange: (Boolean) -> Unit = {},
     onItemSelected: (Int) -> Unit = {}

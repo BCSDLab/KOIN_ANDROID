@@ -34,7 +34,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 fun KeywordChipGroup(
     chipTextList: List<String>,
-    vararg selectedChipIndexes: Int,
+    selectedChipIndexes: List<Int>,
     modifier: Modifier = Modifier,
     onSelect: (index: Int) -> Unit = {}
 ) {
@@ -58,7 +58,7 @@ fun LostAndFoundTextChipFlowGroup(
     titles: List<String>,
     shape: Shape,
     onChipSelected: (index: Int) -> Unit = {},
-    vararg selectedChipIndexes: Int,
+    selectedChipIndexes: List<Int>,
     showClickRipple: Boolean,
     contentPadding: PaddingValues = PaddingValues(vertical = 0.dp, horizontal = 0.dp),
     horizontalArrangement: Arrangement.Horizontal,
@@ -103,7 +103,7 @@ internal fun LostAndFoundTextChipScrollGroup(
     titles: List<String>,
     shape: Shape,
     onChipSelected: (index: Int) -> Unit = {},
-    vararg selectedChipIndexes: Int,
+    selectedChipIndexes: List<Int>,
     showClickRipple: Boolean,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),

@@ -24,7 +24,7 @@ fun LostAndFoundDropdownGroup(
 ) {
     Dropdown(
         title = stringResource(R.string.dropdown_type_all),
-        items = arrayOf("모두보기", "습득물", "분실물"),
+        items = listOf("모두보기", "습득물", "분실물"),
         isDropdownExpanded = isDropdownExpanded,
         modifier = Modifier.align(Alignment.CenterEnd),
         onDropdownExpandChange = onDropdownExpandChange,
