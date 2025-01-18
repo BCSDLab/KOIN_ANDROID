@@ -12,8 +12,8 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 @Composable
 fun ItemTypeChip(
     chipItemList: List<LostItemCategory>,
-    selectedChipIndexes: Int? = null,
     modifier: Modifier = Modifier,
+    selectedChipIndexes: Int? = null,
     onChipSelected: (index: Int) -> Unit = {}
 ) {
     LostAndFoundTextChipFlowGroup(

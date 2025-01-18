@@ -38,9 +38,9 @@ import `in`.koreatech.koin.feature.lostandfound.R
  */
 @Composable
 fun Dropdown(
-    modifier: Modifier = Modifier,
     title: String,
     vararg items: String,
+    modifier: Modifier = Modifier,
     onItemSelected: (Int) -> Unit
 ) = Column(modifier = modifier) {
     var isDropdownExpanded by remember { mutableStateOf(false) }
