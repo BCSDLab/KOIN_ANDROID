@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundDialog
@@ -60,7 +61,7 @@ fun LostAndFoundList(
                 val fabWrite = stringResource(R.string.fab_write)
 
                 when (uiState.userType) {
-                    "COUNCIL" -> { // If userType is COUNCIL, show FAB for write article
+                    UserType.COUNCIL.name -> { // If userType is COUNCIL, show FAB for write article
                         LostAndFoundFAB(
                             mainOnClick = {
                                 EventLogger.logCampusClickEvent(
