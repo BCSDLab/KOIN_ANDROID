@@ -90,8 +90,6 @@ class ArticleRemoteDataSource @Inject constructor(
             } else {
                 Result.failure(Exception("Failed to upload article"))
             }
-        } catch (e: Exception) {
-            Result.failure(e)
         } catch (t: Throwable) {
             Result.failure(t)
         }
@@ -101,8 +99,6 @@ class ArticleRemoteDataSource @Inject constructor(
         return try {
             articleAuthApi.deleteArticleLostAndFound(articleId)
             Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
         } catch (t: Throwable) {
             Result.failure(t)
         }
