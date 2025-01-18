@@ -154,6 +154,7 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
         itemIndex: Int,
         imageUri: Uri
     ) = intent {
+        if (state.itemList.lastIndex < itemIndex) return@intent
         if (state.itemList[itemIndex].images.size + 1 > IMAGE_MAX_COUNT) {
             postSideEffect(LostAndFoundWriteArticleSideEffect.FailedToUploadImage)
             return@intent
