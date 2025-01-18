@@ -39,11 +39,12 @@ import `in`.koreatech.koin.feature.lostandfound.R
 @Composable
 fun Dropdown(
     title: String,
+    isDropdownExpanded: Boolean,
     vararg items: String,
     modifier: Modifier = Modifier,
+    onDropdownExpandChange: (Boolean) -> Unit,
     onItemSelected: (Int) -> Unit
 ) = Column(modifier = modifier) {
-    var isDropdownExpanded by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .clip(KoinTheme.shapes.medium)
@@ -51,7 +52,7 @@ fun Dropdown(
                 color = KoinTheme.colors.info200
             )
             .noRippleClickable {
-                isDropdownExpanded = !isDropdownExpanded
+                onDropdownExpandChange(!isDropdownExpanded)
             }
             .padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically

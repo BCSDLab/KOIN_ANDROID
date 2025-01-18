@@ -13,6 +13,7 @@ data class LostAndFoundDetailState(
     val isLoading: Boolean = false,
     val currentLoggedInUser: String = "",
     val canDelete: Boolean = false,
+    val showDeleteDialog: Boolean = false,
     val lostOrFound: LostOrFoundType = LostOrFoundType.FOUND,
     val id: Int = 0,
     val category: LostItemCategory = LostItemCategory.NONE,

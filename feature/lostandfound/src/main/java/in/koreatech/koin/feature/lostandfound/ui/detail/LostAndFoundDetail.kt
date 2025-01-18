@@ -68,11 +68,15 @@ fun LostAndFoundDetail(
 
             DetailButtonGroup(
                 showDeleteButton = uiState.canDelete,
+                showDeleteDialog = uiState.showDeleteDialog,
                 onArticleListClick = {
                     navigateToArticleList()
                 },
                 onDeleteArticleClick = {
                     viewModel.deleteArticle()
+                },
+                onShowDeleteDialogChange = {
+                    viewModel.setShowDeleteDialog(it)
                 }
             )
 
