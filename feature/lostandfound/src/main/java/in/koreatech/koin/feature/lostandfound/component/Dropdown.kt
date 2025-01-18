@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.component
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +43,10 @@ fun Dropdown(
     onDropdownExpandChange: (Boolean) -> Unit = {},
     onItemSelected: (Int) -> Unit = {}
 ) = Column(modifier = modifier) {
+    val rotateDegree: Float by animateFloatAsState(
+        targetValue = if (isDropdownExpanded) 180f else 0f, label = "degree"
+    )
+
     Row(
         modifier = Modifier
             .clip(KoinTheme.shapes.medium)
@@ -61,7 +67,7 @@ fun Dropdown(
         )
         Spacer(modifier = Modifier.width(4.dp))
         Icon(
-            modifier = Modifier.rotate(if (isDropdownExpanded) 180f else 0f),
+            modifier = Modifier.rotate(rotateDegree),
             painter = painterResource(id = R.drawable.ic_dropdown_arrow),
             contentDescription = "",
         )

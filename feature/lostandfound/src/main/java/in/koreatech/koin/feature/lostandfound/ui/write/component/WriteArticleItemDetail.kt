@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.write.component
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -150,10 +151,14 @@ fun WriteArticleItemDetail(
                     )
                 }
 
+                val rotateDegree: Float by animateFloatAsState(
+                    targetValue = if (showDatePicker) 180f else 0f, label = "degree"
+                )
+
                 Image(
                     modifier = Modifier
                         .size(24.dp)
-                        .rotate(if (showDatePicker) 180f else 0f),
+                        .rotate(rotateDegree),
                     painter = painterResource(id = R.drawable.ic_dropdown_arrow),
                     contentDescription = when (type) {
                         LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_hint)
