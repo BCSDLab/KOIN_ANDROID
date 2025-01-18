@@ -102,9 +102,9 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
                     state.copy(
                         itemList = state.itemList.mapIndexed { i, item ->
                             if (i == itemIndex) {
-                                item.copy(images = item.images.mapIndexed { j, currentValue ->
+                                return@mapIndexed item.copy(images = item.images.mapIndexed { j, currentValue ->
                                     if (j == imageIndex) {
-                                        fileUrl // Replace placeholder to real image url
+                                        return@mapIndexed fileUrl // Replace placeholder to real image url
                                     } else {
                                         currentValue
                                     }
