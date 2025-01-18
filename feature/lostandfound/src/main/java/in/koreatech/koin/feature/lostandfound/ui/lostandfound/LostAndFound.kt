@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -125,13 +127,15 @@ fun LostAndFoundList(
             contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) { contentPadding ->
             val myKeywords = uiState.myKeywords
+            val lazyListState = rememberLazyListState()
             Column(
                 modifier = modifier
                     .padding(contentPadding)
                     .consumeWindowInsets(contentPadding)
             ) {
                 LazyColumn(
-                    modifier = modifier
+                    modifier = modifier,
+                    state = lazyListState
                 ) {
                     item {
                         LostAndFoundKeywordGroup(
@@ -180,6 +184,10 @@ fun LostAndFoundList(
                             }
                         }
                     }
+                }
+
+                LaunchedEffect(uiState.currentPage) {
+                    lazyListState.scrollToItem(0)
                 }
 
                 if (isLoading) {
