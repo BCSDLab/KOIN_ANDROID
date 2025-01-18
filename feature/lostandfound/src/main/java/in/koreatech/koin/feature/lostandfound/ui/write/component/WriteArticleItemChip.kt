@@ -25,8 +25,8 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 fun WriteArticleItemChip(
     type: LostOrFoundType,
     index: Int,
-    shouldShowDelete: Boolean = false,
     modifier: Modifier = Modifier,
+    shouldShowDelete: Boolean = false,
     onDeleteItemClick: () -> Unit
 ) {
     Row(
