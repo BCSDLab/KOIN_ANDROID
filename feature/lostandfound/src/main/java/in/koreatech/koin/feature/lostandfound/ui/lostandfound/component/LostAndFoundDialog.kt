@@ -11,9 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -49,12 +52,7 @@ fun LostAndFoundDialog(
     onPositive: () -> Unit = {},
     onNegative: () -> Unit = {},
     modifier: Modifier = Modifier,
-    titleStyle: TextStyle = KoinTheme.typography.medium18,
-    descriptionStyle: TextStyle = KoinTheme.typography.regular14,
-    positiveButtonText: String = stringResource(id = R.string.common_confirmation),
-    negativeButtonText: String = stringResource(id = R.string.common_cancellation),
-    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
+    lostAndFoundDialogStyle: LostAndFoundDialogStyle = lostAndFoundDialogStyle()
 ) {
     BasicAlertDialog(
         modifier = modifier
@@ -72,12 +70,12 @@ fun LostAndFoundDialog(
         ) {
             Text(
                 text = title,
-                style = titleStyle
+                style = lostAndFoundDialogStyle.titleStyle
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = description,
-                style = descriptionStyle
+                style = lostAndFoundDialogStyle.descriptionStyle
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
@@ -85,21 +83,64 @@ fun LostAndFoundDialog(
             ) {
                 OutlinedBoxButton(
                     modifier = Modifier.weight(1.0F),
-                    text = negativeButtonText,
+                    text = lostAndFoundDialogStyle.negativeButtonText,
                     onClick = onNegative,
                     shape = KoinTheme.shapes.small,
-                    colors = negativeButtonColors,
+                    colors = lostAndFoundDialogStyle.negativeButtonColors,
                     contentPadding = PaddingValues(12.dp, 12.dp)
                 )
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
-                    text = positiveButtonText,
+                    text = lostAndFoundDialogStyle.positiveButtonText,
                     onClick = onPositive,
                     shape = KoinTheme.shapes.small,
-                    colors = positiveButtonColors,
+                    colors = lostAndFoundDialogStyle.positiveButtonColors,
                     contentPadding = PaddingValues(12.dp, 12.dp)
                 )
             }
         }
     }
+}
+
+@Composable
+fun lostAndFoundDialogStyle(
+    titleStyle: TextStyle = KoinTheme.typography.medium18,
+    descriptionStyle: TextStyle = KoinTheme.typography.regular14,
+    positiveButtonText: String = stringResource(id = R.string.common_confirmation),
+    negativeButtonText: String = stringResource(id = R.string.common_cancellation),
+    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
+    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
+) = LostAndFoundDialogStyle(
+    titleStyle = titleStyle,
+    descriptionStyle = descriptionStyle,
+    positiveButtonText = positiveButtonText,
+    negativeButtonText = negativeButtonText,
+    positiveButtonColors = positiveButtonColors,
+    negativeButtonColors = negativeButtonColors
+)
+
+@Immutable
+class LostAndFoundDialogStyle(
+    val titleStyle: TextStyle,
+    val descriptionStyle: TextStyle,
+    val positiveButtonText: String,
+    val negativeButtonText: String,
+    val positiveButtonColors: FilledButtonColors,
+    val negativeButtonColors: OutlinedBoxButtonColors
+) {
+    fun copy(
+        titleStyle: TextStyle = this.titleStyle,
+        descriptionStyle: TextStyle = this.descriptionStyle,
+        positiveButtonText: String = this.positiveButtonText,
+        negativeButtonText: String = this.negativeButtonText,
+        positiveButtonColors: FilledButtonColors = this.positiveButtonColors,
+        negativeButtonColors: OutlinedBoxButtonColors = this.negativeButtonColors
+    ) = LostAndFoundDialogStyle(
+        titleStyle = titleStyle,
+        descriptionStyle = descriptionStyle,
+        positiveButtonText = positiveButtonText,
+        negativeButtonText = negativeButtonText,
+        positiveButtonColors = positiveButtonColors,
+        negativeButtonColors = negativeButtonColors
+    )
 }

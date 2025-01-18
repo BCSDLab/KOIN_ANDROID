@@ -33,6 +33,7 @@ import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAn
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundItem
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundKeywordGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundPagination
+import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.lostAndFoundDialogStyle
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -197,9 +198,11 @@ fun LostAndFoundList(
                 if (uiState.showLoginRequestDialog) {
                     LostAndFoundDialog(
                         title = stringResource(R.string.request_login_dialog_title),
-                        titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
                         description = stringResource(R.string.request_login_dialog_description),
-                        descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center),
+                        lostAndFoundDialogStyle = lostAndFoundDialogStyle().copy(
+                            titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
+                            descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center),
+                        ),
                         onPositive = {
                             navigateToLoginActivity()
                             viewModel.setShowLoginRequestDialog(false)
