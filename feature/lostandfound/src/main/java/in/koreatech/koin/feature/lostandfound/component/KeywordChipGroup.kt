@@ -99,7 +99,7 @@ fun LostAndFoundTextChipFlowGroup(
  * @param chipColors 칩 색상
  */
 @Composable
-fun LostAndFoundTextChipScrollGroup(
+internal fun LostAndFoundTextChipScrollGroup(
     titles: List<String>,
     shape: Shape,
     onChipSelected: (index: Int) -> Unit,
