@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.withCreationCallback
@@ -20,6 +21,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.HotArticle
 import `in`.koreatech.koin.feature.lostandfound.component.HotArticleData
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
+import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
@@ -33,12 +35,15 @@ fun LostAndFoundDetail(
     navigateToArticleList: () -> Unit = {},
     navigateToHotArticle: (HotArticleData) -> Unit
 ) {
+    val savedStateHandle = SavedStateHandle()
+    savedStateHandle[ARTICLE_ID] = articleId
+
     val viewModelStoreOwner = requireNotNull(
         LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
     )
     val viewModel: LostAndFoundDetailViewModel = viewModel(
         extras = viewModelStoreOwner.defaultViewModelCreationExtras.withCreationCallback<LostAndFoundDetailViewModel.Factory> {
-            it.create(articleId = articleId)
+            it.create(savedStateHandle = savedStateHandle)
         }
     )
     KoinTheme {

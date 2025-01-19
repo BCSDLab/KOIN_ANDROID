@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.write
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -23,7 +24,7 @@ import java.time.LocalDate
 
 @HiltViewModel(assistedFactory = LostAndFoundWriteArticleViewModel.Factory::class)
 class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
-    @Assisted lostOrFoundType: LostOrFoundType,
+    @Assisted savedStateHandle: SavedStateHandle,
     private val uploadLostAndFoundArticleUseCase: UploadLostAndFoundArticleUseCase,
     private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
@@ -37,14 +38,15 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(lostOrFoundType: LostOrFoundType): LostAndFoundWriteArticleViewModel
+        fun create(savedStateHandle: SavedStateHandle): LostAndFoundWriteArticleViewModel
     }
 
     init {
         intent {
             addItem(
                 LostAndFoundWriteArticleItemState(
-                    lostOrFoundType = lostOrFoundType,
+                    lostOrFoundType = savedStateHandle.get<LostOrFoundType>(LOST_OR_FOUND_TYPE)
+                        ?: LostOrFoundType.FOUND,
                 )
             )
         }
@@ -213,7 +215,10 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
-                        return@mapIndexed item.copy(location = location, locationRequired = location.isEmpty())
+                        return@mapIndexed item.copy(
+                            location = location,
+                            locationRequired = location.isEmpty()
+                        )
                     } else {
                         item
                     }
@@ -250,5 +255,9 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
                 postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticleFailed)
             }
         }
+    }
+
+    companion object {
+        const val LOST_OR_FOUND_TYPE = "lost_or_found_type"
     }
 }

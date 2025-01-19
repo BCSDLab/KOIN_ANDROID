@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.withCreationCallback
@@ -42,6 +43,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleAddItemButton
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleDoneButton
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleHeader
@@ -58,12 +60,15 @@ fun LostAndFoundWriteArticle(
     lostOrFoundType: LostOrFoundType = LostOrFoundType.FOUND,
     onWriteComplete: (articleId: Int) -> Unit = {}
 ) {
+    val savedStateHandle = SavedStateHandle()
+    savedStateHandle[LOST_OR_FOUND_TYPE] = lostOrFoundType
+
     val viewModelStoreOwner = requireNotNull(
         LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
     )
     val viewModel: LostAndFoundWriteArticleViewModel = viewModel(
         extras = viewModelStoreOwner.defaultViewModelCreationExtras.withCreationCallback<LostAndFoundWriteArticleViewModel.Factory> {
-            it.create(lostOrFoundType = lostOrFoundType)
+            it.create(savedStateHandle = savedStateHandle)
         }
     )
     val context = LocalContext.current
@@ -83,6 +88,7 @@ fun LostAndFoundWriteArticle(
                             AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_WRITE_CONFIRM,
                             "작성 완료"
                         )
+
                         LostOrFoundType.LOST -> EventLogger.logCampusClickEvent(
                             AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_WRITE_CONFIRM,
                             "작성 완료"
