@@ -84,12 +84,7 @@ class ArticleRemoteDataSource @Inject constructor(
     suspend fun uploadArticleLostAndFound(articleLostAndFound: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFoundResponse> {
         return try {
             val response = articleAuthApi.uploadArticleLostAndFound(articleLostAndFound.toArticleLostAndFoundRequest())
-
-            if (response.code() == 201) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Failed to upload article"))
-            }
+            Result.success(response.body()!!)
         } catch (t: Throwable) {
             Result.failure(t)
         }
