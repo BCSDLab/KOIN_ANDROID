@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.webkit.URLUtil
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -25,7 +26,7 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel(assistedFactory = LostAndFoundDetailViewModel.Factory::class)
 class LostAndFoundDetailViewModel @AssistedInject constructor(
-    @Assisted articleId: Int,
+    @Assisted savedStateHandle: SavedStateHandle,
     private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
     private val fetchHotArticlesUseCase: FetchHotArticlesUseCase,
     private val deleteArticleLostAndFoundUseCase: DeleteArticleLostAndFoundUseCase,
@@ -36,12 +37,12 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
 
     init {
         fetchHotArticles()
-        fetchLostAndFoundDetail(articleId)
+        fetchLostAndFoundDetail(savedStateHandle.get<Int>(ARTICLE_ID) ?: 0)
     }
 
     @AssistedFactory
     interface Factory {
-        fun create(articleId: Int): LostAndFoundDetailViewModel
+        fun create(savedStateHandle: SavedStateHandle): LostAndFoundDetailViewModel
     }
 
     fun fetchLostAndFoundDetail(articleId: Int) = viewModelScope.launch {
@@ -125,5 +126,6 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
 
     companion object {
         const val HOT_ARTICLE_COUNT = 4
+        const val ARTICLE_ID = "article_id"
     }
 }
