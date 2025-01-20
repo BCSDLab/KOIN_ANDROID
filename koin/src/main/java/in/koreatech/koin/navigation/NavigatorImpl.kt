@@ -10,6 +10,7 @@ import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.splash.SplashActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
+import timber.log.Timber
 import javax.inject.Inject
 
 class NavigatorImpl @Inject constructor() : Navigator {
@@ -69,6 +70,7 @@ class NavigatorImpl @Inject constructor() : Navigator {
         targetId: Pair<String, Any?>,
         type: Pair<String, Any?>
     ): Intent {
+        Timber.d("navigateToArticleLostAndFound")
         val intent = context.buildIntent<ArticleActivity>(targetId, Pair(EXTRA_BOARD_ID, 14), type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent

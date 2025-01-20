@@ -78,14 +78,14 @@ class SchemeActivity : ActivityBase() {
                     val intent = navigator.navigateToSplash(
                         context = this,
                         targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
-                        type = Pair(EXTRA_TYPE, url?.toHost()),
+                        type = Pair(EXTRA_TYPE, url?.toHost(getBoardIdFromUrl(url))),
                         navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
                     )
                     navigateToActivity(intent)
                 }
 
                 NavigatorType.DETAIL -> {
-                    when (val host = url?.toHost()) {
+                    when (val host = url?.toHost(getBoardIdFromUrl(url))) {
                         SchemeType.SHOP.type -> {
                             val intent = navigator.navigateToShop(
                                 context = this,
@@ -147,7 +147,7 @@ class SchemeActivity : ActivityBase() {
     }
 
     private fun getBoardIdFromUrl(url: String): Int {
-        return Uri.parse(url).getQueryParameter("boardId")?.toIntOrNull() ?: -1
+        return Uri.parse(url).getQueryParameter("board-id")?.toIntOrNull() ?: -1
     }
 
     private fun getKeywordFromUrl(url: String): String {
