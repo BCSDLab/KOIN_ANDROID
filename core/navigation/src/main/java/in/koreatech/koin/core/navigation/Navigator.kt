@@ -34,4 +34,10 @@ interface Navigator {
         targetId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", ""),
     ): Intent
+
+    fun navigateToArticleLostAndFound(
+        context: Context,
+        targetId: Pair<String, Any?> = Pair("", 0),
+        type: Pair<String, Any?> = Pair("", ""),
+    ): Intent
 }

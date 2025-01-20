@@ -67,7 +67,7 @@ class SchemeActivity : ActivityBase() {
             }
             Timber.e("navigatorType : $navigatorType")
             Timber.e("url : ${url}")
-            Timber.e("url to host : ${url?.toHost()}")
+            Timber.e("url to host : ${url?.toHost(getBoardIdFromUrl(url))}")
 
             /**
              * koin://shop
@@ -118,6 +118,15 @@ class SchemeActivity : ActivityBase() {
                             navigateToActivity(intent)
                         }
 
+                        SchemeType.LOST_AND_FOUND.type -> { // TODO: Find a better way to handle lost and found board
+                            val intent = navigator.navigateToArticleLostAndFound(
+                                context = this,
+                                targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
+                                type = Pair(EXTRA_TYPE, host)
+                            )
+                            navigateToActivity(intent)
+                        }
+
                         else -> {
                             val intent = navigator.navigateToMain(context = this)
                             navigateToActivity(intent)
@@ -135,6 +144,10 @@ class SchemeActivity : ActivityBase() {
 
     private fun getIdFromUrl(url: String): Int {
         return Uri.parse(url).getQueryParameter("id")?.toIntOrNull() ?: -1
+    }
+
+    private fun getBoardIdFromUrl(url: String): Int {
+        return Uri.parse(url).getQueryParameter("boardId")?.toIntOrNull() ?: -1
     }
 
     private fun getKeywordFromUrl(url: String): String {

@@ -364,6 +364,15 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 )
                 startActivity(intent)
             }
+
+            SchemeType.LOST_AND_FOUND.type -> {
+                val intent = navigator.navigateToArticleLostAndFound(
+                    context = this,
+                    targetId = Pair(EXTRA_ID, targetId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
         }
     }
 
