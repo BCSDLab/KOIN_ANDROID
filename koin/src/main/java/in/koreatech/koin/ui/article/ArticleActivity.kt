@@ -16,6 +16,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.ToolbarMenu
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityArticleBinding
@@ -115,15 +116,27 @@ class ArticleActivity : ActivityBase() {
         mIntent?.getIntExtra(EXTRA_ID, -1).let {
             Timber.d("article id : $it")
             if (it == -1) return
-            setNavigationGraph()
+            val boardId = mIntent?.getIntExtra(EXTRA_BOARD_ID, ArticleBoardType.ALL.id)
+            if (boardId == ArticleBoardType.LOSTANDFOUND.id) {
+                setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
 
-            navController.navigate(
-                R.id.articleDetailFragment,
-                bundleOf(
-                    ARTICLE_ID to it,
-                    NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
+                navController.navigate(
+                    R.id.articleLostAndFoundDetailFragment,
+                    bundleOf(
+                        ARTICLE_ID to it
+                    )
                 )
-            )
+            } else {
+                setNavigationGraph()
+
+                navController.navigate(
+                    R.id.articleDetailFragment,
+                    bundleOf(
+                        ARTICLE_ID to it,
+                        NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
+                    )
+                )
+            }
         }
     }
 
