@@ -8,7 +8,7 @@ data class ArticleLostAndFoundRequest(
 ) {
     data class ArticleLostAndFoundBody(
         @SerializedName("category") val category: String,
-        @SerializedName("location") val location: String,
+        @SerializedName("found_place") val foundPlace: String,
         @SerializedName("found_date") val foundDate: String,
         @SerializedName("content") val content: String?,
         @SerializedName("images") val images: List<String>?

@@ -210,14 +210,14 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
         }
     }
 
-    fun updateLocation(itemIndex: Int, location: String) = intent {
+    fun updateLocation(itemIndex: Int, foundPlace: String) = intent {
         reduce {
             state.copy(
                 itemList = state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
                         return@mapIndexed item.copy(
-                            location = location,
-                            locationRequired = location.isEmpty()
+                            foundPlace = foundPlace,
+                            locationRequired = foundPlace.isEmpty()
                         )
                     } else {
                         item

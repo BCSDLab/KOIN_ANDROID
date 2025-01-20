@@ -12,7 +12,7 @@ data class ArticleLostAndFoundResponse(
     @SerializedName("found_date") val foundDate: String,
     @SerializedName("content") val content: String?,
     @SerializedName("author") val author: String,
-    @SerializedName("image") val images: List<ArticleLostAndFoundImageResponse>?, // TODO: Fix after API is fixed
+    @SerializedName("images") val images: List<ArticleLostAndFoundImageResponse>?,
     @SerializedName("prev_id") val prevArticleId: Int?,
     @SerializedName("next_id") val nextArticleId: Int?,
     @SerializedName("registered_at") val registeredAt: String,
