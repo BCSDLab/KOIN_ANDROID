@@ -15,7 +15,7 @@ data class LostAndFoundWriteArticleItemState(
     val locationRequired: Boolean = false,
     val dateRequired: Boolean = false,
     val category: LostItemCategory = LostItemCategory.NONE,
-    val location: String = "",
+    val foundPlace: String = "",
     val foundDate: LocalDate? = null,
     val content: String? = null,
     val images: List<String> = emptyList()
@@ -24,7 +24,7 @@ data class LostAndFoundWriteArticleItemState(
 fun LostAndFoundWriteArticleItemState.toArticleLostAndFoundUpload(): ArticleLostAndFoundUpload {
     return ArticleLostAndFoundUpload(
         category = category.getCategoryKoreanWord(),
-        location = location,
+        foundPlace = foundPlace,
         foundDate = foundDate.toString(),
         content = content,
         images = images.map { it }

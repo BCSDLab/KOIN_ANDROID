@@ -12,7 +12,7 @@ fun List<ArticleLostAndFoundUpload>.toArticleLostAndFoundRequest(): ArticleLostA
 fun ArticleLostAndFoundUpload.toArticleLostAndFoundBody(): ArticleLostAndFoundRequest.ArticleLostAndFoundBody {
     return ArticleLostAndFoundRequest.ArticleLostAndFoundBody(
         category = category,
-        location = location,
+        foundPlace = foundPlace,
         foundDate = foundDate,
         content = content,
         images = images

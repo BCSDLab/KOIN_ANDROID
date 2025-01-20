@@ -158,8 +158,8 @@ fun LostAndFoundWriteArticle(
                         onUpdateDescription = { description ->
                             viewModel.updateDescription(itemIndex, description)
                         },
-                        onUpdateLocation = { location ->
-                            viewModel.updateLocation(itemIndex, location)
+                        onUpdateLocation = { foundPlace ->
+                            viewModel.updateLocation(itemIndex, foundPlace)
                         },
                         onShowDatePickerChange = { showDatePicker ->
                             shouldShowDatePicker = showDatePicker
@@ -260,7 +260,7 @@ fun WriteFoundItemArticleImpl(
             type = lostOrFoundType,
             moreDescription = articleData.content ?: "",
             onMoreDescriptionChange = { onUpdateDescription(it) },
-            location = articleData.location,
+            location = articleData.foundPlace,
             locationRequired = if (lostOrFoundType == LostOrFoundType.FOUND) articleData.locationRequired else false, // Lost item doesn't require location
             onLocationChange = { onUpdateLocation(it) },
             date = articleData.foundDate,
@@ -324,7 +324,7 @@ fun handleSideEffect(
                     viewModel.updateItemType(index, LostItemCategory.NONE)
                     isAllFieldValid = false
                 }
-                if (it.location.isEmpty()) {
+                if (it.foundPlace.isEmpty()) {
                     viewModel.updateLocation(index, "")
                     isAllFieldValid = false
                 }
