@@ -115,6 +115,7 @@ class ArticleActivity : ActivityBase() {
         mIntent?.getIntExtra(EXTRA_ID, -1).let {
             Timber.d("article id : $it")
             if (it == -1) return
+            setNavigationGraph()
 
             navController.navigate(
                 R.id.articleDetailFragment,
