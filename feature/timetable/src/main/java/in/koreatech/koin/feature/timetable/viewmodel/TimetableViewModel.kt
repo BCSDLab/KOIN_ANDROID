@@ -97,6 +97,12 @@ class TimetableViewModel @Inject constructor(
             val semesters = getSemester(state.value.isAnonymous)
             val semester = semesters.firstOrNull().orEmpty()
 
+            // 학기를 추가하지 않은 경우 데이터 로드 x
+            semester.ifEmpty {
+                updateLoading(false)
+                return@launch
+            }
+
             _lectures.value = getLectures(semester)
 
             when (state.value.isAnonymous) {
@@ -152,6 +158,13 @@ class TimetableViewModel @Inject constructor(
     fun getRefreshData(frameId: Int, semester: String, frameName: String) {
         viewModelScope.launch {
             updateLoading(true)
+
+            // 학기를 추가하지 않은 경우 데이터 로드 x
+            semester.ifEmpty {
+                updateLoading(false)
+                return@launch
+            }
+
             when (state.value.isAnonymous) {
                 true -> {
                     if (state.value.currentSemester == semester) {
