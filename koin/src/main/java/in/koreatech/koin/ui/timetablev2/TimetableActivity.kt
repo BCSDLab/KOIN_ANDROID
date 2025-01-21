@@ -50,6 +50,7 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class TimetableActivity : KoinNavigationDrawerActivity() {
@@ -345,7 +346,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     }
 
                     is TimetableSideEffect.Toast -> {
-                        Toast.makeText(this@TimetableActivity, effect.message, Toast.LENGTH_SHORT).show()
+                        // TODO::현재는 에러 메세지를 띄우는 용로도 토스트가 사용되기에 임시 메세지 사용, 배포 후 수정 필요
+                        Timber.d("TimetableSideEffect.Toast| ${effect.message}")
+                        Toast.makeText(this@TimetableActivity, "인터넷 연결을 확인하고 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                     }
 
                     is TimetableSideEffect.Nothing -> Unit
