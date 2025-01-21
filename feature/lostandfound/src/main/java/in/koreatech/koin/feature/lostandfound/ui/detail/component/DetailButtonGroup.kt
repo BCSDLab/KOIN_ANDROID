@@ -37,7 +37,7 @@ fun DetailButtonGroup(
             titleStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral600),
             onPositive = {
                 EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_DELETE,
+                    AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_DELETE_CONFIRM,
                     "확인"
                 )
                 onDeleteArticleClick()
