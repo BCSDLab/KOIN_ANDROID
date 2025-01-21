@@ -46,7 +46,11 @@ class TimetableRepositoryImpl @Inject constructor(
     }
 
     override fun getTimetableFrames(semester: String): Flow<List<TimetableFrame>> = flow {
-        emit(timetableRemoteDataSource.getTimetableFrames(semester).map { it.toTimetableFrameResponse() })
+        emit(timetableRemoteDataSource.getTimetableFrames(semester).map { it.toTimetableFrame() })
+    }
+
+    override fun getAllFrames(): Flow<Map<String, List<TimetableFrame>>> = flow {
+        emit(timetableRemoteDataSource.getAllFrames().mapValues { it.value.map { it.toTimetableFrame() } })
     }
 
     override suspend fun getTimetableLectures(timetableFrameId: Int): Result<TimetableLectures> = runCatching {
@@ -83,7 +87,7 @@ class TimetableRepositoryImpl @Inject constructor(
                 frame.timetableName,
                 frame.isMain
             )
-        ).toTimetableFrameResponse()
+        ).toTimetableFrame()
     }
 
     override suspend fun postTimetableLectures(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures> = runCatching {
@@ -135,12 +139,15 @@ class TimetableRepositoryImpl @Inject constructor(
                 semester = frame.semester,
                 timetableName = frame.timetableName
             )
-        ).toTimetableFrameResponse()
+        ).toTimetableFrame()
     }.recoverCatching {
         if(it is HttpException) throw Exception(it.getErrorResponse().message ?: "")
         else throw it
     }
 
+    override suspend fun postRollbackFrame(frameId: Int): Result<TimetableLectures> = runCatching {
+        timetableRemoteDataSource.postRollbackFrame(frameId).toTimetableLectures()
+    }
 
     override suspend fun deleteTimetableFrame(frameId: Int): Result<Unit> = runCatching {
         timetableRemoteDataSource.deleteTimetableFrame(frameId)

@@ -1,63 +1,77 @@
 package `in`.koreatech.koin.feature.timetable.viewmodel
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.bottomsheet.BottomSheetBehavior.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.timetable.request.TimetableLectureQuery
-import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
-import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
-import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
-import `in`.koreatech.koin.domain.repository.TimetableRepository
 import `in`.koreatech.koin.domain.usecase.timetable.AddSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.AddTimetableFrameUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableFrameUseCase
-import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterTimetableFramesUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.GetAllFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemestersUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.RollbackFrameUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.UpdateTimetableFrameUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.toSemesterModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@Stable
 data class ScreenState(
-    val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE
-)
+    val mode: ScreenStateUIMode = ScreenStateUIMode.IDLE,
+    val availableYears: List<Int> = emptyList(),
+    val userTimetableFrames: Map<SemesterModel, List<TimetableFrame>> = emptyMap(),
+    val isAnonymous: Boolean = true,
+    val isEditTimetableDialogVisible: Boolean = false,
+    val isEditSemesterDialogVisible: Boolean = false,
+    val isSelectYearDialogVisible: Boolean = false,
+    val isDeleteSemesterDialogVisible: Boolean = false,
+    val isRequestLoginDialogVisible: Boolean = false
+) {
+    val userSemesters: List<SemesterModel>
+        get() = userTimetableFrames.keys.toList()
+}
 
-enum class ScreenStateUIMode{
+// 학기가 비었을 때 상태
+@Stable
+enum class ScreenStateUIMode {
     BASIC, EMPTY, IDLE
 }
 
-
 @HiltViewModel
 class SemesterViewModel @Inject constructor(
-    private val timetableRepository: TimetableRepository,
     private val getUserSemestersUseCase: GetUserSemestersUseCase,
     private val getSemestersUseCase: GetSemestersUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getSemesterTimetableFramesUseCase: GetSemesterTimetableFramesUseCase,
     private val getTimetableFramesUseCase: GetTimetableFramesUseCase,
     private val deleteSemesterUseCase: DeleteSemesterUseCase,
     private val addSemesterUseCase: AddSemesterUseCase,
     private val addTimetableFrameUseCase: AddTimetableFrameUseCase,
     private val updateTimetableFrameUseCase: UpdateTimetableFrameUseCase,
-    private val deleteTimetableFrameUseCase: DeleteTimetableFrameUseCase
+    private val deleteTimetableFrameUseCase: DeleteTimetableFrameUseCase,
+    private val rollbackFrameUseCase: RollbackFrameUseCase,
+    private val getAllFramesUseCase: GetAllFramesUseCase,
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
 
     private val _dialogUiState: MutableStateFlow<SemesterDialogUiState> = MutableStateFlow(SemesterDialogUiState())
@@ -66,6 +80,7 @@ class SemesterViewModel @Inject constructor(
     private val _sideEffect: MutableStateFlow<SemesterSideEffect> = MutableStateFlow(SemesterSideEffect.Nothing)
     val sideEffect: StateFlow<SemesterSideEffect> = _sideEffect.asStateFlow()
 
+    //_currentXXXX 변수들은 시간표로 이동할 때 전달하는 정보
     private val _currentTimetableSemester: MutableStateFlow<String> = MutableStateFlow("")
     val currentTimetableSemester: StateFlow<String> = _currentTimetableSemester.asStateFlow()
 
@@ -75,74 +90,59 @@ class SemesterViewModel @Inject constructor(
     private val _currentTimetableName: MutableStateFlow<String> = MutableStateFlow("")
     val currentTimetableName: StateFlow<String> = _currentTimetableName.asStateFlow()
 
+    /**
+     * 시간표에서 현재 보여지고 있는 프레임 Id
+     * 프레임을 복구 할 때 보여지고 있는 프레임인지 학인 후 currentTimetableId 를 변경해야 하기에 필요함
+     */
     private val _originalTimetableId: MutableStateFlow<Int> = MutableStateFlow(-1)
-    val originalTimetableId: StateFlow<Int> = _currentTimetableId.asStateFlow()
 
-    private val _isAnonymous: MutableStateFlow<Boolean> = MutableStateFlow(true)
-    val isAnonymous: StateFlow<Boolean> = _isAnonymous.asStateFlow()
+    // 가장 최근 삭제한 프레임과 프레임의 학기
+    private val _deletedFrame: MutableStateFlow<TimetableFrame?> = MutableStateFlow(null)
+    private val _deletedFrameSemester: MutableStateFlow<SemesterModel?> = MutableStateFlow(null)
 
-    private val _userSemester: MutableStateFlow<List<SemesterModel>> = MutableStateFlow(emptyList())
-    val userSemesters: StateFlow<List<SemesterModel>> = _userSemester.asStateFlow()
+    private val availableYears: Flow<List<Int>> = getSemestersUseCase()
+        .map { it.map { it.toSemesterModel().year }.distinct() }
 
-    private val _userTimetableFrames: MutableStateFlow<Map<SemesterModel, List<TimetableFrame>>> = MutableStateFlow(emptyMap())
-    val userTimetableFrames: StateFlow<Map<SemesterModel, List<TimetableFrame>>> = _userTimetableFrames.asStateFlow()
+    // TODO::hyeok 리프래시 로직 추가
+    private val initialScreenState = flow {
+        Timber.d("dhk| initialScreenState")
+        val availableYears = availableYears.first()
+        val isAnonymous = getUserStatusUseCase().first().isAnonymous
+        val userFrames = if (isAnonymous) {
+            getUserSemestersUseCase(isAnonymous)
+                .catch { Timber.d("Fail to getUserSemestersUseCase on initialScreenState| message: ${it.message}") }
+                .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) } }
+                .first()
+        } else {
+            getAllFramesUseCase()
+                .catch { Timber.d("Fail to getAllFramesUseCase on initialScreenState| message: ${it.message}") }
+                .map { it.mapKeys { it.key.toSemesterModel() } }
+                .first()
+        }
+        emit(ScreenState(
+            availableYears = availableYears,
+            userTimetableFrames = userFrames,
+            mode = if(userFrames.isEmpty()) ScreenStateUIMode.EMPTY else ScreenStateUIMode.BASIC,
+            isAnonymous = isAnonymous
+        ))
+    }.catch {
+        // TODO::hyeok Error 상태 추가
+        emit(ScreenState())
+    }
 
-    private val _screenState =  MutableStateFlow<ScreenState>(ScreenState())
-    val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
+    private val _screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState())
 
-    val semesters: StateFlow<List<SemesterModel>> = getSemestersUseCase()
-        .map { it.map { it.toSemesterModel() } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
-
-    val years: StateFlow<List<Int>> = semesters
-        .map { it.map { it.year }.distinct() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+    val screenState: StateFlow<ScreenState> = flow {
+        val initialState = initialScreenState.first()
+        _screenState.value = initialState
+        emit(initialState)
+        emitAll(_screenState)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), ScreenState())
 
     private var _isRestorePerformed = false
 
-    fun initData() {
-        viewModelScope.launch {
-            // 유저가 추가한 학기 불러옴
-            getUserSemestersUseCase(_isAnonymous.value)
-                .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
-                .map { it.map { it.toSemesterModel() } }
-                .collect {
-                    _userSemester.value = it
-                }
-
-            // 유저가 추가한 학기의 프레임 불러옴
-            val tmp = mutableMapOf<SemesterModel, List<TimetableFrame>>()
-            userSemesters.value
-                .map { it.toSemester() }
-                .forEach { semester ->
-                    if (isAnonymous.value) {
-                        // 익명이면 모든 프레임의 이름은 '시간표1'
-                        tmp.put(semester.toSemesterModel(), listOf(TimetableFrame(0, "시간표1", isMain = true)))
-                    } else {
-                        getTimetableFramesUseCase(semester)
-                            .catch { Timber.d("Fail to getUserSemestersUseCase on initData()| message: ${it.message}") }
-                            .collect {
-                                // 기본 시간표가 첫 번째에 오도록 정렬
-                                it.sortedByDescending { it.isMain }.also { sortedFrames ->
-                                    tmp.put(semester.toSemesterModel(), sortedFrames)
-                                }
-                            }
-                    }
-
-                }
-
-            _userTimetableFrames.value = tmp
-            if (tmp.isEmpty()) {
-                _screenState.value = _screenState.value.copy(mode = ScreenStateUIMode.EMPTY)
-            } else {
-                _screenState.value = _screenState.value.copy(mode = ScreenStateUIMode.BASIC)
-            }
-        }
-    }
-
     fun updateIntentData(isAnonymous: Boolean, timetableFrameId: Int, semester: String, frameName: String) {
         viewModelScope.launch {
-            _isAnonymous.value = isAnonymous
             _currentTimetableId.value = timetableFrameId
             _originalTimetableId.value = timetableFrameId
             _currentTimetableSemester.value = semester
@@ -150,31 +150,39 @@ class SemesterViewModel @Inject constructor(
         }
     }
 
-    fun updateEditTimetableDialogVisibility(isVisible: Boolean) {
-        _dialogUiState.value = _dialogUiState.value.copy(isEditTimetableDialogVisible = isVisible)
+    fun updateEditTimetableDialogVisible(isVisible: Boolean) {
+        _screenState.value = _screenState.value.copy(isEditTimetableDialogVisible = isVisible)
     }
 
     fun updateEditSemesterDialogVisible(isVisible: Boolean) {
-        _dialogUiState.value = _dialogUiState.value.copy(isEditSemesterDialogVisible = isVisible)
+        _screenState.value = _screenState.value.copy(isEditSemesterDialogVisible = isVisible)
+    }
+
+    fun updateSelectYearDialogVisible(isVisible: Boolean) {
+        _screenState.value = _screenState.value.copy(isSelectYearDialogVisible = isVisible)
     }
 
     fun updateDeleteSemesterDialogVisible(isVisible: Boolean) {
-        _dialogUiState.value = _dialogUiState.value.copy(isDeleteSemesterDialogVisible = isVisible)
+        _screenState.value = _screenState.value.copy(isDeleteSemesterDialogVisible = isVisible)
     }
 
     fun updateRequestLoginDialogVisible(isVisible: Boolean) {
-        _dialogUiState.value = _dialogUiState.value.copy(isRequestLoginDialogVisible = isVisible)
+        _screenState.value = _screenState.value.copy(isRequestLoginDialogVisible = isVisible)
     }
 
     fun updateSelectedSemesters(semesterModels: List<SemesterModel>) {
         _dialogUiState.value = _dialogUiState.value.copy(selectedSemesters = semesterModels)
     }
 
+    fun updateUserTimetableFrames(userTimetableFrames: Map<SemesterModel, List<TimetableFrame>>) {
+        _screenState.value = _screenState.value.copy(userTimetableFrames = userTimetableFrames)
+    }
+
     fun updateSideEffect(sideEffect: SemesterSideEffect) {
         _sideEffect.value = sideEffect
     }
 
-    fun updateScreenState(mode: ScreenStateUIMode) {
+    fun updateScreenMode(mode: ScreenStateUIMode) {
         _screenState.value = _screenState.value.copy(
             mode = mode
         )
@@ -184,16 +192,16 @@ class SemesterViewModel @Inject constructor(
         viewModelScope.launch {
             addTimetableFrameUseCase(
                 semester = target.toSemester(),
-                timetableName = "시간표${(userTimetableFrames.value[target]?.size ?: 1) + 1}"
+                timetableName = "시간표${(screenState.value.userTimetableFrames[target]?.size ?: 1) + 1}"
             ).onSuccess { addedFrame ->
-                _userTimetableFrames.update { it ->
-                    it.mapValues {
+                updateUserTimetableFrames(
+                    screenState.value.userTimetableFrames.mapValues {
                         if (it.key == target)
                             it.value + addedFrame
                         else
                             it.value
                     }
-                }
+                )
             }.onFailure {
                 Timber.d("시간표 추가 실패")
             }
@@ -201,36 +209,27 @@ class SemesterViewModel @Inject constructor(
     }
 
     fun onClickEditTimetable(targetSemester: SemesterModel, targetFrame: TimetableFrame) {
+        _screenState.value = _screenState.value.copy(isEditTimetableDialogVisible = true)
         _dialogUiState.value = _dialogUiState.value.copy(
-            isEditTimetableDialogVisible = true,
             editedSemester = targetSemester,
             editedTimetableFrame = targetFrame
         )
     }
 
-    /**
-     * @input 유저가 선택한 학기 리스트
-     */
     fun updateUserSemesters() {
         viewModelScope.launch {
             dialogUiState.value.selectedSemesters.forEach { semester ->
-                if (userSemesters.value.contains(semester)) {
+                if (screenState.value.userSemesters.contains(semester)) {
                     deleteSemesterUseCase(semester.toSemester()).onSuccess {
-                        _userSemester.update {
-                            it - semester
-                        }
-                        _userTimetableFrames.update {
-                            it - semester
-                        }
+                        updateUserTimetableFrames(
+                            screenState.value.userTimetableFrames - semester
+                        )
                     }
                 } else {
                     addSemesterUseCase(semester.toSemester()).onSuccess { addedFrame ->
-                        _userSemester.update {
-                            it + semester
-                        }
-                        _userTimetableFrames.update {
-                            (it + (semester to listOf(addedFrame))).toSortedMap()
-                        }
+                        updateUserTimetableFrames(
+                            (screenState.value.userTimetableFrames + (semester to listOf(addedFrame))).toSortedMap()
+                        )
                     }.onFailure {
                         it.message?.let { errorMessage ->
                             _sideEffect.value = SemesterSideEffect.Toast(errorMessage)
@@ -240,9 +239,7 @@ class SemesterViewModel @Inject constructor(
             }
 
             // 시간표에서 진입한 학기가 삭제된 경우
-            if (_currentTimetableSemester.value.isEmpty() || !userSemesters.value.contains(_currentTimetableSemester.value.toSemesterModel())) {
-                Timber.d("userSemesters: ${userSemesters.value}")
-                Timber.d("userTimetableFrames: ${userTimetableFrames.value}")
+            if (_currentTimetableSemester.value.isEmpty() || !screenState.value.userSemesters.contains(_currentTimetableSemester.value.toSemesterModel())) {
                 // 가장 최근 학기의 기본 시간표로 설정
                 updateCurrentTimetableDataToLatest()
             }
@@ -274,20 +271,6 @@ class SemesterViewModel @Inject constructor(
 
     fun deleteTimetableFrame() {
         viewModelScope.launch {
-            // 삭제된 시간표에 담긴 강의 캐싱
-            dialogUiState.value.takeIf {
-                it.editedSemester != null && it.editedTimetableFrame != null
-            }?.let { uiState ->
-                timetableRepository.getTimetableLectures(
-                    uiState.editedTimetableFrame!!.id
-                ).onSuccess {
-                    _dialogUiState.value = _dialogUiState.value.copy(
-                        deletedTimetableLectures = it
-                    )
-                }
-            }
-
-            // 강의 삭제
             dialogUiState.value.editedTimetableFrame?.let { target ->
                 deleteTimetableFrameUseCase(
                     frameId = target.id
@@ -296,19 +279,23 @@ class SemesterViewModel @Inject constructor(
                         refreshSemesterTimetableFrames(it)
                     }
 
+                    // 삭제한 프레임과 학기 저장
+                    _deletedFrame.value = target
+                    _deletedFrameSemester.value = dialogUiState.value.editedSemester
+
                     // 시간표에서 선택한 프레임이 삭제된 경우..
                     if (currentTimetableId.value == target.id) {
                         // 학기가 함께 삭제된 경우 가장 최근 학기의 기본 시간표로 이동
-                        if (!userSemesters.value.contains(dialogUiState.value.editedSemester)) {
+                        if (!screenState.value.userSemesters.contains(dialogUiState.value.editedSemester)) {
                             updateCurrentTimetableDataToLatest()
                             return@onSuccess
                         }
 
                         // 학기가 함께 삭제되지 않는 경우엔, 삭제된 시간표 대신 그 학기의 기본 시간표로 이동
                         // 학기를 찾을 수 없으면, 가장 최근 시간표로 이동
-                        userTimetableFrames.value
+                        screenState.value.userTimetableFrames
                             .get(currentTimetableSemester.value.toSemesterModel())
-                            ?.find { it.isMain}
+                            ?.find { it.isMain }
                             ?.let {
                                 _currentTimetableId.value = it.id
                                 _currentTimetableName.value = it.timetableName
@@ -321,85 +308,43 @@ class SemesterViewModel @Inject constructor(
         }
     }
 
-    /** TODO::hyeok usecase로 옮기면 좋을듯
-     * 학기의 마지막 시간표를 지웠으면 학기도 같이 사라지기 때문에, 새로 추가를 해야함
-     */
+    // TODO::hyeok atomic 으로 개선?
     fun restoreTimetableFrame() {
         if (!_isRestorePerformed) {
             _isRestorePerformed = true
             viewModelScope.launch {
+                // 연속으로 복구버튼 누르는 경우 방지
                 delay(500L)
                 _isRestorePerformed = false
             }
             viewModelScope.launch {
+                // 프레임이 삭제 된 경우 동작
                 dialogUiState.value.takeIf {
-                    it.editedSemester != null
-                            && it.editedTimetableFrame != null
-                            && it.deletedTimetableLectures != null
+                    _deletedFrame.value != null && _deletedFrameSemester.value != null
                 }?.let { uiState ->
-                    var targetFrame: TimetableFrame? = null
-                    var isRestoredSemester: Boolean = false
+                    rollbackFrameUseCase(_deletedFrame.value!!.id)
+                        .onSuccess {
+                            val restoredFrame: TimetableFrame = _deletedFrame.value!!
+                            val isRestoredSemester: Boolean = screenState.value.userTimetableFrames[_deletedFrameSemester.value].isNullOrEmpty()
 
-                    // 학기가 함께 삭제되었는지 확인
-                    if (userSemesters.value.contains(uiState.editedSemester)) {
-                        // 학기가 삭제되지 않았다면, 바로 프레임 추가
-                        addTimetableFrameUseCase(
-                            uiState.editedSemester!!.toSemester(),
-                            uiState.editedTimetableFrame!!.timetableName
-                        ).onSuccess {
-                            updateTimetableFrameUseCase(
-                                it.id,
-                                uiState.editedTimetableFrame!!.timetableName,
-                                uiState.editedTimetableFrame!!.isMain
-                            ).onSuccess {
-                                targetFrame = it
+                            refreshSemesterTimetableFrames(_deletedFrameSemester.value!!)
+
+                            // 시간표에서 보여주던 프레임이 복구된 경우 변경
+                            if (_originalTimetableId.value == restoredFrame.id) {
+                                _currentTimetableId.value = restoredFrame.id
+                                _currentTimetableName.value = restoredFrame.timetableName
+
+                                if (isRestoredSemester)
+                                    _currentTimetableSemester.value = _deletedFrameSemester.value!!.toSemester()
                             }
+
+                            _deletedFrame.value = null
+                            _deletedFrameSemester.value = null
                         }
-                    } else {
-                        // 학기가 삭제되었다면, 새로 학기를 새로 추가하고 추가된 학기를 변경
-                        addSemesterUseCase(
-                            uiState.editedSemester!!.toSemester()
-                        ).onSuccess {
-                            isRestoredSemester = true
-                            updateTimetableFrameUseCase(
-                                it.id,
-                                uiState.editedTimetableFrame!!.timetableName,
-                                uiState.editedTimetableFrame!!.isMain
-                            ).onSuccess {
-                                targetFrame = it
-                            }
+                        .onFailure {
+                            // TODO::hyeok 에러 핸들링
+                            Timber.d("롤백 실패")
                         }
-                    }
-
-                    // 학기 추가 or 프레임 추가가 정상적으로 동작한 경우 강의들 복구
-                    targetFrame?.let { targetFrame ->
-                        timetableRepository.postTimetableBasicLectures(
-                            frameId = targetFrame.id,
-                            lectures = uiState.deletedTimetableLectures!!.timetable
-                        ).onSuccess {
-                            // _originalTimetableId 랑 editedTimetableFrame.id 이랑 같다면
-                            // 시간표에 보여지고 있는 시간표가 삭제 후 복구된 경우
-                            if (_originalTimetableId.value == dialogUiState.value.editedTimetableFrame!!.id) {
-
-                                // 복구된 frame 으로 변경
-                                _currentTimetableId.value = targetFrame.id
-                                _originalTimetableId.value = targetFrame.id
-                                _currentTimetableName.value = targetFrame.timetableName
-
-                                // 학기도 복구된 경우 변경
-                                if(isRestoredSemester) {
-                                    _currentTimetableSemester.value = uiState.editedSemester.toSemester()
-                                }
-                            }
-                        }.onFailure {
-                            if (isRestoredSemester) {
-                                deleteSemesterUseCase(uiState.editedSemester.toSemester())
-                            } else {
-                                deleteTimetableFrameUseCase(targetFrame.id)
-                            }
-                        }
-                        refreshSemesterTimetableFrames(semester = uiState.editedSemester)
-                    }
                 }
             }
         }
@@ -407,8 +352,7 @@ class SemesterViewModel @Inject constructor(
 
 
     /**
-     * _userTimetableFrames 을 서버 데이터로 갱신
-     * 시간표가 존재하지 않는 학기인 경우 삭제함
+     * 인자로 들어온 학기의 프레임을 서버 데이터로 갱신
      */
     private suspend fun refreshSemesterTimetableFrames(semester: SemesterModel) {
         getTimetableFramesUseCase(semester.toSemester())
@@ -416,33 +360,22 @@ class SemesterViewModel @Inject constructor(
             .firstOrNull()
             .let { newFrames ->
                 if (newFrames.isNullOrEmpty()) {
-                    _userSemester.update {
-                        it - semester
-                    }
-                    _userTimetableFrames.update {
-                        it - semester
-                    }
+                    updateUserTimetableFrames(
+                        screenState.value.userTimetableFrames - semester
+                    )
                 } else {
-                    _userSemester.update {
-                        if (it.contains(semester))
-                            it
-                        else
-                            it + semester
-                    }
-                    _userTimetableFrames.update {
-                        it.let {
+
+                    updateUserTimetableFrames(
+                        screenState.value.userTimetableFrames.let {
                             if (it.containsKey(semester)) {
-                                it
+                                it.toMutableMap().apply {
+                                    replace(semester, newFrames)
+                                }
                             } else {
-                                it + (semester to emptyList())
+                                it + (semester to newFrames)
                             }
-                        }.mapValues {
-                            if (it.key == semester) {
-                                newFrames.sortedByDescending { it.isMain }
-                            } else
-                                it.value
                         }.toSortedMap()
-                    }
+                    )
                 }
             }
     }
@@ -452,13 +385,13 @@ class SemesterViewModel @Inject constructor(
      */
     private fun updateCurrentTimetableDataToLatest() {
         // 학기가 비어있는 경우 기본 값 전달
-        if(userSemesters.value.isEmpty() || userTimetableFrames.value.isEmpty()) {
+        if (screenState.value.userSemesters.isEmpty() || screenState.value.userTimetableFrames.isEmpty()) {
             updateCurrentTimetableDataToEmpty()
             return
         }
 
         // 학기와 시간표가 비어있지 않은 경우
-        userTimetableFrames.value.entries.first().let { entry ->
+        screenState.value.userTimetableFrames.entries.first().let { entry ->
             _currentTimetableSemester.value = entry.key.toSemester()
             entry.value.find { it.isMain }.let {
                 Timber.d("메인이 없는 시간표가 존재함!!")
@@ -480,10 +413,5 @@ class SemesterViewModel @Inject constructor(
 data class SemesterDialogUiState(
     val editedSemester: SemesterModel? = null,
     val editedTimetableFrame: TimetableFrame? = null,
-    val deletedTimetableLectures: TimetableLectures? = null,
-    val selectedSemesters: List<SemesterModel> = emptyList(),
-    val isEditTimetableDialogVisible: Boolean = false,
-    val isEditSemesterDialogVisible: Boolean = false,
-    val isDeleteSemesterDialogVisible: Boolean = false,
-    val isRequestLoginDialogVisible: Boolean = false
+    val selectedSemesters: List<SemesterModel> = emptyList()
 )

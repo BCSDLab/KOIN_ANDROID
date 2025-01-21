@@ -3,6 +3,7 @@ package `in`.koreatech.koin.navigation
 import android.content.Context
 import android.content.Intent
 import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
@@ -59,6 +60,16 @@ class NavigatorImpl @Inject constructor() : Navigator {
         type: Pair<String, Any?>
     ): Intent {
         val intent = context.buildIntent<ArticleActivity>(targetId, type)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        return intent
+    }
+
+    override fun navigateToArticleLostAndFound(
+        context: Context,
+        targetId: Pair<String, Any?>,
+        type: Pair<String, Any?>
+    ): Intent {
+        val intent = context.buildIntent<ArticleActivity>(targetId, Pair(EXTRA_BOARD_ID, 14), type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }

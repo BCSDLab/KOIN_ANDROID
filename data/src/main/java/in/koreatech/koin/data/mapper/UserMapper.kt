@@ -8,7 +8,7 @@ import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
 
-fun UserResponse.toUser() = User.Student(
+fun UserResponse.toUser(userType: String) = User.Student(
     anonymousNickname = anonymousNickname,
     email = email,
     name = name,
@@ -20,7 +20,8 @@ fun UserResponse.toUser() = User.Student(
     },
     nickname = nickname,
     phoneNumber = phoneNumber,
-    major = major
+    major = major,
+    userType = userType
 )
 
 fun User.Student.toUserRequest() = UserRequest(

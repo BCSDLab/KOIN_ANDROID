@@ -84,4 +84,8 @@ class UserRemoteDataSource(
     suspend fun postABTestAssign(abTestRequest: ABTestRequest): ABTestResponse {
         return userAuthApi.postABTestAssign(abTestRequest)
     }
+
+    suspend fun getUserType(): UserTypeResponse {
+        return userAuthApi.getUserType()
+    }
 }

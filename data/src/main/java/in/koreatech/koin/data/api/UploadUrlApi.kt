@@ -12,4 +12,7 @@ interface UploadUrlApi {
 
     @POST(URLConstant.UPLOAD.MARKETURL)
     suspend fun postUploadMarketUrl(@Body uploadUrlRequest: UploadUrlRequest): UploadUrlResponse
+
+    @POST(URLConstant.UPLOAD.LOSTANDFOUNDURL)
+    suspend fun postUploadLostAndFoundUrl(@Body uploadUrlRequest: UploadUrlRequest): UploadUrlResponse
 }
