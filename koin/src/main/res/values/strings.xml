@@ -556,11 +556,13 @@
     <string name="navigation_title_article">공지사항</string>
     <string name="navigation_title_article_search">공지글 검색</string>
     <string name="navigation_title_article_keyword">키워드 관리</string>
+    <string name="navigation_title_article_write_found_item">습득물 신고</string>
     <string name="article_more">더보기</string>
     <string name="article_free">자유게시판</string>
     <string name="article_employment">취업게시판</string>
     <string name="article_anonymous">익명게시판</string>
     <string name="article_all">전체공지</string>
+    <string name="article_lost_and_found">분실물</string>
     <string name="article_normal">일반공지</string>
     <string name="article_normal_simple">일반</string>
     <string name="article_school">학사공지</string>
