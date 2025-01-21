@@ -109,6 +109,8 @@ private fun handleSideEffect(
     navigateToArticleList: () -> Unit = {},
 ) {
     when (sideEffect) {
+        //is LostAndFoundDetailSideEffect.FetchDetail -> {}
+        //LostAndFoundDetailSideEffect.FetchHotArticles -> {}
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
             Toast.makeText(
                 context,
