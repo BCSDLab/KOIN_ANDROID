@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.article
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,11 +16,13 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.ToolbarMenu
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityArticleBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
+import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -29,14 +32,18 @@ class ArticleActivity : ActivityBase() {
     private lateinit var navController: NavController
     override val screenTitle: String = "공지사항"
 
+    private val viewModel by viewModels<ArticleListViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_article)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, imeInsets.bottom or systemBars.bottom)
+            WindowInsetsCompat.CONSUMED
         }
 
         val navHostFragment =
@@ -49,14 +56,23 @@ class ArticleActivity : ActivityBase() {
                 R.id.articleDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
                 R.id.articleSearchFragment -> setToolbar(ArticleToolbarState.ARTICLE_SEARCH)
                 R.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD)
+                R.id.articleLostAndFoundWriteFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM)
+                R.id.articleLostAndFoundDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
             }
         }
+
         navigateToDetailFragment()
     }
 
     override fun onNewIntent(intent: Intent?) {
         navigateToArticleDetail(intent)
         super.onNewIntent(intent)
+    }
+
+    private fun setNavigationGraph(
+        startBoard: Int = ArticleBoardType.ALL.id
+    ) {
+        navController.setGraph(R.navigation.nav_graph_article, bundleOf(START_BOARD to startBoard))
     }
 
     // 지정된 프래그먼트로 이동 (extra로 전달받은 경우에만)
@@ -67,8 +83,12 @@ class ArticleActivity : ActivityBase() {
         navigateToArticleDetail(intent)
 
         when (link) {
-            "article_keyword" -> navController.navigate(R.id.articleKeywordFragment)    // See ArticleKeywordFragment, LoginActivity
+            "article_keyword" -> {
+                setNavigationGraph()
+                navController.navigate(R.id.articleKeywordFragment)    // See ArticleKeywordFragment, LoginActivity
+            }
             "article_detail" -> {
+                setNavigationGraph()
                 val articleId = uri.getQueryParameter("article_id")?.toIntOrNull() ?: 0
                 val boardId = uri.getQueryParameter("board_id")?.toIntOrNull() ?: 0
                 navController.navigate(
@@ -79,6 +99,15 @@ class ArticleActivity : ActivityBase() {
                     )
                 )
             }
+            "article_lost_and_found" -> {
+                setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
+            }
+            null -> {
+                val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
+                bundle?.getInt(START_BOARD)?.let {
+                    setNavigationGraph(it)
+                } ?: setNavigationGraph()
+            }
         }
     }
 
@@ -87,14 +116,27 @@ class ArticleActivity : ActivityBase() {
         mIntent?.getIntExtra(EXTRA_ID, -1).let {
             Timber.d("article id : $it")
             if (it == -1) return
+            val boardId = mIntent?.getIntExtra(EXTRA_BOARD_ID, ArticleBoardType.ALL.id)
+            if (boardId == ArticleBoardType.LOSTANDFOUND.id) {
+                setNavigationGraph(ArticleBoardType.LOSTANDFOUND.id)
 
-            navController.navigate(
-                R.id.articleDetailFragment,
-                bundleOf(
-                    ARTICLE_ID to it,
-                    NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
+                navController.navigate(
+                    R.id.articleLostAndFoundDetailFragment,
+                    bundleOf(
+                        ARTICLE_ID to it
+                    )
                 )
-            )
+            } else {
+                setNavigationGraph()
+
+                navController.navigate(
+                    R.id.articleDetailFragment,
+                    bundleOf(
+                        ARTICLE_ID to it,
+                        NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
+                    )
+                )
+            }
         }
     }
 
@@ -122,5 +164,8 @@ class ArticleActivity : ActivityBase() {
 
     companion object {
         const val NAVIGATE_ACTION = "navigate_action"
+        const val NAV_ARTICLE = "article"
+        const val START_BOARD = "start_board"
+        const val BUNDLE_ARTICLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
     }
 }

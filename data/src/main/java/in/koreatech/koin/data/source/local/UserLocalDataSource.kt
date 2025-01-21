@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.UserType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -30,7 +31,8 @@ class UserLocalDataSource @Inject constructor(
     val user: Flow<User?> = userDataStore.data.map { pref ->
         try {
             if (pref[PREF_KEY_IS_LOGIN] == true) {
-                return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], UserResponse::class.java).toUser()
+                return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], UserResponse::class.java)
+                    .toUser(pref[PREF_KEY_USER_TYPE] ?: UserType.STUDENT.name) // Set default userType to STUDENT if logged in
             } else {
                 return@map User.Anonymous
             }
@@ -62,7 +64,13 @@ class UserLocalDataSource @Inject constructor(
                     )
                 )
             } else {
-                "Anonymous"
+                ""
+            }
+
+            pref[PREF_KEY_USER_TYPE] = if (user is User.Student) {
+                user.userType
+            } else {
+                ""
             }
         }
     }
@@ -71,5 +79,6 @@ class UserLocalDataSource @Inject constructor(
         const val PREF_NAME = "PREF_USER_NAME"
         val PREF_KEY_IS_LOGIN = booleanPreferencesKey("KEY_USER_IS_LOGIN")
         val PREF_KEY_USER_INFO = stringPreferencesKey("KEY_USER_INFO")
+        val PREF_KEY_USER_TYPE = stringPreferencesKey("KEY_USER_TYPE")
     }
 }

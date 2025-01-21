@@ -3,8 +3,8 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
-import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.UserTypeResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -34,6 +35,9 @@ interface UserAuthApi {
 
     @GET(URLConstant.USER.CHECKNICKNAME + "/{nickname}")
     suspend fun checkNickName(): UserInfoEditResponse
+
+    @GET(URLConstant.USER.AUTH)
+    suspend fun getUserType(): UserTypeResponse
 
     @POST("/notification")
     suspend fun updateDeviceToken(@Body deviceTokenRequest: DeviceTokenRequest)

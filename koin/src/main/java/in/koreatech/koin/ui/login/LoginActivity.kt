@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -13,11 +14,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
+import `in`.koreatech.koin.ui.article.ArticleActivity
+import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_EXTRA_KEY
 import `in`.koreatech.koin.ui.businesslogin.BusinessLoginActivity
 import `in`.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
@@ -29,6 +32,7 @@ import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity : ActivityBase(R.layout.activity_login) {
@@ -83,6 +87,18 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         } else {
             if (handleTimetableIntent()) {
                 startActivity(Intent(this@LoginActivity, TimetableActivity::class.java))
+                finish()
+                return
+            } else if (handleArticleIntent()) {
+                val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
+                val startBoard = bundle?.getInt(ArticleActivity.START_BOARD, 4)
+                startActivity(Intent(this@LoginActivity, ArticleActivity::class.java).apply {
+                    putExtra(
+                        BUNDLE_ARTICLE_EXTRA_KEY, bundleOf(
+                            ArticleActivity.START_BOARD to startBoard
+                        )
+                    )
+                })
                 finish()
                 return
             }
@@ -163,6 +179,11 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
     private fun handleTimetableIntent(): Boolean {
         val bundle = intent.getBundleExtra(TimetableActivity.BUNDLE_LOGIN_EXTRA_KEY)
         return bundle?.getBoolean(TimetableActivity.NAV_TIMETABLE, false) ?: false
+    }
+
+    private fun handleArticleIntent(): Boolean {
+        val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
+        return bundle?.getBoolean(ArticleActivity.NAV_ARTICLE, false) ?: false
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
