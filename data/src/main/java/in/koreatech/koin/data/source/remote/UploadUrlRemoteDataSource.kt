@@ -11,4 +11,6 @@ class UploadUrlRemoteDataSource @Inject constructor(
     suspend fun postUploadUrl(uploadUrlRequest: UploadUrlRequest): UploadUrlResponse = uploadUrl.postUploadUrl(uploadUrlRequest)
 
     suspend fun postUploadMarketUrl(uploadUrlRequest: UploadUrlRequest): UploadUrlResponse = uploadUrl.postUploadMarketUrl(uploadUrlRequest)
+
+    suspend fun postUploadLostAndFoundUrl(uploadUrlRequest: UploadUrlRequest): UploadUrlResponse = uploadUrl.postUploadLostAndFoundUrl(uploadUrlRequest)
 }

@@ -2,7 +2,9 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
-import `in`.koreatech.koin.domain.model.article.ArticleNoti
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import kotlinx.coroutines.flow.Flow
 
@@ -24,4 +26,8 @@ interface ArticleRepository {
     fun saveSearchHistory(query: String): Flow<Unit>
     fun deleteSearchHistory(query: String): Flow<Unit>
     fun clearSearchHistory(): Flow<Unit>
+    fun fetchArticleLostAndFoundPagination(page: Int, limit: Int): Flow<ArticleLostAndFoundPagination>
+    fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
+    suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound>
+    suspend fun deleteArticleLostAndFound(articleId: Int): Result<Unit>
 }

@@ -12,4 +12,10 @@ interface UploadUrlRepository {
         contentType: String,
         fileName: String
     ): Result<Pair<String, String>>
+
+    suspend fun getUploadLostAndFoundUrlResult(
+        contentLength: Long,
+        contentType: String,
+        fileName: String
+    ): Result<Pair<String, String>>
 }

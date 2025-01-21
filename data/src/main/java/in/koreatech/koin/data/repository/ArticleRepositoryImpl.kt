@@ -5,9 +5,10 @@ import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
-import `in`.koreatech.koin.domain.model.article.ArticleNoti
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
-import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -203,5 +204,33 @@ class ArticleRepositoryImpl @Inject constructor(
         return flow {
             emit(articleLocalDataSource.clearSearchHistory())
         }
+    }
+
+    override fun fetchArticleLostAndFoundPagination(
+        page: Int,
+        limit: Int
+    ): Flow<ArticleLostAndFoundPagination> {
+        return flow {
+            emit(
+                articleRemoteDataSource.fetchArticleLostAndFoundPagination(page, limit)
+                    .toArticleLostAndFoundPagination()
+            )
+        }
+    }
+
+    override fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound> {
+        return flow {
+            emit(
+                articleRemoteDataSource.fetchArticleLostAndFound(articleId).toArticleLostAndFound()
+            )
+        }
+    }
+
+    override suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound> {
+        return articleRemoteDataSource.uploadArticleLostAndFound(articleLostAndFoundList).map { it.toArticleLostAndFound() }
+    }
+
+    override suspend fun deleteArticleLostAndFound(articleId: Int): Result<Unit> {
+        return articleRemoteDataSource.deleteArticleLostAndFound(articleId)
     }
 }
