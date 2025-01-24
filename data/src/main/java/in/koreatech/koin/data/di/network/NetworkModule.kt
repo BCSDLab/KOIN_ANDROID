@@ -17,6 +17,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.config.HeartBeat
 import org.hildan.krossbow.websocket.okhttp.OkHttpWebSocketClient
+import org.hildan.krossbow.websocket.reconnection.FixedDelay
+import org.hildan.krossbow.websocket.reconnection.withAutoReconnect
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
@@ -62,7 +64,9 @@ object NetworkModule {
     fun provideStompClient(
         okHttpWebSocketClient: OkHttpWebSocketClient,
     ): StompClient {
-        return StompClient(okHttpWebSocketClient) {
+        return StompClient(okHttpWebSocketClient.withAutoReconnect(
+            delayStrategy = FixedDelay(5000.milliseconds)
+        )) {
             heartBeat = HeartBeat(
                 minSendPeriod = 4000.milliseconds, // Follow backend recommendation
                 expectedPeriod = 4000.milliseconds
