@@ -17,10 +17,12 @@ import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
+import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
@@ -33,6 +35,8 @@ import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
+import `in`.koreatech.koin.data.stomp.KoinStomp
+import org.hildan.krossbow.stomp.StompClient
 import javax.inject.Singleton
 
 @Module
@@ -145,5 +149,14 @@ object RemoteDataSourceModule {
         timetableAuthApi: TimetableAuthApi
     ): TimetableRemoteDataSource {
         return TimetableRemoteDataSource(timetableApi, timetableAuthApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatRemoteDataSource(
+        chatAuthApi: ChatAuthApi,
+        koinStomp: KoinStomp
+    ): ChatRemoteDataSource {
+        return ChatRemoteDataSource(chatAuthApi, koinStomp)
     }
 }
