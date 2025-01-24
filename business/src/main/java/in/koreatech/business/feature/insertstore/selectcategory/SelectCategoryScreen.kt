@@ -143,7 +143,7 @@ fun SelectCategoryScreenImpl(
                     modifier = Modifier.clickable {
                         chooseCategory(category.id)
                     },
-                    imageUrl = category.imageUrl,
+                    imageUrl = category.imageUrl.toString(),
                     name = category.name,
                     categoryId = category.id,
                     choosedCategoryId = categoryId
