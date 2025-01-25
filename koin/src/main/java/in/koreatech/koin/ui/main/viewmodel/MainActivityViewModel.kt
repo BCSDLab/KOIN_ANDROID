@@ -46,23 +46,6 @@ class MainActivityViewModel @Inject constructor(
     val bannerABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
             emit(it)
-            when (it) {
-                ExperimentGroup.MAIN_BANNER_NEW -> {
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(키워드관리 진입 배너)",
-                        AnalyticsConstant.Label.CAMPUS_NOTICE_1,
-                        "진입점O"
-                    )
-                }
-
-                ExperimentGroup.MAIN_BANNER_ORIGINAL -> {
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(키워드관리 진입 배너)",
-                        AnalyticsConstant.Label.CAMPUS_NOTICE_1,
-                        "진입점X"
-                    )
-                }
-            }
         }.onFailure {
             emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
         }
