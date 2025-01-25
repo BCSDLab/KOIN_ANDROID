@@ -58,23 +58,6 @@ class MainActivityViewModel @Inject constructor(
     val diningABTestExperimentGroup = flow {
         abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
             emit(it)
-            when (it) {
-                ExperimentGroup.MAIN_DINING_NEW -> {
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(식단 메인 진입점)",
-                        AnalyticsConstant.Label.CAMPUS_DINING_1,
-                        "더보기O"
-                    )
-                }
-
-                ExperimentGroup.MAIN_DINING_ORIGINAL -> {
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(식단 메인 진입점)",
-                        AnalyticsConstant.Label.CAMPUS_DINING_1,
-                        "더보기X"
-                    )
-                }
-            }
         }.onFailure {
             emit(Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first())
         }
