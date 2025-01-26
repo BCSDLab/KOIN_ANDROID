@@ -13,6 +13,14 @@ import javax.inject.Inject
 class ChatRepositoryImpl @Inject constructor(
     private val chatRemoteDataSource: ChatRemoteDataSource
 ): ChatRepository {
+    override suspend fun connectWS() {
+        chatRemoteDataSource.connectWS()
+    }
+
+    override suspend fun disconnectWS() {
+        chatRemoteDataSource.disconnectWS()
+    }
+
     override suspend fun getChatRoomFromArticleId(articleId: Int): Flow<ChatRoom> {
         return flow {
             emit(chatRemoteDataSource.getChatRoomFromArticleId(articleId).toChatRoom())
