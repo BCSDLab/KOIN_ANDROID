@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.core.designsystem.theme
 
+import android.app.Activity
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -10,7 +11,10 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
 internal val LocalKoinColorPalette = staticCompositionLocalOf {
     KoinLightColorPalette
@@ -58,6 +62,7 @@ internal val LocalShapes = staticCompositionLocalOf {
 fun KoinTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicTheme: Boolean = true,
+    isLightStatusBar: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val extendedColors =
@@ -129,6 +134,20 @@ fun KoinTheme(
             shapes = Shapes,
             content = content
         )
+    }
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            if (view.context is Activity) {
+                /*
+                We need to check view.context is Activity
+                because when we call KoinTheme inside ComposeView, view.context is not Activity
+                */
+                val window = (view.context as Activity).window
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = isLightStatusBar
+            }
+        }
     }
 }
 
