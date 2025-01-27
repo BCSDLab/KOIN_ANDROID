@@ -4,7 +4,7 @@ package `in`.koreatech.business.feature.store.storedetail
 sealed class MyStoreDetailSideEffect {
     data object NavigateToUploadEventScreen : MyStoreDetailSideEffect()
     data class NavigateToModifyScreen(val storeId: Int) : MyStoreDetailSideEffect()
-    data object NavigateToManageMenuScreen :  MyStoreDetailSideEffect()
+    data class NavigateToManageMenuScreen(val storeId: Int) :  MyStoreDetailSideEffect()
     data object NavigateToRegisterMenuScreen :  MyStoreDetailSideEffect()
 
     data class NavigateToModifyMenuScreen(val menuId: Int) : MyStoreDetailSideEffect()
