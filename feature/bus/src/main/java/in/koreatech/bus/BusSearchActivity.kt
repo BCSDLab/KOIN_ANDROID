@@ -16,9 +16,7 @@ class BusSearchActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            KoinTheme(
-                isLightStatusBar = true
-            ) {
+            KoinTheme {
                 BusSearchNavigation(
                     modifier = Modifier.fillMaxSize()
                 )

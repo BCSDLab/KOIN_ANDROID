@@ -16,9 +16,7 @@ class BusTimetableActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            KoinTheme(
-                isLightStatusBar = true
-            ) {
+            KoinTheme {
                 BusTimetableNavigation(
                     modifier = Modifier.fillMaxSize()
                 )
