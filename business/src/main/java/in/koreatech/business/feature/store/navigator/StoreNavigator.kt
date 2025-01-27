@@ -18,13 +18,15 @@ import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyOperatingTimeScreen
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailScreen
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
+import `in`.koreatech.business.navigation.MANAGEMENUSCREEN
+import `in`.koreatech.business.navigation.MODIFYMENUSCREEN
 import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
 import `in`.koreatech.business.navigation.SIGNINSCREEN
 import `in`.koreatech.business.navigation.navigate
 import `in`.koreatech.business.navigation.sharedHiltViewModel
-import `in`.koreatech.business.navigation.toNavigateModifyMenuScreen
 import `in`.koreatech.business.navigation.toNavigateRegisterMenuScreen
+import `in`.koreatech.business.navigation.toNavigateScreenWithMenuId
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.myStoreScreen(
@@ -53,15 +55,17 @@ fun NavGraphBuilder.myStoreScreen(
                                          },
                 viewModel = myStoreInfoViewModel,
                 modifyInfoViewModel = modifyInfoViewModel,
+                navigateToManageMenuScreen = { storeId ->
+                    navController.toNavigateScreenWithMenuId(MANAGEMENUSCREEN, storeId)
+                },
                 navigateToRegisterStoreScreen = {
                     navController.navigate(REGISTERSTORESCREEN)
                 },
-                navigateToRegisterMenuScreen = {  storeId ->
+                navigateToRegisterMenuScreen = {storeId ->
                     navController.toNavigateRegisterMenuScreen(storeId)
                 },
                 navigateToModifyMenuScreen = {menuId ->
-                    navController.toNavigateModifyMenuScreen(menuId)
-
+                    navController.toNavigateScreenWithMenuId(MODIFYMENUSCREEN, menuId)
                 }
             )
         }
