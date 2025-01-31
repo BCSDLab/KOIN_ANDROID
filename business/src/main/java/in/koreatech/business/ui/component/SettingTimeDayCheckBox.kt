@@ -41,16 +41,13 @@ fun DayCheckBox(
     Box(
         modifier = modifier
             .shadow(
-                elevation = 4.dp, // 그림자의 높이
-                shape = RoundedCornerShape(8.dp), // 모서리를 둥글게 설정
+                elevation = 2.dp,
+                shape = RoundedCornerShape(16.dp),
                 clip = false)
             .background(
                 color = if(isChecked) ColorCategory else Color.White,
                 shape = RoundedCornerShape(16.dp)
             )
-            .clickable {
-                //isChecked = !isChecked
-            }
         ,
         contentAlignment = Alignment.TopCenter
     ){
