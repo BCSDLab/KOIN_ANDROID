@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.chat.ui.room
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +15,10 @@ class ChatRoomActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            try {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            } catch (ignore: IllegalStateException) {
+            }
             KoinTheme {
                 ChatRoom(
                     articleId = intent.getIntExtra(ARTICLE_ID, 0)
