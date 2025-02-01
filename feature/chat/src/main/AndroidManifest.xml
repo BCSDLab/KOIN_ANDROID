@@ -4,7 +4,8 @@
     <application>
         <activity
             android:name=".ui.room.ChatRoomActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
