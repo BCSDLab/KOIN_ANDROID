@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.source.remote
 
+import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.request.chat.ChatMessageRequest
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ChatRemoteDataSource @Inject constructor(
+    private val chatApi: ChatApi,
     private val chatAuthApi: ChatAuthApi,
     private val koinStomp: KoinStomp
 ) {
@@ -22,6 +24,10 @@ class ChatRemoteDataSource @Inject constructor(
 
     suspend fun getChatRoomFromArticleId(articleId: Int): ChatRoomResponse {
         return chatAuthApi.getChatRoomFromArticleId(articleId)
+    }
+
+    suspend fun getChatMessages(articleId: Int, chatRoomId: Int): List<ChatMessageResponse> {
+        return chatApi.getChatMessages(articleId, chatRoomId)
     }
 
     suspend fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessageResponse> {

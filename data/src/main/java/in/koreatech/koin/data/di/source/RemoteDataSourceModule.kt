@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.api.ArticleApi
+import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
@@ -154,9 +155,10 @@ object RemoteDataSourceModule {
     @Provides
     @Singleton
     fun provideChatRemoteDataSource(
+        chatApi: ChatApi,
         chatAuthApi: ChatAuthApi,
         koinStomp: KoinStomp
     ): ChatRemoteDataSource {
-        return ChatRemoteDataSource(chatAuthApi, koinStomp)
+        return ChatRemoteDataSource(chatApi, chatAuthApi, koinStomp)
     }
 }
