@@ -33,6 +33,8 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.m3)
 
+    implementation(libs.coil.compose)
+
     implementation(libs.timber)
 
     implementation(libs.krossbow.stomp.core)
