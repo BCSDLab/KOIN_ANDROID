@@ -123,6 +123,14 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
+    fun changeDialogVisibility(visibility: Boolean) = intent {
+        reduce {
+            state.copy(
+                dialogVisibility = visibility,
+            )
+        }
+    }
+
     fun onBackButtonClicked() = intent {
         postSideEffect(AccountSetupSideEffect.NavigateToBackScreen)
     }
@@ -130,6 +138,7 @@ class AccountSetupViewModel @Inject constructor(
     fun verifySmsCode(
         phoneNumber: String, verifyCode: String
     ) {
+        onAuthCodeChanged(verifyCode)
         viewModelScope.launch {
             verifySmsCodeUseCase(
                 phoneNumber, verifyCode
