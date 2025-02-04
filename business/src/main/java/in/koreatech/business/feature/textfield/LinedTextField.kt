@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
+import `in`.koreatech.business.ui.theme.ColorSuccess
 import `in`.koreatech.business.ui.theme.ColorTextField
 
 
@@ -80,7 +81,7 @@ fun LinedTextField(
 
                 }
 
-                Box(modifier = Modifier.padding(start = 8.dp, top = 1.dp)) {
+                Box(modifier = Modifier.padding(start = 8.dp, top = 4.dp)) {
                     Text(
                         text = if(isError) "" else helperText,
                         fontSize = 11.sp,
@@ -88,12 +89,12 @@ fun LinedTextField(
                     )
 
                     if (isError) Text(
-                        text = errorText, fontSize = 11.sp, color = ColorSecondary
+                        text = errorText, fontSize = 16.sp, color = ColorSecondary
                     )
                     else if (isSuccess) Text(
                         text = successText,
-                        fontSize = 11.sp,
-                        color = ColorPrimary
+                        fontSize = 16.sp,
+                        color = ColorSuccess
                     )
                 }
 
