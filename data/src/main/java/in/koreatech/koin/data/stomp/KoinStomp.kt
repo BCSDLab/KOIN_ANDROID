@@ -26,7 +26,7 @@ class KoinStomp @Inject constructor(
         if (!::stompSession.isInitialized) {
             stompSession = stompClient.connect(
                 url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
-                customStompConnectHeaders = mapOf("Authorization" to "Bearer $authToken")
+                customStompConnectHeaders = mapOf("Authorization" to authToken)
             )
             jsonStompSession = stompSession.withJsonConversions()
         }
