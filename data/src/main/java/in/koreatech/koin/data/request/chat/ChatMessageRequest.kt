@@ -1,14 +1,14 @@
 package `in`.koreatech.koin.data.request.chat
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChatMessageRequest(
-    @SerializedName("user_id") val userId: Int,
-    @SerializedName("user_nickname") val userNickname: String,
-    @SerializedName("content") val content: String,
-    @SerializedName("timestamp") val timestamp: String,
-    @SerializedName("is_image") val isImage: Boolean,
-    @SerializedName("isSentByMe") val isSentByMe: Boolean
+    @SerialName("user_id") val userId: Int,
+    @SerialName("user_nickname") val userNickname: String,
+    @SerialName("content") val content: String,
+    @SerialName("timestamp") val timestamp: String,
+    @SerialName("is_image") val isImage: Boolean,
+    @SerialName("isSentByMe") val isSentByMe: Boolean
 )
