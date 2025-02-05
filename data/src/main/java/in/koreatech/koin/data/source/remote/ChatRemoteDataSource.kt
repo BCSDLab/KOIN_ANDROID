@@ -27,7 +27,7 @@ class ChatRemoteDataSource @Inject constructor(
     }
 
     suspend fun getChatMessages(articleId: Int, chatRoomId: Int): List<ChatMessageResponse> {
-        return chatApi.getChatMessages(articleId, chatRoomId)
+        return chatAuthApi.getChatMessages(articleId, chatRoomId)
     }
 
     suspend fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessageResponse> {
