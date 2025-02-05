@@ -38,7 +38,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,11 +54,11 @@ import `in`.koreatech.business.ui.theme.Gray11
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Gray500
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
-import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.formatTime
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+
 @Composable
 fun AccountSetupScreen(
     modifier: Modifier = Modifier,
@@ -75,7 +74,6 @@ fun AccountSetupScreen(
         hasRequestedSmsValidation = true
     }
     var timerText by remember { mutableStateOf(300) }
-
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -280,7 +278,6 @@ fun AccountSetupScreen(
                                 timerText = remainingTime
                             }
                         }
-
                     ) {
                         Text(
                             text = stringResource(id = R.string.resend_authentication_code),

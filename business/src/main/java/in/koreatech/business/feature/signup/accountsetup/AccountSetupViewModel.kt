@@ -172,6 +172,7 @@ class AccountSetupViewModel @Inject constructor(
                         state.copy(
                             phoneNumberState = SignupContinuationState.RequestedSmsValidation,
                             sendCodeError = null,
+                            verifyState = SignupContinuationState.AvailablePhoneNumber,
                         )
                     }
                 }.onFailure {

@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupScreen
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
+import `in`.koreatech.business.feature.signup.accountsetup.EnterPasswordScreen
 import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthScreen
 import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthViewModel
 import `in`.koreatech.business.feature.signup.businessauth.SearchStoreScreen
@@ -45,6 +46,20 @@ fun NavGraphBuilder.signUpScreen(
         ) {
             val accountSetupViewModel: AccountSetupViewModel = it.sharedHiltViewModel(navController = navController)
             AccountSetupScreen(
+                onBackClicked = { navController.popBackStack() },
+                onNextClicked = {
+                    navController.navigate(SignupRoute.ENTER_PASSWORD.name)
+                },
+                viewModel = accountSetupViewModel
+            )
+        }
+
+
+        composable(
+            route = SignupRoute.ENTER_PASSWORD.name,
+        ) {
+            val accountSetupViewModel: AccountSetupViewModel = it.sharedHiltViewModel(navController = navController)
+            EnterPasswordScreen(
                 onBackClicked = { navController.popBackStack() },
                 onNextClicked = {
                     navController.navigate(SignupRoute.BUSINESS_AUTH.name)
