@@ -106,9 +106,13 @@
     <string name="search_icon">search</string>
     <string name="email_not_validate">존재하지 않는 도메인입니다.</string>
     <string name="enter_id">아이디를 입력해주세요.</string>
-    <string name="enter_password">비밀번호를 입력해주세요.</string>
+    <string name="enter_password">사용하실 비밀번호를 입력해주세요.</string>
     <string name="enter_password_confirm">비밀번호를 다시 입력해주세요.</string>
-    <string name="enter_phone_number">-없이 번호를 입력해주세요.</string>
+    <string name="enter_password_condition">특수문자 포함 영어와 숫자 6~18자리로 입력해주세요.</string>
+    <string name="available_password">사용 가능한 비밀번호 입니다. 다음으로 넘어가주세요.</string>
+    <string name="match_password">비밀번호가 일치합니다. 다음으로 넘어가주세요.</string>
+    <string name="enter_phone_number">휴대 전화 번호를 입력해주세요.</string>
+    <string name="enter_phone">-없이 번호를 입력해주세요.</string>
     <string name="sign_up">회원가입</string>
     <string name="business_number_not_validate">올바르지 않는 사업자 번호입니다.</string>
     <string name="phone_number_not_validate">존재하지 않는 휴대폰 번호입니다.</string>
