@@ -54,7 +54,6 @@ class ChatRoomViewModel @AssistedInject constructor(
     }
 
     init {
-        connectToWS()
         getUserInfo()
         savedStateHandle.get<Int>(ARTICLE_ID)?.let {
             getChatRoom(it)
@@ -92,8 +91,10 @@ class ChatRoomViewModel @AssistedInject constructor(
                         chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: "")
                     )
                 }
+                getChatMessages(data.articleId, data.chatRoomId)
             }
         }
+        connectToWS()
     }
 
     private fun connectToWS() = viewModelScope.launch {
@@ -115,8 +116,21 @@ class ChatRoomViewModel @AssistedInject constructor(
     private fun subscribeChatRoom(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
         subscribeChatRoomUseCase(articleId, chatRoomId).catch {
             Timber.e(it)
-        }.collectLatest { message ->
+        }.collect { message ->
             intent {
+                if (state.chatMessage.isEmpty()) {
+                    reduce {
+                        state.copy(
+                            chatMessage = listOf(
+                                Pair(
+                                    LocalDateTime.parse(message.timestamp).toLocalDate(),
+                                    listOf(message.toConvertedChatMessage())
+                                )
+                            )
+                        )
+                    }
+                    return@intent
+                }
                 if (state.chatMessage.last().first < LocalDateTime.parse(message.timestamp)
                         .toLocalDate()
                 ) {
@@ -153,7 +167,7 @@ class ChatRoomViewModel @AssistedInject constructor(
     private fun getChatMessages(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
         getChatMessageUseCase(articleId, chatRoomId).catch {
             Timber.e(it)
-        }.collectLatest { messages ->
+        }.collect { messages ->
             intent {
                 reduce {
                     state.copy(chatMessage = messages.map { it.toConvertedChatMessage() }
@@ -200,7 +214,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                     ChatMessage(
                         userId = state.userId,
                         userNickname = state.userNickName,
-                        content =  fileUrl,
+                        content = fileUrl,
                         timestamp = LocalDateTime.now().toString(),
                         isImage = true,
                         isSentByMe = true
@@ -253,10 +267,11 @@ class ChatRoomViewModel @AssistedInject constructor(
                         isSentByMe = true
                     )
                 )
+                reduce {
+                    state.copy(chatInputValue = "")
+                }
             }
-            reduce {
-                state.copy(chatInputValue = "")
-            }
+
         }
     }
 
