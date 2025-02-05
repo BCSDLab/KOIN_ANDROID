@@ -1,11 +1,16 @@
 package `in`.koreatech.koin.data.api
 
+import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundReportRequest
+import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundReportRequestItem
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
+import okhttp3.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -78,4 +83,10 @@ interface ArticleApi {
     suspend fun fetchArticleLostAndFound(
         @Path("id") id: Int
     ): ArticleLostAndFoundResponse
+
+    @POST("articles/lost-item/{id}/reports")
+    suspend fun reportLostAndFound(
+        @Path("id") id: Int,
+        @Body reportReasons: ArticleLostAndFoundReportRequest
+    ): Response
 }

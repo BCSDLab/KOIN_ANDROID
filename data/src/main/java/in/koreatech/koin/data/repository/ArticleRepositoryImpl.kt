@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.request.article.toRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
@@ -7,6 +8,7 @@ import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import `in`.koreatech.koin.domain.model.user.User
@@ -232,5 +234,12 @@ class ArticleRepositoryImpl @Inject constructor(
 
     override suspend fun deleteArticleLostAndFound(articleId: Int): Result<Unit> {
         return articleRemoteDataSource.deleteArticleLostAndFound(articleId)
+    }
+
+    override suspend fun reportLostAndFoundArticle(
+        articleId: Int,
+        articleLostAndFoundList: List<ArticleLostAndFoundReportItem>
+    ): Result<Unit> {
+        return articleRemoteDataSource.reportLostAndFoundArticle(articleId, articleLostAndFoundList.toRequest())
     }
 }
