@@ -54,6 +54,7 @@ class ChatRoomViewModel @AssistedInject constructor(
     }
 
     init {
+        connectToWS()
         getUserInfo()
         savedStateHandle.get<Int>(ARTICLE_ID)?.let {
             getChatRoom(it)
@@ -88,13 +89,17 @@ class ChatRoomViewModel @AssistedInject constructor(
                         chatRoomId = data.chatRoomId,
                         userId = data.userId,
                         articleTitle = data.articleTitle,
-                        chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage)
+                        chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: "")
                     )
                 }
             }
-            getChatMessages(data.articleId, data.chatRoomId)
+        }
+    }
+
+    private fun connectToWS() = viewModelScope.launch {
+        intent {
             chatWSConnectUseCase().onSuccess {
-                subscribeChatRoom(data.articleId, data.chatRoomId)
+                subscribeChatRoom(state.articleId, state.chatRoomId)
             }.onFailure { error ->
                 if (error is WebSocketReconnectionException) {
                     // Handle reconnection error
@@ -142,6 +147,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                 }
             }
         }
+        getChatMessages(articleId, chatRoomId)
     }
 
     private fun getChatMessages(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
