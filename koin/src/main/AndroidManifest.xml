@@ -76,6 +76,11 @@
         </activity>
 
         <activity
+            android:name=".ui.article.lostandfound.LostAndFoundReportActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".ui.store.activity.WriteReviewActivity"
             android:exported="false">
             <intent-filter>

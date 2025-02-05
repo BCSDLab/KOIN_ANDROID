@@ -33,7 +33,8 @@ fun LostAndFoundDetail(
     articleId: Int,
     modifier: Modifier = Modifier,
     navigateToArticleList: () -> Unit = {},
-    navigateToHotArticle: (HotArticleData) -> Unit
+    navigateToHotArticle: (HotArticleData) -> Unit,
+    navigateToReport: (articleId: Int) -> Unit = {}
 ) {
     val savedStateHandle = SavedStateHandle()
     savedStateHandle[ARTICLE_ID] = articleId
@@ -86,6 +87,9 @@ fun LostAndFoundDetail(
                 },
                 onShowDeleteDialogChange = {
                     viewModel.setShowDeleteDialog(it)
+                },
+                onReportArticleClick = {
+                    navigateToReport(articleId)
                 }
             )
 
