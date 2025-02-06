@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -106,7 +107,11 @@ private fun ChatBubbleFromOther(
                 Image(
                     painter = painterResource(id = R.drawable.ic_chat_user_image),
                     contentDescription = stringResource(id = R.string.chat_user_profile_image),
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .clip(KoinTheme.shapes.small)
+                        .background(KoinTheme.colors.primary500)
+                        .padding(2.dp)
+                        .size(24.dp)
                 )
             } else {
                 AsyncImage(
@@ -118,7 +123,7 @@ private fun ChatBubbleFromOther(
                     placeholder = painterResource(id = R.drawable.ic_chat_user_image),
                 )
             }
-            Spacer(modifier = Modifier.width(2.dp))
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = message.userNickname,
                 style = KoinTheme.typography.regular12,
