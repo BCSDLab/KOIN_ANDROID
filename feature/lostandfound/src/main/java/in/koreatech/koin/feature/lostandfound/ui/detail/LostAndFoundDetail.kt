@@ -78,7 +78,7 @@ fun LostAndFoundDetail(
             )
 
             DetailButtonGroup(
-                showDeleteButton = uiState.canDelete,
+                showDeleteButton = uiState.isMine,
                 showDeleteDialog = uiState.showDeleteDialog,
                 isLoggedIn = uiState.isLoggedIn,
                 onArticleListClick = {

@@ -15,7 +15,6 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFound
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.model.toArticleHeaderState
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -75,45 +74,27 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
                 )
             }
 
-            getUserStatusUseCase()
-                .combine(fetchLostAndFoundArticleUseCase(articleId).map {
-                    it.toLostAndFoundDetailState()
-                }) { user, article ->
-                    user to article
-                }.collectLatest { (user, article) ->
-                    if (user is User.Student) {
-                        reduce {
-                            state.copy(
-                                currentLoggedInUser = user.name ?: ""
-                            )
-                        }
-                    } else {
-                        reduce {
-                            state.copy(
-                                currentLoggedInUser = ""
-                            )
-                        }
-                    }
-
-                    reduce {
-                        state.copy(
-                            canDelete = state.currentLoggedInUser == article.author,
-                            lostOrFound = article.lostOrFound,
-                            id = article.id,
-                            category = article.category,
-                            foundPlace = article.foundPlace,
-                            foundDate = article.foundDate,
-                            content = article.content,
-                            author = article.author,
-                            images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
-                            registeredAt = article.registeredAt,
-                            updatedAt = article.updatedAt,
-                            isWriterCouncil = article.isWriterCouncil,
-                            isMine = article.isMine,
-                            isLoading = false
-                        )
-                    }
+            fetchLostAndFoundArticleUseCase(articleId).map {
+                it.toLostAndFoundDetailState()
+            }.collectLatest { article ->
+                reduce {
+                    state.copy(
+                        lostOrFound = article.lostOrFound,
+                        id = article.id,
+                        category = article.category,
+                        foundPlace = article.foundPlace,
+                        foundDate = article.foundDate,
+                        content = article.content,
+                        author = article.author,
+                        images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
+                        registeredAt = article.registeredAt,
+                        updatedAt = article.updatedAt,
+                        isWriterCouncil = article.isWriterCouncil,
+                        isMine = article.isMine,
+                        isLoading = false
+                    )
                 }
+            }
         }
     }
 
