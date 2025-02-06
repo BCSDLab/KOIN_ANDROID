@@ -28,6 +28,7 @@ fun DetailButtonGroup(
     modifier: Modifier = Modifier,
     showDeleteButton: Boolean = false,
     showDeleteDialog: Boolean = false,
+    isLoggedIn: Boolean = false,
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
@@ -110,49 +111,51 @@ fun DetailButtonGroup(
                 }
             }
         } else {
-            Button(
-                modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                contentPadding = PaddingValues(10.dp, 6.dp),
-                onClick = onChatRoomClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.neutral300,
-                    contentColor = KoinTheme.colors.neutral600
-                ),
-                shape = KoinTheme.shapes.extraSmall
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
+            if (isLoggedIn) {
+                Button(
+                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                    contentPadding = PaddingValues(10.dp, 6.dp),
+                    onClick = onChatRoomClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = KoinTheme.colors.neutral300,
+                        contentColor = KoinTheme.colors.neutral600
+                    ),
+                    shape = KoinTheme.shapes.extraSmall
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_chat),
+                            contentDescription = null
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(
+                            style = KoinTheme.typography.regular12,
+                            text = stringResource(R.string.detail_chat_room_button)
+                        )
+                    }
+                }
+
+                Button(
+                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                    contentPadding = PaddingValues(10.dp, 6.dp),
+                    onClick = onReportArticleClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = KoinTheme.colors.neutral300,
+                        contentColor = KoinTheme.colors.neutral600
+                    ),
+                    shape = KoinTheme.shapes.extraSmall
                 ) {
                     Image(
                         modifier = Modifier.size(20.dp),
-                        painter = painterResource(id = R.drawable.ic_chat),
+                        painter = painterResource(id = R.drawable.ic_article_report),
                         contentDescription = null
                     )
-
-                    Spacer(modifier = Modifier.width(4.dp))
-
-                    Text(
-                        style = KoinTheme.typography.regular12,
-                        text = stringResource(R.string.detail_chat_room_button)
-                    )
                 }
-            }
-
-            Button(
-                modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                contentPadding = PaddingValues(10.dp, 6.dp),
-                onClick = onReportArticleClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.neutral300,
-                    contentColor = KoinTheme.colors.neutral600
-                ),
-                shape = KoinTheme.shapes.extraSmall
-            ) {
-                Image(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(id = R.drawable.ic_article_report),
-                    contentDescription = null
-                )
             }
         }
     }
