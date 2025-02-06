@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.lostandfound
 
 import android.os.Parcelable
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -10,6 +11,7 @@ data class LostAndFoundState(
     val isFabDialogExpanded: Boolean = false,
     val myKeywords: List<String> = emptyList(),
     val selectedKeyword: String = "",
+    val selectedType: LostOrFoundType? = null,
     val isAnonymous: Boolean = false,
     val userType: String = "",
     val lostAndFoundList: List<LostAndFoundItemState> = emptyList(),
