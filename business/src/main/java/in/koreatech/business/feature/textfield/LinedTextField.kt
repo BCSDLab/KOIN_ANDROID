@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.ui.theme.ColorHelper
@@ -58,7 +59,6 @@ fun LinedTextField(
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         decorationBox = { innerTextField ->
             Column(modifier = Modifier.fillMaxWidth()) {
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -78,20 +78,18 @@ fun LinedTextField(
                             Text(text = label, fontSize = 14.sp, color = ColorHelper)
                         innerTextField()
                     }
-
                 }
 
                 Box(modifier = Modifier.padding(start = 8.dp, top = 4.dp)) {
                     Text(
                         text = if(isError) "" else helperText,
-                        fontSize = 11.sp,
+                        fontSize = 16.sp,
                         color = ColorHelper,
                     )
-
                     if (isError) Text(
                         text = errorText, fontSize = 16.sp, color = ColorSecondary
                     )
-                    else if (isSuccess) Text(
+                    else if (isSuccess && focused) Text(
                         text = successText,
                         fontSize = 16.sp,
                         color = ColorSuccess
