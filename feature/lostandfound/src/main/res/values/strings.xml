@@ -102,4 +102,5 @@
 
     <string name="pagination_prev">이전</string>
     <string name="pagination_next">다음</string>
+    <string name="detail_chat_room_button">쪽지 보내기</string>
 </resources>
