@@ -58,6 +58,7 @@ fun DetailButtonGroup(
             .fillMaxWidth()
     ) {
         Button(
+            modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
             contentPadding = PaddingValues(12.dp, 6.dp),
             onClick = onArticleListClick,
             colors = ButtonDefaults.buttonColors(
@@ -67,6 +68,7 @@ fun DetailButtonGroup(
             shape = KoinTheme.shapes.extraSmall
         ) {
             Text(
+                modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                 style = KoinTheme.typography.regular12,
                 text = stringResource(R.string.detail_article_list_button)
             )
@@ -76,6 +78,7 @@ fun DetailButtonGroup(
 
         if (showDeleteButton) {
             Button(
+                modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                 contentPadding = PaddingValues(10.dp, 6.dp),
                 onClick = {
                     onShowDeleteDialogChange(true)
@@ -94,6 +97,7 @@ fun DetailButtonGroup(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
+                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                         style = KoinTheme.typography.regular12,
                         text = stringResource(R.string.detail_delete_button)
                     )
