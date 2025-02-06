@@ -53,7 +53,8 @@ class LostAndFoundViewModel @Inject constructor(
             if (state.selectedKeyword.isEmpty()) {
                 fetchLostAndFoundArticlePaginationUseCase(
                     state.currentPage,
-                    ARTICLES_PER_PAGE
+                    ARTICLES_PER_PAGE,
+                    state.selectedType?.name
                 ).collectLatest {
                     reduce {
                         state.copy(
