@@ -11,7 +11,9 @@ import java.time.LocalDate
 
 data class LostAndFoundDetailState(
     val isLoading: Boolean = false,
+    val isLoggedIn: Boolean = false,
     val currentLoggedInUser: String = "",
+    val currentLoggedInUserId: Int = 0,
     val canDelete: Boolean = false,
     val showDeleteDialog: Boolean = false,
     val lostOrFound: LostOrFoundType = LostOrFoundType.FOUND,

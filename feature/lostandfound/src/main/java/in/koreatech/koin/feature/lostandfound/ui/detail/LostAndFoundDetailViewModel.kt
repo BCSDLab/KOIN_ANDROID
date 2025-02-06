@@ -36,6 +36,7 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
         container<LostAndFoundDetailState, LostAndFoundDetailSideEffect>(LostAndFoundDetailState())
 
     init {
+        initUserInfo()
         fetchHotArticles()
         fetchLostAndFoundDetail(savedStateHandle.get<Int>(ARTICLE_ID) ?: 0)
     }
@@ -43,6 +44,27 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(savedStateHandle: SavedStateHandle): LostAndFoundDetailViewModel
+    }
+
+    private fun initUserInfo() = viewModelScope.launch {
+        getUserStatusUseCase().collectLatest {
+            intent {
+                if (it is User.Student) {
+                    reduce {
+                        state.copy(
+                            isLoggedIn = true,
+                            currentLoggedInUserId = Integer.parseInt(it.studentNumber ?: "0"),
+                        )
+                    }
+                } else {
+                    reduce {
+                        state.copy(
+                            isLoggedIn = false,
+                        )
+                    }
+                }
+            }
+        }
     }
 
     fun fetchLostAndFoundDetail(articleId: Int) = viewModelScope.launch {
