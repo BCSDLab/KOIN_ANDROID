@@ -24,7 +24,8 @@ data class LostAndFoundDetailState(
     val images: List<Uri>? = null,
     val registeredAt: LocalDate = LocalDate.MIN,
     val updatedAt: String = "",
-    val isWriterCouncil: Boolean = true,
+    val isWriterCouncil: Boolean = false,
+    val isMine: Boolean = false,
     val hotArticles: List<ArticleHeaderState> = emptyList(),
 )
 
@@ -40,6 +41,7 @@ fun ArticleLostAndFound.toLostAndFoundDetailState(): LostAndFoundDetailState {
         images = images?.map { Uri.parse(it.imageUrl) },
         registeredAt = LocalDate.parse(registeredAt),
         updatedAt = updatedAt,
-        isWriterCouncil = true, //Currenly, only council can write article. So hardcode isWriterCouncil to true
+        isWriterCouncil = isCouncil,
+        isMine = isMine
     )
 }

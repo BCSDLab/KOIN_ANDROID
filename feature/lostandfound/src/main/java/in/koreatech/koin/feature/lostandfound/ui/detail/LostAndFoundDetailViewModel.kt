@@ -86,6 +86,8 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
                             images = article.images?.filter { URLUtil.isValidUrl(it.toString()) },
                             registeredAt = article.registeredAt,
                             updatedAt = article.updatedAt,
+                            isWriterCouncil = article.isWriterCouncil,
+                            isMine = article.isMine,
                             isLoading = false
                         )
                     }
