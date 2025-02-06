@@ -47,7 +47,14 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                                 putInt(NAVIGATED_BOARD_ID, hotArticleData.board.id)
                             }
                         )
-                    }
+                    },
+                    navigateToChatRoom = { articleId ->
+                        Intent(requireContext(), ChatRoomActivity::class.java).apply {
+                            putExtra(ARTICLE_ID, articleId)
+                        }.also {
+                            startActivity(it)
+                        }
+                    },
                 )
             }
         }
