@@ -42,4 +42,8 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun sendMessage(articleId: Int, chatRoomId: Int, message: ChatMessage) {
         chatRemoteDataSource.sendMessage(articleId, chatRoomId, message.toChatMessageRequest())
     }
+
+    override suspend fun blockUser(articleId: Int, chatRoomId: Int): Result<Unit> {
+        return chatRemoteDataSource.blockUser(articleId, chatRoomId)
+    }
 }

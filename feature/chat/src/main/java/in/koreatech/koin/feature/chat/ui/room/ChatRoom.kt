@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.chat.ui.room
 
+import android.app.Activity
 import android.content.Context
 import android.provider.OpenableColumns
 import android.widget.Toast
@@ -44,7 +45,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatRoom(
-    articleId: Int
+    articleId: Int,
 ) {
     val savedStateHandle = SavedStateHandle()
     savedStateHandle[ARTICLE_ID] = articleId
@@ -129,7 +130,7 @@ fun ChatRoom(
                                 )
                             },
                             onClick = {
-                                // TODO: Implement block user
+                                viewModel.blockUser()
                             }
                         )
                     }
@@ -176,6 +177,17 @@ fun handleSideEffect(
                 context.getString(R.string.failed_to_upload_image),
                 Toast.LENGTH_SHORT
             ).show()
+        }
+
+        ChatRoomSideEffect.BlockUserFailed -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.failed_to_block_user),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        ChatRoomSideEffect.BlockUserSuccess -> {
+            (context as Activity).finish()
         }
     }
 }

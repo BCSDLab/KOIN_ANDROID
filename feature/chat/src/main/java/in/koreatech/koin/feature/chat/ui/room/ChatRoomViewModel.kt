@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
+import `in`.koreatech.koin.domain.usecase.chat.ChatBlockUserUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatMessageUseCase
@@ -44,7 +45,8 @@ class ChatRoomViewModel @AssistedInject constructor(
     private val getChatMessageUseCase: GetChatMessageUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
-    private val uploadFilesUseCase: UploadFileUseCase
+    private val uploadFilesUseCase: UploadFileUseCase,
+    private val chatBlockUserUseCase: ChatBlockUserUseCase
 ) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
     override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState())
 
@@ -272,6 +274,17 @@ class ChatRoomViewModel @AssistedInject constructor(
                 }
             }
 
+        }
+    }
+
+    fun blockUser() = intent {
+        viewModelScope.launch {
+            chatBlockUserUseCase(state.articleId, state.chatRoomId).onSuccess {
+                postSideEffect(ChatRoomSideEffect.BlockUserSuccess)
+            }.onFailure {
+                Timber.d(it)
+                postSideEffect(ChatRoomSideEffect.BlockUserFailed)
+            }
         }
     }
 
