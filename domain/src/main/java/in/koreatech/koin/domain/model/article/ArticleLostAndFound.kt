@@ -3,6 +3,7 @@ package `in`.koreatech.koin.domain.model.article
 data class ArticleLostAndFound(
     val id: Int,
     val boardId: Int,
+    val type: String,
     val category: String,
     val foundPlace: String,
     val foundDate: String,

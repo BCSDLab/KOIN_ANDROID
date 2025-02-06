@@ -23,6 +23,7 @@ data class LostAndFoundWriteArticleItemState(
 
 fun LostAndFoundWriteArticleItemState.toArticleLostAndFoundUpload(): ArticleLostAndFoundUpload {
     return ArticleLostAndFoundUpload(
+        type = lostOrFoundType.name,
         category = category.getCategoryKoreanWord(),
         foundPlace = foundPlace,
         foundDate = foundDate.toString(),

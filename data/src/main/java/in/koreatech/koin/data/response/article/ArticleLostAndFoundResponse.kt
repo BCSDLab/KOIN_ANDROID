@@ -7,6 +7,7 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundHeader
 data class ArticleLostAndFoundResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("board_id") val boardId: Int,
+    @SerializedName("type") val type: String,
     @SerializedName("category") val category: String,
     @SerializedName("found_place") val foundPlace: String,
     @SerializedName("found_date") val foundDate: String,
@@ -31,6 +32,7 @@ data class ArticleLostAndFoundResponse(
     fun toArticleLostAndFoundHeader() = ArticleLostAndFoundHeader(
         id = id,
         boardId = boardId,
+        type = type,
         category = category,
         foundPlace = foundPlace,
         foundDate = foundDate,
@@ -43,6 +45,7 @@ data class ArticleLostAndFoundResponse(
     fun toArticleLostAndFound() = ArticleLostAndFound(
         id = id,
         boardId = boardId,
+        type = type,
         category = category,
         foundPlace = foundPlace,
         foundDate = foundDate,
