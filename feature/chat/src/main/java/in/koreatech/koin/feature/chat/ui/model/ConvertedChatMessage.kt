@@ -12,13 +12,13 @@ data class ConvertedChatMessage(
     val isSentByMe: Boolean
 )
 
-fun ChatMessage.toConvertedChatMessage(): ConvertedChatMessage {
+fun ChatMessage.toConvertedChatMessage(userId: Int): ConvertedChatMessage {
     return ConvertedChatMessage(
         userId = this.userId,
         userNickname = this.userNickname,
         content = this.content,
         timestamp = LocalDateTime.parse(this.timestamp),
         isImage = this.isImage,
-        isSentByMe = this.isSentByMe
+        isSentByMe = userId == this.userId
     )
 }

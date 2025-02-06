@@ -124,7 +124,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                             chatMessage = listOf(
                                 Pair(
                                     LocalDateTime.parse(message.timestamp).toLocalDate(),
-                                    listOf(message.toConvertedChatMessage())
+                                    listOf(message.toConvertedChatMessage(state.userId))
                                 )
                             )
                         )
@@ -139,7 +139,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                             chatMessage = state.chatMessage.plus(
                                 Pair(
                                     LocalDateTime.parse(message.timestamp).toLocalDate(), listOf(
-                                        message.toConvertedChatMessage()
+                                        message.toConvertedChatMessage(state.userId)
                                     )
                                 )
                             ),
@@ -152,7 +152,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                                 Pair(
                                     state.chatMessage.last().first,
                                     state.chatMessage.last().second.plus(
-                                        message.toConvertedChatMessage()
+                                        message.toConvertedChatMessage(state.userId)
                                     )
                                 )
                             ),
@@ -170,7 +170,7 @@ class ChatRoomViewModel @AssistedInject constructor(
         }.collect { messages ->
             intent {
                 reduce {
-                    state.copy(chatMessage = messages.map { it.toConvertedChatMessage() }
+                    state.copy(chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
                         .groupBy { it.timestamp.toLocalDate() }.toList())
                 }
             }
