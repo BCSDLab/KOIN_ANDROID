@@ -15,4 +15,5 @@ data class ChatRoomState(
     val chatMessage: List<Pair<LocalDate, List<ConvertedChatMessage>>> = emptyList(),
     val chatInputValue: String = "",
     val showMenu: Boolean = false,
+    val showBlockDialog: Boolean = false
 )

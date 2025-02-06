@@ -18,6 +18,9 @@ fun ChatRoomContent(
     messages: List<Pair<LocalDate, List<ConvertedChatMessage>>>,
     chatPartnerProfileImage: Uri?,
     chatInputValue: String,
+    showBlockDialog: Boolean,
+    onBlockUser: () -> Unit,
+    onBlockCancel: () -> Unit,
     onChatInputValueChange: (String) -> Unit,
     onImageButtonClick: () -> Unit,
     onSendClick: () -> Unit,
@@ -55,5 +58,11 @@ fun ChatRoomContent(
             onImageButtonClick = onImageButtonClick,
             onSendClick = onSendClick
         )
+        if (showBlockDialog) {
+            ChatBlockDialog(
+                onBlockUser = onBlockUser,
+                onBlockCancel = onBlockCancel
+            )
+        }
     }
 }

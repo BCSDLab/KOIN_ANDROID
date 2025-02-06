@@ -130,7 +130,7 @@ fun ChatRoom(
                                 )
                             },
                             onClick = {
-                                viewModel.blockUser()
+                                viewModel.changeBlockDialogState(true)
                             }
                         )
                     }
@@ -149,6 +149,12 @@ fun ChatRoom(
             messages = uiState.chatMessage,
             chatPartnerProfileImage = uiState.chatPartnerProfileImage,
             chatInputValue = uiState.chatInputValue,
+            showBlockDialog = uiState.showBlockDialog,
+            onBlockUser = {
+                viewModel.blockUser()
+                viewModel.changeBlockDialogState(false)
+            },
+            onBlockCancel = { viewModel.changeBlockDialogState(false) },
             onChatInputValueChange = { viewModel.onChatInputValueChange(it) },
             onImageButtonClick = {
                 pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -186,6 +192,7 @@ fun handleSideEffect(
                 Toast.LENGTH_SHORT
             ).show()
         }
+
         ChatRoomSideEffect.BlockUserSuccess -> {
             (context as Activity).finish()
         }

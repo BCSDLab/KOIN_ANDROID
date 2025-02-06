@@ -299,6 +299,15 @@ class ChatRoomViewModel @AssistedInject constructor(
         disconnectWS()
     }
 
+    fun changeBlockDialogState(dialogState: Boolean) = intent {
+        reduce {
+            state.copy(
+                showBlockDialog = dialogState,
+                showMenu = false // Close menu when dialog state changes
+            )
+        }
+    }
+
     companion object {
         const val ARTICLE_ID = "article_id"
     }
