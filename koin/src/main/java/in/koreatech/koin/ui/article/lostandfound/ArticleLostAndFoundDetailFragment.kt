@@ -49,6 +49,16 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                                 putInt(NAVIGATED_BOARD_ID, hotArticleData.board.id)
                             }
                         )
+                    },
+                    navigateToReport = { articleId ->
+                        Intent(requireContext(), LostAndFoundReportActivity::class.java).apply {
+                            putExtra(
+                                BUNDLE_ARTICLE_EXTRA_KEY,
+                                bundleOf(
+                                    ARTICLE_ID to articleId,
+                                )
+                            )
+                        }.let(::startActivity)
                     }
                 )
             }
