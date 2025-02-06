@@ -17,6 +17,7 @@ import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_E
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAV_ARTICLE
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
 import `in`.koreatech.koin.ui.article.ArticleBoardType
+import `in`.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundWriteFragment.Companion.LOST_OR_FOUND_TYPE
 import `in`.koreatech.koin.ui.login.LoginActivity
 
 @AndroidEntryPoint
@@ -32,7 +33,9 @@ class ArticleListLostAndFoundFragment : Fragment() {
             setContent {
                 LostAndFoundList(
                     navigateToWriteFoundItem = {
-                        navController.navigate(R.id.articleLostAndFoundWriteFragment)
+                        navController.navigate(R.id.articleLostAndFoundWriteFragment,
+                            bundleOf(LOST_OR_FOUND_TYPE to it)
+                        )
                     },
                     navigateToLostAndFoundDetail = { articleId ->
                         navController.navigate(

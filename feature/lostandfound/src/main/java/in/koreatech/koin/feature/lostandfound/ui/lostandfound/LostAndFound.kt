@@ -9,14 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,10 +24,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundDialog
+import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundDropdownGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundFAB
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundItem
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundKeywordGroup
@@ -41,7 +41,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun LostAndFoundList(
     viewModel: LostAndFoundViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    navigateToWriteFoundItem: () -> Unit = {},
+    navigateToWriteFoundItem: (lostOrFoundType: String) -> Unit = {},
     navigateToLostAndFoundDetail: (articleId: Int) -> Unit = {},
     navigateToKeywordFragment: () -> Unit = {},
     navigateToLoginActivity: () -> Unit = {}
@@ -59,34 +59,13 @@ fun LostAndFoundList(
     KoinTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            containerColor = if (uiState.isFabDialogExpanded) Color(0xB2000000) else KoinTheme.colors.neutral0,
+            containerColor = KoinTheme.colors.neutral0,
             floatingActionButton = {
                 val fabWrite = stringResource(R.string.fab_write)
-
-                when (uiState.userType) {
-                    UserType.COUNCIL.name -> { // If userType is COUNCIL, show FAB for write article
-                        LostAndFoundFAB(
-                            mainOnClick = {
-                                EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_WRITE,
-                                    fabWrite
-                                )
-                                navigateToWriteFoundItem()
-                            }
-                        )
-                    }
-
-                    else -> {
-                        // Do nothing
-                    }
-                }
-
-                /* TODO: 2차 배포
                 val fabFoundText = stringResource(R.string.fab_found)
                 val fabLostText = stringResource(R.string.fab_lost)
                 LostAndFoundFAB(
-                    modifier = Modifier,
-                    isDialogExpanded = { viewModel.setFabDialogExpanded(it) },
+                    isDialogExpanded = uiState.isFabDialogExpanded,
                     dialogExpandButtonText = fabWrite,
                     dialogExpandButtonPainter = painterResource(id = R.drawable.ic_fab_write),
                     firstButtonText = fabFoundText,
@@ -94,26 +73,32 @@ fun LostAndFoundList(
                     secondButtonText = fabLostText,
                     secondButtonPainter = painterResource(id = R.drawable.ic_lost),
                     onFirstButtonClick = {
-                        if (isAnonymous) {
+                        if (uiState.isAnonymous) {
                             viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
                                 AnalyticsConstant.Label.LOST_AND_FOUND.FOUND_WRITE,
                                 fabFoundText
                             )
-                            navigateToWriteFoundItem()
+                            navigateToWriteFoundItem(
+                                LostOrFoundType.FOUND.name
+                            )
                         }
+                        viewModel.setFabDialogExpanded(false)
                     },
                     onSecondButtonClick = {
-                        if (isAnonymous) {
+                        if (uiState.isAnonymous) {
                             viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
                                 AnalyticsConstant.Label.LOST_AND_FOUND.LOST_WRITE,
                                 fabLostText
                             )
-                            navigateToWriteFoundItem()
+                            navigateToWriteFoundItem(
+                                LostOrFoundType.LOST.name
+                            )
                         }
+                        viewModel.setFabDialogExpanded(false)
                     },
                     onDialogExpandedChange = {
                         EventLogger.logCampusClickEvent(
@@ -123,7 +108,6 @@ fun LostAndFoundList(
                         viewModel.setFabDialogExpanded(it)
                     }
                 )
-                 */
             },
             contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) { contentPadding ->
@@ -141,13 +125,31 @@ fun LostAndFoundList(
                     item {
                         LostAndFoundKeywordGroup(
                             keyWords = myKeywords,
+                            selectedKeywordIndex = when (uiState.selectedKeyword) {
+                                "" -> 0
+                                else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
+                            },
                             navigateToKeywordFragment = navigateToKeywordFragment
                         ) {
                             viewModel.selectKeyword(it)
                         }
-                        /* TODO: 2차 배포
-                        LostAndFoundDropdownGroup {}
-                         */
+                        LostAndFoundDropdownGroup(
+                            selectedType = uiState.selectedType,
+                            isDropdownExpanded = uiState.isDropdownExpanded,
+                            onDropdownExpandChange = {
+                                viewModel.setDropdownExpanded(it)
+                            },
+                            onItemSelected = {
+                                viewModel.setSelectedType(
+                                    when (it) {
+                                        0 -> null
+                                        1 -> LostOrFoundType.FOUND
+                                        2 -> LostOrFoundType.LOST
+                                        else -> null
+                                    }
+                                )
+                            }
+                        )
                     }
                     if (uiState.lostAndFoundList.isEmpty()) {
                         item {

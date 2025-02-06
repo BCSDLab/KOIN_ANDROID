@@ -13,6 +13,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticle
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
+import `in`.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundDetailFragment.Companion
 import `in`.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundDetailFragment.Companion.ARTICLE_ID
 
 @AndroidEntryPoint
@@ -28,7 +29,7 @@ class ArticleLostAndFoundWriteFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 LostAndFoundWriteArticle(
-                    lostOrFoundType = LostOrFoundType.FOUND
+                    rawLostOrFoundType = requireArguments().getString(LOST_OR_FOUND_TYPE)
                 ) { articleId ->
                     navController.popBackStack()
                     navController.navigate(
@@ -43,5 +44,6 @@ class ArticleLostAndFoundWriteFragment : Fragment() {
     }
     companion object {
         const val ARTICLE_ID = "article_id"
+        const val LOST_OR_FOUND_TYPE = "lost_or_found_type"
     }
 }

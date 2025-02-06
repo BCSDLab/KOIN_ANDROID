@@ -72,7 +72,8 @@ interface ArticleApi {
     @GET("articles/lost-item")
     suspend fun fetchArticleLostAndFoundPagination(
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
+        @Query("type") type: String?
     ): ArticleLostAndFoundPaginationResponse
 
     /**

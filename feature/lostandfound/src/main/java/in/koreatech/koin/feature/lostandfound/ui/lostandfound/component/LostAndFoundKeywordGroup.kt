@@ -40,6 +40,7 @@ import `in`.koreatech.koin.feature.lostandfound.util.horizontalFadingEdge
 @Composable
 fun LostAndFoundKeywordGroup(
     keyWords: List<String>,
+    selectedKeywordIndex: Int,
     navigateToKeywordFragment: () -> Unit = {},
     modifier: Modifier = Modifier,
     selectKeyword: (keyword: String) -> Unit = {}
@@ -97,8 +98,6 @@ fun LostAndFoundKeywordGroup(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        var selectedKeywordIndex by remember { mutableIntStateOf(0) }
-
         LostAndFoundTextChip(
             title = stringResource(R.string.keyword_see_all),
             isSelected = selectedKeywordIndex == 0,
@@ -109,7 +108,6 @@ fun LostAndFoundKeywordGroup(
                     AnalyticsConstant.Label.NOTICE_FILTER_ALL,
                     "모두보기"
                 )
-                selectedKeywordIndex = 0
                 selectKeyword("")
             }
         )
@@ -122,7 +120,6 @@ fun LostAndFoundKeywordGroup(
                 isSelected = selectedKeywordIndex == index + 1,
                 textStyle = textStyle,
                 onSelect = {
-                    selectedKeywordIndex = index + 1
                     selectKeyword(it)
                 }
             )
@@ -153,6 +150,7 @@ fun LostAndFoundKeywordGroupPreview() {
     LostAndFoundKeywordGroup(
         keyWords = listOf("키워드1", "키워드2", "키워드3"),
         navigateToKeywordFragment = {},
-        selectKeyword = {}
+        selectKeyword = {},
+        selectedKeywordIndex = 1
     )
 }

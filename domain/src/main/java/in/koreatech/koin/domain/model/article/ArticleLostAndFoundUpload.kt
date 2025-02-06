@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.domain.model.article
 
 data class ArticleLostAndFoundUpload(
+    val type: String,
     val category: String,
     val foundPlace: String,
     val foundDate: String,

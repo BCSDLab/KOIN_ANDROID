@@ -103,6 +103,8 @@
     <string name="pagination_prev">이전</string>
     <string name="pagination_next">다음</string>
 
+    <string name="detail_chat_room_button">쪽지 보내기</string>
+
     <string name="report_title">게시글 신고하기</string>
 
     <string name="report_reason_off_topic_title">주제에 맞지 않음</string>

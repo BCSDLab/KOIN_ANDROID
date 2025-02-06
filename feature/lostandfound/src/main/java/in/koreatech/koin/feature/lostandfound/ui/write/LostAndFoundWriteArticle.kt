@@ -57,11 +57,14 @@ import java.time.LocalDate
 
 @Composable
 fun LostAndFoundWriteArticle(
-    lostOrFoundType: LostOrFoundType = LostOrFoundType.FOUND,
+    rawLostOrFoundType: String?,
     onWriteComplete: (articleId: Int) -> Unit = {}
 ) {
     val savedStateHandle = SavedStateHandle()
-    savedStateHandle[LOST_OR_FOUND_TYPE] = lostOrFoundType
+    savedStateHandle[LOST_OR_FOUND_TYPE] = LostOrFoundType.entries.find {
+        it.name == (rawLostOrFoundType ?: LostOrFoundType.FOUND.name)
+    }
+    val lostOrFoundType = requireNotNull(savedStateHandle.get<LostOrFoundType>(LOST_OR_FOUND_TYPE))
 
     val viewModelStoreOwner = requireNotNull(
         LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
