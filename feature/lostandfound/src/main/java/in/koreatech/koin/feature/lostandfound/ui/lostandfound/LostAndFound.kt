@@ -28,6 +28,7 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundDialog
+import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundDropdownGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundFAB
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundItem
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundKeywordGroup
@@ -128,9 +129,23 @@ fun LostAndFoundList(
                         ) {
                             viewModel.selectKeyword(it)
                         }
-                        /* TODO: 2차 배포
-                        LostAndFoundDropdownGroup {}
-                         */
+                        LostAndFoundDropdownGroup(
+                            selectedType = uiState.selectedType,
+                            isDropdownExpanded = uiState.isDropdownExpanded,
+                            onDropdownExpandChange = {
+                                viewModel.setDropdownExpanded(it)
+                            },
+                            onItemSelected = {
+                                viewModel.setSelectedType(
+                                    when (it) {
+                                        0 -> null
+                                        1 -> LostOrFoundType.FOUND
+                                        2 -> LostOrFoundType.LOST
+                                        else -> null
+                                    }
+                                )
+                            }
+                        )
                     }
                     if (uiState.lostAndFoundList.isEmpty()) {
                         item {

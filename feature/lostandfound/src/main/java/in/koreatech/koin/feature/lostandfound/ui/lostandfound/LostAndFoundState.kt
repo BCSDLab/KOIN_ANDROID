@@ -9,6 +9,7 @@ data class LostAndFoundState(
     val isLoading: Boolean = false,
     val showLoginRequestDialog: Boolean = false,
     val isFabDialogExpanded: Boolean = false,
+    val isDropdownExpanded: Boolean = false,
     val myKeywords: List<String> = emptyList(),
     val selectedKeyword: String = "",
     val selectedType: LostOrFoundType? = null,

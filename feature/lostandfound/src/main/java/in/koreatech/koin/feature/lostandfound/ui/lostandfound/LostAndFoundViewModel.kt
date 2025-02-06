@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFound
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -186,6 +187,22 @@ class LostAndFoundViewModel @Inject constructor(
         reduce {
             state.copy(
                 isFabDialogExpanded = isExpanded
+            )
+        }
+    }
+
+    fun setDropdownExpanded(isExpanded: Boolean) = intent {
+        reduce {
+            state.copy(
+                isDropdownExpanded = isExpanded
+            )
+        }
+    }
+
+    fun setSelectedType(type: LostOrFoundType?) = intent {
+        reduce {
+            state.copy(
+                selectedType = type
             )
         }
     }
