@@ -30,8 +30,7 @@ fun DetailButtonGroup(
     showDeleteDialog: Boolean = false,
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
-    onDeleteArticleClick: () -> Unit = {},
-    onReportArticleClick: () -> Unit = {}
+    onDeleteArticleClick: () -> Unit = {}
 ) {
     if (showDeleteDialog) {
         DetailDialog(
@@ -106,23 +105,6 @@ fun DetailButtonGroup(
                         contentDescription = null
                     )
                 }
-            }
-        } else {
-            Button(
-                modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                contentPadding = PaddingValues(10.dp, 6.dp),
-                onClick = onReportArticleClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.neutral300,
-                    contentColor = KoinTheme.colors.neutral600
-                ),
-                shape = KoinTheme.shapes.extraSmall
-            ) {
-                Image(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(id = R.drawable.ic_article_report),
-                    contentDescription = null
-                )
             }
         }
     }
