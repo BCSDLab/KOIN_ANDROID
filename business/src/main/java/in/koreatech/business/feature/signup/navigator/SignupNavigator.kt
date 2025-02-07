@@ -71,17 +71,27 @@ fun NavGraphBuilder.signUpScreen(
         composable(
             route = SignupRoute.BUSINESS_AUTH.name,
         ) {
-            val accountSetupViewModel: AccountSetupViewModel = it.sharedHiltViewModel(navController = navController)
             val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
             BusinessAuthScreen(
-                accountSetupViewModel = accountSetupViewModel,
-                businessAuthViewModel = businessAuthViewModel,
+                viewModel = businessAuthViewModel,
+                onBackClicked = { navController.popBackStack() },
+            ) {
+                navController.navigate(SignupRoute.ENTER_STORE_NAME.name)
+            }
+        }
+
+        composable(
+            route = SignupRoute.ENTER_STORE_NAME.name,
+        ) {
+            val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
+            EnterStoreNameScreen(
+                viewModel = businessAuthViewModel,
                 onBackClicked = { navController.popBackStack() },
                 onSearchClicked = {
                     navController.navigate(SignupRoute.STORE_SETUP.name)
                 },
             ) {
-                navController.navigate(SignupRoute.SIGNUP_COMPLETED.name)
+                navController.navigate(SignupRoute.BUSINESS_REGISTER_NUMBER.name)
             }
         }
 
