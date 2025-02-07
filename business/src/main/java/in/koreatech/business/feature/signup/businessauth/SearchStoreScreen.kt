@@ -13,19 +13,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,10 +42,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.SearchTextField
-import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
-import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.koin.domain.model.store.Store
@@ -169,7 +163,6 @@ fun SearchStoreScreen(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StoreList(
     item: List<Store>,
@@ -191,7 +184,7 @@ fun StoreList(
     ) {
         LazyColumn(
             modifier = Modifier
-                .weight(1f)
+                .weight(9f)
                 .padding(vertical = 8.dp)
                 .fillMaxSize()
         ) {
@@ -250,7 +243,7 @@ fun StoreList(
                 }
             }
         }
-        Spacer(modifier =Modifier.height(70.dp))
+        Spacer(modifier =Modifier.weight(1f))
 
         Button(modifier = Modifier
             .fillMaxWidth()
@@ -274,5 +267,6 @@ fun StoreList(
                 fontWeight = Bold,
             )
         }
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
