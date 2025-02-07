@@ -18,6 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -26,12 +27,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import `in`.koreatech.business.R
+import `in`.koreatech.koin.core.R
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.ui.theme.Black1
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.business.ui.theme.Red2
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 fun CheckSettingTime(
@@ -72,18 +74,16 @@ fun CheckSettingTime(
             horizontalArrangement = Arrangement.Center
         ){
             Text(
-                text = "설정시간 추가",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
+                text = stringResource(R.string.add_setting_time),
+                style = KoinTheme.typography.medium16,
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Image(
                 painter = painterResource(R.drawable.fi_plus),
-                contentDescription = "플러스버튼"
+                contentDescription = stringResource(R.string.add_setting_time_plus)
             )
         }
 
@@ -120,9 +120,7 @@ fun TimeItem(
 
             Text(
                 text = coloredString,
-                style = TextStyle(
-                    fontSize = 16.sp
-                )
+                style = KoinTheme.typography.medium16,
             )
 
             Image(
