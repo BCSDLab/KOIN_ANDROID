@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,10 +37,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import `in`.koreatech.business.R
+import `in`.koreatech.koin.core.R
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -57,21 +59,17 @@ fun SettingTimeDialog(
     var isSettingScreen by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
+        modifier = modifier
+            .fillMaxSize()
     ){
         Text(
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .fillMaxWidth()
             ,
-            text = "운영시간 설정",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
+            text = stringResource(R.string.insert_store_operating_time_setting),
+            style = KoinTheme.typography.bold16,
+            textAlign = TextAlign.Center
         )
 
         if(isSettingScreen) {
@@ -107,11 +105,9 @@ fun SettingTimeDialog(
             ) {
                 Text(
                     text = stringResource(id = R.string.cancel),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        color = Gray3
-                    )
+                    style = KoinTheme.typography.medium16,
+                    textAlign = TextAlign.Center,
+                    color = Gray3
                 )
             }
 
@@ -128,11 +124,9 @@ fun SettingTimeDialog(
             ) {
                 Text(
                     text = if(isSettingScreen)"등록하기" else "추가하기",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        color = Color.White
-                    )
+                    style = KoinTheme.typography.medium16,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
                 )
             }
         }
