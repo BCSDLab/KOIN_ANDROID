@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.chat.ui.list
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -76,7 +77,7 @@ fun ChatListContent(
                 lastMessageAt = LocalDateTime.parse(it.lastMessageAt.substring(0..26))
                     .toLocalTime(),
                 unReadMessageCount = it.unReadMessageCount,
-                modifier = Modifier.noRippleClickable {
+                modifier = Modifier.clickable {
                     Timber.d("ChatListItem Clicked: ${it.chatRoomId}")
                     Intent(context, ChatRoomActivity::class.java).apply {
                         putExtra(ARTICLE_ID, it.articleId)
