@@ -17,7 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.feature.chat.R
@@ -26,7 +25,6 @@ import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
 import org.orbitmvi.orbit.compose.collectAsState
-import timber.log.Timber
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +76,6 @@ fun ChatListContent(
                     .toLocalTime(),
                 unReadMessageCount = it.unReadMessageCount,
                 modifier = Modifier.clickable {
-                    Timber.d("ChatListItem Clicked: ${it.chatRoomId}")
                     Intent(context, ChatRoomActivity::class.java).apply {
                         putExtra(ARTICLE_ID, it.articleId)
                         putExtra(CHAT_ROOM_ID, it.chatRoomId)
