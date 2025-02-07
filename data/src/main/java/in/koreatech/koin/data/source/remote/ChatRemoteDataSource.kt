@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.source.remote
 import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.request.chat.ChatMessageRequest
+import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
@@ -23,8 +24,16 @@ class ChatRemoteDataSource @Inject constructor(
         koinStomp.disconnect()
     }
 
+    suspend fun getChatRoomList(): List<ChatListItemResponse> {
+        return chatAuthApi.getChatRoomList()
+    }
+
     suspend fun getChatRoomFromArticleId(articleId: Int): ChatRoomResponse {
         return chatAuthApi.getChatRoomFromArticleId(articleId)
+    }
+
+    suspend fun getChatRoom(articleId: Int, chatRoomId: Int): ChatRoomResponse {
+        return chatAuthApi.getChatRoom(articleId, chatRoomId)
     }
 
     suspend fun getChatMessages(articleId: Int, chatRoomId: Int): List<ChatMessageResponse> {

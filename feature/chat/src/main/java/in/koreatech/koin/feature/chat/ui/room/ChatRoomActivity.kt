@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
+import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
 
 @AndroidEntryPoint
 class ChatRoomActivity : ComponentActivity() {
@@ -21,7 +22,8 @@ class ChatRoomActivity : ComponentActivity() {
             }
             KoinTheme {
                 ChatRoom(
-                    articleId = intent.getIntExtra(ARTICLE_ID, 0)
+                    articleId = intent.getIntExtra(ARTICLE_ID, -1),
+                    chatRoomId = intent.getIntExtra(CHAT_ROOM_ID, -1)
                 )
             }
         }

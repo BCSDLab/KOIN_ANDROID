@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import kotlinx.coroutines.flow.Flow
@@ -7,7 +8,9 @@ import kotlinx.coroutines.flow.Flow
 interface ChatRepository {
     suspend fun connectWS()
     suspend fun disconnectWS()
+    suspend fun getChatRoomList(): Flow<List<ChatListItem>>
     suspend fun getChatRoomFromArticleId(articleId: Int): Flow<ChatRoom>
+    suspend fun getChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatRoom>
     suspend fun getChatMessages(articleId: Int, chatRoomId: Int): Flow<List<ChatMessage>>
     suspend fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessage>
     suspend fun sendMessage(articleId: Int, chatRoomId: Int, message: ChatMessage)

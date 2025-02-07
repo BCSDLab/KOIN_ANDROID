@@ -15,6 +15,7 @@ import `in`.koreatech.koin.domain.usecase.chat.ChatBlockUserUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatMessageUseCase
+import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomFromArticleIdUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SendMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
@@ -39,6 +40,7 @@ class ChatRoomViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val chatWSConnectUseCase: ChatWSConnectUseCase,
     private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
+    private val getChatRoomFromArticleIdUseCase: GetChatRoomFromArticleIdUseCase,
     private val getChatRoomUseCase: GetChatRoomUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val subscribeChatRoomUseCase: SubscribeChatRoomUseCase,
@@ -57,8 +59,16 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     init {
         getUserInfo()
-        savedStateHandle.get<Int>(ARTICLE_ID)?.let {
-            getChatRoom(it)
+        Timber.d("ChatRoomViewModel ${savedStateHandle.get<Int>(ARTICLE_ID)} ${savedStateHandle.get<Int>(CHAT_ROOM_ID)}")
+        if (savedStateHandle.get<Int>(CHAT_ROOM_ID) == -1) {
+            savedStateHandle.get<Int>(ARTICLE_ID)?.let {
+                createAndGetChatRoom(it)
+            }
+        } else {
+            getChatRoom(
+                savedStateHandle[ARTICLE_ID] ?: -1,
+                savedStateHandle[CHAT_ROOM_ID] ?: -1
+            )
         }
     }
 
@@ -79,8 +89,28 @@ class ChatRoomViewModel @AssistedInject constructor(
         }
     }
 
-    private fun getChatRoom(articleId: Int) = viewModelScope.launch {
-        getChatRoomUseCase(articleId).catch {
+    private fun createAndGetChatRoom(articleId: Int) = viewModelScope.launch {
+        getChatRoomFromArticleIdUseCase(articleId).catch {
+            Timber.e(it)
+        }.collectLatest { data ->
+            intent {
+                reduce {
+                    state.copy(
+                        articleId = data.articleId,
+                        chatRoomId = data.chatRoomId,
+                        userId = data.userId,
+                        articleTitle = data.articleTitle,
+                        chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: "")
+                    )
+                }
+                getChatMessages(data.articleId, data.chatRoomId)
+            }
+        }
+        connectToWS()
+    }
+
+    private fun getChatRoom(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
+        getChatRoomUseCase(articleId, chatRoomId).catch {
             Timber.e(it)
         }.collectLatest { data ->
             intent {
@@ -310,5 +340,6 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     companion object {
         const val ARTICLE_ID = "article_id"
+        const val CHAT_ROOM_ID = "chat_room_id"
     }
 }

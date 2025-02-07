@@ -38,6 +38,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
+import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
 import `in`.koreatech.koin.feature.chat.ui.room.component.ChatRoomContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -46,9 +47,11 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ChatRoom(
     articleId: Int,
+    chatRoomId: Int
 ) {
     val savedStateHandle = SavedStateHandle()
     savedStateHandle[ARTICLE_ID] = articleId
+    savedStateHandle[CHAT_ROOM_ID] = chatRoomId
 
     val viewModelStoreOwner = requireNotNull(
         LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory

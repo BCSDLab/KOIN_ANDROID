@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toChatMessageRequest
+import `in`.koreatech.koin.data.response.chat.toChatListItem
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
+import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import `in`.koreatech.koin.domain.repository.ChatRepository
@@ -21,9 +23,21 @@ class ChatRepositoryImpl @Inject constructor(
         chatRemoteDataSource.disconnectWS()
     }
 
+    override suspend fun getChatRoomList(): Flow<List<ChatListItem>> {
+        return flow {
+            emit(chatRemoteDataSource.getChatRoomList().map { it.toChatListItem() })
+        }
+    }
+
     override suspend fun getChatRoomFromArticleId(articleId: Int): Flow<ChatRoom> {
         return flow {
             emit(chatRemoteDataSource.getChatRoomFromArticleId(articleId).toChatRoom())
+        }
+    }
+
+    override suspend fun getChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatRoom> {
+        return flow {
+            emit(chatRemoteDataSource.getChatRoom(articleId, chatRoomId).toChatRoom())
         }
     }
 
