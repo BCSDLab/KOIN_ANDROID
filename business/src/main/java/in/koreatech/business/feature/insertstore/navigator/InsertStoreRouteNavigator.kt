@@ -32,7 +32,6 @@ import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
 import `in`.koreatech.business.navigation.SIGNUPSCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
-import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 
 
 @OptIn(ExperimentalAnimationApi::class)

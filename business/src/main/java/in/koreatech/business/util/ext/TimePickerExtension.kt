@@ -1,0 +1,30 @@
+package `in`.koreatech.business.util.ext
+
+import com.chargemap.compose.numberpicker.Hours
+
+fun Hours.toTimeString(): String {
+
+    val hoursString: String =
+        if (this.hours < 10) "0" + this.hours.toString() else this.hours.toString()
+
+    val minutesString: String =
+        if (this.minutes < 10) "0" + this.minutes.toString() else this.minutes.toString()
+
+    return "$hoursString:$minutesString"
+}
+
+fun makeTimeInfo(
+    dayOfWeekList: List<String>,
+    openTime: String,
+    closeTime: String,
+    isClosed: Boolean,
+    is24Hours: Boolean
+): String {
+    var infoString = dayOfWeekList.joinToString(", ")
+
+    infoString = if(isClosed) "$infoString : 휴무"
+    else if (is24Hours) "$infoString : 24시간 운영"
+    else infoString + " : ${openTime}:${closeTime}"
+
+    return infoString
+}
