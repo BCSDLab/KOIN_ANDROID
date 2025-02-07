@@ -22,6 +22,9 @@ import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.chat.ui.model.toConvertedChatMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -52,6 +55,9 @@ class ChatRoomViewModel @AssistedInject constructor(
 ) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
     override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState())
 
+    private val job = SupervisorJob()
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
+
     @AssistedFactory
     interface Factory {
         fun create(savedStateHandle: SavedStateHandle): ChatRoomViewModel
@@ -59,7 +65,6 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     init {
         getUserInfo()
-        Timber.d("ChatRoomViewModel ${savedStateHandle.get<Int>(ARTICLE_ID)} ${savedStateHandle.get<Int>(CHAT_ROOM_ID)}")
         if (savedStateHandle.get<Int>(CHAT_ROOM_ID) == -1) {
             savedStateHandle.get<Int>(ARTICLE_ID)?.let {
                 createAndGetChatRoom(it)
@@ -209,7 +214,7 @@ class ChatRoomViewModel @AssistedInject constructor(
         }
     }
 
-    fun disconnectWS() = viewModelScope.launch {
+    fun disconnectWS() = coroutineScope.launch { // We need to disconnect websocket on onCleared. So, we need to use coroutineScope instead of viewModelScope
         chatWSDisconnectUseCase().onFailure {
             // Sometimes the server closes the connection too quickly to send a RECEIPT, which is not really an error
             // So, we can ignore LostReceiptException
@@ -326,7 +331,7 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        disconnectWS()
+        disconnectWS() // We need to disconnect websocket on onCleared. So, don't call job.cancel() manually.
     }
 
     fun changeBlockDialogState(dialogState: Boolean) = intent {
