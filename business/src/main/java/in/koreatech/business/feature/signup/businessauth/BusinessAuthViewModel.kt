@@ -98,7 +98,7 @@ class BusinessAuthViewModel @Inject constructor(
         postSideEffect(BusinessAuthSideEffect.NavigateToNextScreen)
     }
 
-    fun changeImageUri(context: Context, phoneNumber: String, password: String, uriList: List<Uri>) {
+    fun changeImageUri(context: Context, uriList: List<Uri>) {
         intent {
             reduce {
                 if (uriList.size <= SIGN_UP_IMAGE_MAX) {
