@@ -28,7 +28,6 @@ data class ChatMessageResponse(
         userNickname = userNickname,
         content = content,
         timestamp = timestamp,
-        isImage = isImage,
-        isSentByMe = false
+        isImage = isImage
     )
 }

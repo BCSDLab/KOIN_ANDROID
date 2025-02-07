@@ -8,6 +8,5 @@ fun ChatMessage.toChatMessageRequest() = ChatMessageRequest(
     userNickname = userNickname,
     content = content,
     timestamp = timestamp,
-    isImage = isImage,
-    isSentByMe = isSentByMe
+    isImage = isImage
 )

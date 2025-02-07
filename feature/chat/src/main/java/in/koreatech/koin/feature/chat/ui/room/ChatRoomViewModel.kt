@@ -253,8 +253,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                         userNickname = state.userNickName,
                         content = fileUrl,
                         timestamp = LocalDateTime.now().toString(),
-                        isImage = true,
-                        isSentByMe = true
+                        isImage = true
                     )
                 )
             }
@@ -300,8 +299,7 @@ class ChatRoomViewModel @AssistedInject constructor(
                         userNickname = state.userNickName,
                         content = state.chatInputValue,
                         timestamp = LocalDateTime.now().toString(),
-                        isImage = false,
-                        isSentByMe = true
+                        isImage = false
                     )
                 )
                 reduce {

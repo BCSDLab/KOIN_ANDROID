@@ -10,5 +10,4 @@ data class ChatMessageRequest(
     @SerialName("content") val content: String,
     @SerialName("timestamp") val timestamp: String,
     @SerialName("is_image") val isImage: Boolean,
-    @SerialName("isSentByMe") val isSentByMe: Boolean
 )
