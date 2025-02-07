@@ -51,6 +51,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.toggleDrawer
 import `in`.koreatech.koin.util.ext.whiteStatusBar
 import `in`.koreatech.koin.util.ext.windowWidth
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -119,7 +120,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         menus.get(MenuState.LoginOrLogout) as TextView?
             ?: findViewById(R.id.navi_item_login_or_logout)
     }
-
+    private val unReadMessageCountTextView by lazy {
+        findViewById<TextView>(R.id.navi_item_chat_badge)
+    }
 
     private val requestMainPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -155,9 +158,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        koinNavigationDrawerViewModel.getUnreadMessageCount()
+
         drawerLayout.setScrimColor(ContextCompat.getColor(this, R.color.black_alpha20))
         drawerLayout.addDrawerListener { _, slideOffset ->
             if (slideOffset < 0.5f) window.blueStatusBar() else window.whiteStatusBar()
+            if (slideOffset == 1f) koinNavigationDrawerViewModel.getUnreadMessageCount()
         }
 
         menus.forEach { (state, view) ->
@@ -330,37 +336,49 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userInfoFlow.collect { user ->
-                    when (user) {
-                        User.Anonymous -> {
-                            nameTextView.visibility = View.GONE
-                            helloMessageTextView.text =
-                                getString(R.string.navigation_hello_message_anonymous)
-                            loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
-                        }
-
-                        is User.Student -> {
-                            nameTextView.text = if (user.nickname?.isNotEmpty() == true) {
-                                user.nickname!!
-                            } else if (user.name?.isNotEmpty() == true) {
-                                user.name!!
-                            } else {
-                                "회원"
+                launch {
+                    userInfoFlow.collect { user ->
+                        when (user) {
+                            User.Anonymous -> {
+                                nameTextView.visibility = View.GONE
+                                helloMessageTextView.text =
+                                    getString(R.string.navigation_hello_message_anonymous)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
                             }
-                            nameTextView.visibility = View.VISIBLE
-                            helloMessageTextView.text = getString(R.string.navigation_hello_message)
-                            loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
 
-                            when (menuState) {
-                                MenuState.Main -> {
-                                    if (!checkMainPermission()) requestMainPermissionLauncher.launch(
-                                        MAIN_REQUIRED_PERMISSION
-                                    )
-                                    koinNavigationDrawerViewModel.updateDeviceToken()
+                            is User.Student -> {
+                                nameTextView.text = if (user.nickname?.isNotEmpty() == true) {
+                                    user.nickname!!
+                                } else if (user.name?.isNotEmpty() == true) {
+                                    user.name!!
+                                } else {
+                                    "회원"
                                 }
+                                nameTextView.visibility = View.VISIBLE
+                                helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
 
-                                else -> Unit
+                                when (menuState) {
+                                    MenuState.Main -> {
+                                        if (!checkMainPermission()) requestMainPermissionLauncher.launch(
+                                            MAIN_REQUIRED_PERMISSION
+                                        )
+                                        koinNavigationDrawerViewModel.updateDeviceToken()
+                                    }
+
+                                    else -> Unit
+                                }
                             }
+                        }
+                    }
+                }
+                launch {
+                    unReadMessageCount.collectLatest {
+                        if (it > 0) {
+                            unReadMessageCountTextView.visibility = View.VISIBLE
+                            unReadMessageCountTextView.text = "$it"
+                        } else {
+                            unReadMessageCountTextView.visibility = View.GONE
                         }
                     }
                 }
