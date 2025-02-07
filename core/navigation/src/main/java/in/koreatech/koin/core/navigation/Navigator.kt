@@ -40,4 +40,11 @@ interface Navigator {
         targetId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", ""),
     ): Intent
+
+    fun navigateToChat(
+        context: Context,
+        targetArticleId: Pair<String, Any?> = Pair("", 0),
+        targetChatId: Pair<String, Any?> = Pair("", 0),
+        type: Pair<String, Any?> = Pair("", ""),
+    ): Intent
 }
