@@ -552,7 +552,7 @@
     <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
 
     <!-- Koreatech 공지사항 -->
-    <string name="title_article">공지사항</string>
+    <string name="title_article">게시판</string>
     <string name="navigation_title_article">공지사항</string>
     <string name="navigation_title_article_search">공지글 검색</string>
     <string name="navigation_title_article_keyword">키워드 관리</string>
@@ -665,4 +665,6 @@
 
     <!-- etc -->
     <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>
+    <string name="lost_and_found_noti_title">분실물은 여기 다 모아뒀어요</string>
+    <string name="lost_and_found_noti_sub"><![CDATA[바로가기 >>]]></string>
 </resources>
