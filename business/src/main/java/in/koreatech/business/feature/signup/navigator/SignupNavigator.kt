@@ -98,6 +98,33 @@ fun NavGraphBuilder.signUpScreen(
         }
 
         composable(
+            route = SignupRoute.BUSINESS_REGISTER_NUMBER.name,
+        ) {
+            val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
+            EnterBusinessNumberScreen(
+                viewModel = businessAuthViewModel,
+                onBackClicked = { navController.popBackStack() },
+            ) {
+                  navController.navigate(SignupRoute.ATTACH_FILE.name)
+            }
+        }
+
+        composable(
+            route = SignupRoute.ATTACH_FILE.name,
+        ) {
+            val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
+            val accountSetupViewModel: AccountSetupViewModel = it.sharedHiltViewModel(navController = navController)
+            AttachFileScreen(
+                businessAuthViewModel = businessAuthViewModel,
+                accountSetupViewModel = accountSetupViewModel,
+                onBackClicked = { navController.popBackStack() },
+            ) {
+                  navController.navigate(SignupRoute.SIGNUP_COMPLETED.name)
+            }
+        }
+
+
+        composable(
             route = SignupRoute.SIGNUP_COMPLETED.name,
         ) {
             CompleteSignupScreen(
