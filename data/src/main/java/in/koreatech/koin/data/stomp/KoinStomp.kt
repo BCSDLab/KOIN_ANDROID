@@ -19,21 +19,22 @@ class KoinStomp @Inject constructor(
     private val authToken: String,
     private val stompClient: StompClient
 ) {
-    lateinit var stompSession: StompSession
+    var stompSession: StompSession? = null
     lateinit var jsonStompSession: StompSessionWithKxSerialization
 
     suspend fun connect() {
-        if (!::stompSession.isInitialized) {
+        if (stompSession == null) {
             stompSession = stompClient.connect(
                 url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
                 customStompConnectHeaders = mapOf("Authorization" to authToken)
             )
-            jsonStompSession = stompSession.withJsonConversions()
+            jsonStompSession = stompSession!!.withJsonConversions()
         }
     }
 
     suspend fun disconnect() {
-        stompSession.disconnect()
+        stompSession?.disconnect()
+        stompSession = null
     }
 
     suspend fun <T : Any> subscribe(
