@@ -336,6 +336,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun handleIntent() {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
+        val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
+        val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
         when (type) {
@@ -376,8 +378,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
 
             SchemeType.CHAT.type -> {
-                val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
-                val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
                 val intent = navigator.navigateToChat(
                     context = this,
                     targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),

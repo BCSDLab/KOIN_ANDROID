@@ -80,6 +80,8 @@ class SchemeActivity : ActivityBase() {
                     val intent = navigator.navigateToSplash(
                         context = this,
                         targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
+                        targetArticleId = Pair(EXTRA_ARTICLE_ID, getArticleIdFromUrl(url ?: "")),
+                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url ?: "")),
                         type = Pair(EXTRA_TYPE, url?.toHost(getBoardIdFromUrl(url))),
                         navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
                     )
