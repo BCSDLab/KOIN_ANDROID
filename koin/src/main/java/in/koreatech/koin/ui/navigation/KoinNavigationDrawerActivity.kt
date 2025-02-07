@@ -32,6 +32,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
@@ -72,6 +73,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private val menus by lazy {
         listOf(
+            R.id.navi_item_chat,
             R.id.navi_item_setting,
             R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
@@ -88,6 +90,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             findViewById<View>(it)
         }.zip(
             listOf(
+                MenuState.Chat,
                 MenuState.Setting,
                 MenuState.LoginOrLogout,
                 MenuState.Store,
@@ -290,6 +293,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Land -> goToLandActivity()
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
+                MenuState.Chat -> goToChatActivity()
                 MenuState.Setting -> {
                     goToSettingActivity()
                     return@observeLiveData
@@ -508,6 +512,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
      */
     private fun goToSettingActivity() {
         Intent(this, SettingActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+
+    private fun goToChatActivity() {
+        Intent(this, ChatListActivity::class.java).apply {
             startActivity(this)
         }
     }
