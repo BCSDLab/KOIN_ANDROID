@@ -24,6 +24,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,11 +38,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -53,14 +56,17 @@ fun SettingTimeDialog(
         rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
             skipHalfExpanded = true
-        )
+        ),
 )
 {
     var isSettingScreen by remember { mutableStateOf(false) }
+    val timeInfoList = remember { mutableStateListOf<TimeSettingState>() }
+    val emptySpaceList = remember { mutableStateListOf("", "", "", "", "", "") }
 
     Column(
         modifier = modifier
             .fillMaxSize()
+
     ){
         Text(
             modifier = Modifier
@@ -73,13 +79,26 @@ fun SettingTimeDialog(
         )
 
         if(isSettingScreen) {
-            NullSettingTime{isSettingScreen = it}
+            SettingTime(
+                storeOperatingTime = operatingTime,
+                coroutineScope = coroutineScope,
+                sheetState = sheetState,
+                addTimeState = {
+                    timeInfoList.add(it)
+                    emptySpaceList.removeAt(emptySpaceList.lastIndex)
+                    Log.e("로그 리스트 크기", timeInfoList.size.toString())
+                    Log.e("로그 리스트 ", emptySpaceList.size.toString())
+                }
+            ){
+                isSettingScreen = it
+            }
         }
         else {
-//            NullSettingTime{isSettingScreen = it}
-            CheckSettingTime(
-                settingTimeList = list2
-            )
+
+//           NullSettingTime{isSettingScreen = it}
+//            CheckSettingTime(
+//                settingTimeList = list2
+//            )
         }
         Row(
             modifier = Modifier
@@ -128,6 +147,29 @@ fun SettingTimeDialog(
                     textAlign = TextAlign.Center,
                     color = Color.White
                 )
+
+            if(timeInfoList.isEmpty()){
+                NullSettingTime(
+                    coroutineScope = coroutineScope,
+                    sheetState = sheetState
+                ) {
+                    isSettingScreen = it
+                }
+            }
+            else{
+                CheckSettingTime(
+                    settingTimeList = timeInfoList,
+                    emptySpaceList = emptySpaceList,
+                    coroutineScope = coroutineScope,
+                    sheetState = sheetState,
+                    removeTimeSetting = {
+                        timeInfoList.removeAt(it)
+                        emptySpaceList.add("")
+                    }
+                ){
+                    isSettingScreen = it
+                }
+
             }
         }
     }

@@ -1,28 +1,39 @@
 package `in`.koreatech.business.ui.component
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Divider
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -34,14 +45,27 @@ import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
+import `in`.koreatech.business.util.ext.makeTimeInfo
+import `in`.koreatech.business.util.ext.toTimeString
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @SuppressLint("RememberReturnType")
 @Composable
 fun SettingTime(
     modifier: Modifier = Modifier,
     storeOperatingTime: List<OperatingTimeState> = emptyList(),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    sheetState: ModalBottomSheetState =
+        rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            skipHalfExpanded = true
+        ),
+    addTimeState: (TimeSettingState) -> Unit = {},
+    updateIsSettingScreenState: (Boolean) -> Unit = {},
 ) {
     val dayOfWeekList = remember { mutableStateListOf<String>() }
     var openTimeValue by remember { mutableStateOf<Hours>(FullHours(6, 0)) }
@@ -228,7 +252,80 @@ fun SettingTime(
         color = Gray3,
         thickness = 0.5.dp
     )
+
+    Row(
+        modifier = Modifier
+            .padding(top = 12.dp, bottom = 36.dp)
+            .fillMaxWidth()
+        ,
+        horizontalArrangement = Arrangement.Center
+    ){
+        Button(
+            onClick = {
+                coroutineScope.launch {
+                    sheetState.hide()
+                }
+                updateIsSettingScreenState(false)
+            },
+            colors = ButtonDefaults.buttonColors(Color.White),
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(1.dp, Gray3),
+            modifier = Modifier
+                .height(44.dp)
+                .width(128.dp)
+
+        ) {
+            Text(
+                text = stringResource(id = R.string.cancel),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Gray3
+                )
+            )
+        }
+
+        Spacer(modifier = Modifier.width(32.dp))
+
+        Button(
+            onClick = {
+                addTimeState(
+                    TimeSettingState(
+                        timeInfoString = makeTimeInfo(
+                            dayOfWeekList = dayOfWeekList,
+                            openTime = openTimeValue.toTimeString(),
+                            closeTime = closeTimeValue.toTimeString(),
+                            isClosed = isClosedChecked,
+                            is24Hours = is24hoursChecked
+                        ),
+                        dayOfWeekList = dayOfWeekList,
+                        openTime = openTimeValue.toTimeString(),
+                        closeTime = closeTimeValue.toTimeString(),
+                        isClosed = isClosedChecked,
+                        is24Hours = is24hoursChecked
+                    )
+                )
+                updateIsSettingScreenState(false)
+                      },
+            colors = ButtonDefaults.buttonColors(ColorPrimary),
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(1.dp, ColorPrimary),
+            modifier = Modifier
+                .height(44.dp)
+                .width(128.dp)
+        ) {
+            Text(
+                text = "추가하기",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
+                )
+            )
+        }
+    }
 }
+
 
 @Preview
 @Composable

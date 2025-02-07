@@ -3,6 +3,7 @@ package `in`.koreatech.business.feature.insertstore.insertdetailinfo
 import android.net.Uri
 import android.os.Parcelable
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
 import `in`.koreatech.koin.domain.model.owner.SettingTime
 import kotlinx.parcelize.Parcelize
 
@@ -30,5 +31,6 @@ data class InsertDetailInfoScreenState (
     val isDetailInfoValid: Boolean = false,
     val showDialog: Boolean = false,
     val isOpenTimeSetting: SettingTime = SettingTime.OPEN,
-    val dayOfWeekIndex: Int = -1
+    val dayOfWeekIndex: Int = -1,
+    val settingTimeInfoList: List<TimeSettingState> = emptyList()
 ): Parcelable

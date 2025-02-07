@@ -39,8 +39,8 @@
     <string name="day_of_week">요일</string>
     <string name="open_time">시간</string>
     <string name="day_off">휴무</string>
-    <string name="store_open_time">개점시간</string>
-    <string name="store_close_time">폐점시간</string>
+    <string name="store_open_time">개점 시간</string>
+    <string name="store_close_time">폐점 시간</string>
     <string name="go_to_main_screen">메인 화면 바로가기</string>
     <string name="add_price">가격 추가</string>
     <string name="temp_price">TempPrice</string>

@@ -52,7 +52,6 @@ import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.upload.toResizeBitmap
-import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import java.io.InputStream
