@@ -57,18 +57,18 @@ class BusinessAuthViewModel @Inject constructor(
         }
     }
 
-    fun onStoreNumberChanged(storeNumber: String) = blockingIntent {
+    fun onCompanyNumberChanged(storeNumber: String) = blockingIntent {
         reduce {
             state.copy(
-                shopNumber = if (storeNumber.length <=10) storeNumber else state.shopNumber,
+                companyNumber = if (storeNumber.length <=10) storeNumber else state.companyNumber,
             )
         }
     }
 
-    fun storeNumberCheck() = intent {
+    fun companyNumberCheck() = intent {
         reduce {
             state.copy(
-                signupContinuationState = if (state.shopNumber.length != 10) SignupContinuationState.BusinessNumberIsNotValidate
+                signupContinuationState = if (state.companyNumber.length != 10) SignupContinuationState.companyNumberIsNotValidate
                 else SignupContinuationState.RequestedSmsValidation
             )
         }

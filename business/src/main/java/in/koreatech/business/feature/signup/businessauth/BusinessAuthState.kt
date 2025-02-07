@@ -8,7 +8,7 @@ import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 data class BusinessAuthState(
     val name: String = "",
     val shopName: String = "",
-    val shopNumber: String = "",
+    val companyNumber: String = "", //사업자 등록 번호
     val shopId: Int? = null,
     val openAlertDialog: Boolean = false,
     val selectedImages :MutableList<AttachStore> = mutableListOf(),
@@ -20,5 +20,5 @@ data class BusinessAuthState(
     val error: Throwable? = null,
 ){
     val isButtonEnabled: Boolean
-        get() = name.isNotEmpty() && shopName.isNotEmpty() && shopNumber.isNotEmpty() && selectedImages.isNotEmpty() && signupContinuationState != SignupContinuationState.BusinessNumberIsNotValidate
+        get() = name.isNotEmpty() && shopName.isNotEmpty() && companyNumber.isNotEmpty() && selectedImages.isNotEmpty() && signupContinuationState != SignupContinuationState.companyNumberIsNotValidate
 }
