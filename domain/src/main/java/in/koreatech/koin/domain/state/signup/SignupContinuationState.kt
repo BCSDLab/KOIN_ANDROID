@@ -17,7 +17,7 @@ sealed class SignupContinuationState {
     object CheckNameFormat: SignupContinuationState() // 이름을 올바른 형식으로 작성했는지 확인
     object CheckPhoneNumberFormat: SignupContinuationState() // 전화번호를 올바른 형식으로 작성했는지 확인
 
-    object BusinessNumberIsNotValidate: SignupContinuationState()
+    object companyNumberIsNotValidate: SignupContinuationState()
     object SmsCodeIsNotValidate: SignupContinuationState()
     object PhoneNumberIsNotValidate: SignupContinuationState()
     object EmailIsNotValidate: SignupContinuationState()
