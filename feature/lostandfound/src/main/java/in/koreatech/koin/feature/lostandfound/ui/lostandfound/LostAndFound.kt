@@ -169,6 +169,7 @@ fun LostAndFoundList(
                                 foundPlace = it.foundPlace,
                                 content = it.content,
                                 author = it.author,
+                                isReported = it.isReported,
                                 foundDate = it.foundDate,
                                 registeredAt = it.registeredAt,
                             ) {

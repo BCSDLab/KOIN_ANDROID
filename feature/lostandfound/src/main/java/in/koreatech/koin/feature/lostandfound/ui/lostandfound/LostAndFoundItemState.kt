@@ -19,6 +19,7 @@ data class LostAndFoundItemState(
     val foundDate: LocalDate,
     val content: String,
     val author: String,
+    val isReported: Boolean,
     val registeredAt: LocalDate,
     val updatedAt: String,
 ) : Parcelable
@@ -32,6 +33,7 @@ fun ArticleLostAndFoundHeader.toLostAndFoundItemState() = LostAndFoundItemState(
     foundDate = LocalDate.parse(foundDate),
     content = content ?: "",
     author = author,
+    isReported = isReported,
     registeredAt = LocalDate.parse(registeredAt),
     updatedAt = updatedAt
 )
@@ -49,6 +51,7 @@ fun ArticleHeader.toLostAndFoundItemState(): LostAndFoundItemState {
         foundDate = LocalDate.parse(title[2].trim(), titleDateFormatter),
         content = "",
         author = author,
+        isReported = false, // Set default value to false because search api doesn't have this field
         registeredAt = LocalDate.parse(registeredAt),
         updatedAt = updatedAt
     )

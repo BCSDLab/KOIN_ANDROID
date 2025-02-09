@@ -9,6 +9,7 @@ data class ArticleLostAndFoundHeader(
     val foundDate: String,
     val content: String?,
     val author: String,
+    val isReported: Boolean,
     val registeredAt: String,
     val updatedAt: String
 )
