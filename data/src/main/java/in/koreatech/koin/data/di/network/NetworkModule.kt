@@ -1,27 +1,23 @@
 package `in`.koreatech.koin.data.di.network
 
-import `in`.koreatech.koin.core.qualifier.ServerUrl
-import `in`.koreatech.koin.data.constant.URLConstant
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.NoAuth
+import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.BuildConfig
+import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
-import javax.inject.Singleton
 import okhttp3.logging.HttpLoggingInterceptor
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.config.HeartBeat
 import org.hildan.krossbow.websocket.okhttp.OkHttpWebSocketClient
-import org.hildan.krossbow.websocket.reconnection.FixedDelay
-import org.hildan.krossbow.websocket.reconnection.withAutoReconnect
-import kotlin.time.Duration
+import javax.inject.Singleton
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.DurationUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -64,9 +60,7 @@ object NetworkModule {
     fun provideStompClient(
         okHttpWebSocketClient: OkHttpWebSocketClient,
     ): StompClient {
-        return StompClient(okHttpWebSocketClient.withAutoReconnect(
-            delayStrategy = FixedDelay(5000.milliseconds)
-        )) {
+        return StompClient(okHttpWebSocketClient) {
             heartBeat = HeartBeat(
                 minSendPeriod = 4000.milliseconds, // Follow backend recommendation
                 expectedPeriod = 4000.milliseconds
