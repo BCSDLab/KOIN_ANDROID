@@ -233,6 +233,7 @@ fun AccountSetupScreen(
                             )
                         },
                         label = stringResource(id = R.string.enter_verification_code),
+                        timerText = timerText,
                         textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                         errorText = if (timerText == 0) stringResource(id = R.string.sms_code_time_over) else stringResource(
                             id = R.string.sms_code_not_validate
@@ -242,22 +243,6 @@ fun AccountSetupScreen(
                         isSuccess = state.verifyState == SignupContinuationState.CheckComplete,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp)
-                            .padding(end = 16.dp),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = timerText.formatTime(),
-                            fontSize = 16.sp,
-                            color = Gray500,
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
-                    }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 
