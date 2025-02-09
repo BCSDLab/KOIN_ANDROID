@@ -12,7 +12,7 @@ interface ChatRepository {
     suspend fun getChatRoomFromArticleId(articleId: Int): Flow<ChatRoom>
     suspend fun getChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatRoom>
     suspend fun getChatMessages(articleId: Int, chatRoomId: Int): Flow<List<ChatMessage>>
-    suspend fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessage>
+    fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessage>
     suspend fun sendMessage(articleId: Int, chatRoomId: Int, message: ChatMessage)
     suspend fun blockUser(articleId: Int, chatRoomId: Int): Result<Unit>
 }

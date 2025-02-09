@@ -7,12 +7,6 @@ import javax.inject.Inject
 class SubscribeChatRoomUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
-    suspend operator fun invoke(articleId: Int, chatRoomId: Int) =
-        chatRepository.subscribeChatRoom(articleId, chatRoomId).retryWhen { cause, attempt ->
-            if (attempt < 3) {
-                true
-            } else {
-                throw cause
-            }
-        }
+    operator fun invoke(articleId: Int, chatRoomId: Int) =
+        chatRepository.subscribeChatRoom(articleId, chatRoomId)
 }

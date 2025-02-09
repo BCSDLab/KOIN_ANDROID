@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import kotlinx.coroutines.flow.Flow
 import okhttp3.Response
+import timber.log.Timber
 import javax.inject.Inject
 
 class ChatRemoteDataSource @Inject constructor(
@@ -40,7 +41,7 @@ class ChatRemoteDataSource @Inject constructor(
         return chatAuthApi.getChatMessages(articleId, chatRoomId)
     }
 
-    suspend fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessageResponse> {
+    fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessageResponse> {
         return koinStomp.subscribe(
             "/topic/chat/$articleId/$chatRoomId",
             ChatMessageResponse.serializer()

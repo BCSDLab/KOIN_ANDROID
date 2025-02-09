@@ -22,13 +22,16 @@ import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.chat.ui.model.toConvertedChatMessage
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.hildan.krossbow.stomp.LostReceiptException
+import org.hildan.krossbow.websocket.WebSocketException
 import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
