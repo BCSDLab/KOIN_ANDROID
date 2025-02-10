@@ -138,6 +138,9 @@ fun ChatRoom(
                         )
                     }
                 },
+                onNavigationIconClick = {
+                    (context as Activity).finish()
+                }
             )
 
         },
