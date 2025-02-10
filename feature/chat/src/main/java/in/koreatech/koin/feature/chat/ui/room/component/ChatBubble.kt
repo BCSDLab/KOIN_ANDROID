@@ -81,7 +81,10 @@ private fun ChatBubbleFromMe(
                     color = KoinTheme.colors.neutral100.copy(alpha = 0.8f),
                     shape = KoinTheme.shapes.small,
                 )
-                .padding(vertical = 8.dp, horizontal = 12.dp)
+                .then(
+                    if (message.isImage) Modifier
+                    else Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+                )
         ) {
             if (message.isImage) {
                 ChatBubbleImage(message.content)
@@ -143,7 +146,10 @@ private fun ChatBubbleFromOther(
                         color = KoinTheme.colors.info100,
                         shape = KoinTheme.shapes.small
                     )
-                    .padding(vertical = 8.dp, horizontal = 12.dp)
+                    .then(
+                        if (message.isImage) Modifier
+                        else Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+                    )
             ) {
                 if (message.isImage) {
                     ChatBubbleImage(message.content)
@@ -178,7 +184,7 @@ private fun ChatBubbleImage(
 ) {
     Box {
         SubcomposeAsyncImage(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.clip(KoinTheme.shapes.small),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
                 .crossfade(true)
