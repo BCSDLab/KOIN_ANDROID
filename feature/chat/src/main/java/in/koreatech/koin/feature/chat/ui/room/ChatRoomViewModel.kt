@@ -367,6 +367,12 @@ class ChatRoomViewModel @AssistedInject constructor(
         }
     }
 
+    fun changeShowImageState(showImageState: Boolean, url: Uri) = intent {
+        reduce {
+            state.copy(showImage = Pair(showImageState, url))
+        }
+    }
+
     companion object {
         const val ARTICLE_ID = "article_id"
         const val CHAT_ROOM_ID = "chat_room_id"

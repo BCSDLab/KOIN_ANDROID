@@ -31,6 +31,7 @@ import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
@@ -43,17 +44,20 @@ private val chatBubbleDefaultModifier = Modifier.padding(horizontal = 24.dp, ver
 fun ChatBubble(
     message: ConvertedChatMessage,
     modifier: Modifier = Modifier,
-    chatPartnerProfileImage: Uri? = null
+    chatPartnerProfileImage: Uri? = null,
+    onShowImageChange:(Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     if (message.isSentByMe) {
         ChatBubbleFromMe(
             message = message,
+            onShowImageChange = onShowImageChange,
             modifier = modifier.then(chatBubbleDefaultModifier)
         )
     } else {
         ChatBubbleFromOther(
             message = message,
             chatPartnerProfileImage = chatPartnerProfileImage,
+            onShowImageChange = onShowImageChange,
             modifier = modifier.then(chatBubbleDefaultModifier)
         )
     }
@@ -62,7 +66,8 @@ fun ChatBubble(
 @Composable
 private fun ChatBubbleFromMe(
     message: ConvertedChatMessage,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onShowImageChange:(Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -87,7 +92,10 @@ private fun ChatBubbleFromMe(
                 )
         ) {
             if (message.isImage) {
-                ChatBubbleImage(message.content)
+                ChatBubbleImage(
+                    imageUrl = message.content,
+                    onShowImageChange = onShowImageChange
+                )
             } else {
                 ChatBubbleText(message.content)
             }
@@ -99,7 +107,8 @@ private fun ChatBubbleFromMe(
 private fun ChatBubbleFromOther(
     message: ConvertedChatMessage,
     modifier: Modifier = Modifier,
-    chatPartnerProfileImage: Uri? = null
+    chatPartnerProfileImage: Uri? = null,
+    onShowImageChange:(Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier = modifier
@@ -152,7 +161,10 @@ private fun ChatBubbleFromOther(
                     )
             ) {
                 if (message.isImage) {
-                    ChatBubbleImage(message.content)
+                    ChatBubbleImage(
+                        imageUrl = message.content,
+                        onShowImageChange = onShowImageChange
+                    )
                 } else {
                     ChatBubbleText(message.content)
                 }
@@ -180,11 +192,14 @@ private fun ChatBubbleText(
 
 @Composable
 private fun ChatBubbleImage(
-    imageUrl: String
+    imageUrl: String,
+    onShowImageChange:(Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Box {
         SubcomposeAsyncImage(
-            modifier = Modifier.clip(KoinTheme.shapes.small),
+            modifier = Modifier.clip(KoinTheme.shapes.small).noRippleClickable {
+                onShowImageChange(true, Uri.parse(imageUrl))
+            },
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
                 .crossfade(true)

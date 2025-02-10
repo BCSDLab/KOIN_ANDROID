@@ -16,4 +16,5 @@ data class ChatRoomState(
     val showMenu: Boolean = false,
     val showBlockDialog: Boolean = false,
     val uploadingImage: List<ConvertedChatMessage> = emptyList(),
+    val showImage: Pair<Boolean, Uri> = Pair(false, Uri.EMPTY),
 )

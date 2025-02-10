@@ -154,6 +154,7 @@ fun ChatRoom(
             chatPartnerProfileImage = uiState.chatPartnerProfileImage,
             chatInputValue = uiState.chatInputValue,
             showBlockDialog = uiState.showBlockDialog,
+            showImage = uiState.showImage,
             onBlockUser = {
                 viewModel.blockUser()
                 viewModel.changeBlockDialogState(false)
@@ -163,7 +164,10 @@ fun ChatRoom(
             onImageButtonClick = {
                 pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             },
-            onSendClick = { viewModel.sendMessage() }
+            onSendClick = { viewModel.sendMessage() },
+            onShowImageChange = { state, url ->
+                viewModel.changeShowImageState(state, url)
+            }
         )
     }
 }
