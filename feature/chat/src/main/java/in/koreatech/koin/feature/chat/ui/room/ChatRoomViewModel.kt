@@ -21,17 +21,15 @@ import `in`.koreatech.koin.domain.usecase.chat.SendMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.model.toConvertedChatMessage
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.hildan.krossbow.stomp.LostReceiptException
-import org.hildan.krossbow.websocket.WebSocketException
 import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -259,6 +257,13 @@ class ChatRoomViewModel @AssistedInject constructor(
                         isImage = true
                     )
                 )
+                intent {
+                    reduce {
+                        state.copy(
+                            uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
+                        )
+                    }
+                }
             }
         }.onFailure {
             intent {
@@ -272,20 +277,38 @@ class ChatRoomViewModel @AssistedInject constructor(
         fileType: String,
         fileName: String,
         imageUri: Uri
-    ) = viewModelScope.launch {
-        getLostAndFoundPreSignedUrlUseCase(
-            fileSize, fileType, fileName
-        ).onSuccess {
-            uploadImage(
-                preSignedUrl = it.second,
-                fileUrl = it.first,
-                mediaType = fileType,
-                mediaSize = fileSize,
-                imageUri = imageUri
-            )
-        }.onFailure {
-            intent {
-                postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
+    ) {
+        intent {
+            reduce {
+                state.copy(
+                    uploadingImage = state.uploadingImage.plus(
+                        ConvertedChatMessage(
+                            userId = state.userId,
+                            userNickname = state.userNickName,
+                            content = imageUri.toString(),
+                            timestamp = LocalDateTime.now(),
+                            isImage = true,
+                            isSentByMe = true
+                        )
+                    )
+                )
+            }
+        }
+        viewModelScope.launch {
+            getLostAndFoundPreSignedUrlUseCase(
+                fileSize, fileType, fileName
+            ).onSuccess {
+                uploadImage(
+                    preSignedUrl = it.second,
+                    fileUrl = it.first,
+                    mediaType = fileType,
+                    mediaSize = fileSize,
+                    imageUri = imageUri
+                )
+            }.onFailure {
+                intent {
+                    postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
+                }
             }
         }
     }

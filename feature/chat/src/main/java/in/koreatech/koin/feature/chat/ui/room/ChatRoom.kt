@@ -150,6 +150,7 @@ fun ChatRoom(
             modifier = Modifier
                 .padding(contentPadding),
             messages = uiState.chatMessage,
+            uploadingImage = uiState.uploadingImage,
             chatPartnerProfileImage = uiState.chatPartnerProfileImage,
             chatInputValue = uiState.chatInputValue,
             showBlockDialog = uiState.showBlockDialog,

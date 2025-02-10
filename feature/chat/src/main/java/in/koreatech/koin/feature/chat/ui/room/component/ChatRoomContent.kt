@@ -16,6 +16,7 @@ import java.time.LocalDate
 @Composable
 fun ChatRoomContent(
     messages: List<Pair<LocalDate, List<ConvertedChatMessage>>>,
+    uploadingImage: List<ConvertedChatMessage>,
     chatPartnerProfileImage: Uri?,
     chatInputValue: String,
     showBlockDialog: Boolean,
@@ -41,7 +42,7 @@ fun ChatRoomContent(
         ) {
             messages.asReversed().forEach { (date, messages) ->
                 // Render the message before date because we are using reverse layout
-                items(messages.asReversed()) { message ->
+                items(messages.plus(uploadingImage).asReversed()) { message ->
                     ChatBubble(
                         message = message,
                         chatPartnerProfileImage = chatPartnerProfileImage

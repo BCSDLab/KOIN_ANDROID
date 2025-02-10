@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -175,23 +176,58 @@ private fun ChatBubbleText(
 private fun ChatBubbleImage(
     imageUrl: String
 ) {
-    SubcomposeAsyncImage(
-        modifier = Modifier.fillMaxWidth(),
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .crossfade(true)
-            .build(),
-        loading = {
+    Box {
+        SubcomposeAsyncImage(
+            modifier = Modifier.fillMaxWidth(),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(true)
+                .build(),
+            loading = {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            },
+            contentScale = ContentScale.Fit,
+            contentDescription = null
+        )
+        if (imageUrl.startsWith("content://")) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                Modifier
+                    .background(Color(0x66000000))
+                    .matchParentSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Box(
+                        modifier = Modifier.size(40.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_uploading_image),
+                            contentDescription = null
+                        )
+                        CircularProgressIndicator(
+                            modifier = Modifier.matchParentSize(),
+                            strokeWidth = 2.dp,
+                            color = KoinTheme.colors.neutral0
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "로딩중...",
+                        color = KoinTheme.colors.neutral0,
+                        style = KoinTheme.typography.regular10
+                    )
+                }
             }
-        },
-        contentScale = ContentScale.Fit,
-        contentDescription = null
-    )
+        }
+    }
 }
 
 @Preview
