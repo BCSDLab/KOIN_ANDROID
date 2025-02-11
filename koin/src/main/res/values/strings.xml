@@ -666,5 +666,5 @@
     <!-- etc -->
     <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>
     <string name="lost_and_found_noti_title">분실물은 여기 다 모아뒀어요</string>
-    <string name="lost_and_found_noti_sub"><![CDATA[바로가기 >>]]></string>
+    <string name="lost_and_found_noti_sub">바로가기 >></string>
 </resources>
