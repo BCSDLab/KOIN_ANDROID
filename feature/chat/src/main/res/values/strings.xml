@@ -10,6 +10,7 @@
     <string name="failed_to_block_user">사용자 차단에 실패했습니다</string>
     <string name="block_dialog_title">이 사용자를 차단하시겠습니까?</string>
     <string name="block_dialog_description">쪽지 수신 및 발신이 모두 차단됩니다.</string>
+    <string name="block_snackbar_message">사용자가 차단되었습니다.</string>
 
     <string name="chat_list_title">쪽지</string>
 </resources>

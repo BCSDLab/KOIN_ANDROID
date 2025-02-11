@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.chat.ui.room
 
-import android.app.Activity
 import android.content.Context
 import android.provider.OpenableColumns
 import android.widget.Toast
@@ -47,7 +46,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ChatRoom(
     articleId: Int,
-    chatRoomId: Int
+    chatRoomId: Int,
+    finishActivity: () -> Unit
 ) {
     val savedStateHandle = SavedStateHandle()
     savedStateHandle[ARTICLE_ID] = articleId
@@ -93,7 +93,7 @@ fun ChatRoom(
         }
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, context)
+        handleSideEffect(it, context, finishActivity)
     }
 
     val uiState by viewModel.collectAsState()
@@ -169,7 +169,8 @@ fun ChatRoom(
 
 fun handleSideEffect(
     sideEffect: ChatRoomSideEffect,
-    context: Context
+    context: Context,
+    finishActivity: () -> Unit
 ) {
     when (sideEffect) {
         ChatRoomSideEffect.FailedToConnectWS -> {
@@ -197,7 +198,7 @@ fun handleSideEffect(
         }
 
         ChatRoomSideEffect.BlockUserSuccess -> {
-            (context as Activity).finish()
+            finishActivity()
         }
     }
 }

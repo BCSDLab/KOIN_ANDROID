@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.feature.chat.ui.room
 
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,9 +25,21 @@ class ChatRoomActivity : ComponentActivity() {
             KoinTheme {
                 ChatRoom(
                     articleId = intent.getIntExtra(ARTICLE_ID, -1),
-                    chatRoomId = intent.getIntExtra(CHAT_ROOM_ID, -1)
+                    chatRoomId = intent.getIntExtra(CHAT_ROOM_ID, -1),
+                    finishActivity = {
+                        val resultIntent = Intent()
+
+                        resultIntent.putExtra(IS_BLOCKED, true)
+
+                        setResult(Activity.RESULT_OK, resultIntent)
+                        finish()
+                    }
                 )
             }
         }
+    }
+
+    companion object {
+        const val IS_BLOCKED = "is_blocked"
     }
 }
