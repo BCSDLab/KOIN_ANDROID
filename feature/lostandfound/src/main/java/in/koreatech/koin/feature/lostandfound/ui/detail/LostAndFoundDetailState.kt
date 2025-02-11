@@ -5,14 +5,12 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.model.ArticleHeaderState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 data class LostAndFoundDetailState(
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = false,
-    val currentLoggedInUserId: Int = 0,
+    val currentLoggedInUser: String = "",
     val showDeleteDialog: Boolean = false,
     val lostOrFound: LostOrFoundType = LostOrFoundType.FOUND,
     val id: Int = 0,
