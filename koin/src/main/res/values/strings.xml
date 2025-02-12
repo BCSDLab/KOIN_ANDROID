@@ -556,6 +556,7 @@
     <string name="navigation_title_article">공지사항</string>
     <string name="navigation_title_article_search">공지글 검색</string>
     <string name="navigation_title_article_keyword">키워드 관리</string>
+    <string name="navigation_title_article_write_lost_item">분실물 신고</string>
     <string name="navigation_title_article_write_found_item">습득물 신고</string>
     <string name="article_more">더보기</string>
     <string name="article_free">자유게시판</string>

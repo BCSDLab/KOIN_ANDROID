@@ -58,9 +58,15 @@
     </fragment>
 
     <fragment
-        android:id="@+id/articleLostAndFoundWriteFragment"
-        android:name="in.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundWriteFragment"
-        android:label="ArticleLostAndFoundWriteFragment">
+        android:id="@+id/articleLostAndFoundWriteFoundFragment"
+        android:name="in.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundWriteFoundFragment"
+        android:label="ArticleLostAndFoundWriteFoundFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleLostAndFoundWriteLostFragment"
+        android:name="in.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundWriteLostFragment"
+        android:label="ArticleLostAndFoundWriteLostFragment">
     </fragment>
 
     <fragment
