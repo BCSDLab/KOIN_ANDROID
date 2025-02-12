@@ -208,8 +208,12 @@ class ChatRoomViewModel @AssistedInject constructor(
         }.collect { messages ->
             intent {
                 reduce {
-                    state.copy(chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
-                        .groupBy { it.timestamp.toLocalDate() }.toList())
+                    if (messages.isEmpty()) {
+                        state.copy(chatMessage = listOf(Pair(LocalDateTime.now().toLocalDate(), emptyList())))
+                    } else {
+                        state.copy(chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
+                            .groupBy { it.timestamp.toLocalDate() }.toList())
+                    }
                 }
             }
         }
