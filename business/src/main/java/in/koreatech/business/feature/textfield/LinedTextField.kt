@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,6 +22,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -28,6 +31,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorSuccess
@@ -82,40 +86,81 @@ fun LinedTextField(
                             contentAlignment = Alignment.CenterStart
                         ) {
                             if (value.isEmpty())
-                                Text( text = label, fontSize = 16.sp, color = ColorHelper)
+                                Text(text = label, fontSize = 16.sp, color = ColorHelper)
                             innerTextField()
                         }
-                        if(timerText != null)
-                        Text(
-                            text = timerText.formatTime(),
-                            fontSize = 16.sp,
-                            color = Gray500,
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
+                        if (timerText != null)
+                            Text(
+                                text = timerText.formatTime(),
+                                fontSize = 16.sp,
+                                color = Gray500,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
                     }
                 }
-
-                Box(modifier = Modifier.padding(start = 8.dp, top = 4.dp)) {
-                    Text(
-                        text = if(isError) "" else helperText,
-                        fontSize = 16.sp,
-                        color = ColorHelper,
-                    )
-                    if (isError) Text(
-                        text = errorText, fontSize = 16.sp, color = ColorSecondary
-                    )
-                    else if (isSuccess && focused) Text(
-                        text = successText,
-                        fontSize = 16.sp,
-                        color = ColorSuccess
-                    )
-                }
-
+                HelperMessage(
+                    helperText = helperText,
+                    isError = isError,
+                    isSuccess = isSuccess,
+                    errorText = errorText,
+                    successText = successText,
+                    focused = focused,
+                )
             }
-
         }
     )
+
 }
+
+
+@Composable
+fun HelperMessage(
+    helperText: String,
+    isError: Boolean,
+    isSuccess: Boolean,
+    errorText: String,
+    successText: String,
+    focused: Boolean,
+) {
+    Box(modifier = Modifier.padding(start = 8.dp, top = 4.dp)) {
+        Text(
+            text = if (isError) "" else helperText,
+            fontSize = 16.sp,
+            color = ColorHelper,
+        )
+        if (isError) {
+            Row{
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_error),
+                    contentDescription = stringResource(id = R.string.error),
+                    tint = ColorSecondary,
+                )
+                Text(
+                    modifier = Modifier.padding(start = 4.dp),
+                    text = errorText, fontSize = 16.sp,
+                    color = ColorSecondary
+                )
+            }
+        }
+        else if (isSuccess && focused){
+            Row {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_success),
+                    contentDescription = stringResource(id = R.string.success),
+                    tint = ColorSuccess
+                )
+                Text(
+                    modifier = Modifier.padding(start = 4.dp),
+                    text = successText,
+                    fontSize = 16.sp,
+                    color = ColorSuccess
+                )
+            }
+        }
+    }
+
+}
+
 
 @Preview
 @Composable
