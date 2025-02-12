@@ -148,6 +148,7 @@ fun LostAndFoundList(
                                         else -> null
                                     }
                                 )
+                                viewModel.fetchLostAndFoundList()
                             }
                         )
                     }
