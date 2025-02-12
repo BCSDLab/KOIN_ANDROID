@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.lostandfound.ui.report
 import android.app.Activity
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -55,7 +56,9 @@ fun LostAndFoundReport(
             containerColor = KoinTheme.colors.neutral0
         ) { contentPadding ->
             LostAndFoundReportContent(
-                modifier = Modifier.padding(contentPadding),
+                modifier = Modifier
+                    .padding(contentPadding)
+                    .consumeWindowInsets(contentPadding),
                 selectedItemIndex = lostAndFoundReportReasonList.indexOf(uiState.reportReason),
                 onSelectedItemChange = { index ->
                     viewModel.setReportReason(lostAndFoundReportReasonList[index])
