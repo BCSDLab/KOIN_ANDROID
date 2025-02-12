@@ -21,7 +21,7 @@ class LostAndFoundReportActivity : ComponentActivity() {
         enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
         setContent {
             LostAndFoundReport(
-                articleId = intent.getIntExtra("articleId", 0),
+                articleId = intent.getIntExtra("article_id", 0),
                 onSuccess = {
                     startActivity(Intent(this, ArticleActivity::class.java).apply {
                         putExtra(
