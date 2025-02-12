@@ -21,6 +21,7 @@
     <string name="go_login_activity">로그인 화면 바로가기</string>
     <string name="back_arrow">backArrow</string>
     <string name="error">오류가 발생하였습니다. 잠시뒤에 다시 시도해 주세요</string>
+    <string name="success">성공</string>
     <string name="koin_for_business">Koin For Business</string>
 
 
@@ -198,4 +199,5 @@
     <string name="delete_user_detail">현재 로그인 되어 있는 계정을\n 탈퇴하시겠습니까?</string>
     <string name="delete_user_success">탈퇴가 완료되었습니다.</string>
     <string name="update_soon">추후 업데이트로 추가 예정입니다</string>
+    <string name="password_visibility">비밀번호 표시</string>
 </resources>
