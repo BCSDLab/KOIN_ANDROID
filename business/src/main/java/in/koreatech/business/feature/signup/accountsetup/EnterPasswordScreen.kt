@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedTextField
+import `in`.koreatech.business.feature.textfield.PasswordTextField
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
@@ -151,7 +152,7 @@ fun EnterPasswordScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            LinedTextField(
+            PasswordTextField(
                 value = state.password,
                 onValueChange = { viewModel.onPasswordChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
@@ -163,7 +164,7 @@ fun EnterPasswordScreen(
                 isSuccess = state.password.isValidPassword(),
             )
 
-            LinedTextField(
+            PasswordTextField(
                 value = state.passwordConfirm,
                 onValueChange = { viewModel.onPasswordConfirmChanged(it) },
                 modifier = Modifier.fillMaxWidth().padding(top=20.dp),
