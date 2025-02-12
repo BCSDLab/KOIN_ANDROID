@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.chat.ui.room.component
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -86,7 +87,8 @@ fun ChatRoomContent(
                     .background(KoinTheme.colors.neutral0)
                     .weight(1f),
                 state = scrollState,
-                reverseLayout = true
+                reverseLayout = true,
+                verticalArrangement = Arrangement.Top
             ) {
                 messages.asReversed().forEach { (date, messages) ->
                     // Render the message before date because we are using reverse layout
