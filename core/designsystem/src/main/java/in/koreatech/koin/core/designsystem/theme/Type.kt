@@ -26,6 +26,7 @@ data class KoinTypography(
     val medium15: TextStyle,
     val medium16: TextStyle,
     val medium18: TextStyle,
+    val medium20: TextStyle,
     val bold12: TextStyle,
     val bold13: TextStyle,
     val bold14: TextStyle,
@@ -123,6 +124,11 @@ internal val MediumStyle6 = DefaultTextStyle.copy(
     lineHeight = 28.8.sp
 )
 
+internal val MediumStyle7 = DefaultTextStyle.copy(
+    fontSize = 20.sp,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 30.sp
+)
 
 internal val BoldStyle1 = DefaultTextStyle.copy(
     fontSize = 12.sp,

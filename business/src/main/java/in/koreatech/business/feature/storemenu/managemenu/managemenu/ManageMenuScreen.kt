@@ -35,8 +35,14 @@ import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.koin.core.R
 import org.orbitmvi.orbit.compose.collectAsState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
@@ -49,10 +55,12 @@ fun ManageMenuScreen(
 ) {
     val state = viewModel.collectAsState().value
     ManageMenuScreenImpl(
+        modifier = modifier,
         onBackPressed = onBackPressed,
         state = state,
         onMenuItemClicked = viewModel::onModifyMenuClicked,
-        onAddMenuClicked = viewModel::onRegisterMenuClicked
+        onAddMenuClicked = viewModel::onRegisterMenuClicked,
+        onCheckBoxClicked = viewModel::onCheckBoxClicked
     )
     HandleSideEffects(viewModel, navigateToModifyMenuScreen, navigateToRegisterMenuScreen)
 }
@@ -62,7 +70,8 @@ fun ManageMenuScreenImpl(
     onBackPressed: () -> Unit = {},
     state: ManageMenuState = ManageMenuState(),
     onMenuItemClicked: (Int) -> Unit ={},
-    onAddMenuClicked: () -> Unit = {}
+    onAddMenuClicked: () -> Unit = {},
+    onCheckBoxClicked: (Int) -> Unit = {}
 ) {
     val categories = listOf(
         stringResource(R.string.recommend_menu),
@@ -71,8 +80,11 @@ fun ManageMenuScreenImpl(
         stringResource(R.string.side_menu)
     )
 
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Box(
             modifier = Modifier
@@ -94,7 +106,8 @@ fun ManageMenuScreenImpl(
             Text(
                 text = stringResource(R.string.menu_edit),
                 modifier = Modifier.align(Alignment.Center),
-                style = TextStyle(color = Color.White, fontSize = 20.sp),
+                style = KoinTheme.typography.medium20,
+                color = Color.White,
             )
         }
 
@@ -107,7 +120,7 @@ fun ManageMenuScreenImpl(
                     onAddMenuClicked()
                 }
             ,
-            text = "+ 메뉴 추가",
+            text = stringResource(R.string.menu_add_plus),
             style = TextStyle(color = colorResource(R.color.primary_500), fontSize = 16.sp)
         )
 
@@ -121,21 +134,29 @@ fun ManageMenuScreenImpl(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            items(categories.size) {
+            itemsIndexed(state.storeMenuCategoryList) { index, item->
                 Box(
                     modifier = Modifier
+                        .background(color = if(item.isChecked) ColorPrimary else Color.White, shape = RoundedCornerShape(8.dp))
                         .fillParentMaxWidth(0.228f)
                         .fillMaxHeight()
+                        .clickable {
+                            coroutineScope.launch {
+                                listState.animateScrollToItem(index)
+                            }
+                            onCheckBoxClicked(index)
+                        }
                         .border(
                             width = 1.dp, color = Gray3, shape = RoundedCornerShape(8.dp)
-                        ),
+                        )
+                    ,
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         modifier = Modifier.padding(1.dp),
-                        text = categories[it],
-                        fontSize = 12.sp,
-                        style = TextStyle(color = Gray3, fontSize = 12.sp),
+                        text = item.categoryName,
+                        style = KoinTheme.typography.medium12,
+                        color = if(item.isChecked) Color.White else Gray3,
                         fontWeight = FontWeight(500),
                     )
                 }
@@ -143,6 +164,7 @@ fun ManageMenuScreenImpl(
         }
 
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 32.dp)
