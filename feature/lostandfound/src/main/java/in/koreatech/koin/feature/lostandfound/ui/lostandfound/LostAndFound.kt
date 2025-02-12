@@ -165,6 +165,7 @@ fun LostAndFoundList(
                                         else -> null
                                     }
                                 )
+                                viewModel.changePage(1)
                                 viewModel.fetchLostAndFoundList()
                             }
                         )
