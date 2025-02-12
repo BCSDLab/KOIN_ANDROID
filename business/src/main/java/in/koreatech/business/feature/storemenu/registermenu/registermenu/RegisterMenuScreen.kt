@@ -1,12 +1,9 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
 import android.net.Uri
-import android.os.Environment
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -340,7 +337,7 @@ fun RegisterMenuScreenImpl(
                         if(registerMenuState.menuOptionPrice.isEmpty()){
                             Box(
                                 modifier = modifier
-                                    .border(width = 1.dp, color = ColorMinor)
+                                    .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                                     .height(37.dp),
                                 contentAlignment = Alignment.CenterStart
                             ) {
@@ -391,7 +388,7 @@ fun RegisterMenuScreenImpl(
 
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_add),
+                            painter = painterResource(id = R.drawable.ic_user_add),
                             contentDescription = null
                         )
 
@@ -432,7 +429,7 @@ fun RegisterMenuScreenImpl(
                 item {
                     DivideOption(22.dp, stringResource(id = R.string.menu_detail))
 
-                    Text(
+                    /*Text(
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp),
                         text = stringResource(id = R.string.menu_composition),
                         fontSize = 15.sp,
@@ -480,7 +477,7 @@ fun RegisterMenuScreenImpl(
                             .padding(top = 24.dp),
                         thickness = 1.dp,
                         color = Gray7
-                    )
+                    )*/
                 }
 
                 item {
@@ -596,10 +593,10 @@ fun RegisterMenuScreenImpl(
                     ) {
                         Button(
                             onClick = {onBackPressed()},
-                            shape = RectangleShape,
+                            shape =  RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(Color.White),
                             modifier = Modifier
-                                .border(1.dp, ColorSecondary)
+                                .border(1.dp, ColorMinor, shape =  RoundedCornerShape(8.dp))
                                 .fillMaxHeight()
                                 .width(113.dp)
                         ) {
@@ -607,13 +604,13 @@ fun RegisterMenuScreenImpl(
                                 text = stringResource(id = R.string.cancel),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = ColorSecondary
+                                color = ColorMinor
                             )
                         }
 
                         Button(
                             onClick = onNextButtonClicked,
-                            shape = RectangleShape,
+                            shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
                             modifier = Modifier
                                 .fillMaxSize()
@@ -645,7 +642,6 @@ private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScr
                     RegisterMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
                     RegisterMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
                     RegisterMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
-                    RegisterMenuErrorType.NullMenuDescription-> context.getString(R.string.menu_null_description)
                     RegisterMenuErrorType.NullMenuImage-> context.getString(R.string.menu_null_image)
                     RegisterMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
                     RegisterMenuErrorType.FailRegisterMenu ->context.getString(R.string.menu_fail_register_menu)
@@ -672,8 +668,8 @@ fun CategoryRadioButton(
             .width(185.dp)
             .height(50.dp)
             .padding(start = startDp, end = endDp)
-            .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6)
-            .background(color = if (isClicked) ColorSecondary else ColorTransparency)
+            .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6, shape = RoundedCornerShape(8.dp))
+            .background(color = if (isClicked) ColorSecondary else ColorTransparency, shape = RoundedCornerShape(8.dp))
             .clickable {
                 onButtonClicked(index)
             }
@@ -755,7 +751,7 @@ fun BorderTextField(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .padding(top = 8.dp)
-            .border(width = 1.dp, color = ColorMinor)
+            .border(width = 1.dp, color = ColorMinor,shape = RoundedCornerShape(8.dp))
             .height(height),
         contentAlignment = Alignment.CenterStart
     ) {

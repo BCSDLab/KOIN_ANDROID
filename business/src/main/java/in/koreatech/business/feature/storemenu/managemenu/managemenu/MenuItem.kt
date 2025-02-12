@@ -27,6 +27,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorCategory
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 
 
@@ -96,9 +97,9 @@ fun MenuCategories(item: StoreMenuCategories) {
         Text(
             text = item.name ?: "",
             modifier = Modifier.padding(10.dp),
+            style = KoinTheme.typography.medium18,
             color = ColorCategory,
             fontWeight = FontWeight(500),
-            fontSize = 18.sp
         )
     }
 }

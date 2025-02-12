@@ -11,7 +11,6 @@ enum class RegisterMenuErrorType {
     NullMenuName,
     NullMenuPrice,
     NullMenuCategory,
-    NullMenuDescription,
     NullMenuImage,
     FailUploadImage,
     FailRegisterMenu
