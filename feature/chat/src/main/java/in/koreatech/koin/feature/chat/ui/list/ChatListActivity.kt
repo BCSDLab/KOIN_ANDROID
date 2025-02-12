@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 
 @AndroidEntryPoint
 class ChatListActivity : ComponentActivity() {
@@ -20,7 +21,10 @@ class ChatListActivity : ComponentActivity() {
             } catch (ignore: IllegalStateException) {
             }
             KoinTheme {
-                ChatList()
+                ChatList(
+                    showBlockedMessage = intent.extras?.getBoolean(ChatRoomActivity.IS_BLOCKED)
+                        ?: false
+                )
             }
         }
     }

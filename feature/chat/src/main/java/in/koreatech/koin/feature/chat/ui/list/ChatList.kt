@@ -2,8 +2,6 @@ package `in`.koreatech.koin.feature.chat.ui.list
 
 import android.app.Activity
 import android.content.Intent
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +12,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,7 +38,8 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatList(
-    viewModel: ChatListViewModel = hiltViewModel()
+    viewModel: ChatListViewModel = hiltViewModel(),
+    showBlockedMessage: Boolean = false
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -47,21 +47,15 @@ fun ChatList(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data = result.data
-                data?.getBooleanExtra(IS_BLOCKED, false).let {
-                    if (it == true) {
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                message = context.getString(R.string.block_snackbar_message),
-                            )
-                        }
-                    }
-                }
+    LaunchedEffect(showBlockedMessage) {
+        if (showBlockedMessage) {
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = context.getString(R.string.block_snackbar_message),
+                )
             }
         }
+    }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         viewModel.fetchChatList()
@@ -94,12 +88,10 @@ fun ChatList(
         ChatListContent(
             chatList = uiState.chatList,
             navigateToChatRoom = { articleId, chatRoomId ->
-                launcher.launch(
                     Intent(context, ChatRoomActivity::class.java).apply {
                         putExtra(ARTICLE_ID, articleId)
                         putExtra(CHAT_ROOM_ID, chatRoomId)
-                    }
-                )
+                    }.let(context::startActivity)
             },
             modifier = Modifier.padding(contentPadding)
         )
@@ -130,5 +122,3 @@ fun ChatListContent(
         }
     }
 }
-
-const val IS_BLOCKED = "is_blocked"

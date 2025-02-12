@@ -47,7 +47,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ChatRoom(
     articleId: Int,
     chatRoomId: Int,
-    finishActivity: () -> Unit
+    navigateToChatList: (isBlocked: Boolean) -> Unit
 ) {
     val savedStateHandle = SavedStateHandle()
     savedStateHandle[ARTICLE_ID] = articleId
@@ -93,7 +93,7 @@ fun ChatRoom(
         }
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, context, finishActivity)
+        handleSideEffect(it, context, navigateToChatList)
     }
 
     val uiState by viewModel.collectAsState()
@@ -170,7 +170,7 @@ fun ChatRoom(
 fun handleSideEffect(
     sideEffect: ChatRoomSideEffect,
     context: Context,
-    finishActivity: () -> Unit
+    navigateToChatList: (isBlocked: Boolean) -> Unit
 ) {
     when (sideEffect) {
         ChatRoomSideEffect.FailedToConnectWS -> {
@@ -198,7 +198,7 @@ fun handleSideEffect(
         }
 
         ChatRoomSideEffect.BlockUserSuccess -> {
-            finishActivity()
+            navigateToChatList(true)
         }
     }
 }
