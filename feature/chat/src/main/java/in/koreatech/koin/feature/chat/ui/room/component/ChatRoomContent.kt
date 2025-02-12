@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -19,6 +21,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @Composable
@@ -38,13 +41,16 @@ fun ChatRoomContent(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
 
     if (showImage.first) {
         BackHandler {
             onShowImageChange(false, Uri.EMPTY)
         }
         Box(
-            modifier = modifier.fillMaxSize().background(KoinTheme.colors.neutral800),
+            modifier = modifier
+                .fillMaxSize()
+                .background(KoinTheme.colors.neutral800),
             contentAlignment = Alignment.Center
         ) {
             SubcomposeAsyncImage(
@@ -65,6 +71,12 @@ fun ChatRoomContent(
             )
         }
     } else {
+        LaunchedEffect(messages) {
+            scope.launch {
+                scrollState.scrollToItem(0)
+            }
+        }
+
         Column(
             modifier = modifier.fillMaxSize()
         ) {
