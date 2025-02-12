@@ -53,6 +53,7 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     }
 
     fun getUnreadMessageCount() = viewModelScope.launch {
+        if (userInfoFlow.value == User.Anonymous) return@launch
         var tempUnReadMessageCount = 0
         getChatListUseCase().collectLatest { messages ->
             messages.forEach { message ->
