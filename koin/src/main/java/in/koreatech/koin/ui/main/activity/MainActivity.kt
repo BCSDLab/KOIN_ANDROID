@@ -40,6 +40,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.enableAutoScroll
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
+import `in`.koreatech.koin.domain.model.article.ArticleNotiType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.ui.article.ArticleActivity
@@ -76,7 +77,10 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         onNotiClick = {
             EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.TO_MANAGE_KEYWORD, it.value)
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("koin://article/activity?fragment=article_keyword")
+                data = when (it.type) {
+                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
+                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                }
             }
             startActivity(intent)
         },
