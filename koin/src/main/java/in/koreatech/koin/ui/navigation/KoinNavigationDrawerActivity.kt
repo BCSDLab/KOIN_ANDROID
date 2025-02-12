@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -123,6 +124,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     private val unReadMessageCountTextView by lazy {
         findViewById<TextView>(R.id.navi_item_chat_badge)
     }
+    private val chatMenuIcon by lazy {
+        findViewById<AppCompatImageView>(R.id.navi_item_chat)
+    }
 
     private val requestMainPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -158,12 +162,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        koinNavigationDrawerViewModel.getUnreadMessageCount()
-
         drawerLayout.setScrimColor(ContextCompat.getColor(this, R.color.black_alpha20))
         drawerLayout.addDrawerListener { _, slideOffset ->
             if (slideOffset < 0.5f) window.blueStatusBar() else window.whiteStatusBar()
-            if (slideOffset == 1f) koinNavigationDrawerViewModel.getUnreadMessageCount()
+            if (koinNavigationDrawerViewModel.userInfoFlow.value.isStudent) {
+                if (slideOffset == 1f) koinNavigationDrawerViewModel.getUnreadMessageCount()
+            }
         }
 
         menus.forEach { (state, view) ->
@@ -357,6 +361,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 nameTextView.visibility = View.VISIBLE
                                 helloMessageTextView.text = getString(R.string.navigation_hello_message)
                                 loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+                                chatMenuIcon.visibility = View.VISIBLE
+                                koinNavigationDrawerViewModel.getUnreadMessageCount()
 
                                 when (menuState) {
                                     MenuState.Main -> {

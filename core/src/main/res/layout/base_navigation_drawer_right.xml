@@ -33,6 +33,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:src="@drawable/ic_chat"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/navi_item_setting"
             app:layout_constraintTop_toTopOf="parent" />
 
