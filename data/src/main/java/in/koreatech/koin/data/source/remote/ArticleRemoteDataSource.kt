@@ -104,11 +104,11 @@ class ArticleRemoteDataSource @Inject constructor(
 
     suspend fun reportLostAndFoundArticle(articleId: Int, reportReasons: ArticleLostAndFoundReportRequest): Result<Unit> {
         return try {
-            val response = articleApi.reportLostAndFound(articleId, reportReasons)
+            val response = articleAuthApi.reportLostAndFound(articleId, reportReasons)
             if (response.isSuccessful) {
                 return Result.success(Unit)
             }
-            return Result.failure(Exception(response.message))
+            return Result.failure(Exception(response.message()))
         } catch (t: Throwable) {
             Result.failure(t)
         }

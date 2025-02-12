@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
+import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundReportRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundRequest
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
@@ -33,5 +34,11 @@ interface ArticleAuthApi {
     @DELETE("articles/lost-item/{id}")
     suspend fun deleteArticleLostAndFound(
         @Path("id") id: Int
+    ): Response<Unit>
+
+    @POST("articles/lost-item/{id}/reports")
+    suspend fun reportLostAndFound(
+        @Path("id") id: Int,
+        @Body reportReasons: ArticleLostAndFoundReportRequest
     ): Response<Unit>
 }
