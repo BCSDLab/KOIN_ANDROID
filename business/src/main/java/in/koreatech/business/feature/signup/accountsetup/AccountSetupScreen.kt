@@ -54,6 +54,7 @@ import `in`.koreatech.business.ui.theme.Gray11
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Gray500
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.formatTime
 import org.orbitmvi.orbit.compose.collectAsState
@@ -175,8 +176,8 @@ fun AccountSetupScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = stringResource(id = R.string.enter_phone),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                errorText = stringResource(id = R.string.phone_number_error),
-                isError = state.phoneNumber.isNotEmpty() && state.phoneNumber.length != 11,
+                errorText = if( state.sendCodeError == OwnerError.ExistsPhoneNumberException) stringResource(id = R.string.phone_number_is_duplicated) else stringResource(id = R.string.phone_number_error),
+                isError = (state.phoneNumber.isNotEmpty() && state.phoneNumber.length != 11) || state.sendCodeError != null,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -186,9 +187,8 @@ fun AccountSetupScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation,
+                enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null,
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (state.sendCodeError == null) ColorPrimary else ColorSecondary,
                     disabledBackgroundColor = Gray11,
                 ),
                 onClick = {
@@ -253,7 +253,7 @@ fun AccountSetupScreen(
                             .height(48.dp),
                         shape = RoundedCornerShape(4.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = if (state.sendCodeError == null) ColorPrimary else ColorSecondary,
+                            backgroundColor = ColorPrimary,
                             disabledBackgroundColor = Gray2,
                         ),
                         onClick = {

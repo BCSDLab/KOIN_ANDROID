@@ -119,7 +119,9 @@
     <string name="enter_phone">-없이 번호를 입력해주세요.</string>
     <string name="sign_up">회원가입</string>
     <string name="business_number_not_validate">올바르지 않는 사업자 번호입니다.</string>
-    <string name="phone_number_not_validate">존재하지 않는 휴대폰 번호입니다.</string>
+    <string name="phone_number_not_validate">올바른 번호가 아닙니다. 다시 입력해주세요.</string>
+    <string name="phone_number_error">올바른 번호가 아닙니다. 다시 입력해주세요.</string>
+    <string name="phone_number_is_duplicated">이미 가입된 전화번호입니다.</string>
     <string name="error_invalid_phone_number">전화번호 형식이 올바르지 않습니다. 11자리 숫자로 입력해 주세요.</string>
     <string name="check_duplicate">중복 확인</string>
     <string name="authentication_code">인증번호</string>
