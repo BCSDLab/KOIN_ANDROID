@@ -2,6 +2,7 @@
     <string name="chat_user_profile_image">User Profile Image</string>
     <string name="chat_add_image">Add Image</string>
     <string name="chat_send">Send</string>
+    <string name="chat_loading">로딩중…</string>
     <string name="chat_input_placeholder">메시지 보내기</string>
     <string name="chat_block_user">차단하기</string>
     <string name="chat_toolbar_more">더보기</string>

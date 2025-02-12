@@ -241,7 +241,7 @@ private fun ChatBubbleImage(
                     }
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = "로딩중...",
+                        text = stringResource(id = R.string.chat_loading),
                         color = KoinTheme.colors.neutral0,
                         style = KoinTheme.typography.regular10
                     )
