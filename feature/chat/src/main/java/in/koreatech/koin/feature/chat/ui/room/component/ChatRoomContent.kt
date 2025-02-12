@@ -78,7 +78,10 @@ fun ChatRoomContent(
             ) {
                 messages.asReversed().forEach { (date, messages) ->
                     // Render the message before date because we are using reverse layout
-                    items(messages.plus(uploadingImage).asReversed()) { message ->
+                    items(
+                        items = messages.plus(uploadingImage).asReversed(),
+                        key = { message -> "${message.userId}:${message.content}:${message.timestamp}" }
+                    ) { message ->
                         ChatBubble(
                             message = message,
                             chatPartnerProfileImage = chatPartnerProfileImage,
