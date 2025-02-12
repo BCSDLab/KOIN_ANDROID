@@ -8,8 +8,7 @@ import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import kotlinx.coroutines.flow.Flow
-import okhttp3.Response
-import timber.log.Timber
+
 import javax.inject.Inject
 
 class ChatRemoteDataSource @Inject constructor(
@@ -57,7 +56,7 @@ class ChatRemoteDataSource @Inject constructor(
         if (response.isSuccessful) {
             return Result.success(Unit)
         } else {
-            return Result.failure(Exception(response.message))
+            return Result.failure(Exception(response.message()))
         }
     }
 }
