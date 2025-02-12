@@ -166,6 +166,7 @@ fun LostAndFoundList(
                     } else {
                         items(uiState.lostAndFoundList) {
                             LostAndFoundItem(
+                                lostOrFound = it.lostOrFound,
                                 lostItemCategory = it.category,
                                 foundPlace = it.foundPlace,
                                 content = it.content,

@@ -29,7 +29,7 @@ data class LostAndFoundDetailState(
 
 fun ArticleLostAndFound.toLostAndFoundDetailState(): LostAndFoundDetailState {
     return LostAndFoundDetailState(
-        lostOrFound = LostOrFoundType.FOUND,
+        lostOrFound = LostOrFoundType.entries.find { it.name == type } ?: LostOrFoundType.FOUND,
         id = id,
         category = LostItemCategory.safeValueOf(category),
         foundPlace = foundPlace,

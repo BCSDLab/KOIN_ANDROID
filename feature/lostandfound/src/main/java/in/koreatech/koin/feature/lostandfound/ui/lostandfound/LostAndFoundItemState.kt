@@ -27,7 +27,7 @@ data class LostAndFoundItemState(
 fun ArticleLostAndFoundHeader.toLostAndFoundItemState() = LostAndFoundItemState(
     id = id,
     boardId = boardId,
-    lostOrFound = LostOrFoundType.FOUND, // Hardcode value to FOUND for now
+    lostOrFound = LostOrFoundType.entries.find { it.name == type } ?: LostOrFoundType.FOUND, // Hardcode value to FOUND for now
     category = LostItemCategory.safeValueOf(category),
     foundPlace = foundPlace,
     foundDate = LocalDate.parse(foundDate),

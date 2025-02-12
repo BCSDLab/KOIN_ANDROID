@@ -44,7 +44,7 @@ import java.time.format.DateTimeFormatter
  */
 @Composable
 fun LostAndFoundItem(
-    lostOrFound: LostOrFoundType = LostOrFoundType.FOUND,
+    lostOrFound: LostOrFoundType,
     lostItemCategory: LostItemCategory,
     foundPlace: String,
     content: String,
@@ -124,6 +124,7 @@ fun LostAndFoundItemPreview() {
     KoinTheme {
         Surface {
             LostAndFoundItem(
+                lostOrFound = LostOrFoundType.FOUND,
                 lostItemCategory = LostItemCategory.WALLET,
                 foundPlace = "담헌실학관 2층",
                 content = "에어팟이에요 투명 케이스가 끼워져 있었어요! 담헌실학관 401호에",
@@ -142,6 +143,7 @@ fun LostAndFoundReportedItemPreview() {
     KoinTheme {
         Surface {
             LostAndFoundItem(
+                lostOrFound = LostOrFoundType.LOST,
                 lostItemCategory = LostItemCategory.WALLET,
                 foundPlace = "담헌실학관 2층",
                 content = "에어팟이에요 투명 케이스가 끼워져 있었어요! 담헌실학관 401호에",
