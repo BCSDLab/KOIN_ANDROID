@@ -2,6 +2,7 @@ package `in`.koreatech.business.feature.insertstore.finalcheckstore
 
 import android.os.Parcelable
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
 import kotlinx.parcelize.Parcelize
 
 
@@ -18,5 +19,6 @@ data class FinalCheckStoreScreenState(
     val isDeliveryOk: Boolean = false,
     val isCardOk: Boolean = false,
     val isBankOk: Boolean = false,
-    val operatingTimeList: List<OperatingTimeState> = emptyList()
+    val operatingTimeList: List<OperatingTimeState> = emptyList(),
+    val settingTimeInfoList: List<TimeSettingState> = emptyList()
 ): Parcelable

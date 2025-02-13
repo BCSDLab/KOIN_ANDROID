@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -230,25 +231,30 @@ fun InsertBasicInfoScreenImpl(
             onStoreAddressChange,
             24.dp
         )
-
-        Button(
-            onClick = onNextButtonClicked,
-            colors = if(isBasicInfoValid) ButtonDefaults.buttonColors(ColorPrimary)
-                    else ButtonDefaults.buttonColors(ColorDisabledButton),
-            shape = RectangleShape,
-            modifier = modifier
-                .padding(top = 57.dp, start = 240.dp, end = 16.dp)
-                .height(38.dp)
-                .width(105.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.next),
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
+        Row(
+            modifier = Modifier
+                .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
+                .fillMaxWidth()
+            ,
+            horizontalArrangement = Arrangement.End
+        ){
+            Button(
+                onClick = onNextButtonClicked,
+                colors = if(isBasicInfoValid) ButtonDefaults.buttonColors(ColorPrimary)
+                else ButtonDefaults.buttonColors(ColorDisabledButton),
+                shape = RectangleShape,
+                modifier = modifier
+                    .height(38.dp)
+                    .width(105.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.next),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
         }
-
     }
 
 }

@@ -44,6 +44,7 @@ import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.KorDayOfWeek
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -57,7 +58,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingTime(
     modifier: Modifier = Modifier,
-    storeOperatingTime: List<OperatingTimeState> = emptyList(),
+    storeOperatingTime: List<KorDayOfWeek> = emptyList(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(
@@ -67,7 +68,7 @@ fun SettingTime(
     addTimeState: (TimeSettingState) -> Unit = {},
     updateIsSettingScreenState: (Boolean) -> Unit = {},
 ) {
-    val dayOfWeekList = remember { mutableStateListOf<String>() }
+    val dayOfWeekList = remember { mutableStateListOf<KorDayOfWeek>() }
     var openTimeValue by remember { mutableStateOf<Hours>(FullHours(6, 0)) }
     var closeTimeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
     var isClosedChecked by remember { mutableStateOf(false) }
@@ -92,12 +93,12 @@ fun SettingTime(
                 modifier = Modifier
                     .size(40.dp)
                     .clickable{
-                        if (dayOfWeekList.contains(item.dayOfWeek)) dayOfWeekList.remove(item.dayOfWeek)
-                        else dayOfWeekList.add(item.dayOfWeek)
+                        if (dayOfWeekList.contains(item)) dayOfWeekList.remove(item)
+                        else dayOfWeekList.add(item)
                     }
                 ,
-                dayName = item.dayOfWeek,
-                isChecked = dayOfWeekList.contains(item.dayOfWeek)
+                dayName = item.kor,
+                isChecked = dayOfWeekList.contains(item)
             )
         }
     }
@@ -292,19 +293,20 @@ fun SettingTime(
                 addTimeState(
                     TimeSettingState(
                         timeInfoString = makeTimeInfo(
-                            dayOfWeekList = dayOfWeekList,
+                            dayOfWeekList = dayOfWeekList.sortedBy { it.priority },
                             openTime = openTimeValue.toTimeString(),
                             closeTime = closeTimeValue.toTimeString(),
                             isClosed = isClosedChecked,
                             is24Hours = is24hoursChecked
                         ),
-                        dayOfWeekList = dayOfWeekList,
+                        dayOfWeekList = dayOfWeekList.sortedBy { it.priority },
                         openTime = openTimeValue.toTimeString(),
                         closeTime = closeTimeValue.toTimeString(),
                         isClosed = isClosedChecked,
                         is24Hours = is24hoursChecked
                     )
                 )
+
                 updateIsSettingScreenState(false)
                       },
             colors = ButtonDefaults.buttonColors(ColorPrimary),
@@ -331,6 +333,16 @@ fun SettingTime(
 @Composable
 fun PreviewSettingTime() {
     SettingTime(
-        storeOperatingTime = operatingTime
+        storeOperatingTime = dayOfWeekList
     )
 }
+
+val dayOfWeekList: List<KorDayOfWeek> = listOf(
+    KorDayOfWeek("월", "MONDAY",1),
+    KorDayOfWeek("화", "TUESDAY",2),
+    KorDayOfWeek("수", "WEDNESDAY",3),
+    KorDayOfWeek("목", "THURSDAY",4),
+    KorDayOfWeek("금", "FRIDAY",5),
+    KorDayOfWeek("토", "SATURDAY",6),
+    KorDayOfWeek("일", "SUNDAY",7)
+)

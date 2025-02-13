@@ -57,7 +57,8 @@ fun CheckSettingTime(
     settingTimeList: List<TimeSettingState> = emptyList(),
     emptySpaceList: List<String> = emptyList(),
     removeTimeSetting: (Int)-> Unit = {},
-    updateIsSettingScreenState: (Boolean) -> Unit = {}
+    onChangeSettingTimeList: () -> Unit = {},
+    updateIsSettingScreenState: (Boolean) -> Unit = {},
 ) {
 
     Divider(
@@ -170,7 +171,12 @@ fun CheckSettingTime(
         Spacer(modifier = Modifier.width(32.dp))
 
         Button(
-            onClick = {updateIsSettingScreenState(true)},
+            onClick = {
+                coroutineScope.launch {
+                    sheetState.hide()
+                }
+                onChangeSettingTimeList()
+                      },
             colors = ButtonDefaults.buttonColors(ColorPrimary),
             shape = RoundedCornerShape(8.dp),
             border = BorderStroke(1.dp, ColorPrimary),
@@ -236,21 +242,3 @@ fun PreviewCheckSettingTime() {
 fun PreviewTimeItem() {
     TimeItem()
 }
-
-val list1: List<String> = listOf(
-    "토, 일 : 휴무",
-    "월, 화, 수, 목, 금 : 06:00 ~ 23:00",
-    "",
-    "",
-    "",
-    ""
-)
-
-val list2: List<String> = listOf(
-    "토, 일 : 휴무",
-    "월 : 06:00 ~ 23:00",
-    "화 : 06:00 ~ 23:00",
-    "수 : 06:00 ~ 23:00",
-    "목 : 06:00 ~ 23:00",
-    "금 : 06:00 ~ 23:00"
-)

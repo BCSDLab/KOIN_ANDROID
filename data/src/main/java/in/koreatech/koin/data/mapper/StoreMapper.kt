@@ -157,8 +157,9 @@ fun StoreDetailEventResponse.toStoreDetailEvents(): ShopEvents = ShopEvents(
 
 fun StoreRegisterResponse.toStoreDetailInfo(): StoreDetailInfo = StoreDetailInfo(
     address = address ?: "",
+    mainCategoryId = mainCategoryId,
     categoryIds = categoryIds ?: emptyList(),
-    deliveryPrice = delivery_price ?: 0,
+    deliveryPrice = deliveryPrice ?: 0,
     description = description ?: "",
     imageUrls = imageUrls ?: emptyList(),
     isBankOk = payBank ?: false,

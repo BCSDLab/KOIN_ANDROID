@@ -4,9 +4,10 @@ import com.google.gson.annotations.SerializedName
 
 data class StoreRegisterResponse (
     @SerializedName("address") val address: String,
+    @SerializedName("main_category_id") val mainCategoryId: Int,
     @SerializedName("category_ids") val categoryIds: List<Int>,
     @SerializedName("delivery") val delivery: Boolean, // 배달가능
-    @SerializedName("delivery_price") val delivery_price: Int,
+    @SerializedName("delivery_price") val deliveryPrice: Int,
     @SerializedName("description") val description: String,
     @SerializedName("image_urls") val imageUrls: List<String>, // 이미지
     @SerializedName("name") val name: String, // 가게이름
