@@ -5,10 +5,13 @@ import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference
 import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
 import `in`.koreatech.koin.domain.repository.TokenRepository
+import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserIdUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,6 +25,9 @@ class KoinApplication : Application() {
     @Inject
     lateinit var crashlytics: FirebaseCrashlytics
 
+    @Inject
+    lateinit var getLoggerUserIdUseCase: GetLoggerUserIdUseCase
+
     override fun onCreate() {
         super.onCreate()
         init()
@@ -34,6 +40,7 @@ class KoinApplication : Application() {
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandlerUtil(applicationContext))
         initTimber()
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
+        EventLogger.init(getLoggerUserIdUseCase)
     }
 
     private fun initTimber() {

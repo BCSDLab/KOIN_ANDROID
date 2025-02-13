@@ -3,12 +3,28 @@ package `in`.koreatech.koin.core.analytics
 import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
 import com.google.firebase.Firebase
+import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserIdUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 object EventLogger {
-
+    private const val USER_ID = "user_id"
     private const val EVENT_CATEGORY = "event_category"
     private const val EVENT_LABEL = "event_label"
     private const val VALUE = "value"
+
+    private var userId: String? = null
+
+    fun init(getLoggerUserIdUseCase: GetLoggerUserIdUseCase) {
+        CoroutineScope(Dispatchers.IO).launch {
+            getLoggerUserIdUseCase()
+                .collectLatest {
+                    userId = it
+                }
+        }
+    }
 
     /**
      * 클릭 이벤트 로깅
@@ -87,6 +103,7 @@ object EventLogger {
     fun logCustomEvent(action: String, category: String, label: String, value: String) {
         if (BuildConfig.IS_DEBUG) {
             Firebase.analytics.logEvent("${action}_debug") {
+                if(userId != null) param(USER_ID, "${userId}")
                 param(EVENT_CATEGORY, "${category}_debug")
                 param(EVENT_LABEL, "$label (debug)")
                 param(VALUE, value)
@@ -95,6 +112,7 @@ object EventLogger {
 
         } else {
             Firebase.analytics.logEvent(action) {
+                if(userId != null) param(USER_ID, "${userId}")
                 param(EVENT_CATEGORY, category)
                 param(EVENT_LABEL, label)
                 param(VALUE, value)
@@ -115,6 +133,7 @@ object EventLogger {
     private fun logEvent(action: EventAction, category: EventCategory, label: String, value: String, vararg extras: EventExtra) {
         if (BuildConfig.IS_DEBUG) {
             Firebase.analytics.logEvent("${action.value}_debug") {
+                if(userId != null) param(USER_ID, "${userId}")
                 param(EVENT_CATEGORY, "${category.value}_debug")
                 param(EVENT_LABEL, "$label (debug)")
                 param(VALUE, value)
@@ -125,6 +144,7 @@ object EventLogger {
             println("EventLogger: ${action.value}, ${category.value}, $label, $value,  ${extras.joinToString { ", ${it.key}: ${it.value}" }}")
         } else {
             Firebase.analytics.logEvent(action.value) {
+                if(userId != null) param(USER_ID, "${userId}")
                 param(EVENT_CATEGORY, category.value)
                 param(EVENT_LABEL, label)
                 param(VALUE, value)
