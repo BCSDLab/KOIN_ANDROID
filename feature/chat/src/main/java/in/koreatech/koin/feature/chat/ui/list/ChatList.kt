@@ -23,6 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
@@ -88,10 +90,14 @@ fun ChatList(
         ChatListContent(
             chatList = uiState.chatList,
             navigateToChatRoom = { articleId, chatRoomId ->
-                    Intent(context, ChatRoomActivity::class.java).apply {
-                        putExtra(ARTICLE_ID, articleId)
-                        putExtra(CHAT_ROOM_ID, chatRoomId)
-                    }.let(context::startActivity)
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.CHAT.MESSAGE_LIST_SELECT,
+                    "쪽지"
+                )
+                Intent(context, ChatRoomActivity::class.java).apply {
+                    putExtra(ARTICLE_ID, articleId)
+                    putExtra(CHAT_ROOM_ID, chatRoomId)
+                }.let(context::startActivity)
             },
             modifier = Modifier.padding(contentPadding)
         )

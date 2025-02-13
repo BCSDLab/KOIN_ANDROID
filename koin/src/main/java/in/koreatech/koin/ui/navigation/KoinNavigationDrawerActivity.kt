@@ -34,6 +34,7 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
@@ -541,6 +542,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToChatActivity() {
+        EventLogger.logCampusClickEvent(
+            AnalyticsConstant.Label.CHAT.HAMBURGER,
+            "쪽지"
+        )
         Intent(this, ChatListActivity::class.java).apply {
             startActivity(this)
         }

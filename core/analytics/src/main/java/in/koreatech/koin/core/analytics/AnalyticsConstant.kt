@@ -117,6 +117,11 @@ object AnalyticsConstant {
             const val FIND_USER_DELETE = "find_user_delete"
             const val FIND_USER_DELETE_CONFIRM = "find_user_delete_confirm"
         }
+
+        object CHAT {
+            const val HAMBURGER = "hamburger"
+            const val MESSAGE_LIST_SELECT = "message_list_select"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"
