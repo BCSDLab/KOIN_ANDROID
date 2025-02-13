@@ -2,6 +2,7 @@ package `in`.koreatech.business.feature.insertstore.finalcheckstore
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -36,6 +40,7 @@ import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
+import `in`.koreatech.business.ui.theme.Red2
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
@@ -179,18 +184,17 @@ fun FinalCheckStoreScreenImpl(
                         modifier = Modifier
                             .padding(start = 30.dp)
                     ) {
-                        state.operatingTimeList.forEach { item ->
+                        state.settingTimeInfoList.forEach { item ->
+                            val stringList = item.timeInfoString.split(" : ")
+                            val coloredString = buildAnnotatedString {
+                                append(stringList[0] + " : ")
+                                withStyle(style = SpanStyle(color = if (stringList[1] == "휴무") Red2 else ColorPrimary)){
+                                    append(stringList[1])
+                                }
+                            }
                             Text(
-                                text = if (item.closed) stringResource(
-                                    id = R.string.insert_store_closed_day,
-                                    item.dayOfWeek
-                                )
-                                else stringResource(
-                                    id = R.string.insert_store_operating_time,
-                                    item.dayOfWeek,
-                                    item.openTime,
-                                    item.closeTime
-                                )
+                                modifier = Modifier.padding(start = 26.dp),
+                                text = coloredString
                             )
                         }
                     }
@@ -233,21 +237,28 @@ fun FinalCheckStoreScreenImpl(
             }
 
             item {
-                Button(
-                    onClick = navigateToFinishScreen,
-                    colors = ButtonDefaults.buttonColors(ColorPrimary),
-                    shape = RectangleShape,
+                Row(
                     modifier = Modifier
-                        .padding(top = 57.dp, start = 240.dp, end = 16.dp, bottom = 20.dp)
-                        .height(38.dp)
-                        .width(105.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.next),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
+                        .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
+                        .fillMaxWidth()
+                    ,
+                    horizontalArrangement = Arrangement.End
+                ){
+                    Button(
+                        onClick = navigateToFinishScreen,
+                        colors = ButtonDefaults.buttonColors(ColorPrimary),
+                        shape = RectangleShape,
+                        modifier = Modifier
+                            .height(38.dp)
+                            .width(105.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.next),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
                 }
             }
         }
@@ -278,7 +289,6 @@ fun NameTextField(
             modifier = Modifier.padding(start = 26.dp),
             text = outputString,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
         )
     }
 }
