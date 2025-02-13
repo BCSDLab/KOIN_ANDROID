@@ -4,12 +4,10 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.DisplayMetrics
 import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.WindowInsetsCompat
@@ -25,15 +23,10 @@ inline val Activity.windowHeight: Int
             val metrics = windowManager.currentWindowMetrics
             val insets = metrics.windowInsets.getInsets(WindowInsets.Type.systemBars())
             metrics.bounds.height() - insets.bottom - insets.top
-        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else {
             val view = window.decorView
             val insets = WindowInsetsCompat.toWindowInsetsCompat(view.rootWindowInsets, view).getInsets(WindowInsetsCompat.Type.systemBars())
             resources.displayMetrics.heightPixels - insets.bottom - insets.top
-        } else {
-            DisplayMetrics().let { displayMetrics ->
-                windowManager.defaultDisplay.getMetrics(displayMetrics)
-                displayMetrics.heightPixels
-            }
         }
     }
 
@@ -43,15 +36,10 @@ inline val Activity.windowWidth: Int
             val metrics = windowManager.currentWindowMetrics
             val insets = metrics.windowInsets.getInsets(WindowInsets.Type.systemBars())
             metrics.bounds.width() - insets.left - insets.right
-        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else {
             val view = window.decorView
             val insets = WindowInsetsCompat.toWindowInsetsCompat(view.rootWindowInsets, view).getInsets(WindowInsetsCompat.Type.systemBars())
             resources.displayMetrics.widthPixels - insets.left - insets.right
-        } else {
-            DisplayMetrics().let { displayMetrics ->
-                windowManager.defaultDisplay.getMetrics(displayMetrics)
-                displayMetrics.widthPixels
-            }
         }
     }
 
