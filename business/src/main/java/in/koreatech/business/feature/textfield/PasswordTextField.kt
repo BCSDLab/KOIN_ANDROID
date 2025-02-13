@@ -25,16 +25,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
-import `in`.koreatech.business.ui.theme.Gray500
-
-private const val s = "Password visibility"
 
 @Composable
 fun PasswordTextField(
@@ -54,10 +51,10 @@ fun PasswordTextField(
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
-        textStyle = textStyle.copy(fontSize = 32.sp),
+        textStyle = textStyle.copy(fontSize = 15.sp),
         modifier = modifier.onFocusChanged { focused = it.isFocused },
         maxLines = 1,
-        visualTransformation = PasswordVisualTransformation(),
+        visualTransformation = if(visible) VisualTransformation.None else PasswordVisualTransformation(),
         decorationBox = { innerTextField ->
             Column(modifier = Modifier.fillMaxWidth()) {
                 Column(
@@ -80,7 +77,7 @@ fun PasswordTextField(
                             contentAlignment = Alignment.CenterStart
                         ) {
                             if (value.isEmpty())
-                                Text(text = label, fontSize = 16.sp, color = ColorHelper)
+                                Text(text = label, fontSize = 13.sp, color = ColorHelper)
                             innerTextField()
                         }
                         IconButton(
@@ -114,8 +111,8 @@ fun PasswordTextFieldPreview() {
     PasswordTextField(
         value = "",
         onValueChange = {},
-        label = "Password",
-        helperText = "Password must be at leasㄱt 8 characters long",
+        label = "특수문자 포함 영어와 숫자 6~18자리로 입력해주세요.",
+        helperText = "특수문자 포함 영어와 숫자 6~18자리로 입력해주세요.",
         errorText = "Password must be at least 8 characters long",
         isError = true
     )
