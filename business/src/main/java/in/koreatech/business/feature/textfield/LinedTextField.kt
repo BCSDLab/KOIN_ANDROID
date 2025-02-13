@@ -40,6 +40,7 @@ import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorSuccess
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray500
+import `in`.koreatech.koin.data.constant.URLConstant.CONTACT_URL
 import `in`.koreatech.koin.domain.util.ext.formatTime
 
 
@@ -116,66 +117,10 @@ fun LinedTextField(
 }
 
 
-@Composable
-fun HelperMessage(
-    helperText: String,
-    isError: Boolean,
-    isSuccess: Boolean,
-    errorText: String,
-    successText: String,
-    focused: Boolean,
-) {
-    Box(modifier = Modifier.padding(start = 8.dp, top = 4.dp)) {
-        Text(
-            text = if (isError) "" else helperText,
-            fontSize = 16.sp,
-            color = ColorHelper,
-        )
-        if (isError) {
-            Row {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_error),
-                    contentDescription = stringResource(id = R.string.error),
-                    tint = ColorSecondary,
-                )
-                Text(
-                    modifier = Modifier.padding(start = 4.dp),
-                    text = errorText, fontSize = 16.sp,
-                    color = ColorSecondary
-                )
-            }
-        } else if (isSuccess && focused) {
-            Row {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_success),
-                    contentDescription = stringResource(id = R.string.success),
-                    tint = ColorSuccess
-                )
-                Text(
-                    modifier = Modifier.padding(start = 4.dp),
-                    text = successText,
-                    fontSize = 16.sp,
-                    color = ColorSuccess
-                )
-            }
-        }
-    }
-}
-
-}
-
-
 @Preview
 @Composable
 fun LinedTextFieldPreview() {
-    LinedTextField(
-        value = "",
-        onValueChange = {},
-        label = "Label",
-        helperText = "Helper Text",
+    ContactHelperMessage(
         errorText = "Error Text",
-        successText = "Success Text",
-        isError = true,
-        isSuccess = true
     )
 }
