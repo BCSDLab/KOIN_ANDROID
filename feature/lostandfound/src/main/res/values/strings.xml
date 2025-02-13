@@ -105,4 +105,8 @@
     <string name="detail_chat_room_button">쪽지 보내기</string>
 
     <string name="article_reported">신고에 의해 숨김 처리 되었습니다. </string>
+
+    <string name="logging_lost_message_send">분실물 쪽지 보내기</string>
+    <string name="logging_found_message_send">습득물 쪽지 보내기</string>
+    <string name="logging_report">신고하기</string>
 </resources>

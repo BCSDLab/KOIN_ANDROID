@@ -157,6 +157,15 @@ fun LostAndFoundList(
                                 viewModel.setDropdownExpanded(it)
                             },
                             onItemSelected = {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_TYPE,
+                                    when (it) {
+                                        0 -> "물품 전체"
+                                        1 -> "습득물"
+                                        2 -> "분실물"
+                                        else -> ""
+                                    }
+                                )
                                 viewModel.setSelectedType(
                                     when (it) {
                                         0 -> null
