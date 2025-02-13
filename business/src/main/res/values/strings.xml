@@ -13,6 +13,9 @@
     <string name="send_authentication_code">인증번호 발송</string>
     <string name="send_authentication_code_dialog">인증번호가 발송되었습니다.\n잠시만 기다려 주세요.</string>
     <string name="resend_authentication_code">인증번호 재발송</string>
+    <string name="resend_authentication_code_error">인증번호 재발송이 안되시나요?</string>
+    <string name="sms_code_time_over">유효시간이 지났습니다. 인증번호를 재발송 해주세요.</string>
+    <string name="enter_authentication_code">발송된 인증 번호를 입력해주세요.</string>
     <string name="confirm_password">비밀번호 확인</string>
     <string name="new_password">새 비밀번호</string>
     <string name="input_new_password">새 비밀번호를 입력해주세요.</string>
@@ -101,6 +104,7 @@
     <string name="signup_request_complete_description">회원가입이 완료되었습니다!\n가입 승인 시 로그인이 가능합니다.</string>
     <string name="navigate_to_login_screen">로그인 화면 바로가기</string>
     <string name="go_to_login_screen">로그인하러 가기</string>
+    <string name="contact">문의하기</string>
 
     <string name="back_icon">BackArrow</string>
     <string name="check_icon">check</string>
