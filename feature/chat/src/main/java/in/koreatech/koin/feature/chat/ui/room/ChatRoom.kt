@@ -207,5 +207,14 @@ fun handleSideEffect(
         ChatRoomSideEffect.BlockUserSuccess -> {
             (context as Activity).finish()
         }
+
+        ChatRoomSideEffect.BlockedByUser -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.blocked_by_user),
+                Toast.LENGTH_SHORT
+            ).show()
+            (context as Activity).finish()
+        }
     }
 }

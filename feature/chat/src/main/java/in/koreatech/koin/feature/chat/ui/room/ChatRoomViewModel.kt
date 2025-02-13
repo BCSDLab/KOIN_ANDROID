@@ -36,6 +36,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
 import timber.log.Timber
 import java.time.LocalDateTime
 
@@ -97,7 +98,18 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     private fun createAndGetChatRoom(articleId: Int) = viewModelScope.launch {
         getChatRoomFromArticleIdUseCase(articleId).catch {
-            Timber.e(it)
+            if (it is HttpException) {
+                if (it.code() == 403) {
+                    intent {
+                        reduce {
+                            state.copy(isBlocked = true)
+                        }
+                        postSideEffect(ChatRoomSideEffect.BlockedByUser)
+                    }
+                }
+            } else {
+                Timber.e(it)
+            }
         }.collectLatest { data ->
             intent {
                 reduce {
@@ -117,7 +129,18 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     private fun getChatRoom(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
         getChatRoomUseCase(articleId, chatRoomId).catch {
-            Timber.e(it)
+            if (it is HttpException) {
+                if (it.code() == 403) {
+                    intent {
+                        reduce {
+                            state.copy(isBlocked = true)
+                        }
+                        postSideEffect(ChatRoomSideEffect.BlockedByUser)
+                    }
+                }
+            } else {
+                Timber.e(it)
+            }
         }.collectLatest { data ->
             intent {
                 reduce {

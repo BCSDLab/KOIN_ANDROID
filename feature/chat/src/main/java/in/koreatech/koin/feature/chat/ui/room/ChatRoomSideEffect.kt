@@ -5,4 +5,5 @@ sealed class ChatRoomSideEffect {
     data object FailedToUploadImage: ChatRoomSideEffect()
     data object BlockUserSuccess: ChatRoomSideEffect()
     data object BlockUserFailed: ChatRoomSideEffect()
+    data object BlockedByUser: ChatRoomSideEffect()
 }
