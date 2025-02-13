@@ -13,8 +13,8 @@ fun ComponentActivity.enableEdgeToEdgeWithLightStatusBar() = enableEdgeToEdge(
 )
 
 /**
- * Enables the edge-to-edge display for this [ComponentActivity] with blue status bar.
+ * Enables the edge-to-edge display for this [ComponentActivity] with dark status bar.
  */
-fun ComponentActivity.enableEdgeToEdgeWithBlueStatusBar() = enableEdgeToEdge(
-    statusBarStyle = SystemBarStyle.dark(Color.parseColor("#FF175C8E"))
+fun ComponentActivity.enableEdgeToEdgeWithDarkStatusBar() = enableEdgeToEdge(
+    statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
 )
