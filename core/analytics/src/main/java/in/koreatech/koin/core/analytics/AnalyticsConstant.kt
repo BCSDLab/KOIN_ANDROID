@@ -116,6 +116,7 @@ object AnalyticsConstant {
             const val FIND_USER_WRITE_CONFIRM = "find_user_write_confirm"
             const val FIND_USER_DELETE = "find_user_delete"
             const val FIND_USER_DELETE_CONFIRM = "find_user_delete_confirm"
+            const val ITEM_POST_REPORT_CONFIRM = "item_post_report_confirm"
         }
     }
 

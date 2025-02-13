@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -74,6 +76,10 @@ fun LostAndFoundReport(
                     viewModel.setReportReasonDescription(it)
                 },
                 onReport = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT_CONFIRM,
+                        uiState.reportReasonTitle
+                    )
                     viewModel.reportArticle(articleId)
                 }
             )
