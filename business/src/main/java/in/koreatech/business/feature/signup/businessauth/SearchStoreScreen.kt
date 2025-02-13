@@ -60,13 +60,13 @@ fun SearchStoreScreen(
 ) {
     val state = viewModel.collectAsState().value
     Column(
-        modifier = modifier,
-
+        modifier = modifier
+            .fillMaxSize()
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp)
+                .padding(vertical = 12.dp),
         ) {
             IconButton(
                 onClick = { viewModel.onNavigateToBackScreen() },

@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.textfield
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorHelper
+import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorSuccess
 import `in`.koreatech.business.ui.theme.ColorTextField
@@ -104,7 +107,7 @@ fun LinedTextField(
                     isSuccess = isSuccess,
                     errorText = errorText,
                     successText = successText,
-                    focused = focused,
+                    focused = if (timerText != null) true else focused,
                 )
             }
         }
@@ -129,7 +132,7 @@ fun HelperMessage(
             color = ColorHelper,
         )
         if (isError) {
-            Row{
+            Row {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_error),
                     contentDescription = stringResource(id = R.string.error),
@@ -141,8 +144,7 @@ fun HelperMessage(
                     color = ColorSecondary
                 )
             }
-        }
-        else if (isSuccess && focused){
+        } else if (isSuccess && focused) {
             Row {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_success),
@@ -158,6 +160,7 @@ fun HelperMessage(
             }
         }
     }
+}
 
 }
 

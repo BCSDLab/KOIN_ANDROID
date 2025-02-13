@@ -51,7 +51,6 @@ fun CompleteSignupScreen(
     Column(
         modifier = modifier,
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()

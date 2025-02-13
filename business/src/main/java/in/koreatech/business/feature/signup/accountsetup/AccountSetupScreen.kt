@@ -45,18 +45,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.textfield.ContactHelperMessage
 import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorPrimary
-import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray11
 import `in`.koreatech.business.ui.theme.Gray2
-import `in`.koreatech.business.ui.theme.Gray500
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
-import `in`.koreatech.koin.domain.util.ext.formatTime
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -75,79 +73,81 @@ fun AccountSetupScreen(
         hasRequestedSmsValidation = true
     }
     var timerText by remember { mutableStateOf(300) }
+    if (state.verifyState == SignupContinuationState.CheckComplete) {
+        AccountTimer.cancel()
+    }
 
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp)
-            ) {
-                IconButton(
-                    onClick = viewModel::onBackButtonClicked,
-                    modifier = Modifier.align(Alignment.CenterStart)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
-                        contentDescription = stringResource(id = R.string.back_icon),
-                    )
-                }
 
-                Text(
-                    text = stringResource(id = R.string.sign_up),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.align(Alignment.Center)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
+        ) {
+            IconButton(
+                onClick = viewModel::onBackButtonClicked,
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = stringResource(id = R.string.back_icon),
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = stringResource(id = R.string.sign_up),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
 
-            Column(
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Row(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.Center,
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        modifier = Modifier,
-                        color = ColorPrimary,
-                        fontWeight = FontWeight.Medium,
-                        text = stringResource(id = R.string.input_basic_information)
-                    )
-                    Text(
-                        text = stringResource(id = R.string.two_third),
-                        color = ColorPrimary,
-                        fontWeight = FontWeight.Medium,
-                    )
-                }
+                Text(
+                    modifier = Modifier,
+                    color = ColorPrimary,
+                    fontWeight = FontWeight.Medium,
+                    text = stringResource(id = R.string.input_basic_information)
+                )
+                Text(
+                    text = stringResource(id = R.string.two_third),
+                    color = ColorPrimary,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
 
-                Canvas(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    drawLine(
-                        color = ColorUnarchived,
-                        start = Offset(-40f, 0f),
-                        end = Offset(size.width + 40, size.height),
-                        strokeWidth = 4.dp.toPx(),
-                        cap = StrokeCap.Round
-                    )
-                    drawLine(
-                        color = ColorPrimary,
-                        start = Offset(-40f, 0f),
-                        end = Offset((size.width + 35) / 3 * 2, size.height),
-                        strokeWidth = 4.dp.toPx(),
-                        cap = StrokeCap.Round
-                    )
-                }
+            Canvas(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                drawLine(
+                    color = ColorUnarchived,
+                    start = Offset(-40f, 0f),
+                    end = Offset(size.width + 40, size.height),
+                    strokeWidth = 4.dp.toPx(),
+                    cap = StrokeCap.Round
+                )
+                drawLine(
+                    color = ColorPrimary,
+                    start = Offset(-40f, 0f),
+                    end = Offset((size.width + 35) / 3 * 2, size.height),
+                    strokeWidth = 4.dp.toPx(),
+                    cap = StrokeCap.Round
+                )
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
@@ -176,7 +176,9 @@ fun AccountSetupScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = stringResource(id = R.string.enter_phone),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                errorText = if( state.sendCodeError == OwnerError.ExistsPhoneNumberException) stringResource(id = R.string.phone_number_is_duplicated) else stringResource(id = R.string.phone_number_error),
+                errorText = if (state.sendCodeError == OwnerError.ExistsPhoneNumberException) stringResource(
+                    id = R.string.phone_number_is_duplicated
+                ) else stringResource(id = R.string.phone_number_error),
                 isError = (state.phoneNumber.isNotEmpty() && state.phoneNumber.length != 11) || state.sendCodeError != null,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
@@ -211,7 +213,8 @@ fun AccountSetupScreen(
             if (hasRequestedSmsValidation) {
                 SendAuthCodeDialog(
                     onDismissRequest = {
-                       viewModel.changeDialogVisibility(false)},
+                        viewModel.changeDialogVisibility(false)
+                    },
                     dialogText = stringResource(id = R.string.send_authentication_code_dialog),
                     visibility = state.dialogVisibility
                 )
@@ -270,6 +273,12 @@ fun AccountSetupScreen(
                             color = White
                         )
                     }
+                    if (AccountTimer.secondsRemaining <= 290L) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        ContactHelperMessage(
+                            errorText = stringResource(id = R.string.resend_authentication_code_error),
+                        )
+                    }
                 }
             }
 
@@ -292,7 +301,7 @@ fun AccountSetupScreen(
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 16.sp,
-                    color = if(state.verifyState != SignupContinuationState.CheckComplete) Gray1 else White,
+                    color = if (state.verifyState != SignupContinuationState.CheckComplete) Gray1 else White,
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))

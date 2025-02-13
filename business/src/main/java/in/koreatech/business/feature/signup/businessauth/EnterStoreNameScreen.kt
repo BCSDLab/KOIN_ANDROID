@@ -56,12 +56,13 @@ fun EnterStoreNameScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 12.dp),
     ) {
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(vertical = 12.dp),
+
         ) {
             IconButton(
                 onClick = viewModel::onNavigateToBackScreen,
@@ -164,11 +165,17 @@ fun EnterStoreNameScreen(
                 onClick = viewModel::onNavigateToSearchStore,
             )
             {
-                Text(
-                    text = stringResource(id = R.string.search_store),
-                    fontSize = 15.sp,
-                    color = Color.White,
-                )
+                    Text(
+                        text = stringResource(id = R.string.search_store),
+                        fontSize = 15.sp,
+                        color = Color.White,
+                    )
+                    Icon(
+                        modifier = Modifier.padding(start = 4.dp),
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = stringResource(id = R.string.search_icon),
+                        tint = Color.White
+                    )
             }
             Spacer(modifier = Modifier.weight(1f))
             Button(

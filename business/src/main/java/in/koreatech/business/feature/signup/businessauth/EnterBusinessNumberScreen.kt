@@ -59,12 +59,11 @@ fun EnterBusinessNumberScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 12.dp),
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = viewModel::onNavigateToBackScreen,
@@ -138,7 +137,6 @@ fun EnterBusinessNumberScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
         ) {
-
             Text(
                 text = stringResource(id = R.string.enter_business_registration_number),
                 fontSize = 20.sp,
@@ -155,7 +153,6 @@ fun EnterBusinessNumberScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = stringResource(id = R.string.enter_business_registration_number),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                isError = state.signupContinuationState == SignupContinuationState.companyNumberIsNotValidate,
             )
             Spacer(modifier = Modifier.weight(1f))
 
@@ -164,7 +161,7 @@ fun EnterBusinessNumberScreen(
                     .fillMaxWidth()
                     .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = state.name.isNotEmpty(),
+                enabled = state.companyNumber.length == 10,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     disabledBackgroundColor = ColorDisabledButton,

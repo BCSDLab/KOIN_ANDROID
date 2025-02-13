@@ -78,12 +78,11 @@ fun BusinessAuthScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 12.dp),
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = viewModel::onNavigateToBackScreen,
@@ -94,7 +93,6 @@ fun BusinessAuthScreen(
                     contentDescription = stringResource(id = R.string.back_icon),
                 )
             }
-
             Text(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,

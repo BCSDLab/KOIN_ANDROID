@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupSideEffect
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
@@ -53,6 +54,7 @@ import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorTextDescription
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.ColorUnarchived
@@ -90,12 +92,11 @@ fun AttachFileScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 12.dp),
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = businessAuthViewModel::onNavigateToBackScreen,
@@ -196,11 +197,25 @@ fun AttachFileScreen(
                 text = stringResource(id = R.string.instruction_file),
                 fontSize = 14.sp,
             )
-            Text(
-                text = stringResource(id = R.string.file_upload_instruction),
-                fontSize = 12.sp,
-                color = ColorTextDescription
-            )
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Text(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = stringResource(id = R.string.file_upload_instruction),
+                    fontSize = 12.sp,
+                    color = ColorTextDescription
+                )
+                Text(
+                    modifier = Modifier.padding(bottom = 20.dp),
+                    text = "${businessAuthState.selectedImages.size}/5",
+                    fontSize = 12.sp,
+                    color = if(businessAuthState.selectedImages.size==0) ColorTextDescription else ColorSecondary
+                )
+            }
+
+
             Spacer(modifier = Modifier.height(8.dp))
 
             if (businessAuthState.selectedImages.isNotEmpty()) {

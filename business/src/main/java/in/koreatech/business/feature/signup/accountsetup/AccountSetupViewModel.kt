@@ -106,7 +106,7 @@ class AccountSetupViewModel @Inject constructor(
     fun onPhoneNumChanged(phoneNumber: String) = blockingIntent {
         reduce {
             state.copy(
-                phoneNumber = phoneNumber,
+                phoneNumber =  if (phoneNumber.length <=11)  phoneNumber else state.phoneNumber,
                 phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
                 sendCodeError = null,
             )
