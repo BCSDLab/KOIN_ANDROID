@@ -4,10 +4,12 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -31,6 +33,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.splash.SplashActivity
 import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailImageViewpagerAdapter
@@ -92,6 +95,18 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     }
     private val storeDetailViewpagerAdapter = StoreDetailViewpagerAdapter(this)
 
+    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (flyerDialogFragment?.isVisible == true) {
+                flyerDialogFragment!!.dismiss()
+                flyerDialogFragment = null
+                return
+            }
+            isEnabled = false
+            onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,7 +123,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 AppBarBase.getLeftButtonId() -> {
                     storeElapsedTime = System.currentTimeMillis() - storeCurrentTime
                     isSwipeGesture = false
-                    onBackPressed()
+                    onBackPressedDispatcher.onBackPressed()
                 }
 
                 AppBarBase.getRightButtonId() -> {
@@ -264,15 +279,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             isSwipeGesture = true
         }
         return super.onTouchEvent(event)
-    }
-
-    override fun onBackPressed() {
-        if (flyerDialogFragment?.isVisible == true) {
-            flyerDialogFragment!!.dismiss()
-            flyerDialogFragment = null
-            return
-        }
-        super.onBackPressed()
     }
 
     private fun initCallFunction() {

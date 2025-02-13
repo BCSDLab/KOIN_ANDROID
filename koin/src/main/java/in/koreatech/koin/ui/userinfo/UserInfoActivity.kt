@@ -48,7 +48,7 @@ class UserInfoActivity : ActivityBase() {
     private fun initView() = with(binding) {
         appbarUserInfo.setAppBarButtonClickedListener(
             leftButtonClicked = {
-                onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
             },
             rightButtonClicked = {
                 userInfoEditActivityNew.launch(Unit)

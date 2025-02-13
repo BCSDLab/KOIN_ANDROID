@@ -405,7 +405,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     private fun setAppbarEvent(rightButtonClickable: () -> Unit = {}) {
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
                 AppBarBase.getRightButtonId() -> rightButtonClickable()
             }
         }

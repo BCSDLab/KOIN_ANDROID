@@ -56,7 +56,7 @@ class StoreReviewReportActivity:  ActivityBase() {
 
         reportAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
             }
         }
         storeName = intent.extras?.getString("storeName")

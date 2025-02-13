@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -149,6 +150,26 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             }.create()
     }
 
+    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (drawerLayout.isDrawerOpened()) {
+                drawerLayout.closeDrawer()
+            } else {
+                if (menuState == MenuState.Main) {
+                    if (System.currentTimeMillis() > pressTime + 2000) {
+                        pressTime = System.currentTimeMillis()
+                        ToastUtil.getInstance().makeShort(getString(R.string.press_again_to_exit))
+                    } else {
+                        finishAffinity()
+                    }
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+    }
+
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
@@ -261,23 +282,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
         leftNavigationView.layoutParams =
             leftNavigationView.layoutParams.apply { width = windowWidth }
-    }
-
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpened()) {
-            drawerLayout.closeDrawer()
-        } else {
-            if (menuState == MenuState.Main) {
-                if (System.currentTimeMillis() > pressTime + 2000) {
-                    pressTime = System.currentTimeMillis()
-                    ToastUtil.getInstance().makeShort(getString(R.string.press_again_to_exit))
-                } else {
-                    finishAffinity()
-                }
-            } else {
-                super.onBackPressed()
-            }
-        }
     }
 
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
