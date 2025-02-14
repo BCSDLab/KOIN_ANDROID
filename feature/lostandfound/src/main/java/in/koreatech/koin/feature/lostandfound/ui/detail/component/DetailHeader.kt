@@ -53,7 +53,7 @@ fun DetailHeader(
             LostItemTypeChip(category = category)
             Text(
                 modifier = Modifier.padding(start = 8.dp),
-                text = "$foundPlace | ${foundDate.format(foundDateFormatType)}",
+                text = "${foundPlace.replace("\n", " ")} | ${foundDate.format(foundDateFormatType)}",
                 fontWeight = FontWeight(500),
                 style = KoinTheme.typography.medium14
             )
