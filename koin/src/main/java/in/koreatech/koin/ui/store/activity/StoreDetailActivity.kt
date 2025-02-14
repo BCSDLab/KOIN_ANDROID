@@ -318,11 +318,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             abtestName = it
             when (viewModel.variableName.value) {
                 ExperimentGroup.CALL_NUMBER -> {
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(전화하기)",
-                        AnalyticsConstant.Label.BUSINESS_CALL_1,
-                        "number"
-                    )
                     binding.callFloatingButton.visibility = View.GONE
                     binding.storeDetailPhoneTextview.setTextColor(
                         ContextCompat.getColor(
@@ -335,11 +330,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 ExperimentGroup.CALL_FLOATING -> {
                     binding.scrollUpButton.visibility = View.GONE
                     binding.storeDetailPhoneImage.visibility = View.GONE
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(전화하기)",
-                        AnalyticsConstant.Label.BUSINESS_CALL_1,
-                        "floating"
-                    )
                 }
             }
         }
