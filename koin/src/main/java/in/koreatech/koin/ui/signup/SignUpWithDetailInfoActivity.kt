@@ -15,6 +15,7 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.databinding.ActivitySignUpWithDetailInfoBinding
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.user.Gender
@@ -28,6 +29,9 @@ import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class SignupWithDetailInfoActivity : ActivityBase() {
@@ -101,8 +105,16 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                 )
                 EventLogger.logClickEvent(
                     EventAction.USER,
-                    AnalyticsConstant.Label.COMPLETE_SIGN_UP,
-                    getString(R.string.complete_sign_up)
+                    "header",
+                    "회원가입",
+                    EventExtra("gender", when {
+                        signupUserRadiobuttonGenderMan.isChecked -> "0"
+                        signupUserRadiobuttonGenderWoman.isChecked -> "1"
+                        else -> "2"
+                    }),
+                    EventExtra("department", spinnerSignupUserMajor.text.toString()),
+                    EventExtra("created_at", ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"))
+                    )
                 )
             }
         }
