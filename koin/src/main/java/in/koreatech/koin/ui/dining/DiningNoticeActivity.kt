@@ -14,6 +14,7 @@ import `in`.koreatech.koin.databinding.ActivityDiningNoticeBinding
 import `in`.koreatech.koin.ui.dining.adapter.DiningNoticeAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningNoticeViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.whiteStatusBar
 import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
@@ -54,6 +55,8 @@ class DiningNoticeActivity : ActivityBase() {
                 itemAnimator = null
             }
         }
+
+        window.whiteStatusBar()
     }
 
     private fun initViewModel() = with(viewModel) {
