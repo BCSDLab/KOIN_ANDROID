@@ -49,3 +49,6 @@ val ColorTransparency = Color(0x00FF0000)
 val ColorOnCardBackground = Color(0xFF4B4B4B)
 val ColorTextDescription = Color(0xFF8E8E8E)
 val ColorTextFieldDescription = Color(0xFFCACACA)
+
+val Danger700 = Color(0XFFEC2D30)
+val Info700 = Color(0xFF3A70E2)

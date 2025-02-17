@@ -23,6 +23,7 @@ import `in`.koreatech.koin.databinding.ActivityArticleBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
+import `in`.koreatech.koin.util.ext.whiteStatusBar
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -45,6 +46,8 @@ class ArticleActivity : ActivityBase() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, imeInsets.bottom or systemBars.bottom)
             WindowInsetsCompat.CONSUMED
         }
+
+        window.whiteStatusBar()
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_article_fragment) as NavHostFragment
