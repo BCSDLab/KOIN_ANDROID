@@ -195,6 +195,7 @@
     <string name="add_setting_time">설정시간 추가</string>
     <string name="add_setting_time_plus">설정시간 플러스 버튼</string>
     <string name="insert_store_operating_time_setting">운영시간 설정</string>
+    <string name="setting_time_is_null">등록한 운영시간이 없습니다.</string>
 
     <string name="insert_store_check_store_info">4. 가게 정보 확인</string>
     <string name="insert_store_check_info">입력하신 정보가 맞습니까?</string>

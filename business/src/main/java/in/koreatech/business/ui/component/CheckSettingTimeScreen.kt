@@ -42,6 +42,7 @@ import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.business.ui.theme.Red2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
+import `in`.koreatech.business.ui.component.button.SettingTimeButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -137,61 +138,21 @@ fun CheckSettingTime(
             thickness = 0.5.dp
         )
     }
-
-    Row(
-        modifier = Modifier
-            .padding(top = 12.dp, bottom = 36.dp)
-            .fillMaxWidth()
-        ,
-        horizontalArrangement = Arrangement.Center
-    ){
-        Button(
-            onClick = {
-                updateIsSettingScreenState(false)
-                coroutineScope.launch {
-                    sheetState.hide()
-                }
-            },
-            colors = ButtonDefaults.buttonColors(Color.White),
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(1.dp, Gray3),
-            modifier = Modifier
-                .height(44.dp)
-                .width(128.dp)
-
-        ) {
-            Text(
-                text = stringResource(id = R.string.cancel),
-                style = KoinTheme.typography.medium16,
-                textAlign = TextAlign.Center,
-                color = Gray3
-            )
+    SettingTimeButton(
+        modifier = Modifier,
+        onCancelButtonClicked = {
+            updateIsSettingScreenState(false)
+            coroutineScope.launch {
+                sheetState.hide()
+            }
+        },
+        onRegisterButtonClicked = {
+            coroutineScope.launch {
+                sheetState.hide()
+            }
+            onChangeSettingTimeList()
         }
-
-        Spacer(modifier = Modifier.width(32.dp))
-
-        Button(
-            onClick = {
-                coroutineScope.launch {
-                    sheetState.hide()
-                }
-                onChangeSettingTimeList()
-                      },
-            colors = ButtonDefaults.buttonColors(ColorPrimary),
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(1.dp, ColorPrimary),
-            modifier = Modifier
-                .height(44.dp)
-                .width(128.dp)
-        ) {
-            Text(
-                text = "등록하기",
-                style = KoinTheme.typography.medium16,
-                textAlign = TextAlign.Center,
-                color = Color.White
-            )
-        }
-    }
+    )
 }
 
 @Composable
