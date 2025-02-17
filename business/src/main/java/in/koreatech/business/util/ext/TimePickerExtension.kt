@@ -1,18 +1,11 @@
 package `in`.koreatech.business.util.ext
 
+import android.annotation.SuppressLint
 import com.chargemap.compose.numberpicker.Hours
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.KorDayOfWeek
 
-fun Hours.toTimeString(): String {
-
-    val hoursString: String =
-        if (this.hours < 10) "0" + this.hours.toString() else this.hours.toString()
-
-    val minutesString: String =
-        if (this.minutes < 10) "0" + this.minutes.toString() else this.minutes.toString()
-
-    return "$hoursString:$minutesString"
-}
+@SuppressLint("DefaultLocale")
+fun Hours.toTimeString(): String = String.format("%02d:%02d", this.hours, this.minutes)
 
 fun makeTimeInfo(
     dayOfWeekList: List<KorDayOfWeek>,
@@ -25,7 +18,7 @@ fun makeTimeInfo(
 
     infoString = if(isClosed) "$infoString : 휴무"
     else if (is24Hours) "$infoString : 24시간 운영"
-    else infoString + " : ${openTime} ~ ${closeTime}"
+    else "$infoString : $openTime ~ $closeTime"
 
     return infoString
 }

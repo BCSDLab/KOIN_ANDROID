@@ -29,6 +29,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.business.ui.component.button.SettingTimeButton
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -62,7 +63,7 @@ fun NullSettingTime(
                 .padding(vertical = 135.dp)
                 .fillMaxWidth()
             ,
-            text = "등록한 운영시간이 없습니다.",
+            text = stringResource(R.string.setting_time_is_null),
             style = KoinTheme.typography.medium16,
             textAlign = TextAlign.Center
         )
@@ -85,7 +86,7 @@ fun NullSettingTime(
             horizontalArrangement = Arrangement.Center
         ){
             Text(
-                text = "설정시간 추가",
+                text = stringResource(R.string.add_setting_time),
                 style = KoinTheme.typography.medium16,
                 textAlign = TextAlign.Center
             )
@@ -106,57 +107,16 @@ fun NullSettingTime(
         )
     }
 
-    Row(
-        modifier = Modifier
-            .padding(top = 12.dp, bottom = 36.dp)
-            .fillMaxWidth()
-        ,
-        horizontalArrangement = Arrangement.Center
-    ){
-        Button(
-            onClick = {
-                updateIsSettingScreenState(false)
-                coroutineScope.launch {
-                    sheetState.hide()
-                }
-            },
-            colors = ButtonDefaults.buttonColors(Color.White),
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(1.dp, Gray3),
-            modifier = Modifier
-                .height(44.dp)
-                .width(128.dp)
-
-        ) {
-            Text(
-                text = stringResource(id = R.string.cancel),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center,
-                    color = Gray3
-                )
-            )
+    SettingTimeButton(
+        modifier = Modifier,
+        onCancelButtonClicked = {
+            updateIsSettingScreenState(false)
+            coroutineScope.launch {
+                sheetState.hide()
+            }
+        },
+        onRegisterButtonClicked = {
+            updateIsSettingScreenState(true)
         }
-
-        Spacer(modifier = Modifier.width(32.dp))
-
-        Button(
-            onClick = {updateIsSettingScreenState(true)},
-            colors = ButtonDefaults.buttonColors(ColorPrimary),
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(1.dp, ColorPrimary),
-            modifier = Modifier
-                .height(44.dp)
-                .width(128.dp)
-        ) {
-            Text(
-                text = "등록하기",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.White
-                )
-            )
-        }
-    }
+    )
 }

@@ -182,7 +182,7 @@ fun FinalCheckStoreScreenImpl(
 
                     Column(
                         modifier = Modifier
-                            .padding(start = 30.dp)
+                            .padding(start = 26.dp)
                     ) {
                         state.settingTimeInfoList.forEach { item ->
                             val stringList = item.timeInfoString.split(" : ")
@@ -193,7 +193,6 @@ fun FinalCheckStoreScreenImpl(
                                 }
                             }
                             Text(
-                                modifier = Modifier.padding(start = 26.dp),
                                 text = coloredString
                             )
                         }

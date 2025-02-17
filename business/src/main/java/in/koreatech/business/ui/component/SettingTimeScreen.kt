@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -47,6 +48,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.KorDayOfWeek
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
+import `in`.koreatech.business.ui.component.button.SettingTimeButton
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.business.util.ext.makeTimeInfo
@@ -73,223 +75,198 @@ fun SettingTime(
     var closeTimeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
     var isClosedChecked by remember { mutableStateOf(false) }
     var is24hoursChecked by remember { mutableStateOf(false) }
+    Column(
+        modifier = modifier
+    ) {
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = Gray3,
+            thickness = 0.5.dp
+        )
 
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth(),
-        color = Gray3,
-        thickness = 0.5.dp
-    )
+        LazyRow(
+            modifier = Modifier
+                .padding(horizontal = 31.dp, vertical = 8.dp)
+                .fillMaxWidth()
+            ,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            itemsIndexed(storeOperatingTime){ index, item ->
+                DayCheckBox(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable{
+                            if (dayOfWeekList.contains(item)) dayOfWeekList.remove(item)
+                            else dayOfWeekList.add(item)
+                        }
+                    ,
+                    dayName = item.kor,
+                    isChecked = dayOfWeekList.contains(item)
+                )
+            }
+        }
 
-    LazyRow(
-        modifier = Modifier
-            .padding(horizontal = 31.dp, vertical = 8.dp)
-            .fillMaxWidth()
-        ,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ){
-        itemsIndexed(storeOperatingTime){ index, item ->
-            DayCheckBox(
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = Gray3,
+            thickness = 0.5.dp
+        )
+
+        Row(
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+                .fillMaxWidth()
+                .height(120.dp),
+
+            ){
+            Text(
                 modifier = Modifier
-                    .size(40.dp)
-                    .clickable{
-                        if (dayOfWeekList.contains(item)) dayOfWeekList.remove(item)
-                        else dayOfWeekList.add(item)
-                    }
+                    .padding(start = 55.dp)
+                    .align(Alignment.CenterVertically)
                 ,
-                dayName = item.kor,
-                isChecked = dayOfWeekList.contains(item)
+                text = stringResource(R.string.store_open_time),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+            )
+
+            HoursNumberPicker(
+                modifier = Modifier
+                    .padding(horizontal = 40.dp)
+                    .fillMaxHeight(),
+                dividersColor = Gray3,
+                leadingZero = true,
+                value = openTimeValue,
+                onValueChange = {
+                    openTimeValue = it
+                },
+                minutesRange = (0..59 step 10),
+                hoursDivider = {
+                    Text(
+                        modifier = Modifier.size(24.dp),
+                        textAlign = TextAlign.Center,
+                        text = ":"
+                    )
+                }
             )
         }
-    }
 
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth(),
-        color = Gray3,
-        thickness = 0.5.dp
-    )
-
-    Row(
-        modifier = Modifier
-            .padding(vertical = 4.dp)
-            .fillMaxWidth()
-            .height(120.dp),
-
-        ){
-        Text(
+        Divider(
             modifier = Modifier
-                .padding(start = 55.dp)
-                .align(Alignment.CenterVertically)
-            ,
-            text = stringResource(R.string.store_open_time),
-            style = TextStyle(
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center
-            )
+                .fillMaxWidth(),
+            color = Gray3,
+            thickness = 0.5.dp
         )
 
-        HoursNumberPicker(
-            modifier = Modifier
-                .padding(horizontal = 40.dp)
-                .fillMaxHeight(),
-            dividersColor = Gray3,
-            leadingZero = true,
-            value = openTimeValue,
-            onValueChange = {
-                openTimeValue = it
-            },
-            minutesRange = (0..59 step 10),
-            hoursDivider = {
-                Text(
-                    modifier = Modifier.size(24.dp),
-                    textAlign = TextAlign.Center,
-                    text = ":"
-                )
-            }
-        )
-    }
-
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth(),
-        color = Gray3,
-        thickness = 0.5.dp
-    )
-
-    Row(
-        modifier = Modifier
-            .padding(vertical = 4.dp)
-            .fillMaxWidth()
-            .height(120.dp),
-
-        ){
-        Text(
-            modifier = Modifier
-                .padding(start = 55.dp)
-                .align(Alignment.CenterVertically)
-            ,
-            text = stringResource(R.string.store_close_time),
-            style = TextStyle(
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center
-            )
-        )
-
-        HoursNumberPicker(
-            modifier = Modifier
-                .padding(horizontal = 40.dp)
-                .fillMaxHeight(),
-            dividersColor = Gray3,
-            leadingZero = true,
-            value = closeTimeValue,
-            onValueChange = {
-                closeTimeValue = it
-            },
-            minutesRange = (0..59 step 10),
-            hoursDivider = {
-                Text(
-                    modifier = Modifier.size(24.dp),
-                    textAlign = TextAlign.Center,
-                    text = ":"
-                )
-            }
-        )
-    }
-
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth(),
-        color = Gray3,
-        thickness = 0.5.dp
-    )
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ){
         Row(
             modifier = Modifier
-                .padding(end = 56.dp)
-            ,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
+                .padding(vertical = 4.dp)
+                .fillMaxWidth()
+                .height(120.dp),
+
+            ){
             Text(
-                "휴무"
-            )
-            Checkbox(
-                checked = isClosedChecked,
-                onCheckedChange = { isClosedChecked = it },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = ColorPrimary,
-                    uncheckedColor = Gray3
+                modifier = Modifier
+                    .padding(start = 55.dp)
+                    .align(Alignment.CenterVertically)
+                ,
+                text = stringResource(R.string.store_close_time),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
                 )
             )
+
+            HoursNumberPicker(
+                modifier = Modifier
+                    .padding(horizontal = 40.dp)
+                    .fillMaxHeight(),
+                dividersColor = Gray3,
+                leadingZero = true,
+                value = closeTimeValue,
+                onValueChange = {
+                    closeTimeValue = it
+                },
+                minutesRange = (0..59 step 10),
+                hoursDivider = {
+                    Text(
+                        modifier = Modifier.size(24.dp),
+                        textAlign = TextAlign.Center,
+                        text = ":"
+                    )
+                }
+            )
         }
+
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = Gray3,
+            thickness = 0.5.dp
+        )
 
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                "24시간"
-            )
-            Checkbox(
-                checked = is24hoursChecked,
-                onCheckedChange = { is24hoursChecked = it },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = ColorPrimary,
-                    uncheckedColor = Gray3
+        ){
+            Row(
+                modifier = Modifier
+                    .padding(end = 56.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    "휴무"
                 )
-            )
+                Checkbox(
+                    checked = isClosedChecked,
+                    onCheckedChange = { isClosedChecked = it },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = ColorPrimary,
+                        uncheckedColor = Gray3
+                    )
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    "24시간"
+                )
+                Checkbox(
+                    checked = is24hoursChecked,
+                    onCheckedChange = { is24hoursChecked = it },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = ColorPrimary,
+                        uncheckedColor = Gray3
+                    )
+                )
+            }
         }
-    }
 
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth(),
-        color = Gray3,
-        thickness = 0.5.dp
-    )
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = Gray3,
+            thickness = 0.5.dp
+        )
 
-    Row(
-        modifier = Modifier
-            .padding(top = 12.dp, bottom = 36.dp)
-            .fillMaxWidth()
-        ,
-        horizontalArrangement = Arrangement.Center
-    ){
-        Button(
-            onClick = {
+        SettingTimeButton(
+            modifier = modifier,
+            onCancelButtonClicked = {
                 coroutineScope.launch {
                     sheetState.hide()
                 }
                 updateIsSettingScreenState(false)
             },
-            colors = ButtonDefaults.buttonColors(Color.White),
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(1.dp, Gray3),
-            modifier = Modifier
-                .height(44.dp)
-                .width(128.dp)
-
-        ) {
-            Text(
-                text = stringResource(id = R.string.cancel),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center,
-                    color = Gray3
-                )
-            )
-        }
-
-        Spacer(modifier = Modifier.width(32.dp))
-
-        Button(
-            onClick = {
+            onRegisterButtonClicked = {
                 addTimeState(
                     TimeSettingState(
                         timeInfoString = makeTimeInfo(
@@ -308,23 +285,8 @@ fun SettingTime(
                 )
 
                 updateIsSettingScreenState(false)
-                      },
-            colors = ButtonDefaults.buttonColors(ColorPrimary),
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(1.dp, ColorPrimary),
-            modifier = Modifier
-                .height(44.dp)
-                .width(128.dp)
-        ) {
-            Text(
-                text = "추가하기",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.White
-                )
-            )
-        }
+            }
+        )
     }
 }
 
