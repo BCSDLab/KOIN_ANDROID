@@ -56,7 +56,6 @@ fun LostAndFoundItem(
     onClick: () -> Unit = {}
 ) = Column(
     modifier = modifier.noRippleClickable {
-        if (isReported) return@noRippleClickable
         onClick()
     }
 ) {
