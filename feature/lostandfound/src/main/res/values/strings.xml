@@ -12,7 +12,7 @@
     <string name="item_type_card">카드</string>
     <string name="item_type_wallet">지갑</string>
     <string name="item_type_id">신분증</string>
-    <string name="item_type_other">그 외</string>
+    <string name="item_type_other">기타</string>
     <string name="item_type_none" />
 
     <string name="dropdown_type_all">물품 전체</string>
