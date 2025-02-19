@@ -132,10 +132,13 @@
     <string name="id_not_validate">중복된 아이디입니다.</string>
     <string name="shop_name">가게이름</string>
     <string name="enter_name">성함을 입력해주세요.</string>
+    <string name="business_registration_number_is_duplicated">이미 사용된 사업자 등록 번호입니다.</string>
     <string name="enter_business_registration_number">사업자 등록 번호를 입력해주세요.</string>
     <string name="enter_business_file">사업자 등록 번호를 입력해주세요.</string>
     <string name="enter_private_number_attach_file">개인 연락처를 입력해주시고,\n사업자 인증 파일을 첨부해주세요.</string>
+    <string name="enter_shop_number_attach_file">가게 연락처를 입력해주시고,\n사업자 인증 파일을 첨부해주세요.</string>
     <string name="private_number">개인 연락처</string>
+    <string name="shop_number">개인 연락처</string>
     <string name="enter_personal_contact">-없이 번호를 입력해주세요.</string>
     <string name="instruction_file">사업자 인증 파일</string>
     <string name="sms_code_not_validate">인증번호가 일치하지 않습니다.</string>
