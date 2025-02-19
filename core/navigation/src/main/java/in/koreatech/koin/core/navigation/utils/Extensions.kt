@@ -22,8 +22,7 @@ inline fun <reified T : Activity> Context.goToActivity(
  * @input : koin://shop?id
  * @output : shop
  */
-fun String.toHost(boardId: Int = -1): String {
-    if (boardId == 14) return SchemeType.LOST_AND_FOUND.type // TODO: Find a better way to handle lost and found board
+fun String.toHost(): String {
     val host = this.split("://", "?")
     return if (host.size > 1) host[1] else ""
 }

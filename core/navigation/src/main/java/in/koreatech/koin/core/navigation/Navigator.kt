@@ -7,6 +7,7 @@ interface Navigator {
     fun navigateToSplash(
         context: Context,
         targetId: Pair<String, Any?> = Pair("", 0),
+        targetBoardId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", ""),
         navType: Pair<String, Any?> = Pair("", "")
     ): Intent
@@ -14,6 +15,7 @@ interface Navigator {
     fun navigateToMain(
         context: Context,
         targetId: Pair<String, Any?> = Pair("", 0),
+        targetBoardId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", ""),
     ): Intent
 
@@ -32,6 +34,7 @@ interface Navigator {
     fun navigateToArticle(
         context: Context,
         targetId: Pair<String, Any?> = Pair("", 0),
+        targetBoardId: Pair<String, Any?> = Pair("", 0),
         type: Pair<String, Any?> = Pair("", ""),
     ): Intent
 

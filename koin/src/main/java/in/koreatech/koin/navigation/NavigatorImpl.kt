@@ -16,10 +16,11 @@ class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToSplash(
         context: Context,
         targetId: Pair<String, Any?>,
+        targetBoardId: Pair<String, Any?>,
         type: Pair<String, Any?>,
         navType: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<SplashActivity>(targetId, type, navType)
+        val intent = context.buildIntent<SplashActivity>(targetId, targetBoardId, type, navType)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }
@@ -27,9 +28,10 @@ class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToMain(
         context: Context,
         targetId: Pair<String, Any?>,
+        targetBoardId: Pair<String, Any?>,
         type: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<MainActivity>(targetId, type)
+        val intent = context.buildIntent<MainActivity>(targetId, targetBoardId, type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }
@@ -57,9 +59,10 @@ class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToArticle(
         context: Context,
         targetId: Pair<String, Any?>,
+        targetBoardId: Pair<String, Any?>,
         type: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<ArticleActivity>(targetId, type)
+        val intent = context.buildIntent<ArticleActivity>(targetId, targetBoardId, type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }

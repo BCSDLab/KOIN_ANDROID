@@ -14,6 +14,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
@@ -132,6 +133,7 @@ class SplashActivity : ActivityBase() {
 
     private fun gotoMainActivityOrDelay() {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
+        val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
         val navType = intent.getStringExtra(EXTRA_NAV_TYPE) ?: ""
 
@@ -141,6 +143,7 @@ class SplashActivity : ActivityBase() {
                 navigator.navigateToMain(
                     context = this@SplashActivity,
                     targetId = Pair(EXTRA_ID, targetId),
+                    targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
                     type = Pair(EXTRA_TYPE, type)
                 )
             } else {
