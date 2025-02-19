@@ -338,7 +338,7 @@ fun handleSideEffect(
                     viewModel.updateItemType(index, LostItemCategory.NONE)
                     isAllFieldValid = false
                 }
-                if (it.foundPlace.isEmpty()) {
+                if (it.lostOrFoundType == LostOrFoundType.FOUND && it.foundPlace.isEmpty()) {
                     viewModel.updateLocation(index, "")
                     isAllFieldValid = false
                 }
