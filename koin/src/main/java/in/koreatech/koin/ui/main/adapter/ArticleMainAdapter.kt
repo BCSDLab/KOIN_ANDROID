@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.MainCardArticleBinding
 import `in`.koreatech.koin.databinding.MainCardArticleNotiBinding
+import `in`.koreatech.koin.domain.model.article.ArticleNotiType
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 
 class ArticleMainAdapter(
@@ -21,6 +22,12 @@ class ArticleMainAdapter(
         fun bind(content: ArticleMainState.Noti) {
             binding.textArticleNotiTitle.text = content.title
             binding.textArticleNotiSub.text = content.sub
+            binding.icArticleNoti.setImageResource(
+                when (content.type) {
+                    ArticleNotiType.KEYWORD -> `in`.koreatech.koin.core.R.drawable.ic_main_article_bell
+                    ArticleNotiType.LOST_AND_FOUND -> `in`.koreatech.koin.core.R.drawable.ic_main_lost_and_found_icon
+                }
+            )
             binding.cardViewArticleNoti.setOnClickListener { onNotiClick(content) }
         }
     }

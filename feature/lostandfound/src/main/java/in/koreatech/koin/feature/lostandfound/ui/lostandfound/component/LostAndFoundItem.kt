@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,12 +16,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.util.getKoreanDayOfWeekShortName
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
@@ -41,11 +44,12 @@ import java.time.format.DateTimeFormatter
  */
 @Composable
 fun LostAndFoundItem(
-    lostOrFound: LostOrFoundType = LostOrFoundType.FOUND,
+    lostOrFound: LostOrFoundType,
     lostItemCategory: LostItemCategory,
     foundPlace: String,
     content: String,
     author: String,
+    isReported: Boolean,
     foundDate: LocalDate,
     registeredAt: LocalDate,
     modifier: Modifier = Modifier,
@@ -69,22 +73,37 @@ fun LostAndFoundItem(
             color = KoinTheme.colors.primary600,
             style = KoinTheme.typography.medium12.copy(fontWeight = FontWeight.SemiBold)
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            LostItemTypeChip(category = lostItemCategory)
-            Spacer(modifier = Modifier.width(8.dp))
+        if (isReported) {
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_article_reported),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(id = R.string.article_reported),
+                    color = KoinTheme.colors.neutral500,
+                    style = KoinTheme.typography.regular14
+                )
+            }
+        } else {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                LostItemTypeChip(category = lostItemCategory)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "${foundPlace.replace("\n", " ")} | ${foundDate.format(foundDateFormatType)}",
+                    style = KoinTheme.typography.medium14
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "$foundPlace | ${foundDate.format(foundDateFormatType)}",
-                style = KoinTheme.typography.medium14
+                text = content,
+                style = KoinTheme.typography.regular12.copy(color = KoinTheme.colors.neutral800),
+                maxLines = 1,
             )
         }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = content,
-            style = KoinTheme.typography.regular12.copy(color = KoinTheme.colors.neutral800),
-            maxLines = 1,
-        )
         Spacer(modifier = Modifier.height(4.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -105,10 +124,31 @@ fun LostAndFoundItemPreview() {
     KoinTheme {
         Surface {
             LostAndFoundItem(
+                lostOrFound = LostOrFoundType.FOUND,
                 lostItemCategory = LostItemCategory.WALLET,
                 foundPlace = "담헌실학관 2층",
                 content = "에어팟이에요 투명 케이스가 끼워져 있었어요! 담헌실학관 401호에",
                 author = "총학생회",
+                isReported = false,
+                foundDate = LocalDate.now(),
+                registeredAt = LocalDate.now()
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun LostAndFoundReportedItemPreview() {
+    KoinTheme {
+        Surface {
+            LostAndFoundItem(
+                lostOrFound = LostOrFoundType.LOST,
+                lostItemCategory = LostItemCategory.WALLET,
+                foundPlace = "담헌실학관 2층",
+                content = "에어팟이에요 투명 케이스가 끼워져 있었어요! 담헌실학관 401호에",
+                author = "총학생회",
+                isReported = true,
                 foundDate = LocalDate.now(),
                 registeredAt = LocalDate.now()
             )

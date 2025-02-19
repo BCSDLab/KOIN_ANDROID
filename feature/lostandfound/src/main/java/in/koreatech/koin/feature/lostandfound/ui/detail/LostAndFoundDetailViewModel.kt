@@ -52,7 +52,7 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
                     reduce {
                         state.copy(
                             isLoggedIn = true,
-                            currentLoggedInUserId = Integer.parseInt(it.studentNumber ?: "0"),
+                            currentLoggedInUser = it.nickname ?: ""
                         )
                     }
                 } else {
@@ -90,7 +90,7 @@ class LostAndFoundDetailViewModel @AssistedInject constructor(
                         registeredAt = article.registeredAt,
                         updatedAt = article.updatedAt,
                         isWriterCouncil = article.isWriterCouncil,
-                        isMine = article.isMine,
+                        isMine = state.currentLoggedInUser == article.author,
                         isLoading = false
                     )
                 }
