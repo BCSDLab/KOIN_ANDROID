@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.chat.ui.room
 
+import android.app.Activity
 import android.content.Context
 import android.provider.OpenableColumns
 import android.widget.Toast
