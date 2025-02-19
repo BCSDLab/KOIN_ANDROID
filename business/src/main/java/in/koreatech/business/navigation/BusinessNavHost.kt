@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import `in`.koreatech.business.feature.event.writeevent.writeevent.registerEventScreen
 import `in`.koreatech.business.feature.findpassword.navigator.ChangePasswordRoute
 import `in`.koreatech.business.feature.findpassword.navigator.changePasswordScreen
 import `in`.koreatech.business.feature.insertstore.navigator.registerStoreScreen
@@ -26,6 +27,7 @@ const val SIGNINSCREEN = "sign_in_screen"
 const val SIGNUPSCREEN = "sign_up_screen"
 const val MYSTORESCREEN = "my_store_screen"
 const val REGISTERSTORESCREEN = "register_store_screen"
+const val ADDEVENT = "register_event_screen"
 const val MANAGEMENUSCREEN = "manage_menu_screen"
 const val MODIFYMENUSCREEN = "modify_menu_screen"
 const val REGISTERMENUSCREEN = "register_menu_screen"
@@ -62,6 +64,10 @@ fun KoinBusinessNavHost(
             navController = navController
         )
 
+        registerEventScreen(
+            navController = navController
+        )
+
         manageMenuScreen(
             navController = navController
         )
@@ -91,6 +97,15 @@ fun KoinBusinessNavHost(
             }
         )
     }
+}
+
+
+fun NavController.toNavigateScreenWithStoreId(screenRoute: String, storeId: Int) {
+    val bundle = Bundle().apply {
+        putInt("menuId", storeId)
+    }
+
+    navigate("${screenRoute}/$storeId", bundle)
 }
 
 fun NavController.toNavigateScreenWithMenuId(screenRoute: String, menuId: Int) {

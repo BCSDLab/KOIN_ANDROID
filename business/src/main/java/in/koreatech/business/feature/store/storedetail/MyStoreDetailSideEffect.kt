@@ -6,7 +6,7 @@ sealed class MyStoreDetailSideEffect {
     data class NavigateToModifyScreen(val storeId: Int) : MyStoreDetailSideEffect()
     data class NavigateToManageMenuScreen(val storeId: Int) :  MyStoreDetailSideEffect()
     data object NavigateToRegisterMenuScreen :  MyStoreDetailSideEffect()
-
+    data class NavigateToAddEventScreen(val storeId: Int) : MyStoreDetailSideEffect()
     data class NavigateToModifyMenuScreen(val menuId: Int) : MyStoreDetailSideEffect()
     data object NavigateToRegisterStoreScreen :  MyStoreDetailSideEffect()
     data class ShowErrorMessage(val errorMessage: String) : MyStoreDetailSideEffect()

@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -245,6 +246,11 @@ class MyStoreDetailViewModel @Inject constructor(
     fun navigateToModifyScreen() = intent {
         if (state.storeId == -1) return@intent
         postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen(state.storeId))
+    }
+
+    fun navigateToAddEventScreen() = intent {
+        if (state.storeId == -1) return@intent
+        postSideEffect(MyStoreDetailSideEffect.NavigateToAddEventScreen(state.storeId))
     }
 
     fun onManageMenuClicked() = intent {

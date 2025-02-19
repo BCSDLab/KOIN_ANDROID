@@ -18,6 +18,7 @@ import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyOperatingTimeScreen
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailScreen
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
+import `in`.koreatech.business.navigation.ADDEVENT
 import `in`.koreatech.business.navigation.MANAGEMENUSCREEN
 import `in`.koreatech.business.navigation.MODIFYMENUSCREEN
 import `in`.koreatech.business.navigation.MYSTORESCREEN
@@ -27,6 +28,7 @@ import `in`.koreatech.business.navigation.navigate
 import `in`.koreatech.business.navigation.sharedHiltViewModel
 import `in`.koreatech.business.navigation.toNavigateRegisterMenuScreen
 import `in`.koreatech.business.navigation.toNavigateScreenWithMenuId
+import `in`.koreatech.business.navigation.toNavigateScreenWithStoreId
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.myStoreScreen(
@@ -55,6 +57,9 @@ fun NavGraphBuilder.myStoreScreen(
                                          },
                 viewModel = myStoreInfoViewModel,
                 modifyInfoViewModel = modifyInfoViewModel,
+                navigateToAddEventScreen = { storeId ->
+                    navController.toNavigateScreenWithStoreId(ADDEVENT, storeId)
+                },
                 navigateToManageMenuScreen = { storeId ->
                     navController.toNavigateScreenWithMenuId(MANAGEMENUSCREEN, storeId)
                 },

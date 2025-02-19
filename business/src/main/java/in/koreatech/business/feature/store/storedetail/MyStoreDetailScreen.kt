@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -68,6 +69,7 @@ fun MyStoreDetailScreen(
     navigateToUploadEventScreen: () -> Unit = {},
     navigateToModifyScreen: (Int) -> Unit = {},
     navigateToRegisterStoreScreen: () -> Unit = {},
+    navigateToAddEventScreen: (Int) -> Unit = {},
     navigateToManageMenuScreen: (Int) -> Unit = {},
     navigateToRegisterMenuScreen: (Int) -> Unit = {},
     navigateToModifyMenuScreen: (Int) -> Unit = {},
@@ -131,6 +133,10 @@ fun MyStoreDetailScreen(
 
             is MyStoreDetailSideEffect.NavigateToManageMenuScreen -> {
                 navigateToManageMenuScreen(it.storeId)
+            }
+
+            is MyStoreDetailSideEffect.NavigateToAddEventScreen -> {
+                navigateToAddEventScreen(it.storeId)
             }
 
             MyStoreDetailSideEffect.NavigateToRegisterMenuScreen -> {
