@@ -166,7 +166,7 @@ class ArticleRepositoryImpl @Inject constructor(
 
     override fun fetchSearchedArticles(
         query: String,
-        boardId: Int,
+        boardId: Int?,
         page: Int,
         limit: Int
     ): Flow<ArticlePagination> {

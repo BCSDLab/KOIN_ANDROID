@@ -59,7 +59,7 @@ class ArticleRemoteDataSource @Inject constructor(
 
     suspend fun fetchSearchedArticles(
         query: String,
-        boardId: Int,
+        boardId: Int?,
         page: Int,
         limit: Int
     ): ArticlePaginationResponse {

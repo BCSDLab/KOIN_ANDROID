@@ -65,7 +65,7 @@ class ArticleSearchViewModel @Inject constructor(
             return
         }
 
-        articleRepository.fetchSearchedArticles(trimmedQuery, 4, 1, 20)
+        articleRepository.fetchSearchedArticles(trimmedQuery, null, 1, 20)
             .onStart {
                 _isLoading.value = true
                 _searchResultUiState.tryEmit(SearchUiState.Loading)
