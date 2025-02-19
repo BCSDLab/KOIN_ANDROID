@@ -14,7 +14,7 @@ data class ChatRoomResponse(
         articleId = articleId,
         chatRoomId = chatRoomId,
         userId = userId,
-        articleTitle = articleTitle,
+        articleTitle = articleTitle.replace("\n", " "),
         chatPartnerProfileImage = chatPartnerProfileImage
     )
 }
