@@ -73,13 +73,6 @@ fun ManageMenuScreenImpl(
     onAddMenuClicked: () -> Unit = {},
     onCheckBoxClicked: (Int) -> Unit = {}
 ) {
-    val categories = listOf(
-        stringResource(R.string.recommend_menu),
-        stringResource(R.string.main_menu),
-        stringResource(R.string.set_menu),
-        stringResource(R.string.side_menu)
-    )
-
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
