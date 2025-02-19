@@ -9,6 +9,7 @@ data class BusinessAuthState(
     val name: String = "",
     val shopName: String = "",
     val companyNumber: String = "", //사업자 등록 번호
+    val shopNumber: String = "", // 가게 전화번호
     val shopId: Int? = null,
     val openAlertDialog: Boolean = false,
     val selectedImages :MutableList<AttachStore> = mutableListOf(),

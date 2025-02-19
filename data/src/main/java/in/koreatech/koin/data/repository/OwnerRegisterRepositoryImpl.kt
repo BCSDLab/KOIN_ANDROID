@@ -64,6 +64,7 @@ class OwnerRegisterRepositoryImpl(
         name: String,
         password: String,
         phoneNumber: String,
+        shopNumber: String,
         shopId: Int?,
         shopName: String
     ) {
@@ -74,6 +75,7 @@ class OwnerRegisterRepositoryImpl(
                 name,
                 password.toSHA256(),
                 phoneNumber,
+                shopNumber,
                 shopId,
                 shopName
             )

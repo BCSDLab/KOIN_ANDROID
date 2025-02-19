@@ -32,6 +32,7 @@ class OwnerRemoteDataSource(
     }
 
 
+    //회원가입 요청
     suspend fun postOwnerEmailRegister(ownerEmailRegisterRequest: OwnerEmailRegisterRequest): OwnerResponse {
         return ownerApi.postOwnerEmailRegister(ownerEmailRegisterRequest)
     }

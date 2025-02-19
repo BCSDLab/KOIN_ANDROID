@@ -13,6 +13,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.forcrupdate.ForceUpdateScreen
+import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthScreen
+import `in`.koreatech.business.feature.signup.businessauth.EnterBusinessNumberScreen
 import `in`.koreatech.business.navigation.KoinBusinessNavHost
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -26,7 +28,8 @@ class BusinessMainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KOIN_ANDROIDTheme {
-                KoinBusinessAppScreen()
+             //   KoinBusinessAppScreen()
+                EnterBusinessNumberScreen()
             }
         }
     }

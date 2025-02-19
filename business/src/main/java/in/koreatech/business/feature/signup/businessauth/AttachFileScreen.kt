@@ -72,7 +72,6 @@ fun AttachFileScreen(
     accountSetupViewModel: AccountSetupViewModel = hiltViewModel(),
     businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),
     scrollState: ScrollState = rememberScrollState(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     onBackClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
 ) {
@@ -172,21 +171,21 @@ fun AttachFileScreen(
         ) {
 
             Text(
-                text = stringResource(id = R.string.enter_private_number_attach_file),
+                text = stringResource(id = R.string.enter_shop_number_attach_file),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = stringResource(id = R.string.private_number),
+                text = stringResource(id = R.string.shop_number),
                 fontSize = 14.sp,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             LinedTextField(
-                value = accountSetupState.phoneNumber,
+                value = businessAuthState.shopNumber,
                 onValueChange = {
-                  accountSetupViewModel.onPhoneNumChanged(it)
+                  businessAuthViewModel.onShopNumberChanged(it)
                 },
                 label = stringResource(id = R.string.enter_personal_contact),
 
@@ -283,6 +282,7 @@ fun AttachFileScreen(
                         fileUrls = businessAuthState.fileInfo.map { it.resultUrl },
                         companyNumber = businessAuthState.companyNumber,
                         phoneNumber = accountSetupState.phoneNumber,
+                        shopNumber = businessAuthState.shopNumber,
                         name = businessAuthState.name,
                         password = accountSetupState.password,
                         shopId = businessAuthState.shopId,

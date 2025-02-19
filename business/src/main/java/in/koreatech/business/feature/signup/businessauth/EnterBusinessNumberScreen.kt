@@ -149,8 +149,10 @@ fun EnterBusinessNumberScreen(
                 value = state.companyNumber,
                 onValueChange = {
                     viewModel.onCompanyNumberChanged(it)
-                    viewModel.companyNumberCheck()},
+                },
                 modifier = Modifier.fillMaxWidth(),
+                isError = state.signupContinuationState == SignupContinuationState.CompanyNumberIsDuplicated,
+                errorText = stringResource(id = R.string.business_registration_number_is_duplicated),
                 label = stringResource(id = R.string.enter_business_registration_number),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
             )
@@ -161,7 +163,7 @@ fun EnterBusinessNumberScreen(
                     .fillMaxWidth()
                     .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = state.companyNumber.length == 10,
+                enabled = state.companyNumber.length == 10 && state.signupContinuationState != SignupContinuationState.CompanyNumberIsDuplicated,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     disabledBackgroundColor = ColorDisabledButton,

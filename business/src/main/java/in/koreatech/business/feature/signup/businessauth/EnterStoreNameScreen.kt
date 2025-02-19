@@ -183,7 +183,7 @@ fun EnterStoreNameScreen(
                     .fillMaxWidth()
                     .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = state.name.isNotEmpty(),
+                enabled = state.shopName.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     disabledBackgroundColor = ColorDisabledButton,

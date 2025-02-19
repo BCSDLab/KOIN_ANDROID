@@ -16,6 +16,7 @@ import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
+import `in`.koreatech.koin.domain.usecase.business.businessauth.CheckExistsCompanyNumberUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.util.ext.formatBusinessNumber
@@ -35,6 +36,7 @@ class BusinessAuthViewModel @Inject constructor(
     private val getPresignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
     private val ownerRegisterUseCase: OwnerRegisterUseCase,
+    private val checkCompanyNumberUseCase: CheckExistsCompanyNumberUseCase,
 ) : ContainerHost<BusinessAuthState, BusinessAuthSideEffect>, ViewModel() {
     override val container =
         container<BusinessAuthState, BusinessAuthSideEffect>(BusinessAuthState())
@@ -57,22 +59,38 @@ class BusinessAuthViewModel @Inject constructor(
         }
     }
 
-    fun onCompanyNumberChanged(storeNumber: String) = blockingIntent {
+    fun onShopNumberChanged(shopNumber: String) = blockingIntent {
         reduce {
             state.copy(
-                companyNumber = if (storeNumber.length <=10) storeNumber else state.companyNumber,
+                companyNumber = shopNumber,
             )
         }
     }
 
-    fun companyNumberCheck() = intent {
+    fun onCompanyNumberChanged(companyNumber: String) = blockingIntent {
         reduce {
             state.copy(
-                signupContinuationState = if (state.companyNumber.length != 10) SignupContinuationState.companyNumberIsNotValidate
-                else SignupContinuationState.RequestedSmsValidation
+                companyNumber = if (companyNumber.length <= 10) companyNumber else state.companyNumber,
             )
         }
+        if (companyNumber.length == 10)
+            viewModelScope.launch {
+                checkCompanyNumberUseCase(companyNumber).onSuccess {
+                    reduce {
+                        state.copy(
+                            signupContinuationState = SignupContinuationState.CheckComplete
+                        )
+                    }
+                }.onFailure {
+                    reduce {
+                        state.copy(
+                            signupContinuationState = SignupContinuationState.CompanyNumberIsDuplicated
+                        )
+                    }
+                }
+            }
     }
+
 
     fun onImageUrlsChanged(selectedImages: MutableList<AttachStore>) = intent {
         reduce {
@@ -216,10 +234,11 @@ class BusinessAuthViewModel @Inject constructor(
         }
     }
 
-     fun sendRegisterRequest(
+    fun sendRegisterRequest(
         fileUrls: List<String>,
         companyNumber: String,
         phoneNumber: String,
+        shopNumber: String,
         name: String,
         password: String,
         shopId: Int?,
@@ -232,6 +251,7 @@ class BusinessAuthViewModel @Inject constructor(
                 name,
                 password,
                 phoneNumber,
+                shopNumber,
                 shopId,
                 shopName
             ).onSuccess {

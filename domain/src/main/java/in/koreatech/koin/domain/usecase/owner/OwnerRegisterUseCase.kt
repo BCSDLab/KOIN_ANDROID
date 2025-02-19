@@ -16,6 +16,7 @@ class OwnerRegisterUseCase @Inject constructor(
         name: String,
         password: String,
         phoneNumber: String,
+        shopNumber: String,
         shopId: Int?,
         shopName: String
     ): Pair<Unit?, ErrorHandler?> {
@@ -26,6 +27,7 @@ class OwnerRegisterUseCase @Inject constructor(
                 name,
                 password,
                 phoneNumber,
+                shopNumber,
                 shopId,
                 shopName
             )
