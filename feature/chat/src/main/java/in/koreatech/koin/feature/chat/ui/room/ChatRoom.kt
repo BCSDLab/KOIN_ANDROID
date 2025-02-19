@@ -138,6 +138,9 @@ fun ChatRoom(
                         )
                     }
                 },
+                onNavigationIconClick = {
+                    (context as Activity).finish()
+                }
             )
 
         },
@@ -150,9 +153,11 @@ fun ChatRoom(
             modifier = Modifier
                 .padding(contentPadding),
             messages = uiState.chatMessage,
+            uploadingImage = uiState.uploadingImage,
             chatPartnerProfileImage = uiState.chatPartnerProfileImage,
             chatInputValue = uiState.chatInputValue,
             showBlockDialog = uiState.showBlockDialog,
+            showImage = uiState.showImage,
             onBlockUser = {
                 viewModel.blockUser()
                 viewModel.changeBlockDialogState(false)
@@ -162,7 +167,10 @@ fun ChatRoom(
             onImageButtonClick = {
                 pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             },
-            onSendClick = { viewModel.sendMessage() }
+            onSendClick = { viewModel.sendMessage() },
+            onShowImageChange = { state, url ->
+                viewModel.changeShowImageState(state, url)
+            }
         )
     }
 }
@@ -199,6 +207,15 @@ fun handleSideEffect(
 
         ChatRoomSideEffect.BlockUserSuccess -> {
             navigateToChatList(true)
+        }
+
+        ChatRoomSideEffect.BlockedByUser -> {
+            Toast.makeText(
+                context,
+                context.getString(R.string.blocked_by_user),
+                Toast.LENGTH_SHORT
+            ).show()
+            (context as Activity).finish()
         }
     }
 }

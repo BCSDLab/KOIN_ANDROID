@@ -29,6 +29,7 @@ import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.CHAT_MESSAGE_MAX_LENGTH
 
 object ChatInputDefaults {
     val windowInsets: WindowInsets
@@ -108,7 +109,11 @@ fun ChatTextField(
         modifier = modifier,
         value = value,
         textStyle = KoinTheme.typography.regular14,
-        onValueChange = onValueChange,
+        onValueChange = { if (value.length < CHAT_MESSAGE_MAX_LENGTH) {
+            onValueChange(it)
+        } else {
+            onValueChange(it.take(CHAT_MESSAGE_MAX_LENGTH))
+        } },
         decorationBox = { innerTextField ->
             Box(
                 contentAlignment = Alignment.CenterStart,

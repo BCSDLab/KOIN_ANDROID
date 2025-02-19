@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.data.stomp
 
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json.Default.serializersModule
@@ -12,6 +15,8 @@ import org.hildan.krossbow.stomp.conversions.kxserialization.StompSessionWithKxS
 import org.hildan.krossbow.stomp.conversions.kxserialization.json.withJsonConversions
 import org.hildan.krossbow.stomp.conversions.kxserialization.subscribe
 import org.hildan.krossbow.stomp.headers.StompSendHeaders
+import org.hildan.krossbow.websocket.WebSocketException
+import timber.log.Timber
 import javax.inject.Inject
 
 class KoinStomp @Inject constructor(
@@ -37,11 +42,27 @@ class KoinStomp @Inject constructor(
         stompSession = null
     }
 
-    suspend fun <T : Any> subscribe(
+    fun <T : Any> subscribe(
         destination: String,
         deserializer: DeserializationStrategy<T>,
     ): Flow<T> {
-        return jsonStompSession.subscribe(destination, deserializer)
+        return flow {
+            while (true) {
+                try {
+                    jsonStompSession.subscribe(destination, deserializer)
+                        .collect { emit(it) }
+                } catch (e: WebSocketException) {
+                    Timber.d("WebSocketException, reconnecting...")
+                    disconnect()
+                    connect()
+                    Timber.d("Reconnected. Retrying subscription...")
+                } catch (e: CancellationException) {
+                    return@flow
+                } catch (e: Exception) {
+                    return@flow
+                }
+            }
+        }
     }
 
     suspend fun <T : Any> convertAndSend(

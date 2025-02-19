@@ -21,6 +21,7 @@ import `in`.koreatech.koin.domain.usecase.chat.SendMessageUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.model.toConvertedChatMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +36,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
 import timber.log.Timber
 import java.time.LocalDateTime
 
@@ -96,7 +98,18 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     private fun createAndGetChatRoom(articleId: Int) = viewModelScope.launch {
         getChatRoomFromArticleIdUseCase(articleId).catch {
-            Timber.e(it)
+            if (it is HttpException) {
+                if (it.code() == 403) {
+                    intent {
+                        reduce {
+                            state.copy(isBlocked = true)
+                        }
+                        postSideEffect(ChatRoomSideEffect.BlockedByUser)
+                    }
+                }
+            } else {
+                Timber.e(it)
+            }
         }.collectLatest { data ->
             intent {
                 reduce {
@@ -116,7 +129,18 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     private fun getChatRoom(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
         getChatRoomUseCase(articleId, chatRoomId).catch {
-            Timber.e(it)
+            if (it is HttpException) {
+                if (it.code() == 403) {
+                    intent {
+                        reduce {
+                            state.copy(isBlocked = true)
+                        }
+                        postSideEffect(ChatRoomSideEffect.BlockedByUser)
+                    }
+                }
+            } else {
+                Timber.e(it)
+            }
         }.collectLatest { data ->
             intent {
                 reduce {
@@ -207,8 +231,12 @@ class ChatRoomViewModel @AssistedInject constructor(
         }.collect { messages ->
             intent {
                 reduce {
-                    state.copy(chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
-                        .groupBy { it.timestamp.toLocalDate() }.toList())
+                    if (messages.isEmpty()) {
+                        state.copy(chatMessage = listOf(Pair(LocalDateTime.now().toLocalDate(), emptyList())))
+                    } else {
+                        state.copy(chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
+                            .groupBy { it.timestamp.toLocalDate() }.toList())
+                    }
                 }
             }
         }
@@ -256,6 +284,13 @@ class ChatRoomViewModel @AssistedInject constructor(
                         isImage = true
                     )
                 )
+                intent {
+                    reduce {
+                        state.copy(
+                            uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
+                        )
+                    }
+                }
             }
         }.onFailure {
             intent {
@@ -269,20 +304,38 @@ class ChatRoomViewModel @AssistedInject constructor(
         fileType: String,
         fileName: String,
         imageUri: Uri
-    ) = viewModelScope.launch {
-        getLostAndFoundPreSignedUrlUseCase(
-            fileSize, fileType, fileName
-        ).onSuccess {
-            uploadImage(
-                preSignedUrl = it.second,
-                fileUrl = it.first,
-                mediaType = fileType,
-                mediaSize = fileSize,
-                imageUri = imageUri
-            )
-        }.onFailure {
-            intent {
-                postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
+    ) {
+        intent {
+            reduce {
+                state.copy(
+                    uploadingImage = state.uploadingImage.plus(
+                        ConvertedChatMessage(
+                            userId = state.userId,
+                            userNickname = state.userNickName,
+                            content = imageUri.toString(),
+                            timestamp = LocalDateTime.now(),
+                            isImage = true,
+                            isSentByMe = true
+                        )
+                    )
+                )
+            }
+        }
+        viewModelScope.launch {
+            getLostAndFoundPreSignedUrlUseCase(
+                fileSize, fileType, fileName
+            ).onSuccess {
+                uploadImage(
+                    preSignedUrl = it.second,
+                    fileUrl = it.first,
+                    mediaType = fileType,
+                    mediaSize = fileSize,
+                    imageUri = imageUri
+                )
+            }.onFailure {
+                intent {
+                    postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
+                }
             }
         }
     }
@@ -338,6 +391,12 @@ class ChatRoomViewModel @AssistedInject constructor(
                 showBlockDialog = dialogState,
                 showMenu = false // Close menu when dialog state changes
             )
+        }
+    }
+
+    fun changeShowImageState(showImageState: Boolean, url: Uri) = intent {
+        reduce {
+            state.copy(showImage = Pair(showImageState, url))
         }
     }
 

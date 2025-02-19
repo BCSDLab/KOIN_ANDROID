@@ -8,7 +8,7 @@ import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import kotlinx.coroutines.flow.Flow
-import okhttp3.Response
+
 import javax.inject.Inject
 
 class ChatRemoteDataSource @Inject constructor(
@@ -40,7 +40,7 @@ class ChatRemoteDataSource @Inject constructor(
         return chatAuthApi.getChatMessages(articleId, chatRoomId)
     }
 
-    suspend fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessageResponse> {
+    fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessageResponse> {
         return koinStomp.subscribe(
             "/topic/chat/$articleId/$chatRoomId",
             ChatMessageResponse.serializer()
@@ -56,7 +56,7 @@ class ChatRemoteDataSource @Inject constructor(
         if (response.isSuccessful) {
             return Result.success(Unit)
         } else {
-            return Result.failure(Exception(response.message))
+            return Result.failure(Exception(response.message()))
         }
     }
 }

@@ -49,7 +49,7 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessage> {
+    override fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessage> {
         return chatRemoteDataSource.subscribeChatRoom(articleId, chatRoomId).map { it.toChatMessage() }
     }
 
