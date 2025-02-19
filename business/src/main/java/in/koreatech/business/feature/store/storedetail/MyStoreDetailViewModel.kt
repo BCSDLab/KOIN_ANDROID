@@ -248,7 +248,7 @@ class MyStoreDetailViewModel @Inject constructor(
     }
 
     fun onManageMenuClicked() = intent {
-        postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen)
+        postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen(state.storeId))
     }
 
     fun onRegisterMenuClicked() = intent {

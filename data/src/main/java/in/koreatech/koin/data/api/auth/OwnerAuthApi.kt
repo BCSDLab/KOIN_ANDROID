@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.response.owner.OwnerStoreResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
@@ -22,7 +23,7 @@ interface OwnerAuthApi {
     suspend fun postMyStore(@Body storeRegisterResponse: StoreRegisterResponse)
 
     @GET(URLConstant.SHOPS.OWNERSHOPS)
-    suspend fun getMyShopList(): StoreResponse
+    suspend fun getMyShopList(): OwnerStoreResponse
 
     @GET(URLConstant.SHOPS.OWNERSHOPS + "/{id}")
     suspend fun getOwnerShopInfo(@Path("id") uid: Int): StoreRegisterResponse

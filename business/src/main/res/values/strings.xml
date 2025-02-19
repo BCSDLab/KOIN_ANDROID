@@ -134,6 +134,7 @@
     <string name="price">가격</string>
     <string name="menu_default_image">메뉴 기본 이미지</string>
     <string name="edit">편집하기</string>
+    <string name="edit_menu">메뉴 편집하기</string>
     <string name="add">추가하기</string>
     <string name="event_default_image">이벤트 기본 이미지</string>
     <string name="fold">접기</string>
@@ -188,4 +189,5 @@
     <string name="delete_user_detail">현재 로그인 되어 있는 계정을\n 탈퇴하시겠습니까?</string>
     <string name="delete_user_success">탈퇴가 완료되었습니다.</string>
     <string name="update_soon">추후 업데이트로 추가 예정입니다</string>
+    <string name="modify_store">수정하기</string>
 </resources>
