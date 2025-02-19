@@ -118,7 +118,7 @@ fun ChatListContent(
                 title = it.title,
                 recentMessage = it.recentMessage,
                 imageUrl = it.imageUrl ?: "",
-                lastMessageAt = LocalDateTime.parse(it.lastMessageAt.substring(0..26))
+                lastMessageAt = LocalDateTime.parse(it.lastMessageAt)
                     .toLocalTime(),
                 unReadMessageCount = it.unReadMessageCount,
                 modifier = Modifier.clickable {
