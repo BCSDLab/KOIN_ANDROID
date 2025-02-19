@@ -21,6 +21,7 @@ sealed class SignupContinuationState {
     object SmsCodeIsNotValidate: SignupContinuationState()
     object PhoneNumberIsNotValidate: SignupContinuationState()
     object EmailIsNotValidate: SignupContinuationState()
+    object CompanyNumberIsDuplicated: SignupContinuationState()
     object PasswordIsNotValidate: SignupContinuationState()
     object PasswordNotMatching: SignupContinuationState()
     object NotAgreedPrivacyTerms: SignupContinuationState()

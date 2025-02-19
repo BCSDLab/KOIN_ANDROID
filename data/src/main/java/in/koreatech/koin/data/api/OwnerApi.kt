@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
+import `in`.koreatech.koin.data.response.owner.CheckCompanyNumberResponse
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
@@ -62,4 +63,9 @@ interface OwnerApi {
 
     @POST(URLConstant.OWNER.SHOPS)
     suspend fun putMyStore(@Body storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse
+
+    @GET(URLConstant.OWNER.OWNERS +"/exists/company-number")
+    suspend fun checkExistsCompanyNumber(
+        @Body companyNumber: CheckCompanyNumberResponse
+    )
 }

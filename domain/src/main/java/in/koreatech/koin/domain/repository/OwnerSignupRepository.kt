@@ -15,4 +15,6 @@ interface OwnerSignupRepository {
     suspend fun getExistsAccount(
         phoneNumber: String
     ): Result<Unit>
+
+    suspend fun checkExistsCompanyNumber(companyNumber: String)
 }
