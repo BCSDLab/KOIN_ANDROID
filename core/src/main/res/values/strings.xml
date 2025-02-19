@@ -192,6 +192,10 @@
     <string name="insert_store_null_store_delivery_fee">가게 배달비를 입력해 주세요.</string>
     <string name="insert_store_null_store_other_info">가게 기타 정보를 입력해 주세요.</string>
 
+    <string name="add_setting_time">설정시간 추가</string>
+    <string name="add_setting_time_plus">설정시간 플러스 버튼</string>
+    <string name="insert_store_operating_time_setting">운영시간 설정</string>
+
     <string name="insert_store_check_store_info">4. 가게 정보 확인</string>
     <string name="insert_store_check_info">입력하신 정보가 맞습니까?</string>
     <string name="insert_store_fail_register_store">가게를 등록하는데 실패하였습니다.</string>
