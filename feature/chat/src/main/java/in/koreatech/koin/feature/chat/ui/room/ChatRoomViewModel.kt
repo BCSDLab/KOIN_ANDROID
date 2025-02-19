@@ -29,7 +29,9 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.hildan.krossbow.stomp.LostReceiptException
+import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -38,6 +40,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 import java.time.LocalDateTime
 
 @HiltViewModel(assistedFactory = ChatRoomViewModel.Factory::class)
@@ -176,7 +179,23 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     private fun subscribeChatRoom(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
         subscribeChatRoomUseCase(articleId, chatRoomId).catch {
-            Timber.e(it)
+            if (it is UnknownHostException) {
+                // Android OS disconnect network when the device enter idle.
+                // So, we set shouldReconnect to true
+                // And reconnect websocket when activity is resumed
+                setShouldReconnectState(true)
+            } else if (it is WebSocketConnectionException) {
+                if (it.cause is UnknownHostException) {
+                    // Android OS disconnect network when the device enter idle.
+                    // So, we set shouldReconnect to true
+                    // And reconnect websocket when activity is resumed
+                    setShouldReconnectState(true)
+                } else {
+                    Timber.e(it)
+                }
+            } else {
+                Timber.e(it)
+            }
         }.collect { message ->
             intent {
                 if (state.chatMessage.isEmpty()) {
@@ -227,12 +246,26 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     private fun getChatMessages(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
         getChatMessageUseCase(articleId, chatRoomId).catch {
-            Timber.e(it)
+            if (it is UnknownHostException) {
+                // Android OS disconnect network when the device enter idle.
+                // So, we set shouldReconnect to true
+                // And reconnect websocket when activity is resumed
+                setShouldReconnectState(true)
+            } else {
+                Timber.e(it)
+            }
         }.collect { messages ->
             intent {
                 reduce {
                     if (messages.isEmpty()) {
-                        state.copy(chatMessage = listOf(Pair(LocalDateTime.now().toLocalDate(), emptyList())))
+                        state.copy(
+                            chatMessage = listOf(
+                                Pair(
+                                    LocalDateTime.now().toLocalDate(),
+                                    emptyList()
+                                )
+                            )
+                        )
                     } else {
                         state.copy(chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
                             .groupBy { it.timestamp.toLocalDate() }.toList())
@@ -251,6 +284,11 @@ class ChatRoomViewModel @AssistedInject constructor(
                 Timber.e(it)
             }
         }
+    }
+
+    fun reconnect() = intent {
+        getChatRoom(state.articleId, state.chatRoomId)
+        setShouldReconnectState(false)
     }
 
     fun onChatInputValueChange(value: String) = intent {
@@ -397,6 +435,14 @@ class ChatRoomViewModel @AssistedInject constructor(
     fun changeShowImageState(showImageState: Boolean, url: Uri) = intent {
         reduce {
             state.copy(showImage = Pair(showImageState, url))
+        }
+    }
+
+    fun setShouldReconnectState(shouldReconnect: Boolean) = intent {
+        withContext(Dispatchers.Main) {
+            reduce {
+                state.copy(shouldReconnect = shouldReconnect)
+            }
         }
     }
 

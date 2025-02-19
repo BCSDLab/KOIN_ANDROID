@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -97,6 +98,13 @@ fun ChatRoom(
     }
 
     val uiState by viewModel.collectAsState()
+
+    LaunchedEffect(uiState.shouldReconnect) {
+        if (uiState.shouldReconnect) {
+            viewModel.reconnect()
+        }
+    }
+
     Scaffold(
         modifier = Modifier.imePadding(),
         topBar = {
