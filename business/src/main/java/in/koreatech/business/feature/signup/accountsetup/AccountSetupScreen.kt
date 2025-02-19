@@ -189,7 +189,7 @@ fun AccountSetupScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null,
+                enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null && !state.sendCodeIsClicked,
                 colors = ButtonDefaults.buttonColors(
                     disabledBackgroundColor = Gray11,
                 ),

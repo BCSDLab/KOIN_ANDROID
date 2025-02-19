@@ -173,6 +173,7 @@ class AccountSetupViewModel @Inject constructor(
                             phoneNumberState = SignupContinuationState.RequestedSmsValidation,
                             sendCodeError = null,
                             verifyState = SignupContinuationState.AvailablePhoneNumber,
+                            sendCodeIsClicked = true,
                         )
                     }
                 }.onFailure {
