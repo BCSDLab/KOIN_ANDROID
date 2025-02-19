@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.lostandfound
 
+import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -72,6 +74,8 @@ fun LostAndFoundList(
             0.dp
         }
     )
+
+    val context = LocalContext.current
 
     KoinTheme {
         Scaffold(
@@ -157,6 +161,15 @@ fun LostAndFoundList(
                                 viewModel.setDropdownExpanded(it)
                             },
                             onItemSelected = {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_TYPE,
+                                    when (it) {
+                                        0 -> "물품 전체"
+                                        1 -> "습득물"
+                                        2 -> "분실물"
+                                        else -> ""
+                                    }
+                                )
                                 viewModel.setSelectedType(
                                     when (it) {
                                         0 -> null
@@ -165,6 +178,7 @@ fun LostAndFoundList(
                                         else -> null
                                     }
                                 )
+                                viewModel.changePage(1)
                                 viewModel.fetchLostAndFoundList()
                             }
                         )
@@ -192,7 +206,11 @@ fun LostAndFoundList(
                                 foundDate = it.foundDate,
                                 registeredAt = it.registeredAt,
                             ) {
-                                navigateToLostAndFoundDetail(it.id)
+                                if (it.isReported) {
+                                    Toast.makeText(context, context.getString(R.string.reported_article_click_toast), Toast.LENGTH_SHORT).show()
+                                } else {
+                                    navigateToLostAndFoundDetail(it.id)
+                                }
                             }
                         }
                         item {
