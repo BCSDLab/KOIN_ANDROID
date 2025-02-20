@@ -77,8 +77,6 @@ fun LostAndFoundList(
 
     val context = LocalContext.current
 
-    val unknownLocation = stringResource(R.string.item_location_unknown)
-
     KoinTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -201,7 +199,7 @@ fun LostAndFoundList(
                             LostAndFoundItem(
                                 lostOrFound = it.lostOrFound,
                                 lostItemCategory = it.category,
-                                foundPlace = it.foundPlace.ifEmpty { unknownLocation },
+                                foundPlace = it.foundPlace,
                                 content = it.content,
                                 author = it.author,
                                 isReported = it.isReported,

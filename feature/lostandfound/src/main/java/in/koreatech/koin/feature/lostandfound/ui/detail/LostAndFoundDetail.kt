@@ -67,7 +67,7 @@ fun LostAndFoundDetail(
             DetailHeader(
                 lostOrFound = uiState.lostOrFound,
                 category = uiState.category,
-                foundPlace = uiState.foundPlace.ifEmpty { stringResource(R.string.item_location_unknown) },
+                foundPlace = uiState.foundPlace,
                 foundDate = uiState.foundDate,
                 author = uiState.author,
                 registeredAt = uiState.registeredAt

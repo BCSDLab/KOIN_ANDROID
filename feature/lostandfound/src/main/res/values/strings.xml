@@ -15,8 +15,6 @@
     <string name="item_type_other">기타</string>
     <string name="item_type_none" />
 
-    <string name="item_location_unknown">장소 미상</string>
-
     <string name="dropdown_type_all">물품 전체</string>
 
     <string name="dropdown_item_all">모두보기</string>
