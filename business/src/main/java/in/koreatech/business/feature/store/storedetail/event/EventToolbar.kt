@@ -153,9 +153,6 @@ fun EventToolbar(
         }
         Button(
             onClick = {
-                ToastUtil.getInstance().makeShort(
-                    context.getString(R.string.update_soon)
-                )
                 viewModel.navigateToAddEventScreen()
             },
             modifier = Modifier

@@ -90,6 +90,7 @@ class MyStoreDetailViewModel @Inject constructor(
         reduce {
             state.copy(isEventExpanded = List(state.isEventExpanded.size) { _ -> false })
         }
+        getShopEvents()
     }
 
     private fun getOwnerShopInfo(shopId: Int) = intent {
