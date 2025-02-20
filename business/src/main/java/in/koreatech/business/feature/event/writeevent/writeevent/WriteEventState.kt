@@ -5,6 +5,8 @@ import android.net.Uri
 data class WriteEventState(
     val title: String = "",
     val content: String = "",
+    val startDate: String = "2025-01-01",
+    val endDate: String = "2025-12-31",
     val startYear: String = "",
     val startMonth: String = "",
     val startDay: String = "",

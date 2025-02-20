@@ -14,6 +14,12 @@ class WriteEventViewModel(
 ) : ViewModel(), ContainerHost<WriteEventState, WriteEventSideEffect> {
     override val container = container<WriteEventState, WriteEventSideEffect>(WriteEventState())
 
+    fun onCalendarVisibilityChanged(visibility: Boolean) = intent {
+        reduce {
+            state.copy(showCalendarAlert = visibility)
+        }
+    }
+
     fun onTitleChanged(title: String) = blockingIntent {
         if(title.length > MAX_TITLE_LENGTH)
             return@blockingIntent
@@ -30,9 +36,19 @@ class WriteEventViewModel(
         }
     }
 
+    fun onStartDateChanged(startDate: String) = intent {
+        reduce {
+            state.copy(startDate = startDate)
+        }
+    }
+
+    fun onEndDateChanged(endDate: String) = intent {
+        reduce {
+            state.copy(endDate = endDate)
+        }
+    }
+
     fun onStartYearChanged(startYear: String) = intent {
-        if(isValidNumberInput(4, startYear).not())
-            return@intent
         reduce {
             state.copy(startYear = startYear,
                 showDateInputAlert = if (state.showDateInputAlert)
@@ -43,8 +59,6 @@ class WriteEventViewModel(
     }
 
     fun onStartMonthChanged(startMonth: String) = intent {
-        if(isValidNumberInput(2, startMonth).not())
-            return@intent
         reduce {
             state.copy(startMonth = startMonth,
                 showDateInputAlert = if (state.showDateInputAlert)

@@ -138,6 +138,7 @@
     <string name="add">추가하기</string>
     <string name="event_default_image">이벤트 기본 이미지</string>
     <string name="setting_event_duration">이벤트/공지 등록 기간 설정</string>
+    <string name="calendar">캘린더</string>
     <string name="fold">접기</string>
     <string name="view_all">전체보기</string>
     <string name="telephone_number">전화번호</string>

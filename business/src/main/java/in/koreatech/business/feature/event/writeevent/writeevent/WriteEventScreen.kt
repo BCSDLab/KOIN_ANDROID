@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.event.writeevent.writeevent
 
+import CalendarBottomDialog
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -29,9 +31,12 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -68,20 +74,33 @@ fun WriteEventScreen(
     viewModel: WriteEventViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
-    WriteEventScreenImpl(
-        onBackPressed = onBackPressed,
-        writeEventState = state,
-        onChangeTitle = viewModel::onTitleChanged,
-        onChangeContent = viewModel::onContentChanged,
-        onRegisterImage = viewModel::registerEventImageUri,
-        onDeleteImage = viewModel::deleteImage,
-        onStartYearChanged = viewModel::onStartYearChanged,
-        onStartMonthChanged = viewModel::onStartMonthChanged,
-        onStartDayChanged = viewModel::onStartDayChanged,
-        onEndYearChanged = viewModel::onEndYearChanged,
-        onEndMonthChanged = viewModel::onEndMonthChanged,
-        onEndDayChanged = viewModel::onEndDayChanged,
-    )
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        WriteEventScreenImpl(
+            onBackPressed = onBackPressed,
+            writeEventState = state,
+            onChangeTitle = viewModel::onTitleChanged,
+            onChangeContent = viewModel::onContentChanged,
+            onRegisterImage = viewModel::registerEventImageUri,
+            onDeleteImage = viewModel::deleteImage,
+            onStartYearChanged = viewModel::onStartYearChanged,
+            onStartMonthChanged = viewModel::onStartMonthChanged,
+            onStartDayChanged = viewModel::onStartDayChanged,
+            onEndYearChanged = viewModel::onEndYearChanged,
+            onEndMonthChanged = viewModel::onEndMonthChanged,
+            onEndDayChanged = viewModel::onEndDayChanged,
+        )
+
+        if (state.showCalendarAlert) {
+            CalendarBottomDialog(
+                viewModel = viewModel,
+                showDialog = state.showCalendarAlert,
+                onDismiss = { viewModel.onCalendarVisibilityChanged(false) },
+                onDateSelected = { },
+            )
+        }
+    }
+
 }
 
 @Composable
@@ -296,28 +315,16 @@ fun WriteEventScreenImpl(
 
                 DateInputRow(
                     modifier = Modifier
-                        .height(40.dp)
-                        .width(60.dp),
+                        .height(40.dp),
                     optionString = stringResource(id = R.string.start_date),
-                    year = writeEventState.startYear,
-                    month = writeEventState.startMonth,
-                    day= writeEventState.startDay,
-                    onYearChanged = onStartYearChanged,
-                    onMonthChanged= onStartMonthChanged,
-                    onDayChanged= onStartDayChanged
+                    date = writeEventState.startDate,
                 )
 
                 DateInputRow(
                     modifier = Modifier
-                        .height(40.dp)
-                        .width(60.dp),
+                        .height(40.dp),
                     optionString = stringResource(id = R.string.end_date),
-                    year = writeEventState.endYear,
-                    month = writeEventState.endMonth,
-                    day= writeEventState.endDay,
-                    onYearChanged = onEndYearChanged,
-                    onMonthChanged= onEndMonthChanged,
-                    onDayChanged= onEndDayChanged
+                    date = writeEventState.endDate,
                 )
             }
 
@@ -331,7 +338,7 @@ fun WriteEventScreenImpl(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Button(
-                        onClick = {onBackPressed()},
+                        onClick = { onBackPressed() },
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(ColorTextField),
                         modifier = Modifier
@@ -491,25 +498,21 @@ private fun CountLimitText(
 @Composable
 private fun DateInputRow(
     modifier: Modifier = Modifier,
+    viewModel: WriteEventViewModel = hiltViewModel(),
     optionString: String = "시작일",
-    year: String = "",
-    month: String = "",
-    day: String = "",
-    onYearChanged: (String) -> Unit = {},
-    onMonthChanged: (String) -> Unit = {},
-    onDayChanged: (String) -> Unit = {},
-) {
+    date: String = "",
+    ) {
     Row(
         modifier = Modifier
             .padding(top = 11.dp)
             .padding(horizontal = 24.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier
-            .clip(RoundedCornerShape(999.dp))
-            .background(ColorTextField)
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(999.dp))
+                .background(ColorTextField)
         ) {
             Text(
                 text = optionString,
@@ -521,48 +524,30 @@ private fun DateInputRow(
 
         Spacer(modifier = Modifier.size(12.5.dp))
 
-        BorderTextField(
-            modifier = modifier,
-            inputString= year,
-            onStringChange= onYearChanged,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            hintString = "2999",
-            contentAlignment = Alignment.Center,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.size(12.5.dp))
-
-        Text(text = "/", fontWeight = FontWeight.Bold)
-
-        Spacer(modifier = Modifier.size(12.5.dp))
-
-        BorderTextField(
-            modifier = modifier
-            ,
-            inputString= month,
-            onStringChange= onMonthChanged,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            hintString = "01",
-            contentAlignment = Alignment.Center,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.size(12.5.dp))
-
-        Text(text = "/", fontWeight = FontWeight.Bold)
-
-        Spacer(modifier = Modifier.size(12.5.dp))
-
-        BorderTextField(
-            modifier = modifier,
-            inputString= day,
-            onStringChange= onDayChanged,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            hintString = "01",
-            contentAlignment = Alignment.Center,
-            textAlign = TextAlign.Center
-        )
+        Box(
+            modifier = Modifier.wrapContentWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = date,
+                maxLines = 1,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
+                color = ColorPrimary400,
+            )
+        }
+        IconButton(
+            onClick = { viewModel.onCalendarVisibilityChanged(true) },
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .size(24.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_calendar),
+                contentDescription = stringResource(R.string.calendar) ,
+                tint = ColorPrimary400,
+            )
+        }
     }
 }
 
