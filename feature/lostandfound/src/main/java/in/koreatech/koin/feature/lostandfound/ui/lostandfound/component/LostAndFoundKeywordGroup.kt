@@ -6,16 +6,12 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,12 +64,11 @@ fun LostAndFoundKeywordGroup(
         modifier = modifier
             .padding(vertical = 16.dp, horizontal = 24.dp)
             .horizontalFadingEdge(scrollState, 24.dp, Color.White)
-            .horizontalScroll(scrollState)
-
+            .horizontalScroll(scrollState),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier
-            .width(32.dp)
-            .height(32.dp)
+            .size(32.dp)
             .background(
                 color = Color(0xFFF5F5F5),
                 shape = RoundedCornerShape(size = 999.dp)
@@ -86,8 +80,8 @@ fun LostAndFoundKeywordGroup(
                     "키워드관리"
                 )
                 navigateToKeywordFragment()
-            }
-            .padding(start = 6.dp, top = 6.dp, end = 6.dp, bottom = 6.dp)
+            },
+            contentAlignment = Alignment.Center
         ) {
             Image(
                 modifier = Modifier.align(alignment = Alignment.Center),
