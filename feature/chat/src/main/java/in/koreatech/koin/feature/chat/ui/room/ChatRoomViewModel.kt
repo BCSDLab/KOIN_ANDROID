@@ -90,7 +90,6 @@ class ChatRoomViewModel @AssistedInject constructor(
                 if (it is User.Student) {
                     reduce {
                         state.copy(
-                            userId = Integer.parseInt(it.studentNumber ?: ""),
                             userNickName = it.nickname ?: it.anonymousNickname ?: ""
                         )
                     }
