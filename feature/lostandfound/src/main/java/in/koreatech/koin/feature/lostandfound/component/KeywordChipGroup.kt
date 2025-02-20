@@ -170,10 +170,6 @@ fun LostAndFoundTextChip(
 ) {
     Box(
         modifier = modifier
-            .defaultMinSize(
-                minWidth = Dp.Unspecified,
-                minHeight = 32.dp
-            )
             .clip(shape)
             .then(
                 if (showClickRipple) Modifier.clickable {
