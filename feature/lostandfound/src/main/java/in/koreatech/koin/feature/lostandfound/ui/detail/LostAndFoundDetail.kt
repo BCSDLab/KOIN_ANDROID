@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
@@ -29,6 +31,7 @@ import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailView
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
+import `in`.koreatech.koin.feature.lostandfound.util.findActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -135,7 +138,7 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {},
+    navigateToArticleList: () -> Unit = {}
 ) {
     when (sideEffect) {
         //is LostAndFoundDetailSideEffect.FetchDetail -> {}
@@ -153,6 +156,19 @@ private fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_delete_failed_toast),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        LostAndFoundDetailSideEffect.DeletedArticle -> {
+            context.findActivity()?.finish()
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+            }
+            context.startActivity(intent)
+            Toast.makeText(
+                context,
+                context.getString(R.string.detail_deleted_article),
                 Toast.LENGTH_SHORT
             ).show()
         }

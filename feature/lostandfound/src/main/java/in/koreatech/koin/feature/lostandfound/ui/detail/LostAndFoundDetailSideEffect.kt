@@ -5,4 +5,5 @@ sealed class LostAndFoundDetailSideEffect {
     //data object FetchHotArticles : LostAndFoundDetailSideEffect()
     data class DeleteArticle(val id: Int) : LostAndFoundDetailSideEffect()
     data object DeleteArticleFailed : LostAndFoundDetailSideEffect()
+    data object DeletedArticle : LostAndFoundDetailSideEffect()
 }
