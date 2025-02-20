@@ -9,8 +9,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.business.feature.loading.LoadingState
 import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.TEMP_IMAGE_URI
 import `in`.koreatech.business.util.getImageInfo
+import `in`.koreatech.koin.domain.model.owner.EventInfo
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
+import `in`.koreatech.koin.domain.usecase.owner.RegisterEventUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -25,6 +27,7 @@ import javax.inject.Inject
 class WriteEventViewModel @Inject constructor(
     private val getPresignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
+    private val registerEventUseCase: RegisterEventUseCase,
 ) : ViewModel(), ContainerHost<WriteEventState, WriteEventSideEffect> {
     override val container = container<WriteEventState, WriteEventSideEffect>(WriteEventState())
 
@@ -247,7 +250,18 @@ class WriteEventViewModel @Inject constructor(
         }
     }
 
-    fun registerEvent() = intent {
+    fun registerEvent(shopId: Int) = intent {
+        viewModelScope.launch {
+            registerEventUseCase(
+                shopId = shopId,
+                eventInfo = EventInfo(
+                    title = state.title,
+                    content = state.content,
+                    thumbnailImages = state.fileInfo.map { it.resultUrl },
+                    startDate = state.startDate,
+                    endDate = state.endDate
+                ),
+            )}
         reduce {
             state.copy(
                 showTitleInputAlert = state.title.isEmpty(),
@@ -260,6 +274,7 @@ class WriteEventViewModel @Inject constructor(
                         || state.endDay.length != 2
             )
         }
+        postSideEffect(WriteEventSideEffect.RegisterEventSuccess)
     }
 
     private fun isAllDateInputFilled(state: WriteEventState): Boolean {

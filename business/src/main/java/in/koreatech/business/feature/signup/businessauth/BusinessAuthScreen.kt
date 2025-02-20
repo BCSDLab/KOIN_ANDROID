@@ -80,8 +80,6 @@ fun BusinessAuthScreen(
         onResult = {
             businessAuthViewModel.changeImageUri(
                 context,
-                accountSetupState.phoneNumber,
-                accountSetupState.password,
                 it
             )
         }

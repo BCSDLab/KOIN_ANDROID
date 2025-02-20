@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.owner.EventInfo
 import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
@@ -21,4 +22,5 @@ interface OwnerShopRepository {
         storeDetailInfo: StoreDetailInfo,
     )
     fun getOwnerStoreSize(): Boolean
+    suspend fun registerEvent(storeId: Int, event: EventInfo)
 }

@@ -25,7 +25,10 @@ fun NavGraphBuilder.registerEventScreen(
                     defaultValue = -1
                 })
         ) {
+            val storeId = it.arguments?.getInt("storeId") ?: -1
+
             WriteEventScreen(
+                shopId = storeId,
                 onBackPressed = {
                     navController.navigateUp()
                 },

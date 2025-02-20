@@ -70,6 +70,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun WriteEventScreen(
+    shopId: Int,
     goToMyStoreScreen: () -> Unit = {},
     onBackPressed: () -> Unit = {},
     viewModel: WriteEventViewModel = hiltViewModel()
@@ -78,6 +79,7 @@ fun WriteEventScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         WriteEventScreenImpl(
+            shopId=shopId,
             onBackPressed = onBackPressed,
             writeEventState = state,
             onChangeTitle = viewModel::onTitleChanged,
@@ -90,6 +92,8 @@ fun WriteEventScreen(
             onEndYearChanged = viewModel::onEndYearChanged,
             onEndMonthChanged = viewModel::onEndMonthChanged,
             onEndDayChanged = viewModel::onEndDayChanged,
+            onNextButtonClicked = {viewModel.registerEvent(shopId)
+                goToMyStoreScreen()},
         )
 
         if (state.showCalendarAlert) {
@@ -106,6 +110,7 @@ fun WriteEventScreen(
 
 @Composable
 fun WriteEventScreenImpl(
+    shopId: Int,
     onBackPressed: () -> Unit = {},
     writeEventState: WriteEventState = WriteEventState(),
     onChangeTitle: (String) -> Unit = {},
@@ -118,7 +123,7 @@ fun WriteEventScreenImpl(
     onEndYearChanged:(String) -> Unit = {},
     onEndMonthChanged:(String) -> Unit = {},
     onEndDayChanged:(String) -> Unit = {},
-    onNextButtonClicked: () -> Unit = {}
+    onNextButtonClicked: (shopId: Int) -> Unit = {}
 ) {
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -359,7 +364,8 @@ fun WriteEventScreenImpl(
                     }
 
                     Button(
-                        onClick = onNextButtonClicked,
+                        onClick = {onNextButtonClicked(shopId)},
+                        enabled = writeEventState.title.isNotEmpty() && writeEventState.content.isNotEmpty(),
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(ColorPrimary),
                         modifier = Modifier
@@ -545,7 +551,7 @@ private fun DateInputRow(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_calendar),
-                contentDescription = stringResource(R.string.calendar) ,
+                contentDescription = stringResource(R.string.id) ,
                 tint = ColorPrimary400,
             )
         }
@@ -555,7 +561,7 @@ private fun DateInputRow(
 @Preview
 @Composable
 fun PreviewWriteEventScreen() {
-    WriteEventScreenImpl()
+    WriteEventScreenImpl(0)
 }
 
 @Preview

@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
+import `in`.koreatech.koin.data.response.owner.OwnerEventResponse
 import `in`.koreatech.koin.data.response.owner.OwnerGetStoreResponse
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
@@ -120,5 +121,9 @@ class OwnerRemoteDataSource(
 
     suspend fun modifyOwnerShopInfo(storeUid: Int, storeInfo: StoreRegisterResponse) {
         ownerAuthApi.modifyOwnerShopInfo(storeUid, storeInfo)
+    }
+
+    suspend fun postOwnerShopEvent(storeUid: Int, ownerEventResponse: OwnerEventResponse) {
+        ownerAuthApi.postOwnerShopEvent(storeUid, ownerEventResponse)
     }
 }
