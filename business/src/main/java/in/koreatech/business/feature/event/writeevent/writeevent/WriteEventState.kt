@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.event.writeevent.writeevent
 
 import android.net.Uri
+import `in`.koreatech.koin.domain.model.store.StoreUrl
 
 data class WriteEventState(
     val title: String = "",
@@ -13,8 +14,11 @@ data class WriteEventState(
     val endYear: String = "",
     val endMonth: String = "",
     val endDay: String = "",
-    val images: List<Uri> = emptyList(),
+    val images: List<String> = emptyList(),
+    val fileInfo: MutableList<StoreUrl> = mutableListOf(), // 서버에 보낼 파일 정보
+    val showCalendarAlert: Boolean = false,
     val showTitleInputAlert: Boolean = false,
     val showContentInputAlert: Boolean = false,
     val showDateInputAlert: Boolean = false,
+    val error: Throwable? = null,
 )

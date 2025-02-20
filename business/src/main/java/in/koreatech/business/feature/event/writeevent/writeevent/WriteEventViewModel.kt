@@ -1,16 +1,30 @@
 package `in`.koreatech.business.feature.event.writeevent.writeevent
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.transition.Visibility
+import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.business.feature.loading.LoadingState
+import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.TEMP_IMAGE_URI
+import `in`.koreatech.business.util.getImageInfo
+import `in`.koreatech.koin.domain.model.store.StoreUrl
+import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Inject
 
-class WriteEventViewModel(
-
+@HiltViewModel
+class WriteEventViewModel @Inject constructor(
+    private val getPresignedUrlUseCase: GetMarketPreSignedUrlUseCase,
+    private val uploadFilesUseCase: UploadFileUseCase,
 ) : ViewModel(), ContainerHost<WriteEventState, WriteEventSideEffect> {
     override val container = container<WriteEventState, WriteEventSideEffect>(WriteEventState())
 
@@ -119,12 +133,13 @@ class WriteEventViewModel(
     fun registerEventImageUri(imageUri: Uri) {
         intent {
             val newMenuUriList = state.images.toMutableList()
-            newMenuUriList.add(imageUri)
+            newMenuUriList.add(imageUri.toString())
             reduce {
                 state.copy(
                     images = newMenuUriList
                 )
             }
+          //  uploadImageList(context)
         }
     }
 
@@ -136,6 +151,98 @@ class WriteEventViewModel(
                 state.copy(
                     images = newMenuUriList
                 )
+            }
+        }
+    }
+
+    //이미지 업로드
+    private fun uploadImage(
+        preSignedUrl: String,
+        mediaType: String,
+        mediaSize: Long,
+        imageUri: String
+    ) {
+        viewModelScope.launch {
+            uploadFilesUseCase(
+                preSignedUrl,
+                mediaType,
+                mediaSize,
+                imageUri
+            ).onSuccess {
+                intent {
+                    reduce { state.copy(error = null) }
+                }
+            }.onFailure {
+                intent {
+                    reduce { state.copy(error = it) }
+                }
+            }
+            LoadingState.hide()
+        }
+    }
+
+
+    private fun uploadImageList(context: Context) {
+        intent {
+            viewModelScope.launch {
+                state.images.forEach { uriString ->
+                    if (uriString != TEMP_IMAGE_URI) {
+                        if (uriString.contains("content")) {
+                            val uri = Uri.parse(uriString)
+                            val imageInfo = getImageInfo(context, uri)
+                            getPreSignedUrl(
+                                fileSize = imageInfo.imageSize,
+                                fileType = imageInfo.imageType,
+                                fileName = imageInfo.imageName,
+                                imageUri = uriString
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getPreSignedUrl(
+        fileSize: Long,
+        fileType: String,
+        fileName: String,
+        imageUri: String,
+    ) {
+        viewModelScope.launch {
+            LoadingState.show()
+            getPresignedUrlUseCase(
+                fileSize, fileType, fileName
+            ).onSuccess {
+                uploadImage(
+                    preSignedUrl = it.second,
+                    mediaType = fileType,
+                    mediaSize = fileSize,
+                    imageUri = imageUri,
+                )
+                intent {
+                    reduce {
+                        state.copy(
+                            fileInfo = state.fileInfo.toMutableList().apply {
+                                add(
+                                    StoreUrl(
+                                        imageUri,
+                                        it.first,
+                                        fileName,
+                                        fileType,
+                                        it.second,
+                                        fileSize
+                                    )
+                                )
+                            },
+                            error = null
+                        )
+                    }
+                }
+            }.onFailure {
+                intent {
+                    reduce { state.copy(error = it) }
+                }
             }
         }
     }
@@ -155,7 +262,7 @@ class WriteEventViewModel(
         }
     }
 
-    private fun isAllDateInputFilled(state: WriteEventState) : Boolean {
+    private fun isAllDateInputFilled(state: WriteEventState): Boolean {
         return state.startYear.length == 4
                 && state.startMonth.length == 2
                 && state.startDay.length == 2
@@ -165,12 +272,13 @@ class WriteEventViewModel(
     }
 
     private fun isValidNumberInput(maxLength: Int, input: String): Boolean {
-        if(input.length > maxLength)
+        if (input.length > maxLength)
             return false
-        if(input.isNotEmpty() && input.toIntOrNull() == null)
+        if (input.isNotEmpty() && input.toIntOrNull() == null)
             return false
         return true
     }
+
 
     companion object {
         const val MAX_IMAGE_LENGTH = 3

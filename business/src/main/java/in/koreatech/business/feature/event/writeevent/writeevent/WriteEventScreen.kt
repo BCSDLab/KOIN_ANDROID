@@ -59,6 +59,7 @@ import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.ui.theme.Black1
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorPrimary400
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorTextDescription
 import `in`.koreatech.business.ui.theme.ColorTextField
@@ -433,7 +434,7 @@ fun BorderTextField(
 @Composable
 fun EventImageView(
     modifier: Modifier = Modifier,
-    imageList: List<Uri> = emptyList(),
+    imageList: List<String> = emptyList(),
     onDeleteImage: (Int) -> Unit = {}
 ) {
     Box(
