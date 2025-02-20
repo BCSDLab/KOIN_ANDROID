@@ -5,6 +5,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.chargemap.compose.numberpicker.Hours
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.koin.domain.model.owner.SettingTime
 import org.orbitmvi.orbit.Container
@@ -50,15 +52,52 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         }
     }
 
-    private fun isOpenTimeSetting(openTimeSetting: SettingTime) = intent{
-        reduce{
-            state.copy(isOpenTimeSetting = openTimeSetting)
-        }
-    }
+    fun onChangeSettingTimeList(timeList: List<TimeSettingState>) = intent{
+        val operatingTimeList: MutableList<OperatingTimeState> = mutableListOf()
 
-    private fun dayOfIndex(index: Int) = intent{
+        timeList.forEach {  timeInfo ->
+            if(timeInfo.isClosed){
+                timeInfo.dayOfWeekList.forEach { day ->
+                    operatingTimeList.add(OperatingTimeState(
+                        closeTime = "00:00",
+                        closed = true,
+                        dayOfWeek = day.kor,
+                        openTime = "00:00",
+                        dayOfWeekEnglish = day.eng,
+                        priority = day.priority
+                    ))
+                }
+            }
+            else if(timeInfo.is24Hours){
+                timeInfo.dayOfWeekList.forEach { day ->
+                    operatingTimeList.add(OperatingTimeState(
+                        closeTime = "23:59",
+                        closed = false,
+                        dayOfWeek = day.kor,
+                        openTime = "00:00",
+                        dayOfWeekEnglish = day.eng,
+                        priority = day.priority
+                    ))
+                }
+            }
+            else{
+                timeInfo.dayOfWeekList.forEach { day ->
+                    operatingTimeList.add(OperatingTimeState(
+                        closeTime = timeInfo.closeTime,
+                        closed = false,
+                        dayOfWeek = day.kor,
+                        openTime = timeInfo.openTime,
+                        dayOfWeekEnglish = day.eng,
+                        priority = day.priority
+                    ))
+                }
+            }
+        }
         reduce{
-            state.copy(dayOfWeekIndex = index)
+            state.copy(
+                operatingTimeList = operatingTimeList.sortedBy { it.priority },
+                settingTimeInfoList = timeList
+            )
         }
     }
 
@@ -101,78 +140,10 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         }
     }
 
-    fun showOpenTimeDialog(index: Int) = intent{
-        reduce {
-            state.copy(showDialog = true)
-        }
-        isOpenTimeSetting(SettingTime.OPEN)
-        dayOfIndex(index)
-    }
-
-    fun showCloseTimeDialog(index: Int) = intent{
-        reduce {
-            state.copy(showDialog = true)
-        }
-        isOpenTimeSetting(SettingTime.CLOSE)
-        dayOfIndex(index)
-    }
-
-    fun closeDialog() = intent{
-        reduce{
-            state.copy(showDialog = false)
-        }
-    }
-
-    fun settingStoreOpenTime(time: Hours, index: Int) {
-        intent {
-            if (index >= 0 && index < state.operatingTimeList.size) {
-                val newList = state.operatingTimeList.toMutableList()
-                val currentItem = newList[index]
-                newList[index] = currentItem.copy(openTime = time.toTimeString())
-
-                reduce {
-                    state.copy(operatingTimeList = newList)
-                }
-
-                closeDialog()
-            }
-        }
-    }
-
-    fun settingStoreCloseTime(time: Hours, index: Int) {
-        intent {
-            if (index >= 0 && index < state.operatingTimeList.size) {
-                val newList = state.operatingTimeList.toMutableList()
-                val currentItem = newList[index]
-                newList[index] = currentItem.copy(closeTime = time.toTimeString())
-
-                reduce {
-                    state.copy(operatingTimeList = newList)
-                }
-
-                closeDialog()
-            }
-        }
-    }
-
-    fun isClosedDay(index: Int) {
-        intent {
-            if (index >= 0 && index <= state.operatingTimeList.size){
-                val newList = state.operatingTimeList.toMutableList()
-                val currentItem = newList[index]
-                newList[index] = currentItem.copy(closed = !currentItem.closed)
-                reduce{
-                    state.copy(operatingTimeList = newList)
-                }
-            }
-        }
-    }
-
     fun onNextButtonClick(){
         intent{
             if(state.isDetailInfoValid){
                 val storeDetailInfo = state
-
                 postSideEffect(InsertDetailInfoScreenSideEffect.NavigateToCheckScreen(storeDetailInfo))
                 return@intent
             }
@@ -185,15 +156,4 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         }
     }
 
-}
-
-private fun Hours.toTimeString(): String {
-
-    val hoursString: String =
-        if (this.hours < 10) "0" + this.hours.toString() else this.hours.toString()
-
-    val minutesString: String =
-        if (this.minutes < 10) "0" + this.minutes.toString() else this.minutes.toString()
-
-    return "$hoursString:$minutesString"
 }
