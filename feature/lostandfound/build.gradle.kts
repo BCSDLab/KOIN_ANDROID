@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.bundles.compose.m3)
 
     implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
 
     implementation(libs.timber)
 
