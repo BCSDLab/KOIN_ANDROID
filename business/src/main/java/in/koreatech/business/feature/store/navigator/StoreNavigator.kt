@@ -29,6 +29,7 @@ import `in`.koreatech.business.navigation.sharedHiltViewModel
 import `in`.koreatech.business.navigation.toNavigateRegisterMenuScreen
 import `in`.koreatech.business.navigation.toNavigateScreenWithMenuId
 import `in`.koreatech.business.navigation.toNavigateScreenWithStoreId
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.myStoreScreen(
@@ -43,6 +44,7 @@ fun NavGraphBuilder.myStoreScreen(
         ) {
             val myStoreInfoViewModel: MyStoreDetailViewModel = it.sharedHiltViewModel(navController = navController)
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
+            val myStoreInfoState = myStoreInfoViewModel.collectAsState().value
             MyStoreDetailScreen(
                 modifier = Modifier.fillMaxSize(),
                 navigateToLoginScreen = {
@@ -58,7 +60,7 @@ fun NavGraphBuilder.myStoreScreen(
                 viewModel = myStoreInfoViewModel,
                 modifyInfoViewModel = modifyInfoViewModel,
                 navigateToAddEventScreen = { storeId ->
-                    navController.toNavigateScreenWithStoreId(ADDEVENT, storeId)
+                    navController.toNavigateScreenWithStoreId(ADDEVENT, myStoreInfoState.storeId)
                 },
                 navigateToManageMenuScreen = { storeId ->
                     navController.toNavigateScreenWithMenuId(MANAGEMENUSCREEN, storeId)

@@ -7,7 +7,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
+import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.navigation.ADDEVENT
+import `in`.koreatech.business.navigation.sharedHiltViewModel
+import org.orbitmvi.orbit.compose.collectAsState
 
 
 fun NavGraphBuilder.registerEventScreen(
@@ -25,10 +29,12 @@ fun NavGraphBuilder.registerEventScreen(
                     defaultValue = -1
                 })
         ) {
-            val storeId = it.arguments?.getInt("storeId") ?: -1
+           // val storeId = it.arguments?.getInt("storeId") ?: -1
+            val myStoreInfoViewModel: MyStoreDetailViewModel = it.sharedHiltViewModel(navController = navController)
+            val myStoreInfoState = myStoreInfoViewModel.collectAsState().value
 
             WriteEventScreen(
-                shopId = storeId,
+                shopId = myStoreInfoState.storeId,
                 onBackPressed = {
                     navController.navigateUp()
                 },
