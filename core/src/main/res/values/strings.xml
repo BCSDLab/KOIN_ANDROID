@@ -244,6 +244,7 @@
     <string name="main_menu">메인 메뉴</string>
     <string name="set_menu">세트 메뉴</string>
     <string name="side_menu">사이드 메뉴</string>
+    <string name="menu_delete">메뉴 삭제</string>
 
     <!-- 이벤트 로깅 -->
     <string name="event_set_notification">알림설정</string>

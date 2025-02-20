@@ -39,9 +39,15 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
+import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.domain.model.store.ShopMenus
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -58,9 +64,12 @@ fun ManageMenuScreen(
         modifier = modifier,
         onBackPressed = onBackPressed,
         state = state,
-        onMenuItemClicked = viewModel::onModifyMenuClicked,
+        onModifyMenuClicked = viewModel::onModifyMenuClicked,
+        onDeleteMenuClicked = viewModel::onDeleteMenuClicked,
         onAddMenuClicked = viewModel::onRegisterMenuClicked,
-        onCheckBoxClicked = viewModel::onCheckBoxClicked
+        onCheckBoxClicked = viewModel::onCheckBoxClicked,
+        onChangeShowDialog = viewModel::onChangeIsShowDialogState,
+        onPositiveButtonClicked = viewModel::onPositiveButtonClicked
     )
     HandleSideEffects(viewModel, navigateToModifyMenuScreen, navigateToRegisterMenuScreen)
 }
@@ -69,9 +78,12 @@ fun ManageMenuScreenImpl(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {},
     state: ManageMenuState = ManageMenuState(),
-    onMenuItemClicked: (Int) -> Unit ={},
+    onModifyMenuClicked: (Int) -> Unit ={},
+    onDeleteMenuClicked:(ShopMenus) -> Unit = {},
     onAddMenuClicked: () -> Unit = {},
-    onCheckBoxClicked: (Int) -> Unit = {}
+    onCheckBoxClicked: (Int) -> Unit = {},
+    onChangeShowDialog: () -> Unit = {},
+    onPositiveButtonClicked: () -> Unit = {}
 ) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -79,6 +91,32 @@ fun ManageMenuScreenImpl(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
+
+        if(state.isShowDeleteDialog){
+            ChoiceDialog(
+                title = {},
+                description = {
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
+                                append("${state.menuName}을(를)\n")
+                            }
+                            withStyle(KoinTheme.typography.medium16.copy(color = KoinTheme.colors.danger700).toSpanStyle()) {
+                                append(stringResource(R.string.common_delete))
+                            }
+                            withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
+                                append("하시겠어요?")
+                            }
+                        },
+                        textAlign = TextAlign.Center
+                    )
+                },
+                onPositive = onPositiveButtonClicked,
+                onNegative = onChangeShowDialog,
+                positiveButtonColors = FilledButtonColors.Danger
+            )
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -167,9 +205,13 @@ fun ManageMenuScreenImpl(
                     MenuCategories(it)
                     MenuItem(
                         menuList = it,
-                        onMenuClicked = {menuId ->
-                            onMenuItemClicked(menuId)
+                        onModifyMenuClicked = {menuId ->
+                            onModifyMenuClicked(menuId)
+                        },
+                        onDeleteMenuClicked = { menuItem ->
+                            onDeleteMenuClicked(menuItem)
                         }
+
                     )
                 }
             }
@@ -191,6 +233,12 @@ private fun HandleSideEffects(
             }
             is ManageMenuSideEffect.NavigateToRegisterMenuScreen ->{
                 navigateToRegisterMenuScreen(sideEffect.storeId)
+            }
+            is ManageMenuSideEffect.SuccessDeleteMenu ->{
+
+            }
+            is ManageMenuSideEffect.FailedDeleteMenu ->{
+
             }
         }
     }

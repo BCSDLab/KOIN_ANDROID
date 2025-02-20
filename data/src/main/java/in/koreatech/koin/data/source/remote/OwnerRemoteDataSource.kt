@@ -19,6 +19,7 @@ import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
+import retrofit2.Response
 
 class OwnerRemoteDataSource(
     private val ownerApi: OwnerApi,
@@ -110,6 +111,10 @@ class OwnerRemoteDataSource(
         return ownerAuthApi.putShopModifiedMenu(menuId, storeMenuRegisterResponse)
     }
 
+    suspend fun deleteStoreMenu(menuId: Int): Response<Unit>{
+        return ownerAuthApi.deleteShopMenu(menuId)
+    }
+
     suspend fun getStoreMenuInfo(menuId: Int): StoreMenuInfoResponse {
         return ownerAuthApi.getMenuInfo(menuId)
     }
@@ -121,4 +126,5 @@ class OwnerRemoteDataSource(
     suspend fun modifyOwnerShopInfo(storeUid: Int, storeInfo: StoreRegisterResponse) {
         ownerAuthApi.modifyOwnerShopInfo(storeUid, storeInfo)
     }
+
 }

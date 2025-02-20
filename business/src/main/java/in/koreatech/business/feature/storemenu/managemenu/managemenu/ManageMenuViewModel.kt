@@ -1,12 +1,16 @@
 package `in`.koreatech.business.feature.storemenu.managemenu.managemenu
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.owner.MenuCategory
+import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopMenusUseCase
+import `in`.koreatech.koin.domain.usecase.business.menu.DeleteMenuUseCase
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -18,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ManageMenuViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val  getOwnerShopMenusUseCase: GetOwnerShopMenusUseCase
+    private val  getOwnerShopMenusUseCase: GetOwnerShopMenusUseCase,
+    private val deleteMenuUseCase: DeleteMenuUseCase
 ): ViewModel(), ContainerHost<ManageMenuState, ManageMenuSideEffect> {
     override val container = container<ManageMenuState, ManageMenuSideEffect>(ManageMenuState())
 
@@ -73,6 +78,26 @@ class ManageMenuViewModel @Inject constructor(
         }
     }
 
+    fun onChangeIsShowDialogState() = intent {
+        reduce {
+            state.copy(
+                isShowDeleteDialog = !state.isShowDeleteDialog
+            )
+        }
+    }
+    fun onDeleteMenuClicked(menuItem: ShopMenus){
+        intent {
+            onChangeIsShowDialogState()
+            reduce {
+                state.copy(
+                    menuId = menuItem.id,
+                    menuName = menuItem.name
+                )
+            }
+        }
+    }
+
+
     fun onCheckBoxClicked(index: Int) = intent {
         reduce {
             state.copy(
@@ -86,5 +111,21 @@ class ManageMenuViewModel @Inject constructor(
             )
         }
         setCheckBox()
+    }
+
+    fun onPositiveButtonClicked() = intent{
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteMenuUseCase(state.menuId)
+                .onSuccess {
+                    Log.e("로그", "성공")
+                    onChangeIsShowDialogState()
+                    getShopMenus()
+                    postSideEffect(ManageMenuSideEffect.SuccessDeleteMenu)
+                }
+                .onFailure {
+                    Log.e("로그", "실패")
+                    postSideEffect(ManageMenuSideEffect.FailedDeleteMenu)
+                }
+        }
     }
 }
