@@ -186,7 +186,7 @@ fun ReportTextField(
             if (value.length < maxLength) {
                 onValueChange(it)
             } else {
-                onValueChange(it.take(DESCRIPTION_MAX_LENGTH))
+                onValueChange(it.take(maxLength))
             }
         },
         decorationBox = { innerTextField ->
