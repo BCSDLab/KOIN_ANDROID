@@ -14,7 +14,6 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
-import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 
 @AndroidEntryPoint
@@ -30,7 +29,6 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 LostAndFoundDetail(
-                    articleId = requireArguments().getInt(ARTICLE_ID),
                     navigateToArticleList = {
                         navController.popBackStack(R.id.articleListFragment, false)
                     },

@@ -4,9 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.UploadLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
@@ -21,10 +18,11 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import java.time.LocalDate
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = LostAndFoundWriteArticleViewModel.Factory::class)
-class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
-    @Assisted savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class LostAndFoundWriteArticleViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val uploadLostAndFoundArticleUseCase: UploadLostAndFoundArticleUseCase,
     private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
@@ -33,25 +31,26 @@ class LostAndFoundWriteArticleViewModel @AssistedInject constructor(
 
     override val container =
         container<LostAndFoundWriteArticleState, LostAndFoundWriteArticleSideEffect>(
-            LostAndFoundWriteArticleState()
-        )
-
-    @AssistedFactory
-    interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): LostAndFoundWriteArticleViewModel
-    }
-
-    init {
-        intent {
+            LostAndFoundWriteArticleState(),
+            savedStateHandle
+        ) {
+            val rawLostOrFoundType = savedStateHandle.get<String>(LOST_OR_FOUND_TYPE)
+            val lostOrFoundType = LostOrFoundType.entries.find {
+                it.name == rawLostOrFoundType
+            } ?: LostOrFoundType.FOUND
+            setLostOrFoundType(lostOrFoundType)
             addItem(
                 LostAndFoundWriteArticleItemState(
-                    lostOrFoundType = savedStateHandle.get<LostOrFoundType>(LOST_OR_FOUND_TYPE)
-                        ?: LostOrFoundType.FOUND,
+                    lostOrFoundType = lostOrFoundType
                 )
             )
         }
-    }
 
+    private fun setLostOrFoundType(lostOrFoundType: LostOrFoundType) = intent {
+        reduce {
+            state.copy(lostOrFoundType = lostOrFoundType)
+        }
+    }
 
     fun addItem(item: LostAndFoundWriteArticleItemState) = intent {
         //postSideEffect(LostAndFoundWriteArticleSideEffect.AddItem(item))

@@ -14,11 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.HasDefaultViewModelProviderFactory
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.lifecycle.withCreationCallback
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -27,7 +23,6 @@ import `in`.koreatech.koin.feature.lostandfound.component.HotArticle
 import `in`.koreatech.koin.feature.lostandfound.component.HotArticleData
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
@@ -37,24 +32,13 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun LostAndFoundDetail(
-    articleId: Int,
+    viewModel: LostAndFoundDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     navigateToArticleList: () -> Unit = {},
     navigateToHotArticle: (HotArticleData) -> Unit,
     navigateToChatRoom: (articleId: Int) -> Unit = {},
     navigateToReport: (articleId: Int) -> Unit = {}
 ) {
-    val savedStateHandle = SavedStateHandle()
-    savedStateHandle[ARTICLE_ID] = articleId
-
-    val viewModelStoreOwner = requireNotNull(
-        LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
-    )
-    val viewModel: LostAndFoundDetailViewModel = viewModel(
-        extras = viewModelStoreOwner.defaultViewModelCreationExtras.withCreationCallback<LostAndFoundDetailViewModel.Factory> {
-            it.create(savedStateHandle = savedStateHandle)
-        }
-    )
     KoinTheme {
         val uiState by viewModel.collectAsState()
         val hotArticle = uiState.hotArticles
@@ -110,14 +94,14 @@ fun LostAndFoundDetail(
                             loggingFoundMessageSend
                         }
                     )
-                    navigateToChatRoom(articleId)
+                    navigateToChatRoom(uiState.id)
                 },
                 onReportArticleClick = {
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT,
                         loggingReport
                     )
-                    navigateToReport(articleId)
+                    navigateToReport(uiState.id)
                 }
             )
 
