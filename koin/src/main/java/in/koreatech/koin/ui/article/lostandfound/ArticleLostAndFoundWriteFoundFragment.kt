@@ -24,9 +24,7 @@ class ArticleLostAndFoundWriteFoundFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                LostAndFoundWriteArticle(
-                    rawLostOrFoundType = "FOUND"
-                ) { articleId ->
+                LostAndFoundWriteArticle { articleId ->
                     navController.popBackStack()
                     navController.navigate(
                         R.id.articleLostAndFoundDetailFragment,
