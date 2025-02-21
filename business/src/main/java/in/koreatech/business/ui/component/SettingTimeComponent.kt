@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
+import `in`.koreatech.koin.core.designsystem.component.dialog.MessageDialog
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -40,6 +41,17 @@ fun SettingTimeDialog(
     var isSettingScreen by remember { mutableStateOf(false) }
     val timeInfoList = remember { mutableStateListOf<TimeSettingState>() }
     val emptySpaceList = remember { mutableStateListOf("", "", "", "", "", "") }
+    var isDayOfWeekListEmpty by remember { mutableStateOf(false) }
+
+    if (isDayOfWeekListEmpty){
+        MessageDialog(
+            title = "요일을 선택해 주세요.",
+            onPositive = {
+                isDayOfWeekListEmpty = false
+            }
+        )
+    }
+
 
     Column(
         modifier = modifier
@@ -63,18 +75,23 @@ fun SettingTimeDialog(
                 addTimeState = {
                     timeInfoList.add(it)
                     emptySpaceList.removeAt(emptySpaceList.lastIndex)
+                },
+                updateIsSettingScreenState = {
+                    isSettingScreen = it
+                },
+                showMessageDialog = {
+                    isDayOfWeekListEmpty = it
                 }
-            ) {
-                isSettingScreen = it
-            }
+            )
         } else {
             if (timeInfoList.isEmpty()) {
                 NullSettingTime(
                     coroutineScope = coroutineScope,
-                    sheetState = sheetState
-                ) {
-                    isSettingScreen = it
-                }
+                    sheetState = sheetState,
+                    updateIsSettingScreenState = {
+                        isSettingScreen = it
+                    },
+                )
             } else {
                 CheckSettingTime(
                     settingTimeList = timeInfoList,
@@ -87,11 +104,11 @@ fun SettingTimeDialog(
                     },
                     onChangeSettingTimeList ={
                         onChangeSettingTimeList(timeInfoList)
-                    }
-                ) {
-                    isSettingScreen = it
-                }
-
+                    },
+                    updateIsSettingScreenState = {
+                        isSettingScreen = it
+                    },
+                )
             }
         }
     }

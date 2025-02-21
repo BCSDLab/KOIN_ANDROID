@@ -253,8 +253,6 @@ fun StoreInfoScreen(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 text = state.storeInfo?.name ?: stringResource(R.string.shop_name),
                 style = TextStyle(color = Color.Black, fontSize = 20.sp),
-                fontSize = 20.sp,
-                fontWeight = FontWeight(600),
             )
             Row(
                 modifier = Modifier

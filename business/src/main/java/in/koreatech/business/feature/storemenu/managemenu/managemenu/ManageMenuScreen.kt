@@ -188,7 +188,6 @@ fun ManageMenuScreenImpl(
                         text = item.categoryName,
                         style = KoinTheme.typography.medium12,
                         color = if(item.isChecked) Color.White else Gray3,
-                        fontWeight = FontWeight(500),
                     )
                 }
             }

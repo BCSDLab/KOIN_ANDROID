@@ -69,6 +69,7 @@ fun SettingTime(
         ),
     addTimeState: (TimeSettingState) -> Unit = {},
     updateIsSettingScreenState: (Boolean) -> Unit = {},
+    showMessageDialog:(Boolean) -> Unit = {}
 ) {
     val dayOfWeekList = remember { mutableStateListOf<KorDayOfWeek>() }
     var openTimeValue by remember { mutableStateOf<Hours>(FullHours(6, 0)) }
@@ -267,24 +268,30 @@ fun SettingTime(
                 updateIsSettingScreenState(false)
             },
             onRegisterButtonClicked = {
-                addTimeState(
-                    TimeSettingState(
-                        timeInfoString = makeTimeInfo(
+                
+                if(dayOfWeekList.isEmpty()){
+                    showMessageDialog(true)
+                }
+                else {
+                    addTimeState(
+                        TimeSettingState(
+                            timeInfoString = makeTimeInfo(
+                                dayOfWeekList = dayOfWeekList.sortedBy { it.priority },
+                                openTime = openTimeValue.toTimeString(),
+                                closeTime = closeTimeValue.toTimeString(),
+                                isClosed = isClosedChecked,
+                                is24Hours = is24hoursChecked
+                            ),
                             dayOfWeekList = dayOfWeekList.sortedBy { it.priority },
                             openTime = openTimeValue.toTimeString(),
                             closeTime = closeTimeValue.toTimeString(),
                             isClosed = isClosedChecked,
                             is24Hours = is24hoursChecked
-                        ),
-                        dayOfWeekList = dayOfWeekList.sortedBy { it.priority },
-                        openTime = openTimeValue.toTimeString(),
-                        closeTime = closeTimeValue.toTimeString(),
-                        isClosed = isClosedChecked,
-                        is24Hours = is24hoursChecked
+                        )
                     )
-                )
 
-                updateIsSettingScreenState(false)
+                    updateIsSettingScreenState(false)
+                }
             }
         )
     }

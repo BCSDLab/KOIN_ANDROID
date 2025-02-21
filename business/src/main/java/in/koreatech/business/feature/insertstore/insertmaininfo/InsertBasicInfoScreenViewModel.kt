@@ -52,6 +52,25 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         storeImageIsEmpty()
     }
 
+    fun dialogSetting(
+        title: String
+    ) = intent{
+        reduce{
+            state.copy(
+                dialogTitle = title
+            )
+        }
+        isShowDialog()
+    }
+
+    fun isShowDialog() = intent{
+        reduce{
+            state.copy(
+                isDialogShow = !state.isDialogShow
+            )
+        }
+    }
+
     fun getPreSignedUrl(
         fileSize: Long,
         fileType: String,

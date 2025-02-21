@@ -188,6 +188,25 @@ class ModifyMenuViewModel @Inject constructor(
         }
     }
 
+    fun dialogSetting(
+        title: String
+    ) = intent{
+        reduce{
+            state.copy(
+                dialogTitle = title
+            )
+        }
+        isShowDialog()
+    }
+
+    fun isShowDialog() = intent{
+        reduce{
+            state.copy(
+                isDialogShow = !state.isDialogShow
+            )
+        }
+    }
+
     fun changeMenuImageUri(uriList: List<Uri>){
         intent {
             reduce {
