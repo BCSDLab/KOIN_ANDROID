@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime
 
 import android.os.Parcelable
+import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -9,5 +10,6 @@ data class OperatingTimeState(
     val closed: Boolean = false,
     val dayOfWeek: String = "",
     val openTime: String = "",
-    val dayOfWeekEnglish: String = ""
+    val dayOfWeekEnglish: String = "",
+    val priority: Int = 0
 ): Parcelable

@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 
 data class StoreDetailInfo (
     val address: String?,
+    val mainCategoryId: Int,
     val categoryIds: List<Int>,
     val isDeliveryOk: Boolean,
     val deliveryPrice: Int,

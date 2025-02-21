@@ -62,7 +62,8 @@ class FinalCheckStoreScreenViewModel @Inject constructor(
                     isDeliveryOk = storeInfo.isDeliveryOk,
                     isBankOk = storeInfo.isBankOk,
                     isCardOk = storeInfo.isCardOk,
-                    operatingTimeList = storeInfo.operatingTimeList
+                    operatingTimeList = storeInfo.operatingTimeList,
+                    settingTimeInfoList = storeInfo.settingTimeInfoList
                 )
             }
             getCategory()
