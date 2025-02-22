@@ -1,8 +1,11 @@
 package `in`.koreatech.koin.feature.chat.ui.model
 
+import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
+@Parcelize
 data class ConvertedChatMessage(
     val userId: Int,
     val userNickname: String,
@@ -10,7 +13,7 @@ data class ConvertedChatMessage(
     val timestamp: LocalDateTime,
     val isImage: Boolean,
     val isSentByMe: Boolean
-)
+) : Parcelable
 
 fun ChatMessage.toConvertedChatMessage(userId: Int): ConvertedChatMessage {
     return ConvertedChatMessage(

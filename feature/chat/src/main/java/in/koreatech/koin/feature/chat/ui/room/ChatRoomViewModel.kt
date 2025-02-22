@@ -4,9 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.user.User
@@ -42,10 +39,11 @@ import retrofit2.HttpException
 import timber.log.Timber
 import java.net.UnknownHostException
 import java.time.LocalDateTime
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = ChatRoomViewModel.Factory::class)
-class ChatRoomViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class ChatRoomViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val chatWSConnectUseCase: ChatWSConnectUseCase,
     private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
     private val getChatRoomFromArticleIdUseCase: GetChatRoomFromArticleIdUseCase,
@@ -58,28 +56,22 @@ class ChatRoomViewModel @AssistedInject constructor(
     private val uploadFilesUseCase: UploadFileUseCase,
     private val chatBlockUserUseCase: ChatBlockUserUseCase
 ) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
-    override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState())
+    override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState(), savedStateHandle) {
+        val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
+        val chatRoomId = savedStateHandle.get<Int>(CHAT_ROOM_ID)
+        checkNotNull(articleId)
+        if (chatRoomId == null) {
+            createAndGetChatRoom(articleId)
+        } else {
+            getChatRoom(articleId, chatRoomId)
+        }
+    }
 
     private val job = SupervisorJob()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
 
-    @AssistedFactory
-    interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): ChatRoomViewModel
-    }
-
     init {
         getUserInfo()
-        if (savedStateHandle.get<Int>(CHAT_ROOM_ID) == -1) {
-            savedStateHandle.get<Int>(ARTICLE_ID)?.let {
-                createAndGetChatRoom(it)
-            }
-        } else {
-            getChatRoom(
-                savedStateHandle[ARTICLE_ID] ?: -1,
-                savedStateHandle[CHAT_ROOM_ID] ?: -1
-            )
-        }
     }
 
     private fun getUserInfo() = viewModelScope.launch {
