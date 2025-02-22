@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import `in`.koreatech.koin.ui.article.ArticleBoardType
 import `in`.koreatech.koin.ui.article.state.ArticlePaginationState
 import `in`.koreatech.koin.ui.article.state.toArticlePaginationState
 import kotlinx.coroutines.channels.BufferOverflow
@@ -59,14 +58,14 @@ class ArticleSearchViewModel @Inject constructor(
         savedStateHandle[SEARCH_INPUT] = query
     }
 
-    fun search(boardId: Int = ArticleBoardType.ALL.id) {
+    fun search() {
         val trimmedQuery = query.value.trim()
         if (trimmedQuery.isEmpty()) {
             _searchResultUiState.tryEmit(SearchUiState.RequireInput)
             return
         }
 
-        articleRepository.fetchSearchedArticles(trimmedQuery, boardId, 1, 20)
+        articleRepository.fetchSearchedArticles(trimmedQuery, null, 1, 20)
             .onStart {
                 _isLoading.value = true
                 _searchResultUiState.tryEmit(SearchUiState.Loading)

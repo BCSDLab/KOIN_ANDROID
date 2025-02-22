@@ -12,7 +12,7 @@
     <string name="item_type_card">카드</string>
     <string name="item_type_wallet">지갑</string>
     <string name="item_type_id">신분증</string>
-    <string name="item_type_other">그 외</string>
+    <string name="item_type_other">기타</string>
     <string name="item_type_none" />
 
     <string name="dropdown_type_all">물품 전체</string>
@@ -102,4 +102,13 @@
 
     <string name="pagination_prev">이전</string>
     <string name="pagination_next">다음</string>
+    <string name="detail_chat_room_button">쪽지 보내기</string>
+
+    <string name="article_reported">신고에 의해 숨김 처리 되었습니다. </string>
+
+    <string name="reported_article_click_toast">신고된 게시글은 더 이상 볼 수 없습니다.</string>
+
+    <string name="logging_lost_message_send">분실물 쪽지 보내기</string>
+    <string name="logging_found_message_send">습득물 쪽지 보내기</string>
+    <string name="logging_report">신고하기</string>
 </resources>

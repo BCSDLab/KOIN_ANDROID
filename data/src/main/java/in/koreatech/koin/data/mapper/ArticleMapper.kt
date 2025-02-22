@@ -15,6 +15,7 @@ fun ArticleLostAndFoundUpload.toArticleLostAndFoundBody(): ArticleLostAndFoundRe
         foundPlace = foundPlace,
         foundDate = foundDate,
         content = content,
-        images = images
+        images = images,
+        type = type
     )
 }

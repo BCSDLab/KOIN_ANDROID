@@ -10,10 +10,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.Dropdown
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
 @Composable
 fun LostAndFoundDropdownGroup(
     isDropdownExpanded: Boolean,
+    selectedType: LostOrFoundType?,
     modifier: Modifier = Modifier,
     onDropdownExpandChange: (Boolean) -> Unit = {},
     onItemSelected: (Int) -> Unit = {}
@@ -23,7 +25,11 @@ fun LostAndFoundDropdownGroup(
         .padding(horizontal = 24.dp)
 ) {
     Dropdown(
-        title = stringResource(R.string.dropdown_type_all),
+        title = when (selectedType) {
+            LostOrFoundType.LOST -> stringResource(R.string.dropdown_item_lost)
+            LostOrFoundType.FOUND -> stringResource(R.string.dropdown_item_found)
+            else -> stringResource(R.string.dropdown_item_all)
+        },
         items = listOf(
             stringResource(R.string.dropdown_item_all),
             stringResource(R.string.dropdown_item_found),
