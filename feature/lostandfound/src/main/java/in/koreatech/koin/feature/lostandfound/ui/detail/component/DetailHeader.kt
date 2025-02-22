@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,9 +31,17 @@ fun DetailHeader(
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
     val convertedRegisteredAt =
-        "${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}"
+        remember(key1 = registeredAt) { "${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}" }
 
     val foundDateFormatType = DateTimeFormatter.ofPattern("yy.MM.dd")
+    val headerText = remember(key1 = foundPlace, key2 = foundDate) {
+        "${
+            foundPlace.replace(
+                "\n",
+                " "
+            )
+        } | ${foundDate.format(foundDateFormatType)}"
+    }
 
     Column(
         modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp)
@@ -51,12 +60,7 @@ fun DetailHeader(
             LostItemTypeChip(category = category)
             Text(
                 modifier = Modifier.padding(start = 8.dp),
-                text = "${
-                    foundPlace.replace(
-                        "\n",
-                        " "
-                    )
-                } | ${foundDate.format(foundDateFormatType)}",
+                text = headerText,
                 fontWeight = FontWeight(500),
                 style = KoinTheme.typography.medium14
             )

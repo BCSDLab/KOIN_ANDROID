@@ -4,9 +4,6 @@ import android.webkit.URLUtil
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.DeleteArticleLostAndFoundUseCase
@@ -22,27 +19,26 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = LostAndFoundDetailViewModel.Factory::class)
-class LostAndFoundDetailViewModel @AssistedInject constructor(
-    @Assisted savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class LostAndFoundDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
     private val fetchHotArticlesUseCase: FetchHotArticlesUseCase,
     private val deleteArticleLostAndFoundUseCase: DeleteArticleLostAndFoundUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : ViewModel(), ContainerHost<LostAndFoundDetailState, LostAndFoundDetailSideEffect> {
     override val container =
-        container<LostAndFoundDetailState, LostAndFoundDetailSideEffect>(LostAndFoundDetailState())
+        container<LostAndFoundDetailState, LostAndFoundDetailSideEffect>(LostAndFoundDetailState(), savedStateHandle) {
+            val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
+            checkNotNull(articleId)
+            fetchLostAndFoundDetail(articleId)
+        }
 
     init {
         initUserInfo()
         fetchHotArticles()
-        fetchLostAndFoundDetail(savedStateHandle.get<Int>(ARTICLE_ID) ?: 0)
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): LostAndFoundDetailViewModel
     }
 
     private fun initUserInfo() = viewModelScope.launch {

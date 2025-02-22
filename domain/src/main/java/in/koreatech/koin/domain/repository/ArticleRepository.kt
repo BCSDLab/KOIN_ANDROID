@@ -21,7 +21,7 @@ interface ArticleRepository {
     fun deleteKeyword(keyword: String): Flow<Unit>
     fun fetchKeywordNotiIndex(): Flow<Int>
     fun saveKeywordNotiIndex(): Flow<Unit>
-    fun fetchSearchedArticles(query: String, boardId: Int, page: Int, limit: Int): Flow<ArticlePagination>
+    fun fetchSearchedArticles(query: String, boardId: Int?, page: Int, limit: Int): Flow<ArticlePagination>
     fun fetchMostSearchedKeywords(count: Int): Flow<List<String>>
     fun fetchSearchHistory(): Flow<List<String>>
     fun saveSearchHistory(query: String): Flow<Unit>
