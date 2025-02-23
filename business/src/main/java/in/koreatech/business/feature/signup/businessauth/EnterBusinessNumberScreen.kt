@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -156,6 +158,7 @@ fun EnterBusinessNumberScreen(
                     else stringResource(id = R.string.error_network_unknown),
                 label = stringResource(id = R.string.enter_business_registration_number),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
             Spacer(modifier = Modifier.weight(1f))
 
