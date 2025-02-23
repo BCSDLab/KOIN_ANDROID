@@ -12,6 +12,7 @@ import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.toStringL
 import `in`.koreatech.business.util.getImageInfo
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.constant.SIGN_UP_IMAGE_MAX
+import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
@@ -78,14 +79,26 @@ class BusinessAuthViewModel @Inject constructor(
                 checkCompanyNumberUseCase(companyNumber).onSuccess {
                     reduce {
                         state.copy(
+                            error = null,
                             signupContinuationState = SignupContinuationState.CheckComplete
                         )
                     }
                 }.onFailure {
-                    reduce {
-                        state.copy(
-                            signupContinuationState = SignupContinuationState.CompanyNumberIsDuplicated
-                        )
+                    if (it is OwnerError.CompanyNumberIsDuplicatedException) {
+                        reduce {
+                            state.copy(
+                                error = it,
+                                signupContinuationState = SignupContinuationState.CompanyNumberIsDuplicated
+                            )
+                        }
+                    }
+                    else{
+                        reduce {
+                            state.copy(
+                                error = it,
+                                signupContinuationState = SignupContinuationState.Failed()
+                            )
+                        }
                     }
                 }
             }

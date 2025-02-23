@@ -151,8 +151,9 @@ fun EnterBusinessNumberScreen(
                     viewModel.onCompanyNumberChanged(it)
                 },
                 modifier = Modifier.fillMaxWidth(),
-                isError = state.signupContinuationState == SignupContinuationState.CompanyNumberIsDuplicated,
-                errorText = stringResource(id = R.string.business_registration_number_is_duplicated),
+                isError = state.error != null,
+                errorText = if(state.signupContinuationState == SignupContinuationState.CompanyNumberIsDuplicated ) stringResource(id = R.string.business_registration_number_is_duplicated)
+                    else stringResource(id = R.string.error_network_unknown),
                 label = stringResource(id = R.string.enter_business_registration_number),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
             )

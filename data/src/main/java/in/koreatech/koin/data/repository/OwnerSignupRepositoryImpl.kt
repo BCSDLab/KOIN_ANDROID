@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.repository.OwnerSignupRepository
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -73,6 +74,14 @@ class OwnerSignupRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkExistsCompanyNumber(companyNumber: String) {
-        return ownerRemoteDataSource.checkExistsCompanyNumber(CheckCompanyNumberResponse(companyNumber))
+        return try {
+            ownerRemoteDataSource.checkExistsCompanyNumber(CheckCompanyNumberResponse(companyNumber))
+        } catch (e: HttpException) {
+            if (e.code() == 409)
+                throw OwnerError.CompanyNumberIsDuplicatedException
+            else throw e
+        } catch (t: Throwable) {
+            throw t
+        }
     }
 }

@@ -13,5 +13,6 @@ sealed class OwnerError {
     object NotValidPhoneNumberException: IllegalAccessException()
     object NotExistsPhoneNumberException: IllegalAccessException()
     object ExistsPhoneNumberException: IllegalAccessException()
+    object CompanyNumberIsDuplicatedException: IllegalAccessException()
 
 }
