@@ -3,6 +3,7 @@ package `in`.koreatech.koin.core.activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -22,8 +23,16 @@ abstract class ActivityBase : AppCompatActivity, IProgressDialog {
     private var customProgressDialog: CustomProgressDialog? = null
     protected abstract val screenTitle: String      // for GA4
 
+    open val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            isEnabled = false
+            onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         try {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         } catch (ignore: IllegalStateException) {
