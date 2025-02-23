@@ -64,7 +64,7 @@ interface OwnerApi {
     @POST(URLConstant.OWNER.SHOPS)
     suspend fun putMyStore(@Body storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse
 
-    @GET(URLConstant.OWNER.OWNERS +"/exists/company-number")
+    @POST(URLConstant.OWNER.OWNERS +"/exists/company-number")
     suspend fun checkExistsCompanyNumber(
         @Body companyNumber: CheckCompanyNumberResponse
     )
