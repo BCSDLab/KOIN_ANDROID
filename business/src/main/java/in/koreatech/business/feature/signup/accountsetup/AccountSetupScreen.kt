@@ -72,7 +72,7 @@ fun AccountSetupScreen(
     if (state.phoneNumberState == SignupContinuationState.RequestedSmsValidation || state.phoneNumberState == SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null) {
         hasRequestedSmsValidation = true
     }
-    var timerText by remember { mutableStateOf(300) }
+    var timerText by remember { mutableStateOf(180) }
 
     Column(
         modifier = modifier.fillMaxSize(),

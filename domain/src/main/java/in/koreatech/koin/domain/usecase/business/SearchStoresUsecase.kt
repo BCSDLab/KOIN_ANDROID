@@ -14,6 +14,5 @@ class SearchStoresUseCase @Inject constructor(
     ): List<Store> {
         return storeRepository.getStores()
             .filter { if (search != null) it.name.match(search) else true }
-            .sortedOpenStore()
     }
 }

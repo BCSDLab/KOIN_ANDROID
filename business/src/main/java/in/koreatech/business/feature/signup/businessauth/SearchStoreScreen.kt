@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -45,6 +46,7 @@ import `in`.koreatech.business.feature.textfield.SearchTextField
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray1
+import `in`.koreatech.business.ui.theme.Gray11
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.koin.domain.model.store.Store
 import kotlinx.coroutines.launch
@@ -216,27 +218,26 @@ fun StoreList(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            modifier = Modifier,
+                            modifier = Modifier.weight(1f),
                             text = item[index].name,
                             fontSize = 15.sp,
                             color = Color.Black,
-
                             )
-                        Spacer(modifier = Modifier.width(74.dp))
                         Text(
                             buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
+                                withStyle(style = if(item[index].isDeliveryOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)) {
                                     append(text = stringResource(id = R.string.delivery))
                                 }
                                 append(" ")
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
-                                    append(text = stringResource(id = R.string.card_payment))
+                                withStyle(style = if(item[index].isCardOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)) {
+                                append(text = stringResource(id = R.string.card_payment))
                                 }
                                 append(" ")
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
+                                withStyle(style = if(item[index].isBankOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)) {
                                     append(text = stringResource(id = R.string.account_transfer))
                                 }
                             },
+                            modifier= Modifier.weight(1f).wrapContentWidth(Alignment.End),
                             fontSize = 12.sp
                         )
                     }
