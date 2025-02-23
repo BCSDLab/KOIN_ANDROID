@@ -11,12 +11,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.provider.OpenableColumns
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -65,12 +62,7 @@ class AttachmentDialogFragment : DialogFragment() {
         }
 
         binding.attachFileButton.setOnClickListener {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                checkPermission()
-            }
-            else {
-                getImageFile()
-            }
+            checkPermission()
         }
 
         return view

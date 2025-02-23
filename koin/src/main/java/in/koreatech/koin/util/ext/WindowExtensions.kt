@@ -20,8 +20,7 @@ fun Window.statusBarColor(
             )
 
             this.statusBarColor = color
-
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else {
             var flags: Int = decorView.systemUiVisibility
             flags = if(lightStatusBar) {
                 flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -31,8 +30,6 @@ fun Window.statusBarColor(
 
             decorView.systemUiVisibility = flags
 
-            statusBarColor = color
-        } else {
             statusBarColor = color
         }
     }
@@ -44,9 +41,5 @@ fun Window.blueStatusBar() {
 }
 
 fun Window.whiteStatusBar() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        statusBarColor(ContextCompat.getColor(context, R.color.background), true)
-    } else {
-        statusBarColor(ContextCompat.getColor(context, R.color.gray8))
-    }
+    statusBarColor(ContextCompat.getColor(context, R.color.background), true)
 }
