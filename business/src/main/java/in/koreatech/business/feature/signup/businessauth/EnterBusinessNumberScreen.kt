@@ -1,8 +1,5 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
-
-
-
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
@@ -46,7 +43,6 @@ import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-
 
 @Composable
 fun EnterBusinessNumberScreen(
