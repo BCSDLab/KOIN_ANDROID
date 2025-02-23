@@ -63,7 +63,7 @@ class BusinessAuthViewModel @Inject constructor(
     fun onShopNumberChanged(shopNumber: String) = blockingIntent {
         reduce {
             state.copy(
-                companyNumber = shopNumber,
+                shopNumber = shopNumber,
             )
         }
     }

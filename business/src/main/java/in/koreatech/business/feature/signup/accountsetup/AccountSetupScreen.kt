@@ -73,9 +73,6 @@ fun AccountSetupScreen(
         hasRequestedSmsValidation = true
     }
     var timerText by remember { mutableStateOf(300) }
-    if (state.verifyState == SignupContinuationState.CheckComplete) {
-        AccountTimer.cancel()
-    }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -189,7 +186,7 @@ fun AccountSetupScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null && !state.sendCodeIsClicked,
+                enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null,
                 colors = ButtonDefaults.buttonColors(
                     disabledBackgroundColor = Gray11,
                 ),

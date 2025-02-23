@@ -138,7 +138,7 @@
     <string name="enter_private_number_attach_file">개인 연락처를 입력해주시고,\n사업자 인증 파일을 첨부해주세요.</string>
     <string name="enter_shop_number_attach_file">가게 연락처를 입력해주시고,\n사업자 인증 파일을 첨부해주세요.</string>
     <string name="private_number">개인 연락처</string>
-    <string name="shop_number">개인 연락처</string>
+    <string name="shop_number">가게 연락처</string>
     <string name="enter_personal_contact">-없이 번호를 입력해주세요.</string>
     <string name="instruction_file">사업자 인증 파일</string>
     <string name="sms_code_not_validate">인증번호가 일치하지 않습니다.</string>

@@ -163,7 +163,7 @@ fun EnterBusinessNumberScreen(
                     .fillMaxWidth()
                     .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = state.companyNumber.length == 10 && state.signupContinuationState != SignupContinuationState.CompanyNumberIsDuplicated,
+                enabled = state.companyNumber.length == 10 && state.error == null,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     disabledBackgroundColor = ColorDisabledButton,
