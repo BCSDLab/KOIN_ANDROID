@@ -72,6 +72,8 @@ kotlinxCollectionsImmutableVersion = "0.3.8"
 kspVersion = "1.9.22-1.0.16"
 firebaseCommonKtxVersion = "21.0.0"
 storageVersion = "1.4.2"
+foundationLayoutVersion = "1.0.1"
+uiTextVersion = "1.0.1"
 
 
 [libraries]
@@ -198,6 +200,8 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVersion" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtxVersion" }
 androidx-storage = { group = "androidx.test.services", name = "storage", version.ref = "storageVersion" }
+androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayoutVersion" }
+androidx-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiTextVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

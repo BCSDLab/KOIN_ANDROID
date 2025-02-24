@@ -55,4 +55,7 @@ dependencies {
     implementation(project(mapOf("path" to ":data")))
     implementation(project(mapOf("path" to ":core")))
     implementation(project(":core:designsystem"))
+    implementation(libs.androidx.foundation.layout)
+    implementation(libs.androidx.foundation.layout)
+    implementation(libs.androidx.ui.text)
 }
