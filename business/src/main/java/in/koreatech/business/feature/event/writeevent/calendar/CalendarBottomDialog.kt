@@ -45,12 +45,10 @@ import java.time.YearMonth
 @Composable
 fun CalendarBottomDialog(
     viewModel: WriteEventViewModel = hiltViewModel(),
-    showDialog: Boolean,
     onDismiss: () -> Unit,
+    selectedYearMonth : YearMonth = YearMonth.now(),
     onDateSelected: (LocalDate) -> Unit,
 ) {
-    if (!showDialog) return
-
     val bottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded)
     val coroutineScope = rememberCoroutineScope()
@@ -69,16 +67,15 @@ fun CalendarBottomDialog(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    var expandedMonth by remember { mutableStateOf(false) }
                     Text(
                         text = stringResource(id = R.string.setting_event_duration),
                         fontSize = 18.sp,
                         modifier = Modifier
-                            .clickable { expandedMonth = true }
                     )
                 }
                 CalendarScreen(
                     viewModel = viewModel,
+                    selectedYearMonth = selectedYearMonth
                 )
                 Row {
                     Button(
@@ -124,7 +121,6 @@ fun CalendarBottomDialog(
 @Composable
 fun PreviewCalendarBottomDialog() {
     CalendarBottomDialog(
-        showDialog = true,
         onDismiss = {},
         onDateSelected = {},
     )

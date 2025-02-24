@@ -2,7 +2,6 @@ package `in`.koreatech.business.feature.event.writeevent.calendar
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +37,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.event.writeevent.writeevent.WriteEventViewModel
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -48,8 +46,10 @@ import java.time.YearMonth
 
 
 @Composable
-fun CalendarScreen(viewModel: WriteEventViewModel = hiltViewModel()) {
-    var selectedYearMonth by remember { mutableStateOf(YearMonth.now()) }
+fun CalendarScreen(
+    viewModel: WriteEventViewModel = hiltViewModel(),
+    selectedYearMonth : YearMonth = YearMonth.now(),
+) {
     val context = LocalContext.current
 
     Column {
@@ -59,21 +59,25 @@ fun CalendarScreen(viewModel: WriteEventViewModel = hiltViewModel()) {
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            IconButton(onClick = { selectedYearMonth = selectedYearMonth.minusMonths(1) }) {
-                Icon( painterResource( R.drawable.ic_arrow_left ) , contentDescription = "이전 달")
+            IconButton(onClick = {
+                viewModel.onSelectedYearMonthChanged(selectedYearMonth.minusMonths(1))}) {
+                Icon(painterResource(R.drawable.ic_arrow_left), contentDescription = "이전 달")
             }
 
             TextButton(onClick = {
-                showYearMonthPicker(context) { newYearMonth ->
-                    selectedYearMonth = newYearMonth
-                }
+                viewModel.onDatePickerVisibilityChanged(
+                    true
+                )
             }) {
-                Text("${selectedYearMonth.year}년 ${selectedYearMonth.monthValue}월", fontSize = 18.sp,
-                    color = ColorPrimary)
+                Text(
+                    text = "${selectedYearMonth.year}년 ${selectedYearMonth.monthValue}월",
+                    fontSize = 18.sp,
+                    color = ColorPrimary
+                )
             }
 
-            IconButton(onClick = { selectedYearMonth = selectedYearMonth.plusMonths(1) }) {
-                Icon(painterResource( R.drawable.ic_arrow_right ), contentDescription = "다음 달")
+            IconButton(onClick = {  viewModel.onSelectedYearMonthChanged(selectedYearMonth.plusMonths(1)) }) {
+                Icon(painterResource(R.drawable.ic_arrow_right), contentDescription = "다음 달")
             }
         }
 
@@ -152,7 +156,8 @@ fun CalendarGrid(
             items(daysInMonth) { day ->
                 val date = yearMonth.atDay(day + 1)
                 val dayOfWeek = date.dayOfWeek.value % 7
-                val isInRange = selectedStartDate != null && selectedEndDate != null && date in selectedStartDate!!..selectedEndDate!!
+                val isInRange =
+                    selectedStartDate != null && selectedEndDate != null && date in selectedStartDate!!..selectedEndDate!!
 
                 Box(
                     modifier = Modifier
@@ -203,7 +208,6 @@ fun CalendarGrid(
         }
     }
 }
-
 
 
 @Preview(showBackground = true)

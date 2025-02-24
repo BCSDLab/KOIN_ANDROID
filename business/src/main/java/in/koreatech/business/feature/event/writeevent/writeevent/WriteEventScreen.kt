@@ -36,8 +36,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,13 +48,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.business.feature.event.writeevent.calendar.DatePickerDialog
 import `in`.koreatech.business.ui.theme.Black1
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -68,6 +67,7 @@ import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.koin.core.R
 import org.orbitmvi.orbit.compose.collectAsState
+import java.time.YearMonth
 
 @Composable
 fun WriteEventScreen(
@@ -85,12 +85,8 @@ fun WriteEventScreen(
             onChangeContent = viewModel::onContentChanged,
             onRegisterImage = viewModel::registerEventImageUri,
             onDeleteImage = viewModel::deleteImage,
-            onStartYearChanged = viewModel::onStartYearChanged,
-            onStartMonthChanged = viewModel::onStartMonthChanged,
-            onStartDayChanged = viewModel::onStartDayChanged,
-            onEndYearChanged = viewModel::onEndYearChanged,
-            onEndMonthChanged = viewModel::onEndMonthChanged,
-            onEndDayChanged = viewModel::onEndDayChanged,
+            onSelectedYearMonthChanged = viewModel::onSelectedYearMonthChanged,
+            onDialogVisibilityChanged = viewModel::onDatePickerVisibilityChanged,
             onNextButtonClicked = {viewModel.registerEvent()
                 goToMyStoreScreen()},
         )
@@ -98,9 +94,9 @@ fun WriteEventScreen(
         if (state.showCalendarAlert) {
             CalendarBottomDialog(
                 viewModel = viewModel,
-                showDialog = state.showCalendarAlert,
                 onDismiss = { viewModel.onCalendarVisibilityChanged(false) },
                 onDateSelected = { },
+                selectedYearMonth = state.selectedYearMonth
             )
         }
     }
@@ -115,12 +111,8 @@ fun WriteEventScreenImpl(
     onChangeContent: (String) -> Unit = {},
     onRegisterImage: (Context, Uri) -> Unit = {_,_ -> },
     onDeleteImage: (Int) -> Unit = {},
-    onStartYearChanged:(String) -> Unit = {},
-    onStartMonthChanged:(String) -> Unit = {},
-    onStartDayChanged:(String) -> Unit = {},
-    onEndYearChanged:(String) -> Unit = {},
-    onEndMonthChanged:(String) -> Unit = {},
-    onEndDayChanged:(String) -> Unit = {},
+    onSelectedYearMonthChanged: (YearMonth) -> Unit = {},
+    onDialogVisibilityChanged: (Boolean) -> Unit = {},
     onNextButtonClicked: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -132,10 +124,20 @@ fun WriteEventScreenImpl(
             }
         }
     )
-
+    if (writeEventState.showDatePickerAlert)
+        DatePickerDialog(
+            currentYear = writeEventState.selectedYearMonth.year,
+            currentMonth = writeEventState.selectedYearMonth.monthValue,
+            onDismiss = { onDialogVisibilityChanged(false) },
+            onConfirm = { year, month ->
+                onSelectedYearMonthChanged(YearMonth.of(year, month))
+                onDialogVisibilityChanged(false)
+            }
+        )
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()

@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.transition.Visibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.business.feature.loading.LoadingState
 import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.TEMP_IMAGE_URI
@@ -22,6 +21,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +41,12 @@ class WriteEventViewModel @Inject constructor(
     fun onCalendarVisibilityChanged(visibility: Boolean) = intent {
         reduce {
             state.copy(showCalendarAlert = visibility)
+        }
+    }
+
+    fun onDatePickerVisibilityChanged(visibility: Boolean) = intent {
+        reduce {
+            state.copy(showDatePickerAlert = visibility)
         }
     }
 
@@ -92,53 +98,12 @@ class WriteEventViewModel @Inject constructor(
         }
     }
 
-    fun onStartDayChanged(startDay: String) = intent {
-        if(isValidNumberInput(2, startDay).not())
-            return@intent
+    fun onSelectedYearMonthChanged(yearMonth: YearMonth) = intent {
         reduce {
-            state.copy(startDay = startDay,
-                showDateInputAlert = if (state.showDateInputAlert)
-                    !isAllDateInputFilled(state.copy(startDay = startDay))
-                else false
-            )
+            state.copy(selectedYearMonth = yearMonth)
         }
     }
 
-    fun onEndYearChanged(endYear: String) = intent {
-        if(isValidNumberInput(4, endYear).not())
-            return@intent
-        reduce {
-            state.copy(endYear = endYear,
-                showDateInputAlert = if (state.showDateInputAlert)
-                    !isAllDateInputFilled(state.copy(endYear = endYear))
-                else false
-            )
-        }
-    }
-
-    fun onEndMonthChanged(endMonth: String) = intent {
-        if(isValidNumberInput(2, endMonth).not())
-            return@intent
-        reduce {
-            state.copy(endMonth = endMonth,
-                showDateInputAlert = if (state.showDateInputAlert)
-                    !isAllDateInputFilled(state.copy(endMonth = endMonth))
-                else false
-            )
-        }
-    }
-
-    fun onEndDayChanged(endDay: String) = intent {
-        if(isValidNumberInput(2, endDay).not())
-            return@intent
-        reduce {
-            state.copy(endDay = endDay,
-                showDateInputAlert = if (state.showDateInputAlert)
-                    !isAllDateInputFilled(state.copy(endDay = endDay))
-                else false
-            )
-        }
-    }
 
     fun registerEventImageUri(context: Context, imageUri: Uri) {
         intent {
