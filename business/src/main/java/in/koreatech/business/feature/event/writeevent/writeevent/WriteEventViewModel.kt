@@ -2,6 +2,7 @@ package `in`.koreatech.business.feature.event.writeevent.writeevent
 
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.transition.Visibility
@@ -25,11 +26,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WriteEventViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getPresignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
     private val registerEventUseCase: RegisterEventUseCase,
 ) : ViewModel(), ContainerHost<WriteEventState, WriteEventSideEffect> {
     override val container = container<WriteEventState, WriteEventSideEffect>(WriteEventState())
+
+    private val storeId: Int = checkNotNull(savedStateHandle["storeId"])
+    init {
+        settingId(storeId)
+    }
 
     fun onCalendarVisibilityChanged(visibility: Boolean) = intent {
         reduce {
@@ -250,10 +257,10 @@ class WriteEventViewModel @Inject constructor(
         }
     }
 
-    fun registerEvent(shopId: Int) = intent {
+    fun registerEvent() = intent {
         viewModelScope.launch {
             registerEventUseCase(
-                shopId = shopId,
+                shopId = state.storeId,
                 eventInfo = EventInfo(
                     title = state.title,
                     content = state.content,
@@ -292,6 +299,18 @@ class WriteEventViewModel @Inject constructor(
         if (input.isNotEmpty() && input.toIntOrNull() == null)
             return false
         return true
+    }
+
+    private fun settingId(menuId: Int){
+        intent{
+            if(menuId != state.storeId){
+                reduce {
+                    state.copy(
+                        storeId = menuId
+                    )
+                }
+            }
+        }
     }
 
 

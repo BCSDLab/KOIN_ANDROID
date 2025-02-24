@@ -1,9 +1,9 @@
 package `in`.koreatech.business.feature.event.writeevent.writeevent
 
-import android.net.Uri
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 
 data class WriteEventState(
+    val storeId: Int = -1,
     val title: String = "",
     val content: String = "",
     val startDate: String = "2025-01-01",

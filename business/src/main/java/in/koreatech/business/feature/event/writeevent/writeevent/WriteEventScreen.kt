@@ -70,7 +70,6 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun WriteEventScreen(
-    shopId: Int,
     goToMyStoreScreen: () -> Unit = {},
     onBackPressed: () -> Unit = {},
     viewModel: WriteEventViewModel = hiltViewModel()
@@ -79,7 +78,6 @@ fun WriteEventScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         WriteEventScreenImpl(
-            shopId=shopId,
             onBackPressed = onBackPressed,
             writeEventState = state,
             onChangeTitle = viewModel::onTitleChanged,
@@ -92,7 +90,7 @@ fun WriteEventScreen(
             onEndYearChanged = viewModel::onEndYearChanged,
             onEndMonthChanged = viewModel::onEndMonthChanged,
             onEndDayChanged = viewModel::onEndDayChanged,
-            onNextButtonClicked = {viewModel.registerEvent(shopId)
+            onNextButtonClicked = {viewModel.registerEvent()
                 goToMyStoreScreen()},
         )
 
@@ -110,7 +108,6 @@ fun WriteEventScreen(
 
 @Composable
 fun WriteEventScreenImpl(
-    shopId: Int,
     onBackPressed: () -> Unit = {},
     writeEventState: WriteEventState = WriteEventState(),
     onChangeTitle: (String) -> Unit = {},
@@ -123,7 +120,7 @@ fun WriteEventScreenImpl(
     onEndYearChanged:(String) -> Unit = {},
     onEndMonthChanged:(String) -> Unit = {},
     onEndDayChanged:(String) -> Unit = {},
-    onNextButtonClicked: (shopId: Int) -> Unit = {}
+    onNextButtonClicked: () -> Unit = {}
 ) {
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -364,7 +361,7 @@ fun WriteEventScreenImpl(
                     }
 
                     Button(
-                        onClick = {onNextButtonClicked(shopId)},
+                        onClick = {onNextButtonClicked()},
                         enabled = writeEventState.title.isNotEmpty() && writeEventState.content.isNotEmpty(),
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(ColorPrimary),
@@ -561,7 +558,7 @@ private fun DateInputRow(
 @Preview
 @Composable
 fun PreviewWriteEventScreen() {
-    WriteEventScreenImpl(0)
+    WriteEventScreenImpl()
 }
 
 @Preview

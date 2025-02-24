@@ -29,12 +29,7 @@ fun NavGraphBuilder.registerEventScreen(
                     defaultValue = -1
                 })
         ) {
-           // val storeId = it.arguments?.getInt("storeId") ?: -1
-            val myStoreInfoViewModel: MyStoreDetailViewModel = it.sharedHiltViewModel(navController = navController)
-            val myStoreInfoState = myStoreInfoViewModel.collectAsState().value
-
             WriteEventScreen(
-                shopId = myStoreInfoState.storeId,
                 onBackPressed = {
                     navController.navigateUp()
                 },

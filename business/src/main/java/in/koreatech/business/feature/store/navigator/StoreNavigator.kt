@@ -60,7 +60,7 @@ fun NavGraphBuilder.myStoreScreen(
                 viewModel = myStoreInfoViewModel,
                 modifyInfoViewModel = modifyInfoViewModel,
                 navigateToAddEventScreen = { storeId ->
-                    navController.toNavigateScreenWithStoreId(ADDEVENT, myStoreInfoState.storeId)
+                    navController.toNavigateScreenWithStoreId(ADDEVENT, storeId)
                 },
                 navigateToManageMenuScreen = { storeId ->
                     navController.toNavigateScreenWithMenuId(MANAGEMENUSCREEN, storeId)

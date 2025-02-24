@@ -102,7 +102,7 @@ fun KoinBusinessNavHost(
 
 fun NavController.toNavigateScreenWithStoreId(screenRoute: String, storeId: Int) {
     val bundle = Bundle().apply {
-        putInt("menuId", storeId)
+        putInt("storeId", storeId)
     }
 
     navigate("${screenRoute}/$storeId", bundle)
