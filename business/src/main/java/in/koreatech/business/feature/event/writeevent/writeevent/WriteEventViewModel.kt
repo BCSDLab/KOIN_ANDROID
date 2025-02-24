@@ -140,7 +140,7 @@ class WriteEventViewModel @Inject constructor(
         }
     }
 
-    fun registerEventImageUri(imageUri: Uri) {
+    fun registerEventImageUri(context: Context, imageUri: Uri) {
         intent {
             val newMenuUriList = state.images.toMutableList()
             newMenuUriList.add(imageUri.toString())
@@ -149,7 +149,7 @@ class WriteEventViewModel @Inject constructor(
                     images = newMenuUriList
                 )
             }
-          //  uploadImageList(context)
+            uploadImageList(context)
         }
     }
 

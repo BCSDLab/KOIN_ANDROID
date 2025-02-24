@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.event.writeevent.writeevent
 
 import CalendarBottomDialog
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -112,7 +113,7 @@ fun WriteEventScreenImpl(
     writeEventState: WriteEventState = WriteEventState(),
     onChangeTitle: (String) -> Unit = {},
     onChangeContent: (String) -> Unit = {},
-    onRegisterImage: (Uri) -> Unit = {},
+    onRegisterImage: (Context, Uri) -> Unit = {_,_ -> },
     onDeleteImage: (Int) -> Unit = {},
     onStartYearChanged:(String) -> Unit = {},
     onStartMonthChanged:(String) -> Unit = {},
@@ -122,11 +123,12 @@ fun WriteEventScreenImpl(
     onEndDayChanged:(String) -> Unit = {},
     onNextButtonClicked: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             if (uri != null) {
-                onRegisterImage(uri)
+                onRegisterImage(context, uri)
             }
         }
     )
