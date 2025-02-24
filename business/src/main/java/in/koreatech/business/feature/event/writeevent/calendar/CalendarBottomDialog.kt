@@ -35,6 +35,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.event.writeevent.calendar.CalendarScreen
 import `in`.koreatech.business.feature.event.writeevent.writeevent.WriteEventViewModel
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorTextFieldDescription
 import `in`.koreatech.business.ui.theme.Gray10
 import `in`.koreatech.business.ui.theme.Gray3
 import kotlinx.coroutines.launch
@@ -89,11 +90,11 @@ fun CalendarBottomDialog(
                             .width(128.dp)
                             .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            contentColor = Gray10,
                             backgroundColor = Color.White
                         )
                     ) {
-                        Text(text = stringResource(id = R.string.cancel))
+                        Text(text = stringResource(id = R.string.cancel),
+                            color = ColorTextFieldDescription)
                     }
                     Spacer(modifier = Modifier.width(32.dp))
                     Button(
