@@ -31,6 +31,7 @@ import org.hildan.krossbow.stomp.LostReceiptException
 import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -282,7 +283,7 @@ class ChatRoomViewModel @Inject constructor(
         setShouldReconnectState(false)
     }
 
-    fun onChatInputValueChange(value: String) = intent {
+    fun onChatInputValueChange(value: String) = blockingIntent {
         reduce {
             state.copy(chatInputValue = value)
         }
