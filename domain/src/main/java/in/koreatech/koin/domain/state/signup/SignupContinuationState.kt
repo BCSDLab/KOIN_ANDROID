@@ -26,6 +26,7 @@ sealed class SignupContinuationState {
     object PasswordNotMatching: SignupContinuationState()
     object NotAgreedPrivacyTerms: SignupContinuationState()
     object NotAgreedKoinTerms: SignupContinuationState()
+    object SuccessUploadFiles: SignupContinuationState()
     object CheckComplete: SignupContinuationState()
 
     data class Failed(

@@ -91,8 +91,7 @@ class BusinessAuthViewModel @Inject constructor(
                                 signupContinuationState = SignupContinuationState.CompanyNumberIsDuplicated
                             )
                         }
-                    }
-                    else{
+                    } else {
                         reduce {
                             state.copy(
                                 error = it,
@@ -188,30 +187,33 @@ class BusinessAuthViewModel @Inject constructor(
             LoadingState.show()
             getPresignedUrlUseCase(
                 fileSize, fileType, fileName
-            ).onSuccess {
-                uploadImage(
-                    preSignedUrl = it.second,
+            ).onSuccess { (resultUrl, preSignedUrl) ->
+                uploadFilesUseCase(
+                    preSignedUrl = preSignedUrl,
                     mediaType = fileType,
                     mediaSize = fileSize,
                     imageUri = imageUri,
-                )
-                intent {
-                    reduce {
-                        state.copy(
+                ).onSuccess {
+                    intent {
+                        reduce { state.copy(
                             fileInfo = state.fileInfo.toMutableList().apply {
                                 add(
                                     StoreUrl(
                                         imageUri,
-                                        it.first,
+                                        resultUrl,
                                         fileName,
                                         fileType,
-                                        it.second,
+                                        preSignedUrl,
                                         fileSize
                                     )
                                 )
                             },
-                            error = null
-                        )
+                            signupContinuationState = SignupContinuationState.SuccessUploadFiles,
+                            error = null) }
+                    }
+                }.onFailure {
+                    intent {
+                        reduce { state.copy(error = it) }
                     }
                 }
             }.onFailure {
@@ -219,31 +221,6 @@ class BusinessAuthViewModel @Inject constructor(
                     reduce { state.copy(error = it) }
                 }
             }
-        }
-    }
-
-    private fun uploadImage(
-        preSignedUrl: String,
-        mediaType: String,
-        mediaSize: Long,
-        imageUri: String
-    ) {
-        viewModelScope.launch {
-            uploadFilesUseCase(
-                preSignedUrl,
-                mediaType,
-                mediaSize,
-                imageUri
-            ).onSuccess {
-                intent {
-                    reduce { state.copy(error = null) }
-                }
-            }.onFailure {
-                intent {
-                    reduce { state.copy(error = it) }
-                }
-            }
-            LoadingState.hide()
         }
     }
 

@@ -10,13 +10,13 @@ class UploadFileUseCase @Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(
-        url: String,
+        preSignedUrl: String,
         mediaType: String,
         mediaSize: Long,
         imageUri: String
     ): Result<Unit> {
         return withContext(coroutineDispatcher){
-            preSignedUrlRepository.uploadFile(url,imageUri, mediaType, mediaSize)
+            preSignedUrlRepository.uploadFile(preSignedUrl,imageUri, mediaType, mediaSize)
         }
     }
 }
