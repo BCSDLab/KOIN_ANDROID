@@ -28,14 +28,14 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.lostandfound.DESCRIPTION_MAX_LENGTH
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.REPORT_OTHER_REASON_MAX_LENGTH
 import `in`.koreatech.koin.feature.lostandfound.enums.ReportReason
 
 @Composable
 fun LostAndFoundReportReasons(
-    selectedItem: Int,
+    itemList: List<ReportReason>,
+    selectedItem: IntArray,
     onSelectedItemChange: (Int) -> Unit = {},
     otherReason: String,
     onOtherReasonChange: (String) -> Unit = {},
@@ -44,13 +44,13 @@ fun LostAndFoundReportReasons(
     Column(
         modifier = modifier.padding(vertical = 8.dp, horizontal = 20.dp),
     ) {
-        lostAndFoundReportReasonList.forEachIndexed { index, reportReason ->
+        itemList.forEachIndexed { index, reportReason ->
             if (reportReason == ReportReason.OTHER) {
                 LostAndFoundReportReasonOtherItem(
                     onFocused = {
                         onSelectedItemChange(index)
                     },
-                    isSelected = selectedItem == index,
+                    isSelected = selectedItem.contains(index),
                     reason = otherReason,
                     onOtherReasonChange = onOtherReasonChange,
                 )
@@ -60,7 +60,7 @@ fun LostAndFoundReportReasons(
                         onSelectedItemChange(index)
                     },
                     reportReason = reportReason,
-                    isSelected = selectedItem == index
+                    isSelected = selectedItem.contains(index)
                 )
                 HorizontalDivider(
                     thickness = 1.dp,
@@ -90,12 +90,12 @@ fun LostAndFoundReportReasonItem(
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             Text(
-                text = stringResource(id = reportReason.titleRes),
+                text = reportReason.title,
                 style = KoinTheme.typography.medium16,
                 color = KoinTheme.colors.neutral800
             )
             Text(
-                text = stringResource(id = reportReason.descriptionRes),
+                text = reportReason.description,
                 style = KoinTheme.typography.regular14,
                 color = KoinTheme.colors.neutral500
             )
@@ -131,7 +131,7 @@ fun LostAndFoundReportReasonOtherItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = ReportReason.OTHER.titleRes),
+                    text = ReportReason.OTHER.title,
                     style = KoinTheme.typography.medium16,
                     color = KoinTheme.colors.neutral800
                 )
@@ -151,7 +151,11 @@ fun LostAndFoundReportReasonOtherItem(
             value = reason,
             onValueChange = onOtherReasonChange,
             placeholder = stringResource(id = R.string.report_reason_other_placeholder),
-            onFocused = onFocused
+            onFocused = {
+                if (!isSelected) {
+                    onFocused()
+                }
+            }
         )
     }
 }
@@ -212,7 +216,8 @@ fun ReportTextField(
 fun PreviewLostAndFoundReportReasons() {
     KoinSurface {
         LostAndFoundReportReasons(
-            selectedItem = 3,
+            itemList = lostAndFoundReportReasonList,
+            selectedItem = intArrayOf(1, 2, 4),
             onSelectedItemChange = {},
             otherReason = "",
             onOtherReasonChange = {}

@@ -106,17 +106,6 @@
     <string name="detail_chat_room_button">쪽지 보내기</string>
 
     <string name="report_title">게시글 신고하기</string>
-
-    <string name="report_reason_off_topic_title">주제에 맞지 않음</string>
-    <string name="report_reason_off_topic_description">분실물과 관련 없는 글입니다.</string>
-    <string name="report_reason_spam_title">스팸</string>
-    <string name="report_reason_spam_description">광고가 포함된 글입니다.</string>
-    <string name="report_reason_inappropriate_title">욕설</string>
-    <string name="report_reason_inappropriate_description">욕설, 성적인 언어, 비방하는 글이 포함된 글입니다.</string>
-    <string name="report_reason_privacy_title">개인정보</string>
-    <string name="report_reason_privacy_description">개인정보가 포함된 글입니다.</string>
-    <string name="report_reason_other_title">기타</string>
-    <string name="report_reason_other_description"></string>
     <string name="report_reason_other_placeholder">신고 사유를 입력해주세요.</string>
 
     <string name="report_header_title">신고 이유를 선택해주세요.</string>

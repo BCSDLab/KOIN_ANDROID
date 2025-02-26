@@ -22,7 +22,8 @@ import `in`.koreatech.koin.feature.lostandfound.enums.ReportReason
 
 @Composable
 fun LostAndFoundReportContent(
-    selectedItemIndex: Int,
+    itemList: List<ReportReason>,
+    selectedItemIndex: IntArray,
     onSelectedItemChange: (Int) -> Unit = {},
     otherReason: String,
     onOtherReasonChange: (String) -> Unit = {},
@@ -40,6 +41,7 @@ fun LostAndFoundReportContent(
     ) {
         LostAndFoundReportHeader()
         LostAndFoundReportReasons(
+            itemList = itemList,
             selectedItem = selectedItemIndex,
             onSelectedItemChange = onSelectedItemChange,
             otherReason = otherReason,
@@ -63,7 +65,8 @@ fun LostAndFoundReportContent(
 fun LostAndFoundReportContentPreview() {
     KoinSurface {
         LostAndFoundReportContent(
-            selectedItemIndex = 0,
+            itemList = lostAndFoundReportReasonList,
+            selectedItemIndex = intArrayOf(0),
             onSelectedItemChange = {},
             otherReason = "",
             onOtherReasonChange = {}
