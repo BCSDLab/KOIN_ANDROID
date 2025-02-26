@@ -57,9 +57,9 @@ class KoinStomp @Inject constructor(
                     connect()
                     Timber.d("Reconnected. Retrying subscription...")
                 } catch (e: CancellationException) {
-                    return@flow
+                    throw e
                 } catch (e: Exception) {
-                    return@flow
+                    throw e
                 }
             }
         }
