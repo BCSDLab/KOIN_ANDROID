@@ -95,7 +95,6 @@ fun WriteEventScreen(
             CalendarBottomDialog(
                 viewModel = viewModel,
                 onDismiss = { viewModel.onCalendarVisibilityChanged(false) },
-                onDateSelected = { },
                 selectedYearMonth = state.selectedYearMonth
             )
         }

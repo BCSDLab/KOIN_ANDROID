@@ -47,10 +47,17 @@ fun CalendarBottomDialog(
     viewModel: WriteEventViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
     selectedYearMonth : YearMonth = YearMonth.now(),
-    onDateSelected: (LocalDate) -> Unit,
 ) {
-    val bottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded)
+
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Expanded,
+        confirmValueChange = {
+            if (it == ModalBottomSheetValue.Hidden) {
+                onDismiss()
+            }
+            true
+        }
+    )
     val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
@@ -122,6 +129,5 @@ fun CalendarBottomDialog(
 fun PreviewCalendarBottomDialog() {
     CalendarBottomDialog(
         onDismiss = {},
-        onDateSelected = {},
     )
 }

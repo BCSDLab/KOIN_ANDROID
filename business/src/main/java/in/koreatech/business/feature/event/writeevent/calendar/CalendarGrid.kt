@@ -48,10 +48,8 @@ import java.time.YearMonth
 @Composable
 fun CalendarScreen(
     viewModel: WriteEventViewModel = hiltViewModel(),
-    selectedYearMonth : YearMonth = YearMonth.now(),
+    selectedYearMonth: YearMonth = YearMonth.now(),
 ) {
-    val context = LocalContext.current
-
     Column {
         Row(
             modifier = Modifier
@@ -60,7 +58,8 @@ fun CalendarScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButton(onClick = {
-                viewModel.onSelectedYearMonthChanged(selectedYearMonth.minusMonths(1))}) {
+                viewModel.onSelectedYearMonthChanged(selectedYearMonth.minusMonths(1))
+            }) {
                 Icon(painterResource(R.drawable.ic_arrow_left), contentDescription = "이전 달")
             }
 
@@ -76,7 +75,13 @@ fun CalendarScreen(
                 )
             }
 
-            IconButton(onClick = {  viewModel.onSelectedYearMonthChanged(selectedYearMonth.plusMonths(1)) }) {
+            IconButton(onClick = {
+                viewModel.onSelectedYearMonthChanged(
+                    selectedYearMonth.plusMonths(
+                        1
+                    )
+                )
+            }) {
                 Icon(painterResource(R.drawable.ic_arrow_right), contentDescription = "다음 달")
             }
         }
@@ -91,21 +96,6 @@ fun CalendarScreen(
             }
         )
     }
-}
-
-fun showYearMonthPicker(context: Context, onDateSelected: (YearMonth) -> Unit) {
-    val today = LocalDate.now()
-    val datePickerDialog = DatePickerDialog(
-        context,
-        { _, year, month, _ ->
-            onDateSelected(YearMonth.of(year, month + 1))
-        },
-        today.year,
-        today.monthValue - 1,
-        1
-    )
-    datePickerDialog.datePicker.calendarViewShown = false // 날짜 선택 비활성화 (년/월만 선택)
-    datePickerDialog.show()
 }
 
 
@@ -173,7 +163,11 @@ fun CalendarGrid(
                         )
                         .clickable {
                             when {
-                                selectedStartDate == null -> selectedStartDate = date
+                                selectedStartDate == null -> {
+                                    selectedStartDate = date
+                                    onDateSelected(selectedStartDate, selectedStartDate)
+                                }
+
                                 selectedEndDate == null -> {
                                     if (date.isBefore(selectedStartDate)) {
                                         selectedEndDate = selectedStartDate
@@ -187,6 +181,7 @@ fun CalendarGrid(
                                 else -> {
                                     selectedStartDate = date
                                     selectedEndDate = null
+                                    onDateSelected(selectedStartDate, selectedStartDate)
                                 }
                             }
                         },
