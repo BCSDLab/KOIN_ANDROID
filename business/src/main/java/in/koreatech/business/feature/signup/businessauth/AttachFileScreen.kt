@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -41,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
@@ -188,7 +190,9 @@ fun AttachFileScreen(
                   businessAuthViewModel.onShopNumberChanged(it)
                 },
                 label = stringResource(id = R.string.enter_personal_contact),
-
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                isError = businessAuthState.shopNumber.length !in 10..11 && businessAuthState.shopNumber.isNotEmpty(),
+                errorText = stringResource(id = R.string.shop_number_error),
             )
             Spacer(modifier = Modifier.height(10.dp))
 
