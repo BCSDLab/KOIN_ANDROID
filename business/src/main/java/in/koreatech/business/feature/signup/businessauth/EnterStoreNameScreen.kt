@@ -149,7 +149,7 @@ fun EnterStoreNameScreen(
                 value = state.shopName,
                 onValueChange = { viewModel.onShopNameChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
-                label = stringResource(id = R.string.enter_name),
+                label = stringResource(id = R.string.enter_shop_name),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
             )
             Spacer(modifier = Modifier.height(24.dp))

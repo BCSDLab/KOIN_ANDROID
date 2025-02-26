@@ -49,6 +49,7 @@
     <string name="close">닫기</string>
     <string name="my_shop">내 상점</string>
     <string name="image">사진</string>
+    <string name="event_title">이벤트명</string>
     <string name="title">제목</string>
     <string name="start_date">시작일</string>
     <string name="end_date">종료일</string>
@@ -241,9 +242,9 @@
     <string name="event_set_notification">알림설정</string>
     <string name="event_write">이벤트/공지 작성하기</string>
     <string name="event_upload_image_instruction">이벤트/공지와 관련된 사진을 올려보세요.</string>
-    <string name="event_input_title_instruction">이벤트/공지 제목을 입력해주세요.</string>
-    <string name="event_content">이벤트/공지 내용</string>
-    <string name="event_input_content_instruction">이벤트/공지 내용을 입력해주세요.</string>
+    <string name="event_input_title_instruction">이벤트 이름이 학생들에게 알림으로 전송 돼요.</string>
+    <string name="event_content">이벤트 내용</string>
+    <string name="event_input_content_instruction">이벤트 내용을 입력해주세요.</string>
     <string name="event_period">이벤트/공지 등록 기간</string>
 
     <!-- force update -->

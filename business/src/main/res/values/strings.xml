@@ -140,6 +140,7 @@
     <string name="private_number">개인 연락처</string>
     <string name="shop_number">가게 연락처</string>
     <string name="enter_personal_contact">-없이 번호를 입력해주세요.</string>
+    <string name="shop_number_error">가게 전화번호 형식이 올바르지 않습니다. 10~11자리 숫자로 입력해 주세요.</string>
     <string name="instruction_file">사업자 인증 파일</string>
     <string name="sms_code_not_validate">인증번호가 일치하지 않습니다.</string>
     <string name="error_phone_duplicated">중복된 휴대폰 번호입니다.</string>
