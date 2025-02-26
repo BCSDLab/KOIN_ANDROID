@@ -21,5 +21,5 @@ data class BusinessAuthState(
     val error: Throwable? = null,
 ){
     val isButtonEnabled: Boolean
-        get() = name.isNotEmpty() && shopName.isNotEmpty() && companyNumber.isNotEmpty() && selectedImages.isNotEmpty() && signupContinuationState != SignupContinuationState.companyNumberIsNotValidate
+        get() = name.isNotEmpty() && shopName.isNotEmpty() && companyNumber.isNotEmpty() && selectedImages.isNotEmpty() && signupContinuationState == SignupContinuationState.SuccessUploadFiles
 }
