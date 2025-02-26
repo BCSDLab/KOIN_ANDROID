@@ -222,7 +222,7 @@ fun WriteEventScreenImpl(
                 )
                 {
                     Text(
-                        text = stringResource(id = R.string.title),
+                        text = stringResource(id = R.string.event_title),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
