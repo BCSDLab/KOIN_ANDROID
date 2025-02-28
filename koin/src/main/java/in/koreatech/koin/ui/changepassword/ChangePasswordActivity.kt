@@ -29,7 +29,7 @@ class ChangePasswordActivity : ActivityBase() {
         ChangePasswordPageAdapter(this)
     }
 
-    val onBackPressedCallback: OnBackPressedCallback by lazy {
+    override val onBackPressedCallback: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (viewModel.currentStep.value == ChangePasswordPage.entries.first())
@@ -46,7 +46,6 @@ class ChangePasswordActivity : ActivityBase() {
         setContentView(binding.root)
 
         initView()
-        initListeners()
         initObservers()
     }
 
@@ -63,10 +62,6 @@ class ChangePasswordActivity : ActivityBase() {
             adapter = viewPager
             isUserInputEnabled = false
         }
-    }
-
-    private fun initListeners() {
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     private fun initObservers() {

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.*
+import androidx.activity.OnBackPressedCallback
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.ActivityWebviewBinding
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -15,6 +16,16 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
 
     private val binding by dataBinding<ActivityWebviewBinding>()
     override val screenTitle: String = "웹뷰"
+
+    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (binding.webView.canGoBack()) {
+                binding.webView.goBack()
+            } else {
+                finish()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,17 +40,9 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onBackPressed() {
-        if (binding.webView.canGoBack()) {
-            binding.webView.goBack()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.home -> onBackPressed()
+            R.id.home -> onBackPressedDispatcher.onBackPressed()
             R.id.menu_webview_finish -> finish()
         }
         return super.onOptionsItemSelected(item)

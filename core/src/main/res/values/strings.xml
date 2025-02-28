@@ -39,8 +39,8 @@
     <string name="day_of_week">요일</string>
     <string name="open_time">시간</string>
     <string name="day_off">휴무</string>
-    <string name="store_open_time">개점시간</string>
-    <string name="store_close_time">폐점시간</string>
+    <string name="store_open_time">개점 시간</string>
+    <string name="store_close_time">폐점 시간</string>
     <string name="go_to_main_screen">메인 화면 바로가기</string>
     <string name="add_price">가격 추가</string>
     <string name="temp_price">TempPrice</string>
@@ -85,7 +85,7 @@
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
     <string name="navigation_item_owner">코인 사장님</string>
-    <string name="navigation_item_article">공지사항</string>
+    <string name="navigation_item_article">게시판</string>
     <string name="navigation_item_ask_bcsd">문의하기</string>
     <string name="navigation_item_koreatech_operating_information">교내 시설물 정보</string>
     <!--End left drawer menu -->
@@ -195,6 +195,7 @@
     <string name="add_setting_time">설정시간 추가</string>
     <string name="add_setting_time_plus">설정시간 플러스 버튼</string>
     <string name="insert_store_operating_time_setting">운영시간 설정</string>
+    <string name="setting_time_is_null">등록한 운영시간이 없습니다.</string>
 
     <string name="insert_store_check_store_info">4. 가게 정보 확인</string>
     <string name="insert_store_check_info">입력하신 정보가 맞습니까?</string>

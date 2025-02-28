@@ -1,12 +1,15 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.net.Uri
+import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.model.ArticleHeaderState
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
+@Parcelize
 data class LostAndFoundDetailState(
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = false,
@@ -25,7 +28,7 @@ data class LostAndFoundDetailState(
     val isWriterCouncil: Boolean = false,
     val isMine: Boolean = false,
     val hotArticles: List<ArticleHeaderState> = emptyList(),
-)
+) : Parcelable
 
 fun ArticleLostAndFound.toLostAndFoundDetailState(): LostAndFoundDetailState {
     return LostAndFoundDetailState(

@@ -2,7 +2,6 @@ package `in`.koreatech.koin.core.util
 
 import android.content.Context
 import android.graphics.Typeface
-import android.os.Build
 import androidx.core.content.res.ResourcesCompat
 import `in`.koreatech.koin.core.R
 import java.util.EnumMap
@@ -29,11 +28,7 @@ object FontManager {
     @JvmStatic
     fun getTypeface(context: Context, fontType: KoinFontType): Typeface {
         return cache[fontType] ?: run {
-            val font = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                getFromResource(context, fontType)
-            } else {
-                getFromAsset(context, fontType)
-            }
+            val font = getFromResource(context, fontType)
             cache[fontType] = font
             return@run font
         }

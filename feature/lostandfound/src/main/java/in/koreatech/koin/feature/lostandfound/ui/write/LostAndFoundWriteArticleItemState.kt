@@ -25,7 +25,7 @@ fun LostAndFoundWriteArticleItemState.toArticleLostAndFoundUpload(): ArticleLost
     return ArticleLostAndFoundUpload(
         type = lostOrFoundType.name,
         category = category.getCategoryKoreanWord(),
-        foundPlace = foundPlace,
+        foundPlace = foundPlace.trim(),
         foundDate = foundDate.toString(),
         content = content,
         images = images.map { it }
