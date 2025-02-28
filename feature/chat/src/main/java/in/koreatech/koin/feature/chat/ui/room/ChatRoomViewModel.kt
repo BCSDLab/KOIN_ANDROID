@@ -4,9 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.user.User
@@ -29,20 +26,25 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.hildan.krossbow.stomp.LostReceiptException
+import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.hildan.krossbow.websocket.reconnection.WebSocketReconnectionException
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 import java.time.LocalDateTime
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = ChatRoomViewModel.Factory::class)
-class ChatRoomViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class ChatRoomViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val chatWSConnectUseCase: ChatWSConnectUseCase,
     private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
     private val getChatRoomFromArticleIdUseCase: GetChatRoomFromArticleIdUseCase,
@@ -55,28 +57,22 @@ class ChatRoomViewModel @AssistedInject constructor(
     private val uploadFilesUseCase: UploadFileUseCase,
     private val chatBlockUserUseCase: ChatBlockUserUseCase
 ) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
-    override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState())
+    override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState(), savedStateHandle) {
+        val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
+        val chatRoomId = savedStateHandle.get<Int>(CHAT_ROOM_ID)
+        checkNotNull(articleId)
+        if (chatRoomId == null) {
+            createAndGetChatRoom(articleId)
+        } else {
+            getChatRoom(articleId, chatRoomId)
+        }
+    }
 
     private val job = SupervisorJob()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
 
-    @AssistedFactory
-    interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): ChatRoomViewModel
-    }
-
     init {
         getUserInfo()
-        if (savedStateHandle.get<Int>(CHAT_ROOM_ID) == -1) {
-            savedStateHandle.get<Int>(ARTICLE_ID)?.let {
-                createAndGetChatRoom(it)
-            }
-        } else {
-            getChatRoom(
-                savedStateHandle[ARTICLE_ID] ?: -1,
-                savedStateHandle[CHAT_ROOM_ID] ?: -1
-            )
-        }
     }
 
     private fun getUserInfo() = viewModelScope.launch {
@@ -87,7 +83,6 @@ class ChatRoomViewModel @AssistedInject constructor(
                 if (it is User.Student) {
                     reduce {
                         state.copy(
-                            userId = Integer.parseInt(it.studentNumber ?: ""),
                             userNickName = it.nickname ?: it.anonymousNickname ?: ""
                         )
                     }
@@ -176,7 +171,23 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     private fun subscribeChatRoom(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
         subscribeChatRoomUseCase(articleId, chatRoomId).catch {
-            Timber.e(it)
+            if (it is UnknownHostException) {
+                // Android OS disconnect network when the device enter idle.
+                // So, we set shouldReconnect to true
+                // And reconnect websocket when activity is resumed
+                setShouldReconnectState(true)
+            } else if (it is WebSocketConnectionException) {
+                if (it.cause is UnknownHostException) {
+                    // Android OS disconnect network when the device enter idle.
+                    // So, we set shouldReconnect to true
+                    // And reconnect websocket when activity is resumed
+                    setShouldReconnectState(true)
+                } else {
+                    Timber.e(it)
+                }
+            } else {
+                Timber.e(it)
+            }
         }.collect { message ->
             intent {
                 if (state.chatMessage.isEmpty()) {
@@ -227,12 +238,26 @@ class ChatRoomViewModel @AssistedInject constructor(
 
     private fun getChatMessages(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
         getChatMessageUseCase(articleId, chatRoomId).catch {
-            Timber.e(it)
+            if (it is UnknownHostException) {
+                // Android OS disconnect network when the device enter idle.
+                // So, we set shouldReconnect to true
+                // And reconnect websocket when activity is resumed
+                setShouldReconnectState(true)
+            } else {
+                Timber.e(it)
+            }
         }.collect { messages ->
             intent {
                 reduce {
                     if (messages.isEmpty()) {
-                        state.copy(chatMessage = listOf(Pair(LocalDateTime.now().toLocalDate(), emptyList())))
+                        state.copy(
+                            chatMessage = listOf(
+                                Pair(
+                                    LocalDateTime.now().toLocalDate(),
+                                    emptyList()
+                                )
+                            )
+                        )
                     } else {
                         state.copy(chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
                             .groupBy { it.timestamp.toLocalDate() }.toList())
@@ -253,7 +278,12 @@ class ChatRoomViewModel @AssistedInject constructor(
         }
     }
 
-    fun onChatInputValueChange(value: String) = intent {
+    fun reconnect() = intent {
+        getChatRoom(state.articleId, state.chatRoomId)
+        setShouldReconnectState(false)
+    }
+
+    fun onChatInputValueChange(value: String) = blockingIntent {
         reduce {
             state.copy(chatInputValue = value)
         }
@@ -397,6 +427,14 @@ class ChatRoomViewModel @AssistedInject constructor(
     fun changeShowImageState(showImageState: Boolean, url: Uri) = intent {
         reduce {
             state.copy(showImage = Pair(showImageState, url))
+        }
+    }
+
+    fun setShouldReconnectState(shouldReconnect: Boolean) = intent {
+        withContext(Dispatchers.Main) {
+            reduce {
+                state.copy(shouldReconnect = shouldReconnect)
+            }
         }
     }
 

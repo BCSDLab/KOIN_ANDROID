@@ -18,9 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -114,9 +117,11 @@ fun ChatRoomContent(
                 onSendClick = onSendClick
             )
             if (showBlockDialog) {
-                ChatBlockDialog(
-                    onBlockUser = onBlockUser,
-                    onBlockCancel = onBlockCancel
+                ChoiceDialog(
+                    title = stringResource(id = R.string.block_dialog_title),
+                    description = stringResource(id = R.string.block_dialog_description),
+                    onPositive = onBlockUser,
+                    onNegative = onBlockCancel
                 )
             }
         }

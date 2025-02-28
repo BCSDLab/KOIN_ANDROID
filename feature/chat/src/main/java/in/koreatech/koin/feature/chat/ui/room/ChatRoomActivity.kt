@@ -9,8 +9,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
 
 @AndroidEntryPoint
 class ChatRoomActivity : ComponentActivity() {
@@ -24,8 +22,6 @@ class ChatRoomActivity : ComponentActivity() {
             }
             KoinTheme {
                 ChatRoom(
-                    articleId = intent.getIntExtra(ARTICLE_ID, -1),
-                    chatRoomId = intent.getIntExtra(CHAT_ROOM_ID, -1),
                     navigateToChatList = {
                         Intent(this, ChatListActivity::class.java).apply {
                             putExtra(IS_BLOCKED, it)

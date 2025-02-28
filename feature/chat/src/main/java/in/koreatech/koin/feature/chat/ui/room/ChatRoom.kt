@@ -24,21 +24,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.HasDefaultViewModelProviderFactory
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.lifecycle.withCreationCallback
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
 import `in`.koreatech.koin.feature.chat.ui.room.component.ChatRoomContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -46,22 +41,9 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatRoom(
-    articleId: Int,
-    chatRoomId: Int,
+    viewModel: ChatRoomViewModel = hiltViewModel(),
     navigateToChatList: (isBlocked: Boolean) -> Unit
 ) {
-    val savedStateHandle = SavedStateHandle()
-    savedStateHandle[ARTICLE_ID] = articleId
-    savedStateHandle[CHAT_ROOM_ID] = chatRoomId
-
-    val viewModelStoreOwner = requireNotNull(
-        LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
-    )
-    val viewModel: ChatRoomViewModel = viewModel(
-        extras = viewModelStoreOwner.defaultViewModelCreationExtras.withCreationCallback<ChatRoomViewModel.Factory> {
-            it.create(savedStateHandle = savedStateHandle)
-        }
-    )
     val context = LocalContext.current
 
     val pickMultipleMedia =
@@ -98,6 +80,13 @@ fun ChatRoom(
     }
 
     val uiState by viewModel.collectAsState()
+
+    LaunchedEffect(uiState.shouldReconnect) {
+        if (uiState.shouldReconnect) {
+            viewModel.reconnect()
+        }
+    }
+
     Scaffold(
         modifier = Modifier.imePadding(),
         topBar = {
