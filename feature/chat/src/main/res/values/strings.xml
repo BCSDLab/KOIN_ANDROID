@@ -1,0 +1,15 @@
+<resources>
+    <string name="chat_user_profile_image">User Profile Image</string>
+    <string name="chat_add_image">Add Image</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_loading">로딩중…</string>
+    <string name="chat_input_placeholder">메시지 보내기</string>
+    <string name="chat_block_user">차단하기</string>
+    <string name="chat_toolbar_more">더보기</string>
+    <string name="failed_to_upload_image">이미지를 업로드하지 못했습니다</string>
+    <string name="failed_to_connect_to_server">서버에 연결하지 못했습니다</string>
+    <string name="failed_to_block_user">사용자 차단에 실패했습니다</string>
+    <string name="block_dialog_title">이 사용자를 차단하시겠습니까?</string>
+    <string name="block_dialog_description">쪽지 수신 및 발신이 모두 차단됩니다.</string>
+    <string name="blocked_by_user">차단되었습니다.</string>
+</resources>

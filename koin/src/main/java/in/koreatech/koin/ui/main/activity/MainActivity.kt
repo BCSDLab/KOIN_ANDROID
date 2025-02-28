@@ -31,6 +31,8 @@ import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.onboarding.ArrowDirection
@@ -338,6 +340,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun handleIntent() {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
+        val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
+        val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
 
         when (type) {
@@ -375,6 +379,20 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     type = Pair(EXTRA_TYPE, type),
                 )
                 startActivity(intent)
+            }
+
+            SchemeType.CHAT.type -> {
+                val intent = navigator.navigateToChat(
+                    context = this,
+                    targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                    targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                    type = Pair(EXTRA_TYPE, type),
+                )
+                startActivity(intent)
+            }
+
+            else -> {
+                // Do nothing
             }
         }
     }

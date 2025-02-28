@@ -669,4 +669,7 @@
 
     <!-- etc -->
     <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>
+    <string name="notification_chat">쪽지 알림</string>
+    <string name="notification_chat_description">쪽지가 도착하면 알림을 받습니다.</string>
+    <string name="board">게시판</string>
 </resources>

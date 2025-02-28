@@ -101,6 +101,7 @@ dependencies {
     implementation(project(":feature:timetable"))
     implementation(project(":feature:bus"))
     implementation(project(":feature:lostandfound"))
+    implementation(project(":feature:chat"))
 
     implementation(libs.guava)
 

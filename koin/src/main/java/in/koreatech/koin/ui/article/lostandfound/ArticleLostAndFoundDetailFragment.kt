@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +14,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 
@@ -47,6 +47,13 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                                 putInt(NAVIGATED_BOARD_ID, hotArticleData.board.id)
                             }
                         )
+                    },
+                    navigateToChatRoom = { articleId ->
+                        Intent(requireContext(), ChatRoomActivity::class.java).apply {
+                            putExtra(ARTICLE_ID, articleId)
+                        }.also {
+                            startActivity(it)
+                        }
                     },
                     navigateToReport = { articleId ->
                         Intent(requireContext(), LostAndFoundReportActivity::class.java).apply {
