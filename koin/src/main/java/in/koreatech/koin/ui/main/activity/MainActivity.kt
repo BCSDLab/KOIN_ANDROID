@@ -31,6 +31,7 @@ import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
@@ -340,6 +341,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun handleIntent() {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
+        val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
         val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
@@ -367,15 +369,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 val intent = navigator.navigateToArticle(
                     context = this,
                     targetId = Pair(EXTRA_ID, targetId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
-                startActivity(intent)
-            }
-
-            SchemeType.LOST_AND_FOUND.type -> {
-                val intent = navigator.navigateToArticleLostAndFound(
-                    context = this,
-                    targetId = Pair(EXTRA_ID, targetId),
+                    targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
                     type = Pair(EXTRA_TYPE, type),
                 )
                 startActivity(intent)
