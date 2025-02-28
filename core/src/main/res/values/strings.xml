@@ -193,6 +193,7 @@
     <string name="insert_store_null_store_phone_number">가게 전화번호를 입력해 주세요.</string>
     <string name="insert_store_null_store_delivery_fee">가게 배달비를 입력해 주세요.</string>
     <string name="insert_store_null_store_other_info">가게 기타 정보를 입력해 주세요.</string>
+    <string name="insert_store_null_day_of_week">모든 요일의 운영 시간을 설정해 주세요.</string>
 
     <string name="add_setting_time">설정시간 추가</string>
     <string name="add_setting_time_plus">설정시간 플러스 버튼</string>
