@@ -121,6 +121,11 @@ object AnalyticsConstant {
             const val ITEM_POST_REPORT = "item_post_report"
             const val ITEM_POST_TYPE = "item_post_type"
         }
+
+        object CHAT {
+            const val HAMBURGER = "hamburger"
+            const val MESSAGE_LIST_SELECT = "message_list_select"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"

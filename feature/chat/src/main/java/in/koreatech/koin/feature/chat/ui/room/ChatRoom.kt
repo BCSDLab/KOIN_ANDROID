@@ -41,7 +41,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatRoom(
-    viewModel: ChatRoomViewModel = hiltViewModel()
+    viewModel: ChatRoomViewModel = hiltViewModel(),
+    navigateToChatList: (isBlocked: Boolean) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -75,7 +76,7 @@ fun ChatRoom(
         }
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, context)
+        handleSideEffect(it, context, navigateToChatList)
     }
 
     val uiState by viewModel.collectAsState()
@@ -166,7 +167,8 @@ fun ChatRoom(
 
 fun handleSideEffect(
     sideEffect: ChatRoomSideEffect,
-    context: Context
+    context: Context,
+    navigateToChatList: (isBlocked: Boolean) -> Unit
 ) {
     when (sideEffect) {
         ChatRoomSideEffect.FailedToConnectWS -> {
@@ -194,7 +196,7 @@ fun handleSideEffect(
         }
 
         ChatRoomSideEffect.BlockUserSuccess -> {
-            (context as Activity).finish()
+            navigateToChatList(true)
         }
 
         ChatRoomSideEffect.BlockedByUser -> {

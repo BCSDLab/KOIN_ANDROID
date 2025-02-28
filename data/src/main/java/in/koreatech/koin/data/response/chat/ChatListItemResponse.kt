@@ -14,7 +14,7 @@ data class ChatListItemResponse(
 )
 
 fun ChatListItemResponse.toChatListItem() = ChatListItem(
-    title = title,
+    title = title.replace("\n", " "),
     recentMessage = recentMessage,
     imageUrl = imageUrl,
     unReadMessageCount = unReadMessageCount,
