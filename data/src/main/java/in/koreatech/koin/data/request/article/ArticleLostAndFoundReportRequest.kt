@@ -15,7 +15,7 @@ data class ArticleLostAndFoundReportRequestItem(
     val content: String,
 )
 
-fun List<ArticleLostAndFoundReportItem>.toRequest(): ArticleLostAndFoundReportRequest {
+internal fun List<ArticleLostAndFoundReportItem>.toRequest(): ArticleLostAndFoundReportRequest {
     return ArticleLostAndFoundReportRequest(
         reports = map {
             ArticleLostAndFoundReportRequestItem(
