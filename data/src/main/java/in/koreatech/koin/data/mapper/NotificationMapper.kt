@@ -31,6 +31,7 @@ fun String.toSubscribesType(): SubscribesType = when (this) {
     Subscribes.DINING_IMAGE_UPLOAD -> SubscribesType.DINING_IMAGE_UPLOAD
     Subscribes.ARTICLE_KEYWORD -> SubscribesType.ARTICLE_KEYWORD
     Subscribes.REVIEW_PROMPT -> SubscribesType.REVIEW_PROMPT
+    Subscribes.LOST_ITEM_CHAT -> SubscribesType.LOST_ITEM_CHAT
     else -> SubscribesType.NOTHING
 }
 

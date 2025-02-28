@@ -2,11 +2,12 @@ package `in`.koreatech.koin.ui.article
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,8 +34,6 @@ class ArticleActivity : ActivityBase() {
     private lateinit var navController: NavController
     override val screenTitle: String = "공지사항"
 
-    private val viewModel by viewModels<ArticleListViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -59,7 +58,8 @@ class ArticleActivity : ActivityBase() {
                 R.id.articleDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
                 R.id.articleSearchFragment -> setToolbar(ArticleToolbarState.ARTICLE_SEARCH)
                 R.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD)
-                R.id.articleLostAndFoundWriteFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM)
+                R.id.articleLostAndFoundWriteLostFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_LOST_ITEM)
+                R.id.articleLostAndFoundWriteFoundFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM)
                 R.id.articleLostAndFoundDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
             }
         }

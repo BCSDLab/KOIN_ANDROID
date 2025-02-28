@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.repository.ArticleRepositoryImpl
+import `in`.koreatech.koin.data.repository.ChatRepositoryImpl
 import `in`.koreatech.koin.data.repository.CoopShopRepositoryImpl
 import `in`.koreatech.koin.data.repository.DeptRepositoryImpl
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
@@ -31,6 +32,7 @@ import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
@@ -43,6 +45,7 @@ import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.repository.ChatRepository
 import `in`.koreatech.koin.domain.repository.CoopShopRepository
 import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.DiningRepository
@@ -232,5 +235,13 @@ object RepositoryModule {
         coopShopRemoteDataSource: CoopShopRemoteDataSource
     ): CoopShopRepository {
         return CoopShopRepositoryImpl(coopShopRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatRepository(
+        chatRemoteDataSource: ChatRemoteDataSource
+    ): ChatRepository {
+        return ChatRepositoryImpl(chatRemoteDataSource)
     }
 }

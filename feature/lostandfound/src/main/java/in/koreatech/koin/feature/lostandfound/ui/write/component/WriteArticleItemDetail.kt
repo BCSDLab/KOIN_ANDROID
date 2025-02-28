@@ -323,6 +323,7 @@ fun WriteArticleItemDetail(
     WriteArticleTextField(
         value = location,
         onValueChange = onLocationChange,
+        singleLine = true,
         hint = when (type) {
             LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_hint)
             LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_hint)

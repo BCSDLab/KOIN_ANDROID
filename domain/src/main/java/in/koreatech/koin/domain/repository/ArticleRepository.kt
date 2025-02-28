@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import kotlinx.coroutines.flow.Flow
@@ -20,14 +21,15 @@ interface ArticleRepository {
     fun deleteKeyword(keyword: String): Flow<Unit>
     fun fetchKeywordNotiIndex(): Flow<Int>
     fun saveKeywordNotiIndex(): Flow<Unit>
-    fun fetchSearchedArticles(query: String, boardId: Int, page: Int, limit: Int): Flow<ArticlePagination>
+    fun fetchSearchedArticles(query: String, boardId: Int?, page: Int, limit: Int): Flow<ArticlePagination>
     fun fetchMostSearchedKeywords(count: Int): Flow<List<String>>
     fun fetchSearchHistory(): Flow<List<String>>
     fun saveSearchHistory(query: String): Flow<Unit>
     fun deleteSearchHistory(query: String): Flow<Unit>
     fun clearSearchHistory(): Flow<Unit>
-    fun fetchArticleLostAndFoundPagination(page: Int, limit: Int): Flow<ArticleLostAndFoundPagination>
+    fun fetchArticleLostAndFoundPagination(page: Int, limit: Int, type: String?): Flow<ArticleLostAndFoundPagination>
     fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
     suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound>
     suspend fun deleteArticleLostAndFound(articleId: Int): Result<Unit>
+    suspend fun reportLostAndFoundArticle(articleId: Int, articleLostAndFoundList: List<ArticleLostAndFoundReportItem>): Result<Unit>
 }

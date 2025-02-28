@@ -15,6 +15,8 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
@@ -134,6 +136,8 @@ class SplashActivity : ActivityBase() {
     private fun gotoMainActivityOrDelay() {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
+        val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
+        val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
         val navType = intent.getStringExtra(EXTRA_NAV_TYPE) ?: ""
 
@@ -144,6 +148,8 @@ class SplashActivity : ActivityBase() {
                     context = this@SplashActivity,
                     targetId = Pair(EXTRA_ID, targetId),
                     targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
+                    targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                    targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
                     type = Pair(EXTRA_TYPE, type)
                 )
             } else {
