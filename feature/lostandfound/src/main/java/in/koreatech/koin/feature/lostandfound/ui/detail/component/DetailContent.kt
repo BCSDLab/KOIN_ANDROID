@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail.component
 
 import android.net.Uri
-import android.webkit.URLUtil
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.SubcomposeAsyncImage
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
@@ -43,6 +46,16 @@ fun DetailContent(
     isWriterAdmin: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val imageLoader = ImageLoader.Builder(LocalContext.current)
+        .components {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                add(ImageDecoderDecoder.Factory())
+            } else {
+                add(GifDecoder.Factory())
+            }
+        }
+        .build()
+
     Column(
         modifier = modifier
             .padding(vertical = 24.dp, horizontal = 24.dp)
@@ -62,6 +75,7 @@ fun DetailContent(
                         .data(imageUris[page])
                         .crossfade(true)
                         .build(),
+                    imageLoader = imageLoader,
                     loading = {
                         Box(
                             modifier = Modifier.fillMaxSize(),
