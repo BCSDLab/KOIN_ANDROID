@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import kotlinx.coroutines.flow.Flow
@@ -30,4 +31,5 @@ interface ArticleRepository {
     fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
     suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound>
     suspend fun deleteArticleLostAndFound(articleId: Int): Result<Unit>
+    suspend fun reportLostAndFoundArticle(articleId: Int, articleLostAndFoundList: List<ArticleLostAndFoundReportItem>): Result<Unit>
 }

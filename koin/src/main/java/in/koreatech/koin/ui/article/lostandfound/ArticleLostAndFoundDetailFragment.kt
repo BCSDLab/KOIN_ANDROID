@@ -1,11 +1,13 @@
 package `in`.koreatech.koin.ui.article.lostandfound
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +47,14 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                                 putInt(NAVIGATED_BOARD_ID, hotArticleData.board.id)
                             }
                         )
+                    },
+                    navigateToReport = { articleId ->
+                        Intent(requireContext(), LostAndFoundReportActivity::class.java).apply {
+                            putExtra(
+                                ARTICLE_ID,
+                                articleId
+                            )
+                        }.let(::startActivity)
                     }
                 )
             }
