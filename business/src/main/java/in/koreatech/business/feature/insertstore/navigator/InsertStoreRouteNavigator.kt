@@ -2,10 +2,6 @@ package `in`.koreatech.business.feature.insertstore.navigator
 
 import android.os.Build
 import android.os.Bundle
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
@@ -23,19 +19,15 @@ import `in`.koreatech.business.feature.insertstore.finishregisterstore.FinishReg
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreen
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenState
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeSettingScreen
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreen
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.business.feature.insertstore.selectcategory.SelectCategoryScreen
 import `in`.koreatech.business.feature.insertstore.startinsetstore.StartInsertScreen
 import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
-import `in`.koreatech.business.navigation.SIGNUPSCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
-import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.registerStoreScreen(
     navController: NavHostController
 ){
@@ -107,9 +99,6 @@ fun NavGraphBuilder.registerStoreScreen(
             if (basicInfo != null) {
                 InsertDetailInfoScreen(
                     basicInfo = basicInfo,
-                    reviseButtonClicked = {
-                        navController.navigate(InsertStoreRoute.OPERATING_TIME.name)
-                    },
                     onBackPressed = {
                         navController.navigateUp()
                     },
@@ -122,22 +111,6 @@ fun NavGraphBuilder.registerStoreScreen(
                 )
             }
         }
-        composable(
-            route = InsertStoreRoute.OPERATING_TIME.name
-
-        ){
-            val insertDetailInfoScreenViewModel: InsertDetailInfoScreenViewModel = it.sharedHiltViewModel(
-                navController = navController
-            )
-
-            OperatingTimeSettingScreen(
-                onBackPressed = {
-                    navController.navigateUp()
-                },
-                viewModel = insertDetailInfoScreenViewModel
-            )
-        }
-
         composable(
             route = InsertStoreRoute.CHECK_SCREEN.name
         ){

@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.model.store.StoreUrl
 data class ModifyInfoState(
     val storeInfo: StoreDetailInfo = StoreDetailInfo(
         address = "",
+        mainCategoryId = 0,
         categoryIds = listOf(),
         isDeliveryOk = false,
         deliveryPrice = 0,

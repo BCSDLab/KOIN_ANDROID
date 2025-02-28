@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.feature.timetable.view.dialog
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -248,7 +246,6 @@ private fun SelectYearDialog(
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun EditSemesterDialogPreview() {
@@ -276,7 +273,6 @@ private fun SelectYearDialogContentPreview() {
 
 @Preview
 @Composable
-@RequiresApi(Build.VERSION_CODES.O)
 private fun EditSemesterDialogImplPreview() {
     var userSemesters by remember { mutableStateOf(listOf<SemesterModel>()) }
     EditSemesterDialogImpl(

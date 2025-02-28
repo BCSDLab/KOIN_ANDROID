@@ -18,7 +18,7 @@ enum class LostItemCategory(val id: Int, @StringRes val stringRes: Int) {
                 "신분증" -> ID
                 "지갑" -> WALLET
                 "전자제품" -> ELECTRONIC_DEVICE
-                "그 외" -> OTHER
+                "기타" -> OTHER
                 else -> NONE
             }
         }
@@ -29,7 +29,7 @@ enum class LostItemCategory(val id: Int, @StringRes val stringRes: Int) {
                 ID -> "신분증"
                 WALLET -> "지갑"
                 ELECTRONIC_DEVICE -> "전자제품"
-                OTHER -> "그 외"
+                OTHER -> "기타"
                 NONE -> ""
             }
         }

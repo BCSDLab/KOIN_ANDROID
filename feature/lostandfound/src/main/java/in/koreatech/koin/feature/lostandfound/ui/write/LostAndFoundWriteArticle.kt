@@ -30,11 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.HasDefaultViewModelProviderFactory
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.lifecycle.withCreationCallback
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -43,7 +39,6 @@ import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
-import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleAddItemButton
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleDoneButton
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleHeader
@@ -57,23 +52,9 @@ import java.time.LocalDate
 
 @Composable
 fun LostAndFoundWriteArticle(
-    rawLostOrFoundType: String?,
+    viewModel: LostAndFoundWriteArticleViewModel = hiltViewModel(),
     onWriteComplete: (articleId: Int) -> Unit = {}
 ) {
-    val savedStateHandle = SavedStateHandle()
-    savedStateHandle[LOST_OR_FOUND_TYPE] = LostOrFoundType.entries.find {
-        it.name == (rawLostOrFoundType ?: LostOrFoundType.FOUND.name)
-    }
-    val lostOrFoundType = requireNotNull(savedStateHandle.get<LostOrFoundType>(LOST_OR_FOUND_TYPE))
-
-    val viewModelStoreOwner = requireNotNull(
-        LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
-    )
-    val viewModel: LostAndFoundWriteArticleViewModel = viewModel(
-        extras = viewModelStoreOwner.defaultViewModelCreationExtras.withCreationCallback<LostAndFoundWriteArticleViewModel.Factory> {
-            it.create(savedStateHandle = savedStateHandle)
-        }
-    )
     val context = LocalContext.current
     viewModel.collectSideEffect {
         handleSideEffect(it, viewModel, context, onWriteComplete)
@@ -86,7 +67,7 @@ fun LostAndFoundWriteArticle(
             containerColor = KoinTheme.colors.neutral0,
             bottomBar = {
                 WriteArticleDoneButton {
-                    when (lostOrFoundType) {
+                    when (uiState.lostOrFoundType) {
                         LostOrFoundType.FOUND -> EventLogger.logCampusClickEvent(
                             AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_WRITE_CONFIRM,
                             "작성 완료"
@@ -129,7 +110,7 @@ fun LostAndFoundWriteArticle(
                     .consumeWindowInsets(contentPadding)
             ) {
                 item {
-                    WriteArticleHeader(type = lostOrFoundType)
+                    WriteArticleHeader(type = uiState.lostOrFoundType)
                 }
 
                 itemsIndexed(itemList) { itemIndex, item ->
@@ -137,7 +118,7 @@ fun LostAndFoundWriteArticle(
                         index = itemIndex,
                         shouldShowDelete = shouldShowItemRemoveButton,
                         articleData = item,
-                        lostOrFoundType = lostOrFoundType,
+                        lostOrFoundType = item.lostOrFoundType,
                         showDatePicker = shouldShowDatePicker,
                         onAddImageClick = { uri ->
                             viewModel.addImage(itemIndex, uri)
@@ -150,7 +131,7 @@ fun LostAndFoundWriteArticle(
                         },
                         onChangeItemType = { itemType ->
                             EventLogger.logCampusClickEvent(
-                                when (lostOrFoundType) {
+                                when (uiState.lostOrFoundType) {
                                     LostOrFoundType.FOUND -> AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_CATEGORY
                                     LostOrFoundType.LOST -> AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_CATEGORY
                                 },
@@ -179,7 +160,7 @@ fun LostAndFoundWriteArticle(
                             modifier = Modifier.padding(end = 24.dp, bottom = 16.dp)
                         ) {
                             EventLogger.logCampusClickEvent(
-                                when (lostOrFoundType) {
+                                when (uiState.lostOrFoundType) {
                                     LostOrFoundType.FOUND -> AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_ADD_ITEM
                                     LostOrFoundType.LOST -> AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_ADD_ITEM
                                 },
@@ -187,7 +168,7 @@ fun LostAndFoundWriteArticle(
                             )
                             viewModel.addItem(
                                 LostAndFoundWriteArticleItemState(
-                                    lostOrFoundType = lostOrFoundType
+                                    lostOrFoundType = uiState.lostOrFoundType
                                 )
                             )
                         }
@@ -338,7 +319,7 @@ fun handleSideEffect(
                     viewModel.updateItemType(index, LostItemCategory.NONE)
                     isAllFieldValid = false
                 }
-                if (it.foundPlace.isEmpty()) {
+                if (it.lostOrFoundType == LostOrFoundType.FOUND && it.foundPlace.isEmpty()) {
                     viewModel.updateLocation(index, "")
                     isAllFieldValid = false
                 }

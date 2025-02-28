@@ -10,14 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticle
-import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
-import `in`.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundDetailFragment.Companion
-import `in`.koreatech.koin.ui.article.lostandfound.ArticleLostAndFoundDetailFragment.Companion.ARTICLE_ID
 
 @AndroidEntryPoint
-class ArticleLostAndFoundWriteFragment : Fragment() {
+class ArticleLostAndFoundWriteLostFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,9 +24,7 @@ class ArticleLostAndFoundWriteFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                LostAndFoundWriteArticle(
-                    rawLostOrFoundType = requireArguments().getString(LOST_OR_FOUND_TYPE)
-                ) { articleId ->
+                LostAndFoundWriteArticle { articleId ->
                     navController.popBackStack()
                     navController.navigate(
                         R.id.articleLostAndFoundDetailFragment,
@@ -44,6 +38,5 @@ class ArticleLostAndFoundWriteFragment : Fragment() {
     }
     companion object {
         const val ARTICLE_ID = "article_id"
-        const val LOST_OR_FOUND_TYPE = "lost_or_found_type"
     }
 }

@@ -15,6 +15,7 @@ data class ArticleLostAndFoundResponse(
     @SerializedName("author") val author: String,
     @SerializedName("is_council") val isCouncil: Boolean?, // Set nullable because /articles/lost-item API doesn't have this field
     @SerializedName("is_mine") val isMine: Boolean?, // Set nullable because /articles/lost-item API doesn't have this field
+    @SerializedName("is_reported") val isReported: Boolean,
     @SerializedName("images") val images: List<ArticleLostAndFoundImageResponse>?,
     @SerializedName("prev_id") val prevArticleId: Int?,
     @SerializedName("next_id") val nextArticleId: Int?,
@@ -40,6 +41,7 @@ data class ArticleLostAndFoundResponse(
         foundDate = foundDate,
         content = content,
         author = author,
+        isReported = isReported,
         registeredAt = registeredAt,
         updatedAt = updatedAt ?: "", // updatedAt is not available on /articles/lost-item API
     )

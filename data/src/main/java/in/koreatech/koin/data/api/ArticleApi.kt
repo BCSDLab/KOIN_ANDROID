@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
@@ -47,7 +46,7 @@ interface ArticleApi {
     @GET("articles/search")
     suspend fun fetchSearchedArticles(
         @Query("query") query: String,
-        @Query("boardId") boardId: Int,
+        @Query("boardId") boardId: Int?,
         @Query("page") page: Int,
         @Query("limit") limit: Int
     ): ArticlePaginationResponse
@@ -58,18 +57,6 @@ interface ArticleApi {
      */
     @GET("articles/hot/keyword")
     suspend fun fetchMostSearchedKeywords(@Query("count") count: Int): KeywordsResponse
-
-    /**
-     * 분실물 게시글 목록과 페이지 정보를 가져옴
-     * @param page 페이지 번호
-     * @param limit 페이지 당 게시글 수
-     */
-    @GET("articles/lost-item")
-    suspend fun fetchArticleLostAndFoundPagination(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-        @Query("type") type: String?
-    ): ArticleLostAndFoundPaginationResponse
 
     /**
      * 분실물 게시글 조회
