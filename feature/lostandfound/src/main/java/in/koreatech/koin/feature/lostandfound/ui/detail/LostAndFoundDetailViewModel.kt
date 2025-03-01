@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchHotArticlesU
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.lostandfound.model.toArticleHeaderState
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -69,8 +71,11 @@ class LostAndFoundDetailViewModel @Inject constructor(
                     isLoading = true
                 )
             }
-
-            fetchLostAndFoundArticleUseCase(articleId).map {
+            fetchLostAndFoundArticleUseCase(articleId).catch {
+                if (it is HttpException && it.code() == 404) {
+                    postSideEffect(LostAndFoundDetailSideEffect.DeletedArticle)
+                }
+            }.map {
                 it.toLostAndFoundDetailState()
             }.collectLatest { article ->
                 reduce {
