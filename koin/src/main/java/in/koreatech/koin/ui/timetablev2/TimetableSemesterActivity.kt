@@ -42,7 +42,7 @@ class TimetableSemesterActivity : ActivityBase() {
     private val binding by dataBinding<ActivityTimetableSemesterBinding>()
     private val viewModel by viewModels<SemesterViewModel>()
 
-    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+    override val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             if (viewModel.screenState.value.userTimetableFrames.isEmpty()) {
                 finishActivityWithResult(
@@ -70,7 +70,6 @@ class TimetableSemesterActivity : ActivityBase() {
             val frameName = bundle.getString(TimetableActivity.FRAME_NAME).orEmpty()
             viewModel.updateIntentData(isAnonymous, frameId, semester, frameName)
         }
-        onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
         binding.timetableListComposeView.setContent {
             KoinTheme {

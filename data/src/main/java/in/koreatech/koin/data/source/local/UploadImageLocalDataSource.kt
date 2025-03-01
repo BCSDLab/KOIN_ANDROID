@@ -4,10 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.media.ExifInterface
 import android.net.Uri
-import android.os.Build
-import android.provider.OpenableColumns
-import android.util.Log
-import androidx.annotation.RequiresApi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.core.upload.rotateBitmap
 import `in`.koreatech.koin.core.upload.toCompressJPEG
@@ -30,7 +26,6 @@ class UploadImageLocalDataSource @Inject constructor(
 
                     if (bitmapInputStream != null && exifInterfaceInputStream != null) {
                         val bitmap = bitmapInputStream.toResizeBitmap(fileSize)
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
                             val exif = ExifInterface(exifInterfaceInputStream)
                             val rotatedBitmap = when (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)) {
                                 ExifInterface.ORIENTATION_ROTATE_90 -> bitmap?.rotateBitmap(90f)
@@ -41,10 +36,6 @@ class UploadImageLocalDataSource @Inject constructor(
                             if(rotatedBitmap != null){
                                 imageBitmap = rotatedBitmap
                             }
-                        }
-                        else{
-                            if(bitmap != null) imageBitmap = bitmap
-                        }
                     }
 
                     bitmapInputStream?.close()

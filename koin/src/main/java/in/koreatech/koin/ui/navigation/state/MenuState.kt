@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.navigation.state
 
 sealed class MenuState {
     data object Main: MenuState()
+    data object Chat: MenuState()
     data object Setting: MenuState()
     data object LoginOrLogout: MenuState()
     data object Store: MenuState()

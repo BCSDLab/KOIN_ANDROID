@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy.Flow
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipColors
@@ -162,7 +164,7 @@ fun LostAndFoundTextChip(
     isSelected: Boolean = false,
     shape: Shape = RoundedCornerShape(50),
     showClickRipple: Boolean = true,
-    contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp),
     chipColors: TextChipColors = TextChipDefaults.chipColors(),
     onSelect: () -> Unit = {}
 ) {

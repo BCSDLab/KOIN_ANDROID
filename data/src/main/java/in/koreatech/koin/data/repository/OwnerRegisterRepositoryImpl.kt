@@ -98,16 +98,17 @@ class OwnerRegisterRepositoryImpl(
             ownerRemoteDataSource.postStoreRegister(
                 StoreRegisterResponse(
                     address = address,
+                    mainCategoryId = category,
                     categoryIds = category.toCategory(),
                     delivery = isDeliveryOk,
-                    delivery_price = deliveryPrice.toInt(),
+                    deliveryPrice = deliveryPrice.toInt(),
                     description = description,
                     imageUrls = imageUri.toStringArray(),
                     name = name,
                     open = operatingTime.toMyStoreDayOffResponse(),
                     payBank = isBankOk,
                     payCard = isCardOk,
-                    phone = phoneNumber?.toPhoneNumber() ?: ""
+                    phone = phoneNumber.toPhoneNumber() ?: ""
                 )
             )
         }.onFailure {exception ->

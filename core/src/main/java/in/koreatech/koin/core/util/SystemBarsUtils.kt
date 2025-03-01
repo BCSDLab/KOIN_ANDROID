@@ -48,11 +48,7 @@ class SystemBarsUtils(
     ) {
         WindowInsetsControllerCompat(window, window.decorView).let { controller ->
             controller.isAppearanceLightStatusBars = isLightStatusBar
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                controller.isAppearanceLightNavigationBars = isLightNavigationBar
-            } else {
-                setAppearanceNavigationBarSdk26(window, isLightNavigationBar)
-            }
+            controller.isAppearanceLightNavigationBars = isLightNavigationBar
         }
     }
 

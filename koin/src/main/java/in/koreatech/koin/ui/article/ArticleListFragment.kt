@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +20,6 @@ import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
 import `in`.koreatech.koin.ui.article.lostandfound.ArticleListLostAndFoundFragment
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
-import `in`.koreatech.koin.ui.article.viewmodel.ArticleViewModel
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -51,7 +49,6 @@ class ArticleListFragment : Fragment() {
         }
 
     private val viewModel by viewModels<ArticleListViewModel>()
-    private val activityViewModel by activityViewModels<ArticleViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +91,6 @@ class ArticleListFragment : Fragment() {
                     ArticleBoardType.IPP,
                     ArticleBoardType.STUDENT,
                     ArticleBoardType.KOIN -> {
-                        activityViewModel.setSearchBoard(ArticleBoardType.ALL)
                         val articleListNoticeFragment = ArticleListNoticeFragment()
                         val bundle = Bundle()
                         bundle.putInt("boardId", board.id)
@@ -104,7 +100,6 @@ class ArticleListFragment : Fragment() {
                             .commit()
                     }
                     ArticleBoardType.LOSTANDFOUND -> {
-                        activityViewModel.setSearchBoard(ArticleBoardType.LOSTANDFOUND)
                         childFragmentManager.beginTransaction()
                             .replace(
                                 R.id.frame_layout_article_list,

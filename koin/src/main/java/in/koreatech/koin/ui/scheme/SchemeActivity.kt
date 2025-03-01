@@ -13,6 +13,9 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
 import `in`.koreatech.koin.core.navigation.SchemeType
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
@@ -67,7 +70,7 @@ class SchemeActivity : ActivityBase() {
             }
             Timber.e("navigatorType : $navigatorType")
             Timber.e("url : ${url}")
-            Timber.e("url to host : ${url?.toHost(getBoardIdFromUrl(url))}")
+            Timber.e("url to host : ${url?.toHost()}")
 
             /**
              * koin://shop
@@ -78,14 +81,17 @@ class SchemeActivity : ActivityBase() {
                     val intent = navigator.navigateToSplash(
                         context = this,
                         targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
-                        type = Pair(EXTRA_TYPE, url?.toHost(getBoardIdFromUrl(url))),
+                        targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url ?: "")),
+                        targetArticleId = Pair(EXTRA_ARTICLE_ID, getArticleIdFromUrl(url ?: "")),
+                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url ?: "")),
+                        type = Pair(EXTRA_TYPE, url?.toHost()),
                         navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
                     )
                     navigateToActivity(intent)
                 }
 
                 NavigatorType.DETAIL -> {
-                    when (val host = url?.toHost(getBoardIdFromUrl(url))) {
+                    when (val host = url?.toHost()) {
                         SchemeType.SHOP.type -> {
                             val intent = navigator.navigateToShop(
                                 context = this,
@@ -113,15 +119,17 @@ class SchemeActivity : ActivityBase() {
                             val intent = navigator.navigateToArticle(
                                 context = this,
                                 targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
+                                targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url)),
                                 type = Pair(EXTRA_TYPE, host)
                             )
                             navigateToActivity(intent)
                         }
 
-                        SchemeType.LOST_AND_FOUND.type -> { // TODO: Find a better way to handle lost and found board
-                            val intent = navigator.navigateToArticleLostAndFound(
+                        SchemeType.CHAT.type -> {
+                            val intent = navigator.navigateToChat(
                                 context = this,
-                                targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
+                                targetArticleId = Pair(EXTRA_ARTICLE_ID, getArticleIdFromUrl(url)),
+                                targetChatId = Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url)),
                                 type = Pair(EXTRA_TYPE, host)
                             )
                             navigateToActivity(intent)
@@ -144,6 +152,14 @@ class SchemeActivity : ActivityBase() {
 
     private fun getIdFromUrl(url: String): Int {
         return Uri.parse(url).getQueryParameter("id")?.toIntOrNull() ?: -1
+    }
+
+    private fun getArticleIdFromUrl(url: String): Int {
+        return Uri.parse(url).getQueryParameter("articleId")?.toIntOrNull() ?: -1
+    }
+
+    private fun getChatRoomIdFromUrl(url: String): Int {
+        return Uri.parse(url).getQueryParameter("chatRoomId")?.toIntOrNull() ?: -1
     }
 
     private fun getBoardIdFromUrl(url: String): Int {

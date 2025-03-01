@@ -59,6 +59,18 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         }
     }
 
+    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (isTaskRoot) {
+                val intent = Intent(this@DiningActivity, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
+    }
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
@@ -93,7 +105,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
 
         binding.koinBaseAppBarDark.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
                 AppBarBase.getRightButtonId() -> {
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
@@ -104,19 +116,6 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 }
             }
         }
-
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (isTaskRoot) {
-                    val intent = Intent(this@DiningActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        })
     }
 
     private fun selectInitialPositions() {

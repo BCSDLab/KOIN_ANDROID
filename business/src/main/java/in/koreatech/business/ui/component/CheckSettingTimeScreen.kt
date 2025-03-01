@@ -1,6 +1,7 @@
 package `in`.koreatech.business.ui.component
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,10 +14,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -28,17 +37,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.R
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
-import `in`.koreatech.business.ui.theme.Black1
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.business.ui.theme.Red2
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
+import `in`.koreatech.business.ui.component.button.SettingTimeButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun CheckSettingTime(
     modifier: Modifier = Modifier,
-    settingTimeList: List<String> = emptyList()
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    sheetState: ModalBottomSheetState =
+        rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            skipHalfExpanded = true
+        ),
+    settingTimeList: List<TimeSettingState> = emptyList(),
+    emptySpaceList: List<String> = emptyList(),
+    removeTimeSetting: (Int)-> Unit = {},
+    onChangeSettingTimeList: () -> Unit = {},
+    updateIsSettingScreenState: (Boolean) -> Unit = {},
 ) {
 
     Divider(
@@ -52,11 +73,12 @@ fun CheckSettingTime(
         modifier = Modifier.fillMaxWidth()
     ) {
         itemsIndexed(settingTimeList){ index, item ->
-            if(index != 5 || item.isNotBlank()){
-                TimeItem(
-                    timeString = item
-                )
-            }
+            TimeItem(
+                modifier = Modifier.clickable {
+                    removeTimeSetting(index)
+                },
+                timeString = item.timeInfoString
+            )
             Divider(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -65,11 +87,33 @@ fun CheckSettingTime(
             )
         }
     }
-    if(settingTimeList.last().isBlank()){
+
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        itemsIndexed(emptySpaceList){index, item ->
+            if(index != emptySpaceList.lastIndex){
+                TimeItem(
+                    timeString = item
+                )
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    color = Gray3,
+                    thickness = 0.5.dp
+                )
+            }
+        }
+    }
+
+    if(emptySpaceList.isNotEmpty()){
         Row(
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .fillMaxWidth()
+                .clickable {
+                    updateIsSettingScreenState(true)
+                }
             ,
             horizontalArrangement = Arrangement.Center
         ){
@@ -94,6 +138,21 @@ fun CheckSettingTime(
             thickness = 0.5.dp
         )
     }
+    SettingTimeButton(
+        modifier = Modifier,
+        onCancelButtonClicked = {
+            updateIsSettingScreenState(false)
+            coroutineScope.launch {
+                sheetState.hide()
+            }
+        },
+        onRegisterButtonClicked = {
+            coroutineScope.launch {
+                sheetState.hide()
+            }
+            onChangeSettingTimeList()
+        }
+    )
 }
 
 @Composable
@@ -102,7 +161,7 @@ fun TimeItem(
     timeString: String = "월, 화, 수, 목, 금 : 06:00 ~ 23:00"
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 24.dp, vertical = 16.dp)
             .fillMaxWidth()
             .height(25.dp)
@@ -135,7 +194,7 @@ fun TimeItem(
 @Composable
 fun PreviewCheckSettingTime() {
     CheckSettingTime(
-        settingTimeList = list1
+
     )
 }
 
@@ -144,21 +203,3 @@ fun PreviewCheckSettingTime() {
 fun PreviewTimeItem() {
     TimeItem()
 }
-
-val list1: List<String> = listOf(
-    "토, 일 : 휴무",
-    "월, 화, 수, 목, 금 : 06:00 ~ 23:00",
-    "",
-    "",
-    "",
-    ""
-)
-
-val list2: List<String> = listOf(
-    "토, 일 : 휴무",
-    "월 : 06:00 ~ 23:00",
-    "화 : 06:00 ~ 23:00",
-    "수 : 06:00 ~ 23:00",
-    "목 : 06:00 ~ 23:00",
-    "금 : 06:00 ~ 23:00"
-)
