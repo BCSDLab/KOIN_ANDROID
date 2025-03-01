@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -52,28 +51,6 @@ class SignupWithDetailInfoActivity : ActivityBase() {
         checkNickname()
         continueSignup()
         initSpinner()
-//        addTextChangedListenerWithNicknameAndDept()
-//        autoInputMajor()
-
-
-    }
-
-//    private fun autoInputMajor() {
-//        binding.signupUserEdittextMajor.apply {
-//            isEnabled = false
-//            hint = context.getString(R.string.user_info_id_hint)
-//        }
-//    }
-
-    private fun addTextChangedListenerWithNicknameAndDept() {
-        binding.signupUserEdittextNickName.addTextChangedListener {
-            if (signupViewModel.isCheckedNickname) signupViewModel.isCheckedNickname = false
-        }
-
-//        binding.signupUserEdittextStudentId.addTextChangedListener {
-//            if (signupViewModel.isPerformDept) signupViewModel.isPerformDept = false
-//            signupViewModel.getDept(it.toString())
-//        }
     }
 
     private fun continueSignup() {
@@ -102,7 +79,7 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                 EventLogger.logClickEvent(
                     EventAction.USER,
                     AnalyticsConstant.Label.COMPLETE_SIGN_UP,
-                    getString(R.string.complete_sign_up)
+                    "회원가입 완료"
                 )
             }
         }
@@ -148,6 +125,12 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                     SignupContinuationState.AvailableNickname -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_nickname_available))
 
                     SignupContinuationState.RequestedEmailValidation -> {
+                        EventLogger.logCustomEvent(
+                            action = EventAction.USER.value,
+                            category = "signup",
+                            label = AnalyticsConstant.Label.COMPLETE_SIGN_UP,
+                            value = "회원가입 완료 성공"
+                        )
                         startSignupCompleteActivity()
                     }
 

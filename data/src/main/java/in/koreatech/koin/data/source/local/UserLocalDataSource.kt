@@ -53,6 +53,7 @@ class UserLocalDataSource @Inject constructor(
             pref[PREF_KEY_USER_INFO] = if (user is User.Student) {
                 Gson().toJson(
                     UserResponse(
+                        id = user.id,
                         anonymousNickname = user.anonymousNickname,
                         email = user.email,
                         gender = user.gender.toInt(),
