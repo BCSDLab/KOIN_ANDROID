@@ -19,7 +19,6 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.enums.ReportReason
 import `in`.koreatech.koin.feature.lostandfound.ui.report.component.LostAndFoundReportContent
 import `in`.koreatech.koin.feature.lostandfound.ui.report.component.lostAndFoundReportReasonList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -61,24 +60,19 @@ fun LostAndFoundReport(
                 modifier = Modifier
                     .padding(contentPadding)
                     .consumeWindowInsets(contentPadding),
-                selectedItemIndex = lostAndFoundReportReasonList.indexOf(uiState.reportReason),
+                itemList = lostAndFoundReportReasonList,
+                selectedItemIndex = uiState.selectedReason,
                 onSelectedItemChange = { index ->
                     viewModel.setReportReason(lostAndFoundReportReasonList[index])
-                    viewModel.setReportReasonTitle(context.getString(lostAndFoundReportReasonList[index].titleRes))
-                    viewModel.setReportReasonDescription(
-                        context.getString(
-                            lostAndFoundReportReasonList[index].descriptionRes
-                        )
-                    )
                 },
-                otherReason = if (uiState.reportReason == ReportReason.OTHER) uiState.reportReasonDescription else "",
+                otherReason = uiState.reportReasonDescription,
                 onOtherReasonChange = {
                     viewModel.setReportReasonDescription(it)
                 },
                 onReport = {
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT_CONFIRM,
-                        uiState.reportReasonTitle
+                        "신고하기"
                     )
                     viewModel.reportArticle(articleId)
                 }
