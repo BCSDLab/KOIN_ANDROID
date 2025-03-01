@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,7 +14,6 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
-import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.databinding.ActivitySignUpWithDetailInfoBinding
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.user.Gender
@@ -29,9 +27,6 @@ import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class SignupWithDetailInfoActivity : ActivityBase() {
@@ -56,28 +51,6 @@ class SignupWithDetailInfoActivity : ActivityBase() {
         checkNickname()
         continueSignup()
         initSpinner()
-//        addTextChangedListenerWithNicknameAndDept()
-//        autoInputMajor()
-
-
-    }
-
-//    private fun autoInputMajor() {
-//        binding.signupUserEdittextMajor.apply {
-//            isEnabled = false
-//            hint = context.getString(R.string.user_info_id_hint)
-//        }
-//    }
-
-    private fun addTextChangedListenerWithNicknameAndDept() {
-        binding.signupUserEdittextNickName.addTextChangedListener {
-            if (signupViewModel.isCheckedNickname) signupViewModel.isCheckedNickname = false
-        }
-
-//        binding.signupUserEdittextStudentId.addTextChangedListener {
-//            if (signupViewModel.isPerformDept) signupViewModel.isPerformDept = false
-//            signupViewModel.getDept(it.toString())
-//        }
     }
 
     private fun continueSignup() {
@@ -105,16 +78,8 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                 )
                 EventLogger.logClickEvent(
                     EventAction.USER,
-                    "header",
-                    "회원가입",
-                    EventExtra("gender", when {
-                        signupUserRadiobuttonGenderMan.isChecked -> "0"
-                        signupUserRadiobuttonGenderWoman.isChecked -> "1"
-                        else -> "2"
-                    }),
-                    EventExtra("department", spinnerSignupUserMajor.text.toString()),
-                    EventExtra("created_at", ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"))
-                    )
+                    AnalyticsConstant.Label.COMPLETE_SIGN_UP,
+                    "회원가입 완료"
                 )
             }
         }
@@ -160,6 +125,12 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                     SignupContinuationState.AvailableNickname -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_nickname_available))
 
                     SignupContinuationState.RequestedEmailValidation -> {
+                        EventLogger.logCustomEvent(
+                            action = EventAction.USER.value,
+                            category = "signup",
+                            label = AnalyticsConstant.Label.COMPLETE_SIGN_UP,
+                            value = "회원가입 완료 성공"
+                        )
                         startSignupCompleteActivity()
                     }
 
