@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.lostandfound.ui.detail
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
@@ -10,42 +12,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.HasDefaultViewModelProviderFactory
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.lifecycle.withCreationCallback
+import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.HotArticle
 import `in`.koreatech.koin.feature.lostandfound.component.HotArticleData
 import `in`.koreatech.koin.feature.lostandfound.component.LoadingDialog
-import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetailViewModel.Companion.ARTICLE_ID
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailButtonGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailContent
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.DetailHeader
+import `in`.koreatech.koin.feature.lostandfound.util.findActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun LostAndFoundDetail(
-    articleId: Int,
+    viewModel: LostAndFoundDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     navigateToArticleList: () -> Unit = {},
-    navigateToHotArticle: (HotArticleData) -> Unit
+    navigateToHotArticle: (HotArticleData) -> Unit,
+    navigateToChatRoom: (articleId: Int) -> Unit = {},
+    navigateToReport: (articleId: Int) -> Unit = {}
 ) {
-    val savedStateHandle = SavedStateHandle()
-    savedStateHandle[ARTICLE_ID] = articleId
-
-    val viewModelStoreOwner = requireNotNull(
-        LocalViewModelStoreOwner.current as? HasDefaultViewModelProviderFactory
-    )
-    val viewModel: LostAndFoundDetailViewModel = viewModel(
-        extras = viewModelStoreOwner.defaultViewModelCreationExtras.withCreationCallback<LostAndFoundDetailViewModel.Factory> {
-            it.create(savedStateHandle = savedStateHandle)
-        }
-    )
     KoinTheme {
         val uiState by viewModel.collectAsState()
         val hotArticle = uiState.hotArticles
@@ -75,9 +68,14 @@ fun LostAndFoundDetail(
                 isWriterAdmin = uiState.isWriterCouncil
             )
 
+            val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
+            val loggingFoundMessageSend = stringResource(id = R.string.logging_found_message_send)
+            val loggingReport = stringResource(id = R.string.logging_report)
+
             DetailButtonGroup(
-                showDeleteButton = uiState.canDelete,
+                showDeleteButton = uiState.isMine,
                 showDeleteDialog = uiState.showDeleteDialog,
+                isLoggedIn = uiState.isLoggedIn,
                 onArticleListClick = {
                     navigateToArticleList()
                 },
@@ -86,6 +84,24 @@ fun LostAndFoundDetail(
                 },
                 onShowDeleteDialogChange = {
                     viewModel.setShowDeleteDialog(it)
+                },
+                onChatRoomClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_MESSAGE_SEND,
+                        if (uiState.lostOrFound == LostOrFoundType.LOST) {
+                            loggingLostMessageSend
+                        } else {
+                            loggingFoundMessageSend
+                        }
+                    )
+                    navigateToChatRoom(uiState.id)
+                },
+                onReportArticleClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT,
+                        loggingReport
+                    )
+                    navigateToReport(uiState.id)
                 }
             )
 
@@ -106,7 +122,7 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {},
+    navigateToArticleList: () -> Unit = {}
 ) {
     when (sideEffect) {
         //is LostAndFoundDetailSideEffect.FetchDetail -> {}
@@ -124,6 +140,19 @@ private fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_delete_failed_toast),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        LostAndFoundDetailSideEffect.DeletedArticle -> {
+            context.findActivity()?.finish()
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+            }
+            context.startActivity(intent)
+            Toast.makeText(
+                context,
+                context.getString(R.string.detail_deleted_article),
                 Toast.LENGTH_SHORT
             ).show()
         }

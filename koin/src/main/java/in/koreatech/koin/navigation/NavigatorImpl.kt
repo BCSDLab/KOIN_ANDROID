@@ -5,6 +5,7 @@ import android.content.Intent
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
+import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
@@ -16,10 +17,13 @@ class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToSplash(
         context: Context,
         targetId: Pair<String, Any?>,
+        targetBoardId: Pair<String, Any?>,
+        targetArticleId: Pair<String, Any?>,
+        targetChatId: Pair<String, Any?>,
         type: Pair<String, Any?>,
         navType: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<SplashActivity>(targetId, type, navType)
+        val intent = context.buildIntent<SplashActivity>(targetId, targetBoardId, targetArticleId, targetChatId, type, navType)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }
@@ -27,9 +31,12 @@ class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToMain(
         context: Context,
         targetId: Pair<String, Any?>,
+        targetBoardId: Pair<String, Any?>,
+        targetArticleId: Pair<String, Any?>,
+        targetChatId: Pair<String, Any?>,
         type: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<MainActivity>(targetId, type)
+        val intent = context.buildIntent<MainActivity>(targetId, targetBoardId, targetArticleId, targetChatId, type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }
@@ -57,9 +64,10 @@ class NavigatorImpl @Inject constructor() : Navigator {
     override fun navigateToArticle(
         context: Context,
         targetId: Pair<String, Any?>,
+        targetBoardId: Pair<String, Any?>,
         type: Pair<String, Any?>
     ): Intent {
-        val intent = context.buildIntent<ArticleActivity>(targetId, type)
+        val intent = context.buildIntent<ArticleActivity>(targetId, targetBoardId, type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }
@@ -70,6 +78,17 @@ class NavigatorImpl @Inject constructor() : Navigator {
         type: Pair<String, Any?>
     ): Intent {
         val intent = context.buildIntent<ArticleActivity>(targetId, Pair(EXTRA_BOARD_ID, 14), type)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        return intent
+    }
+
+    override fun navigateToChat(
+        context: Context,
+        targetArticleId: Pair<String, Any?>,
+        targetChatId: Pair<String, Any?>,
+        type: Pair<String, Any?>
+    ): Intent {
+        val intent = context.buildIntent<ChatRoomActivity>(targetArticleId, targetChatId, type)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }

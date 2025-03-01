@@ -59,4 +59,6 @@ dependencies {
     implementation(libs.jsoup)
 
     implementation(libs.timber)
+
+    implementation(libs.bundles.krossbow)
 }

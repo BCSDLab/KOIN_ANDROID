@@ -71,7 +71,7 @@ turbineVersion = "1.2.0"
 kotlinxCollectionsImmutableVersion = "0.3.8"
 kspVersion = "1.9.22-1.0.16"
 firebaseCommonKtxVersion = "21.0.0"
-
+krossbow = "7.0.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -197,6 +197,11 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVersion" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtxVersion" }
 
+krossbow-stomp-core = { group = "org.hildan.krossbow", name = "krossbow-stomp-core", version.ref = "krossbow" }
+krossbow-websocket-okhttp = { group = "org.hildan.krossbow", name = "krossbow-websocket-okhttp", version.ref = "krossbow" }
+krossbow-stomp-kxserialization = { group = "org.hildan.krossbow", name = "krossbow-stomp-kxserialization", version.ref = "krossbow" }
+krossbow-stomp-kxserialization-json = { group = "org.hildan.krossbow", name = "krossbow-stomp-kxserialization-json", version.ref = "krossbow" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
@@ -224,3 +229,4 @@ compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
 hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]
 firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-analytics-ktx", "firebase-database", "firebase-perf", "firebase-messsaing"]
+krossbow = ["krossbow-stomp-core", "krossbow-websocket-okhttp", "krossbow-stomp-kxserialization", "krossbow-stomp-kxserialization-json"]

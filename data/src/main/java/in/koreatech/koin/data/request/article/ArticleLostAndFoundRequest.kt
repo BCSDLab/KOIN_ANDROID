@@ -7,6 +7,7 @@ data class ArticleLostAndFoundRequest(
     @SerializedName("articles") val articles: List<ArticleLostAndFoundBody>,
 ) {
     data class ArticleLostAndFoundBody(
+        @SerializedName("type") val type: String,
         @SerializedName("category") val category: String,
         @SerializedName("found_place") val foundPlace: String,
         @SerializedName("found_date") val foundDate: String,

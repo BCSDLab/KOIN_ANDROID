@@ -221,7 +221,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 else -> {
                     viewModel.refreshStores()
                     isEnabled = false
-                    onBackPressed()
+                    onBackPressedDispatcher.onBackPressed()
                 }
             }
         }

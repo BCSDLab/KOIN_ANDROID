@@ -1,25 +1,30 @@
 package `in`.koreatech.koin.ui.splash
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
-import dagger.hilt.android.AndroidEntryPoint
-import android.util.Log
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.UpdateAvailability
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
+import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
@@ -85,7 +90,7 @@ class SplashActivity : ActivityBase() {
         }
 
         observeLiveData(tokenState) {
-            gotoMainActivityOrDelay()
+            handleIntentOrLaunch()
         }
     }
 
@@ -130,8 +135,44 @@ class SplashActivity : ActivityBase() {
         }
     }
 
+    private fun handleIntentOrLaunch() {
+        val uriPrefix = intent.data?.path?.split("/")?.getOrNull(1)
+        when (uriPrefix) {
+            "articles" -> {
+                gotoArticleActivityOrDelay()
+            }
+            else -> {
+                gotoMainActivityOrDelay()
+            }
+        }
+    }
+
+    private fun gotoArticleActivityOrDelay() {
+        val path = intent.data?.path?.split("/")?.getOrNull(2)
+        lifecycleScope.launch {
+            delay()
+            val intent = when (path) {
+                "lost-item" -> {
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                    }
+                }
+                else -> {
+                    Intent(this@SplashActivity, ArticleActivity::class.java)
+                }
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade, R.anim.hold)
+            finish()
+            firebasePerformanceUtil.stop()
+        }
+    }
+
     private fun gotoMainActivityOrDelay() {
         val targetId = intent.getIntExtra(EXTRA_ID, -1)
+        val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
+        val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
+        val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
         val navType = intent.getStringExtra(EXTRA_NAV_TYPE) ?: ""
 
@@ -141,6 +182,9 @@ class SplashActivity : ActivityBase() {
                 navigator.navigateToMain(
                     context = this@SplashActivity,
                     targetId = Pair(EXTRA_ID, targetId),
+                    targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
+                    targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                    targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
                     type = Pair(EXTRA_TYPE, type)
                 )
             } else {

@@ -15,6 +15,7 @@ import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
+import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
@@ -130,6 +131,14 @@ object AuthNetworkModule {
         @Auth retrofit: Retrofit
     ): TimetableAuthApi {
         return retrofit.create(TimetableAuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatAuthApi(
+        @Auth retrofit: Retrofit
+    ): ChatAuthApi {
+        return retrofit.create(ChatAuthApi::class.java)
     }
 }
 

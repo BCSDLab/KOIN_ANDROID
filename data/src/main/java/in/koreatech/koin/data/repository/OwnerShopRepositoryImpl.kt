@@ -52,9 +52,10 @@ class OwnerShopRepositoryImpl @Inject constructor(
         ownerRemoteDataSource.modifyOwnerShopInfo(
             shopId, StoreRegisterResponse(
                 address = storeDetailInfo.address ?: "",
+                mainCategoryId = storeDetailInfo.mainCategoryId,
                 categoryIds = storeDetailInfo.categoryIds.toMutableList().apply { add(1) },
                 delivery = storeDetailInfo.isDeliveryOk,
-                delivery_price = storeDetailInfo.deliveryPrice,
+                deliveryPrice = storeDetailInfo.deliveryPrice,
                 description = storeDetailInfo.description,
                 imageUrls = storeDetailInfo.imageUrls ?: emptyList(),
                 name = storeDetailInfo.name,

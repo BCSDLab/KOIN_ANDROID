@@ -2,6 +2,7 @@ package `in`.koreatech.koin.domain.model.user
 
 sealed class User {
     data class Student(
+        val id: Int,
         val anonymousNickname: String?,
         val email: String?,
         val name: String?,

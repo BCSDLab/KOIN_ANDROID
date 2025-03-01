@@ -130,7 +130,7 @@ fun SelectCategoryScreenImpl(
         )
 
         LazyHorizontalGrid(
-            rows = GridCells.Fixed(2),
+            rows = GridCells.Fixed(3),
             modifier = Modifier
                 .padding(top = 28.dp)
                 .padding(horizontal = 15.dp)
@@ -143,7 +143,7 @@ fun SelectCategoryScreenImpl(
                     modifier = Modifier.clickable {
                         chooseCategory(category.id)
                     },
-                    imageUrl = category.imageUrl,
+                    imageUrl = category.imageUrl.toString(),
                     name = category.name,
                     categoryId = category.id,
                     choosedCategoryId = categoryId
@@ -151,23 +151,29 @@ fun SelectCategoryScreenImpl(
             }
         }
 
-        Button(
-            onClick = nextButtonClicked,
-            colors = if(categoryIdIsValid)ButtonDefaults.buttonColors(ColorPrimary) else ButtonDefaults.buttonColors(ColorDisabledButton),
-            shape = RectangleShape,
-            modifier = modifier
-                .padding(top = 57.dp, start = 240.dp, end = 16.dp)
-                .height(38.dp)
-                .width(105.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.next),
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
+        Row(
+            modifier = Modifier
+                .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
+                .fillMaxWidth()
+            ,
+            horizontalArrangement = Arrangement.End
+        ){
+            Button(
+                onClick = nextButtonClicked,
+                colors = if(categoryIdIsValid)ButtonDefaults.buttonColors(ColorPrimary) else ButtonDefaults.buttonColors(ColorDisabledButton),
+                shape = RectangleShape,
+                modifier = modifier
+                    .height(38.dp)
+                    .width(105.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.next),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
         }
-
     }
 
 }

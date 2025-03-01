@@ -44,6 +44,7 @@ android {
             )
             manifestPlaceholders["appName"] = "@string/app_name_dev"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
+            manifestPlaceholders["appLinkUri"] = "stage.koreatech.in"
             buildConfigField("Boolean", "IS_DEBUG", "true")
             buildConfigField(
                 "String",
@@ -62,6 +63,7 @@ android {
             )
             manifestPlaceholders["appName"] = "@string/app_name"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
+            manifestPlaceholders["appLinkUri"] = "koreatech.in"
             buildConfigField("Boolean", "IS_DEBUG", "false")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField(
@@ -101,6 +103,7 @@ dependencies {
     implementation(project(":feature:timetable"))
     implementation(project(":feature:bus"))
     implementation(project(":feature:lostandfound"))
+    implementation(project(":feature:chat"))
 
     implementation(libs.guava)
 

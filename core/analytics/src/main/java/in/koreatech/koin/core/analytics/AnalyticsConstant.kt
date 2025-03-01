@@ -97,8 +97,6 @@ object AnalyticsConstant {
 
         const val MENU_SHARE = "menu_share"
 
-        const val CAMPUS_DINING_1 = "CAMPUS_dining_1"
-        const val CAMPUS_NOTICE_1 = "CAMPUS_notice_1"
         const val APP_MAIN_NOTICE_DETAIL = "app_main_notice_detail"
         const val POPULAR_NOTICE_BANNER = "popular_notice_banner"
         const val TO_MANAGE_KEYWORD = "to_manage_keyword"
@@ -108,13 +106,22 @@ object AnalyticsConstant {
             const val FIND_USER_ADD_ITEM = "find_user_add_item"
             const val LOST_ITEM_CATEGORY = "lost_item_category"
             const val FIND_USER_CATEGORY = "find_user_category"
-            const val LOST_WRITE = "item_lost_write"
+            const val LOST_WRITE = "lost_item_write"
             const val FOUND_WRITE = "find_user_write"
             const val ITEM_WRITE = "item_write"
             const val LOST_ITEM_WRITE_CONFIRM = "lost_item_write_confirm"
             const val FIND_USER_WRITE_CONFIRM = "find_user_write_confirm"
             const val FIND_USER_DELETE = "find_user_delete"
             const val FIND_USER_DELETE_CONFIRM = "find_user_delete_confirm"
+            const val ITEM_POST_REPORT_CONFIRM = "item_post_report_confirm"
+            const val ITEM_MESSAGE_SEND = "item_message_send"
+            const val ITEM_POST_REPORT = "item_post_report"
+            const val ITEM_POST_TYPE = "item_post_type"
+        }
+
+        object CHAT {
+            const val HAMBURGER = "hamburger"
+            const val MESSAGE_LIST_SELECT = "message_list_select"
         }
     }
 

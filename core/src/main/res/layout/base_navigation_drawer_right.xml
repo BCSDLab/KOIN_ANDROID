@@ -27,6 +27,31 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/navi_item_chat"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_chat"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/navi_item_setting"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_chat_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_chat_badge"
+            android:gravity="center"
+            android:paddingHorizontal="6dp"
+            android:textColor="@color/white"
+            android:translationX="-12dp"
+            android:translationY="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/navi_item_chat"
+            app:layout_constraintStart_toEndOf="@id/navi_item_chat" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/navi_item_setting"
             android:layout_width="24dp"
             android:layout_height="24dp"
