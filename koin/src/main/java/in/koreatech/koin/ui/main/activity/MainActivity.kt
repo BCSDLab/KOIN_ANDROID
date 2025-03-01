@@ -278,31 +278,16 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(variableName) {
             when (viewModel.variableName.value) {
                 ExperimentGroup.A -> {
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
-                        "혜택X"
-                    )
                     binding.storeButtonLayout.visibility = View.GONE
                     binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
 
                 ExperimentGroup.B -> {
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
-                        "혜택O"
-                    )
                     binding.storeButtonLayout.visibility = View.VISIBLE
                     binding.recyclerViewStoreCategory.visibility = View.GONE
                 }
 
                 else -> {
-                    EventLogger.logABTestEvent(
-                        "a/b test 로깅(3차 스프린트, 혜택페이지)",
-                        AnalyticsConstant.Label.BUSINESS_BENEFIT_1,
-                        "혜택X"
-                    )
                     binding.storeButtonLayout.visibility = View.GONE
                     binding.recyclerViewStoreCategory.visibility = View.VISIBLE
                 }
