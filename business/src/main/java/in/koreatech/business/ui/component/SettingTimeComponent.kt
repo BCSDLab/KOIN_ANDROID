@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.KorDayOfWeek
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
@@ -42,10 +43,12 @@ fun SettingTimeDialog(
     val timeInfoList = remember { mutableStateListOf<TimeSettingState>() }
     val emptySpaceList = remember { mutableStateListOf("", "", "", "", "", "") }
     var isDayOfWeekListEmpty by remember { mutableStateOf(false) }
+    var warningMessage by remember { mutableStateOf("") }
+    val registeredDayOfWeekList = remember { mutableStateListOf<KorDayOfWeek>() }
 
     if (isDayOfWeekListEmpty){
         MessageDialog(
-            title = "요일을 선택해 주세요.",
+            title = warningMessage,
             onPositive = {
                 isDayOfWeekListEmpty = false
             }
@@ -72,16 +75,21 @@ fun SettingTimeDialog(
                 storeOperatingTime = dayOfWeekList,
                 coroutineScope = coroutineScope,
                 sheetState = sheetState,
-                addTimeState = {
-                    timeInfoList.add(it)
+                addTimeState = { state, dayList ->
+                    timeInfoList.add(state)
                     emptySpaceList.removeAt(emptySpaceList.lastIndex)
+                    dayList.forEach {
+                        registeredDayOfWeekList.add(it)
+                    }
                 },
                 updateIsSettingScreenState = {
                     isSettingScreen = it
                 },
-                showMessageDialog = {
-                    isDayOfWeekListEmpty = it
-                }
+                showMessageDialog = {   boolean, string ->
+                    isDayOfWeekListEmpty = boolean
+                    warningMessage = string
+                },
+                registeredDayOfWeekList = registeredDayOfWeekList
             )
         } else {
             if (timeInfoList.isEmpty()) {

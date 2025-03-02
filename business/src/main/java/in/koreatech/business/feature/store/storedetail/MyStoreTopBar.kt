@@ -159,30 +159,6 @@ fun StoreInfoScreen(
                     )
                 )
             }
-
-            Button(
-                onClick = {
-                    viewModel.onRegisterMenuClicked()
-                          },
-                modifier = Modifier
-                    .width(107.dp)
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(0.dp),
-                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
-
-                ) {
-                Text(
-                    text = stringResource(R.string.register_menu),
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 15.sp
-                    )
-                )
-            }
         }
 
         Divider(
@@ -258,7 +234,7 @@ fun StoreInfoScreen(
                 modifier = Modifier
                     .padding(end = 24.dp)
                     .clickable {
-                        viewModel.navigateToModifyScreen()
+                        viewModel::navigateToModifyScreen
                     }
             ){
                 Image(

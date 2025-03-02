@@ -67,15 +67,17 @@ fun SettingTime(
             initialValue = ModalBottomSheetValue.Hidden,
             skipHalfExpanded = true
         ),
-    addTimeState: (TimeSettingState) -> Unit = {},
+    addTimeState: (TimeSettingState, List<KorDayOfWeek>) -> Unit = {t, s ->},
     updateIsSettingScreenState: (Boolean) -> Unit = {},
-    showMessageDialog:(Boolean) -> Unit = {}
+    showMessageDialog:(Boolean, String) -> Unit = {b,s ->},
+    registeredDayOfWeekList: List<KorDayOfWeek> = emptyList()
 ) {
     val dayOfWeekList = remember { mutableStateListOf<KorDayOfWeek>() }
     var openTimeValue by remember { mutableStateOf<Hours>(FullHours(6, 0)) }
     var closeTimeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
     var isClosedChecked by remember { mutableStateOf(false) }
     var is24hoursChecked by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
     ) {
@@ -98,8 +100,13 @@ fun SettingTime(
                     modifier = Modifier
                         .size(40.dp)
                         .clickable{
-                            if (dayOfWeekList.contains(item)) dayOfWeekList.remove(item)
-                            else dayOfWeekList.add(item)
+                            if(registeredDayOfWeekList.contains(item)){
+                                showMessageDialog(true, "이미 설정한 요일입니다.")
+                            }
+                            else{
+                                if (dayOfWeekList.contains(item)) dayOfWeekList.remove(item)
+                                else dayOfWeekList.add(item)
+                            }
                         }
                     ,
                     dayName = item.kor,
@@ -270,7 +277,7 @@ fun SettingTime(
             onRegisterButtonClicked = {
                 
                 if(dayOfWeekList.isEmpty()){
-                    showMessageDialog(true)
+                    showMessageDialog(true, "요일을 선택해 주세요.")
                 }
                 else {
                     addTimeState(
@@ -287,7 +294,8 @@ fun SettingTime(
                             closeTime = closeTimeValue.toTimeString(),
                             isClosed = isClosedChecked,
                             is24Hours = is24hoursChecked
-                        )
+                        ),
+                        dayOfWeekList
                     )
 
                     updateIsSettingScreenState(false)

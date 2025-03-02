@@ -6,8 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -206,7 +208,27 @@ fun MyStoreScrollScreen(
             item {
                 StoreInfoScreen(viewModel)
             }
-            storeDetailInfo(infoDataList)
+            item{
+                infoDataList.forEach { (info, data) ->
+                    Column(
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = info,
+                                style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                            )
+                            Text(
+                                text = data,
+                                style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                            )
+                        }
+                    }
+                }
+            }
             item {
                 LazyRow(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
                     items(available.size) {
