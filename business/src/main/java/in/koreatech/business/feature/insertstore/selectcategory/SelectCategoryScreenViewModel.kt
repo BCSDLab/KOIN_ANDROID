@@ -43,6 +43,27 @@ class SelectCategoryScreenViewModel @Inject constructor(
             }
         }
     }
+
+    fun dialogSetting(
+        title: String
+    ) = intent{
+        reduce{
+            state.copy(
+                dialogTitle = title
+            )
+        }
+        isShowDialog()
+    }
+
+    fun isShowDialog() = intent{
+        reduce{
+            state.copy(
+                isDialogShow = !state.isDialogShow
+            )
+        }
+    }
+
+
     private fun categoryIdIsValid(){
         intent{
             reduce{

@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
+import `in`.koreatech.koin.data.response.owner.OwnerGetStoreResponse
 import `in`.koreatech.koin.data.response.store.BenefitCategoryListResponse
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
@@ -20,6 +21,7 @@ import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewContentResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewStatisticsResponse
+import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
@@ -319,5 +321,11 @@ fun ShopRelatedListResponse.toShopSearchRelatedList(): ShopSearchRelatedList =
             )
         }
     )
+
+fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore = OwnerGetStore(
+    uid = uid ?: 0,
+    name = name ?: "",
+    isEvent = isEvent ?: false
+)
 
 

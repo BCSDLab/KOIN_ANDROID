@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
+import `in`.koreatech.koin.data.response.owner.OwnerGetStoreResponse
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
@@ -18,6 +19,7 @@ import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
+import retrofit2.Response
 
 class OwnerRemoteDataSource(
     private val ownerApi: OwnerApi,
@@ -81,7 +83,7 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationCodeSms(ownerVerificationCode)
     }
 
-    suspend fun getMyShopList(): List<StoreItemResponse> {
+    suspend fun getMyShopList(): List<OwnerGetStoreResponse> {
         return ownerAuthApi.getMyShopList().shops
     }
 
@@ -109,6 +111,10 @@ class OwnerRemoteDataSource(
         return ownerAuthApi.putShopModifiedMenu(menuId, storeMenuRegisterResponse)
     }
 
+    suspend fun deleteStoreMenu(menuId: Int): Response<Unit>{
+        return ownerAuthApi.deleteShopMenu(menuId)
+    }
+
     suspend fun getStoreMenuInfo(menuId: Int): StoreMenuInfoResponse {
         return ownerAuthApi.getMenuInfo(menuId)
     }
@@ -120,4 +126,5 @@ class OwnerRemoteDataSource(
     suspend fun modifyOwnerShopInfo(storeUid: Int, storeInfo: StoreRegisterResponse) {
         ownerAuthApi.modifyOwnerShopInfo(storeUid, storeInfo)
     }
+
 }

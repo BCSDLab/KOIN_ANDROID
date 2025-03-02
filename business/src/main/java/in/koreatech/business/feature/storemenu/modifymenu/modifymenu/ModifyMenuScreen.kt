@@ -1,7 +1,6 @@
 package `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,7 +43,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -70,6 +68,7 @@ import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.designsystem.component.dialog.MessageDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.upload.createImageFile
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
@@ -111,6 +110,7 @@ fun ModifyMenuScreen(
         setImageModify = viewModel::isImageModify,
         setImageIndex = viewModel::setImageIndex,
         onNextButtonClicked = viewModel::onNextButtonClick,
+        closeDialog = viewModel::isShowDialog
     )
     HandleSideEffects(viewModel, goToCheckMenuScreen)
 }
@@ -137,7 +137,8 @@ fun ModifyMenuScreenImpl(
     menuImageFromCamera: (String) -> Unit ={},
     setImageModify:(Boolean) -> Unit ={},
     setImageIndex: (Int) -> Unit = {},
-    onNextButtonClicked: () -> Unit ={}
+    onNextButtonClicked: () -> Unit ={},
+    closeDialog: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val sheetState: ModalBottomSheetState =
@@ -169,6 +170,13 @@ fun ModifyMenuScreenImpl(
             }
         }
     )
+
+    if(registerMenuState.isDialogShow){
+        MessageDialog(
+            title = registerMenuState.dialogTitle,
+            onPositive = closeDialog
+        )
+    }
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -336,7 +344,7 @@ fun ModifyMenuScreenImpl(
                         if(registerMenuState.menuOptionPrice.isEmpty()){
                             Box(
                                 modifier = modifier
-                                    .border(width = 1.dp, color = ColorMinor)
+                                    .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                                     .height(37.dp),
                                 contentAlignment = Alignment.CenterStart
                             ) {
@@ -387,7 +395,7 @@ fun ModifyMenuScreenImpl(
 
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_add),
+                            painter = painterResource(id = R.drawable.ic_user_add),
                             contentDescription = null
                         )
 
@@ -417,7 +425,6 @@ fun ModifyMenuScreenImpl(
                         fontWeight = FontWeight.Bold
                     )
                     if (registerMenuState.menuCategory.isNotEmpty()) {
-
                         CategoryRadioButtonScreen(
                             menuCategory = registerMenuState.menuCategory,
                             onMenuCategoryIsClicked = onMenuCategoryIsClicked,
@@ -440,7 +447,7 @@ fun ModifyMenuScreenImpl(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(top = 8.dp)
-                            .border(width = 1.dp, color = ColorMinor)
+                            .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                             .height(105.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
@@ -594,10 +601,10 @@ fun ModifyMenuScreenImpl(
                     ) {
                         Button(
                             onClick = {onBackPressed()},
-                            shape = RectangleShape,
+                            shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(Color.White),
                             modifier = Modifier
-                                .border(1.dp, ColorSecondary)
+                                .border(1.dp, ColorMinor, shape = RoundedCornerShape(8.dp))
                                 .fillMaxHeight()
                                 .width(113.dp)
                         ) {
@@ -605,16 +612,17 @@ fun ModifyMenuScreenImpl(
                                 text = stringResource(id = R.string.cancel),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = ColorSecondary
+                                color = ColorMinor
                             )
                         }
 
                         Button(
                             onClick = onNextButtonClicked,
-                            shape = RectangleShape,
+                            shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
                             modifier = Modifier
                                 .fillMaxSize()
+
 
                         ) {
                             Text(
@@ -639,16 +647,14 @@ private fun HandleSideEffects(viewModel: ModifyMenuViewModel, goToCheckMenuScree
         when (sideEffect) {
             is ModifyMenuSideEffect.GoToCheckMenuScreen -> goToCheckMenuScreen()
             is ModifyMenuSideEffect.ShowMessage -> {
-                val message = when (sideEffect.type) {
-                    ModifyMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
-                    ModifyMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
-                    ModifyMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
-                    ModifyMenuErrorType.NullMenuDescription-> context.getString(R.string.menu_null_description)
-                    ModifyMenuErrorType.NullMenuImage-> context.getString(R.string.menu_null_image)
-                    ModifyMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
-                    ModifyMenuErrorType.FailModifyMenu ->context.getString(R.string.menu_fail_register_menu)
+            when (sideEffect.type) {
+                    ModifyMenuErrorType.NullMenuName -> viewModel.dialogSetting(context.getString(R.string.menu_null_name))
+                    ModifyMenuErrorType.NullMenuPrice -> viewModel.dialogSetting(context.getString(R.string.menu_null_price))
+                    ModifyMenuErrorType.NullMenuCategory -> viewModel.dialogSetting(context.getString(R.string.menu_null_category))
+                    ModifyMenuErrorType.NullMenuImage-> viewModel.dialogSetting(context.getString(R.string.menu_null_image))
+                    ModifyMenuErrorType.FailUploadImage -> viewModel.dialogSetting(context.getString(R.string.menu_fail_upload_image))
+                    ModifyMenuErrorType.FailModifyMenu ->viewModel.dialogSetting(context.getString(R.string.menu_fail_register_menu))
                 }
-                ToastUtil.getInstance().makeShort(message)
             }
             else -> ""
         }
@@ -666,12 +672,12 @@ fun CategoryRadioButton(
     onButtonClicked: (Int) ->Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .width(185.dp)
             .height(50.dp)
             .padding(start = startDp, end = endDp)
-            .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6)
-            .background(color = if (isClicked) ColorSecondary else ColorTransparency)
+            .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6, shape = RoundedCornerShape(8.dp))
+            .background(color = if (isClicked) ColorSecondary else ColorTransparency, shape = RoundedCornerShape(8.dp))
             .clickable {
                 onButtonClicked(index)
             }
@@ -753,7 +759,7 @@ fun BorderTextField(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .padding(top = 8.dp)
-            .border(width = 1.dp, color = ColorMinor)
+            .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
             .height(height),
         contentAlignment = Alignment.CenterStart
     ) {

@@ -46,6 +46,7 @@ import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.designsystem.component.dialog.MessageDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import org.orbitmvi.orbit.compose.collectAsState
@@ -61,6 +62,7 @@ fun SelectCategoryScreen(
     val state = viewModel.collectAsState().value
     SelectCategoryScreenImpl(
         modifier = modifier,
+        state = state,
         categories = state.categories,
         categoryId = state.categoryId,
         chooseCategory = {
@@ -70,7 +72,9 @@ fun SelectCategoryScreen(
         nextButtonClicked = {
                             viewModel.goToInsertBasicInfoScreen()
         },
-        onBackPressed =  onBackPressed
+        onBackPressed =  onBackPressed,
+        closeDialog = viewModel::isShowDialog
+
     )
 
     HandleSideEffects(viewModel, state.categoryId, navigateToInsertBasicInfoScreen)
@@ -81,13 +85,22 @@ fun SelectCategoryScreen(
 @Composable
 fun SelectCategoryScreenImpl(
     modifier: Modifier = Modifier,
+    state : SelectCategoryScreenState = SelectCategoryScreenState(),
     categories: List<StoreCategories> = emptyList(),
     categoryId: Int = -1,
     categoryIdIsValid: Boolean = true,
     chooseCategory: (Int) -> Unit = {},
     nextButtonClicked: () -> Unit = {},
-    onBackPressed: () -> Unit = {}
+    onBackPressed: () -> Unit = {},
+    closeDialog: () -> Unit = {}
 ) {
+    if(state.isDialogShow){
+        MessageDialog(
+            title = state.dialogTitle,
+            onPositive = closeDialog
+        )
+    }
+
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -228,7 +241,7 @@ private fun HandleSideEffects(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is SelectCategoryScreenSideEffect.NavigateToInsertBasicInfoScreen -> navigateToInsertMainInfoScreen(categoryId)
-            is SelectCategoryScreenSideEffect.NotSelectCategory -> ToastUtil.getInstance().makeShort(context.getString(R.string.insert_store_choose_category))
+            is SelectCategoryScreenSideEffect.NotSelectCategory -> viewModel.dialogSetting(context.getString(R.string.insert_store_choose_category))
         }
     }
 }

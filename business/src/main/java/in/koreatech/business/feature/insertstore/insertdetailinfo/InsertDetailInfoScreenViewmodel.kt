@@ -47,7 +47,7 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
     private fun isDetailInfoValid() = intent{
         reduce {
             state.copy(
-                isDetailInfoValid = state.storePhoneNumber.isNotEmpty() && state.storeDeliveryFee.isNotEmpty() && state.storeOtherInfo.isNotEmpty()
+                isDetailInfoValid = state.storePhoneNumber.isNotEmpty() && state.storeDeliveryFee.isNotEmpty() && state.storeOtherInfo.isNotEmpty() && state.operatingTimeList.size == 7
             )
         }
     }
@@ -99,6 +99,7 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
                 settingTimeInfoList = timeList
             )
         }
+        isDetailInfoValid()
     }
 
     fun onChangePhoneNumber(phoneNumber: String) = blockingIntent{
@@ -147,11 +148,13 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
                 postSideEffect(InsertDetailInfoScreenSideEffect.NavigateToCheckScreen(storeDetailInfo))
                 return@intent
             }
+            Log.e("로그 상태", state.operatingTimeList.toString())
 
             when {
                 state.storePhoneNumber.isEmpty() -> postSideEffect(InsertDetailInfoScreenSideEffect.ShowMessage(DetailInfoErrorType.NullStorePhoneNumber))
                 state.storeDeliveryFee.isEmpty() -> postSideEffect(InsertDetailInfoScreenSideEffect.ShowMessage(DetailInfoErrorType.NullStoreDeliveryFee))
                 state.storeOtherInfo.isEmpty() -> postSideEffect(InsertDetailInfoScreenSideEffect.ShowMessage(DetailInfoErrorType.NullStoreOtherInfo))
+                state.operatingTimeList.size != 7 -> postSideEffect(InsertDetailInfoScreenSideEffect.ShowMessage(DetailInfoErrorType.NullDayOfWeek))
             }
         }
     }

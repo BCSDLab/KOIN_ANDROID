@@ -1,12 +1,9 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
 import android.net.Uri
-import android.os.Environment
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -72,6 +69,7 @@ import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.designsystem.component.dialog.MessageDialog
 import `in`.koreatech.koin.core.file.FileUtil
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
@@ -115,6 +113,7 @@ fun RegisterMenuScreen(
         setImageModify = viewModel::isImageModify,
         setImageIndex = viewModel::setImageIndex,
         onNextButtonClicked = viewModel::onNextButtonClick,
+        closeDialog = viewModel::isShowDialog
     )
 
     HandleSideEffects(viewModel, goToCheckMenuScreen)
@@ -142,9 +141,9 @@ fun RegisterMenuScreenImpl(
     menuImageFromCamera: (Uri) -> Unit ={},
     setImageModify:(Boolean) -> Unit ={},
     setImageIndex: (Int) -> Unit = {},
-    onNextButtonClicked: () -> Unit ={}
+    onNextButtonClicked: () -> Unit ={},
+    closeDialog: () -> Unit = {}
 ) {
-    val context = LocalContext.current
     val sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -173,7 +172,12 @@ fun RegisterMenuScreenImpl(
             }
         }
     )
-
+    if(registerMenuState.isDialogShow){
+        MessageDialog(
+            title = registerMenuState.dialogTitle,
+            onPositive = closeDialog
+        )
+    }
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
@@ -340,7 +344,7 @@ fun RegisterMenuScreenImpl(
                         if(registerMenuState.menuOptionPrice.isEmpty()){
                             Box(
                                 modifier = modifier
-                                    .border(width = 1.dp, color = ColorMinor)
+                                    .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                                     .height(37.dp),
                                 contentAlignment = Alignment.CenterStart
                             ) {
@@ -391,7 +395,7 @@ fun RegisterMenuScreenImpl(
 
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_add),
+                            painter = painterResource(id = R.drawable.ic_user_add),
                             contentDescription = null
                         )
 
@@ -444,7 +448,7 @@ fun RegisterMenuScreenImpl(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(top = 8.dp)
-                            .border(width = 1.dp, color = ColorMinor)
+                            .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                             .height(105.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
@@ -596,10 +600,10 @@ fun RegisterMenuScreenImpl(
                     ) {
                         Button(
                             onClick = {onBackPressed()},
-                            shape = RectangleShape,
+                            shape =  RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(Color.White),
                             modifier = Modifier
-                                .border(1.dp, ColorSecondary)
+                                .border(1.dp, ColorMinor, shape =  RoundedCornerShape(8.dp))
                                 .fillMaxHeight()
                                 .width(113.dp)
                         ) {
@@ -607,13 +611,13 @@ fun RegisterMenuScreenImpl(
                                 text = stringResource(id = R.string.cancel),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = ColorSecondary
+                                color = ColorMinor
                             )
                         }
 
                         Button(
                             onClick = onNextButtonClicked,
-                            shape = RectangleShape,
+                            shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
                             modifier = Modifier
                                 .fillMaxSize()
@@ -641,16 +645,14 @@ private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScr
         when (sideEffect) {
             is RegisterMenuSideEffect.GoToCheckMenuScreen -> goToCheckMenuScreen()
             is RegisterMenuSideEffect.ShowMessage -> {
-                val message = when (sideEffect.type) {
-                    RegisterMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
-                    RegisterMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
-                    RegisterMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
-                    RegisterMenuErrorType.NullMenuDescription-> context.getString(R.string.menu_null_description)
-                    RegisterMenuErrorType.NullMenuImage-> context.getString(R.string.menu_null_image)
-                    RegisterMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
-                    RegisterMenuErrorType.FailRegisterMenu ->context.getString(R.string.menu_fail_register_menu)
+               when (sideEffect.type) {
+                    RegisterMenuErrorType.NullMenuName -> viewModel.dialogSetting(context.getString(R.string.menu_null_name))
+                    RegisterMenuErrorType.NullMenuPrice -> viewModel.dialogSetting(context.getString(R.string.menu_null_price))
+                    RegisterMenuErrorType.NullMenuCategory -> viewModel.dialogSetting(context.getString(R.string.menu_null_category))
+                    RegisterMenuErrorType.NullMenuImage-> viewModel.dialogSetting(context.getString(R.string.menu_null_image))
+                    RegisterMenuErrorType.FailUploadImage -> viewModel.dialogSetting(context.getString(R.string.menu_fail_upload_image))
+                    RegisterMenuErrorType.FailRegisterMenu ->viewModel.dialogSetting(context.getString(R.string.menu_fail_register_menu))
                 }
-                ToastUtil.getInstance().makeShort(message)
             }
             else -> ""
         }
@@ -672,8 +674,8 @@ fun CategoryRadioButton(
             .width(185.dp)
             .height(50.dp)
             .padding(start = startDp, end = endDp)
-            .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6)
-            .background(color = if (isClicked) ColorSecondary else ColorTransparency)
+            .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6, shape = RoundedCornerShape(8.dp))
+            .background(color = if (isClicked) ColorSecondary else ColorTransparency, shape = RoundedCornerShape(8.dp))
             .clickable {
                 onButtonClicked(index)
             }
@@ -755,7 +757,7 @@ fun BorderTextField(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .padding(top = 8.dp)
-            .border(width = 1.dp, color = ColorMinor)
+            .border(width = 1.dp, color = ColorMinor,shape = RoundedCornerShape(8.dp))
             .height(height),
         contentAlignment = Alignment.CenterStart
     ) {

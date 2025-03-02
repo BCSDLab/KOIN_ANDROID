@@ -11,4 +11,5 @@ enum class DetailInfoErrorType {
     NullStorePhoneNumber,
     NullStoreDeliveryFee,
     NullStoreOtherInfo,
+    NullDayOfWeek
 }

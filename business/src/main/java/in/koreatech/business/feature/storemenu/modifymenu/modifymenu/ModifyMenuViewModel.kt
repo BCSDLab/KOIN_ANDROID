@@ -188,6 +188,25 @@ class ModifyMenuViewModel @Inject constructor(
         }
     }
 
+    fun dialogSetting(
+        title: String
+    ) = intent{
+        reduce{
+            state.copy(
+                dialogTitle = title
+            )
+        }
+        isShowDialog()
+    }
+
+    fun isShowDialog() = intent{
+        reduce{
+            state.copy(
+                isDialogShow = !state.isDialogShow
+            )
+        }
+    }
+
     fun changeMenuImageUri(uriList: List<Uri>){
         intent {
             reduce {
@@ -375,11 +394,11 @@ class ModifyMenuViewModel @Inject constructor(
                 !state.menuCategory.take(state.menuCategory.size).any { it.menuCategoryIsChecked } -> postSideEffect(
                     ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.NullMenuCategory)
                 )
-                state.description.isBlank() -> postSideEffect(
+                /*state.description.isBlank() -> postSideEffect(
                     ModifyMenuSideEffect.ShowMessage(
                         ModifyMenuErrorType.NullMenuDescription
                     )
-                )
+                )*/
                 state.imageUriList.size == 1 && state.imageUriList[0] == TEMP_IMAGE_URI -> postSideEffect(
                     ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.NullMenuImage)
                 )
