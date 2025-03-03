@@ -9,8 +9,9 @@ data class SemesterCheckResponse(
     @SerializedName("semesters")
     val semesters: List<String>,
 ) {
-    fun toSemesterCheck() = SemesterCheck(
-        userId = userId,
-        semesters = semesters
-    )
+    fun toSemesterCheck() =
+        SemesterCheck(
+            userId = userId,
+            semesters = semesters,
+        )
 }

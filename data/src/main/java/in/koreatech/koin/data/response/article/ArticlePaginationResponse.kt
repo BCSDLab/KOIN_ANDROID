@@ -8,13 +8,14 @@ data class ArticlePaginationResponse(
     @SerializedName("total_count") val totalCount: Int,
     @SerializedName("current_count") val currentCount: Int,
     @SerializedName("total_page") val totalPage: Int,
-    @SerializedName("current_page") val currentPage: Int
+    @SerializedName("current_page") val currentPage: Int,
 ) {
-    fun toArticlePagination() = ArticlePagination(
-        articleHeaders = articles.map { it.toArticleHeader() },
-        totalCount = totalCount,
-        currentCount = currentCount,
-        totalPage = totalPage,
-        currentPage = currentPage
-    )
+    fun toArticlePagination() =
+        ArticlePagination(
+            articleHeaders = articles.map { it.toArticleHeader() },
+            totalCount = totalCount,
+            currentCount = currentCount,
+            totalPage = totalPage,
+            currentPage = currentPage,
+        )
 }

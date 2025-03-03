@@ -23,38 +23,38 @@ interface TimetableAuthApi {
 
     @GET("/v2/timetables/lecture")
     suspend fun getTimetableLectures(
-        @Query("timetable_frame_id") timetableFrameId: Int
+        @Query("timetable_frame_id") timetableFrameId: Int,
     ): TimetableLecturesResponse
 
     @PUT("/v2/timetables/lecture")
     suspend fun putTimetableLectures(
-        @Body lectures: TimetableLecturesQueryRequest
+        @Body lectures: TimetableLecturesQueryRequest,
     ): TimetableLecturesResponse
 
     @POST("/v2/timetables/lecture")
     suspend fun postTimetableLectures(
-        @Body lectures: LecturesQueryRequest
+        @Body lectures: LecturesQueryRequest,
     ): TimetableLecturesResponse
 
     @PUT("/v2/timetables/frame/{id}")
     suspend fun putTimetableFrame(
         @Path("id") id: Int,
-        @Body frame: TimetableFrameQueryRequest
+        @Body frame: TimetableFrameQueryRequest,
     ): TimetableFrameResponse
 
     @POST("/v2/timetables/frame")
     suspend fun postTimetableFrame(
-        @Body frame: TimetableFrameCreateQueryRequest
+        @Body frame: TimetableFrameCreateQueryRequest,
     ): TimetableFrameResponse
 
     @POST("/v2/timetables/frame/rollback")
     suspend fun postRollbackFrame(
-        @Query("timetable_frame_id") frameId: Int
+        @Query("timetable_frame_id") frameId: Int,
     ): TimetableLecturesResponse
 
     @DELETE("/v2/timetables/frame")
     suspend fun deleteTimetableFrame(
-        @Query("id") frameId: Int
+        @Query("id") frameId: Int,
     ): Response<Unit>
 
     /**
@@ -63,7 +63,7 @@ interface TimetableAuthApi {
      */
     @GET("/v2/timetables/frames")
     suspend fun getTimetableFrames(
-        @Query("semester") semester: String
+        @Query("semester") semester: String,
     ): List<TimetableFrameResponse>
 
     /**
@@ -75,18 +75,18 @@ interface TimetableAuthApi {
 
     @DELETE("/v2/timetables/lecture/{id}")
     suspend fun deleteTimetableLecture(
-        @Path("id") id: Int
+        @Path("id") id: Int,
     ): Response<Unit>
 
     @DELETE("/v2/timetables/frame/{frameId}/lecture/{lectureId}")
     suspend fun deleteTimetableFrameLecture(
         @Path("frameId") frameId: Int,
-        @Path("lectureId") lectureId: Int
+        @Path("lectureId") lectureId: Int,
     ): Response<Unit>
 
     @DELETE("/v2/timetables/lectures")
     suspend fun deleteTimetableLectures(
-        @Query("timetable_lecture_ids") lectureIds : List<Int>
+        @Query("timetable_lecture_ids") lectureIds: List<Int>,
     ): Response<Unit>
 
     @DELETE("/v2/all/timetables/frame")

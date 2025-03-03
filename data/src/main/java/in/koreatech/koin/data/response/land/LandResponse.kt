@@ -18,10 +18,10 @@ data class LandResponse(
     @SerializedName("longitude")
     val longitude: Double,
     @SerializedName("room_type")
-    val roomType: String?
+    val roomType: String?,
 )
 
 data class LandsResponse(
     @SerializedName("lands")
-    val lands: List<LandResponse>
+    val lands: List<LandResponse>,
 )

@@ -13,7 +13,5 @@ import javax.inject.Singleton
 abstract class BindsDataSourceRemoteModule {
     @Binds
     @Singleton
-    abstract fun bindsFirebaseMessagingDataSource(
-        firebaseMessageDataSourceImpl: FirebaseMessagingDataSourceImpl
-    ): FirebaseMessageDataSource
+    abstract fun bindsFirebaseMessagingDataSource(firebaseMessageDataSourceImpl: FirebaseMessagingDataSourceImpl): FirebaseMessageDataSource
 }

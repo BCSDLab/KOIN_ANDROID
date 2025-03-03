@@ -7,10 +7,11 @@ data class SemesterResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("semester")
-    val semester: String?
+    val semester: String?,
 ) {
-    fun toSemester() = Semester(
-        id = id,
-        semester = semester.orEmpty()
-    )
+    fun toSemester() =
+        Semester(
+            id = id,
+            semester = semester.orEmpty(),
+        )
 }

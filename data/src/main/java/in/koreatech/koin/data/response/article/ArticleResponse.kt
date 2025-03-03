@@ -16,7 +16,6 @@ import `in`.koreatech.koin.domain.model.article.html.HtmlTag
 import `in`.koreatech.koin.domain.model.article.html.toCssAttribute
 import `in`.koreatech.koin.domain.model.article.html.toHtmlAttribute
 import `in`.koreatech.koin.domain.model.article.html.toHtmlTag
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
@@ -36,24 +35,26 @@ data class ArticleResponse(
     @SerializedName("attachments") val attachments: List<AttachmentResponse>?,
     @SerializedName("url") val url: String?,
 ) {
-    fun toArticleHeader() = ArticleHeader(
-        id = id ?: 0,
-        boardId = boardId ?: 0,
-        title = title ?: "",
-        author = author ?: "",
-        viewCount = viewCount ?: 0,
-        registeredAt = registeredAt ?: "",
-        updatedAt = updatedAt ?: "",
-    )
+    fun toArticleHeader() =
+        ArticleHeader(
+            id = id ?: 0,
+            boardId = boardId ?: 0,
+            title = title ?: "",
+            author = author ?: "",
+            viewCount = viewCount ?: 0,
+            registeredAt = registeredAt ?: "",
+            updatedAt = updatedAt ?: "",
+        )
 
-    fun toArticle() = Article(
-        header = toArticleHeader(),
-        content = content ?: "",
-        prevArticleId = prevArticleId,
-        nextArticleId = nextArticleId,
-        attachments = attachments?.map { it.toAttachment() } ?: listOf(),
-        url = url ?: "",
-    )
+    fun toArticle() =
+        Article(
+            header = toArticleHeader(),
+            content = content ?: "",
+            prevArticleId = prevArticleId,
+            nextArticleId = nextArticleId,
+            attachments = attachments?.map { it.toAttachment() } ?: listOf(),
+            url = url ?: "",
+        )
 }
 
 fun Document.toHtmlModel(): HtmlModel {
@@ -69,78 +70,79 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
     this.attributes().forEach { attribute ->
         try {
             selfAttributes[attribute.key.toHtmlAttribute()] = attribute.value
-        } catch(e: IllegalArgumentException) {
+        } catch (e: IllegalArgumentException) {
             // 지정되지 않은 속성 무시
         }
     }
 
-    selfStyles.putAll(parentStyles)     // 부모 스타일 상속
+    selfStyles.putAll(parentStyles) // 부모 스타일 상속
     selfStyles.removeNonInheritableStyles() // 상속되지 않는 스타일 제거
 
     if (this is Element) {
         selfTag = this.tagName().toHtmlTag()
-        selfTag = when (selfTag) {
-            HtmlTag.B, HtmlTag.STRONG -> {
-                selfStyles[CssAttribute.FONT_STYLE] = BOLD
-                HtmlTag.SPAN
-            }
+        selfTag =
+            when (selfTag) {
+                HtmlTag.B, HtmlTag.STRONG -> {
+                    selfStyles[CssAttribute.FONT_STYLE] = BOLD
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.I, HtmlTag.EM, HtmlTag.DFN -> {
-                selfStyles[CssAttribute.FONT_STYLE] =
-                    if (selfStyles[CssAttribute.FONT_STYLE] == BOLD) BOLD_ITALIC else ITALIC
-                HtmlTag.SPAN
-            }
+                HtmlTag.I, HtmlTag.EM, HtmlTag.DFN -> {
+                    selfStyles[CssAttribute.FONT_STYLE] =
+                        if (selfStyles[CssAttribute.FONT_STYLE] == BOLD) BOLD_ITALIC else ITALIC
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.U -> {
-                selfStyles[CssAttribute.TEXT_DECORATION] = UNDERLINE
-                HtmlTag.SPAN
-            }
+                HtmlTag.U -> {
+                    selfStyles[CssAttribute.TEXT_DECORATION] = UNDERLINE
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.STRIKE, HtmlTag.DEL, HtmlTag.S -> {
-                selfStyles[CssAttribute.TEXT_DECORATION] = LINE_THROUGH
-                HtmlTag.SPAN
-            }
+                HtmlTag.STRIKE, HtmlTag.DEL, HtmlTag.S -> {
+                    selfStyles[CssAttribute.TEXT_DECORATION] = LINE_THROUGH
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.H1 -> {
-                selfStyles[CssAttribute.FONT_SIZE] = "2em"
-                selfStyles[CssAttribute.FONT_STYLE] = BOLD
-                HtmlTag.SPAN
-            }
+                HtmlTag.H1 -> {
+                    selfStyles[CssAttribute.FONT_SIZE] = "2em"
+                    selfStyles[CssAttribute.FONT_STYLE] = BOLD
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.H2 -> {
-                selfStyles[CssAttribute.FONT_SIZE] = "1.5em"
-                selfStyles[CssAttribute.FONT_STYLE] = BOLD
-                HtmlTag.SPAN
-            }
+                HtmlTag.H2 -> {
+                    selfStyles[CssAttribute.FONT_SIZE] = "1.5em"
+                    selfStyles[CssAttribute.FONT_STYLE] = BOLD
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.H3 -> {
-                selfStyles[CssAttribute.FONT_SIZE] = "1.17em"
-                selfStyles[CssAttribute.FONT_STYLE] = BOLD
-                HtmlTag.SPAN
-            }
+                HtmlTag.H3 -> {
+                    selfStyles[CssAttribute.FONT_SIZE] = "1.17em"
+                    selfStyles[CssAttribute.FONT_STYLE] = BOLD
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.H4 -> {
-                selfStyles[CssAttribute.FONT_SIZE] = "1em"
-                selfStyles[CssAttribute.FONT_STYLE] = BOLD
-                HtmlTag.SPAN
-            }
+                HtmlTag.H4 -> {
+                    selfStyles[CssAttribute.FONT_SIZE] = "1em"
+                    selfStyles[CssAttribute.FONT_STYLE] = BOLD
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.H5 -> {
-                selfStyles[CssAttribute.FONT_SIZE] = "0.83em"
-                selfStyles[CssAttribute.FONT_STYLE] = BOLD
-                HtmlTag.SPAN
-            }
+                HtmlTag.H5 -> {
+                    selfStyles[CssAttribute.FONT_SIZE] = "0.83em"
+                    selfStyles[CssAttribute.FONT_STYLE] = BOLD
+                    HtmlTag.SPAN
+                }
 
-            HtmlTag.H6 -> {
-                selfStyles[CssAttribute.FONT_SIZE] = "0.67em"
-                selfStyles[CssAttribute.FONT_STYLE] = BOLD
-                HtmlTag.SPAN
-            }
+                HtmlTag.H6 -> {
+                    selfStyles[CssAttribute.FONT_SIZE] = "0.67em"
+                    selfStyles[CssAttribute.FONT_STYLE] = BOLD
+                    HtmlTag.SPAN
+                }
 
-            else -> {
-                selfTag
+                else -> {
+                    selfTag
+                }
             }
-        }
     }
 
     if (selfAttributes.containsKey(HtmlAttribute.STYLE)) {
@@ -151,14 +153,17 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
     this.childNodes().forEach { child ->
         if (child is TextNode) {
             if (selfTag == HtmlTag.HTML && child.wholeText == "\n") return@forEach
-            if (child.wholeText.isNotEmpty())
-                selfChildren.add(HtmlModel(
-                    tag = HtmlTag.SPAN,
-                    content = child.wholeText,
-                    attributes = selfAttributes,
-                    children = listOf(),
-                    styles = selfStyles
-                ))
+            if (child.wholeText.isNotEmpty()) {
+                selfChildren.add(
+                    HtmlModel(
+                        tag = HtmlTag.SPAN,
+                        content = child.wholeText,
+                        attributes = selfAttributes,
+                        children = listOf(),
+                        styles = selfStyles,
+                    ),
+                )
+            }
         } else if (child is Element) {
             selfChildren.add(child.toHtmlModel(selfStyles))
         }
@@ -169,7 +174,7 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
         content = "",
         attributes = selfAttributes,
         children = selfChildren,
-        styles = selfStyles
+        styles = selfStyles,
     )
 }
 
@@ -179,7 +184,7 @@ private fun MutableMap<CssAttribute, String>.applySelfStyles(styles: List<String
         if (styleKeyValue.size == 2) {
             try {
                 this[styleKeyValue[0].toCssAttribute()] = styleKeyValue[1].trim()
-            } catch(e: IllegalArgumentException) {
+            } catch (e: IllegalArgumentException) {
                 // 지정되지 않은 속성 무시
             }
         }
@@ -203,7 +208,8 @@ private fun MutableMap<CssAttribute, String>.convertFontWeightToFontStyle() {
             } else {
                 this[CssAttribute.FONT_STYLE] = BOLD
             }
-        } catch (e: NumberFormatException) { }
+        } catch (e: NumberFormatException) {
+        }
     }.also {
         this.remove(CssAttribute.FONT_WEIGHT)
     }

@@ -24,7 +24,7 @@ object LocalDataSourceModule {
     @Singleton
     fun provideSignupLocalDataSource(
         @ApplicationContext applicationContext: Context,
-        @IoDispatcher dispatcherIO: CoroutineDispatcher
+        @IoDispatcher dispatcherIO: CoroutineDispatcher,
     ): SignupTermsLocalDataSource {
         return SignupTermsLocalDataSource(applicationContext, dispatcherIO)
     }
@@ -33,7 +33,7 @@ object LocalDataSourceModule {
     @Singleton
     fun provideTokenLocalDataSource(
         @ApplicationContext applicationContext: Context,
-        @IoDispatcher dispatcherIO: CoroutineDispatcher
+        @IoDispatcher dispatcherIO: CoroutineDispatcher,
     ): TokenLocalDataSource {
         return TokenLocalDataSource(applicationContext, dispatcherIO)
     }
@@ -41,7 +41,7 @@ object LocalDataSourceModule {
     @Provides
     @Singleton
     fun provideVersionLocalDataSource(
-        @ApplicationContext applicationContext: Context
+        @ApplicationContext applicationContext: Context,
     ): VersionLocalDataSource {
         return VersionLocalDataSource(applicationContext)
     }
@@ -49,7 +49,7 @@ object LocalDataSourceModule {
     @Provides
     @Singleton
     fun provideDeptLocalDataSource(
-        @ApplicationContext applicationContext: Context
+        @ApplicationContext applicationContext: Context,
     ): DeptLocalDataSource {
         return DeptLocalDataSource(applicationContext)
     }
@@ -64,9 +64,7 @@ object LocalDataSourceModule {
 
     @Provides
     @Singleton
-    fun provideArticleLocalDataSource(
-        articleDataStore: ArticleDataStore
-    ): ArticleLocalDataSource {
+    fun provideArticleLocalDataSource(articleDataStore: ArticleDataStore): ArticleLocalDataSource {
         return ArticleLocalDataSource(articleDataStore)
     }
 }

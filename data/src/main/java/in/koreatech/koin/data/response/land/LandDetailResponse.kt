@@ -72,5 +72,5 @@ data class LandDetailResponse(
     @SerializedName("opt_microwave")
     val optMicrowave: Boolean,
     @SerializedName("room_type")
-    val roomType: String?
+    val roomType: String?,
 )
