@@ -9,9 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.Navigator
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreen
@@ -27,14 +25,11 @@ import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
 
-
-fun NavGraphBuilder.registerStoreScreen(
-    navController: NavHostController
-){
+fun NavGraphBuilder.registerStoreScreen(navController: NavHostController) {
     navigation(
         route = REGISTERSTORESCREEN,
-        startDestination = InsertStoreRoute.START.name
-    ){
+        startDestination = InsertStoreRoute.START.name,
+    ) {
         composable(
             route = InsertStoreRoute.START.name,
         ) {
@@ -44,7 +39,7 @@ fun NavGraphBuilder.registerStoreScreen(
                 },
                 onBackPressed = {
                     navController.navigateUp()
-                }
+                },
             )
         }
 
@@ -57,44 +52,46 @@ fun NavGraphBuilder.registerStoreScreen(
                 },
                 onBackPressed = {
                     navController.navigateUp()
-                }
+                },
             )
         }
 
         composable(
             route = "${InsertStoreRoute.BASIC_INFO.name}/{categoryId}",
-            arguments = listOf(
-                navArgument("categoryId"){
-                    type = NavType.IntType
-                    defaultValue = 0
-                }
-            )
-        ){
+            arguments =
+                listOf(
+                    navArgument("categoryId") {
+                        type = NavType.IntType
+                        defaultValue = 0
+                    },
+                ),
+        ) {
             InsertBasicInfoScreen(
                 onBackPressed = {
                     navController.navigateUp()
                 },
                 navigateToInsertDetailInfoScreen = {
                     navigateToDetailInfo(navController, it)
-                }
+                },
             )
         }
 
         composable(
-            route = InsertStoreRoute.DETAIL_INFO.name
-        ){
-
+            route = InsertStoreRoute.DETAIL_INFO.name,
+        ) {
             val bundle = it.arguments
 
-            val basicInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle?.getParcelable("storeBasicInfo", InsertBasicInfoScreenState::class.java)
-            } else {
-                bundle?.getParcelable("storeBasicInfo") as? InsertBasicInfoScreenState
-            }
+            val basicInfo =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    bundle?.getParcelable("storeBasicInfo", InsertBasicInfoScreenState::class.java)
+                } else {
+                    bundle?.getParcelable("storeBasicInfo") as? InsertBasicInfoScreenState
+                }
 
-            val insertDetailInfoScreenViewModel: InsertDetailInfoScreenViewModel = it.sharedHiltViewModel(
-                navController = navController
-            )
+            val insertDetailInfoScreenViewModel: InsertDetailInfoScreenViewModel =
+                it.sharedHiltViewModel(
+                    navController = navController,
+                )
 
             if (basicInfo != null) {
                 InsertDetailInfoScreen(
@@ -102,27 +99,26 @@ fun NavGraphBuilder.registerStoreScreen(
                     onBackPressed = {
                         navController.navigateUp()
                     },
-
                     viewModel = insertDetailInfoScreenViewModel,
-
                     navigateToCheckScreen = {
                         navigateToCheckScreen(navController, it)
-                    }
+                    },
                 )
             }
         }
         composable(
-            route = InsertStoreRoute.CHECK_SCREEN.name
-        ){
+            route = InsertStoreRoute.CHECK_SCREEN.name,
+        ) {
             val bundle = it.arguments
 
-            val storeInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle?.getParcelable("storeInfo", InsertDetailInfoScreenState::class.java)
-            } else {
-                bundle?.getParcelable("storeInfo") as? InsertDetailInfoScreenState
-            }
+            val storeInfo =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    bundle?.getParcelable("storeInfo", InsertDetailInfoScreenState::class.java)
+                } else {
+                    bundle?.getParcelable("storeInfo") as? InsertDetailInfoScreenState
+                }
 
-            if(storeInfo != null){
+            if (storeInfo != null) {
                 FinalCheckStoreScreen(
                     storeInfo = storeInfo,
                     onBackPressed = {
@@ -130,7 +126,7 @@ fun NavGraphBuilder.registerStoreScreen(
                     },
                     navigateToFinishScreen = {
                         navController.navigate(InsertStoreRoute.FINISH_SCREEN.name)
-                    }
+                    },
                 )
             }
         }
@@ -140,53 +136,55 @@ fun NavGraphBuilder.registerStoreScreen(
         ) {
             FinishRegisterScreen(
                 goToMainScreen = {
-                    navController.navigate(MYSTORESCREEN){
+                    navController.navigate(MYSTORESCREEN) {
                         popUpTo(
-                            REGISTERSTORESCREEN
-                        ){
+                            REGISTERSTORESCREEN,
+                        ) {
                             inclusive = true
                         }
                     }
                 },
                 onBackPressed = {
                     navController.navigateUp()
-                }
+                },
             )
         }
     }
 }
+
 private fun navigateToMainInfo(
     navController: NavController,
-    categoryId: Int
+    categoryId: Int,
 ) {
-    navController.navigate("${InsertStoreRoute.BASIC_INFO}/${categoryId}")
+    navController.navigate("${InsertStoreRoute.BASIC_INFO}/$categoryId")
 }
-
 
 private fun navigateToDetailInfo(
     navController: NavController,
-    storeBasicInfo: InsertBasicInfoScreenState
+    storeBasicInfo: InsertBasicInfoScreenState,
 ) {
-    val bundle = Bundle().apply {
-        this.putParcelable("storeBasicInfo", storeBasicInfo)
-    }
+    val bundle =
+        Bundle().apply {
+            this.putParcelable("storeBasicInfo", storeBasicInfo)
+        }
 
     navController.navigate(InsertStoreRoute.DETAIL_INFO.name, args = bundle)
 }
 
 private fun navigateToCheckScreen(
     navController: NavController,
-    storeInfo: InsertDetailInfoScreenState
+    storeInfo: InsertDetailInfoScreenState,
 ) {
     val bundle = Bundle()
     bundle.putParcelable("storeInfo", storeInfo)
     navController.navigate(InsertStoreRoute.CHECK_SCREEN.name, args = bundle)
 }
+
 fun NavController.navigate(
     route: String,
     args: Bundle,
     navOptions: NavOptions? = null,
-    navigatorExtras: Navigator.Extras? = null
+    navigatorExtras: Navigator.Extras? = null,
 ) {
     val nodes = graph.findNode(REGISTERSTORESCREEN) as? NavGraph
 

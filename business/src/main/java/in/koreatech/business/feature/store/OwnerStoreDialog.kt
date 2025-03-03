@@ -31,7 +31,6 @@ import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.Gray6
 
-
 @Composable
 fun OwnerStoreDialog(
     dialogTitle: String,
@@ -46,19 +45,20 @@ fun OwnerStoreDialog(
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
-            modifier = Modifier
-                .padding(7.dp)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(7.dp)
+                    .fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(
-                modifier = Modifier
-                    .background(Color.White)
-                    .padding(vertical = 40.dp, horizontal = 14.dp),
+                modifier =
+                    Modifier
+                        .background(Color.White)
+                        .padding(vertical = 40.dp, horizontal = 14.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-
-                ) {
+            ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = dialogTitle,
@@ -85,9 +85,10 @@ fun OwnerStoreDialog(
                         },
                         border = BorderStroke(1.dp, Gray6),
                         shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier
-                            .width(128.dp)
-                            .height(48.dp),
+                        modifier =
+                            Modifier
+                                .width(128.dp)
+                                .height(48.dp),
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
@@ -102,21 +103,23 @@ fun OwnerStoreDialog(
                         onClick = {
                             onConfirmation()
                         },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = ColorSecondary,
-                            disabledBackgroundColor = ColorDisabledButton,
-                            contentColor = Color.White,
-                            disabledContentColor = Color.White,
-                        ),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                backgroundColor = ColorSecondary,
+                                disabledBackgroundColor = ColorDisabledButton,
+                                contentColor = Color.White,
+                                disabledContentColor = Color.White,
+                            ),
                         border = BorderStroke(1.dp, ColorSecondary),
                         shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier
-                            .width(128.dp)
-                            .height(48.dp),
+                        modifier =
+                            Modifier
+                                .width(128.dp)
+                                .height(48.dp),
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
-                            text = positiveButtonText
+                            text = positiveButtonText,
                         )
                     }
                 }

@@ -17,9 +17,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
@@ -53,25 +53,30 @@ fun CollapsedTopBar(
     state: MyStoreDetailState,
 ) {
     val color: Color by animateColorAsState(
-        if (isCollapsed) Color.White
-        else Color.Transparent
+        if (isCollapsed) {
+            Color.White
+        } else {
+            Color.Transparent
+        },
     )
     Box(
-        modifier = modifier
-            .background(color)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.BottomStart
+        modifier =
+            modifier
+                .background(color)
+                .fillMaxWidth(),
+        contentAlignment = Alignment.BottomStart,
     ) {
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
-            visible = isCollapsed
+            visible = isCollapsed,
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .padding(horizontal = 10.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .padding(horizontal = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -79,15 +84,16 @@ fun CollapsedTopBar(
                     IconButton(onClick = onNavigateToModifyScreen) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_setting),
-                            contentDescription = stringResource(R.string.shop_management)
+                            contentDescription = stringResource(R.string.shop_management),
                         )
                     }
                 }
                 Divider(
                     color = ColorTextField,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(1.dp),
                 )
             }
         }
@@ -96,121 +102,131 @@ fun CollapsedTopBar(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun StoreInfoScreen(
-    viewModel: MyStoreDetailViewModel,
-) {
+fun StoreInfoScreen(viewModel: MyStoreDetailViewModel) {
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState { state.storeInfo?.imageUrls?.size ?: 1 }
 
     Column(modifier = Modifier) {
-
         Row(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        )
-        {
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+        ) {
             Button(
                 onClick = { viewModel.onRegisterStoreClicked() },
-                modifier = Modifier
-                    .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
-                    .width(107.dp)
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White
-                ),
+                modifier =
+                    Modifier
+                        .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
+                        .width(107.dp)
+                        .height(40.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                    ),
                 shape = RoundedCornerShape(0.dp),
                 elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
             ) {
                 Text(
                     text = stringResource(R.string.register_store),
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 15.sp
-                    )
+                    style =
+                        TextStyle(
+                            color = Color.White,
+                            fontSize = 15.sp,
+                        ),
                 )
             }
 
             Button(
                 onClick = {
                     viewModel.showSelectStoreDialog()
-                          },
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
-                    .width(107.dp)
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White
-                ),
+                },
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
+                        .width(107.dp)
+                        .height(40.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                    ),
                 shape = RoundedCornerShape(0.dp),
                 elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
             ) {
                 Text(
                     text = stringResource(R.string.select_store),
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 15.sp
-                    )
+                    style =
+                        TextStyle(
+                            color = Color.White,
+                            fontSize = 15.sp,
+                        ),
                 )
             }
 
             Button(
                 onClick = {
                     viewModel.onRegisterMenuClicked()
-                          },
-                modifier = Modifier
-                    .width(107.dp)
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White
-                ),
+                },
+                modifier =
+                    Modifier
+                        .width(107.dp)
+                        .height(40.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                    ),
                 shape = RoundedCornerShape(0.dp),
                 elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
-
-                ) {
+            ) {
                 Text(
                     text = stringResource(R.string.register_menu),
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 15.sp
-                    )
+                    style =
+                        TextStyle(
+                            color = Color.White,
+                            fontSize = 15.sp,
+                        ),
                 )
             }
         }
 
         Divider(
-            modifier = Modifier
-                .fillMaxWidth(),
-            color = ColorPrimary
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            color = ColorPrimary,
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Gray2),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(Gray2),
             contentAlignment = Alignment.Center,
         ) {
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(255.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(255.dp),
             ) { page ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
                     Image(
                         modifier = Modifier.height(255.dp),
-                        painter = rememberAsyncImagePainter(
-                            model = if (state.storeInfo != null) state.storeInfo.imageUrls[page] else R.drawable.no_image
-                        ),
+                        painter =
+                            rememberAsyncImagePainter(
+                                model = if (state.storeInfo != null) state.storeInfo.imageUrls[page] else R.drawable.no_image,
+                            ),
                         contentDescription = stringResource(R.string.shop_image),
                         contentScale = ContentScale.Crop,
                     )
@@ -218,19 +234,20 @@ fun StoreInfoScreen(
             }
         }
         Button(
-            modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 10.dp)
-                .background(Color.White)
-                .fillMaxWidth()
-                .height(40.dp),
+            modifier =
+                Modifier
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
+                    .background(Color.White)
+                    .fillMaxWidth()
+                    .height(40.dp),
             onClick = viewModel::navigateToModifyScreen,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.White,
-                contentColor = ColorPrimary,
-            ),
+            colors =
+                ButtonDefaults.buttonColors(
+                    backgroundColor = Color.White,
+                    contentColor = ColorPrimary,
+                ),
             shape = Shapes.medium,
-            border = BorderStroke(1.dp, ColorPrimary)
-
+            border = BorderStroke(1.dp, ColorPrimary),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string.shop_management), color = ColorPrimary, fontSize = 16.sp)

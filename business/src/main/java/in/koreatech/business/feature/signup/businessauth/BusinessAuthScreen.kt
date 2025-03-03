@@ -75,31 +75,33 @@ fun BusinessAuthScreen(
     val context = LocalContext.current
     val businessAuthState = businessAuthViewModel.collectAsState().value
     val accountSetupState = accountSetupViewModel.collectAsState().value
-    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(5),
-        onResult = {
-            businessAuthViewModel.changeImageUri(
-                context,
-                accountSetupState.phoneNumber,
-                accountSetupState.password,
-                it
-            )
-        }
-    )
+    val multiplePhotoPickerLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickMultipleVisualMedia(5),
+            onResult = {
+                businessAuthViewModel.changeImageUri(
+                    context,
+                    accountSetupState.phoneNumber,
+                    accountSetupState.password,
+                    it,
+                )
+            },
+        )
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 12.dp),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(top = 12.dp),
     ) {
-
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
         ) {
             IconButton(
                 onClick = businessAuthViewModel::onNavigateToBackScreen,
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier.align(Alignment.CenterStart),
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
@@ -111,27 +113,29 @@ fun BusinessAuthScreen(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
                 fontWeight = Bold,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
         Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp),
+            modifier =
+                Modifier
+                    .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.Center,
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = Bold,
-                    text = stringResource(id = R.string.business_auth)
+                    text = stringResource(id = R.string.business_auth),
                 )
                 Text(
                     text = stringResource(id = R.string.three_third),
@@ -141,56 +145,56 @@ fun BusinessAuthScreen(
             }
 
             Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                    cap = StrokeCap.Round,
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 40, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                    cap = StrokeCap.Round,
                 )
             }
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp)
-                .verticalScroll(scrollState),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp)
+                    .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
         ) {
-
             Text(
                 text = stringResource(id = R.string.master_name),
                 fontSize = 14.sp,
-                fontWeight = Bold
+                fontWeight = Bold,
             )
             LinedTextField(
                 value = businessAuthState.name,
                 onValueChange = { businessAuthViewModel.onNameChanged(it) },
-                label = stringResource(id = R.string.enter_name)
+                label = stringResource(id = R.string.enter_name),
             )
             Text(
                 text = stringResource(id = R.string.shop_name),
                 fontSize = 14.sp,
-                fontWeight = Bold
+                fontWeight = Bold,
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top,
             ) {
-
                 LinedTextField(
                     modifier = Modifier.width(197.dp),
                     value = businessAuthState.shopName,
@@ -198,19 +202,23 @@ fun BusinessAuthScreen(
                         businessAuthViewModel.onShopNameChanged(it)
                         businessAuthViewModel.onShopIdChanged(null)
                     },
-                    label = stringResource(id = R.string.enter_store_name)
+                    label = stringResource(id = R.string.enter_store_name),
                 )
 
-                Button(modifier = Modifier
-                    .height(41.dp),
+                Button(
+                    modifier =
+                        Modifier
+                            .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
-                        contentColor = Color.White,
-                    ),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            backgroundColor = ColorPrimary,
+                            contentColor = Color.White,
+                        ),
                     onClick = {
                         businessAuthViewModel.onNavigateToSearchStore()
-                    }) {
+                    },
+                ) {
                     Text(text = stringResource(id = R.string.search_store))
                 }
             }
@@ -218,7 +226,7 @@ fun BusinessAuthScreen(
             Text(
                 text = stringResource(id = R.string.business_registration_number),
                 fontSize = 14.sp,
-                fontWeight = Bold
+                fontWeight = Bold,
             )
             LinedTextField(
                 value = businessAuthState.shopNumber,
@@ -227,18 +235,22 @@ fun BusinessAuthScreen(
                     businessAuthViewModel.storeNumberCheck()
                 },
                 label = stringResource(id = R.string.enter_business_registration_number),
-                isError = businessAuthState.signupContinuationState == SignupContinuationState.BusinessNumberIsNotValidate ||
+                isError =
+                    businessAuthState.signupContinuationState == SignupContinuationState.BusinessNumberIsNotValidate ||
                         businessAuthState.signupContinuationState is SignupContinuationState.Failed,
-                errorText = if (businessAuthState.signupContinuationState is SignupContinuationState.Failed)
-                    businessAuthState.signupContinuationState.message
-                else stringResource(id = R.string.business_number_not_validate)
+                errorText =
+                    if (businessAuthState.signupContinuationState is SignupContinuationState.Failed) {
+                        businessAuthState.signupContinuationState.message
+                    } else {
+                        stringResource(id = R.string.business_number_not_validate)
+                    },
             )
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = stringResource(id = R.string.instruction_file),
                 fontSize = 14.sp,
-                fontWeight = Bold
+                fontWeight = Bold,
             )
 
             if (businessAuthState.selectedImages.isNotEmpty()) {
@@ -255,29 +267,32 @@ fun BusinessAuthScreen(
                         list.map {
                             AttachStore(
                                 it,
-                                it
+                                it,
                             )
-                        }.toMutableList()
+                        }.toMutableList(),
                     )
                 }
             }
 
             Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(44.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(44.dp),
                 shape = RectangleShape,
                 enabled = businessAuthState.selectedImages.isEmpty(),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField,
-                    contentColor = Gray1,
-                    disabledBackgroundColor = ColorTextField,
-                    disabledContentColor = Gray3,
-                ),
-                onClick = { businessAuthViewModel.onDialogVisibilityChanged(true) }) {
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorTextField,
+                        contentColor = Gray1,
+                        disabledBackgroundColor = ColorTextField,
+                        disabledContentColor = Gray3,
+                    ),
+                onClick = { businessAuthViewModel.onDialogVisibilityChanged(true) },
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.attach_file_add),
-                    contentDescription = stringResource(id = R.string.attach_file)
+                    contentDescription = stringResource(id = R.string.attach_file),
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
@@ -289,18 +304,20 @@ fun BusinessAuthScreen(
             }
 
             Spacer(modifier = Modifier.weight(1f))
-            Button(modifier = Modifier
-                .fillMaxWidth()
-                .height(44.dp),
+            Button(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
                 enabled = businessAuthState.isButtonEnabled,
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    disabledBackgroundColor = ColorDisabledButton,
-                    contentColor = Color.White,
-                    disabledContentColor = Color.White,
-                ),
-
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        disabledBackgroundColor = ColorDisabledButton,
+                        contentColor = Color.White,
+                        disabledContentColor = Color.White,
+                    ),
                 onClick = {
                     businessAuthViewModel.sendRegisterRequest(
                         fileUrls = businessAuthState.fileInfo.map { it.resultUrl },
@@ -311,7 +328,8 @@ fun BusinessAuthScreen(
                         shopId = businessAuthState.shopId,
                         shopName = businessAuthState.shopName,
                     )
-                }) {
+                },
+            ) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
@@ -323,21 +341,19 @@ fun BusinessAuthScreen(
                     onConfirmation = {
                         multiplePhotoPickerLauncher.launch(
                             PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
-                            )
+                                ActivityResultContracts.PickVisualMedia.ImageOnly,
+                            ),
                         )
                         businessAuthViewModel.onDialogVisibilityChanged(false)
                     },
                     dialogTitle = stringResource(id = R.string.file_upload),
                     dialogText = stringResource(id = R.string.file_upload_requirements),
                     positiveButtonText = stringResource(id = R.string.select_file),
-                    visibility = businessAuthState.dialogVisibility
+                    visibility = businessAuthState.dialogVisibility,
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
-
         }
-
     }
     businessAuthViewModel.collectSideEffect {
         when (it) {
@@ -353,16 +369,14 @@ fun BusinessAuthScreen(
                 onNextClicked()
             }
         }
-
     }
-
 }
 
 @Composable
 fun UploadFileList(
     modifier: Modifier,
     fileList: MutableList<AttachStore>,
-    onDelete: (Int) -> Unit = {}
+    onDelete: (Int) -> Unit = {},
 ) {
     Column(modifier = Modifier.height(fileList.size * 40.dp)) {
         LazyColumn(
@@ -370,17 +384,19 @@ fun UploadFileList(
         ) {
             items(fileList.size) { index ->
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(ColorTextField)
-                        .padding(6.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .background(ColorTextField)
+                            .padding(6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable { onDelete(index) }
-                            .padding(end = 8.dp),
+                        modifier =
+                            Modifier
+                                .size(24.dp)
+                                .clickable { onDelete(index) }
+                                .padding(end = 8.dp),
                         painter = painterResource(id = R.drawable.ic_delete_button),
                         contentDescription = stringResource(id = R.string.file_icon),
                     )
@@ -388,7 +404,7 @@ fun UploadFileList(
                     Text(
                         text = fileList[index].title,
                         fontSize = 15.sp,
-                        color = ColorMinor
+                        color = ColorMinor,
                     )
                 }
                 Spacer(modifier = Modifier.width(12.dp))
@@ -396,4 +412,3 @@ fun UploadFileList(
         }
     }
 }
-

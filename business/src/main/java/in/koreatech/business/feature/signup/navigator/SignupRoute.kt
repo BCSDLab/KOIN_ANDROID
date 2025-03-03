@@ -1,11 +1,11 @@
 package `in`.koreatech.business.feature.signup.navigator
 
-enum class SignupRoute(){
+enum class SignupRoute() {
     LOGIN,
     TERMS_OF_SERVICE,
     BASIC_INFO_INPUT,
     EMAIL_AUTH,
     BUSINESS_AUTH,
     STORE_SETUP,
-    SIGNUP_COMPLETED
+    SIGNUP_COMPLETED,
 }

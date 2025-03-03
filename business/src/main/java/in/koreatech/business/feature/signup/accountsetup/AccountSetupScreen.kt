@@ -63,13 +63,14 @@ fun AccountSetupScreen(
     ) {
         Column {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
             ) {
                 IconButton(
                     onClick = { viewModel.onBackButtonClicked() },
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    modifier = Modifier.align(Alignment.CenterStart),
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_back),
@@ -81,27 +82,29 @@ fun AccountSetupScreen(
                     text = stringResource(id = R.string.sign_up),
                     fontSize = 18.sp,
                     fontWeight = Bold,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 )
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Column(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 24.dp),
                 verticalArrangement = Arrangement.Center,
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
                         modifier = Modifier,
                         color = ColorPrimary,
                         fontWeight = Bold,
-                        text = stringResource(id = R.string.input_basic_information)
+                        text = stringResource(id = R.string.input_basic_information),
                     )
                     Text(
                         text = stringResource(id = R.string.two_third),
@@ -111,23 +114,24 @@ fun AccountSetupScreen(
                 }
 
                 Canvas(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
                 ) {
                     drawLine(
                         color = ColorUnarchived,
                         start = Offset(-40f, 0f),
                         end = Offset(size.width + 40, size.height),
                         strokeWidth = 4.dp.toPx(),
-                        cap = StrokeCap.Round
+                        cap = StrokeCap.Round,
                     )
                     drawLine(
                         color = ColorPrimary,
                         start = Offset(-40f, 0f),
                         end = Offset((size.width + 35) / 3 * 2, size.height),
                         strokeWidth = 4.dp.toPx(),
-                        cap = StrokeCap.Round
+                        cap = StrokeCap.Round,
                     )
                 }
             }
@@ -135,69 +139,81 @@ fun AccountSetupScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp)
-                .verticalScroll(scrollState),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp)
+                    .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
         ) {
-
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = stringResource(id = R.string.phone_number),
                 fontSize = 14.sp,
-                fontWeight = Bold
+                fontWeight = Bold,
             )
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 LinedTextField(
                     value = state.phoneNumber,
                     onValueChange = { viewModel.onPhoneNumChanged(it) },
                     modifier = Modifier.width(203.dp),
                     label = stringResource(id = R.string.enter_phone_number),
                     textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                    errorText = when (state.sendCodeError) {
-                        OwnerError.ExistsPhoneNumberException -> stringResource(
-                            id = R.string.error_account_duplicated
-                        )
-                        OwnerError.NotValidPhoneNumberException -> stringResource(
-                            id = R.string.error_invalid_phone_number
-                        )
-                        else -> stringResource(id = R.string.error_network_unknown)
-                    },
+                    errorText =
+                        when (state.sendCodeError) {
+                            OwnerError.ExistsPhoneNumberException ->
+                                stringResource(
+                                    id = R.string.error_account_duplicated,
+                                )
+                            OwnerError.NotValidPhoneNumberException ->
+                                stringResource(
+                                    id = R.string.error_invalid_phone_number,
+                                )
+                            else -> stringResource(id = R.string.error_network_unknown)
+                        },
                     successText = stringResource(R.string.success_send_sms_code),
                     isError = state.sendCodeError != null,
                     isSuccess = state.phoneNumberState == SignupContinuationState.RequestedSmsValidation,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
 
-                Button(modifier = Modifier
-                    .width(115.dp)
-                    .height(41.dp),
+                Button(
+                    modifier =
+                        Modifier
+                            .width(115.dp)
+                            .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
                     enabled = state.phoneNumber.isNotEmpty(),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if(state.sendCodeError == null) ColorPrimary else ColorSecondary,
-                        contentColor = Color.White,
-                        disabledBackgroundColor = Gray2,
-                        disabledContentColor = Gray1,
-                    ),
-                    onClick = viewModel::checkExistsAccount
-                    ) {
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            backgroundColor = if (state.sendCodeError == null) ColorPrimary else ColorSecondary,
+                            contentColor = Color.White,
+                            disabledBackgroundColor = Gray2,
+                            disabledContentColor = Gray1,
+                        ),
+                    onClick = viewModel::checkExistsAccount,
+                ) {
                     Text(
-                        text = if(state.phoneNumberState is SignupContinuationState.RequestedSmsValidation) stringResource(id = R.string.resend_authentication_code) else stringResource(id = R.string.send_authentication_code),
+                        text =
+                            if (state.phoneNumberState is SignupContinuationState.RequestedSmsValidation) {
+                                stringResource(
+                                    id = R.string.resend_authentication_code,
+                                )
+                            } else {
+                                stringResource(id = R.string.send_authentication_code)
+                            },
                         fontWeight = Bold,
                         fontSize = 13.sp,
                     )
                 }
-
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -205,18 +221,20 @@ fun AccountSetupScreen(
             Text(
                 text = stringResource(id = R.string.authentication_code),
                 fontSize = 14.sp,
-                fontWeight = Bold
+                fontWeight = Bold,
             )
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 LinedTextField(
-                    modifier = Modifier
-                        .width(203.dp),
+                    modifier =
+                        Modifier
+                            .width(203.dp),
                     value = state.authCode,
                     onValueChange = { viewModel.onAuthCodeChanged(it) },
                     label = stringResource(id = R.string.enter_verification_code),
@@ -225,27 +243,29 @@ fun AccountSetupScreen(
                     successText = stringResource(id = R.string.auth_code_equal),
                     isError = state.verifyState is SignupContinuationState.Failed,
                     isSuccess = state.verifyState == SignupContinuationState.CheckComplete,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
 
                 Button(
-                    modifier = Modifier
-                        .width(115.dp)
-                        .height(41.dp),
+                    modifier =
+                        Modifier
+                            .width(115.dp)
+                            .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
                     enabled = state.authCode.isNotEmpty() && state.verifyState != SignupContinuationState.CheckComplete,
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if ( state.verifyState is SignupContinuationState.Failed) ColorSecondary else ColorPrimary,
-                        contentColor = Color.White,
-                        disabledBackgroundColor = Gray2,
-                        disabledContentColor = Gray1,
-                    ),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            backgroundColor = if (state.verifyState is SignupContinuationState.Failed) ColorSecondary else ColorPrimary,
+                            contentColor = Color.White,
+                            disabledBackgroundColor = Gray2,
+                            disabledContentColor = Gray1,
+                        ),
                     onClick = {
                         viewModel.verifySmsCode(
                             state.phoneNumber,
-                            state.authCode
+                            state.authCode,
                         )
-                    }
+                    },
                 ) {
                     Text(
                         text = stringResource(R.string.verify_sms),
@@ -254,7 +274,6 @@ fun AccountSetupScreen(
                     )
                 }
             }
-
 
             Text(text = stringResource(id = R.string.password), fontSize = 14.sp, fontWeight = Bold)
             LinedTextField(
@@ -272,7 +291,7 @@ fun AccountSetupScreen(
             Text(
                 text = stringResource(id = R.string.password_confirm),
                 fontSize = 14.sp,
-                fontWeight = Bold
+                fontWeight = Bold,
             )
             LinedTextField(
                 value = state.passwordConfirm,
@@ -286,19 +305,21 @@ fun AccountSetupScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-                    .height(44.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp)
+                        .height(44.dp),
                 shape = RectangleShape,
                 enabled = state.isButtonEnabled,
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White,
-                    disabledBackgroundColor = Gray2,
-                    disabledContentColor = Gray1,
-                ),
-                onClick = viewModel::onNavigateToNextScreen
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                        disabledBackgroundColor = Gray2,
+                        disabledContentColor = Gray1,
+                    ),
+                onClick = viewModel::onNavigateToNextScreen,
             ) {
                 Text(
                     text = stringResource(id = R.string.next),
@@ -324,7 +345,7 @@ fun AccountSetupScreenPreview() {
     KOIN_ANDROIDTheme {
         AccountSetupScreen(
             onNextClicked = {},
-            onBackClicked = {}
+            onBackClicked = {},
         )
     }
 }

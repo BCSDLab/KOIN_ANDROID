@@ -2,12 +2,9 @@ package `in`.koreatech.business.feature.insertstore.insertmaininfo
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.provider.OpenableColumns
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -44,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import `in`.koreatech.business.feature.insertstore.selectcategory.InsertStoreProgressBar
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
@@ -52,17 +48,14 @@ import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.upload.toResizeBitmap
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import java.io.InputStream
-
 
 @Composable
 fun InsertBasicInfoScreen(
     onBackPressed: () -> Unit,
     navigateToInsertDetailInfoScreen: (InsertBasicInfoScreenState) -> Unit,
-    viewModel: InsertBasicInfoScreenViewModel = hiltViewModel()
+    viewModel: InsertBasicInfoScreenViewModel = hiltViewModel(),
 ) {
     val state = viewModel.collectAsState().value
 
@@ -81,14 +74,13 @@ fun InsertBasicInfoScreen(
         onUploadImage = {
             viewModel.getPreSignedUrl(it.first.first, it.first.second, it.second.first, it.second.second)
         },
-
         onStoreAddressChange = {
             viewModel.insertStoreAddress(it)
         },
         onNextButtonClicked = {
             viewModel.onNextButtonClick()
         },
-        onBackPressed = onBackPressed
+        onBackPressed = onBackPressed,
     )
 
     HandleSideEffects(viewModel, navigateToInsertDetailInfoScreen)
@@ -103,68 +95,70 @@ fun InsertBasicInfoScreenImpl(
     storeAddress: String = "",
     isBasicInfoValid: Boolean = false,
     onStoreImageChange: (Uri) -> Unit = {},
-    onUploadImage:(Pair<Pair<Long, String>, Pair<String, String>>) -> Unit = {},
+    onUploadImage: (Pair<Pair<Long, String>, Pair<String, String>>) -> Unit = {},
     onStoreNameChange: (String) -> Unit = {},
     onStoreAddressChange: (String) -> Unit = {},
     onNextButtonClicked: () -> Unit = {},
-    onBackPressed: () -> Unit = {}
+    onBackPressed: () -> Unit = {},
 ) {
-
     val context = LocalContext.current
 
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let { uri ->
+    val galleryLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
 
-                val inputStream = context.contentResolver.openInputStream(uri)
+                    val inputStream = context.contentResolver.openInputStream(uri)
 
-                if (uri.scheme.equals("content")) {
-                    val cursor = context.contentResolver.query(uri, null, null, null, null)
-                    cursor.use {
-                        if (cursor != null && cursor.moveToFirst()) {
-                            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+                    if (uri.scheme.equals("content")) {
+                        val cursor = context.contentResolver.query(uri, null, null, null, null)
+                        cursor.use {
+                            if (cursor != null && cursor.moveToFirst()) {
+                                val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                                val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
 
-                            if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                                val fileName = cursor.getString(fileNameIndex)
-                                val fileSize = cursor.getLong(fileSizeIndex)
+                                if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                                    val fileName = cursor.getString(fileNameIndex)
+                                    val fileSize = cursor.getLong(fileSizeIndex)
 
-                                if (inputStream != null) {
-                                    onUploadImage(
-                                        Pair(
-                                            Pair(fileSize, "image/" + fileName.split(".")[1]),
-                                            Pair(fileName, uri.toString())
+                                    if (inputStream != null) {
+                                        onUploadImage(
+                                            Pair(
+                                                Pair(fileSize, "image/" + fileName.split(".")[1]),
+                                                Pair(fileName, uri.toString()),
+                                            ),
                                         )
-                                    )
+                                    }
+                                    inputStream?.close()
                                 }
-                                inputStream?.close()
                             }
                         }
                     }
+                    onStoreImageChange(uri)
                 }
-                onStoreImageChange(uri)
             }
         }
-    }
 
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         Box(
-            modifier = modifier
-                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
-                .size(40.dp)
-                .clickable {
-                    onBackPressed()
-                }
+            modifier =
+                modifier
+                    .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
+                    .size(40.dp)
+                    .clickable {
+                        onBackPressed()
+                    },
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_arrow_left),
                 contentDescription = "backArrow",
-                modifier = modifier
-                    .size(40.dp)
+                modifier =
+                    modifier
+                        .size(40.dp),
             )
         }
 
@@ -172,48 +166,48 @@ fun InsertBasicInfoScreenImpl(
             modifier = modifier.padding(top = 35.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store),
             fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         Text(
             modifier = modifier.padding(top = 34.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store_main_info),
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         InsertStoreProgressBar(modifier, 0.50f, R.string.insert_store_basic_info, R.string.page_two)
 
-
         Box(
-            modifier = Modifier
-                .padding(top = 32.dp)
-                .padding(horizontal = 32.dp)
-                .fillMaxWidth()
-                .height(200.dp)
-                .border(width = 1.dp, color = ColorMinor)
-                .clickable {
-                    galleryLauncher.launch(takePhotoFromAlbumIntent)
-                }
-            ,
-            contentAlignment = Alignment.Center
-        ){
-            if(storeImageIsEmpty){
+            modifier =
+                Modifier
+                    .padding(top = 32.dp)
+                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .border(width = 1.dp, color = ColorMinor)
+                    .clickable {
+                        galleryLauncher.launch(takePhotoFromAlbumIntent)
+                    },
+            contentAlignment = Alignment.Center,
+        ) {
+            if (storeImageIsEmpty) {
                 Image(
-                    modifier = Modifier
-                        .padding(horizontal = 71.dp, vertical = 53.dp),
+                    modifier =
+                        Modifier
+                            .padding(horizontal = 71.dp, vertical = 53.dp),
                     painter = painterResource(R.drawable.ic_no_store_image),
-                    contentDescription = "emptyStoreImage"
+                    contentDescription = "emptyStoreImage",
                 )
-            }
-            else{
+            } else {
                 Image(
                     modifier = Modifier.fillMaxSize(),
-                    painter = rememberAsyncImagePainter(
-                        storeImage
-                    ),
+                    painter =
+                        rememberAsyncImagePainter(
+                            storeImage,
+                        ),
                     contentDescription = "storeImage",
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.FillBounds,
                 )
             }
         }
@@ -222,57 +216,68 @@ fun InsertBasicInfoScreenImpl(
             stringResource(id = R.string.insert_store_store_name),
             storeName,
             onStoreNameChange,
-            32.dp
+            32.dp,
         )
 
         NameTextField(
             stringResource(id = R.string.insert_store_store_address),
             storeAddress,
             onStoreAddressChange,
-            24.dp
+            24.dp,
         )
         Row(
-            modifier = Modifier
-                .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
-                .fillMaxWidth()
-            ,
-            horizontalArrangement = Arrangement.End
-        ){
+            modifier =
+                Modifier
+                    .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+        ) {
             Button(
                 onClick = onNextButtonClicked,
-                colors = if(isBasicInfoValid) ButtonDefaults.buttonColors(ColorPrimary)
-                else ButtonDefaults.buttonColors(ColorDisabledButton),
+                colors =
+                    if (isBasicInfoValid) {
+                        ButtonDefaults.buttonColors(ColorPrimary)
+                    } else {
+                        ButtonDefaults.buttonColors(ColorDisabledButton)
+                    },
                 shape = RectangleShape,
-                modifier = modifier
-                    .height(38.dp)
-                    .width(105.dp)
+                modifier =
+                    modifier
+                        .height(38.dp)
+                        .width(105.dp),
             ) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.White,
                 )
             }
         }
     }
-
 }
 
 @Composable
-private fun HandleSideEffects(viewModel: InsertBasicInfoScreenViewModel, navigateToInsertDetailInfoScreen: (InsertBasicInfoScreenState) -> Unit) {
+private fun HandleSideEffects(
+    viewModel: InsertBasicInfoScreenViewModel,
+    navigateToInsertDetailInfoScreen: (InsertBasicInfoScreenState) -> Unit,
+) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is InsertBasicInfoScreenSideEffect.NavigateToInsertDetailInfoScreen -> navigateToInsertDetailInfoScreen(sideEffect.storeBasicInfo)
+            is InsertBasicInfoScreenSideEffect.NavigateToInsertDetailInfoScreen ->
+                navigateToInsertDetailInfoScreen(
+                    sideEffect.storeBasicInfo,
+                )
             is InsertBasicInfoScreenSideEffect.ShowMessage -> {
-                val message = when (sideEffect.type) {
-                    BasicInfoErrorType.NullStoreName -> context.getString(R.string.insert_store_null_store_name)
-                    BasicInfoErrorType.NullStoreAddress -> context.getString(R.string.insert_store_null_store_address)
-                    BasicInfoErrorType.NullStoreImage -> context.getString(R.string.insert_store_null_store_image)
-                    BasicInfoErrorType.FailUploadImage -> context.getString(R.string.insert_store_fail_upload_store_image)
-                }
+                val message =
+                    when (sideEffect.type) {
+                        BasicInfoErrorType.NullStoreName -> context.getString(R.string.insert_store_null_store_name)
+                        BasicInfoErrorType.NullStoreAddress -> context.getString(R.string.insert_store_null_store_address)
+                        BasicInfoErrorType.NullStoreImage -> context.getString(R.string.insert_store_null_store_image)
+                        BasicInfoErrorType.FailUploadImage -> context.getString(R.string.insert_store_fail_upload_store_image)
+                    }
                 ToastUtil.getInstance().makeShort(message)
             }
         }
@@ -284,20 +289,21 @@ fun NameTextField(
     textString: String = "",
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
-    paddingTopValue: Dp = 10.dp
-){
+    paddingTopValue: Dp = 10.dp,
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp)
-            .padding(top = paddingTopValue),
-        verticalAlignment = Alignment.CenterVertically
-    ){
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+                .padding(top = paddingTopValue),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Text(
             text = textString,
             fontSize = 14.sp,
             color = ColorActiveButton,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         BorderTextField(inputString, onStringChange)
@@ -308,24 +314,27 @@ fun NameTextField(
 fun BorderTextField(
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
-){
+) {
     Box(
-        modifier = Modifier
-            .padding(start = 30.dp)
-            .border(width = 1.dp, color = ColorMinor)
-            .height(37.dp),
-        contentAlignment = Alignment.CenterStart
+        modifier =
+            Modifier
+                .padding(start = 30.dp)
+                .border(width = 1.dp, color = ColorMinor)
+                .height(37.dp),
+        contentAlignment = Alignment.CenterStart,
     ) {
         BasicTextField(
             value = inputString,
             onValueChange = onStringChange,
-            textStyle = TextStyle(
-                color = Color.Black,
-                fontSize = 14.sp
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 12.dp)
+            textStyle =
+                TextStyle(
+                    color = Color.Black,
+                    fontSize = 14.sp,
+                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 12.dp),
         )
     }
 }
@@ -336,12 +345,10 @@ private val takePhotoFromAlbumIntent =
         action = Intent.ACTION_GET_CONTENT
         putExtra(
             Intent.EXTRA_MIME_TYPES,
-            arrayOf("image/jpeg", "image/png", "image/bmp", "image/webp")
+            arrayOf("image/jpeg", "image/png", "image/bmp", "image/webp"),
         )
         putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
     }
-
-
 
 @Preview
 @Composable

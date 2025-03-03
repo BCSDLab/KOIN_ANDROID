@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.signup.dialog
 
-import android.opengl.Visibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +15,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +32,6 @@ import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.Gray6
 
-
 @Composable
 fun BusinessAlertDialog(
     onDismissRequest: () -> Unit,
@@ -42,26 +39,27 @@ fun BusinessAlertDialog(
     dialogTitle: String,
     dialogText: String,
     positiveButtonText: String,
-    visibility: Boolean = false
+    visibility: Boolean = false,
 ) {
     if (!visibility) {
         return
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
-            modifier = Modifier
-                .padding(7.dp)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(7.dp)
+                    .fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(
-                modifier = Modifier
-                    .background(Color.White)
-                    .padding(vertical = 40.dp, horizontal = 14.dp),
+                modifier =
+                    Modifier
+                        .background(Color.White)
+                        .padding(vertical = 40.dp, horizontal = 14.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-
-                ) {
+            ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = dialogTitle,
@@ -89,9 +87,10 @@ fun BusinessAlertDialog(
                         },
                         border = BorderStroke(1.dp, Gray6),
                         shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier
-                            .width(128.dp)
-                            .height(48.dp),
+                        modifier =
+                            Modifier
+                                .width(128.dp)
+                                .height(48.dp),
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
@@ -106,21 +105,23 @@ fun BusinessAlertDialog(
                         onClick = {
                             onConfirmation()
                         },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = ColorActiveButton,
-                            disabledBackgroundColor = ColorDisabledButton,
-                            contentColor = Color.White,
-                            disabledContentColor = Color.White,
-                        ),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                backgroundColor = ColorActiveButton,
+                                disabledBackgroundColor = ColorDisabledButton,
+                                contentColor = Color.White,
+                                disabledContentColor = Color.White,
+                            ),
                         border = BorderStroke(1.dp, ColorActiveButton),
                         shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier
-                            .width(128.dp)
-                            .height(48.dp),
+                        modifier =
+                            Modifier
+                                .width(128.dp)
+                                .height(48.dp),
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
-                            text = positiveButtonText
+                            text = positiveButtonText,
                         )
                     }
                 }
@@ -134,9 +135,9 @@ fun BusinessAlertDialog(
 fun PreviewDialog() {
     BusinessAlertDialog(
         onDismissRequest = {},
-        onConfirmation ={},
-        dialogTitle ="",
-        dialogText ="",
-        positiveButtonText ="",
+        onConfirmation = {},
+        dialogTitle = "",
+        dialogText = "",
+        positiveButtonText = "",
     )
 }
