@@ -42,7 +42,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ChatRoom(
     viewModel: ChatRoomViewModel = hiltViewModel(),
-    navigateToChatList: (isBlocked: Boolean) -> Unit
+    navigateToChatList: (isBlocked: Boolean) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -59,14 +59,15 @@ fun ChatRoom(
                             if (fileNameIndex != -1 && fileSizeIndex != -1) {
                                 val fileName = cursor.getString(fileNameIndex)
                                 val fileSize = cursor.getLong(fileSizeIndex)
-                                val fileType = context.contentResolver.getType(uri)
-                                    ?: "image/${fileName.split(".").last()}"
+                                val fileType =
+                                    context.contentResolver.getType(uri)
+                                        ?: "image/${fileName.split(".").last()}"
 
                                 viewModel.getPreSignedUrl(
                                     fileSize,
                                     fileType,
                                     fileName,
-                                    uri
+                                    uri,
                                 )
                             }
                         }
@@ -98,7 +99,7 @@ fun ChatRoom(
                     }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(id = R.string.chat_toolbar_more)
+                            contentDescription = stringResource(id = R.string.chat_toolbar_more),
                         )
                     }
 
@@ -119,29 +120,30 @@ fun ChatRoom(
                             trailingIcon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_chat_block_user),
-                                    contentDescription = stringResource(id = R.string.chat_block_user)
+                                    contentDescription = stringResource(id = R.string.chat_block_user),
                                 )
                             },
                             onClick = {
                                 viewModel.changeBlockDialogState(true)
-                            }
+                            },
                         )
                     }
                 },
                 onNavigationIconClick = {
                     (context as Activity).finish()
-                }
+                },
             )
-
         },
         // Handle the navigation bar and IME insets on ChatInput
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
-            .exclude(WindowInsets.navigationBars)
-            .exclude(WindowInsets.ime)
+        contentWindowInsets =
+            ScaffoldDefaults.contentWindowInsets
+                .exclude(WindowInsets.navigationBars)
+                .exclude(WindowInsets.ime),
     ) { contentPadding ->
         ChatRoomContent(
-            modifier = Modifier
-                .padding(contentPadding),
+            modifier =
+                Modifier
+                    .padding(contentPadding),
             messages = uiState.chatMessage,
             uploadingImage = uiState.uploadingImage,
             chatPartnerProfileImage = uiState.chatPartnerProfileImage,
@@ -160,7 +162,7 @@ fun ChatRoom(
             onSendClick = { viewModel.sendMessage() },
             onShowImageChange = { state, url ->
                 viewModel.changeShowImageState(state, url)
-            }
+            },
         )
     }
 }
@@ -168,14 +170,14 @@ fun ChatRoom(
 fun handleSideEffect(
     sideEffect: ChatRoomSideEffect,
     context: Context,
-    navigateToChatList: (isBlocked: Boolean) -> Unit
+    navigateToChatList: (isBlocked: Boolean) -> Unit,
 ) {
     when (sideEffect) {
         ChatRoomSideEffect.FailedToConnectWS -> {
             Toast.makeText(
                 context,
                 context.getString(R.string.failed_to_connect_to_server),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
         }
 
@@ -183,7 +185,7 @@ fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.failed_to_upload_image),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
         }
 
@@ -191,7 +193,7 @@ fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.failed_to_block_user),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
         }
 
@@ -203,7 +205,7 @@ fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.blocked_by_user),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
             (context as Activity).finish()
         }

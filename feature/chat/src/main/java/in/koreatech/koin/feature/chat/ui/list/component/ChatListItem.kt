@@ -41,36 +41,40 @@ fun ChatListItem(
     imageUrl: String,
     lastMessageAt: LocalTime,
     unReadMessageCount: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val lastMessageTimeFormatType = DateTimeFormatter.ofPattern("a hh:mm")
     val convertedLastMessageTime by remember {
         mutableStateOf(
             lastMessageAt.format(
-                lastMessageTimeFormatType
-            )
+                lastMessageTimeFormatType,
+            ),
         )
     }
 
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 18.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(vertical = 18.dp, horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         if (URLUtil.isValidUrl(imageUrl) && imageUrl.isNotEmpty()) {
             SubcomposeAsyncImage(
-                modifier = Modifier
-                    .size(48.dp),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
-                    .crossfade(true)
-                    .build(),
+                modifier =
+                    Modifier
+                        .size(48.dp),
+                model =
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(imageUrl)
+                        .crossfade(true)
+                        .build(),
                 loading = {
                     Box(
-                        modifier = Modifier
-                            .border(1.dp, KoinTheme.colors.neutral300, shape = KoinTheme.shapes.medium),
-                        contentAlignment = Alignment.Center
+                        modifier =
+                            Modifier
+                                .border(1.dp, KoinTheme.colors.neutral300, shape = KoinTheme.shapes.medium),
+                        contentAlignment = Alignment.Center,
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_chat_list_thumbnail),
@@ -79,14 +83,15 @@ fun ChatListItem(
                     }
                 },
                 contentScale = ContentScale.Fit,
-                contentDescription = null
+                contentDescription = null,
             )
         } else {
             Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .border(1.dp, KoinTheme.colors.neutral300, shape = KoinTheme.shapes.medium),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .size(48.dp)
+                        .border(1.dp, KoinTheme.colors.neutral300, shape = KoinTheme.shapes.medium),
+                contentAlignment = Alignment.Center,
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_chat_list_thumbnail),
@@ -99,7 +104,7 @@ fun ChatListItem(
 
         Column {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
@@ -107,18 +112,18 @@ fun ChatListItem(
                     style = KoinTheme.typography.medium14,
                     color = KoinTheme.colors.neutral800,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
 
                 Text(
                     text = convertedLastMessageTime,
                     style = KoinTheme.typography.regular12,
-                    color = KoinTheme.colors.neutral500
+                    color = KoinTheme.colors.neutral500,
                 )
             }
 
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = recentMessage,
@@ -126,16 +131,17 @@ fun ChatListItem(
                     color = KoinTheme.colors.neutral500,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
 
                 if (unReadMessageCount > 0) {
                     Box(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(KoinTheme.colors.primary500)
-                            .padding(horizontal = 6.dp),
-                        contentAlignment = Alignment.Center
+                        modifier =
+                            Modifier
+                                .clip(CircleShape)
+                                .background(KoinTheme.colors.primary500)
+                                .padding(horizontal = 6.dp),
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = "$unReadMessageCount",
@@ -157,6 +163,6 @@ fun ChatListItemPreview() {
         recentMessage = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vitae risus condimentum leo facilisis luctus. Vestibulum viverra justo eu leo dictum, sit amet fermentum nisi facilisis. Mauris sagittis dignissim massa, ac varius enim faucibus id. Etiam tempus dolor et diam tempus consectetur. Nulla facilisi. Pellentesque ex nisi, varius eu pellentesque in, scelerisque sed nisl. Morbi tincidunt vestibulum sapien, at mattis erat tempus in. Sed consequat non ligula eget eleifend. Nulla tempor eleifend ligula sed dapibus. Nunc fringilla cursus felis. Curabitur egestas arcu non sodales mollis. ",
         imageUrl = "https://www.example.com/image.jpg",
         lastMessageAt = LocalTime.now(),
-        unReadMessageCount = 1
+        unReadMessageCount = 1,
     )
 }

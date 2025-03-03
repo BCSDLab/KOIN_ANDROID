@@ -42,7 +42,7 @@ fun ChatRoomContent(
     onImageButtonClick: () -> Unit,
     onSendClick: () -> Unit,
     onShowImageChange: (Boolean, Uri) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -52,26 +52,28 @@ fun ChatRoomContent(
             onShowImageChange(false, Uri.EMPTY)
         }
         Box(
-            modifier = modifier
-                .fillMaxSize()
-                .background(KoinTheme.colors.neutral800),
-            contentAlignment = Alignment.Center
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .background(KoinTheme.colors.neutral800),
+            contentAlignment = Alignment.Center,
         ) {
             SubcomposeAsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(showImage.second)
-                    .crossfade(true)
-                    .build(),
+                model =
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(showImage.second)
+                        .crossfade(true)
+                        .build(),
                 loading = {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator()
                     }
                 },
                 contentScale = ContentScale.Fit,
-                contentDescription = null
+                contentDescription = null,
             )
         }
     } else {
@@ -82,27 +84,28 @@ fun ChatRoomContent(
         }
 
         Column(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier.fillMaxSize(),
         ) {
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(KoinTheme.colors.neutral0)
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(KoinTheme.colors.neutral0)
+                        .weight(1f),
                 state = scrollState,
                 reverseLayout = true,
-                verticalArrangement = Arrangement.Top
+                verticalArrangement = Arrangement.Top,
             ) {
                 messages.asReversed().forEach { (date, messages) ->
                     // Render the message before date because we are using reverse layout
                     items(
                         items = messages.plus(uploadingImage).asReversed(),
-                        key = { message -> "${message.userId}:${message.content}:${message.timestamp}" }
+                        key = { message -> "${message.userId}:${message.content}:${message.timestamp}" },
                     ) { message ->
                         ChatBubble(
                             message = message,
                             chatPartnerProfileImage = chatPartnerProfileImage,
-                            onShowImageChange = onShowImageChange
+                            onShowImageChange = onShowImageChange,
                         )
                     }
                     item {
@@ -114,14 +117,14 @@ fun ChatRoomContent(
                 value = chatInputValue,
                 onValueChange = onChatInputValueChange,
                 onImageButtonClick = onImageButtonClick,
-                onSendClick = onSendClick
+                onSendClick = onSendClick,
             )
             if (showBlockDialog) {
                 ChoiceDialog(
                     title = stringResource(id = R.string.block_dialog_title),
                     description = stringResource(id = R.string.block_dialog_description),
                     onPositive = onBlockUser,
-                    onNegative = onBlockCancel
+                    onNegative = onBlockCancel,
                 )
             }
         }
