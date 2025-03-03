@@ -15,75 +15,79 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.animation.skeleton
 
 @Composable
-internal fun ShuttleTimetableLoading(
-    modifier: Modifier = Modifier
-) {
+internal fun ShuttleTimetableLoading(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Column(
-            modifier = Modifier
+            modifier = Modifier,
         ) {
             Spacer(
-                modifier = Modifier
-                    .width(30.dp)
-                    .height(16.dp)
-                    .skeleton()
+                modifier =
+                    Modifier
+                        .width(30.dp)
+                        .height(16.dp)
+                        .skeleton(),
             )
 
             Spacer(
-                modifier = Modifier
-                    .padding(top = 6.dp)
-                    .width(120.dp)
-                    .height(24.dp)
-                    .skeleton(),
+                modifier =
+                    Modifier
+                        .padding(top = 6.dp)
+                        .width(120.dp)
+                        .height(24.dp)
+                        .skeleton(),
             )
         }
 
         Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(24.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(24.dp),
         )
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min),
         ) {
-
             Column(
                 modifier = Modifier.padding(end = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp)
+                verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 repeat(25) {
                     Spacer(
-                        modifier = Modifier
-                            .width(90.dp)
-                            .height(30.dp)
-                            .skeleton()
+                        modifier =
+                            Modifier
+                                .width(90.dp)
+                                .height(30.dp)
+                                .skeleton(),
                     )
                 }
             }
 
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp)
+                verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 repeat(25) {
                     Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(30.dp)
-                            .skeleton()
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(30.dp)
+                                .skeleton(),
                     )
                 }
             }
         }
 
         Spacer(
-            modifier = Modifier.fillMaxWidth()
-                .height(120.dp)
+            modifier =
+                Modifier.fillMaxWidth()
+                    .height(120.dp),
         )
     }
 }

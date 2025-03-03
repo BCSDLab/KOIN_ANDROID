@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 enum class ShuttleBusOperationType(
     @StringRes val titleRes: Int,
-    @StringRes val simpleTitleRes: Int
+    @StringRes val simpleTitleRes: Int,
 ) : Parcelable {
     ALL(R.string.all_routes, 0),
     WEEKDAY(R.string.weekday_routes, R.string.weekday_routes_simple),

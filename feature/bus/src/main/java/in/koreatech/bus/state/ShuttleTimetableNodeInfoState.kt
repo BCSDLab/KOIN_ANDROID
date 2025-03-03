@@ -7,7 +7,8 @@ data class ShuttleTimetableNodeInfoState(
     val detail: String,
 )
 
-fun ShuttleTimetableNodeInfo.toShuttleTimetableNodeInfoState() = ShuttleTimetableNodeInfoState(
-    name = name,
-    detail = detail
-)
+fun ShuttleTimetableNodeInfo.toShuttleTimetableNodeInfoState() =
+    ShuttleTimetableNodeInfoState(
+        name = name,
+        detail = detail,
+    )

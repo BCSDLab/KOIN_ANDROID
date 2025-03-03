@@ -11,12 +11,14 @@ data class ExpressTimetableState(
     val updatedAt: LocalDateTime,
 )
 
-fun ExpressTimetable.toExpressTimetableState() = ExpressTimetableState(
-    timetable = timetable.mapToCommonTimetableState(),
-    updatedAt = updatedAt,
-)
+fun ExpressTimetable.toExpressTimetableState() =
+    ExpressTimetableState(
+        timetable = timetable.mapToCommonTimetableState(),
+        updatedAt = updatedAt,
+    )
 
-private fun List<ExpressTimetableItem>.mapToCommonTimetableState() = CommonTimetableState(
-    amDepartures = this.filter { it.departureTime.split(":")[0].toInt() < 12 }.map { DepartureState(it.departureTime) },
-    pmDepartures = this.filter { it.departureTime.split(":")[0].toInt() >= 12 }.map { DepartureState(it.departureTime) },
-)
+private fun List<ExpressTimetableItem>.mapToCommonTimetableState() =
+    CommonTimetableState(
+        amDepartures = this.filter { it.departureTime.split(":")[0].toInt() < 12 }.map { DepartureState(it.departureTime) },
+        pmDepartures = this.filter { it.departureTime.split(":")[0].toInt() >= 12 }.map { DepartureState(it.departureTime) },
+    )

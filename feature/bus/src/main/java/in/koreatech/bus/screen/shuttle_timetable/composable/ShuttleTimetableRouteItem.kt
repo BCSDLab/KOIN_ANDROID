@@ -29,25 +29,27 @@ fun ShuttleTimetableRouteItem(
 ) {
     Column(
         modifier = modifier.width(IntrinsicSize.Max),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = route.name,
             style = KoinTheme.typography.regular14,
             color = KoinTheme.colors.neutral600,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = KoinTheme.colors.neutral100)
-                .padding(vertical = 8.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(color = KoinTheme.colors.neutral100)
+                    .padding(vertical = 8.dp),
         )
 
         route.arrivalTimes.fastForEach { time ->
             Box(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 4.dp)
-                    .height(nodeItemHeightDp),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .height(nodeItemHeightDp),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = time,
@@ -64,6 +66,6 @@ fun ShuttleTimetableRouteItem(
 private fun ShuttleTimetableItemPreview() {
     ShuttleTimetableRouteItem(
         route = shuttleTimetableRouteInfoMock1,
-        nodeItemHeightDp = 40.dp
+        nodeItemHeightDp = 40.dp,
     )
 }

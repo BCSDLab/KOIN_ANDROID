@@ -15,9 +15,8 @@ import kotlinx.collections.immutable.toImmutableList
 fun BusSearchResultScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
-    viewModel: BusSearchResultViewModel = hiltViewModel()
+    viewModel: BusSearchResultViewModel = hiltViewModel(),
 ) {
-
     val searchResultUiState by viewModel.searchResultUiState.collectAsStateWithLifecycle()
     val selectedDateIndex by viewModel.selectedDateIndex.collectAsStateWithLifecycle()
     val selectedDaytimeIndex by viewModel.selectedDaytimeIndex.collectAsStateWithLifecycle()
