@@ -96,7 +96,6 @@ fun CollapsedTopBar(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StoreInfoScreen(
     viewModel: MyStoreDetailViewModel,
@@ -219,30 +218,7 @@ fun StoreInfoScreen(
                 }
             }
         }
-        /*Button(
-            modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 10.dp)
-                .background(Color.White)
-                .fillMaxWidth()
-                .height(40.dp),
-            onClick = viewModel::navigateToModifyScreen,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.White,
-                contentColor = ColorPrimary,
-            ),
-            shape = Shapes.medium,
-            border = BorderStroke(1.dp, ColorPrimary)
 
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = stringResource(R.string.shop_management), color = ColorPrimary, fontSize = 16.sp)
-                Spacer(modifier = Modifier.width(1.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.ic_setting),
-                    contentDescription = stringResource(R.string.shop_management),
-                )
-            }
-        }*/
         Row(
             modifier = Modifier
                 .padding(top = 16.dp)
