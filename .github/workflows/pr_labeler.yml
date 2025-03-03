@@ -10,3 +10,9 @@ jobs:
       - uses: TimonVS/pr-labeler-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Lint Check
+        run: ./gradlew ktlintCheck
