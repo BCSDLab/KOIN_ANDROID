@@ -16,7 +16,7 @@ fun SemesterButton(
     modifier: Modifier = Modifier,
     isExisted: Boolean = false,
     isSelected: Boolean = false,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     if (isExisted) {
         val color = if (isSelected) FilledButtonColors.Danger else FilledButtonColors.Success
@@ -24,7 +24,7 @@ fun SemesterButton(
             modifier = modifier,
             text = text,
             onClick = onClick,
-            colors = color
+            colors = color,
         )
     } else {
         if (isSelected) {
@@ -32,7 +32,7 @@ fun SemesterButton(
                 modifier = modifier,
                 text = text,
                 onClick = onClick,
-                colors = FilledButtonColors.Success
+                colors = FilledButtonColors.Success,
             )
         } else {
             OutlinedBoxButton(
@@ -40,16 +40,18 @@ fun SemesterButton(
                 text = text,
                 textStyle = KoinTheme.typography.medium16,
                 onClick = onClick,
-                colors = ButtonColors(
-                    containerColor = KoinTheme.colors.neutral0,
-                    contentColor = KoinTheme.colors.neutral800,
-                    disabledContainerColor = KoinTheme.colors.neutral300,
-                    disabledContentColor = KoinTheme.colors.neutral800
-                ),
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = KoinTheme.colors.neutral300
-                )
+                colors =
+                    ButtonColors(
+                        containerColor = KoinTheme.colors.neutral0,
+                        contentColor = KoinTheme.colors.neutral800,
+                        disabledContainerColor = KoinTheme.colors.neutral300,
+                        disabledContentColor = KoinTheme.colors.neutral800,
+                    ),
+                border =
+                    BorderStroke(
+                        width = 1.dp,
+                        color = KoinTheme.colors.neutral300,
+                    ),
             )
         }
     }

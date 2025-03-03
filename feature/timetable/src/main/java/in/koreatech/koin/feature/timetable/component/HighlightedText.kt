@@ -18,34 +18,37 @@ fun HighlightedText(
     highlightIndices: List<Int>,
     defaultStyle: TextStyle,
     highlightStyle: TextStyle,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    val annotatedString = buildAnnotatedString {
-        pushStyle(
-            ParagraphStyle(
-                lineBreak = LineBreak(
-                    strategy = LineBreak.Strategy.Balanced,
-                    wordBreak = LineBreak.WordBreak.Phrase,
-                    strictness = LineBreak.Strictness.Normal
-                )
+    val annotatedString =
+        buildAnnotatedString {
+            pushStyle(
+                ParagraphStyle(
+                    lineBreak =
+                        LineBreak(
+                            strategy = LineBreak.Strategy.Balanced,
+                            wordBreak = LineBreak.WordBreak.Phrase,
+                            strictness = LineBreak.Strictness.Normal,
+                        ),
+                ),
             )
-        )
-        texts.forEachIndexed { idx, text ->
-            withStyle(
-                style = highlightIndices.find { it == idx }
-                    ?.let { highlightStyle.toSpanStyle() }
-                    ?: defaultStyle.toSpanStyle()
-            ) {
-                append(text)
+            texts.forEachIndexed { idx, text ->
+                withStyle(
+                    style =
+                        highlightIndices.find { it == idx }
+                            ?.let { highlightStyle.toSpanStyle() }
+                            ?: defaultStyle.toSpanStyle(),
+                ) {
+                    append(text)
+                }
             }
         }
-    }
 
     Text(
         text = annotatedString,
         style = defaultStyle,
         textAlign = TextAlign.Center,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 

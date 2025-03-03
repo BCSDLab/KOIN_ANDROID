@@ -41,27 +41,29 @@ import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 fun LectureDuplicationDialog(
     onConfirm: () -> Unit,
     onDismiss: (visible: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     BasicAlertDialog(
         onDismissRequest = { onDismiss(false) },
         modifier = modifier,
     ) {
         Surface(
-            modifier = Modifier
-                .wrapContentWidth()
-                .wrapContentHeight(),
+            modifier =
+                Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall,
-            color = Color.White
+            color = Color.White,
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 32.dp,
-                        vertical = 24.dp
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 32.dp,
+                            vertical = 24.dp,
+                        ),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = stringResource(id = R.string.lecture_duplication_title),
@@ -73,47 +75,55 @@ fun LectureDuplicationDialog(
                 HighlightedText(
                     texts = stringArrayResource(id = R.array.lecture_duplication_description),
                     highlightIndices = listOf(1),
-                    defaultStyle = KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.neutral600,
-                    ),
-                    highlightStyle = KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.warning600,
-                    )
+                    defaultStyle =
+                        KoinTheme.typography.regular14.copy(
+                            color = KoinTheme.colors.neutral600,
+                        ),
+                    highlightStyle =
+                        KoinTheme.typography.regular14.copy(
+                            color = KoinTheme.colors.warning600,
+                        ),
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     OutlinedButton(
-                        modifier = Modifier
-                            .height(48.dp)
-                            .weight(1.0F),
-                        colors = ButtonColors(
-                            containerColor = KoinTheme.colors.neutral0,
-                            contentColor = KoinTheme.colors.neutral500,
-                            disabledContainerColor = KoinTheme.colors.neutral400,
-                            disabledContentColor = KoinTheme.colors.neutral500
-                        ),
+                        modifier =
+                            Modifier
+                                .height(48.dp)
+                                .weight(1.0F),
+                        colors =
+                            ButtonColors(
+                                containerColor = KoinTheme.colors.neutral0,
+                                contentColor = KoinTheme.colors.neutral500,
+                                disabledContainerColor = KoinTheme.colors.neutral400,
+                                disabledContentColor = KoinTheme.colors.neutral500,
+                            ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
-                        onClick = { onDismiss(false) }
+                        onClick = { onDismiss(false) },
                     ) {
-                        Text(text = stringResource(id = R.string.common_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
+                        Text(
+                            text = stringResource(id = R.string.common_cancellation),
+                            style = KoinTheme.typography.medium15,
+                            color = KoinTheme.colors.neutral600,
+                        )
                     }
                     FilledTextButton(
-                        modifier = Modifier
-                            .height(48.dp)
-                            .weight(1.0F),
+                        modifier =
+                            Modifier
+                                .height(48.dp)
+                                .weight(1.0F),
                         text = stringResource(id = R.string.lecture_duplication_confirmation),
-                        onClick = { onConfirm() }
+                        onClick = { onConfirm() },
                     )
                 }
             }
         }
     }
-
 }
 
 @FontScalePreviews
@@ -125,7 +135,7 @@ private fun LectureDuplicationDialogPreview(modifier: Modifier = Modifier) {
         if (isShowing) {
             LectureDuplicationDialog(
                 onConfirm = {},
-                onDismiss = { isShowing = false }
+                onDismiss = { isShowing = false },
             )
         }
     }

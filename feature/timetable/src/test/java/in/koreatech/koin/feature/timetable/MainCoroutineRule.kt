@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-class MainCoroutineRule: TestWatcher() {
+class MainCoroutineRule : TestWatcher() {
     lateinit var scheduler: TestCoroutineScheduler
         private set
     lateinit var dispatcher: TestDispatcher
