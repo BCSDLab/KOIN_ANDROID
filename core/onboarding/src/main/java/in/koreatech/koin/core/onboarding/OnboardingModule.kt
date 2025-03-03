@@ -4,9 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
 import javax.inject.Singleton
@@ -14,12 +12,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object OnboardingModule {
-
     @Provides
     @Singleton
     fun provideOnboardingManager(
         onboardingRepository: OnboardingRepository,
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): OnboardingManager {
         return OnboardingManager(onboardingRepository, context)
     }
