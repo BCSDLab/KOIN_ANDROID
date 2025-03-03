@@ -36,22 +36,22 @@ fun LeadingIconText(
     textStyle: TextStyle = KoinTheme.typography.regular14,
     iconSize: Dp = 24.dp,
     iconTint: Color = textStyle.color,
-    spacing: Dp = 8.dp
+    spacing: Dp = 8.dp,
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = null,
             tint = iconTint,
-            modifier = Modifier.size(iconSize)
+            modifier = Modifier.size(iconSize),
         )
         Spacer(modifier = Modifier.width(spacing))
         Text(
             text = text,
-            style = textStyle
+            style = textStyle,
         )
     }
 }
@@ -62,7 +62,7 @@ private fun LeadingIconTextPreview() {
     KoinTheme {
         LeadingIconText(
             iconRes = android.R.drawable.ic_media_play,
-            text = "예시예시예시yesi"
+            text = "예시예시예시yesi",
         )
     }
 }
