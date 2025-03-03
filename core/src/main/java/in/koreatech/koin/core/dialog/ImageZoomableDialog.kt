@@ -22,7 +22,6 @@ import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.ImageZoomableDialogBinding
 
 class ImageZoomableDialog(private val context: Context, private val image: String) : Dialog(context) {
-
     private lateinit var binding: ImageZoomableDialogBinding
     private var isUserImageInteraction = false
     var initialScale = 1f
@@ -48,30 +47,35 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
             setOnTouchListener { v, event ->
                 attacher.onTouch(v, event)
 
-                if (event?.action == ACTION_POINTER_DOWN || event?.action == MotionEvent.ACTION_UP)
+                if (event?.action == ACTION_POINTER_DOWN || event?.action == MotionEvent.ACTION_UP) {
                     false
-                else true
+                } else {
+                    true
+                }
             }
             minimumScale = initialScale
         }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if(event.action == ACTION_POINTER_DOWN)
+        if (event.action == ACTION_POINTER_DOWN) {
             isUserImageInteraction = true
+        }
 
         // 이미지 영역 밖 터치 시 dismiss
-        if(event.action == MotionEvent.ACTION_UP) {
+        if (event.action == MotionEvent.ACTION_UP) {
             if (!isUserImageInteraction) {
                 val rect = Rect()
                 window!!.decorView.getWindowVisibleDisplayFrame(rect)
                 val statusBarHeight = rect.top
 
-                if(binding.photoView.displayRect != null)
+                if (binding.photoView.displayRect != null) {
                     if (!binding.photoView.displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
-                        if (cancelableOnTouchOutside)
+                        if (cancelableOnTouchOutside) {
                             dismiss()
+                        }
                     }
+                }
             }
             isUserImageInteraction = false
         }
@@ -82,34 +86,36 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
         super.show()
         Glide.with(context)
             .load(image)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>,
-                    isFirstResource: Boolean
-                ): Boolean = false
+            .listener(
+                object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean,
+                    ): Boolean = false
 
-                override fun onResourceReady(
-                    resource: Drawable,
-                    model: Any,
-                    target: Target<Drawable>,
-                    dataSource: DataSource,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    binding.photoView.post {
-                        binding.photoView.scale = initialScale
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean,
+                    ): Boolean {
+                        binding.photoView.post {
+                            binding.photoView.scale = initialScale
 
-                        val closeButton = findViewById<ImageView>(R.id.dialog_close_button)
-                        val lp = closeButton?.layoutParams as FrameLayout.LayoutParams
-                        val rectF = binding.photoView.displayRect
-                        lp.setMargins(0, rectF.top.toInt() - closeButton.height - 8, rectF.left.toInt(), 0)
-                        closeButton.layoutParams = lp
-                        closeButton.visibility = View.VISIBLE
+                            val closeButton = findViewById<ImageView>(R.id.dialog_close_button)
+                            val lp = closeButton?.layoutParams as FrameLayout.LayoutParams
+                            val rectF = binding.photoView.displayRect
+                            lp.setMargins(0, rectF.top.toInt() - closeButton.height - 8, rectF.left.toInt(), 0)
+                            closeButton.layoutParams = lp
+                            closeButton.visibility = View.VISIBLE
+                        }
+                        return false
                     }
-                    return false
-                }
-            })
+                },
+            )
             .into(binding.photoView)
     }
 

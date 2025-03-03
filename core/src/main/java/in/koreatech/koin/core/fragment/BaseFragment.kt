@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import `in`.koreatech.koin.core.progressdialog.CustomProgressDialog
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 
-open class BaseFragment: Fragment(), IProgressDialog {
+open class BaseFragment : Fragment(), IProgressDialog {
     private var customProgressDialog: CustomProgressDialog? = null
     private lateinit var context: Context
 
@@ -22,7 +22,9 @@ open class BaseFragment: Fragment(), IProgressDialog {
         }
     }
 
-    override fun showProgressDialog(@StringRes resId: Int) {
+    override fun showProgressDialog(
+        @StringRes resId: Int,
+    ) {
         if (customProgressDialog == null) {
             customProgressDialog = CustomProgressDialog(context, context.resources.getString(resId))
         }
