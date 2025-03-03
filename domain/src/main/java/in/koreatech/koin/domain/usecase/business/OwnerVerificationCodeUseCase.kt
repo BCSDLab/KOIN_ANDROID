@@ -7,25 +7,28 @@ import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import javax.inject.Inject
 
-class OwnerVerificationCodeUseCase @Inject constructor(
-    private val ownerVerificationCodeRepository: OwnerVerificationCodeRepository,
-    private val tokenRepository: TokenRepository,
-    private val ownerErrorHandler: OwnerErrorHandler,
-) {
-    suspend operator fun invoke(
-        phoneNumber: String,
-        verificationCode: String
-    ): Pair<Unit?, ErrorHandler?> {
-        return try {
-            val authToken = ownerVerificationCodeRepository.verifySmsCode(
-                phoneNumber,
-                verificationCode
-            )
-            tokenRepository.saveOwnerAccessToken(authToken.token)
-            Result.success(SignupContinuationState.CheckComplete)
-            Unit to null
-        } catch (t: Throwable) {
-            null to ownerErrorHandler.handleVerifySmsCodeError(t)
+class OwnerVerificationCodeUseCase
+    @Inject
+    constructor(
+        private val ownerVerificationCodeRepository: OwnerVerificationCodeRepository,
+        private val tokenRepository: TokenRepository,
+        private val ownerErrorHandler: OwnerErrorHandler,
+    ) {
+        suspend operator fun invoke(
+            phoneNumber: String,
+            verificationCode: String,
+        ): Pair<Unit?, ErrorHandler?> {
+            return try {
+                val authToken =
+                    ownerVerificationCodeRepository.verifySmsCode(
+                        phoneNumber,
+                        verificationCode,
+                    )
+                tokenRepository.saveOwnerAccessToken(authToken.token)
+                Result.success(SignupContinuationState.CheckComplete)
+                Unit to null
+            } catch (t: Throwable) {
+                null to ownerErrorHandler.handleVerifySmsCodeError(t)
+            }
         }
     }
-}

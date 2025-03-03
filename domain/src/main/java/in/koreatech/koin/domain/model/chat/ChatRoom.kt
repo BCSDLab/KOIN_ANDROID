@@ -5,5 +5,5 @@ data class ChatRoom(
     val chatRoomId: Int,
     val userId: Int,
     val articleTitle: String,
-    val chatPartnerProfileImage: String?
+    val chatPartnerProfileImage: String?,
 )

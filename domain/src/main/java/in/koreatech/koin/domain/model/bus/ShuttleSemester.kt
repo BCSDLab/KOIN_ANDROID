@@ -5,5 +5,5 @@ import java.time.LocalDate
 data class ShuttleSemester(
     val name: String,
     val from: LocalDate,
-    val to: LocalDate
+    val to: LocalDate,
 )

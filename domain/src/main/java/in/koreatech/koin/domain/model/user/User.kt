@@ -11,10 +11,10 @@ sealed class User {
         val nickname: String?,
         val phoneNumber: String?,
         val major: String?,
-        val userType: String
-    ): User()
+        val userType: String,
+    ) : User()
 
-    data object Anonymous: User()
+    data object Anonymous : User()
 
     val isAnonymous get() = this is Anonymous
     val isStudent get() = this is Student

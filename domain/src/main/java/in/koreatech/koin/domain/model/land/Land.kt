@@ -8,5 +8,5 @@ data class Land(
     val name: String,
     val id: Int,
     val longitude: Double,
-    val roomType: String
+    val roomType: String,
 )

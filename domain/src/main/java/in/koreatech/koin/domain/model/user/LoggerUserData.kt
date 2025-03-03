@@ -11,5 +11,5 @@ package `in`.koreatech.koin.domain.model.user
 data class LoggerUserData(
     val userId: String,
     val gender: String,
-    val major: String
+    val major: String,
 )

@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.model.store
 
-data class BenefitCategory (
+data class BenefitCategory(
     val id: Int,
     val title: String,
     val detail: String,
@@ -9,5 +9,5 @@ data class BenefitCategory (
 )
 
 data class BenefitCategoryList(
-    val benefitCategories: List<BenefitCategory>
+    val benefitCategories: List<BenefitCategory>,
 )
