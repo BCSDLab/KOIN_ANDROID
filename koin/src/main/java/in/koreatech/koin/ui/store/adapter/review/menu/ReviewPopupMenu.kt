@@ -16,10 +16,11 @@ class ReviewPopupMenu(
     private val onDelete: () -> Unit,
 ) : PopupWindow() {
     private val binding = MenuReviewPopupBinding.inflate(LayoutInflater.from(context), null, false)
-    private val menuList = listOf(
-        MENU_MODIFY to R.drawable.ic_modify,
-        MENU_DELETE to R.drawable.ic_trash_can
-    )
+    private val menuList =
+        listOf(
+            MENU_MODIFY to R.drawable.ic_modify,
+            MENU_DELETE to R.drawable.ic_trash_can,
+        )
 
     init {
         contentView = binding.root

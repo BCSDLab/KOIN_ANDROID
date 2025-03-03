@@ -19,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -43,7 +42,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ArticleListNoticeFragment : Fragment() {
-
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
@@ -53,28 +51,29 @@ class ArticleListNoticeFragment : Fragment() {
 
     private val viewModel: ArticleListNoticeViewModel by viewModels()
 
-    private var scrollPercentage = 0.0f     // for GA4
-
+    private var scrollPercentage = 0.0f // for GA4
 
     private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
     private lateinit var pageChips: ArrayList<Chip>
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleListNoticeBinding.inflate(inflater, container, false)
             initArgument()
             initArticleRecyclerView()
             initPageButtonSelectedListener()
-            pageChips = arrayListOf(
-                binding.chipPage1,
-                binding.chipPage2,
-                binding.chipPage3,
-                binding.chipPage4,
-                binding.chipPage5
-            )
+            pageChips =
+                arrayListOf(
+                    binding.chipPage1,
+                    binding.chipPage2,
+                    binding.chipPage3,
+                    binding.chipPage4,
+                    binding.chipPage5,
+                )
             binding.textViewNextPage.setOnClickListener {
                 viewModel.setCurrentPage(viewModel.currentPage.value + 1)
             }
@@ -92,13 +91,13 @@ class ArticleListNoticeFragment : Fragment() {
                 val newScrollPercentage = 100.0f * offset / (range - extent)
                 if (EventUtils.didCrossedScrollThreshold(
                         scrollPercentage,
-                        newScrollPercentage
+                        newScrollPercentage,
                     ) && scrollPercentage.toDouble() != .0
                 ) {
                     EventLogger.logScrollEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.NOTICE_PAGE,
-                        getString(R.string.title_article)
+                        getString(R.string.title_article),
                     )
                 }
                 scrollPercentage = 100.0f * offset / (range - extent)
@@ -120,7 +119,7 @@ class ArticleListNoticeFragment : Fragment() {
                 type = `in`.koreatech.koin.core.onboarding.OnboardingType.ARTICLE_KEYWORD,
                 view = binding.imageViewToKeywordAddPage,
                 arrowPosition = 0.135f,
-                arrowDirection = `in`.koreatech.koin.core.onboarding.ArrowDirection.TOP
+                arrowDirection = `in`.koreatech.koin.core.onboarding.ArrowDirection.TOP,
             )
         }
     }
@@ -135,12 +134,18 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun initArticleRecyclerView() {
         binding.recyclerViewArticleList.adapter = articleAdapter
-        binding.recyclerViewArticleList.addItemDecoration(object :
-            DividerItemDecoration(requireContext(), VERTICAL) {
-            override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-                drawArticleDivider(c, parent)
-            }
-        })
+        binding.recyclerViewArticleList.addItemDecoration(
+            object :
+                DividerItemDecoration(requireContext(), VERTICAL) {
+                override fun onDrawOver(
+                    c: Canvas,
+                    parent: RecyclerView,
+                    state: RecyclerView.State,
+                ) {
+                    drawArticleDivider(c, parent)
+                }
+            },
+        )
     }
 
     private fun onArticleClicked(article: ArticleHeaderState) {
@@ -148,8 +153,8 @@ class ArticleListNoticeFragment : Fragment() {
             R.id.action_articleListFragment_to_articleDetailFragment,
             bundleOf(
                 ARTICLE_ID to article.id,
-                NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id
-            )
+                NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id,
+            ),
         )
     }
 
@@ -158,7 +163,7 @@ class ArticleListNoticeFragment : Fragment() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.MANAGE_KEYWORD,
-                "키워드관리"
+                "키워드관리",
             )
             navigateToKeywordFragment()
         }
@@ -166,7 +171,7 @@ class ArticleListNoticeFragment : Fragment() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTICE_FILTER_ALL,
-                getString(R.string.see_all_article)
+                getString(R.string.see_all_article),
             )
             viewModel.selectKeyword("")
         }
@@ -182,10 +187,10 @@ class ArticleListNoticeFragment : Fragment() {
                                     EventLogger.logClickEvent(
                                         EventAction.CAMPUS,
                                         AnalyticsConstant.Label.ADD_KEYWORD,
-                                        "키워드추가"
+                                        "키워드추가",
                                     )
                                     navigateToKeywordFragment()
-                                }
+                                },
                             )
                         } else {
                             addKeywordChip(keywords)
@@ -196,12 +201,12 @@ class ArticleListNoticeFragment : Fragment() {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.selectedKeyword.collect { keyword ->
-                        /* 다른 화면을 갔다가 돌아와도 키워드 선택 상태 유지 */
+                        // 다른 화면을 갔다가 돌아와도 키워드 선택 상태 유지
                         var isKeywordSelected = false
                         if (keyword.isEmpty()) {
                             binding.chipSeeAll.isChecked = true
                             isKeywordSelected = true
-                        } else
+                        } else {
                             binding.chipGroupMyKeywords.children.forEach {
                                 if ("#$keyword" == (it as? Chip)?.text.toString()) {
                                     (it as? Chip)?.isChecked = true
@@ -209,7 +214,8 @@ class ArticleListNoticeFragment : Fragment() {
                                     return@forEach
                                 }
                             }
-                        if (isKeywordSelected.not()) {      // 원래 선택된 상태였던 키워드가 삭제된 경우 "모두보기" 선택
+                        }
+                        if (isKeywordSelected.not()) { // 원래 선택된 상태였던 키워드가 삭제된 경우 "모두보기" 선택
                             viewModel.selectKeyword("")
                             binding.chipSeeAll.isChecked = true
                         }
@@ -221,28 +227,34 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun removeKeywordChip(keywords: List<String>) {
         binding.chipGroupMyKeywords.children.forEachIndexed { i, chip ->
-            if (i != 0)
-                if (keywords.contains((chip as? Chip)?.text.toString().substring(1)).not())
+            if (i != 0) {
+                if (keywords.contains((chip as? Chip)?.text.toString().substring(1)).not()) {
                     binding.chipGroupMyKeywords.removeView(chip)
+                }
+            }
         }
     }
 
     private fun addKeywordChip(keywords: List<String>) {
         keywords.forEach { keyword ->
             if (binding.chipGroupMyKeywords.children.any {
-                    (it as? Chip)?.text == TextUtils.concat(
-                        "#",
-                        keyword
-                    )
-                }.not())
+                    (it as? Chip)?.text ==
+                        TextUtils.concat(
+                            "#",
+                            keyword,
+                        )
+                }.not()
+            ) {
                 binding.chipGroupMyKeywords.addView(
                     createChip(
-                        TextUtils.concat("#", keyword).toString(), true,
+                        TextUtils.concat("#", keyword).toString(),
+                        true,
                         onChipClicked = {
                             viewModel.selectKeyword(keyword)
-                        }
-                    )
+                        },
+                    ),
                 )
+            }
         }
     }
 
@@ -250,7 +262,11 @@ class ArticleListNoticeFragment : Fragment() {
         navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
     }
 
-    private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip? {
+    private fun createChip(
+        text: String,
+        isCheckable: Boolean,
+        onChipClicked: () -> Unit,
+    ): Chip? {
         val chip =
             layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as? Chip
         return chip?.apply {
@@ -330,7 +346,10 @@ class ArticleListNoticeFragment : Fragment() {
         }
     }
 
-    private fun drawArticleDivider(c: Canvas, parent: RecyclerView) {
+    private fun drawArticleDivider(
+        c: Canvas,
+        parent: RecyclerView,
+    ) {
         val paint = Paint()
         paint.color = ContextCompat.getColor(requireContext(), R.color.divider)
         val height = 1f

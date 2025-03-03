@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class KoinApplication : Application() {
-
     @Inject
     lateinit var tokenRepository: TokenRepository
 
@@ -55,17 +54,23 @@ class KoinApplication : Application() {
     }
 
     private fun plantReleaseTimberTree() {
-        val releaseTree = object : Timber.Tree() {
-            override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-                if (t != null) {
-                    when (priority) {
-                        Log.ERROR -> {
-                            crashlytics.recordException(t)
+        val releaseTree =
+            object : Timber.Tree() {
+                override fun log(
+                    priority: Int,
+                    tag: String?,
+                    message: String,
+                    t: Throwable?,
+                ) {
+                    if (t != null) {
+                        when (priority) {
+                            Log.ERROR -> {
+                                crashlytics.recordException(t)
+                            }
                         }
                     }
                 }
             }
-        }
 
         Timber.plant(releaseTree)
     }

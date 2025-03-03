@@ -21,15 +21,19 @@ class LostAndFoundReportActivity : ComponentActivity() {
             LostAndFoundReport(
                 articleId = intent.getIntExtra("article_id", 0),
                 onSuccess = {
-                    startActivity(Intent(this, ArticleActivity::class.java).apply {
-                        putExtra(
-                            BUNDLE_ARTICLE_EXTRA_KEY, bundleOf(
-                                ArticleActivity.START_BOARD to ArticleBoardType.LOSTANDFOUND.id
+                    startActivity(
+                        Intent(this, ArticleActivity::class.java).apply {
+                            putExtra(
+                                BUNDLE_ARTICLE_EXTRA_KEY,
+                                bundleOf(
+                                    ArticleActivity.START_BOARD to ArticleBoardType.LOSTANDFOUND.id,
+                                ),
                             )
-                        )
-                    })
+                        },
+                    )
                     finish()
-                })
+                },
+            )
         }
     }
 }

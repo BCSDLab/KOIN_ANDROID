@@ -10,11 +10,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityCallBenefitStoreMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreSorter
@@ -30,85 +30,86 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
 class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.BenefitStore
     override val screenTitle: String
         get() = "전화주문혜택"
     private val binding: ActivityCallBenefitStoreMainBinding by dataBinding<ActivityCallBenefitStoreMainBinding>(
-        R.layout.activity_call_benefit_store_main
+        R.layout.activity_call_benefit_store_main,
     )
     private val viewModel by viewModels<StoreViewModel>()
     private val benefitViewModel by viewModels<StoreBenefitViewModel>()
     private val viewPagerHandler = Handler(Looper.getMainLooper())
     private val viewPagerDelayTime = 10000L
-    private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
-    }
-    private val storeAdapter = StoreRecyclerAdapter().apply {
-        setOnItemClickListener {
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.BENEFIT_SHOP_CLICK,
-                it.name,
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, benefitViewModel.getCategoryTitle()),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-            )
-            storeDetailContract.launch(Triple(it.uid, viewModel.category.value?.name, true))
+    private val storeDetailContract =
+        registerForActivityResult(StoreDetailActivityContract()) {
         }
-    }
-    private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
-        setOnItemClickListener {
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.BENEFIT_SHOP_CATEGORIES_EVENT,
-                it.shopName
-            )
-            storeDetailContract.launch(
-                Triple(
-                    it.shopId,
-                    viewModel.category.value?.name,
-                    false
+    private val storeAdapter =
+        StoreRecyclerAdapter().apply {
+            setOnItemClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.BENEFIT_SHOP_CLICK,
+                    it.name,
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, benefitViewModel.getCategoryTitle()),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
                 )
-            )
+                storeDetailContract.launch(Triple(it.uid, viewModel.category.value?.name, true))
+            }
         }
-    }
-    private val benefitAdapter = StoreBenefitRecyclerAdapter(
-        onItemClick = {
-
-            var previousCategory = benefitViewModel.getCategoryTitle()
-            benefitViewModel.setCategoryId(it)
-
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.BENEFIT_SHOP_CATEGORIES,
-                benefitViewModel.getCategoryTitle(),
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousCategory),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, benefitViewModel.getCategoryTitle()),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-            )
-        },
-        getPosition = {
-            binding.benefitDescription.text =
-                benefitViewModel.storeBenefitCategories.value.benefitCategories.getOrNull(it)?.detail
-                    ?: ""
+    private val storeEventPagerAdapter =
+        StoreEventPagerAdapter().apply {
+            setOnItemClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.BENEFIT_SHOP_CATEGORIES_EVENT,
+                    it.shopName,
+                )
+                storeDetailContract.launch(
+                    Triple(
+                        it.shopId,
+                        viewModel.category.value?.name,
+                        false,
+                    ),
+                )
+            }
         }
-    )
+    private val benefitAdapter =
+        StoreBenefitRecyclerAdapter(
+            onItemClick = {
+
+                var previousCategory = benefitViewModel.getCategoryTitle()
+                benefitViewModel.setCategoryId(it)
+
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.BENEFIT_SHOP_CATEGORIES,
+                    benefitViewModel.getCategoryTitle(),
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousCategory),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, benefitViewModel.getCategoryTitle()),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                )
+            },
+            getPosition = {
+                binding.benefitDescription.text =
+                    benefitViewModel.storeBenefitCategories.value.benefitCategories.getOrNull(it)?.detail
+                        ?: ""
+            },
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initViewModel()
         initView()
-
     }
 
     private fun initView() {
         with(binding) {
-
             koinBaseAppbar.setOnClickListener {
-                when(it.id) {
+                when (it.id) {
                     AppBarBase.getLeftButtonId() -> finish()
                     AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
                 }
@@ -186,7 +187,7 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
         }
         observeLiveData(viewModel.storeEvents) {
             storeEventPagerAdapter.submitList(it)
-         //   binding.eventViewPager.isGone = it.isNullOrEmpty()
+            //   binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
         viewModel.settingStoreSorter(StoreSorter.NONE)
     }
@@ -220,5 +221,4 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
         viewPagerHandler.removeCallbacks(runnable)
         viewPagerHandler.postDelayed(runnable, viewPagerDelayTime)
     }*/
-
 }

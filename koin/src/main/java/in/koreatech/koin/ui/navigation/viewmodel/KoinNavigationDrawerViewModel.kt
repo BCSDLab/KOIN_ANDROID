@@ -23,51 +23,59 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class KoinNavigationDrawerViewModel @Inject constructor(
-    private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
-    private val userLogoutUseCase: UserLogoutUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getChatListUseCase: GetChatListUseCase
-) : BaseViewModel() {
-    private val _menuEvent = SingleLiveEvent<MenuState>()
-    val menuEvent: LiveData<MenuState> get() = _menuEvent
+class KoinNavigationDrawerViewModel
+    @Inject
+    constructor(
+        private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
+        private val userLogoutUseCase: UserLogoutUseCase,
+        private val getUserStatusUseCase: GetUserStatusUseCase,
+        private val getChatListUseCase: GetChatListUseCase,
+    ) : BaseViewModel() {
+        private val _menuEvent = SingleLiveEvent<MenuState>()
+        val menuEvent: LiveData<MenuState> get() = _menuEvent
 
-    val userInfoFlow: StateFlow<User> = getUserStatusUseCase()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), User.Anonymous)
+        val userInfoFlow: StateFlow<User> =
+            getUserStatusUseCase()
+                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), User.Anonymous)
 
-    private val _unReadMessageCount = MutableStateFlow(0)
-    val unReadMessageCount: StateFlow<Int> = _unReadMessageCount.asStateFlow()
+        private val _unReadMessageCount = MutableStateFlow(0)
+        val unReadMessageCount: StateFlow<Int> = _unReadMessageCount.asStateFlow()
 
-    fun selectMenu(menuState: MenuState) {
-        _menuEvent.value = menuState
-    }
-
-    fun updateDeviceToken() {
-        viewModelScope.launch {
-            try {
-                updateDeviceTokenUseCase()
-            } catch (e:Exception) {
-                Timber.e("Failed Update Fcm Token : ${e.message}")
-            }
+        fun selectMenu(menuState: MenuState) {
+            _menuEvent.value = menuState
         }
-    }
 
-    fun getUnreadMessageCount() = viewModelScope.launch {
-        if (userInfoFlow.value == User.Anonymous) return@launch
-        var tempUnReadMessageCount = 0
-        getChatListUseCase().collectLatest { messages ->
-            messages.forEach { message ->
-                tempUnReadMessageCount += message.unReadMessageCount
+        fun updateDeviceToken() {
+            viewModelScope.launch {
+                try {
+                    updateDeviceTokenUseCase()
+                } catch (e: Exception) {
+                    Timber.e("Failed Update Fcm Token : ${e.message}")
+                }
             }
         }
 
-        if (tempUnReadMessageCount == _unReadMessageCount.value) return@launch
-        else _unReadMessageCount.value = tempUnReadMessageCount
-    }
+        fun getUnreadMessageCount() =
+            viewModelScope.launch {
+                if (userInfoFlow.value == User.Anonymous) return@launch
+                var tempUnReadMessageCount = 0
+                getChatListUseCase().collectLatest { messages ->
+                    messages.forEach { message ->
+                        tempUnReadMessageCount += message.unReadMessageCount
+                    }
+                }
 
-    fun logout() = viewModelScope.launch {
-        userLogoutUseCase().onFailure {
-            _errorToast.value = it.message
-        }
+                if (tempUnReadMessageCount == _unReadMessageCount.value) {
+                    return@launch
+                } else {
+                    _unReadMessageCount.value = tempUnReadMessageCount
+                }
+            }
+
+        fun logout() =
+            viewModelScope.launch {
+                userLogoutUseCase().onFailure {
+                    _errorToast.value = it.message
+                }
+            }
     }
-}

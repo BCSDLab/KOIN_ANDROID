@@ -19,11 +19,12 @@ import kotlinx.coroutines.launch
 class TermActivity : ActivityBase(R.layout.activity_term) {
     private lateinit var binding: ActivityTermBinding
     override val screenTitle: String
-        get() = when (term) {
-            TERM_KOIN -> getString(R.string.setting_item_koin_terms)
-            TERM_PRIVACY_POLICY -> getString(R.string.setting_item_privacy_policy)
-            else -> TERM_UNKNOWN
-        }
+        get() =
+            when (term) {
+                TERM_KOIN -> getString(R.string.setting_item_koin_terms)
+                TERM_PRIVACY_POLICY -> getString(R.string.setting_item_privacy_policy)
+                else -> TERM_UNKNOWN
+            }
 
     private var term = TERM_UNKNOWN
 
@@ -31,7 +32,7 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
 
     private val articleAdapter by lazy {
         TermArticleAdapter(
-            onClickArticle = ::scrollContent
+            onClickArticle = ::scrollContent,
         )
     }
 
@@ -107,9 +108,10 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
     }
 
     private fun scrollContent(position: Int) {
-        val y = binding.rvContent.getChildAt(position).let {
-            it.y + binding.rvContent.y
-        }.toInt()
+        val y =
+            binding.rvContent.getChildAt(position).let {
+                it.y + binding.rvContent.y
+            }.toInt()
         binding.nsvTermKoin.smoothScrollTo(0, y)
     }
 

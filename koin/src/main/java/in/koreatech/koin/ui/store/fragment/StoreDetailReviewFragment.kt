@@ -15,9 +15,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.contract.LoginContract
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
@@ -44,31 +44,31 @@ class StoreDetailReviewFragment : Fragment() {
                 goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
                 goToReviewScreen.putExtra("review", it)
                 startActivity(goToReviewScreen)
-
             },
             onDeleteItem = {
-                val reviewDeleteDialog = ReviewDeleteCheckDialog(
-                    onDelete = {
-                        viewModel.deleteReview(it, viewModel.store.value!!.uid)
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
-                            viewModel.store.value?.name ?: "Unknown"
-                        )
-                    },
-                    onCancel = {
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL,
-                            viewModel.store.value?.name ?: "Unknown"
-                        )
-                    }
-                )
+                val reviewDeleteDialog =
+                    ReviewDeleteCheckDialog(
+                        onDelete = {
+                            viewModel.deleteReview(it, viewModel.store.value!!.uid)
+                            EventLogger.logClickEvent(
+                                EventAction.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
+                                viewModel.store.value?.name ?: "Unknown",
+                            )
+                        },
+                        onCancel = {
+                            EventLogger.logClickEvent(
+                                EventAction.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL,
+                                viewModel.store.value?.name ?: "Unknown",
+                            )
+                        },
+                    )
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE,
-                    viewModel.store.value?.name ?: "Unknown"
+                    viewModel.store.value?.name ?: "Unknown",
                 )
             },
             onReportItem = {
@@ -85,45 +85,49 @@ class StoreDetailReviewFragment : Fragment() {
                         startActivity(intent)
                     }
                 } else {
-                    val loginRequestDialog = LoginRequestDialog(
-                        goToLogin = {
-                            loginActivityLauncher.launch(Unit)
-                            EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN,
-                                viewModel.store.value?.name ?: "Unknown"
-                            )
-                        },
-                        onCancel = {
-                            EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
-                                viewModel.store.value?.name ?: "Unknown"
-                            )
-                        }
-                    )
+                    val loginRequestDialog =
+                        LoginRequestDialog(
+                            goToLogin = {
+                                loginActivityLauncher.launch(Unit)
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN,
+                                    viewModel.store.value?.name ?: "Unknown",
+                                )
+                            },
+                            onCancel = {
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
+                                    viewModel.store.value?.name ?: "Unknown",
+                                )
+                            },
+                        )
                     loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT,
-                    viewModel.store.value?.name ?: "Unknown"
+                    viewModel.store.value?.name ?: "Unknown",
                 )
-            }
+            },
         )
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         return FragmentStoreDetailReviewBinding.inflate(inflater, container, false).also {
             _binding = it
         }.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModel()
@@ -137,7 +141,6 @@ class StoreDetailReviewFragment : Fragment() {
     private fun initViews() {
         viewModel.checkToken()
         with(binding) {
-
             reviewContentRecyclerview.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = storeDetailReviewRecyclerAdapter
@@ -149,34 +152,34 @@ class StoreDetailReviewFragment : Fragment() {
                     goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
                     startActivity(goToReviewScreen)
                 } else {
-                    val loginRequestDialog = LoginRequestDialog(
-                        goToLogin = {
-                            loginActivityLauncher.launch(Unit)
-                            EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN,
-                                viewModel.store.value?.name ?: "Unknown"
-                            )
-                        },
-                        onCancel = {
-                            EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL,
-                                viewModel.store.value?.name ?: "Unknown"
-                            )
-                        }
-                    )
+                    val loginRequestDialog =
+                        LoginRequestDialog(
+                            goToLogin = {
+                                loginActivityLauncher.launch(Unit)
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN,
+                                    viewModel.store.value?.name ?: "Unknown",
+                                )
+                            },
+                            onCancel = {
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL,
+                                    viewModel.store.value?.name ?: "Unknown",
+                                )
+                            },
+                        )
                     loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE,
-                    viewModel.store.value?.name ?: "Unknown"
+                    viewModel.store.value?.name ?: "Unknown",
                 )
             }
 
             observeLiveData(viewModel.storeReview) {
-
                 scoreText.text = String.format("%.1f", it.statistics.averageRating)
                 storeTotalRating.rating = it.statistics.averageRating.toFloat()
 
@@ -200,7 +203,6 @@ class StoreDetailReviewFragment : Fragment() {
                 ratingOneProgressbar.progress =
                     calculateScore(it.totalCount, it.statistics.ratings["1"])
 
-
                 if (it.totalCount == 0) {
                     yesReviewLayout.isGone = true
                     noReviewLayout.isVisible = true
@@ -219,7 +221,7 @@ class StoreDetailReviewFragment : Fragment() {
                         R.id.action_latest -> {
                             viewModel.filterReview(
                                 ReviewFilterEnum.LATEST,
-                                isMineCheckbox.isChecked
+                                isMineCheckbox.isChecked,
                             )
                             filterTextview.text = getString(R.string.latest)
                             true
@@ -228,7 +230,7 @@ class StoreDetailReviewFragment : Fragment() {
                         R.id.action_oldest -> {
                             viewModel.filterReview(
                                 ReviewFilterEnum.OLDEST,
-                                isMineCheckbox.isChecked
+                                isMineCheckbox.isChecked,
                             )
                             filterTextview.text = getString(R.string.oldest)
                             true
@@ -237,7 +239,7 @@ class StoreDetailReviewFragment : Fragment() {
                         R.id.action_high_rating -> {
                             viewModel.filterReview(
                                 ReviewFilterEnum.HIGH_RATTING,
-                                isMineCheckbox.isChecked
+                                isMineCheckbox.isChecked,
                             )
                             filterTextview.text = getString(R.string.high_rating)
                             true
@@ -246,7 +248,7 @@ class StoreDetailReviewFragment : Fragment() {
                         R.id.action_low_rating -> {
                             viewModel.filterReview(
                                 ReviewFilterEnum.LOW_RATIONG,
-                                isMineCheckbox.isChecked
+                                isMineCheckbox.isChecked,
                             )
                             filterTextview.text = getString(R.string.low_rating)
                             true
@@ -262,9 +264,7 @@ class StoreDetailReviewFragment : Fragment() {
             isMineCheckbox.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.checkShowMyReview(isChecked)
             }
-
         }
-
     }
 
     private fun initViewModel() {
@@ -301,12 +301,14 @@ class StoreDetailReviewFragment : Fragment() {
                 EventLogger.logScrollEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW,
-                    viewModel.store.value?.name ?: "Unknown"
+                    viewModel.store.value?.name ?: "Unknown",
                 )
             }
         }
     }
 
-    private fun calculateScore(total: Int, count: Int?) =
-        count?.let { ((it.toFloat() / total) * 100).toInt() } ?: 0
+    private fun calculateScore(
+        total: Int,
+        count: Int?,
+    ) = count?.let { ((it.toFloat() / total) * 100).toInt() } ?: 0
 }

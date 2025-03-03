@@ -14,28 +14,29 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserInfoCheckPasswordViewModel @Inject constructor(
-    private val verifyUserPasswordUseCase: VerifyUserPasswordUseCase
-) : BaseViewModel() {
+class UserInfoCheckPasswordViewModel
+    @Inject
+    constructor(
+        private val verifyUserPasswordUseCase: VerifyUserPasswordUseCase,
+    ) : BaseViewModel() {
+        private val _verifyStatus = MutableStateFlow(PwdVerificationState(UiStatus.Init, isEdited = false))
+        val verifyStatus: StateFlow<PwdVerificationState> = _verifyStatus.asStateFlow()
 
-    private val _verifyStatus = MutableStateFlow(PwdVerificationState(UiStatus.Init, isEdited = false))
-    val verifyStatus: StateFlow<PwdVerificationState> = _verifyStatus.asStateFlow()
-
-    fun verifyPassword(password: String) {
-        viewModelScope.launch {
-            verifyUserPasswordUseCase(password).let { handler ->
-                if (handler == null) {
-                    _verifyStatus.update { it.copy(status = UiStatus.Success, isEdited = false) }
-                } else {
-                    _verifyStatus.update { it.copy(UiStatus.Failed(handler.message), isEdited = false) }
+        fun verifyPassword(password: String) {
+            viewModelScope.launch {
+                verifyUserPasswordUseCase(password).let { handler ->
+                    if (handler == null) {
+                        _verifyStatus.update { it.copy(status = UiStatus.Success, isEdited = false) }
+                    } else {
+                        _verifyStatus.update { it.copy(UiStatus.Failed(handler.message), isEdited = false) }
+                    }
                 }
             }
         }
-    }
 
-    fun onPwdTextChanged() {
-        viewModelScope.launch {
-            _verifyStatus.update { it.copy(isEdited = true) }
+        fun onPwdTextChanged() {
+            viewModelScope.launch {
+                _verifyStatus.update { it.copy(isEdited = true) }
+            }
         }
     }
-}

@@ -4,17 +4,20 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.store.activity.StoreDetailActivity
 
 class StoreDetailActivityContract(
-    private val storeCategoryFactory: StoreActivity.StoreCategoryFactory? = null
+    private val storeCategoryFactory: StoreActivity.StoreCategoryFactory? = null,
 ) : ActivityResultContract<Triple<Int, String?, Boolean>, Unit>() {
-    override fun createIntent(context: Context, input: Triple<Int, String?, Boolean>): Intent {
+    override fun createIntent(
+        context: Context,
+        input: Triple<Int, String?, Boolean>,
+    ): Intent {
         return Intent(context, StoreDetailActivity::class.java).apply {
             putExtra(STORE_ID, input.first)
             putExtra(CATEGORY, input.second)
@@ -22,28 +25,32 @@ class StoreDetailActivityContract(
         }
     }
 
-    override fun parseResult(resultCode: Int, intent: Intent?) {
+    override fun parseResult(
+        resultCode: Int,
+        intent: Intent?,
+    ) {
         if (resultCode == Activity.RESULT_OK) {
             val category = storeCategoryFactory?.getCurrentCategory() ?: return
             val elapsedTime = intent?.getDoubleExtra(StoreDetailActivity.ELAPSED_TIME, .0)
             val storeName = intent?.getStringExtra(StoreDetailActivity.STORE_NAME)
             val backAction = intent?.getStringExtra(StoreDetailActivity.BACK_ACTION)
-            if (backAction == "swipe")
+            if (backAction == "swipe") {
                 EventLogger.logSwipeEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                     storeName ?: "Unknown",
                     EventExtra(AnalyticsConstant.CURRENT_PAGE, category),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
+                    EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString()),
                 )
-            else if (backAction == "click")
+            } else if (backAction == "click") {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                     storeName ?: "Unknown",
                     EventExtra(AnalyticsConstant.CURRENT_PAGE, category),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
+                    EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString()),
                 )
+            }
         }
     }
 

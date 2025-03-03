@@ -19,13 +19,14 @@ class ErrorActivity : ActivityBase() {
     private val binding by dataBinding<ActivityErrorBinding>(R.layout.activity_error)
     override val screenTitle: String = "에러"
 
-    override var onBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            onBackPressedDispatcher.onBackPressed()
-            val goToHomeIntent = Intent(this@ErrorActivity, SplashActivity::class.java)
-            startActivity(goToHomeIntent)
+    override var onBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressedDispatcher.onBackPressed()
+                val goToHomeIntent = Intent(this@ErrorActivity, SplashActivity::class.java)
+                startActivity(goToHomeIntent)
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

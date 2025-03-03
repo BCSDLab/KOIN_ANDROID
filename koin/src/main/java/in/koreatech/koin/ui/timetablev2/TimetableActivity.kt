@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -152,7 +151,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 if (dialogState.isLectureDuplicationVisible) {
                     LectureDuplicationDialog(
                         onConfirm = viewModel::updateDuplicationTimetableLecture,
-                        onDismiss = viewModel::updateIsLectureDuplicationDialogVisible
+                        onDismiss = viewModel::updateIsLectureDuplicationDialogVisible,
                     )
                 }
 
@@ -161,7 +160,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         ScheduleDuplicationDialog(
                             timetableEvent = it,
                             onConfirm = viewModel::updateIsCustomLectureDuplicationDialogVisible,
-                            onDismiss = viewModel::updateIsCustomLectureDuplicationDialogVisible
+                            onDismiss = viewModel::updateIsCustomLectureDuplicationDialogVisible,
                         )
                     }
                 }
@@ -171,14 +170,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         department = searchEngineState.department,
                         departments = departments,
                         onConfirm = viewModel::updateDepartment,
-                        onDismiss = viewModel::updateIsSelectDepartmentDialogVisible
+                        onDismiss = viewModel::updateIsSelectDepartmentDialogVisible,
                     )
                 }
 
                 if (dialogState.isLoginVisible) {
                     RequestLoginDialog(
                         onConfirm = ::startToLoginActivity,
-                        onDismiss = viewModel::updateIsLoginDialogVisible
+                        onDismiss = viewModel::updateIsLoginDialogVisible,
                     )
                 }
 
@@ -188,7 +187,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         isStartTime = true,
                         customContent = state.customTimeData,
                         onConfirm = viewModel::updateStarTimeContent,
-                        onDismiss = viewModel::updateIsStartTimePickerDialogVisible
+                        onDismiss = viewModel::updateIsStartTimePickerDialogVisible,
                     )
                 }
 
@@ -198,7 +197,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         isStartTime = false,
                         customContent = state.customTimeData,
                         onConfirm = viewModel::updateEndTimeContent,
-                        onDismiss = viewModel::updateIsEndTimePickerDialogVisible
+                        onDismiss = viewModel::updateIsEndTimePickerDialogVisible,
                     )
                 }
 
@@ -211,7 +210,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         },
                         onDismiss = {
                             viewModel.updateIsDeleteLectureDialogVisible(visible = false)
-                        }
+                        },
                     )
                 }
 
@@ -229,7 +228,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                                 }
                             }
                         },
-                        onDismiss = viewModel::updateIsDownloadDialogVisible
+                        onDismiss = viewModel::updateIsDownloadDialogVisible,
                     )
                 }
 
@@ -263,7 +262,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickAddCustomLectureMode = {
                         handleAddCustomLectureMode(state.isAnonymous) {
                             viewModel.updateTimetableBottomSheetMode(
-                                TimetableBottomSheetContentMode.CUSTOM
+                                TimetableBottomSheetContentMode.CUSTOM,
                             )
                         }
                     },
@@ -308,7 +307,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                                     if (sheetState.isExpanded) {
                                         sheetState.collapse()
                                         sheetState.expand()
-                                    } else sheetState.expand()
+                                    } else {
+                                        sheetState.expand()
+                                    }
                                 } else {
                                     if (sheetState.isCollapsed) sheetState.expand()
                                 }
@@ -322,7 +323,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickStartTime = viewModel::updateIsStartTimePickerDialogVisible,
                     onClickEndTime = viewModel::updateIsEndTimePickerDialogVisible,
                     onClickAddCustomContent = viewModel::addCustomExtraContent,
-                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent
+                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent,
                 )
 
                 CircleLoadingBar(loading = state.loading)
@@ -340,7 +341,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         snackBarHost.showSnackBarWithDismiss(
                             message = effect.message,
                             actionLabel = "닫기",
-                            duration = SnackbarDuration.Short
+                            duration = SnackbarDuration.Short,
                         )
                         viewModel.updateSideEffect(TimetableSideEffect.Nothing)
                     }
@@ -357,12 +358,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-
     private fun initEvent() {
         setAppbarEvent()
     }
 
-    private fun handleAddCustomLectureMode(isAnonymous: Boolean, callback: () -> Unit) {
+    private fun handleAddCustomLectureMode(
+        isAnonymous: Boolean,
+        callback: () -> Unit,
+    ) {
         if (isAnonymous) {
             viewModel.updateIsLoginDialogVisible(true)
         } else {
@@ -375,16 +378,18 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun startToTimetableSemesterActivity() {
-        val intent = Intent(this, TimetableSemesterActivity::class.java).apply {
-            putExtra(
-                BUNDLE_EXTRA_KEY, bundleOf(
-                    IS_ANONYMOUS to viewModel.state.value.isAnonymous,
-                    SEMESTER to viewModel.state.value.currentSemester,
-                    FRAME_ID to viewModel.state.value.frameId,
-                    FRAME_NAME to viewModel.state.value.timetableName
+        val intent =
+            Intent(this, TimetableSemesterActivity::class.java).apply {
+                putExtra(
+                    BUNDLE_EXTRA_KEY,
+                    bundleOf(
+                        IS_ANONYMOUS to viewModel.state.value.isAnonymous,
+                        SEMESTER to viewModel.state.value.currentSemester,
+                        FRAME_ID to viewModel.state.value.frameId,
+                        FRAME_NAME to viewModel.state.value.timetableName,
+                    ),
                 )
-            )
-        }
+            }
         registerTimetableSemesterActivityResult.launch(intent)
     }
 
@@ -396,7 +401,10 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         }.let(::startActivity)
     }
 
-    private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {
+    private fun saveTimetable(
+        bitmap: Bitmap,
+        callback: (Boolean) -> Unit,
+    ) {
         BitmapUtils(this).saveBitmapImage(bitmap).let {
             callback(it)
         }

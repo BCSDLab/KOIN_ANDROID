@@ -19,20 +19,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.bus.screen.MainEntryView
-import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
@@ -76,55 +75,59 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
-    private val articleMainAdapter = ArticleMainAdapter(
-        onNotiClick = {
-            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.TO_MANAGE_KEYWORD, it.value)
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = when (it.type) {
-                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-                }
-            }
-            startActivity(intent)
-        },
-        onArticleClick = {
-            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.POPULAR_NOTICE_BANNER, it.title)
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data =
-                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
-            }
-            startActivity(intent)
-        }
-    )
+    private val articleMainAdapter =
+        ArticleMainAdapter(
+            onNotiClick = {
+                EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.TO_MANAGE_KEYWORD, it.value)
+                val intent =
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data =
+                            when (it.type) {
+                                ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
+                                ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                            }
+                    }
+                startActivity(intent)
+            },
+            onArticleClick = {
+                EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.POPULAR_NOTICE_BANNER, it.title)
+                val intent =
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data =
+                            Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
+                    }
+                startActivity(intent)
+            },
+        )
 
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
-    private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
-        setOnItemClickListener { id, name ->
-            if(id == 0){
-                startActivity(Intent(this@MainActivity, CallBenefitStoreActivity::class.java))
-                EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
-                    name,
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                    EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-                )
-            }
-            else{
-                EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                    name,
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                    EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-                )
-                gotoStoreActivity(id)
+    private val storeCategoriesRecyclerAdapter =
+        StoreCategoriesRecyclerAdapter().apply {
+            setOnItemClickListener { id, name ->
+                if (id == 0) {
+                    startActivity(Intent(this@MainActivity, CallBenefitStoreActivity::class.java))
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                        name,
+                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                        EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                        EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                    )
+                } else {
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
+                        name,
+                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                        EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
+                        EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                    )
+                    gotoStoreActivity(id)
+                }
             }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,178 +145,184 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         viewModel.updateDining()
     }
 
-    private fun initView() = with(binding) {
-        viewModel.checkKeywordNotiContent()
-        initArticleBannerABTest()
-        initDiningABTest()
-        binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
-            val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
-            val range = binding.nestedScrollViewMain.computeVerticalScrollRange()
+    private fun initView() =
+        with(binding) {
+            viewModel.checkKeywordNotiContent()
+            initArticleBannerABTest()
+            initDiningABTest()
+            binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
+                val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
+                val range = binding.nestedScrollViewMain.computeVerticalScrollRange()
 
-            val newScrollPercentage = 100.0f * offset / (range - extent)
-            if (EventUtils.didCrossedScrollThreshold(
-                    scrollPercentage,
-                    newScrollPercentage
-                ) && scrollPercentage.toDouble() != .0
-            ) {
-                EventLogger.logScrollEvent(
+                val newScrollPercentage = 100.0f * offset / (range - extent)
+                if (EventUtils.didCrossedScrollThreshold(
+                        scrollPercentage,
+                        newScrollPercentage,
+                    ) && scrollPercentage.toDouble() != .0
+                ) {
+                    EventLogger.logScrollEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.MAIN_SCROLL,
+                        "70%",
+                    )
+                }
+                scrollPercentage = 100.0f * offset / (range - extent)
+            }
+            viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
+
+            storeListButton.setOnClickListener {
+                gotoStoreActivity(0)
+            }
+            callBenefitStoreListButton.setOnClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.BUSINESS,
+                    AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                    "전화주문혜택",
+                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                    EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                )
+                val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
+                startActivity(intent)
+            }
+            buttonCategory.setOnClickListener {
+                toggleNavigationDrawer()
+            }
+
+            viewPagerHotArticle.apply {
+                adapter = articleMainAdapter
+                offscreenPageLimit = 3
+                enableAutoScroll(this@MainActivity, 5_000)
+            }
+            TabLayoutMediator(tabHotArticle, viewPagerHotArticle) { _, _ -> }.attach()
+
+            textSeeMoreArticle.setOnClickListener {
+                EventLogger.logClickEvent(
                     EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MAIN_SCROLL,
-                    "70%"
+                    AnalyticsConstant.Label.APP_MAIN_NOTICE_DETAIL,
+                    getString(R.string.article_more),
                 )
+                startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
             }
-            scrollPercentage = 100.0f * offset / (range - extent)
-        }
-        viewModel.postABTestAssign(Experiment.BENEFIT_STORE.experimentTitle)
 
-        storeListButton.setOnClickListener {
-            gotoStoreActivity(0)
-        }
-        callBenefitStoreListButton.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
-                "전화주문혜택",
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-            )
-            val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
-            startActivity(intent)
-        }
-        buttonCategory.setOnClickListener {
-            toggleNavigationDrawer()
-        }
-
-        viewPagerHotArticle.apply {
-            adapter = articleMainAdapter
-            offscreenPageLimit = 3
-            enableAutoScroll(this@MainActivity, 5_000)
-        }
-        TabLayoutMediator(tabHotArticle, viewPagerHotArticle) { _, _ -> }.attach()
-
-        textSeeMoreArticle.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.CAMPUS,
-                AnalyticsConstant.Label.APP_MAIN_NOTICE_DETAIL,
-                getString(R.string.article_more)
-            )
-            startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
-        }
-
-        busComposeView.apply {
-            setContent {
-                MainEntryView(
-                    onShuttleTicketClicked = {
-                        EventLogger.logCampusClickEvent(
-                            "shuttle_ticket",
-                            "셔틀 탑승권"
-                        )
-                        val intent = Intent(this@MainActivity, WebViewActivity::class.java)
-                        intent.putExtra("url", "https://koreatech.unibus.kr/")
-                        startActivity(intent)
-                    }, onTimetableCardClicked = {
-                        EventLogger.logCampusClickEvent(
-                            "main_bus_timetable",
-                            "버스 시간표 바로가기"
-                        )
-                        val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
-                        startActivity(intent)
-                    }, onSearchCardClicked = {
-                        EventLogger.logCampusClickEvent(
-                            "main_bus_search",
-                            "가장 빠른 버스 조회하기"
-                        )
-                        val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
-                        startActivity(intent)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                )
+            busComposeView.apply {
+                setContent {
+                    MainEntryView(
+                        onShuttleTicketClicked = {
+                            EventLogger.logCampusClickEvent(
+                                "shuttle_ticket",
+                                "셔틀 탑승권",
+                            )
+                            val intent = Intent(this@MainActivity, WebViewActivity::class.java)
+                            intent.putExtra("url", "https://koreatech.unibus.kr/")
+                            startActivity(intent)
+                        },
+                        onTimetableCardClicked = {
+                            EventLogger.logCampusClickEvent(
+                                "main_bus_timetable",
+                                "버스 시간표 바로가기",
+                            )
+                            val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
+                            startActivity(intent)
+                        },
+                        onSearchCardClicked = {
+                            EventLogger.logCampusClickEvent(
+                                "main_bus_search",
+                                "가장 빠른 버스 조회하기",
+                            )
+                            val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
+                            startActivity(intent)
+                        },
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp),
+                    )
+                }
             }
-        }
 
-        recyclerViewStoreCategory.apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 6)
-            adapter = storeCategoriesRecyclerAdapter
-        }
+            recyclerViewStoreCategory.apply {
+                layoutManager = GridLayoutManager(this@MainActivity, 6)
+                adapter = storeCategoriesRecyclerAdapter
+            }
 
-        mainSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.updateDining()
-        }
+            mainSwipeRefreshLayout.setOnRefreshListener {
+                viewModel.updateDining()
+            }
 
 //        diningContainer.setOnClickListener {
 //            callDrawerItem(R.id.navi_item_dining)
 //        }
 
-        pagerDiningContainer.adapter = diningContainerAdapter
-        pagerDiningContainer.offscreenPageLimit = 3
+            pagerDiningContainer.adapter = diningContainerAdapter
+            pagerDiningContainer.offscreenPageLimit = 3
 
-        TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
-            tab.text = DiningPlace.entries[position].place
-        }.attach()
+            TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
+                tab.text = DiningPlace.entries[position].place
+            }.attach()
 
-        tabDining.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewModel.setSelectedPosition(tab.position)
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MAIN_MENU_CORNER,
-                    tab.text.toString()
-                )
+            tabDining.addOnTabSelectedListener(
+                object : TabLayout.OnTabSelectedListener {
+                    override fun onTabSelected(tab: TabLayout.Tab) {
+                        viewModel.setSelectedPosition(tab.position)
+                        EventLogger.logClickEvent(
+                            EventAction.CAMPUS,
+                            AnalyticsConstant.Label.MAIN_MENU_CORNER,
+                            tab.text.toString(),
+                        )
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab) {}
+
+                    override fun onTabReselected(tab: TabLayout.Tab) {}
+                },
+            )
+        }
+
+    private fun initViewModel() =
+        with(viewModel) {
+            getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
+
+            observeLiveData(variableName) {
+                when (viewModel.variableName.value) {
+                    ExperimentGroup.A -> {
+                        binding.storeButtonLayout.visibility = View.GONE
+                        binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                    }
+
+                    ExperimentGroup.B -> {
+                        binding.storeButtonLayout.visibility = View.VISIBLE
+                        binding.recyclerViewStoreCategory.visibility = View.GONE
+                    }
+
+                    else -> {
+                        binding.storeButtonLayout.visibility = View.GONE
+                        binding.recyclerViewStoreCategory.visibility = View.VISIBLE
+                    }
+                }
+            }
+            observeLiveData(isLoading) {
+                binding.mainSwipeRefreshLayout.isRefreshing = it
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-
-
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-    }
-
-    private fun initViewModel() = with(viewModel) {
-        getStoreCategories(StoreCategories(-1, R.drawable.ic_benefit_icon, "혜택"))
-
-        observeLiveData(variableName) {
-            when (viewModel.variableName.value) {
-                ExperimentGroup.A -> {
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
-                }
-
-                ExperimentGroup.B -> {
-                    binding.storeButtonLayout.visibility = View.VISIBLE
-                    binding.recyclerViewStoreCategory.visibility = View.GONE
-                }
-
-                else -> {
-                    binding.storeButtonLayout.visibility = View.GONE
-                    binding.recyclerViewStoreCategory.visibility = View.VISIBLE
-                }
+            observeLiveData(selectedType) {
+                binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
             }
-        }
-        observeLiveData(isLoading) {
-            binding.mainSwipeRefreshLayout.isRefreshing = it
-        }
 
-        observeLiveData(selectedType) {
-            binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
+            observeLiveData(storeCategories) {
+                storeCategoriesRecyclerAdapter.submitList(it)
+            }
+            binding.recyclerViewStoreCategory.visibility = View.GONE
+            binding.storeButtonLayout.visibility = View.VISIBLE
         }
-
-        observeLiveData(storeCategories) {
-            storeCategoriesRecyclerAdapter.submitList(it)
-        }
-        binding.recyclerViewStoreCategory.visibility = View.GONE
-        binding.storeButtonLayout.visibility = View.VISIBLE
-    }
 
     private fun initDiningTooltip() {
         with(onboardingManager) {
             showOnboardingTooltipIfNeeded(
                 type = OnboardingType.DINING_IMAGE,
                 view = binding.textViewDiningTitle,
-                arrowDirection = ArrowDirection.LEFT
+                arrowDirection = ArrowDirection.LEFT,
             )
         }
     }
@@ -333,40 +342,44 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
         when (type) {
             SchemeType.SHOP.type -> {
-                val intent = navigator.navigateToShop(
-                    context = this,
-                    targetId = Pair(EXTRA_ID, targetId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
+                val intent =
+                    navigator.navigateToShop(
+                        context = this,
+                        targetId = Pair(EXTRA_ID, targetId),
+                        type = Pair(EXTRA_TYPE, type),
+                    )
                 startActivity(intent)
             }
 
             SchemeType.DINING.type -> {
-                val intent = navigator.navigateToDinging(
-                    context = this,
-                    targetId = Pair(EXTRA_ID, targetId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
+                val intent =
+                    navigator.navigateToDinging(
+                        context = this,
+                        targetId = Pair(EXTRA_ID, targetId),
+                        type = Pair(EXTRA_TYPE, type),
+                    )
                 startActivity(intent)
             }
 
             SchemeType.ARTICLE.type -> {
-                val intent = navigator.navigateToArticle(
-                    context = this,
-                    targetId = Pair(EXTRA_ID, targetId),
-                    targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
+                val intent =
+                    navigator.navigateToArticle(
+                        context = this,
+                        targetId = Pair(EXTRA_ID, targetId),
+                        targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
+                        type = Pair(EXTRA_TYPE, type),
+                    )
                 startActivity(intent)
             }
 
             SchemeType.CHAT.type -> {
-                val intent = navigator.navigateToChat(
-                    context = this,
-                    targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                    targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
+                val intent =
+                    navigator.navigateToChat(
+                        context = this,
+                        targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        type = Pair(EXTRA_TYPE, type),
+                    )
                 startActivity(intent)
             }
 

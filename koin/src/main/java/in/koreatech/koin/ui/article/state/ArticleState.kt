@@ -11,11 +11,12 @@ data class ArticleState(
     val url: String,
 )
 
-fun Article.toArticleState() = ArticleState(
-    header = header.toArticleHeaderState(),
-    content = content,
-    prevArticleId = prevArticleId,
-    nextArticleId = nextArticleId,
-    attachments = attachments.map { it.toAttachmentState() },
-    url = url,
-)
+fun Article.toArticleState() =
+    ArticleState(
+        header = header.toArticleHeaderState(),
+        content = content,
+        prevArticleId = prevArticleId,
+        nextArticleId = nextArticleId,
+        attachments = attachments.map { it.toAttachmentState() },
+        url = url,
+    )
