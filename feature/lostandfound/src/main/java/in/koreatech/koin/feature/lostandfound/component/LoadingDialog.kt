@@ -22,19 +22,20 @@ import `in`.koreatech.koin.feature.lostandfound.R
 fun LoadingDialog() {
     Dialog(
         onDismissRequest = { },
-        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
     ) {
         Row(
-            modifier = Modifier
-                .background(KoinTheme.colors.primary500)
-                .padding(vertical = 24.dp, horizontal = 24.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .background(KoinTheme.colors.primary500)
+                    .padding(vertical = 24.dp, horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             CircularProgressIndicator(color = KoinTheme.colors.neutral0)
             Spacer(modifier = Modifier.width(32.dp))
             Text(
                 text = stringResource(R.string.dialog_loading),
-                color = KoinTheme.colors.neutral0
+                color = KoinTheme.colors.neutral0,
             )
         }
     }

@@ -33,11 +33,12 @@ fun LostAndFoundReportContent(
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .imePadding()
-            .verticalScroll(scrollState)
-            .height(IntrinsicSize.Max)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .imePadding()
+                .verticalScroll(scrollState)
+                .height(IntrinsicSize.Max),
     ) {
         LostAndFoundReportHeader()
         LostAndFoundReportReasons(
@@ -53,9 +54,10 @@ fun LostAndFoundReportContent(
         FilledButton(
             text = stringResource(id = R.string.report_submit),
             onClick = onReport,
-            modifier = Modifier
-                .padding(vertical = 20.dp, horizontal = 24.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(vertical = 20.dp, horizontal = 24.dp)
+                    .fillMaxWidth(),
         )
     }
 }
@@ -69,16 +71,16 @@ fun LostAndFoundReportContentPreview() {
             selectedItemIndex = intArrayOf(0),
             onSelectedItemChange = {},
             otherReason = "",
-            onOtherReasonChange = {}
+            onOtherReasonChange = {},
         )
     }
 }
 
-
-val lostAndFoundReportReasonList = listOf(
-    ReportReason.OFF_TOPIC,
-    ReportReason.SPAM,
-    ReportReason.INAPPROPRIATE_LANGUAGE,
-    ReportReason.PRIVACY,
-    ReportReason.OTHER
-)
+val lostAndFoundReportReasonList =
+    listOf(
+        ReportReason.OFF_TOPIC,
+        ReportReason.SPAM,
+        ReportReason.INAPPROPRIATE_LANGUAGE,
+        ReportReason.PRIVACY,
+        ReportReason.OTHER,
+    )

@@ -53,7 +53,7 @@ import java.time.LocalDate
 @Composable
 fun LostAndFoundWriteArticle(
     viewModel: LostAndFoundWriteArticleViewModel = hiltViewModel(),
-    onWriteComplete: (articleId: Int) -> Unit = {}
+    onWriteComplete: (articleId: Int) -> Unit = {},
 ) {
     val context = LocalContext.current
     viewModel.collectSideEffect {
@@ -68,21 +68,23 @@ fun LostAndFoundWriteArticle(
             bottomBar = {
                 WriteArticleDoneButton {
                     when (uiState.lostOrFoundType) {
-                        LostOrFoundType.FOUND -> EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_WRITE_CONFIRM,
-                            "작성 완료"
-                        )
+                        LostOrFoundType.FOUND ->
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_WRITE_CONFIRM,
+                                "작성 완료",
+                            )
 
-                        LostOrFoundType.LOST -> EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_WRITE_CONFIRM,
-                            "작성 완료"
-                        )
+                        LostOrFoundType.LOST ->
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_WRITE_CONFIRM,
+                                "작성 완료",
+                            )
                     }
                     viewModel.checkAllFieldValid()
                 }
             },
             // Fix wrong top padding value
-            contentWindowInsets = WindowInsets(0, 0, 0, 0)
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
         ) { contentPadding ->
             val itemList = uiState.itemList
             var shouldShowItemRemoveButton by remember { mutableStateOf(false) }
@@ -105,9 +107,10 @@ fun LostAndFoundWriteArticle(
 
             LazyColumn(
                 state = lazyColumnState,
-                modifier = Modifier
-                    .padding(contentPadding)
-                    .consumeWindowInsets(contentPadding)
+                modifier =
+                    Modifier
+                        .padding(contentPadding)
+                        .consumeWindowInsets(contentPadding),
             ) {
                 item {
                     WriteArticleHeader(type = uiState.lostOrFoundType)
@@ -135,7 +138,7 @@ fun LostAndFoundWriteArticle(
                                     LostOrFoundType.FOUND -> AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_CATEGORY
                                     LostOrFoundType.LOST -> AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_CATEGORY
                                 },
-                                itemType.getCategoryKoreanWord()
+                                itemType.getCategoryKoreanWord(),
                             )
                             viewModel.updateItemType(itemIndex, itemType)
                         },
@@ -150,26 +153,26 @@ fun LostAndFoundWriteArticle(
                         },
                         onDateChange = { date ->
                             viewModel.updateDate(itemIndex, date)
-                        }
+                        },
                     )
                 }
 
                 if (shouldShowItemAddButton) {
                     item {
                         WriteArticleAddItemButton(
-                            modifier = Modifier.padding(end = 24.dp, bottom = 16.dp)
+                            modifier = Modifier.padding(end = 24.dp, bottom = 16.dp),
                         ) {
                             EventLogger.logCampusClickEvent(
                                 when (uiState.lostOrFoundType) {
                                     LostOrFoundType.FOUND -> AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_ADD_ITEM
                                     LostOrFoundType.LOST -> AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_ADD_ITEM
                                 },
-                                "물품 추가"
+                                "물품 추가",
                             )
                             viewModel.addItem(
                                 LostAndFoundWriteArticleItemState(
-                                    lostOrFoundType = uiState.lostOrFoundType
-                                )
+                                    lostOrFoundType = uiState.lostOrFoundType,
+                                ),
                             )
                         }
                     }
@@ -194,7 +197,7 @@ fun WriteFoundItemArticleImpl(
     onUpdateDescription: (description: String) -> Unit = {},
     onUpdateLocation: (location: String) -> Unit = {},
     onShowDatePickerChange: (showDatePicker: Boolean) -> Unit = {},
-    onDateChange: (date: LocalDate?) -> Unit = {}
+    onDateChange: (date: LocalDate?) -> Unit = {},
 ) {
     val pickMultipleMedia =
         rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { uris ->
@@ -205,18 +208,17 @@ fun WriteFoundItemArticleImpl(
             }
         }
 
-
     val imageList = articleData.images
 
     HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
 
     Column(
-        modifier = modifier.padding(vertical = 16.dp, horizontal = 24.dp)
+        modifier = modifier.padding(vertical = 16.dp, horizontal = 24.dp),
     ) {
         WriteArticleItemChip(
             type = lostOrFoundType,
             index = index,
-            shouldShowDelete = shouldShowDelete
+            shouldShowDelete = shouldShowDelete,
         ) {
             onRemoveItemClick(index)
         }
@@ -230,12 +232,12 @@ fun WriteFoundItemArticleImpl(
             },
             onRemoveImage = { index ->
                 onRemoveImageClick(index)
-            }
+            },
         )
 
         WriteArticleItemType(
             selectedChipIndex = articleData.category.id,
-            itemTypeRequired = articleData.itemTypeRequired
+            itemTypeRequired = articleData.itemTypeRequired,
         ) {
             onChangeItemType(LostItemCategory.entries[it])
         }
@@ -251,7 +253,7 @@ fun WriteFoundItemArticleImpl(
             dateRequired = articleData.dateRequired,
             showDatePicker = showDatePicker,
             onShowDatePickerChange = onShowDatePickerChange,
-            onDateChange = { onDateChange(it) }
+            onDateChange = { onDateChange(it) },
         )
     }
 }
@@ -260,7 +262,7 @@ fun handleSideEffect(
     sideEffect: LostAndFoundWriteArticleSideEffect,
     viewModel: LostAndFoundWriteArticleViewModel,
     context: Context,
-    onWriteComplete: (articleId: Int) -> Unit = {}
+    onWriteComplete: (articleId: Int) -> Unit = {},
 ) {
     when (sideEffect) {
         /*
@@ -286,8 +288,9 @@ fun handleSideEffect(
                     if (fileNameIndex != -1 && fileSizeIndex != -1) {
                         val fileName = cursor.getString(fileNameIndex)
                         val fileSize = cursor.getLong(fileSizeIndex)
-                        val fileType = context.contentResolver.getType(imageContextUri)
-                            ?: "image/${fileName.split(".").last()}"
+                        val fileType =
+                            context.contentResolver.getType(imageContextUri)
+                                ?: "image/${fileName.split(".").last()}"
 
                         viewModel.getPreSignedUrl(
                             fileSize,
@@ -295,7 +298,7 @@ fun handleSideEffect(
                             fileName,
                             imageContextUri,
                             itemIndex,
-                            imageIndex
+                            imageIndex,
                         )
                     }
                 }
@@ -307,7 +310,7 @@ fun handleSideEffect(
         is LostAndFoundWriteArticleSideEffect.UpdateDescription -> {}
         is LostAndFoundWriteArticleSideEffect.UpdateLocation -> {}
         is LostAndFoundWriteArticleSideEffect.UpdateDate -> {}
-        */
+         */
         is LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle -> {
             onWriteComplete(sideEffect.articleId)
         }
@@ -338,7 +341,7 @@ fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.upload_image_failed),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
         }
 

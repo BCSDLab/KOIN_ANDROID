@@ -15,23 +15,21 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
-fun LostAndFoundReportHeader(
-    modifier: Modifier = Modifier,
-) {
+fun LostAndFoundReportHeader(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(24.dp),
     ) {
         Text(
             text = stringResource(id = R.string.report_header_title),
             style = KoinTheme.typography.bold18.copy(fontWeight = FontWeight.SemiBold),
-            color = KoinTheme.colors.neutral800
+            color = KoinTheme.colors.neutral800,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(id = R.string.report_header_description),
             style = KoinTheme.typography.regular14,
-            color = Color(0xFF8E8E8E) // TODO: Replace after design system update
+            color = Color(0xFF8E8E8E), // TODO: Replace after design system update
         )
     }
 }

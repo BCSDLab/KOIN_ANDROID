@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.util.getKoreanDayOfWeekShortName
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.util.getKoreanDayOfWeekShortName
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -53,37 +53,40 @@ fun LostAndFoundItem(
     foundDate: LocalDate,
     registeredAt: LocalDate,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) = Column(
-    modifier = modifier.noRippleClickable {
-        onClick()
-    }
+    modifier =
+        modifier.noRippleClickable {
+            onClick()
+        },
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
-    val convertedRegisteredAt by remember { mutableStateOf("${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}")}
+    val convertedRegisteredAt by remember {
+        mutableStateOf("${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}")
+    }
 
     val foundDateFormatType = DateTimeFormatter.ofPattern("yy.MM.dd")
 
     Column(
-        modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp)
+        modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
     ) {
         Text(
             modifier = Modifier.padding(bottom = 2.dp),
             text = stringResource(lostOrFound.stringRes),
             color = KoinTheme.colors.primary600,
-            style = KoinTheme.typography.medium12.copy(fontWeight = FontWeight.SemiBold)
+            style = KoinTheme.typography.medium12.copy(fontWeight = FontWeight.SemiBold),
         )
         if (isReported) {
             Row {
                 Image(
                     painter = painterResource(id = R.drawable.ic_article_reported),
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(id = R.string.article_reported),
                     color = KoinTheme.colors.neutral500,
-                    style = KoinTheme.typography.regular14
+                    style = KoinTheme.typography.regular14,
                 )
             }
         } else {
@@ -94,7 +97,7 @@ fun LostAndFoundItem(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "${foundPlace.replace("\n", " ")} | ${foundDate.format(foundDateFormatType)}",
-                    style = KoinTheme.typography.medium14
+                    style = KoinTheme.typography.medium14,
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
@@ -106,12 +109,12 @@ fun LostAndFoundItem(
         }
         Spacer(modifier = Modifier.height(4.dp))
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "$author • $convertedRegisteredAt",
                 color = KoinTheme.colors.neutral500,
-                style = KoinTheme.typography.regular12
+                style = KoinTheme.typography.regular12,
             )
         }
     }
@@ -131,7 +134,7 @@ fun LostAndFoundItemPreview() {
                 author = "총학생회",
                 isReported = false,
                 foundDate = LocalDate.now(),
-                registeredAt = LocalDate.now()
+                registeredAt = LocalDate.now(),
             )
         }
     }
@@ -150,7 +153,7 @@ fun LostAndFoundReportedItemPreview() {
                 author = "총학생회",
                 isReported = true,
                 foundDate = LocalDate.now(),
-                registeredAt = LocalDate.now()
+                registeredAt = LocalDate.now(),
             )
         }
     }

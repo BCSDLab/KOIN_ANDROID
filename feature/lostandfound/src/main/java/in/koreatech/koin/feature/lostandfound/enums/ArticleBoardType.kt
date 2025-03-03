@@ -33,5 +33,8 @@ enum class ArticleBoardType(
  * @property STEMS 학생종합경력개발로 이동 (로그인 필요한 게시판)
  */
 enum class LinkType {
-    NONE, ARTICLE, PORTAL, STEMS
+    NONE,
+    ARTICLE,
+    PORTAL,
+    STEMS,
 }
