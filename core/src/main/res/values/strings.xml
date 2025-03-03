@@ -189,7 +189,8 @@
     <string name="insert_store_time_setting">시간설정</string>
     <string name="insert_store_open_time_setting">평일/주말 운영시간</string>
     <string name="insert_store_operating_time">%1$s: %2$s ~ %3$s</string>
-    <string name="insert_store_closed_day">매주 %1$s 정기 휴무</string>
+    <string name="insert_store_closed_day">%1$s 정기 휴무</string>
+    <string name="closed_day">휴무</string>
     <string name="insert_store_null_store_phone_number">가게 전화번호를 입력해 주세요.</string>
     <string name="insert_store_null_store_delivery_fee">가게 배달비를 입력해 주세요.</string>
     <string name="insert_store_null_store_other_info">가게 기타 정보를 입력해 주세요.</string>
