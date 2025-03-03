@@ -73,7 +73,7 @@ fun LostAndFoundReport(
                 },
                 onReport = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT_CONFIRM,
+                        AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT_CONFIRM,
                         "신고하기",
                     )
                     viewModel.reportArticle(articleId)

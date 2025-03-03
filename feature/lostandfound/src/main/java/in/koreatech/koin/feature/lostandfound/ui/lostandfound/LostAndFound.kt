@@ -99,7 +99,7 @@ fun LostAndFoundList(
                             viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LOST_AND_FOUND.FOUND_WRITE,
+                                AnalyticsConstant.Label.LostAndFound.FOUND_WRITE,
                                 fabFoundText,
                             )
                             navigateToWriteFoundItem(
@@ -113,7 +113,7 @@ fun LostAndFoundList(
                             viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LOST_AND_FOUND.LOST_WRITE,
+                                AnalyticsConstant.Label.LostAndFound.LOST_WRITE,
                                 fabLostText,
                             )
                             navigateToWriteFoundItem(
@@ -124,7 +124,7 @@ fun LostAndFoundList(
                     },
                     onDialogExpandedChange = {
                         EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_WRITE,
+                            AnalyticsConstant.Label.LostAndFound.ITEM_WRITE,
                             fabWrite,
                         )
                         viewModel.setFabDialogExpanded(it)
@@ -164,7 +164,7 @@ fun LostAndFoundList(
                             },
                             onItemSelected = {
                                 EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_TYPE,
+                                    AnalyticsConstant.Label.LostAndFound.ITEM_POST_TYPE,
                                     when (it) {
                                         0 -> "물품 전체"
                                         1 -> "습득물"

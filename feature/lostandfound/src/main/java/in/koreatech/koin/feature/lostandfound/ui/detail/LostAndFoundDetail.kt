@@ -87,7 +87,7 @@ fun LostAndFoundDetail(
                 },
                 onChatRoomClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_MESSAGE_SEND,
+                        AnalyticsConstant.Label.LostAndFound.ITEM_MESSAGE_SEND,
                         if (uiState.lostOrFound == LostOrFoundType.LOST) {
                             loggingLostMessageSend
                         } else {
@@ -98,7 +98,7 @@ fun LostAndFoundDetail(
                 },
                 onReportArticleClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT,
+                        AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
                         loggingReport,
                     )
                     navigateToReport(uiState.id)

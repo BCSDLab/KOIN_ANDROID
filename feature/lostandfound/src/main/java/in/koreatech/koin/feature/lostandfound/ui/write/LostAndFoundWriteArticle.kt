@@ -70,13 +70,13 @@ fun LostAndFoundWriteArticle(
                     when (uiState.lostOrFoundType) {
                         LostOrFoundType.FOUND ->
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_WRITE_CONFIRM,
+                                AnalyticsConstant.Label.LostAndFound.FIND_USER_WRITE_CONFIRM,
                                 "작성 완료",
                             )
 
                         LostOrFoundType.LOST ->
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_WRITE_CONFIRM,
+                                AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_CONFIRM,
                                 "작성 완료",
                             )
                     }
@@ -135,8 +135,8 @@ fun LostAndFoundWriteArticle(
                         onChangeItemType = { itemType ->
                             EventLogger.logCampusClickEvent(
                                 when (uiState.lostOrFoundType) {
-                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_CATEGORY
-                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_CATEGORY
+                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LostAndFound.FIND_USER_CATEGORY
+                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LostAndFound.LOST_ITEM_CATEGORY
                                 },
                                 itemType.getCategoryKoreanWord(),
                             )
@@ -164,8 +164,8 @@ fun LostAndFoundWriteArticle(
                         ) {
                             EventLogger.logCampusClickEvent(
                                 when (uiState.lostOrFoundType) {
-                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_ADD_ITEM
-                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_ADD_ITEM
+                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LostAndFound.FIND_USER_ADD_ITEM
+                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LostAndFound.LOST_ITEM_ADD_ITEM
                                 },
                                 "물품 추가",
                             )
