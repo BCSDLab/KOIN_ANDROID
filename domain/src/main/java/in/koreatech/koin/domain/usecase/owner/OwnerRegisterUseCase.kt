@@ -18,6 +18,7 @@ class OwnerRegisterUseCase
             name: String,
             password: String,
             phoneNumber: String,
+            shopNumber: String,
             shopId: Int?,
             shopName: String,
         ): Pair<Unit?, ErrorHandler?> {
@@ -28,6 +29,7 @@ class OwnerRegisterUseCase
                     name,
                     password,
                     phoneNumber,
+                    shopNumber,
                     shopId,
                     shopName,
                 )

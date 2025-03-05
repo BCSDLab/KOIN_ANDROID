@@ -67,9 +67,11 @@ fun MyStoreDetailScreen(
     navigateToUploadEventScreen: () -> Unit = {},
     navigateToModifyScreen: (Int) -> Unit = {},
     navigateToRegisterStoreScreen: () -> Unit = {},
-    navigateToManageMenuScreen: () -> Unit = {},
+    navigateToAddEventScreen: (Int) -> Unit = {},
+    navigateToManageMenuScreen: (Int) -> Unit = {},
     navigateToRegisterMenuScreen: (Int) -> Unit = {},
     navigateToModifyMenuScreen: (Int) -> Unit = {},
+    navigateToSettingMenuScreen: () -> Unit = {},
 ) {
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
@@ -112,6 +114,7 @@ fun MyStoreDetailScreen(
             },
             onDeleteEvent = viewModel::deleteEventAll,
             onMenuItemClicked = viewModel::onModifyMenuClicked,
+            onManageMenuClicked = viewModel::onManageMenuClicked,
         )
     }
     viewModel.collectSideEffect {
@@ -126,7 +129,14 @@ fun MyStoreDetailScreen(
                 navigateToModifyScreen(it.storeId)
             }
             MyStoreDetailSideEffect.NavigateToRegisterStoreScreen -> navigateToRegisterStoreScreen()
-            MyStoreDetailSideEffect.NavigateToManageMenuScreen -> navigateToManageMenuScreen()
+
+            is MyStoreDetailSideEffect.NavigateToManageMenuScreen -> {
+                navigateToManageMenuScreen(it.storeId)
+            }
+
+            is MyStoreDetailSideEffect.NavigateToAddEventScreen -> {
+                navigateToAddEventScreen(it.storeId)
+            }
 
             MyStoreDetailSideEffect.NavigateToRegisterMenuScreen -> {
                 navigateToRegisterMenuScreen(state.storeId)
@@ -160,6 +170,7 @@ fun MyStoreScrollScreen(
     onTabSelected: (Int) -> Unit = {},
     onDeleteEvent: () -> Unit = {},
     onMenuItemClicked: (Int) -> Unit,
+    onManageMenuClicked: () -> Unit,
 ) {
     val toolBarHeight = 145.dp
     val configuration = LocalConfiguration.current
@@ -282,6 +293,9 @@ fun MyStoreScrollScreen(
                                     state = state,
                                     onMenuItemClicked = {
                                         onMenuItemClicked(it)
+                                    },
+                                    onManageMenuClicked = {
+                                        onManageMenuClicked()
                                     },
                                 )
                             1 ->

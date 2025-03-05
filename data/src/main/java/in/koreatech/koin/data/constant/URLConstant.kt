@@ -4,6 +4,7 @@ package `in`.koreatech.koin.data.constant
  * KOIN API URL
  */
 object URLConstant {
+    const val CONTACT_URL = "https://open.kakao.com/o/sgiYx4Qg"
     const val BASE_URL_PRODUCTION = "https://api.koreatech.in" // release server
     const val BASE_URL_STAGE = "https://api.stage.koreatech.in" // development server
     const val URL_PLAYSTORE = "https://play.google.com/store/apps/details?id=in.koreatech.koin"

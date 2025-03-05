@@ -29,3 +29,10 @@ fun String.isNicknameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a
 fun String.formatPhoneNumber(): String = this.replace(Regex("(\\d{3})-?(\\d{4})-?(\\d{4})"), "$1-$2-$3")
 
 fun String.formatBusinessNumber(): String = this.replace(Regex("(\\d{3})(\\d{2})(\\d{5})"), "$1-$2-$3")
+
+fun Int.formatTime(): String {
+    val time = this
+    val minute = time / 60
+    val second = time % 60
+    return String.format("%02d:%02d", minute, second)
+}

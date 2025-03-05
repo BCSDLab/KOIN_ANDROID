@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
+import `in`.koreatech.koin.data.response.owner.CheckCompanyNumberResponse
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.error.owner.OwnerError
@@ -67,6 +68,20 @@ class OwnerSignupRepositoryImpl
                 }
             } catch (t: Throwable) {
                 Result.failure(t)
+            }
+        }
+
+        override suspend fun checkExistsCompanyNumber(companyNumber: String) {
+            return try {
+                ownerRemoteDataSource.checkExistsCompanyNumber(CheckCompanyNumberResponse(companyNumber))
+            } catch (e: HttpException) {
+                if (e.code() == 409) {
+                    throw OwnerError.CompanyNumberIsDuplicatedException
+                } else {
+                    throw e
+                }
+            } catch (t: Throwable) {
+                throw t
             }
         }
     }

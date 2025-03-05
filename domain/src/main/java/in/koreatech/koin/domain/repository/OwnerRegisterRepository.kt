@@ -22,6 +22,7 @@ interface OwnerRegisterRepository {
         name: String,
         password: String,
         phoneNumber: String,
+        shopNumber: String,
         shopId: Int?,
         shopName: String,
     )

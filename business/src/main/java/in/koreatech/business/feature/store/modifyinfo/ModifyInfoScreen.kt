@@ -223,7 +223,10 @@ fun ModifyInfoScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Column {
-                            state.storeInfo?.operatingTime?.forEach { item ->
+                            val closedStores = state.storeInfo.operatingTime.filter { it.closed }
+                            val openStores = state.storeInfo.operatingTime.filter { !it.closed }
+
+                            openStores.forEach { item ->
                                 val dayOfWeekIndex = dayOfWeekToIndex(item.dayOfWeek)
                                 val dayOfWeekKorean =
                                     if (dayOfWeekIndex != -1) {
@@ -235,20 +238,35 @@ fun ModifyInfoScreen(
                                     }
                                 Text(
                                     text =
-                                        if (item.closed) {
-                                            stringResource(
-                                                id = R.string.insert_store_closed_day,
-                                                dayOfWeekKorean,
-                                            )
-                                        } else {
-                                            "$dayOfWeekKorean " +
-                                                StoreUtil.generateOpenCloseTimeString(
-                                                    item.openTime,
-                                                    item.closeTime,
-                                                )
-                                        },
+                                        "$dayOfWeekKorean " +
+                                            StoreUtil.generateOpenCloseTimeString(
+                                                item.openTime,
+                                                item.closeTime,
+                                            ),
                                     color = ColorMinor,
                                 )
+                            }
+                            Row {
+                                closedStores.forEach { item ->
+                                    val dayOfWeekIndex = dayOfWeekToIndex(item.dayOfWeek)
+                                    val dayOfWeekKorean =
+                                        if (dayOfWeekIndex != -1) {
+                                            context.resources.getStringArray(
+                                                R.array.days_one_letter,
+                                            )[dayOfWeekIndex]
+                                        } else {
+                                            item.dayOfWeek
+                                        }
+                                    Text(
+                                        text = "$dayOfWeekKorean ",
+                                    )
+                                }
+                                if (closedStores.isNotEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.closed_day),
+                                        color = Color.Red,
+                                    )
+                                }
                             }
                         }
                         Button(

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
@@ -32,7 +33,7 @@ fun MenuBorderTextField(
     Box(
         modifier =
             modifier
-                .border(width = 1.dp, color = ColorMinor)
+                .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                 .height(37.dp)
                 .width(170.dp),
         contentAlignment = Alignment.CenterStart,

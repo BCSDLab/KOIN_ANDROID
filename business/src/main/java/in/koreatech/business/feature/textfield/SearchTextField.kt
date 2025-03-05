@@ -25,8 +25,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
-import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.Gray5
+import `in`.koreatech.business.ui.theme.ColorTextField
+import `in`.koreatech.business.ui.theme.SearchColorHelper
 
 @Composable
 fun SearchTextField(
@@ -48,14 +48,14 @@ fun SearchTextField(
             Row(
                 modifier =
                     Modifier.fillMaxWidth().height(40.dp)
-                        .background(color = Gray5, shape = RoundedCornerShape(4.dp))
+                        .background(color = ColorTextField, shape = RoundedCornerShape(4.dp))
                         .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Box {
                     if (value.isEmpty()) {
-                        Text(label, fontSize = 15.sp, color = ColorHelper)
+                        Text(label, fontSize = 15.sp, color = SearchColorHelper)
                     }
                     innerTextField()
                 }

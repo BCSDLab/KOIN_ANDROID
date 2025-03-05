@@ -1,15 +1,15 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 import androidx.compose.runtime.Immutable
+import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.store.ShopEvent
-import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class MyStoreDetailState(
-    val storeList: List<Store> = mutableListOf(),
+    val storeList: List<OwnerGetStore> = mutableListOf(),
     val storeInfo: StoreDetailInfo? = null,
     val storeId: Int = -1,
     val storeEvent: ImmutableList<ShopEvent>? = null,

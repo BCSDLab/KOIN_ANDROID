@@ -145,8 +145,10 @@ fun EventEditToolbar(
 }
 
 @Composable
-fun EventToolbar(context: Context) {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+fun EventToolbar(
+    context: Context,
+    viewModel: MyStoreDetailViewModel = hiltViewModel(),
+) {
     Row(
         modifier =
             Modifier
@@ -179,9 +181,7 @@ fun EventToolbar(context: Context) {
         }
         Button(
             onClick = {
-                ToastUtil.getInstance().makeShort(
-                    context.getString(R.string.update_soon),
-                )
+                viewModel.navigateToAddEventScreen()
             },
             modifier =
                 Modifier

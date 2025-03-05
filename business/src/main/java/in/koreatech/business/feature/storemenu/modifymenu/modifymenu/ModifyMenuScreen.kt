@@ -43,7 +43,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -345,7 +344,7 @@ fun ModifyMenuScreenImpl(
                             Box(
                                 modifier =
                                     modifier
-                                        .border(width = 1.dp, color = ColorMinor)
+                                        .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                                         .height(37.dp),
                                 contentAlignment = Alignment.CenterStart,
                             ) {
@@ -398,7 +397,7 @@ fun ModifyMenuScreenImpl(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_add),
+                            painter = painterResource(id = R.drawable.ic_user_add),
                             contentDescription = null,
                         )
 
@@ -439,59 +438,55 @@ fun ModifyMenuScreenImpl(
                 item {
                     DivideOption(22.dp, stringResource(id = R.string.menu_detail))
 
-                    Text(
+                    /*Text(
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp),
                         text = stringResource(id = R.string.menu_composition),
                         fontSize = 15.sp,
                         color = ColorPrimary,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Bold
                     )
 
                     Box(
-                        modifier =
-                            Modifier
-                                .padding(horizontal = 16.dp)
-                                .padding(top = 8.dp)
-                                .border(width = 1.dp, color = ColorMinor)
-                                .height(105.dp),
-                        contentAlignment = Alignment.CenterStart,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 8.dp)
+                            .border(width = 1.dp, color = ColorMinor)
+                            .height(105.dp),
+                        contentAlignment = Alignment.CenterStart
                     ) {
                         BasicTextField(
                             value = registerMenuState.description,
                             onValueChange = onChangeMenuDetail,
-                            textStyle =
-                                TextStyle(
-                                    color = Color.Black,
-                                    fontSize = 14.sp,
-                                ),
-                            modifier =
-                                Modifier
-                                    .fillMaxSize()
-                                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                            textStyle = TextStyle(
+                                color = Color.Black,
+                                fontSize = 14.sp
+                            ),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 8.dp, vertical = 8.dp)
+                            ,
                             decorationBox = { innerTextField ->
                                 if (registerMenuState.description.isEmpty()) {
                                     Text(
                                         text = stringResource(id = R.string.menu_description_example),
-                                        style =
-                                            TextStyle(
-                                                color = Color.Gray,
-                                                fontSize = 14.sp,
-                                            ),
+                                        style = TextStyle(
+                                            color = Color.Gray,
+                                            fontSize = 14.sp
+                                        )
                                     )
                                 }
                                 innerTextField()
-                            },
+                            }
                         )
                     }
 
                     Divider(
-                        modifier =
-                            Modifier
-                                .padding(horizontal = 16.dp)
-                                .padding(top = 24.dp),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 24.dp),
                         thickness = 1.dp,
-                        color = Gray7,
-                    )
+                        color = Gray7
+                    )*/
                 }
 
                 item {
@@ -612,11 +607,11 @@ fun ModifyMenuScreenImpl(
                     ) {
                         Button(
                             onClick = { onBackPressed() },
-                            shape = RectangleShape,
+                            shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(Color.White),
                             modifier =
                                 Modifier
-                                    .border(1.dp, ColorSecondary)
+                                    .border(1.dp, ColorMinor, shape = RoundedCornerShape(8.dp))
                                     .fillMaxHeight()
                                     .width(113.dp),
                         ) {
@@ -624,13 +619,13 @@ fun ModifyMenuScreenImpl(
                                 text = stringResource(id = R.string.cancel),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = ColorSecondary,
+                                color = ColorMinor,
                             )
                         }
 
                         Button(
                             onClick = onNextButtonClicked,
-                            shape = RectangleShape,
+                            shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
                             modifier =
                                 Modifier
@@ -666,7 +661,6 @@ private fun HandleSideEffects(
                         ModifyMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
                         ModifyMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
                         ModifyMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
-                        ModifyMenuErrorType.NullMenuDescription -> context.getString(R.string.menu_null_description)
                         ModifyMenuErrorType.NullMenuImage -> context.getString(R.string.menu_null_image)
                         ModifyMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
                         ModifyMenuErrorType.FailModifyMenu -> context.getString(R.string.menu_fail_register_menu)
@@ -690,12 +684,12 @@ fun CategoryRadioButton(
 ) {
     Box(
         modifier =
-            Modifier
+            modifier
                 .width(185.dp)
                 .height(50.dp)
                 .padding(start = startDp, end = endDp)
-                .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6)
-                .background(color = if (isClicked) ColorSecondary else ColorTransparency)
+                .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6, shape = RoundedCornerShape(8.dp))
+                .background(color = if (isClicked) ColorSecondary else ColorTransparency, shape = RoundedCornerShape(8.dp))
                 .clickable {
                     onButtonClicked(index)
                 },
@@ -778,7 +772,7 @@ fun BorderTextField(
             Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = 8.dp)
-                .border(width = 1.dp, color = ColorMinor)
+                .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                 .height(height),
         contentAlignment = Alignment.CenterStart,
     ) {

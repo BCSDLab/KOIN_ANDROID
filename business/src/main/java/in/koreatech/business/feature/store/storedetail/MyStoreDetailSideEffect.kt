@@ -5,9 +5,11 @@ sealed class MyStoreDetailSideEffect {
 
     data class NavigateToModifyScreen(val storeId: Int) : MyStoreDetailSideEffect()
 
-    data object NavigateToManageMenuScreen : MyStoreDetailSideEffect()
+    data class NavigateToManageMenuScreen(val storeId: Int) : MyStoreDetailSideEffect()
 
     data object NavigateToRegisterMenuScreen : MyStoreDetailSideEffect()
+
+    data class NavigateToAddEventScreen(val storeId: Int) : MyStoreDetailSideEffect()
 
     data class NavigateToModifyMenuScreen(val menuId: Int) : MyStoreDetailSideEffect()
 

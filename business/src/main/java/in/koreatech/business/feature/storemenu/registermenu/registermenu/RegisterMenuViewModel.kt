@@ -330,10 +330,7 @@ class RegisterMenuViewModel
                     !state.menuCategory.take(state.menuCategory.size).any {
                         it.menuCategoryIsChecked
                     } -> postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuCategory))
-                    state.description.isBlank() ->
-                        postSideEffect(
-                            RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuDescription),
-                        )
+                    // state.description.isBlank() -> postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuDescription))
                     state.imageUriList.size == 1 && state.imageUriList[0] == Uri.EMPTY ->
                         postSideEffect(
                             RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuImage),

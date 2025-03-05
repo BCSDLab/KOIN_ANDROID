@@ -22,4 +22,6 @@ sealed class OwnerError {
     object NotExistsPhoneNumberException : IllegalAccessException()
 
     object ExistsPhoneNumberException : IllegalAccessException()
+
+    object CompanyNumberIsDuplicatedException : IllegalAccessException()
 }

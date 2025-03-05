@@ -7,6 +7,7 @@ data class OwnerRegisterRequest(
     @SerializedName("name") val name: String?,
     @SerializedName("password") val password: String?,
     @SerializedName("phone_number") val phoneNumber: String?,
+    @SerializedName("shop_number") val shopNumber: String?, // 가게 전화번호
     @SerializedName("shop_id") val shopId: Int?,
     @SerializedName("shop_name") val shopName: String?,
 )
