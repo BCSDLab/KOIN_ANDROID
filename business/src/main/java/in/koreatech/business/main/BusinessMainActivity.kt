@@ -29,7 +29,7 @@ class BusinessMainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KOIN_ANDROIDTheme {
-             //   KoinBusinessAppScreen()
+               KoinBusinessAppScreen()
             }
         }
     }
