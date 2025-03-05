@@ -10,3 +10,6 @@ data class UserSemestersResponse(
 
 internal fun UserSemestersResponse.toSemesters(): List<SemesterV3>
         = this.semesters.map { it.toSemester() }
+
+// TODO::마이그레이션 완료 후 제거
+internal fun UserSemestersResponse.toLegacySemesters(): List<String> = this.semesters.map {it.toLegacySemesterString() }

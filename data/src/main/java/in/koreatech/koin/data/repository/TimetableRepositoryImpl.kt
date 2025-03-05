@@ -10,6 +10,9 @@ import `in`.koreatech.koin.data.request.timetable.TimetableLectureClassInfoReque
 import `in`.koreatech.koin.data.request.timetable.toCustomLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
+import `in`.koreatech.koin.data.response.timetable.v3.toLegacySemesterString
+import `in`.koreatech.koin.data.response.timetable.v3.toLegacySemesters
+import `in`.koreatech.koin.data.response.timetable.v3.toSemesters
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
@@ -37,12 +40,12 @@ class TimetableRepositoryImpl
 
         override fun getSemesters(): Flow<List<String>> =
             flow {
-                emit(timetableRemoteDataSource.getSemesters().map { it.toSemester().semester })
+                emit(timetableRemoteDataSource.getSemestersV3().map { it.toLegacySemesterString() })
             }
 
         override fun getSemesterCheck(): Flow<List<String>> =
             flow {
-                emit(timetableRemoteDataSource.getSemesterCheck().toSemesterCheck().semesters)
+                emit(timetableRemoteDataSource.getUserSemesters().toLegacySemesters())
             }
 
         override fun getLectures(semesterDate: String): Flow<List<Lecture>> =

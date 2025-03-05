@@ -7,8 +7,6 @@ import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryReque
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableLecturesQueryRequest
 import `in`.koreatech.koin.data.response.timetable.LectureResponse
-import `in`.koreatech.koin.data.response.timetable.SemesterCheckResponse
-import `in`.koreatech.koin.data.response.timetable.SemesterResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
 import `in`.koreatech.koin.data.response.timetable.v3.SemesterResponseV3
@@ -21,10 +19,6 @@ class TimetableRemoteDataSource
         private val timetableApi: TimetableApi,
         private val timetableAuthApi: TimetableAuthApi,
     ) {
-        suspend fun getSemesters(): List<SemesterResponse> = timetableApi.getSemesters()
-
-        suspend fun getSemesterCheck(): SemesterCheckResponse = timetableAuthApi.getSemestersCheck()
-
         suspend fun getSemestersV3(): List<SemesterResponseV3> = timetableApi.getSemestersV3()
 
         suspend fun getUserSemesters(): UserSemestersResponse = timetableAuthApi.getUserSemesters()
