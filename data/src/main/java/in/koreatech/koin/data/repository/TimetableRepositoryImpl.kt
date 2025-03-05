@@ -10,12 +10,12 @@ import `in`.koreatech.koin.data.request.timetable.TimetableLectureClassInfoReque
 import `in`.koreatech.koin.data.request.timetable.toCustomLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
-import `in`.koreatech.koin.data.response.timetable.v3.toLegacySemesterString
-import `in`.koreatech.koin.data.response.timetable.v3.toLegacySemesters
+import `in`.koreatech.koin.data.response.timetable.v3.toSemester
 import `in`.koreatech.koin.data.response.timetable.v3.toSemesters
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.domain.model.timetable.SemesterV3
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
@@ -38,14 +38,14 @@ class TimetableRepositoryImpl
     ) : TimetableRepository {
         private val gson = Gson()
 
-        override fun getSemesters(): Flow<List<String>> =
+        override fun getSemestersV3(): Flow<List<SemesterV3>> =
             flow {
-                emit(timetableRemoteDataSource.getSemestersV3().map { it.toLegacySemesterString() })
+                emit(timetableRemoteDataSource.getSemestersV3().map { it.toSemester() })
             }
 
-        override fun getSemesterCheck(): Flow<List<String>> =
+        override fun getUserSemesters(): Flow<List<SemesterV3>> =
             flow {
-                emit(timetableRemoteDataSource.getUserSemesters().toLegacySemesters())
+                emit(timetableRemoteDataSource.getUserSemesters().toSemesters())
             }
 
         override fun getLectures(semesterDate: String): Flow<List<Lecture>> =

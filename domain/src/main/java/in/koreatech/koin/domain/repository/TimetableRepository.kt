@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.timetable.SemesterV3
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
@@ -10,9 +11,9 @@ import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import kotlinx.coroutines.flow.Flow
 
 interface TimetableRepository {
-    fun getSemesters(): Flow<List<String>>
+    fun getSemestersV3(): Flow<List<SemesterV3>>
 
-    fun getSemesterCheck(): Flow<List<String>>
+    fun getUserSemesters(): Flow<List<SemesterV3>>
 
     fun getLectures(semesterDate: String): Flow<List<Lecture>>
 
