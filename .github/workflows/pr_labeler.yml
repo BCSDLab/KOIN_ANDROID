@@ -21,6 +21,11 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Create local.properties
+        env: 
+          PROPERTIES: ${{ secrets.PROPERTIES }}
+        run: echo $PROPERTIES | base64 -di > ./local.properties
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
