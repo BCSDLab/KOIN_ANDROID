@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -174,7 +175,7 @@ fun EnterPasswordScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 24.dp)
-                    .height(50.dp),
+                    .heightIn(50.dp),
                 shape = RectangleShape,
                 enabled = state.password == state.passwordConfirm && state.passwordConfirm.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(

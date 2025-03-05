@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -283,7 +285,7 @@ fun AccountSetupScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 24.dp)
-                    .height(50.dp),
+                    .heightIn(50.dp),
                 shape = RectangleShape,
                 enabled = state.verifyState == SignupContinuationState.CheckComplete,
                 colors = ButtonDefaults.buttonColors(
@@ -344,7 +346,7 @@ fun SendAuthCodeDialog(
             ) {
                 TextButton(
                     modifier = Modifier
-                        .width(72.dp)
+                        .widthIn(72.dp)
                         .height(40.dp),
                     colors = ButtonDefaults.textButtonColors(
                         backgroundColor = ColorPrimary,
