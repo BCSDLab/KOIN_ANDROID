@@ -12,7 +12,6 @@ enum class ModifyMenuErrorType {
     NullMenuName,
     NullMenuPrice,
     NullMenuCategory,
-    NullMenuDescription,
     NullMenuImage,
     FailUploadImage,
     FailModifyMenu,

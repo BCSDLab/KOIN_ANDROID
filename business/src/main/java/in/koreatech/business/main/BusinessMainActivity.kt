@@ -20,6 +20,7 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import java.time.YearMonth
 
 @AndroidEntryPoint
 class BusinessMainActivity : ComponentActivity() {
@@ -27,8 +28,7 @@ class BusinessMainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KOIN_ANDROIDTheme {
-             //   KoinBusinessAppScreen()
-                EnterBusinessNumberScreen()
+               KoinBusinessAppScreen()
             }
         }
     }

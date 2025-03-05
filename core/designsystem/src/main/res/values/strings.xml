@@ -4,4 +4,5 @@
     <string name="common_confirmation">확인</string>
     <!-- Content Description -->
     <string name="navigate_up_content_description">뒤로가기</string>
+    <string name="navigate_back_content_description">돌아가기</string>
 </resources>

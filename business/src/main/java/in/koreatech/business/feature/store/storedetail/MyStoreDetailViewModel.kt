@@ -1,5 +1,7 @@
 package `in`.koreatech.business.feature.store.storedetail
 
+
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,341 +24,305 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class MyStoreDetailViewModel
-    @Inject
-    constructor(
-        private val getOwnerShopInfoUseCase: GetOwnerShopInfoUseCase,
-        private val getOwnerShopListUseCase: GetOwnerShopListUseCase,
-        private val getOwnerShopEventsUseCase: GetOwnerShopEventsUseCase,
-        private val getOwnerShopMenusUseCase: GetOwnerShopMenusUseCase,
-        private val deleteOwnerShopEventsUseCase: DeleteOwnerEventsUseCase,
-        private val userRemoveUseCase: UserRemoveUseCase,
-    ) : ContainerHost<MyStoreDetailState, MyStoreDetailSideEffect>, ViewModel() {
-        override val container =
-            container<MyStoreDetailState, MyStoreDetailSideEffect>(MyStoreDetailState())
+class MyStoreDetailViewModel @Inject constructor(
+    private val getOwnerShopInfoUseCase: GetOwnerShopInfoUseCase,
+    private val getOwnerShopListUseCase: GetOwnerShopListUseCase,
+    private val getOwnerShopEventsUseCase: GetOwnerShopEventsUseCase,
+    private val getOwnerShopMenusUseCase: GetOwnerShopMenusUseCase,
+    private val deleteOwnerShopEventsUseCase: DeleteOwnerEventsUseCase,
+    private val userRemoveUseCase: UserRemoveUseCase
+) : ContainerHost<MyStoreDetailState, MyStoreDetailSideEffect>, ViewModel() {
+    override val container =
+        container<MyStoreDetailState, MyStoreDetailSideEffect>(MyStoreDetailState())
 
-        init {
-            initOwnerShopList()
+    init {
+        initOwnerShopList()
+    }
+
+    fun onChangeAllEventSelected() = intent {
+        reduce {
+            state.copy(
+                isAllEventSelected = if (state.storeEvent?.size == 0) false
+                else !state.isAllEventSelected,
+            )
         }
+        reduce {
+            state.copy(
+                isSelectedEvent = if (state.isAllEventSelected) {
+                    mutableListOf<Int>().apply { state.storeEvent?.forEach { add(it.eventId) } }
+                } else {
+                    mutableListOf<Int>().apply { state.storeEvent?.forEach { remove(it.eventId) } }
+                }
+            )
+        }
+    }
 
-        fun onChangeAllEventSelected() =
-            intent {
+    fun onChangeEventSelected(eventId: Int) = intent {
+        reduce {
+            if (!state.isSelectedEvent.contains(eventId)) {
+                state.copy(
+                    isSelectedEvent = state.isSelectedEvent.toMutableList().apply { add(eventId) },
+                )
+            } else {
+                state.copy(
+                    isSelectedEvent = state.isSelectedEvent.toMutableList()
+                        .apply { remove(eventId) })
+            }
+        }
+        reduce {
+            state.copy(
+                isAllEventSelected = state.isSelectedEvent.size == state.storeEvent?.size
+            )
+        }
+    }
+
+    fun onChangeEditMode() = intent {
+        reduce {
+            state.copy(
+                isEditMode = !state.isEditMode,
+                isSelectedEvent = mutableListOf(),
+                isAllEventSelected = false
+            )
+        }
+    }
+
+    fun initEventItem() = intent {
+        reduce {
+            state.copy(isEventExpanded = List(state.isEventExpanded.size) { _ -> false })
+        }
+        getShopEvents()
+    }
+
+    private fun getOwnerShopInfo(shopId: Int) = intent {
+        viewModelScope.launch {
+            getOwnerShopInfoUseCase(shopId).onSuccess {
+                reduce {
+                    state.copy(storeInfo = it)
+                }
+                getShopEvents()
+                getShopMenus()
+            }.onFailure {
+                reduce {
+                    state.copy(storeInfo = null)
+                }
+            }
+        }
+    }
+
+    private fun getShopEvents() = intent {
+        viewModelScope.launch {
+            getOwnerShopEventsUseCase(state.storeId).also {
                 reduce {
                     state.copy(
-                        isAllEventSelected =
-                            if (state.storeEvent?.size == 0) {
-                                false
-                            } else {
-                                !state.isAllEventSelected
-                            },
+                        storeEvent = it.events.toImmutableList(),
+                        isEventExpanded = List(it.events.size) { _ -> false })
+                }
+            }
+        }
+    }
+
+    fun changeMyStoreInfo(storeId: Int) = intent{
+        viewModelScope.launch {
+            getOwnerShopInfoUseCase(storeId).onSuccess {
+                reduce {
+                    state.copy(
+                        storeInfo = it
                     )
                 }
                 reduce {
                     state.copy(
-                        isSelectedEvent =
-                            if (state.isAllEventSelected) {
-                                mutableListOf<Int>().apply { state.storeEvent?.forEach { add(it.eventId) } }
-                            } else {
-                                mutableListOf<Int>().apply { state.storeEvent?.forEach { remove(it.eventId) } }
-                            },
+                        storeId = storeId
                     )
                 }
-            }
-
-        fun onChangeEventSelected(eventId: Int) =
-            intent {
+                getShopEvents()
+                getShopMenus()
+            }.onFailure {
                 reduce {
-                    if (!state.isSelectedEvent.contains(eventId)) {
-                        state.copy(
-                            isSelectedEvent = state.isSelectedEvent.toMutableList().apply { add(eventId) },
-                        )
-                    } else {
-                        state.copy(
-                            isSelectedEvent =
-                                state.isSelectedEvent.toMutableList()
-                                    .apply { remove(eventId) },
-                        )
-                    }
+                    state.copy(storeInfo = null)
+                }
+            }
+        }
+    }
+
+    fun modifyStoreInfo(storeInfo: StoreDetailInfo) = intent {
+        reduce {
+            state.copy(storeInfo = storeInfo)
+        }
+    }
+
+    fun changeDialogVisibility() = intent {
+        reduce {
+            state.copy(
+                dialogVisibility = if (state.isSelectedEvent.size > 0) {
+                    !state.dialogVisibility
+                } else false
+            )
+        }
+    }
+
+    private fun initOwnerShopList() = intent {
+        viewModelScope.launch {
+            getOwnerShopListUseCase().onSuccess {
+                reduce {
+                    state.copy(
+                        storeList = it,
+                    )
                 }
                 reduce {
                     state.copy(
-                        isAllEventSelected = state.isSelectedEvent.size == state.storeEvent?.size,
+                        storeId = if (state.storeList.isNotEmpty()) state.storeList.first().uid else -1
                     )
                 }
-            }
+                getOwnerShopInfo(state.storeId)
 
-        fun onChangeEditMode() =
-            intent {
+            }.onFailure {
                 reduce {
                     state.copy(
-                        isEditMode = !state.isEditMode,
-                        isSelectedEvent = mutableListOf(),
-                        isAllEventSelected = false,
+                        storeList = emptyList(),
+                        storeId = if (state.storeList.isNotEmpty()) state.storeList.first().uid else -1
                     )
                 }
+                postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
             }
+        }
+    }
 
-        fun initEventItem() =
-            intent {
+    private fun getShopMenus() = intent {
+        viewModelScope.launch {
+            getOwnerShopMenusUseCase(state.storeId).also {
                 reduce {
-                    state.copy(isEventExpanded = List(state.isEventExpanded.size) { _ -> false })
+                    state.copy(storeMenu = it.menuCategories?.toImmutableList())
                 }
             }
+        }
+    }
 
-        private fun getOwnerShopInfo(shopId: Int) =
-            intent {
-                viewModelScope.launch {
-                    getOwnerShopInfoUseCase(shopId).onSuccess {
-                        reduce {
-                            state.copy(storeInfo = it)
-                        }
-                        getShopEvents()
-                        getShopMenus()
-                    }.onFailure {
-                        reduce {
-                            state.copy(storeInfo = null)
-                        }
-                    }
-                }
-            }
-
-        private fun getShopEvents() =
-            intent {
-                viewModelScope.launch {
-                    getOwnerShopEventsUseCase(state.storeId).also {
-                        reduce {
-                            state.copy(
-                                storeEvent = it.events.toImmutableList(),
-                                isEventExpanded = List(it.events.size) { _ -> false },
-                            )
-                        }
-                    }
-                }
-            }
-
-        fun changeMyStoreInfo(storeId: Int) =
-            intent {
-                viewModelScope.launch {
-                    getOwnerShopInfoUseCase(storeId).onSuccess {
-                        reduce {
-                            state.copy(
-                                storeInfo = it,
-                            )
-                        }
-                        reduce {
-                            state.copy(
-                                storeId = storeId,
-                            )
-                        }
-                        getShopEvents()
-                        getShopMenus()
-                    }.onFailure {
-                        reduce {
-                            state.copy(storeInfo = null)
-                        }
-                    }
-                }
-            }
-
-        fun modifyStoreInfo(storeInfo: StoreDetailInfo) =
-            intent {
-                reduce {
-                    state.copy(storeInfo = storeInfo)
-                }
-            }
-
-        fun changeDialogVisibility() =
-            intent {
-                reduce {
-                    state.copy(
-                        dialogVisibility =
-                            if (state.isSelectedEvent.size > 0) {
-                                !state.dialogVisibility
-                            } else {
-                                false
-                            },
-                    )
-                }
-            }
-
-        private fun initOwnerShopList() =
-            intent {
-                viewModelScope.launch {
-                    getOwnerShopListUseCase().onSuccess {
+    fun refreshStoreList() = intent {
+            viewModelScope.launch {
+                getOwnerShopListUseCase()
+                    .onSuccess {
                         reduce {
                             state.copy(
                                 storeList = it,
                             )
                         }
-                        reduce {
-                            state.copy(
-                                storeId = if (state.storeList.isNotEmpty()) state.storeList.first().uid else -1,
-                            )
-                        }
-                        getOwnerShopInfo(state.storeId)
                     }.onFailure {
-                        reduce {
-                            state.copy(
-                                storeList = emptyList(),
-                                storeId = if (state.storeList.isNotEmpty()) state.storeList.first().uid else -1,
-                            )
-                        }
                         postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
                     }
-                }
-            }
-
-        private fun getShopMenus() =
-            intent {
-                viewModelScope.launch {
-                    getOwnerShopMenusUseCase(state.storeId).also {
-                        reduce {
-                            state.copy(storeMenu = it.menuCategories?.toImmutableList())
-                        }
-                    }
-                }
-            }
-
-        fun refreshStoreList() =
-            intent {
-                viewModelScope.launch {
-                    getOwnerShopListUseCase()
-                        .onSuccess {
-                            reduce {
-                                state.copy(
-                                    storeList = it,
-                                )
-                            }
-                        }.onFailure {
-                            postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
-                        }
-                }
-            }
-
-        fun showSelectStoreDialog() =
-            intent {
-                reduce {
-                    state.copy(
-                        selectDialogVisibility = true,
-                    )
-                }
-            }
-
-        fun closeSelectStoreDialog() =
-            intent {
-                reduce {
-                    state.copy(
-                        selectDialogVisibility = false,
-                    )
-                }
-            }
-
-        fun showDeleteUserDialog() =
-            intent {
-                reduce {
-                    state.copy(
-                        deleteUserDialogVisibility = true,
-                    )
-                }
-            }
-
-        fun closeDeleteUserDialog() =
-            intent {
-                reduce {
-                    state.copy(
-                        deleteUserDialogVisibility = false,
-                    )
-                }
-            }
-
-        fun navigateToModifyScreen() =
-            intent {
-                if (state.storeId == -1) return@intent
-                postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen(state.storeId))
-            }
-
-        fun onManageMenuClicked() =
-            intent {
-                postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen)
-            }
-
-        fun onRegisterMenuClicked() =
-            intent {
-                postSideEffect(MyStoreDetailSideEffect.NavigateToRegisterMenuScreen)
-            }
-
-        fun onModifyMenuClicked(menuId: Int) {
-            intent {
-                postSideEffect(MyStoreDetailSideEffect.NavigateToModifyMenuScreen(menuId))
-            }
         }
+    }
 
-        fun onRegisterStoreClicked() =
-            intent {
-                postSideEffect(MyStoreDetailSideEffect.NavigateToRegisterStoreScreen)
-            }
-
-        fun modifyEventError() =
-            intent {
-                postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
-            }
-
-        fun deleteEventAll() =
-            intent {
-                state.isSelectedEvent.forEach {
-                    deleteEventItem(state.storeId, it)
-                }
-            }
-
-        fun deleteEventItem(
-            shopId: Int,
-            eventId: Int,
-        ) = intent {
-            viewModelScope.launch {
-                deleteOwnerShopEventsUseCase(shopId, eventId).also {
-                    reduce {
-                        state.copy(
-                            storeEvent =
-                                state.storeEvent?.filter { it.eventId != eventId }
-                                    ?.toImmutableList(),
-                            isSelectedEvent =
-                                state.isSelectedEvent.toMutableList()
-                                    .apply { remove(eventId) },
-                            dialogVisibility = false,
-                        )
-                    }
-                    reduce {
-                        state.copy(
-                            isAllEventSelected = if (state.storeEvent?.size == 0) false else state.isAllEventSelected,
-                        )
-                    }
-                }
-            }
+    fun showSelectStoreDialog() = intent{
+        reduce {
+            state.copy(
+                selectDialogVisibility = true
+            )
         }
+    }
 
-        fun toggleEventItem(index: Int) =
-            intent {
+    fun closeSelectStoreDialog() = intent{
+        reduce {
+            state.copy(
+                selectDialogVisibility = false
+            )
+        }
+    }
+
+    fun showDeleteUserDialog() = intent{
+        reduce {
+            state.copy(
+                deleteUserDialogVisibility = true
+            )
+        }
+    }
+
+    fun closeDeleteUserDialog() = intent{
+        reduce {
+            state.copy(
+                deleteUserDialogVisibility = false
+            )
+        }
+    }
+
+    fun navigateToModifyScreen() = intent {
+        if (state.storeId == -1) return@intent
+        postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen(state.storeId))
+    }
+
+    fun navigateToAddEventScreen() = intent {
+        if (state.storeId == -1) return@intent
+        postSideEffect(MyStoreDetailSideEffect.NavigateToAddEventScreen(state.storeId))
+    }
+
+    fun onManageMenuClicked() = intent {
+        postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen(state.storeId))
+    }
+
+    fun onRegisterMenuClicked() = intent {
+        postSideEffect(MyStoreDetailSideEffect.NavigateToRegisterMenuScreen)
+    }
+
+    fun onModifyMenuClicked(menuId: Int){
+        intent {
+            postSideEffect(MyStoreDetailSideEffect.NavigateToModifyMenuScreen(menuId))
+        }
+    }
+
+    fun onRegisterStoreClicked() = intent {
+        postSideEffect(MyStoreDetailSideEffect.NavigateToRegisterStoreScreen)
+    }
+    fun modifyEventError() = intent {
+        postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
+    }
+
+    fun deleteEventAll() = intent {
+        state.isSelectedEvent.forEach {
+            deleteEventItem(state.storeId, it)
+        }
+    }
+
+    fun deleteEventItem(shopId: Int, eventId: Int) = intent {
+        viewModelScope.launch {
+            deleteOwnerShopEventsUseCase(shopId, eventId).also {
                 reduce {
                     state.copy(
-                        isEventExpanded =
-                            state.isEventExpanded.mapIndexed { i, isExpanded ->
-                                if (i == index) !isExpanded else isExpanded
-                            },
+                        storeEvent = state.storeEvent?.filter { it.eventId != eventId }
+                            ?.toImmutableList(),
+                        isSelectedEvent = state.isSelectedEvent.toMutableList()
+                            .apply { remove(eventId) },
+                        dialogVisibility = false
                     )
                 }
-            }
-
-        fun deleteUser() {
-            intent {
-                viewModelScope.launch {
-                    userRemoveUseCase()
-                        .onSuccess {
-                            postSideEffect(MyStoreDetailSideEffect.DeleteUser)
-                        }
-                        .onFailure { errorHandler ->
-                            postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(errorHandler.message))
-                        }
+                reduce {
+                    state.copy(
+                        isAllEventSelected = if (state.storeEvent?.size == 0) false else state.isAllEventSelected
+                    )
                 }
             }
         }
     }
+
+    fun toggleEventItem(index: Int) = intent {
+        reduce {
+            state.copy(
+                isEventExpanded = state.isEventExpanded.mapIndexed { i, isExpanded ->
+                    if (i == index) !isExpanded else isExpanded
+                }
+            )
+        }
+    }
+
+    fun deleteUser() {
+        intent{
+            viewModelScope.launch {
+                userRemoveUseCase()
+                    .onSuccess {
+                        postSideEffect(MyStoreDetailSideEffect.DeleteUser)
+                    }
+                    .onFailure { errorHandler ->
+                        postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(errorHandler.message))
+                    }
+            }
+        }
+    }
+}
