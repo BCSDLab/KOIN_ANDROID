@@ -15,10 +15,10 @@ class GetUserSemestersUseCase
     constructor(
         private val timetableRepository: TimetableRepository,
     ) {
-        operator fun invoke(isAnonymous: Boolean): Flow<List<String>> {
-            return if (isAnonymous)
-                timetableRepository.getSemestersV3().map { it.map { it.toLegacySemester() } }
-            else
+        operator fun invoke(isAnonymous: Boolean): Flow<List<String>> =
+            if (isAnonymous) {
+                timetableRepository.getSemesters().map { it.map { it.toLegacySemester() } }
+            } else {
                 timetableRepository.getUserSemesters().map { it.map { it.toLegacySemester() } }
-        }
+            }
     }

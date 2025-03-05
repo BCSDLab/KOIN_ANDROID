@@ -38,7 +38,7 @@ class TimetableRepositoryImpl
     ) : TimetableRepository {
         private val gson = Gson()
 
-        override fun getSemestersV3(): Flow<List<Semester>> =
+        override fun getSemesters(): Flow<List<Semester>> =
             flow {
                 emit(timetableRemoteDataSource.getSemestersV3().map { it.toSemester() })
             }

@@ -14,5 +14,5 @@ class GetSemestersUseCase
     constructor(
         private val timetableRepository: TimetableRepository,
     ) {
-        operator fun invoke(): Flow<List<String>> = timetableRepository.getSemestersV3().map { it.map { it.toLegacySemester() } }
+        operator fun invoke(): Flow<List<String>> = timetableRepository.getSemesters().map { it.map { it.toLegacySemester() } }
     }

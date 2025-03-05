@@ -11,7 +11,7 @@ import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import kotlinx.coroutines.flow.Flow
 
 interface TimetableRepository {
-    fun getSemestersV3(): Flow<List<Semester>>
+    fun getSemesters(): Flow<List<Semester>>
 
     fun getUserSemesters(): Flow<List<Semester>>
 
