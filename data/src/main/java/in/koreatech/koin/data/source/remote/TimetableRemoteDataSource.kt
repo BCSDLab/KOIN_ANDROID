@@ -11,6 +11,8 @@ import `in`.koreatech.koin.data.response.timetable.SemesterCheckResponse
 import `in`.koreatech.koin.data.response.timetable.SemesterResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
+import `in`.koreatech.koin.data.response.timetable.v3.SemesterResponseV3
+import `in`.koreatech.koin.data.response.timetable.v3.UserSemestersResponse
 import javax.inject.Inject
 
 class TimetableRemoteDataSource
@@ -22,6 +24,10 @@ class TimetableRemoteDataSource
         suspend fun getSemesters(): List<SemesterResponse> = timetableApi.getSemesters()
 
         suspend fun getSemesterCheck(): SemesterCheckResponse = timetableAuthApi.getSemestersCheck()
+
+        suspend fun getSemestersV3(): List<SemesterResponseV3> = timetableApi.getSemestersV3()
+
+        suspend fun getUserSemesters(): UserSemestersResponse = timetableAuthApi.getUserSemesters()
 
         suspend fun getLectures(semesterDate: String): List<LectureResponse> = timetableApi.getLectures(semesterDate)
 
