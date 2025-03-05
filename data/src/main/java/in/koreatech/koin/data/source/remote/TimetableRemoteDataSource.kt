@@ -9,7 +9,7 @@ import `in`.koreatech.koin.data.request.timetable.TimetableLecturesQueryRequest
 import `in`.koreatech.koin.data.response.timetable.LectureResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
-import `in`.koreatech.koin.data.response.timetable.v3.SemesterResponseV3
+import `in`.koreatech.koin.data.response.timetable.v3.SemesterResponse
 import `in`.koreatech.koin.data.response.timetable.v3.UserSemestersResponse
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class TimetableRemoteDataSource
         private val timetableApi: TimetableApi,
         private val timetableAuthApi: TimetableAuthApi,
     ) {
-        suspend fun getSemestersV3(): List<SemesterResponseV3> = timetableApi.getSemestersV3()
+        suspend fun getSemestersV3(): List<SemesterResponse> = timetableApi.getSemestersV3()
 
         suspend fun getUserSemesters(): UserSemestersResponse = timetableAuthApi.getUserSemesters()
 
