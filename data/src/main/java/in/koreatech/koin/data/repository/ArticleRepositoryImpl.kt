@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.request.article.toRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
@@ -7,6 +8,7 @@ import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundPagination
+import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import `in`.koreatech.koin.domain.model.user.User
@@ -26,211 +28,241 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-class ArticleRepositoryImpl @Inject constructor(
-    private val articleRemoteDataSource: ArticleRemoteDataSource,
-    private val articleLocalDataSource: ArticleLocalDataSource,
-    private val userRepository: UserRepository,
-    private val coroutineScope: CoroutineScope
-) : ArticleRepository {
+class ArticleRepositoryImpl
+    @Inject
+    constructor(
+        private val articleRemoteDataSource: ArticleRemoteDataSource,
+        private val articleLocalDataSource: ArticleLocalDataSource,
+        private val userRepository: UserRepository,
+        private val coroutineScope: CoroutineScope,
+    ) : ArticleRepository {
+        val user =
+            userRepository.getUserInfoFlow().distinctUntilChanged()
+                .onEach { user ->
+                    if (user.isStudent) {
+                        _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
+                    } else {
+                        _myKeywords.emit(
+                            articleLocalDataSource.fetchMyKeyword().map {
+                                ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
+                            },
+                        )
+                    }
+                }.stateIn(
+                    scope = coroutineScope,
+                    started = SharingStarted.WhileSubscribed(5_000),
+                    initialValue = User.Anonymous,
+                )
 
-    val user = userRepository.getUserInfoFlow().distinctUntilChanged()
-        .onEach { user ->
-            if (user.isStudent) {
-                _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
-            } else {
-                _myKeywords.emit(articleLocalDataSource.fetchMyKeyword().map {
-                    ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
-                })
-            }
-        }.stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = User.Anonymous
-        )
-
-    private val _myKeywords =
-        MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
-    private val myKeywords = _myKeywords.stateIn(
-        scope = coroutineScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
-    )
-
-    private val hotArticleHeaders: StateFlow<List<ArticleHeader>> = flow {
-        emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
-    }.catch {
-        emit(emptyList())
-    }.stateIn(
-        scope = coroutineScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = listOf()
-    )
-
-
-    init {
-        user.launchIn(coroutineScope)
-    }
-
-    override fun fetchArticlePagination(
-        boardId: Int,
-        page: Int,
-        limit: Int
-    ): Flow<ArticlePagination> {
-        return flow {
-            emit(
-                articleRemoteDataSource.fetchArticlePagination(boardId, page, limit)
-                    .toArticlePagination()
+        private val _myKeywords =
+            MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
+        private val myKeywords =
+            _myKeywords.stateIn(
+                scope = coroutineScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList(),
             )
+
+        private val hotArticleHeaders: StateFlow<List<ArticleHeader>> =
+            flow {
+                emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
+            }.catch {
+                emit(emptyList())
+            }.stateIn(
+                scope = coroutineScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = listOf(),
+            )
+
+        init {
+            user.launchIn(coroutineScope)
         }
-    }
 
-    override fun fetchArticle(articleId: Int, boardId: Int): Flow<Article> {
-        return flow {
-            emit(articleRemoteDataSource.fetchArticle(articleId, boardId).toArticle())
-        }
-    }
-
-    override fun fetchPreviousArticle(articleId: Int, boardId: Int): Flow<Article> {
-        return flow {
-            emit(articleRemoteDataSource.fetchPreviousArticle(articleId, boardId).toArticle())
-        }
-    }
-
-    override fun fetchNextArticle(articleId: Int, boardId: Int): Flow<Article> {
-        return flow {
-            emit(articleRemoteDataSource.fetchNextArticle(articleId, boardId).toArticle())
-        }
-    }
-
-    override fun fetchHotArticleHeaders(): Flow<List<ArticleHeader>> {
-        return hotArticleHeaders
-    }
-
-    override fun fetchMyKeyword(): Flow<List<String>> {
-        return myKeywords.map { response ->
-            response.map {
-                it.keyword
+        override fun fetchArticlePagination(
+            boardId: Int,
+            page: Int,
+            limit: Int,
+        ): Flow<ArticlePagination> {
+            return flow {
+                emit(
+                    articleRemoteDataSource.fetchArticlePagination(boardId, page, limit)
+                        .toArticlePagination(),
+                )
             }
         }
-    }
 
-    override fun fetchKeywordSuggestions(): Flow<List<String>> {
-        return flow {
-            emit(articleRemoteDataSource.fetchKeywordSuggestions().keywords)
-        }
-    }
-
-    override fun saveKeyword(keyword: String): Flow<Unit> {
-        return flow {
-            if (user.value.isStudent)
-                emit(articleRemoteDataSource.saveKeyword(keyword))
-            else {
-                articleLocalDataSource.saveKeyword(keyword)
-                emit(ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, keyword))
+        override fun fetchArticle(
+            articleId: Int,
+            boardId: Int,
+        ): Flow<Article> {
+            return flow {
+                emit(articleRemoteDataSource.fetchArticle(articleId, boardId).toArticle())
             }
-        }.onEach {
-            _myKeywords.emit(buildList {
-                addAll(myKeywords.value)
-                add(it)
-            })
-        }.map { Unit }
-    }
+        }
 
-    override fun deleteKeyword(keyword: String): Flow<Unit> {
-        return flow {
-            if (user.value.isStudent)
-                emit(articleRemoteDataSource.deleteKeyword(myKeywords.value.first { it.keyword == keyword }.id))
-            else
-                emit(articleLocalDataSource.deleteKeyword(keyword))
-        }.onEach {
-            _myKeywords.emit(buildList {
-                myKeywords.value.forEach {
-                    if (it.keyword != keyword)
-                        add(it)
+        override fun fetchPreviousArticle(
+            articleId: Int,
+            boardId: Int,
+        ): Flow<Article> {
+            return flow {
+                emit(articleRemoteDataSource.fetchPreviousArticle(articleId, boardId).toArticle())
+            }
+        }
+
+        override fun fetchNextArticle(
+            articleId: Int,
+            boardId: Int,
+        ): Flow<Article> {
+            return flow {
+                emit(articleRemoteDataSource.fetchNextArticle(articleId, boardId).toArticle())
+            }
+        }
+
+        override fun fetchHotArticleHeaders(): Flow<List<ArticleHeader>> {
+            return hotArticleHeaders
+        }
+
+        override fun fetchMyKeyword(): Flow<List<String>> {
+            return myKeywords.map { response ->
+                response.map {
+                    it.keyword
                 }
-            })
+            }
+        }
+
+        override fun fetchKeywordSuggestions(): Flow<List<String>> {
+            return flow {
+                emit(articleRemoteDataSource.fetchKeywordSuggestions().keywords)
+            }
+        }
+
+        override fun saveKeyword(keyword: String): Flow<Unit> {
+            return flow {
+                if (user.value.isStudent) {
+                    emit(articleRemoteDataSource.saveKeyword(keyword))
+                } else {
+                    articleLocalDataSource.saveKeyword(keyword)
+                    emit(ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, keyword))
+                }
+            }.onEach {
+                _myKeywords.emit(
+                    buildList {
+                        addAll(myKeywords.value)
+                        add(it)
+                    },
+                )
+            }.map { Unit }
+        }
+
+        override fun deleteKeyword(keyword: String): Flow<Unit> {
+            return flow {
+                if (user.value.isStudent) {
+                    emit(articleRemoteDataSource.deleteKeyword(myKeywords.value.first { it.keyword == keyword }.id))
+                } else {
+                    emit(articleLocalDataSource.deleteKeyword(keyword))
+                }
+            }.onEach {
+                _myKeywords.emit(
+                    buildList {
+                        myKeywords.value.forEach {
+                            if (it.keyword != keyword) {
+                                add(it)
+                            }
+                        }
+                    },
+                )
+            }
+        }
+
+        override fun fetchKeywordNotiIndex(): Flow<Int> {
+            return flow {
+                emit(articleLocalDataSource.fetchKeywordNotiIndex())
+            }
+        }
+
+        override fun saveKeywordNotiIndex(): Flow<Unit> {
+            return flow {
+                emit(articleLocalDataSource.saveKeywordNotiIndex())
+            }
+        }
+
+        override fun fetchSearchedArticles(
+            query: String,
+            boardId: Int?,
+            page: Int,
+            limit: Int,
+        ): Flow<ArticlePagination> {
+            return flow {
+                emit(
+                    articleRemoteDataSource.fetchSearchedArticles(query, boardId, page, limit)
+                        .toArticlePagination(),
+                )
+            }
+        }
+
+        override fun fetchMostSearchedKeywords(count: Int): Flow<List<String>> {
+            return flow {
+                emit(articleRemoteDataSource.fetchMostSearchedKeywords(count).keywords)
+            }
+        }
+
+        override fun fetchSearchHistory(): Flow<List<String>> {
+            return articleLocalDataSource.fetchSearchHistory()
+        }
+
+        override fun saveSearchHistory(query: String): Flow<Unit> {
+            return flow {
+                emit(articleLocalDataSource.saveSearchHistory(query))
+            }
+        }
+
+        override fun deleteSearchHistory(query: String): Flow<Unit> {
+            return flow {
+                emit(articleLocalDataSource.deleteSearchHistory(query))
+            }
+        }
+
+        override fun clearSearchHistory(): Flow<Unit> {
+            return flow {
+                emit(articleLocalDataSource.clearSearchHistory())
+            }
+        }
+
+        override fun fetchArticleLostAndFoundPagination(
+            page: Int,
+            limit: Int,
+            type: String?,
+        ): Flow<ArticleLostAndFoundPagination> {
+            return flow {
+                emit(
+                    articleRemoteDataSource.fetchArticleLostAndFoundPagination(page, limit, type)
+                        .toArticleLostAndFoundPagination(),
+                )
+            }
+        }
+
+        override fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound> {
+            return flow {
+                emit(
+                    articleRemoteDataSource.fetchArticleLostAndFound(articleId).toArticleLostAndFound(),
+                )
+            }
+        }
+
+        override suspend fun uploadArticleLostAndFound(
+            articleLostAndFoundList: List<ArticleLostAndFoundUpload>,
+        ): Result<ArticleLostAndFound> {
+            return articleRemoteDataSource.uploadArticleLostAndFound(articleLostAndFoundList).map { it.toArticleLostAndFound() }
+        }
+
+        override suspend fun deleteArticleLostAndFound(articleId: Int): Result<Unit> {
+            return articleRemoteDataSource.deleteArticleLostAndFound(articleId)
+        }
+
+        override suspend fun reportLostAndFoundArticle(
+            articleId: Int,
+            articleLostAndFoundList: List<ArticleLostAndFoundReportItem>,
+        ): Result<Unit> {
+            return articleRemoteDataSource.reportLostAndFoundArticle(articleId, articleLostAndFoundList.toRequest())
         }
     }
-
-    override fun fetchKeywordNotiIndex(): Flow<Int> {
-        return flow {
-            emit(articleLocalDataSource.fetchKeywordNotiIndex())
-        }
-    }
-
-    override fun saveKeywordNotiIndex(): Flow<Unit> {
-        return flow {
-            emit(articleLocalDataSource.saveKeywordNotiIndex())
-        }
-    }
-
-    override fun fetchSearchedArticles(
-        query: String,
-        boardId: Int,
-        page: Int,
-        limit: Int
-    ): Flow<ArticlePagination> {
-        return flow {
-            emit(
-                articleRemoteDataSource.fetchSearchedArticles(query, boardId, page, limit)
-                    .toArticlePagination()
-            )
-        }
-    }
-
-    override fun fetchMostSearchedKeywords(count: Int): Flow<List<String>> {
-        return flow {
-            emit(articleRemoteDataSource.fetchMostSearchedKeywords(count).keywords)
-        }
-    }
-
-    override fun fetchSearchHistory(): Flow<List<String>> {
-        return articleLocalDataSource.fetchSearchHistory()
-    }
-
-    override fun saveSearchHistory(query: String): Flow<Unit> {
-        return flow {
-            emit(articleLocalDataSource.saveSearchHistory(query))
-        }
-    }
-
-    override fun deleteSearchHistory(query: String): Flow<Unit> {
-        return flow {
-            emit(articleLocalDataSource.deleteSearchHistory(query))
-        }
-    }
-
-    override fun clearSearchHistory(): Flow<Unit> {
-        return flow {
-            emit(articleLocalDataSource.clearSearchHistory())
-        }
-    }
-
-    override fun fetchArticleLostAndFoundPagination(
-        page: Int,
-        limit: Int
-    ): Flow<ArticleLostAndFoundPagination> {
-        return flow {
-            emit(
-                articleRemoteDataSource.fetchArticleLostAndFoundPagination(page, limit)
-                    .toArticleLostAndFoundPagination()
-            )
-        }
-    }
-
-    override fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound> {
-        return flow {
-            emit(
-                articleRemoteDataSource.fetchArticleLostAndFound(articleId).toArticleLostAndFound()
-            )
-        }
-    }
-
-    override suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound> {
-        return articleRemoteDataSource.uploadArticleLostAndFound(articleLostAndFoundList).map { it.toArticleLostAndFound() }
-    }
-
-    override suspend fun deleteArticleLostAndFound(articleId: Int): Result<Unit> {
-        return articleRemoteDataSource.deleteArticleLostAndFound(articleId)
-    }
-}

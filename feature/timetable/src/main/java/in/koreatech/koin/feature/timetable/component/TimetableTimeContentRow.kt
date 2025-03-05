@@ -27,47 +27,48 @@ fun TimetableTimeContentRow(
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(start = 4.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(start = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(id = R.string.timetable_input_field_option_character),
             style = KoinTheme.typography.regular16,
             color = KoinTheme.colors.sub500,
-            modifier = Modifier.padding(end = 1.dp, bottom = 1.dp)
+            modifier = Modifier.padding(end = 1.dp, bottom = 1.dp),
         )
         Text(
             text = stringResource(id = R.string.timetable_input_field_title_time),
             style = KoinTheme.typography.bold12,
-            color = KoinTheme.colors.neutral800
+            color = KoinTheme.colors.neutral800,
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         DayOfWeekEditBox(
             customContent = customContent,
-            onDayOfWeekChange = onDayOfWeekChange
+            onDayOfWeekChange = onDayOfWeekChange,
         )
         Spacer(modifier = Modifier.width(11.dp))
         TimeEditBox(
             content = customContent,
             localTime = customContent.startTime,
-            onClick = onClickStartTime
+            onClick = onClickStartTime,
         )
         Spacer(modifier = Modifier.width(11.dp))
         Text(
             text = stringResource(id = R.string.timetable_input_field_wave_character),
             style = KoinTheme.typography.medium18,
-            color = KoinTheme.colors.neutral800
+            color = KoinTheme.colors.neutral800,
         )
         Spacer(modifier = Modifier.width(11.dp))
         TimeEditBox(
             content = customContent,
             localTime = customContent.endTime,
-            onClick = onClickEndTime
+            onClick = onClickEndTime,
         )
     }
 }
@@ -76,6 +77,6 @@ fun TimetableTimeContentRow(
 @Composable
 private fun TimetableTimeContentRowPreview() {
     TimetableTimeContentRow(
-        customContent = CustomExtraContentState()
+        customContent = CustomExtraContentState(),
     )
 }

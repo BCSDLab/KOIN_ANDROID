@@ -10,40 +10,42 @@ import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.util.deptCode
 import javax.inject.Inject
 
-class GetUserInfoUseCase @Inject constructor(
-    private val userRepository: UserRepository,
-    private val deptRepository: DeptRepository,
-    private val tokenRepository: TokenRepository,
-    private val userErrorHandler: UserErrorHandler,
-    private val deptErrorHandler: DeptErrorHandler
-) {
-    suspend operator fun invoke(): Pair<User?, ErrorHandler?> {
-        return if (tokenRepository.getAccessToken() == null) {
-            //익명
-            User.Anonymous to null
-        } else {
-            try {
-                val user = userRepository.getUserInfo()
+class GetUserInfoUseCase
+    @Inject
+    constructor(
+        private val userRepository: UserRepository,
+        private val deptRepository: DeptRepository,
+        private val tokenRepository: TokenRepository,
+        private val userErrorHandler: UserErrorHandler,
+        private val deptErrorHandler: DeptErrorHandler,
+    ) {
+        suspend operator fun invoke(): Pair<User?, ErrorHandler?> {
+            return if (tokenRepository.getAccessToken() == null) {
+                // 익명
+                User.Anonymous to null
+            } else {
+                try {
+                    val user = userRepository.getUserInfo()
 
-                if (user is User.Student && user.studentNumber != null && user.major == null) {
-                    return try {
-                        val deptName =
-                            deptRepository.getDeptNameFromDeptCode(user.studentNumber.deptCode)
+                    if (user is User.Student && user.studentNumber != null && user.major == null) {
+                        return try {
+                            val deptName =
+                                deptRepository.getDeptNameFromDeptCode(user.studentNumber.deptCode)
 
-                        user.copy(major = deptName) to null
-                    } catch (t: Throwable) {
-                        user to deptErrorHandler.getDeptNameFromDeptCodeError(t)
+                            user.copy(major = deptName) to null
+                        } catch (t: Throwable) {
+                            user to deptErrorHandler.getDeptNameFromDeptCodeError(t)
+                        }
                     }
+                } catch (t: Throwable) {
+                    null to userErrorHandler.handleGetUserInfoError(t)
                 }
-            } catch (t: Throwable) {
-                null to userErrorHandler.handleGetUserInfoError(t)
-            }
 
-            return try {
-                userRepository.getUserInfo() to null
-            } catch (e: Exception) {
-                null to userErrorHandler.handleGetUserInfoError(e)
+                return try {
+                    userRepository.getUserInfo() to null
+                } catch (e: Exception) {
+                    null to userErrorHandler.handleGetUserInfoError(e)
+                }
             }
         }
     }
-}

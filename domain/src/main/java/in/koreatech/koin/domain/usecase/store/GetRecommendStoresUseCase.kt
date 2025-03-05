@@ -7,23 +7,23 @@ import `in`.koreatech.koin.domain.repository.StoreRepository
 import `in`.koreatech.koin.domain.util.ext.sortedOpenStore
 import javax.inject.Inject
 
-class GetRecommendStoresUseCase @Inject constructor(
-    private val storeRepository: StoreRepository,
-) {
-    suspend operator fun invoke(
-        store: StoreWithMenu,
-    ): List<Store> {
-        return storeRepository.getStores()
-            .filter {
-                val shopRandomCategoryId =
-                    store.shopCategories?.filter { it.id != 0 }
-                        ?.randomOrNull()?.id
-                it.categoryIds.find {
-                    it == shopRandomCategoryId
-                } == shopRandomCategoryId && !it.open.closed && it.uid != store.uid
-            }
-            .shuffled()
-            .take(STORE_RECOMMEND_STORES)
-            .sortedOpenStore()
+class GetRecommendStoresUseCase
+    @Inject
+    constructor(
+        private val storeRepository: StoreRepository,
+    ) {
+        suspend operator fun invoke(store: StoreWithMenu): List<Store> {
+            return storeRepository.getStores()
+                .filter {
+                    val shopRandomCategoryId =
+                        store.shopCategories?.filter { it.id != 0 }
+                            ?.randomOrNull()?.id
+                    it.categoryIds.find {
+                        it == shopRandomCategoryId
+                    } == shopRandomCategoryId && !it.open.closed && it.uid != store.uid
+                }
+                .shuffled()
+                .take(STORE_RECOMMEND_STORES)
+                .sortedOpenStore()
+        }
     }
-}

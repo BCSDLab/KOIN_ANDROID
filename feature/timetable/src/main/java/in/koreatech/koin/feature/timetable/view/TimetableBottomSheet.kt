@@ -26,7 +26,8 @@ import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
 enum class TimetableBottomSheetContentMode {
-    CUSTOM, BASIC
+    CUSTOM,
+    BASIC,
 }
 
 @Composable
@@ -60,18 +61,19 @@ fun TimetableBottomSheet(
     onClickRemoveCustomContent: (id: Int) -> Unit = {},
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(400.dp)
-            .background(Color.White)
-            .onGloballyPositioned {
-                onBottomSheetHeightChange(it.size.height.toFloat())
-            }
-            .padding(
-                start = 24.dp,
-                end = 24.dp,
-                top = 10.dp
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(400.dp)
+                .background(Color.White)
+                .onGloballyPositioned {
+                    onBottomSheetHeightChange(it.size.height.toFloat())
+                }
+                .padding(
+                    start = 24.dp,
+                    end = 24.dp,
+                    top = 10.dp,
+                ),
     ) {
         TimetableBottomSheetHeader(
             modifier = Modifier.padding(bottom = 10.dp),
@@ -112,11 +114,10 @@ fun TimetableBottomSheet(
                     onClickStartTime = onClickStartTime,
                     onClickEndTime = onClickEndTime,
                     onClickAddCustomContent = onClickAddCustomContent,
-                    onClickRemoveCustomContent = onClickRemoveCustomContent
+                    onClickRemoveCustomContent = onClickRemoveCustomContent,
                 )
             }
         }
-
     }
 }
 

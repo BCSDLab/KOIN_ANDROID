@@ -10,27 +10,32 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class OnboardingLocalDataSource @Inject constructor(
-    private val dataStore: DataStore<Preferences>
-) {
-
-    suspend fun getShouldOnboarding(onboardingType: String): Boolean {
-        return dataStore.data.catch {
-            emit(emptyPreferences())
-        }.map { preferences ->
-            preferences[booleanPreferencesKey(onboardingType)]
-        }.firstOrNull() ?: true
-    }
-
-    suspend fun updateShouldOnboarding(onboardingType: String, shouldShow: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[booleanPreferencesKey(onboardingType)] = shouldShow
+class OnboardingLocalDataSource
+    @Inject
+    constructor(
+        private val dataStore: DataStore<Preferences>,
+    ) {
+        suspend fun getShouldOnboarding(onboardingType: String): Boolean {
+            return dataStore.data.catch {
+                emit(emptyPreferences())
+            }.map { preferences ->
+                preferences[booleanPreferencesKey(onboardingType)]
+            }.firstOrNull() ?: true
         }
-    }
 
-    fun getShouldOnboardingFlow(onboardingType: String) = dataStore.data.catch {
-        emit(emptyPreferences())
-    }.map { preferences ->
-        preferences[booleanPreferencesKey(onboardingType)] ?: true
+        suspend fun updateShouldOnboarding(
+            onboardingType: String,
+            shouldShow: Boolean,
+        ) {
+            dataStore.edit { preferences ->
+                preferences[booleanPreferencesKey(onboardingType)] = shouldShow
+            }
+        }
+
+        fun getShouldOnboardingFlow(onboardingType: String) =
+            dataStore.data.catch {
+                emit(emptyPreferences())
+            }.map { preferences ->
+                preferences[booleanPreferencesKey(onboardingType)] ?: true
+            }
     }
-}

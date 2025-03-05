@@ -5,7 +5,6 @@ import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 
 data class RegisterMenuState(
-
     val storeId: Int = -1,
     val menuName: String = "",
     val menuPrice: String = "",
@@ -16,7 +15,6 @@ data class RegisterMenuState(
     val imageUriList: List<Uri> = emptyList(),
     val imageUrlList: List<String> = emptyList(),
     val isModify: Boolean = false,
-    val menuCategoryLabel: String ="",
-    val imageIndex: Int = 0
-
+    val menuCategoryLabel: String = "",
+    val imageIndex: Int = 0,
 )

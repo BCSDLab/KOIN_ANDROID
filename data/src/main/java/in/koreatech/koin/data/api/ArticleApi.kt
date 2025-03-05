@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
@@ -10,7 +9,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ArticleApi {
-
     /**
      * 게시글 목록과 페이지 정보를 가져옴
      * @param boardId 게시판 아이디
@@ -21,7 +19,7 @@ interface ArticleApi {
     suspend fun fetchArticlePagination(
         @Query("boardId") boardId: Int,
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
     ): ArticlePaginationResponse
 
     /**
@@ -32,7 +30,7 @@ interface ArticleApi {
     @GET("articles/{id}")
     suspend fun fetchArticle(
         @Path("id") articleId: Int,
-        @Query("boardId") boardId: Int
+        @Query("boardId") boardId: Int,
     ): ArticleResponse
 
     @GET("articles/hot")
@@ -47,9 +45,9 @@ interface ArticleApi {
     @GET("articles/search")
     suspend fun fetchSearchedArticles(
         @Query("query") query: String,
-        @Query("boardId") boardId: Int,
+        @Query("boardId") boardId: Int?,
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
     ): ArticlePaginationResponse
 
     /**
@@ -57,18 +55,9 @@ interface ArticleApi {
      * @param count 키워드 수
      */
     @GET("articles/hot/keyword")
-    suspend fun fetchMostSearchedKeywords(@Query("count") count: Int): KeywordsResponse
-
-    /**
-     * 분실물 게시글 목록과 페이지 정보를 가져옴
-     * @param page 페이지 번호
-     * @param limit 페이지 당 게시글 수
-     */
-    @GET("articles/lost-item")
-    suspend fun fetchArticleLostAndFoundPagination(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int
-    ): ArticleLostAndFoundPaginationResponse
+    suspend fun fetchMostSearchedKeywords(
+        @Query("count") count: Int,
+    ): KeywordsResponse
 
     /**
      * 분실물 게시글 조회
@@ -76,6 +65,6 @@ interface ArticleApi {
      */
     @GET("articles/lost-item/{id}")
     suspend fun fetchArticleLostAndFound(
-        @Path("id") id: Int
+        @Path("id") id: Int,
     ): ArticleLostAndFoundResponse
 }

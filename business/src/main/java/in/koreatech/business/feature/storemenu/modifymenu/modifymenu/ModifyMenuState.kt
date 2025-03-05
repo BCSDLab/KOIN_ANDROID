@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu
 
-import android.net.Uri
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 
@@ -16,7 +15,6 @@ data class ModifyMenuState(
     val imageUriList: List<String> = emptyList(),
     val imageUrlList: List<String> = emptyList(),
     val isModify: Boolean = false,
-    val menuCategoryLabel: String ="",
-    val imageIndex: Int = 0
-
+    val menuCategoryLabel: String = "",
+    val imageIndex: Int = 0,
 )

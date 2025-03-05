@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.article.lostandfound
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +14,8 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
-import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 
 @AndroidEntryPoint
@@ -22,7 +23,7 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val navController = findNavController()
 
@@ -30,7 +31,6 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 LostAndFoundDetail(
-                    articleId = requireArguments().getInt(ARTICLE_ID),
                     navigateToArticleList = {
                         navController.popBackStack(R.id.articleListFragment, false)
                     },
@@ -38,16 +38,31 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                         EventLogger.logClickEvent(
                             EventAction.CAMPUS,
                             AnalyticsConstant.Label.POPULAR_NOTICE,
-                            hotArticleData.articleTitle
+                            hotArticleData.articleTitle,
                         )
                         navController.navigate(
                             R.id.articleLostAndFoundDetailFragment_to_articleDetailFragment,
                             Bundle().apply {
                                 putInt(ARTICLE_ID, hotArticleData.articleId)
                                 putInt(NAVIGATED_BOARD_ID, hotArticleData.board.id)
-                            }
+                            },
                         )
-                    }
+                    },
+                    navigateToChatRoom = { articleId ->
+                        Intent(requireContext(), ChatRoomActivity::class.java).apply {
+                            putExtra(ARTICLE_ID, articleId)
+                        }.also {
+                            startActivity(it)
+                        }
+                    },
+                    navigateToReport = { articleId ->
+                        Intent(requireContext(), LostAndFoundReportActivity::class.java).apply {
+                            putExtra(
+                                ARTICLE_ID,
+                                articleId,
+                            )
+                        }.let(::startActivity)
+                    },
                 )
             }
         }

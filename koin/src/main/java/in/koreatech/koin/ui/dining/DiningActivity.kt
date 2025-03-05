@@ -11,15 +11,15 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.core.viewpager.addOnPageScrollListener
 import `in`.koreatech.koin.core.viewpager.addOnPageChangedListener
+import `in`.koreatech.koin.core.viewpager.addOnPageScrollListener
 import `in`.koreatech.koin.databinding.ActivityDiningBinding
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -52,12 +52,27 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private val diningOnBoardingBottomSheet by lazy {
         DiningNotificationOnBoardingFragment()
     }
-    private val diningPageChangeListener = object : OnPageChangeCallback() {
-        override fun onPageScrollStateChanged(state: Int) {
-            super.onPageScrollStateChanged(state)
-            binding.swipeRefreshLayoutDining.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
+    private val diningPageChangeListener =
+        object : OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                binding.swipeRefreshLayoutDining.setEnabled(state == ViewPager.SCROLL_STATE_IDLE)
+            }
         }
-    }
+
+    override val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isTaskRoot) {
+                    val intent = Intent(this@DiningActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
 
     @Inject
     lateinit var onboardingManager: OnboardingManager
@@ -79,11 +94,11 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 if (it != null && it.isAnonymous.not()) {
                     with(onboardingManager) {
                         showOnboardingIfNeeded(
-                            OnboardingType.DINING_NOTIFICATION
+                            OnboardingType.DINING_NOTIFICATION,
                         ) {
                             diningOnBoardingBottomSheet.show(
                                 supportFragmentManager,
-                                diningOnBoardingBottomSheet.tag
+                                diningOnBoardingBottomSheet.tag,
                             )
                         }
                     }
@@ -93,30 +108,17 @@ class DiningActivity : KoinNavigationDrawerActivity() {
 
         binding.koinBaseAppBarDark.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
                 AppBarBase.getRightButtonId() -> {
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.CAFETERIA_INFO,
-                        getString(R.string.cafeteria_info)
+                        getString(R.string.cafeteria_info),
                     )
                     startActivity(Intent(this@DiningActivity, DiningNoticeActivity::class.java))
                 }
             }
         }
-
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (isTaskRoot) {
-                    val intent = Intent(this@DiningActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        })
     }
 
     private fun selectInitialPositions() {
@@ -147,7 +149,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                         EventLogger.logClickEvent(
                             EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_SHARE,
-                            "코인으로 이동"
+                            "코인으로 이동",
                         )
                     }
                 } catch (_: Exception) {
@@ -165,18 +167,19 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     EventLogger.logScrollEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_TIME,
-                        tabsDiningTime.getTabAt(it)?.text.toString()
+                        tabsDiningTime.getTabAt(it)?.text.toString(),
                     )
                 }
                 addOnPageChangedListener(this@DiningActivity, diningPageChangeListener)
             }
             TabLayoutMediator(tabsDiningTime, diningViewPager) { tab, position ->
-                tab.text = when (position) {
-                    0 -> getString(R.string.dining_breakfast)
-                    1 -> getString(R.string.dining_lunch)
-                    2 -> getString(R.string.dining_dinner)
-                    else -> throw IllegalArgumentException("Position must be lower than ${diningViewPager.offscreenPageLimit}")
-                }
+                tab.text =
+                    when (position) {
+                        0 -> getString(R.string.dining_breakfast)
+                        1 -> getString(R.string.dining_lunch)
+                        2 -> getString(R.string.dining_dinner)
+                        else -> throw IllegalArgumentException("Position must be lower than ${diningViewPager.offscreenPageLimit}")
+                    }
             }.attach()
 
             initialDiningTab = getDiningTabByType(DiningUtil.getCurrentType())
@@ -188,7 +191,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_TIME,
-                        tab.text.toString()
+                        tab.text.toString(),
                     )
                 }
             }

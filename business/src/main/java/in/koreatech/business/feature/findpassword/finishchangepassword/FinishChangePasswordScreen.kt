@@ -37,21 +37,22 @@ import `in`.koreatech.business.ui.theme.Gray6
 
 @Composable
 fun FinishChangePasswordScreen(
-    navigateToSignInScreen: () -> Unit ={},
-    modifier: Modifier = Modifier
+    navigateToSignInScreen: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
         Column {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp),
             ) {
                 IconButton(
                     onClick = { /*TODO*/ },
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    modifier = Modifier.align(Alignment.CenterStart),
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_back),
@@ -63,25 +64,27 @@ fun FinishChangePasswordScreen(
                     text = stringResource(id = R.string.password_find),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))
             Column(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 24.dp),
                 verticalArrangement = Arrangement.Center,
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
                         modifier = Modifier,
                         color = ColorPrimary,
                         style = MaterialTheme.typography.h6,
-                        text = stringResource(R.string.change_password_step)
+                        text = stringResource(R.string.change_password_step),
                     )
                     Text(
                         text = stringResource(id = R.string.two_half),
@@ -92,16 +95,16 @@ fun FinishChangePasswordScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Canvas(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                 ) {
-
                     drawLine(
                         color = ColorPrimary,
                         start = Offset(0f, 0f),
                         end = Offset(size.width, size.height),
                         strokeWidth = 4.dp.toPx(),
-                        cap = StrokeCap.Round
+                        cap = StrokeCap.Round,
                     )
                 }
 
@@ -110,9 +113,10 @@ fun FinishChangePasswordScreen(
                     painter = painterResource(id = R.drawable.complete_change_password),
                     contentDescription = "finish_mark",
                     alignment = Alignment.Center,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 24.dp)
+                    modifier =
+                        modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 24.dp),
                 )
                 Text(
                     text = stringResource(R.string.password_change_complete),
@@ -120,9 +124,10 @@ fun FinishChangePasswordScreen(
                     color = ColorPrimary,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 46.dp)
+                    modifier =
+                        modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 46.dp),
                 )
                 Text(
                     text = stringResource(R.string.password_please_sign_in_with_new_password),
@@ -130,18 +135,20 @@ fun FinishChangePasswordScreen(
                     color = Gray6,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp)
+                    modifier =
+                        modifier
+                            .fillMaxWidth()
+                            .padding(top = 12.dp),
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = { navigateToSignInScreen() },
                     colors = ButtonDefaults.buttonColors(ColorPrimary),
-                    modifier = modifier
-                        .padding(bottom = 24.dp)
-                        .fillMaxWidth()
-                        .height(48.dp)
+                    modifier =
+                        modifier
+                            .padding(bottom = 24.dp)
+                            .fillMaxWidth()
+                            .height(48.dp),
                 ) {
                     Text(
                         text = stringResource(id = R.string.go_to_login_screen),

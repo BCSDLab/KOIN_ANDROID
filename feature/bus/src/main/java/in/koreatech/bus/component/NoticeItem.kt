@@ -32,21 +32,22 @@ internal fun NoticeItem(
     onCloseIconClick: () -> Unit,
     modifier: Modifier = Modifier,
     noticeMaxLines: Int = 1,
-    textStyle: TextStyle = KoinTheme.typography.medium14
+    textStyle: TextStyle = KoinTheme.typography.medium14,
 ) {
     val textHeightDp = textStyle.getMeasuredKoreanHeightDp()
 
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(
-                color = KoinTheme.colors.info100,
-                shape = RoundedCornerShape(8.dp)
-            ).clickable { onNoticeClick(notice) }
-            .padding(16.dp),
-        verticalAlignment = if (noticeMaxLines == 1) Alignment.CenterVertically else Alignment.Top
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(
+                    color = KoinTheme.colors.info100,
+                    shape = RoundedCornerShape(8.dp),
+                ).clickable { onNoticeClick(notice) }
+                .padding(16.dp),
+        verticalAlignment = if (noticeMaxLines == 1) Alignment.CenterVertically else Alignment.Top,
     ) {
         Text(
             modifier = Modifier.weight(1f),
@@ -54,15 +55,16 @@ internal fun NoticeItem(
             style = textStyle,
             color = KoinTheme.colors.primary500,
             maxLines = noticeMaxLines,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
         Icon(
-            modifier = Modifier.padding(start = 4.dp).padding(vertical = (textHeightDp - 16.dp) / 2).size(16.dp).noRippleClickable {
-                onCloseIconClick()
-            },
+            modifier =
+                Modifier.padding(start = 4.dp).padding(vertical = (textHeightDp - 16.dp) / 2).size(16.dp).noRippleClickable {
+                    onCloseIconClick()
+                },
             imageVector = Icons.Rounded.Close,
             contentDescription = notice.title,
-            tint = KoinTheme.colors.neutral400
+            tint = KoinTheme.colors.neutral400,
         )
     }
 }
@@ -74,7 +76,7 @@ private fun NoticeItemPreview() {
         NoticeItem(
             notice = busNoticeUiStateMock.notice,
             onCloseIconClick = {},
-            onNoticeClick = {}
+            onNoticeClick = {},
         )
     }
 }
@@ -87,7 +89,7 @@ private fun NoticeItem2Preview() {
             notice = busNoticeUiStateMock.notice,
             onCloseIconClick = {},
             onNoticeClick = {},
-            noticeMaxLines = 2
+            noticeMaxLines = 2,
         )
     }
 }

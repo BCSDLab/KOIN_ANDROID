@@ -36,7 +36,7 @@ fun KeywordChipGroup(
     chipTextList: List<String>,
     selectedChipIndexes: List<Int>,
     modifier: Modifier = Modifier,
-    onSelect: (index: Int) -> Unit = {}
+    onSelect: (index: Int) -> Unit = {},
 ) {
     LostAndFoundTextChipScrollGroup(
         titles = chipTextList,
@@ -46,10 +46,9 @@ fun KeywordChipGroup(
         shape = RoundedCornerShape(50),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         chipColors = keywordChipColors(),
-        modifier = modifier
+        modifier = modifier,
     )
 }
-
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -63,12 +62,12 @@ fun LostAndFoundTextChipFlowGroup(
     contentPadding: PaddingValues = PaddingValues(vertical = 0.dp, horizontal = 0.dp),
     horizontalArrangement: Arrangement.Horizontal,
     verticalArrangement: Arrangement.Vertical,
-    chipColors: TextChipColors
+    chipColors: TextChipColors,
 ) {
     FlowRow(
         modifier = modifier,
         horizontalArrangement = horizontalArrangement,
-        verticalArrangement = verticalArrangement
+        verticalArrangement = verticalArrangement,
     ) {
         titles.forEachIndexed { index, it ->
             LostAndFoundTextChip(
@@ -78,7 +77,7 @@ fun LostAndFoundTextChipFlowGroup(
                 chipColors = chipColors,
                 contentPadding = contentPadding,
                 showClickRipple = showClickRipple,
-                onSelect = { onChipSelected(index) }
+                onSelect = { onChipSelected(index) },
             )
         }
     }
@@ -108,24 +107,26 @@ internal fun LostAndFoundTextChipScrollGroup(
     showClickRipple: Boolean = false,
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
     horizontalArrangement: Arrangement.Horizontal,
-    chipColors: TextChipColors = TextChipDefaults.chipColors()
+    chipColors: TextChipColors = TextChipDefaults.chipColors(),
 ) {
     Row(
-        modifier = modifier
-            .horizontalScroll(rememberScrollState())
-            .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-            .drawWithContent {
-                drawContent()
-                drawRect(
-                    brush = Brush.horizontalGradient(
-                        0f to Color.White,
-                        0.1f to Color.Transparent,
-                        0.9f to Color.Transparent,
-                        1f to Color.White
+        modifier =
+            modifier
+                .horizontalScroll(rememberScrollState())
+                .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+                .drawWithContent {
+                    drawContent()
+                    drawRect(
+                        brush =
+                            Brush.horizontalGradient(
+                                0f to Color.White,
+                                0.1f to Color.Transparent,
+                                0.9f to Color.Transparent,
+                                1f to Color.White,
+                            ),
                     )
-                )
-            },
-        horizontalArrangement = horizontalArrangement
+                },
+        horizontalArrangement = horizontalArrangement,
     ) {
         titles.forEachIndexed { index, it ->
             LostAndFoundTextChip(
@@ -135,12 +136,11 @@ internal fun LostAndFoundTextChipScrollGroup(
                 chipColors = chipColors,
                 contentPadding = contentPadding,
                 showClickRipple = showClickRipple,
-                onSelect = { onChipSelected(index) }
+                onSelect = { onChipSelected(index) },
             )
         }
     }
 }
-
 
 /**
  * 텍스트 칩
@@ -162,37 +162,42 @@ fun LostAndFoundTextChip(
     isSelected: Boolean = false,
     shape: Shape = RoundedCornerShape(50),
     showClickRipple: Boolean = true,
-    contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp),
     chipColors: TextChipColors = TextChipDefaults.chipColors(),
-    onSelect: () -> Unit = {}
+    onSelect: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier
-            .clip(shape)
-            .then(
-                if (showClickRipple) Modifier.clickable {
-                    onSelect()
-                } else Modifier.noRippleClickable {
-                    onSelect()
-                }
-            )
-            .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
-            .padding(contentPadding),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .clip(shape)
+                .then(
+                    if (showClickRipple) {
+                        Modifier.clickable {
+                            onSelect()
+                        }
+                    } else {
+                        Modifier.noRippleClickable {
+                            onSelect()
+                        }
+                    },
+                )
+                .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
+                .padding(contentPadding),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = title,
             style = textStyle,
-            color = if (isSelected) chipColors.selectedContentColor else chipColors.unselectedContentColor
+            color = if (isSelected) chipColors.selectedContentColor else chipColors.unselectedContentColor,
         )
     }
 }
 
-
 @Composable
-fun keywordChipColors() = TextChipDefaults.chipColors(
-    selectedContainerColor = KoinTheme.colors.primary500,
-    unselectedContainerColor = KoinTheme.colors.neutral100,
-    selectedContentColor = KoinTheme.colors.neutral100,
-    unselectedContentColor = KoinTheme.colors.neutral500
-)
+fun keywordChipColors() =
+    TextChipDefaults.chipColors(
+        selectedContainerColor = KoinTheme.colors.primary500,
+        unselectedContainerColor = KoinTheme.colors.neutral100,
+        selectedContentColor = KoinTheme.colors.neutral100,
+        unselectedContentColor = KoinTheme.colors.neutral500,
+    )

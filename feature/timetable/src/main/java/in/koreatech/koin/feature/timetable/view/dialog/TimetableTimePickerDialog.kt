@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.timetable.view.dialog
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -48,13 +47,14 @@ fun TimetableTimePickerDialog(
     customContent: CustomExtraContentState,
     modifier: Modifier = Modifier,
     onDismiss: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
-    onConfirm: (customContent: CustomExtraContentState) -> Unit = { }
+    onConfirm: (customContent: CustomExtraContentState) -> Unit = { },
 ) {
-    val hourItems = if (isStartTime) {
-        (9..23).map { it.toString() }
-    } else {
-        (9..24).map { it.toString() }
-    }
+    val hourItems =
+        if (isStartTime) {
+            (9..23).map { it.toString() }
+        } else {
+            (9..24).map { it.toString() }
+        }
     val minutesItems = listOf("00", "30")
 
     val hourPickerState = rememberPickerState()
@@ -62,7 +62,6 @@ fun TimetableTimePickerDialog(
 
     val hourItemsState = rememberSaveable { mutableStateOf(hourItems) }
     val minutesItemsState = rememberSaveable { mutableStateOf(minutesItems) }
-
 
     LaunchedEffect(hourPickerState) {
         snapshotFlow { hourPickerState.selectedItem }
@@ -86,63 +85,68 @@ fun TimetableTimePickerDialog(
             }
     }
 
-
     BasicAlertDialog(
         onDismissRequest = { onDismiss(customContent, false) },
-        modifier = modifier
+        modifier = modifier,
     ) {
         Surface(
             shape = KoinTheme.shapes.extraSmall,
-            color = Color.White
+            color = Color.White,
         ) {
             Column(
-                modifier = Modifier
-                    .background(color = Color.White)
-                    .padding(
-                        top = 24.dp,
-                        bottom = 19.dp,
-                        start = (31.5).dp,
-                        end = (31.5).dp,
-                    ),
+                modifier =
+                    Modifier
+                        .background(color = Color.White)
+                        .padding(
+                            top = 24.dp,
+                            bottom = 19.dp,
+                            start = (31.5).dp,
+                            end = (31.5).dp,
+                        ),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Text(
                     text = title,
                     style = KoinTheme.typography.bold16,
-                    color = KoinTheme.colors.neutral800
+                    color = KoinTheme.colors.neutral800,
                 )
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     KoinPicker(
                         items = hourItemsState.value,
                         pickerState = hourPickerState,
                         visibleItemsCount = 5,
-                        startIndex = if (isStartTime) {
-                            (customContent.startTime.hour - 9)
-                        } else {
-                            if (customContent.endTime.hour == 23 && customContent.endTime.minute == 59) {
-                                hourItems.size - 1
+                        startIndex =
+                            if (isStartTime) {
+                                (customContent.startTime.hour - 9)
                             } else {
-                                (customContent.endTime.hour - 9)
-                            }
-                        },
-                        selectedTextStyle = KoinTheme.typography.bold20.copy(
-                            textAlign = TextAlign.End
-                        ),
-                        unselectedTextStyle = KoinTheme.typography.bold20.copy(
-                            textAlign = TextAlign.End
-                        ),
+                                if (customContent.endTime.hour == 23 && customContent.endTime.minute == 59) {
+                                    hourItems.size - 1
+                                } else {
+                                    (customContent.endTime.hour - 9)
+                                }
+                            },
+                        selectedTextStyle =
+                            KoinTheme.typography.bold20.copy(
+                                textAlign = TextAlign.End,
+                            ),
+                        unselectedTextStyle =
+                            KoinTheme.typography.bold20.copy(
+                                textAlign = TextAlign.End,
+                            ),
                         selectedItemColor = KoinTheme.colors.neutral700,
                         unselectedItemColor = KoinTheme.colors.neutral500,
-                        brushVerticalGradient = Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.5f to Color.Black,
-                            1f to Color.Transparent
-                        ),
+                        brushVerticalGradient =
+                            Brush.verticalGradient(
+                                0f to Color.Transparent,
+                                0.5f to Color.Black,
+                                1f to Color.Transparent,
+                            ),
                         modifier = Modifier.weight(.45f),
                     )
                     Text(
@@ -150,106 +154,114 @@ fun TimetableTimePickerDialog(
                         style = KoinTheme.typography.bold20,
                         color = KoinTheme.colors.neutral700,
                         modifier = Modifier.weight(.1f),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     KoinPicker(
                         items = minutesItemsState.value,
                         pickerState = minutesPickerState,
                         visibleItemsCount = 5,
-                        startIndex = if (isStartTime) {
-                            if (customContent.startTime.minute == 0) {
-                                0
+                        startIndex =
+                            if (isStartTime) {
+                                if (customContent.startTime.minute == 0) {
+                                    0
+                                } else {
+                                    1
+                                }
                             } else {
-                                1
-                            }
-                        } else {
-                            if (customContent.endTime.minute == 0 || customContent.endTime.minute == 59) {
-                                0
-                            } else {
-                                1
-                            }
-                        },
+                                if (customContent.endTime.minute == 0 || customContent.endTime.minute == 59) {
+                                    0
+                                } else {
+                                    1
+                                }
+                            },
                         selectedTextStyle = KoinTheme.typography.bold20,
                         unselectedTextStyle = KoinTheme.typography.bold20,
                         selectedItemColor = KoinTheme.colors.neutral700,
                         unselectedItemColor = KoinTheme.colors.neutral500,
                         modifier = Modifier.weight(.45f),
-                        brushVerticalGradient = Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.5f to Color.Black,
-                            1f to Color.Transparent
-                        ),
-                        infiniteScroll = false
+                        brushVerticalGradient =
+                            Brush.verticalGradient(
+                                0f to Color.Transparent,
+                                0.5f to Color.Black,
+                                1f to Color.Transparent,
+                            ),
+                        infiniteScroll = false,
                     )
                 }
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     OutlinedButton(
-                        modifier = Modifier
-                            .height(48.dp)
-                            .weight(1.0F),
-                        colors = ButtonColors(
-                            containerColor = KoinTheme.colors.neutral0,
-                            contentColor = KoinTheme.colors.neutral500,
-                            disabledContainerColor = KoinTheme.colors.neutral400,
-                            disabledContentColor = KoinTheme.colors.neutral500
-                        ),
+                        modifier =
+                            Modifier
+                                .height(48.dp)
+                                .weight(1.0F),
+                        colors =
+                            ButtonColors(
+                                containerColor = KoinTheme.colors.neutral0,
+                                contentColor = KoinTheme.colors.neutral500,
+                                disabledContainerColor = KoinTheme.colors.neutral400,
+                                disabledContentColor = KoinTheme.colors.neutral500,
+                            ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
-                        onClick = { onDismiss(customContent, false) }
+                        onClick = { onDismiss(customContent, false) },
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_cancellation),
                             style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600
+                            color = KoinTheme.colors.neutral600,
                         )
                     }
                     FilledTextButton(
-                        modifier = Modifier
-                            .height(48.dp)
-                            .weight(1.0F),
+                        modifier =
+                            Modifier
+                                .height(48.dp)
+                                .weight(1.0F),
                         text = stringResource(id = R.string.common_confirmation),
                         onClick = {
                             if (isStartTime) {
                                 onConfirm(
                                     customContent.copy(
-                                        startTime = LocalTime.of(
-                                            hourPickerState.selectedItem.toInt(),
-                                            minutesPickerState.selectedItem.toInt()
-                                        )
-                                    )
+                                        startTime =
+                                            LocalTime.of(
+                                                hourPickerState.selectedItem.toInt(),
+                                                minutesPickerState.selectedItem.toInt(),
+                                            ),
+                                    ),
                                 )
                             } else {
                                 if (hourPickerState.selectedItem == "9") {
                                     onConfirm(
                                         customContent.copy(
-                                            endTime = LocalTime.of(
-                                                hourPickerState.selectedItem.toInt(),
-                                                30
-                                            )
-                                        )
+                                            endTime =
+                                                LocalTime.of(
+                                                    hourPickerState.selectedItem.toInt(),
+                                                    30,
+                                                ),
+                                        ),
                                     )
                                 } else if (hourPickerState.selectedItem == "24") {
                                     onConfirm(
                                         customContent.copy(
-                                            endTime = LocalTime.of(23, 59)
-                                        )
+                                            endTime = LocalTime.of(23, 59),
+                                        ),
                                     )
                                 } else {
                                     onConfirm(
                                         customContent.copy(
-                                            endTime = LocalTime.of(
-                                                hourPickerState.selectedItem.toInt(),
-                                                minutesPickerState.selectedItem.toInt()
-                                            )
-                                        )
+                                            endTime =
+                                                LocalTime.of(
+                                                    hourPickerState.selectedItem.toInt(),
+                                                    minutesPickerState.selectedItem.toInt(),
+                                                ),
+                                        ),
                                     )
                                 }
                             }
-                        }
+                        },
                     )
                 }
             }

@@ -12,18 +12,19 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 internal fun ShuttleBusOperationChip(
     operationType: ShuttleBusOperationType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ReadOnlyTextChip(
         modifier = modifier,
         title = stringResource(operationType.simpleTitleRes),
-        containerColor = when (operationType) {
-            ShuttleBusOperationType.WEEKEND -> Color(0xFF34ADFF)
-            ShuttleBusOperationType.WEEKDAY -> Color(0xFFFFB443)
-            ShuttleBusOperationType.CIRCULATION -> Color(0xFF4ED92C)
-            else -> Color.Transparent
-        },
-        textStyle = KoinTheme.typography.regular12.copy(color = Color.White)
+        containerColor =
+            when (operationType) {
+                ShuttleBusOperationType.WEEKEND -> Color(0xFF34ADFF)
+                ShuttleBusOperationType.WEEKDAY -> Color(0xFFFFB443)
+                ShuttleBusOperationType.CIRCULATION -> Color(0xFF4ED92C)
+                else -> Color.Transparent
+            },
+        textStyle = KoinTheme.typography.regular12.copy(color = Color.White),
     )
 }
 

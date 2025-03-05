@@ -32,7 +32,7 @@ fun KoinTabRow(
         if (selectedTabIndex < tabPositions.size) {
             TabRowDefaults.SecondaryIndicator(
                 modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                color = indicatorColor
+                color = indicatorColor,
             )
         }
     },
@@ -40,9 +40,9 @@ fun KoinTabRow(
         HorizontalDivider(
             color = KoinTheme.colors.neutral400,
         )
-    }
+    },
 ) {
-    TabRow (
+    TabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = modifier,
         containerColor = containerColor,
@@ -62,7 +62,7 @@ fun KoinTabRow(
                     )
                 }
             }
-        }
+        },
     )
 }
 

@@ -42,40 +42,42 @@ import kotlinx.coroutines.launch
 @Composable
 fun CustomAlertDialog(
     onClickCancel: () -> Unit = {},
-    onClickConfirm: () -> Unit = {}
+    onClickConfirm: () -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = { onClickCancel() },
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true,
-        )
+        properties =
+            DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true,
+            ),
     ) {
         Card(
             shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp), // Card의 모든 꼭지점에 8.dp의 둥근 모서리 적용
-        )
-        {
+        ) {
             Column(
-                modifier = Modifier
-                    .width(300.dp)
-                    .wrapContentHeight()
-                    .background(
-                        color = Color.White,
-                    ),
+                modifier =
+                    Modifier
+                        .width(300.dp)
+                        .wrapContentHeight()
+                        .background(
+                            color = Color.White,
+                        ),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-
                 Box(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth(),
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_x),
                         contentDescription = "",
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(end = 16.dp)
+                        modifier =
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(end = 16.dp),
                     )
                 }
 
@@ -84,7 +86,7 @@ fun CustomAlertDialog(
                     textAlign = TextAlign.Center,
                     color = Color.Black,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
 
                 Text(
@@ -93,19 +95,19 @@ fun CustomAlertDialog(
                     textAlign = TextAlign.Center,
                     color = Color.Black,
                     fontSize = 13.sp,
-                    fontWeight = FontWeight.Normal
+                    fontWeight = FontWeight.Normal,
                 )
 
                 Image(
                     modifier = Modifier.padding(top = 32.dp),
                     painter = painterResource(R.drawable.ic_gallery_picture),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
 
                 Image(
                     modifier = Modifier.padding(top = 16.dp, bottom = 48.dp),
                     painter = painterResource(R.drawable.ic_camera_picture),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
         }
@@ -114,78 +116,78 @@ fun CustomAlertDialog(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomSheetDialog(
-    sheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-) {
+fun BottomSheetDialog(sheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)) {
     val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
-        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd =20.dp),
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
-                Column(
-                    modifier = Modifier
+            Column(
+                modifier =
+                    Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .background(color = Color.White,),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-
-                    Box(
-                        modifier = Modifier
+                        .background(color = Color.White),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Box(
+                    modifier =
+                        Modifier
                             .padding(top = 16.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.ic_x),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .padding(end = 16.dp)
-                        )
-                    }
-
-                    Text(
-                        text = stringResource(id = R.string.menu_image_add),
-                        textAlign = TextAlign.Center,
-                        color = Color.Black,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Text(
-                        modifier = Modifier.padding(top = 8.dp),
-                        text = stringResource(id = R.string.menu_image_can_input),
-                        textAlign = TextAlign.Center,
-                        color = Color.Black,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-
+                            .fillMaxWidth(),
+                ) {
                     Image(
-                        modifier = Modifier
+                        painter = painterResource(R.drawable.ic_x),
+                        contentDescription = "",
+                        modifier =
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(end = 16.dp),
+                    )
+                }
+
+                Text(
+                    text = stringResource(id = R.string.menu_image_add),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Text(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = stringResource(id = R.string.menu_image_can_input),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Normal,
+                )
+
+                Image(
+                    modifier =
+                        Modifier
                             .padding(top = 32.dp)
                             .clickable {
                                 Log.e("로그 클릭", "갤러리 클릭")
-                            }
-                        ,
-                        painter = painterResource(R.drawable.ic_gallery_picture),
-                        contentDescription = ""
-                    )
+                            },
+                    painter = painterResource(R.drawable.ic_gallery_picture),
+                    contentDescription = "",
+                )
 
-                    Image(
-                        modifier = Modifier
+                Image(
+                    modifier =
+                        Modifier
                             .padding(top = 16.dp, bottom = 48.dp)
                             .clickable {
                                 Log.e("로그 클릭", "사진 클릭")
                             },
-                        painter = painterResource(R.drawable.ic_camera_picture),
-                        contentDescription = ""
-                    )
-                }
-        }
-    )
-    {
+                    painter = painterResource(R.drawable.ic_camera_picture),
+                    contentDescription = "",
+                )
+            }
+        },
+    ) {
         Button(
             onClick = {
                 coroutineScope.launch {
@@ -195,7 +197,7 @@ fun BottomSheetDialog(
                         sheetState.show()
                     }
                 }
-            }
+            },
         ) {
             Text("Toggle Bottom Sheet")
         }
@@ -212,19 +214,20 @@ fun MyApp() {
         scaffoldState = scaffoldState,
         sheetContent = {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(text = "This is a Bottom Sheet")
             }
         },
-        sheetPeekHeight = 0.dp
+        sheetPeekHeight = 0.dp,
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Button(onClick = {
                 scope.launch {
@@ -243,14 +246,14 @@ fun MyApp() {
 
 @Preview
 @Composable
-fun PreviewDialog(){
+fun PreviewDialog() {
     CustomAlertDialog()
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
-fun PreviewBottomDialog(){
+fun PreviewBottomDialog() {
     BottomSheetDialog()
 }
 

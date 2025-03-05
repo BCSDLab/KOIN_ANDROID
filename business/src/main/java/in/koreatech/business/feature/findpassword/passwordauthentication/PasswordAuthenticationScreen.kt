@@ -49,13 +49,12 @@ import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinua
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-
 @Composable
 fun PasswordAuthenticationScreenImpl(
     modifier: Modifier = Modifier,
     navigateToChangePassword: (email: String) -> Unit = {},
     onBackPressed: () -> Unit,
-    viewModel: PasswordAuthenticationViewModel = hiltViewModel()
+    viewModel: PasswordAuthenticationViewModel = hiltViewModel(),
 ) {
     val state = viewModel.collectAsState().value
 
@@ -73,12 +72,12 @@ fun PasswordAuthenticationScreenImpl(
         authenticateCode = {
             viewModel.authenticateCode(
                 state.phoneNumber.trim(),
-                state.authenticationCode.trim()
+                state.authenticationCode.trim(),
             )
         },
         accountState = state.accountContinuationState,
         authState = state.smsAuthContinuationState,
-        sendSmsError = state.sendSmsError
+        sendSmsError = state.sendSmsError,
     )
 
     HandleSideEffects(viewModel, state.phoneNumber.trim(), navigateToChangePassword)
@@ -101,20 +100,20 @@ fun PasswordAuthenticationScreen(
     sendSmsError: Throwable?,
     authState: ChangePasswordContinuationState,
 ) {
-
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 12.dp),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(top = 12.dp),
     ) {
-
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
         ) {
             IconButton(
                 onClick = { onBackPressed() },
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier.align(Alignment.CenterStart),
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
@@ -126,18 +125,20 @@ fun PasswordAuthenticationScreen(
                 text = stringResource(id = R.string.password_find),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
         }
         Column(
-            modifier = Modifier
-                .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp),
+            modifier =
+                Modifier
+                    .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp),
             verticalArrangement = Arrangement.Center,
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     modifier = Modifier,
@@ -154,22 +155,23 @@ fun PasswordAuthenticationScreen(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(0f, 0f),
                     end = Offset(size.width, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                    cap = StrokeCap.Round,
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(0f, 0f),
                     end = Offset(size.width / 2, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                    cap = StrokeCap.Round,
                 )
             }
 
@@ -187,16 +189,18 @@ fun PasswordAuthenticationScreen(
                 onValueChange = insertPhoneNumber,
                 label = stringResource(R.string.enter_phone_number),
                 isError = sendSmsError != null,
-                errorText = when (sendSmsError) {
-                    OwnerError.NotValidPhoneNumberException -> stringResource(id = R.string.error_invalid_phone_number)
-                    OwnerError.NotExistsPhoneNumberException -> stringResource(id = R.string.phone_number_not_validate)
-                    else -> stringResource(
-                        R.string.error_network_unknown
-                    )
-                },
+                errorText =
+                    when (sendSmsError) {
+                        OwnerError.NotValidPhoneNumberException -> stringResource(id = R.string.error_invalid_phone_number)
+                        OwnerError.NotExistsPhoneNumberException -> stringResource(id = R.string.phone_number_not_validate)
+                        else ->
+                            stringResource(
+                                R.string.error_network_unknown,
+                            )
+                    },
                 isSuccess = accountState == ChangePasswordContinuationState.SendAuthCode,
                 successText = stringResource(R.string.success_send_sms_code),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
 
             Text(
@@ -217,26 +221,38 @@ fun PasswordAuthenticationScreen(
                     label = stringResource(R.string.input_auth_code),
                     errorText = stringResource(R.string.auth_code_not_equal),
                     isError = authState is ChangePasswordContinuationState.Failed,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
                     onClick = sendAuthCode,
-                    colors = if (authState is ChangePasswordContinuationState.Failed) ButtonDefaults.buttonColors(
-                        ColorAccent
-                    ) else buttonColors(ColorPrimary),
-                    modifier = modifier
-                        .width(135.dp)
-                        .height(41.dp)
-                        .clickableOnce { }
+                    colors =
+                        if (authState is ChangePasswordContinuationState.Failed) {
+                            ButtonDefaults.buttonColors(
+                                ColorAccent,
+                            )
+                        } else {
+                            buttonColors(ColorPrimary)
+                        },
+                    modifier =
+                        modifier
+                            .width(135.dp)
+                            .height(41.dp)
+                            .clickableOnce { },
                 ) {
                     Text(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(align = Alignment.Center),
-                        text = if (authenticationBtnIsClicked) stringResource(R.string.auth_code_resend) else stringResource(
-                            R.string.auth_code_send
-                        ),
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .wrapContentSize(align = Alignment.Center),
+                        text =
+                            if (authenticationBtnIsClicked) {
+                                stringResource(R.string.auth_code_resend)
+                            } else {
+                                stringResource(
+                                    R.string.auth_code_send,
+                                )
+                            },
                         letterSpacing = (-0.3).sp,
                         fontSize = 13.sp,
                         color = Color.White,
@@ -248,16 +264,17 @@ fun PasswordAuthenticationScreen(
             Button(
                 onClick = authenticateCode,
                 colors = buttonColors(ColorPrimary),
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                enabled = authState !is ChangePasswordContinuationState.Failed && !authCodeIsEmpty && !phoneNumberIsEmpty
+                modifier =
+                    modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                enabled = authState !is ChangePasswordContinuationState.Failed && !authCodeIsEmpty && !phoneNumberIsEmpty,
             ) {
                 Text(
                     text = stringResource(R.string.next),
                     fontSize = 15.sp,
                     color = if (authCodeIsEmpty || authState is ChangePasswordContinuationState.Failed) Gray1 else Color.White,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -269,13 +286,14 @@ fun PasswordAuthenticationScreen(
 private fun HandleSideEffects(
     viewModel: PasswordAuthenticationViewModel,
     email: String,
-    navigateToChangePassword: (email: String) -> Unit
+    navigateToChangePassword: (email: String) -> Unit,
 ) {
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(
-                email
-            )
+            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen ->
+                navigateToChangePassword(
+                    email,
+                )
 
             else -> {}
         }
@@ -300,7 +318,7 @@ fun PreviewPasswordAuthenticationScreen() {
             authenticateCode = { },
             accountState = ChangePasswordContinuationState.SendAuthCode,
             authState = ChangePasswordContinuationState.SendAuthCode,
-            sendSmsError = null
+            sendSmsError = null,
         )
     }
 }

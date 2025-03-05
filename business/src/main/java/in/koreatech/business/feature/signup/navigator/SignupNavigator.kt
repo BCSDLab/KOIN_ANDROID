@@ -1,16 +1,9 @@
 package `in`.koreatech.business.feature.signup.navigator
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupScreen
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
@@ -28,19 +21,17 @@ import `in`.koreatech.business.navigation.SIGNUPSCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.signUpScreen(
-    navController: NavController
-){
+fun NavGraphBuilder.signUpScreen(navController: NavController) {
     navigation(
         route = SIGNUPSCREEN,
-        startDestination = SignupRoute.TERMS_OF_SERVICE.name
-    ){
+        startDestination = SignupRoute.TERMS_OF_SERVICE.name,
+    ) {
         composable(
             route = SignupRoute.TERMS_OF_SERVICE.name,
         ) {
             CheckTermScreen(
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = { navController.navigate(SignupRoute.BASIC_INFO_INPUT.name) }
+                onNextClicked = { navController.navigate(SignupRoute.BASIC_INFO_INPUT.name) },
             )
         }
 
@@ -67,7 +58,7 @@ fun NavGraphBuilder.signUpScreen(
                 onNextClicked = {
                     navController.navigate(SignupRoute.BUSINESS_AUTH.name)
                 },
-                viewModel = accountSetupViewModel
+                viewModel = accountSetupViewModel,
             )
         }
 
@@ -142,22 +133,23 @@ fun NavGraphBuilder.signUpScreen(
         ) {
             CompleteSignupScreen(
                 onBackClicked = {
-                    navController.navigate(SIGNINSCREEN){
-                    popUpTo(
-                        SIGNUPSCREEN
-                    ){
-                        inclusive = true
-                    }
-                } },
-                onNavigateToLoginScreen = {
-                    navController.navigate(SIGNINSCREEN){
+                    navController.navigate(SIGNINSCREEN) {
                         popUpTo(
-                            SIGNUPSCREEN
-                        ){
+                            SIGNUPSCREEN,
+                        ) {
                             inclusive = true
                         }
                     }
-                }
+                },
+                onNavigateToLoginScreen = {
+                    navController.navigate(SIGNINSCREEN) {
+                        popUpTo(
+                            SIGNUPSCREEN,
+                        ) {
+                            inclusive = true
+                        }
+                    }
+                },
             )
         }
     }

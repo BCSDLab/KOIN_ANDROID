@@ -9,14 +9,16 @@ android {
     buildTypes {
         getByName("debug") {
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
             buildConfigField("Boolean", "IS_DEBUG", "true")
         }
 
         getByName("release") {
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
             buildConfigField("Boolean", "IS_DEBUG", "false")
         }
@@ -26,13 +28,12 @@ android {
         viewBinding = true
         dataBinding = true
     }
-
 }
 
 dependencies {
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
-    
-    /* Dependency - AndroidX Jetpack */
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Dependency - AndroidX Jetpack
     api(libs.appcompat)
     api(libs.androidx.recyclerview)
     api(libs.androidx.cardview)
@@ -44,30 +45,30 @@ dependencies {
     api(libs.androidx.fragment.ktx)
     api(libs.androidx.constraintlayout)
 
-    /* Dependency - kotlin */
+    // Dependency - kotlin
     api(libs.kotlin.stdlib)
     api(libs.kotlinx.coroutines.android)
 
-    /* Dependency - Retrofit2 */
+    // Dependency - Retrofit2
     api(libs.retrofit)
     api(libs.retrofit.converter.gson)
     api(libs.retrofit.rxjava2)
 
-    /* Dependency - okhttp */
+    // Dependency - okhttp
     api(libs.okhttp)
     api(libs.okhttp.logging.interceptor)
 
-    /* Dependency - leakcanary */
+    // Dependency - leakcanary
     debugImplementation(libs.leakcanary.android)
 
-    /* Dependency - glide */
+    // Dependency - glide
     implementation(libs.glide)
     ksp(libs.glide.ksp)
 
-    /* Dependency - sticky scroll view */
+    // Dependency - sticky scroll view
     api(libs.stickyScrollView)
 
-    /* Dependency - firebase */
+    // Dependency - firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics.ktx)
 

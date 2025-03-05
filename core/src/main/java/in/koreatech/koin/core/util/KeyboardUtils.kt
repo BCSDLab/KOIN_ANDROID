@@ -5,7 +5,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 class KeyboardUtils(
-    private val context: Context
+    private val context: Context,
 ) {
     // 키보드 올리기
     fun show(view: View) {

@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class StoreBenefitResponse(
     @SerializedName("count") val count: Int?,
-    @SerializedName("shops") val shops: List<StoreItemResponse>?
+    @SerializedName("shops") val shops: List<StoreItemResponse>?,
 )

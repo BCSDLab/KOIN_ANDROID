@@ -5,5 +5,5 @@ import java.time.LocalTime
 
 @Immutable
 data class ImmutableLocalTime(
-    val localTime: LocalTime
+    val localTime: LocalTime,
 )

@@ -7,9 +7,9 @@ data class AttachmentResponse(
     @SerializedName("name") val name: String,
     @SerializedName("url") val url: String,
 ) {
-
-    fun toAttachment() = Attachment(
-        name = name,
-        url = url,
-    )
+    fun toAttachment() =
+        Attachment(
+            name = name,
+            url = url,
+        )
 }

@@ -7,8 +7,9 @@ data class ShuttleTimetableNodeInfoResponse(
     @SerializedName("name") val name: String?,
     @SerializedName("detail") val detail: String?,
 ) {
-    fun toShuttleTimetableNodeInfo() = ShuttleTimetableNodeInfo(
-        name = name.orEmpty(),
-        detail = detail.orEmpty()
-    )
+    fun toShuttleTimetableNodeInfo() =
+        ShuttleTimetableNodeInfo(
+            name = name.orEmpty(),
+            detail = detail.orEmpty(),
+        )
 }

@@ -10,9 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailMenuBinding
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
@@ -38,25 +38,29 @@ class StoreDetailMenuFragment : Fragment() {
         registerForActivityResult(StoreDetailActivityContract()) {
         }
 
-    private val storeRandomRecyclerAdapter = StoreRecyclerAdapter().apply {
-        setOnItemClickListener {
+    private val storeRandomRecyclerAdapter =
+        StoreRecyclerAdapter().apply {
+            setOnItemClickListener {
 
-            storeDetailActivityContract.launch(Triple(it.uid,null,false))
-            requireActivity().finish()
+                storeDetailActivityContract.launch(Triple(it.uid, null, false))
+                requireActivity().finish()
+            }
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         return FragmentStoreDetailMenuBinding.inflate(inflater, container, false).also {
             _binding = it
         }.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModel()
@@ -69,12 +73,10 @@ class StoreDetailMenuFragment : Fragment() {
         binding.storeDetailSetRecyclerview.adapter = storeSetMenuAdapter
         binding.storeDetailSideRecyclerview.adapter = storeSideMenuAdapter
         binding.storeRandomRecyclerView.adapter = storeRandomRecyclerAdapter
-
     }
-    
+
     @SuppressLint("ResourceAsColor")
     private fun initViewModel() {
-
         observeLiveData(viewModel.storeMenu) {
             viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
 
@@ -84,24 +86,24 @@ class StoreDetailMenuFragment : Fragment() {
                         if (shopMenus.isSingle && shopMenus.singlePrice != null) {
                             shopMenus.singlePrice
                             list.add(shopMenus)
-                        } else if (shopMenus.optionPrices?.isNotEmpty() == true) {//옵션
+                        } else if (shopMenus.optionPrices?.isNotEmpty() == true) { // 옵션
 
                             shopMenus.optionPrices?.forEachIndexed { optionIndex, shopMenuOptions ->
                                 list.add(
                                     ShopMenus(
                                         id = shopMenus.id,
-                                        name = shopMenus.name+"-"+shopMenuOptions.option,
+                                        name = shopMenus.name + "-" + shopMenuOptions.option,
                                         isHidden = shopMenus.isHidden,
                                         isSingle = true,
                                         singlePrice = shopMenuOptions.price,
                                         null,
                                         description = shopMenus.description,
-                                        imageUrls = shopMenus.imageUrls
-                                    )
+                                        imageUrls = shopMenus.imageUrls,
+                                    ),
                                 )
                             }
                         }
-                        when(category.name){
+                        when (category.name) {
                             "추천 메뉴" -> {
                                 binding.storeDetailRecommendRecyclerview.visibility = View.VISIBLE
                                 storeRecommendMenuAdapter.submitList(list)
@@ -154,7 +156,7 @@ class StoreDetailMenuFragment : Fragment() {
             observeLiveData(viewModel.categories) {
                 if (it.menuCategories != null) {
                     viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
-                        when(category.name) {
+                        when (category.name) {
                             binding.storeDetailMainMenuTextView.text -> {
                                 binding.storeDetailMainMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
                                 binding.storeDetailMainMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
@@ -169,11 +171,13 @@ class StoreDetailMenuFragment : Fragment() {
                             }
                             else -> {
                                 binding.storeDetailRecommendMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
-                                binding.storeDetailRecommendMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                                binding.storeDetailRecommendMenuTextView.setTextColor(
+                                    ContextCompat.getColor(requireContext(), R.color.gray10),
+                                )
                             }
                         }
 
-                        when(category.name){
+                        when (category.name) {
                             "추천 메뉴" -> storeRecommendMenuAdapter.setCategory(category.name)
                             "메인 메뉴" -> storeMainMenuAdapter.setCategory(category.name)
                             "세트 메뉴" -> storeSetMenuAdapter.setCategory(category.name)
@@ -183,20 +187,23 @@ class StoreDetailMenuFragment : Fragment() {
                 }
             }
 
-            observeLiveData(viewModel.scrollUp){
-                if(it == StoreDetailScrollType.MENU){
+            observeLiveData(viewModel.scrollUp) {
+                if (it == StoreDetailScrollType.MENU) {
                     binding.storeDetailMenuNestedScrollView.fullScroll(ScrollView.FOCUS_UP)
                     viewModel.scrollReset()
                 }
             }
         }
     }
+
     private fun setSelectedCategoryButtonStyle(name: String?) {
-        when(name) {
+        when (name) {
             "추천 메뉴" -> {
                 binding.storeDetailRecommendMenuButton.strokeWidth = 0
                 binding.storeDetailRecommendMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                binding.storeDetailRecommendMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                binding.storeDetailRecommendMenuButton.setCardBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.colorPrimary),
+                )
             }
             "메인 메뉴" -> {
                 binding.storeDetailMainMenuButton.strokeWidth = 0
@@ -215,8 +222,9 @@ class StoreDetailMenuFragment : Fragment() {
             }
         }
     }
+
     private fun setUnselectedCategoryButtonStyle(name: String?) {
-        when(name) {
+        when (name) {
             null -> return
             "추천 메뉴" -> {
                 binding.storeDetailRecommendMenuButton.strokeWidth = 1
@@ -239,9 +247,7 @@ class StoreDetailMenuFragment : Fragment() {
                 binding.storeDetailSideMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
         }
-
     }
-
 
     private fun initEventScrollCallback() {
         binding.storeDetailMenuNestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
@@ -254,7 +260,7 @@ class StoreDetailMenuFragment : Fragment() {
                 EventLogger.logScrollEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
-                    viewModel.store.value?.name ?: "Unknown"
+                    viewModel.store.value?.name ?: "Unknown",
                 )
             }
         }

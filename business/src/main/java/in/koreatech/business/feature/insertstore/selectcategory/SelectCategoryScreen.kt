@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
@@ -56,7 +54,7 @@ fun SelectCategoryScreen(
     modifier: Modifier = Modifier,
     navigateToInsertBasicInfoScreen: (Int) -> Unit,
     onBackPressed: () -> Unit,
-    viewModel: SelectCategoryScreenViewModel = hiltViewModel()
+    viewModel: SelectCategoryScreenViewModel = hiltViewModel(),
 ) {
     val state = viewModel.collectAsState().value
     SelectCategoryScreenImpl(
@@ -68,15 +66,13 @@ fun SelectCategoryScreen(
         },
         categoryIdIsValid = state.categoryIdIsValid,
         nextButtonClicked = {
-                            viewModel.goToInsertBasicInfoScreen()
+            viewModel.goToInsertBasicInfoScreen()
         },
-        onBackPressed =  onBackPressed
+        onBackPressed = onBackPressed,
     )
 
     HandleSideEffects(viewModel, state.categoryId, navigateToInsertBasicInfoScreen)
 }
-
-
 
 @Composable
 fun SelectCategoryScreenImpl(
@@ -86,24 +82,26 @@ fun SelectCategoryScreenImpl(
     categoryIdIsValid: Boolean = true,
     chooseCategory: (Int) -> Unit = {},
     nextButtonClicked: () -> Unit = {},
-    onBackPressed: () -> Unit = {}
+    onBackPressed: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         Box(
-            modifier = Modifier
-                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
-                .width(40.dp)
-                .height(40.dp)
-                .clickable { onBackPressed() }
+            modifier =
+                Modifier
+                    .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
+                    .width(40.dp)
+                    .height(40.dp)
+                    .clickable { onBackPressed() },
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_arrow_left),
                 contentDescription = "backArrow",
-                modifier = modifier
-                    .width(40.dp)
-                    .height(40.dp)
+                modifier =
+                    modifier
+                        .width(40.dp)
+                        .height(40.dp),
             )
         }
 
@@ -111,14 +109,14 @@ fun SelectCategoryScreenImpl(
             modifier = Modifier.padding(top = 35.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store),
             fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         Text(
             modifier = Modifier.padding(top = 34.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store_main_info),
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         InsertStoreProgressBar(Modifier, 0.25f, R.string.insert_store_category_setting, R.string.page_one)
@@ -126,50 +124,65 @@ fun SelectCategoryScreenImpl(
         Text(
             modifier = Modifier.padding(top = 24.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store_choose_category),
-            fontSize = 18.sp
+            fontSize = 18.sp,
         )
 
         LazyHorizontalGrid(
-            rows = GridCells.Fixed(2),
-            modifier = Modifier
-                .padding(top = 28.dp)
-                .padding(horizontal = 15.dp)
-                .height(200.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            rows = GridCells.Fixed(3),
+            modifier =
+                Modifier
+                    .padding(top = 28.dp)
+                    .padding(horizontal = 15.dp)
+                    .height(200.dp)
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
         ) {
             items(categories) { category ->
                 CategoryItem(
-                    modifier = Modifier.clickable {
-                        chooseCategory(category.id)
-                    },
+                    modifier =
+                        Modifier.clickable {
+                            chooseCategory(category.id)
+                        },
                     imageUrl = category.imageUrl.toString(),
                     name = category.name,
                     categoryId = category.id,
-                    choosedCategoryId = categoryId
+                    choosedCategoryId = categoryId,
                 )
             }
         }
 
-        Button(
-            onClick = nextButtonClicked,
-            colors = if(categoryIdIsValid)ButtonDefaults.buttonColors(ColorPrimary) else ButtonDefaults.buttonColors(ColorDisabledButton),
-            shape = RectangleShape,
-            modifier = modifier
-                .padding(top = 57.dp, start = 240.dp, end = 16.dp)
-                .height(38.dp)
-                .width(105.dp)
+        Row(
+            modifier =
+                Modifier
+                    .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
         ) {
-            Text(
-                text = stringResource(id = R.string.next),
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
+            Button(
+                onClick = nextButtonClicked,
+                colors =
+                    if (categoryIdIsValid) {
+                        ButtonDefaults.buttonColors(
+                            ColorPrimary,
+                        )
+                    } else {
+                        ButtonDefaults.buttonColors(ColorDisabledButton)
+                    },
+                shape = RectangleShape,
+                modifier =
+                    modifier
+                        .height(38.dp)
+                        .width(105.dp),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.next),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+            }
         }
-
     }
-
 }
 
 @Composable
@@ -177,37 +190,37 @@ fun InsertStoreProgressBar(
     modifier: Modifier,
     range: Float,
     resourceId: Int,
-    pageId: Int
+    pageId: Int,
 ) {
     Row(
-        modifier = modifier
-            .padding(top = 24.dp)
-            .padding(horizontal = 32.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier =
+            modifier
+                .padding(top = 24.dp)
+                .padding(horizontal = 32.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
             text = stringResource(id = resourceId),
             fontSize = 15.sp,
-            color = ColorSecondary
+            color = ColorSecondary,
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = stringResource(id = pageId),
             fontSize = 15.sp,
-            color = ColorSecondary
+            color = ColorSecondary,
         )
-
     }
     LinearProgressIndicator(
-        modifier = Modifier
-            .padding(top = 4.dp)
-            .padding(horizontal = 32.dp)
-            .fillMaxWidth()
-            .height(3.dp)
-        ,
+        modifier =
+            Modifier
+                .padding(top = 4.dp)
+                .padding(horizontal = 32.dp)
+                .fillMaxWidth()
+                .height(3.dp),
         color = ColorSecondary,
         backgroundColor = Color.Gray,
-        progress = range
+        progress = range,
     )
 }
 
@@ -215,49 +228,55 @@ fun InsertStoreProgressBar(
 private fun HandleSideEffects(
     viewModel: SelectCategoryScreenViewModel,
     categoryId: Int,
-    navigateToInsertMainInfoScreen: (categoryId: Int) -> Unit
+    navigateToInsertMainInfoScreen: (categoryId: Int) -> Unit,
 ) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is SelectCategoryScreenSideEffect.NavigateToInsertBasicInfoScreen -> navigateToInsertMainInfoScreen(categoryId)
-            is SelectCategoryScreenSideEffect.NotSelectCategory -> ToastUtil.getInstance().makeShort(context.getString(R.string.insert_store_choose_category))
+            is SelectCategoryScreenSideEffect.NotSelectCategory ->
+                ToastUtil.getInstance().makeShort(
+                    context.getString(R.string.insert_store_choose_category),
+                )
         }
     }
 }
+
 @Composable
 fun CategoryItem(
     modifier: Modifier,
     imageUrl: String,
     name: String,
     categoryId: Int,
-    choosedCategoryId: Int
+    choosedCategoryId: Int,
 ) {
     Column(
-        modifier = modifier
-            .width(70.dp)
-            .wrapContentHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
+        modifier =
+            modifier
+                .width(70.dp)
+                .wrapContentHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Image(
-            modifier = modifier
-                .size(44.dp)
-                .border(
-                    width = 2.dp,
-                    color = if (categoryId == choosedCategoryId) ColorSecondary else Color.Transparent,
-                    shape = CircleShape
-                )
-            ,
-            painter = rememberAsyncImagePainter(
-                ImageRequest.Builder(LocalContext.current).data(data = imageUrl)
-                    .apply<ImageRequest.Builder>(block = fun ImageRequest.Builder.() {
-                        crossfade(true)
-                        transformations(CircleCropTransformation())
-                    }).build()
-            ),
+            modifier =
+                modifier
+                    .size(44.dp)
+                    .border(
+                        width = 2.dp,
+                        color = if (categoryId == choosedCategoryId) ColorSecondary else Color.Transparent,
+                        shape = CircleShape,
+                    ),
+            painter =
+                rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(data = imageUrl)
+                        .crossfade(true)
+                        .transformations(CircleCropTransformation())
+                        .build(),
+                ),
             alignment = Alignment.Center,
-            contentDescription = "category_image"
+            contentDescription = "category_image",
         )
         Text(
             modifier = modifier.fillMaxWidth(),
@@ -265,7 +284,7 @@ fun CategoryItem(
             textAlign = TextAlign.Center,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
-            color = if(categoryId == choosedCategoryId) ColorSecondary else Color.Black
+            color = if (categoryId == choosedCategoryId) ColorSecondary else Color.Black,
         )
     }
 }
@@ -278,26 +297,27 @@ fun PreviewCategoryItem() {
         imageUrl = "",
         name = "치킨",
         categoryId = 0,
-        choosedCategoryId = 0
+        choosedCategoryId = 0,
     )
 }
 
 @Preview
 @Composable
-fun PreviewSelectCategoryScreen(){
+fun PreviewSelectCategoryScreen() {
     SelectCategoryScreenImpl(
-        categories = sampleCategories
+        categories = sampleCategories,
     )
 }
 
-val sampleCategories = listOf(
-    StoreCategories(1,"imageUrl1", "일반음식점"),
-    StoreCategories(1, "imageUrl2", "패스트푸드"),
-    StoreCategories(1,"imageUrl3", "카페"),
-    StoreCategories(1,"imageUrl4", "디저트"),
-    StoreCategories(1,"imageUrl5", "바베큐"),
-    StoreCategories(1,"imageUrl5", "바베큐"),
-    StoreCategories(1,"imageUrl5", "바베큐"),
-    StoreCategories(1,"imageUrl5", "바베큐"),
-    StoreCategories(1,"imageUrl5", "바베큐")
-)
+val sampleCategories =
+    listOf(
+        StoreCategories(1, "imageUrl1", "일반음식점"),
+        StoreCategories(1, "imageUrl2", "패스트푸드"),
+        StoreCategories(1, "imageUrl3", "카페"),
+        StoreCategories(1, "imageUrl4", "디저트"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+    )

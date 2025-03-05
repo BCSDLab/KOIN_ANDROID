@@ -15,9 +15,10 @@ class ReviewReportPopupMenu(
     private val onReport: () -> Unit,
 ) : PopupWindow() {
     private val binding = MenuReviewPopupBinding.inflate(LayoutInflater.from(context), null, false)
-    private val menuList = listOf(
-        MENU_REPORT to R.drawable.icon_report
-    )
+    private val menuList =
+        listOf(
+            MENU_REPORT to R.drawable.icon_report,
+        )
 
     init {
         contentView = binding.root

@@ -13,17 +13,18 @@ data class CustomContentState(
     val schedule: String = "",
     val professor: String = "",
     val isScheduleError: Boolean = false,
-    val data: ImmutableList<CustomExtraContentState> = persistentListOf(CustomExtraContentState())
+    val data: ImmutableList<CustomExtraContentState> = persistentListOf(CustomExtraContentState()),
 ) {
-    fun toTimetableEvent() = TimetableEvent(
-        id = 0,
-        lectureId = 0,
-        name = "",
-        color = TimetableColor(Color.White, Color.White),
-        dayOfWeek = DayOfWeek.MONDAY,
-        start = LocalTime.of(9, 0),
-        end = LocalTime.of(10, 0)
-    )
+    fun toTimetableEvent() =
+        TimetableEvent(
+            id = 0,
+            lectureId = 0,
+            name = "",
+            color = TimetableColor(Color.White, Color.White),
+            dayOfWeek = DayOfWeek.MONDAY,
+            start = LocalTime.of(9, 0),
+            end = LocalTime.of(10, 0),
+        )
 
     fun toLectures(): List<Lecture> {
         val lectures = mutableListOf<Lecture>()
@@ -35,8 +36,8 @@ data class CustomContentState(
                     name = schedule.trim(),
                     professor = professor.trim(),
                     classTime = lecture.toClassTime(),
-                    place = lecture.place.trim()
-                )
+                    place = lecture.place.trim(),
+                ),
             )
         }
 

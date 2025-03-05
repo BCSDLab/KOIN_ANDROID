@@ -1,27 +1,27 @@
 package `in`.koreatech.koin.ui.bus.adpater.timetable
 
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableHeaderViewHolder
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableItemViewHolder
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableFooterViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableHeaderViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableItemViewHolder
 
 abstract class TableAdapter<T>(itemCallback: ItemCallback<T>) :
     ListAdapter<T, ViewHolder>(itemCallback) {
-
     private var updatedAt: String? = null
 
-    override fun getItemViewType(position: Int) = when (position) {
-        0 -> HEADER
-        itemCount - 1 -> FOOTER
-        else -> ITEM
-    }
+    override fun getItemViewType(position: Int) =
+        when (position) {
+            0 -> HEADER
+            itemCount - 1 -> FOOTER
+            else -> ITEM
+        }
 
     final override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): ViewHolder {
         return when (viewType) {
             HEADER -> onCreateHeaderViewHolder(parent)
@@ -31,16 +31,20 @@ abstract class TableAdapter<T>(itemCallback: ItemCallback<T>) :
         }
     }
 
-    final override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    final override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         when (getItemViewType(position)) {
             ITEM -> (holder as TableItemViewHolder<T>).bind(getItem(position))
             FOOTER -> (holder as TableFooterViewHolder).setUpdatedAt(updatedAt)
         }
     }
 
-
     abstract fun onCreateHeaderViewHolder(parent: ViewGroup): TableHeaderViewHolder
+
     abstract fun onCreateItemViewHolder(parent: ViewGroup): TableItemViewHolder<T>
+
     abstract fun onCreateFooterViewHolder(parent: ViewGroup): TableFooterViewHolder
 
     fun setUpdatedAt(date: String?) {
@@ -55,11 +59,16 @@ abstract class TableAdapter<T>(itemCallback: ItemCallback<T>) :
                     addAll(list)
                     add(list[0])
                 }
-            } else null
+            } else {
+                null
+            },
         )
     }
 
-    final override fun submitList(list: List<T>?, commitCallback: Runnable?) {
+    final override fun submitList(
+        list: List<T>?,
+        commitCallback: Runnable?,
+    ) {
         super.submitList(
             if (!list.isNullOrEmpty()) {
                 mutableListOf<T>().apply {
@@ -67,7 +76,11 @@ abstract class TableAdapter<T>(itemCallback: ItemCallback<T>) :
                     addAll(list)
                     add(list[0])
                 }
-            } else null, commitCallback)
+            } else {
+                null
+            },
+            commitCallback,
+        )
     }
 
     companion object {

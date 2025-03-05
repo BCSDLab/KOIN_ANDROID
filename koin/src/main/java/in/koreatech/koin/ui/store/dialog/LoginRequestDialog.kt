@@ -25,7 +25,7 @@ class LoginRequestDialog(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = LoginRequestDialogBinding.inflate(inflater, container, false)
         val spannableString = SpannableString(getString(R.string.login_request_to_write_review))
@@ -33,7 +33,7 @@ class LoginRequestDialog(
             ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorPrimary)),
             8,
             11,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
         )
         binding.textViewTitle.text = spannableString
         binding.buttonDelete.setOnClickListener {

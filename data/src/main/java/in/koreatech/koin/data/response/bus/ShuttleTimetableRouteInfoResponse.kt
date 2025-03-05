@@ -7,8 +7,9 @@ data class ShuttleTimetableRouteInfoResponse(
     @SerializedName("name") val name: String?,
     @SerializedName("arrival_time") val arrivalTimes: List<String?>?,
 ) {
-    fun toShuttleTimetableRouteInfo() = ShuttleTimetableRouteInfo(
-        name = name.orEmpty(),
-        arrivalTimes = arrivalTimes?.map { it.orEmpty() }.orEmpty()
-    )
+    fun toShuttleTimetableRouteInfo() =
+        ShuttleTimetableRouteInfo(
+            name = name.orEmpty(),
+            arrivalTimes = arrivalTimes?.map { it.orEmpty() }.orEmpty(),
+        )
 }

@@ -17,18 +17,21 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface StoreApi {
-    //Get Shop list API
+    // Get Shop list API
     @GET(URLConstant.SHOPS.SHOPS_V2)
     suspend fun getShopList(): StoreResponse
 
     @GET(URLConstant.SHOPS.SHOPS_V2)
-    suspend fun getShopListWithSorting(@Query("sorter") sorter: String, @Query("query") query: String?): StoreResponse
+    suspend fun getShopListWithSorting(
+        @Query("sorter") sorter: String,
+        @Query("query") query: String?,
+    ): StoreResponse
 
     @GET(URLConstant.SHOPS.SHOPS_V2)
     suspend fun getShopListWithOneFilter(
         @Query("sorter") sorter: String,
         @Query("filter") filter: String,
-        @Query("query") query: String?
+        @Query("query") query: String?,
     ): StoreResponse
 
     @GET(URLConstant.SHOPS.SHOPS_V2)
@@ -36,7 +39,7 @@ interface StoreApi {
         @Query("sorter") sorter: String,
         @Query("filter") OPEN: String = "OPEN",
         @Query("filter") DELIVERY: String = "DELIVERY",
-        @Query("query") query: String?
+        @Query("query") query: String?,
     ): StoreResponse
 
     @GET(URLConstant.SHOPS.EVENTS)
@@ -45,28 +48,42 @@ interface StoreApi {
     @GET(URLConstant.SHOPS.CATERGORIES)
     suspend fun getCategories(): StoreCategoriesResponse
 
-    //Get Shop list API
+    // Get Shop list API
     @GET(URLConstant.SHOPS.SHOPS + "/{id}")
-    suspend fun getStore(@Path("id") uid: Int): StoreItemWithMenusResponse
+    suspend fun getStore(
+        @Path("id") uid: Int,
+    ): StoreItemWithMenusResponse
 
     @GET(URLConstant.SHOPS.SHOPS + "/{shopId}/menus/categories")
-    suspend fun getStoreMenuCategory(@Path("shopId") uid: Int): StoreMenuCategoryResponse
+    suspend fun getStoreMenuCategory(
+        @Path("shopId") uid: Int,
+    ): StoreMenuCategoryResponse
 
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/menus")
-    suspend fun getShopMenus(@Path("id") uid: Int): StoreMenuResponse
+    suspend fun getShopMenus(
+        @Path("id") uid: Int,
+    ): StoreMenuResponse
 
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/events")
-    suspend fun getShopEvents(@Path("id") uid: Int): StoreDetailEventResponse
+    suspend fun getShopEvents(
+        @Path("id") uid: Int,
+    ): StoreDetailEventResponse
 
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/reviews")
-    suspend fun getShopReviews(@Path("id") uid: Int): StoreReviewResponse
+    suspend fun getShopReviews(
+        @Path("id") uid: Int,
+    ): StoreReviewResponse
 
     @GET("benefit/{id}/shops")
-    suspend fun getBenefitShopList(@Path("id") uid: Int): StoreBenefitResponse
+    suspend fun getBenefitShopList(
+        @Path("id") uid: Int,
+    ): StoreBenefitResponse
 
     @GET("benefit/categories")
     suspend fun getBenefitCategories(): BenefitCategoryListResponse
 
     @GET("/shops/search/related/{query}")
-    suspend fun getShopSearchRelated(@Path("query") query: String): ShopRelatedListResponse
+    suspend fun getShopSearchRelated(
+        @Path("query") query: String,
+    ): ShopRelatedListResponse
 }

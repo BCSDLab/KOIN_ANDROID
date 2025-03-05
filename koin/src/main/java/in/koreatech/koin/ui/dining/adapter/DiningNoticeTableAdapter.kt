@@ -15,9 +15,11 @@ import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableHeaderViewHo
 import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableItemViewHolder
 
 class DiningNoticeTableAdapter : TableAdapter<OpenCloseTimeInfo>(diffUtil) {
+    inner class DiningNoticeTableHeaderViewHolder(binding: TableDiningNoticeHeaderBinding) : TableHeaderViewHolder(binding)
 
-    inner class DiningNoticeTableHeaderViewHolder(binding: TableDiningNoticeHeaderBinding): TableHeaderViewHolder(binding)
-    inner class DiningNoticeTableItemViewHolder(private val binding: TableDiningNoticeItemBinding): TableItemViewHolder<OpenCloseTimeInfo>(binding) {
+    inner class DiningNoticeTableItemViewHolder(private val binding: TableDiningNoticeItemBinding) : TableItemViewHolder<OpenCloseTimeInfo>(
+        binding,
+    ) {
         override fun bind(item: OpenCloseTimeInfo) {
             with(binding) {
                 tvDayType.text = item.type
@@ -26,48 +28,51 @@ class DiningNoticeTableAdapter : TableAdapter<OpenCloseTimeInfo>(diffUtil) {
             }
         }
     }
-    inner class DiningNoticeTableFooterViewHolder(binding: TableDiningNoticeFooterBinding): TableFooterViewHolder(binding)
+
+    inner class DiningNoticeTableFooterViewHolder(binding: TableDiningNoticeFooterBinding) : TableFooterViewHolder(binding)
 
     override fun onCreateHeaderViewHolder(parent: ViewGroup): TableHeaderViewHolder {
         return DiningNoticeTableHeaderViewHolder(
             TableDiningNoticeHeaderBinding.inflate(
-                LayoutInflater.from(parent.context)
-            )
+                LayoutInflater.from(parent.context),
+            ),
         )
     }
 
     override fun onCreateItemViewHolder(parent: ViewGroup): TableItemViewHolder<OpenCloseTimeInfo> {
         return DiningNoticeTableItemViewHolder(
             TableDiningNoticeItemBinding.inflate(LayoutInflater.from(parent.context)).apply {
-                root.layoutParams = LinearLayout.LayoutParams(
-                    ConstraintLayout.LayoutParams.MATCH_PARENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
-                )
-            }
+                root.layoutParams =
+                    LinearLayout.LayoutParams(
+                        ConstraintLayout.LayoutParams.MATCH_PARENT,
+                        ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    )
+            },
         )
     }
 
     override fun onCreateFooterViewHolder(parent: ViewGroup): TableFooterViewHolder {
         return DiningNoticeTableFooterViewHolder(
-            TableDiningNoticeFooterBinding.inflate(LayoutInflater.from(parent.context))
+            TableDiningNoticeFooterBinding.inflate(LayoutInflater.from(parent.context)),
         )
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<OpenCloseTimeInfo>() {
-            override fun areItemsTheSame(
-                oldItem: OpenCloseTimeInfo,
-                newItem: OpenCloseTimeInfo
-            ): Boolean {
-                return oldItem.openTime == newItem.openTime
-            }
+        val diffUtil =
+            object : DiffUtil.ItemCallback<OpenCloseTimeInfo>() {
+                override fun areItemsTheSame(
+                    oldItem: OpenCloseTimeInfo,
+                    newItem: OpenCloseTimeInfo,
+                ): Boolean {
+                    return oldItem.openTime == newItem.openTime
+                }
 
-            override fun areContentsTheSame(
-                oldItem: OpenCloseTimeInfo,
-                newItem: OpenCloseTimeInfo
-            ): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: OpenCloseTimeInfo,
+                    newItem: OpenCloseTimeInfo,
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class TimetableFramesResponse(
     @SerializedName("semesters")
-    val semesterFrames: Map<String, List<TimetableFrameResponse>>
+    val semesterFrames: Map<String, List<TimetableFrameResponse>>,
 )

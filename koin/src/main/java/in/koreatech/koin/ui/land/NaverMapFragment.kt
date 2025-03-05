@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMapOptions
 
-class NaverMapFragment: MapFragment() {
-
+class NaverMapFragment : MapFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         view?.setOnTouchListener { touchView: View, event: MotionEvent? ->

@@ -9,34 +9,40 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesDetail
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 
-fun NotificationPermissionInfoResponse.toNotificationPermissionInfo() = NotificationPermissionInfo(
-    isPermit = isPermit,
-    subscribes = subscribes.map { it.toSubscribes() },
-)
+fun NotificationPermissionInfoResponse.toNotificationPermissionInfo() =
+    NotificationPermissionInfo(
+        isPermit = isPermit,
+        subscribes = subscribes.map { it.toSubscribes() },
+    )
 
-fun SubscribesResponse.toSubscribes() = Subscribes(
-    type = type.toSubscribesType(),
-    isPermit = isPermit,
-    detailSubscribes = detailSubscribes.map { it.toSubscribesDetail() }
-)
+fun SubscribesResponse.toSubscribes() =
+    Subscribes(
+        type = type.toSubscribesType(),
+        isPermit = isPermit,
+        detailSubscribes = detailSubscribes.map { it.toSubscribesDetail() },
+    )
 
-fun SubscribeDetailResponse.toSubscribesDetail() = SubscribesDetail(
-    type = detailType.toSubscribesDetailType(),
-    isPermit = isPermit
-)
+fun SubscribeDetailResponse.toSubscribesDetail() =
+    SubscribesDetail(
+        type = detailType.toSubscribesDetailType(),
+        isPermit = isPermit,
+    )
 
-fun String.toSubscribesType(): SubscribesType = when (this) {
-    Subscribes.SHOP_EVENT -> SubscribesType.SHOP_EVENT
-    Subscribes.DINING_SOLD_OUT -> SubscribesType.DINING_SOLD_OUT
-    Subscribes.DINING_IMAGE_UPLOAD -> SubscribesType.DINING_IMAGE_UPLOAD
-    Subscribes.ARTICLE_KEYWORD -> SubscribesType.ARTICLE_KEYWORD
-    Subscribes.REVIEW_PROMPT -> SubscribesType.REVIEW_PROMPT
-    else -> SubscribesType.NOTHING
-}
+fun String.toSubscribesType(): SubscribesType =
+    when (this) {
+        Subscribes.SHOP_EVENT -> SubscribesType.SHOP_EVENT
+        Subscribes.DINING_SOLD_OUT -> SubscribesType.DINING_SOLD_OUT
+        Subscribes.DINING_IMAGE_UPLOAD -> SubscribesType.DINING_IMAGE_UPLOAD
+        Subscribes.ARTICLE_KEYWORD -> SubscribesType.ARTICLE_KEYWORD
+        Subscribes.REVIEW_PROMPT -> SubscribesType.REVIEW_PROMPT
+        Subscribes.LOST_ITEM_CHAT -> SubscribesType.LOST_ITEM_CHAT
+        else -> SubscribesType.NOTHING
+    }
 
-fun String.toSubscribesDetailType(): SubscribesDetailType = when (this) {
-    SubscribesDetail.BREAKFAST -> SubscribesDetailType.BREAKFAST
-    SubscribesDetail.LUNCH -> SubscribesDetailType.LUNCH
-    SubscribesDetail.DINNER -> SubscribesDetailType.DINNER
-    else -> SubscribesDetailType.NOTHING
-}
+fun String.toSubscribesDetailType(): SubscribesDetailType =
+    when (this) {
+        SubscribesDetail.BREAKFAST -> SubscribesDetailType.BREAKFAST
+        SubscribesDetail.LUNCH -> SubscribesDetailType.LUNCH
+        SubscribesDetail.DINNER -> SubscribesDetailType.DINNER
+        else -> SubscribesDetailType.NOTHING
+    }

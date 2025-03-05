@@ -6,9 +6,8 @@ import `in`.koreatech.koin.core.file.FileUtil
 import `in`.koreatech.koin.core.toast.ToastUtil
 
 @HiltAndroidApp
-class KoinBusinessApplication : Application(){
-
-    companion object{
+class KoinBusinessApplication : Application() {
+    companion object {
         lateinit var instance: KoinBusinessApplication
             private set
     }

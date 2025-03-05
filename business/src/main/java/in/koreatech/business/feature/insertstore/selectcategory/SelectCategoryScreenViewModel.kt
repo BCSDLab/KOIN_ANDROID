@@ -12,56 +12,58 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
-
 @HiltViewModel
-class SelectCategoryScreenViewModel @Inject constructor(
-    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
-) : ViewModel(), ContainerHost<SelectCategoryScreenState, SelectCategoryScreenSideEffect>{
-    override val container = container<SelectCategoryScreenState,SelectCategoryScreenSideEffect>(SelectCategoryScreenState())
+class SelectCategoryScreenViewModel
+    @Inject
+    constructor(
+        private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
+    ) : ViewModel(), ContainerHost<SelectCategoryScreenState, SelectCategoryScreenSideEffect> {
+        override val container = container<SelectCategoryScreenState, SelectCategoryScreenSideEffect>(SelectCategoryScreenState())
 
-
-    init {
-        getCategory()
-    }
-
-    fun chooseCategory(categoryId: Int) = intent{
-            reduce{
-                state.copy(
-                    categoryId = categoryId
-                )
-            }
-        categoryIdIsValid()
-    }
-
-    fun goToInsertBasicInfoScreen(){
-        intent {
-            if(state.categoryIdIsValid){
-                postSideEffect(SelectCategoryScreenSideEffect.NavigateToInsertBasicInfoScreen(state.categoryId))
-            }
-            else{
-                postSideEffect(SelectCategoryScreenSideEffect.NotSelectCategory)
-            }
+        init {
+            getCategory()
         }
-    }
-    private fun categoryIdIsValid(){
-        intent{
-            reduce{
-                state.copy(
-                    categoryIdIsValid = (state.categoryId != -1)
-                )
-            }
-        }
-    }
-    private fun getCategory() {
-        intent {
-            viewModelScope.launch {
-                val categories = getStoreCategoriesUseCase().drop(1)
+
+        fun chooseCategory(categoryId: Int) =
+            intent {
                 reduce {
                     state.copy(
-                        categories = categories
+                        categoryId = categoryId,
+                    )
+                }
+                categoryIdIsValid()
+            }
+
+        fun goToInsertBasicInfoScreen() {
+            intent {
+                if (state.categoryIdIsValid) {
+                    postSideEffect(SelectCategoryScreenSideEffect.NavigateToInsertBasicInfoScreen(state.categoryId))
+                } else {
+                    postSideEffect(SelectCategoryScreenSideEffect.NotSelectCategory)
+                }
+            }
+        }
+
+        private fun categoryIdIsValid() {
+            intent {
+                reduce {
+                    state.copy(
+                        categoryIdIsValid = (state.categoryId != -1),
                     )
                 }
             }
         }
+
+        private fun getCategory() {
+            intent {
+                viewModelScope.launch {
+                    val categories = getStoreCategoriesUseCase().drop(1)
+                    reduce {
+                        state.copy(
+                            categories = categories,
+                        )
+                    }
+                }
+            }
+        }
     }
-}

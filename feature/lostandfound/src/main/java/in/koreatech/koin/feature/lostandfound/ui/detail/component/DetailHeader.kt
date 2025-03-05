@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,39 +30,49 @@ fun DetailHeader(
     modifier: Modifier = Modifier,
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
-    val convertedRegisteredAt by remember { mutableStateOf("${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}") }
+    val convertedRegisteredAt =
+        remember(key1 = registeredAt) { "${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}" }
 
     val foundDateFormatType = DateTimeFormatter.ofPattern("yy.MM.dd")
+    val headerText =
+        remember(key1 = foundPlace, key2 = foundDate) {
+            "${
+                foundPlace.replace(
+                    "\n",
+                    " ",
+                )
+            } | ${foundDate.format(foundDateFormatType)}"
+        }
 
     Column(
-        modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp)
+        modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp),
     ) {
         Text(
             modifier = Modifier.padding(bottom = 2.dp),
             text = stringResource(lostOrFound.stringRes),
             color = KoinTheme.colors.primary600,
             fontWeight = FontWeight(600),
-            style = KoinTheme.typography.medium12
+            style = KoinTheme.typography.medium12,
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
         ) {
             LostItemTypeChip(category = category)
             Text(
                 modifier = Modifier.padding(start = 8.dp),
-                text = "$foundPlace | ${foundDate.format(foundDateFormatType)}",
+                text = headerText,
                 fontWeight = FontWeight(500),
-                style = KoinTheme.typography.medium14
+                style = KoinTheme.typography.medium14,
             )
         }
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "$author • $convertedRegisteredAt",
                 color = KoinTheme.colors.neutral500,
-                style = KoinTheme.typography.regular12
+                style = KoinTheme.typography.regular12,
             )
         }
     }

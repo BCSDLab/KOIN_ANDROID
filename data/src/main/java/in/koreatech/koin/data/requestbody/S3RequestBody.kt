@@ -9,7 +9,7 @@ class S3RequestBody(
     private val inputStream: InputStream,
     private val mediaType: MediaType,
     private val contentLength: Long,
-): RequestBody() {
+) : RequestBody() {
     override fun writeTo(sink: okio.BufferedSink) {
         inputStream.source().use(sink::writeAll)
     }

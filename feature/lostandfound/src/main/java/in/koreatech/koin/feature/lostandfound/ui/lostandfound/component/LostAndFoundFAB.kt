@@ -13,28 +13,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.lostandfound.R
-
-@Composable
-fun LostAndFoundFAB(
-    mainOnClick: () -> Unit = {},
-    modifier: Modifier = Modifier
-) {
-    LostAndFoundFABButton(
-        modifier = modifier,
-        painter = painterResource(id = R.drawable.ic_fab_write),
-        text = stringResource(id = R.string.fab_write),
-    ) {
-        mainOnClick()
-    }
-}
 
 @Composable
 fun LostAndFoundFAB(
@@ -48,13 +32,15 @@ fun LostAndFoundFAB(
     onFirstButtonClick: () -> Unit = {},
     secondButtonText: String,
     secondButtonPainter: Painter,
-    onSecondButtonClick: () -> Unit = {}
-) = Column(modifier = modifier) {
-
+    onSecondButtonClick: () -> Unit = {},
+) = Column(
+    modifier = modifier,
+    horizontalAlignment = Alignment.End,
+) {
     if (isDialogExpanded) {
         LostAndFoundFABButton(
             painter = firstButtonPainter,
-            text = firstButtonText
+            text = firstButtonText,
         ) {
             onFirstButtonClick()
         }
@@ -63,7 +49,7 @@ fun LostAndFoundFAB(
 
         LostAndFoundFABButton(
             painter = secondButtonPainter,
-            text = secondButtonText
+            text = secondButtonText,
         ) {
             onSecondButtonClick()
         }
@@ -84,23 +70,24 @@ fun LostAndFoundFABButton(
     painter: Painter,
     text: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) = Box(
-    modifier = modifier
-        .border(width = 1.dp, color = KoinTheme.colors.neutral300, shape = RoundedCornerShape(50))
-        .background(color = KoinTheme.colors.neutral0, shape = RoundedCornerShape(50))
-        .padding(vertical = 8.dp, horizontal = 12.dp)
-        .noRippleClickable { onClick() }
+    modifier =
+        modifier
+            .border(width = 1.dp, color = KoinTheme.colors.neutral300, shape = RoundedCornerShape(50))
+            .background(color = KoinTheme.colors.neutral0, shape = RoundedCornerShape(50))
+            .padding(vertical = 8.dp, horizontal = 12.dp)
+            .noRippleClickable { onClick() },
 ) {
     Row {
         Image(
             painter = painter,
-            contentDescription = text
+            contentDescription = text,
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = text,
-            style = KoinTheme.typography.regular16
+            style = KoinTheme.typography.regular16,
         )
     }
 }

@@ -18,15 +18,16 @@ data class LostAndFoundWriteArticleItemState(
     val foundPlace: String = "",
     val foundDate: LocalDate? = null,
     val content: String? = null,
-    val images: List<String> = emptyList()
+    val images: List<String> = emptyList(),
 ) : Parcelable
 
 fun LostAndFoundWriteArticleItemState.toArticleLostAndFoundUpload(): ArticleLostAndFoundUpload {
     return ArticleLostAndFoundUpload(
+        type = lostOrFoundType.name,
         category = category.getCategoryKoreanWord(),
-        foundPlace = foundPlace,
+        foundPlace = foundPlace.trim(),
         foundDate = foundDate.toString(),
         content = content,
-        images = images.map { it }
+        images = images.map { it },
     )
 }

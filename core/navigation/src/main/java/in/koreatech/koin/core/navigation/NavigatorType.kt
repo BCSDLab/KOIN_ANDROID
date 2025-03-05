@@ -1,13 +1,17 @@
 package `in`.koreatech.koin.core.navigation
 
 enum class NavigatorType(
-    val type: String
+    val type: String,
 ) {
-    MAIN("main"), DETAIL("detail")
+    MAIN("main"),
+    DETAIL("detail"),
 }
 
 enum class SchemeType(
-    val type: String
+    val type: String,
 ) {
-    SHOP("shop"), DINING("dining"), ARTICLE("keyword"), LOST_AND_FOUND("lost_and_found")
+    SHOP("shop"),
+    DINING("dining"),
+    ARTICLE("keyword"),
+    CHAT("chat"),
 }

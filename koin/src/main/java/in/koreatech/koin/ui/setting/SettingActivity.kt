@@ -58,7 +58,6 @@ class SettingActivity : ActivityBase() {
         initObservers()
     }
 
-
     private fun initView() {
     }
 
@@ -73,32 +72,39 @@ class SettingActivity : ActivityBase() {
             }
 
             svProfile.setOnSettingClickListener {
-                if (viewModel.isStudent)
+                if (viewModel.isStudent) {
                     startActivity(Intent(this@SettingActivity, UserInfoActivity::class.java))
-                else
+                } else {
                     loginSnackBar.show()
+                }
             }
             svChangePassword.setOnSettingClickListener {
                 if (viewModel.isStudent) {
                     changePasswordResult.launch(Unit)
-                } else
+                } else {
                     loginSnackBar.show()
+                }
             }
             svNotification.setOnSettingClickListener {
                 if (viewModel.isStudent) {
                     startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
-                } else
+                } else {
                     loginSnackBar.show()
+                }
             }
             svPrivacyPolicy.setOnSettingClickListener {
-                startActivity(Intent(this@SettingActivity, TermActivity::class.java).apply {
-                    putExtra(TermActivity.KEY_TERM, TermActivity.TERM_PRIVACY_POLICY)
-                })
+                startActivity(
+                    Intent(this@SettingActivity, TermActivity::class.java).apply {
+                        putExtra(TermActivity.KEY_TERM, TermActivity.TERM_PRIVACY_POLICY)
+                    },
+                )
             }
             svKoinTerms.setOnSettingClickListener {
-                startActivity(Intent(this@SettingActivity, TermActivity::class.java).apply {
-                    putExtra(TermActivity.KEY_TERM, TermActivity.TERM_KOIN)
-                })
+                startActivity(
+                    Intent(this@SettingActivity, TermActivity::class.java).apply {
+                        putExtra(TermActivity.KEY_TERM, TermActivity.TERM_KOIN)
+                    },
+                )
             }
             svOpenSourceLicense.setOnSettingClickListener {
                 startActivity(Intent(this@SettingActivity, OssLicensesMenuActivity::class.java))

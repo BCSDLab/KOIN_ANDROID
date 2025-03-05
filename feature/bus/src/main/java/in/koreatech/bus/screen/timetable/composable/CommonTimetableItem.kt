@@ -19,7 +19,7 @@ internal fun CommonTimetableItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Text(
             modifier = Modifier.padding(vertical = 16.dp),
@@ -36,12 +36,14 @@ internal fun CommonTimetableItem(
 @Composable
 private fun CommonTimetableItemPreview() {
     CommonTimetableItem(
-        arrival = DepartureState(
-            departureTime = "09:00"
-        ),
-        textStyle = KoinTheme.typography.bold18.copy(
-            color = KoinTheme.colors.warning500
-        ),
-        modifier = Modifier.padding(vertical = 12.dp)
+        arrival =
+            DepartureState(
+                departureTime = "09:00",
+            ),
+        textStyle =
+            KoinTheme.typography.bold18.copy(
+                color = KoinTheme.colors.warning500,
+            ),
+        modifier = Modifier.padding(vertical = 12.dp),
     )
 }

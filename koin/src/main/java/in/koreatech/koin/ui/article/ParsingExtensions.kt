@@ -10,7 +10,10 @@ internal fun String.parseColor(default: Int): Int {
     }
 }
 
-private fun parseRgbColor(rgbString: String, default: Int): Int {
+private fun parseRgbColor(
+    rgbString: String,
+    default: Int,
+): Int {
     val regex = """rgb\((\d+), (\d+), (\d+)\)""".toRegex()
     val matchResult = regex.matchEntire(rgbString)
 

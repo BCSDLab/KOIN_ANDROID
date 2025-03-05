@@ -16,20 +16,21 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 @Composable
 fun CircleLoadingBar(
     loading: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (loading.not()) return
 
     Box(
-        modifier = modifier
-            .background(Color(0x80FFFFFF))
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .background(Color(0x80FFFFFF))
+                .fillMaxSize(),
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
             color = KoinTheme.colors.primary500,
-            trackColor = Color.LightGray
+            trackColor = Color.LightGray,
         )
     }
 }
