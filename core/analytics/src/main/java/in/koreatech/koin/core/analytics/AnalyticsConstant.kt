@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.core.analytics
 
 object AnalyticsConstant {
-
     object Category {
         const val CLICK = "click"
         const val SCROLL = "scroll"
@@ -59,7 +58,6 @@ object AnalyticsConstant {
         const val SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE = "shop_detail_view_review_delete_done"
         const val SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL = "shop_detail_view_review_delete_cancel"
 
-
         const val SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN = "shop_detail_view_review_write_login"
         const val SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL = "shop_detail_view_review_write_cancel"
 
@@ -101,21 +99,27 @@ object AnalyticsConstant {
         const val POPULAR_NOTICE_BANNER = "popular_notice_banner"
         const val TO_MANAGE_KEYWORD = "to_manage_keyword"
 
-        const val BUSINESS_BENEFIT_1 = "BUSINESS_benefit_1"
-        const val BUSINESS_CALL_1 = "BUSINESS_call_1"
-
-        object LOST_AND_FOUND {
+        object LostAndFound {
             const val LOST_ITEM_ADD_ITEM = "lost_item_add_item"
             const val FIND_USER_ADD_ITEM = "find_user_add_item"
             const val LOST_ITEM_CATEGORY = "lost_item_category"
             const val FIND_USER_CATEGORY = "find_user_category"
-            const val LOST_WRITE = "item_lost_write"
+            const val LOST_WRITE = "lost_item_write"
             const val FOUND_WRITE = "find_user_write"
             const val ITEM_WRITE = "item_write"
             const val LOST_ITEM_WRITE_CONFIRM = "lost_item_write_confirm"
             const val FIND_USER_WRITE_CONFIRM = "find_user_write_confirm"
             const val FIND_USER_DELETE = "find_user_delete"
             const val FIND_USER_DELETE_CONFIRM = "find_user_delete_confirm"
+            const val ITEM_POST_REPORT_CONFIRM = "item_post_report_confirm"
+            const val ITEM_MESSAGE_SEND = "item_message_send"
+            const val ITEM_POST_REPORT = "item_post_report"
+            const val ITEM_POST_TYPE = "item_post_type"
+        }
+
+        object CHAT {
+            const val HAMBURGER = "hamburger"
+            const val MESSAGE_LIST_SELECT = "message_list_select"
         }
     }
 

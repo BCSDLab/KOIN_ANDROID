@@ -35,15 +35,14 @@ object AuthNetworkModule {
     @Auth
     @Provides
     @Singleton
-    fun provideAuthInterceptor(
-        tokenLocalDataSource: TokenLocalDataSource
-    ): Interceptor {
+    fun provideAuthInterceptor(tokenLocalDataSource: TokenLocalDataSource): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val accessToken = tokenLocalDataSource.getAccessToken() ?: ""
-                val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $accessToken")
-                    .build()
+                val newRequest: Request =
+                    chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $accessToken")
+                        .build()
                 chain.proceed(newRequest)
             }
         }
@@ -55,9 +54,8 @@ object AuthNetworkModule {
     fun provideRefreshInterceptor(
         @ApplicationContext applicationContext: Context,
         tokenLocalDataSource: TokenLocalDataSource,
-        userApi: UserApi
+        userApi: UserApi,
     ): Interceptor = RefreshTokenInterceptor(applicationContext, tokenLocalDataSource, userApi)
-
 
     @Auth
     @Provides
@@ -65,7 +63,7 @@ object AuthNetworkModule {
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @Auth authInterceptor: Interceptor,
-        @Refresh refreshInterceptor: Interceptor
+        @Refresh refreshInterceptor: Interceptor,
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
@@ -82,7 +80,7 @@ object AuthNetworkModule {
     @Singleton
     fun provideAuthRetrofit(
         @ServerUrl baseUrl: String,
-        @Auth okHttpClient: OkHttpClient
+        @Auth okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
@@ -91,17 +89,15 @@ object AuthNetworkModule {
             .build()
     }
 
-    /* Auth retrofit instances below */
+    // Auth retrofit instances below
     @Provides
     @Singleton
     fun provideUserAuthApi(
-        @Auth retrofit: Retrofit
+        @Auth retrofit: Retrofit,
     ): UserAuthApi {
         return retrofit.create(UserAuthApi::class.java)
     }
-
 }
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -109,15 +105,14 @@ object BusinessAuthNetworkModule {
     @OwnerAuth
     @Provides
     @Singleton
-    fun provideOwnerAuthInterceptor(
-        tokenLocalDataSource: TokenLocalDataSource
-    ): Interceptor {
+    fun provideOwnerAuthInterceptor(tokenLocalDataSource: TokenLocalDataSource): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val ownerAccessToken = tokenLocalDataSource.getOwnerAccessToken() ?: ""
-                val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $ownerAccessToken")
-                    .build()
+                val newRequest: Request =
+                    chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $ownerAccessToken")
+                        .build()
                 chain.proceed(newRequest)
             }
         }
@@ -128,7 +123,7 @@ object BusinessAuthNetworkModule {
     @Singleton
     fun provideTokenAuthenticator(
         @ApplicationContext applicationContext: Context,
-        tokenLocalDataSource: TokenLocalDataSource
+        tokenLocalDataSource: TokenLocalDataSource,
     ) = OwnerTokenAuthenticator(applicationContext, tokenLocalDataSource)
 
     @OwnerAuth
@@ -137,7 +132,7 @@ object BusinessAuthNetworkModule {
     fun provideOwnerAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @OwnerAuth ownerAuthInterceptor: Interceptor,
-        @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator
+        @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator,
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
@@ -154,7 +149,7 @@ object BusinessAuthNetworkModule {
     @Singleton
     fun provideOwnerAuthRetrofit(
         @ServerUrl baseUrl: String,
-        @OwnerAuth ownerOkHttpClient: OkHttpClient
+        @OwnerAuth ownerOkHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .client(ownerOkHttpClient)
@@ -166,7 +161,7 @@ object BusinessAuthNetworkModule {
     @Provides
     @Singleton
     fun provideUploadUrlApi(
-        @OwnerAuth retrofit: Retrofit
+        @OwnerAuth retrofit: Retrofit,
     ): UploadUrlApi {
         return retrofit.create(UploadUrlApi::class.java)
     }
@@ -174,12 +169,11 @@ object BusinessAuthNetworkModule {
     @Provides
     @Singleton
     fun provideOwnerAuthApi(
-        @OwnerAuth retrofit: Retrofit
+        @OwnerAuth retrofit: Retrofit,
     ): OwnerAuthApi {
         return retrofit.create(OwnerAuthApi::class.java)
     }
 }
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -187,9 +181,7 @@ object PreSignedUrlNetworkModule {
     @PreSignedUrl
     @Provides
     @Singleton
-    fun provideOwnerAuthOkHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
+    fun provideOwnerAuthOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
@@ -208,15 +200,15 @@ object PreSignedUrlNetworkModule {
                 OkHttpClient.Builder().addInterceptor(
                     HttpLoggingInterceptor().apply {
                         level = HttpLoggingInterceptor.Level.HEADERS
-                    }
-                ).build()
+                    },
+                ).build(),
             ).build()
     }
 
     @Provides
     @Singleton
     fun provideUploadUrlApi(
-        @PreSignedUrl retrofit: Retrofit
+        @PreSignedUrl retrofit: Retrofit,
     ): PreSignedUrlApi {
         return retrofit.create(PreSignedUrlApi::class.java)
     }

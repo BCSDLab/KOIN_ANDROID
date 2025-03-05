@@ -4,10 +4,12 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 object TimeUtil {
     private val simpleDateFormat = SimpleDateFormat()
+
     fun getCurrentTime(): Date {
         return Calendar.getInstance().time
     }
@@ -61,7 +63,7 @@ object TimeUtil {
         return simpleDateFormat.parse(date)
     }
 
-    fun compareWithCurrentTime(time: String): Long { //HH:mm
+    fun compareWithCurrentTime(time: String): Long { // HH:mm
         val compareTimeString = dateFormatToYYYYMMDD(getCurrentTime()) + " " + time
         simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm")
         return simpleDateFormat.parse(compareTimeString).time - getCurrentTime().time
@@ -78,22 +80,27 @@ object TimeUtil {
         return ((date.time - getCurrentTime().time) / (60 * 60 * 24 * 1000)).toInt()
     }
 
-    fun getDateDifferenceInDays(date1: Date, date2: Date): Int {
-        val calendar1 = Calendar.getInstance().apply {
-            time = date1
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
+    fun getDateDifferenceInDays(
+        date1: Date,
+        date2: Date,
+    ): Int {
+        val calendar1 =
+            Calendar.getInstance().apply {
+                time = date1
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
 
-        val calendar2 = Calendar.getInstance().apply {
-            time = date2
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
+        val calendar2 =
+            Calendar.getInstance().apply {
+                time = date2
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
 
         val diffInMillis = calendar1.timeInMillis - calendar2.timeInMillis
         return (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
@@ -117,7 +124,10 @@ object TimeUtil {
         return dateString == tomorrowString
     }
 
-    fun isBetweenCurrentTime(starTime: String, endTime: String): Boolean {
+    fun isBetweenCurrentTime(
+        starTime: String,
+        endTime: String,
+    ): Boolean {
         return if (starTime.isEmpty() || endTime.isEmpty()) {
             true
         } else {

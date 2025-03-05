@@ -8,7 +8,10 @@ import `in`.koreatech.koin.domain.model.owner.ImageInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-suspend fun getImageInfo(context: Context, uri: Uri): ImageInfo {
+suspend fun getImageInfo(
+    context: Context,
+    uri: Uri,
+): ImageInfo {
     return withContext(Dispatchers.IO) {
         lateinit var imageInfo: ImageInfo
         val inputStream = context.contentResolver.openInputStream(uri)
@@ -35,7 +38,10 @@ suspend fun getImageInfo(context: Context, uri: Uri): ImageInfo {
     }
 }
 
-fun getDrawableResSize(context: Context, drawableResId: Int): Pair<Int, Int>{
+fun getDrawableResSize(
+    context: Context,
+    drawableResId: Int,
+): Pair<Int, Int> {
     val resources = context.resources
 
     val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }

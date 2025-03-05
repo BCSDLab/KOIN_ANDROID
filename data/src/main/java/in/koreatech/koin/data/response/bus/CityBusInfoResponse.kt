@@ -8,10 +8,10 @@ data class CityBusInfoResponse(
     @SerializedName("depart_node") val departNode: String,
     @SerializedName("arrival_node") val arriveNode: String,
 ) {
-
-    fun toCityBusInfo() = CityBusInfo(
-        number = number,
-        departNode = departNode,
-        arriveNode = arriveNode,
-    )
+    fun toCityBusInfo() =
+        CityBusInfo(
+            number = number,
+            departNode = departNode,
+            arriveNode = arriveNode,
+        )
 }

@@ -11,13 +11,12 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BusApi {
-
     @GET("bus/notice")
     suspend fun fetchBusNotice(): BusNoticeResponse
 
     @GET("bus/timetable/shuttle/{id}")
     suspend fun fetchShuttleTimetable(
-        @Path("id") id: String
+        @Path("id") id: String,
     ): ShuttleTimetableResponse
 
     @GET("bus/courses/shuttle")
@@ -40,6 +39,6 @@ interface BusApi {
         @Query("time") time: String,
         @Query("bus_type") busType: String,
         @Query("depart") departure: String,
-        @Query("arrival") arrival: String
+        @Query("arrival") arrival: String,
     ): BusSearchResultWrapperResponse
 }

@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.koin.library)
-
 }
 
 android {

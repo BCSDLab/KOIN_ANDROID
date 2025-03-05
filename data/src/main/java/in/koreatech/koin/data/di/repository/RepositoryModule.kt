@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.repository.ArticleRepositoryImpl
+import `in`.koreatech.koin.data.repository.ChatRepositoryImpl
 import `in`.koreatech.koin.data.repository.CoopShopRepositoryImpl
 import `in`.koreatech.koin.data.repository.DeptRepositoryImpl
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
@@ -31,6 +32,7 @@ import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
@@ -43,6 +45,7 @@ import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.repository.ChatRepository
 import `in`.koreatech.koin.domain.repository.CoopShopRepository
 import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.DiningRepository
@@ -70,9 +73,7 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Provides
     @Singleton
-    fun provideNotificationRepository(
-        notificationRemoteDataSource: NotificationRemoteDataSource
-    ): NotificationRepository {
+    fun provideNotificationRepository(notificationRemoteDataSource: NotificationRemoteDataSource): NotificationRepository {
         return NotificationRepositoryImpl(notificationRemoteDataSource)
     }
 
@@ -80,7 +81,7 @@ object RepositoryModule {
     @Singleton
     fun provideTokenRepository(
         tokenLocalDataSource: TokenLocalDataSource,
-        userLocalDataSource: UserLocalDataSource
+        userLocalDataSource: UserLocalDataSource,
     ): TokenRepository {
         return TokenRepositoryImpl(tokenLocalDataSource, userLocalDataSource)
     }
@@ -90,7 +91,7 @@ object RepositoryModule {
     fun provideUserRepository(
         userRemoteDataSource: UserRemoteDataSource,
         tokenLocalDataSource: TokenLocalDataSource,
-        userLocalDataSource: UserLocalDataSource
+        userLocalDataSource: UserLocalDataSource,
     ): UserRepository {
         return UserRepositoryImpl(userRemoteDataSource, tokenLocalDataSource, userLocalDataSource)
     }
@@ -99,7 +100,7 @@ object RepositoryModule {
     @Singleton
     fun provideSignupRepository(
         userRemoteDataSource: UserRemoteDataSource,
-        signupTermsLocalDataSource: SignupTermsLocalDataSource
+        signupTermsLocalDataSource: SignupTermsLocalDataSource,
     ): SignupRepository {
         return SignupRepositoryImpl(userRemoteDataSource, signupTermsLocalDataSource)
     }
@@ -108,35 +109,28 @@ object RepositoryModule {
     @Singleton
     fun provideOwnerSignupRepository(
         ownerRemoteDataSource: OwnerRemoteDataSource,
-        signupTermsLocalDataSource: SignupTermsLocalDataSource
+        signupTermsLocalDataSource: SignupTermsLocalDataSource,
     ): OwnerSignupRepository {
         return OwnerSignupRepositoryImpl(ownerRemoteDataSource, signupTermsLocalDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideOwnerVerificationCodeRepository(
-        ownerRemoteDataSource: OwnerRemoteDataSource
-    ): OwnerVerificationCodeRepository {
+    fun provideOwnerVerificationCodeRepository(ownerRemoteDataSource: OwnerRemoteDataSource): OwnerVerificationCodeRepository {
         return OwnerVerificationCodeRepositoryImpl(ownerRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideUploadUrlRepository(
-        uploadUrlRemoteDataSource: UploadUrlRemoteDataSource
-    ): UploadUrlRepository {
+    fun provideUploadUrlRepository(uploadUrlRemoteDataSource: UploadUrlRemoteDataSource): UploadUrlRepository {
         return UploadUrlRepositoryImpl(uploadUrlRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideRegisterRepository(
-        ownerRemoteDataSource: OwnerRemoteDataSource
-    ): OwnerRegisterRepository {
+    fun provideRegisterRepository(ownerRemoteDataSource: OwnerRemoteDataSource): OwnerRegisterRepository {
         return OwnerRegisterRepositoryImpl(ownerRemoteDataSource)
     }
-
 
     @Provides
     @Singleton
@@ -154,34 +148,29 @@ object RepositoryModule {
     @Singleton
     fun provideDeptRepository(
         deptRemoteDataSource: DeptRemoteDataSource,
-        deptLocalDataSource: DeptLocalDataSource
+        deptLocalDataSource: DeptLocalDataSource,
     ): DeptRepository {
         return DeptRepositoryImpl(
-            deptRemoteDataSource, deptLocalDataSource
+            deptRemoteDataSource,
+            deptLocalDataSource,
         )
     }
 
     @Provides
     @Singleton
-    fun provideDiningRepository(
-        diningRemoteDataSource: DiningRemoteDataSource
-    ): DiningRepository {
+    fun provideDiningRepository(diningRemoteDataSource: DiningRemoteDataSource): DiningRepository {
         return DiningRepositoryImpl(diningRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideStoreRepository(
-        storeRemoteDataSource: StoreRemoteDataSource
-    ): StoreRepository {
+    fun provideStoreRepository(storeRemoteDataSource: StoreRemoteDataSource): StoreRepository {
         return StoreRepositoryImpl(storeRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideLandRepository(
-        landRemoteDataSource: LandRemoteDataSource
-    ): LandRepository {
+    fun provideLandRepository(landRemoteDataSource: LandRemoteDataSource): LandRepository {
         return LandRepositoryImpl(landRemoteDataSource)
     }
 
@@ -189,24 +178,20 @@ object RepositoryModule {
     @Singleton
     fun providePreSignedUrlRepository(
         preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource,
-        uploadImageLocalDataSource: UploadImageLocalDataSource
+        uploadImageLocalDataSource: UploadImageLocalDataSource,
     ): PreSignedUrlRepository {
         return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource, uploadImageLocalDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideOwnerChangePasswordRepository(
-        ownerRemoteDataSource: OwnerRemoteDataSource
-    ): OwnerChangePasswordRepository {
+    fun provideOwnerChangePasswordRepository(ownerRemoteDataSource: OwnerRemoteDataSource): OwnerChangePasswordRepository {
         return OwnerChangePasswordRepositoryImpl(ownerRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideOwnerShopRepository(
-        ownerRemoteDataSource: OwnerRemoteDataSource
-    ): OwnerShopRepository {
+    fun provideOwnerShopRepository(ownerRemoteDataSource: OwnerRemoteDataSource): OwnerShopRepository {
         return OwnerShopRepositoryImpl(ownerRemoteDataSource)
     }
 
@@ -216,21 +201,25 @@ object RepositoryModule {
         articleRemoteDataSource: ArticleRemoteDataSource,
         articleLocalDataSource: ArticleLocalDataSource,
         userRepository: UserRepository,
-        @IoDispatcher dispatcher: CoroutineDispatcher
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): ArticleRepository {
         return ArticleRepositoryImpl(
             articleRemoteDataSource,
             articleLocalDataSource,
             userRepository,
-            CoroutineScope(SupervisorJob() + dispatcher)
+            CoroutineScope(SupervisorJob() + dispatcher),
         )
     }
 
     @Provides
     @Singleton
-    fun provideCoopShopRepository(
-        coopShopRemoteDataSource: CoopShopRemoteDataSource
-    ): CoopShopRepository {
+    fun provideCoopShopRepository(coopShopRemoteDataSource: CoopShopRemoteDataSource): CoopShopRepository {
         return CoopShopRepositoryImpl(coopShopRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatRepository(chatRemoteDataSource: ChatRemoteDataSource): ChatRepository {
+        return ChatRepositoryImpl(chatRemoteDataSource)
     }
 }

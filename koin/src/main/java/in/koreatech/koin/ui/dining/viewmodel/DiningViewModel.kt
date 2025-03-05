@@ -20,57 +20,57 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class DiningViewModel @Inject constructor(
-    private val getDiningUseCase: GetDiningUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val abTestUseCase: ABTestUseCase
-) : BaseViewModel() {
+class DiningViewModel
+    @Inject
+    constructor(
+        private val getDiningUseCase: GetDiningUseCase,
+        private val getUserStatusUseCase: GetUserStatusUseCase,
+        private val abTestUseCase: ABTestUseCase,
+    ) : BaseViewModel() {
+        val userState: StateFlow<User?>
+            get() =
+                getUserStatusUseCase().stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.Eagerly,
+                    initialValue = null,
+                )
 
-    val userState: StateFlow<User?>
-        get() = getUserStatusUseCase().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = null
-        )
+        private val _selectedDate =
+            MutableStateFlow(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
+        val selectedDate: StateFlow<String> get() = _selectedDate
 
-    private val _selectedDate =
-        MutableStateFlow(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
-    val selectedDate: StateFlow<String> get() = _selectedDate
+        private val _dining =
+            MutableStateFlow<List<Dining>>(emptyList())
+        val dining: StateFlow<List<Dining>> get() = _dining
 
-    private val _dining =
-        MutableStateFlow<List<Dining>>(emptyList())
-    val dining: StateFlow<List<Dining>> get() = _dining
+        val abTestExperimentGroup =
+            flow {
+                abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
+                    emit(it)
+                }.onFailure {
+                    emit(Experiment.DINING_SHARE.experimentGroups.first())
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = Experiment.DINING_SHARE.experimentGroups.first(),
+            )
 
-    val abTestExperimentGroup = flow {
-        abTestUseCase(Experiment.DINING_SHARE.experimentTitle).onSuccess {
-            emit(it)
-        }.onFailure {
-            emit(Experiment.DINING_SHARE.experimentGroups.first())
+        fun setSelectedDate(date: Date) {
+            _selectedDate.value = TimeUtil.dateFormatToYYMMDD(date)
+            getDining(selectedDate.value)
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = Experiment.DINING_SHARE.experimentGroups.first()
-    )
 
-    fun setSelectedDate(date: Date) {
-        _selectedDate.value = TimeUtil.dateFormatToYYMMDD(date)
-        getDining(selectedDate.value)
-    }
-
-    fun getDining(
-        date: String = selectedDate.value
-    ) {
-        if (isLoading.value == false) {
-            viewModelScope.launchWithLoading {
-                getDiningUseCase(date)
-                    .onSuccess {
-                        _dining.value = it
-                    }
-                    .onFailure {
-
-                    }
+        fun getDining(date: String = selectedDate.value) {
+            if (isLoading.value == false) {
+                viewModelScope.launchWithLoading {
+                    getDiningUseCase(date)
+                        .onSuccess {
+                            _dining.value = it
+                        }
+                        .onFailure {
+                        }
+                }
             }
         }
     }
-}

@@ -29,7 +29,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
-
 /**
  * 긍정, 부정 버튼이 있는 다이얼로그
  * @param title 다이얼로그 제목 텍스트
@@ -60,49 +59,49 @@ fun ChoiceDialog(
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(
-                color = KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.extraSmall
-            )
-            .padding(horizontal = 32.dp, vertical = 24.dp),
-        onDismissRequest = { onNegative() }
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(
+                    color = KoinTheme.colors.neutral0,
+                    shape = KoinTheme.shapes.extraSmall,
+                )
+                .padding(horizontal = 32.dp, vertical = 24.dp),
+        onDismissRequest = { onNegative() },
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = title,
-                style = titleStyle
+                style = titleStyle,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = description,
-                style = descriptionStyle
+                style = descriptionStyle,
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 OutlinedBoxButton(
                     modifier = Modifier.weight(1.0F),
                     text = negativeButtonText,
                     onClick = onNegative,
-                    colors = negativeButtonColors
+                    colors = negativeButtonColors,
                 )
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
                     onClick = onPositive,
-                    colors = positiveButtonColors
+                    colors = positiveButtonColors,
                 )
             }
         }
     }
 }
-
 
 /**
  * 긍정, 부정 버튼이 있는 다이얼로그
@@ -130,37 +129,38 @@ fun ChoiceDialog(
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(
-                color = KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.extraSmall
-            )
-            .padding(horizontal = 32.dp, vertical = 24.dp),
-        onDismissRequest = { onNegative() }
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(
+                    color = KoinTheme.colors.neutral0,
+                    shape = KoinTheme.shapes.extraSmall,
+                )
+                .padding(horizontal = 32.dp, vertical = 24.dp),
+        onDismissRequest = { onNegative() },
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             title()
             Spacer(modifier = Modifier.height(8.dp))
             description()
             Spacer(modifier = Modifier.height(24.dp))
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 OutlinedBoxButton(
                     modifier = Modifier.weight(1.0F),
                     text = negativeButtonText,
                     onClick = onNegative,
-                    colors = negativeButtonColors
+                    colors = negativeButtonColors,
                 )
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
                     text = positiveButtonText,
                     onClick = onPositive,
-                    colors = positiveButtonColors
+                    colors = positiveButtonColors,
                 )
             }
         }
@@ -174,15 +174,15 @@ private fun ChoiceDialogPreview() {
         ChoiceDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
-            descriptionStyle = KoinTheme.typography.regular14.copy(
-                color = KoinTheme.colors.neutral500
-            ),
+            descriptionStyle =
+                KoinTheme.typography.regular14.copy(
+                    color = KoinTheme.colors.neutral500,
+                ),
             onPositive = {},
             onNegative = {},
         )
     }
 }
-
 
 @Preview
 @Composable
@@ -191,39 +191,41 @@ private fun ChoiceDialogComposableTextPreview() {
         ChoiceDialog(
             title = {
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
-                            append("이렇게 ")
-                        }
-                        withStyle(KoinTheme.typography.bold16.toSpanStyle()) {
-                            append("강조하는")
-                        }
-                        withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
-                            append(" 제목은 컴포저블로")
-                        }
-                    },
-                    textAlign = TextAlign.Center
+                    text =
+                        buildAnnotatedString {
+                            withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
+                                append("이렇게 ")
+                            }
+                            withStyle(KoinTheme.typography.bold16.toSpanStyle()) {
+                                append("강조하는")
+                            }
+                            withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
+                                append(" 제목은 컴포저블로")
+                            }
+                        },
+                    textAlign = TextAlign.Center,
                 )
             },
             description = {
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
-                            append("설명하는 부분도 ")
-                        }
-                        withStyle(KoinTheme.typography.medium16.copy(color = KoinTheme.colors.danger700).toSpanStyle()) {
-                            append("이렇게 강조하는")
-                        }
-                        withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
-                            append(" 컴포저블로 추가할 수 있습니다")
-                        }
-                    },
-                    textAlign = TextAlign.Center
+                    text =
+                        buildAnnotatedString {
+                            withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
+                                append("설명하는 부분도 ")
+                            }
+                            withStyle(KoinTheme.typography.medium16.copy(color = KoinTheme.colors.danger700).toSpanStyle()) {
+                                append("이렇게 강조하는")
+                            }
+                            withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
+                                append(" 컴포저블로 추가할 수 있습니다")
+                            }
+                        },
+                    textAlign = TextAlign.Center,
                 )
             },
             onPositive = {},
             onNegative = {},
-            positiveButtonColors = FilledButtonColors.Warning
+            positiveButtonColors = FilledButtonColors.Warning,
         )
     }
 }

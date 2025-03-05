@@ -9,7 +9,8 @@ data class ShuttleTimetableRouteInfoState(
     val arrivalTimes: List<String>,
 )
 
-fun ShuttleTimetableRouteInfo.toShuttleTimetableRouteInfoState() = ShuttleTimetableRouteInfoState(
-    name = name,
-    arrivalTimes = arrivalTimes
-)
+fun ShuttleTimetableRouteInfo.toShuttleTimetableRouteInfoState() =
+    ShuttleTimetableRouteInfoState(
+        name = name,
+        arrivalTimes = arrivalTimes,
+    )

@@ -17,7 +17,7 @@ fun CoopShopResponse.toCoopShop(): CoopShop {
         phone = phone.orEmpty(),
         location = location,
         remarks = remarks.orEmpty(),
-        updatedAt = updatedAt
+        updatedAt = updatedAt,
     )
 }
 
@@ -25,12 +25,13 @@ fun List<OpenCloseInfoResponse>.groupByDayOfWeek(): List<OpenCloseInfo> =
     this.groupBy { it.dayOfWeek }.map { (day, infoList) ->
         OpenCloseInfo(
             dayOfWeek = day.toCoopShopDayType,
-            opensByDayType = infoList.map { info ->
-                OpenCloseTimeInfo(
-                    type = info.type.orEmpty(),
-                    openTime = info.openTime.orEmpty().checkIfNotOpen,
-                    closeTime = info.closeTime.orEmpty().checkIfNotOpen
-                )
-            }
+            opensByDayType =
+                infoList.map { info ->
+                    OpenCloseTimeInfo(
+                        type = info.type.orEmpty(),
+                        openTime = info.openTime.orEmpty().checkIfNotOpen,
+                        closeTime = info.closeTime.orEmpty().checkIfNotOpen,
+                    )
+                },
         )
     }

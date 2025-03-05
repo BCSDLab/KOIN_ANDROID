@@ -25,7 +25,7 @@ fun LostAndFoundPagination(
     currentPage: Int,
     totalPage: Int,
     modifier: Modifier = Modifier,
-    onPageChange: (Int) -> Unit = {}
+    onPageChange: (Int) -> Unit = {},
 ) {
     val showPrevButton = currentPage > 1
     val showNextButton = currentPage < totalPage
@@ -33,11 +33,11 @@ fun LostAndFoundPagination(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
+        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
     ) {
         LostAndFoundPaginationButton(
             text = stringResource(R.string.pagination_prev),
-            isClickable = showPrevButton
+            isClickable = showPrevButton,
         ) {
             onPageChange(currentPage - 1)
         }
@@ -46,7 +46,7 @@ fun LostAndFoundPagination(
             if (i <= totalPage) {
                 LostAndFoundPaginationPageButton(
                     page = i,
-                    isSelected = i == currentPage
+                    isSelected = i == currentPage,
                 ) {
                     onPageChange(i)
                 }
@@ -55,7 +55,7 @@ fun LostAndFoundPagination(
 
         LostAndFoundPaginationButton(
             text = stringResource(R.string.pagination_next),
-            isClickable = showNextButton
+            isClickable = showNextButton,
         ) {
             onPageChange(currentPage + 1)
         }
@@ -67,18 +67,19 @@ fun LostAndFoundPaginationButton(
     text: String,
     modifier: Modifier = Modifier,
     isClickable: Boolean = true,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Text(
-        modifier = modifier
-            .noRippleClickable {
-                if (isClickable) {
-                    onClick()
+        modifier =
+            modifier
+                .noRippleClickable {
+                    if (isClickable) {
+                        onClick()
+                    }
                 }
-            }
-            .padding(vertical = 6.dp, horizontal = 16.dp),
+                .padding(vertical = 6.dp, horizontal = 16.dp),
         text = text,
-        color = if (isClickable) KoinTheme.colors.neutral600 else Color.Transparent
+        color = if (isClickable) KoinTheme.colors.neutral600 else Color.Transparent,
     )
 }
 
@@ -87,23 +88,23 @@ fun LostAndFoundPaginationPageButton(
     page: Int,
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit = {}
+    onClick: (Int) -> Unit = {},
 ) {
     Box(
-        modifier = modifier
-            .size(32.dp)
-            .noRippleClickable(onClick = { onClick(page) })
-            .clip(RoundedCornerShape(6.dp))
-            .background(if (isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral300),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(32.dp)
+                .noRippleClickable(onClick = { onClick(page) })
+                .clip(RoundedCornerShape(6.dp))
+                .background(if (isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral300),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = "$page",
-            color = if (isSelected) KoinTheme.colors.neutral0 else KoinTheme.colors.neutral600
+            color = if (isSelected) KoinTheme.colors.neutral0 else KoinTheme.colors.neutral600,
         )
     }
 }
-
 
 @Preview
 @Composable

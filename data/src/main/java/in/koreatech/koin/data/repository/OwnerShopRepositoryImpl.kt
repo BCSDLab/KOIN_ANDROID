@@ -45,7 +45,10 @@ class OwnerShopRepositoryImpl @Inject constructor(
         return ownerRemoteDataSource.getStoreMenuInfo(menuId).toStoreMenuInfo()
     }
 
-    override suspend fun deleteOwnerShopEvent(storeId: Int, eventId: Int) {
+    override suspend fun deleteOwnerShopEvent(
+        storeId: Int,
+        eventId: Int,
+    ) {
         ownerRemoteDataSource.deleteOwnerShopEvent(storeId, eventId)
     }
 
@@ -54,19 +57,21 @@ class OwnerShopRepositoryImpl @Inject constructor(
         storeDetailInfo: StoreDetailInfo,
     ) {
         ownerRemoteDataSource.modifyOwnerShopInfo(
-            shopId, StoreRegisterResponse(
+            shopId,
+            StoreRegisterResponse(
                 address = storeDetailInfo.address ?: "",
+                mainCategoryId = storeDetailInfo.mainCategoryId,
                 categoryIds = storeDetailInfo.categoryIds.toMutableList().apply { add(1) },
                 delivery = storeDetailInfo.isDeliveryOk,
-                delivery_price = storeDetailInfo.deliveryPrice,
+                deliveryPrice = storeDetailInfo.deliveryPrice,
                 description = storeDetailInfo.description,
                 imageUrls = storeDetailInfo.imageUrls ?: emptyList(),
                 name = storeDetailInfo.name,
                 open = storeDetailInfo.operatingTime.toMyStoreDayOffResponse(),
                 payBank = storeDetailInfo.isBankOk,
                 payCard = storeDetailInfo.isCardOk,
-                phone = storeDetailInfo.phone.toPhoneNumber()
-            )
+                phone = storeDetailInfo.phone.toPhoneNumber(),
+            ),
         )
     }
 
@@ -76,13 +81,16 @@ class OwnerShopRepositoryImpl @Inject constructor(
         }
     }
 
+
     override suspend fun registerEvent(storeId: Int, event: EventInfo) {
-        return ownerRemoteDataSource.postOwnerShopEvent(storeId, OwnerEventResponse(
-            content = event.content,
-            endDate = event.endDate,
-            startDate = event.startDate,
-            title = event.title,
-            thumbnailImages = event.thumbnailImages
-        ))
+        return ownerRemoteDataSource.postOwnerShopEvent(
+            storeId, OwnerEventResponse(
+                content = event.content,
+                endDate = event.endDate,
+                startDate = event.startDate,
+                title = event.title,
+                thumbnailImages = event.thumbnailImages
+            )
+        )
     }
 }

@@ -19,9 +19,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.AlertModalDialog
 import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
@@ -38,7 +38,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ArticleKeywordFragment : Fragment() {
-
     private var _binding: FragmentArticleKeywordBinding? = null
     private val binding get() = _binding!!
 
@@ -51,33 +50,36 @@ class ArticleKeywordFragment : Fragment() {
             AlertModalDialogData(
                 title = R.string.recommend_login_to_get_keyword_notification_title,
                 message = R.string.recommend_login_to_get_keyword_notification_message,
-                positiveButtonText = R.string.action_login
+                positiveButtonText = R.string.action_login,
             ),
             onPositiveButtonClicked = {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.action_login)
+                    getString(R.string.action_login),
                 )
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("koin://login/login?link=koin://article/activity?fragment=article_keyword")
-                }
+                val intent =
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse("koin://login/login?link=koin://article/activity?fragment=article_keyword")
+                    }
                 it.dismiss()
                 startActivity(intent)
-            }, onNegativeButtonClicked = {
+            },
+            onNegativeButtonClicked = {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.close)
+                    getString(R.string.close),
                 )
                 it.dismiss()
-            })
+            },
+        )
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleKeywordBinding.inflate(inflater, container, false)
@@ -90,7 +92,9 @@ class ArticleKeywordFragment : Fragment() {
                 if (id == EditorInfo.IME_ACTION_DONE) {
                     viewModel.addKeyword(binding.textInputSearch.text.toString())
                     true
-                } else false
+                } else {
+                    false
+                }
             }
             binding.textInputSearch.addTextChangedListener {
                 viewModel.onKeywordInputChanged(it.toString())
@@ -120,15 +124,16 @@ class ArticleKeywordFragment : Fragment() {
         binding.run {
             if (chipGroupMyKeyword.childCount < keywords.size) {
                 keywords.forEach { keyword ->
-                    if (chipGroupMyKeyword.children.none { (it as? Chip)?.text == keyword })
+                    if (chipGroupMyKeyword.children.none { (it as? Chip)?.text == keyword }) {
                         chipGroupMyKeyword.addView(
                             createChip(
                                 keyword,
                                 R.drawable.ic_close_round,
                                 binding.chipGroupMyKeyword,
-                                viewModel::deleteKeyword
-                            )
+                                viewModel::deleteKeyword,
+                            ),
                         )
+                    }
                     binding.chipGroupSuggestionKeywords.children.forEach { chip ->
                         if ((chip as? Chip)?.text == keyword) {
                             chipGroupSuggestionKeywords.removeView(chip)
@@ -160,15 +165,16 @@ class ArticleKeywordFragment : Fragment() {
                     binding.chipGroupSuggestionKeywords.removeAllViews()
                     suggests.forEach { keyword ->
                         binding.run {
-                            if (chipGroupSuggestionKeywords.childCount >= ArticleKeywordViewModel.MAX_SUGGEST_KEYWORD_COUNT)
+                            if (chipGroupSuggestionKeywords.childCount >= ArticleKeywordViewModel.MAX_SUGGEST_KEYWORD_COUNT) {
                                 return@forEach
+                            }
 
                             if (viewModel.myKeywords.value.contains(keyword).not()) {
                                 val onClick: (String) -> Unit = {
                                     EventLogger.logClickEvent(
                                         EventAction.CAMPUS,
                                         AnalyticsConstant.Label.RECOMMENDED_KEYWORD,
-                                        keyword
+                                        keyword,
                                     )
                                     viewModel.addKeyword(it)
                                 }
@@ -178,8 +184,8 @@ class ArticleKeywordFragment : Fragment() {
                                         R.drawable.ic_add_round,
                                         binding.chipGroupSuggestionKeywords,
                                         onCloseIconClicked = onClick,
-                                        onClick = onClick
-                                    )
+                                        onClick = onClick,
+                                    ),
                                 )
                             }
                         }
@@ -194,7 +200,7 @@ class ArticleKeywordFragment : Fragment() {
         @DrawableRes icon: Int,
         root: ViewGroup,
         onCloseIconClicked: (String) -> Unit = {},
-        onClick: (String) -> Unit = {}
+        onClick: (String) -> Unit = {},
     ): Chip? {
         val chip = layoutInflater.inflate(R.layout.chip_layout, root, false) as? Chip
         return chip?.apply {
@@ -260,9 +266,10 @@ class ArticleKeywordFragment : Fragment() {
                                 binding.chipGroupSuggestionKeywords.removeView(
                                     binding.chipGroupSuggestionKeywords.children.first { chip ->
                                         (chip as? Chip)?.text == state.keyword
-                                    }
+                                    },
                                 )
-                            } catch (_: Exception) {}
+                            } catch (_: Exception) {
+                            }
                             binding.textInputSearch.text = null
                         }
 
@@ -285,29 +292,33 @@ class ArticleKeywordFragment : Fragment() {
                     binding.buttonAddKeyword.apply {
                         background.setTint(
                             when (state) {
-                                is KeywordInputUiState.Empty -> ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.gray16
-                                )
+                                is KeywordInputUiState.Empty ->
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.gray16,
+                                    )
 
-                                is KeywordInputUiState.Valid -> ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.colorPrimary
-                                )
-                            }
+                                is KeywordInputUiState.Valid ->
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.colorPrimary,
+                                    )
+                            },
                         )
                         setTextColor(
                             when (state) {
-                                is KeywordInputUiState.Empty -> ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.gray14
-                                )
+                                is KeywordInputUiState.Empty ->
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.gray14,
+                                    )
 
-                                is KeywordInputUiState.Valid -> ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.white
-                                )
-                            }
+                                is KeywordInputUiState.Valid ->
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.white,
+                                    )
+                            },
                         )
                     }
                 }
@@ -343,15 +354,14 @@ class ArticleKeywordFragment : Fragment() {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                    "on"
+                    "on",
                 )
                 notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD)
-            }
-            else {
+            } else {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                    "off"
+                    "off",
                 )
                 notificationViewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD)
             }

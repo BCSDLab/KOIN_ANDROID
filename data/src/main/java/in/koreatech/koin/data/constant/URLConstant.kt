@@ -28,15 +28,15 @@ object URLConstant {
     object DINING {
         const val DINING = "dining"
         const val DININGS = "dinings"
-        const val LIKE = "${DINING}/like"
-        const val UNLIKE = "${LIKE}/cancel"
+        const val LIKE = "$DINING/like"
+        const val UNLIKE = "$LIKE/cancel"
     }
+
     // external url
     const val UNIBUS = "koreatech.unibus.kr"
 
-
-    object SHOPS{
-        const val OWNERSHOPS= "owner/shops"
+    object SHOPS {
+        const val OWNERSHOPS = "owner/shops"
         const val SHOPS = "shops"
         const val SHOPS_V2 = "/v2/shops"
         const val EVENTS = "$SHOPS/events"
@@ -70,7 +70,7 @@ object URLConstant {
         const val EMAIL = "email"
         const val PW = "password"
 
-        object STUDENT{
+        object STUDENT {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
         }
@@ -91,13 +91,13 @@ object URLConstant {
         const val CHANGEPASSWORDESENDSMS = "$OWNERS/$PASSWORD/$RESET/$VERIFICATION/sms"
         const val CHANGEPASSWORDSMSCODE = "$OWNERS/$PASSWORD/$RESET/send/sms"
         const val CHANGEPASSWORDCODE = "$OWNERS/$PASSWORD/$RESET/send"
-        const val CHANGEPASSWORD ="$OWNERS/$PASSWORD/$RESET"
-        const val CHANGEPASSWORDSMS ="$OWNERS/$PASSWORD/$RESET/sms"
+        const val CHANGEPASSWORD = "$OWNERS/$PASSWORD/$RESET"
+        const val CHANGEPASSWORDSMS = "$OWNERS/$PASSWORD/$RESET/sms"
         const val CODE_SMS = "$OWNERS/$VERIFICATION/code/sms"
         const val SMS = "$OWNERS/$VERIFICATION/sms"
         const val PW = "password"
         const val SHOPS = "$OWNER/shops"
-        const val EXISTS_ACCOUNT= "$OWNERS/exists/account"
+        const val EXISTS_ACCOUNT = "$OWNERS/exists/account"
     }
 
     object CALLVANS {

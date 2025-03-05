@@ -1,15 +1,18 @@
 package `in`.koreatech.koin.firebase
 
+import android.app.ActivityManager
 import android.content.Intent
+import androidx.core.content.getSystemService
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import `in`.koreatech.koin.core.notification.Notifier
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
+import `in`.koreatech.koin.core.navigation.utils.toHost
+import `in`.koreatech.koin.core.notification.Notifier
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
+import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.ui.scheme.SchemeActivity
-import `in`.koreatech.koin.ui.splash.SplashActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -22,6 +25,7 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         private const val URL = "url"
     }
+
     @Inject
     lateinit var notifier: Notifier
 
@@ -51,13 +55,31 @@ class KoinFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(message)
         Timber.e("FirebaseMessaging Received Notification Payload : ${message.notification}")
 
+        val isChatListActivityRunning =
+            getSystemService<ActivityManager>()?.appTasks?.map {
+                /**
+                 * class Name : in.koreatech.koin.feature.chat.ui.list.ChatListActivity
+                 */
+                it.taskInfo.topActivity?.className?.equals(ChatListActivity::class.qualifiedName) == true
+            }
+
         message.data.let { data ->
             Timber.e("FirebaseMessaging Received Data Payload : $data")
             if (data.isNotEmpty()) {
-                val intent = Intent(this, SchemeActivity::class.java).apply {
-                    putExtra(EXTRA_URL, data[URL])
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                isChatListActivityRunning?.any { it }.let {
+                    if (it == true && data[URL]?.toHost() == "chat") {
+                        val intent =
+                            Intent(this, ChatListActivity::class.java).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                        startActivity(intent)
+                    }
                 }
+                val intent =
+                    Intent(this, SchemeActivity::class.java).apply {
+                        putExtra(EXTRA_URL, data[URL])
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    }
                 notifier.sendNotification(data, intent)
             }
         }

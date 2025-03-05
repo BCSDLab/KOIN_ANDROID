@@ -31,19 +31,20 @@ data class TimetableLectureResponse(
     @SerializedName("department") // "디자인ㆍ건축공학부"
     val department: String?,
 ) {
-    fun toTimetableLecture() = TimetableLecture(
-        id = id,
-        lectureId = lectureId ?: 0,
-        regularNumber = regularNumber.orEmpty(),
-        code = code.orEmpty(),
-        designScore = designScore.orEmpty(),
-        classInfos = classInfos.map { it.toTimetableLectureClassInfo() },
-        memo = memo.orEmpty(),
-        grades = grades.orEmpty(),
-        classTitle = classTitle.orEmpty(),
-        lectureClass = lectureClass.orEmpty(),
-        target = target.orEmpty(),
-        professor = professor.orEmpty(),
-        department = department.orEmpty()
-    )
+    fun toTimetableLecture() =
+        TimetableLecture(
+            id = id,
+            lectureId = lectureId ?: 0,
+            regularNumber = regularNumber.orEmpty(),
+            code = code.orEmpty(),
+            designScore = designScore.orEmpty(),
+            classInfos = classInfos.map { it.toTimetableLectureClassInfo() },
+            memo = memo.orEmpty(),
+            grades = grades.orEmpty(),
+            classTitle = classTitle.orEmpty(),
+            lectureClass = lectureClass.orEmpty(),
+            target = target.orEmpty(),
+            professor = professor.orEmpty(),
+            department = department.orEmpty(),
+        )
 }

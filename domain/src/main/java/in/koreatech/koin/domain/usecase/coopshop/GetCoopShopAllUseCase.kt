@@ -6,15 +6,17 @@ import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.CoopShopRepository
 import javax.inject.Inject
 
-class GetCoopShopAllUseCase @Inject constructor(
-    private val coopShopRepository: CoopShopRepository,
-    private val coopShopErrorHandler: CoopShopErrorHandler
-)  {
-    suspend operator fun invoke(): Pair<List<CoopShop>?, ErrorHandler?> {
-        return try {
-            coopShopRepository.getCoopShopAll() to null
-        } catch (t: Throwable) {
-            null to coopShopErrorHandler.handleGetCoopShopAllError(t)
+class GetCoopShopAllUseCase
+    @Inject
+    constructor(
+        private val coopShopRepository: CoopShopRepository,
+        private val coopShopErrorHandler: CoopShopErrorHandler,
+    ) {
+        suspend operator fun invoke(): Pair<List<CoopShop>?, ErrorHandler?> {
+            return try {
+                coopShopRepository.getCoopShopAll() to null
+            } catch (t: Throwable) {
+                null to coopShopErrorHandler.handleGetCoopShopAllError(t)
+            }
         }
     }
-}

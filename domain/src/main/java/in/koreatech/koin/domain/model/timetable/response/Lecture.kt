@@ -17,28 +17,30 @@ data class Lecture(
     val designScore: String = "",
     val isElearning: String = "",
     val classTime: List<Int>,
-    val place: String? = null
+    val place: String? = null,
 ) {
-    fun toTimetableLecture() = TimetableLecture(
-        id = id,
-        lectureId = id,
-        regularNumber = regularNumber,
-        code = code,
-        designScore = designScore,
-        classInfos = listOf(
-            TimetableLectureClassInfo(
-                classTime = classTime,
-                classPlace = place ?: ""
-            )
-        ),
-        memo = "",
-        grades = grades,
-        classTitle = name,
-        lectureClass = lectureClass,
-        target = target,
-        professor = professor,
-        department = department
-    )
+    fun toTimetableLecture() =
+        TimetableLecture(
+            id = id,
+            lectureId = id,
+            regularNumber = regularNumber,
+            code = code,
+            designScore = designScore,
+            classInfos =
+                listOf(
+                    TimetableLectureClassInfo(
+                        classTime = classTime,
+                        classPlace = place ?: "",
+                    ),
+                ),
+            memo = "",
+            grades = grades,
+            classTitle = name,
+            lectureClass = lectureClass,
+            target = target,
+            professor = professor,
+            department = department,
+        )
 
     /**
      * @test : LectureTest.kt
@@ -93,28 +95,36 @@ data class Lecture(
     }
 
     fun formatDescription(): String {
-        val description = if (grades.isEmpty()) {
-            ""
-        } else {
-            ""
-        }.let {
-            if (grades.isNotEmpty()) it + "${grades}학점"
-            else it
-        }.let {
-            if (code.isNotEmpty()) "$it  $code"
-            else it
-        }
+        val description =
+            if (grades.isEmpty()) {
+                ""
+            } else {
+                ""
+            }.let {
+                if (grades.isNotEmpty()) {
+                    it + "${grades}학점"
+                } else {
+                    it
+                }
+            }.let {
+                if (code.isNotEmpty()) {
+                    "$it  $code"
+                } else {
+                    it
+                }
+            }
 
         return description
     }
 
     fun doesMatchSearchQuery(query: String): Boolean {
-        val matchingCombinations = listOf(
-            name,
-            name.take(0),
-            professor,
-            professor.take(0),
-        )
+        val matchingCombinations =
+            listOf(
+                name,
+                name.take(0),
+                professor,
+                professor.take(0),
+            )
 
         return matchingCombinations.any {
             it.contains(query, ignoreCase = true)

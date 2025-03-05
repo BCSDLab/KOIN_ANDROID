@@ -6,7 +6,6 @@ import java.util.Date
 import java.util.Locale
 
 object DateFormatUtil {
-
     /**
      * Date에 해당하는 요일
      */
@@ -14,7 +13,7 @@ object DateFormatUtil {
         val calendar = Calendar.getInstance()
         calendar.time = date
         return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.KOREAN)
-                ?.toString() ?: ""
+            ?.toString() ?: ""
     }
 
     /**

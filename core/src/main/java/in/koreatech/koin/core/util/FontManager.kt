@@ -2,11 +2,9 @@ package `in`.koreatech.koin.core.util
 
 import android.content.Context
 import android.graphics.Typeface
-import android.os.Build
 import androidx.core.content.res.ResourcesCompat
 import `in`.koreatech.koin.core.R
 import java.util.EnumMap
-
 
 /**
  * 폰트를 불러오는 데 사용하는 클래스
@@ -27,19 +25,21 @@ object FontManager {
     private val PRETENDARD_REGULAR_ID = R.font.pretendard_regular
 
     @JvmStatic
-    fun getTypeface(context: Context, fontType: KoinFontType): Typeface {
+    fun getTypeface(
+        context: Context,
+        fontType: KoinFontType,
+    ): Typeface {
         return cache[fontType] ?: run {
-            val font = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                getFromResource(context, fontType)
-            } else {
-                getFromAsset(context, fontType)
-            }
+            val font = getFromResource(context, fontType)
             cache[fontType] = font
             return@run font
         }
     }
 
-    private fun getFromAsset(context: Context, font: KoinFontType): Typeface {
+    private fun getFromAsset(
+        context: Context,
+        font: KoinFontType,
+    ): Typeface {
         return when (font) {
             KoinFontType.PRETENDARD_BOLD -> {
                 Typeface.createFromAsset(context.assets, PRETENDARD_BOLD_ASSET) ?: Typeface.DEFAULT_BOLD
@@ -55,7 +55,10 @@ object FontManager {
         }
     }
 
-    private fun getFromResource(context: Context, font: KoinFontType): Typeface {
+    private fun getFromResource(
+        context: Context,
+        font: KoinFontType,
+    ): Typeface {
         return when (font) {
             KoinFontType.PRETENDARD_BOLD -> {
                 ResourcesCompat.getFont(context, PRETENDARD_BOLD_ID) ?: Typeface.DEFAULT_BOLD
@@ -74,6 +77,6 @@ object FontManager {
     enum class KoinFontType {
         PRETENDARD_BOLD,
         PRETENDARD_MEDIUM,
-        PRETENDARD_REGULAR
+        PRETENDARD_REGULAR,
     }
 }

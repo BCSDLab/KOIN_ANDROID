@@ -1,16 +1,5 @@
 package `in`.koreatech.koin.ui.land
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.constant.LAND
-import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.databinding.LandActivityMainBinding
-import `in`.koreatech.koin.domain.model.land.Land
-import `in`.koreatech.koin.domain.util.ext.nameSearchFilter
-import `in`.koreatech.koin.ui.land.adapter.LandRecyclerViewAdapter
-import `in`.koreatech.koin.ui.land.viewmodel.LandViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.util.ext.dpToIntPx
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -24,6 +13,17 @@ import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.LAND
+import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.databinding.LandActivityMainBinding
+import `in`.koreatech.koin.domain.model.land.Land
+import `in`.koreatech.koin.domain.util.ext.nameSearchFilter
+import `in`.koreatech.koin.ui.land.adapter.LandRecyclerViewAdapter
+import `in`.koreatech.koin.ui.land.viewmodel.LandViewModel
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.util.ext.dpToIntPx
 
 class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
     override val menuState = MenuState.Land
@@ -37,9 +37,10 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
         binding = DataBindingUtil.setContentView(this, R.layout.land_activity_main)
         initView()
         landViewModel.landData.observe(this) {
-            if (it.isEmpty()) Toast.makeText(this, R.string.land_data_load_fail, Toast.LENGTH_SHORT)
-                .show()
-            else {
+            if (it.isEmpty()) {
+                Toast.makeText(this, R.string.land_data_load_fail, Toast.LENGTH_SHORT)
+                    .show()
+            } else {
                 landAdapter.setLandList(it)
                 makeNaverMapMarker(it)
             }
@@ -92,13 +93,14 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
     }
 
     private fun naverMapSetting() {
-        val options = NaverMapOptions()
-            .camera(
-                CameraPosition(
-                    LatLng(LAND.INITIAL_LATITUDE, LAND.INITIAL_LONGITUDE),
-                    LAND.INITIAL_ZOOM
+        val options =
+            NaverMapOptions()
+                .camera(
+                    CameraPosition(
+                        LatLng(LAND.INITIAL_LATITUDE, LAND.INITIAL_LONGITUDE),
+                        LAND.INITIAL_ZOOM,
+                    ),
                 )
-            )
         var mapFragment =
             supportFragmentManager.findFragmentById(R.id.activity_land_navermap) as NaverMapFragment?
         if (mapFragment == null) {
@@ -120,8 +122,8 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
             landViewModel.markerList.add(
                 Marker(
                     LatLng(land.latitude, land.longitude),
-                    OverlayImage.fromResource(R.drawable.ic_marker_normal)
-                )
+                    OverlayImage.fromResource(R.drawable.ic_marker_normal),
+                ),
             )
         }
         landViewModel.markerList.forEachIndexed { index, marker ->
@@ -139,11 +141,17 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun selectMarker(markers: List<Marker>, selectIndex: Int) {
+    private fun selectMarker(
+        markers: List<Marker>,
+        selectIndex: Int,
+    ) {
         markers.forEachIndexed { index, marker ->
-            if (index == selectIndex) marker.icon =
-                OverlayImage.fromResource(R.drawable.ic_marker_selected)
-            else marker.icon = OverlayImage.fromResource(R.drawable.ic_marker_normal)
+            if (index == selectIndex) {
+                marker.icon =
+                    OverlayImage.fromResource(R.drawable.ic_marker_selected)
+            } else {
+                marker.icon = OverlayImage.fromResource(R.drawable.ic_marker_normal)
+            }
         }
     }
 }

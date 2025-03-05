@@ -44,21 +44,22 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun CompleteSignupScreen(
     modifier: Modifier = Modifier,
-    viewModel: CompleteSignupViewModel= hiltViewModel(),
+    viewModel: CompleteSignupViewModel = hiltViewModel(),
     onNavigateToLoginScreen: () -> Unit = {},
-    onBackClicked: () -> Unit = {}
+    onBackClicked: () -> Unit = {},
 ) {
     Column(
         modifier = modifier,
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
         ) {
             IconButton(
                 onClick = { viewModel.onBackButtonClicked() },
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier.align(Alignment.CenterStart),
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
@@ -70,19 +71,21 @@ fun CompleteSignupScreen(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
                 fontWeight = Bold,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
         }
 
         Column(
-            modifier = Modifier
-                .padding(horizontal = 32.dp),
+            modifier =
+                Modifier
+                    .padding(horizontal = 32.dp),
             verticalArrangement = Arrangement.Center,
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     modifier = Modifier,
@@ -98,33 +101,33 @@ fun CompleteSignupScreen(
             }
 
             Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                    cap = StrokeCap.Round,
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset((size.width + 40), size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                    cap = StrokeCap.Round,
                 )
             }
-
         }
         Spacer(modifier = Modifier.height(123.dp))
 
         Column(
             modifier = Modifier.padding(horizontal = 32.dp),
             verticalArrangement = Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 modifier = Modifier.size(276.dp),
@@ -150,28 +153,29 @@ fun CompleteSignupScreen(
                 color = ColorDescription,
             )
             Spacer(modifier = Modifier.weight(1f))
-            Button(modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp)
-                .height(44.dp),
+            Button(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp)
+                        .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    disabledBackgroundColor = ColorDisabledButton,
-                    contentColor = Color.White,
-                    disabledContentColor = Color.White,
-                ),
-                onClick = { viewModel.onNavigateToLoginScreen() }) {
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        disabledBackgroundColor = ColorDisabledButton,
+                        contentColor = Color.White,
+                        disabledContentColor = Color.White,
+                    ),
+                onClick = { viewModel.onNavigateToLoginScreen() },
+            ) {
                 Text(
                     text = stringResource(id = R.string.navigate_to_login_screen),
                     fontSize = 15.sp,
                     color = Color.White,
-
-                    )
+                )
             }
             Spacer(modifier = Modifier.height(20.dp))
-
-
         }
         viewModel.collectSideEffect {
             when (it) {
@@ -183,22 +187,19 @@ fun CompleteSignupScreen(
                 }
             }
         }
-
     }
 }
-
 
 @Composable
 @Preview
 fun Preview() {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-
+        modifier =
+            Modifier
+                .fillMaxSize(),
     ) {
-            CompleteSignupScreen(
-                onBackClicked = {  }
-            )
-
+        CompleteSignupScreen(
+            onBackClicked = { },
+        )
     }
 }

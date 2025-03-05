@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class StoreDetailEventResponse(
     @SerializedName("events") val events: List<StoreEventDTO>?,
-){
+) {
     data class StoreEventDTO(
         @SerializedName("shop_id") val shopId: Int?,
         @SerializedName("shop_name") val shopName: String?,

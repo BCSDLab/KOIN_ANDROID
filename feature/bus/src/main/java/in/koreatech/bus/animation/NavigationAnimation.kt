@@ -16,36 +16,44 @@ private const val SLIDE_DIVIDE_RATIO = 3
 
 internal val defaultOutsideColor = Color(0xFF282828)
 
-internal fun<S> AnimatedContentTransitionScope<S>.defaultEnterTransition() = slideInHorizontally(
-    animationSpec = tween(TRANSITION_DURATION),
-    initialOffsetX = { it }
-)
+internal fun <S> AnimatedContentTransitionScope<S>.defaultEnterTransition() =
+    slideInHorizontally(
+        animationSpec = tween(TRANSITION_DURATION),
+        initialOffsetX = { it },
+    )
 
-internal fun<S> AnimatedContentTransitionScope<S>.defaultExitTransition() = fadeOut(
-    animationSpec = tween(TRANSITION_DURATION),
-    targetAlpha = FADE_RATIO
-) + scaleOut(
-    animationSpec = tween(TRANSITION_DURATION),
-    targetScale = SCALE_RATIO
-) + slideOutOfContainer(
-    towards = AnimatedContentTransitionScope.SlideDirection.Left,
-    animationSpec = tween(TRANSITION_DURATION),
-    targetOffset = { it / SLIDE_DIVIDE_RATIO }
-)
+internal fun <S> AnimatedContentTransitionScope<S>.defaultExitTransition() =
+    fadeOut(
+        animationSpec = tween(TRANSITION_DURATION),
+        targetAlpha = FADE_RATIO,
+    ) +
+        scaleOut(
+            animationSpec = tween(TRANSITION_DURATION),
+            targetScale = SCALE_RATIO,
+        ) +
+        slideOutOfContainer(
+            towards = AnimatedContentTransitionScope.SlideDirection.Left,
+            animationSpec = tween(TRANSITION_DURATION),
+            targetOffset = { it / SLIDE_DIVIDE_RATIO },
+        )
 
-internal fun<S> AnimatedContentTransitionScope<S>.defaultPopEnterTransition() = fadeIn(
-    animationSpec = tween(TRANSITION_DURATION),
-    initialAlpha = FADE_RATIO
-) + scaleIn(
-    animationSpec = tween(TRANSITION_DURATION),
-    initialScale = SCALE_RATIO
-) + slideIntoContainer(
-    towards = AnimatedContentTransitionScope.SlideDirection.Right,
-    animationSpec = tween(TRANSITION_DURATION),
-    initialOffset = { it / SLIDE_DIVIDE_RATIO }
-)
+internal fun <S> AnimatedContentTransitionScope<S>.defaultPopEnterTransition() =
+    fadeIn(
+        animationSpec = tween(TRANSITION_DURATION),
+        initialAlpha = FADE_RATIO,
+    ) +
+        scaleIn(
+            animationSpec = tween(TRANSITION_DURATION),
+            initialScale = SCALE_RATIO,
+        ) +
+        slideIntoContainer(
+            towards = AnimatedContentTransitionScope.SlideDirection.Right,
+            animationSpec = tween(TRANSITION_DURATION),
+            initialOffset = { it / SLIDE_DIVIDE_RATIO },
+        )
 
-internal fun<S> AnimatedContentTransitionScope<S>.defaultPopExitTransition() = slideOutOfContainer(
-    towards = AnimatedContentTransitionScope.SlideDirection.Right,
-    animationSpec = tween(TRANSITION_DURATION),
-)
+internal fun <S> AnimatedContentTransitionScope<S>.defaultPopExitTransition() =
+    slideOutOfContainer(
+        towards = AnimatedContentTransitionScope.SlideDirection.Right,
+        animationSpec = tween(TRANSITION_DURATION),
+    )

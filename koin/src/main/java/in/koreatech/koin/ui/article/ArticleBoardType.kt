@@ -19,6 +19,7 @@ enum class ArticleBoardType(
     SCHOLARSHIP(6, R.string.article_scholarship, R.string.article_scholarship_simple, LinkType.ARTICLE),
     SCHOOL(7, R.string.article_school, R.string.article_school_simple, LinkType.ARTICLE),
     RECRUIT(8, R.string.article_recruit, R.string.article_recruit_simple, LinkType.STEMS),
+
     // QNA(10, R.string.article_qna),               // NOT USED
     // PROMOTION(11, R.string.article_promotion),   // NOT USED
     IPP(12, R.string.article_ipp, R.string.article_ipp_simple, LinkType.PORTAL),
@@ -51,5 +52,8 @@ enum class ArticleBoardType(
  * @property STEMS 학생종합경력개발로 이동 (로그인 필요한 게시판)
  */
 enum class LinkType {
-    NONE, ARTICLE, PORTAL, STEMS
+    NONE,
+    ARTICLE,
+    PORTAL,
+    STEMS,
 }

@@ -8,6 +8,7 @@ import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.ArticleApi
 import `in`.koreatech.koin.data.api.BusApi
+import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
@@ -30,9 +31,7 @@ object NoAuthNetworkModule {
     @NoAuth
     @Provides
     @Singleton
-    fun provideAuthOkHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
+    fun provideAuthOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
@@ -46,7 +45,7 @@ object NoAuthNetworkModule {
     @Singleton
     fun provideAuthRetrofit(
         @ServerUrl baseUrl: String,
-        @NoAuth okHttpClient: OkHttpClient
+        @NoAuth okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
@@ -55,11 +54,11 @@ object NoAuthNetworkModule {
             .build()
     }
 
-    /* Auth retrofit instances below */
+    // Auth retrofit instances below
     @Provides
     @Singleton
     fun provideUserApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): UserApi {
         return retrofit.create(UserApi::class.java)
     }
@@ -67,7 +66,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideOwnerApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): OwnerApi {
         return retrofit.create(OwnerApi::class.java)
     }
@@ -75,7 +74,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideVersionApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): VersionApi {
         return retrofit.create(VersionApi::class.java)
     }
@@ -83,7 +82,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideDeptApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): DeptApi {
         return retrofit.create(DeptApi::class.java)
     }
@@ -91,7 +90,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideDiningApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): DiningApi {
         return retrofit.create(DiningApi::class.java)
     }
@@ -99,7 +98,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideBusApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): BusApi {
         return retrofit.create(BusApi::class.java)
     }
@@ -107,7 +106,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideStoreApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): StoreApi {
         return retrofit.create(StoreApi::class.java)
     }
@@ -115,7 +114,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideLandApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): LandApi {
         return retrofit.create(LandApi::class.java)
     }
@@ -123,7 +122,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideArticleApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): ArticleApi {
         return retrofit.create(ArticleApi::class.java)
     }
@@ -131,7 +130,7 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideCoopShopApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): CoopShopApi {
         return retrofit.create(CoopShopApi::class.java)
     }
@@ -139,8 +138,16 @@ object NoAuthNetworkModule {
     @Provides
     @Singleton
     fun provideTimetableApi(
-        @NoAuth retrofit: Retrofit
+        @NoAuth retrofit: Retrofit,
     ): TimetableApi {
         return retrofit.create(TimetableApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatApi(
+        @NoAuth retrofit: Retrofit,
+    ): ChatApi {
+        return retrofit.create(ChatApi::class.java)
     }
 }

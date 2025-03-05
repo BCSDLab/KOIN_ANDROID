@@ -31,19 +31,20 @@ data class LectureResponse(
     @SerializedName("class_time")
     val classTime: List<Int>,
 ) {
-    fun toLecture() = Lecture(
-        id = id,
-        code = code.orEmpty(),
-        name = name.orEmpty(),
-        grades = grades.orEmpty(),
-        lectureClass = lectureClass.orEmpty(),
-        regularNumber = regularNumber.orEmpty(),
-        department = department.orEmpty(),
-        target = target.orEmpty(),
-        professor = professor.orEmpty(),
-        isEnglish = isEnglish.orEmpty(),
-        designScore = designScore.orEmpty(),
-        isElearning = isElearning.orEmpty(),
-        classTime = classTime
-    )
+    fun toLecture() =
+        Lecture(
+            id = id,
+            code = code.orEmpty(),
+            name = name.orEmpty(),
+            grades = grades.orEmpty(),
+            lectureClass = lectureClass.orEmpty(),
+            regularNumber = regularNumber.orEmpty(),
+            department = department.orEmpty(),
+            target = target.orEmpty(),
+            professor = professor.orEmpty(),
+            isEnglish = isEnglish.orEmpty(),
+            designScore = designScore.orEmpty(),
+            isElearning = isElearning.orEmpty(),
+            classTime = classTime,
+        )
 }

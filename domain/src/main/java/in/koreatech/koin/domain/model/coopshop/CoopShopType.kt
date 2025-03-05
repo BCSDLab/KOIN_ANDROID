@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.domain.model.coopshop
 
 enum class CoopShopType(
-    val id: Int
+    val id: Int,
 ) {
-    Dining(1)
+    Dining(1),
 }

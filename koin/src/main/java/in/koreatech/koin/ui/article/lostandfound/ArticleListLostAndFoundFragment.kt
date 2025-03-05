@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.LostAndFoundList
+import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_EXTRA_KEY
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAV_ARTICLE
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
@@ -24,7 +25,7 @@ class ArticleListLostAndFoundFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val navController = findNavController()
         return ComposeView(requireContext()).apply {
@@ -32,12 +33,24 @@ class ArticleListLostAndFoundFragment : Fragment() {
             setContent {
                 LostAndFoundList(
                     navigateToWriteFoundItem = {
-                        navController.navigate(R.id.articleLostAndFoundWriteFragment)
+                        when (it) {
+                            "LOST" ->
+                                navController.navigate(
+                                    R.id.articleLostAndFoundWriteLostFragment,
+                                    bundleOf(LOST_OR_FOUND_TYPE to "LOST"),
+                                )
+
+                            "FOUND" ->
+                                navController.navigate(
+                                    R.id.articleLostAndFoundWriteFoundFragment,
+                                    bundleOf(LOST_OR_FOUND_TYPE to "FOUND"),
+                                )
+                        }
                     },
                     navigateToLostAndFoundDetail = { articleId ->
                         navController.navigate(
                             R.id.articleLostAndFoundDetailFragment,
-                            bundleOf(ARTICLE_ID to articleId)
+                            bundleOf(ARTICLE_ID to articleId),
                         )
                     },
                     navigateToKeywordFragment = {
@@ -49,13 +62,13 @@ class ArticleListLostAndFoundFragment : Fragment() {
                                 BUNDLE_ARTICLE_EXTRA_KEY,
                                 bundleOf(
                                     NAV_ARTICLE to true,
-                                    START_BOARD to ArticleBoardType.LOSTANDFOUND.id
-                                )
+                                    START_BOARD to ArticleBoardType.LOSTANDFOUND.id,
+                                ),
                             )
                             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                             requireActivity().finish()
                         }.let(::startActivity)
-                    }
+                    },
                 )
             }
         }
@@ -65,4 +78,3 @@ class ArticleListLostAndFoundFragment : Fragment() {
         const val ARTICLE_ID = "article_id"
     }
 }
-

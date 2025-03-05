@@ -16,18 +16,19 @@ internal fun NodeItem(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = if (nodeDescription.isBlank()) Arrangement.Center else Arrangement.Top
+        verticalArrangement = if (nodeDescription.isBlank()) Arrangement.Center else Arrangement.Top,
     ) {
         Text(
             text = nodeTitle,
-            style = KoinTheme.typography.medium15
+            style = KoinTheme.typography.medium15,
         )
-        if (nodeDescription.isNotBlank())
+        if (nodeDescription.isNotBlank()) {
             Text(
                 text = nodeDescription,
                 style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral500
+                color = KoinTheme.colors.neutral500,
             )
+        }
     }
 }
 
@@ -36,7 +37,7 @@ internal fun NodeItem(
 private fun NodeItemPreview() {
     NodeItem(
         nodeTitle = "천안역",
-        nodeDescription = "학화호두과자 앞"
+        nodeDescription = "학화호두과자 앞",
     )
 }
 
@@ -45,6 +46,6 @@ private fun NodeItemPreview() {
 private fun NodeItemNoDescriptionPreview() {
     NodeItem(
         nodeTitle = "천안역",
-        nodeDescription = ""
+        nodeDescription = "",
     )
 }

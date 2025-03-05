@@ -24,25 +24,25 @@ internal fun CommonLoadingView(
     @RawRes rawRes: Int = R.raw.lottie_loading,
 ) {
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(rawRes)
+        LottieCompositionSpec.RawRes(rawRes),
     )
     val lottieAnimatable = rememberLottieAnimatable()
 
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         LottieAnimation(
             modifier = Modifier.size(size),
             composition = composition,
             progress = { lottieAnimatable.progress },
-            contentScale = ContentScale.FillHeight
+            contentScale = ContentScale.FillHeight,
         )
     }
     LaunchedEffect(composition) {
         lottieAnimatable.animate(
             composition = composition,
-            iterations = Int.MAX_VALUE
+            iterations = Int.MAX_VALUE,
         )
     }
 }

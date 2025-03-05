@@ -24,53 +24,55 @@ import `in`.koreatech.koin.feature.bus.R
 internal fun CommonTimetableView(
     updatedAt: String,
     timetable: CommonTimetableState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     KoinSurface(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = 24.dp),
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
             ) {
                 Column(
-                    modifier = Modifier.weight(1f).padding(end = 8.dp)
+                    modifier = Modifier.weight(1f).padding(end = 8.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.am),
                         style = KoinTheme.typography.regular16,
-                        color = KoinTheme.colors.neutral600
+                        color = KoinTheme.colors.neutral600,
                     )
 
                     timetable.amDepartures.fastForEach {
                         CommonTimetableItem(
                             arrival = it,
-                            textStyle = KoinTheme.typography.bold18.copy(
-                                color = KoinTheme.colors.warning500
-                            ),
-                            modifier = Modifier
+                            textStyle =
+                                KoinTheme.typography.bold18.copy(
+                                    color = KoinTheme.colors.warning500,
+                                ),
+                            modifier = Modifier,
                         )
                     }
                 }
 
                 Column(
-                    modifier = Modifier.weight(1f).padding(start = 8.dp)
+                    modifier = Modifier.weight(1f).padding(start = 8.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.pm),
                         style = KoinTheme.typography.regular16,
-                        color = KoinTheme.colors.neutral600
+                        color = KoinTheme.colors.neutral600,
                     )
 
                     timetable.pmDepartures.fastForEach {
                         CommonTimetableItem(
                             arrival = it,
-                            textStyle = KoinTheme.typography.bold18.copy(
-                                color = KoinTheme.colors.info700
-                            ),
-                            modifier = Modifier
+                            textStyle =
+                                KoinTheme.typography.bold18.copy(
+                                    color = KoinTheme.colors.info700,
+                                ),
+                            modifier = Modifier,
                         )
                     }
                 }
@@ -80,12 +82,12 @@ internal fun CommonTimetableView(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = stringResource(R.string.updated_at, updatedAt),
                 style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500
+                color = KoinTheme.colors.neutral500,
             )
 
             WrongInformationText(
                 modifier = Modifier.padding(top = 4.dp),
-                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
+                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue(),
             )
         }
     }
@@ -97,6 +99,6 @@ private fun CommonTimetableViewPreview() {
     CommonTimetableView(
         modifier = Modifier.fillMaxSize(),
         timetable = commonTimetableMock,
-        updatedAt = "2024-11-11"
+        updatedAt = "2024-11-11",
     )
 }

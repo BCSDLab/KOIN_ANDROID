@@ -9,8 +9,9 @@ data class ExpressTimetableResponse(
     @SerializedName("bus_timetables") val timetable: List<ExpressTimetableItemResponse>?,
     @SerializedName("updated_at") val updatedAt: String?,
 ) {
-    fun toExpressTimetable() = ExpressTimetable(
-        timetable = timetable?.map { it.toExpressTimetableItem() }.orEmpty(),
-        updatedAt = LocalDateTime.parse(updatedAt ?: "1999-04-29 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-    )
+    fun toExpressTimetable() =
+        ExpressTimetable(
+            timetable = timetable?.map { it.toExpressTimetableItem() }.orEmpty(),
+            updatedAt = LocalDateTime.parse(updatedAt ?: "1999-04-29 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+        )
 }

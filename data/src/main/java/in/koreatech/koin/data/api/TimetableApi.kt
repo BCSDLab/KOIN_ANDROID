@@ -11,6 +11,6 @@ interface TimetableApi {
 
     @GET("/lectures")
     suspend fun getLectures(
-        @Query("semester_date") semesterDate: String
+        @Query("semester_date") semesterDate: String,
     ): List<LectureResponse>
 }

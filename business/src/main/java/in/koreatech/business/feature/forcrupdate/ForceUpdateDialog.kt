@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.forcrupdate
 
-import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,24 +32,21 @@ import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray500
 import `in`.koreatech.business.util.ext.navigateToPlayStore
 import `in`.koreatech.koin.core.R
-import org.checkerframework.checker.units.qual.Current
 
 @Composable
-fun ForceUpdateDialog(
-    isShow :MutableState<Boolean> = remember { mutableStateOf(true) }
-) {
+fun ForceUpdateDialog(isShow: MutableState<Boolean> = remember { mutableStateOf(true) }) {
     val context = LocalContext.current
-    if(isShow.value){
+    if (isShow.value) {
         Dialog(
-            onDismissRequest = { isShow.value = false }
+            onDismissRequest = { isShow.value = false },
         ) {
             Surface(
                 shape = RoundedCornerShape(4.dp),
                 color = Color.White,
-                elevation = 8.dp
+                elevation = 8.dp,
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(
                         text = stringResource(id = R.string.force_update_already_update),
@@ -58,9 +54,10 @@ fun ForceUpdateDialog(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 24.dp)
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(top = 24.dp),
                     )
 
                     Text(
@@ -68,33 +65,35 @@ fun ForceUpdateDialog(
                         fontSize = 13.sp,
                         color = Gray1,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(horizontal = 32.dp)
-                            .padding(top = 8.dp)
-                            .fillMaxWidth()
-
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 32.dp)
+                                .padding(top = 8.dp)
+                                .fillMaxWidth(),
                     )
 
                     Row(
-                        modifier = Modifier
-                            .padding(horizontal = 32.dp)
-                            .padding(top = 16.dp, bottom = 24.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ){
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 32.dp)
+                                .padding(top = 16.dp, bottom = 24.dp)
+                                .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
                         OutlinedButton(
                             onClick = { isShow.value = false },
                             shape = RoundedCornerShape(4.dp),
                             border = BorderStroke(1.dp, Gray500),
                             colors = ButtonDefaults.buttonColors(Color.White),
-                            modifier = Modifier
-                                .weight(1f)
-                                .wrapContentHeight()
+                            modifier =
+                                Modifier
+                                    .weight(1f)
+                                    .wrapContentHeight(),
                         ) {
                             Text(
                                 text = stringResource(id = R.string.positive),
                                 fontSize = 14.sp,
-                                color = Gray500
+                                color = Gray500,
                             )
                         }
 
@@ -102,17 +101,18 @@ fun ForceUpdateDialog(
                             onClick = {
                                 isShow.value = false
                                 context.navigateToPlayStore()
-                                      },
+                            },
                             shape = RoundedCornerShape(4.dp),
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
-                            modifier = Modifier
-                                .weight(1f)
-                                .wrapContentHeight()
+                            modifier =
+                                Modifier
+                                    .weight(1f)
+                                    .wrapContentHeight(),
                         ) {
                             Text(
                                 text = stringResource(id = R.string.force_update_go_store),
                                 fontSize = 14.sp,
-                                color = Color.White
+                                color = Color.White,
                             )
                         }
                     }
@@ -124,6 +124,6 @@ fun ForceUpdateDialog(
 
 @Preview
 @Composable
-fun PreviewForceUpdateDialog(){
-    //ForceUpdateDialog()
+fun PreviewForceUpdateDialog() {
+    // ForceUpdateDialog()
 }

@@ -17,9 +17,10 @@ data class BusSearchResultResponse(
     @SerializedName("bus_name") val busName: String?,
     @SerializedName("depart_time") val departureTime: String?,
 ) {
-    fun toBusSearchResult() = BusSearchResult(
-        busType = busType.orEmpty(),
-        busName = busName.orEmpty(),
-        departureTime = LocalTime.parse(departureTime)
-    )
+    fun toBusSearchResult() =
+        BusSearchResult(
+            busType = busType.orEmpty(),
+            busName = busName.orEmpty(),
+            departureTime = LocalTime.parse(departureTime),
+        )
 }

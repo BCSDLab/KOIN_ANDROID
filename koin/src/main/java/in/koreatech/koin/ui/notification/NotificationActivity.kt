@@ -11,11 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
-import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
@@ -39,16 +39,17 @@ class NotificationActivity : ActivityBase() {
         withLoading(this, viewModel)
         binding.koinBaseAppBar.setAppBarButtonClickedListener(
             leftButtonClicked = { onBackPressed() },
-            rightButtonClicked = {}
+            rightButtonClicked = {},
         )
 
         observeData()
         onSubscribe()
         setOnClickNotificationSetting()
         binding.clGotoArticleKeyword.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("koin://article/activity?fragment=article_keyword")
-            }
+            val intent =
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("koin://article/activity?fragment=article_keyword")
+                }
             startActivity(intent)
         }
     }
@@ -92,34 +93,46 @@ class NotificationActivity : ActivityBase() {
                         is NotificationUiState.Success -> {
                             uiState.notificationPermissionInfo.subscribes.forEach {
                                 when (it.type) {
-                                    SubscribesType.SHOP_EVENT -> with(binding.notificationShopEvent) {
-                                        if (isChecked != it.isPermit) {
-                                            fakeChecked = it.isPermit
-                                            isChecked = it.isPermit
+                                    SubscribesType.SHOP_EVENT ->
+                                        with(binding.notificationShopEvent) {
+                                            if (isChecked != it.isPermit) {
+                                                fakeChecked = it.isPermit
+                                                isChecked = it.isPermit
+                                            }
                                         }
-                                    }
 
-                                    SubscribesType.DINING_SOLD_OUT -> with(binding.notificationDiningSoldOut) {
-                                        if (isChecked != it.isPermit) {
-                                            fakeChecked = it.isPermit
-                                            isChecked = it.isPermit
-                                            updateDiningSoldOutVisibility(it.isPermit)
+                                    SubscribesType.DINING_SOLD_OUT ->
+                                        with(binding.notificationDiningSoldOut) {
+                                            if (isChecked != it.isPermit) {
+                                                fakeChecked = it.isPermit
+                                                isChecked = it.isPermit
+                                                updateDiningSoldOutVisibility(it.isPermit)
+                                            }
                                         }
-                                    }
 
-                                    SubscribesType.DINING_IMAGE_UPLOAD -> with(binding.notificationDiningImageUpload) {
-                                        if (isChecked != it.isPermit) {
-                                            fakeChecked = it.isPermit
-                                            isChecked = it.isPermit
+                                    SubscribesType.DINING_IMAGE_UPLOAD ->
+                                        with(binding.notificationDiningImageUpload) {
+                                            if (isChecked != it.isPermit) {
+                                                fakeChecked = it.isPermit
+                                                isChecked = it.isPermit
+                                            }
                                         }
-                                    }
 
-                                    SubscribesType.REVIEW_PROMPT -> with(binding.notificationReviewPrompt) {
-                                        if (isChecked != it.isPermit) {
-                                            fakeChecked = it.isPermit
-                                            isChecked = it.isPermit
+                                    SubscribesType.REVIEW_PROMPT ->
+                                        with(binding.notificationReviewPrompt) {
+                                            if (isChecked != it.isPermit) {
+                                                fakeChecked = it.isPermit
+                                                isChecked = it.isPermit
+                                            }
                                         }
-                                    }
+
+                                    SubscribesType.LOST_ITEM_CHAT ->
+                                        with(binding.notificationChat) {
+                                            if (isChecked != it.isPermit) {
+                                                fakeChecked = it.isPermit
+                                                isChecked = it.isPermit
+                                            }
+                                        }
 
                                     SubscribesType.NOTHING -> Unit
                                     else -> Unit
@@ -128,26 +141,29 @@ class NotificationActivity : ActivityBase() {
                             uiState.notificationPermissionInfo.subscribes.forEach {
                                 it.detailSubscribes.forEach { detail ->
                                     when (detail.type) {
-                                        SubscribesDetailType.BREAKFAST -> with(binding.notificationDiningBreakfastSoldOut) {
-                                            if (isChecked != detail.isPermit) {
-                                                fakeChecked = detail.isPermit
-                                                isChecked = detail.isPermit
+                                        SubscribesDetailType.BREAKFAST ->
+                                            with(binding.notificationDiningBreakfastSoldOut) {
+                                                if (isChecked != detail.isPermit) {
+                                                    fakeChecked = detail.isPermit
+                                                    isChecked = detail.isPermit
+                                                }
                                             }
-                                        }
 
-                                        SubscribesDetailType.LUNCH -> with(binding.notificationDiningLunchSoldOut) {
-                                            if (isChecked != detail.isPermit) {
-                                                fakeChecked = detail.isPermit
-                                                isChecked = detail.isPermit
+                                        SubscribesDetailType.LUNCH ->
+                                            with(binding.notificationDiningLunchSoldOut) {
+                                                if (isChecked != detail.isPermit) {
+                                                    fakeChecked = detail.isPermit
+                                                    isChecked = detail.isPermit
+                                                }
                                             }
-                                        }
 
-                                        SubscribesDetailType.DINNER -> with(binding.notificationDiningDinnerSoldOut) {
-                                            if (isChecked != detail.isPermit) {
-                                                fakeChecked = detail.isPermit
-                                                isChecked = detail.isPermit
+                                        SubscribesDetailType.DINNER ->
+                                            with(binding.notificationDiningDinnerSoldOut) {
+                                                if (isChecked != detail.isPermit) {
+                                                    fakeChecked = detail.isPermit
+                                                    isChecked = detail.isPermit
+                                                }
                                             }
-                                        }
 
                                         SubscribesDetailType.NOTHING -> Unit
                                     }
@@ -174,7 +190,7 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_SOLD_OUT,
-                if (isChecked) "on" else "off"
+                if (isChecked) "on" else "off",
             )
             handleSubscription(isChecked, SubscribesType.DINING_SOLD_OUT)
             enableSubscriptionDetail(isChecked, SubscribesType.DINING_SOLD_OUT)
@@ -187,11 +203,15 @@ class NotificationActivity : ActivityBase() {
             handleSubscription(isChecked, SubscribesType.REVIEW_PROMPT)
         }
 
+        binding.notificationChat.setOnSwitchClickListener { isChecked ->
+            handleSubscription(isChecked, SubscribesType.LOST_ITEM_CHAT)
+        }
+
         binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_MENU_IMAGE_UPLOAD,
-                if (isChecked) "on" else "off"
+                if (isChecked) "on" else "off",
             )
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
@@ -202,7 +222,7 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_BREAKFAST_SOLD_OUT,
-                if (isChecked) "on" else "off"
+                if (isChecked) "on" else "off",
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
         }
@@ -210,7 +230,7 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_LUNCH_SOLD_OUT,
-                if (isChecked) "on" else "off"
+                if (isChecked) "on" else "off",
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
         }
@@ -218,23 +238,38 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_DINNER_SOLD_OUT,
-                if (isChecked) "on" else "off"
+                if (isChecked) "on" else "off",
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
         }
     }
 
-    private fun handleSubscription(isChecked: Boolean, type: SubscribesType) {
-        if (isChecked) viewModel.updateSubscription(type)
-        else viewModel.deleteSubscription(type)
+    private fun handleSubscription(
+        isChecked: Boolean,
+        type: SubscribesType,
+    ) {
+        if (isChecked) {
+            viewModel.updateSubscription(type)
+        } else {
+            viewModel.deleteSubscription(type)
+        }
     }
 
-    private fun handleSubscriptionDetail(isChecked: Boolean, type: SubscribesDetailType) {
-        if (isChecked) viewModel.updateSubscriptionDetail(type)
-        else viewModel.deleteSubscriptionDetail(type)
+    private fun handleSubscriptionDetail(
+        isChecked: Boolean,
+        type: SubscribesDetailType,
+    ) {
+        if (isChecked) {
+            viewModel.updateSubscriptionDetail(type)
+        } else {
+            viewModel.deleteSubscriptionDetail(type)
+        }
     }
 
-    private fun enableSubscriptionDetail(isChecked: Boolean, subscribesType: SubscribesType) {
+    private fun enableSubscriptionDetail(
+        isChecked: Boolean,
+        subscribesType: SubscribesType,
+    ) {
         if (subscribesType == SubscribesType.DINING_SOLD_OUT) {
             updateDiningSoldOutVisibility(isChecked)
         }
@@ -253,9 +288,10 @@ class NotificationActivity : ActivityBase() {
     }
 
     private fun intentAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.fromParts(PACKAGE, packageName, null)
-        }
+        val intent =
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts(PACKAGE, packageName, null)
+            }
         startActivity(intent)
     }
 

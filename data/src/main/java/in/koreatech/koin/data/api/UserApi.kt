@@ -10,27 +10,44 @@ import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface UserApi {
     @POST(URLConstant.USER.LOGIN)
-    suspend fun getToken(@Body loginRequest: LoginRequest): AuthResponse
+    suspend fun getToken(
+        @Body loginRequest: LoginRequest,
+    ): AuthResponse
 
     @POST(URLConstant.OWNER.SIGNIN)
-    suspend fun getOwnerToken(@Body ownerLoginRequest: OwnerLoginRequest): OwnerAuthResponse
+    suspend fun getOwnerToken(
+        @Body ownerLoginRequest: OwnerLoginRequest,
+    ): OwnerAuthResponse
 
     @POST(URLConstant.USER.STUDENT.REGISTER)
-    suspend fun postRegister(@Body studentInfoRequest: StudentInfoRequest)
+    suspend fun postRegister(
+        @Body studentInfoRequest: StudentInfoRequest,
+    )
 
     @POST(URLConstant.USER.FINDPASSWORD)
-    suspend fun postPasswordReset(@Body idRequest: IdRequest)
+    suspend fun postPasswordReset(
+        @Body idRequest: IdRequest,
+    )
 
     @GET(URLConstant.USER.CHECKNICKNAME)
-    suspend fun checkNickname(@Query("nickname") nickname: String)
+    suspend fun checkNickname(
+        @Query("nickname") nickname: String,
+    )
 
     @GET(URLConstant.USER.CHECKEMAIL)
-    suspend fun checkEmail(@Query("address") email: String)
+    suspend fun checkEmail(
+        @Query("address") email: String,
+    )
 
     @POST(URLConstant.USER.REFRESH)
-    suspend fun postUserRefresh(@Body refreshRequest: RefreshRequest): Response<RefreshResponse>
+    suspend fun postUserRefresh(
+        @Body refreshRequest: RefreshRequest,
+    ): Response<RefreshResponse>
 }

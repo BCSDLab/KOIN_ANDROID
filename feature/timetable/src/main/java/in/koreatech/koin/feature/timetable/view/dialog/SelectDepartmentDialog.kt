@@ -39,36 +39,40 @@ fun SelectDepartmentDialog(
     departments: List<String>,
     onConfirm: (String) -> Unit,
     onDismiss: (visible: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var selectedDepartment by remember { mutableStateOf(department) }
 
     BasicAlertDialog(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
         onDismissRequest = { onDismiss(false) },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
+        properties =
+            DialogProperties(
+                usePlatformDefaultWidth = false,
+            ),
     ) {
         Surface(
             shape = KoinTheme.shapes.extraSmall,
-            color = Color.White
+            color = Color.White,
         ) {
             Column(
-                modifier = Modifier
-                    .padding(
-                        horizontal = 12.dp,
-                        vertical = 18.dp
-                    ),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                modifier =
+                    Modifier
+                        .padding(
+                            horizontal = 12.dp,
+                            vertical = 18.dp,
+                        ),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Text(
                     text = stringResource(id = R.string.select_department_title),
-                    style = KoinTheme.typography.medium18.copy(
-                        color = KoinTheme.colors.primary500
-                    )
+                    style =
+                        KoinTheme.typography.medium18.copy(
+                            color = KoinTheme.colors.primary500,
+                        ),
                 )
                 DepartmentRadioButtons(
                     departments = departments,
@@ -79,15 +83,16 @@ fun SelectDepartmentDialog(
                         } else {
                             selectedDepartment = it
                         }
-                    }
+                    },
                 )
                 FilledTextButton(
-                    modifier = Modifier
-                        .height(30.dp)
-                        .width(60.dp)
-                        .align(Alignment.End),
+                    modifier =
+                        Modifier
+                            .height(30.dp)
+                            .width(60.dp)
+                            .align(Alignment.End),
                     text = stringResource(id = R.string.common_complete),
-                    onClick = { onConfirm(selectedDepartment) }
+                    onClick = { onConfirm(selectedDepartment) },
                 )
             }
         }
@@ -99,34 +104,38 @@ fun DepartmentRadioButtons(
     departments: List<String>,
     selectedDepartment: String,
     onClickDepartment: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .wrapContentSize(),
+        modifier =
+            modifier
+                .wrapContentSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(14.dp)
+        verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         departments.chunked(2).forEach { rowDepartments ->
             Row(
-                modifier = Modifier
-                    .height(32.dp)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .height(32.dp)
+                        .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 rowDepartments.forEach { department ->
                     DepartmentRadioButton(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(1.0F),
+                        modifier =
+                            Modifier
+                                .fillMaxHeight()
+                                .weight(1.0F),
                         text = department,
                         isSelected = department == selectedDepartment,
-                        onClick = { onClickDepartment(department) }
+                        onClick = { onClickDepartment(department) },
                     )
                 }
-                if (rowDepartments.size == 1)
+                if (rowDepartments.size == 1) {
                     Spacer(modifier = Modifier.weight(1.0F))
+                }
             }
         }
     }
@@ -144,4 +153,3 @@ private fun SelectDepartmentDialogPreview() {
         )
     }
 }
-

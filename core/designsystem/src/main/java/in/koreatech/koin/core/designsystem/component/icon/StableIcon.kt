@@ -22,6 +22,6 @@ fun StableIcon(
         painter = painter,
         contentDescription = description,
         tint = tint,
-        modifier = modifier
+        modifier = modifier,
     )
 }

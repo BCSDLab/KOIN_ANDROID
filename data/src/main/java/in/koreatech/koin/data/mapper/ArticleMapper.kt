@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 
 fun List<ArticleLostAndFoundUpload>.toArticleLostAndFoundRequest(): ArticleLostAndFoundRequest {
     return ArticleLostAndFoundRequest(
-        articles = this.map { it.toArticleLostAndFoundBody() }
+        articles = this.map { it.toArticleLostAndFoundBody() },
     )
 }
 
@@ -15,6 +15,7 @@ fun ArticleLostAndFoundUpload.toArticleLostAndFoundBody(): ArticleLostAndFoundRe
         foundPlace = foundPlace,
         foundDate = foundDate,
         content = content,
-        images = images
+        images = images,
+        type = type,
     )
 }

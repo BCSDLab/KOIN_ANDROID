@@ -16,6 +16,7 @@ fun WriteArticleTextField(
     value: String,
     hint: String,
     modifier: Modifier = Modifier,
+    singleLine: Boolean = false,
     textPaddingValues: PaddingValues = PaddingValues(0.dp),
     onValueChange: (String) -> Unit = {},
 ) {
@@ -25,17 +26,19 @@ fun WriteArticleTextField(
                 modifier = Modifier.padding(textPaddingValues),
                 text = hint,
                 color = KoinTheme.colors.neutral500,
-                style = KoinTheme.typography.regular12
+                style = KoinTheme.typography.regular12,
             )
         }
 
         BasicTextField(
-            modifier = Modifier
-                .padding(textPaddingValues)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(textPaddingValues)
+                    .fillMaxWidth(),
             value = value,
+            singleLine = singleLine,
             textStyle = KoinTheme.typography.regular14,
-            onValueChange = onValueChange
+            onValueChange = onValueChange,
         )
     }
 }

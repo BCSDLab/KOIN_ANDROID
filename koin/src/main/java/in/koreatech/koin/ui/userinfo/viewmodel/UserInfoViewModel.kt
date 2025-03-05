@@ -20,44 +20,51 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class UserInfoViewModel @Inject constructor(
-    private val userInfoUseCase: GetUserInfoUseCase,
-    private val userLogoutUseCase: UserLogoutUseCase,
-    private val userRemoveUseCase: UserRemoveUseCase,
-) : BaseViewModel() {
+class UserInfoViewModel
+    @Inject
+    constructor(
+        private val userInfoUseCase: GetUserInfoUseCase,
+        private val userLogoutUseCase: UserLogoutUseCase,
+        private val userRemoveUseCase: UserRemoveUseCase,
+    ) : BaseViewModel() {
+        private val _user = MutableLiveData<User?>()
+        val user: LiveData<User?> get() = _user
 
-    private val _user = MutableLiveData<User?>()
-    val user: LiveData<User?> get() = _user
+        private val _userInfoState = MutableStateFlow(UserInfoState())
+        val userInfoState: StateFlow<UserInfoState> = _userInfoState.asStateFlow()
 
-    private val _userInfoState = MutableStateFlow(UserInfoState())
-    val userInfoState: StateFlow<UserInfoState> = _userInfoState.asStateFlow()
-
-    fun getUserInfo() = viewModelScope.launchWithLoading {
-        userInfoUseCase().let { (user, error) ->
-            if (error != null) _userInfoState.update {
-                it.copy(status = UiStatus.Failed(error.message))
+        fun getUserInfo() =
+            viewModelScope.launchWithLoading {
+                userInfoUseCase().let { (user, error) ->
+                    if (error != null) {
+                        _userInfoState.update {
+                            it.copy(status = UiStatus.Failed(error.message))
+                        }
+                    } else {
+                        _user.value = user
+                    }
+                }
             }
-            else _user.value = user
-        }
+
+        fun logout() =
+            viewModelScope.launchWithLoading {
+                userLogoutUseCase()
+                    .onSuccess {
+                        _userInfoState.update { it.copy(status = UiStatus.Success) }
+                    }
+                    .onFailure { errorHandler ->
+                        _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+                    }
+            }
+
+        fun removeUser() =
+            viewModelScope.launchWithLoading {
+                userRemoveUseCase()
+                    .onSuccess {
+                        _userInfoState.update { it.copy(status = UiStatus.Success) }
+                    }
+                    .onFailure { errorHandler ->
+                        _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+                    }
+            }
     }
-
-    fun logout() = viewModelScope.launchWithLoading {
-        userLogoutUseCase()
-            .onSuccess {
-                _userInfoState.update { it.copy(status = UiStatus.Success) }
-            }
-            .onFailure { errorHandler ->
-                _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
-            }
-    }
-
-    fun removeUser() = viewModelScope.launchWithLoading {
-        userRemoveUseCase()
-            .onSuccess {
-                _userInfoState.update { it.copy(status = UiStatus.Success) }
-            }
-            .onFailure { errorHandler ->
-                _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
-            }
-    }
-}

@@ -1,10 +1,8 @@
 package `in`.koreatech.koin.data.request.timetable
 
 import com.google.gson.annotations.SerializedName
-import `in`.koreatech.koin.data.response.timetable.TimetableLectureClassInfoResponse
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
-import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectureClassInfo
 
 data class LecturesQueryRequest(
     @SerializedName("timetable_frame_id")
@@ -27,39 +25,43 @@ data class LectureQueryRequest(
     @SerializedName("memo")
     val memo: String,
 )
-fun TimetableLecture.toCustomLectureQueryRequest() = LectureQueryRequest(
-    classTitle = classTitle,
-    classInfos = classInfos.map { it.toClassInfoRequest() },
-    professor = professor,
-    lectureId = null,
-    grades = "0",
-    memo = ""
-)
 
-fun TimetableLecture.toLectureQueryRequest() = LectureQueryRequest(
-    classTitle = null,
-    classInfos = null,
-    professor = null,
-    lectureId = lectureId,
-    grades = "0",
-    memo = ""
-)
+fun TimetableLecture.toCustomLectureQueryRequest() =
+    LectureQueryRequest(
+        classTitle = classTitle,
+        classInfos = classInfos.map { it.toClassInfoRequest() },
+        professor = professor,
+        lectureId = null,
+        grades = "0",
+        memo = "",
+    )
 
-fun Lecture.toCustomLectureQueryRequest(classInfos: List<TimetableLectureClassInfoRequest>) = LectureQueryRequest(
-    classTitle = name,
-    classInfos = classInfos,
-    professor = professor,
-    lectureId = null,
-    grades = "0",
-    memo = ""
-)
+fun TimetableLecture.toLectureQueryRequest() =
+    LectureQueryRequest(
+        classTitle = null,
+        classInfos = null,
+        professor = null,
+        lectureId = lectureId,
+        grades = "0",
+        memo = "",
+    )
 
+fun Lecture.toCustomLectureQueryRequest(classInfos: List<TimetableLectureClassInfoRequest>) =
+    LectureQueryRequest(
+        classTitle = name,
+        classInfos = classInfos,
+        professor = professor,
+        lectureId = null,
+        grades = "0",
+        memo = "",
+    )
 
-fun Lecture.toLectureQueryRequest() = LectureQueryRequest(
-    classTitle = null,
-    classInfos = null,
-    professor = null,
-    lectureId = id,
-    grades = "0",
-    memo = ""
-)
+fun Lecture.toLectureQueryRequest() =
+    LectureQueryRequest(
+        classTitle = null,
+        classInfos = null,
+        professor = null,
+        lectureId = id,
+        grades = "0",
+        memo = "",
+    )

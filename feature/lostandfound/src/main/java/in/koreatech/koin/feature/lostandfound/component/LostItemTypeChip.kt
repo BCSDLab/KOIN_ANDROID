@@ -21,14 +21,14 @@ import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 @Composable
 fun LostItemTypeChip(
     category: LostItemCategory,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ReadOnlyTextChip(
         title = stringResource(category.stringRes),
         contentPadding = PaddingValues(vertical = 0.dp, horizontal = 8.dp),
         chipColor = Color(0xFF175C8E),
         textColor = Color.White,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -48,13 +48,14 @@ fun ReadOnlyTextChip(
         showClickRipple = false,
         onSelect = {},
         contentPadding = contentPadding,
-        chipColors = TextChipDefaults.chipColors(
-            selectedContainerColor = chipColor,
-            unselectedContainerColor = chipColor,
-            selectedContentColor = textColor,
-            unselectedContentColor = textColor
-        ),
-        modifier = modifier
+        chipColors =
+            TextChipDefaults.chipColors(
+                selectedContainerColor = chipColor,
+                unselectedContainerColor = chipColor,
+                selectedContentColor = textColor,
+                unselectedContentColor = textColor,
+            ),
+        modifier = modifier,
     )
 }
 

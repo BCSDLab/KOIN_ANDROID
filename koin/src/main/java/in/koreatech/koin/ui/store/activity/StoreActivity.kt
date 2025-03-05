@@ -23,12 +23,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.internal.TextWatcherAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
@@ -72,97 +72,104 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         fun getCurrentCategory(): String
     }
 
-    private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract {
-        viewModel.category.value?.let { viewModel.category.value?.name } ?: "Unknown"
-    }) {
-
-    }
+    private val storeDetailContract =
+        registerForActivityResult(
+            StoreDetailActivityContract {
+                viewModel.category.value?.let { viewModel.category.value?.name } ?: "Unknown"
+            },
+        ) {
+        }
 
     private val viewPagerHandler = Handler(Looper.getMainLooper())
     private val viewPagerDelayTime = 4000L
 
-    private val storeAdapter = StoreRecyclerAdapter().apply {
-        setOnItemClickListener {
-            storeElapsedTime = System.currentTimeMillis() - currentTime
+    private val storeAdapter =
+        StoreRecyclerAdapter().apply {
+            setOnItemClickListener {
+                storeElapsedTime = System.currentTimeMillis() - currentTime
 
-            storeDetailContract.launch(Triple(it.uid, viewModel.category.value?.name, false))
-            val categoryName = viewModel.category.value?.name
+                storeDetailContract.launch(Triple(it.uid, viewModel.category.value?.name, false))
+                val categoryName = viewModel.category.value?.name
 
-            if (categoryName != null) {
-                EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_CLICK,
-                    it.name,
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, categoryName),
-                    EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-                )
+                if (categoryName != null) {
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CLICK,
+                        it.name,
+                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, categoryName),
+                        EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                        EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                    )
+                }
             }
         }
-    }
 
-    private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
-        setOnItemClickListener {
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
-                it.shopName
-            )
-            storeDetailContract.launch(Triple(it.shopId, viewModel.category.value?.name, false))
-        }
-    }
-
-    private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
-        setOnItemClickListener {
-            val previous = viewModel.category.value?.name
-            viewModel.setCategory(it + 1)
-            binding.searchEditText.text.clear()
-            val current = viewModel.category.value?.name
-
-            if (current != null && previous != null) {
+    private val storeEventPagerAdapter =
+        StoreEventPagerAdapter().apply {
+            setOnItemClickListener {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_CATEGORIES,
-                    current,
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previous),
-                    EventExtra(AnalyticsConstant.CURRENT_PAGE, current),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+                    AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
+                    it.shopName,
                 )
+                storeDetailContract.launch(Triple(it.shopId, viewModel.category.value?.name, false))
             }
-            preCategories = it
-            currentTime = System.currentTimeMillis()
         }
-    }
 
-    private var searchRelatedAdapter = SearchRelatedRecyclerAdapter(
-        onItemClick = {
-            storeDetailContract.launch(
-                Triple(
-                    it,
-                    viewModel.category.value?.name,
-                    false
+    private val storeCategoriesAdapter =
+        StoreCategoriesRecyclerAdapter().apply {
+            setOnItemClickListener {
+                val previous = viewModel.category.value?.name
+                viewModel.setCategory(it + 1)
+                binding.searchEditText.text.clear()
+                val current = viewModel.category.value?.name
+
+                if (current != null && previous != null) {
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES,
+                        current,
+                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previous),
+                        EventExtra(AnalyticsConstant.CURRENT_PAGE, current),
+                        EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                    )
+                }
+                preCategories = it
+                currentTime = System.currentTimeMillis()
+            }
+        }
+
+    private var searchRelatedAdapter =
+        SearchRelatedRecyclerAdapter(
+            onItemClick = {
+                storeDetailContract.launch(
+                    Triple(
+                        it,
+                        viewModel.category.value?.name,
+                        false,
+                    ),
                 )
-            )
-        },
-
+            },
         )
 
     private var showRemoveQueryButton: Boolean = false
         set(value) {
             if (!value) {
-                binding.searchImageView.background = ContextCompat.getDrawable(
-                    this,
-                    R.drawable.ic_search
-                )
+                binding.searchImageView.background =
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.ic_search,
+                    )
                 binding.searchImageView.layoutParams.apply {
                     width = dpToPx(24)
                     height = dpToPx(24)
                 }
             } else {
-                binding.searchImageView.background = ContextCompat.getDrawable(
-                    this,
-                    R.drawable.ic_search_close
-                )
+                binding.searchImageView.background =
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.ic_search_close,
+                    )
                 binding.searchImageView.layoutParams.apply {
                     width = dpToPx(16)
                     height = dpToPx(16)
@@ -185,7 +192,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         viewModel.setCategory(initStoreCategory)
         storeCategoriesAdapter.initCategory(initStoreCategory)
     }
-
 
     private fun initView() {
         currentTime = System.currentTimeMillis()
@@ -221,7 +227,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 else -> {
                     viewModel.refreshStores()
                     isEnabled = false
-                    onBackPressed()
+                    onBackPressedDispatcher.onBackPressed()
                 }
             }
         }
@@ -232,7 +238,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                    "search in " + viewModel.category.value?.name
+                    "search in " + viewModel.category.value?.name,
                 )
             }
             v.performClick()
@@ -269,7 +275,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                    "search in " + viewModel.category.value
+                    "search in " + viewModel.category.value,
                 )
             }
             v.performClick()
@@ -281,7 +287,8 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
         binding.searchEditText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
-                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+            ) {
                 handleSearchAction()
             } else {
                 false
@@ -292,12 +299,12 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             @SuppressLint("RestrictedApi")
             object : TextWatcherAdapter() {
                 override fun afterTextChanged(p0: Editable) {
-                    if(p0.isNotEmpty()) viewModel.updateSearchQuery(binding.searchEditText.text.toString())
+                    if (p0.isNotEmpty()) viewModel.updateSearchQuery(binding.searchEditText.text.toString())
                     viewModel.getRelatedStore()
                     binding.suggestionsLayout.visibility =
                         if (p0.isEmpty()) View.GONE else View.VISIBLE
                 }
-            }
+            },
         )
 
         binding.storeRecyclerview.apply {
@@ -315,40 +322,40 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             addItemDecoration(
                 HorizontalMarginItemDecoration(
                     this@StoreActivity,
-                    R.dimen.view_pager_item_margin
-                )
+                    R.dimen.view_pager_item_margin,
+                ),
             )
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-                }
-
-                override fun onPageSelected(position: Int) {
-
-                }
-
-                override fun onPageScrollStateChanged(state: Int) {
-                    if (state == ViewPager2.SCROLL_STATE_IDLE) {
-                        if (binding.eventViewPager.currentItem == eventListSize - 1) {
-                            binding.eventViewPager.setCurrentItem(1, false)
-                            binding.eventPageCounterTextView.text = "1/${eventListSize - 2}"
-                        }
-
-                        if (binding.eventViewPager.currentItem == 0) {
-                            binding.eventViewPager.setCurrentItem(eventListSize - 2, false)
-                            binding.eventPageCounterTextView.text =
-                                "${eventListSize - 2}/${eventListSize - 2}"
-                        }
-                        binding.eventPageCounterTextView.text =
-                            "${binding.eventViewPager.currentItem}/${eventListSize - 2}"
-                        startAutoScroll()
+            registerOnPageChangeCallback(
+                object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageScrolled(
+                        position: Int,
+                        positionOffset: Float,
+                        positionOffsetPixels: Int,
+                    ) {
                     }
-                }
-            })
+
+                    override fun onPageSelected(position: Int) {
+                    }
+
+                    override fun onPageScrollStateChanged(state: Int) {
+                        if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                            if (binding.eventViewPager.currentItem == eventListSize - 1) {
+                                binding.eventViewPager.setCurrentItem(1, false)
+                                binding.eventPageCounterTextView.text = "1/${eventListSize - 2}"
+                            }
+
+                            if (binding.eventViewPager.currentItem == 0) {
+                                binding.eventViewPager.setCurrentItem(eventListSize - 2, false)
+                                binding.eventPageCounterTextView.text =
+                                    "${eventListSize - 2}/${eventListSize - 2}"
+                            }
+                            binding.eventPageCounterTextView.text =
+                                "${binding.eventViewPager.currentItem}/${eventListSize - 2}"
+                            startAutoScroll()
+                        }
+                    }
+                },
+            )
         }
 
         binding.root.post {
@@ -356,18 +363,28 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
             binding.containerScrollView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val oldScrollRatio =
-                    oldScrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(
-                        0
-                    ).height - statusBarHeight))
+                    oldScrollY.toFloat() / (
+                        binding.containerScrollView.getChildAt(0).height - (
+                            binding.root.height -
+                                binding.callvanMainLayout.getChildAt(
+                                    0,
+                                ).height - statusBarHeight
+                        )
+                    )
                 val scrollRatio =
-                    scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(
-                        0
-                    ).height - statusBarHeight))
+                    scrollY.toFloat() / (
+                        binding.containerScrollView.getChildAt(0).height - (
+                            binding.root.height -
+                                binding.callvanMainLayout.getChildAt(
+                                    0,
+                                ).height - statusBarHeight
+                        )
+                    )
                 if (EventUtils.didCrossedScrollThreshold(oldScrollRatio, scrollRatio)) {
                     EventLogger.logScrollEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CATEGORIES,
-                        "scroll in " + viewModel.category.value?.name
+                        "scroll in " + viewModel.category.value?.name,
                     )
                 }
             }
@@ -379,13 +396,13 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
-                        "check_review_" + viewModel.category.value?.let { viewModel.category.value?.name }
+                        "check_review_" + viewModel.category.value?.let { viewModel.category.value?.name },
                     )
                     storeManyReviewCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.blue_alpha20
-                        )
+                            R.color.blue_alpha20,
+                        ),
                     )
                     viewModel.settingStoreSorter(StoreSorter.COUNT)
 
@@ -393,15 +410,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     storeHighRatingCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.gray15
-                        )
+                            R.color.gray15,
+                        ),
                     )
                 } else {
                     storeManyReviewCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.gray15
-                        )
+                            R.color.gray15,
+                        ),
                     )
                     viewModel.settingStoreSorter(StoreSorter.NONE)
                 }
@@ -412,13 +429,13 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
-                        "check_star_" + viewModel.category.value?.let { viewModel.category.value?.name }
+                        "check_star_" + viewModel.category.value?.let { viewModel.category.value?.name },
                     )
                     storeHighRatingCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.blue_alpha20
-                        )
+                            R.color.blue_alpha20,
+                        ),
                     )
                     viewModel.settingStoreSorter(StoreSorter.RATING)
 
@@ -426,15 +443,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     storeManyReviewCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.gray15
-                        )
+                            R.color.gray15,
+                        ),
                     )
                 } else {
                     storeHighRatingCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.gray15
-                        )
+                            R.color.gray15,
+                        ),
                     )
                     viewModel.settingStoreSorter(StoreSorter.NONE)
                 }
@@ -446,13 +463,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_open_" + viewModel.category.value?.let { viewModel.category.value?.name }
+                            "check_open_" + viewModel.category.value?.let { viewModel.category.value?.name },
                         )
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.blue_alpha20
+                            R.color.blue_alpha20,
                         )
-                    } else ContextCompat.getColor(this@StoreActivity, R.color.gray15)
+                    } else {
+                        ContextCompat.getColor(this@StoreActivity, R.color.gray15)
+                    },
                 )
 
                 viewModel.filterStoreIsOpen(storeIsOperatingCheckbox.isChecked)
@@ -464,13 +483,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_delivery_" + viewModel.category.value?.let { viewModel.category.value?.name }
+                            "check_delivery_" + viewModel.category.value?.let { viewModel.category.value?.name },
                         )
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.blue_alpha20
+                            R.color.blue_alpha20,
                         )
-                    } else ContextCompat.getColor(this@StoreActivity, R.color.gray15)
+                    } else {
+                        ContextCompat.getColor(this@StoreActivity, R.color.gray15)
+                    },
                 )
 
                 viewModel.filterStoreIsDelivery(storeIsDeliveryCheckbox.isChecked)
@@ -499,15 +520,16 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         return true
     }
 
-    private val runnable = object : Runnable {
-        override fun run() {
-            var currentPosition = binding.eventViewPager.currentItem
-            currentPosition = if (currentPosition >= eventListSize - 1) 0 else currentPosition + 1
+    private val runnable =
+        object : Runnable {
+            override fun run() {
+                var currentPosition = binding.eventViewPager.currentItem
+                currentPosition = if (currentPosition >= eventListSize - 1) 0 else currentPosition + 1
 
-            binding.eventViewPager.setCurrentItem(currentPosition, true)
-            viewPagerHandler.postDelayed(this, viewPagerDelayTime)
+                binding.eventViewPager.setCurrentItem(currentPosition, true)
+                viewPagerHandler.postDelayed(this, viewPagerDelayTime)
+            }
         }
-    }
 
     private fun startAutoScroll() {
         viewPagerHandler.removeCallbacks(runnable)
@@ -523,11 +545,12 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
         observeLiveData(viewModel.storeEvents) {
             if (!it.isNullOrEmpty()) {
-                val augmentedList = mutableListOf<StoreEvent>().apply {
-                    add(it.last())
-                    addAll(it)
-                    add(it.first())
-                }
+                val augmentedList =
+                    mutableListOf<StoreEvent>().apply {
+                        add(it.last())
+                        addAll(it)
+                        add(it.first())
+                    }
                 binding.eventPageCounterTextView.text = "1/${augmentedList.size - 2}"
                 eventListSize = augmentedList.size
                 storeEventPagerAdapter.submitList(augmentedList)
@@ -541,7 +564,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(viewModel.storeCategoryList) {
             storeCategoriesAdapter.submitList(it.drop(1))
         }
-
 
         observeLiveData(viewModel.searchRelated) {
             searchRelatedAdapter.submitList(it.keywords)
@@ -563,7 +585,6 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     binding.storeSwiperefreshlayout.isRefreshing = false
                     binding.searchResultTextView.text =
                         "\"${viewModel.search.value}\" 관련 가게가 총 ${it.size}개 있어요."
-
                 }
             }
         }
@@ -583,6 +604,5 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         currentTime = System.currentTimeMillis()
         super.onResume()
         startAutoScroll()
-
     }
 }

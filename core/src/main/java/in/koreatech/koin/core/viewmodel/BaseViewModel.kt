@@ -3,30 +3,34 @@ package `in`.koreatech.koin.core.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.coroutines.cancellation.CancellationException
 
 open class BaseViewModel() : ViewModel() {
     protected val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     protected val _errorToast = SingleLiveEvent<String>()
-    val errorToast : LiveData<String> get() = _errorToast
+    val errorToast: LiveData<String> get() = _errorToast
 
     fun CoroutineScope.launchWithLoading(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
         ignoreCancellationException: Boolean = true,
-        block: suspend CoroutineScope.() -> Unit
+        block: suspend CoroutineScope.() -> Unit,
     ) = this.launch(
-        context, start
+        context,
+        start,
     ) {
         _isLoading.value = true
-        if(ignoreCancellationException) {
+        if (ignoreCancellationException) {
             ignoreCancellationException { block() }
-        }
-        else {
+        } else {
             block()
         }
         _isLoading.value = false
@@ -36,15 +40,15 @@ open class BaseViewModel() : ViewModel() {
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
         ignoreCancellationException: Boolean = true,
-        block: suspend CoroutineScope.() -> T
+        block: suspend CoroutineScope.() -> T,
     ) = this.async(
-        context, start
+        context,
+        start,
     ) {
         _isLoading.value = true
-        if(ignoreCancellationException) {
+        if (ignoreCancellationException) {
             ignoreCancellationException { block() }
-        }
-        else {
+        } else {
             block()
         }
         _isLoading.value = false
@@ -53,9 +57,10 @@ open class BaseViewModel() : ViewModel() {
     fun CoroutineScope.launchIgnoreCancellation(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
-        block: suspend CoroutineScope.() -> Unit
+        block: suspend CoroutineScope.() -> Unit,
     ) = this.launch(
-        context, start
+        context,
+        start,
     ) {
         ignoreCancellationException { block() }
     }
@@ -63,9 +68,10 @@ open class BaseViewModel() : ViewModel() {
     fun <T> CoroutineScope.asyncIgnoreCancellation(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
-        block: suspend CoroutineScope.() -> T
+        block: suspend CoroutineScope.() -> T,
     ) = this.async(
-        context, start
+        context,
+        start,
     ) {
         ignoreCancellationException { block() }
     }
@@ -79,6 +85,5 @@ private inline fun <T> ignoreCancellationException(block: () -> T) {
     try {
         block()
     } catch (e: CancellationException) {
-
     }
 }

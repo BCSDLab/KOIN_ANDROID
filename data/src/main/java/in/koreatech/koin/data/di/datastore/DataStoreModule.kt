@@ -17,23 +17,22 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
-
     private val Context.articleDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "article_data_store"
+        name = "article_data_store",
     )
 
     private val Context.timetableDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "timetables"
+        name = "timetables",
     )
 
     private val Context.busDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "bus.ds"
+        name = "bus.ds",
     )
 
     @Provides
     @Singleton
     fun provideArticleDataStore(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): ArticleDataStore {
         return ArticleDataStore(context.articleDataStore)
     }
@@ -41,7 +40,7 @@ object DataStoreModule {
     @Provides
     @Singleton
     fun provideTimetableDataStore(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): TimetableDataStore {
         return TimetableDataStore(context.timetableDataStore)
     }
@@ -49,7 +48,7 @@ object DataStoreModule {
     @Provides
     @Singleton
     fun provideBusDataStore(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): BusDataStore {
         return BusDataStore(context.busDataStore)
     }

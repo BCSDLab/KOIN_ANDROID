@@ -16,12 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
-
 enum class FilledButtonColors {
     Primary,
     Warning,
     Danger,
-    Success
+    Success,
 }
 
 @Composable
@@ -42,11 +41,11 @@ fun FilledButton(
         shape = shape,
         enabled = enabled,
         colors = buttonColors,
-        contentPadding = contentPadding
+        contentPadding = contentPadding,
     ) {
         Text(
             text = text,
-            style = textStyle
+            style = textStyle,
         )
     }
 }
@@ -68,46 +67,51 @@ fun FilledButton(
         shape = shape,
         enabled = enabled,
         colors = colors,
-        contentPadding = contentPadding
+        contentPadding = contentPadding,
     ) {
         Text(
             text = text,
-            style = textStyle
+            style = textStyle,
         )
     }
 }
 
 @Composable
 @Stable
-internal fun filledButtonColorByType(type: FilledButtonColors): ButtonColors = when (type) {
-    FilledButtonColors.Primary -> ButtonColors(
-        containerColor = KoinTheme.colors.primary500,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
-    )
+internal fun filledButtonColorByType(type: FilledButtonColors): ButtonColors =
+    when (type) {
+        FilledButtonColors.Primary ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.primary500,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600,
+            )
 
-    FilledButtonColors.Warning -> ButtonColors(
-        containerColor = KoinTheme.colors.sub500,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
-    )
+        FilledButtonColors.Warning ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.sub500,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600,
+            )
 
-    FilledButtonColors.Danger -> ButtonColors(
-        containerColor = KoinTheme.colors.danger700,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
-    )
+        FilledButtonColors.Danger ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.danger700,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600,
+            )
 
-    FilledButtonColors.Success -> ButtonColors(
-        containerColor = KoinTheme.colors.success700,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
-    )
-}
+        FilledButtonColors.Success ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.success700,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600,
+            )
+    }
 
 @Preview
 @Composable

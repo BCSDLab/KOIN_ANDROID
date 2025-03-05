@@ -47,7 +47,6 @@ import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.util.StoreUtil
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EventItem(
@@ -57,40 +56,49 @@ fun EventItem(
     state: MyStoreDetailState,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(enabled = enabledScroll, state = scrollState),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(enabled = enabledScroll, state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         state.storeEvent?.forEachIndexed { index, item ->
-            val eventOpenCloseTime = remember(item.startDate, item.endDate) {
-                StoreUtil.generateOpenCloseTimeString(item.startDate, item.endDate)
-            }
+            val eventOpenCloseTime =
+                remember(item.startDate, item.endDate) {
+                    StoreUtil.generateOpenCloseTimeString(item.startDate, item.endDate)
+                }
             val pagerState =
                 rememberPagerState { (state.storeEvent[index].thumbnailImages?.size ?: 0).takeIf { it > 0 } ?: 1 }
             if (state.isEventExpanded[index]) {
-                EventExpandedItem(state.storeEvent[index],
+                EventExpandedItem(
+                    state.storeEvent[index],
                     eventOpenCloseTime = eventOpenCloseTime,
                     pagerState = pagerState,
-                    onCollapse = { viewModel.toggleEventItem(index) })
+                    onCollapse = { viewModel.toggleEventItem(index) },
+                )
             } else {
                 EventFoldedItem(
                     item = state.storeEvent[index],
                     eventOpenCloseTime = eventOpenCloseTime,
                     onClicked = {
-                        if (!state.isEditMode) viewModel.toggleEventItem(index) else viewModel.onChangeEventSelected(
-                            item.eventId
-                        )
+                        if (!state.isEditMode) {
+                            viewModel.toggleEventItem(index)
+                        } else {
+                            viewModel.onChangeEventSelected(
+                                item.eventId,
+                            )
+                        }
                     },
                     viewModel = viewModel,
-                    state = state
+                    state = state,
                 )
             }
             Divider(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .fillMaxWidth()
-                    .height(1.dp),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 10.dp)
+                        .fillMaxWidth()
+                        .height(1.dp),
                 color = ColorTextField,
             )
         }
@@ -106,90 +114,111 @@ fun EventFoldedItem(
     state: MyStoreDetailState,
 ) {
     Row(
-        modifier = Modifier
-            .clickable(onClick = { onClicked() })
-            .fillMaxWidth()
-            .height(104.dp),
+        modifier =
+            Modifier
+                .clickable(onClick = { onClicked() })
+                .fillMaxWidth()
+                .height(104.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-            Box(
-                modifier = Modifier
+        Box(
+            modifier =
+                Modifier
                     .fillMaxHeight()
                     .padding(4.dp),
-                contentAlignment = Alignment.TopEnd
-            ) {
-                Image(
-                    modifier = Modifier
+            contentAlignment = Alignment.TopEnd,
+        ) {
+            Image(
+                modifier =
+                    Modifier
                         .padding(top = 4.dp, start = 10.dp)
                         .align(Alignment.Center)
                         .width(72.dp)
                         .height(80.dp)
                         .clip(RoundedCornerShape(5.dp)),
-                    contentScale = ContentScale.FillBounds,
-                    painter = if (item.thumbnailImages.isNullOrEmpty()) painterResource(id = R.drawable.no_image) else rememberAsyncImagePainter(
-                        model = item.thumbnailImages?.getOrNull(0)
-                    ),
-                    contentDescription = stringResource(R.string.event_default_image),
-                )
-                if (state.isEditMode) {
-                    viewModel.initEventItem()
-                    Image(
-                        modifier = Modifier
+                contentScale = ContentScale.FillBounds,
+                painter =
+                    if (item.thumbnailImages.isNullOrEmpty()) {
+                        painterResource(id = R.drawable.no_image)
+                    } else {
+                        rememberAsyncImagePainter(
+                            model = item.thumbnailImages?.getOrNull(0),
+                        )
+                    },
+                contentDescription = stringResource(R.string.event_default_image),
+            )
+            if (state.isEditMode) {
+                viewModel.initEventItem()
+                Image(
+                    modifier =
+                        Modifier
                             .align(Alignment.TopStart)
                             .height(24.dp)
                             .width(24.dp)
                             .clickable {
                                 viewModel.onChangeEventSelected(item.eventId)
                             },
-                        painter = if (state.isAllEventSelected || state.isSelectedEvent.contains(
-                                item.eventId
+                    painter =
+                        if (state.isAllEventSelected ||
+                            state.isSelectedEvent.contains(
+                                item.eventId,
                             )
-                        ) painterResource(
-                            id = R.drawable.ic_check_selected
-                        ) else painterResource(
-                            id = R.drawable.ic_check
-                        ),
-                        contentDescription = stringResource(R.string.check),
-                    )
-                }
-
+                        ) {
+                            painterResource(
+                                id = R.drawable.ic_check_selected,
+                            )
+                        } else {
+                            painterResource(
+                                id = R.drawable.ic_check,
+                            )
+                        },
+                    contentDescription = stringResource(R.string.check),
+                )
+            }
         }
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     modifier = Modifier.weight(3.5f),
                     text = item.title,
                     fontWeight = FontWeight(500),
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
-                Row(modifier = Modifier.weight(1f),
+                Row(
+                    modifier = Modifier.weight(1f),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center) {
+                    horizontalArrangement = Arrangement.Center,
+                ) {
                     Text(
                         text = stringResource(R.string.view_all),
                         fontWeight = FontWeight(500),
                         fontSize = 12.sp,
-                        color = Gray6
+                        color = Gray6,
                     )
                     Image(
                         painter = painterResource(id = R.drawable.ic_arrow_down),
-                        contentDescription = stringResource(R.string.view_all)
+                        contentDescription = stringResource(R.string.view_all),
                     )
                 }
             }
             Text(
-                text = item.content, maxLines = 2, fontSize = 12.sp, color = Gray6
+                text = item.content,
+                maxLines = 2,
+                fontSize = 12.sp,
+                color = Gray6,
             )
             Text(
-                text = eventOpenCloseTime, fontSize = 10.sp, color = Gray6
+                text = eventOpenCloseTime,
+                fontSize = 10.sp,
+                color = Gray6,
             )
         }
     }
@@ -204,9 +233,10 @@ fun EventExpandedItem(
     onCollapse: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 10.dp)
-            .fillMaxWidth(),
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+                .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -216,44 +246,53 @@ fun EventExpandedItem(
             state = pagerState,
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .aspectRatio(0.7f)
-                    .background(Gray2),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .aspectRatio(0.7f)
+                        .background(Gray2),
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
-                    painter = if (item.thumbnailImages.isNullOrEmpty()) painterResource(id = R.drawable.no_event_image) else rememberAsyncImagePainter(
-                        model = item.thumbnailImages?.getOrNull(it)
-                    ),
+                    painter =
+                        if (item.thumbnailImages.isNullOrEmpty()) {
+                            painterResource(id = R.drawable.no_event_image)
+                        } else {
+                            rememberAsyncImagePainter(
+                                model = item.thumbnailImages?.getOrNull(it),
+                            )
+                        },
                     contentDescription = stringResource(R.string.event_default_image),
                     contentScale = ContentScale.FillBounds,
                 )
             }
         }
         Column(
-            modifier = Modifier.padding(vertical = 5.dp)
+            modifier = Modifier.padding(vertical = 5.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    modifier = Modifier.weight(8f), text = item.title, fontWeight = FontWeight(500)
+                    modifier = Modifier.weight(8f),
+                    text = item.title,
+                    fontWeight = FontWeight(500),
                 )
                 Row(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(R.string.fold),
                         fontWeight = FontWeight(500),
                         fontSize = 12.sp,
-                        color = Gray6
+                        color = Gray6,
                     )
                     Image(
-                        modifier = Modifier
-                            .rotate(180f)
-                            .clickable(onClick = { onCollapse() }),
+                        modifier =
+                            Modifier
+                                .rotate(180f)
+                                .clickable(onClick = { onCollapse() }),
                         painter = painterResource(id = R.drawable.ic_arrow_down),
                         contentDescription = stringResource(R.string.fold),
                     )
@@ -261,7 +300,9 @@ fun EventExpandedItem(
             }
             Text(text = item.content, fontSize = 12.sp, color = Gray1)
             Text(
-                text = eventOpenCloseTime, fontSize = 10.sp, color = Gray6
+                text = eventOpenCloseTime,
+                fontSize = 10.sp,
+                color = Gray6,
             )
         }
     }

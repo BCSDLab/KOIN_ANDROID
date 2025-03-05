@@ -40,32 +40,34 @@ fun TextChipGroup(
     showClickRipple: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(6.dp),
-    chipColors: TextChipColors = TextChipDefaults.chipColors()
+    chipColors: TextChipColors = TextChipDefaults.chipColors(),
 ) {
     when (chipOverflowStrategy) {
-        is Flow -> KoinTextChipFlowGroup(
-            modifier = modifier,
-            titles = titles,
-            shape = shape,
-            onChipSelected = onChipSelected,
-            selectedChipIndexes = selectedChipIndexes,
-            horizontalArrangement = horizontalArrangement,
-            showClickRipple = showClickRipple,
-            contentPadding = contentPadding,
-            chipColors = chipColors,
-            verticalArrangement = chipOverflowStrategy.verticalArrangement
-        )
-        Scroll -> KoinTextChipScrollGroup(
-            modifier = modifier,
-            titles = titles,
-            shape = shape,
-            onChipSelected = onChipSelected,
-            selectedChipIndexes = selectedChipIndexes,
-            horizontalArrangement = horizontalArrangement,
-            showClickRipple = showClickRipple,
-            contentPadding = contentPadding,
-            chipColors = chipColors
-        )
+        is Flow ->
+            KoinTextChipFlowGroup(
+                modifier = modifier,
+                titles = titles,
+                shape = shape,
+                onChipSelected = onChipSelected,
+                selectedChipIndexes = selectedChipIndexes,
+                horizontalArrangement = horizontalArrangement,
+                showClickRipple = showClickRipple,
+                contentPadding = contentPadding,
+                chipColors = chipColors,
+                verticalArrangement = chipOverflowStrategy.verticalArrangement,
+            )
+        Scroll ->
+            KoinTextChipScrollGroup(
+                modifier = modifier,
+                titles = titles,
+                shape = shape,
+                onChipSelected = onChipSelected,
+                selectedChipIndexes = selectedChipIndexes,
+                horizontalArrangement = horizontalArrangement,
+                showClickRipple = showClickRipple,
+                contentPadding = contentPadding,
+                chipColors = chipColors,
+            )
     }
 }
 
@@ -76,8 +78,9 @@ fun TextChipGroup(
  */
 sealed interface ChipOverflowStrategy {
     data object Scroll : ChipOverflowStrategy
+
     data class Flow(
-        val verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(6.dp)
+        val verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(6.dp),
     ) : ChipOverflowStrategy
 }
 
@@ -93,12 +96,12 @@ private fun KoinTextChipFlowGroup(
     contentPadding: PaddingValues,
     horizontalArrangement: Arrangement.Horizontal,
     verticalArrangement: Arrangement.Vertical,
-    chipColors: TextChipColors
+    chipColors: TextChipColors,
 ) {
     FlowRow(
         modifier = modifier,
         horizontalArrangement = horizontalArrangement,
-        verticalArrangement = verticalArrangement
+        verticalArrangement = verticalArrangement,
     ) {
         titles.forEachIndexed { index, it ->
             TextChip(
@@ -108,7 +111,7 @@ private fun KoinTextChipFlowGroup(
                 chipColors = chipColors,
                 contentPadding = contentPadding,
                 showClickRipple = showClickRipple,
-                onSelect = { onChipSelected(it) }
+                onSelect = { onChipSelected(it) },
             )
         }
     }
@@ -124,11 +127,11 @@ private fun KoinTextChipScrollGroup(
     showClickRipple: Boolean,
     contentPadding: PaddingValues,
     horizontalArrangement: Arrangement.Horizontal,
-    chipColors: TextChipColors
+    chipColors: TextChipColors,
 ) {
     Row(
         modifier = modifier.horizontalScroll(rememberScrollState()),
-        horizontalArrangement = horizontalArrangement
+        horizontalArrangement = horizontalArrangement,
     ) {
         titles.forEachIndexed { index, it ->
             TextChip(
@@ -138,7 +141,7 @@ private fun KoinTextChipScrollGroup(
                 chipColors = chipColors,
                 contentPadding = contentPadding,
                 showClickRipple = showClickRipple,
-                onSelect = { onChipSelected(it) }
+                onSelect = { onChipSelected(it) },
             )
         }
     }
@@ -152,7 +155,7 @@ private fun KoinTextChipGroupFlowPreview() {
         selectedChipIndexes = intArrayOf(0, 2, 3, 6),
         onChipSelected = {},
         chipOverflowStrategy = Flow(),
-        chipColors = TextChipDefaults.chipColors()
+        chipColors = TextChipDefaults.chipColors(),
     )
 }
 
@@ -164,6 +167,6 @@ private fun KoinTextChipGroupScrollPreview() {
         selectedChipIndexes = intArrayOf(0, 2, 3, 6),
         onChipSelected = {},
         chipOverflowStrategy = Scroll,
-        chipColors = TextChipDefaults.chipColors()
+        chipColors = TextChipDefaults.chipColors(),
     )
 }

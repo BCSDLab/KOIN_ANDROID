@@ -33,14 +33,15 @@ fun ReadOnlyTextChip(
     containerColor: Color = KoinTheme.colors.primary500,
     textStyle: TextStyle = KoinTheme.typography.regular12,
     shape: Shape = RoundedCornerShape(4.dp),
-    contentPadding: PaddingValues = PaddingValues(horizontal = 4.dp)
+    contentPadding: PaddingValues = PaddingValues(horizontal = 4.dp),
 ) {
     Box(
-        modifier = modifier
-            .clip(shape)
-            .background(containerColor)
-            .padding(contentPadding),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .clip(shape)
+                .background(containerColor)
+                .padding(contentPadding),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = title,
@@ -55,6 +56,6 @@ private fun ReadOnlyTextChipPreview() {
     ReadOnlyTextChip(
         title = "순환",
         containerColor = Color(0xFF4ED92C),
-        textStyle = KoinTheme.typography.regular12.copy(color = Color.White)
+        textStyle = KoinTheme.typography.regular12.copy(color = Color.White),
     )
 }

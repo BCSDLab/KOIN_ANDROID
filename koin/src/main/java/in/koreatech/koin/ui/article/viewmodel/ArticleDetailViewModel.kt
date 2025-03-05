@@ -20,80 +20,85 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
-class ArticleDetailViewModel @AssistedInject constructor(
-    @Assisted("articleId") articleId: Int,
-    @Assisted("navigatedBoardId") val navigatedBoardId: Int,
-    private val articleRepository: ArticleRepository,
-) : BaseViewModel() {
-
-    val article: StateFlow<ArticleState> =
-        articleRepository.fetchArticle(articleId, navigatedBoardId)
-            .onStart {
-                _isLoading.value = true
-            }.map {
-                it.toArticleState()
-            }.onEach {
-                _isLoading.value = false
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = ArticleState(
-                    header = ArticleHeaderState(
-                        id = 0,
-                        board = ArticleBoardType.ALL,
-                        title = "",
-                        author = "",
-                        viewCount = 0,
-                        registeredAt = "",
-                        updatedAt = "",
-                    ),
-                    content = "",
-                    prevArticleId = null,
-                    nextArticleId = null,
-                    attachments = listOf(),
-                    url = "",
+class ArticleDetailViewModel
+    @AssistedInject
+    constructor(
+        @Assisted("articleId") articleId: Int,
+        @Assisted("navigatedBoardId") val navigatedBoardId: Int,
+        private val articleRepository: ArticleRepository,
+    ) : BaseViewModel() {
+        val article: StateFlow<ArticleState> =
+            articleRepository.fetchArticle(articleId, navigatedBoardId)
+                .onStart {
+                    _isLoading.value = true
+                }.map {
+                    it.toArticleState()
+                }.onEach {
+                    _isLoading.value = false
+                }.stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5_000),
+                    initialValue =
+                        ArticleState(
+                            header =
+                                ArticleHeaderState(
+                                    id = 0,
+                                    board = ArticleBoardType.ALL,
+                                    title = "",
+                                    author = "",
+                                    viewCount = 0,
+                                    registeredAt = "",
+                                    updatedAt = "",
+                                ),
+                            content = "",
+                            prevArticleId = null,
+                            nextArticleId = null,
+                            attachments = listOf(),
+                            url = "",
+                        ),
                 )
-            )
 
-    val hotArticles: StateFlow<List<ArticleHeaderState>> = articleRepository.fetchHotArticleHeaders()
-        .map {
-            var doesHotContainsThis = false
-            it.filterIndexed { index, hotArticleHeader ->
-                if (articleId == hotArticleHeader.id)
-                    doesHotContainsThis = true
-                articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if (doesHotContainsThis) 1 else 0)
-            }.map { it.toArticleHeaderState() }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = listOf()
-        )
+        val hotArticles: StateFlow<List<ArticleHeaderState>> =
+            articleRepository.fetchHotArticleHeaders()
+                .map {
+                    var doesHotContainsThis = false
+                    it.filterIndexed { index, hotArticleHeader ->
+                        if (articleId == hotArticleHeader.id) {
+                            doesHotContainsThis = true
+                        }
+                        articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if (doesHotContainsThis) 1 else 0)
+                    }.map { it.toArticleHeaderState() }
+                }.stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5_000),
+                    initialValue = listOf(),
+                )
 
-    fun setIsLoading(isLoading: Boolean) {
-        _isLoading.value = isLoading
-    }
+        fun setIsLoading(isLoading: Boolean) {
+            _isLoading.value = isLoading
+        }
 
-    @AssistedFactory
-    interface Factory {
-        fun create(
-            @Assisted("articleId") articleId: Int,
-            @Assisted("navigatedBoardId") navigatedBoardId: Int,
-        ): ArticleDetailViewModel
-    }
+        @AssistedFactory
+        interface Factory {
+            fun create(
+                @Assisted("articleId") articleId: Int,
+                @Assisted("navigatedBoardId") navigatedBoardId: Int,
+            ): ArticleDetailViewModel
+        }
 
-    companion object {
-        const val HOT_ARTICLE_COUNT = 4
+        companion object {
+            const val HOT_ARTICLE_COUNT = 4
 
-        fun provideFactory(
-            assistedFactory: Factory,
-            article: Int,
-            boardId: Int
-        ): ViewModelProvider.Factory {
-            return object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return assistedFactory.create(article, boardId) as T
+            fun provideFactory(
+                assistedFactory: Factory,
+                article: Int,
+                boardId: Int,
+            ): ViewModelProvider.Factory {
+                return object : ViewModelProvider.Factory {
+                    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                        return assistedFactory.create(article, boardId) as T
+                    }
                 }
             }
         }
     }
-}

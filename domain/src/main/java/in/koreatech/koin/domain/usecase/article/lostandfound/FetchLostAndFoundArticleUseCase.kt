@@ -5,9 +5,10 @@ import `in`.koreatech.koin.domain.repository.ArticleRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class FetchLostAndFoundArticleUseCase @Inject constructor(
-    private val articleRepository: ArticleRepository
-) {
-    operator fun invoke(articleId: Int): Flow<ArticleLostAndFound> =
-        articleRepository.fetchArticleLostAndFound(articleId)
-}
+class FetchLostAndFoundArticleUseCase
+    @Inject
+    constructor(
+        private val articleRepository: ArticleRepository,
+    ) {
+        operator fun invoke(articleId: Int): Flow<ArticleLostAndFound> = articleRepository.fetchArticleLostAndFound(articleId)
+    }

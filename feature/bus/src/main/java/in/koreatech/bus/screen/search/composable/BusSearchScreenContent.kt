@@ -40,14 +40,13 @@ internal fun BusSearchScreenContent(
     onDepartureSet: (PlaceType) -> Unit = {},
     onArrivalSet: (PlaceType) -> Unit = {},
     onCloseNotice: () -> Unit = {},
-    onNoticeClick: (BusNoticeState) -> Unit = {}
+    onNoticeClick: (BusNoticeState) -> Unit = {},
 ) {
-
     val context = LocalContext.current
 
     val searchButtonEnabled by remember(
         departure,
-        arrival
+        arrival,
     ) { derivedStateOf { departure != null && arrival != null } }
     var placeSelectMode by rememberSaveable { mutableStateOf(PlaceSelectMode.NONE) }
 
@@ -60,11 +59,11 @@ internal fun BusSearchScreenContent(
     }
 
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         KoinTopAppBar(
             title = stringResource(R.string.title_bus_search),
-            onNavigationIconClick = onNavigationIconClick
+            onNavigationIconClick = onNavigationIconClick,
         )
 
         if (busNoticeUiState is BusNoticeUiState.Show) {
@@ -75,56 +74,57 @@ internal fun BusSearchScreenContent(
                     onCloseNotice()
                     EventLogger.logCampusClickEvent(
                         "bus_announcement_close",
-                        "교통편 조회하기"
+                        "교통편 조회하기",
                     )
                 },
                 onNoticeClick = {
                     onNoticeClick(busNoticeUiState.notice)
                     EventLogger.logCampusClickEvent(
                         "bus_announcement",
-                        "교통편 조회하기"
+                        "교통편 조회하기",
                     )
                 },
-                noticeMaxLines = 2
+                noticeMaxLines = 2,
             )
         }
 
         BusSearchView(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 16.dp)
-                .padding(horizontal = 24.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 24.dp),
             departure = departure?.titleRes?.let { stringResource(it) } ?: "",
             arrival = arrival?.titleRes?.let { stringResource(it) } ?: "",
             searchButtonEnabled = searchButtonEnabled,
             onSwapIconClicked = {
                 EventLogger.logCampusClickEvent(
                     "swap_destination",
-                    "스왑 버튼"
+                    "스왑 버튼",
                 )
                 onSwapIconClick()
             },
             onSearchClicked = {
                 EventLogger.logCampusClickEvent(
                     "search_bus",
-                    "조회하기"
+                    "조회하기",
                 )
                 onSearchClick()
             },
             onDepartureFieldClicked = {
                 EventLogger.logCampusClickEvent(
                     "departure_box",
-                    "출발지 선택"
+                    "출발지 선택",
                 )
                 placeSelectMode = PlaceSelectMode.DEPARTURE
             },
             onArrivalFieldClicked = {
                 EventLogger.logCampusClickEvent(
                     "arrival_box",
-                    "목적지 선택"
+                    "목적지 선택",
                 )
                 placeSelectMode = PlaceSelectMode.ARRIVAL
-            }
+            },
         )
     }
 
@@ -136,7 +136,7 @@ internal fun BusSearchScreenContent(
                 if (placeSelectMode == PlaceSelectMode.DEPARTURE) {
                     EventLogger.logCampusClickEvent(
                         "departure_location_confirm",
-                        context.getString(it.titleRes)
+                        context.getString(it.titleRes),
                     )
                     placeSelectMode =
                         if (arrival == null) PlaceSelectMode.ARRIVAL else PlaceSelectMode.NONE
@@ -144,7 +144,7 @@ internal fun BusSearchScreenContent(
                 } else if (placeSelectMode == PlaceSelectMode.ARRIVAL) {
                     EventLogger.logCampusClickEvent(
                         "arrival_location_confirm",
-                        context.getString(it.titleRes)
+                        context.getString(it.titleRes),
                     )
                     placeSelectMode =
                         if (departure == null) PlaceSelectMode.DEPARTURE else PlaceSelectMode.NONE
@@ -152,11 +152,10 @@ internal fun BusSearchScreenContent(
                 }
             },
             modifier = Modifier,
-            disabledPlace = if (placeSelectMode == PlaceSelectMode.DEPARTURE) disabledDeparture else disabledArrival
+            disabledPlace = if (placeSelectMode == PlaceSelectMode.DEPARTURE) disabledDeparture else disabledArrival,
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -165,7 +164,7 @@ private fun BusSearchScreenPreview() {
         departure = null,
         arrival = null,
         modifier = Modifier.fillMaxWidth(),
-        busNoticeUiState = busNoticeUiStateMock
+        busNoticeUiState = busNoticeUiStateMock,
     )
 }
 
@@ -176,7 +175,7 @@ private fun BusSearchScreen2Preview() {
         departure = PlaceType.KOREATECH,
         arrival = null,
         modifier = Modifier.fillMaxWidth(),
-        busNoticeUiState = busNoticeUiStateMock
+        busNoticeUiState = busNoticeUiStateMock,
     )
 }
 
@@ -187,7 +186,7 @@ private fun BusSearchScreen3Preview() {
         departure = null,
         arrival = PlaceType.STATION,
         modifier = Modifier.fillMaxWidth(),
-        busNoticeUiState = BusNoticeUiState.NotShow
+        busNoticeUiState = BusNoticeUiState.NotShow,
     )
 }
 
@@ -198,6 +197,6 @@ private fun BusSearchScreen4Preview() {
         departure = PlaceType.KOREATECH,
         arrival = PlaceType.STATION,
         modifier = Modifier.fillMaxWidth(),
-        busNoticeUiState = busNoticeUiStateMock
+        busNoticeUiState = busNoticeUiStateMock,
     )
 }

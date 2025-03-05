@@ -3,6 +3,7 @@ package `in`.koreatech.koin.core.activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -13,17 +14,26 @@ import com.google.firebase.ktx.Firebase
 import `in`.koreatech.koin.core.progressdialog.CustomProgressDialog
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 
-
 abstract class ActivityBase : AppCompatActivity, IProgressDialog {
-
     constructor() : super()
-    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
+    constructor(
+        @LayoutRes contentLayoutId: Int,
+    ) : super(contentLayoutId)
 
     private var customProgressDialog: CustomProgressDialog? = null
-    protected abstract val screenTitle: String      // for GA4
+    protected abstract val screenTitle: String // for GA4
+
+    open val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         try {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         } catch (ignore: IllegalStateException) {
@@ -37,7 +47,9 @@ abstract class ActivityBase : AppCompatActivity, IProgressDialog {
         }
     }
 
-    override fun showProgressDialog(@StringRes resId: Int) {
+    override fun showProgressDialog(
+        @StringRes resId: Int,
+    ) {
         if (customProgressDialog == null) {
             customProgressDialog = CustomProgressDialog(this, getResources().getString(resId))
             customProgressDialog!!.execute()
@@ -63,4 +75,3 @@ abstract class ActivityBase : AppCompatActivity, IProgressDialog {
         const val PAGE_TITLE = "page_title"
     }
 }
-

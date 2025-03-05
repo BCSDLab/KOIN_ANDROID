@@ -10,28 +10,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.Dropdown
+import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 
 @Composable
 fun LostAndFoundDropdownGroup(
     isDropdownExpanded: Boolean,
+    selectedType: LostOrFoundType?,
     modifier: Modifier = Modifier,
     onDropdownExpandChange: (Boolean) -> Unit = {},
-    onItemSelected: (Int) -> Unit = {}
+    onItemSelected: (Int) -> Unit = {},
 ) = Box(
-    modifier = modifier
-        .fillMaxWidth()
-        .padding(horizontal = 24.dp)
+    modifier =
+        modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
 ) {
     Dropdown(
-        title = stringResource(R.string.dropdown_type_all),
-        items = listOf(
-            stringResource(R.string.dropdown_item_all),
-            stringResource(R.string.dropdown_item_found),
-            stringResource(R.string.dropdown_item_lost)
-        ),
+        title =
+            when (selectedType) {
+                LostOrFoundType.LOST -> stringResource(R.string.dropdown_item_lost)
+                LostOrFoundType.FOUND -> stringResource(R.string.dropdown_item_found)
+                else -> stringResource(R.string.dropdown_item_all)
+            },
+        items =
+            listOf(
+                stringResource(R.string.dropdown_item_all),
+                stringResource(R.string.dropdown_item_found),
+                stringResource(R.string.dropdown_item_lost),
+            ),
         isDropdownExpanded = isDropdownExpanded,
         modifier = Modifier.align(Alignment.CenterEnd),
         onDropdownExpandChange = onDropdownExpandChange,
-        onItemSelected = onItemSelected
+        onItemSelected = onItemSelected,
     )
 }

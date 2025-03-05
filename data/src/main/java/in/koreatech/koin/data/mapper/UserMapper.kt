@@ -8,53 +8,60 @@ import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
 
-fun UserResponse.toUser(userType: String) = User.Student(
-    anonymousNickname = anonymousNickname,
-    email = email,
-    name = name,
-    studentNumber = studentNumber,
-    gender = when (gender) {
-        0 -> Gender.Man
-        1 -> Gender.Woman
-        else -> Gender.Unknown
-    },
-    nickname = nickname,
-    phoneNumber = phoneNumber,
-    major = major,
-    userType = userType
-)
+fun UserResponse.toUser(userType: String) =
+    User.Student(
+        id = id,
+        anonymousNickname = anonymousNickname,
+        email = email,
+        name = name,
+        studentNumber = studentNumber,
+        gender =
+            when (gender) {
+                0 -> Gender.Man
+                1 -> Gender.Woman
+                else -> Gender.Unknown
+            },
+        nickname = nickname,
+        phoneNumber = phoneNumber,
+        major = major,
+        userType = userType,
+    )
 
-fun User.Student.toUserRequest() = UserRequest(
-    nickname = nickname,
-    name = name,
-    studentNumber = studentNumber,
-    major = major,
-    phoneNumber = phoneNumber,
-    gender = when (gender) {
-        Gender.Man -> 0
-        Gender.Woman -> 1
-        else -> null
-    },
-    identity = 0,
-    isGraduated = isStudent,
-    hashedPassword = null
-)
+fun User.Student.toUserRequest() =
+    UserRequest(
+        nickname = nickname,
+        name = name,
+        studentNumber = studentNumber,
+        major = major,
+        phoneNumber = phoneNumber,
+        gender =
+            when (gender) {
+                Gender.Man -> 0
+                Gender.Woman -> 1
+                else -> null
+            },
+        identity = 0,
+        isGraduated = isStudent,
+        hashedPassword = null,
+    )
 
-fun User.Student.toUserRequestWithPassword(hashedPassword: String) = UserRequest(
-    nickname = nickname,
-    name = name,
-    studentNumber = studentNumber,
-    major = major,
-    phoneNumber = phoneNumber,
-    gender = when (gender) {
-        Gender.Man -> 0
-        Gender.Woman -> 1
-        else -> null
-    },
-    identity = 0,
-    isGraduated = isStudent,
-    hashedPassword = hashedPassword
-)
+fun User.Student.toUserRequestWithPassword(hashedPassword: String) =
+    UserRequest(
+        nickname = nickname,
+        name = name,
+        studentNumber = studentNumber,
+        major = major,
+        phoneNumber = phoneNumber,
+        gender =
+            when (gender) {
+                Gender.Man -> 0
+                Gender.Woman -> 1
+                else -> null
+            },
+        identity = 0,
+        isGraduated = isStudent,
+        hashedPassword = hashedPassword,
+    )
 
 fun Graduated.toBoolean(): Boolean {
     return this == Graduated.Graduate
@@ -75,14 +82,14 @@ fun String.toPhoneNumber(): String {
         11 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${
             phoneNumberDigitsOnly.substring(
                 3,
-                7
+                7,
             )
         }-${phoneNumberDigitsOnly.substring(7)}"
 
         10 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${
             phoneNumberDigitsOnly.substring(
                 3,
-                6
+                6,
             )
         }-${phoneNumberDigitsOnly.substring(6)}"
 
@@ -96,7 +103,7 @@ fun String.toBusinessNumber(): String {
         11 -> "${businessNumberDigitsOnly.substring(0, 3)}-${
             businessNumberDigitsOnly.substring(
                 3,
-                5
+                5,
             )
         }-${businessNumberDigitsOnly.substring(5)}"
 
@@ -106,8 +113,9 @@ fun String.toBusinessNumber(): String {
 
 fun String.toSchoolEamil() = "$this@koreatech.ac.kr"
 
-fun RefreshResponse.toAuthToken() = AuthToken(
-    token = this.token,
-    refreshToken = this.refreshToken,
-    userType = null
-)
+fun RefreshResponse.toAuthToken() =
+    AuthToken(
+        token = this.token,
+        refreshToken = this.refreshToken,
+        userType = null,
+    )
