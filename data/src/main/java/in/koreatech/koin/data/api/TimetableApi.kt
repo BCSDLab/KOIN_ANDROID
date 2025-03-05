@@ -2,12 +2,17 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.response.timetable.LectureResponse
 import `in`.koreatech.koin.data.response.timetable.SemesterResponse
+import `in`.koreatech.koin.data.response.timetable.v3.SemesterResponseV3
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface TimetableApi {
+    @Deprecated("use getSemestersV3")
     @GET("/semesters")
     suspend fun getSemesters(): List<SemesterResponse>
+
+    @GET("/v3/semesters")
+    suspend fun getSemestersV3(): List<SemesterResponseV3>
 
     @GET("/lectures")
     suspend fun getLectures(
