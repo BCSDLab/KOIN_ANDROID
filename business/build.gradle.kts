@@ -56,4 +56,7 @@ dependencies {
     implementation(project(mapOf("path" to ":core")))
     implementation(project(":core:designsystem"))
     testImplementation(project(":feature:timetable"))
+    implementation(libs.androidx.foundation.layout)
+    implementation(libs.androidx.foundation.layout)
+    implementation(libs.androidx.ui.text)
 }

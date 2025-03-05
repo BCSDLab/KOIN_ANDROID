@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.store.storedetail
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -89,6 +90,7 @@ class MyStoreDetailViewModel @Inject constructor(
         reduce {
             state.copy(isEventExpanded = List(state.isEventExpanded.size) { _ -> false })
         }
+        getShopEvents()
     }
 
     private fun getOwnerShopInfo(shopId: Int) = intent {
@@ -247,8 +249,13 @@ class MyStoreDetailViewModel @Inject constructor(
         postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen(state.storeId))
     }
 
+    fun navigateToAddEventScreen() = intent {
+        if (state.storeId == -1) return@intent
+        postSideEffect(MyStoreDetailSideEffect.NavigateToAddEventScreen(state.storeId))
+    }
+
     fun onManageMenuClicked() = intent {
-        postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen)
+        postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen(state.storeId))
     }
 
     fun onRegisterMenuClicked() = intent {

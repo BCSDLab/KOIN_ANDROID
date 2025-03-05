@@ -17,6 +17,8 @@
     <string name="common_complete">완료</string>
     <string name="common_edit">편집</string>
     <string name="common_save">저장</string>
+    <string name="common_change">변경</string>
+    <string name="common_delete">삭제</string>
     <string name="need_permission">권한이 필요합니다.</string>
     <string name="back">뒤로가기</string>
     <string name="positive">확인</string>
@@ -188,7 +190,8 @@
     <string name="insert_store_time_setting">시간설정</string>
     <string name="insert_store_open_time_setting">평일/주말 운영시간</string>
     <string name="insert_store_operating_time">%1$s: %2$s ~ %3$s</string>
-    <string name="insert_store_closed_day">매주 %1$s 정기 휴무</string>
+    <string name="insert_store_closed_day">%1$s 정기 휴무</string>
+    <string name="closed_day">휴무</string>
     <string name="insert_store_null_store_phone_number">가게 전화번호를 입력해 주세요.</string>
     <string name="insert_store_null_store_delivery_fee">가게 배달비를 입력해 주세요.</string>
     <string name="insert_store_null_store_other_info">가게 기타 정보를 입력해 주세요.</string>
@@ -210,8 +213,10 @@
 
 
     <!-- 메뉴 등록 -->
+    <string name="menu_add_plus">+ 메뉴 추가</string>
     <string name="menu_add">메뉴 추가</string>
     <string name="menu_modify">메뉴 수정</string>
+    <string name="menu_edit">메뉴 편집</string>
     <string name="menu_info">메뉴 정보</string>
     <string name="menu_name">메뉴명</string>
     <string name="menu_price">가격</string>
@@ -237,6 +242,10 @@
     <string name="menu_success_register_menu">메뉴가 정상적으로 등록되었습니다.</string>
     <string name="menu_fail_modify_menu">메뉴 수정 실패</string>
     <string name="menu_success_modify_menu">메뉴가 정상적으로 수정되었습니다.</string>
+    <string name="recommend_menu">추천 메뉴</string>
+    <string name="main_menu">메인 메뉴</string>
+    <string name="set_menu">세트 메뉴</string>
+    <string name="side_menu">사이드 메뉴</string>
 
     <!-- 이벤트 로깅 -->
     <string name="event_set_notification">알림설정</string>

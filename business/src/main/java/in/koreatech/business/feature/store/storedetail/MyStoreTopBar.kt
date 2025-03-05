@@ -7,6 +7,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
+import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Shapes
 import org.orbitmvi.orbit.compose.collectAsState
@@ -94,7 +96,6 @@ fun CollapsedTopBar(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StoreInfoScreen(
     viewModel: MyStoreDetailViewModel,
@@ -217,36 +218,34 @@ fun StoreInfoScreen(
                 }
             }
         }
-        Button(
-            modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 10.dp)
-                .background(Color.White)
-                .fillMaxWidth()
-                .height(40.dp),
-            onClick = viewModel::navigateToModifyScreen,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.White,
-                contentColor = ColorPrimary,
-            ),
-            shape = Shapes.medium,
-            border = BorderStroke(1.dp, ColorPrimary)
 
+        Row(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = stringResource(R.string.shop_management), color = ColorPrimary, fontSize = 16.sp)
-                Spacer(modifier = Modifier.width(1.dp))
+            Text(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                text = state.storeInfo?.name ?: stringResource(R.string.shop_name),
+                style = TextStyle(color = Color.Black, fontSize = 20.sp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight(600),
+            )
+            Row(
+                modifier = Modifier
+                    .padding(end = 24.dp)
+                    .clickable {
+                        viewModel.navigateToModifyScreen()
+                    }
+            ){
                 Image(
-                    painter = painterResource(id = R.drawable.ic_setting),
-                    contentDescription = stringResource(R.string.shop_management),
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    contentDescription = stringResource(R.string.edit)
                 )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = stringResource(R.string.modify_store), color= Gray1)
             }
         }
-        Text(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            text = state.storeInfo?.name ?: stringResource(R.string.shop_name),
-            style = TextStyle(color = Color.Black, fontSize = 20.sp),
-            fontSize = 20.sp,
-            fontWeight = FontWeight(600),
-        )
     }
 }

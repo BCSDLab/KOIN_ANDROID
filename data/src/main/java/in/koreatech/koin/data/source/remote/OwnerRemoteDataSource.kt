@@ -10,6 +10,8 @@ import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
+import `in`.koreatech.koin.data.response.owner.OwnerEventResponse
+import `in`.koreatech.koin.data.response.owner.OwnerGetStoreResponse
 import `in`.koreatech.koin.data.response.owner.CheckCompanyNumberResponse
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
@@ -83,7 +85,7 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationCodeSms(ownerVerificationCode)
     }
 
-    suspend fun getMyShopList(): List<StoreItemResponse> {
+    suspend fun getMyShopList(): List<OwnerGetStoreResponse> {
         return ownerAuthApi.getMyShopList().shops
     }
 
@@ -125,5 +127,8 @@ class OwnerRemoteDataSource(
 
     suspend fun checkExistsCompanyNumber(companyNumber: CheckCompanyNumberResponse) {
         ownerApi.checkExistsCompanyNumber(companyNumber)
+    }
+    suspend fun postOwnerShopEvent(storeUid: Int, ownerEventResponse: OwnerEventResponse) {
+        ownerAuthApi.postOwnerShopEvent(storeUid, ownerEventResponse)
     }
 }
