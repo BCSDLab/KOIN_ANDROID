@@ -56,15 +56,16 @@ fun LostAndFoundReportReasons(
                 )
             } else {
                 LostAndFoundReportReasonItem(
-                    modifier = Modifier.noRippleClickable {
-                        onSelectedItemChange(index)
-                    },
+                    modifier =
+                        Modifier.noRippleClickable {
+                            onSelectedItemChange(index)
+                        },
                     reportReason = reportReason,
-                    isSelected = selectedItem.contains(index)
+                    isSelected = selectedItem.contains(index),
                 )
                 HorizontalDivider(
                     thickness = 1.dp,
-                    color = KoinTheme.colors.neutral200
+                    color = KoinTheme.colors.neutral200,
                 )
             }
         }
@@ -79,7 +80,7 @@ fun LostAndFoundReportReasonItem(
 ) {
     Row(
         modifier = modifier.padding(vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             modifier = Modifier.padding(horizontal = 8.dp),
@@ -87,17 +88,17 @@ fun LostAndFoundReportReasonItem(
             contentDescription = null,
         )
         Column(
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier.padding(horizontal = 8.dp),
         ) {
             Text(
                 text = reportReason.title,
                 style = KoinTheme.typography.medium16,
-                color = KoinTheme.colors.neutral800
+                color = KoinTheme.colors.neutral800,
             )
             Text(
                 text = reportReason.description,
                 style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500
+                color = KoinTheme.colors.neutral500,
             )
         }
     }
@@ -112,28 +113,32 @@ fun LostAndFoundReportReasonOtherItem(
     isSelected: Boolean = false,
 ) {
     Column(
-        modifier = modifier
-            .padding(vertical = 14.dp)
-            .noRippleClickable {
-                onFocused()
-            },
+        modifier =
+            modifier
+                .padding(vertical = 14.dp)
+                .noRippleClickable {
+                    onFocused()
+                },
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                painter = painterResource(id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected),
+                painter =
+                    painterResource(
+                        id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected,
+                    ),
                 contentDescription = null,
             )
             Row(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = ReportReason.OTHER.title,
                     style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.neutral800
+                    color = KoinTheme.colors.neutral800,
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -141,7 +146,7 @@ fun LostAndFoundReportReasonOtherItem(
                 Text(
                     text = "${reason.length}/$REPORT_OTHER_REASON_MAX_LENGTH",
                     style = KoinTheme.typography.regular12,
-                    color = Color(0xFF8E8E8E)
+                    color = Color(0xFF8E8E8E),
                 )
             }
         }
@@ -155,7 +160,7 @@ fun LostAndFoundReportReasonOtherItem(
                 if (!isSelected) {
                     onFocused()
                 }
-            }
+            },
         )
     }
 }
@@ -179,10 +184,11 @@ fun ReportTextField(
     }
 
     BasicTextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(1.dp, color = KoinTheme.colors.neutral300, shape = KoinTheme.shapes.extraSmall)
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .border(1.dp, color = KoinTheme.colors.neutral300, shape = KoinTheme.shapes.extraSmall)
+                .padding(vertical = 12.dp, horizontal = 16.dp),
         interactionSource = interactionSource,
         value = value,
         textStyle = KoinTheme.typography.regular14,
@@ -195,7 +201,7 @@ fun ReportTextField(
         },
         decorationBox = { innerTextField ->
             Box(
-                contentAlignment = Alignment.CenterStart
+                contentAlignment = Alignment.CenterStart,
             ) {
                 if (value.isEmpty()) {
                     Text(
@@ -207,7 +213,7 @@ fun ReportTextField(
                     innerTextField()
                 }
             }
-        }
+        },
     )
 }
 
@@ -220,7 +226,7 @@ fun PreviewLostAndFoundReportReasons() {
             selectedItem = intArrayOf(1, 2, 4),
             onSelectedItemChange = {},
             otherReason = "",
-            onOtherReasonChange = {}
+            onOtherReasonChange = {},
         )
     }
 }

@@ -9,9 +9,10 @@ data class ShuttleSemesterResponse(
     @SerializedName("from") val from: String?,
     @SerializedName("to") val to: String?,
 ) {
-    fun toShuttleSemester() = ShuttleSemester(
-        name = name.orEmpty(),
-        from = LocalDate.parse(from.orEmpty()),
-        to = LocalDate.parse(to.orEmpty())
-    )
+    fun toShuttleSemester() =
+        ShuttleSemester(
+            name = name.orEmpty(),
+            from = LocalDate.parse(from.orEmpty()),
+            to = LocalDate.parse(to.orEmpty()),
+        )
 }

@@ -9,20 +9,22 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class CompleteSignupViewModel @Inject constructor() :
+class CompleteSignupViewModel
+    @Inject
+    constructor() :
     ContainerHost<Unit, CompleteSignupSideEffect>, ViewModel() {
-    override val container =
-        container<Unit, CompleteSignupSideEffect>(Unit)
+        override val container =
+            container<Unit, CompleteSignupSideEffect>(Unit)
 
-    fun onNavigateToLoginScreen() {
-        intent {
-            postSideEffect(CompleteSignupSideEffect.NavigateToLoginScreen)
+        fun onNavigateToLoginScreen() {
+            intent {
+                postSideEffect(CompleteSignupSideEffect.NavigateToLoginScreen)
+            }
+        }
+
+        fun onBackButtonClicked() {
+            intent {
+                postSideEffect(CompleteSignupSideEffect.NavigateToBackScreen)
+            }
         }
     }
-
-    fun onBackButtonClicked() {
-        intent {
-            postSideEffect(CompleteSignupSideEffect.NavigateToBackScreen)
-        }
-    }
-}

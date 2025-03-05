@@ -14,23 +14,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserLeaveViewModel @Inject constructor(
-    private val userRemoveUseCase: UserRemoveUseCase
-) : ViewModel() {
+class UserLeaveViewModel
+    @Inject
+    constructor(
+        private val userRemoveUseCase: UserRemoveUseCase,
+    ) : ViewModel() {
+        private val _uiStatus = MutableStateFlow<UiStatus>(UiStatus.Init)
+        val uiStatus: StateFlow<UiStatus> = _uiStatus.asStateFlow()
 
-    private val _uiStatus = MutableStateFlow<UiStatus>(UiStatus.Init)
-    val uiStatus: StateFlow<UiStatus> = _uiStatus.asStateFlow()
-
-    fun leaveUser() {
-        viewModelScope.launch {
-            userRemoveUseCase()
-                .onSuccess {
-                    _uiStatus.value = UiStatus.Success
-                }
-                .onFailure { errorHandler ->
-                    _uiStatus.value = UiStatus.Failed(errorHandler.message)
-                }
+        fun leaveUser() {
+            viewModelScope.launch {
+                userRemoveUseCase()
+                    .onSuccess {
+                        _uiStatus.value = UiStatus.Success
+                    }
+                    .onFailure { errorHandler ->
+                        _uiStatus.value = UiStatus.Failed(errorHandler.message)
+                    }
+            }
         }
-
     }
-}

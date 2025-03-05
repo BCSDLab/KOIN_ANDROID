@@ -5,5 +5,5 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class TableItemViewHolder<T>(binding: ViewDataBinding) :
     RecyclerView.ViewHolder(binding.root) {
-        abstract fun bind(item: T)
+    abstract fun bind(item: T)
 }

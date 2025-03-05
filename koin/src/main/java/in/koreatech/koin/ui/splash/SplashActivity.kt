@@ -15,8 +15,8 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
@@ -73,34 +73,39 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun initObserve() = with(splashViewModel) {
-        observeLiveData(version) { version ->
-            when (version.versionUpdatePriority) {
-                VersionUpdatePriority.Importance -> goToForceUpdateActivity(
-                    version.title,
-                    version.content
-                )
+    private fun initObserve() =
+        with(splashViewModel) {
+            observeLiveData(version) { version ->
+                when (version.versionUpdatePriority) {
+                    VersionUpdatePriority.Importance ->
+                        goToForceUpdateActivity(
+                            version.title,
+                            version.content,
+                        )
 
-                VersionUpdatePriority.None -> Unit
+                    VersionUpdatePriority.None -> Unit
+                }
+            }
+
+            observeLiveData(checkVersionError) {
+                ToastUtil.getInstance().makeShort(R.string.version_check_failed)
+            }
+
+            observeLiveData(tokenState) {
+                handleIntentOrLaunch()
             }
         }
 
-        observeLiveData(checkVersionError) {
-            ToastUtil.getInstance().makeShort(R.string.version_check_failed)
-        }
-
-        observeLiveData(tokenState) {
-            handleIntentOrLaunch()
-        }
-    }
-
-    private fun goToForceUpdateActivity(title: String, content: String) {
+    private fun goToForceUpdateActivity(
+        title: String,
+        content: String,
+    ) {
         lifecycleScope.launch {
             delay()
             Intent(this@SplashActivity, ForceUpdateActivity::class.java).apply {
                 putExtra(
                     version,
-                    bundleOf(SplashActivity.title to title, SplashActivity.content to content)
+                    bundleOf(SplashActivity.title to title, SplashActivity.content to content),
                 )
             }.let { intent ->
                 startActivity(intent)
@@ -115,13 +120,15 @@ class SplashActivity : ActivityBase() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
             when (appUpdateInfo.updateAvailability()) {
                 UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS,
-                UpdateAvailability.UPDATE_AVAILABLE -> {
+                UpdateAvailability.UPDATE_AVAILABLE,
+                -> {
                     // 업데이트가 필요한 상황이거나 업데이트 중이라면 최신 버전값 저장
                     splashViewModel.updateLatestVersion(appUpdateInfo.availableVersionCode())
                 }
 
                 UpdateAvailability.UPDATE_NOT_AVAILABLE,
-                UpdateAvailability.UNKNOWN -> {
+                UpdateAvailability.UNKNOWN,
+                -> {
                     // 업데이트 가능 유무를 모르거나, 업데이트가 불가능 한 경우 현재 버전 저장
                     splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
                 }
@@ -130,7 +137,7 @@ class SplashActivity : ActivityBase() {
 
         appUpdateManager.appUpdateInfo.addOnFailureListener { e ->
             // 업데이트 정보를 받아오는데 실패한 경우 현재 버전 저장
-            Log.e("SplashActivity", "Fail to get latest app: exception: ${e}")
+            Log.e("SplashActivity", "Fail to get latest app: exception: $e")
             splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
         }
     }
@@ -151,16 +158,17 @@ class SplashActivity : ActivityBase() {
         val path = intent.data?.path?.split("/")?.getOrNull(2)
         lifecycleScope.launch {
             delay()
-            val intent = when (path) {
-                "lost-item" -> {
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+            val intent =
+                when (path) {
+                    "lost-item" -> {
+                        Intent(Intent.ACTION_VIEW).apply {
+                            data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                        }
+                    }
+                    else -> {
+                        Intent(this@SplashActivity, ArticleActivity::class.java)
                     }
                 }
-                else -> {
-                    Intent(this@SplashActivity, ArticleActivity::class.java)
-                }
-            }
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
             finish()
@@ -178,30 +186,28 @@ class SplashActivity : ActivityBase() {
 
         lifecycleScope.launch {
             delay()
-            val intent = if (navType == NavigatorType.MAIN.type) {
-                navigator.navigateToMain(
-                    context = this@SplashActivity,
-                    targetId = Pair(EXTRA_ID, targetId),
-                    targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
-                    targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                    targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                    type = Pair(EXTRA_TYPE, type)
-                )
-            } else {
-                Intent(this@SplashActivity, MainActivity::class.java)
-            }
+            val intent =
+                if (navType == NavigatorType.MAIN.type) {
+                    navigator.navigateToMain(
+                        context = this@SplashActivity,
+                        targetId = Pair(EXTRA_ID, targetId),
+                        targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
+                        targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        type = Pair(EXTRA_TYPE, type),
+                    )
+                } else {
+                    Intent(this@SplashActivity, MainActivity::class.java)
+                }
 
             startActivity(intent)
             overridePendingTransition(R.anim.fade, R.anim.hold)
             finish()
             firebasePerformanceUtil.stop()
         }
-
     }
 
     private suspend fun delay() {
         while (System.currentTimeMillis() - createdTime < 2000) yield()
     }
 }
-
-

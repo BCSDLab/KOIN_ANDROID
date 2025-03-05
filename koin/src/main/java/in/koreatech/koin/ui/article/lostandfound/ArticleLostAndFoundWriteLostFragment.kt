@@ -17,7 +17,7 @@ class ArticleLostAndFoundWriteLostFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val navController = findNavController()
 
@@ -30,12 +30,13 @@ class ArticleLostAndFoundWriteLostFragment : Fragment() {
                         R.id.articleLostAndFoundDetailFragment,
                         Bundle().apply {
                             putInt(ARTICLE_ID, articleId)
-                        }
+                        },
                     )
                 }
             }
         }
     }
+
     companion object {
         const val ARTICLE_ID = "article_id"
     }

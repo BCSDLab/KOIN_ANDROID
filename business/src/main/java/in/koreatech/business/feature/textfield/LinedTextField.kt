@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -29,7 +28,6 @@ import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorTextField
-
 
 @Composable
 fun LinedTextField(
@@ -44,7 +42,7 @@ fun LinedTextField(
     successText: String = "",
     isError: Boolean = false,
     isSuccess: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     var focused by remember { mutableStateOf(false) }
     BasicTextField(
@@ -57,48 +55,51 @@ fun LinedTextField(
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         decorationBox = { innerTextField ->
             Column(modifier = Modifier.fillMaxWidth()) {
-
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(46.dp)
-                        .border(
-                            width = 1.dp,
-                            color = if (isError) ColorSecondary else if (focused) ColorPrimary else ColorTextField,
-                            shape = RoundedCornerShape(4.dp)
-                        )
-                        .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(46.dp)
+                            .border(
+                                width = 1.dp,
+                                color = if (isError) ColorSecondary else if (focused) ColorPrimary else ColorTextField,
+                                shape = RoundedCornerShape(4.dp),
+                            )
+                            .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Box(
                         modifier = Modifier.padding(start = 12.dp),
                     ) {
-                        if (value.isEmpty())
+                        if (value.isEmpty()) {
                             Text(text = label, fontSize = 14.sp, color = ColorHelper)
+                        }
                         innerTextField()
                     }
-
                 }
 
                 Box(modifier = Modifier.padding(start = 8.dp, top = 1.dp)) {
                     Text(
-                        text = if(isError) "" else helperText,
+                        text = if (isError) "" else helperText,
                         fontSize = 11.sp,
                         color = ColorHelper,
                     )
 
-                    if (isError) Text(
-                        text = errorText, fontSize = 11.sp, color = ColorSecondary
-                    )
-                    else if (isSuccess) Text(
-                        text = successText,
-                        fontSize = 11.sp,
-                        color = ColorPrimary
-                    )
+                    if (isError) {
+                        Text(
+                            text = errorText,
+                            fontSize = 11.sp,
+                            color = ColorSecondary,
+                        )
+                    } else if (isSuccess) {
+                        Text(
+                            text = successText,
+                            fontSize = 11.sp,
+                            color = ColorPrimary,
+                        )
+                    }
                 }
-
             }
-
-        }
+        },
     )
 }

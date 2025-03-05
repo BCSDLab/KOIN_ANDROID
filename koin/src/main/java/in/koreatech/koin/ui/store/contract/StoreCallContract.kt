@@ -6,11 +6,16 @@ import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 
 class StoreCallContract : ActivityResultContract<String, Unit>() {
-    override fun createIntent(context: Context, input: String): Intent {
+    override fun createIntent(
+        context: Context,
+        input: String,
+    ): Intent {
         return Intent(Intent.ACTION_CALL, Uri.parse("tel:$input"))
     }
 
-    override fun parseResult(resultCode: Int, intent: Intent?) {
-
+    override fun parseResult(
+        resultCode: Int,
+        intent: Intent?,
+    ) {
     }
 }

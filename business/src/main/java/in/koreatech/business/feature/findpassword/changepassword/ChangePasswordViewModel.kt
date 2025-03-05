@@ -17,84 +17,92 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class ChangePasswordViewModel  @Inject constructor(
-    private val changePasswordSmsUseCase: ChangePasswordSmsUseCase,
-    savedStateHandle: SavedStateHandle
-) : ViewModel(), ContainerHost<ChangePasswordState, ChangePasswordSideEffect> {
-    override val container: Container<ChangePasswordState, ChangePasswordSideEffect> =
-        container(ChangePasswordState(), savedStateHandle = savedStateHandle){
-            val phoneNumber = savedStateHandle.get<String>("phoneNumber")
-            checkNotNull(phoneNumber)
-            getPhoneNumber(phoneNumber)
-        }
-
-    fun viewNotCoincidePassword() = intent {
-        reduce{
-            state.copy(notCoincidePW = true)
-        }
-    }
-
-    fun fillAllPasswords() = intent {
-        reduce{
-            state.copy(fillAllPasswords = (state.password.isNotBlank() && state.passwordChecked.isNotBlank()))
-        }
-    }
-
-    fun coincidePasswordReset() = intent {
-        reduce{
-            state.copy(notCoincidePW = false)
-        }
-    }
-
-    fun insertPassword(password: String) = blockingIntent{
-        reduce { state.copy(password = password) }
-        coincidePasswordReset()
-        fillAllPasswords()
-    }
-
-    fun insertPasswordChecked(passwordChecked: String) = blockingIntent{
-        reduce { state.copy(passwordChecked = passwordChecked) }
-        coincidePasswordReset()
-        fillAllPasswords()
-    }
-
-    fun changePassword(
-        phoneNumber: String,
-        password: String,
-        passwordChecked: String
-    ){
-        viewModelScope.launch {
-            changePasswordSmsUseCase(
-                phoneNumber = phoneNumber,
-                password = password,
-                passwordChanged = passwordChecked
-            )   .onSuccess {
-                goToFinishScreen()
+class ChangePasswordViewModel
+    @Inject
+    constructor(
+        private val changePasswordSmsUseCase: ChangePasswordSmsUseCase,
+        savedStateHandle: SavedStateHandle,
+    ) : ViewModel(), ContainerHost<ChangePasswordState, ChangePasswordSideEffect> {
+        override val container: Container<ChangePasswordState, ChangePasswordSideEffect> =
+            container(ChangePasswordState(), savedStateHandle = savedStateHandle) {
+                val phoneNumber = savedStateHandle.get<String>("phoneNumber")
+                checkNotNull(phoneNumber)
+                getPhoneNumber(phoneNumber)
             }
-                .onFailure {
-                    when(it){
-                        ChangePasswordExceptionState.NotCoincidePassword -> notCoincidePassword()
-                    }
+
+        fun viewNotCoincidePassword() =
+            intent {
+                reduce {
+                    state.copy(notCoincidePW = true)
                 }
-        }
-    }
+            }
 
-    private fun getPhoneNumber(phoneNumber: String){
-        intent {
-            reduce {
-                state.copy(
-                    phoneNumber = phoneNumber
-                )
+        fun fillAllPasswords() =
+            intent {
+                reduce {
+                    state.copy(fillAllPasswords = (state.password.isNotBlank() && state.passwordChecked.isNotBlank()))
+                }
+            }
+
+        fun coincidePasswordReset() =
+            intent {
+                reduce {
+                    state.copy(notCoincidePW = false)
+                }
+            }
+
+        fun insertPassword(password: String) =
+            blockingIntent {
+                reduce { state.copy(password = password) }
+                coincidePasswordReset()
+                fillAllPasswords()
+            }
+
+        fun insertPasswordChecked(passwordChecked: String) =
+            blockingIntent {
+                reduce { state.copy(passwordChecked = passwordChecked) }
+                coincidePasswordReset()
+                fillAllPasswords()
+            }
+
+        fun changePassword(
+            phoneNumber: String,
+            password: String,
+            passwordChecked: String,
+        ) {
+            viewModelScope.launch {
+                changePasswordSmsUseCase(
+                    phoneNumber = phoneNumber,
+                    password = password,
+                    passwordChanged = passwordChecked,
+                ).onSuccess {
+                    goToFinishScreen()
+                }
+                    .onFailure {
+                        when (it) {
+                            ChangePasswordExceptionState.NotCoincidePassword -> notCoincidePassword()
+                        }
+                    }
             }
         }
-    }
 
+        private fun getPhoneNumber(phoneNumber: String) {
+            intent {
+                reduce {
+                    state.copy(
+                        phoneNumber = phoneNumber,
+                    )
+                }
+            }
+        }
 
-    private fun notCoincidePassword() = intent {
-        postSideEffect(ChangePasswordSideEffect.NotCoincidePassword)
-    }
+        private fun notCoincidePassword() =
+            intent {
+                postSideEffect(ChangePasswordSideEffect.NotCoincidePassword)
+            }
 
-    private fun goToFinishScreen() = intent {
-        postSideEffect(ChangePasswordSideEffect.GotoFinishScreen)
+        private fun goToFinishScreen() =
+            intent {
+                postSideEffect(ChangePasswordSideEffect.GotoFinishScreen)
+            }
     }
-}

@@ -28,13 +28,16 @@ fun KoinTopAppBar(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = KoinTheme.typography.medium18,
     onNavigationIconClick: () -> Unit = {},
-    actions: @Composable() (RowScope.() -> Unit) = {},
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-        containerColor = Color.White,
-        navigationIconContentColor = Color.Black,
-        titleContentColor = Color.Black,
-        actionIconContentColor = Color.Black,
-    ),
+    actions:
+        @Composable()
+        (RowScope.() -> Unit) = {},
+    colors: TopAppBarColors =
+        TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.White,
+            navigationIconContentColor = Color.Black,
+            titleContentColor = Color.Black,
+            actionIconContentColor = Color.Black,
+        ),
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -52,7 +55,7 @@ fun KoinTopAppBar(
             )
         },
         actions = actions,
-        colors = colors
+        colors = colors,
     )
 }
 
@@ -62,6 +65,6 @@ fun KoinTopAppBar(
 private fun KoinTopAppBarPreview() {
     KoinTopAppBar(
         title = "버스 시간표",
-        actions = { }
+        actions = { },
     )
 }

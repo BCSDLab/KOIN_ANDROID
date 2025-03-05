@@ -8,5 +8,5 @@ data class OwnerRegisterRequest(
     @SerializedName("password") val password: String?,
     @SerializedName("phone_number") val phoneNumber: String?,
     @SerializedName("shop_id") val shopId: Int?,
-    @SerializedName("shop_name") val shopName: String?
+    @SerializedName("shop_name") val shopName: String?,
 )

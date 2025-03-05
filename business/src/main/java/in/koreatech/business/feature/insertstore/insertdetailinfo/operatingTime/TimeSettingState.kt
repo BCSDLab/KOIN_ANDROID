@@ -10,12 +10,12 @@ data class TimeSettingState(
     val openTime: String,
     val closeTime: String,
     val isClosed: Boolean,
-    val is24Hours: Boolean
-): Parcelable
+    val is24Hours: Boolean,
+) : Parcelable
 
 @Parcelize
 data class KorDayOfWeek(
     val kor: String,
     val eng: String,
-    val priority: Int
-): Parcelable
+    val priority: Int,
+) : Parcelable

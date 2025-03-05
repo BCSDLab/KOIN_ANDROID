@@ -11,7 +11,6 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ActivityOperatingInfoBinding
 
 class OperatingInfoActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityOperatingInfoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +34,11 @@ class OperatingInfoActivity : AppCompatActivity() {
                 javaScriptEnabled = true
                 domStorageEnabled = true
             }
-            if (BuildConfig.IS_DEBUG)
+            if (BuildConfig.IS_DEBUG) {
                 loadUrl(getString(R.string.koreatech_operating_info_stage_url))
-            else
+            } else {
                 loadUrl(getString(R.string.koreatech_operating_info_production_url))
-
+            }
         }
     }
 

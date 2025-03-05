@@ -22,6 +22,6 @@ fun HtmlModel.toHtmlElement(): HtmlElement {
         content = content,
         attributes = attributes,
         children = children.map { it.toHtmlElement() },
-        styles = styles
+        styles = styles,
     )
 }

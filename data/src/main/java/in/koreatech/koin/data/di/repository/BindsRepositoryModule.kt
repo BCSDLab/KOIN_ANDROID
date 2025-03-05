@@ -18,18 +18,14 @@ abstract class BindsRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsFirebaseMessagingRepository(
-        firebaseMessagingRepositoryImpl: FirebaseMessagingRepositoryImpl
+        firebaseMessagingRepositoryImpl: FirebaseMessagingRepositoryImpl,
     ): FirebaseMessagingRepository
 
     @Binds
     @Singleton
-    abstract fun bindsTimetableRepository(
-        timetableRepositoryImpl: TimetableRepositoryImpl
-    ): TimetableRepository
+    abstract fun bindsTimetableRepository(timetableRepositoryImpl: TimetableRepositoryImpl): TimetableRepository
 
     @Binds
     @Singleton
-    abstract fun bindsBusV2Repository(
-        busV2RepositoryImpl: BusRepositoryImpl
-    ): BusRepository
+    abstract fun bindsBusV2Repository(busV2RepositoryImpl: BusRepositoryImpl): BusRepository
 }

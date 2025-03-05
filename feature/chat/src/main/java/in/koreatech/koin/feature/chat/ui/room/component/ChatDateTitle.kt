@@ -17,24 +17,26 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ChatDateTitle(
     date: LocalDate,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp, horizontal = 24.dp),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp, horizontal = 24.dp),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
-            modifier = Modifier
-                .background(
-                    color = KoinTheme.colors.neutral200.copy(alpha = 0.8f),
-                    shape = KoinTheme.shapes.medium
-                )
-                .padding(vertical = 4.dp, horizontal = 12.dp),
+            modifier =
+                Modifier
+                    .background(
+                        color = KoinTheme.colors.neutral200.copy(alpha = 0.8f),
+                        shape = KoinTheme.shapes.medium,
+                    )
+                    .padding(vertical = 4.dp, horizontal = 12.dp),
             text = date.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")),
             style = KoinTheme.typography.medium12,
-            color = KoinTheme.colors.primary600
+            color = KoinTheme.colors.primary600,
         )
     }
 }

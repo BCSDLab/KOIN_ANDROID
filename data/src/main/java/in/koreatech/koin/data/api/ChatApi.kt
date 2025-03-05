@@ -1,4 +1,3 @@
 package `in`.koreatech.koin.data.api
 
-interface ChatApi {
-}
+interface ChatApi

@@ -11,5 +11,7 @@ interface LandApi {
     suspend fun getLandList(): LandsResponse
 
     @GET("${URLConstant.LAND}/{id}")
-    suspend fun getLandDetail(@Path("id") id: Int): LandDetailResponse
+    suspend fun getLandDetail(
+        @Path("id") id: Int,
+    ): LandDetailResponse
 }

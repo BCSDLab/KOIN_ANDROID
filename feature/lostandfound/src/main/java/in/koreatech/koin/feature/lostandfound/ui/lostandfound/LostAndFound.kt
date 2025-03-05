@@ -53,7 +53,7 @@ fun LostAndFoundList(
     navigateToWriteFoundItem: (lostOrFoundType: String) -> Unit = {},
     navigateToLostAndFoundDetail: (articleId: Int) -> Unit = {},
     navigateToKeywordFragment: () -> Unit = {},
-    navigateToLoginActivity: () -> Unit = {}
+    navigateToLoginActivity: () -> Unit = {},
 ) {
     val uiState by viewModel.collectAsState()
     viewModel.collectSideEffect { sideEffect ->
@@ -72,7 +72,7 @@ fun LostAndFoundList(
             64.dp
         } else {
             0.dp
-        }
+        },
     )
 
     val context = LocalContext.current
@@ -99,11 +99,11 @@ fun LostAndFoundList(
                             viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LOST_AND_FOUND.FOUND_WRITE,
-                                fabFoundText
+                                AnalyticsConstant.Label.LostAndFound.FOUND_WRITE,
+                                fabFoundText,
                             )
                             navigateToWriteFoundItem(
-                                LostOrFoundType.FOUND.name
+                                LostOrFoundType.FOUND.name,
                             )
                         }
                         viewModel.setFabDialogExpanded(false)
@@ -113,44 +113,46 @@ fun LostAndFoundList(
                             viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LOST_AND_FOUND.LOST_WRITE,
-                                fabLostText
+                                AnalyticsConstant.Label.LostAndFound.LOST_WRITE,
+                                fabLostText,
                             )
                             navigateToWriteFoundItem(
-                                LostOrFoundType.LOST.name
+                                LostOrFoundType.LOST.name,
                             )
                         }
                         viewModel.setFabDialogExpanded(false)
                     },
                     onDialogExpandedChange = {
                         EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_WRITE,
-                            fabWrite
+                            AnalyticsConstant.Label.LostAndFound.ITEM_WRITE,
+                            fabWrite,
                         )
                         viewModel.setFabDialogExpanded(it)
-                    }
+                    },
                 )
             },
-            contentWindowInsets = WindowInsets(0, 0, 0, 0)
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
         ) { contentPadding ->
             val myKeywords = uiState.myKeywords
             Column(
-                modifier = modifier
-                    .padding(contentPadding)
-                    .consumeWindowInsets(contentPadding)
+                modifier =
+                    modifier
+                        .padding(contentPadding)
+                        .consumeWindowInsets(contentPadding),
             ) {
                 LazyColumn(
                     modifier = modifier,
-                    state = lazyListState
+                    state = lazyListState,
                 ) {
                     item {
                         LostAndFoundKeywordGroup(
                             keyWords = myKeywords,
-                            selectedKeywordIndex = when (uiState.selectedKeyword) {
-                                "" -> 0
-                                else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
-                            },
-                            navigateToKeywordFragment = navigateToKeywordFragment
+                            selectedKeywordIndex =
+                                when (uiState.selectedKeyword) {
+                                    "" -> 0
+                                    else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
+                                },
+                            navigateToKeywordFragment = navigateToKeywordFragment,
                         ) {
                             viewModel.selectKeyword(it)
                         }
@@ -162,13 +164,13 @@ fun LostAndFoundList(
                             },
                             onItemSelected = {
                                 EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_TYPE,
+                                    AnalyticsConstant.Label.LostAndFound.ITEM_POST_TYPE,
                                     when (it) {
                                         0 -> "물품 전체"
                                         1 -> "습득물"
                                         2 -> "분실물"
                                         else -> ""
-                                    }
+                                    },
                                 )
                                 viewModel.setSelectedType(
                                     when (it) {
@@ -176,22 +178,23 @@ fun LostAndFoundList(
                                         1 -> LostOrFoundType.FOUND
                                         2 -> LostOrFoundType.LOST
                                         else -> null
-                                    }
+                                    },
                                 )
                                 viewModel.changePage(1)
                                 viewModel.fetchLostAndFoundList()
-                            }
+                            },
                         )
                     }
                     if (uiState.lostAndFoundList.isEmpty()) {
                         item {
                             Text(
-                                modifier = modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp),
+                                modifier =
+                                    modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp),
                                 textAlign = TextAlign.Center,
                                 fontSize = 16.sp,
-                                text = stringResource(R.string.empty_articles)
+                                text = stringResource(R.string.empty_articles),
                             )
                         }
                     } else {
@@ -207,7 +210,11 @@ fun LostAndFoundList(
                                 registeredAt = it.registeredAt,
                             ) {
                                 if (it.isReported) {
-                                    Toast.makeText(context, context.getString(R.string.reported_article_click_toast), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.reported_article_click_toast),
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
                                 } else {
                                     navigateToLostAndFoundDetail(it.id)
                                 }
@@ -218,10 +225,11 @@ fun LostAndFoundList(
                         }
                         item {
                             LostAndFoundPagination(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth(),
                                 currentPage = uiState.currentPage,
-                                totalPage = uiState.totalPage
+                                totalPage = uiState.totalPage,
                             ) {
                                 viewModel.changePage(it)
                             }
@@ -244,10 +252,11 @@ fun LostAndFoundList(
                     LostAndFoundDialog(
                         title = stringResource(R.string.request_login_dialog_title),
                         description = stringResource(R.string.request_login_dialog_description),
-                        lostAndFoundDialogStyle = lostAndFoundDialogStyle().copy(
-                            titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
-                            descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center),
-                        ),
+                        lostAndFoundDialogStyle =
+                            lostAndFoundDialogStyle().copy(
+                                titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
+                                descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center),
+                            ),
                         onPositive = {
                             navigateToLoginActivity()
                             viewModel.setShowLoginRequestDialog(false)
@@ -259,13 +268,12 @@ fun LostAndFoundList(
                 }
             }
         }
-
     }
 }
 
 fun handleSideEffect(
     sideEffect: LostAndFoundSideEffect,
-    viewModel: LostAndFoundViewModel
+    viewModel: LostAndFoundViewModel,
 ) {
     when (sideEffect) {
         is LostAndFoundSideEffect.PageChanged -> {

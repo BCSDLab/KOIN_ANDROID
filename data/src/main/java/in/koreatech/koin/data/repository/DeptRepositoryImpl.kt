@@ -6,36 +6,38 @@ import `in`.koreatech.koin.domain.model.user.Dept
 import `in`.koreatech.koin.domain.repository.DeptRepository
 import javax.inject.Inject
 
-class DeptRepositoryImpl @Inject constructor(
-    private val deptRemoteDataSource: DeptRemoteDataSource,
-    private val deptLocalDataSource: DeptLocalDataSource
-) : DeptRepository {
-    override suspend fun getDeptNameFromDeptCode(deptCode: String): String {
-        return try {
-            val deptResponse = deptRemoteDataSource.getDeptFromDeptCode(deptCode)
-            deptResponse?.name ?: throw IllegalArgumentException()
-        } catch (t: Throwable) {
-            deptLocalDataSource.getDeptFromDeptCode(deptCode)
-        }
-    }
-
-    override suspend fun getDepts(): List<Dept> {
-        return deptRemoteDataSource.getAllDepts().map {
-            Dept(
-                name = it.name,
-                curriculumUrl = it.curriculumLinkUrl,
-                codes = it.deptNums
-            )
-        }
-    }
-
-    override suspend fun getDeptNames(): List<String> {
-        return try {
-            deptRemoteDataSource.getAllDepts().map {
-                it.name
+class DeptRepositoryImpl
+    @Inject
+    constructor(
+        private val deptRemoteDataSource: DeptRemoteDataSource,
+        private val deptLocalDataSource: DeptLocalDataSource,
+    ) : DeptRepository {
+        override suspend fun getDeptNameFromDeptCode(deptCode: String): String {
+            return try {
+                val deptResponse = deptRemoteDataSource.getDeptFromDeptCode(deptCode)
+                deptResponse?.name ?: throw IllegalArgumentException()
+            } catch (t: Throwable) {
+                deptLocalDataSource.getDeptFromDeptCode(deptCode)
             }
-        } catch (t: Throwable) {
-            deptLocalDataSource.getDeptNames()
+        }
+
+        override suspend fun getDepts(): List<Dept> {
+            return deptRemoteDataSource.getAllDepts().map {
+                Dept(
+                    name = it.name,
+                    curriculumUrl = it.curriculumLinkUrl,
+                    codes = it.deptNums,
+                )
+            }
+        }
+
+        override suspend fun getDeptNames(): List<String> {
+            return try {
+                deptRemoteDataSource.getAllDepts().map {
+                    it.name
+                }
+            } catch (t: Throwable) {
+                deptLocalDataSource.getDeptNames()
+            }
         }
     }
-}

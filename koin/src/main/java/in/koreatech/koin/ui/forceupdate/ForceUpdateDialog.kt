@@ -10,7 +10,7 @@ import `in`.koreatech.koin.util.ext.navigateToPlayStore
 
 class ForceUpdateDialog : BaseDialogFragment<DialogForceUpdateBinding>(
     R.layout.dialog_force_update,
-    DialogForceUpdateBinding::inflate
+    DialogForceUpdateBinding::inflate,
 ) {
     companion object {
         private const val action = "force_update"
@@ -31,7 +31,10 @@ class ForceUpdateDialog : BaseDialogFragment<DialogForceUpdateBinding>(
         setStyle(STYLE_NORMAL, R.style.TransparentDialog)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setLayoutSizeRatio(widthPercent = 0.77f)
         initEvent()
@@ -43,7 +46,7 @@ class ForceUpdateDialog : BaseDialogFragment<DialogForceUpdateBinding>(
                 action = action,
                 category = clickCategory,
                 label = "already_update_popup",
-                value = "닫기"
+                value = "닫기",
             )
             dismiss()
         }
@@ -52,7 +55,7 @@ class ForceUpdateDialog : BaseDialogFragment<DialogForceUpdateBinding>(
                 action = action,
                 category = clickCategory,
                 label = "already_update_popup",
-                value = "스토어로_가기"
+                value = "스토어로_가기",
             )
             requireContext().navigateToPlayStore()
         }

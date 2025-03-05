@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class TermEntity(
     val header: String,
     val articles: List<TermArticleEntity>,
-    val footer: String
+    val footer: String,
 )

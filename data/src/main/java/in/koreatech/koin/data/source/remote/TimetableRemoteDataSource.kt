@@ -13,66 +13,51 @@ import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
 import javax.inject.Inject
 
-class TimetableRemoteDataSource @Inject constructor(
-    private val timetableApi: TimetableApi,
-    private val timetableAuthApi: TimetableAuthApi
-) {
-    suspend fun getSemesters(): List<SemesterResponse> = timetableApi.getSemesters()
+class TimetableRemoteDataSource
+    @Inject
+    constructor(
+        private val timetableApi: TimetableApi,
+        private val timetableAuthApi: TimetableAuthApi,
+    ) {
+        suspend fun getSemesters(): List<SemesterResponse> = timetableApi.getSemesters()
 
-    suspend fun getSemesterCheck(): SemesterCheckResponse = timetableAuthApi.getSemestersCheck()
+        suspend fun getSemesterCheck(): SemesterCheckResponse = timetableAuthApi.getSemestersCheck()
 
-    suspend fun getLectures(semesterDate: String): List<LectureResponse> =
-        timetableApi.getLectures(semesterDate)
+        suspend fun getLectures(semesterDate: String): List<LectureResponse> = timetableApi.getLectures(semesterDate)
 
-    suspend fun getTimetableLectures(timetableFrameId: Int): TimetableLecturesResponse =
-        timetableAuthApi.getTimetableLectures(timetableFrameId)
+        suspend fun getTimetableLectures(timetableFrameId: Int): TimetableLecturesResponse =
+            timetableAuthApi.getTimetableLectures(timetableFrameId)
 
-    suspend fun getTimetableFrames(
-        semester: String
-    ): List<TimetableFrameResponse> = timetableAuthApi.getTimetableFrames(semester)
+        suspend fun getTimetableFrames(semester: String): List<TimetableFrameResponse> = timetableAuthApi.getTimetableFrames(semester)
 
-    suspend fun getAllFrames(): Map<String, List<TimetableFrameResponse>> =
-        timetableAuthApi.getAllFrames().semesterFrames
+        suspend fun getAllFrames(): Map<String, List<TimetableFrameResponse>> = timetableAuthApi.getAllFrames().semesterFrames
 
-    suspend fun putTimetableLectures(
-        lectures: TimetableLecturesQueryRequest
-    ): TimetableLecturesResponse = timetableAuthApi.putTimetableLectures(lectures)
+        suspend fun putTimetableLectures(lectures: TimetableLecturesQueryRequest): TimetableLecturesResponse =
+            timetableAuthApi.putTimetableLectures(lectures)
 
-    suspend fun putTimetableFrame(
-        id: Int, frame: TimetableFrameQueryRequest
-    ): TimetableFrameResponse = timetableAuthApi.putTimetableFrame(id, frame)
+        suspend fun putTimetableFrame(
+            id: Int,
+            frame: TimetableFrameQueryRequest,
+        ): TimetableFrameResponse = timetableAuthApi.putTimetableFrame(id, frame)
 
-    suspend fun postTimetableLectures(
-        lectures: LecturesQueryRequest
-    ): TimetableLecturesResponse = timetableAuthApi.postTimetableLectures(lectures)
+        suspend fun postTimetableLectures(lectures: LecturesQueryRequest): TimetableLecturesResponse =
+            timetableAuthApi.postTimetableLectures(lectures)
 
-    suspend fun postTimetableFrame(
-        frame: TimetableFrameCreateQueryRequest
-    ): TimetableFrameResponse = timetableAuthApi.postTimetableFrame(frame)
+        suspend fun postTimetableFrame(frame: TimetableFrameCreateQueryRequest): TimetableFrameResponse =
+            timetableAuthApi.postTimetableFrame(frame)
 
-    suspend fun postRollbackFrame(
-        frameId: Int
-    ): TimetableLecturesResponse = timetableAuthApi.postRollbackFrame(frameId)
+        suspend fun postRollbackFrame(frameId: Int): TimetableLecturesResponse = timetableAuthApi.postRollbackFrame(frameId)
 
-    suspend fun deleteTimetableFrame(
-        frameId: Int
-    ) = timetableAuthApi.deleteTimetableFrame(frameId)
+        suspend fun deleteTimetableFrame(frameId: Int) = timetableAuthApi.deleteTimetableFrame(frameId)
 
+        suspend fun deleteTimetableLecture(id: Int) = timetableAuthApi.deleteTimetableLecture(id)
 
-    suspend fun deleteTimetableLecture(
-        id: Int
-    ) = timetableAuthApi.deleteTimetableLecture(id)
+        suspend fun deleteTimetableFrameLecture(
+            frameId: Int,
+            lectureId: Int,
+        ) = timetableAuthApi.deleteTimetableFrameLecture(frameId, lectureId)
 
-    suspend fun deleteTimetableFrameLecture(
-        frameId: Int,
-        lectureId: Int
-    ) = timetableAuthApi.deleteTimetableFrameLecture(frameId, lectureId)
+        suspend fun deleteTimetableLectures(lectureIds: List<Int>) = timetableAuthApi.deleteTimetableLectures(lectureIds)
 
-    suspend fun deleteTimetableLectures(
-        lectureIds: List<Int>
-    ) = timetableAuthApi.deleteTimetableLectures(lectureIds)
-
-    suspend fun deleteAllTimetableFrame(
-        semester: String
-    ) = timetableAuthApi.deleteAllTimetableFrame(semester)
-}
+        suspend fun deleteAllTimetableFrame(semester: String) = timetableAuthApi.deleteAllTimetableFrame(semester)
+    }

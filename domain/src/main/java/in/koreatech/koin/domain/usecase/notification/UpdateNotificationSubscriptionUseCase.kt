@@ -6,16 +6,18 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.repository.NotificationRepository
 import javax.inject.Inject
 
-class UpdateNotificationSubscriptionUseCase @Inject constructor(
-    private val notificationRepository: NotificationRepository,
-    private val userErrorHandler: UserErrorHandler,
-) {
-    suspend operator fun invoke(type: SubscribesType): Pair<Unit?, ErrorHandler?> {
-        return try {
-            notificationRepository.updateSubscription(type)
-            Unit to null
-        } catch (e: Exception) {
-            null to userErrorHandler.handleUserError(e)
+class UpdateNotificationSubscriptionUseCase
+    @Inject
+    constructor(
+        private val notificationRepository: NotificationRepository,
+        private val userErrorHandler: UserErrorHandler,
+    ) {
+        suspend operator fun invoke(type: SubscribesType): Pair<Unit?, ErrorHandler?> {
+            return try {
+                notificationRepository.updateSubscription(type)
+                Unit to null
+            } catch (e: Exception) {
+                null to userErrorHandler.handleUserError(e)
+            }
         }
     }
-}

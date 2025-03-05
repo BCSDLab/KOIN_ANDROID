@@ -13,17 +13,18 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class BitmapUtils (
-    private val context: Context
+class BitmapUtils(
+    private val context: Context,
 ) {
-    fun capture(view: View, onSavedTimeTable: (Bitmap) -> Unit) {
+    fun capture(
+        view: View,
+        onSavedTimeTable: (Bitmap) -> Unit,
+    ) {
         val bitmap = generateBitmap(view)
         onSavedTimeTable(bitmap)
     }
 
-    fun saveBitmapImage(
-        bitmap: Bitmap,
-    ): Boolean {
+    fun saveBitmapImage(bitmap: Bitmap): Boolean {
         val timeStamp = System.currentTimeMillis()
 
         val values = ContentValues()
@@ -54,7 +55,7 @@ class BitmapUtils (
                     Timber.e("Saved...")
                     return true
                 } catch (e: Exception) {
-                   Timber.e("Failed save : ${e.message}")
+                    Timber.e("Failed save : ${e.message}")
                     return false
                 }
             } else {
@@ -76,7 +77,7 @@ class BitmapUtils (
                     values.put(MediaStore.Images.Media.DATA, imageFile.absolutePath)
                     context.contentResolver.insert(
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        values
+                        values,
                     )
 
                     Timber.e("Saved...")
@@ -91,17 +92,18 @@ class BitmapUtils (
     }
 
     private fun generateBitmap(view: View): Bitmap {
-        val bitmap = Bitmap.createBitmap(
-            view.width,
-            view.height,
-            Bitmap.Config.ARGB_8888
-        )
+        val bitmap =
+            Bitmap.createBitmap(
+                view.width,
+                view.height,
+                Bitmap.Config.ARGB_8888,
+            )
         val canvas = Canvas(bitmap)
         view.layout(
             view.left,
             view.top,
             view.right,
-            view.bottom
+            view.bottom,
         )
         view.draw(canvas)
         return bitmap

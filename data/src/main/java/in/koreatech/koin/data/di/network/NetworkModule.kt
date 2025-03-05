@@ -24,22 +24,20 @@ import kotlin.time.Duration.Companion.milliseconds
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(
-
-    ) = HttpLoggingInterceptor().apply {
-        level = if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.BODY
-        } else {
-            HttpLoggingInterceptor.Level.HEADERS
+    fun provideHttpLoggingInterceptor() =
+        HttpLoggingInterceptor().apply {
+            level =
+                if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.BODY
+                } else {
+                    HttpLoggingInterceptor.Level.HEADERS
+                }
         }
-    }
 
     @ServerUrl
     @Provides
     @Singleton
-    fun provideServerUrl(
-
-    ): String {
+    fun provideServerUrl(): String {
         return if (BuildConfig.DEBUG) {
             URLConstant.BASE_URL_STAGE
         } else {
@@ -50,21 +48,20 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpWebSocketClient(
-        @NoAuth okHttpClient: OkHttpClient
+        @NoAuth okHttpClient: OkHttpClient,
     ): OkHttpWebSocketClient {
         return OkHttpWebSocketClient(okHttpClient)
     }
 
     @Provides
     @Singleton
-    fun provideStompClient(
-        okHttpWebSocketClient: OkHttpWebSocketClient,
-    ): StompClient {
+    fun provideStompClient(okHttpWebSocketClient: OkHttpWebSocketClient): StompClient {
         return StompClient(okHttpWebSocketClient) {
-            heartBeat = HeartBeat(
-                minSendPeriod = 4000.milliseconds, // Follow backend recommendation
-                expectedPeriod = 4000.milliseconds
-            )
+            heartBeat =
+                HeartBeat(
+                    minSendPeriod = 4000.milliseconds, // Follow backend recommendation
+                    expectedPeriod = 4000.milliseconds,
+                )
         }
     }
 
@@ -73,7 +70,7 @@ object NetworkModule {
     fun provideKoinStomp(
         @ServerUrl baseUrl: String,
         tokenLocalDataSource: TokenLocalDataSource,
-        stompClient: StompClient
+        stompClient: StompClient,
     ): KoinStomp {
         return runBlocking {
             val authToken = tokenLocalDataSource.getAccessToken() ?: ""

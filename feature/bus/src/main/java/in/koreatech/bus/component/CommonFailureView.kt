@@ -31,13 +31,11 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
-fun CommonFailureView(
-    modifier: Modifier = Modifier
-) {
+fun CommonFailureView(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             modifier = Modifier.width(120.dp),
@@ -49,18 +47,19 @@ fun CommonFailureView(
             modifier = Modifier,
             text = stringResource(R.string.fail_to_load_screen_description),
             style = KoinTheme.typography.bold15,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         )
         Spacer(modifier = Modifier.height(12.dp))
         Button(
             onClick = LocalOnRefresh.current,
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
-            ),
+            colors =
+                ButtonDefaults.buttonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black,
+                ),
             border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
-            shape = CircleShape
+            shape = CircleShape,
         ) {
             Icon(
                 imageVector = Icons.Rounded.Refresh,

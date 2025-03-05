@@ -10,24 +10,29 @@ import `in`.koreatech.koin.R
 
 class StoreDetailImageViewpagerAdapter(
     private val images: List<String>?,
-    private val onClick: (String) -> Unit
+    private val onClick: (String) -> Unit,
 ) :
     RecyclerView.Adapter<StoreDetailImageViewpagerAdapter.ImageViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_store_detail_image, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ImageViewHolder {
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_store_detail_image, parent, false)
         return ImageViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ImageViewHolder,
+        position: Int,
+    ) {
         holder.bind(images?.get(position))
     }
 
     override fun getItemCount(): Int {
         return images?.size ?: 0
     }
-
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.store_detail_image_imageview)

@@ -5,5 +5,5 @@ enum class ReportReason(val title: String, val description: String) {
     SPAM("스팸", "광고가 포함된 글입니다."),
     INAPPROPRIATE_LANGUAGE("욕설", "욕설, 성적인 언어, 비방하는 글이 포함된 글입니다."),
     PRIVACY("개인정보", "개인정보가 포함된 글입니다."),
-    OTHER("기타", "")
+    OTHER("기타", ""),
 }

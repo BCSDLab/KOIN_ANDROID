@@ -1,15 +1,14 @@
 package `in`.koreatech.koin.data.repository
 
 import OwnerRegisterRequest
-
 import `in`.koreatech.koin.data.mapper.toCategory
 import `in`.koreatech.koin.data.mapper.toFileUrlList
 import `in`.koreatech.koin.data.mapper.toMyStoreDayOffResponse
 import `in`.koreatech.koin.data.mapper.toOptionPriceList
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.data.mapper.toStringArray
-import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
+import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
@@ -22,7 +21,7 @@ import retrofit2.HttpException
 import java.io.EOFException
 
 class OwnerRegisterRepositoryImpl(
-    private val ownerRemoteDataSource: OwnerRemoteDataSource
+    private val ownerRemoteDataSource: OwnerRemoteDataSource,
 ) : OwnerRegisterRepository {
     override suspend fun ownerEmailRegister(
         attachments: List<OwnerRegisterUrl>,
@@ -32,7 +31,7 @@ class OwnerRegisterRepositoryImpl(
         password: String,
         phoneNumber: String,
         shopId: Int?,
-        shopName: String
+        shopName: String,
     ): Result<Unit> {
         return try {
             ownerRemoteDataSource.postOwnerEmailRegister(
@@ -44,8 +43,8 @@ class OwnerRegisterRepositoryImpl(
                     password.toSHA256(),
                     phoneNumber,
                     shopId,
-                    shopName
-                )
+                    shopName,
+                ),
             )
 
             Result.success(Unit)
@@ -65,7 +64,7 @@ class OwnerRegisterRepositoryImpl(
         password: String,
         phoneNumber: String,
         shopId: Int?,
-        shopName: String
+        shopName: String,
     ) {
         ownerRemoteDataSource.postOwnerRegister(
             OwnerRegisterRequest(
@@ -75,11 +74,10 @@ class OwnerRegisterRepositoryImpl(
                 password.toSHA256(),
                 phoneNumber,
                 shopId,
-                shopName
-            )
+                shopName,
+            ),
         )
     }
-
 
     override suspend fun storeRegister(
         name: String,
@@ -92,7 +90,7 @@ class OwnerRegisterRepositoryImpl(
         operatingTime: List<OperatingTime>,
         isDeliveryOk: Boolean,
         isCardOk: Boolean,
-        isBankOk: Boolean
+        isBankOk: Boolean,
     ): Result<Unit> {
         return runCatching {
             ownerRemoteDataSource.postStoreRegister(
@@ -108,11 +106,11 @@ class OwnerRegisterRepositoryImpl(
                     open = operatingTime.toMyStoreDayOffResponse(),
                     payBank = isBankOk,
                     payCard = isCardOk,
-                    phone = phoneNumber.toPhoneNumber() ?: ""
-                )
+                    phone = phoneNumber.toPhoneNumber() ?: "",
+                ),
             )
-        }.onFailure {exception ->
-            if(exception is CancellationException) throw exception
+        }.onFailure { exception ->
+            if (exception is CancellationException) throw exception
         }
     }
 
@@ -124,7 +122,7 @@ class OwnerRegisterRepositoryImpl(
         isSingle: Boolean,
         menuName: String,
         menuOptionPrice: List<StoreMenuOptionPrice>,
-        menuSinglePrice: String
+        menuSinglePrice: String,
     ): Result<Unit> {
         return runCatching {
             ownerRemoteDataSource.postStoreMenu(
@@ -132,15 +130,15 @@ class OwnerRegisterRepositoryImpl(
                 StoreMenuRegisterResponse(
                     menuCategoryId = menuCategoryId,
                     description = description,
-                    imageUrls=menuImageUrlList,
+                    imageUrls = menuImageUrlList,
                     isSingle = isSingle,
                     name = menuName,
-                    optionPrices = if(!isSingle)menuOptionPrice.toOptionPriceList() else null,
-                    singlePrice = if(isSingle)menuSinglePrice.toInt() else null
-                )
+                    optionPrices = if (!isSingle)menuOptionPrice.toOptionPriceList() else null,
+                    singlePrice = if (isSingle)menuSinglePrice.toInt() else null,
+                ),
             )
-        }.onFailure {exception ->
-            if(exception is CancellationException) throw exception
+        }.onFailure { exception ->
+            if (exception is CancellationException) throw exception
         }
     }
 
@@ -152,7 +150,7 @@ class OwnerRegisterRepositoryImpl(
         isSingle: Boolean,
         menuName: String,
         menuOptionPrice: List<StoreMenuOptionPrice>,
-        menuSinglePrice: String
+        menuSinglePrice: String,
     ): Result<Unit> {
         return runCatching {
             ownerRemoteDataSource.putStoreModifiedMenu(
@@ -160,16 +158,15 @@ class OwnerRegisterRepositoryImpl(
                 StoreMenuRegisterResponse(
                     menuCategoryId = menuCategoryId,
                     description = description,
-                    imageUrls=menuImageUrlList,
+                    imageUrls = menuImageUrlList,
                     isSingle = isSingle,
                     name = menuName,
-                    optionPrices = if(!isSingle)menuOptionPrice.toOptionPriceList() else null,
-                    singlePrice = if(isSingle)menuSinglePrice.toInt() else null
-                )
+                    optionPrices = if (!isSingle)menuOptionPrice.toOptionPriceList() else null,
+                    singlePrice = if (isSingle)menuSinglePrice.toInt() else null,
+                ),
             )
-        }.onFailure {exception ->
-            if(exception is CancellationException) throw exception
+        }.onFailure { exception ->
+            if (exception is CancellationException) throw exception
         }
-
     }
 }

@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
-import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -34,134 +32,141 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(
-    private val getDiningUseCase: GetDiningUseCase,
-    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
-    private val abTestUseCase: ABTestUseCase,
-    private val articleRepository: ArticleRepository
-) : BaseViewModel() {
-    private val _variableName = MutableLiveData<String>()
-    val variableName: LiveData<String> get() = _variableName
+class MainActivityViewModel
+    @Inject
+    constructor(
+        private val getDiningUseCase: GetDiningUseCase,
+        private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
+        private val abTestUseCase: ABTestUseCase,
+        private val articleRepository: ArticleRepository,
+    ) : BaseViewModel() {
+        private val _variableName = MutableLiveData<String>()
+        val variableName: LiveData<String> get() = _variableName
 
-    val bannerABTestExperimentGroup = flow {
-        abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
-            emit(it)
-        }.onFailure {
-            emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = null
-    ).filterNotNull()
-
-    val diningABTestExperimentGroup = flow {
-        abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
-            emit(it)
-        }.onFailure {
-            emit(Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first())
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first()
-    )
-
-    val hotArticles: StateFlow<List<ArticleMainState.Content>> =
-        articleRepository.fetchHotArticleHeaders()
-            .map {
-                it.take(HOT_ARTICLE_COUNT).map { article -> article.toContent() }
-            }.catch {
-
+        val bannerABTestExperimentGroup =
+            flow {
+                abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
+                    emit(it)
+                }.onFailure {
+                    emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
+                }
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = emptyList()
-            )
-    val articleNoti: StateFlow<ArticleMainState.Noti> =
-        articleRepository.fetchKeywordNotiIndex()
-            .map { articleNotiContent[it].toNoti() }
-            .stateIn(
+                initialValue = null,
+            ).filterNotNull()
+
+        val diningABTestExperimentGroup =
+            flow {
+                abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
+                    emit(it)
+                }.onFailure {
+                    emit(Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first())
+                }
+            }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = articleNotiContent.first().toNoti()
+                initialValue = Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first(),
             )
 
-    val articleMain: StateFlow<List<ArticleMainState>> = combine(
-        bannerABTestExperimentGroup, articleNoti, hotArticles
-    ) { experimentGroup, noti, articles ->
-        when (experimentGroup) {
-            ExperimentGroup.MAIN_BANNER_NEW -> listOf(noti) + articles
-            ExperimentGroup.MAIN_BANNER_ORIGINAL -> articles
-            else -> articles
+        val hotArticles: StateFlow<List<ArticleMainState.Content>> =
+            articleRepository.fetchHotArticleHeaders()
+                .map {
+                    it.take(HOT_ARTICLE_COUNT).map { article -> article.toContent() }
+                }.catch {
+                }.stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5_000),
+                    initialValue = emptyList(),
+                )
+        val articleNoti: StateFlow<ArticleMainState.Noti> =
+            articleRepository.fetchKeywordNotiIndex()
+                .map { articleNotiContent[it].toNoti() }
+                .stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5_000),
+                    initialValue = articleNotiContent.first().toNoti(),
+                )
+
+        val articleMain: StateFlow<List<ArticleMainState>> =
+            combine(
+                bannerABTestExperimentGroup,
+                articleNoti,
+                hotArticles,
+            ) { experimentGroup, noti, articles ->
+                when (experimentGroup) {
+                    ExperimentGroup.MAIN_BANNER_NEW -> listOf(noti) + articles
+                    ExperimentGroup.MAIN_BANNER_ORIGINAL -> articles
+                    else -> articles
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList(),
+            )
+
+        private val _selectedPosition = MutableLiveData(0)
+        val selectedPosition: LiveData<Int> get() = _selectedPosition
+        private val _diningData = MutableLiveData<List<Dining>>(listOf())
+        val diningData: LiveData<List<Dining>> get() = _diningData
+        private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
+        val selectedType: LiveData<DiningType> get() = _selectedType
+
+        private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
+        val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
+
+        init {
+            updateDining()
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
-    )
 
-    private val _selectedPosition = MutableLiveData(0)
-    val selectedPosition: LiveData<Int> get() = _selectedPosition
-    private val _diningData = MutableLiveData<List<Dining>>(listOf())
-    val diningData: LiveData<List<Dining>> get() = _diningData
-    private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
-    val selectedType: LiveData<DiningType> get() = _selectedType
+        fun postABTestAssign(title: String) =
+            viewModelScope.launchWithLoading {
+                abTestUseCase(title).onSuccess {
+                    _variableName.value = it
+                }
+            }
 
-    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
-    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
-
-    init {
-        updateDining()
-    }
-
-    fun postABTestAssign(title: String) = viewModelScope.launchWithLoading {
-        abTestUseCase(title).onSuccess {
-            _variableName.value = it
+        fun checkKeywordNotiContent() {
+            viewModelScope.launchWithLoading {
+                articleRepository.saveKeywordNotiIndex().launchIn(viewModelScope)
+            }
         }
-    }
 
-    fun checkKeywordNotiContent() {
-        viewModelScope.launchWithLoading {
-            articleRepository.saveKeywordNotiIndex().launchIn(viewModelScope)
+        fun setDiningType(diningType: DiningType) {
+            _selectedType.value = diningType
         }
-    }
 
-    fun setDiningType(diningType: DiningType) {
-        _selectedType.value = diningType
-    }
+        fun setSelectedPosition(position: Int) {
+            _selectedPosition.value = position
+        }
 
-    fun setSelectedPosition(position: Int) {
-        _selectedPosition.value = position
-    }
-
-    fun updateDining() {
-        viewModelScope.launchWithLoading {
-            getDiningUseCase(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
-                .onSuccess {
-                    if (it.isNotEmpty()) {
-                        _selectedType.value = DiningUtil.getCurrentType()
+        fun updateDining() {
+            viewModelScope.launchWithLoading {
+                getDiningUseCase(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
+                    .onSuccess {
+                        if (it.isNotEmpty()) {
+                            _selectedType.value = DiningUtil.getCurrentType()
+                        }
+                        _diningData.value = it
+                        _selectedPosition.value = 0
+                        _isLoading.value = false
                     }
-                    _diningData.value = it
-                    _selectedPosition.value = 0
-                    _isLoading.value = false
-                }
-                .onFailure {
-                    _diningData.value = listOf()
-                    _isLoading.value = false
-                }
+                    .onFailure {
+                        _diningData.value = listOf()
+                        _isLoading.value = false
+                    }
+            }
+        }
+
+        fun getStoreCategories(storeCategory: StoreCategories) {
+            viewModelScope.launchWithLoading {
+                val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
+                categoryList.add(0, storeCategory)
+                _storeCategories.value = categoryList
+            }
+        }
+
+        companion object {
+            private const val HOT_ARTICLE_COUNT = 4
         }
     }
-
-    fun getStoreCategories(storeCategory: StoreCategories) {
-        viewModelScope.launchWithLoading {
-            val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
-            categoryList.add(0, storeCategory)
-            _storeCategories.value = categoryList
-        }
-    }
-
-    companion object {
-        private const val HOT_ARTICLE_COUNT = 4
-    }
-}

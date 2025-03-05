@@ -17,6 +17,6 @@ data class ArticleLostAndFound(
 ) {
     data class ArticleLostAndFoundImage(
         val id: Int,
-        val imageUrl: String
+        val imageUrl: String,
     )
 }

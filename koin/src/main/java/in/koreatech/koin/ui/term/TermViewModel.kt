@@ -12,35 +12,36 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TermViewModel @Inject constructor(
-    private val getKoinTermUseCase: GetKoinTermUseCase,
-    private val getPrivacyTermUseCase: GetPrivacyTermUseCase
-) : ViewModel() {
+class TermViewModel
+    @Inject
+    constructor(
+        private val getKoinTermUseCase: GetKoinTermUseCase,
+        private val getPrivacyTermUseCase: GetPrivacyTermUseCase,
+    ) : ViewModel() {
+        private val _term: MutableStateFlow<TermState> = MutableStateFlow(TermState.Init)
+        val term: StateFlow<TermState> get() = _term.asStateFlow()
 
-    private val _term: MutableStateFlow<TermState> = MutableStateFlow(TermState.Init)
-    val term: StateFlow<TermState> get() = _term.asStateFlow()
+        fun loadKoinTerm() {
+            viewModelScope.launch {
+                getKoinTermUseCase()
+                    .onSuccess {
+                        _term.value = TermState.Success(it)
+                    }
+                    .onFailure {
+                        _term.value = TermState.Failure(it.message ?: "")
+                    }
+            }
+        }
 
-    fun loadKoinTerm() {
-        viewModelScope.launch {
-            getKoinTermUseCase()
-                .onSuccess {
-                    _term.value = TermState.Success(it)
-                }
-                .onFailure {
-                    _term.value = TermState.Failure(it.message ?: "")
-                }
+        fun loadPrivacyTerm() {
+            viewModelScope.launch {
+                getPrivacyTermUseCase()
+                    .onSuccess {
+                        _term.value = TermState.Success(it)
+                    }
+                    .onFailure {
+                        _term.value = TermState.Failure(it.message ?: "")
+                    }
+            }
         }
     }
-
-    fun loadPrivacyTerm() {
-        viewModelScope.launch {
-            getPrivacyTermUseCase()
-                .onSuccess {
-                    _term.value = TermState.Success(it)
-                }
-                .onFailure {
-                    _term.value = TermState.Failure(it.message ?: "")
-                }
-        }
-    }
-}

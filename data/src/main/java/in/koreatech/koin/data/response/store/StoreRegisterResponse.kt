@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.response.store
 
 import com.google.gson.annotations.SerializedName
 
-data class StoreRegisterResponse (
+data class StoreRegisterResponse(
     @SerializedName("address") val address: String,
     @SerializedName("main_category_id") val mainCategoryId: Int,
     @SerializedName("category_ids") val categoryIds: List<Int>,
@@ -14,5 +14,5 @@ data class StoreRegisterResponse (
     @SerializedName("open") val open: List<StoreDayOffResponse>?, // 가게 휴점 시간
     @SerializedName("pay_bank") val payBank: Boolean, // 계좌이체 가능
     @SerializedName("pay_card") val payCard: Boolean, // 카드결제 가능
-    @SerializedName("phone") val phone: String // 전화번호
+    @SerializedName("phone") val phone: String, // 전화번호
 )

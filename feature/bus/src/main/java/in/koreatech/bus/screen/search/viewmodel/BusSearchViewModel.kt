@@ -20,74 +20,82 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BusSearchViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val onboardingManager: OnboardingManager,
-    private val busRepository: BusRepository
-) : BaseBusViewModel() {
+class BusSearchViewModel
+    @Inject
+    constructor(
+        private val savedStateHandle: SavedStateHandle,
+        private val onboardingManager: OnboardingManager,
+        private val busRepository: BusRepository,
+    ) : BaseBusViewModel() {
+        private val shouldShowNotice =
+            onboardingManager.getShouldOnboardFlow(
+                OnboardingType.SHOW_BUS_HEAD_ARTICLE,
+            )
 
-    private val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
-        OnboardingType.SHOW_BUS_HEAD_ARTICLE
-    )
+        private val notice =
+            flow {
+                busRepository.fetchBusNotice().onSuccess {
+                    emit(it.toBusNoticeState())
+                }.onFailure {
+                    if (BuildConfig.DEBUG) {
+                        emit(busNoticeMock)
+                    } else {
+                        emit(null)
+                    }
+                }
+            }
 
-    private val notice = flow {
-        busRepository.fetchBusNotice().onSuccess {
-            emit(it.toBusNoticeState())
-        }.onFailure {
-            if (BuildConfig.DEBUG) emit(busNoticeMock)
-            else emit(null)
-        }
-    }
+        val noticeUiState =
+            combine(notice, shouldShowNotice) { notice, shouldShow ->
+                if (notice == null) {
+                    BusNoticeUiState.LoadFailed
+                } else {
+                    val lastNoticeId = busRepository.getLastShownNoticeId().getOrElse { -1 }
 
-    val noticeUiState = combine(notice, shouldShowNotice) { notice, shouldShow ->
-        if (notice == null)
-            BusNoticeUiState.LoadFailed
-        else {
-            val lastNoticeId = busRepository.getLastShownNoticeId().getOrElse { -1 }
+                    busRepository.saveLastShownNoticeId(notice.id).getOrNull() ?: return@combine BusNoticeUiState.LoadFailed
+                    if (notice.id == lastNoticeId) {
+                        if (shouldShow) {
+                            BusNoticeUiState.Show(notice)
+                        } else {
+                            BusNoticeUiState.NotShow
+                        }
+                    } else {
+                        onboardingManager.updateShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE, true)
+                        BusNoticeUiState.Show(notice)
+                    }
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = BusNoticeUiState.Loading,
+            )
 
-            busRepository.saveLastShownNoticeId(notice.id).getOrNull() ?: return@combine BusNoticeUiState.LoadFailed
-            if (notice.id == lastNoticeId) {
-                if (shouldShow)
-                    BusNoticeUiState.Show(notice)
-                else
-                    BusNoticeUiState.NotShow
-            } else {
-                onboardingManager.updateShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE, true)
-                BusNoticeUiState.Show(notice)
+        fun closeNotice() {
+            viewModelScope.launch {
+                onboardingManager.updateShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE, false)
             }
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = BusNoticeUiState.Loading
-    )
 
-    fun closeNotice() {
-        viewModelScope.launch {
-            onboardingManager.updateShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE, false)
+        val departure = savedStateHandle.getStateFlow<PlaceType?>(KEY_DEPARTURE, null)
+        val arrival = savedStateHandle.getStateFlow<PlaceType?>(KEY_ARRIVAL, null)
+
+        fun setDeparture(departure: PlaceType?) {
+            savedStateHandle[KEY_DEPARTURE] = departure
+        }
+
+        fun setArrival(arrival: PlaceType?) {
+            savedStateHandle[KEY_ARRIVAL] = arrival
+        }
+
+        fun swapDepartureAndArrival() {
+            val currentDeparture = departure.value
+            val currentArrival = arrival.value
+            setDeparture(currentArrival)
+            setArrival(currentDeparture)
+        }
+
+        companion object {
+            private const val KEY_DEPARTURE = "departure"
+            private const val KEY_ARRIVAL = "arrival"
         }
     }
-
-    val departure = savedStateHandle.getStateFlow<PlaceType?>(KEY_DEPARTURE, null)
-    val arrival = savedStateHandle.getStateFlow<PlaceType?>(KEY_ARRIVAL, null)
-
-    fun setDeparture(departure: PlaceType?) {
-        savedStateHandle[KEY_DEPARTURE] = departure
-    }
-
-    fun setArrival(arrival: PlaceType?) {
-        savedStateHandle[KEY_ARRIVAL] = arrival
-    }
-
-    fun swapDepartureAndArrival() {
-        val currentDeparture = departure.value
-        val currentArrival = arrival.value
-        setDeparture(currentArrival)
-        setArrival(currentDeparture)
-    }
-
-    companion object {
-        private const val KEY_DEPARTURE = "departure"
-        private const val KEY_ARRIVAL = "arrival"
-    }
-}

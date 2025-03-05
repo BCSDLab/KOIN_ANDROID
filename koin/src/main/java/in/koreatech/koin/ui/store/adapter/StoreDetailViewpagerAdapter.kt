@@ -7,8 +7,9 @@ import `in`.koreatech.koin.ui.store.fragment.StoreDetailEventFragment
 import `in`.koreatech.koin.ui.store.fragment.StoreDetailMenuFragment
 import `in`.koreatech.koin.ui.store.fragment.StoreDetailReviewFragment
 
-class StoreDetailViewpagerAdapter(fragment: FragmentActivity): FragmentStateAdapter(fragment){
+class StoreDetailViewpagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
     override fun getItemCount() = PAGE_NUMBER
+
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> StoreDetailMenuFragment()
@@ -17,8 +18,8 @@ class StoreDetailViewpagerAdapter(fragment: FragmentActivity): FragmentStateAdap
             else -> throw IndexOutOfBoundsException()
         }
     }
+
     companion object {
         const val PAGE_NUMBER = 3
-
     }
 }

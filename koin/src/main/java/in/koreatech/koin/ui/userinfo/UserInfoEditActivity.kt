@@ -41,7 +41,6 @@ class UserInfoEditActivity : ActivityBase() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -52,39 +51,41 @@ class UserInfoEditActivity : ActivityBase() {
         userInfoEditViewModel.getUserInfo()
     }
 
-    private fun initView() = with(binding) {
-        appbarUserInfoEdit.setAppBarButtonClickedListener(
-            leftButtonClicked = {
-                onBackPressedDispatcher.onBackPressed()
-            },
-            rightButtonClicked = {}
-        )
-
-        etNickname.addTextChangedListener(nicknameWatcher)
-        spinnerMajor.lifecycleOwner = this@UserInfoEditActivity
-
-        btnConfirm.setOnClickListener {
-            userInfoEditViewModel.updateUserInfo(
-                name = etName.text.toString(),
-                nickname = etNickname.text.toString(),
-                rawPhoneNumber = etPhoneNumber.text.toString(),
-                gender =
-                if (rbGenderMan.isChecked)
-                    Gender.Man
-                else if (rbGenderWoman.isChecked)
-                    Gender.Woman
-                else
-                    Gender.Unknown,
-                studentId = etStudentId.text.toString(),
-                major = spinnerMajor.text.toString()
+    private fun initView() =
+        with(binding) {
+            appbarUserInfoEdit.setAppBarButtonClickedListener(
+                leftButtonClicked = {
+                    onBackPressedDispatcher.onBackPressed()
+                },
+                rightButtonClicked = {},
             )
-        }
 
-        btnNicknameDuplication.setOnClickListener {
-            userInfoEditViewModel.checkNickname(etNickname.textString)
+            etNickname.addTextChangedListener(nicknameWatcher)
+            spinnerMajor.lifecycleOwner = this@UserInfoEditActivity
+
+            btnConfirm.setOnClickListener {
+                userInfoEditViewModel.updateUserInfo(
+                    name = etName.text.toString(),
+                    nickname = etNickname.text.toString(),
+                    rawPhoneNumber = etPhoneNumber.text.toString(),
+                    gender =
+                        if (rbGenderMan.isChecked) {
+                            Gender.Man
+                        } else if (rbGenderWoman.isChecked) {
+                            Gender.Woman
+                        } else {
+                            Gender.Unknown
+                        },
+                    studentId = etStudentId.text.toString(),
+                    major = spinnerMajor.text.toString(),
+                )
+            }
+
+            btnNicknameDuplication.setOnClickListener {
+                userInfoEditViewModel.checkNickname(etNickname.textString)
+            }
+            invalidateNickNameViews(false)
         }
-        invalidateNickNameViews(false)
-    }
 
     private fun initViewModel() {
         with(userInfoEditViewModel) {
@@ -151,13 +152,16 @@ class UserInfoEditActivity : ActivityBase() {
                     EventAction.USER,
                     "header",
                     "정보수정",
-                    EventExtra("gender", when {
-                        binding.rbGenderMan.isChecked -> "0"
-                        binding.rbGenderWoman.isChecked -> "1"
-                        else -> "2"
-                    }),
+                    EventExtra(
+                        "gender",
+                        when {
+                            binding.rbGenderMan.isChecked -> "0"
+                            binding.rbGenderWoman.isChecked -> "1"
+                            else -> "2"
+                        },
+                    ),
                     EventExtra("department", binding.spinnerMajor.text.toString()),
-                    EventExtra("updated_at", ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")))
+                    EventExtra("updated_at", ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"))),
                 )
                 ToastUtil.getInstance().makeShort(getString(R.string.user_info_edited))
                 setResult(UserInfoEditContract.RESULT_USER_INFO_EDITED)

@@ -5,7 +5,12 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.*
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.ActivityWebviewBinding
@@ -13,19 +18,19 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 
 class WebViewActivity : ActivityBase(R.layout.activity_webview) {
-
     private val binding by dataBinding<ActivityWebviewBinding>()
     override val screenTitle: String = "웹뷰"
 
-    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            if (binding.webView.canGoBack()) {
-                binding.webView.goBack()
-            } else {
-                finish()
+    override val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.webView.canGoBack()) {
+                    binding.webView.goBack()
+                } else {
+                    finish()
+                }
             }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,33 +54,44 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun init(title: String?, url: String?) {
+    private fun init(
+        title: String?,
+        url: String?,
+    ) {
         setTitle(title)
 
         binding.webView.apply {
             webChromeClient = WebChromeClient()
             settings.javaScriptEnabled = true
-            webViewClient = object : WebViewClient() {
-                override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
-                    super.onPageStarted(view, url, favicon)
-                    showProgressDialog(R.string.loading)
-                }
+            webViewClient =
+                object : WebViewClient() {
+                    override fun onPageStarted(
+                        view: WebView,
+                        url: String,
+                        favicon: Bitmap?,
+                    ) {
+                        super.onPageStarted(view, url, favicon)
+                        showProgressDialog(R.string.loading)
+                    }
 
-                override fun onPageFinished(view: WebView, url: String) {
-                    super.onPageFinished(view, url)
-                    hideProgressDialog()
-                }
+                    override fun onPageFinished(
+                        view: WebView,
+                        url: String,
+                    ) {
+                        super.onPageFinished(view, url)
+                        hideProgressDialog()
+                    }
 
-                override fun onReceivedError(
-                    view: WebView,
-                    request: WebResourceRequest,
-                    error: WebResourceError
-                ) {
-                    super.onReceivedError(view, request, error)
-                    hideProgressDialog()
-                    ToastUtil.getInstance().makeShort(R.string.error_network)
+                    override fun onReceivedError(
+                        view: WebView,
+                        request: WebResourceRequest,
+                        error: WebResourceError,
+                    ) {
+                        super.onReceivedError(view, request, error)
+                        hideProgressDialog()
+                        ToastUtil.getInstance().makeShort(R.string.error_network)
+                    }
                 }
-            }
             settings.loadWithOverviewMode = true
             settings.useWideViewPort = true
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW

@@ -11,14 +11,14 @@ data class BusinessAuthState(
     val shopNumber: String = "",
     val shopId: Int? = null,
     val openAlertDialog: Boolean = false,
-    val selectedImages :MutableList<AttachStore> = mutableListOf(),
-    val dialogVisibility:Boolean = false,
+    val selectedImages: MutableList<AttachStore> = mutableListOf(),
+    val dialogVisibility: Boolean = false,
     val imageUriList: List<String> = emptyList(),
     val fileInfo: MutableList<StoreUrl> = mutableListOf(),
     val bitmap: MutableList<Bitmap> = mutableListOf(),
     val signupContinuationState: SignupContinuationState = SignupContinuationState.RequestedSmsValidation,
     val error: Throwable? = null,
-){
+) {
     val isButtonEnabled: Boolean
         get() = name.isNotEmpty() && shopName.isNotEmpty() && shopNumber.isNotEmpty() && selectedImages.isNotEmpty() && signupContinuationState != SignupContinuationState.BusinessNumberIsNotValidate
 }

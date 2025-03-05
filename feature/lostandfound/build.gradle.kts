@@ -25,7 +25,6 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:analytics"))
 
-
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

@@ -13,7 +13,11 @@ inline val Fragment.windowHeight: Int
             metrics.bounds.height() - insets.bottom - insets.top
         } else {
             val view = requireActivity().window.decorView
-            val insets = WindowInsetsCompat.toWindowInsetsCompat(view.rootWindowInsets, view).getInsets(WindowInsetsCompat.Type.systemBars())
+            val insets =
+                WindowInsetsCompat.toWindowInsetsCompat(
+                    view.rootWindowInsets,
+                    view,
+                ).getInsets(WindowInsetsCompat.Type.systemBars())
             resources.displayMetrics.heightPixels - insets.bottom - insets.top
         }
     }
@@ -26,7 +30,11 @@ inline val Fragment.windowWidth: Int
             metrics.bounds.width() - insets.left - insets.right
         } else {
             val view = requireActivity().window.decorView
-            val insets = WindowInsetsCompat.toWindowInsetsCompat(view.rootWindowInsets, view).getInsets(WindowInsetsCompat.Type.systemBars())
+            val insets =
+                WindowInsetsCompat.toWindowInsetsCompat(
+                    view.rootWindowInsets,
+                    view,
+                ).getInsets(WindowInsetsCompat.Type.systemBars())
             resources.displayMetrics.widthPixels - insets.left - insets.right
         }
     }

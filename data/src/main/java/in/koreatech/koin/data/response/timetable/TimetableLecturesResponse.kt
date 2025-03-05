@@ -13,11 +13,11 @@ data class TimetableLecturesResponse(
     @SerializedName("total_grades")
     val totalGrades: Int?,
 ) {
-    fun toTimetableLectures() = TimetableLectures(
-        timetableFrameId = timetableFrameId,
-        timetable = timetable.map { it.toTimetableLecture() },
-        grades = grades ?: 0,
-        totalGrades = totalGrades ?: 0
-    )
+    fun toTimetableLectures() =
+        TimetableLectures(
+            timetableFrameId = timetableFrameId,
+            timetable = timetable.map { it.toTimetableLecture() },
+            grades = grades ?: 0,
+            totalGrades = totalGrades ?: 0,
+        )
 }
-

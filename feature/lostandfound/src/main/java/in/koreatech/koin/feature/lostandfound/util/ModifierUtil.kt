@@ -29,29 +29,34 @@ fun Modifier.horizontalFadingEdge(
         drawContent()
 
         drawRect(
-            brush = Brush.horizontalGradient(
-                colors = listOf(
-                    color,
-                    Color.Transparent,
+            brush =
+                Brush.horizontalGradient(
+                    colors =
+                        listOf(
+                            color,
+                            Color.Transparent,
+                        ),
+                    startX = 0f,
+                    endX = startFadingEdgeStrength,
                 ),
-                startX = 0f,
-                endX = startFadingEdgeStrength,
-            ),
-            size = Size(
-                startFadingEdgeStrength,
-                this.size.height,
-            ),
+            size =
+                Size(
+                    startFadingEdgeStrength,
+                    this.size.height,
+                ),
         )
 
         drawRect(
-            brush = Brush.horizontalGradient(
-                colors = listOf(
-                    Color.Transparent,
-                    color,
+            brush =
+                Brush.horizontalGradient(
+                    colors =
+                        listOf(
+                            Color.Transparent,
+                            color,
+                        ),
+                    startX = size.width - endFadingEdgeStrength,
+                    endX = size.width,
                 ),
-                startX = size.width - endFadingEdgeStrength,
-                endX = size.width,
-            ),
             topLeft = Offset(x = size.width - endFadingEdgeStrength, y = 0f),
         )
     }

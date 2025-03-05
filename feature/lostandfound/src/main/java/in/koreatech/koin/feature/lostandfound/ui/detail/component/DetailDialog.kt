@@ -52,26 +52,27 @@ fun DetailDialog(
     negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
 ) {
     BasicAlertDialog(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(
-                color = KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.small
-            )
-            .padding(horizontal = 32.dp, vertical = 24.dp),
-        onDismissRequest = { onNegative() }
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(
+                    color = KoinTheme.colors.neutral0,
+                    shape = KoinTheme.shapes.small,
+                )
+                .padding(horizontal = 32.dp, vertical = 24.dp),
+        onDismissRequest = { onNegative() },
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = title,
-                style = titleStyle
+                style = titleStyle,
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 OutlinedBoxButton(
                     modifier = Modifier.weight(1.0F),
@@ -79,7 +80,7 @@ fun DetailDialog(
                     onClick = onNegative,
                     shape = KoinTheme.shapes.small,
                     colors = negativeButtonColors,
-                    contentPadding = PaddingValues(40.dp, 12.dp)
+                    contentPadding = PaddingValues(40.dp, 12.dp),
                 )
                 FilledButton(
                     modifier = Modifier.weight(1.0F),
@@ -87,7 +88,7 @@ fun DetailDialog(
                     onClick = onPositive,
                     shape = KoinTheme.shapes.small,
                     colors = positiveButtonColors,
-                    contentPadding = PaddingValues(40.dp, 12.dp)
+                    contentPadding = PaddingValues(40.dp, 12.dp),
                 )
             }
         }

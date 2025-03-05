@@ -19,23 +19,23 @@ import `in`.koreatech.business.R
 import `in`.koreatech.koin.domain.util.DateFormatUtil.dayOfWeekToIndex
 import `in`.koreatech.koin.domain.util.StoreUtil
 
-
-fun LazyListScope.storeDetailInfo(
-    infoDataList: List<Pair<String, String>>
-) {
+fun LazyListScope.storeDetailInfo(infoDataList: List<Pair<String, String>>) {
     infoDataList.forEach { (info, data) ->
         info(info, data)
     }
 }
 
-fun LazyListScope.info(info: String, data: String?) {
+fun LazyListScope.info(
+    info: String,
+    data: String?,
+) {
     item {
         Column(
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     text = info,
@@ -63,24 +63,25 @@ fun getInfoDataList(state: MyStoreDetailState): List<Pair<String, String>> {
                 val dayOfWeekKorean =
                     if (dayOfWeekIndex != -1) context.resources.getStringArray(R.array.days_one_letter)[dayOfWeekIndex] else it.dayOfWeek
 
-                if (it.closed) context.resources.getString(
-                    R.string.insert_store_closed_day,
-                    dayOfWeekKorean,
-                )
-                else {
+                if (it.closed) {
+                    context.resources.getString(
+                        R.string.insert_store_closed_day,
+                        dayOfWeekKorean,
+                    )
+                } else {
                     "$dayOfWeekKorean " +
-                            StoreUtil.generateOpenCloseTimeString(
-                                it.openTime,
-                                it.closeTime
-                            )
+                        StoreUtil.generateOpenCloseTimeString(
+                            it.openTime,
+                            it.closeTime,
+                        )
                 }
-            } ?: ""
+            } ?: "",
         ),
         Pair(stringResource(id = R.string.address), state.storeInfo?.address ?: ""),
         Pair(
             stringResource(id = R.string.delivery_amount),
-            "${state.storeInfo?.deliveryPrice ?: 0}원"
+            "${state.storeInfo?.deliveryPrice ?: 0}원",
         ),
-        Pair(stringResource(id = R.string.other_info), state.storeInfo?.description ?: "")
+        Pair(stringResource(id = R.string.other_info), state.storeInfo?.description ?: ""),
     )
 }

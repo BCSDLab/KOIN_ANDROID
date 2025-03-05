@@ -8,8 +8,9 @@ data class CityBusInfoState(
     val arriveNode: String,
 )
 
-fun CityBusInfo.toCityBusInfoState() = CityBusInfoState(
-    number = number,
-    departNode = departNode,
-    arriveNode = arriveNode,
-)
+fun CityBusInfo.toCityBusInfoState() =
+    CityBusInfoState(
+        number = number,
+        departNode = departNode,
+        arriveNode = arriveNode,
+    )

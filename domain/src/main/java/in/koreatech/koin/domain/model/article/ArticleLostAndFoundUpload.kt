@@ -6,5 +6,5 @@ data class ArticleLostAndFoundUpload(
     val foundPlace: String,
     val foundDate: String,
     val content: String?,
-    val images: List<String>?
+    val images: List<String>?,
 )

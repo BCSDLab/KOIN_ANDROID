@@ -20,13 +20,11 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 
 @Composable
-fun CommonEmptyView(
-    modifier: Modifier = Modifier
-) {
+fun CommonEmptyView(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             modifier = Modifier.width(120.dp),
@@ -38,7 +36,7 @@ fun CommonEmptyView(
             modifier = Modifier,
             text = stringResource(R.string.empty_description),
             style = KoinTheme.typography.bold15,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         )
         Spacer(modifier = Modifier.height(64.dp))
     }

@@ -12,18 +12,21 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatListViewModel @Inject constructor(
-    private val getChatListUseCase: GetChatListUseCase
-) : ViewModel(), ContainerHost<ChatListState, ChatListSideEffect> {
-    override val container = container<ChatListState, ChatListSideEffect>(ChatListState())
+class ChatListViewModel
+    @Inject
+    constructor(
+        private val getChatListUseCase: GetChatListUseCase,
+    ) : ViewModel(), ContainerHost<ChatListState, ChatListSideEffect> {
+        override val container = container<ChatListState, ChatListSideEffect>(ChatListState())
 
-    fun fetchChatList() = viewModelScope.launch {
-        getChatListUseCase().collect { data ->
-            intent {
-                reduce {
-                    state.copy(chatList = data)
+        fun fetchChatList() =
+            viewModelScope.launch {
+                getChatListUseCase().collect { data ->
+                    intent {
+                        reduce {
+                            state.copy(chatList = data)
+                        }
+                    }
                 }
             }
-        }
     }
-}

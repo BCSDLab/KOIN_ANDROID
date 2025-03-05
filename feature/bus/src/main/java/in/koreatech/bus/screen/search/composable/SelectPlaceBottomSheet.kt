@@ -46,20 +46,26 @@ internal fun SelectPlaceBottomSheet(
         "SelectPlaceBottomSheet should not be used with PlaceSelectMode.NONE"
     }
 
-    var selectedPlace by remember(disabledPlace) { mutableStateOf(PlaceType.entries.first {
-        it != disabledPlace
-    }) }
+    var selectedPlace by remember(disabledPlace) {
+        mutableStateOf(
+            PlaceType.entries.first {
+                it != disabledPlace
+            },
+        )
+    }
 
-    val sheetTitle = when (selectMode) {
-        PlaceSelectMode.DEPARTURE -> stringResource(R.string.question_departure)
-        PlaceSelectMode.ARRIVAL -> stringResource(R.string.question_arrival)
-        PlaceSelectMode.NONE -> ""
-    }
-    val buttonText = when (selectMode) {
-        PlaceSelectMode.DEPARTURE -> stringResource(R.string.action_select_arrival)
-        PlaceSelectMode.ARRIVAL -> stringResource(R.string.confirm_selection)
-        PlaceSelectMode.NONE -> ""
-    }
+    val sheetTitle =
+        when (selectMode) {
+            PlaceSelectMode.DEPARTURE -> stringResource(R.string.question_departure)
+            PlaceSelectMode.ARRIVAL -> stringResource(R.string.question_arrival)
+            PlaceSelectMode.NONE -> ""
+        }
+    val buttonText =
+        when (selectMode) {
+            PlaceSelectMode.DEPARTURE -> stringResource(R.string.action_select_arrival)
+            PlaceSelectMode.ARRIVAL -> stringResource(R.string.confirm_selection)
+            PlaceSelectMode.NONE -> ""
+        }
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -67,21 +73,21 @@ internal fun SelectPlaceBottomSheet(
         containerColor = Color.White,
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     ) {
-
         Text(
             text = sheetTitle,
             style = KoinTheme.typography.medium18,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 12.dp)
+            modifier =
+                Modifier
+                    .padding(horizontal = 32.dp)
+                    .padding(bottom = 12.dp),
         )
 
         HorizontalDivider(color = KoinTheme.colors.neutral200)
 
         FlowRow(
             modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp)
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             PlaceType.entries.fastForEach {
                 TextChip(
@@ -89,13 +95,18 @@ internal fun SelectPlaceBottomSheet(
                     showClickRipple = false,
                     title = stringResource(it.titleRes),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
-                    chipColors = if (disabledPlace == it) TextChipDefaults.chipColors(
-                        unselectedContainerColor = KoinTheme.colors.neutral50,
-                        unselectedContentColor = KoinTheme.colors.neutral300
-                    ) else TextChipDefaults.chipColors(
-                        unselectedContainerColor = KoinTheme.colors.neutral200,
-                        unselectedContentColor = KoinTheme.colors.neutral600
-                    ),
+                    chipColors =
+                        if (disabledPlace == it) {
+                            TextChipDefaults.chipColors(
+                                unselectedContainerColor = KoinTheme.colors.neutral50,
+                                unselectedContentColor = KoinTheme.colors.neutral300,
+                            )
+                        } else {
+                            TextChipDefaults.chipColors(
+                                unselectedContainerColor = KoinTheme.colors.neutral200,
+                                unselectedContentColor = KoinTheme.colors.neutral600,
+                            )
+                        },
                     isSelected = selectedPlace == it,
                     onSelect = {
                         if (it != disabledPlace) {
@@ -103,20 +114,21 @@ internal fun SelectPlaceBottomSheet(
                                 type == it
                             } ?: PlaceType.KOREATECH
                         }
-                    }
+                    },
                 )
             }
         }
 
         Spacer(modifier = Modifier.height(140.dp))
         FilledButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 36.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp)
+                    .padding(bottom = 36.dp),
             text = buttonText,
             onClick = { onConfirmSelection(selectedPlace) },
-            contentPadding = PaddingValues(vertical = 12.dp)
+            contentPadding = PaddingValues(vertical = 12.dp),
         )
     }
 }
@@ -128,6 +140,6 @@ private fun SelectPlaceBottomSheetPreview() {
         onDismissRequest = {},
         selectMode = PlaceSelectMode.DEPARTURE,
         onConfirmSelection = {},
-        disabledPlace = PlaceType.TERMINAL
+        disabledPlace = PlaceType.TERMINAL,
     )
 }

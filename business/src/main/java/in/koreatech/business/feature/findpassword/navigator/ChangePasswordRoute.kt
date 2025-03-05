@@ -5,5 +5,5 @@ enum class ChangePasswordRoute() {
     Login,
     ChangePassword,
     Authentication,
-    Finish
+    Finish,
 }

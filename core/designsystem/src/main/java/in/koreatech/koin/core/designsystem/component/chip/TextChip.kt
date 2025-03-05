@@ -40,18 +40,23 @@ fun TextChip(
     chipColors: TextChipColors = TextChipDefaults.chipColors(),
 ) {
     Box(
-        modifier = modifier
-            .clip(shape)
-            .then(
-                if (showClickRipple) Modifier.clickable {
-                    onSelect()
-                } else Modifier.noRippleClickable {
-                    onSelect()
-                }
-            )
-            .background(if(isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
-            .padding(contentPadding),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .clip(shape)
+                .then(
+                    if (showClickRipple) {
+                        Modifier.clickable {
+                            onSelect()
+                        }
+                    } else {
+                        Modifier.noRippleClickable {
+                            onSelect()
+                        }
+                    },
+                )
+                .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
+                .padding(contentPadding),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = title,
@@ -61,7 +66,6 @@ fun TextChip(
 }
 
 object TextChipDefaults {
-
     @Composable
     fun chipColors(
         selectedContainerColor: Color = KoinTheme.colors.primary500,

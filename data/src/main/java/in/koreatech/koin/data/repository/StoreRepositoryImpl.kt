@@ -3,18 +3,16 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toCategory
 import `in`.koreatech.koin.data.mapper.toShopSearchRelatedList
 import `in`.koreatech.koin.data.mapper.toStore
+import `in`.koreatech.koin.data.mapper.toStoreBenefitCategory
 import `in`.koreatech.koin.data.mapper.toStoreCategories
 import `in`.koreatech.koin.data.mapper.toStoreDetailEvents
 import `in`.koreatech.koin.data.mapper.toStoreEvent
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreReview
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
-import `in`.koreatech.koin.data.mapper.toStoreBenefitCategory
 import `in`.koreatech.koin.data.request.user.ReviewRequest
-import `in`.koreatech.koin.data.response.store.BenefitCategoryResponse
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
-import `in`.koreatech.koin.domain.model.store.BenefitCategory
 import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ShopEvents
@@ -30,135 +28,153 @@ import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import retrofit2.HttpException
-import retrofit2.http.Query
 import javax.inject.Inject
 
-class StoreRepositoryImpl @Inject constructor(
-    private val storeRemoteDataSource: StoreRemoteDataSource
-) : StoreRepository {
-    private var stores: List<Store>? = null
-    private var storeEvents: List<StoreEvent>? = null
-    private var storeCategories: List<StoreCategories>? = null
+class StoreRepositoryImpl
+    @Inject
+    constructor(
+        private val storeRemoteDataSource: StoreRemoteDataSource,
+    ) : StoreRepository {
+        private var stores: List<Store>? = null
+        private var storeEvents: List<StoreEvent>? = null
+        private var storeCategories: List<StoreCategories>? = null
 
-    override suspend fun getStores(
-        storeSorter: StoreSorter?,
-        isOperating: Boolean?,
-        isDelivery: Boolean?,
-        query: String?,
-    ): List<Store> {
-        if (stores == null) {
-            stores = if(isOperating == true && isDelivery == true){
-                storeRemoteDataSource.getStoreItemsWithTwoFilter(storeSorter, query).map { it.toStore() }
-            } else if(isOperating == false && isDelivery == false) {
-                storeRemoteDataSource.getStoreItemsWithSorting(storeSorter, query).map { it.toStore() }
-            } else{
-                if(isOperating == true) storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "OPEN", query).map { it.toStore() }
-                else storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "DELIVERY", query).map { it.toStore() }
+        override suspend fun getStores(
+            storeSorter: StoreSorter?,
+            isOperating: Boolean?,
+            isDelivery: Boolean?,
+            query: String?,
+        ): List<Store> {
+            if (stores == null) {
+                stores =
+                    if (isOperating == true && isDelivery == true) {
+                        storeRemoteDataSource.getStoreItemsWithTwoFilter(storeSorter, query).map { it.toStore() }
+                    } else if (isOperating == false && isDelivery == false) {
+                        storeRemoteDataSource.getStoreItemsWithSorting(storeSorter, query).map { it.toStore() }
+                    } else {
+                        if (isOperating == true) {
+                            storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "OPEN", query).map { it.toStore() }
+                        } else {
+                            storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "DELIVERY", query).map { it.toStore() }
+                        }
+                    }
+            }
+
+            return stores!!
+        }
+
+        override suspend fun getStoreEvents(): List<StoreEvent> {
+            if (storeEvents == null) {
+                storeEvents = storeRemoteDataSource.getStoreEvents().map { it.toStoreEvent() }
+            }
+
+            return storeEvents!!
+        }
+
+        override suspend fun getStoreCategories(): List<StoreCategories> {
+            if (storeCategories == null) {
+                storeCategories =
+                    storeRemoteDataSource.getStoreCategories().map { it.toStoreCategories() }
+            }
+
+            return storeCategories!!
+        }
+
+        override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu {
+            return storeRemoteDataSource.getStoreMenu(storeId).toStoreWithMenu()
+        }
+
+        override suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory> {
+            return storeRemoteDataSource.getStoreMenuCategory(storeId).toCategory()
+        }
+
+        override suspend fun getShopMenus(storeId: Int): StoreMenu {
+            return storeRemoteDataSource.getShopMenus(storeId).toStoreMenu()
+        }
+
+        override suspend fun getShopEvents(storeId: Int): ShopEvents {
+            return storeRemoteDataSource.getShopEvents(storeId).toStoreDetailEvents()
+        }
+
+        override suspend fun getStoreReviews(storeId: Int): StoreReview {
+            return storeRemoteDataSource.getStoreReviews(storeId).toStoreReview()
+        }
+
+        override suspend fun invalidateStores() {
+            stores = null
+        }
+
+        override suspend fun writeReview(
+            shopId: Int,
+            content: Review,
+        ) {
+            storeRemoteDataSource.writeReview(
+                shopId,
+                ReviewRequest(
+                    content = content.content,
+                    rating = content.rating,
+                    imageUrls = content.imageUrls,
+                    menuNames = content.menuNames,
+                ),
+            )
+        }
+
+        override suspend fun deleteReview(
+            reviewId: Int,
+            shopId: Int,
+        ) {
+            storeRemoteDataSource.deleteReview(reviewId, shopId)
+        }
+
+        override suspend fun modifyReview(
+            reviewId: Int,
+            shopId: Int,
+            content: Review,
+        ) {
+            storeRemoteDataSource.modifyReview(
+                reviewId,
+                shopId,
+                ReviewRequest(
+                    content = content.content,
+                    rating = content.rating,
+                    imageUrls = content.imageUrls,
+                    menuNames = content.menuNames,
+                ),
+            )
+        }
+
+        override suspend fun reportReview(
+            storeId: Int?,
+            reviewId: Int?,
+            reportList: List<StoreReport>?,
+        ): Result<Unit> {
+            return try {
+                if (storeId != null && reviewId != null && reportList != null) {
+                    storeRemoteDataSource.postReviewReports(
+                        storeId,
+                        reviewId,
+                        reportList,
+                    )
+                }
+                Result.success(Unit)
+            } catch (e: HttpException) {
+                Result.failure(e)
+            } catch (e: Exception) {
+                Result.failure(e)
             }
         }
 
-        return stores!!
-    }
-
-    override suspend fun getStoreEvents(): List<StoreEvent> {
-        if (storeEvents == null) {
-            storeEvents = storeRemoteDataSource.getStoreEvents().map { it.toStoreEvent() }
-        }
-
-        return storeEvents!!
-    }
-
-    override suspend fun getStoreCategories(): List<StoreCategories> {
-        if (storeCategories == null) {
-            storeCategories =
-                storeRemoteDataSource.getStoreCategories().map { it.toStoreCategories() }
-        }
-
-        return storeCategories!!
-    }
-
-    override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu {
-        return storeRemoteDataSource.getStoreMenu(storeId).toStoreWithMenu()
-    }
-
-    override suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory> {
-        return storeRemoteDataSource.getStoreMenuCategory(storeId).toCategory()
-    }
-
-    override suspend fun getShopMenus(storeId: Int): StoreMenu {
-        return storeRemoteDataSource.getShopMenus(storeId).toStoreMenu()
-    }
-
-    override suspend fun getShopEvents(storeId: Int): ShopEvents {
-        return storeRemoteDataSource.getShopEvents(storeId).toStoreDetailEvents()
-    }
-
-    override suspend fun getStoreReviews(storeId: Int): StoreReview {
-        return storeRemoteDataSource.getStoreReviews(storeId).toStoreReview()
-    }
-
-    override suspend fun invalidateStores() {
-        stores = null
-    }
-
-    override suspend fun writeReview(shopId: Int, content: Review) {
-        storeRemoteDataSource.writeReview(
-            shopId, ReviewRequest(
-                content = content.content,
-                rating = content.rating,
-                imageUrls = content.imageUrls,
-                menuNames = content.menuNames,
-            )
-        )
-    }
-
-    override suspend fun deleteReview(reviewId: Int, shopId: Int) {
-        storeRemoteDataSource.deleteReview(reviewId, shopId)
-    }
-
-    override suspend fun modifyReview(reviewId: Int, shopId: Int, content: Review) {
-        storeRemoteDataSource.modifyReview(
-            reviewId, shopId, ReviewRequest(
-                content = content.content,
-                rating = content.rating,
-                imageUrls = content.imageUrls,
-                menuNames = content.menuNames,
-            )
-        )
-    }
-
-    override suspend fun reportReview(
-        storeId: Int?,
-        reviewId: Int?,
-        reportList: List<StoreReport>?
-    ): Result<Unit> {
-        return try {
-            if (storeId != null && reviewId != null && reportList != null) {
-                storeRemoteDataSource.postReviewReports(
-                    storeId,reviewId, reportList
-                )
+        override suspend fun getStoreBenefitShopList(uid: Int): StoreBenefit {
+            storeRemoteDataSource.getStoreBenefitShopList(uid).apply {
+                return StoreBenefit(count ?: 0, shops?.map { it.toStore() } ?: emptyList())
             }
-            Result.success(Unit)
         }
-        catch (e: HttpException) {
-            Result.failure(e)
-        }
-        catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
 
-    override suspend fun getStoreBenefitShopList(uid: Int): StoreBenefit {
-        storeRemoteDataSource.getStoreBenefitShopList(uid).apply {
-            return StoreBenefit(count?:0, shops?.map { it.toStore() } ?: emptyList())
+        override suspend fun getStoreBenefitCategories(): BenefitCategoryList {
+            return storeRemoteDataSource.getStoreBenefitCategories().toStoreBenefitCategory()
+        }
+
+        override suspend fun getShopSearchRelatedList(query: String): ShopSearchRelatedList {
+            return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
         }
     }
-
-    override suspend fun getStoreBenefitCategories() : BenefitCategoryList {
-        return storeRemoteDataSource.getStoreBenefitCategories().toStoreBenefitCategory()
-    }
-
-    override suspend fun getShopSearchRelatedList(query: String) : ShopSearchRelatedList {
-        return storeRemoteDataSource.getShopSearchRelated(query).toShopSearchRelatedList()
-    }
-}

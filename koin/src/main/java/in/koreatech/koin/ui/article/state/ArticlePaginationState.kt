@@ -7,13 +7,14 @@ data class ArticlePaginationState(
     val totalCount: Int,
     val currentCount: Int,
     val totalPage: Int,
-    val currentPage: Int
+    val currentPage: Int,
 )
 
-fun ArticlePagination.toArticlePaginationState() = ArticlePaginationState(
-    articles = articleHeaders.map { it.toArticleHeaderState() },
-    totalCount = totalCount,
-    currentCount = currentCount,
-    totalPage = totalPage,
-    currentPage = currentPage
-)
+fun ArticlePagination.toArticlePaginationState() =
+    ArticlePaginationState(
+        articles = articleHeaders.map { it.toArticleHeaderState() },
+        totalCount = totalCount,
+        currentCount = currentCount,
+        totalPage = totalPage,
+        currentPage = currentPage,
+    )

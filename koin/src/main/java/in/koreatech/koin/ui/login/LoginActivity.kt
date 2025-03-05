@@ -32,7 +32,6 @@ import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity : ActivityBase(R.layout.activity_login) {
@@ -48,25 +47,26 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         initViewModel()
     }
 
-    private fun initViewModel() = with(loginViewModel) {
-        withLoading(this@LoginActivity, this)
+    private fun initViewModel() =
+        with(loginViewModel) {
+            withLoading(this@LoginActivity, this)
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                loginState.collect {
-                    when (it.status) {
-                        is UiStatus.Init -> Unit
-                        is UiStatus.Loading -> Unit
-                        is UiStatus.Success -> goToNextRoute()
-                        is UiStatus.Failed -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
-                            loginViewModel.onFailedLogin()
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    loginState.collect {
+                        when (it.status) {
+                            is UiStatus.Init -> Unit
+                            is UiStatus.Loading -> Unit
+                            is UiStatus.Success -> goToNextRoute()
+                            is UiStatus.Failed -> {
+                                SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
+                                loginViewModel.onFailedLogin()
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
     private fun goToNextRoute() {
         val uri = intent.data
@@ -74,10 +74,11 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
 
         if (link != null) {
             try {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    flags = FLAG_ACTIVITY_CLEAR_TOP
-                    data = Uri.parse(link)
-                }
+                val intent =
+                    Intent(Intent.ACTION_VIEW).apply {
+                        flags = FLAG_ACTIVITY_CLEAR_TOP
+                        data = Uri.parse(link)
+                    }
                 startActivity(intent)
                 finish()
             } catch (e: Exception) {
@@ -92,13 +93,16 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
             } else if (handleArticleIntent()) {
                 val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
                 val startBoard = bundle?.getInt(ArticleActivity.START_BOARD, 4)
-                startActivity(Intent(this@LoginActivity, ArticleActivity::class.java).apply {
-                    putExtra(
-                        BUNDLE_ARTICLE_EXTRA_KEY, bundleOf(
-                            ArticleActivity.START_BOARD to startBoard
+                startActivity(
+                    Intent(this@LoginActivity, ArticleActivity::class.java).apply {
+                        putExtra(
+                            BUNDLE_ARTICLE_EXTRA_KEY,
+                            bundleOf(
+                                ArticleActivity.START_BOARD to startBoard,
+                            ),
                         )
-                    )
-                })
+                    },
+                )
                 finish()
                 return
             }
@@ -107,74 +111,75 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         }
     }
 
-    private fun initView() = with(binding) {
-        loginEdittextId.setOnEditorActionListener { v, actionId, event ->
-            loginEdittextPw.requestFocus()
-        }
-        loginEdittextPw.setOnEditorActionListener { v, actionId, event ->
-            currentFocus?.also { view ->
-                hideKeyboard(view)
+    private fun initView() =
+        with(binding) {
+            loginEdittextId.setOnEditorActionListener { v, actionId, event ->
+                loginEdittextPw.requestFocus()
             }
-            false
-        }
-
-        loginButton.setOnClickListener {
-            currentFocus?.let { view ->
-                hideKeyboard(view)
+            loginEdittextPw.setOnEditorActionListener { v, actionId, event ->
+                currentFocus?.also { view ->
+                    hideKeyboard(view)
+                }
+                false
             }
 
-            if (
-                loginEdittextId.textString.isBlank() ||
-                loginEdittextPw.textString.isBlank()
-            ) {
-                SnackbarUtil.makeShortSnackbar(
-                    binding.root,
-                    getString(R.string.login_required_field_not_filled)
+            loginButton.setOnClickListener {
+                currentFocus?.let { view ->
+                    hideKeyboard(view)
+                }
+
+                if (
+                    loginEdittextId.textString.isBlank() ||
+                    loginEdittextPw.textString.isBlank()
+                ) {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.login_required_field_not_filled),
+                    )
+                } else {
+                    loginViewModel.login(
+                        email =
+                            getString(
+                                R.string.koreatech_email_postfix,
+                                loginEdittextId.text.trim(),
+                            ),
+                        password = loginEdittextPw.text.toString().trim(),
+                    )
+                }
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.LOGIN,
+                    getString(R.string.login_complete),
                 )
-            } else {
-                loginViewModel.login(
-                    email = getString(
-                        R.string.koreatech_email_postfix,
-                        loginEdittextId.text.trim()
-                    ),
-                    password = loginEdittextPw.text.toString().trim()
+            }
+
+            loginButtonSignup.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.LOGIN,
+                    getString(R.string.sign_up),
                 )
             }
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.LOGIN,
-                getString(R.string.login_complete)
-            )
-        }
 
-        loginButtonSignup.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.LOGIN,
-                getString(R.string.sign_up)
-            )
-        }
+            forgotPasswordLinearLayout.setOnClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.LOGIN,
+                    getString(R.string.find_password),
+                )
+                startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
+            }
 
-        forgotPasswordLinearLayout.setOnClickListener {
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.LOGIN,
-                getString(R.string.find_password)
-            )
-            startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
-        }
+            anonymousLoginLinearLayout.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            }
 
-        anonymousLoginLinearLayout.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            finish()
+            isBusinessButton.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, BusinessLoginActivity::class.java))
+            }
         }
-
-        isBusinessButton.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, BusinessLoginActivity::class.java))
-        }
-
-    }
 
     private fun handleTimetableIntent(): Boolean {
         val bundle = intent.getBundleExtra(TimetableActivity.BUNDLE_LOGIN_EXTRA_KEY)

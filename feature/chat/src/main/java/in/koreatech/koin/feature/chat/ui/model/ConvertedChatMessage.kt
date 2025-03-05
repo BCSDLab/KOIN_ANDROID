@@ -12,7 +12,7 @@ data class ConvertedChatMessage(
     val content: String,
     val timestamp: LocalDateTime,
     val isImage: Boolean,
-    val isSentByMe: Boolean
+    val isSentByMe: Boolean,
 ) : Parcelable
 
 fun ChatMessage.toConvertedChatMessage(userId: Int): ConvertedChatMessage {
@@ -22,6 +22,6 @@ fun ChatMessage.toConvertedChatMessage(userId: Int): ConvertedChatMessage {
         content = this.content,
         timestamp = LocalDateTime.parse(this.timestamp),
         isImage = this.isImage,
-        isSentByMe = userId == this.userId
+        isSentByMe = userId == this.userId,
     )
 }

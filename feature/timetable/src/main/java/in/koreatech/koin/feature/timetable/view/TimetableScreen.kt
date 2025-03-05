@@ -22,7 +22,6 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -125,7 +124,7 @@ fun TimetableScreen(
                         onClickStartTime = onClickStartTime,
                         onClickEndTime = onClickEndTime,
                         onClickAddCustomContent = onClickAddCustomContent,
-                        onClickRemoveCustomContent = onClickRemoveCustomContent
+                        onClickRemoveCustomContent = onClickRemoveCustomContent,
                     )
                 }
 
@@ -140,27 +139,29 @@ fun TimetableScreen(
             }
         },
         sheetPeekHeight = 0.dp,
-        sheetElevation = 20.dp
+        sheetElevation = 20.dp,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .fillMaxHeight()
-                .background(Color.White)
-                .dynamicPadding(sheetState, bottomSheetHeight),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .fillMaxHeight()
+                    .background(Color.White)
+                    .dynamicPadding(sheetState, bottomSheetHeight),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(14.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 TimetableScheduleBox(
                     currentSemester = currentSemester,
                     timetableName = timetableName,
-                    onClick = onClickTimetableSchedule
+                    onClick = onClickTimetableSchedule,
                 )
                 TimetableDownloadBox(onClick = onClickDownloadTimetable)
             }
@@ -171,31 +172,31 @@ fun TimetableScreen(
                 events = timetableEvents,
                 clickEvent = clickedTimetableEvents,
                 etcClickEvent = etcClickedTimetableEvents,
-                onEventClick = onClickTimetableEvent
+                onEventClick = onClickTimetableEvent,
             )
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterialApi::class)
 private fun Modifier.dynamicPadding(
     sheetState: BottomSheetState,
     sheetHeight: Float,
 ) = padding(
-    bottom = if (sheetState.isExpanded) {
-        if (sheetState.progress == 1.0f) {
-            if (sheetState.currentValue == BottomSheetValue.Expanded && sheetState.targetValue == BottomSheetValue.Collapsed) {
-                0.dp
+    bottom =
+        if (sheetState.isExpanded) {
+            if (sheetState.progress == 1.0f) {
+                if (sheetState.currentValue == BottomSheetValue.Expanded && sheetState.targetValue == BottomSheetValue.Collapsed) {
+                    0.dp
+                } else {
+                    sheetHeight.pxToDp
+                }
             } else {
-                sheetHeight.pxToDp
+                sheetHeight.pxToDp * (1.0f - sheetState.progress)
             }
         } else {
-            sheetHeight.pxToDp * (1.0f - sheetState.progress)
-        }
-    } else {
-        0.dp
-    }
+            0.dp
+        },
 )
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -215,9 +216,10 @@ private fun TimetableScreenPreview() {
         searchText = "",
         bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
         bottomSheetUI = BottomSheetUI.DEFAULT,
-        sheetState = rememberBottomSheetState(
-            initialValue = BottomSheetValue.Collapsed
-        ),
+        sheetState =
+            rememberBottomSheetState(
+                initialValue = BottomSheetValue.Collapsed,
+            ),
         sheetLazyListState = rememberLazyListState(),
         scaffoldState = rememberBottomSheetScaffoldState(),
     )

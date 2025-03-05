@@ -8,9 +8,10 @@ data class ExpressTimetableItemResponse(
     @SerializedName("departure") val departureTime: String?,
     @SerializedName("charge") val charge: Int?,
 ) {
-    fun toExpressTimetableItem() = ExpressTimetableItem(
-        arrivalTime = arrivalTime ?: "",
-        departureTime = departureTime ?: "",
-        charge = charge ?: 0,
-    )
+    fun toExpressTimetableItem() =
+        ExpressTimetableItem(
+            arrivalTime = arrivalTime ?: "",
+            departureTime = departureTime ?: "",
+            charge = charge ?: 0,
+        )
 }

@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.userinfo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -31,9 +30,10 @@ class UserInfoActivity : ActivityBase() {
     override val screenTitle = "내 정보"
     private val userInfoViewModel by viewModels<UserInfoViewModel>()
 
-    private val userInfoEditActivityNew = registerForActivityResult(UserInfoEditContract()) { edited ->
-        if (edited) userInfoViewModel.getUserInfo()
-    }
+    private val userInfoEditActivityNew =
+        registerForActivityResult(UserInfoEditContract()) { edited ->
+            if (edited) userInfoViewModel.getUserInfo()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,51 +45,53 @@ class UserInfoActivity : ActivityBase() {
         userInfoViewModel.getUserInfo()
     }
 
-    private fun initView() = with(binding) {
-        appbarUserInfo.setAppBarButtonClickedListener(
-            leftButtonClicked = {
-                onBackPressedDispatcher.onBackPressed()
-            },
-            rightButtonClicked = {
-                userInfoEditActivityNew.launch(Unit)
+    private fun initView() =
+        with(binding) {
+            appbarUserInfo.setAppBarButtonClickedListener(
+                leftButtonClicked = {
+                    onBackPressedDispatcher.onBackPressed()
+                },
+                rightButtonClicked = {
+                    userInfoEditActivityNew.launch(Unit)
+                },
+            )
+
+            btnLeave.setOnClickListener {
+                UserLeaveDialog().show(supportFragmentManager, "dialog")
             }
-        )
-
-        btnLeave.setOnClickListener {
-            UserLeaveDialog().show(supportFragmentManager, "dialog")
         }
-    }
 
-    private fun initViewModel() = with(userInfoViewModel) {
-        withLoading(this@UserInfoActivity, this)
+    private fun initViewModel() =
+        with(userInfoViewModel) {
+            withLoading(this@UserInfoActivity, this)
 
-        observeLiveData(user) { user ->
-            if (user != null && user.isStudent) {
-                val userState = user.toUserState(this@UserInfoActivity)
-                with(binding) {
-                    svId.labelText = userState.email
-                    svName.labelText = userState.username
-                    svNickname.labelText = userState.userNickname
-                    svPhoneNumber.labelText = userState.phoneNumber
-                    svStudentNumber.labelText = userState.studentNumber
-                    svMajor.labelText = userState.major
-                    svGender.labelText = userState.gender
+            observeLiveData(user) { user ->
+                if (user != null && user.isStudent) {
+                    val userState = user.toUserState(this@UserInfoActivity)
+                    with(binding) {
+                        svId.labelText = userState.email
+                        svName.labelText = userState.username
+                        svNickname.labelText = userState.userNickname
+                        svPhoneNumber.labelText = userState.phoneNumber
+                        svStudentNumber.labelText = userState.studentNumber
+                        svMajor.labelText = userState.major
+                        svGender.labelText = userState.gender
+                    }
+                } else {
+                    ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
+                    finish()
                 }
-            } else {
-                ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
-                finish()
             }
-        }
 
-        userInfoState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
-            when (it.status) {
-                UiStatus.Init -> Unit
-                UiStatus.Loading -> Unit
-                UiStatus.Success -> goToLoginActivity()
-                is UiStatus.Failed -> ToastUtil.getInstance().makeShort(it.status.message)
-            }
-        }.launchIn(lifecycleScope)
-    }
+            userInfoState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+                when (it.status) {
+                    UiStatus.Init -> Unit
+                    UiStatus.Loading -> Unit
+                    UiStatus.Success -> goToLoginActivity()
+                    is UiStatus.Failed -> ToastUtil.getInstance().makeShort(it.status.message)
+                }
+            }.launchIn(lifecycleScope)
+        }
 
     private fun goToLoginActivity() {
         finishAffinity()

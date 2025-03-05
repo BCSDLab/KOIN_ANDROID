@@ -21,7 +21,7 @@ import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 
 class OwnerRemoteDataSource(
     private val ownerApi: OwnerApi,
-    private val ownerAuthApi: OwnerAuthApi
+    private val ownerAuthApi: OwnerAuthApi,
 ) {
     suspend fun postVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse {
         return ownerApi.postVerificationCode(ownerVerificationCode)
@@ -31,7 +31,6 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationEmail(ownerVerificationEmail)
     }
 
-
     suspend fun postOwnerEmailRegister(ownerEmailRegisterRequest: OwnerEmailRegisterRequest): OwnerResponse {
         return ownerApi.postOwnerEmailRegister(ownerEmailRegisterRequest)
     }
@@ -40,8 +39,7 @@ class OwnerRemoteDataSource(
         return ownerApi.postOwnerRegister(ownerRegisterRequest)
     }
 
-
-    //비밀번호 변경 인증번호 발송
+    // 비밀번호 변경 인증번호 발송
     suspend fun changePasswordVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest) {
         return ownerApi.changePasswordVerificationEmail(ownerVerificationEmail)
     }
@@ -50,7 +48,7 @@ class OwnerRemoteDataSource(
         return ownerApi.changePasswordVerificationSms(ownerVerificationSms)
     }
 
-    //비밀번호 변경 인증번호 확인
+    // 비밀번호 변경 인증번호 확인
     suspend fun changePasswordVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest) {
         return ownerApi.changePasswordVerificationCode(ownerVerificationCode)
     }
@@ -59,7 +57,7 @@ class OwnerRemoteDataSource(
         return ownerApi.changePasswordVerificationCode(ownerVerificationCode)
     }
 
-    //비밀번호 변경
+    // 비밀번호 변경
     suspend fun ownerChangePassword(ownerChangePasswordRequest: OwnerChangePasswordRequest) {
         return ownerApi.changePassword(ownerChangePasswordRequest)
     }
@@ -67,7 +65,6 @@ class OwnerRemoteDataSource(
     suspend fun ownerChangePasswordSms(ownerChangePasswordSmsRequest: OwnerChangePasswordSmsRequest) {
         return ownerApi.changePasswordSms(ownerChangePasswordSmsRequest)
     }
-
 
     suspend fun postVerificationSms(ownerVerificationSms: VerificationSmsRequest) {
         return ownerApi.postVerificationSms(ownerVerificationSms)
@@ -97,15 +94,21 @@ class OwnerRemoteDataSource(
         return ownerAuthApi.getOwnerShopEvents(storeUid)
     }
 
-    suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse){
+    suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse) {
         ownerAuthApi.postMyStore(storeRegisterResponse)
     }
 
-    suspend fun postStoreMenu(storeId: Int, storeMenuRegisterResponse: StoreMenuRegisterResponse){
-       ownerAuthApi.postShopMenu(storeId, storeMenuRegisterResponse)
+    suspend fun postStoreMenu(
+        storeId: Int,
+        storeMenuRegisterResponse: StoreMenuRegisterResponse,
+    ) {
+        ownerAuthApi.postShopMenu(storeId, storeMenuRegisterResponse)
     }
 
-    suspend fun putStoreModifiedMenu(menuId: Int, storeMenuRegisterResponse: StoreMenuRegisterResponse){
+    suspend fun putStoreModifiedMenu(
+        menuId: Int,
+        storeMenuRegisterResponse: StoreMenuRegisterResponse,
+    ) {
         return ownerAuthApi.putShopModifiedMenu(menuId, storeMenuRegisterResponse)
     }
 
@@ -113,11 +116,17 @@ class OwnerRemoteDataSource(
         return ownerAuthApi.getMenuInfo(menuId)
     }
 
-    suspend fun deleteOwnerShopEvent(storeUid: Int, eventId: Int) {
+    suspend fun deleteOwnerShopEvent(
+        storeUid: Int,
+        eventId: Int,
+    ) {
         ownerAuthApi.deleteOwnerShopEvent(storeUid, eventId)
     }
 
-    suspend fun modifyOwnerShopInfo(storeUid: Int, storeInfo: StoreRegisterResponse) {
+    suspend fun modifyOwnerShopInfo(
+        storeUid: Int,
+        storeInfo: StoreRegisterResponse,
+    ) {
         ownerAuthApi.modifyOwnerShopInfo(storeUid, storeInfo)
     }
 }

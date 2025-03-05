@@ -62,9 +62,12 @@ fun KoinPicker(
     selectedItemColor: Color = KoinTheme.colors.primary500,
     unselectedItemColor: Color = KoinTheme.colors.neutral500,
 ) {
-
-    val newItems = if (infiniteScroll) items
-    else List(visibleItemsCount / 2) { "" } + items + List(visibleItemsCount / 2) { "" }
+    val newItems =
+        if (infiniteScroll) {
+            items
+        } else {
+            List(visibleItemsCount / 2) { "" } + items + List(visibleItemsCount / 2) { "" }
+        }
 
     val visibleItemsMiddle = visibleItemsCount / 2
     val listScrollCount = if (infiniteScroll) Int.MAX_VALUE else newItems.size
@@ -85,9 +88,10 @@ fun KoinPicker(
     LazyColumn(
         state = listState,
         flingBehavior = flingBehavior,
-        modifier = modifier
-            .height(itemHeight * visibleItemsCount)
-            .fadingEdge(fadingEdgeGradient),
+        modifier =
+            modifier
+                .height(itemHeight * visibleItemsCount)
+                .fadingEdge(fadingEdgeGradient),
     ) {
         items(listScrollCount) { index ->
             Text(
@@ -96,14 +100,16 @@ fun KoinPicker(
                 overflow = TextOverflow.Ellipsis,
                 style = if (selectedItemIndex == index) selectedTextStyle else unselectedTextStyle,
                 color = if (selectedItemIndex == index) selectedItemColor else unselectedItemColor,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .onSizeChanged {
-                        itemHeight = with(density) {
-                            it.height.toDp()
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .onSizeChanged {
+                            itemHeight =
+                                with(density) {
+                                    it.height.toDp()
+                                }
                         }
-                    }
-                    .padding(contentPadding)
+                        .padding(contentPadding),
             )
         }
     }
@@ -129,16 +135,16 @@ class PickerState internal constructor() {
     var selectedItemIndex by mutableIntStateOf(0)
 }
 
-private fun Modifier.fadingEdge(brush: Brush) = if (brush == verticalGradient()) {
-    this
-} else {
-    this
-        .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-        .drawWithContent {
+private fun Modifier.fadingEdge(brush: Brush) =
+    if (brush == verticalGradient()) {
+        this
+    } else {
+        this
+            .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+            .drawWithContent {
                 drawContent()
                 drawRect(brush = brush, blendMode = BlendMode.DstIn)
-        }
-}
-
+            }
+    }
 
 private fun List<String>.getItem(index: Int) = this[index % this.size]

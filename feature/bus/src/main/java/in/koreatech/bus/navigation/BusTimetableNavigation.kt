@@ -24,7 +24,6 @@ fun BusTimetableNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
-
     val context = LocalContext.current
 
     NavHost(
@@ -33,15 +32,17 @@ fun BusTimetableNavigation(
         startDestination = Routes.BusTimetable,
         enterTransition = {
             defaultEnterTransition()
-        }, exitTransition = {
+        },
+        exitTransition = {
             defaultExitTransition()
-        }, popEnterTransition = {
+        },
+        popEnterTransition = {
             defaultPopEnterTransition()
-        }, popExitTransition = {
+        },
+        popExitTransition = {
             defaultPopExitTransition()
-        }
+        },
     ) {
-
         composable<Routes.BusTimetable> {
             BusTimetableScreen(
                 modifier = Modifier.fillMaxSize().background(Color.White),
@@ -50,14 +51,14 @@ fun BusTimetableNavigation(
                 },
                 onNavigateToShuttleTimetableScreen = {
                     navController.navigate(Routes.ShuttleTimetable(it.id))
-                }
+                },
             )
         }
 
         composable<Routes.ShuttleTimetable> {
             ShuttleTimetableScreen(
                 modifier = Modifier.fillMaxSize().background(Color.White),
-                onNavigationIconClick = navController::popBackStack
+                onNavigationIconClick = navController::popBackStack,
             )
         }
     }

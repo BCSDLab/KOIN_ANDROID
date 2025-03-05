@@ -37,7 +37,7 @@ fun LostAndFoundDetail(
     navigateToArticleList: () -> Unit = {},
     navigateToHotArticle: (HotArticleData) -> Unit,
     navigateToChatRoom: (articleId: Int) -> Unit = {},
-    navigateToReport: (articleId: Int) -> Unit = {}
+    navigateToReport: (articleId: Int) -> Unit = {},
 ) {
     KoinTheme {
         val uiState by viewModel.collectAsState()
@@ -49,7 +49,7 @@ fun LostAndFoundDetail(
             handleSideEffect(it, context, navigateToArticleList)
         }
         Column(
-            modifier = modifier.verticalScroll(rememberScrollState())
+            modifier = modifier.verticalScroll(rememberScrollState()),
         ) {
             DetailHeader(
                 lostOrFound = uiState.lostOrFound,
@@ -57,7 +57,7 @@ fun LostAndFoundDetail(
                 foundPlace = uiState.foundPlace,
                 foundDate = uiState.foundDate,
                 author = uiState.author,
-                registeredAt = uiState.registeredAt
+                registeredAt = uiState.registeredAt,
             )
 
             HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
@@ -65,7 +65,7 @@ fun LostAndFoundDetail(
             DetailContent(
                 imageUris = uiState.images,
                 content = uiState.content,
-                isWriterAdmin = uiState.isWriterCouncil
+                isWriterAdmin = uiState.isWriterCouncil,
             )
 
             val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
@@ -87,29 +87,29 @@ fun LostAndFoundDetail(
                 },
                 onChatRoomClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_MESSAGE_SEND,
+                        AnalyticsConstant.Label.LostAndFound.ITEM_MESSAGE_SEND,
                         if (uiState.lostOrFound == LostOrFoundType.LOST) {
                             loggingLostMessageSend
                         } else {
                             loggingFoundMessageSend
-                        }
+                        },
                     )
                     navigateToChatRoom(uiState.id)
                 },
                 onReportArticleClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT,
-                        loggingReport
+                        AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
+                        loggingReport,
                     )
                     navigateToReport(uiState.id)
-                }
+                },
             )
 
             HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
 
             HotArticle(
                 hotArticleList = hotArticle,
-                navigateToHotArticle = navigateToHotArticle
+                navigateToHotArticle = navigateToHotArticle,
             )
 
             if (isLoading) {
@@ -122,16 +122,16 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {}
+    navigateToArticleList: () -> Unit = {},
 ) {
     when (sideEffect) {
-        //is LostAndFoundDetailSideEffect.FetchDetail -> {}
-        //LostAndFoundDetailSideEffect.FetchHotArticles -> {}
+        // is LostAndFoundDetailSideEffect.FetchDetail -> {}
+        // LostAndFoundDetailSideEffect.FetchHotArticles -> {}
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_delete_toast),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
             navigateToArticleList()
         }
@@ -140,23 +140,22 @@ private fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_delete_failed_toast),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
         }
 
         LostAndFoundDetailSideEffect.DeletedArticle -> {
             context.findActivity()?.finish()
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-            }
+            val intent =
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                }
             context.startActivity(intent)
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_deleted_article),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
         }
     }
 }
-
-

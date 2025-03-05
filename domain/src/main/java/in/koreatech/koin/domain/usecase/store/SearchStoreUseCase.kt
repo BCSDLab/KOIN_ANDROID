@@ -16,20 +16,18 @@ class SearchStoreUseCase constructor(
         category: StoreCategories? = null,
         storeSorter: StoreSorter? = null,
         isOperating: Boolean? = null,
-        isDelivery: Boolean? = null
+        isDelivery: Boolean? = null,
     ): List<Store> {
         return withContext(coroutineDispatcher) {
-
             storeRepository.getStores(
                 storeSorter = storeSorter,
                 isOperating = isOperating,
                 isDelivery = isDelivery,
-                query = search
+                query = search,
             )
                 .filter {
                     if (search == "") category?.id in it.categoryIds else true
                 }
-            
         }
     }
 }

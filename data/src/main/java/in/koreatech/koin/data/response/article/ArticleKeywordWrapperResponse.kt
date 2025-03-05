@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ArticleKeywordWrapperResponse(
     @SerializedName("count") val count: Int,
-    @SerializedName("keywords") val keywords: List<ArticleKeywordResponse>
+    @SerializedName("keywords") val keywords: List<ArticleKeywordResponse>,
 ) {
     data class ArticleKeywordResponse(
         @SerializedName("id") val id: Int,

@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextCheckbox(
@@ -28,35 +27,37 @@ fun TextCheckbox(
     isChecked: Boolean,
     onCheckChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Row(
-        modifier = modifier.noRippleClickable {
-            if(enabled) onCheckChanged(!isChecked)
-        },
+        modifier =
+            modifier.noRippleClickable {
+                if (enabled) onCheckChanged(!isChecked)
+            },
         horizontalArrangement = Arrangement.spacedBy(5.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
             TriStateCheckbox(
                 state = ToggleableState(isChecked),
                 onClick = null,
                 enabled = enabled,
-                colors = CheckboxDefaults.colors().copy(
-                    checkedBoxColor = KoinTheme.colors.primary500,
-                    checkedCheckmarkColor = KoinTheme.colors.neutral0,
-                    checkedBorderColor = KoinTheme.colors.primary500,
-                    uncheckedBoxColor = KoinTheme.colors.neutral0,
-                    uncheckedCheckmarkColor = KoinTheme.colors.neutral0,
-                    uncheckedBorderColor = KoinTheme.colors.neutral400,
-                    disabledCheckedBoxColor = KoinTheme.colors.primary300,
-                    disabledBorderColor = KoinTheme.colors.primary300,
-                )
+                colors =
+                    CheckboxDefaults.colors().copy(
+                        checkedBoxColor = KoinTheme.colors.primary500,
+                        checkedCheckmarkColor = KoinTheme.colors.neutral0,
+                        checkedBorderColor = KoinTheme.colors.primary500,
+                        uncheckedBoxColor = KoinTheme.colors.neutral0,
+                        uncheckedCheckmarkColor = KoinTheme.colors.neutral0,
+                        uncheckedBorderColor = KoinTheme.colors.neutral400,
+                        disabledCheckedBoxColor = KoinTheme.colors.primary300,
+                        disabledBorderColor = KoinTheme.colors.primary300,
+                    ),
             )
         }
         Text(
             text = text,
-            style = textStyle
+            style = textStyle,
         )
     }
 }
@@ -70,7 +71,7 @@ private fun TextCheckboxCheckedPreview() {
             text = "체크박스",
             textStyle = KoinTheme.typography.regular15,
             isChecked = true,
-            onCheckChanged = {}
+            onCheckChanged = {},
         )
     }
 }
@@ -84,10 +85,11 @@ private fun TextCheckboxUncheckedPreview() {
             text = "체크박스",
             textStyle = KoinTheme.typography.regular15,
             isChecked = false,
-            onCheckChanged = {}
+            onCheckChanged = {},
         )
     }
 }
+
 @Preview()
 @Composable
 private fun TextCheckboxDisabledPreview() {
@@ -98,7 +100,7 @@ private fun TextCheckboxDisabledPreview() {
             textStyle = KoinTheme.typography.regular15,
             isChecked = true,
             onCheckChanged = {},
-            enabled = false
+            enabled = false,
         )
     }
 }

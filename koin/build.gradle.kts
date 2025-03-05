@@ -40,7 +40,8 @@ android {
             isDebuggable = true
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
             manifestPlaceholders["appName"] = "@string/app_name_dev"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
@@ -49,7 +50,7 @@ android {
             buildConfigField(
                 "String",
                 "KAKAO_NATIVE_APP_KEY",
-                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
+                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")",
             )
             firebaseCrashlytics {
                 mappingFileUploadEnabled = false
@@ -59,7 +60,8 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
             manifestPlaceholders["appName"] = "@string/app_name"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
@@ -69,7 +71,7 @@ android {
             buildConfigField(
                 "String",
                 "KAKAO_NATIVE_APP_KEY",
-                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
+                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")",
             )
             firebaseAppDistribution {
                 artifactType = "AAB"
@@ -107,15 +109,15 @@ dependencies {
 
     implementation(libs.guava)
 
-    /* Dependency - glide & coil */
+    // Dependency - glide & coil
     implementation(libs.glide)
     implementation(libs.coil)
     ksp(libs.glide.ksp)
 
-    /* Dependency - naver api */
+    // Dependency - naver api
     implementation(libs.map.sdk)
 
-    /* Dependency -google play core */
+    // Dependency -google play core
     implementation(libs.inApp.update)
     implementation(libs.inApp.update.ktx)
     implementation(libs.feature.delivery.ktx)

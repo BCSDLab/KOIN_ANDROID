@@ -32,9 +32,18 @@ data class SubscribesDetail(
 }
 
 enum class SubscribesType {
-    SHOP_EVENT, DINING_SOLD_OUT, DINING_IMAGE_UPLOAD, NOTHING, ARTICLE_KEYWORD, REVIEW_PROMPT, LOST_ITEM_CHAT
+    SHOP_EVENT,
+    DINING_SOLD_OUT,
+    DINING_IMAGE_UPLOAD,
+    NOTHING,
+    ARTICLE_KEYWORD,
+    REVIEW_PROMPT,
+    LOST_ITEM_CHAT,
 }
 
 enum class SubscribesDetailType {
-    BREAKFAST, LUNCH, DINNER, NOTHING
+    BREAKFAST,
+    LUNCH,
+    DINNER,
+    NOTHING,
 }

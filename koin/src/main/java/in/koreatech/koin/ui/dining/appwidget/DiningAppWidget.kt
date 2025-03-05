@@ -1,11 +1,5 @@
 package `in`.koreatech.koin.ui.dining.appwidget
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.constant.DINING
-import `in`.koreatech.koin.domain.model.dining.Dining
-import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
-import `in`.koreatech.koin.domain.util.DiningUtil
-import `in`.koreatech.koin.domain.util.TimeUtil
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.appwidget.AppWidgetManager
@@ -18,6 +12,12 @@ import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.DINING
+import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
+import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.domain.util.TimeUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,7 +36,7 @@ class DiningAppWidget : AppWidgetProvider() {
     private fun updateAppWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
-        appWidgetId: Int
+        appWidgetId: Int,
     ) {
         val remoteViews = RemoteViews(context.packageName, R.layout.dining_widget)
         setDiningWidget(context, remoteViews)
@@ -46,14 +46,17 @@ class DiningAppWidget : AppWidgetProvider() {
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
+        appWidgetIds: IntArray,
     ) {
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(
+        context: Context,
+        intent: Intent,
+    ) {
         super.onReceive(context, intent)
         val action = intent.action
         val remoteViews = RemoteViews(context.packageName, R.layout.dining_widget)
@@ -77,12 +80,18 @@ class DiningAppWidget : AppWidgetProvider() {
         }
     }
 
-    override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
+    override fun onDeleted(
+        context: Context?,
+        appWidgetIds: IntArray?,
+    ) {
         super.onDeleted(context, appWidgetIds)
         if (job != null && job!!.isActive) job!!.cancel()
     }
 
-    private fun setDiningWidget(context: Context, remoteViews: RemoteViews) {
+    private fun setDiningWidget(
+        context: Context,
+        remoteViews: RemoteViews,
+    ) {
         setDiningType(remoteViews) // 아침, 점심, 석식 저장 및 출력
         val targetDay = DiningUtil.getCurrentDate()
         setDate(remoteViews, targetDay)
@@ -90,33 +99,37 @@ class DiningAppWidget : AppWidgetProvider() {
             remoteViews,
             context,
             DINING.WIDGET_ACTION_REFRESH_CLICKED,
-            R.id.dining_widget_refresh_imageview
+            R.id.dining_widget_refresh_imageview,
         )
-        job = CoroutineScope(Dispatchers.IO).launch {
-            getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay))
-                .onSuccess {
-                    withContext(Dispatchers.Main) {
-                        setDiningList(it, context)
+        job =
+            CoroutineScope(Dispatchers.IO).launch {
+                getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay))
+                    .onSuccess {
+                        withContext(Dispatchers.Main) {
+                            setDiningList(it, context)
+                        }
                     }
-                }
-                .onFailure {
-                    Toast.makeText(
-                        context,
-                        R.string.error_network,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-        }
+                    .onFailure {
+                        Toast.makeText(
+                            context,
+                            R.string.error_network,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+            }
     }
 
     private fun setDiningType(remoteViews: RemoteViews) {
         remoteViews.setTextViewText(
             R.id.dining_widget_name_textview,
-            DiningUtil.getCurrentType().typeKorean
+            DiningUtil.getCurrentType().typeKorean,
         )
     }
 
-    private fun setDiningList(diningList: List<Dining>, context: Context) {
+    private fun setDiningList(
+        diningList: List<Dining>,
+        context: Context,
+    ) {
         val componentName = ComponentName(context, DiningAppWidget::class.java)
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val remoteViews = RemoteViews(context.packageName, R.layout.dining_widget)
@@ -125,8 +138,10 @@ class DiningAppWidget : AppWidgetProvider() {
         with(DiningUtil.typeFiltering(diningList, currentType)) {
             var isCurrentPlaceInDining = false
             forEachIndexed { index, dining ->
-                if (index < DINING.WIDGET_PLACE_NUMBERS && dining.place == currentDiningPlace) isCurrentPlaceInDining =
-                    true
+                if (index < DINING.WIDGET_PLACE_NUMBERS && dining.place == currentDiningPlace) {
+                    isCurrentPlaceInDining =
+                        true
+                }
             }
             if (!isCurrentPlaceInDining) currentDiningPlace = null
             forEachIndexed { index, dining ->
@@ -135,7 +150,7 @@ class DiningAppWidget : AppWidgetProvider() {
                         RemoteViews(context.packageName, R.layout.dining_widget_place)
                     remoteViews.addView(
                         R.id.dining_widget_place_layout,
-                        placeRemoteViews
+                        placeRemoteViews,
                     )
                     if (currentDiningPlace == null) {
                         if (index == 0) {
@@ -143,7 +158,7 @@ class DiningAppWidget : AppWidgetProvider() {
                             makePlaceViewSelected(
                                 context,
                                 R.id.dining_widget_place_name_textview,
-                                placeRemoteViews
+                                placeRemoteViews,
                             )
                         }
                     } else {
@@ -151,19 +166,19 @@ class DiningAppWidget : AppWidgetProvider() {
                             makePlaceViewSelected(
                                 context,
                                 R.id.dining_widget_place_name_textview,
-                                placeRemoteViews
+                                placeRemoteViews,
                             )
                         }
                     }
                     placeRemoteViews.setTextViewText(
                         R.id.dining_widget_place_name_textview,
-                        dining.place
+                        dining.place,
                     )
                     setButtonEventName(
                         placeRemoteViews,
                         context,
                         "${DINING.WIDGET_ACTION_CLICKED} ${dining.place}",
-                        R.id.dining_widget_place_name_textview
+                        R.id.dining_widget_place_name_textview,
                     )
                 }
             }
@@ -186,14 +201,15 @@ class DiningAppWidget : AppWidgetProvider() {
     private fun setDiningMenu(
         remoteViews: RemoteViews,
         diningMenuList: List<String>,
-        context: Context
+        context: Context,
     ) {
         remoteViews.setViewVisibility(R.id.dining_widget_menulist_linearlayout, View.VISIBLE)
         remoteViews.setViewVisibility(R.id.dining_widget_no_menulist_linearlayout, View.GONE)
         clearDiningMenu(remoteViews, context)
         for (i in 0 until if (diningMenuList.size >= DINING.WIDGET_MAX_MENU_NUMBERS) DINING.WIDGET_MAX_MENU_NUMBERS else diningMenuList.size) {
-            val resId: Int = context.resources
-                .getIdentifier(DINING.WIDGET_MENU_TEXT_VIEW_ID + i, "id", context.packageName)
+            val resId: Int =
+                context.resources
+                    .getIdentifier(DINING.WIDGET_MENU_TEXT_VIEW_ID + i, "id", context.packageName)
             if (diningMenuList[i] == "") continue
             remoteViews.setTextViewText(resId, diningMenuList[i])
         }
@@ -201,11 +217,12 @@ class DiningAppWidget : AppWidgetProvider() {
 
     private fun clearDiningMenu(
         remoteViews: RemoteViews,
-        context: Context
+        context: Context,
     ) {
         for (i in 0 until DINING.WIDGET_MAX_MENU_NUMBERS) {
-            val resId: Int = context.resources
-                .getIdentifier(DINING.WIDGET_MENU_TEXT_VIEW_ID + i, "id", context.packageName)
+            val resId: Int =
+                context.resources
+                    .getIdentifier(DINING.WIDGET_MENU_TEXT_VIEW_ID + i, "id", context.packageName)
             remoteViews.setTextViewText(resId, "")
         }
     }
@@ -214,26 +231,37 @@ class DiningAppWidget : AppWidgetProvider() {
         remoteViews: RemoteViews,
         context: Context,
         name: String,
-        viewNum: Int
+        viewNum: Int,
     ) {
         val intent = Intent(context, DiningAppWidget::class.java).setAction(name)
         val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, FLAG_IMMUTABLE)
         remoteViews.setOnClickPendingIntent(viewNum, pendingIntent)
     }
 
-    private fun setDate(remoteViews: RemoteViews, targetDay: Date) {
+    private fun setDate(
+        remoteViews: RemoteViews,
+        targetDay: Date,
+    ) {
         remoteViews.setTextViewText(
             R.id.dining_widget_date_textview,
-            TimeUtil.dateFormatToMMDDEE(targetDay)
+            TimeUtil.dateFormatToMMDDEE(targetDay),
         )
     }
 
-    private fun makePlaceViewSelected(context: Context, id: Int, remoteViews: RemoteViews) {
+    private fun makePlaceViewSelected(
+        context: Context,
+        id: Int,
+        remoteViews: RemoteViews,
+    ) {
         remoteViews.setTextColor(id, ContextCompat.getColor(context, R.color.vivid_orange))
         remoteViews.setInt(id, "setBackgroundResource", R.drawable.bg_rect_vividorange_radius_10dp)
     }
 
-    private fun makePlaceViewNonSelected(context: Context, id: Int, remoteViews: RemoteViews) {
+    private fun makePlaceViewNonSelected(
+        context: Context,
+        id: Int,
+        remoteViews: RemoteViews,
+    ) {
         remoteViews.setTextColor(id, ContextCompat.getColor(context, R.color.very_dark_gray))
         remoteViews.setInt(id, "setBackgroundResource", R.color.white)
     }

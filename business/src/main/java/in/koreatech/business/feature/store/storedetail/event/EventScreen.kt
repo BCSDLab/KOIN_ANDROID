@@ -9,9 +9,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.store.OwnerStoreDialog
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailState
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
-import `in`.koreatech.business.feature.store.OwnerStoreDialog
 
 @Composable
 fun EventScreen(
@@ -19,12 +19,13 @@ fun EventScreen(
     currentPage: Int,
     viewModel: MyStoreDetailViewModel,
     state: MyStoreDetailState,
-    onDeleteEvent: () -> Unit
+    onDeleteEvent: () -> Unit,
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
-        verticalOffset, scrollState.value
+        verticalOffset,
+        scrollState.value,
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
 
     LaunchedEffect(scrollState.value) {
@@ -50,7 +51,6 @@ fun EventScreen(
         dialogTitle = stringResource(R.string.event_delete_title),
         dialogText = stringResource(R.string.event_delete_text),
         positiveButtonText = stringResource(id = R.string.delete),
-        visibility = state.dialogVisibility
+        visibility = state.dialogVisibility,
     )
-
 }

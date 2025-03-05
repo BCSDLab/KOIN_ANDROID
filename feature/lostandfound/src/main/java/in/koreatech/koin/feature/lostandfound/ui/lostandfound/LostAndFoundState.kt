@@ -19,5 +19,5 @@ data class LostAndFoundState(
     val currentPage: Int = 1,
     val totalCount: Int = 0,
     val currentCount: Int = 0,
-    val totalPage: Int = 1
+    val totalPage: Int = 1,
 ) : Parcelable

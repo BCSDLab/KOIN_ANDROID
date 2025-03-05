@@ -12,7 +12,7 @@ import `in`.koreatech.koin.ui.splash.SplashActivity
 import `in`.koreatech.koin.util.ext.navigateToPlayStore
 
 @AndroidEntryPoint
-class ForceUpdateActivity: ActivityBase() {
+class ForceUpdateActivity : ActivityBase() {
     companion object {
         private const val screenTitle = "강제업데이트"
         private const val action = "force_update"
@@ -21,6 +21,7 @@ class ForceUpdateActivity: ActivityBase() {
         private const val updateCategory = "update"
         private const val clickCategory = "click"
     }
+
     override val screenTitle: String
         get() = ForceUpdateActivity.screenTitle
 
@@ -34,7 +35,7 @@ class ForceUpdateActivity: ActivityBase() {
             action = action,
             category = viewCategory,
             label = "forced_update_page_view",
-            value = "v${BuildConfig.VERSION_NAME}"
+            value = "v${BuildConfig.VERSION_NAME}",
         )
         initView()
         initEvent()
@@ -46,7 +47,7 @@ class ForceUpdateActivity: ActivityBase() {
             action = action,
             category = exitCategory,
             label = "forced_update_exit",
-            value = "홈버튼"
+            value = "홈버튼",
         )
     }
 
@@ -70,7 +71,7 @@ class ForceUpdateActivity: ActivityBase() {
                 action = action,
                 category = exitCategory,
                 label = "forced_update_exit",
-                value = "나가기버튼"
+                value = "나가기버튼",
             )
             finish()
         }
@@ -82,7 +83,7 @@ class ForceUpdateActivity: ActivityBase() {
                 action = action,
                 category = updateCategory,
                 label = "forced_update_confirm",
-                value = "업데이트하기"
+                value = "업데이트하기",
             )
             navigateToPlayStore()
         }
@@ -94,7 +95,7 @@ class ForceUpdateActivity: ActivityBase() {
                 action = action,
                 category = clickCategory,
                 label = "forced_update_already_done",
-                value = "이미업데이트"
+                value = "이미업데이트",
             )
             ForceUpdateDialog.apply {
                 newInstance().show(supportFragmentManager, TAG)

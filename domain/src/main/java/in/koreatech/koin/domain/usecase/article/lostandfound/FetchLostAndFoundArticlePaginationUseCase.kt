@@ -5,9 +5,14 @@ import `in`.koreatech.koin.domain.repository.ArticleRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class FetchLostAndFoundArticlePaginationUseCase @Inject constructor(
-    private val articleRepository: ArticleRepository
-) {
-    operator fun invoke(page: Int, limit: Int, type: String?): Flow<ArticleLostAndFoundPagination> =
-        articleRepository.fetchArticleLostAndFoundPagination(page, limit, type)
-}
+class FetchLostAndFoundArticlePaginationUseCase
+    @Inject
+    constructor(
+        private val articleRepository: ArticleRepository,
+    ) {
+        operator fun invoke(
+            page: Int,
+            limit: Int,
+            type: String?,
+        ): Flow<ArticleLostAndFoundPagination> = articleRepository.fetchArticleLostAndFoundPagination(page, limit, type)
+    }

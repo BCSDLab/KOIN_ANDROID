@@ -1,19 +1,13 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -27,12 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.transition.Visibility
 import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
@@ -41,7 +32,7 @@ import `in`.koreatech.koin.core.R
 @Composable
 fun OperatingTimeSettingDialog(
     title: String = "",
-    operatingTimeDialog: OperatingTimeDialog = OperatingTimeDialog()
+    operatingTimeDialog: OperatingTimeDialog = OperatingTimeDialog(),
 ) {
     var timeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
 
@@ -50,23 +41,25 @@ fun OperatingTimeSettingDialog(
             Surface(
                 shape = RoundedCornerShape(16.dp),
                 color = Color.White,
-                elevation = 8.dp
+                elevation = 8.dp,
             ) {
                 Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
                 ) {
                     Text(
                         modifier = Modifier.padding(bottom = 8.dp),
                         text = title,
                         style = MaterialTheme.typography.h6,
-                        fontSize = 20.sp
+                        fontSize = 20.sp,
                     )
 
                     HoursNumberPicker(
-                        modifier = Modifier
-                            .height(120.dp),
+                        modifier =
+                            Modifier
+                                .height(120.dp),
                         dividersColor = MaterialTheme.colors.primary,
                         leadingZero = true,
                         value = timeValue,
@@ -78,26 +71,29 @@ fun OperatingTimeSettingDialog(
                             Text(
                                 modifier = Modifier.size(24.dp),
                                 textAlign = TextAlign.Center,
-                                text = ":"
+                                text = ":",
                             )
-                        }
+                        },
                     )
                     Row(
-                        modifier = Modifier
-                            .align(Alignment.End)
+                        modifier =
+                            Modifier
+                                .align(Alignment.End),
                     ) {
                         Button(
                             modifier = Modifier.padding(end = 5.dp),
                             onClick = {
                                 operatingTimeDialog.closeDialog()
-                            }) {
+                            },
+                        ) {
                             Text(stringResource(id = R.string.cancel))
                         }
                         Button(
                             onClick = {
                                 operatingTimeDialog.closeDialog()
                                 operatingTimeDialog.onSettingStoreTime(Pair(timeValue, operatingTimeDialog.dayOfWeekIndex))
-                            }) {
+                            },
+                        ) {
                             Text(stringResource(id = R.string.positive))
                         }
                     }

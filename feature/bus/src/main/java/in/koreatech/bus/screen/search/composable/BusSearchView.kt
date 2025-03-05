@@ -43,127 +43,133 @@ internal fun BusSearchView(
     onSwapIconClicked: () -> Unit = {},
     onSearchClicked: () -> Unit = {},
     onDepartureFieldClicked: () -> Unit = {},
-    onArrivalFieldClicked: () -> Unit = {}
+    onArrivalFieldClicked: () -> Unit = {},
 ) {
-
     KoinSurface {
         Column(modifier = modifier) {
             Text(
                 modifier = Modifier,
                 text = stringResource(R.string.introduce_bus_search),
                 style = KoinTheme.typography.medium16,
-                color = KoinTheme.colors.neutral800
+                color = KoinTheme.colors.neutral800,
             )
 
             Text(
                 modifier = Modifier.padding(top = 2.dp),
                 text = stringResource(R.string.caution_possibly_inaccurate),
                 style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral600
+                color = KoinTheme.colors.neutral600,
             )
 
             ConstraintLayout(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 46.dp)
-                    .height(IntrinsicSize.Min)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 46.dp)
+                        .height(IntrinsicSize.Min),
             ) {
                 val (departureText, arrivalText, departureField, arrivalField, iconSwap) = createRefs()
 
                 Text(
-                    modifier = Modifier.constrainAs(departureText) {
-                        start.linkTo(departureField.start)
-                        top.linkTo(parent.top)
-                        end.linkTo(departureField.end)
-                    },
+                    modifier =
+                        Modifier.constrainAs(departureText) {
+                            start.linkTo(departureField.start)
+                            top.linkTo(parent.top)
+                            end.linkTo(departureField.end)
+                        },
                     text = stringResource(R.string.departure),
                     style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.primary500
+                    color = KoinTheme.colors.primary500,
                 )
                 Text(
-                    modifier = Modifier.constrainAs(arrivalText) {
-                        top.linkTo(parent.top)
-                        start.linkTo(arrivalField.start)
-                        end.linkTo(arrivalField.end)
-                    },
+                    modifier =
+                        Modifier.constrainAs(arrivalText) {
+                            top.linkTo(parent.top)
+                            start.linkTo(arrivalField.start)
+                            end.linkTo(arrivalField.end)
+                        },
                     text = stringResource(R.string.arrival),
                     style = KoinTheme.typography.medium16,
-                    color = KoinTheme.colors.primary500
+                    color = KoinTheme.colors.primary500,
                 )
 
                 BusSearchInput(
                     place = departure,
                     placeholder = stringResource(R.string.select_departure),
-                    modifier = Modifier
-                        .padding(top = 10.dp)
-                        .noRippleClickable {
-                            onDepartureFieldClicked()
-                        }
-                        .constrainAs(departureField) {
-                            top.linkTo(iconSwap.top)
-                            bottom.linkTo(iconSwap.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(iconSwap.start)
+                    modifier =
+                        Modifier
+                            .padding(top = 10.dp)
+                            .noRippleClickable {
+                                onDepartureFieldClicked()
+                            }
+                            .constrainAs(departureField) {
+                                top.linkTo(iconSwap.top)
+                                bottom.linkTo(iconSwap.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(iconSwap.start)
 
-                            width = Dimension.fillToConstraints
-                            height = Dimension.preferredWrapContent
-                        }
+                                width = Dimension.fillToConstraints
+                                height = Dimension.preferredWrapContent
+                            },
                 )
 
                 IconButton(
                     onClick = onSwapIconClicked,
-                    modifier = Modifier
-                        .padding(top = 10.dp)
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                        .constrainAs(iconSwap) {
-                            top.linkTo(departureText.bottom)
-                            start.linkTo(departureField.end)
-                            end.linkTo(arrivalField.start)
-                        }.border(
-                            width = 1.dp,
-                            color = KoinTheme.colors.neutral300,
-                            shape = CircleShape
-                        ).background(
-                            color = KoinTheme.colors.neutral50,
-                            shape = CircleShape
-                        ).size(32.dp)
+                    modifier =
+                        Modifier
+                            .padding(top = 10.dp)
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .constrainAs(iconSwap) {
+                                top.linkTo(departureText.bottom)
+                                start.linkTo(departureField.end)
+                                end.linkTo(arrivalField.start)
+                            }.border(
+                                width = 1.dp,
+                                color = KoinTheme.colors.neutral300,
+                                shape = CircleShape,
+                            ).background(
+                                color = KoinTheme.colors.neutral50,
+                                shape = CircleShape,
+                            ).size(32.dp),
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_swap),
                         contentDescription = stringResource(R.string.swap_content_description),
-                        tint = KoinTheme.colors.primary500
+                        tint = KoinTheme.colors.primary500,
                     )
                 }
 
                 BusSearchInput(
                     place = arrival,
                     placeholder = stringResource(R.string.select_arrival),
-                    modifier = Modifier
-                        .padding(top = 10.dp)
-                        .noRippleClickable {
-                            onArrivalFieldClicked()
-                        }
-                        .constrainAs(arrivalField) {
-                            top.linkTo(iconSwap.top)
-                            bottom.linkTo(iconSwap.bottom)
-                            start.linkTo(iconSwap.end)
-                            end.linkTo(parent.end)
+                    modifier =
+                        Modifier
+                            .padding(top = 10.dp)
+                            .noRippleClickable {
+                                onArrivalFieldClicked()
+                            }
+                            .constrainAs(arrivalField) {
+                                top.linkTo(iconSwap.top)
+                                bottom.linkTo(iconSwap.bottom)
+                                start.linkTo(iconSwap.end)
+                                end.linkTo(parent.end)
 
-                            width = Dimension.fillToConstraints
-                            height = Dimension.preferredWrapContent
-                        }
+                                width = Dimension.fillToConstraints
+                                height = Dimension.preferredWrapContent
+                            },
                 )
             }
 
             Spacer(modifier = Modifier.weight(1f))
             FilledButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 30.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 30.dp),
                 enabled = searchButtonEnabled,
                 text = stringResource(R.string.action_search),
                 contentPadding = PaddingValues(vertical = 12.dp),
-                onClick = onSearchClicked
+                onClick = onSearchClicked,
             )
         }
     }
@@ -175,33 +181,33 @@ private fun BusSearchInput(
     placeholder: String,
     modifier: Modifier = Modifier,
 ) {
-
     val isPlaceDetermined = place.isNotEmpty()
 
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(4.dp))
-                .background(if (isPlaceDetermined.not()) KoinTheme.colors.neutral100 else Color.Transparent)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(if (isPlaceDetermined.not()) KoinTheme.colors.neutral100 else Color.Transparent)
+                    .fillMaxSize(),
+            contentAlignment = Alignment.Center,
         ) {
-            if (isPlaceDetermined.not())
+            if (isPlaceDetermined.not()) {
                 Text(
                     text = placeholder,
                     maxLines = 1,
                     style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral400     // TODO neutral450 ?
+                    color = KoinTheme.colors.neutral400, // TODO neutral450 ?
                 )
-            else {
+            } else {
                 Text(
                     text = place,
                     maxLines = 1,
                     style = KoinTheme.typography.bold18,
-                    color = KoinTheme.colors.neutral800
+                    color = KoinTheme.colors.neutral800,
                 )
             }
         }

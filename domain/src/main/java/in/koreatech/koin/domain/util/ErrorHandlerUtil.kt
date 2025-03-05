@@ -11,4 +11,3 @@ inline fun <T> Pair<T?, ErrorHandler?>.onFailure(action: (ErrorHandler) -> Unit)
     this.also {
         it.second?.let(action)
     }
-

@@ -72,6 +72,7 @@ kotlinxCollectionsImmutableVersion = "0.3.8"
 kspVersion = "1.9.22-1.0.16"
 firebaseCommonKtxVersion = "21.0.0"
 krossbow = "7.0.0"
+ktlint = "12.1.2"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -211,6 +212,7 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradleVersion" }
 google-service = { id = "com.google.gms.google-services", version.ref = "googleServiceVersion" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
 koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
 koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }

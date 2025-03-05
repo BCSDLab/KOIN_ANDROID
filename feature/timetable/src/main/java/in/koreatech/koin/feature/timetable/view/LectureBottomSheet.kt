@@ -31,30 +31,31 @@ fun LectureBottomSheet(
     onClickComplete: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier
-            .height(220.dp)
-            .fillMaxWidth()
-            .background(Color.White)
-            .onGloballyPositioned {
-                onBottomSheetHeightChange(it.size.height.toFloat())
-            }
-            .padding(
-                start = 24.dp,
-                end = 24.dp,
-                top = 10.dp
-            ),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        modifier =
+            modifier
+                .height(220.dp)
+                .fillMaxWidth()
+                .background(Color.White)
+                .onGloballyPositioned {
+                    onBottomSheetHeightChange(it.size.height.toFloat())
+                }
+                .padding(
+                    start = 24.dp,
+                    end = 24.dp,
+                    top = 10.dp,
+                ),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         LectureBottomSheetHeader(
             onClickLectureDelete = {
                 lecture?.let(onClickLectureDelete)
             },
-            onClickComplete = onClickComplete
+            onClickComplete = onClickComplete,
         )
         HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
         lecture?.let {
             LectureBottomSheetContent(
-                lecture = it
+                lecture = it,
             )
         }
     }
@@ -67,31 +68,34 @@ fun LectureBottomSheetHeader(
     onClickComplete: () -> Unit = {},
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier =
+            modifier
+                .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
             text = stringResource(id = R.string.timetable_bottom_sheet_lecture_delete),
             style = KoinTheme.typography.bold18,
             color = KoinTheme.colors.danger700,
-            modifier = Modifier.clickable {
-                onClickLectureDelete()
-            }
+            modifier =
+                Modifier.clickable {
+                    onClickLectureDelete()
+                },
         )
         Text(
             text = stringResource(id = R.string.timetable_bottom_sheet_lecture_detail),
             style = KoinTheme.typography.medium18,
             color = KoinTheme.colors.primary500,
-            modifier = Modifier
+            modifier = Modifier,
         )
         Text(
             text = stringResource(id = R.string.timetable_bottom_sheet_complete),
             style = KoinTheme.typography.medium18,
             color = KoinTheme.colors.neutral800,
-            modifier = Modifier.clickable {
-                onClickComplete()
-            }
+            modifier =
+                Modifier.clickable {
+                    onClickComplete()
+                },
         )
     }
 }
@@ -99,25 +103,25 @@ fun LectureBottomSheetHeader(
 @Composable
 fun LectureBottomSheetContent(
     lecture: TimetableLecture,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Text(
             text = lecture.classTitle,
             style = KoinTheme.typography.medium18,
-            color = KoinTheme.colors.neutral800
+            color = KoinTheme.colors.neutral800,
         )
         Text(
             text = lecture.professor,
             style = KoinTheme.typography.regular15,
-            color = KoinTheme.colors.neutral800
+            color = KoinTheme.colors.neutral800,
         )
         Text(
             text = lecture.getDetailTime(),
             style = KoinTheme.typography.regular15,
-            color = KoinTheme.colors.neutral800
+            color = KoinTheme.colors.neutral800,
         )
     }
 }
@@ -126,6 +130,6 @@ fun LectureBottomSheetContent(
 @Composable
 private fun LectureBottomSheetPreview() {
     LectureBottomSheet(
-        lecture = dummyLecture.toTimetableLecture()
+        lecture = dummyLecture.toTimetableLecture(),
     )
 }

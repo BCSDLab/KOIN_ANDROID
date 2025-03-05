@@ -24,9 +24,9 @@ import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
@@ -54,14 +54,17 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     lateinit var onboardingManager: OnboardingManager
     private lateinit var diningAdapter: ListAdapter<Dining, RecyclerView.ViewHolder>
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 combine(
                     viewModel.abTestExperimentGroup,
-                    viewModel.dining
+                    viewModel.dining,
                 ) { experimentGroup, diningList ->
                     when (experimentGroup) {
                         ExperimentGroup.SHARE_ORIGINAL -> {
@@ -70,7 +73,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                                 0,
                                 0,
                                 0,
-                                40
+                                40,
                             )
                         }
                         ExperimentGroup.SHARE_NEW -> {
@@ -79,7 +82,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                                 24,
                                 20,
                                 24,
-                                40
+                                40,
                             )
                         }
                     }
@@ -88,10 +91,11 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                         adapter = diningAdapter
                     }
 
-                    val filteredDiningList = diningList
-                        .filter { dining -> dining.type == type }
-                        .arrange()
-                        .filter { dining -> dining.menu.isNotEmpty() && dining.menu.first() != "미운영" }
+                    val filteredDiningList =
+                        diningList
+                            .filter { dining -> dining.type == type }
+                            .arrange()
+                            .filter { dining -> dining.menu.isNotEmpty() && dining.menu.first() != "미운영" }
 
                     diningAdapter.submitList(filteredDiningList) {
                         if (filteredDiningList.isNotEmpty() && diningAdapter is DiningAdapter) onListItemAttached()
@@ -112,12 +116,13 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                         val bottomOffset = it.bottom
                         binding.frameLayoutDiningItems.addView(
                             ImageView(requireContext()).apply {
-                                layoutParams = FrameLayout.LayoutParams(
-                                    550,
-                                    FrameLayout.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    gravity = Gravity.CENTER_HORIZONTAL
-                                }
+                                layoutParams =
+                                    FrameLayout.LayoutParams(
+                                        550,
+                                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                                    ).apply {
+                                        gravity = Gravity.CENTER_HORIZONTAL
+                                    }
 
                                 translationY = bottomOffset.toFloat() - 90f
                                 setOnClickListener {
@@ -126,10 +131,9 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                                 Glide.with(requireContext())
                                     .load(R.drawable.tooltip_share)
                                     .into(this)
-                            }
+                            },
                         )
                     }
-
                 }
             }
         }
@@ -139,14 +143,14 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
         EventLogger.logClickEvent(
             EventAction.CAMPUS,
             AnalyticsConstant.Label.MENU_SHARE,
-            "공유하기"
+            "공유하기",
         )
         val messageTemplate = createFeedMessageTemplate(dining)
 
         if (ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
             ShareClient.instance.shareDefault(
                 requireContext(),
-                messageTemplate
+                messageTemplate,
             ) { sharingResult, error ->
                 error?.printStackTrace()
                 sharingResult?.let {
@@ -157,45 +161,59 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     }
 
     private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
-        val executionParams = mapOf(
-            "date" to dining.date,
-            "type" to dining.type,
-            "place" to dining.place
-        )
-        val link = Link(
-            androidExecutionParams = executionParams,
-            iosExecutionParams = executionParams
-        )
-        return FeedTemplate(
-            content = Content(
-                title = "ㅤ",
-                imageUrl = dining.imageUrl,
-                link = link
-            ),
-            itemContent = ItemContent(
-                profileText = "${
-                    if (TimeUtil.isToday(dining.date)) "오늘" else if (TimeUtil.isTomorrow(dining.date)) "내일" else
-                        TimeUtil.formatDateToKorean(dining.date)
-                } ${DiningUtil.getKoreanName(dining.type)} 식단",
-                items = listOf(
-                    ItemInfo(
-                        item = dining.place,
-                        itemOp = dining.menu.joinToString(", ")
-                    )
-                )
-            ),
-            buttons = listOf(
-                Button("코인에서 식단 전체보기", link)
+        val executionParams =
+            mapOf(
+                "date" to dining.date,
+                "type" to dining.type,
+                "place" to dining.place,
             )
+        val link =
+            Link(
+                androidExecutionParams = executionParams,
+                iosExecutionParams = executionParams,
+            )
+        return FeedTemplate(
+            content =
+                Content(
+                    title = "ㅤ",
+                    imageUrl = dining.imageUrl,
+                    link = link,
+                ),
+            itemContent =
+                ItemContent(
+                    profileText = "${
+                        if (TimeUtil.isToday(dining.date)) {
+                            "오늘"
+                        } else if (TimeUtil.isTomorrow(dining.date)) {
+                            "내일"
+                        } else {
+                            TimeUtil.formatDateToKorean(dining.date)
+                        }
+                    } ${DiningUtil.getKoreanName(dining.type)} 식단",
+                    items =
+                        listOf(
+                            ItemInfo(
+                                item = dining.place,
+                                itemOp = dining.menu.joinToString(", "),
+                            ),
+                        ),
+                ),
+            buttons =
+                listOf(
+                    Button("코인에서 식단 전체보기", link),
+                ),
         )
     }
 
     companion object {
         private const val TYPE = "type"
-        fun newInstance(type: String) = DiningItemsFragment().apply {
-            arguments = Bundle().apply {
-                putString(TYPE, type)
+
+        fun newInstance(type: String) =
+            DiningItemsFragment().apply {
+                arguments =
+                    Bundle().apply {
+                        putString(TYPE, type)
+                    }
             }
-        }
     }
 }

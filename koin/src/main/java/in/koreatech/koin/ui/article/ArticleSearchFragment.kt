@@ -18,9 +18,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleSearchBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
@@ -36,7 +36,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ArticleSearchFragment : Fragment() {
-
     private var _binding: FragmentArticleSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -46,7 +45,7 @@ class ArticleSearchFragment : Fragment() {
     private val recentSearchedHistoryAdapter: RecentSearchedHistoryAdapter by lazy {
         RecentSearchedHistoryAdapter(
             onSearchHistoryClicked = ::onRecentSearchHistoryClicked,
-            onDeleteClicked = ::onRecentSearchHistoryDeleteClicked
+            onDeleteClicked = ::onRecentSearchHistoryDeleteClicked,
         )
     }
 
@@ -57,7 +56,7 @@ class ArticleSearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleSearchBinding.inflate(inflater, container, false)
@@ -67,11 +66,13 @@ class ArticleSearchFragment : Fragment() {
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
-                        "검색하기"
+                        "검색하기",
                     )
                     viewModel.search()
                     true
-                } else false
+                } else {
+                    false
+                }
             }
             initMostSearchedKeywordChips()
             binding.textInputSearch.addTextChangedListener {
@@ -81,7 +82,7 @@ class ArticleSearchFragment : Fragment() {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
-                    "검색하기"
+                    "검색하기",
                 )
                 viewModel.search()
             }
@@ -124,10 +125,11 @@ class ArticleSearchFragment : Fragment() {
                 viewModel.searchResultUiState.collect {
                     when (it) {
                         is SearchUiState.Idle -> Unit
-                        is SearchUiState.RequireInput -> SnackbarUtil.makeShortSnackbar(
-                            binding.root,
-                            getString(R.string.search_input_required)
-                        )
+                        is SearchUiState.RequireInput ->
+                            SnackbarUtil.makeShortSnackbar(
+                                binding.root,
+                                getString(R.string.search_input_required),
+                            )
 
                         is SearchUiState.Loading -> Unit
                         is SearchUiState.Success -> {
@@ -142,10 +144,11 @@ class ArticleSearchFragment : Fragment() {
                             binding.textViewSearchResultEmpty.visibility = View.VISIBLE
                         }
 
-                        is SearchUiState.Error -> SnackbarUtil.makeShortSnackbar(
-                            binding.root,
-                            getString(R.string.error_network_unknown)
-                        )
+                        is SearchUiState.Error ->
+                            SnackbarUtil.makeShortSnackbar(
+                                binding.root,
+                                getString(R.string.error_network_unknown),
+                            )
                     }
                 }
             }
@@ -169,10 +172,11 @@ class ArticleSearchFragment : Fragment() {
     }
 
     private fun onSearchInputChanged(query: String) {
-        if (query.isEmpty())
+        if (query.isEmpty()) {
             binding.imageSearch.setColorFilter(R.color.neutral_500)
-        else
+        } else {
             binding.imageSearch.setColorFilter(R.color.gray14)
+        }
         viewModel.onSearchInputChanged(query)
     }
 
@@ -184,7 +188,7 @@ class ArticleSearchFragment : Fragment() {
         EventLogger.logClickEvent(
             EventAction.CAMPUS,
             AnalyticsConstant.Label.POPULAR_SEARCH_WORD,
-            query
+            query,
         )
         binding.textInputSearch.setText(query)
         binding.textInputSearch.setSelection(query.length)
@@ -197,15 +201,16 @@ class ArticleSearchFragment : Fragment() {
 
     private fun onArticleClicked(article: ArticleHeaderState) {
         when (article.board) {
-            ArticleBoardType.LOSTANDFOUND -> navController.navigate(
-                R.id.articleLostAndFoundDetailFragment,
-                bundleOf(ARTICLE_ID to article.id)
-            )
-            else -> navController.navigate(
-                R.id.action_articleSearchFragment_to_articleDetailFragment,
-                bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id)
-            )
+            ArticleBoardType.LOSTANDFOUND ->
+                navController.navigate(
+                    R.id.articleLostAndFoundDetailFragment,
+                    bundleOf(ARTICLE_ID to article.id),
+                )
+            else ->
+                navController.navigate(
+                    R.id.action_articleSearchFragment_to_articleDetailFragment,
+                    bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id),
+                )
         }
-
     }
 }

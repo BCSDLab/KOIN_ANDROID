@@ -9,7 +9,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ArticleApi {
-
     /**
      * 게시글 목록과 페이지 정보를 가져옴
      * @param boardId 게시판 아이디
@@ -20,7 +19,7 @@ interface ArticleApi {
     suspend fun fetchArticlePagination(
         @Query("boardId") boardId: Int,
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
     ): ArticlePaginationResponse
 
     /**
@@ -31,7 +30,7 @@ interface ArticleApi {
     @GET("articles/{id}")
     suspend fun fetchArticle(
         @Path("id") articleId: Int,
-        @Query("boardId") boardId: Int
+        @Query("boardId") boardId: Int,
     ): ArticleResponse
 
     @GET("articles/hot")
@@ -48,7 +47,7 @@ interface ArticleApi {
         @Query("query") query: String,
         @Query("boardId") boardId: Int?,
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
     ): ArticlePaginationResponse
 
     /**
@@ -56,7 +55,9 @@ interface ArticleApi {
      * @param count 키워드 수
      */
     @GET("articles/hot/keyword")
-    suspend fun fetchMostSearchedKeywords(@Query("count") count: Int): KeywordsResponse
+    suspend fun fetchMostSearchedKeywords(
+        @Query("count") count: Int,
+    ): KeywordsResponse
 
     /**
      * 분실물 게시글 조회
@@ -64,6 +65,6 @@ interface ArticleApi {
      */
     @GET("articles/lost-item/{id}")
     suspend fun fetchArticleLostAndFound(
-        @Path("id") id: Int
+        @Path("id") id: Int,
     ): ArticleLostAndFoundResponse
 }

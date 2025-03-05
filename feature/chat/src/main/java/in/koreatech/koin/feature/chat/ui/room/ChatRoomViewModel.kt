@@ -43,141 +43,222 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatRoomViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val chatWSConnectUseCase: ChatWSConnectUseCase,
-    private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
-    private val getChatRoomFromArticleIdUseCase: GetChatRoomFromArticleIdUseCase,
-    private val getChatRoomUseCase: GetChatRoomUseCase,
-    private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val subscribeChatRoomUseCase: SubscribeChatRoomUseCase,
-    private val getChatMessageUseCase: GetChatMessageUseCase,
-    private val sendMessageUseCase: SendMessageUseCase,
-    private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
-    private val uploadFilesUseCase: UploadFileUseCase,
-    private val chatBlockUserUseCase: ChatBlockUserUseCase
-) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
-    override val container = container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState(), savedStateHandle) {
-        val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
-        val chatRoomId = savedStateHandle.get<Int>(CHAT_ROOM_ID)
-        checkNotNull(articleId)
-        if (chatRoomId == null) {
-            createAndGetChatRoom(articleId)
-        } else {
-            getChatRoom(articleId, chatRoomId)
+class ChatRoomViewModel
+    @Inject
+    constructor(
+        savedStateHandle: SavedStateHandle,
+        private val chatWSConnectUseCase: ChatWSConnectUseCase,
+        private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
+        private val getChatRoomFromArticleIdUseCase: GetChatRoomFromArticleIdUseCase,
+        private val getChatRoomUseCase: GetChatRoomUseCase,
+        private val getUserStatusUseCase: GetUserStatusUseCase,
+        private val subscribeChatRoomUseCase: SubscribeChatRoomUseCase,
+        private val getChatMessageUseCase: GetChatMessageUseCase,
+        private val sendMessageUseCase: SendMessageUseCase,
+        private val getLostAndFoundPreSignedUrlUseCase: GetLostAndFoundPreSignedUrlUseCase,
+        private val uploadFilesUseCase: UploadFileUseCase,
+        private val chatBlockUserUseCase: ChatBlockUserUseCase,
+    ) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
+        override val container =
+            container<ChatRoomState, ChatRoomSideEffect>(ChatRoomState(), savedStateHandle) {
+                val articleId = savedStateHandle.get<Int>(ARTICLE_ID)
+                val chatRoomId = savedStateHandle.get<Int>(CHAT_ROOM_ID)
+                checkNotNull(articleId)
+                if (chatRoomId == null) {
+                    createAndGetChatRoom(articleId)
+                } else {
+                    getChatRoom(articleId, chatRoomId)
+                }
+            }
+
+        private val job = SupervisorJob()
+        private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
+
+        init {
+            getUserInfo()
         }
-    }
 
-    private val job = SupervisorJob()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
+        private fun getUserInfo() =
+            viewModelScope.launch {
+                getUserStatusUseCase().catch {
+                    Timber.e(it)
+                }.collectLatest {
+                    intent {
+                        if (it is User.Student) {
+                            reduce {
+                                state.copy(
+                                    userNickName = it.nickname ?: it.anonymousNickname ?: "",
+                                )
+                            }
+                        }
+                    }
+                }
+            }
 
-    init {
-        getUserInfo()
-    }
+        private fun createAndGetChatRoom(articleId: Int) =
+            viewModelScope.launch {
+                getChatRoomFromArticleIdUseCase(articleId).catch {
+                    if (it is HttpException) {
+                        if (it.code() == 403) {
+                            intent {
+                                reduce {
+                                    state.copy(isBlocked = true)
+                                }
+                                postSideEffect(ChatRoomSideEffect.BlockedByUser)
+                            }
+                        }
+                    } else {
+                        Timber.e(it)
+                    }
+                }.collectLatest { data ->
+                    intent {
+                        reduce {
+                            state.copy(
+                                articleId = data.articleId,
+                                chatRoomId = data.chatRoomId,
+                                userId = data.userId,
+                                articleTitle = data.articleTitle,
+                                chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: ""),
+                            )
+                        }
+                        getChatMessages(data.articleId, data.chatRoomId)
+                    }
+                }
+                connectToWS()
+            }
 
-    private fun getUserInfo() = viewModelScope.launch {
-        getUserStatusUseCase().catch {
-            Timber.e(it)
-        }.collectLatest {
-            intent {
-                if (it is User.Student) {
+        private fun getChatRoom(
+            articleId: Int,
+            chatRoomId: Int,
+        ) = viewModelScope.launch {
+            getChatRoomUseCase(articleId, chatRoomId).catch {
+                if (it is HttpException) {
+                    if (it.code() == 403) {
+                        intent {
+                            reduce {
+                                state.copy(isBlocked = true)
+                            }
+                            postSideEffect(ChatRoomSideEffect.BlockedByUser)
+                        }
+                    }
+                } else {
+                    Timber.e(it)
+                }
+            }.collectLatest { data ->
+                intent {
                     reduce {
                         state.copy(
-                            userNickName = it.nickname ?: it.anonymousNickname ?: ""
+                            articleId = data.articleId,
+                            chatRoomId = data.chatRoomId,
+                            userId = data.userId,
+                            articleTitle = data.articleTitle,
+                            chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: ""),
                         )
                     }
+                    getChatMessages(data.articleId, data.chatRoomId)
                 }
             }
+            connectToWS()
         }
-    }
 
-    private fun createAndGetChatRoom(articleId: Int) = viewModelScope.launch {
-        getChatRoomFromArticleIdUseCase(articleId).catch {
-            if (it is HttpException) {
-                if (it.code() == 403) {
-                    intent {
-                        reduce {
-                            state.copy(isBlocked = true)
+        private fun connectToWS() =
+            viewModelScope.launch {
+                intent {
+                    chatWSConnectUseCase().onSuccess {
+                        subscribeChatRoom(state.articleId, state.chatRoomId)
+                    }.onFailure { error ->
+                        if (error is WebSocketReconnectionException) {
+                            // Handle reconnection error
+                            Timber.d("${error.message}")
+                            intent {
+                                postSideEffect(ChatRoomSideEffect.FailedToConnectWS)
+                            }
                         }
-                        postSideEffect(ChatRoomSideEffect.BlockedByUser)
                     }
                 }
-            } else {
-                Timber.e(it)
             }
-        }.collectLatest { data ->
-            intent {
-                reduce {
-                    state.copy(
-                        articleId = data.articleId,
-                        chatRoomId = data.chatRoomId,
-                        userId = data.userId,
-                        articleTitle = data.articleTitle,
-                        chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: "")
-                    )
-                }
-                getChatMessages(data.articleId, data.chatRoomId)
-            }
-        }
-        connectToWS()
-    }
 
-    private fun getChatRoom(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
-        getChatRoomUseCase(articleId, chatRoomId).catch {
-            if (it is HttpException) {
-                if (it.code() == 403) {
-                    intent {
+        private fun subscribeChatRoom(
+            articleId: Int,
+            chatRoomId: Int,
+        ) = viewModelScope.launch {
+            subscribeChatRoomUseCase(articleId, chatRoomId).catch {
+                if (it is UnknownHostException) {
+                    // Android OS disconnect network when the device enter idle.
+                    // So, we set shouldReconnect to true
+                    // And reconnect websocket when activity is resumed
+                    setShouldReconnectState(true)
+                } else if (it is WebSocketConnectionException) {
+                    if (it.cause is UnknownHostException) {
+                        // Android OS disconnect network when the device enter idle.
+                        // So, we set shouldReconnect to true
+                        // And reconnect websocket when activity is resumed
+                        setShouldReconnectState(true)
+                    } else {
+                        Timber.e(it)
+                    }
+                } else {
+                    Timber.e(it)
+                }
+            }.collect { message ->
+                intent {
+                    if (state.chatMessage.isEmpty()) {
                         reduce {
-                            state.copy(isBlocked = true)
+                            state.copy(
+                                chatMessage =
+                                    listOf(
+                                        Pair(
+                                            LocalDateTime.parse(message.timestamp).toLocalDate(),
+                                            listOf(message.toConvertedChatMessage(state.userId)),
+                                        ),
+                                    ),
+                            )
                         }
-                        postSideEffect(ChatRoomSideEffect.BlockedByUser)
+                        return@intent
+                    }
+                    if (state.chatMessage.last().first <
+                        LocalDateTime.parse(message.timestamp)
+                            .toLocalDate()
+                    ) {
+                        reduce {
+                            state.copy(
+                                chatMessage =
+                                    state.chatMessage.plus(
+                                        Pair(
+                                            LocalDateTime.parse(message.timestamp).toLocalDate(),
+                                            listOf(
+                                                message.toConvertedChatMessage(state.userId),
+                                            ),
+                                        ),
+                                    ),
+                            )
+                        }
+                    } else {
+                        reduce {
+                            state.copy(
+                                chatMessage =
+                                    state.chatMessage.dropLast(1).plus(
+                                        Pair(
+                                            state.chatMessage.last().first,
+                                            state.chatMessage.last().second.plus(
+                                                message.toConvertedChatMessage(state.userId),
+                                            ),
+                                        ),
+                                    ),
+                            )
+                        }
                     }
                 }
-            } else {
-                Timber.e(it)
             }
-        }.collectLatest { data ->
-            intent {
-                reduce {
-                    state.copy(
-                        articleId = data.articleId,
-                        chatRoomId = data.chatRoomId,
-                        userId = data.userId,
-                        articleTitle = data.articleTitle,
-                        chatPartnerProfileImage = Uri.parse(data.chatPartnerProfileImage ?: "")
-                    )
-                }
-                getChatMessages(data.articleId, data.chatRoomId)
-            }
+            getChatMessages(articleId, chatRoomId)
         }
-        connectToWS()
-    }
 
-    private fun connectToWS() = viewModelScope.launch {
-        intent {
-            chatWSConnectUseCase().onSuccess {
-                subscribeChatRoom(state.articleId, state.chatRoomId)
-            }.onFailure { error ->
-                if (error is WebSocketReconnectionException) {
-                    // Handle reconnection error
-                    Timber.d("${error.message}")
-                    intent {
-                        postSideEffect(ChatRoomSideEffect.FailedToConnectWS)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun subscribeChatRoom(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
-        subscribeChatRoomUseCase(articleId, chatRoomId).catch {
-            if (it is UnknownHostException) {
-                // Android OS disconnect network when the device enter idle.
-                // So, we set shouldReconnect to true
-                // And reconnect websocket when activity is resumed
-                setShouldReconnectState(true)
-            } else if (it is WebSocketConnectionException) {
-                if (it.cause is UnknownHostException) {
+        private fun getChatMessages(
+            articleId: Int,
+            chatRoomId: Int,
+        ) = viewModelScope.launch {
+            getChatMessageUseCase(articleId, chatRoomId).catch {
+                if (it is UnknownHostException) {
                     // Android OS disconnect network when the device enter idle.
                     // So, we set shouldReconnect to true
                     // And reconnect websocket when activity is resumed
@@ -185,261 +266,216 @@ class ChatRoomViewModel @Inject constructor(
                 } else {
                     Timber.e(it)
                 }
-            } else {
-                Timber.e(it)
-            }
-        }.collect { message ->
-            intent {
-                if (state.chatMessage.isEmpty()) {
-                    reduce {
-                        state.copy(
-                            chatMessage = listOf(
-                                Pair(
-                                    LocalDateTime.parse(message.timestamp).toLocalDate(),
-                                    listOf(message.toConvertedChatMessage(state.userId))
-                                )
-                            )
-                        )
-                    }
-                    return@intent
-                }
-                if (state.chatMessage.last().first < LocalDateTime.parse(message.timestamp)
-                        .toLocalDate()
-                ) {
-                    reduce {
-                        state.copy(
-                            chatMessage = state.chatMessage.plus(
-                                Pair(
-                                    LocalDateTime.parse(message.timestamp).toLocalDate(), listOf(
-                                        message.toConvertedChatMessage(state.userId)
-                                    )
-                                )
-                            ),
-                        )
-                    }
-                } else {
-                    reduce {
-                        state.copy(
-                            chatMessage = state.chatMessage.dropLast(1).plus(
-                                Pair(
-                                    state.chatMessage.last().first,
-                                    state.chatMessage.last().second.plus(
-                                        message.toConvertedChatMessage(state.userId)
-                                    )
-                                )
-                            ),
-                        )
-                    }
-                }
-            }
-        }
-        getChatMessages(articleId, chatRoomId)
-    }
-
-    private fun getChatMessages(articleId: Int, chatRoomId: Int) = viewModelScope.launch {
-        getChatMessageUseCase(articleId, chatRoomId).catch {
-            if (it is UnknownHostException) {
-                // Android OS disconnect network when the device enter idle.
-                // So, we set shouldReconnect to true
-                // And reconnect websocket when activity is resumed
-                setShouldReconnectState(true)
-            } else {
-                Timber.e(it)
-            }
-        }.collect { messages ->
-            intent {
-                reduce {
-                    if (messages.isEmpty()) {
-                        state.copy(
-                            chatMessage = listOf(
-                                Pair(
-                                    LocalDateTime.now().toLocalDate(),
-                                    emptyList()
-                                )
-                            )
-                        )
-                    } else {
-                        state.copy(chatMessage = messages.map { it.toConvertedChatMessage(state.userId) }
-                            .groupBy { it.timestamp.toLocalDate() }.toList())
-                    }
-                }
-            }
-        }
-    }
-
-    fun disconnectWS() = coroutineScope.launch { // We need to disconnect websocket on onCleared. So, we need to use coroutineScope instead of viewModelScope
-        chatWSDisconnectUseCase().onFailure {
-            // Sometimes the server closes the connection too quickly to send a RECEIPT, which is not really an error
-            // So, we can ignore LostReceiptException
-            // http://stomp.github.io/stomp-specification-1.2.html#Connection_Lingering
-            if (it !is LostReceiptException) {
-                Timber.e(it)
-            }
-        }
-    }
-
-    fun reconnect() = intent {
-        getChatRoom(state.articleId, state.chatRoomId)
-        setShouldReconnectState(false)
-    }
-
-    fun onChatInputValueChange(value: String) = blockingIntent {
-        reduce {
-            state.copy(chatInputValue = value)
-        }
-    }
-
-    private fun uploadImage(
-        preSignedUrl: String,
-        fileUrl: String,
-        mediaType: String,
-        mediaSize: Long,
-        imageUri: Uri,
-    ) = viewModelScope.launch {
-        uploadFilesUseCase(
-            preSignedUrl,
-            mediaType,
-            mediaSize,
-            imageUri.toString()
-        ).onSuccess {
-            intent {
-                sendMessageUseCase(
-                    state.articleId,
-                    state.chatRoomId,
-                    ChatMessage(
-                        userId = state.userId,
-                        userNickname = state.userNickName,
-                        content = fileUrl,
-                        timestamp = LocalDateTime.now().toString(),
-                        isImage = true
-                    )
-                )
+            }.collect { messages ->
                 intent {
                     reduce {
-                        state.copy(
-                            uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() }
-                        )
+                        if (messages.isEmpty()) {
+                            state.copy(
+                                chatMessage =
+                                    listOf(
+                                        Pair(
+                                            LocalDateTime.now().toLocalDate(),
+                                            emptyList(),
+                                        ),
+                                    ),
+                            )
+                        } else {
+                            state.copy(
+                                chatMessage =
+                                    messages.map { it.toConvertedChatMessage(state.userId) }
+                                        .groupBy { it.timestamp.toLocalDate() }.toList(),
+                            )
+                        }
                     }
                 }
             }
-        }.onFailure {
-            intent {
-                postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
-            }
         }
-    }
 
-    fun getPreSignedUrl(
-        fileSize: Long,
-        fileType: String,
-        fileName: String,
-        imageUri: Uri
-    ) {
-        intent {
-            reduce {
-                state.copy(
-                    uploadingImage = state.uploadingImage.plus(
-                        ConvertedChatMessage(
+        fun disconnectWS() =
+            coroutineScope.launch { // We need to disconnect websocket on onCleared. So, we need to use coroutineScope instead of viewModelScope
+                chatWSDisconnectUseCase().onFailure {
+                    // Sometimes the server closes the connection too quickly to send a RECEIPT, which is not really an error
+                    // So, we can ignore LostReceiptException
+                    // http://stomp.github.io/stomp-specification-1.2.html#Connection_Lingering
+                    if (it !is LostReceiptException) {
+                        Timber.e(it)
+                    }
+                }
+            }
+
+        fun reconnect() =
+            intent {
+                getChatRoom(state.articleId, state.chatRoomId)
+                setShouldReconnectState(false)
+            }
+
+        fun onChatInputValueChange(value: String) =
+            blockingIntent {
+                reduce {
+                    state.copy(chatInputValue = value)
+                }
+            }
+
+        private fun uploadImage(
+            preSignedUrl: String,
+            fileUrl: String,
+            mediaType: String,
+            mediaSize: Long,
+            imageUri: Uri,
+        ) = viewModelScope.launch {
+            uploadFilesUseCase(
+                preSignedUrl,
+                mediaType,
+                mediaSize,
+                imageUri.toString(),
+            ).onSuccess {
+                intent {
+                    sendMessageUseCase(
+                        state.articleId,
+                        state.chatRoomId,
+                        ChatMessage(
                             userId = state.userId,
                             userNickname = state.userNickName,
-                            content = imageUri.toString(),
-                            timestamp = LocalDateTime.now(),
+                            content = fileUrl,
+                            timestamp = LocalDateTime.now().toString(),
                             isImage = true,
-                            isSentByMe = true
-                        )
+                        ),
                     )
-                )
-            }
-        }
-        viewModelScope.launch {
-            getLostAndFoundPreSignedUrlUseCase(
-                fileSize, fileType, fileName
-            ).onSuccess {
-                uploadImage(
-                    preSignedUrl = it.second,
-                    fileUrl = it.first,
-                    mediaType = fileType,
-                    mediaSize = fileSize,
-                    imageUri = imageUri
-                )
+                    intent {
+                        reduce {
+                            state.copy(
+                                uploadingImage = state.uploadingImage.filter { it.content != imageUri.toString() },
+                            )
+                        }
+                    }
+                }
             }.onFailure {
                 intent {
                     postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
                 }
             }
         }
-    }
 
-    fun sendMessage() {
-        intent {
-            if (state.chatInputValue.isBlank()) return@intent
-            viewModelScope.launch {
-                sendMessageUseCase(
-                    state.articleId,
-                    state.chatRoomId,
-                    ChatMessage(
-                        userId = state.userId,
-                        userNickname = state.userNickName,
-                        content = state.chatInputValue,
-                        timestamp = LocalDateTime.now().toString(),
-                        isImage = false
-                    )
-                )
+        fun getPreSignedUrl(
+            fileSize: Long,
+            fileType: String,
+            fileName: String,
+            imageUri: Uri,
+        ) {
+            intent {
                 reduce {
-                    state.copy(chatInputValue = "")
+                    state.copy(
+                        uploadingImage =
+                            state.uploadingImage.plus(
+                                ConvertedChatMessage(
+                                    userId = state.userId,
+                                    userNickname = state.userNickName,
+                                    content = imageUri.toString(),
+                                    timestamp = LocalDateTime.now(),
+                                    isImage = true,
+                                    isSentByMe = true,
+                                ),
+                            ),
+                    )
+                }
+            }
+            viewModelScope.launch {
+                getLostAndFoundPreSignedUrlUseCase(
+                    fileSize,
+                    fileType,
+                    fileName,
+                ).onSuccess {
+                    uploadImage(
+                        preSignedUrl = it.second,
+                        fileUrl = it.first,
+                        mediaType = fileType,
+                        mediaSize = fileSize,
+                        imageUri = imageUri,
+                    )
+                }.onFailure {
+                    intent {
+                        postSideEffect(ChatRoomSideEffect.FailedToUploadImage)
+                    }
+                }
+            }
+        }
+
+        fun sendMessage() {
+            intent {
+                if (state.chatInputValue.isBlank()) return@intent
+                viewModelScope.launch {
+                    sendMessageUseCase(
+                        state.articleId,
+                        state.chatRoomId,
+                        ChatMessage(
+                            userId = state.userId,
+                            userNickname = state.userNickName,
+                            content = state.chatInputValue,
+                            timestamp = LocalDateTime.now().toString(),
+                            isImage = false,
+                        ),
+                    )
+                    reduce {
+                        state.copy(chatInputValue = "")
+                    }
+                }
+            }
+        }
+
+        fun blockUser() =
+            intent {
+                viewModelScope.launch {
+                    chatBlockUserUseCase(state.articleId, state.chatRoomId).onSuccess {
+                        postSideEffect(ChatRoomSideEffect.BlockUserSuccess)
+                    }.onFailure {
+                        Timber.d(it)
+                        postSideEffect(ChatRoomSideEffect.BlockUserFailed)
+                    }
                 }
             }
 
-        }
-    }
-
-    fun blockUser() = intent {
-        viewModelScope.launch {
-            chatBlockUserUseCase(state.articleId, state.chatRoomId).onSuccess {
-                postSideEffect(ChatRoomSideEffect.BlockUserSuccess)
-            }.onFailure {
-                Timber.d(it)
-                postSideEffect(ChatRoomSideEffect.BlockUserFailed)
+        fun changeMenuState(menuState: Boolean) =
+            intent {
+                reduce {
+                    state.copy(showMenu = menuState)
+                }
             }
+
+        override fun onCleared() {
+            super.onCleared()
+            disconnectWS() // We need to disconnect websocket on onCleared. So, don't call job.cancel() manually.
         }
-    }
 
-    fun changeMenuState(menuState: Boolean) = intent {
-        reduce {
-            state.copy(showMenu = menuState)
-        }
-    }
+        fun changeBlockDialogState(dialogState: Boolean) =
+            intent {
+                reduce {
+                    state.copy(
+                        showBlockDialog = dialogState,
+                        showMenu = false, // Close menu when dialog state changes
+                    )
+                }
+            }
 
-    override fun onCleared() {
-        super.onCleared()
-        disconnectWS() // We need to disconnect websocket on onCleared. So, don't call job.cancel() manually.
-    }
-
-    fun changeBlockDialogState(dialogState: Boolean) = intent {
-        reduce {
-            state.copy(
-                showBlockDialog = dialogState,
-                showMenu = false // Close menu when dialog state changes
-            )
-        }
-    }
-
-    fun changeShowImageState(showImageState: Boolean, url: Uri) = intent {
-        reduce {
-            state.copy(showImage = Pair(showImageState, url))
-        }
-    }
-
-    fun setShouldReconnectState(shouldReconnect: Boolean) = intent {
-        withContext(Dispatchers.Main) {
+        fun changeShowImageState(
+            showImageState: Boolean,
+            url: Uri,
+        ) = intent {
             reduce {
-                state.copy(shouldReconnect = shouldReconnect)
+                state.copy(showImage = Pair(showImageState, url))
             }
         }
-    }
 
-    companion object {
-        const val ARTICLE_ID = "article_id"
-        const val CHAT_ROOM_ID = "chat_room_id"
+        fun setShouldReconnectState(shouldReconnect: Boolean) =
+            intent {
+                withContext(Dispatchers.Main) {
+                    reduce {
+                        state.copy(shouldReconnect = shouldReconnect)
+                    }
+                }
+            }
+
+        companion object {
+            const val ARTICLE_ID = "article_id"
+            const val CHAT_ROOM_ID = "chat_room_id"
+        }
     }
-}
