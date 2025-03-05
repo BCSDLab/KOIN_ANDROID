@@ -67,10 +67,9 @@ fun AccountSetupScreen(
 ) {
     val scrollState = rememberScrollState()
     val state = viewModel.collectAsState().value
-    var hasRequestedSmsValidation by remember { mutableStateOf(false) }
 
     if (state.phoneNumberState == SignupContinuationState.RequestedSmsValidation || state.phoneNumberState == SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null) {
-        hasRequestedSmsValidation = true
+        viewModel.onChangeSmsValidation(true)
     }
     var timerText by remember { mutableStateOf(180) }
 
@@ -207,7 +206,7 @@ fun AccountSetupScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            if (hasRequestedSmsValidation) {
+            if (state.hasRequestedSmsValidation) {
                 SendAuthCodeDialog(
                     onDismissRequest = {
                         viewModel.changeDialogVisibility(false)

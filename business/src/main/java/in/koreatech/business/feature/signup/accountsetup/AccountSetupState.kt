@@ -16,4 +16,5 @@ data class AccountSetupState(
     val sendCodeError:Throwable? = null,
     val isButtonEnabled: Boolean = false,
     val dialogVisibility: Boolean = false,
+    val hasRequestedSmsValidation: Boolean = false,
 )

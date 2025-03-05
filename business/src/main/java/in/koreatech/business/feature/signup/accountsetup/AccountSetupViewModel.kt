@@ -209,6 +209,14 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
+    fun onChangeSmsValidation(validation: Boolean) = intent {
+        reduce {
+            state.copy(
+                hasRequestedSmsValidation = validation,
+            )
+        }
+    }
+
     fun onNavigateToNextScreen() = intent {
         postSideEffect(AccountSetupSideEffect.NavigateToNextScreen)
     }
