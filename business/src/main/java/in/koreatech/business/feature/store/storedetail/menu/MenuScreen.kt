@@ -1,11 +1,8 @@
 package `in`.koreatech.business.feature.store.storedetail.menu
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
@@ -35,7 +31,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
@@ -44,8 +39,6 @@ import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.business.ui.theme.Gray6
-import `in`.koreatech.koin.core.toast.ToastUtil
-
 
 @Composable
 fun MenuScreen(
@@ -53,18 +46,20 @@ fun MenuScreen(
     currentPage: Int,
     state: MyStoreDetailState,
     onMenuItemClicked: (Int) -> Unit = {},
-    onManageMenuClicked: () -> Unit = {}
+    onManageMenuClicked: () -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
-        verticalOffset, scrollState.value
+        verticalOffset,
+        scrollState.value,
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
-    val categories = listOf(
-        stringResource(R.string.recommend_menu),
-        stringResource(R.string.main_menu),
-        stringResource(R.string.set_menu),
-        stringResource(R.string.side_menu)
-    )
+    val categories =
+        listOf(
+            stringResource(R.string.recommend_menu),
+            stringResource(R.string.main_menu),
+            stringResource(R.string.set_menu),
+            stringResource(R.string.side_menu),
+        )
     LaunchedEffect(scrollState.value) {
         if (scrollState.value != 0 && currentPage != 0) {
             scrollState.scrollTo(0)
@@ -75,50 +70,56 @@ fun MenuScreen(
         onClick = {
             onManageMenuClicked()
         },
-        modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 16.dp)
-            .fillMaxWidth()
-            .height(40.dp),
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = ColorTextField, contentColor = Color.Black
-        )
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp, vertical = 16.dp)
+                .fillMaxWidth()
+                .height(40.dp),
+        colors =
+            ButtonDefaults.buttonColors(
+                backgroundColor = ColorTextField,
+                contentColor = Color.Black,
+            ),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_edit),
-            contentDescription = stringResource(R.string.edit)
+            contentDescription = stringResource(R.string.edit),
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Text(text = stringResource(R.string.edit_menu), color= Gray1)
+        Text(text = stringResource(R.string.edit_menu), color = Gray1)
     }
 
     Divider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-        ,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(1.dp),
         color = colorResource(R.color.neutral_300),
     )
 
     LazyRow(
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .padding(top = 16.dp)
-            .padding(bottom = 9.dp)
-            .fillMaxWidth()
-            .height(40.dp)
-        ,
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp)
+                .padding(top = 16.dp)
+                .padding(bottom = 9.dp)
+                .fillMaxWidth()
+                .height(40.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         items(categories.size) {
             Box(
-                modifier = Modifier
-                    .fillParentMaxWidth(0.25f)
-                    .height(40.dp)
-                    .padding(end = 10.dp)
-                    .border(
-                        width = 1.dp, color = Gray3, shape = RoundedCornerShape(4.dp)
-                    ), contentAlignment = Alignment.Center
-
+                modifier =
+                    Modifier
+                        .fillParentMaxWidth(0.25f)
+                        .height(40.dp)
+                        .padding(end = 10.dp)
+                        .border(
+                            width = 1.dp,
+                            color = Gray3,
+                            shape = RoundedCornerShape(4.dp),
+                        ),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
@@ -131,18 +132,19 @@ fun MenuScreen(
         }
     }
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        userScrollEnabled = enabledScroll
+        modifier =
+            Modifier
+                .fillMaxSize(),
+        userScrollEnabled = enabledScroll,
     ) {
         state.storeMenu?.let {
-            items(state.storeMenu){
+            items(state.storeMenu) {
                 MenuCategories(it)
                 MenuItem(
                     menuList = it,
-                    onMenuClicked = {menuId ->
+                    onMenuClicked = { menuId ->
                         onMenuItemClicked(menuId)
-                    }
+                    },
                 )
             }
         }

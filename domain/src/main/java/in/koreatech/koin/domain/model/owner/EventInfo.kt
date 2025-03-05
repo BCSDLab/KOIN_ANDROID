@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.model.owner
 
-data class EventInfo (
+data class EventInfo(
     val title: String?,
     val content: String?,
     val thumbnailImages: List<String>?,

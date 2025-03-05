@@ -75,13 +75,12 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-
 @Composable
 fun ModifyMenuScreen(
     modifier: Modifier = Modifier,
     goToCheckMenuScreen: () -> Unit,
     onBackPressed: () -> Unit,
-    viewModel: ModifyMenuViewModel = hiltViewModel()
+    viewModel: ModifyMenuViewModel = hiltViewModel(),
 ) {
     val state = viewModel.collectAsState().value
 
@@ -95,9 +94,9 @@ fun ModifyMenuScreen(
         onChangeDetailMenuServing = {
             viewModel.changeDetailMenuServing(it.first, it.second)
         },
-        onChangeDetailMenuPrice ={
+        onChangeDetailMenuPrice = {
             viewModel.changeDetailMenuPrice(it.first, it.second)
-        } ,
+        },
         onDeleteMenuPrice = viewModel::deleteMenuPrice,
         onChangeMenuDetail = viewModel::changeMenuDetail,
         addPriceButtonClicked = viewModel::addPrice,
@@ -105,7 +104,7 @@ fun ModifyMenuScreen(
         onChangeImage = viewModel::changeMenuImageUri,
         onDeleteImage = viewModel::deleteMenuImageUri,
         onModifyImage = viewModel::modifyMenuImageUri,
-        menuImageFromCamera=viewModel::menuImageFromCamera,
+        menuImageFromCamera = viewModel::menuImageFromCamera,
         setImageModify = viewModel::isImageModify,
         setImageIndex = viewModel::setImageIndex,
         onNextButtonClicked = viewModel::onNextButtonClick,
@@ -126,77 +125,82 @@ fun ModifyMenuScreenImpl(
     onChangeMenuPrice: (String) -> Unit = {},
     onChangeDetailMenuServing: (Pair<Int, String>) -> Unit = {},
     onChangeDetailMenuPrice: (Pair<Int, String>) -> Unit = {},
-    onDeleteMenuPrice:(Int) -> Unit = {},
+    onDeleteMenuPrice: (Int) -> Unit = {},
     addPriceButtonClicked: () -> Unit = {},
     onMenuCategoryIsClicked: (Int) -> Unit = {},
     onChangeImage: (List<Uri>) -> Unit = {},
-    onDeleteImage: (Int) -> Unit ={},
-    onModifyImage: (String) -> Unit ={},
-    menuImageFromCamera: (String) -> Unit ={},
-    setImageModify:(Boolean) -> Unit ={},
+    onDeleteImage: (Int) -> Unit = {},
+    onModifyImage: (String) -> Unit = {},
+    menuImageFromCamera: (String) -> Unit = {},
+    setImageModify: (Boolean) -> Unit = {},
     setImageIndex: (Int) -> Unit = {},
-    onNextButtonClicked: () -> Unit ={}
+    onNextButtonClicked: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
 
-    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia((3 - imageIndex).coerceAtLeast(2)),
-        onResult = {
-            onChangeImage(it)
-        }
-    )
-    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri ->
-            if (uri != null) {
-                onModifyImage(uri.toString())
-            }
-        }
-    )
+    val multiplePhotoPickerLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickMultipleVisualMedia((3 - imageIndex).coerceAtLeast(2)),
+            onResult = {
+                onChangeImage(it)
+            },
+        )
+    val singlePhotoPickerLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickVisualMedia(),
+            onResult = { uri ->
+                if (uri != null) {
+                    onModifyImage(uri.toString())
+                }
+            },
+        )
 
     var takePictureUri: Uri? = null
 
-    val takePhotoFromCameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = {
-            if(it){
-                takePictureUri?.let { uri -> menuImageFromCamera(uri.toString()) }
-            }
-        }
-    )
+    val takePhotoFromCameraLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.TakePicture(),
+            onResult = {
+                if (it) {
+                    takePictureUri?.let { uri -> menuImageFromCamera(uri.toString()) }
+                }
+            },
+        )
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(color = Color.White,),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .background(color = Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-
                 Box(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth()
+                    modifier =
+                        Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth(),
                 ) {
                     Image(
                         painter = painterResource(`in`.koreatech.business.R.drawable.ic_x),
                         contentDescription = "",
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(end = 16.dp)
-                            .clickable {
-                                coroutineScope.launch {
-                                    sheetState.hide()
-                                }
-                                setImageModify(false)
-                            }
+                        modifier =
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(end = 16.dp)
+                                .clickable {
+                                    coroutineScope.launch {
+                                        sheetState.hide()
+                                    }
+                                    setImageModify(false)
+                                },
                     )
                 }
 
@@ -205,7 +209,7 @@ fun ModifyMenuScreenImpl(
                     textAlign = TextAlign.Center,
                     color = Color.Black,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
 
                 Text(
@@ -214,67 +218,70 @@ fun ModifyMenuScreenImpl(
                     textAlign = TextAlign.Center,
                     color = Color.Black,
                     fontSize = 13.sp,
-                    fontWeight = FontWeight.Normal
+                    fontWeight = FontWeight.Normal,
                 )
 
                 Image(
-                    modifier = Modifier
-                        .padding(top = 32.dp)
-                        .clickable {
-                            if (imageIndex == 2 || isModify) {
-                                singlePhotoPickerLauncher.launch(
-                                    PickVisualMediaRequest(
-                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                    modifier =
+                        Modifier
+                            .padding(top = 32.dp)
+                            .clickable {
+                                if (imageIndex == 2 || isModify) {
+                                    singlePhotoPickerLauncher.launch(
+                                        PickVisualMediaRequest(
+                                            ActivityResultContracts.PickVisualMedia.ImageOnly,
+                                        ),
                                     )
-                                )
 
-                                setImageModify(false)
-                            } else {
-                                multiplePhotoPickerLauncher.launch(
-                                    PickVisualMediaRequest(
-                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    setImageModify(false)
+                                } else {
+                                    multiplePhotoPickerLauncher.launch(
+                                        PickVisualMediaRequest(
+                                            ActivityResultContracts.PickVisualMedia.ImageOnly,
+                                        ),
                                     )
-                                )
-                            }
-                            coroutineScope.launch {
-                                sheetState.hide()
-                            }
-                        }
-                    ,
+                                }
+                                coroutineScope.launch {
+                                    sheetState.hide()
+                                }
+                            },
                     painter = painterResource(`in`.koreatech.business.R.drawable.ic_gallery_picture),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
 
                 Image(
-                    modifier = Modifier
-                        .padding(top = 16.dp, bottom = 48.dp)
-                        .clickable {
-                            takePictureUri = createImageFile(context)
-                            takePhotoFromCameraLauncher.launch(takePictureUri)
-                            coroutineScope.launch {
-                                sheetState.hide()
-                            }
-                        },
+                    modifier =
+                        Modifier
+                            .padding(top = 16.dp, bottom = 48.dp)
+                            .clickable {
+                                takePictureUri = createImageFile(context)
+                                takePhotoFromCameraLauncher.launch(takePictureUri)
+                                coroutineScope.launch {
+                                    sheetState.hide()
+                                }
+                            },
                     painter = painterResource(`in`.koreatech.business.R.drawable.ic_camera_picture),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(62.dp)
-                    .background(ColorPrimary),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(62.dp)
+                        .background(ColorPrimary),
             ) {
                 IconButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(start = 16.dp),
-                    onClick = { onBackPressed() }
+                    modifier =
+                        Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(start = 16.dp),
+                    onClick = { onBackPressed() },
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_white_arrow_back),
@@ -289,7 +296,7 @@ fun ModifyMenuScreenImpl(
             }
 
             LazyColumn(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 item {
                     DivideOption(16.dp, stringResource(id = R.string.menu_info))
@@ -299,21 +306,22 @@ fun ModifyMenuScreenImpl(
                         text = stringResource(id = R.string.menu_name),
                         fontSize = 15.sp,
                         color = ColorPrimary,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
 
                     BorderTextField(
                         height = 37.dp,
                         inputString = registerMenuState.menuName,
-                        onStringChange = changeMenuName
+                        onStringChange = changeMenuName,
                     )
 
                     Divider(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 27.dp),
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 16.dp)
+                                .padding(top = 27.dp),
                         thickness = 1.dp,
-                        color = Gray7
+                        color = Gray7,
                     )
                 }
 
@@ -323,51 +331,55 @@ fun ModifyMenuScreenImpl(
                         text = stringResource(id = R.string.menu_price),
                         fontSize = 15.sp,
                         color = ColorPrimary,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
 
                     Box(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 8.dp)
-                    ){
-                        if(registerMenuState.menuOptionPrice.isEmpty()){
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 16.dp)
+                                .padding(top = 8.dp),
+                    ) {
+                        if (registerMenuState.menuOptionPrice.isEmpty()) {
                             Box(
-                                modifier = modifier
-                                    .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
-                                    .height(37.dp),
-                                contentAlignment = Alignment.CenterStart
+                                modifier =
+                                    modifier
+                                        .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
+                                        .height(37.dp),
+                                contentAlignment = Alignment.CenterStart,
                             ) {
                                 BasicTextField(
                                     value = registerMenuState.menuPrice,
                                     onValueChange = { newValue ->
                                         onChangeMenuPrice(newValue)
                                     },
-                                    textStyle = TextStyle(
-                                        color = Color.Black,
-                                        fontSize = 14.sp
-                                    ),
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp)
-                                        .fillMaxWidth(),
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                    textStyle =
+                                        TextStyle(
+                                            color = Color.Black,
+                                            fontSize = 14.sp,
+                                        ),
+                                    modifier =
+                                        Modifier
+                                            .padding(horizontal = 8.dp)
+                                            .fillMaxWidth(),
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 )
                             }
-                        }
-                        else{
+                        } else {
                             Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ){
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth(),
+                            ) {
                                 registerMenuState.menuOptionPrice.forEachIndexed { index, menuDetailPrice ->
                                     DetailMenuTextField(
                                         modifier = modifier,
                                         index = index,
                                         menuOption = menuDetailPrice.option,
                                         onChangeMenuServing = onChangeDetailMenuServing,
-                                        menuPrice= menuDetailPrice.price,
+                                        menuPrice = menuDetailPrice.price,
                                         onChangeMenuPrice = onChangeDetailMenuPrice,
-                                        onDeleteMenuPrice = onDeleteMenuPrice
+                                        onDeleteMenuPrice = onDeleteMenuPrice,
                                     )
                                 }
                             }
@@ -375,34 +387,35 @@ fun ModifyMenuScreenImpl(
                     }
 
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp, start = 16.dp)
-                            .clickable {
-                                addPriceButtonClicked()
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp, start = 16.dp)
+                                .clickable {
+                                    addPriceButtonClicked()
+                                },
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_user_add),
-                            contentDescription = null
+                            contentDescription = null,
                         )
 
                         Text(
                             text = stringResource(id = R.string.add_price),
                             color = ColorAccent,
                             fontSize = 13.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                     }
 
                     Divider(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 27.dp),
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 16.dp)
+                                .padding(top = 27.dp),
                         thickness = 1.dp,
-                        color = Gray7
+                        color = Gray7,
                     )
                 }
 
@@ -412,7 +425,7 @@ fun ModifyMenuScreenImpl(
                         text = stringResource(id = R.string.menu_category),
                         fontSize = 15.sp,
                         color = ColorPrimary,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                     if (registerMenuState.menuCategory.isNotEmpty()) {
                         CategoryRadioButtonScreen(
@@ -478,13 +491,13 @@ fun ModifyMenuScreenImpl(
 
                 item {
                     Row(
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.menu_image),
                             fontSize = 15.sp,
                             color = ColorPrimary,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
 
                         Text(
@@ -492,53 +505,27 @@ fun ModifyMenuScreenImpl(
                             text = stringResource(id = R.string.menu_image_maximum),
                             fontSize = 15.sp,
                             color = Gray6,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                     }
 
                     LazyRow(
-                        modifier = modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 16.dp)
+                        modifier =
+                            modifier
+                                .padding(horizontal = 16.dp)
+                                .padding(top = 16.dp),
                     ) {
                         itemsIndexed(registerMenuState.imageUriList) { index, item ->
                             if (item == stringResource(id = R.string.temp_uri)) {
                                 Image(
-                                    modifier = Modifier
-                                        .size(137.dp)
-                                        .padding(bottom = 16.dp)
-                                        .clickable {
-                                            coroutineScope.launch {
-
-                                                setImageIndex(index)
-
-                                                if (sheetState.isVisible) {
-                                                    sheetState.hide()
-                                                } else {
-                                                    sheetState.show()
-                                                }
-                                            }
-                                        },
-                                    painter = painterResource(id = R.drawable.ic_add_menu_image),
-                                    contentDescription = ""
-                                )
-                            }
-                            else{
-                                Box(
-                                    modifier = Modifier
-                                        .size(137.dp)
-                                        .padding(bottom = 16.dp)
-                                        .padding(end = 16.dp),
-                                    contentAlignment = Alignment.TopEnd
-                                )
-                                {
-                                    Image(
-                                        modifier = Modifier
-                                            .fillMaxSize()
+                                    modifier =
+                                        Modifier
+                                            .size(137.dp)
+                                            .padding(bottom = 16.dp)
                                             .clickable {
-                                                setImageModify(true)
                                                 coroutineScope.launch {
                                                     setImageIndex(index)
+
                                                     if (sheetState.isVisible) {
                                                         sheetState.hide()
                                                     } else {
@@ -546,33 +533,61 @@ fun ModifyMenuScreenImpl(
                                                     }
                                                 }
                                             },
-                                        painter = rememberAsyncImagePainter(
-                                            item
-                                        ),
+                                    painter = painterResource(id = R.drawable.ic_add_menu_image),
+                                    contentDescription = "",
+                                )
+                            } else {
+                                Box(
+                                    modifier =
+                                        Modifier
+                                            .size(137.dp)
+                                            .padding(bottom = 16.dp)
+                                            .padding(end = 16.dp),
+                                    contentAlignment = Alignment.TopEnd,
+                                ) {
+                                    Image(
+                                        modifier =
+                                            Modifier
+                                                .fillMaxSize()
+                                                .clickable {
+                                                    setImageModify(true)
+                                                    coroutineScope.launch {
+                                                        setImageIndex(index)
+                                                        if (sheetState.isVisible) {
+                                                            sheetState.hide()
+                                                        } else {
+                                                            sheetState.show()
+                                                        }
+                                                    }
+                                                },
+                                        painter =
+                                            rememberAsyncImagePainter(
+                                                item,
+                                            ),
                                         contentDescription = "",
-                                        contentScale = ContentScale.Crop
+                                        contentScale = ContentScale.Crop,
                                     )
                                     Image(
-                                        modifier = Modifier
-                                            .size(24.dp)
-                                            .offset(x = 12.dp, y = (-12).dp)
-                                            .clickable {
-                                                onDeleteImage(index)
-                                            }
-                                        ,
+                                        modifier =
+                                            Modifier
+                                                .size(24.dp)
+                                                .offset(x = 12.dp, y = (-12).dp)
+                                                .clickable {
+                                                    onDeleteImage(index)
+                                                },
                                         painter = painterResource(id = R.drawable.ic_delete_button),
-                                        contentDescription = ""
+                                        contentDescription = "",
                                     )
                                     Text(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(27.dp)
-                                            .align(Alignment.BottomCenter)
-                                            .background(Color.Black.copy(alpha = 0.5f))
-                                        ,
+                                        modifier =
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .height(27.dp)
+                                                .align(Alignment.BottomCenter)
+                                                .background(Color.Black.copy(alpha = 0.5f)),
                                         text = stringResource(id = R.string.menu_change),
                                         color = Color.White,
-                                        textAlign = TextAlign.Center
+                                        textAlign = TextAlign.Center,
                                     )
                                 }
                             }
@@ -582,27 +597,29 @@ fun ModifyMenuScreenImpl(
 
                 item {
                     Row(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 24.dp, bottom = 52.dp)
-                            .fillMaxWidth()
-                            .height(43.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 16.dp)
+                                .padding(top = 24.dp, bottom = 52.dp)
+                                .fillMaxWidth()
+                                .height(43.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Button(
-                            onClick = {onBackPressed()},
+                            onClick = { onBackPressed() },
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(Color.White),
-                            modifier = Modifier
-                                .border(1.dp, ColorMinor, shape = RoundedCornerShape(8.dp))
-                                .fillMaxHeight()
-                                .width(113.dp)
+                            modifier =
+                                Modifier
+                                    .border(1.dp, ColorMinor, shape = RoundedCornerShape(8.dp))
+                                    .fillMaxHeight()
+                                    .width(113.dp),
                         ) {
                             Text(
                                 text = stringResource(id = R.string.cancel),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = ColorMinor
+                                color = ColorMinor,
                             )
                         }
 
@@ -610,16 +627,15 @@ fun ModifyMenuScreenImpl(
                             onClick = onNextButtonClicked,
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
-                            modifier = Modifier
-                                .fillMaxSize()
-
-
+                            modifier =
+                                Modifier
+                                    .fillMaxSize(),
                         ) {
                             Text(
                                 text = stringResource(id = R.string.next),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White
+                                color = Color.White,
                             )
                         }
                     }
@@ -630,21 +646,25 @@ fun ModifyMenuScreenImpl(
 }
 
 @Composable
-private fun HandleSideEffects(viewModel: ModifyMenuViewModel, goToCheckMenuScreen: () -> Unit) {
+private fun HandleSideEffects(
+    viewModel: ModifyMenuViewModel,
+    goToCheckMenuScreen: () -> Unit,
+) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is ModifyMenuSideEffect.GoToCheckMenuScreen -> goToCheckMenuScreen()
             is ModifyMenuSideEffect.ShowMessage -> {
-                val message = when (sideEffect.type) {
-                    ModifyMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
-                    ModifyMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
-                    ModifyMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
-                    ModifyMenuErrorType.NullMenuImage-> context.getString(R.string.menu_null_image)
-                    ModifyMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
-                    ModifyMenuErrorType.FailModifyMenu ->context.getString(R.string.menu_fail_register_menu)
-                }
+                val message =
+                    when (sideEffect.type) {
+                        ModifyMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
+                        ModifyMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
+                        ModifyMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
+                        ModifyMenuErrorType.NullMenuImage -> context.getString(R.string.menu_null_image)
+                        ModifyMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
+                        ModifyMenuErrorType.FailModifyMenu -> context.getString(R.string.menu_fail_register_menu)
+                    }
                 ToastUtil.getInstance().makeShort(message)
             }
             else -> ""
@@ -660,50 +680,50 @@ fun CategoryRadioButton(
     buttonName: String = "",
     isClicked: Boolean = false,
     index: Int = 0,
-    onButtonClicked: (Int) ->Unit = {}
+    onButtonClicked: (Int) -> Unit = {},
 ) {
     Box(
-        modifier = modifier
-            .width(185.dp)
-            .height(50.dp)
-            .padding(start = startDp, end = endDp)
-            .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6, shape = RoundedCornerShape(8.dp))
-            .background(color = if (isClicked) ColorSecondary else ColorTransparency, shape = RoundedCornerShape(8.dp))
-            .clickable {
-                onButtonClicked(index)
-            }
-        ,
-        contentAlignment = Alignment.Center
-    ){
+        modifier =
+            modifier
+                .width(185.dp)
+                .height(50.dp)
+                .padding(start = startDp, end = endDp)
+                .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6, shape = RoundedCornerShape(8.dp))
+                .background(color = if (isClicked) ColorSecondary else ColorTransparency, shape = RoundedCornerShape(8.dp))
+                .clickable {
+                    onButtonClicked(index)
+                },
+        contentAlignment = Alignment.Center,
+    ) {
         Text(
             text = buttonName,
-            color = if(isClicked) Color.White else Color.Black,
-            fontWeight = FontWeight.Bold
+            color = if (isClicked) Color.White else Color.Black,
+            fontWeight = FontWeight.Bold,
         )
-
     }
 }
 
 @Composable
 private fun CategoryRadioButtonScreen(
     menuCategory: List<StoreMenuCategory> = emptyList(),
-    onMenuCategoryIsClicked: (Int) -> Unit ={},
+    onMenuCategoryIsClicked: (Int) -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = 16.dp)
-            .padding(top = 8.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(horizontal = 16.dp)
+                .padding(top = 8.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
-        ){
+            modifier = Modifier.fillMaxWidth(),
+        ) {
             CategoryRadioButton(
                 buttonName = menuCategory[0].menuCategoryName,
                 isClicked = menuCategory[0].menuCategoryIsChecked,
                 index = 0,
-                onButtonClicked = onMenuCategoryIsClicked
+                onButtonClicked = onMenuCategoryIsClicked,
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -712,29 +732,30 @@ private fun CategoryRadioButtonScreen(
                 buttonName = menuCategory[1].menuCategoryName,
                 isClicked = menuCategory[1].menuCategoryIsChecked,
                 index = 1,
-                onButtonClicked = onMenuCategoryIsClicked
+                onButtonClicked = onMenuCategoryIsClicked,
             )
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        ){
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+        ) {
             CategoryRadioButton(
                 buttonName = menuCategory[2].menuCategoryName,
                 isClicked = menuCategory[2].menuCategoryIsChecked,
                 index = 2,
-                onButtonClicked = onMenuCategoryIsClicked
+                onButtonClicked = onMenuCategoryIsClicked,
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
             CategoryRadioButton(
                 buttonName = menuCategory[3].menuCategoryName,
-                isClicked =  menuCategory[3].menuCategoryIsChecked,
+                isClicked = menuCategory[3].menuCategoryIsChecked,
                 index = 3,
-                onButtonClicked = onMenuCategoryIsClicked
+                onButtonClicked = onMenuCategoryIsClicked,
             )
         }
     }
@@ -745,25 +766,28 @@ fun BorderTextField(
     height: Dp = 20.dp,
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
-){
+) {
     Box(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .padding(top = 8.dp)
-            .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
-            .height(height),
-        contentAlignment = Alignment.CenterStart
+        modifier =
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 8.dp)
+                .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
+                .height(height),
+        contentAlignment = Alignment.CenterStart,
     ) {
         BasicTextField(
             value = inputString,
             onValueChange = onStringChange,
-            textStyle = TextStyle(
-                color = Color.Black,
-                fontSize = 14.sp
-            ),
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .fillMaxWidth()
+            textStyle =
+                TextStyle(
+                    color = Color.Black,
+                    fontSize = 14.sp,
+                ),
+            modifier =
+                Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth(),
         )
     }
 }
@@ -771,21 +795,23 @@ fun BorderTextField(
 @Composable
 fun DivideOption(
     padding: Dp,
-    optionText: String
+    optionText: String,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = padding)
-            .height(35.dp)
-            .background(ColorTextBackgrond),
-        contentAlignment = Alignment.CenterStart
-    ){
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = padding)
+                .height(35.dp)
+                .background(ColorTextBackgrond),
+        contentAlignment = Alignment.CenterStart,
+    ) {
         Text(
-            modifier = Modifier
-                .padding(start = 16.dp),
+            modifier =
+                Modifier
+                    .padding(start = 16.dp),
             text = optionText,
-            color = ColorSecondaryText
+            color = ColorSecondaryText,
         )
     }
 }
@@ -798,14 +824,14 @@ fun DetailMenuTextField(
     onChangeMenuServing: (Pair<Int, String>) -> Unit = {},
     menuPrice: String = "",
     onChangeMenuPrice: (Pair<Int, String>) -> Unit = {},
-    onDeleteMenuPrice: (Int) -> Unit = {}
+    onDeleteMenuPrice: (Int) -> Unit = {},
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
     ) {
-
         MenuBorderTextField(
             modifier = modifier,
             inputString = menuOption,
@@ -822,21 +848,21 @@ fun DetailMenuTextField(
             index = index,
             getStringResource = R.string.won,
             onStringChange = onChangeMenuPrice,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            modifier = Modifier
-                .size(24.dp)
-                .clickable {
-                    onDeleteMenuPrice(index)
-                }
-                .align(Alignment.CenterVertically)
-            ,
+            modifier =
+                Modifier
+                    .size(24.dp)
+                    .clickable {
+                        onDeleteMenuPrice(index)
+                    }
+                    .align(Alignment.CenterVertically),
             painter = painterResource(id = R.drawable.ic_delete_button),
-            contentDescription = ""
+            contentDescription = "",
         )
     }
 }
@@ -847,10 +873,9 @@ fun PreviewDetailMenuTextField() {
     DetailMenuTextField()
 }
 
-
 @Preview
 @Composable
-fun PreviewRegisterMenuScreen(){
+fun PreviewRegisterMenuScreen() {
     ModifyMenuScreenImpl(
         modifier = Modifier,
         onBackPressed = {},

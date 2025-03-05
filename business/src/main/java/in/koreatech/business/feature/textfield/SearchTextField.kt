@@ -28,7 +28,6 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.SearchColorHelper
 
-
 @Composable
 fun SearchTextField(
     value: String,
@@ -47,11 +46,12 @@ fun SearchTextField(
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         decorationBox = { innerTextField ->
             Row(
-                modifier = Modifier.fillMaxWidth().height(40.dp)
-                    .background(color = ColorTextField, shape = RoundedCornerShape(4.dp))
-                    .padding(8.dp),
+                modifier =
+                    Modifier.fillMaxWidth().height(40.dp)
+                        .background(color = ColorTextField, shape = RoundedCornerShape(4.dp))
+                        .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Box {
                     if (value.isEmpty()) {
@@ -63,11 +63,10 @@ fun SearchTextField(
                     Icon(
                         modifier = Modifier.size(17.dp),
                         painter = painterResource(id = R.drawable.search),
-                        contentDescription = stringResource(id = R.string.search_icon)
+                        contentDescription = stringResource(id = R.string.search_icon),
                     )
                 }
             }
-
-        }
+        },
     )
 }

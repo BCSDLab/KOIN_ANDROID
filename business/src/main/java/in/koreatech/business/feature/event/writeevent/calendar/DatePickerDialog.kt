@@ -30,9 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature.event.writeevent.writeevent.WriteEventViewModel
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.business.ui.theme.Gray500
@@ -42,7 +40,7 @@ fun DatePickerDialog(
     currentYear: Int,
     currentMonth: Int,
     onDismiss: () -> Unit,
-    onConfirm: (Int, Int) -> Unit
+    onConfirm: (Int, Int) -> Unit,
 ) {
     var selectedYear by remember { mutableStateOf(currentYear) }
     var selectedMonth by remember { mutableStateOf(currentMonth) }
@@ -50,13 +48,14 @@ fun DatePickerDialog(
     Dialog(onDismissRequest = onDismiss) {
         Card(
             shape = RoundedCornerShape(16.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = "${currentYear}년 ${selectedMonth}월",
@@ -69,7 +68,7 @@ fun DatePickerDialog(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     AndroidView(
                         factory = { context ->
@@ -82,7 +81,7 @@ fun DatePickerDialog(
                                 }
                             }
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
 
                     AndroidView(
@@ -96,7 +95,7 @@ fun DatePickerDialog(
                                 }
                             }
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
 
@@ -104,17 +103,19 @@ fun DatePickerDialog(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
                     TextButton(
                         onClick = onDismiss,
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(4.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            backgroundColor = Color.Transparent,
-                        ),
-                        border = BorderStroke(1.dp, Gray3)
+                        modifier =
+                            Modifier
+                                .wrapContentSize()
+                                .padding(4.dp),
+                        colors =
+                            ButtonDefaults.outlinedButtonColors(
+                                backgroundColor = Color.Transparent,
+                            ),
+                        border = BorderStroke(1.dp, Gray3),
                     ) {
                         Text(
                             text = stringResource(R.string.cancel),
@@ -126,25 +127,27 @@ fun DatePickerDialog(
 
                     TextButton(
                         onClick = { onConfirm(selectedYear, selectedMonth) },
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(4.dp),
-                        colors = ButtonDefaults.textButtonColors(backgroundColor = ColorPrimary,
-                            contentColor = Color.White)
+                        modifier =
+                            Modifier
+                                .wrapContentSize()
+                                .padding(4.dp),
+                        colors =
+                            ButtonDefaults.textButtonColors(
+                                backgroundColor = ColorPrimary,
+                                contentColor = Color.White,
+                            ),
                     ) {
                         Text(
                             text = stringResource(R.string.check),
                             fontSize = 10.sp,
-                            modifier = Modifier.padding(horizontal = 30.dp).wrapContentSize()
+                            modifier = Modifier.padding(horizontal = 30.dp).wrapContentSize(),
                         )
                     }
-
                 }
             }
         }
     }
 }
-
 
 @Preview
 @Composable
@@ -153,6 +156,6 @@ fun DatePickerDialogPreview() {
         currentYear = 2023,
         currentMonth = 1,
         onDismiss = {},
-        onConfirm = { _, _ -> }
+        onConfirm = { _, _ -> },
     )
 }

@@ -56,5 +56,4 @@ dependencies {
     implementation(project(mapOf("path" to ":core")))
     implementation(project(":core:designsystem"))
     testImplementation(project(":feature:timetable"))
-
 }

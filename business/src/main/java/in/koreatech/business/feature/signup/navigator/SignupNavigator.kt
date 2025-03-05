@@ -44,10 +44,9 @@ fun NavGraphBuilder.signUpScreen(navController: NavController) {
                 onNextClicked = {
                     navController.navigate(SignupRoute.ENTER_PASSWORD.name)
                 },
-                viewModel = accountSetupViewModel
+                viewModel = accountSetupViewModel,
             )
         }
-
 
         composable(
             route = SignupRoute.ENTER_PASSWORD.name,
@@ -109,7 +108,7 @@ fun NavGraphBuilder.signUpScreen(navController: NavController) {
                 viewModel = businessAuthViewModel,
                 onBackClicked = { navController.popBackStack() },
             ) {
-                  navController.navigate(SignupRoute.ATTACH_FILE.name)
+                navController.navigate(SignupRoute.ATTACH_FILE.name)
             }
         }
 
@@ -123,10 +122,9 @@ fun NavGraphBuilder.signUpScreen(navController: NavController) {
                 accountSetupViewModel = accountSetupViewModel,
                 onBackClicked = { navController.popBackStack() },
             ) {
-                  navController.navigate(SignupRoute.SIGNUP_COMPLETED.name)
+                navController.navigate(SignupRoute.SIGNUP_COMPLETED.name)
             }
         }
-
 
         composable(
             route = SignupRoute.SIGNUP_COMPLETED.name,

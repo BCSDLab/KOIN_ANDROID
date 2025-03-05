@@ -1,9 +1,7 @@
 package `in`.koreatech.koin.core.designsystem.component.dialog
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,11 +21,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.R
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
-import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
-import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-
-
 
 /**
  *  1개의 버튼이 있는 다이얼로그
@@ -51,43 +45,42 @@ fun MessageDialog(
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
 ) {
     BasicAlertDialog(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(
-                color = KoinTheme.colors.neutral0,
-                shape = KoinTheme.shapes.large
-            )
-            .padding(horizontal = 32.dp, vertical = 24.dp),
-        onDismissRequest = { onNegative() }
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(
+                    color = KoinTheme.colors.neutral0,
+                    shape = KoinTheme.shapes.large,
+                )
+                .padding(horizontal = 32.dp, vertical = 24.dp),
+        onDismissRequest = { onNegative() },
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = title,
-                style = titleStyle
+                style = titleStyle,
             )
             Spacer(modifier = Modifier.height(32.dp))
 
             FilledButton(
-                modifier = Modifier
-                    .wrapContentWidth(),
+                modifier =
+                    Modifier
+                        .wrapContentWidth(),
                 text = positiveButtonText,
                 onClick = onPositive,
-                colors = positiveButtonColors
+                colors = positiveButtonColors,
             )
         }
     }
 }
 
-
 @Preview
 @Composable
-fun PreviewMassageDialog(
-
-){
+fun PreviewMassageDialog() {
     MessageDialog(
-        title = "요일을 선택해 주세요."
+        title = "요일을 선택해 주세요.",
     )
 }

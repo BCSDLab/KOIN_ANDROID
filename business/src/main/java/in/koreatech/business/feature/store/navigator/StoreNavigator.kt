@@ -1,7 +1,6 @@
 package `in`.koreatech.business.feature.store.navigator
 
 import android.os.Bundle
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
@@ -32,13 +31,11 @@ import `in`.koreatech.business.navigation.toNavigateScreenWithStoreId
 import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.myStoreScreen(
-    navController: NavHostController
-){
+fun NavGraphBuilder.myStoreScreen(navController: NavHostController) {
     navigation(
         route = MYSTORESCREEN,
-        startDestination = StoreRoute.MY_STORE.name
-    ){
+        startDestination = StoreRoute.MY_STORE.name,
+    ) {
         composable(
             route = StoreRoute.MY_STORE.name,
         ) {
@@ -48,15 +45,15 @@ fun NavGraphBuilder.myStoreScreen(
             MyStoreDetailScreen(
                 modifier = Modifier.fillMaxSize(),
                 navigateToLoginScreen = {
-                    navController.navigate(SIGNINSCREEN){
-                        popUpTo(MYSTORESCREEN){
+                    navController.navigate(SIGNINSCREEN) {
+                        popUpTo(MYSTORESCREEN) {
                             inclusive = true
                         }
                     }
                 },
-                navigateToModifyScreen = {storeId ->
+                navigateToModifyScreen = { storeId ->
                     navController.navigate(StoreRoute.MODIFY_INFO.name)
-                                         },
+                },
                 viewModel = myStoreInfoViewModel,
                 modifyInfoViewModel = modifyInfoViewModel,
                 navigateToAddEventScreen = { storeId ->
@@ -68,60 +65,62 @@ fun NavGraphBuilder.myStoreScreen(
                 navigateToRegisterStoreScreen = {
                     navController.navigate(REGISTERSTORESCREEN)
                 },
-                navigateToRegisterMenuScreen = {storeId ->
+                navigateToRegisterMenuScreen = { storeId ->
                     navController.toNavigateRegisterMenuScreen(storeId)
                 },
-                navigateToModifyMenuScreen = {menuId ->
+                navigateToModifyMenuScreen = { menuId ->
                     navController.toNavigateScreenWithMenuId(MODIFYMENUSCREEN, menuId)
-                }
+                },
             )
         }
 
         composable(
-            route = StoreRoute.MODIFY_INFO.name
+            route = StoreRoute.MODIFY_INFO.name,
         ) {
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
             val myStoreInfoViewModel: MyStoreDetailViewModel = it.sharedHiltViewModel(navController = navController)
 
             ModifyInfoScreen(
                 viewModel = modifyInfoViewModel,
-                storeInfoViewModel= myStoreInfoViewModel,
+                storeInfoViewModel = myStoreInfoViewModel,
                 onSettingOperatingClicked = { navController.navigate(StoreRoute.SETTING_OPERATING_TIME.name) },
                 onBackClicked = { navController.popBackStack() },
                 onModifyButtonClicked = {
-                    navController.navigate(StoreRoute.MY_STORE.name){
-                        popUpTo(StoreRoute.MODIFY_INFO.name){
+                    navController.navigate(StoreRoute.MY_STORE.name) {
+                        popUpTo(StoreRoute.MODIFY_INFO.name) {
                             inclusive = true
                         }
                     }
-                }
+                },
             )
         }
 
         composable(
-            route = StoreRoute.SETTING_OPERATING_TIME.name
+            route = StoreRoute.SETTING_OPERATING_TIME.name,
         ) {
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
 
             ModifyOperatingTimeScreen(
                 viewModel = modifyInfoViewModel,
-                onBackClicked = { navController.popBackStack() }
+                onBackClicked = { navController.popBackStack() },
             )
         }
     }
 }
 
-fun NavController.toNaviGateModifyStoreScreen(storeId: Int){
-    val bundle = Bundle().apply {
-        putInt("storeId", storeId)
-    }
+fun NavController.toNaviGateModifyStoreScreen(storeId: Int) {
+    val bundle =
+        Bundle().apply {
+            putInt("storeId", storeId)
+        }
     navigate(StoreRoute.MODIFY_INFO.name, bundle)
 }
+
 fun NavController.navigate(
     route: String,
     args: Bundle,
     navOptions: NavOptions? = null,
-    navigatorExtras: Navigator.Extras? = null
+    navigatorExtras: Navigator.Extras? = null,
 ) {
     val nodes = graph.findNode(MYSTORESCREEN) as? NavGraph
 

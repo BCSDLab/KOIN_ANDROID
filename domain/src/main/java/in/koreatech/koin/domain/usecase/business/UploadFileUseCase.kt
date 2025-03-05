@@ -5,18 +5,20 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UploadFileUseCase @Inject constructor(
-    private val preSignedUrlRepository: PreSignedUrlRepository,
-    private val coroutineDispatcher: CoroutineDispatcher
-) {
-    suspend operator fun invoke(
-        preSignedUrl: String,
-        mediaType: String,
-        mediaSize: Long,
-        imageUri: String
-    ): Result<Unit> {
-        return withContext(coroutineDispatcher){
-            preSignedUrlRepository.uploadFile(preSignedUrl,imageUri, mediaType, mediaSize)
+class UploadFileUseCase
+    @Inject
+    constructor(
+        private val preSignedUrlRepository: PreSignedUrlRepository,
+        private val coroutineDispatcher: CoroutineDispatcher,
+    ) {
+        suspend operator fun invoke(
+            preSignedUrl: String,
+            mediaType: String,
+            mediaSize: Long,
+            imageUri: String,
+        ): Result<Unit> {
+            return withContext(coroutineDispatcher) {
+                preSignedUrlRepository.uploadFile(preSignedUrl, imageUri, mediaType, mediaSize)
+            }
         }
     }
-}

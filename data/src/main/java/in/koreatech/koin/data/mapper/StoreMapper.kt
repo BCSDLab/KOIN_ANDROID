@@ -340,10 +340,9 @@ fun ShopRelatedListResponse.toShopSearchRelatedList(): ShopSearchRelatedList =
             },
     )
 
-fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore = OwnerGetStore(
-    uid = uid ?: 0,
-    name = name ?: "",
-    isEvent = isEvent ?: false
-)
-
-
+fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore =
+    OwnerGetStore(
+        uid = uid ?: 0,
+        name = name ?: "",
+        isEvent = isEvent ?: false,
+    )

@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.response.owner
 
 import com.google.gson.annotations.SerializedName
 
-data class OwnerEventResponse (
+data class OwnerEventResponse(
     @SerializedName("title") val title: String?,
     @SerializedName("content") val content: String?,
     @SerializedName("thumbnail_images") val thumbnailImages: List<String>?,

@@ -1,7 +1,6 @@
 package `in`.koreatech.business.feature.textfield
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,9 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -33,16 +28,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.ColorPrimary
-import `in`.koreatech.business.ui.theme.ColorSecondary
-import `in`.koreatech.business.ui.theme.ColorSuccess
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray500
-import `in`.koreatech.koin.data.constant.URLConstant.CONTACT_URL
 import `in`.koreatech.koin.domain.util.ext.formatTime
-
 
 @Composable
 fun LinedTextField(
@@ -72,34 +61,38 @@ fun LinedTextField(
         decorationBox = { innerTextField ->
             Column(modifier = Modifier.fillMaxWidth()) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(46.dp)
-                        .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(46.dp)
+                            .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Box(
                             modifier = Modifier.fillMaxHeight(),
-                            contentAlignment = Alignment.CenterStart
+                            contentAlignment = Alignment.CenterStart,
                         ) {
-                            if (value.isEmpty())
+                            if (value.isEmpty()) {
                                 Text(text = label, fontSize = 16.sp, color = ColorHelper)
+                            }
                             innerTextField()
                         }
-                        if (timerText != null)
+                        if (timerText != null) {
                             Text(
                                 text = timerText.formatTime(),
                                 fontSize = 16.sp,
                                 color = Gray500,
-                                modifier = Modifier.padding(top = 4.dp)
+                                modifier = Modifier.padding(top = 4.dp),
                             )
+                        }
                     }
                 }
                 HelperMessage(
@@ -111,11 +104,9 @@ fun LinedTextField(
                     focused = if (timerText != null) true else focused,
                 )
             }
-        }
+        },
     )
-
 }
-
 
 @Preview
 @Composable

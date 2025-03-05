@@ -5,11 +5,11 @@ import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
 import `in`.koreatech.koin.domain.model.store.ShopEvents
-import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 
 interface OwnerShopRepository {
     suspend fun getMyShopList(): List<OwnerGetStore>
+
     suspend fun getOwnerShopEvents(storeId: Int): ShopEvents
 
     suspend fun getOwnerShopMenus(storeId: Int): StoreMenu
@@ -29,5 +29,9 @@ interface OwnerShopRepository {
     )
 
     fun getOwnerStoreSize(): Boolean
-    suspend fun registerEvent(storeId: Int, event: EventInfo)
+
+    suspend fun registerEvent(
+        storeId: Int,
+        event: EventInfo,
+    )
 }

@@ -2,8 +2,6 @@ package `in`.koreatech.business.feature.store.storedetail
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,9 +16,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
@@ -44,7 +42,6 @@ import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
-import `in`.koreatech.business.ui.theme.Shapes
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -55,25 +52,30 @@ fun CollapsedTopBar(
     state: MyStoreDetailState,
 ) {
     val color: Color by animateColorAsState(
-        if (isCollapsed) Color.White
-        else Color.Transparent
+        if (isCollapsed) {
+            Color.White
+        } else {
+            Color.Transparent
+        },
     )
     Box(
-        modifier = modifier
-            .background(color)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.BottomStart
+        modifier =
+            modifier
+                .background(color)
+                .fillMaxWidth(),
+        contentAlignment = Alignment.BottomStart,
     ) {
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
-            visible = isCollapsed
+            visible = isCollapsed,
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .padding(horizontal = 10.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .padding(horizontal = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -81,15 +83,16 @@ fun CollapsedTopBar(
                     IconButton(onClick = onNavigateToModifyScreen) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_setting),
-                            contentDescription = stringResource(R.string.shop_management)
+                            contentDescription = stringResource(R.string.shop_management),
                         )
                     }
                 }
                 Divider(
                     color = ColorTextField,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(1.dp),
                 )
             }
         }
@@ -97,121 +100,131 @@ fun CollapsedTopBar(
 }
 
 @Composable
-fun StoreInfoScreen(
-    viewModel: MyStoreDetailViewModel,
-) {
+fun StoreInfoScreen(viewModel: MyStoreDetailViewModel) {
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState { state.storeInfo?.imageUrls?.size ?: 1 }
 
     Column(modifier = Modifier) {
-
         Row(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        )
-        {
+            modifier =
+                Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+        ) {
             Button(
                 onClick = { viewModel.onRegisterStoreClicked() },
-                modifier = Modifier
-                    .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
-                    .width(107.dp)
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White
-                ),
+                modifier =
+                    Modifier
+                        .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
+                        .width(107.dp)
+                        .height(40.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                    ),
                 shape = RoundedCornerShape(0.dp),
                 elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
             ) {
                 Text(
                     text = stringResource(R.string.register_store),
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 15.sp
-                    )
+                    style =
+                        TextStyle(
+                            color = Color.White,
+                            fontSize = 15.sp,
+                        ),
                 )
             }
 
             Button(
                 onClick = {
                     viewModel.showSelectStoreDialog()
-                          },
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
-                    .width(107.dp)
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White
-                ),
+                },
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
+                        .width(107.dp)
+                        .height(40.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                    ),
                 shape = RoundedCornerShape(0.dp),
                 elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
             ) {
                 Text(
                     text = stringResource(R.string.select_store),
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 15.sp
-                    )
+                    style =
+                        TextStyle(
+                            color = Color.White,
+                            fontSize = 15.sp,
+                        ),
                 )
             }
 
             Button(
                 onClick = {
                     viewModel.onRegisterMenuClicked()
-                          },
-                modifier = Modifier
-                    .width(107.dp)
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White
-                ),
+                },
+                modifier =
+                    Modifier
+                        .width(107.dp)
+                        .height(40.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                    ),
                 shape = RoundedCornerShape(0.dp),
                 elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
-
-                ) {
+            ) {
                 Text(
                     text = stringResource(R.string.register_menu),
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 15.sp
-                    )
+                    style =
+                        TextStyle(
+                            color = Color.White,
+                            fontSize = 15.sp,
+                        ),
                 )
             }
         }
 
         Divider(
-            modifier = Modifier
-                .fillMaxWidth(),
-            color = ColorPrimary
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            color = ColorPrimary,
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Gray2),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(Gray2),
             contentAlignment = Alignment.Center,
         ) {
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(255.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(255.dp),
             ) { page ->
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
                     Image(
                         modifier = Modifier.height(255.dp),
-                        painter = rememberAsyncImagePainter(
-                            model = if (state.storeInfo != null) state.storeInfo.imageUrls[page] else R.drawable.no_image
-                        ),
+                        painter =
+                            rememberAsyncImagePainter(
+                                model = if (state.storeInfo != null) state.storeInfo.imageUrls[page] else R.drawable.no_image,
+                            ),
                         contentDescription = stringResource(R.string.shop_image),
                         contentScale = ContentScale.Crop,
                     )
@@ -220,10 +233,11 @@ fun StoreInfoScreen(
         }
 
         Row(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier =
+                Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 20.dp),
@@ -233,18 +247,19 @@ fun StoreInfoScreen(
                 fontWeight = FontWeight(600),
             )
             Row(
-                modifier = Modifier
-                    .padding(end = 24.dp)
-                    .clickable {
-                        viewModel.navigateToModifyScreen()
-                    }
-            ){
+                modifier =
+                    Modifier
+                        .padding(end = 24.dp)
+                        .clickable {
+                            viewModel.navigateToModifyScreen()
+                        },
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = stringResource(R.string.edit)
+                    contentDescription = stringResource(R.string.edit),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = stringResource(R.string.modify_store), color= Gray1)
+                Text(text = stringResource(R.string.modify_store), color = Gray1)
             }
         }
     }

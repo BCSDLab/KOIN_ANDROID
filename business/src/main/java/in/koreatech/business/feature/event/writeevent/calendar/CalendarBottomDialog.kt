@@ -1,6 +1,3 @@
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,8 +15,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,53 +31,51 @@ import `in`.koreatech.business.feature.event.writeevent.calendar.CalendarScreen
 import `in`.koreatech.business.feature.event.writeevent.writeevent.WriteEventViewModel
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextFieldDescription
-import `in`.koreatech.business.ui.theme.Gray10
-import `in`.koreatech.business.ui.theme.Gray3
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
 fun CalendarBottomDialog(
     viewModel: WriteEventViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
-    selectedYearMonth : YearMonth = YearMonth.now(),
+    selectedYearMonth: YearMonth = YearMonth.now(),
 ) {
-
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Expanded,
-        confirmValueChange = {
-            if (it == ModalBottomSheetValue.Hidden) {
-                onDismiss()
-            }
-            true
-        }
-    )
+    val bottomSheetState =
+        rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Expanded,
+            confirmValueChange = {
+                if (it == ModalBottomSheetValue.Hidden) {
+                    onDismiss()
+                }
+                true
+            },
+        )
     val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = stringResource(id = R.string.setting_event_duration),
                         fontSize = 18.sp,
-                        modifier = Modifier
+                        modifier = Modifier,
                     )
                 }
                 CalendarScreen(
                     viewModel = viewModel,
-                    selectedYearMonth = selectedYearMonth
+                    selectedYearMonth = selectedYearMonth,
                 )
                 Row {
                     Button(
@@ -90,15 +83,19 @@ fun CalendarBottomDialog(
                             coroutineScope.launch { bottomSheetState.hide() }
                                 .invokeOnCompletion { onDismiss() }
                         },
-                        modifier = Modifier
-                            .width(128.dp)
-                            .height(40.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White
-                        )
+                        modifier =
+                            Modifier
+                                .width(128.dp)
+                                .height(40.dp),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                backgroundColor = Color.White,
+                            ),
                     ) {
-                        Text(text = stringResource(id = R.string.cancel),
-                            color = ColorTextFieldDescription)
+                        Text(
+                            text = stringResource(id = R.string.cancel),
+                            color = ColorTextFieldDescription,
+                        )
                     }
                     Spacer(modifier = Modifier.width(32.dp))
                     Button(
@@ -106,13 +103,15 @@ fun CalendarBottomDialog(
                             coroutineScope.launch { bottomSheetState.hide() }
                                 .invokeOnCompletion { onDismiss() }
                         },
-                        modifier = Modifier
-                            .width(128.dp)
-                            .height(40.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            contentColor = Color.White,
-                            backgroundColor = ColorPrimary
-                        )
+                        modifier =
+                            Modifier
+                                .width(128.dp)
+                                .height(40.dp),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                contentColor = Color.White,
+                                backgroundColor = ColorPrimary,
+                            ),
                     ) {
                         Text(text = stringResource(id = R.string.register))
                     }
@@ -122,7 +121,6 @@ fun CalendarBottomDialog(
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     ) {}
 }
-
 
 @Preview(showBackground = true)
 @Composable

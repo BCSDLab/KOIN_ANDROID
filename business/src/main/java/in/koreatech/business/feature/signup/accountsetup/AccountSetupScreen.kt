@@ -78,15 +78,15 @@ fun AccountSetupScreen(
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
         ) {
             IconButton(
                 onClick = viewModel::onBackButtonClicked,
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier.align(Alignment.CenterStart),
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
@@ -98,27 +98,29 @@ fun AccountSetupScreen(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
         Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp),
+            modifier =
+                Modifier
+                    .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.Center,
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = FontWeight.Medium,
-                    text = stringResource(id = R.string.input_basic_information)
+                    text = stringResource(id = R.string.input_basic_information),
                 )
                 Text(
                     text = stringResource(id = R.string.two_third),
@@ -128,42 +130,43 @@ fun AccountSetupScreen(
             }
 
             Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 40, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                    cap = StrokeCap.Round,
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset((size.width + 35) / 3 * 2, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                    cap = StrokeCap.Round,
                 )
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp)
-                .verticalScroll(scrollState),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp)
+                    .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
         ) {
-
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = stringResource(id = R.string.enter_phone_number),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -174,30 +177,37 @@ fun AccountSetupScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = stringResource(id = R.string.enter_phone),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                errorText = if (state.sendCodeError == OwnerError.ExistsPhoneNumberException) stringResource(
-                    id = R.string.phone_number_is_duplicated
-                ) else stringResource(id = R.string.phone_number_error),
+                errorText =
+                    if (state.sendCodeError == OwnerError.ExistsPhoneNumberException) {
+                        stringResource(
+                            id = R.string.phone_number_is_duplicated,
+                        )
+                    } else {
+                        stringResource(id = R.string.phone_number_error)
+                    },
                 isError = (state.phoneNumber.isNotEmpty() && state.phoneNumber.length != 11) || state.sendCodeError != null,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
             Spacer(modifier = Modifier.height(10.dp))
 
             Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
                 shape = RoundedCornerShape(4.dp),
                 enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null,
-                colors = ButtonDefaults.buttonColors(
-                    disabledBackgroundColor = Gray11,
-                ),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        disabledBackgroundColor = Gray11,
+                    ),
                 onClick = {
                     viewModel.checkExistsAccount()
                     viewModel.changeDialogVisibility(true)
                     AccountTimer.start { remainingTime ->
                         timerText = remainingTime
                     }
-                }
+                },
             ) {
                 Text(
                     text = stringResource(id = R.string.send_authentication_code),
@@ -214,12 +224,12 @@ fun AccountSetupScreen(
                         viewModel.changeDialogVisibility(false)
                     },
                     dialogText = stringResource(id = R.string.send_authentication_code_dialog),
-                    visibility = state.dialogVisibility
+                    visibility = state.dialogVisibility,
                 )
                 Text(
                     text = stringResource(id = R.string.enter_authentication_code),
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 )
                 Spacer(modifier = Modifier.height(40.dp))
 
@@ -230,45 +240,52 @@ fun AccountSetupScreen(
                         onValueChange = {
                             viewModel.verifySmsCode(
                                 state.phoneNumber,
-                                it
+                                it,
                             )
                         },
                         label = stringResource(id = R.string.enter_verification_code),
                         timerText = timerText,
                         textStyle = TextStyle.Default.copy(fontSize = 20.sp),
-                        errorText = if (timerText == 0) stringResource(id = R.string.sms_code_time_over) else stringResource(
-                            id = R.string.sms_code_not_validate
-                        ),
+                        errorText =
+                            if (timerText == 0) {
+                                stringResource(id = R.string.sms_code_time_over)
+                            } else {
+                                stringResource(
+                                    id = R.string.sms_code_not_validate,
+                                )
+                            },
                         successText = stringResource(id = R.string.auth_code_equal),
                         isError = state.verifyState is SignupContinuationState.Failed || timerText == 0,
                         isSuccess = state.verifyState == SignupContinuationState.CheckComplete,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 
                 if (state.verifyState != SignupContinuationState.CheckComplete) {
                     Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
                         shape = RoundedCornerShape(4.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = ColorPrimary,
-                            disabledBackgroundColor = Gray2,
-                        ),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                backgroundColor = ColorPrimary,
+                                disabledBackgroundColor = Gray2,
+                            ),
                         onClick = {
                             viewModel.checkExistsAccount()
                             viewModel.changeDialogVisibility(true)
                             AccountTimer.start { remainingTime ->
                                 timerText = remainingTime
                             }
-                        }
+                        },
                     ) {
                         Text(
                             text = stringResource(id = R.string.resend_authentication_code),
                             fontSize = 16.sp,
-                            color = White
+                            color = White,
                         )
                     }
                     if (AccountTimer.secondsRemaining <= 290L) {
@@ -282,19 +299,21 @@ fun AccountSetupScreen(
 
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-                    .heightIn(50.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp)
+                        .heightIn(50.dp),
                 shape = RectangleShape,
                 enabled = state.verifyState == SignupContinuationState.CheckComplete,
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = White,
-                    disabledBackgroundColor = Gray2,
-                    disabledContentColor = Gray1,
-                ),
-                onClick = viewModel::onNavigateToNextScreen
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = White,
+                        disabledBackgroundColor = Gray2,
+                        disabledContentColor = Gray1,
+                    ),
+                onClick = viewModel::onNavigateToNextScreen,
             ) {
                 Text(
                     text = stringResource(id = R.string.next),
@@ -314,7 +333,6 @@ fun AccountSetupScreen(
     }
 }
 
-
 @Composable
 fun SendAuthCodeDialog(
     onDismissRequest: () -> Unit,
@@ -323,9 +341,10 @@ fun SendAuthCodeDialog(
 ) {
     if (!visibility) return
     AlertDialog(
-        modifier = Modifier
-            .width(270.dp)
-            .height(160.dp),
+        modifier =
+            Modifier
+                .width(270.dp)
+                .height(160.dp),
         text = {
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -333,7 +352,7 @@ fun SendAuthCodeDialog(
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
                 color = Color.Black,
-                style = TextStyle(lineHeight = 25.sp)
+                style = TextStyle(lineHeight = 25.sp),
             )
         },
         onDismissRequest = {
@@ -342,26 +361,28 @@ fun SendAuthCodeDialog(
         buttons = {
             Box(
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 TextButton(
-                    modifier = Modifier
-                        .widthIn(72.dp)
-                        .height(40.dp),
-                    colors = ButtonDefaults.textButtonColors(
-                        backgroundColor = ColorPrimary,
-                        contentColor = Color.White
-                    ),
+                    modifier =
+                        Modifier
+                            .widthIn(72.dp)
+                            .height(40.dp),
+                    colors =
+                        ButtonDefaults.textButtonColors(
+                            backgroundColor = ColorPrimary,
+                            contentColor = Color.White,
+                        ),
                     onClick = {
                         onDismissRequest()
-                    }
+                    },
                 ) {
                     Text(
                         text = stringResource(id = R.string.check),
                     )
                 }
             }
-        }
+        },
     )
 }
 
@@ -371,7 +392,7 @@ fun AccountSetupScreenPreview() {
     KOIN_ANDROIDTheme {
         AccountSetupScreen(
             onNextClicked = {},
-            onBackClicked = {}
+            onBackClicked = {},
         )
     }
 }

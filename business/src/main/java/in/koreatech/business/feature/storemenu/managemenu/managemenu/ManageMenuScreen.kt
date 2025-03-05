@@ -14,10 +14,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,16 +37,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.koin.core.R
-import org.orbitmvi.orbit.compose.collectAsState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
-import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.toast.ToastUtil
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
@@ -51,7 +48,7 @@ fun ManageMenuScreen(
     onBackPressed: () -> Unit = {},
     navigateToModifyMenuScreen: (Int) -> Unit,
     navigateToRegisterMenuScreen: (Int) -> Unit,
-    viewModel: ManageMenuViewModel = hiltViewModel()
+    viewModel: ManageMenuViewModel = hiltViewModel(),
 ) {
     val state = viewModel.collectAsState().value
     ManageMenuScreenImpl(
@@ -60,36 +57,39 @@ fun ManageMenuScreen(
         state = state,
         onMenuItemClicked = viewModel::onModifyMenuClicked,
         onAddMenuClicked = viewModel::onRegisterMenuClicked,
-        onCheckBoxClicked = viewModel::onCheckBoxClicked
+        onCheckBoxClicked = viewModel::onCheckBoxClicked,
     )
     HandleSideEffects(viewModel, navigateToModifyMenuScreen, navigateToRegisterMenuScreen)
 }
+
 @Composable
 fun ManageMenuScreenImpl(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {},
     state: ManageMenuState = ManageMenuState(),
-    onMenuItemClicked: (Int) -> Unit ={},
+    onMenuItemClicked: (Int) -> Unit = {},
     onAddMenuClicked: () -> Unit = {},
-    onCheckBoxClicked: (Int) -> Unit = {}
+    onCheckBoxClicked: (Int) -> Unit = {},
 ) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(62.dp)
-                .background(ColorPrimary),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(62.dp)
+                    .background(ColorPrimary),
         ) {
             IconButton(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = 16.dp),
-                onClick = { onBackPressed() }
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 16.dp),
+                onClick = { onBackPressed() },
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_arrow_back),
@@ -105,51 +105,53 @@ fun ManageMenuScreenImpl(
         }
 
         Text(
-            modifier = Modifier
-                .padding(top = 32.dp)
-                .padding(end = 24.dp)
-                .align(Alignment.End)
-                .clickable {
-                    onAddMenuClicked()
-                }
-            ,
+            modifier =
+                Modifier
+                    .padding(top = 32.dp)
+                    .padding(end = 24.dp)
+                    .align(Alignment.End)
+                    .clickable {
+                        onAddMenuClicked()
+                    },
             text = stringResource(R.string.menu_add_plus),
-            style = TextStyle(color = colorResource(R.color.primary_500), fontSize = 16.sp)
+            style = TextStyle(color = colorResource(R.color.primary_500), fontSize = 16.sp),
         )
 
         LazyRow(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth()
-                .height(32.dp)
-            ,
+            modifier =
+                Modifier
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 24.dp)
+                    .fillMaxWidth()
+                    .height(32.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            itemsIndexed(state.storeMenuCategoryList) { index, item->
+            itemsIndexed(state.storeMenuCategoryList) { index, item ->
                 Box(
-                    modifier = Modifier
-                        .background(color = if(item.isChecked) ColorPrimary else Color.White, shape = RoundedCornerShape(8.dp))
-                        .fillParentMaxWidth(0.228f)
-                        .fillMaxHeight()
-                        .clickable {
-                            coroutineScope.launch {
-                                listState.animateScrollToItem(index)
+                    modifier =
+                        Modifier
+                            .background(color = if (item.isChecked) ColorPrimary else Color.White, shape = RoundedCornerShape(8.dp))
+                            .fillParentMaxWidth(0.228f)
+                            .fillMaxHeight()
+                            .clickable {
+                                coroutineScope.launch {
+                                    listState.animateScrollToItem(index)
+                                }
+                                onCheckBoxClicked(index)
                             }
-                            onCheckBoxClicked(index)
-                        }
-                        .border(
-                            width = 1.dp, color = Gray3, shape = RoundedCornerShape(8.dp)
-                        )
-                    ,
-                    contentAlignment = Alignment.Center
+                            .border(
+                                width = 1.dp,
+                                color = Gray3,
+                                shape = RoundedCornerShape(8.dp),
+                            ),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         modifier = Modifier.padding(1.dp),
                         text = item.categoryName,
                         style = KoinTheme.typography.medium12,
-                        color = if(item.isChecked) Color.White else Gray3,
+                        color = if (item.isChecked) Color.White else Gray3,
                         fontWeight = FontWeight(500),
                     )
                 }
@@ -158,18 +160,19 @@ fun ManageMenuScreenImpl(
 
         LazyColumn(
             state = listState,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 32.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = 32.dp),
         ) {
             state.storeMenuList?.let { menuList ->
-                items(menuList){
+                items(menuList) {
                     MenuCategories(it)
                     MenuItem(
                         menuList = it,
-                        onMenuClicked = {menuId ->
+                        onMenuClicked = { menuId ->
                             onMenuItemClicked(menuId)
-                        }
+                        },
                     )
                 }
             }
@@ -181,15 +184,14 @@ fun ManageMenuScreenImpl(
 private fun HandleSideEffects(
     viewModel: ManageMenuViewModel,
     navigateToModifyMenuScreen: (Int) -> Unit,
-    navigateToRegisterMenuScreen: (Int) -> Unit
-
+    navigateToRegisterMenuScreen: (Int) -> Unit,
 ) {
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is ManageMenuSideEffect.NavigateToModifyMenuScreen ->{
+            is ManageMenuSideEffect.NavigateToModifyMenuScreen -> {
                 navigateToModifyMenuScreen(sideEffect.menuId)
             }
-            is ManageMenuSideEffect.NavigateToRegisterMenuScreen ->{
+            is ManageMenuSideEffect.NavigateToRegisterMenuScreen -> {
                 navigateToRegisterMenuScreen(sideEffect.storeId)
             }
         }

@@ -16,7 +16,6 @@ import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorSuccess
 
-
 @Composable
 fun HelperMessage(
     helperText: String,
@@ -41,8 +40,9 @@ fun HelperMessage(
                 )
                 Text(
                     modifier = Modifier.padding(start = 4.dp),
-                    text = errorText, fontSize = 16.sp,
-                    color = ColorSecondary
+                    text = errorText,
+                    fontSize = 16.sp,
+                    color = ColorSecondary,
                 )
             }
         } else if (isSuccess && focused) {
@@ -50,16 +50,15 @@ fun HelperMessage(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_success),
                     contentDescription = stringResource(id = R.string.success),
-                    tint = ColorSuccess
+                    tint = ColorSuccess,
                 )
                 Text(
                     modifier = Modifier.padding(start = 4.dp),
                     text = successText,
                     fontSize = 16.sp,
-                    color = ColorSuccess
+                    color = ColorSuccess,
                 )
             }
         }
     }
 }
-
