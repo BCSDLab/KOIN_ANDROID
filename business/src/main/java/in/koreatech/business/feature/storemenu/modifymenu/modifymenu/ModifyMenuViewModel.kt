@@ -35,205 +35,179 @@ class ModifyMenuViewModel
         private val uploadFilesUseCase: UploadFileUseCase,
         private val modifyMenuUseCase: ModifyMenuUseCase,
     ) : ViewModel(), ContainerHost<ModifyMenuState, ModifyMenuSideEffect> {
-        override val container = container<ModifyMenuState, ModifyMenuSideEffect>(ModifyMenuState())
+    override val container = container<ModifyMenuState, ModifyMenuSideEffect>(ModifyMenuState())
 
-        private val menuId: Int = checkNotNull(savedStateHandle["menuId"])
+    private val menuId: Int = checkNotNull(savedStateHandle["menuId"])
 
-        init {
-            settingId(menuId)
-        }
+    init {
+        settingId(menuId)
+    }
 
-        private fun getStoreMenuInfo() {
-            intent {
-                viewModelScope.launch {
-                    val menuInfo = getMenuInfoUseCase(state.menuId)
-                    reduce {
-                        state.copy(
-                            shopId = menuInfo.shopId,
-                            menuName = menuInfo.name,
-                            menuPrice = menuInfo.singlePrice.toString(),
-                            menuOptionPrice = menuInfo.optionPrice,
-                            description = menuInfo.description,
-                            menuCategoryId = menuInfo.categoryIds,
-                            imageUriList = menuInfo.imageUrl,
-                        )
-                    }
-                    getStoreMenuCategory()
-                    addDefaultImage()
-                }
-            }
-        }
-
-        private fun getStoreMenuCategory() {
-            intent {
-                viewModelScope.launch {
-                    val menuCategory = getMenuCategoryUseCase(state.shopId)
-                    val newMenuCategory =
-                        menuCategory.map { category ->
-                            StoreMenuCategory(
-                                menuCategoryId = category.menuCategoryId,
-                                menuCategoryName = category.menuCategoryName,
-                                menuCategoryIsChecked = category.menuCategoryId in state.menuCategoryId,
-                            )
-                        }
-
-                    reduce {
-                        state.copy(
-                            menuCategory = newMenuCategory,
-                        )
-                    }
-                }
-            }
-        }
-
-        private fun addDefaultImage() {
-            intent {
+    private fun getStoreMenuInfo() {
+        intent {
+            viewModelScope.launch {
+                val menuInfo = getMenuInfoUseCase(state.menuId)
                 reduce {
-                    val newMenuUriList = state.imageUriList.toMutableList()
-
-                    if (newMenuUriList.size != STORE_MENU_IMAGE_MAX) {
-                        newMenuUriList.add(ImageHolder.TempUri.toString())
-                    }
                     state.copy(
-                        imageUriList = newMenuUriList,
+                        shopId = menuInfo.shopId,
+                        menuName = menuInfo.name,
+                        menuPrice = menuInfo.singlePrice.toString(),
+                        menuOptionPrice = menuInfo.optionPrice,
+                        description = menuInfo.description,
+                        menuCategoryId = menuInfo.categoryIds,
+                        imageUriList = menuInfo.imageUrl,
+                    )
+                }
+                getStoreMenuCategory()
+                addDefaultImage()
+            }
+        }
+    }
+
+    private fun getStoreMenuCategory() {
+        intent {
+            viewModelScope.launch {
+                val menuCategory = getMenuCategoryUseCase(state.shopId)
+                val newMenuCategory =
+                    menuCategory.map { category ->
+                        StoreMenuCategory(
+                            menuCategoryId = category.menuCategoryId,
+                            menuCategoryName = category.menuCategoryName,
+                            menuCategoryIsChecked = category.menuCategoryId in state.menuCategoryId,
+                        )
+                    }
+
+                reduce {
+                    state.copy(
+                        menuCategory = newMenuCategory,
                     )
                 }
             }
         }
+    }
 
-        private fun makeMenuCategoryString() {
-            intent {
-                val menuLabels = mutableListOf<String>()
-                val menuCategoryId = mutableListOf<Int>()
-
-                state.menuCategory.forEach {
-                    if (it.menuCategoryIsChecked) {
-                        menuLabels.add(it.menuCategoryName)
-                        menuCategoryId.add(it.menuCategoryId)
-                    }
-                }
-                reduce {
-                    state.copy(
-                        menuCategoryLabel = menuLabels.joinToString(separator = " / "),
-                        menuCategoryId = menuCategoryId,
-                    )
-                }
-            }
-        }
-
-        private fun insertStoreFileUrl(url: String) {
-            intent {
-                val newImageUrl = state.imageUrlList.toMutableList()
-                newImageUrl.add(url)
-
-                reduce {
-                    state.copy(
-                        imageUrlList = newImageUrl,
-                    )
-                }
-
-                if ((state.imageUriList.last() == TEMP_IMAGE_URI && (state.imageUrlList.size == state.imageUriList.size - 1)) || state.imageUrlList.size == STORE_MENU_IMAGE_MAX) {
-                    modifyMenu()
-                }
-            }
-        }
-
-        private fun modifyMenu() {
-            intent {
-                viewModelScope.launch {
-                    modifyMenuUseCase(
-                        menuId = state.menuId,
-                        menuCategoryId = state.menuCategoryId,
-                        description = state.description,
-                        menuImageUrlList = state.imageUrlList,
-                        menuName = state.menuName,
-                        menuOptionPrice = state.menuOptionPrice,
-                        menuSinglePrice = state.menuPrice,
-                    ).onSuccess {
-                        postSideEffect(ModifyMenuSideEffect.FinishModifyMenu)
-                        reduce {
-                            state.copy(
-                                imageUrlList = emptyList(),
-                            )
-                        }
-                    }.onFailure {
-                        postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailModifyMenu))
-                        reduce {
-                            state.copy(
-                                imageUrlList = emptyList(),
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        private fun failUploadImage() =
-            intent {
-                postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailUploadImage))
-            }
-
-        private fun settingId(menuId: Int) {
-            intent {
-                if (menuId != state.menuId) {
-                    reduce {
-                        state.copy(
-                            menuId = menuId,
-                        )
-                    }
-                    getStoreMenuInfo()
-                }
-            }
-        }
-
-        fun changeMenuImageUri(uriList: List<Uri>) {
-            intent {
-                reduce {
-                    if (uriList.size < STORE_MENU_IMAGE_MAX) {
-                        val newMenuUriList = state.imageUriList.toMutableList()
-
-                        newMenuUriList.removeAt(newMenuUriList.lastIndex)
-
-                        for (imageUri in uriList)
-                            newMenuUriList.add(imageUri.toString())
-
-                        if (newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(ImageHolder.TempUri.toString())
-
-                        state.copy(
-                            imageUriList = newMenuUriList,
-                        )
-                    } else {
-                        state.copy(
-                            imageUriList = uriList.toStringList(),
-                        )
-                    }
-                }
-            }
-        }
-
-        fun deleteMenuImageUri(index: Int) {
-            intent {
+    private fun addDefaultImage() {
+        intent {
+            reduce {
                 val newMenuUriList = state.imageUriList.toMutableList()
-                newMenuUriList.removeAt(index)
-                if (newMenuUriList.last() != TEMP_IMAGE_URI) {
+
+                if (newMenuUriList.size != STORE_MENU_IMAGE_MAX) {
                     newMenuUriList.add(ImageHolder.TempUri.toString())
                 }
+                state.copy(
+                    imageUriList = newMenuUriList,
+                )
+            }
+        }
+    }
 
+    private fun makeMenuCategoryString() {
+        intent {
+            val menuLabels = mutableListOf<String>()
+            val menuCategoryId = mutableListOf<Int>()
+
+            state.menuCategory.forEach {
+                if (it.menuCategoryIsChecked) {
+                    menuLabels.add(it.menuCategoryName)
+                    menuCategoryId.add(it.menuCategoryId)
+                }
+            }
+            reduce {
+                state.copy(
+                    menuCategoryLabel = menuLabels.joinToString(separator = " / "),
+                    menuCategoryId = menuCategoryId,
+                )
+            }
+        }
+    }
+
+    private fun insertStoreFileUrl(url: String) {
+        intent {
+            val newImageUrl = state.imageUrlList.toMutableList()
+            newImageUrl.add(url)
+
+            reduce {
+                state.copy(
+                    imageUrlList = newImageUrl,
+                )
+            }
+
+            if ((state.imageUriList.last() == TEMP_IMAGE_URI && (state.imageUrlList.size == state.imageUriList.size - 1)) || state.imageUrlList.size == STORE_MENU_IMAGE_MAX) {
+                modifyMenu()
+            }
+        }
+    }
+
+    private fun modifyMenu() {
+        intent {
+            viewModelScope.launch {
+                modifyMenuUseCase(
+                    menuId = state.menuId,
+                    menuCategoryId = state.menuCategoryId,
+                    description = state.description,
+                    menuImageUrlList = state.imageUrlList,
+                    menuName = state.menuName,
+                    menuOptionPrice = state.menuOptionPrice,
+                    menuSinglePrice = state.menuPrice,
+                ).onSuccess {
+                    postSideEffect(ModifyMenuSideEffect.FinishModifyMenu)
+                    reduce {
+                        state.copy(
+                            imageUrlList = emptyList(),
+                        )
+                    }
+                }.onFailure {
+                    postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailModifyMenu))
+                    reduce {
+                        state.copy(
+                            imageUrlList = emptyList(),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun failUploadImage() =
+        intent {
+            postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailUploadImage))
+        }
+
+    private fun settingId(menuId: Int) {
+        intent {
+            if (menuId != state.menuId) {
                 reduce {
                     state.copy(
-                        menuId = menuId
+                        menuId = menuId,
                     )
                 }
                 getStoreMenuInfo()
-
             }
+        }
+    }
+
+    fun deleteMenuImageUri(index: Int) {
+        intent {
+            val newMenuUriList = state.imageUriList.toMutableList()
+            newMenuUriList.removeAt(index)
+            if (newMenuUriList.last() != TEMP_IMAGE_URI) {
+                newMenuUriList.add(ImageHolder.TempUri.toString())
+            }
+
+            reduce {
+                state.copy(
+                    menuId = menuId
+                )
+            }
+            getStoreMenuInfo()
+
         }
     }
 
     fun dialogSetting(
         title: String
-    ) = intent{
-        reduce{
+    ) = intent {
+        reduce {
             state.copy(
                 dialogTitle = title
             )
@@ -241,39 +215,38 @@ class ModifyMenuViewModel
         isShowDialog()
     }
 
-    fun isShowDialog() = intent{
-        reduce{
+    fun isShowDialog() = intent {
+        reduce {
             state.copy(
                 isDialogShow = !state.isDialogShow
             )
         }
     }
 
-    fun changeMenuImageUri(uriList: List<Uri>){
+    fun changeMenuImageUri(uriList: List<Uri>) {
         intent {
             reduce {
-                if(uriList.size < STORE_MENU_IMAGE_MAX){
+                if (uriList.size < STORE_MENU_IMAGE_MAX) {
                     val newMenuUriList = state.imageUriList.toMutableList()
 
                     newMenuUriList.removeAt(newMenuUriList.lastIndex)
 
-                    for(imageUri in uriList)
+                    for (imageUri in uriList)
                         newMenuUriList.add(imageUri.toString())
 
-                    if(newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(ImageHolder.TempUri.toString())
+                    if (newMenuUriList.size != STORE_MENU_IMAGE_MAX) newMenuUriList.add(ImageHolder.TempUri.toString())
 
                     state.copy(
                         imageUriList = newMenuUriList
                     )
-                }
-                else{
+                } else {
                     state.copy(
                         imageUriList = uriList.toStringList()
                     )
                 }
             }
         }
-
+    }
         fun modifyMenuImageUri(modifyUri: String) {
             intent {
                 val newMenuUriList = state.imageUriList.toMutableList()
@@ -291,7 +264,7 @@ class ModifyMenuViewModel
                 val newMenuUriList = state.imageUriList.toMutableList()
                 newMenuUriList[state.imageIndex] = imageUri
 
-                if (newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(TEMP_IMAGE_URI)
+                if (newMenuUriList.size != STORE_MENU_IMAGE_MAX) newMenuUriList.add(TEMP_IMAGE_URI)
 
                 reduce {
                     state.copy(
@@ -326,7 +299,10 @@ class ModifyMenuViewModel
                 if (index in state.menuOptionPrice.indices) {
                     reduce {
                         val newMenuPrice = state.menuOptionPrice.toMutableList()
-                        newMenuPrice[index] = StoreMenuOptionPrice(PriceHolder.PriceString(serving).priceString, newMenuPrice[index].price)
+                        newMenuPrice[index] = StoreMenuOptionPrice(
+                            PriceHolder.PriceString(serving).priceString,
+                            newMenuPrice[index].price
+                        )
                         state.copy(menuOptionPrice = newMenuPrice)
                     }
                 }
@@ -358,7 +334,12 @@ class ModifyMenuViewModel
             intent {
                 reduce {
                     val newMenuPrice = state.menuOptionPrice.toMutableList()
-                    newMenuPrice.add(StoreMenuOptionPrice(PriceHolder.TempPrice.toString(), PriceHolder.TempPrice.toString()))
+                    newMenuPrice.add(
+                        StoreMenuOptionPrice(
+                            PriceHolder.TempPrice.toString(),
+                            PriceHolder.TempPrice.toString()
+                        )
+                    )
                     state.copy(
                         menuOptionPrice = newMenuPrice,
                         menuPrice = "",
@@ -383,7 +364,11 @@ class ModifyMenuViewModel
             intent {
                 reduce {
                     val newMenuCategory = state.menuCategory.toMutableList()
-                    newMenuCategory[index] = StoreMenuCategory(newMenuCategory[index].menuCategoryId, newMenuCategory[index].menuCategoryName, !newMenuCategory[index].menuCategoryIsChecked)
+                    newMenuCategory[index] = StoreMenuCategory(
+                        newMenuCategory[index].menuCategoryId,
+                        newMenuCategory[index].menuCategoryName,
+                        !newMenuCategory[index].menuCategoryIsChecked
+                    )
 
                     state.copy(
                         menuCategory = newMenuCategory,
@@ -428,15 +413,18 @@ class ModifyMenuViewModel
                                 ModifyMenuErrorType.NullMenuName,
                             ),
                         )
+
                     state.menuPrice.isBlank() && state.menuOptionPrice.isEmpty() ->
                         postSideEffect(
                             ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.NullMenuPrice),
                         )
-                    !state.menuCategory.take(state.menuCategory.size).any { it.menuCategoryIsChecked } ->
+
+                    !state.menuCategory.take(state.menuCategory.size)
+                        .any { it.menuCategoryIsChecked } ->
                         postSideEffect(
                             ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.NullMenuCategory),
                         )
-                /*state.description.isBlank() -> postSideEffect(
+                    /*state.description.isBlank() -> postSideEffect(
                     ModifyMenuSideEffect.ShowMessage(
                         ModifyMenuErrorType.NullMenuDescription
                     )
@@ -445,6 +433,7 @@ class ModifyMenuViewModel
                         postSideEffect(
                             ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.NullMenuImage),
                         )
+
                     else -> {
                         makeMenuCategoryString()
                         postSideEffect(ModifyMenuSideEffect.GoToCheckMenuScreen)
@@ -524,7 +513,6 @@ class ModifyMenuViewModel
             }
         }
     }
-
 fun List<Uri>.toStringList(): List<String> {
     val responseList = ArrayList<String>()
 

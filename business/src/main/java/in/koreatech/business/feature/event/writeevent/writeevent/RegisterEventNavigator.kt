@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import `in`.koreatech.business.navigation.ADDEVENT
 
 fun NavGraphBuilder.registerEventScreen(navController: NavHostController) {
     navigation(
