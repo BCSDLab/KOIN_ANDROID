@@ -164,32 +164,6 @@ fun StoreInfoScreen(viewModel: MyStoreDetailViewModel) {
                         ),
                 )
             }
-
-            Button(
-                onClick = {
-                    viewModel.onRegisterMenuClicked()
-                },
-                modifier =
-                    Modifier
-                        .width(107.dp)
-                        .height(40.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
-                        contentColor = Color.White,
-                    ),
-                shape = RoundedCornerShape(0.dp),
-                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.register_menu),
-                    style =
-                        TextStyle(
-                            color = Color.White,
-                            fontSize = 15.sp,
-                        ),
-                )
-            }
         }
 
         Divider(
@@ -243,17 +217,14 @@ fun StoreInfoScreen(viewModel: MyStoreDetailViewModel) {
                 modifier = Modifier.padding(horizontal = 20.dp),
                 text = state.storeInfo?.name ?: stringResource(R.string.shop_name),
                 style = TextStyle(color = Color.Black, fontSize = 20.sp),
-                fontSize = 20.sp,
-                fontWeight = FontWeight(600),
             )
             Row(
-                modifier =
-                    Modifier
-                        .padding(end = 24.dp)
-                        .clickable {
-                            viewModel.navigateToModifyScreen()
-                        },
-            ) {
+                modifier = Modifier
+                    .padding(end = 24.dp)
+                    .clickable {
+                        viewModel::navigateToModifyScreen
+                    }
+            ){
                 Image(
                     painter = painterResource(id = R.drawable.ic_edit),
                     contentDescription = stringResource(R.string.edit),

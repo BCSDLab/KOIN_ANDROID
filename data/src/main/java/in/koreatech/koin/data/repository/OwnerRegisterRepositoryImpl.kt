@@ -171,4 +171,17 @@ class OwnerRegisterRepositoryImpl(
             if (exception is CancellationException) throw exception
         }
     }
+
+    override suspend fun storeMenuDelete(menuId: Int): Result<Unit> {
+        return try {
+            ownerRemoteDataSource.deleteStoreMenu(menuId)
+            Result.success(Unit)
+        } catch (e: EOFException) {
+            Result.failure(e)
+        } catch (e: HttpException) {
+            Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
+    }
 }

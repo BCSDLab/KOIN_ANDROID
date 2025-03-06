@@ -23,9 +23,41 @@ class SelectCategoryScreenViewModel
         init {
             getCategory()
         }
+    }
 
-        fun chooseCategory(categoryId: Int) =
-            intent {
+    fun dialogSetting(
+        title: String
+    ) = intent{
+        reduce{
+            state.copy(
+                dialogTitle = title
+            )
+        }
+        isShowDialog()
+    }
+
+    fun isShowDialog() = intent{
+        reduce{
+            state.copy(
+                isDialogShow = !state.isDialogShow
+            )
+        }
+    }
+
+
+    private fun categoryIdIsValid(){
+        intent{
+            reduce{
+                state.copy(
+                    categoryIdIsValid = (state.categoryId != -1)
+                )
+            }
+        }
+    }
+    private fun getCategory() {
+        intent {
+            viewModelScope.launch {
+                val categories = getStoreCategoriesUseCase().drop(1)
                 reduce {
                     state.copy(
                         categoryId = categoryId,

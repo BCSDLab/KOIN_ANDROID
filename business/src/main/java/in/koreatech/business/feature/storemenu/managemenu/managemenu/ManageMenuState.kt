@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.storemenu.managemenu.managemenu
 
 import `in`.koreatech.koin.domain.model.owner.MenuCategory
+import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import kotlinx.collections.immutable.ImmutableList
 
@@ -19,6 +20,9 @@ data class ManageMenuState(
     val isSetMenuChecked: Boolean = false,
     val isSideMenuChecked: Boolean = false,
     val currentCheckboxState: CheckBoxState = CheckBoxState.RECOMMENDMENU,
+    val menuName: String = "",
+    val menuId: Int = -1,
+    val isShowDeleteDialog: Boolean = false
 )
 
 enum class CheckBoxState {

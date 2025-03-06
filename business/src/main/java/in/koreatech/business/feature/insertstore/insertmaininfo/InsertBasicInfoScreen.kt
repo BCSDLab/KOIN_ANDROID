@@ -47,6 +47,7 @@ import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.designsystem.component.dialog.MessageDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -60,6 +61,7 @@ fun InsertBasicInfoScreen(
     val state = viewModel.collectAsState().value
 
     InsertBasicInfoScreenImpl(
+        state = state,
         storeImage = state.storeImage,
         storeName = state.storeName,
         storeAddress = state.storeAddress,
@@ -90,6 +92,7 @@ fun InsertBasicInfoScreen(
 fun InsertBasicInfoScreenImpl(
     modifier: Modifier = Modifier,
     storeImage: Uri = Uri.EMPTY,
+    state : InsertBasicInfoScreenState = InsertBasicInfoScreenState(),
     storeImageIsEmpty: Boolean = true,
     storeName: String = "",
     storeAddress: String = "",
@@ -100,6 +103,7 @@ fun InsertBasicInfoScreenImpl(
     onStoreAddressChange: (String) -> Unit = {},
     onNextButtonClicked: () -> Unit = {},
     onBackPressed: () -> Unit = {},
+    closeDialog: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -140,6 +144,13 @@ fun InsertBasicInfoScreenImpl(
                 }
             }
         }
+
+    if(state.isDialogShow){
+        MessageDialog(
+            title = state.dialogTitle,
+            onPositive = closeDialog
+        )
+    }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -271,14 +282,12 @@ private fun HandleSideEffects(
                     sideEffect.storeBasicInfo,
                 )
             is InsertBasicInfoScreenSideEffect.ShowMessage -> {
-                val message =
-                    when (sideEffect.type) {
-                        BasicInfoErrorType.NullStoreName -> context.getString(R.string.insert_store_null_store_name)
-                        BasicInfoErrorType.NullStoreAddress -> context.getString(R.string.insert_store_null_store_address)
-                        BasicInfoErrorType.NullStoreImage -> context.getString(R.string.insert_store_null_store_image)
-                        BasicInfoErrorType.FailUploadImage -> context.getString(R.string.insert_store_fail_upload_store_image)
-                    }
-                ToastUtil.getInstance().makeShort(message)
+             when (sideEffect.type) {
+                    BasicInfoErrorType.NullStoreName -> viewModel.dialogSetting(context.getString(R.string.insert_store_null_store_name))
+                    BasicInfoErrorType.NullStoreAddress -> viewModel.dialogSetting(context.getString(R.string.insert_store_null_store_address))
+                    BasicInfoErrorType.NullStoreImage -> viewModel.dialogSetting(context.getString(R.string.insert_store_null_store_image))
+                    BasicInfoErrorType.FailUploadImage -> viewModel.dialogSetting(context.getString(R.string.insert_store_fail_upload_store_image))
+                }
             }
         }
     }

@@ -221,7 +221,54 @@ class ModifyMenuViewModel
 
                 reduce {
                     state.copy(
-                        imageUriList = newMenuUriList,
+                        menuId = menuId
+                    )
+                }
+                getStoreMenuInfo()
+
+            }
+        }
+    }
+
+    fun dialogSetting(
+        title: String
+    ) = intent{
+        reduce{
+            state.copy(
+                dialogTitle = title
+            )
+        }
+        isShowDialog()
+    }
+
+    fun isShowDialog() = intent{
+        reduce{
+            state.copy(
+                isDialogShow = !state.isDialogShow
+            )
+        }
+    }
+
+    fun changeMenuImageUri(uriList: List<Uri>){
+        intent {
+            reduce {
+                if(uriList.size < STORE_MENU_IMAGE_MAX){
+                    val newMenuUriList = state.imageUriList.toMutableList()
+
+                    newMenuUriList.removeAt(newMenuUriList.lastIndex)
+
+                    for(imageUri in uriList)
+                        newMenuUriList.add(imageUri.toString())
+
+                    if(newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(ImageHolder.TempUri.toString())
+
+                    state.copy(
+                        imageUriList = newMenuUriList
+                    )
+                }
+                else{
+                    state.copy(
+                        imageUriList = uriList.toStringList()
                     )
                 }
             }

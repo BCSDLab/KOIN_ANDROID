@@ -140,11 +140,30 @@ class RegisterMenuViewModel
                 postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.FailUploadImage))
             }
 
-        fun changeMenuImageUri(uriList: List<Uri>) {
-            intent {
-                reduce {
-                    if (uriList.size < STORE_MENU_IMAGE_MAX) {
-                        val newMenuUriList = state.imageUriList.toMutableList()
+    fun dialogSetting(
+        title: String
+    ) = intent{
+        reduce{
+            state.copy(
+                dialogTitle = title
+            )
+        }
+        isShowDialog()
+    }
+
+    fun isShowDialog() = intent{
+        reduce{
+            state.copy(
+                isDialogShow = !state.isDialogShow
+            )
+        }
+    }
+
+    fun changeMenuImageUri(uriList: List<Uri>){
+        intent {
+            reduce {
+                if(uriList.size < STORE_MENU_IMAGE_MAX){
+                    val newMenuUriList = state.imageUriList.toMutableList()
 
                         newMenuUriList.removeAt(newMenuUriList.lastIndex)
 

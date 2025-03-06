@@ -68,6 +68,7 @@ import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.designsystem.component.dialog.MessageDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.upload.createImageFile
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
@@ -108,6 +109,7 @@ fun ModifyMenuScreen(
         setImageModify = viewModel::isImageModify,
         setImageIndex = viewModel::setImageIndex,
         onNextButtonClicked = viewModel::onNextButtonClick,
+        closeDialog = viewModel::isShowDialog
     )
     HandleSideEffects(viewModel, goToCheckMenuScreen)
 }
@@ -134,7 +136,8 @@ fun ModifyMenuScreenImpl(
     menuImageFromCamera: (String) -> Unit = {},
     setImageModify: (Boolean) -> Unit = {},
     setImageIndex: (Int) -> Unit = {},
-    onNextButtonClicked: () -> Unit = {},
+    onNextButtonClicked: () -> Unit ={},
+    closeDialog: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val sheetState: ModalBottomSheetState =
@@ -169,6 +172,13 @@ fun ModifyMenuScreenImpl(
                 }
             },
         )
+
+    if(registerMenuState.isDialogShow){
+        MessageDialog(
+            title = registerMenuState.dialogTitle,
+            onPositive = closeDialog
+        )
+    }
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -438,7 +448,7 @@ fun ModifyMenuScreenImpl(
                 item {
                     DivideOption(22.dp, stringResource(id = R.string.menu_detail))
 
-                    /*Text(
+                    Text(
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp),
                         text = stringResource(id = R.string.menu_composition),
                         fontSize = 15.sp,
@@ -450,7 +460,7 @@ fun ModifyMenuScreenImpl(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(top = 8.dp)
-                            .border(width = 1.dp, color = ColorMinor)
+                            .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
                             .height(105.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
@@ -486,7 +496,7 @@ fun ModifyMenuScreenImpl(
                             .padding(top = 24.dp),
                         thickness = 1.dp,
                         color = Gray7
-                    )*/
+                    )
                 }
 
                 item {
@@ -656,16 +666,14 @@ private fun HandleSideEffects(
         when (sideEffect) {
             is ModifyMenuSideEffect.GoToCheckMenuScreen -> goToCheckMenuScreen()
             is ModifyMenuSideEffect.ShowMessage -> {
-                val message =
-                    when (sideEffect.type) {
-                        ModifyMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
-                        ModifyMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
-                        ModifyMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
-                        ModifyMenuErrorType.NullMenuImage -> context.getString(R.string.menu_null_image)
-                        ModifyMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
-                        ModifyMenuErrorType.FailModifyMenu -> context.getString(R.string.menu_fail_register_menu)
-                    }
-                ToastUtil.getInstance().makeShort(message)
+            when (sideEffect.type) {
+                    ModifyMenuErrorType.NullMenuName -> viewModel.dialogSetting(context.getString(R.string.menu_null_name))
+                    ModifyMenuErrorType.NullMenuPrice -> viewModel.dialogSetting(context.getString(R.string.menu_null_price))
+                    ModifyMenuErrorType.NullMenuCategory -> viewModel.dialogSetting(context.getString(R.string.menu_null_category))
+                    ModifyMenuErrorType.NullMenuImage-> viewModel.dialogSetting(context.getString(R.string.menu_null_image))
+                    ModifyMenuErrorType.FailUploadImage -> viewModel.dialogSetting(context.getString(R.string.menu_fail_upload_image))
+                    ModifyMenuErrorType.FailModifyMenu ->viewModel.dialogSetting(context.getString(R.string.menu_fail_register_menu))
+                }
             }
             else -> ""
         }

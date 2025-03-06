@@ -57,30 +57,46 @@ class InsertBasicInfoScreenViewModel
                 storeImageIsEmpty()
             }
 
-        fun getPreSignedUrl(
-            fileSize: Long,
-            fileType: String,
-            fileName: String,
-            imageUri: String,
-        ) {
-            intent {
-                if (state.storeImagePreSignedUrl == "") {
-                    viewModelScope.launch {
-                        getMarketPreSignedUrlUseCase(
-                            fileSize,
-                            fileType,
-                            fileName,
-                        ).onSuccess {
-                            uploadImage(
-                                preSignedUrl = it.second,
-                                fileUrl = it.first,
-                                mediaType = fileType,
-                                mediaSize = fileSize,
-                                imageUri = imageUri,
-                            )
-                        }.onFailure {
-                            failUploadImage()
-                        }
+    fun dialogSetting(
+        title: String
+    ) = intent{
+        reduce{
+            state.copy(
+                dialogTitle = title
+            )
+        }
+        isShowDialog()
+    }
+
+    fun isShowDialog() = intent{
+        reduce{
+            state.copy(
+                isDialogShow = !state.isDialogShow
+            )
+        }
+    }
+
+    fun getPreSignedUrl(
+        fileSize: Long,
+        fileType: String,
+        fileName: String,
+        imageUri: String
+    ) {
+        intent {
+            if(state.storeImagePreSignedUrl == ""){
+                viewModelScope.launch{
+                    getMarketPreSignedUrlUseCase(
+                        fileSize, fileType, fileName
+                    ).onSuccess {
+                        uploadImage(
+                            preSignedUrl = it.second,
+                            fileUrl = it.first,
+                            mediaType = fileType,
+                            mediaSize = fileSize,
+                            imageUri = imageUri
+                        )
+                    }.onFailure {
+                        failUploadImage()
                     }
                 } else {
                     uploadImage(

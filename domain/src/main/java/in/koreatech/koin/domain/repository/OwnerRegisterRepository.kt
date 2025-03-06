@@ -62,4 +62,8 @@ interface OwnerRegisterRepository {
         menuOptionPrice: List<StoreMenuOptionPrice>,
         menuSinglePrice: String,
     ): Result<Unit>
+
+    suspend fun storeMenuDelete(
+        menuId: Int,
+    ): Result<Unit>
 }

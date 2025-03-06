@@ -417,12 +417,12 @@ private fun HandleSideEffects(
         when (sideEffect) {
             is InsertDetailInfoScreenSideEffect.NavigateToCheckScreen -> navigateToCheckScreen(sideEffect.storeDetailInfo)
             is InsertDetailInfoScreenSideEffect.ShowMessage -> {
-                val message =
-                    when (sideEffect.type) {
-                        DetailInfoErrorType.NullStorePhoneNumber -> context.getString(R.string.insert_store_null_store_phone_number)
-                        DetailInfoErrorType.NullStoreDeliveryFee -> context.getString(R.string.insert_store_null_store_delivery_fee)
-                        DetailInfoErrorType.NullStoreOtherInfo -> context.getString(R.string.insert_store_null_store_other_info)
-                    }
+                val message = when (sideEffect.type) {
+                    DetailInfoErrorType.NullStorePhoneNumber -> context.getString(R.string.insert_store_null_store_phone_number)
+                    DetailInfoErrorType.NullStoreDeliveryFee -> context.getString(R.string.insert_store_null_store_delivery_fee)
+                    DetailInfoErrorType.NullStoreOtherInfo -> context.getString(R.string.insert_store_null_store_other_info)
+                    DetailInfoErrorType.NullDayOfWeek -> context.getString(R.string.insert_store_null_day_of_week)
+                }
                 ToastUtil.getInstance().makeShort(message)
             }
             else -> {}

@@ -37,12 +37,14 @@ import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 @Composable
 fun MenuItem(
     menuList: StoreMenuCategories,
-    onMenuClicked: (Int) -> Unit = {},
+    onModifyMenuClicked: (Int) -> Unit = {},
+    onDeleteMenuClicked:(ShopMenus) -> Unit = {},
 ) {
-    Log.e("로그 아이템", menuList.menus.toString())
     menuList.menus?.forEach { item ->
         MenuItemFactor(
             item = item,
+            onModifyMenuClicked = onModifyMenuClicked,
+            onDeleteMenuClicked = onDeleteMenuClicked
         )
     }
 }
@@ -84,22 +86,20 @@ fun MenuCategories(item: StoreMenuCategories) {
 @Composable
 fun MenuItemFactor(
     modifier: Modifier = Modifier,
-    onMenuClicked: (Int) -> Unit = {},
-    item: ShopMenus,
-) {
+    onModifyMenuClicked: (Int) -> Unit = {},
+    onDeleteMenuClicked:(ShopMenus) -> Unit = {},
+    item: ShopMenus
+){
     Column(
         modifier =
             modifier
                 .fillMaxWidth(),
     ) {
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp, vertical = 10.dp)
-                    .clickable {
-                        onMenuClicked(item.id)
-                    },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp, vertical = 10.dp)
+            ,
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -115,12 +115,12 @@ fun MenuItemFactor(
                     )
 
                     Box(
-                        modifier =
-                            Modifier
-                                .padding(start = 12.dp, end = 5.dp)
-                                .border(1.dp, ColorPrimary, RoundedCornerShape(8.dp))
-                                .clickable {
-                                },
+                        modifier = Modifier
+                            .padding(start = 12.dp, end = 5.dp)
+                            .border(1.dp, ColorPrimary, RoundedCornerShape(8.dp))
+                            .clickable {
+                                onModifyMenuClicked(item.id)
+                            }
                     ) {
                         Text(
                             modifier =
@@ -133,11 +133,11 @@ fun MenuItemFactor(
                     }
 
                     Box(
-                        modifier =
-                            Modifier
-                                .border(1.dp, KoinTheme.colors.danger500, RoundedCornerShape(8.dp))
-                                .clickable {
-                                },
+                        modifier = Modifier
+                            .border(1.dp, KoinTheme.colors.danger500, RoundedCornerShape(8.dp))
+                            .clickable {
+                                onDeleteMenuClicked(item)
+                            }
                     ) {
                         Text(
                             modifier =
