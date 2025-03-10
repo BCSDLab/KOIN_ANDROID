@@ -101,8 +101,10 @@
             app:layout_constraintTop_toBottomOf="@id/navi_hello_message" />
 
         <ScrollView
+            android:id="@+id/navi_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/navi_item_contact"
             app:layout_constraintTop_toBottomOf="@id/navi_item_login_or_logout">
 
             <LinearLayout
@@ -208,17 +210,18 @@
             </LinearLayout>
         </ScrollView>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/navi_item_contact"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
             android:text="@string/navigation_item_ask_bcsd"
             android:textAppearance="@style/TextAppearance.Koin.Regular.16"
             android:textColor="@color/neutral_800"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_scroll_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.navigation.NavigationView>
