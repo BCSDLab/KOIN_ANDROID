@@ -214,7 +214,8 @@ class DiningActivity : KoinNavigationDrawerActivity() {
 
             val todayPos = dates.size / 2
             scrollDateTodayToCenter(todayPos)
-            initialDateTab = todayPos
+            initialDateTab =
+                if (DiningUtil.getCurrentType() == DiningType.NextBreakfast) todayPos + 1 else todayPos
         }
     }
 
