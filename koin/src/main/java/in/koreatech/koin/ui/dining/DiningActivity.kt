@@ -200,22 +200,22 @@ class DiningActivity : KoinNavigationDrawerActivity() {
 
     private fun initCalendar() {
         with(binding) {
-            val diningType = DiningUtil.getCurrentType()
             recyclerViewCalendar.adapter = diningDateAdapter
             dates.clear()
             val current = TimeUtil.getCurrentTime()
             dates.add(current)
-            repeat(if (diningType == DiningType.NextBreakfast) 2 else 3) {
+            repeat(3) {
                 dates.add(0, TimeUtil.getPreviousDayDate(dates.first()))
             }
-            repeat(if (diningType == DiningType.NextBreakfast) 4 else 3) {
+            repeat(3) {
                 dates.add(TimeUtil.getNextDayDate(dates.last()))
             }
             diningDateAdapter.submitList(dates)
 
             val todayPos = dates.size / 2
             scrollDateTodayToCenter(todayPos)
-            initialDateTab = todayPos
+            initialDateTab =
+                if (DiningUtil.getCurrentType() == DiningType.NextBreakfast) todayPos + 1 else todayPos
         }
     }
 
