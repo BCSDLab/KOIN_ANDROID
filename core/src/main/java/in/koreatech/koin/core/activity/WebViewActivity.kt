@@ -167,11 +167,9 @@ internal class KoinWebChromeClient(
                         },
                     )
             }
-        if (resultMsg?.obj is WebView.WebViewTransport) {
-            val transport = resultMsg.obj as WebView.WebViewTransport
-            transport.webView = newWebView
-            resultMsg.sendToTarget()
-        }
+        val transport = resultMsg?.obj as? WebView.WebViewTransport
+        transport?.webView = newWebView
+        resultMsg?.sendToTarget()
         return true
     }
 }
