@@ -94,7 +94,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
     }
 }
 
-class KoinWebViewClient(
+internal class KoinWebViewClient(
     private val context: Context,
     private val openInNewTab: Boolean = false,
     private val showProgressDialog: () -> Unit,
@@ -141,7 +141,7 @@ class KoinWebViewClient(
     }
 }
 
-class KoinWebChromeClient(
+internal class KoinWebChromeClient(
     private val context: Context,
     private val showProgressDialog: () -> Unit,
     private val hideProgressDialog: () -> Unit,
