@@ -22,6 +22,7 @@ class ErrorActivity : ActivityBase() {
     override var onBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                isEnabled = false
                 onBackPressedDispatcher.onBackPressed()
                 val goToHomeIntent = Intent(this@ErrorActivity, SplashActivity::class.java)
                 startActivity(goToHomeIntent)
