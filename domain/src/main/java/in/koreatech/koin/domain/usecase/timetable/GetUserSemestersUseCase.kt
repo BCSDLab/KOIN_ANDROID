@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.domain.usecase.timetable
 
+import `in`.koreatech.koin.domain.model.timetable.toLegacySemester
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -13,7 +15,10 @@ class GetUserSemestersUseCase
     constructor(
         private val timetableRepository: TimetableRepository,
     ) {
-        operator fun invoke(isAnonymous: Boolean): Flow<List<String>> {
-            return if (isAnonymous) timetableRepository.getSemesters() else timetableRepository.getSemesterCheck()
-        }
+        operator fun invoke(isAnonymous: Boolean): Flow<List<String>> =
+            if (isAnonymous) {
+                timetableRepository.getSemesters().map { it.map { it.toLegacySemester() } }
+            } else {
+                timetableRepository.getUserSemesters().map { it.map { it.toLegacySemester() } }
+            }
     }

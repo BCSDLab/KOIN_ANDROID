@@ -10,9 +10,12 @@ import `in`.koreatech.koin.data.request.timetable.TimetableLectureClassInfoReque
 import `in`.koreatech.koin.data.request.timetable.toCustomLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toLectureQueryRequest
 import `in`.koreatech.koin.data.request.timetable.toTimetableLecturesQueryRequest
+import `in`.koreatech.koin.data.response.timetable.v3.toSemester
+import `in`.koreatech.koin.data.response.timetable.v3.toSemesters
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.domain.model.timetable.Semester
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameCreateQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableFrameQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
@@ -35,14 +38,14 @@ class TimetableRepositoryImpl
     ) : TimetableRepository {
         private val gson = Gson()
 
-        override fun getSemesters(): Flow<List<String>> =
+        override fun getSemesters(): Flow<List<Semester>> =
             flow {
-                emit(timetableRemoteDataSource.getSemesters().map { it.toSemester().semester })
+                emit(timetableRemoteDataSource.getSemestersV3().map { it.toSemester() })
             }
 
-        override fun getSemesterCheck(): Flow<List<String>> =
+        override fun getUserSemesters(): Flow<List<Semester>> =
             flow {
-                emit(timetableRemoteDataSource.getSemesterCheck().toSemesterCheck().semesters)
+                emit(timetableRemoteDataSource.getUserSemesters().toSemesters())
             }
 
         override fun getLectures(semesterDate: String): Flow<List<Lecture>> =
@@ -87,11 +90,12 @@ class TimetableRepositoryImpl
         ): Result<TimetableLectures> =
             runCatching {
                 timetableDataStore.putString(key, gson.toJson(value))
-                return getTimetableLectures(semester = key).onSuccess {
-                    Result.success(it)
-                }.onFailure {
-                    Result.failure<TimetableLectures>(it)
-                }
+                return getTimetableLectures(semester = key)
+                    .onSuccess {
+                        Result.success(it)
+                    }.onFailure {
+                        Result.failure<TimetableLectures>(it)
+                    }
             }
 
         override suspend fun putTimetableFrame(
@@ -99,13 +103,14 @@ class TimetableRepositoryImpl
             frame: TimetableFrameQuery,
         ): Result<TimetableFrame> =
             runCatching {
-                timetableRemoteDataSource.putTimetableFrame(
-                    id,
-                    TimetableFrameQueryRequest(
-                        frame.timetableName,
-                        frame.isMain,
-                    ),
-                ).toTimetableFrame()
+                timetableRemoteDataSource
+                    .putTimetableFrame(
+                        id,
+                        TimetableFrameQueryRequest(
+                            frame.timetableName,
+                            frame.isMain,
+                        ),
+                    ).toTimetableFrame()
             }
 
         override suspend fun postTimetableLectures(
@@ -113,12 +118,13 @@ class TimetableRepositoryImpl
             lectures: List<Lecture>,
         ): Result<TimetableLectures> =
             runCatching {
-                timetableRemoteDataSource.postTimetableLectures(
-                    LecturesQueryRequest(
-                        timetableFrameId = frameId,
-                        timetableLecture = lectures.map { it.toLectureQueryRequest() },
-                    ),
-                ).toTimetableLectures()
+                timetableRemoteDataSource
+                    .postTimetableLectures(
+                        LecturesQueryRequest(
+                            timetableFrameId = frameId,
+                            timetableLecture = lectures.map { it.toLectureQueryRequest() },
+                        ),
+                    ).toTimetableLectures()
             }
 
         override suspend fun postTimetableCustomLectures(
@@ -141,12 +147,13 @@ class TimetableRepositoryImpl
                         memo = "",
                     )
 
-                timetableRemoteDataSource.postTimetableLectures(
-                    LecturesQueryRequest(
-                        timetableFrameId = frameId,
-                        timetableLecture = listOf(query),
-                    ),
-                ).toTimetableLectures()
+                timetableRemoteDataSource
+                    .postTimetableLectures(
+                        LecturesQueryRequest(
+                            timetableFrameId = frameId,
+                            timetableLecture = listOf(query),
+                        ),
+                    ).toTimetableLectures()
             }
 
         override suspend fun postTimetableBasicLectures(
@@ -163,22 +170,24 @@ class TimetableRepositoryImpl
                         }
                     }
 
-                timetableRemoteDataSource.postTimetableLectures(
-                    LecturesQueryRequest(
-                        timetableFrameId = frameId,
-                        timetableLecture = queryLectures,
-                    ),
-                ).toTimetableLectures()
+                timetableRemoteDataSource
+                    .postTimetableLectures(
+                        LecturesQueryRequest(
+                            timetableFrameId = frameId,
+                            timetableLecture = queryLectures,
+                        ),
+                    ).toTimetableLectures()
             }
 
         override suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame> =
             runCatching {
-                timetableRemoteDataSource.postTimetableFrame(
-                    TimetableFrameCreateQueryRequest(
-                        semester = frame.semester,
-                        timetableName = frame.timetableName,
-                    ),
-                ).toTimetableFrame()
+                timetableRemoteDataSource
+                    .postTimetableFrame(
+                        TimetableFrameCreateQueryRequest(
+                            semester = frame.semester,
+                            timetableName = frame.timetableName,
+                        ),
+                    ).toTimetableFrame()
             }.recoverCatching {
                 if (it is HttpException) {
                     throw Exception(it.getErrorResponse().message ?: "")

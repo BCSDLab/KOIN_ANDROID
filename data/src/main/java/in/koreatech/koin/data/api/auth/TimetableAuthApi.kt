@@ -4,10 +4,10 @@ import `in`.koreatech.koin.data.request.timetable.LecturesQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameCreateQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableFrameQueryRequest
 import `in`.koreatech.koin.data.request.timetable.TimetableLecturesQueryRequest
-import `in`.koreatech.koin.data.response.timetable.SemesterCheckResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableFrameResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableFramesResponse
 import `in`.koreatech.koin.data.response.timetable.TimetableLecturesResponse
+import `in`.koreatech.koin.data.response.timetable.v3.UserSemestersResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -18,8 +18,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TimetableAuthApi {
-    @GET("/semesters/check")
-    suspend fun getSemestersCheck(): SemesterCheckResponse
+    @GET("/v3/semesters/check")
+    suspend fun getUserSemesters(): UserSemestersResponse
 
     @GET("/v2/timetables/lecture")
     suspend fun getTimetableLectures(
