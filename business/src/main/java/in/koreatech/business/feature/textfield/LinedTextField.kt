@@ -1,10 +1,11 @@
 package `in`.koreatech.business.feature.textfield
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,17 +18,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.ColorPrimary
-import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorTextField
+import `in`.koreatech.business.ui.theme.Gray500
+import `in`.koreatech.koin.domain.util.ext.formatTime
 
 @Composable
 fun LinedTextField(
@@ -35,6 +39,7 @@ fun LinedTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String,
+    timerText: Int? = null,
     textStyle: TextStyle = TextStyle.Default.copy(fontSize = 15.sp),
     isPassword: Boolean = false,
     helperText: String = "",
@@ -42,7 +47,7 @@ fun LinedTextField(
     successText: String = "",
     isError: Boolean = false,
     isSuccess: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.None),
 ) {
     var focused by remember { mutableStateOf(false) }
     BasicTextField(
@@ -60,46 +65,53 @@ fun LinedTextField(
                         Modifier
                             .fillMaxWidth()
                             .height(46.dp)
-                            .border(
-                                width = 1.dp,
-                                color = if (isError) ColorSecondary else if (focused) ColorPrimary else ColorTextField,
-                                shape = RoundedCornerShape(4.dp),
-                            )
                             .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    Box(
-                        modifier = Modifier.padding(start = 12.dp),
+                    Row(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (value.isEmpty()) {
-                            Text(text = label, fontSize = 14.sp, color = ColorHelper)
+                        Box(
+                            modifier = Modifier.fillMaxHeight(),
+                            contentAlignment = Alignment.CenterStart,
+                        ) {
+                            if (value.isEmpty()) {
+                                Text(text = label, fontSize = 16.sp, color = ColorHelper)
+                            }
+                            innerTextField()
                         }
-                        innerTextField()
+                        if (timerText != null) {
+                            Text(
+                                text = timerText.formatTime(),
+                                fontSize = 16.sp,
+                                color = Gray500,
+                                modifier = Modifier.padding(top = 4.dp),
+                            )
+                        }
                     }
                 }
-
-                Box(modifier = Modifier.padding(start = 8.dp, top = 1.dp)) {
-                    Text(
-                        text = if (isError) "" else helperText,
-                        fontSize = 11.sp,
-                        color = ColorHelper,
-                    )
-
-                    if (isError) {
-                        Text(
-                            text = errorText,
-                            fontSize = 11.sp,
-                            color = ColorSecondary,
-                        )
-                    } else if (isSuccess) {
-                        Text(
-                            text = successText,
-                            fontSize = 11.sp,
-                            color = ColorPrimary,
-                        )
-                    }
-                }
+                HelperMessage(
+                    helperText = helperText,
+                    isError = isError,
+                    isSuccess = isSuccess,
+                    errorText = errorText,
+                    successText = successText,
+                    focused = if (timerText != null) true else focused,
+                )
             }
         },
+    )
+}
+
+@Preview
+@Composable
+fun LinedTextFieldPreview() {
+    ContactHelperMessage(
+        errorText = "Error Text",
     )
 }

@@ -114,7 +114,7 @@ class AccountSetupViewModel
             blockingIntent {
                 reduce {
                     state.copy(
-                        phoneNumber = phoneNumber,
+                        phoneNumber = if (phoneNumber.length <= 11) phoneNumber else state.phoneNumber,
                         phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
                         sendCodeError = null,
                     )
@@ -132,6 +132,15 @@ class AccountSetupViewModel
                 }
             }
 
+        fun changeDialogVisibility(visibility: Boolean) =
+            intent {
+                reduce {
+                    state.copy(
+                        dialogVisibility = visibility,
+                    )
+                }
+            }
+
         fun onBackButtonClicked() =
             intent {
                 postSideEffect(AccountSetupSideEffect.NavigateToBackScreen)
@@ -141,6 +150,7 @@ class AccountSetupViewModel
             phoneNumber: String,
             verifyCode: String,
         ) {
+            onAuthCodeChanged(verifyCode)
             viewModelScope.launch {
                 verifySmsCodeUseCase(
                     phoneNumber,
@@ -176,6 +186,8 @@ class AccountSetupViewModel
                             state.copy(
                                 phoneNumberState = SignupContinuationState.RequestedSmsValidation,
                                 sendCodeError = null,
+                                verifyState = SignupContinuationState.AvailablePhoneNumber,
+                                sendCodeIsClicked = true,
                             )
                         }
                     }.onFailure {
@@ -210,6 +222,15 @@ class AccountSetupViewModel
                 }
             }
         }
+
+        fun onChangeSmsValidation(validation: Boolean) =
+            intent {
+                reduce {
+                    state.copy(
+                        hasRequestedSmsValidation = validation,
+                    )
+                }
+            }
 
         fun onNavigateToNextScreen() =
             intent {

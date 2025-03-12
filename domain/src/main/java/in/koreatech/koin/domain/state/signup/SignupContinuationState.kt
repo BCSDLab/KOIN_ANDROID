@@ -27,13 +27,15 @@ sealed class SignupContinuationState {
 
     object CheckPhoneNumberFormat : SignupContinuationState() // 전화번호를 올바른 형식으로 작성했는지 확인
 
-    object BusinessNumberIsNotValidate : SignupContinuationState()
+    object CompanyNumberIsNotValidate : SignupContinuationState()
 
     object SmsCodeIsNotValidate : SignupContinuationState()
 
     object PhoneNumberIsNotValidate : SignupContinuationState()
 
     object EmailIsNotValidate : SignupContinuationState()
+
+    object CompanyNumberIsDuplicated : SignupContinuationState()
 
     object PasswordIsNotValidate : SignupContinuationState()
 
@@ -42,6 +44,8 @@ sealed class SignupContinuationState {
     object NotAgreedPrivacyTerms : SignupContinuationState()
 
     object NotAgreedKoinTerms : SignupContinuationState()
+
+    object SuccessUploadFiles : SignupContinuationState()
 
     object CheckComplete : SignupContinuationState()
 

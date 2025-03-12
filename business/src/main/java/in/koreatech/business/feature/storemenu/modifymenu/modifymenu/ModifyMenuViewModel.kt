@@ -389,12 +389,11 @@ class ModifyMenuViewModel
                         postSideEffect(
                             ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.NullMenuCategory),
                         )
-                    state.description.isBlank() ->
-                        postSideEffect(
-                            ModifyMenuSideEffect.ShowMessage(
-                                ModifyMenuErrorType.NullMenuDescription,
-                            ),
-                        )
+                /*state.description.isBlank() -> postSideEffect(
+                    ModifyMenuSideEffect.ShowMessage(
+                        ModifyMenuErrorType.NullMenuDescription
+                    )
+                )*/
                     state.imageUriList.size == 1 && state.imageUriList[0] == TEMP_IMAGE_URI ->
                         postSideEffect(
                             ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.NullMenuImage),

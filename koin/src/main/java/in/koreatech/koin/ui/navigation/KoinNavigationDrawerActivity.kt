@@ -300,6 +300,13 @@ abstract class KoinNavigationDrawerActivity :
         initDrawerViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (drawerLayout.isDrawerOpened(GravityCompat.END)) {
+            window.whiteStatusBar()
+        }
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 

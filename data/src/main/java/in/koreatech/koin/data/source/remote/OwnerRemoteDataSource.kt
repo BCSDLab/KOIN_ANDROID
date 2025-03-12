@@ -10,10 +10,12 @@ import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
+import `in`.koreatech.koin.data.response.owner.CheckCompanyNumberResponse
+import `in`.koreatech.koin.data.response.owner.OwnerEventResponse
+import `in`.koreatech.koin.data.response.owner.OwnerGetStoreResponse
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
-import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
@@ -31,6 +33,7 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationEmail(ownerVerificationEmail)
     }
 
+    // 회원가입 요청
     suspend fun postOwnerEmailRegister(ownerEmailRegisterRequest: OwnerEmailRegisterRequest): OwnerResponse {
         return ownerApi.postOwnerEmailRegister(ownerEmailRegisterRequest)
     }
@@ -78,7 +81,7 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationCodeSms(ownerVerificationCode)
     }
 
-    suspend fun getMyShopList(): List<StoreItemResponse> {
+    suspend fun getMyShopList(): List<OwnerGetStoreResponse> {
         return ownerAuthApi.getMyShopList().shops
     }
 
@@ -128,5 +131,16 @@ class OwnerRemoteDataSource(
         storeInfo: StoreRegisterResponse,
     ) {
         ownerAuthApi.modifyOwnerShopInfo(storeUid, storeInfo)
+    }
+
+    suspend fun checkExistsCompanyNumber(companyNumber: CheckCompanyNumberResponse) {
+        ownerApi.checkExistsCompanyNumber(companyNumber)
+    }
+
+    suspend fun postOwnerShopEvent(
+        storeUid: Int,
+        ownerEventResponse: OwnerEventResponse,
+    ) {
+        ownerAuthApi.postOwnerShopEvent(storeUid, ownerEventResponse)
     }
 }

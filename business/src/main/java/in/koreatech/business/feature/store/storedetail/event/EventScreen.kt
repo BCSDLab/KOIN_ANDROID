@@ -42,7 +42,7 @@ fun EventScreen(
     if (state.isEditMode) {
         EventEditToolbar(viewModel, state)
     } else {
-        EventToolbar(context)
+        EventToolbar(context, viewModel)
     }
     EventItem(enabledScroll, scrollState, viewModel, state)
     OwnerStoreDialog(

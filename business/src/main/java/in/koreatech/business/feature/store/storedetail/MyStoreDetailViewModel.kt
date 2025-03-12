@@ -101,6 +101,7 @@ class MyStoreDetailViewModel
                 reduce {
                     state.copy(isEventExpanded = List(state.isEventExpanded.size) { _ -> false })
                 }
+                getShopEvents()
             }
 
         private fun getOwnerShopInfo(shopId: Int) =
@@ -275,9 +276,15 @@ class MyStoreDetailViewModel
                 postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen(state.storeId))
             }
 
+        fun navigateToAddEventScreen() =
+            intent {
+                if (state.storeId == -1) return@intent
+                postSideEffect(MyStoreDetailSideEffect.NavigateToAddEventScreen(state.storeId))
+            }
+
         fun onManageMenuClicked() =
             intent {
-                postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen)
+                postSideEffect(MyStoreDetailSideEffect.NavigateToManageMenuScreen(state.storeId))
             }
 
         fun onRegisterMenuClicked() =

@@ -13,13 +13,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.ModalBottomSheetValue
@@ -47,6 +46,7 @@ import `in`.koreatech.business.feature.textfield.SearchTextField
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray1
+import `in`.koreatech.business.ui.theme.Gray11
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.koin.domain.model.store.Store
 import kotlinx.coroutines.launch
@@ -62,7 +62,9 @@ fun SearchStoreScreen(
 ) {
     val state = viewModel.collectAsState().value
     Column(
-        modifier = modifier,
+        modifier =
+            modifier
+                .fillMaxSize(),
     ) {
         Box(
             modifier =
@@ -166,7 +168,6 @@ fun SearchStoreScreen(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StoreList(
     item: List<Store>,
@@ -190,7 +191,7 @@ fun StoreList(
         LazyColumn(
             modifier =
                 Modifier
-                    .weight(1f)
+                    .weight(9f)
                     .padding(vertical = 8.dp)
                     .fillMaxSize(),
         ) {
@@ -224,33 +225,39 @@ fun StoreList(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            modifier = Modifier,
+                            modifier = Modifier.weight(1f),
                             text = item[index].name,
                             fontSize = 15.sp,
                             color = Color.Black,
                         )
-                        Spacer(modifier = Modifier.width(74.dp))
                         Text(
                             buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
+                                withStyle(
+                                    style = if (item[index].isDeliveryOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11),
+                                ) {
                                     append(text = stringResource(id = R.string.delivery))
                                 }
                                 append(" ")
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
+                                withStyle(
+                                    style = if (item[index].isCardOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11),
+                                ) {
                                     append(text = stringResource(id = R.string.card_payment))
                                 }
                                 append(" ")
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
+                                withStyle(
+                                    style = if (item[index].isBankOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11),
+                                ) {
                                     append(text = stringResource(id = R.string.account_transfer))
                                 }
                             },
+                            modifier = Modifier.weight(1f).wrapContentWidth(Alignment.End),
                             fontSize = 12.sp,
                         )
                     }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(70.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             modifier =
@@ -278,5 +285,6 @@ fun StoreList(
                 fontWeight = Bold,
             )
         }
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }

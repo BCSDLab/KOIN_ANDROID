@@ -1,12 +1,13 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.response.owner.OwnerEventResponse
+import `in`.koreatech.koin.data.response.owner.OwnerStoreResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
-import `in`.koreatech.koin.data.response.store.StoreResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -23,7 +24,7 @@ interface OwnerAuthApi {
     )
 
     @GET(URLConstant.SHOPS.OWNERSHOPS)
-    suspend fun getMyShopList(): StoreResponse
+    suspend fun getMyShopList(): OwnerStoreResponse
 
     @GET(URLConstant.SHOPS.OWNERSHOPS + "/{id}")
     suspend fun getOwnerShopInfo(
@@ -67,5 +68,11 @@ interface OwnerAuthApi {
     suspend fun modifyOwnerShopInfo(
         @Path("shopId") uid: Int,
         @Body storeInfo: StoreRegisterResponse,
+    )
+
+    @POST(URLConstant.SHOPS.OWNERSHOPS + "/{id}" + "/event")
+    suspend fun postOwnerShopEvent(
+        @Path("id") uid: Int,
+        @Body storeRegisterResponse: OwnerEventResponse,
     )
 }

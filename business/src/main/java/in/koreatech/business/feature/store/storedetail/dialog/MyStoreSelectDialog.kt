@@ -29,13 +29,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import `in`.koreatech.business.R
-import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
 
 @Composable
 fun MyStoreSelectDialog(
     onClickCancel: () -> Unit = {},
     dialogVisibility: Boolean = true,
-    storeList: List<Store> = emptyList(),
+    storeList: List<OwnerGetStore> = emptyList(),
     selectStore: (Int) -> Unit = {},
 ) {
     if (dialogVisibility) {
