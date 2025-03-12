@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.response.timetable
 import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 
+@Deprecated("use LectureResponseV3 instead")
 data class LectureResponse(
     @SerializedName("id")
     val id: Int,
