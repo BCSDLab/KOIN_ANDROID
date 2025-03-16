@@ -6,7 +6,7 @@ data class TimetableRegularLectureRequest(
     @SerializedName("timetable_frame_id")
     val timetableFrameId: Int,
     @SerializedName("timetable_lecture")
-    val timetableRegularLectureBody: List<TimetableRegularLectureBody>,
+    val timetableRegularLectureBody: List<TimetableRegularLectureBody>
 ) {
     data class TimetableRegularLectureBody(
         @SerializedName("id")
@@ -20,6 +20,6 @@ data class TimetableRegularLectureRequest(
         @SerializedName("general_education_area")
         val generalEducationArea: String?,
         @SerializedName("class_places")
-        val classPlaces: List<String>,
+        val classPlaces: List<String>
     )
 }

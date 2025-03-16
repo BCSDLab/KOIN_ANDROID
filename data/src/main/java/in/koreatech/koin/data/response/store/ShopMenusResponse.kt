@@ -10,5 +10,5 @@ data class ShopMenusResponse(
     @SerializedName("single_price") val singlePrice: Int?,
     @SerializedName("option_prices") val optionPrices: List<ShopMenuOptionsResponse>?,
     @SerializedName("description") val description: String?,
-    @SerializedName("image_urls") val imageUrls: List<String>?,
+    @SerializedName("image_urls") val imageUrls: List<String>?
 )

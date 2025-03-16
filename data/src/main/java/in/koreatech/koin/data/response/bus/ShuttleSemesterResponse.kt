@@ -7,12 +7,12 @@ import java.time.LocalDate
 data class ShuttleSemesterResponse(
     @SerializedName("name") val name: String?,
     @SerializedName("from") val from: String?,
-    @SerializedName("to") val to: String?,
+    @SerializedName("to") val to: String?
 ) {
     fun toShuttleSemester() =
         ShuttleSemester(
             name = name.orEmpty(),
             from = LocalDate.parse(from.orEmpty()),
-            to = LocalDate.parse(to.orEmpty()),
+            to = LocalDate.parse(to.orEmpty())
         )
 }

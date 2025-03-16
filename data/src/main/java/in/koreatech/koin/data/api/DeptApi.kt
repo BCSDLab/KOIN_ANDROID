@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface DeptApi {
     @GET(URLConstant.DEPT.DEPT)
     suspend fun getDept(
-        @Query("dept_num") deptNum: String,
+        @Query("dept_num") deptNum: String
     ): DeptResponse?
 
     @GET(URLConstant.DEPT.DEPTS)

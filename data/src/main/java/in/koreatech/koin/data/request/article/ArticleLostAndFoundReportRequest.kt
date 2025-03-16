@@ -5,24 +5,24 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundReportItem
 
 data class ArticleLostAndFoundReportRequest(
     @SerializedName("reports")
-    val reports: List<ArticleLostAndFoundReportRequestItem>,
+    val reports: List<ArticleLostAndFoundReportRequestItem>
 )
 
 data class ArticleLostAndFoundReportRequestItem(
     @SerializedName("title")
     val title: String,
     @SerializedName("content")
-    val content: String,
+    val content: String
 )
 
 internal fun List<ArticleLostAndFoundReportItem>.toRequest(): ArticleLostAndFoundReportRequest {
     return ArticleLostAndFoundReportRequest(
         reports =
-            map {
-                ArticleLostAndFoundReportRequestItem(
-                    title = it.title,
-                    content = it.content,
-                )
-            },
+        map {
+            ArticleLostAndFoundReportRequestItem(
+                title = it.title,
+                content = it.content
+            )
+        }
     )
 }

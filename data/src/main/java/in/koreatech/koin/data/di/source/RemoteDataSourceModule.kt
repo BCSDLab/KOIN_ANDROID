@@ -52,7 +52,7 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideUserRemoteDataSource(
         userApi: UserApi,
-        userAuthApi: UserAuthApi,
+        userAuthApi: UserAuthApi
     ): UserRemoteDataSource {
         return UserRemoteDataSource(userApi, userAuthApi)
     }
@@ -61,7 +61,7 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideOwnerRemoteDataSource(
         ownerApi: OwnerApi,
-        ownerAuthApi: OwnerAuthApi,
+        ownerAuthApi: OwnerAuthApi
     ): OwnerRemoteDataSource {
         return OwnerRemoteDataSource(ownerApi, ownerAuthApi)
     }
@@ -94,7 +94,7 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideStoreRemoteDataSource(
         storeApi: StoreApi,
-        userAuthApi: UserAuthApi,
+        userAuthApi: UserAuthApi
     ): StoreRemoteDataSource {
         return StoreRemoteDataSource(storeApi, userAuthApi)
     }
@@ -115,7 +115,7 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideArticleRemoteDataSource(
         articleApi: ArticleApi,
-        articleAuthApi: ArticleAuthApi,
+        articleAuthApi: ArticleAuthApi
     ): ArticleRemoteDataSource {
         return ArticleRemoteDataSource(articleApi, articleAuthApi)
     }
@@ -130,7 +130,7 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideTimetableRemoteDataSource(
         timetableApi: TimetableApi,
-        timetableAuthApi: TimetableAuthApi,
+        timetableAuthApi: TimetableAuthApi
     ): TimetableRemoteDataSource {
         return TimetableRemoteDataSource(timetableApi, timetableAuthApi)
     }
@@ -140,7 +140,7 @@ object RemoteDataSourceModule {
     fun provideChatRemoteDataSource(
         chatApi: ChatApi,
         chatAuthApi: ChatAuthApi,
-        koinStomp: KoinStomp,
+        koinStomp: KoinStomp
     ): ChatRemoteDataSource {
         return ChatRemoteDataSource(chatApi, chatAuthApi, koinStomp)
     }

@@ -59,16 +59,16 @@ fun StoreItemResponse.toStore(): Store =
         averageRate = averageRate ?: 0.0,
         reviewCount = reviewCount ?: 0,
         open =
-            open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
-                Store.OpenData(
-                    dayOfWeek = it.dayOfWeek ?: "",
-                    closed = it.closed ?: false,
-                    openTime = it.openTime ?: "",
-                    closeTime = it.closeTime ?: "",
-                )
-            }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
+        open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
+            Store.OpenData(
+                dayOfWeek = it.dayOfWeek ?: "",
+                closed = it.closed ?: false,
+                openTime = it.openTime ?: "",
+                closeTime = it.closeTime ?: ""
+            )
+        }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
         categoryIds = categoryIds,
-        benefitDetails = benefitDetails ?: benefitDetail?.toStringArray() ?: emptyList(),
+        benefitDetails = benefitDetails ?: benefitDetail?.toStringArray() ?: emptyList()
     )
 
 fun StoreEventItemReponse.toStoreEvent(): StoreEvent =
@@ -80,14 +80,14 @@ fun StoreEventItemReponse.toStoreEvent(): StoreEvent =
         content = content ?: "",
         thumbnailImages = thumbnailImages ?: ArrayList<String>(),
         startDate = startDate ?: "",
-        endDate = endDate ?: "",
+        endDate = endDate ?: ""
     )
 
 fun StoreCategoriesItemResponse.toStoreCategories(): StoreCategories =
     StoreCategories(
         id = id,
         imageUrl = imageUrl,
-        name = name,
+        name = name
     )
 
 fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu =
@@ -104,19 +104,19 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu =
         updateAt = updateAt,
         isEvent = isEvent ?: false,
         open =
-            open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
-                Store.OpenData(
-                    dayOfWeek = it.dayOfWeek ?: "",
-                    closed = it.closed ?: false,
-                    openTime = it.openTime ?: "",
-                    closeTime = it.closeTime ?: "",
-                )
-            }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00,00") },
+        open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
+            Store.OpenData(
+                dayOfWeek = it.dayOfWeek ?: "",
+                closed = it.closed ?: false,
+                openTime = it.openTime ?: "",
+                closeTime = it.closeTime ?: ""
+            )
+        }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00,00") },
         imageUrls = imageUrls ?: emptyList(),
         shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
         menuCategories = menuCategories?.map { it.toCategory() }.orEmpty(),
         bank = bank ?: null,
-        accountNumber = accountNumber ?: null,
+        accountNumber = accountNumber ?: null
     )
 
 fun List<StoreMenuCategoryResponse.MenuCategory>.toCategory(): List<StoreMenuCategory> {
@@ -130,19 +130,19 @@ fun List<StoreMenuCategoryResponse.MenuCategory>.toCategory(): List<StoreMenuCat
 fun StoreItemWithMenusResponse.CategoriesResponseDTO.toCategory() =
     StoreWithMenu.Category(
         id = id,
-        name = name,
+        name = name
     )
 
 fun StoreMenuResponse.toStoreMenu() =
     StoreMenu(
-        menuCategories = menuCategories?.map { it.toStoreMenuCategories() }.orEmpty(),
+        menuCategories = menuCategories?.map { it.toStoreMenuCategories() }.orEmpty()
     )
 
 fun StoreMenuCategoriesResponse.toStoreMenuCategories() =
     StoreMenuCategories(
         id = id,
         name = name,
-        menus = menus?.map { it.toShopMenus() }.orEmpty(),
+        menus = menus?.map { it.toShopMenus() }.orEmpty()
     )
 
 fun ShopMenusResponse.toShopMenus() =
@@ -154,18 +154,18 @@ fun ShopMenusResponse.toShopMenus() =
         singlePrice = singlePrice,
         optionPrices = optionPrices?.map { it.toShopMenuOptions() }.orEmpty(),
         description = description,
-        imageUrls = imageUrls.orEmpty(),
+        imageUrls = imageUrls.orEmpty()
     )
 
 fun ShopMenuOptionsResponse.toShopMenuOptions() =
     ShopMenus.ShopMenuOptions(
         option = option ?: "",
-        price = price,
+        price = price
     )
 
 fun StoreDetailEventResponse.toStoreDetailEvents(): ShopEvents =
     ShopEvents(
-        events = events?.map { it.toStoreDetailEvent() }.orEmpty(),
+        events = events?.map { it.toStoreDetailEvent() }.orEmpty()
     )
 
 fun StoreRegisterResponse.toStoreDetailInfo(): StoreDetailInfo =
@@ -183,7 +183,7 @@ fun StoreRegisterResponse.toStoreDetailInfo(): StoreDetailInfo =
         operatingTime = open?.toOperatingTime() ?: emptyList(),
         phone = phone ?: "",
         bank = null,
-        accountNumber = null,
+        accountNumber = null
     )
 
 fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() =
@@ -195,7 +195,7 @@ fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() =
         content = content ?: "",
         thumbnailImages = thumbnailImages ?: emptyList(),
         startDate = startDate ?: "",
-        endDate = endDate ?: "",
+        endDate = endDate ?: ""
     )
 
 fun StoreReviewResponse.toStoreReview() =
@@ -205,7 +205,7 @@ fun StoreReviewResponse.toStoreReview() =
         totalPage = totalPage,
         currentPage = currentPage,
         statistics = statistics.toStoreReviewStatistics(),
-        reviews = reviews.toStoreReviewContentList(),
+        reviews = reviews.toStoreReviewContentList()
     )
 
 fun List<OperatingTime>.toMyStoreDayOffResponse(): ArrayList<StoreDayOffResponse> {
@@ -241,7 +241,7 @@ fun List<StoreDayOffResponse>.toOperatingTime(): List<OperatingTime> {
                 dayOff.closeTime ?: "",
                 dayOff.closed,
                 dayOff.dayOfWeek,
-                dayOff.openTime ?: "",
+                dayOff.openTime ?: ""
             )
         responseList.add(response)
     }
@@ -266,7 +266,7 @@ fun StoreMenuInfoResponse.toStoreMenuInfo(): StoreMenuInfo {
             val response =
                 StoreMenuOptionPrice(
                     option = priceOption.option,
-                    price = priceOption.price.toString(),
+                    price = priceOption.price.toString()
                 )
 
             responseList.add(response)
@@ -280,14 +280,14 @@ fun StoreMenuInfoResponse.toStoreMenuInfo(): StoreMenuInfo {
         optionPrice = responseList,
         description = description,
         categoryIds = categoryIds,
-        imageUrl = imageUrls,
+        imageUrl = imageUrls
     )
 }
 
 fun StoreReviewStatisticsResponse.toStoreReviewStatistics() =
     StoreReviewStatistics(
         averageRating = averageRating,
-        ratings = ratings,
+        ratings = ratings
     )
 
 fun List<StoreReviewContentResponse>.toStoreReviewContentList(): List<StoreReviewContent> =
@@ -302,7 +302,7 @@ fun List<StoreReviewContentResponse>.toStoreReviewContentList(): List<StoreRevie
             isMine = response.isMine ?: false,
             isModified = response.isModified ?: false,
             isReported = response.isReported ?: false,
-            createdAt = response.createdAt ?: "",
+            createdAt = response.createdAt ?: ""
         )
     }
 
@@ -323,26 +323,26 @@ fun BenefitCategoryListResponse.toStoreBenefitCategory(): BenefitCategoryList =
                 title = it.title ?: "",
                 detail = it.detail ?: "",
                 onImageUrl = it.onImageUrl ?: "",
-                offImageUrl = it.offImageUrl ?: "",
+                offImageUrl = it.offImageUrl ?: ""
             )
-        },
+        }
     )
 
 fun ShopRelatedListResponse.toShopSearchRelatedList(): ShopSearchRelatedList =
     ShopSearchRelatedList(
         keywords =
-            keywords.map {
-                ShopSearchRelated(
-                    keyword = it.keyword ?: "",
-                    shopIds = it.shopIds ?: emptyList(),
-                    shopId = it.shopId,
-                )
-            },
+        keywords.map {
+            ShopSearchRelated(
+                keyword = it.keyword ?: "",
+                shopIds = it.shopIds ?: emptyList(),
+                shopId = it.shopId
+            )
+        }
     )
 
 fun OwnerGetStoreResponse.toOwnerGetStore(): OwnerGetStore =
     OwnerGetStore(
         uid = uid ?: 0,
         name = name ?: "",
-        isEvent = isEvent ?: false,
+        isEvent = isEvent ?: false
     )

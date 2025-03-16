@@ -13,12 +13,12 @@ interface TimetableApi {
     @Deprecated("use getLecturesBySemester instead")
     @GET("/lectures")
     suspend fun getLectures(
-        @Query("semester_date") semesterDate: String,
+        @Query("semester_date") semesterDate: String
     ): List<LectureResponse>
 
     @GET("/v3/lectures")
     suspend fun getLecturesBySemester(
         @Query("year") year: Int,
-        @Query("term") term: String,
+        @Query("term") term: String
     ): List<LectureResponseV3>
 }

@@ -21,7 +21,7 @@ data class ChatMessageResponse(
     val timestamp: String,
     @SerializedName("is_image")
     @SerialName("is_image")
-    val isImage: Boolean,
+    val isImage: Boolean
 ) {
     fun toChatMessage() =
         ChatMessage(
@@ -29,6 +29,6 @@ data class ChatMessageResponse(
             userNickname = userNickname,
             content = content,
             timestamp = timestamp,
-            isImage = isImage,
+            isImage = isImage
         )
 }

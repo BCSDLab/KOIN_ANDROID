@@ -32,5 +32,5 @@ data class TimetableLectureResponseV3(
     @SerializedName("course_type")
     val courseType: String?,
     @SerializedName("general_education_area")
-    val generalEducationArea: String?,
+    val generalEducationArea: String?
 )

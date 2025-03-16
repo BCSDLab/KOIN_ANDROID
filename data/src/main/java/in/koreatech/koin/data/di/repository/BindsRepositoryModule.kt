@@ -18,7 +18,7 @@ abstract class BindsRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsFirebaseMessagingRepository(
-        firebaseMessagingRepositoryImpl: FirebaseMessagingRepositoryImpl,
+        firebaseMessagingRepositoryImpl: FirebaseMessagingRepositoryImpl
     ): FirebaseMessagingRepository
 
     @Binds

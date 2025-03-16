@@ -10,7 +10,7 @@ data class ChatListItemResponse(
     @SerializedName("unread_message_count") val unReadMessageCount: Int,
     @SerializedName("last_message_at") val lastMessageAt: String,
     @SerializedName("article_id") val articleId: Int,
-    @SerializedName("chat_room_id") val chatRoomId: Int,
+    @SerializedName("chat_room_id") val chatRoomId: Int
 )
 
 fun ChatListItemResponse.toChatListItem() =
@@ -21,5 +21,5 @@ fun ChatListItemResponse.toChatListItem() =
         unReadMessageCount = unReadMessageCount,
         lastMessageAt = lastMessageAt,
         articleId = articleId,
-        chatRoomId = chatRoomId,
+        chatRoomId = chatRoomId
     )

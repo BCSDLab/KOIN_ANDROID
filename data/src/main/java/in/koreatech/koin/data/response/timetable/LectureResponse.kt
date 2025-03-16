@@ -30,7 +30,7 @@ data class LectureResponse(
     @SerializedName("is_elearning") //
     val isElearning: String?,
     @SerializedName("class_time")
-    val classTime: List<Int>,
+    val classTime: List<Int>
 ) {
     fun toLecture() =
         Lecture(
@@ -46,6 +46,6 @@ data class LectureResponse(
             isEnglish = isEnglish.orEmpty(),
             designScore = designScore.orEmpty(),
             isElearning = isElearning.orEmpty(),
-            classTime = classTime,
+            classTime = classTime
         )
 }

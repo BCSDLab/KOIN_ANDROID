@@ -9,18 +9,18 @@ data class BusSearchResultWrapperResponse(
     @SerializedName("arrival") val arrival: String?,
     @SerializedName("depart_date") val departDate: String?,
     @SerializedName("depart_time") val departTime: String?,
-    @SerializedName("schedule") val schedules: List<BusSearchResultResponse>?,
+    @SerializedName("schedule") val schedules: List<BusSearchResultResponse>?
 )
 
 data class BusSearchResultResponse(
     @SerializedName("bus_type") val busType: String?,
     @SerializedName("bus_name") val busName: String?,
-    @SerializedName("depart_time") val departureTime: String?,
+    @SerializedName("depart_time") val departureTime: String?
 ) {
     fun toBusSearchResult() =
         BusSearchResult(
             busType = busType.orEmpty(),
             busName = busName.orEmpty(),
-            departureTime = LocalTime.parse(departureTime),
+            departureTime = LocalTime.parse(departureTime)
         )
 }

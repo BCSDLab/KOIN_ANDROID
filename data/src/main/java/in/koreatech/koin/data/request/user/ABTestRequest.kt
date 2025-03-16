@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 class ABTestRequest(
     @SerializedName("title")
-    val title: String,
+    val title: String
 )

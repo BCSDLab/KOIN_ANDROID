@@ -5,5 +5,5 @@ import `in`.koreatech.koin.data.constant.URLConstant
 
 data class PasswordRequest(
     @SerializedName(URLConstant.USER.PW)
-    val password: String,
+    val password: String
 )

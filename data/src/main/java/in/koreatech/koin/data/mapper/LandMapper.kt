@@ -14,7 +14,7 @@ fun LandResponse.toLand() =
         name = name ?: "-",
         id = id,
         longitude = longitude,
-        roomType = roomType ?: "-",
+        roomType = roomType ?: "-"
     )
 
 fun LandDetailResponse.toLandDetail() =
@@ -53,5 +53,5 @@ fun LandDetailResponse.toLandDetail() =
         name = name ?: "",
         deposit = deposit ?: "",
         optMicrowave = optMicrowave,
-        roomType = roomType ?: "",
+        roomType = roomType ?: ""
     )

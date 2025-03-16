@@ -24,12 +24,12 @@ interface ArticleAuthApi {
 
     @POST("articles/keyword")
     suspend fun saveKeyword(
-        @Body keywordRequest: ArticleKeywordRequest,
+        @Body keywordRequest: ArticleKeywordRequest
     ): ArticleKeywordWrapperResponse.ArticleKeywordResponse
 
     @DELETE("articles/keyword/{id}")
     suspend fun deleteKeyword(
-        @Path("id") keywordId: Int,
+        @Path("id") keywordId: Int
     ): Response<Unit>
 
     /**
@@ -41,22 +41,22 @@ interface ArticleAuthApi {
     suspend fun fetchArticleLostAndFoundPagination(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("type") type: String?,
+        @Query("type") type: String?
     ): ArticleLostAndFoundPaginationResponse
 
     @POST("articles/lost-item")
     suspend fun uploadArticleLostAndFound(
-        @Body request: ArticleLostAndFoundRequest,
+        @Body request: ArticleLostAndFoundRequest
     ): Response<ArticleLostAndFoundResponse>
 
     @DELETE("articles/lost-item/{id}")
     suspend fun deleteArticleLostAndFound(
-        @Path("id") id: Int,
+        @Path("id") id: Int
     ): Response<Unit>
 
     @POST("articles/lost-item/{id}/reports")
     suspend fun reportLostAndFound(
         @Path("id") id: Int,
-        @Body reportReasons: ArticleLostAndFoundReportRequest,
+        @Body reportReasons: ArticleLostAndFoundReportRequest
     ): Response<Unit>
 }

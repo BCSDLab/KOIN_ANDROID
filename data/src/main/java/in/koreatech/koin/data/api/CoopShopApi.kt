@@ -11,6 +11,6 @@ interface CoopShopApi {
 
     @GET("${URLConstant.COOPSHOP}/{coopShopId}")
     suspend fun getCoopShopById(
-        @Path("coopShopId") id: Int,
+        @Path("coopShopId") id: Int
     ): CoopShopResponse
 }

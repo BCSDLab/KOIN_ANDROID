@@ -5,46 +5,44 @@ import `in`.koreatech.koin.data.requestbody.S3RequestBody
 import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
 import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
 import `in`.koreatech.koin.domain.repository.PreSignedUrlRepository
+import java.io.InputStream
+import javax.inject.Inject
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
-import java.io.InputStream
-import javax.inject.Inject
 
-class PreSignedUrlRepositoryImpl
-    @Inject
-    constructor(
-        private val preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource,
-        private val uploadImageLocalDataSource: UploadImageLocalDataSource,
-    ) : PreSignedUrlRepository {
-        override suspend fun putPreSignedUrl(
-            url: String,
-            inputStream: InputStream,
-            mediaType: String,
-            mediaSize: Long,
-        ): Result<Unit> {
-            return try {
-                val file = S3RequestBody(inputStream, mediaType.toMediaType(), mediaSize)
-                preSignedUrlRemoteDataSource.putPreSignedUrl(url, file)
+class PreSignedUrlRepositoryImpl @Inject constructor(
+    private val preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource,
+    private val uploadImageLocalDataSource: UploadImageLocalDataSource
+) : PreSignedUrlRepository {
+    override suspend fun putPreSignedUrl(
+        url: String,
+        inputStream: InputStream,
+        mediaType: String,
+        mediaSize: Long
+    ): Result<Unit> {
+        return try {
+            val file = S3RequestBody(inputStream, mediaType.toMediaType(), mediaSize)
+            preSignedUrlRemoteDataSource.putPreSignedUrl(url, file)
 
-                Result.success(Unit)
-            } catch (e: HttpException) {
-                Result.failure(e)
-            } catch (t: Throwable) {
-                Result.failure(t)
-            }
-        }
-
-        override suspend fun uploadFile(
-            url: String,
-            imageUri: String,
-            mediaType: String,
-            mediaSize: Long,
-        ): Result<Unit> {
-            return safeApiCall {
-                val file = uploadImageLocalDataSource.uriToBitmap(imageUri, mediaSize).toRequestBody(mediaType.toMediaTypeOrNull())
-                preSignedUrlRemoteDataSource.putPreSignedUrl(url, file)
-            }
+            Result.success(Unit)
+        } catch (e: HttpException) {
+            Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t)
         }
     }
+
+    override suspend fun uploadFile(
+        url: String,
+        imageUri: String,
+        mediaType: String,
+        mediaSize: Long
+    ): Result<Unit> {
+        return safeApiCall {
+            val file = uploadImageLocalDataSource.uriToBitmap(imageUri, mediaSize).toRequestBody(mediaType.toMediaTypeOrNull())
+            preSignedUrlRemoteDataSource.putPreSignedUrl(url, file)
+        }
+    }
+}

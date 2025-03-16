@@ -9,5 +9,5 @@ data class ChatMessageRequest(
     @SerialName("user_nickname") val userNickname: String,
     @SerialName("content") val content: String,
     @SerialName("timestamp") val timestamp: String,
-    @SerialName("is_image") val isImage: Boolean,
+    @SerialName("is_image") val isImage: Boolean
 )

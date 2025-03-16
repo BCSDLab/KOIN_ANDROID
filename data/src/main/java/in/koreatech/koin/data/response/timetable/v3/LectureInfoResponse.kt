@@ -13,5 +13,5 @@ data class LectureInfoResponse(
     @SerializedName("start_time")
     val startTime: Int,
     @SerializedName("end_time")
-    val endTime: Int,
+    val endTime: Int
 )

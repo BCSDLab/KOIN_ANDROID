@@ -6,5 +6,5 @@ data class TimetableFramesResponseV3(
     @SerializedName("year")
     val year: Int,
     @SerializedName("timetable_frames")
-    val semesterFrames: Map<String, List<TimetableFrameResponseV3>>,
+    val semesterFrames: Map<String, List<TimetableFrameResponseV3>>
 )

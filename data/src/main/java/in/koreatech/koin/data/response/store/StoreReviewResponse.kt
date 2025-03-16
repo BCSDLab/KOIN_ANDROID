@@ -8,5 +8,5 @@ data class StoreReviewResponse(
     @SerializedName("total_page") val totalPage: Int,
     @SerializedName("current_page") val currentPage: Int,
     @SerializedName("statistics") val statistics: StoreReviewStatisticsResponse,
-    @SerializedName("reviews") val reviews: List<StoreReviewContentResponse>,
+    @SerializedName("reviews") val reviews: List<StoreReviewContentResponse>
 )

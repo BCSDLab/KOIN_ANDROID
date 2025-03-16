@@ -23,7 +23,7 @@ import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 
 class OwnerRemoteDataSource(
     private val ownerApi: OwnerApi,
-    private val ownerAuthApi: OwnerAuthApi,
+    private val ownerAuthApi: OwnerAuthApi
 ) {
     suspend fun postVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse {
         return ownerApi.postVerificationCode(ownerVerificationCode)
@@ -103,14 +103,14 @@ class OwnerRemoteDataSource(
 
     suspend fun postStoreMenu(
         storeId: Int,
-        storeMenuRegisterResponse: StoreMenuRegisterResponse,
+        storeMenuRegisterResponse: StoreMenuRegisterResponse
     ) {
         ownerAuthApi.postShopMenu(storeId, storeMenuRegisterResponse)
     }
 
     suspend fun putStoreModifiedMenu(
         menuId: Int,
-        storeMenuRegisterResponse: StoreMenuRegisterResponse,
+        storeMenuRegisterResponse: StoreMenuRegisterResponse
     ) {
         return ownerAuthApi.putShopModifiedMenu(menuId, storeMenuRegisterResponse)
     }
@@ -121,14 +121,14 @@ class OwnerRemoteDataSource(
 
     suspend fun deleteOwnerShopEvent(
         storeUid: Int,
-        eventId: Int,
+        eventId: Int
     ) {
         ownerAuthApi.deleteOwnerShopEvent(storeUid, eventId)
     }
 
     suspend fun modifyOwnerShopInfo(
         storeUid: Int,
-        storeInfo: StoreRegisterResponse,
+        storeInfo: StoreRegisterResponse
     ) {
         ownerAuthApi.modifyOwnerShopInfo(storeUid, storeInfo)
     }
@@ -139,7 +139,7 @@ class OwnerRemoteDataSource(
 
     suspend fun postOwnerShopEvent(
         storeUid: Int,
-        ownerEventResponse: OwnerEventResponse,
+        ownerEventResponse: OwnerEventResponse
     ) {
         ownerAuthApi.postOwnerShopEvent(storeUid, ownerEventResponse)
     }

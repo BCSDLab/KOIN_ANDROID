@@ -33,7 +33,7 @@ data class ArticleResponse(
     @SerializedName("prev_id") val prevArticleId: Int?,
     @SerializedName("next_id") val nextArticleId: Int?,
     @SerializedName("attachments") val attachments: List<AttachmentResponse>?,
-    @SerializedName("url") val url: String?,
+    @SerializedName("url") val url: String?
 ) {
     fun toArticleHeader() =
         ArticleHeader(
@@ -43,7 +43,7 @@ data class ArticleResponse(
             author = author ?: "",
             viewCount = viewCount ?: 0,
             registeredAt = registeredAt ?: "",
-            updatedAt = updatedAt ?: "",
+            updatedAt = updatedAt ?: ""
         )
 
     fun toArticle() =
@@ -53,7 +53,7 @@ data class ArticleResponse(
             prevArticleId = prevArticleId,
             nextArticleId = nextArticleId,
             attachments = attachments?.map { it.toAttachment() } ?: listOf(),
-            url = url ?: "",
+            url = url ?: ""
         )
 }
 
@@ -160,8 +160,8 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
                         content = child.wholeText,
                         attributes = selfAttributes,
                         children = listOf(),
-                        styles = selfStyles,
-                    ),
+                        styles = selfStyles
+                    )
                 )
             }
         } else if (child is Element) {
@@ -174,7 +174,7 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
         content = "",
         attributes = selfAttributes,
         children = selfChildren,
-        styles = selfStyles,
+        styles = selfStyles
     )
 }
 

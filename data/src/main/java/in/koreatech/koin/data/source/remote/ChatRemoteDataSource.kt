@@ -7,73 +7,71 @@ import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class ChatRemoteDataSource
-    @Inject
-    constructor(
-        private val chatApi: ChatApi,
-        private val chatAuthApi: ChatAuthApi,
-        private val koinStomp: KoinStomp,
+class ChatRemoteDataSource @Inject constructor(
+    private val chatApi: ChatApi,
+    private val chatAuthApi: ChatAuthApi,
+    private val koinStomp: KoinStomp
+) {
+    suspend fun connectWS() {
+        koinStomp.connect()
+    }
+
+    suspend fun disconnectWS() {
+        koinStomp.disconnect()
+    }
+
+    suspend fun getChatRoomList(): List<ChatListItemResponse> {
+        return chatAuthApi.getChatRoomList()
+    }
+
+    suspend fun getChatRoomFromArticleId(articleId: Int): ChatRoomResponse {
+        return chatAuthApi.getChatRoomFromArticleId(articleId)
+    }
+
+    suspend fun getChatRoom(
+        articleId: Int,
+        chatRoomId: Int
+    ): ChatRoomResponse {
+        return chatAuthApi.getChatRoom(articleId, chatRoomId)
+    }
+
+    suspend fun getChatMessages(
+        articleId: Int,
+        chatRoomId: Int
+    ): List<ChatMessageResponse> {
+        return chatAuthApi.getChatMessages(articleId, chatRoomId)
+    }
+
+    fun subscribeChatRoom(
+        articleId: Int,
+        chatRoomId: Int
+    ): Flow<ChatMessageResponse> {
+        return koinStomp.subscribe(
+            "/topic/chat/$articleId/$chatRoomId",
+            ChatMessageResponse.serializer()
+        )
+    }
+
+    suspend fun sendMessage(
+        articleId: Int,
+        chatRoomId: Int,
+        message: ChatMessageRequest
     ) {
-        suspend fun connectWS() {
-            koinStomp.connect()
-        }
+        koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
+    }
 
-        suspend fun disconnectWS() {
-            koinStomp.disconnect()
-        }
-
-        suspend fun getChatRoomList(): List<ChatListItemResponse> {
-            return chatAuthApi.getChatRoomList()
-        }
-
-        suspend fun getChatRoomFromArticleId(articleId: Int): ChatRoomResponse {
-            return chatAuthApi.getChatRoomFromArticleId(articleId)
-        }
-
-        suspend fun getChatRoom(
-            articleId: Int,
-            chatRoomId: Int,
-        ): ChatRoomResponse {
-            return chatAuthApi.getChatRoom(articleId, chatRoomId)
-        }
-
-        suspend fun getChatMessages(
-            articleId: Int,
-            chatRoomId: Int,
-        ): List<ChatMessageResponse> {
-            return chatAuthApi.getChatMessages(articleId, chatRoomId)
-        }
-
-        fun subscribeChatRoom(
-            articleId: Int,
-            chatRoomId: Int,
-        ): Flow<ChatMessageResponse> {
-            return koinStomp.subscribe(
-                "/topic/chat/$articleId/$chatRoomId",
-                ChatMessageResponse.serializer(),
-            )
-        }
-
-        suspend fun sendMessage(
-            articleId: Int,
-            chatRoomId: Int,
-            message: ChatMessageRequest,
-        ) {
-            koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
-        }
-
-        suspend fun blockUser(
-            articleId: Int,
-            chatRoomId: Int,
-        ): Result<Unit> {
-            val response = chatAuthApi.blockUser(articleId, chatRoomId)
-            if (response.isSuccessful) {
-                return Result.success(Unit)
-            } else {
-                return Result.failure(Exception(response.message()))
-            }
+    suspend fun blockUser(
+        articleId: Int,
+        chatRoomId: Int
+    ): Result<Unit> {
+        val response = chatAuthApi.blockUser(articleId, chatRoomId)
+        if (response.isSuccessful) {
+            return Result.success(Unit)
+        } else {
+            return Result.failure(Exception(response.message()))
         }
     }
+}

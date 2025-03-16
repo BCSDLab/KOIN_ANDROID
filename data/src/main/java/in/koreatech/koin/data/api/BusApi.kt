@@ -16,7 +16,7 @@ interface BusApi {
 
     @GET("bus/timetable/shuttle/{id}")
     suspend fun fetchShuttleTimetable(
-        @Path("id") id: String,
+        @Path("id") id: String
     ): ShuttleTimetableResponse
 
     @GET("bus/courses/shuttle")
@@ -24,13 +24,13 @@ interface BusApi {
 
     @GET("bus/timetable/v2?bus_type=EXPRESS&region=null")
     suspend fun fetchExpressTimetable(
-        @Query("direction") direction: String,
+        @Query("direction") direction: String
     ): ExpressTimetableResponse
 
     @GET("bus/timetable/city")
     suspend fun fetchCityTimetable(
         @Query("bus_number") busNumber: Int,
-        @Query("direction") direction: String,
+        @Query("direction") direction: String
     ): CityTimetableResponse
 
     @GET("bus/route")
@@ -39,6 +39,6 @@ interface BusApi {
         @Query("time") time: String,
         @Query("bus_type") busType: String,
         @Query("depart") departure: String,
-        @Query("arrival") arrival: String,
+        @Query("arrival") arrival: String
     ): BusSearchResultWrapperResponse
 }

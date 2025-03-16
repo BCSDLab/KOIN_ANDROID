@@ -9,6 +9,6 @@ interface PreSignedUrlApi {
     @PUT
     suspend fun uploadFile(
         @Url url: String,
-        @Body file: RequestBody,
+        @Body file: RequestBody
     )
 }

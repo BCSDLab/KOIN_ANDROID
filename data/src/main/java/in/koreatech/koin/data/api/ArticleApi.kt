@@ -19,7 +19,7 @@ interface ArticleApi {
     suspend fun fetchArticlePagination(
         @Query("boardId") boardId: Int,
         @Query("page") page: Int,
-        @Query("limit") limit: Int,
+        @Query("limit") limit: Int
     ): ArticlePaginationResponse
 
     /**
@@ -30,7 +30,7 @@ interface ArticleApi {
     @GET("articles/{id}")
     suspend fun fetchArticle(
         @Path("id") articleId: Int,
-        @Query("boardId") boardId: Int,
+        @Query("boardId") boardId: Int
     ): ArticleResponse
 
     @GET("articles/hot")
@@ -47,7 +47,7 @@ interface ArticleApi {
         @Query("query") query: String,
         @Query("boardId") boardId: Int?,
         @Query("page") page: Int,
-        @Query("limit") limit: Int,
+        @Query("limit") limit: Int
     ): ArticlePaginationResponse
 
     /**
@@ -56,7 +56,7 @@ interface ArticleApi {
      */
     @GET("articles/hot/keyword")
     suspend fun fetchMostSearchedKeywords(
-        @Query("count") count: Int,
+        @Query("count") count: Int
     ): KeywordsResponse
 
     /**
@@ -65,6 +65,6 @@ interface ArticleApi {
      */
     @GET("articles/lost-item/{id}")
     suspend fun fetchArticleLostAndFound(
-        @Path("id") id: Int,
+        @Path("id") id: Int
     ): ArticleLostAndFoundResponse
 }

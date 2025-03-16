@@ -10,10 +10,10 @@ data class StoreMenuInfoResponse(
     @SerializedName("option_prices") val optionPrices: List<OptionPrice>,
     @SerializedName("description") val description: String,
     @SerializedName("category_ids") val categoryIds: List<Int>,
-    @SerializedName("image_urls") val imageUrls: List<String>,
+    @SerializedName("image_urls") val imageUrls: List<String>
 ) {
     data class OptionPrice(
         @SerializedName("option") val option: String,
-        @SerializedName("price") val price: Int,
+        @SerializedName("price") val price: Int
     )
 }

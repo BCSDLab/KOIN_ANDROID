@@ -27,13 +27,13 @@ abstract class OnboardingRepositoryModule {
 @InstallIn(SingletonComponent::class)
 object OnboardingLocalDataSourceModule {
     private val Context.onboardingDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "onboarding",
+        name = "onboarding"
     )
 
     @Provides
     @Singleton
     fun provideOnboardingManager(
-        @ApplicationContext context: Context,
+        @ApplicationContext context: Context
     ): OnboardingLocalDataSource {
         return OnboardingLocalDataSource(context.onboardingDataStore)
     }

@@ -8,7 +8,7 @@ data class ChatRoomResponse(
     @SerializedName("chat_room_id") val chatRoomId: Int,
     @SerializedName("user_id") val userId: Int,
     @SerializedName("article_title") val articleTitle: String,
-    @SerializedName("chat_partner_profile_image") val chatPartnerProfileImage: String?,
+    @SerializedName("chat_partner_profile_image") val chatPartnerProfileImage: String?
 ) {
     fun toChatRoom() =
         ChatRoom(
@@ -16,6 +16,6 @@ data class ChatRoomResponse(
             chatRoomId = chatRoomId,
             userId = userId,
             articleTitle = articleTitle.replace("\n", " "),
-            chatPartnerProfileImage = chatPartnerProfileImage,
+            chatPartnerProfileImage = chatPartnerProfileImage
         )
 }

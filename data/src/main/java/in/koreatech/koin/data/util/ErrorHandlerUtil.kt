@@ -4,14 +4,14 @@ import android.content.Context
 import android.util.Log
 import `in`.koreatech.koin.data.R
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
-import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import retrofit2.HttpException
 
 fun Throwable.handleCommonError(
     context: Context,
-    handleRestError: (Throwable) -> ErrorHandler,
+    handleRestError: (Throwable) -> ErrorHandler
 ): ErrorHandler =
     when (this) {
         is HttpException -> {

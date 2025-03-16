@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 @Deprecated("use TimetableFramesResponseV3 instead")
 data class TimetableFramesResponse(
     @SerializedName("semesters")
-    val semesterFrames: Map<String, List<TimetableFrameResponse>>,
+    val semesterFrames: Map<String, List<TimetableFrameResponse>>
 )
