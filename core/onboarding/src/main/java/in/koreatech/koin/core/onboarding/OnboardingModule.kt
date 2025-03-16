@@ -16,7 +16,7 @@ object OnboardingModule {
     @Singleton
     fun provideOnboardingManager(
         onboardingRepository: OnboardingRepository,
-        @ApplicationContext context: Context,
+        @ApplicationContext context: Context
     ): OnboardingManager {
         return OnboardingManager(onboardingRepository, context)
     }
