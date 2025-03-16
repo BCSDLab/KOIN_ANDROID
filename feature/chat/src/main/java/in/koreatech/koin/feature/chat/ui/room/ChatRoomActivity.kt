@@ -28,7 +28,7 @@ class ChatRoomActivity : ComponentActivity() {
                             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                         }.let(::startActivity)
                         finish()
-                    },
+                    }
                 )
             }
         }

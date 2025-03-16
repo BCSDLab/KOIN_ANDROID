@@ -33,15 +33,15 @@ import `in`.koreatech.koin.feature.chat.ui.list.component.ChatListItem
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
+import java.time.LocalDateTime
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
-import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatList(
     viewModel: ChatListViewModel = hiltViewModel(),
-    showBlockedMessage: Boolean = false,
+    showBlockedMessage: Boolean = false
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -53,7 +53,7 @@ fun ChatList(
         if (showBlockedMessage) {
             scope.launch {
                 snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.block_snackbar_message),
+                    message = context.getString(R.string.block_snackbar_message)
                 )
             }
         }
@@ -72,9 +72,9 @@ fun ChatList(
                         snackbarData = it,
                         containerColor = Color(0xCC041A44),
                         contentColor = KoinTheme.colors.neutral0,
-                        shape = KoinTheme.shapes.small,
+                        shape = KoinTheme.shapes.small
                     )
-                },
+                }
             )
         },
         topBar = {
@@ -82,24 +82,24 @@ fun ChatList(
                 title = stringResource(id = R.string.chat_list_title),
                 onNavigationIconClick = {
                     (context as Activity).finish()
-                },
+                }
             )
         },
-        containerColor = KoinTheme.colors.neutral0,
+        containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
         ChatListContent(
             chatList = uiState.chatList,
             navigateToChatRoom = { articleId, chatRoomId ->
                 EventLogger.logCampusClickEvent(
                     AnalyticsConstant.Label.CHAT.MESSAGE_LIST_SELECT,
-                    "쪽지",
+                    "쪽지"
                 )
                 Intent(context, ChatRoomActivity::class.java).apply {
                     putExtra(ARTICLE_ID, articleId)
                     putExtra(CHAT_ROOM_ID, chatRoomId)
                 }.let(context::startActivity)
             },
-            modifier = Modifier.padding(contentPadding),
+            modifier = Modifier.padding(contentPadding)
         )
     }
 }
@@ -108,10 +108,10 @@ fun ChatList(
 fun ChatListContent(
     chatList: List<ChatListItem>,
     navigateToChatRoom: (Int, Int) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier
     ) {
         items(chatList) {
             ChatListItem(
@@ -119,13 +119,13 @@ fun ChatListContent(
                 recentMessage = it.recentMessage,
                 imageUrl = it.imageUrl ?: "",
                 lastMessageAt =
-                    LocalDateTime.parse(it.lastMessageAt)
-                        .toLocalTime(),
+                LocalDateTime.parse(it.lastMessageAt)
+                    .toLocalTime(),
                 unReadMessageCount = it.unReadMessageCount,
                 modifier =
-                    Modifier.clickable {
-                        navigateToChatRoom(it.articleId, it.chatRoomId)
-                    },
+                Modifier.clickable {
+                    navigateToChatRoom(it.articleId, it.chatRoomId)
+                }
             )
         }
     }

@@ -22,8 +22,8 @@ class ChatListActivity : ComponentActivity() {
             KoinTheme {
                 ChatList(
                     showBlockedMessage =
-                        intent.extras?.getBoolean(ChatRoomActivity.IS_BLOCKED)
-                            ?: false,
+                    intent.extras?.getBoolean(ChatRoomActivity.IS_BLOCKED)
+                        ?: false
                 )
             }
         }
