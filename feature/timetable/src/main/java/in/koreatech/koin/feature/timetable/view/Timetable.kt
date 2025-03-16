@@ -32,7 +32,7 @@ fun Timetable(
     modifier: Modifier = Modifier,
     clickEvent: List<TimetableEvent> = emptyList(),
     etcClickEvent: List<TimetableEvent> = emptyList(),
-    onEventClick: (TimetableEvent) -> Unit = {},
+    onEventClick: (TimetableEvent) -> Unit = {}
 ) {
     val verticalScrollState: ScrollState = rememberScrollState()
     var scrollValue by remember { mutableStateOf(0) }
@@ -46,27 +46,27 @@ fun Timetable(
     Box(modifier = Modifier) {
         TimetableContent( // 다운로드 용 시간표 화면
             modifier =
-                modifier.zIndex(0f)
-                    .verticalScroll(verticalScrollState)
-                    .padding(vertical = 14.dp)
-                    .drawWithContent {
-                        graphicsLayer.record {
-                            this@drawWithContent.drawContent()
-                        }
-                        drawLayer(graphicsLayer)
-                    },
+            modifier.zIndex(0f)
+                .verticalScroll(verticalScrollState)
+                .padding(vertical = 14.dp)
+                .drawWithContent {
+                    graphicsLayer.record {
+                        this@drawWithContent.drawContent()
+                    }
+                    drawLayer(graphicsLayer)
+                },
             range = range,
             horizontalPadding = 48.dp,
             events = events,
             clickEvent = emptyList(),
-            etcClickEvent = emptyList(),
+            etcClickEvent = emptyList()
         )
 
         TimetableContent(
             modifier =
-                modifier
-                    .verticalScroll(verticalScrollState)
-                    .padding(vertical = 14.dp),
+            modifier
+                .verticalScroll(verticalScrollState)
+                .padding(vertical = 14.dp),
             range = range,
             horizontalPadding = 48.dp,
             events = events,
@@ -75,7 +75,7 @@ fun Timetable(
             onEventClick = onEventClick,
             onEventY = { y ->
                 scrollValue = y
-            },
+            }
         )
     }
 }
@@ -86,7 +86,7 @@ private fun TimetablePreview() {
     Timetable(
         range = 9,
         events = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.MONDAY)),
-        clickEvent = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.THURSDAY)),
+        clickEvent = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.THURSDAY))
     )
 }
 
@@ -95,6 +95,6 @@ private fun TimetablePreview() {
 private fun TimetablePreview_Scroll() {
     Timetable(
         range = 15,
-        events = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.MONDAY)),
+        events = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.MONDAY))
     )
 }

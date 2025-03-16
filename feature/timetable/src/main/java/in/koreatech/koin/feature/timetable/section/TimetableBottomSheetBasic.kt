@@ -36,26 +36,26 @@ fun TimetableBottomSheetBasic(
     onClickAddLecture: (lecture: Lecture) -> Unit = {},
     onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
     onClickLecture: (events: List<TimetableEvent>) -> Unit = {},
-    onSelectedLecture: (lecture: Lecture?) -> Unit = {},
+    onSelectedLecture: (lecture: Lecture?) -> Unit = {}
 ) {
     val nestedScroll = rememberNestedScrollInteropConnection()
     Column(
         modifier =
-            modifier
-                .background(Color.White),
+        modifier
+            .background(Color.White)
     ) {
         TimetableSearchBox(
             modifier = Modifier.padding(bottom = 8.dp),
             searchText = searchText,
             onSearchTextChange = onSearchTextChange,
             onClickSearchIcon = onClickSearchIcon,
-            onClickSettingIcon = onClickSettingIcon,
+            onClickSettingIcon = onClickSettingIcon
         )
         HorizontalDivider(thickness = 2.dp, color = KoinTheme.colors.neutral300)
         LazyColumn(
             modifier = Modifier.nestedScroll(nestedScroll),
             state = sheetLazyListState,
-            contentPadding = PaddingValues(bottom = 16.dp),
+            contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(lectures.size) {
                 LectureBox(
@@ -66,7 +66,7 @@ fun TimetableBottomSheetBasic(
                     onClickLecture = onClickLecture,
                     onSelectedLecture = onSelectedLecture,
                     onClickAddLecture = onClickAddLecture,
-                    onClickRemoveLecture = onClickRemoveLecture,
+                    onClickRemoveLecture = onClickRemoveLecture
                 )
                 HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
             }
@@ -80,6 +80,6 @@ fun TimetableBottomSheetBasicPreview() {
     TimetableBottomSheetBasic(
         searchText = "",
         lectures = listOf(dummyLecture, dummyLecture.copy(id = 2, name = "컴퓨터 개발")),
-        sheetLazyListState = rememberLazyListState(),
+        sheetLazyListState = rememberLazyListState()
     )
 }

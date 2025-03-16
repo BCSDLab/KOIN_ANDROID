@@ -20,14 +20,14 @@ class TimetableLecturesTest {
             department = "HRD학과",
             target = "전기3",
             classInfos = emptyList(),
-            designScore = "0",
+            designScore = "0"
         )
     val dummyTimetables =
         TimetableLectures(
             timetableFrameId = 1,
             timetable = listOf(dummyTimetableLecture),
             grades = 1,
-            totalGrades = 1,
+            totalGrades = 1
         )
 
     @Test
@@ -35,9 +35,9 @@ class TimetableLecturesTest {
         val timetables =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(classInfos = emptyList()),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(classInfos = emptyList())
+                )
             ) // given
 
         val range = timetables.formatTimeRange()
@@ -50,17 +50,17 @@ class TimetableLecturesTest {
         val timetables =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             ) // given
 
         val range = timetables.formatTimeRange()
@@ -73,17 +73,17 @@ class TimetableLecturesTest {
         val t1 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(18),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(18),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range1 = t1.formatTimeRange()
@@ -93,17 +93,17 @@ class TimetableLecturesTest {
         val t2 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(19),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(19),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range2 = t2.formatTimeRange()
@@ -116,17 +116,17 @@ class TimetableLecturesTest {
         val t1 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(20),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(20),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range1 = t1.formatTimeRange()
@@ -136,17 +136,17 @@ class TimetableLecturesTest {
         val t2 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(21),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(21),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range2 = t2.formatTimeRange()
@@ -159,17 +159,17 @@ class TimetableLecturesTest {
         val t1 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(22),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(22),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range1 = t1.formatTimeRange()
@@ -179,17 +179,17 @@ class TimetableLecturesTest {
         val t2 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(23),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(23),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range2 = t2.formatTimeRange()
@@ -202,17 +202,17 @@ class TimetableLecturesTest {
         val t1 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(24),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(24),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range1 = t1.formatTimeRange()
@@ -222,17 +222,17 @@ class TimetableLecturesTest {
         val t2 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(25),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(25),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range2 = t2.formatTimeRange()
@@ -245,17 +245,17 @@ class TimetableLecturesTest {
         val t1 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(26),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(26),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range1 = t1.formatTimeRange()
@@ -265,17 +265,17 @@ class TimetableLecturesTest {
         val t2 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(27),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(27),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range2 = t2.formatTimeRange()
@@ -288,17 +288,17 @@ class TimetableLecturesTest {
         val t1 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(28),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(28),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
 
         val range1 = t1.formatTimeRange()
@@ -308,17 +308,17 @@ class TimetableLecturesTest {
         val t2 =
             dummyTimetables.copy(
                 timetable =
-                    listOf(
-                        dummyTimetableLecture.copy(
-                            classInfos =
-                                listOf(
-                                    TimetableLectureClassInfo(
-                                        classTime = listOf(29),
-                                        classPlace = "",
-                                    ),
-                                ),
-                        ),
-                    ),
+                listOf(
+                    dummyTimetableLecture.copy(
+                        classInfos =
+                        listOf(
+                            TimetableLectureClassInfo(
+                                classTime = listOf(29),
+                                classPlace = ""
+                            )
+                        )
+                    )
+                )
             )
         val range2 = t2.formatTimeRange()
 

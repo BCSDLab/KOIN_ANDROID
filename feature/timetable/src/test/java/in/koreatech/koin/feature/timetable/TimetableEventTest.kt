@@ -3,10 +3,10 @@ package `in`.koreatech.koin.feature.timetable
 import androidx.compose.ui.graphics.Color
 import `in`.koreatech.koin.feature.timetable.model.TimetableColor
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import java.time.DayOfWeek
 import java.time.LocalTime
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class TimetableEventTest {
     private val sampleTimetableEvent =
@@ -18,7 +18,7 @@ class TimetableEventTest {
             dayOfWeek = DayOfWeek.FRIDAY,
             start = LocalTime.of(9, 30),
             end = LocalTime.of(10, 30),
-            description = "설명",
+            description = "설명"
         )
 
     @Test
@@ -26,7 +26,7 @@ class TimetableEventTest {
         val event =
             sampleTimetableEvent.copy( // given
                 start = LocalTime.of(9, 0),
-                end = LocalTime.of(10, 0),
+                end = LocalTime.of(10, 0)
             )
 
         val code = event.formatClassTimeCode() // when
@@ -39,7 +39,7 @@ class TimetableEventTest {
         val event =
             sampleTimetableEvent.copy( // given
                 start = LocalTime.of(9, 0),
-                end = LocalTime.of(10, 30),
+                end = LocalTime.of(10, 30)
             )
 
         val code = event.formatClassTimeCode() // when
@@ -52,7 +52,7 @@ class TimetableEventTest {
         val event =
             sampleTimetableEvent.copy( // given
                 start = LocalTime.of(9, 30),
-                end = LocalTime.of(10, 0),
+                end = LocalTime.of(10, 0)
             )
 
         val code = event.formatClassTimeCode() // when
@@ -65,7 +65,7 @@ class TimetableEventTest {
         val event =
             sampleTimetableEvent.copy( // given
                 start = LocalTime.of(9, 30),
-                end = LocalTime.of(10, 30),
+                end = LocalTime.of(10, 30)
             )
 
         val code = event.formatClassTimeCode() // when

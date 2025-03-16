@@ -13,7 +13,7 @@ data class CustomExtraContentState(
     val startTime: LocalTime = LocalTime.of(9, 0),
     val endTime: LocalTime = LocalTime.of(10, 0),
     val place: String = "",
-    val isError: Boolean = false,
+    val isError: Boolean = false
 ) {
     fun toTimetableEvent() =
         TimetableEvent(
@@ -23,7 +23,7 @@ data class CustomExtraContentState(
             color = TimetableColor(Color.White, Color.White),
             dayOfWeek = dayOfWeek,
             start = startTime,
-            end = endTime,
+            end = endTime
         )
 
     fun toClassTime(): List<Int> {

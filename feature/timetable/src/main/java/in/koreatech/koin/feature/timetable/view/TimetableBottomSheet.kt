@@ -27,7 +27,7 @@ import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
 enum class TimetableBottomSheetContentMode {
     CUSTOM,
-    BASIC,
+    BASIC
 }
 
 @Composable
@@ -58,29 +58,29 @@ fun TimetableBottomSheet(
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickAddCustomContent: () -> Unit = {},
-    onClickRemoveCustomContent: (id: Int) -> Unit = {},
+    onClickRemoveCustomContent: (id: Int) -> Unit = {}
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .height(400.dp)
-                .background(Color.White)
-                .onGloballyPositioned {
-                    onBottomSheetHeightChange(it.size.height.toFloat())
-                }
-                .padding(
-                    start = 24.dp,
-                    end = 24.dp,
-                    top = 10.dp,
-                ),
+        modifier
+            .fillMaxWidth()
+            .height(400.dp)
+            .background(Color.White)
+            .onGloballyPositioned {
+                onBottomSheetHeightChange(it.size.height.toFloat())
+            }
+            .padding(
+                start = 24.dp,
+                end = 24.dp,
+                top = 10.dp
+            )
     ) {
         TimetableBottomSheetHeader(
             modifier = Modifier.padding(bottom = 10.dp),
             mode = bottomSheetContentMode,
             onClickAddLectureMode = onClickAddLectureMode,
             onClickAddCustomLectureMode = onClickAddCustomLectureMode,
-            onComplete = onComplete,
+            onComplete = onComplete
         )
         HorizontalDivider(thickness = 1.dp, color = KoinTheme.colors.neutral300)
         Spacer(modifier = Modifier.height(8.dp))
@@ -99,7 +99,7 @@ fun TimetableBottomSheet(
                     onClickAddLecture = onClickAddLecture,
                     onClickRemoveLecture = onClickRemoveLecture,
                     onClickLecture = onClickLecture,
-                    onSelectedLecture = onSelectedLecture,
+                    onSelectedLecture = onSelectedLecture
                 )
             }
 
@@ -114,7 +114,7 @@ fun TimetableBottomSheet(
                     onClickStartTime = onClickStartTime,
                     onClickEndTime = onClickEndTime,
                     onClickAddCustomContent = onClickAddCustomContent,
-                    onClickRemoveCustomContent = onClickRemoveCustomContent,
+                    onClickRemoveCustomContent = onClickRemoveCustomContent
                 )
             }
         }
@@ -131,7 +131,7 @@ private fun TimetableBottomSheetPreview() {
             customContents = CustomContentState(),
             bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
             selectedLecture = null,
-            sheetLazyListState = rememberLazyListState(),
+            sheetLazyListState = rememberLazyListState()
         )
     }
 }
@@ -146,7 +146,7 @@ private fun TimetableBottomSheetPreview_Custom() {
             customContents = CustomContentState(),
             bottomSheetContentMode = TimetableBottomSheetContentMode.CUSTOM,
             selectedLecture = null,
-            sheetLazyListState = rememberLazyListState(),
+            sheetLazyListState = rememberLazyListState()
         )
     }
 }

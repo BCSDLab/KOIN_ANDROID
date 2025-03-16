@@ -36,8 +36,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
-import timber.log.Timber
 import java.time.LocalTime
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,7 +47,7 @@ fun TimetableTimePickerDialog(
     customContent: CustomExtraContentState,
     modifier: Modifier = Modifier,
     onDismiss: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
-    onConfirm: (customContent: CustomExtraContentState) -> Unit = { },
+    onConfirm: (customContent: CustomExtraContentState) -> Unit = { }
 ) {
     val hourItems =
         if (isStartTime) {
@@ -87,181 +87,181 @@ fun TimetableTimePickerDialog(
 
     BasicAlertDialog(
         onDismissRequest = { onDismiss(customContent, false) },
-        modifier = modifier,
+        modifier = modifier
     ) {
         Surface(
             shape = KoinTheme.shapes.extraSmall,
-            color = Color.White,
+            color = Color.White
         ) {
             Column(
                 modifier =
-                    Modifier
-                        .background(color = Color.White)
-                        .padding(
-                            top = 24.dp,
-                            bottom = 19.dp,
-                            start = (31.5).dp,
-                            end = (31.5).dp,
-                        ),
+                Modifier
+                    .background(color = Color.White)
+                    .padding(
+                        top = 24.dp,
+                        bottom = 19.dp,
+                        start = (31.5).dp,
+                        end = (31.5).dp
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
                     text = title,
                     style = KoinTheme.typography.bold16,
-                    color = KoinTheme.colors.neutral800,
+                    color = KoinTheme.colors.neutral800
                 )
                 Row(
                     modifier =
-                        Modifier
-                            .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
+                    Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     KoinPicker(
                         items = hourItemsState.value,
                         pickerState = hourPickerState,
                         visibleItemsCount = 5,
                         startIndex =
-                            if (isStartTime) {
-                                (customContent.startTime.hour - 9)
+                        if (isStartTime) {
+                            (customContent.startTime.hour - 9)
+                        } else {
+                            if (customContent.endTime.hour == 23 && customContent.endTime.minute == 59) {
+                                hourItems.size - 1
                             } else {
-                                if (customContent.endTime.hour == 23 && customContent.endTime.minute == 59) {
-                                    hourItems.size - 1
-                                } else {
-                                    (customContent.endTime.hour - 9)
-                                }
-                            },
+                                (customContent.endTime.hour - 9)
+                            }
+                        },
                         selectedTextStyle =
-                            KoinTheme.typography.bold20.copy(
-                                textAlign = TextAlign.End,
-                            ),
+                        KoinTheme.typography.bold20.copy(
+                            textAlign = TextAlign.End
+                        ),
                         unselectedTextStyle =
-                            KoinTheme.typography.bold20.copy(
-                                textAlign = TextAlign.End,
-                            ),
+                        KoinTheme.typography.bold20.copy(
+                            textAlign = TextAlign.End
+                        ),
                         selectedItemColor = KoinTheme.colors.neutral700,
                         unselectedItemColor = KoinTheme.colors.neutral500,
                         brushVerticalGradient =
-                            Brush.verticalGradient(
-                                0f to Color.Transparent,
-                                0.5f to Color.Black,
-                                1f to Color.Transparent,
-                            ),
-                        modifier = Modifier.weight(.45f),
+                        Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.5f to Color.Black,
+                            1f to Color.Transparent
+                        ),
+                        modifier = Modifier.weight(.45f)
                     )
                     Text(
                         text = ":",
                         style = KoinTheme.typography.bold20,
                         color = KoinTheme.colors.neutral700,
                         modifier = Modifier.weight(.1f),
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                     KoinPicker(
                         items = minutesItemsState.value,
                         pickerState = minutesPickerState,
                         visibleItemsCount = 5,
                         startIndex =
-                            if (isStartTime) {
-                                if (customContent.startTime.minute == 0) {
-                                    0
-                                } else {
-                                    1
-                                }
+                        if (isStartTime) {
+                            if (customContent.startTime.minute == 0) {
+                                0
                             } else {
-                                if (customContent.endTime.minute == 0 || customContent.endTime.minute == 59) {
-                                    0
-                                } else {
-                                    1
-                                }
-                            },
+                                1
+                            }
+                        } else {
+                            if (customContent.endTime.minute == 0 || customContent.endTime.minute == 59) {
+                                0
+                            } else {
+                                1
+                            }
+                        },
                         selectedTextStyle = KoinTheme.typography.bold20,
                         unselectedTextStyle = KoinTheme.typography.bold20,
                         selectedItemColor = KoinTheme.colors.neutral700,
                         unselectedItemColor = KoinTheme.colors.neutral500,
                         modifier = Modifier.weight(.45f),
                         brushVerticalGradient =
-                            Brush.verticalGradient(
-                                0f to Color.Transparent,
-                                0.5f to Color.Black,
-                                1f to Color.Transparent,
-                            ),
-                        infiniteScroll = false,
+                        Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.5f to Color.Black,
+                            1f to Color.Transparent
+                        ),
+                        infiniteScroll = false
                     )
                 }
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         colors =
-                            ButtonColors(
-                                containerColor = KoinTheme.colors.neutral0,
-                                contentColor = KoinTheme.colors.neutral500,
-                                disabledContainerColor = KoinTheme.colors.neutral400,
-                                disabledContentColor = KoinTheme.colors.neutral500,
-                            ),
+                        ButtonColors(
+                            containerColor = KoinTheme.colors.neutral0,
+                            contentColor = KoinTheme.colors.neutral500,
+                            disabledContainerColor = KoinTheme.colors.neutral400,
+                            disabledContentColor = KoinTheme.colors.neutral500
+                        ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
-                        onClick = { onDismiss(customContent, false) },
+                        onClick = { onDismiss(customContent, false) }
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_cancellation),
                             style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600,
+                            color = KoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.common_confirmation),
                         onClick = {
                             if (isStartTime) {
                                 onConfirm(
                                     customContent.copy(
                                         startTime =
-                                            LocalTime.of(
-                                                hourPickerState.selectedItem.toInt(),
-                                                minutesPickerState.selectedItem.toInt(),
-                                            ),
-                                    ),
+                                        LocalTime.of(
+                                            hourPickerState.selectedItem.toInt(),
+                                            minutesPickerState.selectedItem.toInt()
+                                        )
+                                    )
                                 )
                             } else {
                                 if (hourPickerState.selectedItem == "9") {
                                     onConfirm(
                                         customContent.copy(
                                             endTime =
-                                                LocalTime.of(
-                                                    hourPickerState.selectedItem.toInt(),
-                                                    30,
-                                                ),
-                                        ),
+                                            LocalTime.of(
+                                                hourPickerState.selectedItem.toInt(),
+                                                30
+                                            )
+                                        )
                                     )
                                 } else if (hourPickerState.selectedItem == "24") {
                                     onConfirm(
                                         customContent.copy(
-                                            endTime = LocalTime.of(23, 59),
-                                        ),
+                                            endTime = LocalTime.of(23, 59)
+                                        )
                                     )
                                 } else {
                                     onConfirm(
                                         customContent.copy(
                                             endTime =
-                                                LocalTime.of(
-                                                    hourPickerState.selectedItem.toInt(),
-                                                    minutesPickerState.selectedItem.toInt(),
-                                                ),
-                                        ),
+                                            LocalTime.of(
+                                                hourPickerState.selectedItem.toInt(),
+                                                minutesPickerState.selectedItem.toInt()
+                                            )
+                                        )
                                     )
                                 }
                             }
-                        },
+                        }
                     )
                 }
             }
@@ -275,6 +275,6 @@ private fun TimetableTimePickerDialogPreview() {
     TimetableTimePickerDialog(
         title = "시작시간을 선택해주세요.",
         isStartTime = true,
-        customContent = CustomExtraContentState(),
+        customContent = CustomExtraContentState()
     )
 }

@@ -39,25 +39,25 @@ fun DeleteLectureDialog(
     lecture: TimetableLecture?,
     onConfirm: (id: Int) -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
         modifier = modifier,
-        onDismissRequest = onDismiss,
+        onDismissRequest = onDismiss
     ) {
         Surface(
             shape = KoinTheme.shapes.extraSmall,
-            color = Color.White,
+            color = Color.White
         ) {
             Column(
                 modifier =
-                    Modifier
-                        .wrapContentSize()
-                        .padding(
-                            horizontal = 32.dp,
-                            vertical = 24.dp,
-                        ),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                Modifier
+                    .wrapContentSize()
+                    .padding(
+                        horizontal = 32.dp,
+                        vertical = 24.dp
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val title =
                     stringArrayResource(id = R.array.delete_lecture_title).apply {
@@ -67,67 +67,67 @@ fun DeleteLectureDialog(
                     texts = title,
                     highlightIndices = listOf(1),
                     defaultStyle =
-                        KoinTheme.typography.medium16.copy(
-                            color = KoinTheme.colors.neutral600,
-                        ),
+                    KoinTheme.typography.medium16.copy(
+                        color = KoinTheme.colors.neutral600
+                    ),
                     highlightStyle =
-                        KoinTheme.typography.bold16.copy(
-                            color = KoinTheme.colors.danger700,
-                        ),
+                    KoinTheme.typography.bold16.copy(
+                        color = KoinTheme.colors.danger700
+                    )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 HighlightedText(
                     texts = stringArrayResource(id = R.array.delete_lecture_description),
                     highlightIndices = listOf(1),
                     defaultStyle =
-                        KoinTheme.typography.medium16.copy(
-                            color = KoinTheme.colors.neutral600,
-                        ),
+                    KoinTheme.typography.medium16.copy(
+                        color = KoinTheme.colors.neutral600
+                    ),
                     highlightStyle =
-                        KoinTheme.typography.bold16.copy(
-                            color = KoinTheme.colors.info700,
-                        ),
+                    KoinTheme.typography.bold16.copy(
+                        color = KoinTheme.colors.info700
+                    )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         colors =
-                            ButtonColors(
-                                containerColor = KoinTheme.colors.neutral0,
-                                contentColor = KoinTheme.colors.neutral500,
-                                disabledContainerColor = KoinTheme.colors.neutral400,
-                                disabledContentColor = KoinTheme.colors.neutral500,
-                            ),
+                        ButtonColors(
+                            containerColor = KoinTheme.colors.neutral0,
+                            contentColor = KoinTheme.colors.neutral500,
+                            disabledContainerColor = KoinTheme.colors.neutral400,
+                            disabledContentColor = KoinTheme.colors.neutral500
+                        ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
-                        onClick = { onDismiss() },
+                        onClick = { onDismiss() }
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_cancellation),
                             style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600,
+                            color = KoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.delete_lecture_confirmation),
                         buttonStyle = FilledButtonType.Danger,
                         onClick = {
                             lecture?.let {
                                 onConfirm(it.id)
                             }
-                        },
+                        }
                     )
                 }
             }
@@ -142,7 +142,7 @@ private fun DeleteLectureDialogPreview() {
         DeleteLectureDialog(
             lecture = dummyLecture.toTimetableLecture(),
             onConfirm = {},
-            onDismiss = {},
+            onDismiss = {}
         )
     }
 }

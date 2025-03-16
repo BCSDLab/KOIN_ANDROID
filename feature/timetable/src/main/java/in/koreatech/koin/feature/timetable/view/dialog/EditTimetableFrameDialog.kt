@@ -49,7 +49,7 @@ fun EditTimetableFrameDialog(
     onDismiss: () -> Unit,
     onConfirmEdit: (TimetableFrame) -> Unit,
     onDeleteFrame: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     var isMain by remember { mutableStateOf(timetableFrameState?.isMain ?: false) }
     var timetableName by remember { mutableStateOf(timetableFrameState?.timetableName ?: "") }
@@ -69,8 +69,8 @@ fun EditTimetableFrameDialog(
                 onConfirmEdit(
                     it.copy(
                         timetableName = timetableName,
-                        isMain = isMain,
-                    ),
+                        isMain = isMain
+                    )
                 )
             }
         },
@@ -85,7 +85,7 @@ fun EditTimetableFrameDialog(
         },
         onCheckChanged = {
             isMain = it
-        },
+        }
     )
 
     if (showingDeleteDialog) {
@@ -97,7 +97,7 @@ fun EditTimetableFrameDialog(
                 timetableFrameState?.let {
                     onDeleteFrame()
                 }
-            },
+            }
         )
     }
 }
@@ -113,99 +113,99 @@ private fun EditTimetableFrameDialog(
     onClickDelete: () -> Unit,
     onValueChanged: (String) -> Unit,
     onCheckChanged: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
         modifier = modifier,
-        onDismissRequest = onDismiss,
+        onDismissRequest = onDismiss
     ) {
         Box(
             modifier =
-                Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight()
-                    .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
-                    .padding(horizontal = 24.dp),
+            Modifier
+                .wrapContentWidth()
+                .wrapContentHeight()
+                .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
+                .padding(horizontal = 24.dp)
         ) {
             FilledTextButton(
                 modifier =
-                    Modifier
-                        .padding(top = 16.dp)
-                        .height(24.dp),
+                Modifier
+                    .padding(top = 16.dp)
+                    .height(24.dp),
                 text = stringResource(id = R.string.edit_titletable_frame_delete),
                 textStyle = KoinTheme.typography.medium14,
                 buttonStyle = FilledButtonType.Danger,
-                onClick = onClickDelete,
+                onClick = onClickDelete
             )
             Column(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 26.dp, horizontal = 0.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 26.dp, horizontal = 0.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
                     text = stringResource(id = R.string.edit_titletable_frame_title),
-                    style = KoinTheme.typography.bold16,
+                    style = KoinTheme.typography.bold16
                 )
                 // TODO:: 높이 수정 필요
                 TextField(
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .border(
-                                border =
-                                    BorderStroke(
-                                        width = 1.dp,
-                                        color = KoinTheme.colors.neutral300,
-                                    ),
-                                shape = KoinTheme.shapes.extraSmall,
+                    Modifier
+                        .fillMaxWidth()
+                        .border(
+                            border =
+                            BorderStroke(
+                                width = 1.dp,
+                                color = KoinTheme.colors.neutral300
                             ),
+                            shape = KoinTheme.shapes.extraSmall
+                        ),
                     value = timetableName,
                     textStyle =
-                        KoinTheme.typography.regular14.copy(
-                            color = KoinTheme.colors.neutral500,
-                        ),
+                    KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.neutral500
+                    ),
                     colors =
-                        TextFieldDefaults.colors(
-                            unfocusedContainerColor = KoinTheme.colors.neutral100, // 배경색 (클릭 X)
-                            focusedContainerColor = KoinTheme.colors.neutral100, // 배경색 (클릭 O)
-                            unfocusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 X)
-                            focusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 O)
-                            cursorColor = Color.Black, // 클릭 시, 커서색
-                            focusedTextColor = Color.Black, // 클릭 시, 입력 텍스트 색
-                        ),
+                    TextFieldDefaults.colors(
+                        unfocusedContainerColor = KoinTheme.colors.neutral100, // 배경색 (클릭 X)
+                        focusedContainerColor = KoinTheme.colors.neutral100, // 배경색 (클릭 O)
+                        unfocusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 X)
+                        focusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 O)
+                        cursorColor = Color.Black, // 클릭 시, 커서색
+                        focusedTextColor = Color.Black // 클릭 시, 입력 텍스트 색
+                    ),
                     singleLine = true,
-                    onValueChange = onValueChanged,
+                    onValueChange = onValueChanged
                 )
                 TextCheckbox(
                     text = stringResource(id = R.string.edit_titletable_frame_main),
                     textStyle = KoinTheme.typography.medium14,
                     isChecked = isMain,
                     enabled = isCheckboxEnabled,
-                    onCheckChanged = onCheckChanged,
+                    onCheckChanged = onCheckChanged
                 )
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedBoxButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.common_cancellation),
                         onClick = onDismiss,
-                        colors = OutlinedBoxButtonColors.Neutral,
+                        colors = OutlinedBoxButtonColors.Neutral
                     )
                     FilledTextButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.common_save),
-                        onClick = onConfirm,
+                        onClick = onConfirm
                     )
                 }
             }
@@ -219,7 +219,7 @@ private fun DeleteTimetableFrameDialog(
     timetableName: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val title =
         stringArrayResource(id = R.array.delete_titletable_frame_title).apply {
@@ -228,60 +228,60 @@ private fun DeleteTimetableFrameDialog(
 
     BasicAlertDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier,
+        modifier = modifier
     ) {
         Surface(
             modifier =
-                Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
+            Modifier
+                .wrapContentWidth()
+                .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall,
-            color = Color.White,
+            color = Color.White
         ) {
             Column(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 32.dp,
-                            vertical = 24.dp,
-                        ),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 32.dp,
+                        vertical = 24.dp
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 HighlightedText(
                     texts = title,
                     highlightIndices = listOf(1),
                     defaultStyle =
-                        KoinTheme.typography.medium16.copy(
-                            color = KoinTheme.colors.neutral600,
-                        ),
+                    KoinTheme.typography.medium16.copy(
+                        color = KoinTheme.colors.neutral600
+                    ),
                     highlightStyle =
-                        KoinTheme.typography.bold16.copy(
-                            color = KoinTheme.colors.danger700,
-                        ),
+                    KoinTheme.typography.bold16.copy(
+                        color = KoinTheme.colors.danger700
+                    )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedBoxButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.common_cancellation),
                         onClick = onDismiss,
-                        colors = OutlinedBoxButtonColors.Neutral,
+                        colors = OutlinedBoxButtonColors.Neutral
                     )
                     FilledButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.delete_titletable_frame_confirmation),
                         onClick = onConfirm,
-                        colors = FilledButtonColors.Danger,
+                        colors = FilledButtonColors.Danger
                     )
                 }
             }
@@ -295,14 +295,14 @@ private fun EditTimetableFrameDialogPreview() {
     KoinTheme {
         EditTimetableFrameDialog(
             timetableFrameState =
-                TimetableFrame(
-                    id = 1,
-                    timetableName = "시간표1",
-                    isMain = true,
-                ),
+            TimetableFrame(
+                id = 1,
+                timetableName = "시간표1",
+                isMain = true
+            ),
             onDismiss = {},
             onConfirmEdit = {},
-            onDeleteFrame = {},
+            onDeleteFrame = {}
         )
     }
 }
@@ -314,7 +314,7 @@ private fun DeleteTimetableFrameDialogPreview() {
         DeleteTimetableFrameDialog(
             timetableName = "시간표1",
             onDismiss = {},
-            onConfirm = {},
+            onConfirm = {}
         )
     }
 }

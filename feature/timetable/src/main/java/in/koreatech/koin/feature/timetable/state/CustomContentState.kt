@@ -4,16 +4,16 @@ import androidx.compose.ui.graphics.Color
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.model.TimetableColor
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import java.time.DayOfWeek
 import java.time.LocalTime
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 data class CustomContentState(
     val schedule: String = "",
     val professor: String = "",
     val isScheduleError: Boolean = false,
-    val data: ImmutableList<CustomExtraContentState> = persistentListOf(CustomExtraContentState()),
+    val data: ImmutableList<CustomExtraContentState> = persistentListOf(CustomExtraContentState())
 ) {
     fun toTimetableEvent() =
         TimetableEvent(
@@ -23,7 +23,7 @@ data class CustomContentState(
             color = TimetableColor(Color.White, Color.White),
             dayOfWeek = DayOfWeek.MONDAY,
             start = LocalTime.of(9, 0),
-            end = LocalTime.of(10, 0),
+            end = LocalTime.of(10, 0)
         )
 
     fun toLectures(): List<Lecture> {
@@ -36,8 +36,8 @@ data class CustomContentState(
                     name = schedule.trim(),
                     professor = professor.trim(),
                     classTime = lecture.toClassTime(),
-                    place = lecture.place.trim(),
-                ),
+                    place = lecture.place.trim()
+                )
             )
         }
 

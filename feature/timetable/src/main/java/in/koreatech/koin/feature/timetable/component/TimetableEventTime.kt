@@ -34,7 +34,7 @@ import java.time.DayOfWeek
 enum class TimetableEventType {
     BASIC,
     SELECTED,
-    ETC_SELECTED,
+    ETC_SELECTED
 }
 
 @Composable
@@ -43,7 +43,7 @@ fun TimetableEventTime(
     event: TimetableEvent,
     modifier: Modifier = Modifier,
     eventType: TimetableEventType = TimetableEventType.BASIC,
-    onEventTimeClick: (event: TimetableEvent) -> Unit = {},
+    onEventTimeClick: (event: TimetableEvent) -> Unit = {}
 ) {
     when (eventType) {
         TimetableEventType.BASIC ->
@@ -51,21 +51,21 @@ fun TimetableEventTime(
                 range = range,
                 event = event,
                 modifier = modifier.padding((0.5).dp),
-                onEventTimeClick = onEventTimeClick,
+                onEventTimeClick = onEventTimeClick
             )
 
         TimetableEventType.SELECTED ->
             TimetableSelectedEventTime(
                 range = range,
                 event = event,
-                modifier = modifier.padding(0.5.dp),
+                modifier = modifier.padding(0.5.dp)
             )
 
         TimetableEventType.ETC_SELECTED ->
             TimetableEtcSelectedEventTime(
                 range = range,
                 event = event,
-                modifier = modifier.padding(1.dp),
+                modifier = modifier.padding(1.dp)
             )
     }
 }
@@ -75,7 +75,7 @@ private fun TimetableBasicEventTime(
     range: Int,
     event: TimetableEvent,
     modifier: Modifier = Modifier,
-    onEventTimeClick: (event: TimetableEvent) -> Unit = {},
+    onEventTimeClick: (event: TimetableEvent) -> Unit = {}
 ) {
     var height by rememberSaveable { mutableIntStateOf(0) }
     var titleMaxLine by rememberSaveable { mutableIntStateOf(Int.MAX_VALUE) }
@@ -113,29 +113,29 @@ private fun TimetableBasicEventTime(
 
     Column(
         modifier =
-            modifier
-                .fillMaxSize()
-                .background(color = event.color.content)
-                .border(
-                    color = Color.Transparent,
-                    width = 1.dp,
-                    shape =
-                        RoundedCornerShape(
-                            bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event),
-                        ),
+        modifier
+            .fillMaxSize()
+            .background(color = event.color.content)
+            .border(
+                color = Color.Transparent,
+                width = 1.dp,
+                shape =
+                RoundedCornerShape(
+                    bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event)
                 )
-                .noRippleClickable { onEventTimeClick(event) }
-                .onGloballyPositioned {
-                    height = it.size.height
-                },
+            )
+            .noRippleClickable { onEventTimeClick(event) }
+            .onGloballyPositioned {
+                height = it.size.height
+            }
     ) {
         HorizontalDivider(color = event.color.header, thickness = 2.dp)
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = event.name,
             modifier =
-                Modifier
-                    .padding(1.dp),
+            Modifier
+                .padding(1.dp),
             style = KoinTheme.typography.regular12,
             color = KoinTheme.colors.neutral800,
             maxLines = titleMaxLine,
@@ -143,14 +143,14 @@ private fun TimetableBasicEventTime(
             onTextLayout = {
                 titleLineCount = it.lineCount
                 titleHeight = it.size.height
-            },
+            }
         )
         if (event.professor.isNotEmpty()) {
             Text(
                 text = event.professor,
                 modifier =
-                    Modifier
-                        .padding(1.dp),
+                Modifier
+                    .padding(1.dp),
                 style = KoinTheme.typography.regular10,
                 color = KoinTheme.colors.neutral800,
                 maxLines = professorMaxLine,
@@ -158,15 +158,15 @@ private fun TimetableBasicEventTime(
                 onTextLayout = {
                     professorLineCount = it.lineCount
                     professorHeight = it.size.height
-                },
+                }
             )
         }
         if (event.place.isNotEmpty()) {
             Text(
                 text = event.place,
                 modifier =
-                    Modifier
-                        .padding(1.dp),
+                Modifier
+                    .padding(1.dp),
                 style = KoinTheme.typography.regular10,
                 color = KoinTheme.colors.neutral800,
                 maxLines = placeMaxLine,
@@ -174,7 +174,7 @@ private fun TimetableBasicEventTime(
                 onTextLayout = {
                     placeLineCount = it.lineCount
                     placeHeight = it.size.height
-                },
+                }
             )
         }
     }
@@ -184,23 +184,23 @@ private fun TimetableBasicEventTime(
 private fun TimetableSelectedEventTime(
     range: Int,
     event: TimetableEvent,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier =
-            modifier
-                .fillMaxSize()
-                .background(
-                    color = Color.Transparent,
+        modifier
+            .fillMaxSize()
+            .background(
+                color = Color.Transparent
+            )
+            .border(
+                color = KoinTheme.colors.neutral500,
+                width = 1.dp,
+                shape =
+                RoundedCornerShape(
+                    bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event)
                 )
-                .border(
-                    color = KoinTheme.colors.neutral500,
-                    width = 1.dp,
-                    shape =
-                        RoundedCornerShape(
-                            bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event),
-                        ),
-                ),
+            )
     )
 }
 
@@ -208,32 +208,32 @@ private fun TimetableSelectedEventTime(
 private fun TimetableEtcSelectedEventTime(
     range: Int,
     event: TimetableEvent,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier =
-            modifier
-                .fillMaxSize()
-                .background(
-                    color = Color.Transparent,
+        modifier
+            .fillMaxSize()
+            .background(
+                color = Color.Transparent
+            )
+            .dashedBorder(
+                gapLength = 5.dp,
+                color = KoinTheme.colors.neutral500,
+                shape =
+                RoundedCornerShape(
+                    topStart = 0.dp,
+                    topEnd = 0.dp,
+                    bottomStart = 0.dp,
+                    bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event)
                 )
-                .dashedBorder(
-                    gapLength = 5.dp,
-                    color = KoinTheme.colors.neutral500,
-                    shape =
-                        RoundedCornerShape(
-                            topStart = 0.dp,
-                            topEnd = 0.dp,
-                            bottomStart = 0.dp,
-                            bottomEnd = timetableSelectedEventTimeBottomEndRound(range, event),
-                        ),
-                ),
+            )
     )
 }
 
 private fun timetableSelectedEventTimeBottomEndRound(
     range: Int,
-    event: TimetableEvent,
+    event: TimetableEvent
 ): Dp {
     if (event.dayOfWeek == DayOfWeek.FRIDAY) {
         val timeRange =
@@ -255,14 +255,14 @@ private fun TimetableEventTimePreview_Basic() {
     TimetableEventTime(
         range = 9,
         event =
-            dummyEvent.copy(
-                name = "asdfsadfsadfsadfadfasdfsadfsdfassadf",
-                professor = "dafdafdafdafdafdafdafdafdafsdfaasdfasd",
-                place = "qqqqqqqqqqqqqqqqqqqqq",
-            ),
+        dummyEvent.copy(
+            name = "asdfsadfsadfsadfadfasdfsadfsdfassadf",
+            professor = "dafdafdafdafdafdafdafdafdafsdfaasdfasd",
+            place = "qqqqqqqqqqqqqqqqqqqqq"
+        ),
         modifier =
-            Modifier
-                .sizeIn(maxHeight = (64 * 2).dp),
+        Modifier
+            .sizeIn(maxHeight = (64 * 2).dp)
     )
 }
 
@@ -273,10 +273,10 @@ private fun TimetableEventTimePreview_Selected() {
         range = 9,
         event = dummyEvent,
         modifier =
-            Modifier
-                .sizeIn(maxHeight = 64.dp)
-                .padding(10.dp),
-        eventType = TimetableEventType.SELECTED,
+        Modifier
+            .sizeIn(maxHeight = 64.dp)
+            .padding(10.dp),
+        eventType = TimetableEventType.SELECTED
     )
 }
 
@@ -287,9 +287,9 @@ private fun TimetableEventTimePreview_Etc_Selected() {
         range = 9,
         event = dummyEvent,
         modifier =
-            Modifier
-                .sizeIn(maxHeight = 64.dp)
-                .padding(10.dp),
-        eventType = TimetableEventType.ETC_SELECTED,
+        Modifier
+            .sizeIn(maxHeight = 64.dp)
+            .padding(10.dp),
+        eventType = TimetableEventType.ETC_SELECTED
     )
 }

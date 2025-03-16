@@ -20,25 +20,25 @@ fun BottomSheetCustomContent(
     onPlaceNameChange: (id: Int, text: String) -> Unit = { _, _ -> },
     onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = {},
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
-    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         TimetableTimeContentRow(
             customContent = customExtraContentState,
             onDayOfWeekChange = onDayOfWeekChange,
             onClickStartTime = onClickStartTime,
-            onClickEndTime = onClickEndTime,
+            onClickEndTime = onClickEndTime
         )
         TimetableInputField(
             text = customExtraContentState.place,
             title = stringResource(id = R.string.timetable_input_field_title_place),
             onValueChange = {
                 onPlaceNameChange(customExtraContentState.id, it)
-            },
+            }
         )
     }
 }
@@ -47,6 +47,6 @@ fun BottomSheetCustomContent(
 @Composable
 private fun BottomSheetCustomContentPreview() {
     BottomSheetCustomContent(
-        customExtraContentState = CustomExtraContentState(),
+        customExtraContentState = CustomExtraContentState()
     )
 }

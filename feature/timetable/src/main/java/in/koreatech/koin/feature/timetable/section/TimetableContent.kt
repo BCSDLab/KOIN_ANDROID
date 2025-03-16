@@ -50,18 +50,18 @@ fun TimetableContent(
     content: @Composable (
         event: TimetableEvent,
         eventType: TimetableEventType,
-        onEventTimeClick: (TimetableEvent) -> Unit,
+        onEventTimeClick: (TimetableEvent) -> Unit
     ) -> Unit = { event, eventType, onClick ->
         TimetableEventTime(
             range = range,
             event = event,
             modifier = Modifier,
             eventType = eventType,
-            onEventTimeClick = onClick,
+            onEventTimeClick = onClick
         )
     },
     onEventClick: (event: TimetableEvent) -> Unit = {},
-    onEventY: (y: Int) -> Unit = {},
+    onEventY: (y: Int) -> Unit = {}
 ) {
     val width = measureEventWidth(horizontalPadding = horizontalPadding, dayCount = dayCount)
     val initStartTime = LocalTime.of(9, 0)
@@ -71,18 +71,18 @@ fun TimetableContent(
             TimetableConstants.days.forEach { day ->
                 Box(
                     modifier =
-                        Modifier.then(
-                            object : ParentDataModifier {
-                                override fun Density.modifyParentData(parentData: Any?): String = day
-                            },
-                        ),
+                    Modifier.then(
+                        object : ParentDataModifier {
+                            override fun Density.modifyParentData(parentData: Any?): String = day
+                        }
+                    )
                 ) {
                     Text(
                         text = day,
                         style = KoinTheme.typography.medium13,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
-                        color = KoinTheme.colors.neutral500,
+                        color = KoinTheme.colors.neutral500
                     )
                 }
             }
@@ -90,18 +90,18 @@ fun TimetableContent(
                 val time = (initStartTime.hour + it).toString()
                 Box(
                     modifier =
-                        Modifier.then(
-                            object : ParentDataModifier {
-                                override fun Density.modifyParentData(parentData: Any?): String = time
-                            },
-                        ),
+                    Modifier.then(
+                        object : ParentDataModifier {
+                            override fun Density.modifyParentData(parentData: Any?): String = time
+                        }
+                    )
                 ) {
                     Text(
                         text = time,
                         style = KoinTheme.typography.regular12,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
-                        color = KoinTheme.colors.neutral500,
+                        color = KoinTheme.colors.neutral500
                     )
                 }
             }
@@ -126,74 +126,74 @@ fun TimetableContent(
             }
         },
         modifier =
-            modifier
-                .background(Color.White, shape = RoundedCornerShape(10.dp))
-                .clip(RoundedCornerShape(10.dp))
-                .border(
-                    border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
-                    shape = RoundedCornerShape(10.dp),
-                )
-                .drawBehind {
-                    repeat(range * 2 + 1) { // 가로축
-                        val innerHeight = (height / 2).toPx()
-                        val headerHeight = dayHeight.toPx()
-                        when (it) {
-                            0 -> { // 시간표 Header
-                                drawLine(
-                                    color = neutral300,
-                                    start = Offset(0f, headerHeight),
-                                    end = Offset(size.width, headerHeight),
-                                    strokeWidth = 1.dp.toPx(),
-                                )
-                            }
-
-                            else -> { // 시간표 Body
-                                if (it % 2 == 1) {
-                                    drawLine(
-                                        color = neutral300,
-                                        start =
-                                            Offset(
-                                                timeWidth.toPx(),
-                                                it * innerHeight + headerHeight,
-                                            ),
-                                        end = Offset(size.width, it * innerHeight + headerHeight),
-                                        strokeWidth = 1.dp.toPx(),
-                                    )
-                                } else {
-                                    drawLine(
-                                        color = neutral300,
-                                        start = Offset(0f, it * innerHeight + headerHeight),
-                                        end = Offset(size.width, it * innerHeight + headerHeight),
-                                        strokeWidth = 1.dp.toPx(),
-                                    )
-                                }
-                            }
+        modifier
+            .background(Color.White, shape = RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(10.dp))
+            .border(
+                border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .drawBehind {
+                repeat(range * 2 + 1) { // 가로축
+                    val innerHeight = (height / 2).toPx()
+                    val headerHeight = dayHeight.toPx()
+                    when (it) {
+                        0 -> { // 시간표 Header
+                            drawLine(
+                                color = neutral300,
+                                start = Offset(0f, headerHeight),
+                                end = Offset(size.width, headerHeight),
+                                strokeWidth = 1.dp.toPx()
+                            )
                         }
-                    }
-                    repeat(dayCount + 1) { // 세로축
-                        val innerWidth =
-                            timeWidth.toPx() + it * ((size.width - timeWidth.toPx()) / dayCount)
-                        when (it) {
-                            0 -> {
-                                drawLine(
-                                    color = neutral300,
-                                    start = Offset(timeWidth.toPx(), 0f),
-                                    end = Offset(timeWidth.toPx(), size.height),
-                                    strokeWidth = 1.dp.toPx(),
-                                )
-                            }
 
-                            else -> {
+                        else -> { // 시간표 Body
+                            if (it % 2 == 1) {
                                 drawLine(
                                     color = neutral300,
-                                    start = Offset(innerWidth, 0f),
-                                    end = Offset(innerWidth, size.height),
-                                    strokeWidth = 1.dp.toPx(),
+                                    start =
+                                    Offset(
+                                        timeWidth.toPx(),
+                                        it * innerHeight + headerHeight
+                                    ),
+                                    end = Offset(size.width, it * innerHeight + headerHeight),
+                                    strokeWidth = 1.dp.toPx()
+                                )
+                            } else {
+                                drawLine(
+                                    color = neutral300,
+                                    start = Offset(0f, it * innerHeight + headerHeight),
+                                    end = Offset(size.width, it * innerHeight + headerHeight),
+                                    strokeWidth = 1.dp.toPx()
                                 )
                             }
                         }
                     }
-                },
+                }
+                repeat(dayCount + 1) { // 세로축
+                    val innerWidth =
+                        timeWidth.toPx() + it * ((size.width - timeWidth.toPx()) / dayCount)
+                    when (it) {
+                        0 -> {
+                            drawLine(
+                                color = neutral300,
+                                start = Offset(timeWidth.toPx(), 0f),
+                                end = Offset(timeWidth.toPx(), size.height),
+                                strokeWidth = 1.dp.toPx()
+                            )
+                        }
+
+                        else -> {
+                            drawLine(
+                                color = neutral300,
+                                start = Offset(innerWidth, 0f),
+                                end = Offset(innerWidth, size.height),
+                                strokeWidth = 1.dp.toPx()
+                            )
+                        }
+                    }
+                }
+            }
     ) { measureables, constraints ->
         val timetableWidth = width.roundToPx() * (dayCount + 1)
         val timetableHeight = height.roundToPx() * range + dayHeight.roundToPx()
@@ -207,8 +207,8 @@ fun TimetableContent(
                         minWidth = innerWidth,
                         maxWidth = innerWidth,
                         minHeight = dayHeight.roundToPx(),
-                        maxHeight = dayHeight.roundToPx(),
-                    ),
+                        maxHeight = dayHeight.roundToPx()
+                    )
                 )
             }
 
@@ -220,8 +220,8 @@ fun TimetableContent(
                         minWidth = timeWidth.roundToPx(),
                         maxWidth = timeWidth.roundToPx(),
                         minHeight = height.roundToPx(),
-                        maxHeight = height.roundToPx(),
-                    ),
+                        maxHeight = height.roundToPx()
+                    )
                 )
             }
 
@@ -243,8 +243,8 @@ fun TimetableContent(
                             minWidth = innerWidth + 1,
                             maxWidth = innerWidth + 1,
                             minHeight = eventHeight,
-                            maxHeight = eventHeight,
-                        ),
+                            maxHeight = eventHeight
+                        )
                     )
                 Pair(placeable, event)
             }
@@ -293,11 +293,11 @@ fun TimetableContent(
 @Composable
 private fun measureEventWidth(
     horizontalPadding: Dp,
-    dayCount: Int,
+    dayCount: Int
 ): Dp = LocalConfiguration.current.screenWidthDp.dp / (dayCount + 1) - (horizontalPadding / (dayCount + 1))
 
 private class EventDataModifier(
-    val event: TimetableEvent,
+    val event: TimetableEvent
 ) : ParentDataModifier {
     override fun Density.modifyParentData(parentData: Any?) = event
 }
@@ -311,28 +311,28 @@ private fun TimetableContentPreview() {
         range = 9,
         horizontalPadding = 24.dp,
         events =
-            listOf(
-                dummyEvent,
-                dummyEvent.copy(
-                    name = "제목제목제목제목제목제목제목제목제목제목",
-                    professor = "교수교수교수교수교수교수교수교수",
-                    place = "장소",
-                    dayOfWeek = DayOfWeek.MONDAY,
-                    start = LocalTime.of(15, 0),
-                    end = LocalTime.of(18, 0),
-                ),
-                dummyEvent.copy(start = LocalTime.of(9, 0), dayOfWeek = DayOfWeek.WEDNESDAY),
-                dummyEvent.copy(
-                    end = LocalTime.of(17, 0),
-                    dayOfWeek = DayOfWeek.THURSDAY,
-                ),
-                dummyEvent.copy(
-                    start = LocalTime.of(9, 0),
-                    end = LocalTime.of(16, 30),
-                    dayOfWeek = DayOfWeek.TUESDAY,
-                ),
+        listOf(
+            dummyEvent,
+            dummyEvent.copy(
+                name = "제목제목제목제목제목제목제목제목제목제목",
+                professor = "교수교수교수교수교수교수교수교수",
+                place = "장소",
+                dayOfWeek = DayOfWeek.MONDAY,
+                start = LocalTime.of(15, 0),
+                end = LocalTime.of(18, 0)
             ),
+            dummyEvent.copy(start = LocalTime.of(9, 0), dayOfWeek = DayOfWeek.WEDNESDAY),
+            dummyEvent.copy(
+                end = LocalTime.of(17, 0),
+                dayOfWeek = DayOfWeek.THURSDAY
+            ),
+            dummyEvent.copy(
+                start = LocalTime.of(9, 0),
+                end = LocalTime.of(16, 30),
+                dayOfWeek = DayOfWeek.TUESDAY
+            )
+        ),
         clickEvent = listOf(dummyEvent),
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(10.dp)
     )
 }

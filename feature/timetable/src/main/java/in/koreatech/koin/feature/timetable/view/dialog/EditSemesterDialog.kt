@@ -52,13 +52,13 @@ fun EditSemesterDialogImpl(
     onDismissSelectYear: () -> Unit = {},
     onClickSelectYear: () -> Unit = {},
     onConfirm: (List<SemesterModel>) -> Unit = {},
-    onDismiss: () -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
     var currentYear by remember { mutableStateOf(LocalDate.now().year) }
     var selectedSemesters by remember(currentYear, userSemesters) { mutableStateOf(listOf<SemesterType>()) }
 
     Box(
-        modifier = modifier,
+        modifier = modifier
     ) {
         if (isSelectYearDialogVisible) {
             SelectYearDialog(
@@ -68,7 +68,7 @@ fun EditSemesterDialogImpl(
                 onSelectYear = {
                     currentYear = it
                     onConfirmSelectYear()
-                },
+                }
             )
         } else {
             EditSemesterDialog(
@@ -85,7 +85,7 @@ fun EditSemesterDialogImpl(
                 },
                 onClickYear = onClickSelectYear,
                 onConfirm = { onConfirm(selectedSemesters.map { SemesterModel(currentYear, it) }) },
-                onDismiss = onDismiss,
+                onDismiss = onDismiss
             )
         }
     }
@@ -101,38 +101,38 @@ private fun EditSemesterDialog(
     onClickYear: () -> Unit = {},
     onClickSemester: (SemesterType) -> Unit = {},
     onConfirm: () -> Unit = {},
-    onDismiss: () -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
     BasicAlertDialog(
         modifier =
-            modifier
-                .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall),
-        onDismissRequest = onDismiss,
+        modifier
+            .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall),
+        onDismissRequest = onDismiss
     ) {
         Box {
             FilledTextButton(
                 modifier =
-                    Modifier
-                        .padding(top = 12.dp, start = 24.dp)
-                        .align(Alignment.TopStart)
-                        .height(24.dp),
+                Modifier
+                    .padding(top = 12.dp, start = 24.dp)
+                    .align(Alignment.TopStart)
+                    .height(24.dp),
                 text = stringResource(id = R.string.semester_edit_year, currentYear),
                 textStyle =
-                    KoinTheme.typography.medium12.copy(
-                        color = KoinTheme.colors.neutral800,
-                    ),
+                KoinTheme.typography.medium12.copy(
+                    color = KoinTheme.colors.neutral800
+                ),
                 buttonStyle = FilledButtonType.Neutral,
                 contentPadding = PaddingValues(horizontal = 20.dp),
-                onClick = onClickYear,
+                onClick = onClickYear
             )
             Column(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter)
-                        .padding(24.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter)
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(text = "학기 편집", style = KoinTheme.typography.bold16)
 
@@ -140,38 +140,38 @@ private fun EditSemesterDialog(
                     columns = GridCells.Fixed(2),
                     contentPadding = PaddingValues(0.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(28.dp),
+                    horizontalArrangement = Arrangement.spacedBy(28.dp)
                 ) {
                     items(SemesterType.entries) {
                         SemesterButton(
                             text = stringResource(id = it.stringRes),
                             isExisted = userSemesters.contains(it),
                             isSelected = selectedSemesters.contains(it),
-                            onClick = { onClickSemester(it) },
+                            onClick = { onClickSemester(it) }
                         )
                     }
                 }
 
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedBoxButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.common_cancellation),
                         colors = OutlinedBoxButtonColors.Neutral,
-                        onClick = onDismiss,
+                        onClick = onDismiss
                     )
                     FilledTextButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.semester_edit_apply),
-                        onClick = onConfirm,
+                        onClick = onConfirm
                     )
                 }
             }
@@ -186,38 +186,38 @@ private fun SelectYearDialog(
     yearList: List<Int>,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
-    onSelectYear: (Int) -> Unit = {},
+    onSelectYear: (Int) -> Unit = {}
 ) {
     BasicAlertDialog(
         modifier =
-            modifier
-                .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
-                .padding(top = 12.dp, start = 24.dp, end = 24.dp, bottom = 40.dp),
-        onDismissRequest = onDismiss,
+        modifier
+            .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
+            .padding(top = 12.dp, start = 24.dp, end = 24.dp, bottom = 40.dp),
+        onDismissRequest = onDismiss
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom,
+                verticalAlignment = Alignment.Bottom
             ) {
                 Text(
                     text = "연도 선택",
                     style =
-                        KoinTheme.typography.medium18.copy(
-                            color = KoinTheme.colors.primary500,
-                        ),
+                    KoinTheme.typography.medium18.copy(
+                        color = KoinTheme.colors.primary500
+                    )
                 )
                 IconButton(
                     modifier =
-                        Modifier
-                            .size(24.dp),
-                    onClick = onDismiss,
+                    Modifier
+                        .size(24.dp),
+                    onClick = onDismiss
                 ) {
                     StableIcon(
-                        drawableResId = R.drawable.ic_close,
+                        drawableResId = R.drawable.ic_close
                     )
                 }
             }
@@ -226,29 +226,29 @@ private fun SelectYearDialog(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(0.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalArrangement = Arrangement.spacedBy(28.dp),
+                horizontalArrangement = Arrangement.spacedBy(28.dp)
             ) {
                 items(yearList) { year ->
                     OutlinedBoxButton(
                         modifier =
-                            Modifier
-                                .height(40.dp),
+                        Modifier
+                            .height(40.dp),
                         text = year.toString(),
                         textStyle = KoinTheme.typography.regular15,
                         colors =
-                            ButtonColors(
-                                containerColor = KoinTheme.colors.neutral0,
-                                contentColor = KoinTheme.colors.neutral800,
-                                disabledContainerColor = KoinTheme.colors.neutral300,
-                                disabledContentColor = KoinTheme.colors.neutral800,
-                            ),
+                        ButtonColors(
+                            containerColor = KoinTheme.colors.neutral0,
+                            contentColor = KoinTheme.colors.neutral800,
+                            disabledContainerColor = KoinTheme.colors.neutral300,
+                            disabledContentColor = KoinTheme.colors.neutral800
+                        ),
                         border =
-                            BorderStroke(
-                                width = 1.dp,
-                                color = KoinTheme.colors.neutral300,
-                            ),
+                        BorderStroke(
+                            width = 1.dp,
+                            color = KoinTheme.colors.neutral300
+                        ),
                         enabled = currentYear != year,
-                        onClick = { onSelectYear(year) },
+                        onClick = { onSelectYear(year) }
                     )
                 }
             }
@@ -262,18 +262,18 @@ private fun EditSemesterDialogPreview() {
     EditSemesterDialog(
         currentYear = 2024,
         userSemesters =
-            listOf(
-                SemesterType.Fall,
-                SemesterType.Winter,
-            ),
+        listOf(
+            SemesterType.Fall,
+            SemesterType.Winter
+        ),
         selectedSemesters =
-            listOf(
-                SemesterType.Winter,
-            ),
+        listOf(
+            SemesterType.Winter
+        ),
         onClickYear = {},
         onClickSemester = {},
         onConfirm = {},
-        onDismiss = {},
+        onDismiss = {}
     )
 }
 
@@ -303,6 +303,6 @@ private fun EditSemesterDialogImplPreview() {
                     }
                 }
         },
-        onDismiss = {},
+        onDismiss = {}
     )
 }

@@ -33,55 +33,55 @@ fun ScheduleDuplicationDialog(
     timetableEvent: TimetableEvent,
     onConfirm: (Boolean) -> Unit,
     onDismiss: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
         onDismissRequest = { onDismiss(false) },
-        modifier = modifier,
+        modifier = modifier
     ) {
         Surface(
             modifier =
-                Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
+            Modifier
+                .wrapContentWidth()
+                .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall,
-            color = Color.White,
+            color = Color.White
         ) {
             Column(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 32.dp,
-                            vertical = 24.dp,
-                        ),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 32.dp,
+                        vertical = 24.dp
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = stringResource(R.string.schedule_duplication_title),
                     style = KoinTheme.typography.bold16,
-                    color = KoinTheme.colors.neutral800,
+                    color = KoinTheme.colors.neutral800
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text =
-                        stringResource(
-                            R.string.schedule_duplication_content,
-                            timetableEvent.name,
-                            calculateTimeContent(timetableEvent),
-                        ),
+                    stringResource(
+                        R.string.schedule_duplication_content,
+                        timetableEvent.name,
+                        calculateTimeContent(timetableEvent)
+                    ),
                     style = KoinTheme.typography.regular14,
                     color = KoinTheme.colors.neutral600,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 FilledTextButton(
                     modifier =
-                        Modifier
-                            .height(48.dp)
-                            .fillMaxWidth(),
+                    Modifier
+                        .height(48.dp)
+                        .fillMaxWidth(),
                     text = "확인",
-                    onClick = { onConfirm(false) },
+                    onClick = { onConfirm(false) }
                 )
             }
         }
@@ -120,17 +120,17 @@ private fun calculateTimeContent(timetableEvent: TimetableEvent): String {
 private fun ScheduleDuplicationDialogPreview() {
     ScheduleDuplicationDialog(
         timetableEvent =
-            TimetableEvent(
-                id = 0,
-                lectureId = 0,
-                name = "강의제목",
-                color = TimetableColor(Color.White, Color.White),
-                dayOfWeek = DayOfWeek.MONDAY,
-                start = LocalTime.of(9, 30),
-                end = LocalTime.of(23, 59),
-                description = null,
-            ),
+        TimetableEvent(
+            id = 0,
+            lectureId = 0,
+            name = "강의제목",
+            color = TimetableColor(Color.White, Color.White),
+            dayOfWeek = DayOfWeek.MONDAY,
+            start = LocalTime.of(9, 30),
+            end = LocalTime.of(23, 59),
+            description = null
+        ),
         onConfirm = {},
-        onDismiss = {},
+        onDismiss = {}
     )
 }

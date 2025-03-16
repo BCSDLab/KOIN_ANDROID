@@ -56,7 +56,7 @@ internal fun CustomContentState.duplicationByTimeTableEvents(events: List<Timeta
 
 private fun duplicate(
     content: CustomExtraContentState,
-    otherContent: CustomExtraContentState,
+    otherContent: CustomExtraContentState
 ): Boolean {
     if (content.dayOfWeek == otherContent.dayOfWeek) {
         if (content.startTime == otherContent.startTime ||
@@ -72,7 +72,7 @@ private fun duplicate(
 
 private fun duplicateWithTimetableEvent(
     event: TimetableEvent,
-    content: CustomExtraContentState,
+    content: CustomExtraContentState
 ): Boolean {
     if (event.dayOfWeek == content.dayOfWeek) {
         if (event.start == content.startTime ||

@@ -26,10 +26,10 @@ data class TimetableState(
     val isAnonymous: Boolean = true, // 로그인 / 비 로그인 판단 플래그 값
     val bottomSheetMode: TimetableBottomSheetContentMode = TimetableBottomSheetContentMode.BASIC, // 바텀시트 모드 (BASIC : 기존 강의, CUSTOM : 커스텀 강의)
     val bottomSheetUI: BottomSheetUI = BottomSheetUI.DEFAULT, // 바텀 시트 ui 모드 (DEFAULT : 강의 추가, DETAIL : 강의 세부 사항, NOTHING: 내려가있는 상태)
-    val bottomSheetCollapse: Boolean = false,
+    val bottomSheetCollapse: Boolean = false
 )
 
 enum class BottomSheetUI {
     DEFAULT,
-    DETAIL,
+    DETAIL
 }

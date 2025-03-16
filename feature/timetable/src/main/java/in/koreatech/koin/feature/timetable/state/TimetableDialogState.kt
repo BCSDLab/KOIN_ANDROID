@@ -8,5 +8,5 @@ data class TimetableDialogState(
     val isLectureDuplicationVisible: Boolean = false, // 기존 강의 중복 팝업
     val isCustomLectureDuplicationVisible: Boolean = false, // 커스텀 강의 추가 시, 기존 강의 중복 팜업
     val isDeleteLectureVisible: Boolean = false,
-    val isDownloadVisible: Boolean = false, // 시간표 다운로드 팝업
+    val isDownloadVisible: Boolean = false // 시간표 다운로드 팝업
 )

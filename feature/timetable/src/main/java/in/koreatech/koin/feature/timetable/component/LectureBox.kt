@@ -41,7 +41,7 @@ fun LectureBox(
     onClickAddLecture: (lecture: Lecture) -> Unit = {},
     onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
-    onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
+    onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {}
 ) {
     val events = lecture.toTimetableEvents()
     val isSelected by remember(lecture, selectedLecture) {
@@ -53,45 +53,45 @@ fun LectureBox(
 
     Row(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .selectable(
-                    selected = isSelected,
-                    onClick = {
-                        if (isSelected) {
-                            onClickLecture(emptyList())
-                            onSelectedLecture(null)
-                        } else {
-                            onClickLecture(events)
-                            onSelectedLecture(lecture)
-                        }
-                    },
-                )
-                .background(
-                    color =
-                        if (isSelected) {
-                            Color(0xFFF2F6FA)
-                        } else {
-                            Color.White
-                        },
-                )
-                .padding(top = if (position != 0) 8.dp else 0.dp)
-                .padding(end = 7.dp),
+        modifier
+            .fillMaxWidth()
+            .selectable(
+                selected = isSelected,
+                onClick = {
+                    if (isSelected) {
+                        onClickLecture(emptyList())
+                        onSelectedLecture(null)
+                    } else {
+                        onClickLecture(events)
+                        onSelectedLecture(lecture)
+                    }
+                }
+            )
+            .background(
+                color =
+                if (isSelected) {
+                    Color(0xFFF2F6FA)
+                } else {
+                    Color.White
+                }
+            )
+            .padding(top = if (position != 0) 8.dp else 0.dp)
+            .padding(end = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier,
+            modifier = Modifier
         ) {
             Text(
                 text = lecture.name,
                 style = KoinTheme.typography.bold12,
-                color = KoinTheme.colors.neutral800,
+                color = KoinTheme.colors.neutral800
             )
             Text(
                 text = lecture.professor.ifEmpty { "미배정" },
                 style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral800,
+                color = KoinTheme.colors.neutral800
             )
 
             Row {
@@ -99,12 +99,12 @@ fun LectureBox(
                     Text(
                         text = event.dayOfWeekToKorean(),
                         style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral800,
+                        color = KoinTheme.colors.neutral800
                     )
                     Text(
                         text = "${event.formatClassTimeCode().first} ~ ${event.formatClassTimeCode().second}",
                         style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral800,
+                        color = KoinTheme.colors.neutral800
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                 }
@@ -113,7 +113,7 @@ fun LectureBox(
                 text = lecture.formatDescription(),
                 fontSize = 12.sp,
                 color = Color.Black,
-                lineHeight = 14.sp,
+                lineHeight = 14.sp
             )
             Spacer(modifier = Modifier.height(4.dp))
         }
@@ -124,7 +124,7 @@ fun LectureBox(
             StableIcon(
                 drawableResId = if (isAdded) R.drawable.ic_minus else R.drawable.ic_plus,
                 tint = if (isAdded) KoinTheme.colors.danger700 else KoinTheme.colors.primary500,
-                modifier = Modifier.size(if (isAdded) 20.dp else 24.dp),
+                modifier = Modifier.size(if (isAdded) 20.dp else 24.dp)
             )
         }
     }
@@ -137,10 +137,10 @@ private fun LectureBoxPreview() {
         LectureBox(
             position = 1,
             lecture =
-                dummyLecture.copy(
-                    classTime = listOf(310, 311, 312, 313, 410, 411, 412, 413),
-                ),
-            selectedLecture = null,
+            dummyLecture.copy(
+                classTime = listOf(310, 311, 312, 313, 410, 411, 412, 413)
+            ),
+            selectedLecture = null
         )
     }
 }
@@ -153,7 +153,7 @@ private fun LectureBoxPreview_Added() {
             position = 2,
             lecture = dummyLecture,
             timetableEvents = dummyLecture.toTimetableEvents(),
-            selectedLecture = dummyLecture,
+            selectedLecture = dummyLecture
         )
     }
 }
@@ -165,7 +165,7 @@ private fun LectureBoxPreview_Selected() {
         LectureBox(
             position = 2,
             lecture = dummyLecture,
-            selectedLecture = dummyLecture,
+            selectedLecture = dummyLecture
         )
     }
 }

@@ -35,19 +35,19 @@ import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 fun DeleteSemesterDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
-    onConfirm: () -> Unit = {},
+    onConfirm: () -> Unit = {}
 ) {
     BasicAlertDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier,
+        modifier = modifier
     ) {
         Box(
             modifier =
-                Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight()
-                    .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
-                    .padding(24.dp),
+            Modifier
+                .wrapContentWidth()
+                .wrapContentHeight()
+                .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
+                .padding(24.dp)
         ) {
             Column {
                 HighlightedText(
@@ -55,46 +55,46 @@ fun DeleteSemesterDialog(
                     highlightIndices = listOf(1),
                     defaultStyle = KoinTheme.typography.medium16,
                     highlightStyle =
-                        KoinTheme.typography.bold16.copy(
-                            color = KoinTheme.colors.danger700,
-                        ),
+                    KoinTheme.typography.bold16.copy(
+                        color = KoinTheme.colors.danger700
+                    )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         colors =
-                            ButtonColors(
-                                containerColor = KoinTheme.colors.neutral0,
-                                contentColor = KoinTheme.colors.neutral500,
-                                disabledContainerColor = KoinTheme.colors.neutral400,
-                                disabledContentColor = KoinTheme.colors.neutral500,
-                            ),
+                        ButtonColors(
+                            containerColor = KoinTheme.colors.neutral0,
+                            contentColor = KoinTheme.colors.neutral500,
+                            disabledContainerColor = KoinTheme.colors.neutral400,
+                            disabledContentColor = KoinTheme.colors.neutral500
+                        ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
-                        onClick = { onDismiss() },
+                        onClick = { onDismiss() }
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_cancellation),
                             style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600,
+                            color = KoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.delete_semester_confirmation),
                         buttonStyle = FilledButtonType.Danger,
-                        onClick = { onConfirm() },
+                        onClick = { onConfirm() }
                     )
                 }
             }
