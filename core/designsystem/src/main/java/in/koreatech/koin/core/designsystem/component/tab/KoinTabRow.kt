@@ -32,15 +32,15 @@ fun KoinTabRow(
         if (selectedTabIndex < tabPositions.size) {
             TabRowDefaults.SecondaryIndicator(
                 modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                color = indicatorColor,
+                color = indicatorColor
             )
         }
     },
     divider: @Composable () -> Unit = @Composable {
         HorizontalDivider(
-            color = KoinTheme.colors.neutral400,
+            color = KoinTheme.colors.neutral400
         )
-    },
+    }
 ) {
     TabRow(
         selectedTabIndex = selectedTabIndex,
@@ -54,15 +54,15 @@ fun KoinTabRow(
                     selected = selectedTabIndex == index,
                     selectedContentColor = selectedTextColor,
                     unselectedContentColor = unselectedTextColor,
-                    onClick = { onTabSelected(index) },
+                    onClick = { onTabSelected(index) }
                 ) {
                     Text(
                         modifier = Modifier.padding(vertical = 12.dp),
-                        text = title,
+                        text = title
                     )
                 }
             }
-        },
+        }
     )
 }
 
@@ -72,6 +72,6 @@ private fun KoinTabRowPreview() {
     KoinTabRow(
         selectedTabIndex = 0,
         titles = listOf("Tab1", "Tab2", "Tab3"),
-        onTabSelected = {},
+        onTabSelected = {}
     )
 }
