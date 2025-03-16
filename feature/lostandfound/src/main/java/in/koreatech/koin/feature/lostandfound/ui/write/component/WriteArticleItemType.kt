@@ -26,22 +26,22 @@ fun WriteArticleItemType(
     selectedChipIndex: Int,
     modifier: Modifier = Modifier,
     itemTypeRequired: Boolean = false,
-    onItemSelected: (Int) -> Unit = {},
+    onItemSelected: (Int) -> Unit = {}
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
+        modifier
+            .fillMaxWidth()
+            .padding(bottom = 24.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 style = KoinTheme.typography.medium14,
-                text = stringResource(id = R.string.item_type),
+                text = stringResource(id = R.string.item_type)
             )
 
             if (itemTypeRequired) {
@@ -49,14 +49,14 @@ fun WriteArticleItemType(
                     textStyle = KoinTheme.typography.medium12.copy(color = Color(0xFFF7941E)),
                     text = stringResource(id = R.string.item_type_required),
                     iconRes = R.drawable.ic_required,
-                    iconSize = 16.dp,
+                    iconSize = 16.dp
                 )
             }
         }
         Text(
             style = KoinTheme.typography.regular12,
             text = stringResource(id = R.string.item_type_description),
-            color = KoinTheme.colors.neutral500,
+            color = KoinTheme.colors.neutral500
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -67,7 +67,7 @@ fun WriteArticleItemType(
                 selectedChipIndexes = if (selectedChipIndex != -1) selectedChipIndex else null,
                 onChipSelected = {
                     onItemSelected(it)
-                },
+                }
             )
         }
     }

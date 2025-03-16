@@ -28,17 +28,17 @@ fun LostAndFoundReportContent(
     otherReason: String,
     onOtherReasonChange: (String) -> Unit = {},
     onReport: () -> Unit = {},
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
 
     Column(
         modifier =
-            modifier
-                .fillMaxSize()
-                .imePadding()
-                .verticalScroll(scrollState)
-                .height(IntrinsicSize.Max),
+        modifier
+            .fillMaxSize()
+            .imePadding()
+            .verticalScroll(scrollState)
+            .height(IntrinsicSize.Max)
     ) {
         LostAndFoundReportHeader()
         LostAndFoundReportReasons(
@@ -46,7 +46,7 @@ fun LostAndFoundReportContent(
             selectedItem = selectedItemIndex,
             onSelectedItemChange = onSelectedItemChange,
             otherReason = otherReason,
-            onOtherReasonChange = onOtherReasonChange,
+            onOtherReasonChange = onOtherReasonChange
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -55,9 +55,9 @@ fun LostAndFoundReportContent(
             text = stringResource(id = R.string.report_submit),
             onClick = onReport,
             modifier =
-                Modifier
-                    .padding(vertical = 20.dp, horizontal = 24.dp)
-                    .fillMaxWidth(),
+            Modifier
+                .padding(vertical = 20.dp, horizontal = 24.dp)
+                .fillMaxWidth()
         )
     }
 }
@@ -71,7 +71,7 @@ fun LostAndFoundReportContentPreview() {
             selectedItemIndex = intArrayOf(0),
             onSelectedItemChange = {},
             otherReason = "",
-            onOtherReasonChange = {},
+            onOtherReasonChange = {}
         )
     }
 }
@@ -82,5 +82,5 @@ val lostAndFoundReportReasonList =
         ReportReason.SPAM,
         ReportReason.INAPPROPRIATE_LANGUAGE,
         ReportReason.PRIVACY,
-        ReportReason.OTHER,
+        ReportReason.OTHER
     )

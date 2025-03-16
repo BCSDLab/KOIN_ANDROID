@@ -41,37 +41,37 @@ fun Dropdown(
     items: List<String>,
     modifier: Modifier = Modifier,
     onDropdownExpandChange: (Boolean) -> Unit = {},
-    onItemSelected: (Int) -> Unit = {},
+    onItemSelected: (Int) -> Unit = {}
 ) = Column(modifier = modifier) {
     val rotateDegree: Float by animateFloatAsState(
         targetValue = if (isDropdownExpanded) 180f else 0f,
-        label = "degree",
+        label = "degree"
     )
 
     Row(
         modifier =
-            Modifier
-                .clip(KoinTheme.shapes.medium)
-                .background(
-                    color = KoinTheme.colors.info200,
-                )
-                .noRippleClickable {
-                    onDropdownExpandChange(!isDropdownExpanded)
-                }
-                .padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        Modifier
+            .clip(KoinTheme.shapes.medium)
+            .background(
+                color = KoinTheme.colors.info200
+            )
+            .noRippleClickable {
+                onDropdownExpandChange(!isDropdownExpanded)
+            }
+            .padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
             style = KoinTheme.typography.medium14.copy(fontWeight = FontWeight.SemiBold),
             color = KoinTheme.colors.primary600,
-            maxLines = 1,
+            maxLines = 1
         )
         Spacer(modifier = Modifier.width(4.dp))
         Icon(
             modifier = Modifier.rotate(rotateDegree),
             painter = painterResource(id = R.drawable.ic_dropdown_arrow),
-            contentDescription = "",
+            contentDescription = ""
         )
     }
 
@@ -82,23 +82,23 @@ fun Dropdown(
      */
     DropdownMenu(
         modifier =
-            Modifier
-                .width(96.dp)
-                .padding(0.dp),
+        Modifier
+            .width(96.dp)
+            .padding(0.dp),
         expanded = isDropdownExpanded,
         onDismissRequest = { onDropdownExpandChange(false) },
         containerColor = Color.Transparent,
         tonalElevation = 0.dp,
-        shadowElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .clip(KoinTheme.shapes.medium)
-                    .background(
-                        color = KoinTheme.colors.info200,
-                    ),
+            Modifier
+                .fillMaxSize()
+                .clip(KoinTheme.shapes.medium)
+                .background(
+                    color = KoinTheme.colors.info200
+                )
         ) {
             Column {
                 items.forEachIndexed { index, it ->
@@ -107,14 +107,14 @@ fun Dropdown(
                         style = KoinTheme.typography.medium14.copy(textAlign = TextAlign.Center),
                         color = KoinTheme.colors.primary600,
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .noRippleClickable {
-                                    onItemSelected(index)
-                                    onDropdownExpandChange(false)
-                                }
-                                .padding(vertical = 8.dp, horizontal = 12.dp),
-                        maxLines = 1,
+                        Modifier
+                            .fillMaxWidth()
+                            .noRippleClickable {
+                                onItemSelected(index)
+                                onDropdownExpandChange(false)
+                            }
+                            .padding(vertical = 8.dp, horizontal = 12.dp),
+                        maxLines = 1
                     )
                 }
             }

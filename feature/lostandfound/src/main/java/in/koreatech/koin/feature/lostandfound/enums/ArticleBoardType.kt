@@ -12,7 +12,7 @@ enum class ArticleBoardType(
     @StringRes val koreanName: Int,
     @StringRes val simpleKoreanName: Int,
     val linkType: LinkType,
-    val exposedInAll: Boolean = true,
+    val exposedInAll: Boolean = true
 ) {
     ALL(4, R.string.article_all, R.string.article_all, LinkType.NONE),
     LOSTANDFOUND(14, R.string.article_lost_and_found, R.string.article_lost_and_found, LinkType.NONE),
@@ -22,7 +22,7 @@ enum class ArticleBoardType(
     RECRUIT(8, R.string.article_recruit, R.string.article_recruit_simple, LinkType.STEMS),
     IPP(12, R.string.article_ipp, R.string.article_ipp_simple, LinkType.PORTAL),
     STUDENT(13, R.string.article_student, R.string.article_student_simple, LinkType.PORTAL, false),
-    KOIN(9, R.string.article_koin, R.string.article_koin, LinkType.NONE, false),
+    KOIN(9, R.string.article_koin, R.string.article_koin, LinkType.NONE, false)
 }
 
 /**
@@ -36,5 +36,5 @@ enum class LinkType {
     NONE,
     ARTICLE,
     PORTAL,
-    STEMS,
+    STEMS
 }

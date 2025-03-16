@@ -27,7 +27,7 @@ fun DetailHeader(
     foundDate: LocalDate,
     author: String,
     registeredAt: LocalDate,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
     val convertedRegisteredAt =
@@ -39,40 +39,40 @@ fun DetailHeader(
             "${
                 foundPlace.replace(
                     "\n",
-                    " ",
+                    " "
                 )
             } | ${foundDate.format(foundDateFormatType)}"
         }
 
     Column(
-        modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp),
+        modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp)
     ) {
         Text(
             modifier = Modifier.padding(bottom = 2.dp),
             text = stringResource(lostOrFound.stringRes),
             color = KoinTheme.colors.primary600,
             fontWeight = FontWeight(600),
-            style = KoinTheme.typography.medium12,
+            style = KoinTheme.typography.medium12
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 4.dp),
+            modifier = Modifier.padding(bottom = 4.dp)
         ) {
             LostItemTypeChip(category = category)
             Text(
                 modifier = Modifier.padding(start = 8.dp),
                 text = headerText,
                 fontWeight = FontWeight(500),
-                style = KoinTheme.typography.medium14,
+                style = KoinTheme.typography.medium14
             )
         }
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "$author • $convertedRegisteredAt",
                 color = KoinTheme.colors.neutral500,
-                style = KoinTheme.typography.regular12,
+                style = KoinTheme.typography.regular12
             )
         }
     }

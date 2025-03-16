@@ -18,29 +18,29 @@ fun LostAndFoundDropdownGroup(
     selectedType: LostOrFoundType?,
     modifier: Modifier = Modifier,
     onDropdownExpandChange: (Boolean) -> Unit = {},
-    onItemSelected: (Int) -> Unit = {},
+    onItemSelected: (Int) -> Unit = {}
 ) = Box(
     modifier =
-        modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+    modifier
+        .fillMaxWidth()
+        .padding(horizontal = 24.dp)
 ) {
     Dropdown(
         title =
-            when (selectedType) {
-                LostOrFoundType.LOST -> stringResource(R.string.dropdown_item_lost)
-                LostOrFoundType.FOUND -> stringResource(R.string.dropdown_item_found)
-                else -> stringResource(R.string.dropdown_item_all)
-            },
+        when (selectedType) {
+            LostOrFoundType.LOST -> stringResource(R.string.dropdown_item_lost)
+            LostOrFoundType.FOUND -> stringResource(R.string.dropdown_item_found)
+            else -> stringResource(R.string.dropdown_item_all)
+        },
         items =
-            listOf(
-                stringResource(R.string.dropdown_item_all),
-                stringResource(R.string.dropdown_item_found),
-                stringResource(R.string.dropdown_item_lost),
-            ),
+        listOf(
+            stringResource(R.string.dropdown_item_all),
+            stringResource(R.string.dropdown_item_found),
+            stringResource(R.string.dropdown_item_lost)
+        ),
         isDropdownExpanded = isDropdownExpanded,
         modifier = Modifier.align(Alignment.CenterEnd),
         onDropdownExpandChange = onDropdownExpandChange,
-        onItemSelected = onItemSelected,
+        onItemSelected = onItemSelected
     )
 }

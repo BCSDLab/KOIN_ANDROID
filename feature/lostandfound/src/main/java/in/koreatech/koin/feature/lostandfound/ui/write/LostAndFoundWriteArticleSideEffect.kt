@@ -10,7 +10,7 @@ sealed class LostAndFoundWriteArticleSideEffect {
         val itemIndex: Int,
         val imageIndex: Int,
         val imageUri: Uri,
-        val tooManyImage: Boolean,
+        val tooManyImage: Boolean
     ) : LostAndFoundWriteArticleSideEffect()
 
     // data class RemoveImage(val itemIndex: Int, val imageIndex: Int) : LostAndFoundWriteArticleSideEffect()

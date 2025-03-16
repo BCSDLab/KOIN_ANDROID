@@ -5,14 +5,14 @@ import `in`.koreatech.koin.feature.lostandfound.R
 
 enum class LostItemCategory(
     val id: Int,
-    @StringRes val stringRes: Int,
+    @StringRes val stringRes: Int
 ) {
     CARD(0, R.string.item_type_card),
     ID(1, R.string.item_type_id),
     WALLET(2, R.string.item_type_wallet),
     ELECTRONIC_DEVICE(3, R.string.item_type_electronic_device),
     OTHER(4, R.string.item_type_other),
-    NONE(-1, R.string.item_type_none),
+    NONE(-1, R.string.item_type_none)
     ;
 
     companion object {

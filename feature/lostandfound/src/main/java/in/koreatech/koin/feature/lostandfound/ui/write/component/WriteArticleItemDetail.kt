@@ -58,7 +58,7 @@ fun WriteArticleItemDetail(
     showDatePicker: Boolean = false,
     onShowDatePickerChange: (Boolean) -> Unit = {},
     onDateChange: (date: LocalDate) -> Unit = {},
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val dayPickerState = rememberPickerState()
     val monthPickerState = rememberPickerState()
@@ -83,33 +83,33 @@ fun WriteArticleItemDetail(
 
     Column(
         modifier =
-            modifier
-                .fillMaxWidth(),
+        modifier
+            .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 style = KoinTheme.typography.medium14,
                 text =
-                    when (type) {
-                        LostOrFoundType.LOST -> stringResource(id = R.string.lost_date)
-                        LostOrFoundType.FOUND -> stringResource(id = R.string.found_date)
-                    },
+                when (type) {
+                    LostOrFoundType.LOST -> stringResource(id = R.string.lost_date)
+                    LostOrFoundType.FOUND -> stringResource(id = R.string.found_date)
+                }
             )
 
             if (dateRequired) {
                 LeadingIconText(
                     textStyle = KoinTheme.typography.medium12.copy(color = Color(0xFFF7941E)),
                     text =
-                        when (type) {
-                            LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_required)
-                            LostOrFoundType.FOUND -> stringResource(id = R.string.found_date_required)
-                        },
+                    when (type) {
+                        LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_required)
+                        LostOrFoundType.FOUND -> stringResource(id = R.string.found_date_required)
+                    },
                     iconRes = R.drawable.ic_required,
-                    iconSize = 16.dp,
+                    iconSize = 16.dp
                 )
             }
         }
@@ -120,23 +120,23 @@ fun WriteArticleItemDetail(
 
         Box(
             modifier =
-                Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(KoinTheme.colors.neutral100)
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
-                    .noRippleClickable {
-                        onShowDatePickerChange(!showDatePicker)
-                    }
-                    .onGloballyPositioned {
-                        dateComposablePosition = it.positionInParent() +
-                            Offset(
-                                0f,
-                                it.size.height.toFloat(),
-                            )
-                    },
+            Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .background(KoinTheme.colors.neutral100)
+                .padding(vertical = 8.dp, horizontal = 16.dp)
+                .noRippleClickable {
+                    onShowDatePickerChange(!showDatePicker)
+                }
+                .onGloballyPositioned {
+                    dateComposablePosition = it.positionInParent() +
+                        Offset(
+                            0f,
+                            it.size.height.toFloat()
+                        )
+                }
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 if (dayPickerState.selectedItem == "" || monthPickerState.selectedItem == "" || yearPickerState.selectedItem == "") {
                     Text(
@@ -144,37 +144,37 @@ fun WriteArticleItemDetail(
                         color = KoinTheme.colors.neutral500,
                         style = KoinTheme.typography.regular12,
                         text =
-                            when (type) {
-                                LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_hint)
-                                LostOrFoundType.FOUND -> stringResource(id = R.string.found_date_hint)
-                            },
+                        when (type) {
+                            LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_hint)
+                            LostOrFoundType.FOUND -> stringResource(id = R.string.found_date_hint)
+                        }
                     )
                 } else {
                     Text(
                         modifier = Modifier.weight(1f),
                         style = KoinTheme.typography.regular14,
                         text = "${yearPickerState.selectedItem.substring(
-                            2,
-                        )}.${monthPickerState.selectedItem}.${dayPickerState.selectedItem}",
+                            2
+                        )}.${monthPickerState.selectedItem}.${dayPickerState.selectedItem}"
                     )
                 }
 
                 val rotateDegree: Float by animateFloatAsState(
                     targetValue = if (showDatePicker) 180f else 0f,
-                    label = "degree",
+                    label = "degree"
                 )
 
                 Image(
                     modifier =
-                        Modifier
-                            .size(24.dp)
-                            .rotate(rotateDegree),
+                    Modifier
+                        .size(24.dp)
+                        .rotate(rotateDegree),
                     painter = painterResource(id = R.drawable.ic_dropdown_arrow),
                     contentDescription =
-                        when (type) {
-                            LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_hint)
-                            LostOrFoundType.FOUND -> stringResource(id = R.string.found_date_hint)
-                        },
+                    when (type) {
+                        LostOrFoundType.LOST -> stringResource(id = R.string.lost_date_hint)
+                        LostOrFoundType.FOUND -> stringResource(id = R.string.found_date_hint)
+                    }
                 )
             }
         }
@@ -182,7 +182,7 @@ fun WriteArticleItemDetail(
         LaunchedEffect(
             dayPickerState.selectedItem,
             monthPickerState.selectedItem,
-            yearPickerState.selectedItem,
+            yearPickerState.selectedItem
         ) {
             if (yearPickerState.selectedItem != "" && monthPickerState.selectedItem != "" && dayPickerState.selectedItem != "") {
                 val selectedYear = Integer.parseInt(yearPickerState.selectedItem)
@@ -193,8 +193,8 @@ fun WriteArticleItemDetail(
                     LocalDate.of(
                         selectedYear,
                         selectedMonth,
-                        if (selectedDay > lastDayOfMonth) lastDayOfMonth else selectedDay,
-                    ),
+                        if (selectedDay > lastDayOfMonth) lastDayOfMonth else selectedDay
+                    )
                 )
             }
         }
@@ -221,7 +221,7 @@ fun WriteArticleItemDetail(
                         val lastDayOfMonth =
                             getLastDayOfMonth(
                                 now.year,
-                                Integer.parseInt(monthPickerState.selectedItem),
+                                Integer.parseInt(monthPickerState.selectedItem)
                             )
                         dayList = (1..lastDayOfMonth).map { it.toString() }
                     }
@@ -231,7 +231,7 @@ fun WriteArticleItemDetail(
                     val lastDayOfMonth =
                         getLastDayOfMonth(
                             Integer.parseInt(yearPickerState.selectedItem),
-                            Integer.parseInt(monthPickerState.selectedItem),
+                            Integer.parseInt(monthPickerState.selectedItem)
                         )
                     dayList = (1..lastDayOfMonth).map { it.toString() }
                 }
@@ -239,24 +239,24 @@ fun WriteArticleItemDetail(
 
             Popup(
                 offset =
-                    IntOffset(
-                        dateComposablePosition.x.toInt(),
-                        dateComposablePosition.y.toInt(),
-                    ),
+                IntOffset(
+                    dateComposablePosition.x.toInt(),
+                    dateComposablePosition.y.toInt()
+                )
             ) {
                 Box(
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 24.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(KoinTheme.colors.neutral100),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp, horizontal = 24.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(KoinTheme.colors.neutral100)
                 ) {
                     Row(
                         modifier =
-                            Modifier
-                                .padding(vertical = 12.dp, horizontal = 32.dp)
-                                .fillMaxWidth(),
+                        Modifier
+                            .padding(vertical = 12.dp, horizontal = 32.dp)
+                            .fillMaxWidth()
                     ) {
                         KoinPicker(
                             modifier = Modifier.weight(1f),
@@ -267,13 +267,13 @@ fun WriteArticleItemDetail(
                             startIndex = yearPickerState.selectedItemIndex,
                             infiniteScroll = false,
                             selectedTextStyle =
-                                KoinTheme.typography.medium16.copy(
-                                    textAlign = TextAlign.Center,
-                                ),
+                            KoinTheme.typography.medium16.copy(
+                                textAlign = TextAlign.Center
+                            ),
                             unselectedTextStyle =
-                                KoinTheme.typography.medium16.copy(
-                                    textAlign = TextAlign.Center,
-                                ),
+                            KoinTheme.typography.medium16.copy(
+                                textAlign = TextAlign.Center
+                            )
                         )
                         KoinPicker(
                             modifier = Modifier.weight(1f),
@@ -284,13 +284,13 @@ fun WriteArticleItemDetail(
                             startIndex = monthPickerState.selectedItemIndex,
                             infiniteScroll = false,
                             selectedTextStyle =
-                                KoinTheme.typography.medium16.copy(
-                                    textAlign = TextAlign.Center,
-                                ),
+                            KoinTheme.typography.medium16.copy(
+                                textAlign = TextAlign.Center
+                            ),
                             unselectedTextStyle =
-                                KoinTheme.typography.medium16.copy(
-                                    textAlign = TextAlign.Center,
-                                ),
+                            KoinTheme.typography.medium16.copy(
+                                textAlign = TextAlign.Center
+                            )
                         )
                         KoinPicker(
                             modifier = Modifier.weight(1f),
@@ -301,13 +301,13 @@ fun WriteArticleItemDetail(
                             startIndex = dayPickerState.selectedItemIndex,
                             infiniteScroll = false,
                             selectedTextStyle =
-                                KoinTheme.typography.medium16.copy(
-                                    textAlign = TextAlign.Center,
-                                ),
+                            KoinTheme.typography.medium16.copy(
+                                textAlign = TextAlign.Center
+                            ),
                             unselectedTextStyle =
-                                KoinTheme.typography.medium16.copy(
-                                    textAlign = TextAlign.Center,
-                                ),
+                            KoinTheme.typography.medium16.copy(
+                                textAlign = TextAlign.Center
+                            )
                         )
                     }
                 }
@@ -320,27 +320,27 @@ fun WriteArticleItemDetail(
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             style = KoinTheme.typography.medium14,
             text =
-                when (type) {
-                    LostOrFoundType.LOST -> stringResource(id = R.string.lost_location)
-                    LostOrFoundType.FOUND -> stringResource(id = R.string.found_location)
-                },
+            when (type) {
+                LostOrFoundType.LOST -> stringResource(id = R.string.lost_location)
+                LostOrFoundType.FOUND -> stringResource(id = R.string.found_location)
+            }
         )
 
         if (locationRequired) {
             LeadingIconText(
                 textStyle = KoinTheme.typography.medium12.copy(color = Color(0xFFF7941E)),
                 text =
-                    when (type) {
-                        LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_required)
-                        LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_required)
-                    },
+                when (type) {
+                    LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_required)
+                    LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_required)
+                },
                 iconRes = R.drawable.ic_required,
-                iconSize = 16.dp,
+                iconSize = 16.dp
             )
         }
     }
@@ -352,16 +352,16 @@ fun WriteArticleItemDetail(
         onValueChange = onLocationChange,
         singleLine = true,
         hint =
-            when (type) {
-                LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_hint)
-                LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_hint)
-            },
+        when (type) {
+            LostOrFoundType.LOST -> stringResource(id = R.string.lost_location_hint)
+            LostOrFoundType.FOUND -> stringResource(id = R.string.found_location_hint)
+        },
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .background(KoinTheme.colors.neutral100),
-        textPaddingValues = PaddingValues(16.dp, 8.dp),
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(KoinTheme.colors.neutral100),
+        textPaddingValues = PaddingValues(16.dp, 8.dp)
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -369,16 +369,16 @@ fun WriteArticleItemDetail(
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             style = KoinTheme.typography.medium14,
-            text = stringResource(id = R.string.more_description),
+            text = stringResource(id = R.string.more_description)
         )
         Text(
             style = KoinTheme.typography.regular12,
             text = "${moreDescription.length}/$DESCRIPTION_MAX_LENGTH",
-            color = KoinTheme.colors.neutral500,
+            color = KoinTheme.colors.neutral500
         )
     }
 
@@ -395,11 +395,11 @@ fun WriteArticleItemDetail(
         },
         hint = stringResource(id = R.string.more_description_hint),
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .background(KoinTheme.colors.neutral100),
-        textPaddingValues = PaddingValues(16.dp, 8.dp, 16.dp, 32.dp),
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(KoinTheme.colors.neutral100),
+        textPaddingValues = PaddingValues(16.dp, 8.dp, 16.dp, 32.dp)
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -407,7 +407,7 @@ fun WriteArticleItemDetail(
 
 private fun getLastDayOfMonth(
     year: Int,
-    month: Int,
+    month: Int
 ): Int {
     return when (month) {
         1, 3, 5, 7, 8, 10, 12 -> 31

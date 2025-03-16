@@ -5,8 +5,8 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LostAndFoundWriteArticleItemState(
@@ -18,7 +18,7 @@ data class LostAndFoundWriteArticleItemState(
     val foundPlace: String = "",
     val foundDate: LocalDate? = null,
     val content: String? = null,
-    val images: List<String> = emptyList(),
+    val images: List<String> = emptyList()
 ) : Parcelable
 
 fun LostAndFoundWriteArticleItemState.toArticleLostAndFoundUpload(): ArticleLostAndFoundUpload {
@@ -28,6 +28,6 @@ fun LostAndFoundWriteArticleItemState.toArticleLostAndFoundUpload(): ArticleLost
         foundPlace = foundPlace.trim(),
         foundDate = foundDate.toString(),
         content = content,
-        images = images.map { it },
+        images = images.map { it }
     )
 }

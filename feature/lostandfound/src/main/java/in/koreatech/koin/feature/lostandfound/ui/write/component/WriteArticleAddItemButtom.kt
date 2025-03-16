@@ -26,34 +26,34 @@ import `in`.koreatech.koin.feature.lostandfound.R
 @Composable
 fun WriteArticleAddItemButton(
     modifier: Modifier = Modifier,
-    onItemAdd: () -> Unit = {},
+    onItemAdd: () -> Unit = {}
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier.align(Alignment.CenterEnd),
             onClick = onItemAdd,
             colors =
-                ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.info200,
-                ),
+            ButtonDefaults.buttonColors(
+                containerColor = KoinTheme.colors.info200
+            ),
             shape = RoundedCornerShape(8.dp),
-            contentPadding = PaddingValues(12.dp, 8.dp),
+            contentPadding = PaddingValues(12.dp, 8.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxHeight(),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_item_add),
                     contentDescription = stringResource(id = R.string.add_item),
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     color = KoinTheme.colors.primary600,
                     style = KoinTheme.typography.regular14,
                     fontWeight = FontWeight.Medium,
-                    text = stringResource(id = R.string.add_item),
+                    text = stringResource(id = R.string.add_item)
                 )
             }
         }

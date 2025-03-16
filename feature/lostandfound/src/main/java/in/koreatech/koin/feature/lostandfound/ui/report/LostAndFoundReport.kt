@@ -30,7 +30,7 @@ import timber.log.Timber
 fun LostAndFoundReport(
     articleId: Int,
     onSuccess: () -> Unit,
-    viewModel: LostAndFoundReportViewModel = hiltViewModel(),
+    viewModel: LostAndFoundReportViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
 
@@ -47,21 +47,21 @@ fun LostAndFoundReport(
                     title = stringResource(R.string.report_title),
                     onNavigationIconClick = { (context as Activity).finish() },
                     colors =
-                        TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
-                            containerColor = KoinTheme.colors.primary500,
-                            navigationIconContentColor = KoinTheme.colors.neutral0,
-                            titleContentColor = KoinTheme.colors.neutral0,
-                            actionIconContentColor = KoinTheme.colors.neutral0,
-                        ),
+                    TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
+                        containerColor = KoinTheme.colors.primary500,
+                        navigationIconContentColor = KoinTheme.colors.neutral0,
+                        titleContentColor = KoinTheme.colors.neutral0,
+                        actionIconContentColor = KoinTheme.colors.neutral0
+                    )
                 )
             },
-            containerColor = KoinTheme.colors.neutral0,
+            containerColor = KoinTheme.colors.neutral0
         ) { contentPadding ->
             LostAndFoundReportContent(
                 modifier =
-                    Modifier
-                        .padding(contentPadding)
-                        .consumeWindowInsets(contentPadding),
+                Modifier
+                    .padding(contentPadding)
+                    .consumeWindowInsets(contentPadding),
                 itemList = lostAndFoundReportReasonList,
                 selectedItemIndex = uiState.selectedReason,
                 onSelectedItemChange = { index ->
@@ -74,10 +74,10 @@ fun LostAndFoundReport(
                 onReport = {
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT_CONFIRM,
-                        "신고하기",
+                        "신고하기"
                     )
                     viewModel.reportArticle(articleId)
-                },
+                }
             )
         }
     }
@@ -86,7 +86,7 @@ fun LostAndFoundReport(
 fun handleSideEffect(
     sideEffect: LostAndFoundReportSideEffect,
     context: Context,
-    onSuccess: () -> Unit,
+    onSuccess: () -> Unit
 ) {
     when (sideEffect) {
         is LostAndFoundReportSideEffect.ReportSuccess -> {
@@ -98,7 +98,7 @@ fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.report_failed),
-                Toast.LENGTH_SHORT,
+                Toast.LENGTH_SHORT
             ).show()
         }
     }

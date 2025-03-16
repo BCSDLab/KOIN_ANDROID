@@ -56,33 +56,33 @@ fun WriteArticleUploadImage(
     imageList: List<String> = listOf(),
     modifier: Modifier = Modifier,
     onUploadImage: () -> Unit = {},
-    onRemoveImage: (index: Int) -> Unit = {},
+    onRemoveImage: (index: Int) -> Unit = {}
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
+        modifier
+            .fillMaxWidth()
+            .padding(bottom = 24.dp)
     ) {
         Text(
             style = KoinTheme.typography.medium14,
-            text = stringResource(id = R.string.image),
+            text = stringResource(id = R.string.image)
         )
         Row {
             Text(
                 modifier = Modifier.weight(1f),
                 style = KoinTheme.typography.regular12,
                 text =
-                    when (type) {
-                        LostOrFoundType.LOST -> stringResource(id = R.string.upload_image_of_lost_item)
-                        LostOrFoundType.FOUND -> stringResource(id = R.string.upload_image_of_found_item)
-                    },
-                color = Color(0xFF8E8E8E),
+                when (type) {
+                    LostOrFoundType.LOST -> stringResource(id = R.string.upload_image_of_lost_item)
+                    LostOrFoundType.FOUND -> stringResource(id = R.string.upload_image_of_found_item)
+                },
+                color = Color(0xFF8E8E8E)
             )
             Text(
                 style = KoinTheme.typography.regular12,
                 text = "$uploadedImageCount/$IMAGE_MAX_COUNT",
-                color = KoinTheme.colors.neutral500,
+                color = KoinTheme.colors.neutral500
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -90,18 +90,18 @@ fun WriteArticleUploadImage(
         if (uploadedImageCount > 0) {
             LazyRow(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(KoinTheme.colors.neutral100)
-                        .height(123.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(KoinTheme.colors.neutral100)
+                    .height(123.dp),
                 contentPadding = PaddingValues(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 itemsIndexed(imageList) { index, imageUrl ->
                     WriteArticleUploadImageThumbnail(
                         index = index,
-                        imageUrl = Uri.parse(imageUrl),
+                        imageUrl = Uri.parse(imageUrl)
                     ) {
                         onRemoveImage(index)
                     }
@@ -114,24 +114,24 @@ fun WriteArticleUploadImage(
         Button(
             onClick = onUploadImage,
             colors =
-                ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.info200,
-                ),
+            ButtonDefaults.buttonColors(
+                containerColor = KoinTheme.colors.info200
+            ),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
-            contentPadding = PaddingValues(8.dp),
+            contentPadding = PaddingValues(8.dp)
         ) {
             Row {
                 Image(
                     painter = painterResource(id = R.drawable.ic_upload_image),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     color = KoinTheme.colors.primary600,
                     style = KoinTheme.typography.regular14,
-                    text = stringResource(id = R.string.upload_image),
+                    text = stringResource(id = R.string.upload_image)
                 )
             }
         }
@@ -143,7 +143,7 @@ fun WriteArticleUploadImageThumbnail(
     index: Int,
     imageUrl: Uri,
     modifier: Modifier = Modifier,
-    removeImage: (index: Int) -> Unit = {},
+    removeImage: (index: Int) -> Unit = {}
 ) {
     var removeButtonPosition by remember { mutableStateOf(Offset.Zero) }
 
@@ -151,21 +151,21 @@ fun WriteArticleUploadImageThumbnail(
         if (imageUrl == Uri.EMPTY) {
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
+                contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
         } else {
             SubcomposeAsyncImage(
                 model =
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(imageUrl)
-                        .crossfade(true)
-                        .build(),
+                ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(true)
+                    .build(),
                 loading = {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center,
+                        contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator()
                     }
@@ -173,27 +173,27 @@ fun WriteArticleUploadImageThumbnail(
                 contentScale = ContentScale.Fit,
                 contentDescription = null,
                 modifier =
-                    modifier.onGloballyPositioned {
-                        removeButtonPosition = it.positionInParent() +
-                            Offset(
-                                it.size.width.toFloat(),
-                                0f,
-                            )
-                    },
+                modifier.onGloballyPositioned {
+                    removeButtonPosition = it.positionInParent() +
+                        Offset(
+                            it.size.width.toFloat(),
+                            0f
+                        )
+                }
             )
 
             Image(
                 painter = painterResource(id = R.drawable.ic_delete_image),
                 contentDescription = null,
                 modifier =
-                    Modifier
-                        .offset(
-                            x = removeButtonPosition.x.pxToDp - 8.dp,
-                            y = removeButtonPosition.y.pxToDp - 8.dp,
-                        )
-                        .noRippleClickable {
-                            removeImage(index)
-                        },
+                Modifier
+                    .offset(
+                        x = removeButtonPosition.x.pxToDp - 8.dp,
+                        y = removeButtonPosition.y.pxToDp - 8.dp
+                    )
+                    .noRippleClickable {
+                        removeImage(index)
+                    }
             )
         }
     }
