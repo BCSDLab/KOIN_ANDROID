@@ -17,28 +17,28 @@ import `in`.koreatech.koin.feature.bus.R
 @Composable
 internal fun WrongInformationText(
     modifier: Modifier = Modifier,
-    loggingEventValue: String = "",
+    loggingEventValue: String = ""
 ) {
     val context = LocalContext.current
 
     LeadingIconText(
         modifier =
-            modifier.noRippleClickable {
-                EventLogger.logCampusClickEvent(
-                    "error_feedback_button",
-                    loggingEventValue,
-                )
-                val url = GOOGLE_FORM_URL
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                context.startActivity(intent)
-            }.padding(top = 4.dp),
+        modifier.noRippleClickable {
+            EventLogger.logCampusClickEvent(
+                "error_feedback_button",
+                loggingEventValue
+            )
+            val url = GOOGLE_FORM_URL
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        }.padding(top = 4.dp),
         text = stringResource(R.string.request_for_incorrect_information),
         iconRes = R.drawable.ic_caution,
         iconTint = KoinTheme.colors.neutral500,
         textStyle =
-            KoinTheme.typography.regular12.copy(
-                color = KoinTheme.colors.neutral500,
-            ),
+        KoinTheme.typography.regular12.copy(
+            color = KoinTheme.colors.neutral500
+        )
     )
 }
 

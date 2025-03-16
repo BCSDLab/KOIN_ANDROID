@@ -46,29 +46,29 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun ShuttleCoursesScreenContent(
     shuttleCourses: ShuttleCoursesState,
     modifier: Modifier = Modifier,
-    onItemClicked: (ShuttleCourseRouteState) -> Unit = {},
+    onItemClicked: (ShuttleCourseRouteState) -> Unit = {}
 ) {
     var selectedRouteType by rememberSaveable { mutableStateOf(ShuttleBusOperationType.ALL) }
     val context = LocalContext.current
 
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         TextChipGroup(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 24.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 24.dp),
             titles = ShuttleBusOperationType.entries.map { stringResource(it.titleRes) },
             onChipSelected = { title ->
                 selectedRouteType = ShuttleBusOperationType.entries.find { context.getString(it.titleRes) == title } ?: ShuttleBusOperationType.ALL
                 EventLogger.logCampusClickEvent(
                     "shuttle_bus_route",
-                    context.getString(selectedRouteType.titleRes),
+                    context.getString(selectedRouteType.titleRes)
                 )
             },
             selectedChipIndexes = intArrayOf(selectedRouteType.ordinal),
-            showClickRipple = false,
+            showClickRipple = false
         )
         shuttleCourses.courses.forEach { courseEntry ->
             val filteredValue =
@@ -92,42 +92,42 @@ internal fun ShuttleCoursesScreenContent(
                     onItemClicked = {
                         EventLogger.logCampusClickEvent(
                             "area_specific_route",
-                            "${context.getString(it.type.simpleTitleRes)}_${it.routeName}",
+                            "${context.getString(it.type.simpleTitleRes)}_${it.routeName}"
                         )
                         onItemClicked(it)
-                    },
+                    }
                 )
             }
         }
 
         Column(
             modifier =
-                Modifier
-                    .background(Color.White)
-                    .padding(top = 8.dp)
-                    .fillMaxWidth(),
+            Modifier
+                .background(Color.White)
+                .padding(top = 8.dp)
+                .fillMaxWidth()
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 text =
-                    stringResource(
-                        R.string.timetable_semester_information,
-                        shuttleCourses.semester.name,
-                        shuttleCourses.semester.from.formatPeriod(),
-                        shuttleCourses.semester.to.formatPeriod(),
-                    ),
+                stringResource(
+                    R.string.timetable_semester_information,
+                    shuttleCourses.semester.name,
+                    shuttleCourses.semester.from.formatPeriod(),
+                    shuttleCourses.semester.to.formatPeriod()
+                ),
                 style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500,
+                color = KoinTheme.colors.neutral500
             )
             WrongInformationText(
                 modifier = Modifier.padding(top = 4.dp, start = 24.dp),
-                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue(),
+                loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
             )
             Spacer(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(120.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
             )
         }
     }
@@ -138,32 +138,32 @@ private fun ShuttleCourseView(
     modifier: Modifier = Modifier,
     region: ShuttleCourseRegionState,
     shuttleCourseRoutes: ImmutableList<ShuttleCourseRouteState>,
-    onItemClicked: (ShuttleCourseRouteState) -> Unit = {},
+    onItemClicked: (ShuttleCourseRouteState) -> Unit = {}
 ) {
     KoinSurface(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .padding(top = 16.dp, bottom = 4.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(top = 16.dp, bottom = 4.dp)
         ) {
             Text(
                 text = region.name,
-                style = KoinTheme.typography.bold18,
+                style = KoinTheme.typography.bold18
             )
             shuttleCourseRoutes.forEach {
                 ShuttleRouteItem(
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onItemClicked(it)
-                            }
-                            .padding(horizontal = 8.dp, vertical = 10.dp),
-                    shuttleCourseRoute = it,
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onItemClicked(it)
+                        }
+                        .padding(horizontal = 8.dp, vertical = 10.dp),
+                    shuttleCourseRoute = it
                 )
             }
         }
@@ -173,36 +173,36 @@ private fun ShuttleCourseView(
 @Composable
 private fun ShuttleRouteItem(
     shuttleCourseRoute: ShuttleCourseRouteState,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             ShuttleBusOperationChip(
-                operationType = shuttleCourseRoute.type,
+                operationType = shuttleCourseRoute.type
             )
 
             Text(
                 text = shuttleCourseRoute.routeName,
                 style = KoinTheme.typography.medium16,
-                modifier = Modifier.padding(start = 8.dp),
+                modifier = Modifier.padding(start = 8.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                 contentDescription = shuttleCourseRoute.routeName,
-                tint = KoinTheme.colors.neutral400,
+                tint = KoinTheme.colors.neutral400
             )
         }
         if (shuttleCourseRoute.subName.isNotEmpty()) {
             Text(
                 text = shuttleCourseRoute.subName,
                 style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral500,
+                color = KoinTheme.colors.neutral500
             )
         }
     }
@@ -213,9 +213,9 @@ private fun ShuttleRouteItem(
 private fun ShuttleCoursesScreenPreview() {
     ShuttleCoursesScreenContent(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(KoinTheme.colors.neutral100),
-        shuttleCourses = shuttleCoursesMock,
+        Modifier
+            .fillMaxSize()
+            .background(KoinTheme.colors.neutral100),
+        shuttleCourses = shuttleCoursesMock
     )
 }

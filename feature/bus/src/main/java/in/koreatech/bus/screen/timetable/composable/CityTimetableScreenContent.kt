@@ -37,27 +37,27 @@ internal fun CityTimetableScreenContent(
     timetable: CityTimetableState,
     modifier: Modifier = Modifier,
     onBusNumberChanged: (CityBusNumberType) -> Unit = {},
-    onDirectionChanged: (CommonDirectionType) -> Unit = {},
+    onDirectionChanged: (CommonDirectionType) -> Unit = {}
 ) {
     var selectedBusNumberType by rememberSaveable { mutableStateOf(CityBusNumberType.N400) }
     var selectedDirectionType by rememberSaveable { mutableStateOf(CommonDirectionType.TO_BYEONGCHEON) }
     val context = LocalContext.current
 
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .padding(top = 8.dp, bottom = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(top = 8.dp, bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = stringResource(R.string.routes),
                 style = KoinTheme.typography.regular16,
-                color = KoinTheme.colors.neutral600,
+                color = KoinTheme.colors.neutral600
             )
             TextChipGroup(
                 modifier = Modifier.padding(start = 16.dp),
@@ -67,25 +67,25 @@ internal fun CityTimetableScreenContent(
                         CityBusNumberType.entries.find { context.getString(it.titleRes) == title } ?: CityBusNumberType.N400
                     EventLogger.logCampusClickEvent(
                         "city_bus_route",
-                        context.getString(selectedBusNumberType.titleRes),
+                        context.getString(selectedBusNumberType.titleRes)
                     )
                 },
                 selectedChipIndexes = intArrayOf(selectedBusNumberType.ordinal),
-                showClickRipple = false,
+                showClickRipple = false
             )
         }
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .padding(top = 4.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(top = 4.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = stringResource(R.string.operating),
                 style = KoinTheme.typography.regular16,
-                color = KoinTheme.colors.neutral600,
+                color = KoinTheme.colors.neutral600
             )
             TextChipGroup(
                 modifier = Modifier.padding(start = 16.dp),
@@ -95,18 +95,18 @@ internal fun CityTimetableScreenContent(
                         CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
                     EventLogger.logCampusClickEvent(
                         "city_bus_direction",
-                        context.getString(selectedDirectionType.titleRes),
+                        context.getString(selectedDirectionType.titleRes)
                     )
                 },
                 selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal),
-                showClickRipple = false,
+                showClickRipple = false
             )
         }
 
         CommonTimetableView(
             timetable = timetable.departureTimes,
             modifier = Modifier.fillMaxSize(),
-            updatedAt = timetable.updatedAt.formatUpdatedTime(),
+            updatedAt = timetable.updatedAt.formatUpdatedTime()
         )
 
         Box(modifier = Modifier.background(Color.White).fillMaxWidth().height(115.dp))
@@ -126,6 +126,6 @@ internal fun CityTimetableScreenContent(
 private fun CityTimetableScreenPreview() {
     CityTimetableScreenContent(
         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-        timetable = cityTimetableMock,
+        timetable = cityTimetableMock
     )
 }

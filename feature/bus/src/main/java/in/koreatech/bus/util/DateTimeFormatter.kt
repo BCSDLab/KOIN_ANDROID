@@ -20,7 +20,7 @@ internal fun LocalDate.formatDateValue(): String {
     }
 
     return this.format(
-        DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA),
+        DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
     ).replace("요일", "")
 }
 
@@ -33,7 +33,7 @@ internal fun formatDepartureTime(
     date: String,
     daytime: String,
     hour: String,
-    minute: String,
+    minute: String
 ): String {
     return "$date $daytime $hour:${minute.padStart(2, '0')}"
 }
@@ -45,7 +45,7 @@ internal fun formatDepartureTime(
  */
 internal fun LocalDateTime.formatUpdatedTime(): String {
     return this.format(
-        DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd")
     )
 }
 
@@ -56,7 +56,7 @@ internal fun LocalDateTime.formatUpdatedTime(): String {
  */
 internal fun LocalTime.formatTime(): String {
     return this.format(
-        DateTimeFormatter.ofPattern("a hh:mm"),
+        DateTimeFormatter.ofPattern("a hh:mm")
     )
 }
 
@@ -86,6 +86,6 @@ internal fun LocalTime.formatBeforeTime(compareTo: LocalTime): String {
  */
 internal fun LocalDate.formatPeriod(): String {
     return this.format(
-        DateTimeFormatter.ofPattern("yyyy년 M월 d일"),
+        DateTimeFormatter.ofPattern("yyyy년 M월 d일")
     )
 }

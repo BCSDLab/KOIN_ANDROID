@@ -18,7 +18,7 @@ class BusSearchActivity : ComponentActivity() {
         setContent {
             KoinTheme {
                 BusSearchNavigation(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }

@@ -35,40 +35,40 @@ fun CommonFailureView(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             modifier = Modifier.width(120.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_fail_whale),
-            contentDescription = stringResource(R.string.error),
+            contentDescription = stringResource(R.string.error)
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             modifier = Modifier,
             text = stringResource(R.string.fail_to_load_screen_description),
             style = KoinTheme.typography.bold15,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(12.dp))
         Button(
             onClick = LocalOnRefresh.current,
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             colors =
-                ButtonDefaults.buttonColors(
-                    containerColor = Color.White,
-                    contentColor = Color.Black,
-                ),
+            ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ),
             border = BorderStroke(1.dp, KoinTheme.colors.neutral300),
-            shape = CircleShape,
+            shape = CircleShape
         ) {
             Icon(
                 imageVector = Icons.Rounded.Refresh,
-                contentDescription = stringResource(R.string.refresh),
+                contentDescription = stringResource(R.string.refresh)
             )
             Text(
                 modifier = Modifier.padding(start = 6.dp),
                 text = stringResource(R.string.refresh),
-                style = KoinTheme.typography.regular14,
+                style = KoinTheme.typography.regular14
             )
         }
     }

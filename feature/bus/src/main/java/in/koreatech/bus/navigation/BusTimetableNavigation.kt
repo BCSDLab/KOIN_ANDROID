@@ -22,7 +22,7 @@ import `in`.koreatech.bus.util.findActivity
 @Composable
 fun BusTimetableNavigation(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController()
 ) {
     val context = LocalContext.current
 
@@ -41,7 +41,7 @@ fun BusTimetableNavigation(
         },
         popExitTransition = {
             defaultPopExitTransition()
-        },
+        }
     ) {
         composable<Routes.BusTimetable> {
             BusTimetableScreen(
@@ -51,14 +51,14 @@ fun BusTimetableNavigation(
                 },
                 onNavigateToShuttleTimetableScreen = {
                     navController.navigate(Routes.ShuttleTimetable(it.id))
-                },
+                }
             )
         }
 
         composable<Routes.ShuttleTimetable> {
             ShuttleTimetableScreen(
                 modifier = Modifier.fillMaxSize().background(Color.White),
-                onNavigationIconClick = navController::popBackStack,
+                onNavigationIconClick = navController::popBackStack
             )
         }
     }

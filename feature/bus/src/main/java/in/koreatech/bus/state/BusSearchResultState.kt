@@ -9,12 +9,12 @@ import java.time.LocalTime
 data class BusSearchResultState(
     val busType: BusType,
     val busName: String,
-    val departureTime: LocalTime,
+    val departureTime: LocalTime
 )
 
 fun BusSearchResult.toBusSearchResultState() =
     BusSearchResultState(
         busType = BusType.valueOf(busType.uppercase()),
         busName = busName,
-        departureTime = departureTime,
+        departureTime = departureTime
     )

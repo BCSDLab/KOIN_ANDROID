@@ -13,7 +13,7 @@ import `in`.koreatech.bus.util.LocalOnRefresh
 fun ShuttleTimetableScreen(
     modifier: Modifier = Modifier,
     viewModel: ShuttleTimetableViewModel = hiltViewModel(),
-    onNavigationIconClick: () -> Unit = {},
+    onNavigationIconClick: () -> Unit = {}
 ) {
     val timetableUiState by viewModel.timetableUiState.collectAsState()
 
@@ -21,7 +21,7 @@ fun ShuttleTimetableScreen(
         ShuttleTimetableScreenContent(
             modifier = modifier,
             onNavigationIconClick = onNavigationIconClick,
-            timetableUiState = timetableUiState,
+            timetableUiState = timetableUiState
         )
     }
 }

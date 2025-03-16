@@ -27,10 +27,10 @@ internal object Skeleton {
 @Composable
 internal fun Modifier.skeleton(
     brush: Brush = Skeleton.brush,
-    shape: Shape = Skeleton.shape,
+    shape: Shape = Skeleton.shape
 ) = this.background(
     brush = brush,
-    shape = shape,
+    shape = shape
 )
 
 @Composable
@@ -39,7 +39,7 @@ internal fun getCommonSkeletonBrush(): Brush {
         listOf(
             Color.LightGray.copy(alpha = 0.6f),
             Color.LightGray.copy(alpha = 0.2f),
-            Color.LightGray.copy(alpha = 0.6f),
+            Color.LightGray.copy(alpha = 0.6f)
         )
 
     val transition = rememberInfiniteTransition()
@@ -48,19 +48,19 @@ internal fun getCommonSkeletonBrush(): Brush {
             initialValue = 0f,
             targetValue = 1000f,
             animationSpec =
-                infiniteRepeatable(
-                    animation =
-                        tween(
-                            durationMillis = 1000,
-                            easing = FastOutSlowInEasing,
-                        ),
-                    repeatMode = RepeatMode.Reverse,
+            infiniteRepeatable(
+                animation =
+                tween(
+                    durationMillis = 1000,
+                    easing = FastOutSlowInEasing
                 ),
+                repeatMode = RepeatMode.Reverse
+            )
         )
 
     return Brush.linearGradient(
         colors = skeletonColors,
         start = Offset.Zero,
-        end = Offset(x = translateAnim.value, y = translateAnim.value),
+        end = Offset(x = translateAnim.value, y = translateAnim.value)
     )
 }
