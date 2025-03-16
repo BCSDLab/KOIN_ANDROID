@@ -23,10 +23,7 @@ class UserLeaveDialog : DialogFragment(R.layout.dialog_user_leave) {
     private val binding by dataBinding<DialogUserLeaveBinding>()
     private val viewModel by viewModels<UserLeaveViewModel>()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
         initObservers()
 

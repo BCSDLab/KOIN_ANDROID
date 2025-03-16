@@ -13,12 +13,12 @@ import `in`.koreatech.koin.databinding.StoreEventCardBinding
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 
 class StoreEventPagerAdapter() : ListAdapter<StoreEvent, StoreEventPagerAdapter.StoreEventCardViewHolder>(
-    diffCallback,
+    diffCallback
 ) {
     var onItemClickListener: OnItemClickListener? = null
 
     inner class StoreEventCardViewHolder(
-        val binding: StoreEventCardBinding,
+        val binding: StoreEventCardBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         val container = binding.storeEventContainer
         val eventStoreImage = binding.eventImageView
@@ -31,10 +31,7 @@ class StoreEventPagerAdapter() : ListAdapter<StoreEvent, StoreEventPagerAdapter.
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): StoreEventCardViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreEventCardViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = StoreEventCardBinding.inflate(inflater, parent, false)
         return StoreEventCardViewHolder(binding)
@@ -42,7 +39,7 @@ class StoreEventPagerAdapter() : ListAdapter<StoreEvent, StoreEventPagerAdapter.
 
     override fun onBindViewHolder(
         holder: StoreEventPagerAdapter.StoreEventCardViewHolder,
-        position: Int,
+        position: Int
     ) {
         val event = getItem(position % itemCount)
         with(holder) {
@@ -78,17 +75,11 @@ class StoreEventPagerAdapter() : ListAdapter<StoreEvent, StoreEventPagerAdapter.
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<StoreEvent>() {
-                override fun areItemsTheSame(
-                    oldItem: StoreEvent,
-                    newItem: StoreEvent,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: StoreEvent, newItem: StoreEvent): Boolean {
                     return oldItem.shopId == newItem.shopId
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: StoreEvent,
-                    newItem: StoreEvent,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: StoreEvent, newItem: StoreEvent): Boolean {
                     return oldItem == newItem
                 }
             }

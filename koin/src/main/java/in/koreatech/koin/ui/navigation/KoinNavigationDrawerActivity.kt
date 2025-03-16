@@ -89,7 +89,7 @@ abstract class KoinNavigationDrawerActivity :
             R.id.navi_item_land,
             R.id.navi_item_owner,
             R.id.navi_item_article,
-            R.id.navi_item_contact,
+            R.id.navi_item_contact
         ).map {
             findViewById<View>(it)
         }.zip(
@@ -106,8 +106,8 @@ abstract class KoinNavigationDrawerActivity :
                 MenuState.Land,
                 MenuState.Owner,
                 MenuState.Article,
-                MenuState.Contact,
-            ),
+                MenuState.Contact
+            )
         ) { view, state ->
             state to view
         }.toMap()
@@ -132,7 +132,7 @@ abstract class KoinNavigationDrawerActivity :
 
     private val requestMainPermissionLauncher =
         registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions(),
+            ActivityResultContracts.RequestMultiplePermissions()
         ) { permission ->
             var permissionGranted = true
             permission.entries.forEach {
@@ -171,7 +171,9 @@ abstract class KoinNavigationDrawerActivity :
                     if (menuState == MenuState.Main) {
                         if (System.currentTimeMillis() > pressTime + 2000) {
                             pressTime = System.currentTimeMillis()
-                            ToastUtil.getInstance().makeShort(getString(R.string.press_again_to_exit))
+                            ToastUtil.getInstance().makeShort(
+                                getString(R.string.press_again_to_exit)
+                            )
                         } else {
                             finishAffinity()
                         }
@@ -203,11 +205,11 @@ abstract class KoinNavigationDrawerActivity :
                                 Intent.ACTION_VIEW,
                                 if (BuildConfig.IS_DEBUG) {
                                     Uri.parse(
-                                        URLConstant.OWNER_URL_STAGE,
+                                        URLConstant.OWNER_URL_STAGE
                                     )
                                 } else {
                                     Uri.parse(URLConstant.OWNER_URL_PRODUCTION)
-                                },
+                                }
                             )
                         startActivity(intent)
                     }
@@ -219,7 +221,7 @@ abstract class KoinNavigationDrawerActivity :
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.HAMBURGER_SHOP,
-                                    getString(R.string.nearby_stores),
+                                    getString(R.string.nearby_stores)
                                 )
                             }
 
@@ -227,7 +229,7 @@ abstract class KoinNavigationDrawerActivity :
                                 EventLogger.logClickEvent(
                                     EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER_DINING,
-                                    getString(R.string.navigation_item_dining),
+                                    getString(R.string.navigation_item_dining)
                                 )
                             }
 
@@ -235,7 +237,7 @@ abstract class KoinNavigationDrawerActivity :
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.HAMBURGER,
-                                    getString(R.string.navigation_item_real_estate),
+                                    getString(R.string.navigation_item_real_estate)
                                 )
                             }
 
@@ -243,7 +245,9 @@ abstract class KoinNavigationDrawerActivity :
                                 EventLogger.logClickEvent(
                                     EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER,
-                                    getString(R.string.navigation_item_koreatech_operating_information),
+                                    getString(
+                                        R.string.navigation_item_koreatech_operating_information
+                                    )
                                 )
                             }
 
@@ -252,13 +256,13 @@ abstract class KoinNavigationDrawerActivity :
                                     EventLogger.logClickEvent(
                                         EventAction.USER,
                                         AnalyticsConstant.Label.HAMBURGER,
-                                        getString(R.string.navigation_item_logout),
+                                        getString(R.string.navigation_item_logout)
                                     )
                                 } else {
                                     EventLogger.logClickEvent(
                                         EventAction.USER,
                                         AnalyticsConstant.Label.HAMBURGER,
-                                        getString(R.string.navigation_item_login),
+                                        getString(R.string.navigation_item_login)
                                     )
                                 }
                             }
@@ -267,21 +271,21 @@ abstract class KoinNavigationDrawerActivity :
                                 EventLogger.logClickEvent(
                                     EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER,
-                                    getString(R.string.navigation_item_article),
+                                    getString(R.string.navigation_item_article)
                                 )
                             }
 
                             MenuState.BusTimetable -> {
                                 EventLogger.logCampusClickEvent(
                                     AnalyticsConstant.Label.HAMBURGER,
-                                    "버스 시간표",
+                                    "버스 시간표"
                                 )
                             }
 
                             MenuState.BusSearch -> {
                                 EventLogger.logCampusClickEvent(
                                     AnalyticsConstant.Label.HAMBURGER,
-                                    "교통편 조회하기",
+                                    "교통편 조회하기"
                                 )
                             }
 
@@ -314,108 +318,107 @@ abstract class KoinNavigationDrawerActivity :
             leftNavigationView.layoutParams.apply { width = windowWidth }
     }
 
-    private fun initDrawerViewModel() =
-        with(koinNavigationDrawerViewModel) {
-            observeLiveData(menuEvent) { menuState ->
-                when (menuState) {
-                    MenuState.BusTimetable -> goToBusTimetableActivity()
-                    MenuState.BusSearch -> goToBusSearchActivity()
-                    MenuState.Dining -> goToDiningActivity()
-                    MenuState.OperatingInfo -> goToOperatingInfoActivity()
-                    MenuState.Land -> goToLandActivity()
-                    MenuState.Main -> goToMainActivity()
-                    MenuState.Store -> goToStoreActivity()
-                    MenuState.Chat -> goToChatActivity()
-                    MenuState.Setting -> {
-                        goToSettingActivity()
-                        return@observeLiveData
-                    }
-
-                    MenuState.LoginOrLogout -> {
-                        if (userInfoFlow.value.isStudent) {
-                            logout()
-                        }
-                        goToLoginActivity()
-                    }
-
-                    MenuState.Timetable -> {
-                        goToTimetableActivity()
-                    }
-
-                    MenuState.LoginOrLogout -> {
-                        if (userInfoFlow.value.isStudent) {
-                            logout()
-                        }
-                        goToLoginActivity()
-                    }
-
-                    MenuState.Article -> goToArticleActivity()
-
-                    MenuState.Contact -> {
-                        goToContactWebActivity()
-                    }
-
-                    else -> Unit
+    private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
+        observeLiveData(menuEvent) { menuState ->
+            when (menuState) {
+                MenuState.BusTimetable -> goToBusTimetableActivity()
+                MenuState.BusSearch -> goToBusSearchActivity()
+                MenuState.Dining -> goToDiningActivity()
+                MenuState.OperatingInfo -> goToOperatingInfoActivity()
+                MenuState.Land -> goToLandActivity()
+                MenuState.Main -> goToMainActivity()
+                MenuState.Store -> goToStoreActivity()
+                MenuState.Chat -> goToChatActivity()
+                MenuState.Setting -> {
+                    goToSettingActivity()
+                    return@observeLiveData
                 }
-                drawerLayout.closeDrawer()
+
+                MenuState.LoginOrLogout -> {
+                    if (userInfoFlow.value.isStudent) {
+                        logout()
+                    }
+                    goToLoginActivity()
+                }
+
+                MenuState.Timetable -> {
+                    goToTimetableActivity()
+                }
+
+                MenuState.LoginOrLogout -> {
+                    if (userInfoFlow.value.isStudent) {
+                        logout()
+                    }
+                    goToLoginActivity()
+                }
+
+                MenuState.Article -> goToArticleActivity()
+
+                MenuState.Contact -> {
+                    goToContactWebActivity()
+                }
+
+                else -> Unit
             }
+            drawerLayout.closeDrawer()
+        }
 
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    launch {
-                        userInfoFlow.collect { user ->
-                            when (user) {
-                                User.Anonymous -> {
-                                    nameTextView.visibility = View.GONE
-                                    helloMessageTextView.text =
-                                        getString(R.string.navigation_hello_message_anonymous)
-                                    loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
-                                }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    userInfoFlow.collect { user ->
+                        when (user) {
+                            User.Anonymous -> {
+                                nameTextView.visibility = View.GONE
+                                helloMessageTextView.text =
+                                    getString(R.string.navigation_hello_message_anonymous)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
+                            }
 
-                                is User.Student -> {
-                                    nameTextView.text =
-                                        if (user.nickname?.isNotEmpty() == true) {
-                                            user.nickname!!
-                                        } else if (user.name?.isNotEmpty() == true) {
-                                            user.name!!
-                                        } else {
-                                            "회원"
-                                        }
-                                    nameTextView.visibility = View.VISIBLE
-                                    helloMessageTextView.text = getString(R.string.navigation_hello_message)
-                                    loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
-                                    chatMenuIcon.visibility = View.VISIBLE
-                                    koinNavigationDrawerViewModel.getUnreadMessageCount()
-
-                                    when (menuState) {
-                                        MenuState.Main -> {
-                                            if (!checkMainPermission()) {
-                                                requestMainPermissionLauncher.launch(
-                                                    MAIN_REQUIRED_PERMISSION,
-                                                )
-                                            }
-                                            koinNavigationDrawerViewModel.updateDeviceToken()
-                                        }
-
-                                        else -> Unit
+                            is User.Student -> {
+                                nameTextView.text =
+                                    if (user.nickname?.isNotEmpty() == true) {
+                                        user.nickname!!
+                                    } else if (user.name?.isNotEmpty() == true) {
+                                        user.name!!
+                                    } else {
+                                        "회원"
                                     }
+                                nameTextView.visibility = View.VISIBLE
+                                helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+                                chatMenuIcon.visibility = View.VISIBLE
+                                koinNavigationDrawerViewModel.getUnreadMessageCount()
+
+                                when (menuState) {
+                                    MenuState.Main -> {
+                                        if (!checkMainPermission()) {
+                                            requestMainPermissionLauncher.launch(
+                                                MAIN_REQUIRED_PERMISSION
+                                            )
+                                        }
+                                        koinNavigationDrawerViewModel.updateDeviceToken()
+                                    }
+
+                                    else -> Unit
                                 }
                             }
                         }
                     }
-                    launch {
-                        unReadMessageCount.collectLatest {
-                            if (it > 0) {
-                                unReadMessageCountTextView.visibility = View.VISIBLE
-                                unReadMessageCountTextView.text = "$it"
-                            } else {
-                                unReadMessageCountTextView.visibility = View.GONE
-                            }
+                }
+                launch {
+                    unReadMessageCount.collectLatest {
+                        if (it > 0) {
+                            unReadMessageCountTextView.visibility = View.VISIBLE
+                            unReadMessageCountTextView.text = "$it"
+                        } else {
+                            unReadMessageCountTextView.visibility = View.GONE
                         }
                     }
                 }
             }
         }
+    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val itemId = item.itemId
@@ -456,10 +459,7 @@ abstract class KoinNavigationDrawerActivity :
         }
     }
 
-    open fun callDrawerItem(
-        itemId: Int,
-        bundle: Bundle?,
-    ) {
+    open fun callDrawerItem(itemId: Int, bundle: Bundle?) {
         if (itemId == R.id.navi_item_store) {
             goToStoreActivity(bundle)
         }
@@ -522,10 +522,15 @@ abstract class KoinNavigationDrawerActivity :
 
     private fun goToTimetableActivity() {
         if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
+            goToActivityFinish(
+                Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java)
+            )
         } else {
             val intent =
-                Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
+                Intent(
+                    this,
+                    `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java
+                ).apply {
                     if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
                         putExtra("isAnonymous", true)
                     } else {
@@ -535,7 +540,7 @@ abstract class KoinNavigationDrawerActivity :
             EventLogger.logClickEvent(
                 action = EventAction.USER,
                 label = "hamburger",
-                value = "시간표",
+                value = "시간표"
             )
             startActivity(intent)
         }
@@ -571,7 +576,7 @@ abstract class KoinNavigationDrawerActivity :
     private fun goToChatActivity() {
         EventLogger.logCampusClickEvent(
             AnalyticsConstant.Label.CHAT.HAMBURGER,
-            "쪽지",
+            "쪽지"
         )
         Intent(this, ChatListActivity::class.java).apply {
             startActivity(this)
@@ -587,7 +592,7 @@ abstract class KoinNavigationDrawerActivity :
                 val intent =
                     Intent(
                         this,
-                        LoginActivity::class.java,
+                        LoginActivity::class.java
                     )
                 intent.putExtra("FIRST_LOGIN", false)
                 startActivity(intent)
@@ -613,7 +618,7 @@ abstract class KoinNavigationDrawerActivity :
     private fun goToLoginActivity() {
         Intent(
             this,
-            LoginActivity::class.java,
+            LoginActivity::class.java
         ).apply {
             startActivity(this)
         }
@@ -623,12 +628,11 @@ abstract class KoinNavigationDrawerActivity :
         drawerLayout.toggleDrawer()
     }
 
-    private fun checkMainPermission() =
-        MAIN_REQUIRED_PERMISSION.all {
-            ContextCompat.checkSelfPermission(
-                this, it,
-            ) == PackageManager.PERMISSION_GRANTED
-        }
+    private fun checkMainPermission() = MAIN_REQUIRED_PERMISSION.all {
+        ContextCompat.checkSelfPermission(
+            this, it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
     companion object {
         private val MAIN_REQUIRED_PERMISSION =

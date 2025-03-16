@@ -41,7 +41,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
             manifestPlaceholders["appName"] = "@string/app_name_dev"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
@@ -50,7 +50,7 @@ android {
             buildConfigField(
                 "String",
                 "KAKAO_NATIVE_APP_KEY",
-                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")",
+                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
             )
             firebaseCrashlytics {
                 mappingFileUploadEnabled = false
@@ -61,7 +61,7 @@ android {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
             manifestPlaceholders["appName"] = "@string/app_name"
             manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher_koin"
@@ -71,7 +71,7 @@ android {
             buildConfigField(
                 "String",
                 "KAKAO_NATIVE_APP_KEY",
-                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")",
+                "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
             )
             firebaseAppDistribution {
                 artifactType = "AAB"

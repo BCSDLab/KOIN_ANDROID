@@ -17,19 +17,21 @@ import `in`.koreatech.koin.databinding.ItemImageBinding
 
 class StoreDetailReviewImageRecyclerAdapter() :
     ListAdapter<String, StoreDetailReviewImageRecyclerAdapter.StoreDetailReviewViewHolder>(
-        diffCallback,
+        diffCallback
     ) {
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
     var isDoubleClick: Boolean = false
 
-    inner class StoreDetailReviewViewHolder(val binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class StoreDetailReviewViewHolder(val binding: ItemImageBinding) : RecyclerView.ViewHolder(
+        binding.root
+    ) {
         val imageView = binding.imageView
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int,
+        viewType: Int
     ): StoreDetailReviewImageRecyclerAdapter.StoreDetailReviewViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemImageBinding.inflate(inflater, parent, false)
@@ -38,17 +40,14 @@ class StoreDetailReviewImageRecyclerAdapter() :
 
     override fun onBindViewHolder(
         holder: StoreDetailReviewImageRecyclerAdapter.StoreDetailReviewViewHolder,
-        position: Int,
+        position: Int
     ) {
         val imageUri = getItem(position)
 
         with(holder) {
             imageView.outlineProvider =
                 object : ViewOutlineProvider() {
-                    override fun getOutline(
-                        view: View,
-                        outline: Outline,
-                    ) {
+                    override fun getOutline(view: View, outline: Outline) {
                         outline.setRoundRect(0, 0, view.width, view.height, 20f)
                     }
                 }
@@ -84,17 +83,11 @@ class StoreDetailReviewImageRecyclerAdapter() :
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<String>() {
-                override fun areItemsTheSame(
-                    oldItem: String,
-                    newItem: String,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
                     return oldItem == newItem
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: String,
-                    newItem: String,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
                     return oldItem == newItem
                 }
             }

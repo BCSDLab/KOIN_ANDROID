@@ -30,19 +30,13 @@ class DiningNoticeAdapter :
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): DiningNoticeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiningNoticeViewHolder {
         return DiningNoticeViewHolder(
-            ItemTableWithTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            ItemTableWithTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
-    override fun onBindViewHolder(
-        holder: DiningNoticeViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: DiningNoticeViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
@@ -51,14 +45,14 @@ class DiningNoticeAdapter :
             object : DiffUtil.ItemCallback<OpenCloseInfo>() {
                 override fun areItemsTheSame(
                     oldItem: OpenCloseInfo,
-                    newItem: OpenCloseInfo,
+                    newItem: OpenCloseInfo
                 ): Boolean {
                     return oldItem.dayOfWeek == newItem.dayOfWeek
                 }
 
                 override fun areContentsTheSame(
                     oldItem: OpenCloseInfo,
-                    newItem: OpenCloseInfo,
+                    newItem: OpenCloseInfo
                 ): Boolean {
                     return oldItem == newItem
                 }

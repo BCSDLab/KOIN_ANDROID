@@ -9,24 +9,22 @@ import `in`.koreatech.koin.domain.usecase.user.RequestFindPasswordEmailUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class ForgotPasswordViewModel
-    @Inject
-    constructor(
-        private val requestFindPasswordEmailUseCase: RequestFindPasswordEmailUseCase,
-    ) : BaseViewModel() {
-        private val _passwordResetEmailRequested = SingleLiveEvent<Unit>()
-        val passwordResetEmailRequested: LiveData<Unit> get() = _passwordResetEmailRequested
+class ForgotPasswordViewModel @Inject constructor(
+    private val requestFindPasswordEmailUseCase: RequestFindPasswordEmailUseCase
+) : BaseViewModel() {
+    private val _passwordResetEmailRequested = SingleLiveEvent<Unit>()
+    val passwordResetEmailRequested: LiveData<Unit> get() = _passwordResetEmailRequested
 
-        private val _passwordResetEmailRequestErrorMessage = SingleLiveEvent<String>()
-        val passwordResetEmailRequestErrorMessage: LiveData<String> get() = _passwordResetEmailRequestErrorMessage
+    private val _passwordResetEmailRequestErrorMessage = SingleLiveEvent<String>()
+    val passwordResetEmailRequestErrorMessage: LiveData<String> get() = _passwordResetEmailRequestErrorMessage
 
-        fun requestFindPasswordEmail(email: String) {
-            if (isLoading.value == false) {
-                viewModelScope.launchWithLoading {
-                    requestFindPasswordEmailUseCase(email)?.also {
-                        _passwordResetEmailRequestErrorMessage.value = it.message
-                    } ?: _passwordResetEmailRequested.call()
-                }
+    fun requestFindPasswordEmail(email: String) {
+        if (isLoading.value == false) {
+            viewModelScope.launchWithLoading {
+                requestFindPasswordEmailUseCase(email)?.also {
+                    _passwordResetEmailRequestErrorMessage.value = it.message
+                } ?: _passwordResetEmailRequested.call()
             }
         }
     }
+}

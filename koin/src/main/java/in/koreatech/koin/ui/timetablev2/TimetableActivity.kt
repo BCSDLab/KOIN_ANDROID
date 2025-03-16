@@ -103,7 +103,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         binding.composeView.setContent {
             val state by viewModel.state.collectAsStateWithLifecycle()
             val dialogState by viewModel.dialogState.collectAsStateWithLifecycle()
-            val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle(TimetableSideEffect.Nothing)
+            val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle(
+                TimetableSideEffect.Nothing
+            )
             val customContentState by viewModel.customContentState.collectAsStateWithLifecycle()
             val searchEngineState by viewModel.searchEngineState.collectAsStateWithLifecycle()
             val lectures by viewModel.lectures.collectAsStateWithLifecycle()
@@ -118,7 +120,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
             setAppbarEvent {
                 state.semesters.ifEmpty {
-                    viewModel.updateSideEffect(TimetableSideEffect.SnackBar(getString(R.string.timetable_error_no_semester)))
+                    viewModel.updateSideEffect(
+                        TimetableSideEffect.SnackBar(
+                            getString(R.string.timetable_error_no_semester)
+                        )
+                    )
                     return@setAppbarEvent
                 }
                 scope.launch {
@@ -151,7 +157,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 if (dialogState.isLectureDuplicationVisible) {
                     LectureDuplicationDialog(
                         onConfirm = viewModel::updateDuplicationTimetableLecture,
-                        onDismiss = viewModel::updateIsLectureDuplicationDialogVisible,
+                        onDismiss = viewModel::updateIsLectureDuplicationDialogVisible
                     )
                 }
 
@@ -160,7 +166,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         ScheduleDuplicationDialog(
                             timetableEvent = it,
                             onConfirm = viewModel::updateIsCustomLectureDuplicationDialogVisible,
-                            onDismiss = viewModel::updateIsCustomLectureDuplicationDialogVisible,
+                            onDismiss = viewModel::updateIsCustomLectureDuplicationDialogVisible
                         )
                     }
                 }
@@ -170,14 +176,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         department = searchEngineState.department,
                         departments = departments,
                         onConfirm = viewModel::updateDepartment,
-                        onDismiss = viewModel::updateIsSelectDepartmentDialogVisible,
+                        onDismiss = viewModel::updateIsSelectDepartmentDialogVisible
                     )
                 }
 
                 if (dialogState.isLoginVisible) {
                     RequestLoginDialog(
                         onConfirm = ::startToLoginActivity,
-                        onDismiss = viewModel::updateIsLoginDialogVisible,
+                        onDismiss = viewModel::updateIsLoginDialogVisible
                     )
                 }
 
@@ -187,7 +193,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         isStartTime = true,
                         customContent = state.customTimeData,
                         onConfirm = viewModel::updateStarTimeContent,
-                        onDismiss = viewModel::updateIsStartTimePickerDialogVisible,
+                        onDismiss = viewModel::updateIsStartTimePickerDialogVisible
                     )
                 }
 
@@ -197,7 +203,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         isStartTime = false,
                         customContent = state.customTimeData,
                         onConfirm = viewModel::updateEndTimeContent,
-                        onDismiss = viewModel::updateIsEndTimePickerDialogVisible,
+                        onDismiss = viewModel::updateIsEndTimePickerDialogVisible
                     )
                 }
 
@@ -210,7 +216,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         },
                         onDismiss = {
                             viewModel.updateIsDeleteLectureDialogVisible(visible = false)
-                        },
+                        }
                     )
                 }
 
@@ -220,15 +226,19 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                             scope.launch {
                                 saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap()) {
                                     if (it) {
-                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지가 저장되었어요."))
+                                        viewModel.updateSideEffect(
+                                            TimetableSideEffect.SnackBar("이미지가 저장되었어요.")
+                                        )
                                     } else {
-                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장을 실패했어요."))
+                                        viewModel.updateSideEffect(
+                                            TimetableSideEffect.SnackBar("이미지 저장을 실패했어요.")
+                                        )
                                     }
                                     viewModel.updateIsDownloadDialogVisible(false)
                                 }
                             }
                         },
-                        onDismiss = viewModel::updateIsDownloadDialogVisible,
+                        onDismiss = viewModel::updateIsDownloadDialogVisible
                     )
                 }
 
@@ -262,7 +272,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickAddCustomLectureMode = {
                         handleAddCustomLectureMode(state.isAnonymous) {
                             viewModel.updateTimetableBottomSheetMode(
-                                TimetableBottomSheetContentMode.CUSTOM,
+                                TimetableBottomSheetContentMode.CUSTOM
                             )
                         }
                     },
@@ -323,7 +333,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     onClickStartTime = viewModel::updateIsStartTimePickerDialogVisible,
                     onClickEndTime = viewModel::updateIsEndTimePickerDialogVisible,
                     onClickAddCustomContent = viewModel::addCustomExtraContent,
-                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent,
+                    onClickRemoveCustomContent = viewModel::removeCustomExtraContent
                 )
 
                 CircleLoadingBar(loading = state.loading)
@@ -341,7 +351,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         snackBarHost.showSnackBarWithDismiss(
                             message = effect.message,
                             actionLabel = "닫기",
-                            duration = SnackbarDuration.Short,
+                            duration = SnackbarDuration.Short
                         )
                         viewModel.updateSideEffect(TimetableSideEffect.Nothing)
                     }
@@ -349,7 +359,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     is TimetableSideEffect.Toast -> {
                         // TODO::현재는 에러 메세지를 띄우는 용로도 토스트가 사용되기에 임시 메세지 사용, 배포 후 수정 필요
                         Timber.d("TimetableSideEffect.Toast| ${effect.message}")
-                        Toast.makeText(this@TimetableActivity, "인터넷 연결을 확인하고 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@TimetableActivity,
+                            "인터넷 연결을 확인하고 다시 시도해주세요.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     is TimetableSideEffect.Nothing -> Unit
@@ -362,10 +376,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         setAppbarEvent()
     }
 
-    private fun handleAddCustomLectureMode(
-        isAnonymous: Boolean,
-        callback: () -> Unit,
-    ) {
+    private fun handleAddCustomLectureMode(isAnonymous: Boolean, callback: () -> Unit) {
         if (isAnonymous) {
             viewModel.updateIsLoginDialogVisible(true)
         } else {
@@ -386,8 +397,8 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                         IS_ANONYMOUS to viewModel.state.value.isAnonymous,
                         SEMESTER to viewModel.state.value.currentSemester,
                         FRAME_ID to viewModel.state.value.frameId,
-                        FRAME_NAME to viewModel.state.value.timetableName,
-                    ),
+                        FRAME_NAME to viewModel.state.value.timetableName
+                    )
                 )
             }
         registerTimetableSemesterActivityResult.launch(intent)
@@ -401,10 +412,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         }.let(::startActivity)
     }
 
-    private fun saveTimetable(
-        bitmap: Bitmap,
-        callback: (Boolean) -> Unit,
-    ) {
+    private fun saveTimetable(bitmap: Bitmap, callback: (Boolean) -> Unit) {
         BitmapUtils(this).saveBitmapImage(bitmap).let {
             callback(it)
         }

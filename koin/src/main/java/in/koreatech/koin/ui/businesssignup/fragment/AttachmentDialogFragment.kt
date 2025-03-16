@@ -29,7 +29,11 @@ class AttachmentDialogFragment : DialogFragment() {
             when (isGranted) {
                 true -> getImageFile()
                 else -> {
-                    when (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    when (
+                        shouldShowRequestPermissionRationale(
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        )
+                    ) {
                         true -> permissionDialog(true)
                         else -> permissionDialog(false)
                     }
@@ -40,7 +44,7 @@ class AttachmentDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAttachmentDialogBinding.inflate(inflater, container, false)
         val view = binding.root

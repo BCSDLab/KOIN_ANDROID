@@ -11,28 +11,22 @@ import `in`.koreatech.koin.ui.main.state.DiningTypeUiState
 
 class DiningTypeAdapter :
     ListAdapter<DiningTypeUiState, DiningTypeAdapter.DiningTypeTextViewHolder>(
-        diffCallback,
+        diffCallback
     ) {
     var onItemClickListener: OnItemClickListener? = null
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): DiningTypeTextViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiningTypeTextViewHolder {
         return DiningTypeTextViewHolder(parent)
     }
 
-    override fun onBindViewHolder(
-        holder: DiningTypeTextViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: DiningTypeTextViewHolder, position: Int) {
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener { onItemClickListener?.onItemClick(position) }
     }
 
     inner class DiningTypeTextViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.main_dining_type_text_view, parent, false),
+            .inflate(R.layout.main_dining_type_text_view, parent, false)
     ) {
         private val textView = itemView.findViewById<TextView>(R.id.text_view)
 
@@ -60,12 +54,12 @@ class DiningTypeAdapter :
             object : DiffUtil.ItemCallback<DiningTypeUiState>() {
                 override fun areItemsTheSame(
                     oldItem: DiningTypeUiState,
-                    newItem: DiningTypeUiState,
+                    newItem: DiningTypeUiState
                 ): Boolean = oldItem.name == newItem.name
 
                 override fun areContentsTheSame(
                     oldItem: DiningTypeUiState,
-                    newItem: DiningTypeUiState,
+                    newItem: DiningTypeUiState
                 ): Boolean = oldItem == newItem
             }
     }

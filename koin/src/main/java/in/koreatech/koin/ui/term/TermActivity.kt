@@ -32,7 +32,7 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
 
     private val articleAdapter by lazy {
         TermArticleAdapter(
-            onClickArticle = ::scrollContent,
+            onClickArticle = ::scrollContent
         )
     }
 

@@ -10,40 +10,38 @@ import `in`.koreatech.koin.domain.usecase.owner.OwnerSignupRequestEmailVerificat
 import javax.inject.Inject
 
 @HiltViewModel
-class BusinessSignUpBasicInfoViewModel
-    @Inject
-    constructor(
-        private val ownerSignupRequestEmailVerificationUseCase: OwnerSignupRequestEmailVerificationUseCase,
-    ) : BaseViewModel() {
-        private val _businessSignupContinuationSate = SingleLiveEvent<SignupContinuationState>()
-        val businessSignupContinuationState: LiveData<SignupContinuationState>
-            get() = _businessSignupContinuationSate
+class BusinessSignUpBasicInfoViewModel @Inject constructor(
+    private val ownerSignupRequestEmailVerificationUseCase: OwnerSignupRequestEmailVerificationUseCase
+) : BaseViewModel() {
+    private val _businessSignupContinuationSate = SingleLiveEvent<SignupContinuationState>()
+    val businessSignupContinuationState: LiveData<SignupContinuationState>
+        get() = _businessSignupContinuationSate
 
-        private val _businessSignUpContinuationError = SingleLiveEvent<Throwable>()
-        val businessSignupContinuationError: LiveData<Throwable>
-            get() = _businessSignUpContinuationError
+    private val _businessSignUpContinuationError = SingleLiveEvent<Throwable>()
+    val businessSignupContinuationError: LiveData<Throwable>
+        get() = _businessSignUpContinuationError
 
-        fun continueBusinessSignup(
-            email: String,
-            password: String,
-            passwordConfirm: String,
-            isAgreedPrivacyTerms: Boolean,
-            isAgreedKoinTerms: Boolean,
-        ) {
-            if (isLoading.value == false) {
-                viewModelScope.launchWithLoading {
-                    ownerSignupRequestEmailVerificationUseCase(
-                        email,
-                        password,
-                        passwordConfirm,
-                        isAgreedPrivacyTerms,
-                        isAgreedKoinTerms,
-                    ).onSuccess {
-                        _businessSignupContinuationSate.value = it
-                    }.onFailure {
-                        _businessSignUpContinuationError.value = it
-                    }
+    fun continueBusinessSignup(
+        email: String,
+        password: String,
+        passwordConfirm: String,
+        isAgreedPrivacyTerms: Boolean,
+        isAgreedKoinTerms: Boolean
+    ) {
+        if (isLoading.value == false) {
+            viewModelScope.launchWithLoading {
+                ownerSignupRequestEmailVerificationUseCase(
+                    email,
+                    password,
+                    passwordConfirm,
+                    isAgreedPrivacyTerms,
+                    isAgreedKoinTerms
+                ).onSuccess {
+                    _businessSignupContinuationSate.value = it
+                }.onFailure {
+                    _businessSignUpContinuationError.value = it
                 }
             }
         }
     }
+}

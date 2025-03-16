@@ -14,7 +14,7 @@ import `in`.koreatech.koin.domain.util.DateFormatUtil
 import java.util.Date
 
 class DiningDateAdapter(
-    private val onClick: (Date) -> Unit,
+    private val onClick: (Date) -> Unit
 ) : ListAdapter<Date, RecyclerView.ViewHolder>(diffCallback) {
     private var selectedPosition = 0
 
@@ -22,17 +22,14 @@ class DiningDateAdapter(
         selectedPosition = position
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val holder =
             DiningDateViewHolder(
                 ItemDiningDateBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
-                    false,
-                ),
+                    false
+                )
             )
 
         val displayMetrics = parent.context.resources.displayMetrics
@@ -46,19 +43,13 @@ class DiningDateAdapter(
         return holder
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as DiningDateViewHolder).bind(getItem(position), position)
     }
 
     inner class DiningDateViewHolder(val binding: ItemDiningDateBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(
-            date: Date,
-            position: Int,
-        ) {
+        fun bind(date: Date, position: Int) {
             with(binding) {
                 val context = root.context
                 textViewDayOfTheWeek.text = DateFormatUtil.getDayOfWeek(date)
@@ -69,35 +60,35 @@ class DiningDateAdapter(
                     textViewDay.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.gray9,
-                        ),
+                            R.color.gray9
+                        )
                     )
                     textViewDayOfTheWeek.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.gray9,
-                        ),
+                            R.color.gray9
+                        )
                     )
                 } else if (position > itemCount / 2) { // 오늘 이후
                     textViewDay.setTextColor(Color.BLACK)
                     textViewDayOfTheWeek.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.gray14,
-                        ),
+                            R.color.gray14
+                        )
                     )
                 } else { // 오늘
                     textViewDay.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.colorPrimary,
-                        ),
+                            R.color.colorPrimary
+                        )
                     )
                     textViewDayOfTheWeek.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.gray9,
-                        ),
+                            R.color.gray9
+                        )
                     )
                     groupTodayIndicator.visibility = View.VISIBLE
                 }
@@ -113,7 +104,7 @@ class DiningDateAdapter(
                     if (selectedPosition < position) {
                         notifyItemRangeChanged(
                             selectedPosition,
-                            position - selectedPosition + 1,
+                            position - selectedPosition + 1
                         )
                     } else {
                         notifyItemRangeChanged(position, selectedPosition - position + 1)
@@ -127,17 +118,11 @@ class DiningDateAdapter(
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<Date>() {
-                override fun areItemsTheSame(
-                    oldItem: Date,
-                    newItem: Date,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: Date, newItem: Date): Boolean {
                     return oldItem.time == newItem.time
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: Date,
-                    newItem: Date,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: Date, newItem: Date): Boolean {
                     return oldItem == newItem
                 }
             }

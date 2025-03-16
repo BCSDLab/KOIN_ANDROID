@@ -59,21 +59,20 @@ class DiningNoticeActivity : ActivityBase() {
         window.whiteStatusBar()
     }
 
-    private fun initViewModel() =
-        with(viewModel) {
-            observeLiveData(diningNotice) {
-                with(binding) {
-                    tvDiningNoticeTitle.text =
-                        getString(R.string.dining_notice_title_format, it.name, it.semester)
-                    tvDiningNoticeLocationValue.text = it.location
-                    tvDiningNoticeTelValue.text = it.phone
-                    tvDiningNoticeUpdate.text =
-                        getString(R.string.dining_notice_updated_at_format, it.updatedAt)
-                }
-                diningNoticeAdapter.submitList(it.opens)
+    private fun initViewModel() = with(viewModel) {
+        observeLiveData(diningNotice) {
+            with(binding) {
+                tvDiningNoticeTitle.text =
+                    getString(R.string.dining_notice_title_format, it.name, it.semester)
+                tvDiningNoticeLocationValue.text = it.location
+                tvDiningNoticeTelValue.text = it.phone
+                tvDiningNoticeUpdate.text =
+                    getString(R.string.dining_notice_updated_at_format, it.updatedAt)
             }
-            observeLiveData(toastErrorMessage) {
-                ToastUtil.getInstance().makeShort(it)
-            }
+            diningNoticeAdapter.submitList(it.opens)
         }
+        observeLiveData(toastErrorMessage) {
+            ToastUtil.getInstance().makeShort(it)
+        }
+    }
 }

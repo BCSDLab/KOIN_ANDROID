@@ -20,16 +20,16 @@ class SignUpCompleteActivity : ActivityBase() {
         initView()
     }
 
-    private fun initView() =
-        with(binding) {
-            btnGoLogin.setOnClickListener {
-                finishAffinity()
-                startActivity(Intent(this@SignUpCompleteActivity, LoginActivity::class.java))
-            }
-
-            btnGoCollegePortal.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.koreatech_url)))
-                startActivity(intent)
-            }
+    private fun initView() = with(binding) {
+        btnGoLogin.setOnClickListener {
+            finishAffinity()
+            startActivity(Intent(this@SignUpCompleteActivity, LoginActivity::class.java))
         }
+
+        btnGoCollegePortal.setOnClickListener {
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.koreatech_url)))
+            startActivity(intent)
+        }
+    }
 }

@@ -15,10 +15,7 @@ class BusinessSignUpCheckViewModel : BaseViewModel() {
     private val _agreedKoinTermsButtonState = MutableStateFlow(R.drawable.check)
     val agreedKoinTermsButtonState = _agreedKoinTermsButtonState.asStateFlow()
 
-    fun updateButtonState(
-        image: Int,
-        kind: Int,
-    ) {
+    fun updateButtonState(image: Int, kind: Int) {
         // kind: 1 -> allCheckButtonState, 2 -> agreedPrivacyButtonState, 3 -> agreedKoinTermsButtonState
         when (kind) {
             1 -> _allCheckButtonState.value = image

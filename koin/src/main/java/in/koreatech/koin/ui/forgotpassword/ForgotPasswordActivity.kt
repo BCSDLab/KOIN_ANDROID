@@ -29,41 +29,42 @@ class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding
         initViewModel()
     }
 
-    private fun initViewModel() =
-        with(forgotPasswordViewModel) {
-            withLoading(this@ForgotPasswordActivity, forgotPasswordViewModel)
-            observeLiveData(passwordResetEmailRequested) {
-                SnackbarUtil.makeSnackbarActionWebView(
-                    this@ForgotPasswordActivity,
-                    R.id.forgot_password_id_edittext,
-                    getString(R.string.forgotpassword_sent_email_message),
-                    getString(R.string.forgotpassword_sent_email_title),
-                    getString(R.string.koreatech_url),
-                    GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME,
-                )
-            }
-
-            observeLiveData(passwordResetEmailRequestErrorMessage) { message ->
-                SnackbarUtil.makeShortSnackbar(binding.root, message)
-            }
+    private fun initViewModel() = with(forgotPasswordViewModel) {
+        withLoading(this@ForgotPasswordActivity, forgotPasswordViewModel)
+        observeLiveData(passwordResetEmailRequested) {
+            SnackbarUtil.makeSnackbarActionWebView(
+                this@ForgotPasswordActivity,
+                R.id.forgot_password_id_edittext,
+                getString(R.string.forgotpassword_sent_email_message),
+                getString(R.string.forgotpassword_sent_email_title),
+                getString(R.string.koreatech_url),
+                GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
+            )
         }
 
-    private fun initView() =
-        with(binding) {
-            resetPasswordButton.setOnClickListener {
-                hideSoftKeyboard()
-                forgotPasswordViewModel.requestFindPasswordEmail(
-                    getString(R.string.koreatech_email_postfix, forgotPasswordIdEdittext.textString.trim()),
-                )
-            }
-
-            forgotPasswordIdEdittext.setOnEditorActionListener { v, actionId, event ->
-                hideSoftKeyboard()
-                false
-            }
-
-            forgotPasswordToLoginButton.setOnClickListener {
-                finish()
-            }
+        observeLiveData(passwordResetEmailRequestErrorMessage) { message ->
+            SnackbarUtil.makeShortSnackbar(binding.root, message)
         }
+    }
+
+    private fun initView() = with(binding) {
+        resetPasswordButton.setOnClickListener {
+            hideSoftKeyboard()
+            forgotPasswordViewModel.requestFindPasswordEmail(
+                getString(
+                    R.string.koreatech_email_postfix,
+                    forgotPasswordIdEdittext.textString.trim()
+                )
+            )
+        }
+
+        forgotPasswordIdEdittext.setOnEditorActionListener { v, actionId, event ->
+            hideSoftKeyboard()
+            false
+        }
+
+        forgotPasswordToLoginButton.setOnClickListener {
+            finish()
+        }
+    }
 }

@@ -5,15 +5,14 @@ import `in`.koreatech.koin.domain.model.article.Attachment
 data class AttachmentState(
     val name: String,
     val url: String,
-    val size: String,
+    val size: String
 )
 
-fun Attachment.toAttachmentState() =
-    AttachmentState(
-        name = name.removeFileSize(),
-        url = url,
-        size = name.extractFileSize() ?: "-",
-    )
+fun Attachment.toAttachmentState() = AttachmentState(
+    name = name.removeFileSize(),
+    url = url,
+    size = name.extractFileSize() ?: "-"
+)
 
 /** 파일 크기 추출
  * 본교 파일 이름은 "수강 신청 안내(129 KB)" 이런 형태임

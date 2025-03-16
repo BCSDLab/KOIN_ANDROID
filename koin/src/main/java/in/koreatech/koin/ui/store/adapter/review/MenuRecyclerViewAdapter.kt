@@ -42,16 +42,13 @@ class MenuRecyclerViewAdapter() :
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MenuViewHolder(
             ItemReviewMenuBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false,
-            ),
+                false
+            )
         )
     }
 
@@ -59,10 +56,7 @@ class MenuRecyclerViewAdapter() :
         return menuList.size
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as MenuViewHolder).bind(position)
     }
 

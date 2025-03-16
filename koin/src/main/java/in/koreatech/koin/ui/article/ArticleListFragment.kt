@@ -36,7 +36,7 @@ class ArticleListFragment : Fragment() {
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.NOTICE_TAB,
-                        it.text.toString(),
+                        it.text.toString()
                     )
                     viewModel.setCurrentBoard(ArticleBoardType.entries[it.position])
                 }
@@ -58,7 +58,7 @@ class ArticleListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleListBinding.inflate(inflater, container, false)
@@ -68,10 +68,7 @@ class ArticleListFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
     }
@@ -92,7 +89,7 @@ class ArticleListFragment : Fragment() {
                     ArticleBoardType.RECRUIT,
                     ArticleBoardType.IPP,
                     ArticleBoardType.STUDENT,
-                    ArticleBoardType.KOIN,
+                    ArticleBoardType.KOIN
                     -> {
                         val articleListNoticeFragment = ArticleListNoticeFragment()
                         val bundle = Bundle()
@@ -106,7 +103,7 @@ class ArticleListFragment : Fragment() {
                         childFragmentManager.beginTransaction()
                             .replace(
                                 R.id.frame_layout_article_list,
-                                ArticleListLostAndFoundFragment(),
+                                ArticleListLostAndFoundFragment()
                             )
                             .commit()
                     }
@@ -121,7 +118,7 @@ class ArticleListFragment : Fragment() {
                 binding.tabLayoutArticleBoard.newTab().apply {
                     id = View.generateViewId()
                     text = getString(it.simpleKoreanName)
-                },
+                }
             )
         }
     }
@@ -134,8 +131,8 @@ class ArticleListFragment : Fragment() {
                     viewModel.currentBoard.collect { board ->
                         binding.tabLayoutArticleBoard.getTabAt(
                             ArticleBoardType.entries.indexOf(
-                                board,
-                            ),
+                                board
+                            )
                         )?.select()
                     }
                 }

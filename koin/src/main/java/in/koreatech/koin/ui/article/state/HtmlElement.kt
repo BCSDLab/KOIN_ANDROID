@@ -13,7 +13,7 @@ data class HtmlElement(
     val content: String = "",
     val attributes: Map<HtmlAttribute, String> = emptyMap(),
     val children: List<HtmlElement> = emptyList(),
-    val styles: Map<CssAttribute, String> = emptyMap(),
+    val styles: Map<CssAttribute, String> = emptyMap()
 ) : Parcelable
 
 fun HtmlModel.toHtmlElement(): HtmlElement {
@@ -22,6 +22,6 @@ fun HtmlModel.toHtmlElement(): HtmlElement {
         content = content,
         attributes = attributes,
         children = children.map { it.toHtmlElement() },
-        styles = styles,
+        styles = styles
     )
 }

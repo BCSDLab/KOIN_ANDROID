@@ -30,9 +30,9 @@ import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
@@ -73,39 +73,35 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    private fun initObserve() =
-        with(splashViewModel) {
-            observeLiveData(version) { version ->
-                when (version.versionUpdatePriority) {
-                    VersionUpdatePriority.Importance ->
-                        goToForceUpdateActivity(
-                            version.title,
-                            version.content,
-                        )
+    private fun initObserve() = with(splashViewModel) {
+        observeLiveData(version) { version ->
+            when (version.versionUpdatePriority) {
+                VersionUpdatePriority.Importance ->
+                    goToForceUpdateActivity(
+                        version.title,
+                        version.content
+                    )
 
-                    VersionUpdatePriority.None -> Unit
-                }
-            }
-
-            observeLiveData(checkVersionError) {
-                ToastUtil.getInstance().makeShort(R.string.version_check_failed)
-            }
-
-            observeLiveData(tokenState) {
-                handleIntentOrLaunch()
+                VersionUpdatePriority.None -> Unit
             }
         }
 
-    private fun goToForceUpdateActivity(
-        title: String,
-        content: String,
-    ) {
+        observeLiveData(checkVersionError) {
+            ToastUtil.getInstance().makeShort(R.string.version_check_failed)
+        }
+
+        observeLiveData(tokenState) {
+            handleIntentOrLaunch()
+        }
+    }
+
+    private fun goToForceUpdateActivity(title: String, content: String) {
         lifecycleScope.launch {
             delay()
             Intent(this@SplashActivity, ForceUpdateActivity::class.java).apply {
                 putExtra(
                     version,
-                    bundleOf(SplashActivity.title to title, SplashActivity.content to content),
+                    bundleOf(SplashActivity.title to title, SplashActivity.content to content)
                 )
             }.let { intent ->
                 startActivity(intent)
@@ -120,14 +116,14 @@ class SplashActivity : ActivityBase() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
             when (appUpdateInfo.updateAvailability()) {
                 UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS,
-                UpdateAvailability.UPDATE_AVAILABLE,
+                UpdateAvailability.UPDATE_AVAILABLE
                 -> {
                     // 업데이트가 필요한 상황이거나 업데이트 중이라면 최신 버전값 저장
                     splashViewModel.updateLatestVersion(appUpdateInfo.availableVersionCode())
                 }
 
                 UpdateAvailability.UPDATE_NOT_AVAILABLE,
-                UpdateAvailability.UNKNOWN,
+                UpdateAvailability.UNKNOWN
                 -> {
                     // 업데이트 가능 유무를 모르거나, 업데이트가 불가능 한 경우 현재 버전 저장
                     splashViewModel.updateLatestVersion(BuildConfig.VERSION_CODE)
@@ -194,7 +190,7 @@ class SplashActivity : ActivityBase() {
                         targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
                         targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
                         targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                        type = Pair(EXTRA_TYPE, type),
+                        type = Pair(EXTRA_TYPE, type)
                     )
                 } else {
                     Intent(this@SplashActivity, MainActivity::class.java)

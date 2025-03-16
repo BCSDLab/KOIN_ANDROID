@@ -9,24 +9,22 @@ import `in`.koreatech.koin.domain.usecase.signup.GetPrivacyTermTextUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupPrivacyTermViewModel
-    @Inject
-    constructor(
-        private val getPrivacyTermTextUseCase: GetPrivacyTermTextUseCase,
-    ) : BaseViewModel() {
-        private val _content = MutableLiveData<String>()
-        val content: LiveData<String> get() = _content
+class SignupPrivacyTermViewModel @Inject constructor(
+    private val getPrivacyTermTextUseCase: GetPrivacyTermTextUseCase
+) : BaseViewModel() {
+    private val _content = MutableLiveData<String>()
+    val content: LiveData<String> get() = _content
 
-        private val _contentLoadingError = MutableLiveData<Throwable?>()
-        val contentLoadingError: LiveData<Throwable?> get() = _contentLoadingError
+    private val _contentLoadingError = MutableLiveData<Throwable?>()
+    val contentLoadingError: LiveData<Throwable?> get() = _contentLoadingError
 
-        fun getPrivacyTermText() {
-            viewModelScope.launchWithLoading {
-                getPrivacyTermTextUseCase().onSuccess {
-                    _content.value = it
-                }.onFailure {
-                    _contentLoadingError.value = it
-                }
+    fun getPrivacyTermText() {
+        viewModelScope.launchWithLoading {
+            getPrivacyTermTextUseCase().onSuccess {
+                _content.value = it
+            }.onFailure {
+                _contentLoadingError.value = it
             }
         }
     }
+}

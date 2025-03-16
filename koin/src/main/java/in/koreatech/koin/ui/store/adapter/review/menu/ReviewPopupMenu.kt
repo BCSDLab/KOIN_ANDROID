@@ -13,13 +13,13 @@ import `in`.koreatech.koin.databinding.MenuReviewPopupBinding
 class ReviewPopupMenu(
     context: Context,
     private val onModify: () -> Unit,
-    private val onDelete: () -> Unit,
+    private val onDelete: () -> Unit
 ) : PopupWindow() {
     private val binding = MenuReviewPopupBinding.inflate(LayoutInflater.from(context), null, false)
     private val menuList =
         listOf(
             MENU_MODIFY to R.drawable.ic_modify,
-            MENU_DELETE to R.drawable.ic_trash_can,
+            MENU_DELETE to R.drawable.ic_trash_can
         )
 
     init {
@@ -36,10 +36,14 @@ class ReviewPopupMenu(
             itemBinding.root.setOnTouchListener { v, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        itemBinding.root.setBackgroundColor(ContextCompat.getColor(context, R.color.gray16))
+                        itemBinding.root.setBackgroundColor(
+                            ContextCompat.getColor(context, R.color.gray16)
+                        )
                     }
                     MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                        itemBinding.root.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                        itemBinding.root.setBackgroundColor(
+                            ContextCompat.getColor(context, R.color.white)
+                        )
 
                         if (event.action == MotionEvent.ACTION_UP) {
                             when (menuTitle) {

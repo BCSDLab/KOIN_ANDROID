@@ -23,7 +23,7 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         val navController = findNavController()
 
@@ -38,14 +38,14 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                         EventLogger.logClickEvent(
                             EventAction.CAMPUS,
                             AnalyticsConstant.Label.POPULAR_NOTICE,
-                            hotArticleData.articleTitle,
+                            hotArticleData.articleTitle
                         )
                         navController.navigate(
                             R.id.articleLostAndFoundDetailFragment_to_articleDetailFragment,
                             Bundle().apply {
                                 putInt(ARTICLE_ID, hotArticleData.articleId)
                                 putInt(NAVIGATED_BOARD_ID, hotArticleData.board.id)
-                            },
+                            }
                         )
                     },
                     navigateToChatRoom = { articleId ->
@@ -59,10 +59,10 @@ class ArticleLostAndFoundDetailFragment : Fragment() {
                         Intent(requireContext(), LostAndFoundReportActivity::class.java).apply {
                             putExtra(
                                 ARTICLE_ID,
-                                articleId,
+                                articleId
                             )
                         }.let(::startActivity)
-                    },
+                    }
                 )
             }
         }

@@ -107,7 +107,7 @@ class ChangePasswordActivity : ActivityBase() {
         private val CHANGE_PASSWORD_PAGES =
             arrayOf(
                 { ChangePasswordVerifyPwdFragment.getInstance() },
-                { ChangePasswordChangePwdFragment.getInstance() },
+                { ChangePasswordChangePwdFragment.getInstance() }
             )
     }
 }

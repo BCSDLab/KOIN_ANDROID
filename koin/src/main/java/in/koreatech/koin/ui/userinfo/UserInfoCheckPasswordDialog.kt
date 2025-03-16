@@ -28,21 +28,11 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
         object : TextWatcher {
             var prevPwd: String = ""
 
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int,
-            ) {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 prevPwd = s.toString()
             }
 
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int,
-            ) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!binding.btnCheckPassword.isEnabled && prevPwd != s.toString()) {
                     this.prevPwd = s.toString()
                     hideErrors()
@@ -54,10 +44,7 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
         }
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setWidthPercent(90)
 
@@ -87,7 +74,9 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
                             is UiStatus.Loading -> Unit
                             is UiStatus.Success -> {
                                 hideErrors()
-                                startActivity(Intent(requireContext(), UserInfoEditActivity::class.java))
+                                startActivity(
+                                    Intent(requireContext(), UserInfoEditActivity::class.java)
+                                )
                                 dismiss()
                             }
 
@@ -103,19 +92,17 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
         }
     }
 
-    private fun showErrors() =
-        with(binding) {
-            groupWarning.visibility = View.VISIBLE
-            btnCheckPassword.isEnabled = false
-            tilPassword.error = " "
-        }
+    private fun showErrors() = with(binding) {
+        groupWarning.visibility = View.VISIBLE
+        btnCheckPassword.isEnabled = false
+        tilPassword.error = " "
+    }
 
-    private fun hideErrors() =
-        with(binding) {
-            groupWarning.visibility = View.GONE
-            btnCheckPassword.isEnabled = true
-            tilPassword.error = null
-        }
+    private fun hideErrors() = with(binding) {
+        groupWarning.visibility = View.GONE
+        btnCheckPassword.isEnabled = true
+        tilPassword.error = null
+    }
 
     override fun onDestroyView() {
         binding.tietPassword.removeTextChangedListener(passwordWatcher)

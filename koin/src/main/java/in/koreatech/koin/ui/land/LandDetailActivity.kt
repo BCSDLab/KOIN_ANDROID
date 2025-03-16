@@ -91,13 +91,13 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
             if (!landDetail.optAirConditioner) {
                 setGray(
                     landDetailAirconditionerImageview,
-                    landDetailAirconditionerTextview,
+                    landDetailAirconditionerTextview
                 )
             }
             if (!landDetail.optRefrigerator) {
                 setGray(
                     landDetailRefrigeratorImageview,
-                    landDetailRefrigeratorTextview,
+                    landDetailRefrigeratorTextview
                 )
             }
             if (!landDetail.optCloset) setGray(landDetailClosetImageview, landDetailClosetTextview)
@@ -105,31 +105,31 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
             if (!landDetail.optElectronicDoorLock) {
                 setGray(
                     landDetailDoorlockImageview,
-                    landDetailDoorlockTextview,
+                    landDetailDoorlockTextview
                 )
             }
             if (!landDetail.optMicrowave) {
                 setGray(
                     landDetailMicrowaveImageview,
-                    landDetailMicrowaveTextview,
+                    landDetailMicrowaveTextview
                 )
             }
             if (!landDetail.optGasRange) {
                 setGray(
                     landDetailGasRangeImageview,
-                    landDetailGasRangeTextview,
+                    landDetailGasRangeTextview
                 )
             }
             if (!landDetail.optInduction) {
                 setGray(
                     landDetailInductionImageview,
-                    landDetailInductionTextview,
+                    landDetailInductionTextview
                 )
             }
             if (!landDetail.optWaterPurifier) {
                 setGray(
                     landDetailWaterPurifierImageview,
-                    landDetailWaterPurifierTextview,
+                    landDetailWaterPurifierTextview
                 )
             }
             if (!landDetail.optBidet) setGray(landDetailBidetImageview, landDetailBidetTextview)
@@ -139,19 +139,19 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
             if (!landDetail.optShoeCloset) {
                 setGray(
                     landDetailShoeClosetImageview,
-                    landDetailShoeClosetTextview,
+                    landDetailShoeClosetTextview
                 )
             }
             if (!landDetail.optVeranda) {
                 setGray(
                     landDetailVerandaImageview,
-                    landDetailVerandaTextview,
+                    landDetailVerandaTextview
                 )
             }
             if (!landDetail.optElevator) {
                 setGray(
                     landDetailElevatorImageview,
-                    landDetailElevatorTextview,
+                    landDetailElevatorTextview
                 )
             }
         }
@@ -197,18 +197,15 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
                             }
                         }
                     }
-                },
+                }
             )
         }
     }
 
-    private fun setGray(
-        landDetailImageview: ImageView,
-        landDetailTextview: TextView,
-    ) {
+    private fun setGray(landDetailImageview: ImageView, landDetailTextview: TextView) {
         landDetailImageview.colorFilter =
             PorterDuffColorFilter(
-                ContextCompat.getColor(this, R.color.gray4), PorterDuff.Mode.SRC_ATOP,
+                ContextCompat.getColor(this, R.color.gray4), PorterDuff.Mode.SRC_ATOP
             )
         landDetailTextview.setTextColor(ContextCompat.getColor(this, R.color.gray4))
     }
@@ -230,13 +227,15 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
                 CameraPosition(
                     LatLng(
                         LAND.INITIAL_LATITUDE,
-                        LAND.INITIAL_LONGITUDE,
+                        LAND.INITIAL_LONGITUDE
                     ),
-                    LAND.INITIAL_ZOOM,
-                ),
+                    LAND.INITIAL_ZOOM
+                )
             )
         var mapFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_land_detail_navermap) as NaverMapFragment?
+            supportFragmentManager.findFragmentById(
+                R.id.activity_land_detail_navermap
+            ) as NaverMapFragment?
         if (mapFragment == null) {
             mapFragment = NaverMapFragment().newInstance(options)
         }
@@ -263,9 +262,9 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
             CameraUpdate.scrollTo(
                 LatLng(
                     landDetail.latitude,
-                    landDetail.longitude,
-                ),
-            ),
+                    landDetail.longitude
+                )
+            )
         )
     }
 }

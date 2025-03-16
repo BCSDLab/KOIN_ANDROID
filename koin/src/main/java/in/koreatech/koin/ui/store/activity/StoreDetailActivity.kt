@@ -44,8 +44,8 @@ import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
+import kotlinx.coroutines.launch
 
 class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
@@ -71,7 +71,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             } else {
                 SnackbarUtil.makePermissionSnackBar(
                     binding.root,
-                    getString(R.string.store_call_permission_denied_message),
+                    getString(R.string.store_call_permission_denied_message)
                 )
             }
         }
@@ -88,7 +88,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_PICTURE,
-                    viewModel.store.value?.name ?: "Unknown",
+                    viewModel.store.value?.name ?: "Unknown"
                 )
             }
         }
@@ -144,13 +144,13 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     super.onPageSelected(position)
                     viewModel.settingFragmentIndex(position)
                 }
-            },
+            }
         )
 
         val tabLayoutMediator =
             TabLayoutMediator(
                 binding.storeDetailTabLayout,
-                binding.storeDetailViewPager,
+                binding.storeDetailViewPager
             ) { tab, position ->
                 tab.text =
                     when (position) {
@@ -173,7 +173,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             EventLogger.logClickEvent(
                                 EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
-                                viewModel.store.value?.name ?: "Unknown",
+                                viewModel.store.value?.name ?: "Unknown"
                             )
                             if (currentTab == 2) {
                                 reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
@@ -185,8 +185,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                                     EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
                                     EventExtra(
                                         AnalyticsConstant.DURATION_TIME,
-                                        (reviewElapsedTime / 1000.0).toString(),
-                                    ),
+                                        (reviewElapsedTime / 1000.0).toString()
+                                    )
                                 )
                             }
                         }
@@ -196,7 +196,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             EventLogger.logClickEvent(
                                 EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
-                                viewModel.store.value?.name ?: "Unknown",
+                                viewModel.store.value?.name ?: "Unknown"
                             )
                             if (currentTab == 2) {
                                 reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
@@ -209,8 +209,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                                     EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
                                     EventExtra(
                                         AnalyticsConstant.DURATION_TIME,
-                                        (reviewElapsedTime / 1000.0).toString(),
-                                    ),
+                                        (reviewElapsedTime / 1000.0).toString()
+                                    )
                                 )
                             }
                         }
@@ -220,7 +220,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             EventLogger.logClickEvent(
                                 EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW,
-                                viewModel.store.value?.name ?: "Unknown",
+                                viewModel.store.value?.name ?: "Unknown"
                             )
                         }
                     }
@@ -230,7 +230,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 override fun onTabUnselected(p0: TabLayout.Tab?) {}
 
                 override fun onTabReselected(p0: TabLayout.Tab?) {}
-            },
+            }
         )
 
         binding.storeDetailAccountCopyButton.setOnClickListener {
@@ -238,7 +238,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             val clipData =
                 ClipData.newPlainText(
                     getString(R.string.account_number),
-                    binding.storeDetailAccountTextview.text,
+                    binding.storeDetailAccountTextview.text
                 )
             clipboardManager.setPrimaryClip(clipData)
 
@@ -258,8 +258,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 binding.storeDetailPhoneTextview.setTextColor(
                     ContextCompat.getColor(
                         this@StoreDetailActivity,
-                        R.color.colorPrimary,
-                    ),
+                        R.color.colorPrimary
+                    )
                 )
             }
 
@@ -307,14 +307,20 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.BENEFIT_SHOP_CALL,
                 viewModel.store.value?.name ?: "Unknown",
-                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0).toString()),
+                EventExtra(
+                    AnalyticsConstant.DURATION_TIME,
+                    (dialogElapsedTime / 1000.0).toString()
+                )
             )
         } else {
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CALL,
                 viewModel.store.value?.name ?: "Unknown",
-                EventExtra(AnalyticsConstant.DURATION_TIME, (dialogElapsedTime / 1000.0).toString()),
+                EventExtra(
+                    AnalyticsConstant.DURATION_TIME,
+                    (dialogElapsedTime / 1000.0).toString()
+                )
             )
         }
     }
@@ -330,8 +336,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     binding.storeDetailPhoneTextview.setTextColor(
                         ContextCompat.getColor(
                             this@StoreDetailActivity,
-                            R.color.colorPrimary,
-                        ),
+                            R.color.colorPrimary
+                        )
                     )
                 }
 
@@ -374,13 +380,13 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     storeDetailIsDeliveryTextview.setTextColor(
                         ContextCompat.getColor(
                             this@StoreDetailActivity,
-                            R.color.gray2,
-                        ),
+                            R.color.gray2
+                        )
                     )
                     storeDetailIsDeliveryTextview.background =
                         ContextCompat.getDrawable(
                             this@StoreDetailActivity,
-                            R.drawable.button_rect_gray_radius_5dp,
+                            R.drawable.button_rect_gray_radius_5dp
                         )
                 } else {
                     storeDetailDeliverTextview.text =
@@ -426,7 +432,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             EventLogger.logClickEvent(
                                 EventAction.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_PICTURE,
-                                viewModel.store.value?.name ?: "Unknown",
+                                viewModel.store.value?.name ?: "Unknown"
                             )
                         }
                 }
@@ -452,7 +458,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                 viewModel.store.value?.name ?: "Unknown",
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, category ?: "Unknown"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0).toString()),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0).toString())
             )
         } else {
             EventLogger.logSwipeEvent(
@@ -460,7 +466,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                 viewModel.store.value?.name ?: "Unknown",
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, category ?: "Unknown"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0).toString()),
+                EventExtra(AnalyticsConstant.DURATION_TIME, (storeElapsedTime / 1000.0).toString())
             )
         }
 
@@ -473,7 +479,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 viewModel.store.value?.name ?: "Unknown",
                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "리뷰"),
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, currentPage),
-                EventExtra(AnalyticsConstant.DURATION_TIME, (reviewElapsedTime / 1000.0).toString()),
+                EventExtra(
+                    AnalyticsConstant.DURATION_TIME,
+                    (reviewElapsedTime / 1000.0).toString()
+                )
             )
         }
         flyerDialogFragment?.dismiss()
@@ -527,10 +536,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    private fun generateOpenCloseTimeString(
-        openTime: String,
-        closeTime: String,
-    ): String {
+    private fun generateOpenCloseTimeString(openTime: String, closeTime: String): String {
         val stringBuilder = StringBuilder()
         stringBuilder.append(openTime)
         stringBuilder.append(getString(R.string.store_open_close_time_mark))
@@ -538,16 +544,13 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         return stringBuilder.toString()
     }
 
-    private fun setEtcInfo(
-        textView: TextView,
-        isAvailable: Boolean,
-    ) {
+    private fun setEtcInfo(textView: TextView, isAvailable: Boolean) {
         if (!isAvailable) {
             textView.setTextColor(ContextCompat.getColor(this@StoreDetailActivity, R.color.gray2))
             textView.background =
                 ContextCompat.getDrawable(
                     this@StoreDetailActivity,
-                    R.drawable.button_rect_gray_radius_5dp,
+                    R.drawable.button_rect_gray_radius_5dp
                 )
         }
     }

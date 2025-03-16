@@ -36,7 +36,7 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
     override val screenTitle: String
         get() = "전화주문혜택"
     private val binding: ActivityCallBenefitStoreMainBinding by dataBinding<ActivityCallBenefitStoreMainBinding>(
-        R.layout.activity_call_benefit_store_main,
+        R.layout.activity_call_benefit_store_main
     )
     private val viewModel by viewModels<StoreViewModel>()
     private val benefitViewModel by viewModels<StoreBenefitViewModel>()
@@ -52,9 +52,15 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.BENEFIT_SHOP_CLICK,
                     it.name,
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, benefitViewModel.getCategoryTitle()),
+                    EventExtra(
+                        AnalyticsConstant.PREVIOUS_PAGE,
+                        benefitViewModel.getCategoryTitle()
+                    ),
                     EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                    EventExtra(
+                        AnalyticsConstant.DURATION_TIME,
+                        getElapsedTimeAndReset().toString()
+                    )
                 )
                 storeDetailContract.launch(Triple(it.uid, viewModel.category.value?.name, true))
             }
@@ -65,14 +71,14 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.BENEFIT_SHOP_CATEGORIES_EVENT,
-                    it.shopName,
+                    it.shopName
                 )
                 storeDetailContract.launch(
                     Triple(
                         it.shopId,
                         viewModel.category.value?.name,
-                        false,
-                    ),
+                        false
+                    )
                 )
             }
         }
@@ -89,14 +95,17 @@ class CallBenefitStoreActivity : KoinNavigationDrawerTimeActivity() {
                     benefitViewModel.getCategoryTitle(),
                     EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousCategory),
                     EventExtra(AnalyticsConstant.CURRENT_PAGE, benefitViewModel.getCategoryTitle()),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                    EventExtra(
+                        AnalyticsConstant.DURATION_TIME,
+                        getElapsedTimeAndReset().toString()
+                    )
                 )
             },
             getPosition = {
                 binding.benefitDescription.text =
                     benefitViewModel.storeBenefitCategories.value.benefitCategories.getOrNull(it)?.detail
                         ?: ""
-            },
+            }
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -13,16 +13,15 @@ data class ArticleHeaderState(
     val author: String,
     val viewCount: Int,
     val registeredAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 ) : Parcelable
 
-fun ArticleHeader.toArticleHeaderState() =
-    ArticleHeaderState(
-        id = id,
-        board = ArticleBoardType.entries.firstOrNull { it.id == boardId } ?: ArticleBoardType.ALL,
-        title = title,
-        author = author,
-        viewCount = viewCount,
-        registeredAt = registeredAt,
-        updatedAt = updatedAt,
-    )
+fun ArticleHeader.toArticleHeaderState() = ArticleHeaderState(
+    id = id,
+    board = ArticleBoardType.entries.firstOrNull { it.id == boardId } ?: ArticleBoardType.ALL,
+    title = title,
+    author = author,
+    viewCount = viewCount,
+    registeredAt = registeredAt,
+    updatedAt = updatedAt
+)

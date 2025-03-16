@@ -31,50 +31,53 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
         initViewModel()
     }
 
-    private fun initView() =
-        with(binding) {
-            businessLoginButton.setOnClickListener {
-                if (businessLoginViewModel.isEmptyIdText.value == true) {
-                    SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.login_required_field_not_filled))
-                } else {
-                    businessLoginViewModel.login(
-                        loginEdittextId.text.toString(),
-                        loginEdittextPw.text.toString(),
-                    )
-                }
-            }
-
-            loginEdittextId.doOnTextChanged { text, _, _, _ ->
-                if (text.isNullOrBlank()) {
-                    businessLoginViewModel.setIdTextState(true)
-                } else {
-                    businessLoginViewModel.setIdTextState(false)
-                }
-            }
-
-            businessSignupButton.setOnClickListener {
-                startActivity(Intent(this@BusinessLoginActivity, BusinessSignUpCheckActivity::class.java))
-            }
-
-            isStudentButton.setOnClickListener {
-                startActivity(Intent(this@BusinessLoginActivity, LoginActivity::class.java))
-            }
-
-            forgotPasswordLinearLayout.setOnClickListener {
-                // startActivity(Intent(this@BusinessLoginActivity, 비밀번호_찾기 Activity))
+    private fun initView() = with(binding) {
+        businessLoginButton.setOnClickListener {
+            if (businessLoginViewModel.isEmptyIdText.value == true) {
+                SnackbarUtil.makeShortSnackbar(
+                    binding.root,
+                    getString(R.string.login_required_field_not_filled)
+                )
+            } else {
+                businessLoginViewModel.login(
+                    loginEdittextId.text.toString(),
+                    loginEdittextPw.text.toString()
+                )
             }
         }
 
-    private fun initViewModel() =
-        with(businessLoginViewModel) {
-            withLoading(this@BusinessLoginActivity, this)
-
-            observeLiveData(loginSuccessEvent) {
-                // startActivity(Intent(this@BusinessLoginActivity, 메인_사장님 Activity))
-            }
-
-            observeLiveData(loginErrorMessage) {
-                SnackbarUtil.makeShortSnackbar(binding.root, it)
+        loginEdittextId.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrBlank()) {
+                businessLoginViewModel.setIdTextState(true)
+            } else {
+                businessLoginViewModel.setIdTextState(false)
             }
         }
+
+        businessSignupButton.setOnClickListener {
+            startActivity(
+                Intent(this@BusinessLoginActivity, BusinessSignUpCheckActivity::class.java)
+            )
+        }
+
+        isStudentButton.setOnClickListener {
+            startActivity(Intent(this@BusinessLoginActivity, LoginActivity::class.java))
+        }
+
+        forgotPasswordLinearLayout.setOnClickListener {
+            // startActivity(Intent(this@BusinessLoginActivity, 비밀번호_찾기 Activity))
+        }
+    }
+
+    private fun initViewModel() = with(businessLoginViewModel) {
+        withLoading(this@BusinessLoginActivity, this)
+
+        observeLiveData(loginSuccessEvent) {
+            // startActivity(Intent(this@BusinessLoginActivity, 메인_사장님 Activity))
+        }
+
+        observeLiveData(loginErrorMessage) {
+            SnackbarUtil.makeShortSnackbar(binding.root, it)
+        }
+    }
 }

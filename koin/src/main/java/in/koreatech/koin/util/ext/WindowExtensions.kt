@@ -8,15 +8,12 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import `in`.koreatech.koin.R
 
-fun Window.statusBarColor(
-    @ColorInt color: Int,
-    lightStatusBar: Boolean = false,
-) {
+fun Window.statusBarColor(@ColorInt color: Int, lightStatusBar: Boolean = false) {
     if (color != statusBarColor) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
             insetsController?.setSystemBarsAppearance(
                 if (lightStatusBar) APPEARANCE_LIGHT_STATUS_BARS else 0,
-                APPEARANCE_LIGHT_STATUS_BARS,
+                APPEARANCE_LIGHT_STATUS_BARS
             )
 
             this.statusBarColor = color

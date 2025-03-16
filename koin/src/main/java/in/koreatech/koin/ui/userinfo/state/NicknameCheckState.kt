@@ -22,7 +22,7 @@ enum class NicknameCheckState {
     /**
      * 이전 닉네임과 동일한 경우
      */
-    SAME_AS_BEFORE,
+    SAME_AS_BEFORE
 
     ;
 

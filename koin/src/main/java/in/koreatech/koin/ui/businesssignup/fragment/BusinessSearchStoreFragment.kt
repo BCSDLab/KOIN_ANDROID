@@ -54,7 +54,7 @@ class BusinessSearchStoreFragment : BaseFragment() {
                 binding.searchStoreButton.background =
                     ContextCompat.getDrawable(
                         this.requireContext(),
-                        R.drawable.ic_search,
+                        R.drawable.ic_search
                     )
                 binding.searchStoreButton.layoutParams.apply {
                     width = this@BusinessSearchStoreFragment.requireActivity().dpToPx(24)
@@ -64,7 +64,7 @@ class BusinessSearchStoreFragment : BaseFragment() {
                 binding.searchStoreButton.background =
                     ContextCompat.getDrawable(
                         this.requireContext(),
-                        R.drawable.ic_search_close,
+                        R.drawable.ic_search_close
                     )
                 binding.searchStoreButton.layoutParams.apply {
                     width = this@BusinessSearchStoreFragment.requireActivity().dpToPx(16)
@@ -77,7 +77,7 @@ class BusinessSearchStoreFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBusinessSearchStoreBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -113,30 +113,29 @@ class BusinessSearchStoreFragment : BaseFragment() {
         return view
     }
 
-    private fun initViewModel() =
-        with(viewModel) {
-            withLoading(this@BusinessSearchStoreFragment, this)
-            refreshStores()
+    private fun initViewModel() = with(viewModel) {
+        withLoading(this@BusinessSearchStoreFragment, this)
+        refreshStores()
 
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    stores.collect {
-                        storeAdapter.submitList(it)
-                    }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                stores.collect {
+                    storeAdapter.submitList(it)
                 }
             }
+        }
 
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    needToProceedStoreInfo.collectLatest {
-                        businessSignupBaseViewModel.setShopId(it.shopId)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                needToProceedStoreInfo.collectLatest {
+                    businessSignupBaseViewModel.setShopId(it.shopId)
 
-                        if (it.checkState) {
-                            setFragmentResult("requestKey", bundleOf("storeName" to it.shopName))
-                            businessSignupBaseViewModel.setFragmentTag("certificationFragment")
-                        }
+                    if (it.checkState) {
+                        setFragmentResult("requestKey", bundleOf("storeName" to it.shopName))
+                        businessSignupBaseViewModel.setFragmentTag("certificationFragment")
                     }
                 }
             }
         }
+    }
 }

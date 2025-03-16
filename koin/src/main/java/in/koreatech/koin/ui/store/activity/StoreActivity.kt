@@ -48,9 +48,9 @@ import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.statusBarHeight
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.properties.Delegates
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StoreActivity : KoinNavigationDrawerTimeActivity() {
@@ -76,7 +76,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         registerForActivityResult(
             StoreDetailActivityContract {
                 viewModel.category.value?.let { viewModel.category.value?.name } ?: "Unknown"
-            },
+            }
         ) {
         }
 
@@ -98,7 +98,10 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         it.name,
                         EventExtra(AnalyticsConstant.PREVIOUS_PAGE, categoryName),
                         EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                        EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                        EventExtra(
+                            AnalyticsConstant.DURATION_TIME,
+                            getElapsedTimeAndReset().toString()
+                        )
                     )
                 }
             }
@@ -110,7 +113,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
-                    it.shopName,
+                    it.shopName
                 )
                 storeDetailContract.launch(Triple(it.shopId, viewModel.category.value?.name, false))
             }
@@ -131,7 +134,10 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         current,
                         EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previous),
                         EventExtra(AnalyticsConstant.CURRENT_PAGE, current),
-                        EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString()),
+                        EventExtra(
+                            AnalyticsConstant.DURATION_TIME,
+                            getElapsedTimeAndReset().toString()
+                        )
                     )
                 }
                 preCategories = it
@@ -146,10 +152,10 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     Triple(
                         it,
                         viewModel.category.value?.name,
-                        false,
-                    ),
+                        false
+                    )
                 )
-            },
+            }
         )
 
     private var showRemoveQueryButton: Boolean = false
@@ -158,7 +164,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 binding.searchImageView.background =
                     ContextCompat.getDrawable(
                         this,
-                        R.drawable.ic_search,
+                        R.drawable.ic_search
                     )
                 binding.searchImageView.layoutParams.apply {
                     width = dpToPx(24)
@@ -168,7 +174,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 binding.searchImageView.background =
                     ContextCompat.getDrawable(
                         this,
-                        R.drawable.ic_search_close,
+                        R.drawable.ic_search_close
                     )
                 binding.searchImageView.layoutParams.apply {
                     width = dpToPx(16)
@@ -238,7 +244,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                    "search in " + viewModel.category.value?.name,
+                    "search in " + viewModel.category.value?.name
                 )
             }
             v.performClick()
@@ -275,7 +281,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
-                    "search in " + viewModel.category.value,
+                    "search in " + viewModel.category.value
                 )
             }
             v.performClick()
@@ -299,12 +305,16 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             @SuppressLint("RestrictedApi")
             object : TextWatcherAdapter() {
                 override fun afterTextChanged(p0: Editable) {
-                    if (p0.isNotEmpty()) viewModel.updateSearchQuery(binding.searchEditText.text.toString())
+                    if (p0.isNotEmpty()) {
+                        viewModel.updateSearchQuery(
+                            binding.searchEditText.text.toString()
+                        )
+                    }
                     viewModel.getRelatedStore()
                     binding.suggestionsLayout.visibility =
                         if (p0.isEmpty()) View.GONE else View.VISIBLE
                 }
-            },
+            }
         )
 
         binding.storeRecyclerview.apply {
@@ -322,15 +332,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             addItemDecoration(
                 HorizontalMarginItemDecoration(
                     this@StoreActivity,
-                    R.dimen.view_pager_item_margin,
-                ),
+                    R.dimen.view_pager_item_margin
+                )
             )
             registerOnPageChangeCallback(
                 object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageScrolled(
                         position: Int,
                         positionOffset: Float,
-                        positionOffsetPixels: Int,
+                        positionOffsetPixels: Int
                     ) {
                     }
 
@@ -354,7 +364,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                             startAutoScroll()
                         }
                     }
-                },
+                }
             )
         }
 
@@ -367,24 +377,24 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         binding.containerScrollView.getChildAt(0).height - (
                             binding.root.height -
                                 binding.callvanMainLayout.getChildAt(
-                                    0,
+                                    0
                                 ).height - statusBarHeight
+                            )
                         )
-                    )
                 val scrollRatio =
                     scrollY.toFloat() / (
                         binding.containerScrollView.getChildAt(0).height - (
                             binding.root.height -
                                 binding.callvanMainLayout.getChildAt(
-                                    0,
+                                    0
                                 ).height - statusBarHeight
+                            )
                         )
-                    )
                 if (EventUtils.didCrossedScrollThreshold(oldScrollRatio, scrollRatio)) {
                     EventLogger.logScrollEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CATEGORIES,
-                        "scroll in " + viewModel.category.value?.name,
+                        "scroll in " + viewModel.category.value?.name
                     )
                 }
             }
@@ -396,13 +406,13 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
-                        "check_review_" + viewModel.category.value?.let { viewModel.category.value?.name },
+                        "check_review_" + viewModel.category.value?.let { viewModel.category.value?.name }
                     )
                     storeManyReviewCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.blue_alpha20,
-                        ),
+                            R.color.blue_alpha20
+                        )
                     )
                     viewModel.settingStoreSorter(StoreSorter.COUNT)
 
@@ -410,15 +420,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     storeHighRatingCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.gray15,
-                        ),
+                            R.color.gray15
+                        )
                     )
                 } else {
                     storeManyReviewCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.gray15,
-                        ),
+                            R.color.gray15
+                        )
                     )
                     viewModel.settingStoreSorter(StoreSorter.NONE)
                 }
@@ -429,13 +439,13 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CAN,
-                        "check_star_" + viewModel.category.value?.let { viewModel.category.value?.name },
+                        "check_star_" + viewModel.category.value?.let { viewModel.category.value?.name }
                     )
                     storeHighRatingCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.blue_alpha20,
-                        ),
+                            R.color.blue_alpha20
+                        )
                     )
                     viewModel.settingStoreSorter(StoreSorter.RATING)
 
@@ -443,15 +453,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                     storeManyReviewCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.gray15,
-                        ),
+                            R.color.gray15
+                        )
                     )
                 } else {
                     storeHighRatingCheckbox.setTextColor(
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.gray15,
-                        ),
+                            R.color.gray15
+                        )
                     )
                     viewModel.settingStoreSorter(StoreSorter.NONE)
                 }
@@ -463,15 +473,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_open_" + viewModel.category.value?.let { viewModel.category.value?.name },
+                            "check_open_" + viewModel.category.value?.let { viewModel.category.value?.name }
                         )
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.blue_alpha20,
+                            R.color.blue_alpha20
                         )
                     } else {
                         ContextCompat.getColor(this@StoreActivity, R.color.gray15)
-                    },
+                    }
                 )
 
                 viewModel.filterStoreIsOpen(storeIsOperatingCheckbox.isChecked)
@@ -483,15 +493,15 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                         EventLogger.logClickEvent(
                             EventAction.BUSINESS,
                             AnalyticsConstant.Label.SHOP_CAN,
-                            "check_delivery_" + viewModel.category.value?.let { viewModel.category.value?.name },
+                            "check_delivery_" + viewModel.category.value?.let { viewModel.category.value?.name }
                         )
                         ContextCompat.getColor(
                             this@StoreActivity,
-                            R.color.blue_alpha20,
+                            R.color.blue_alpha20
                         )
                     } else {
                         ContextCompat.getColor(this@StoreActivity, R.color.gray15)
-                    },
+                    }
                 )
 
                 viewModel.filterStoreIsDelivery(storeIsDeliveryCheckbox.isChecked)

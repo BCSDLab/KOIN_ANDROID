@@ -12,12 +12,12 @@ import `in`.koreatech.koin.databinding.MenuReviewPopupBinding
 
 class ReviewReportPopupMenu(
     context: Context,
-    private val onReport: () -> Unit,
+    private val onReport: () -> Unit
 ) : PopupWindow() {
     private val binding = MenuReviewPopupBinding.inflate(LayoutInflater.from(context), null, false)
     private val menuList =
         listOf(
-            MENU_REPORT to R.drawable.icon_report,
+            MENU_REPORT to R.drawable.icon_report
         )
 
     init {
@@ -36,10 +36,14 @@ class ReviewReportPopupMenu(
             itemBinding.root.setOnTouchListener { v, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        itemBinding.root.setBackgroundColor(ContextCompat.getColor(context, R.color.gray16))
+                        itemBinding.root.setBackgroundColor(
+                            ContextCompat.getColor(context, R.color.gray16)
+                        )
                     }
                     MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                        itemBinding.root.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                        itemBinding.root.setBackgroundColor(
+                            ContextCompat.getColor(context, R.color.white)
+                        )
 
                         if (event.action == MotionEvent.ACTION_UP) {
                             when (menuTitle) {

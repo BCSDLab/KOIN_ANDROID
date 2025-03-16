@@ -18,27 +18,21 @@ import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.util.ext.hasJongSungAtLastChar
 
 class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>(
-    diffCallback,
+    diffCallback
 ) {
     var onItemClickListener: OnItemClickListener? = null
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             StoreListItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false,
-            ),
+                false
+            )
         )
     }
 
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
@@ -54,7 +48,7 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
                     R.drawable.ic_rating
                 } else {
                     R.drawable.ic_no_rating
-                },
+                }
             )
 
             binding.storeReviewTextview.text =
@@ -66,10 +60,10 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
                     } else {
                         itemView.context.getString(
                             R.string.store_review_count,
-                            store.reviewCount.toString(),
+                            store.reviewCount.toString()
                         )
                     }
-                ).toString()
+                    ).toString()
 
             if (!store.isOpen) {
                 binding.readyStoreFrameLayout.isVisible = true
@@ -87,7 +81,7 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
                             ForegroundColorSpan(color),
                             start,
                             end,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
                     }
                     binding.storeDoesNotOpenTextView.text = spannableString
@@ -106,7 +100,7 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
                             ForegroundColorSpan(color),
                             start,
                             end,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
                     }
 
@@ -128,13 +122,13 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
                 newTextView.setTextColor(
                     ContextCompat.getColor(
                         binding.root.context,
-                        R.color.blue_alpha20,
-                    ),
+                        R.color.blue_alpha20
+                    )
                 )
                 newTextView.layoutParams =
                     ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
                     )
 
                 binding.viewFlipper.addView(newTextView)
@@ -159,8 +153,8 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
             setTextColor(
                 ContextCompat.getColor(
                     context,
-                    if (active) R.color.colorPrimary else R.color.blue1,
-                ),
+                    if (active) R.color.colorPrimary else R.color.blue1
+                )
             )
         }
 
@@ -168,8 +162,8 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
             setTextColor(
                 ContextCompat.getColor(
                     context,
-                    if (!active) R.color.blue1 else R.color.black,
-                ),
+                    if (!active) R.color.blue1 else R.color.black
+                )
             )
         }
     }
@@ -190,17 +184,11 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<Store>() {
-                override fun areItemsTheSame(
-                    oldItem: Store,
-                    newItem: Store,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: Store, newItem: Store): Boolean {
                     return oldItem.uid == newItem.uid
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: Store,
-                    newItem: Store,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: Store, newItem: Store): Boolean {
                     return oldItem == newItem
                 }
             }

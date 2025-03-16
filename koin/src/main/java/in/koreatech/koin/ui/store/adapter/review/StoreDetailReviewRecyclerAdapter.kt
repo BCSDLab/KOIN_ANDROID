@@ -19,11 +19,11 @@ import `in`.koreatech.koin.ui.store.adapter.review.menu.ReviewReportPopupMenu
 class StoreDetailReviewRecyclerAdapter(
     val onModifyItem: (StoreReviewContent) -> Unit,
     val onDeleteItem: (Int) -> Unit,
-    val onReportItem: (StoreReviewContent) -> Unit,
+    val onReportItem: (StoreReviewContent) -> Unit
 ) :
     ListAdapter<StoreReviewContent, StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder>(
-            diffCallback,
-        ) {
+        diffCallback
+    ) {
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
     var isDoubleClick: Boolean = false
@@ -45,7 +45,7 @@ class StoreDetailReviewRecyclerAdapter(
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int,
+        viewType: Int
     ): StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemStoreDetailReviewBinding.inflate(inflater, parent, false)
@@ -54,7 +54,7 @@ class StoreDetailReviewRecyclerAdapter(
 
     override fun onBindViewHolder(
         holder: StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder,
-        position: Int,
+        position: Int
     ) {
         val review = getItem(position)
 
@@ -75,7 +75,7 @@ class StoreDetailReviewRecyclerAdapter(
                             },
                             onDelete = {
                                 onDeleteItem(review.reviewId)
-                            },
+                            }
                         )
                     popupMenu.show(it)
 
@@ -92,7 +92,7 @@ class StoreDetailReviewRecyclerAdapter(
                             holder.itemView.context,
                             onReport = {
                                 onReportItem(review)
-                            },
+                            }
                         )
                     popupMenu.show(it)
 
@@ -123,7 +123,7 @@ class StoreDetailReviewRecyclerAdapter(
                     LinearLayoutManager(
                         reviewImageRecyclerView.context,
                         RecyclerView.HORIZONTAL,
-                        false,
+                        false
                     )
                 adapter = storeDetailReviewImageRecyclerAdapter
             }
@@ -133,7 +133,7 @@ class StoreDetailReviewRecyclerAdapter(
                     LinearLayoutManager(
                         reviewImageRecyclerView.context,
                         RecyclerView.HORIZONTAL,
-                        false,
+                        false
                     )
                 adapter = storeDetailReviewMenuRecyclerAdapter
             }
@@ -163,14 +163,14 @@ class StoreDetailReviewRecyclerAdapter(
             object : DiffUtil.ItemCallback<StoreReviewContent>() {
                 override fun areItemsTheSame(
                     oldItem: StoreReviewContent,
-                    newItem: StoreReviewContent,
+                    newItem: StoreReviewContent
                 ): Boolean {
                     return oldItem.nickName == newItem.nickName
                 }
 
                 override fun areContentsTheSame(
                     oldItem: StoreReviewContent,
-                    newItem: StoreReviewContent,
+                    newItem: StoreReviewContent
                 ): Boolean {
                     return oldItem == newItem
                 }

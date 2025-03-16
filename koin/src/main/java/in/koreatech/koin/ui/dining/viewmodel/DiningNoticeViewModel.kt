@@ -14,29 +14,27 @@ import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
 
 @HiltViewModel
-class DiningNoticeViewModel
-    @Inject
-    constructor(
-        private val getCoopShopUseCase: GetCoopShopUseCase,
-    ) : BaseViewModel() {
-        private val _diningNotice = MutableLiveData<CoopShop>()
-        val diningNotice: LiveData<CoopShop> get() = _diningNotice
-        private val _toastErrorMessage = SingleLiveEvent<String>()
-        val toastErrorMessage: LiveData<String> get() = _toastErrorMessage
+class DiningNoticeViewModel @Inject constructor(
+    private val getCoopShopUseCase: GetCoopShopUseCase
+) : BaseViewModel() {
+    private val _diningNotice = MutableLiveData<CoopShop>()
+    val diningNotice: LiveData<CoopShop> get() = _diningNotice
+    private val _toastErrorMessage = SingleLiveEvent<String>()
+    val toastErrorMessage: LiveData<String> get() = _toastErrorMessage
 
-        init {
-            getDiningNotice(CoopShopType.Dining)
-        }
+    init {
+        getDiningNotice(CoopShopType.Dining)
+    }
 
-        fun getDiningNotice(type: CoopShopType) {
-            viewModelScope.launchWithLoading {
-                getCoopShopUseCase(type)
-                    .onSuccess {
-                        _diningNotice.value = it
-                    }
-                    .onFailure {
-                        _toastErrorMessage.value = it.message
-                    }
-            }
+    fun getDiningNotice(type: CoopShopType) {
+        viewModelScope.launchWithLoading {
+            getCoopShopUseCase(type)
+                .onSuccess {
+                    _diningNotice.value = it
+                }
+                .onFailure {
+                    _toastErrorMessage.value = it.message
+                }
         }
     }
+}

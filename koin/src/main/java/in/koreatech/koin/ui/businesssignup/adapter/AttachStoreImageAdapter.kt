@@ -8,30 +8,28 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.AttachStoreItemBinding
 import `in`.koreatech.koin.domain.model.store.AttachStore
 
-class AttachStoreImageAdapter : ListAdapter<AttachStore, AttachStoreImageAdapter.ViewHolder>(diffCallback) {
-    inner class ViewHolder(private val binding: AttachStoreItemBinding) : RecyclerView.ViewHolder(binding.root) {
+class AttachStoreImageAdapter : ListAdapter<AttachStore, AttachStoreImageAdapter.ViewHolder>(
+    diffCallback
+) {
+    inner class ViewHolder(
+        private val binding: AttachStoreItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(store: AttachStore) {
             binding.storeNameTextView.text = store.title
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             AttachStoreItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false,
-            ),
+                false
+            )
         )
     }
 
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
@@ -42,16 +40,13 @@ class AttachStoreImageAdapter : ListAdapter<AttachStore, AttachStoreImageAdapter
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<AttachStore>() {
-                override fun areItemsTheSame(
-                    oldItem: AttachStore,
-                    newItem: AttachStore,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: AttachStore, newItem: AttachStore): Boolean {
                     return oldItem.title == newItem.title
                 }
 
                 override fun areContentsTheSame(
                     oldItem: AttachStore,
-                    newItem: AttachStore,
+                    newItem: AttachStore
                 ): Boolean {
                     return oldItem == newItem
                 }

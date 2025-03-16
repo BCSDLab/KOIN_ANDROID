@@ -26,13 +26,13 @@ class LostAndFoundReportActivity : ComponentActivity() {
                             putExtra(
                                 BUNDLE_ARTICLE_EXTRA_KEY,
                                 bundleOf(
-                                    ArticleActivity.START_BOARD to ArticleBoardType.LOSTANDFOUND.id,
-                                ),
+                                    ArticleActivity.START_BOARD to ArticleBoardType.LOSTANDFOUND.id
+                                )
                             )
-                        },
+                        }
                     )
                     finish()
-                },
+                }
             )
         }
     }

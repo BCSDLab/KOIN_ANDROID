@@ -27,7 +27,7 @@ inline val Activity.windowHeight: Int
             val insets =
                 WindowInsetsCompat.toWindowInsetsCompat(
                     view.rootWindowInsets,
-                    view,
+                    view
                 ).getInsets(WindowInsetsCompat.Type.systemBars())
             resources.displayMetrics.heightPixels - insets.bottom - insets.top
         }
@@ -44,16 +44,13 @@ inline val Activity.windowWidth: Int
             val insets =
                 WindowInsetsCompat.toWindowInsetsCompat(
                     view.rootWindowInsets,
-                    view,
+                    view
                 ).getInsets(WindowInsetsCompat.Type.systemBars())
             resources.displayMetrics.widthPixels - insets.left - insets.right
         }
     }
 
-fun <T : BaseViewModel> IProgressDialog.withLoading(
-    lifecycleOwner: LifecycleOwner,
-    viewModel: T,
-) {
+fun <T : BaseViewModel> IProgressDialog.withLoading(lifecycleOwner: LifecycleOwner, viewModel: T) {
     viewModel.isLoading.observe(lifecycleOwner) {
         if (it) {
             showProgressDialog("로딩 중...")
