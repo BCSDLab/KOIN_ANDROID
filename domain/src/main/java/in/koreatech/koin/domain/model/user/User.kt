@@ -11,7 +11,7 @@ sealed class User {
         val nickname: String?,
         val phoneNumber: String?,
         val major: String?,
-        val userType: String,
+        val userType: String
     ) : User()
 
     data object Anonymous : User()

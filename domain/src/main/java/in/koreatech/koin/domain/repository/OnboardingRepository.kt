@@ -7,7 +7,7 @@ interface OnboardingRepository {
 
     suspend fun updateShouldOnboarding(
         onboardingType: String,
-        shouldShow: Boolean,
+        shouldShow: Boolean
     )
 
     fun getShouldOnboardingFlow(onboardingType: String): Flow<Boolean>

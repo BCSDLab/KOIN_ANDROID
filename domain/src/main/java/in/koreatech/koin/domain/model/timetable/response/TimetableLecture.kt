@@ -16,7 +16,7 @@ data class TimetableLecture(
     val lectureClass: String = "",
     val target: String = "",
     val professor: String = "",
-    val department: String = "",
+    val department: String = ""
 ) {
     /**
      * @test : TimetableLectureTest.kt

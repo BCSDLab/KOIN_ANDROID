@@ -4,5 +4,5 @@ enum class ReviewFilterEnum {
     LATEST,
     OLDEST,
     HIGH_RATTING,
-    LOW_RATIONG,
+    LOW_RATIONG
 }

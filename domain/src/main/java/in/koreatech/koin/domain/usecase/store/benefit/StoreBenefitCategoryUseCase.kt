@@ -4,13 +4,11 @@ import `in`.koreatech.koin.domain.model.store.BenefitCategoryList
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 
-class StoreBenefitCategoryUseCase
-    @Inject
-    constructor(
-        private val storeRepository: StoreRepository,
-    ) {
-        suspend operator fun invoke(): Result<BenefitCategoryList> =
-            runCatching {
-                storeRepository.getStoreBenefitCategories()
-            }
-    }
+class StoreBenefitCategoryUseCase @Inject constructor(
+    private val storeRepository: StoreRepository
+) {
+    suspend operator fun invoke(): Result<BenefitCategoryList> =
+        runCatching {
+            storeRepository.getStoreBenefitCategories()
+        }
+}

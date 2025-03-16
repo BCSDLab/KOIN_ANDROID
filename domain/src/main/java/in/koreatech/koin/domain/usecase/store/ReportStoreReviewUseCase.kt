@@ -6,32 +6,30 @@ import `in`.koreatech.koin.domain.state.store.StoreReviewExceptionState
 import `in`.koreatech.koin.domain.state.store.StoreReviewState
 import javax.inject.Inject
 
-class ReportStoreReviewUseCase
-    @Inject
-    constructor(
-        private val storeRepository: StoreRepository,
-    ) {
-        suspend operator fun invoke(
-            storeId: Int?,
-            reviewId: Int?,
-            reportList: List<StoreReport>?,
-            isNotRelation: Boolean?,
-            isSpam: Boolean?,
-            isAbuse: Boolean?,
-            isPrivate: Boolean?,
-            isEtc: Boolean?,
-            etcReason: String,
-        ): Result<StoreReviewState> {
-            return when {
-                !(isNotRelation == true || isSpam == true || isAbuse == true || isPrivate == true || isEtc == true)
-                -> Result.failure(StoreReviewExceptionState.ToastNullCheckBox)
+class ReportStoreReviewUseCase @Inject constructor(
+    private val storeRepository: StoreRepository
+) {
+    suspend operator fun invoke(
+        storeId: Int?,
+        reviewId: Int?,
+        reportList: List<StoreReport>?,
+        isNotRelation: Boolean?,
+        isSpam: Boolean?,
+        isAbuse: Boolean?,
+        isPrivate: Boolean?,
+        isEtc: Boolean?,
+        etcReason: String
+    ): Result<StoreReviewState> {
+        return when {
+            !(isNotRelation == true || isSpam == true || isAbuse == true || isPrivate == true || isEtc == true)
+            -> Result.failure(StoreReviewExceptionState.ToastNullCheckBox)
 
-                (isEtc == true && etcReason.isEmpty()) -> Result.failure(StoreReviewExceptionState.ToastNullEtcReason)
+            (isEtc == true && etcReason.isEmpty()) -> Result.failure(StoreReviewExceptionState.ToastNullEtcReason)
 
-                else ->
-                    storeRepository.reportReview(storeId, reviewId, reportList).map {
-                        StoreReviewState.ReportComplete
-                    }
-            }
+            else ->
+                storeRepository.reportReview(storeId, reviewId, reportList).map {
+                    StoreReviewState.ReportComplete
+                }
         }
     }
+}

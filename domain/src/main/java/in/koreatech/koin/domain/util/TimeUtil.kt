@@ -82,7 +82,7 @@ object TimeUtil {
 
     fun getDateDifferenceInDays(
         date1: Date,
-        date2: Date,
+        date2: Date
     ): Int {
         val calendar1 =
             Calendar.getInstance().apply {
@@ -126,7 +126,7 @@ object TimeUtil {
 
     fun isBetweenCurrentTime(
         starTime: String,
-        endTime: String,
+        endTime: String
     ): Boolean {
         return if (starTime.isEmpty() || endTime.isEmpty()) {
             true

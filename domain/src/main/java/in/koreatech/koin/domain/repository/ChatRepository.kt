@@ -16,27 +16,27 @@ interface ChatRepository {
 
     suspend fun getChatRoom(
         articleId: Int,
-        chatRoomId: Int,
+        chatRoomId: Int
     ): Flow<ChatRoom>
 
     suspend fun getChatMessages(
         articleId: Int,
-        chatRoomId: Int,
+        chatRoomId: Int
     ): Flow<List<ChatMessage>>
 
     fun subscribeChatRoom(
         articleId: Int,
-        chatRoomId: Int,
+        chatRoomId: Int
     ): Flow<ChatMessage>
 
     suspend fun sendMessage(
         articleId: Int,
         chatRoomId: Int,
-        message: ChatMessage,
+        message: ChatMessage
     )
 
     suspend fun blockUser(
         articleId: Int,
-        chatRoomId: Int,
+        chatRoomId: Int
     ): Result<Unit>
 }

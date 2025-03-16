@@ -6,5 +6,5 @@ data class StoreUrl(
     val fileName: String,
     val mediaType: String,
     val preSignedUrl: String,
-    val fileSize: Long,
+    val fileSize: Long
 )

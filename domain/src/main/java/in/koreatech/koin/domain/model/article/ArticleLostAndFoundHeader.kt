@@ -11,5 +11,5 @@ data class ArticleLostAndFoundHeader(
     val author: String,
     val isReported: Boolean,
     val registeredAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 )

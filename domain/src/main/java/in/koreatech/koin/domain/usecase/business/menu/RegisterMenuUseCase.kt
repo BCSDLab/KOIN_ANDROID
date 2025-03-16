@@ -4,29 +4,27 @@ import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
 import javax.inject.Inject
 
-class RegisterMenuUseCase
-    @Inject
-    constructor(
-        private val ownerRegisterRepository: OwnerRegisterRepository,
-    ) {
-        suspend operator fun invoke(
-            storeId: Int,
-            menuCategoryId: List<Int>,
-            description: String,
-            menuImageUrlList: List<String>,
-            menuName: String,
-            menuOptionPrice: List<StoreMenuOptionPrice>,
-            menuSinglePrice: String,
-        ): Result<Unit> {
-            return ownerRegisterRepository.storeMenuRegister(
-                storeId = storeId,
-                menuCategoryId = menuCategoryId,
-                description = description,
-                menuImageUrlList = menuImageUrlList,
-                isSingle = menuOptionPrice.isEmpty(),
-                menuName = menuName,
-                menuOptionPrice = menuOptionPrice,
-                menuSinglePrice = menuSinglePrice,
-            )
-        }
+class RegisterMenuUseCase @Inject constructor(
+    private val ownerRegisterRepository: OwnerRegisterRepository
+) {
+    suspend operator fun invoke(
+        storeId: Int,
+        menuCategoryId: List<Int>,
+        description: String,
+        menuImageUrlList: List<String>,
+        menuName: String,
+        menuOptionPrice: List<StoreMenuOptionPrice>,
+        menuSinglePrice: String
+    ): Result<Unit> {
+        return ownerRegisterRepository.storeMenuRegister(
+            storeId = storeId,
+            menuCategoryId = menuCategoryId,
+            description = description,
+            menuImageUrlList = menuImageUrlList,
+            isSingle = menuOptionPrice.isEmpty(),
+            menuName = menuName,
+            menuOptionPrice = menuOptionPrice,
+            menuSinglePrice = menuSinglePrice
+        )
     }
+}

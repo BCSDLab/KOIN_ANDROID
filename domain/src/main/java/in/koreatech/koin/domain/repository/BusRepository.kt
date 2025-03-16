@@ -20,7 +20,7 @@ interface BusRepository {
 
     suspend fun fetchCityTimetable(
         number: Int,
-        direction: String,
+        direction: String
     ): Result<CityTimetable>
 
     suspend fun fetchBusSearchResult(
@@ -28,7 +28,7 @@ interface BusRepository {
         time: LocalTime,
         busType: String,
         departure: String,
-        arrival: String,
+        arrival: String
     ): Result<List<BusSearchResult>>
 
     suspend fun getLastShownNoticeId(): Result<Int>

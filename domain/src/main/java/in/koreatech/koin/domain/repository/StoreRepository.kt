@@ -20,7 +20,7 @@ interface StoreRepository {
         storeSorter: StoreSorter? = null,
         isOperating: Boolean? = null,
         isDelivery: Boolean? = null,
-        query: String? = null,
+        query: String? = null
     ): List<Store>
 
     suspend fun getStoreEvents(): List<StoreEvent>
@@ -41,24 +41,24 @@ interface StoreRepository {
 
     suspend fun writeReview(
         shopId: Int,
-        content: Review,
+        content: Review
     )
 
     suspend fun deleteReview(
         reviewId: Int,
-        shopId: Int,
+        shopId: Int
     )
 
     suspend fun modifyReview(
         reviewId: Int,
         shopId: Int,
-        content: Review,
+        content: Review
     )
 
     suspend fun reportReview(
         storeId: Int?,
         reviewId: Int?,
-        reportList: List<StoreReport>?,
+        reportList: List<StoreReport>?
     ): Result<Unit>
 
     suspend fun getStoreBenefitShopList(uid: Int): StoreBenefit

@@ -4,5 +4,5 @@ import java.time.LocalDateTime
 
 data class ExpressTimetable(
     val timetable: List<ExpressTimetableItem>,
-    val updatedAt: LocalDateTime,
+    val updatedAt: LocalDateTime
 )

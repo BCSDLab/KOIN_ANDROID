@@ -10,7 +10,7 @@ object DiningUtil {
 
     fun typeFiltering(
         diningList: List<Dining>,
-        type: DiningType,
+        type: DiningType
     ): List<Dining> = diningList.typeFilter(type).arrange()
 
     fun getTypeByString(type: String): DiningType {
@@ -53,7 +53,7 @@ object DiningUtil {
     fun findDining(
         diningList: List<Dining>,
         type: DiningType,
-        place: String,
+        place: String
     ): Dining? {
         diningList.typeFilter(type).forEach {
             if (it.place == place) return it

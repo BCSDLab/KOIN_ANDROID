@@ -4,15 +4,13 @@ import `in`.koreatech.koin.domain.model.owner.EventInfo
 import `in`.koreatech.koin.domain.repository.OwnerShopRepository
 import javax.inject.Inject
 
-class RegisterEventUseCase
-    @Inject
-    constructor(
-        private val ownerShopRepository: OwnerShopRepository,
+class RegisterEventUseCase @Inject constructor(
+    private val ownerShopRepository: OwnerShopRepository
+) {
+    suspend operator fun invoke(
+        shopId: Int,
+        eventInfo: EventInfo
     ) {
-        suspend operator fun invoke(
-            shopId: Int,
-            eventInfo: EventInfo,
-        ) {
-            ownerShopRepository.registerEvent(shopId, eventInfo)
-        }
+        ownerShopRepository.registerEvent(shopId, eventInfo)
     }
+}

@@ -19,13 +19,13 @@ data class Store(
     val reviewCount: Int,
     val open: OpenData,
     val categoryIds: List<Int>,
-    val benefitDetails: List<String>,
+    val benefitDetails: List<String>
 ) {
     data class OpenData(
         val dayOfWeek: String,
         val closed: Boolean,
         val openTime: String,
-        val closeTime: String,
+        val closeTime: String
     ) {
         fun openStore(): Boolean {
             return if (openTime.isNotEmpty() && closeTime.isNotEmpty()) {

@@ -48,7 +48,7 @@ enum class HtmlTag {
     TR,
     TH,
     TD,
-    UNKNOWN,
+    UNKNOWN
 }
 
 fun String.toHtmlTag(): HtmlTag {

@@ -20,18 +20,18 @@ interface OwnerShopRepository {
 
     suspend fun deleteOwnerShopEvent(
         storeId: Int,
-        eventId: Int,
+        eventId: Int
     )
 
     suspend fun modifyOwnerShopInfo(
         shopId: Int,
-        storeDetailInfo: StoreDetailInfo,
+        storeDetailInfo: StoreDetailInfo
     )
 
     fun getOwnerStoreSize(): Boolean
 
     suspend fun registerEvent(
         storeId: Int,
-        event: EventInfo,
+        event: EventInfo
     )
 }

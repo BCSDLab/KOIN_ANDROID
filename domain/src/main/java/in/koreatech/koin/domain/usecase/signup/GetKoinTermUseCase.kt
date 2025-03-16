@@ -4,13 +4,11 @@ import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import javax.inject.Inject
 
-class GetKoinTermUseCase
-    @Inject
-    constructor(
-        private val signupRepository: SignupRepository,
-    ) {
-        suspend operator fun invoke(): Result<Term> =
-            kotlin.runCatching {
-                signupRepository.getKoinTerm()
-            }
-    }
+class GetKoinTermUseCase @Inject constructor(
+    private val signupRepository: SignupRepository
+) {
+    suspend operator fun invoke(): Result<Term> =
+        kotlin.runCatching {
+            signupRepository.getKoinTerm()
+        }
+}

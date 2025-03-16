@@ -16,5 +16,5 @@ data class StoreDetailInfo(
     val isCardOk: Boolean,
     val phone: String,
     val bank: String?,
-    val accountNumber: String?,
+    val accountNumber: String?
 )

@@ -7,5 +7,5 @@ data class ChatListItem(
     val unReadMessageCount: Int,
     val lastMessageAt: String,
     val articleId: Int,
-    val chatRoomId: Int,
+    val chatRoomId: Int
 )

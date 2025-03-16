@@ -12,5 +12,5 @@ data class StoreReviewContent(
     val isMine: Boolean,
     val isModified: Boolean,
     val isReported: Boolean,
-    val createdAt: String,
+    val createdAt: String
 ) : Serializable

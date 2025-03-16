@@ -2,7 +2,7 @@ package `in`.koreatech.koin.domain.model.timetable.request
 
 data class TimetableLecturesUpdateQueryRequest(
     val timetableFrameId: Int,
-    val timetableLecture: List<TimetableLectureUpdateQueryRequest>,
+    val timetableLecture: List<TimetableLectureUpdateQueryRequest>
 )
 
 data class TimetableLectureUpdateQueryRequest(
@@ -12,5 +12,5 @@ data class TimetableLectureUpdateQueryRequest(
     val classPlace: String,
     val professor: String,
     val grades: String,
-    val memo: String,
+    val memo: String
 )

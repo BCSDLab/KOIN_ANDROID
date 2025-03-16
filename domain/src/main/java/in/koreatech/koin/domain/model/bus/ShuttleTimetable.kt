@@ -6,5 +6,5 @@ data class ShuttleTimetable(
     val routeName: String,
     val subTitle: String,
     val nodeInfo: List<ShuttleTimetableNodeInfo>,
-    val routeInfo: List<ShuttleTimetableRouteInfo>,
+    val routeInfo: List<ShuttleTimetableRouteInfo>
 )

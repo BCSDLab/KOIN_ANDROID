@@ -7,19 +7,17 @@ import `in`.koreatech.koin.domain.util.deptCode
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import javax.inject.Inject
 
-class GetDeptNameFromStudentIdUseCase
-    @Inject
-    constructor(
-        private val deptRepository: DeptRepository,
-        private val deptErrorHandler: DeptErrorHandler,
-    ) {
-        suspend operator fun invoke(studentId: String): Pair<String?, ErrorHandler?> {
-            if (!studentId.isValidStudentId) return "" to null
+class GetDeptNameFromStudentIdUseCase @Inject constructor(
+    private val deptRepository: DeptRepository,
+    private val deptErrorHandler: DeptErrorHandler
+) {
+    suspend operator fun invoke(studentId: String): Pair<String?, ErrorHandler?> {
+        if (!studentId.isValidStudentId) return "" to null
 
-            return try {
-                deptRepository.getDeptNameFromDeptCode(studentId.deptCode) to null
-            } catch (t: Throwable) {
-                null to deptErrorHandler.getDeptNameFromDeptCodeError(t)
-            }
+        return try {
+            deptRepository.getDeptNameFromDeptCode(studentId.deptCode) to null
+        } catch (t: Throwable) {
+            null to deptErrorHandler.getDeptNameFromDeptCodeError(t)
         }
     }
+}

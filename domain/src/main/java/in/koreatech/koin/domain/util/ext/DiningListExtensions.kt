@@ -29,7 +29,7 @@ fun List<Dining>.arrange() =
                 createdAt = "",
                 updatedAt = "",
                 soldOutAt = "",
-                changedAt = "",
+                changedAt = ""
             )
         }
     }

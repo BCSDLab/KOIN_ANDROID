@@ -3,5 +3,5 @@ package `in`.koreatech.koin.domain.model.user
 enum class UserType {
     STUDENT,
     COUNCIL,
-    ANONYMOUS,
+    ANONYMOUS
 }

@@ -5,22 +5,20 @@ import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinua
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
 import javax.inject.Inject
 
-class OwnerAuthenticateCode
-    @Inject
-    constructor(
-        private val ownerChangePasswordRepository: OwnerChangePasswordRepository,
-    ) {
-        suspend operator fun invoke(
-            email: String,
-            authCode: String,
-        ): Result<ChangePasswordContinuationState> {
-            return when (authCode) {
-                "" -> Result.failure(ChangePasswordExceptionState.ToastNullAuthCode)
-                else ->
-                    ownerChangePasswordRepository.authenticateCode(
-                        email = email,
-                        authCode = authCode,
-                    ).map { ChangePasswordContinuationState.GotoChangePasswordScreen }
-            }
+class OwnerAuthenticateCode @Inject constructor(
+    private val ownerChangePasswordRepository: OwnerChangePasswordRepository
+) {
+    suspend operator fun invoke(
+        email: String,
+        authCode: String
+    ): Result<ChangePasswordContinuationState> {
+        return when (authCode) {
+            "" -> Result.failure(ChangePasswordExceptionState.ToastNullAuthCode)
+            else ->
+                ownerChangePasswordRepository.authenticateCode(
+                    email = email,
+                    authCode = authCode
+                ).map { ChangePasswordContinuationState.GotoChangePasswordScreen }
         }
     }
+}

@@ -7,5 +7,5 @@ data class Version(
     val latestVersion: String,
     val title: String,
     val content: String,
-    val versionUpdatePriority: VersionUpdatePriority,
+    val versionUpdatePriority: VersionUpdatePriority
 )

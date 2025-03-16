@@ -5,5 +5,5 @@ data class HtmlModel(
     val content: String = "", // 직접 속하는 내용(child의 text는 제외)
     val attributes: Map<HtmlAttribute, String> = emptyMap(),
     val children: List<HtmlModel> = emptyList(),
-    val styles: Map<CssAttribute, String> = emptyMap(),
+    val styles: Map<CssAttribute, String> = emptyMap()
 )
