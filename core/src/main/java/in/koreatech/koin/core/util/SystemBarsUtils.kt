@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
 class SystemBarsUtils(
-    private val context: Context,
+    private val context: Context
 ) {
     val navigationBarHeight =
         context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
@@ -23,7 +23,7 @@ class SystemBarsUtils(
     /** Status Bar (상단 바) 색상 */
     fun setStatusBarColor(
         window: Window,
-        @ColorRes color: Int,
+        @ColorRes color: Int
     ) {
         window.statusBarColor = context.getColor(color)
     }
@@ -31,7 +31,7 @@ class SystemBarsUtils(
     /** Navigation Bar (하단 바) 색상 */
     fun setNavigationBarColor(
         window: Window,
-        @ColorRes color: Int,
+        @ColorRes color: Int
     ) {
         window.navigationBarColor = context.getColor(color)
     }
@@ -44,7 +44,7 @@ class SystemBarsUtils(
     fun setAppearanceSystemBars(
         window: Window,
         isLightStatusBar: Boolean = true,
-        isLightNavigationBar: Boolean = true,
+        isLightNavigationBar: Boolean = true
     ) {
         WindowInsetsControllerCompat(window, window.decorView).let { controller ->
             controller.isAppearanceLightStatusBars = isLightStatusBar
@@ -54,7 +54,7 @@ class SystemBarsUtils(
 
     private fun setAppearanceNavigationBarSdk26(
         window: Window,
-        isLightNavigationBar: Boolean,
+        isLightNavigationBar: Boolean
     ) {
         if (isLightNavigationBar) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR

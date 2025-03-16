@@ -59,7 +59,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
     @SuppressLint("SetJavaScriptEnabled")
     private fun init(
         title: String?,
-        url: String?,
+        url: String?
     ) {
         setTitle(title)
 
@@ -72,7 +72,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
                     },
                     hideProgressDialog = {
                         hideProgressDialog()
-                    },
+                    }
                 )
             settings.javaScriptEnabled = true
             settings.setSupportMultipleWindows(true)
@@ -84,7 +84,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
                     },
                     hideProgressDialog = {
                         hideProgressDialog()
-                    },
+                    }
                 )
             settings.loadWithOverviewMode = true
             settings.useWideViewPort = true
@@ -98,12 +98,12 @@ internal class KoinWebViewClient(
     private val context: Context,
     private val openInNewTab: Boolean = false,
     private val showProgressDialog: () -> Unit,
-    private val hideProgressDialog: () -> Unit,
+    private val hideProgressDialog: () -> Unit
 ) : WebViewClient() {
     override fun onPageStarted(
         view: WebView,
         url: String,
-        favicon: Bitmap?,
+        favicon: Bitmap?
     ) {
         super.onPageStarted(view, url, favicon)
         showProgressDialog()
@@ -111,7 +111,7 @@ internal class KoinWebViewClient(
 
     override fun onPageFinished(
         view: WebView,
-        url: String,
+        url: String
     ) {
         super.onPageFinished(view, url)
         hideProgressDialog()
@@ -120,7 +120,7 @@ internal class KoinWebViewClient(
     override fun onReceivedError(
         view: WebView,
         request: WebResourceRequest,
-        error: WebResourceError,
+        error: WebResourceError
     ) {
         super.onReceivedError(view, request, error)
         hideProgressDialog()
@@ -129,7 +129,7 @@ internal class KoinWebViewClient(
 
     override fun shouldOverrideUrlLoading(
         view: WebView?,
-        request: WebResourceRequest?,
+        request: WebResourceRequest?
     ): Boolean {
         if (openInNewTab) {
             val intent = Intent(context, WebViewActivity::class.java)
@@ -144,13 +144,13 @@ internal class KoinWebViewClient(
 internal class KoinWebChromeClient(
     private val context: Context,
     private val showProgressDialog: () -> Unit,
-    private val hideProgressDialog: () -> Unit,
+    private val hideProgressDialog: () -> Unit
 ) : WebChromeClient() {
     override fun onCreateWindow(
         view: WebView,
         isDialog: Boolean,
         isUserGesture: Boolean,
-        resultMsg: Message?,
+        resultMsg: Message?
     ): Boolean {
         val newWebView =
             WebView(view.context).apply {
@@ -164,7 +164,7 @@ internal class KoinWebChromeClient(
                         },
                         hideProgressDialog = {
                             hideProgressDialog()
-                        },
+                        }
                     )
             }
         val transport = resultMsg?.obj as? WebView.WebViewTransport

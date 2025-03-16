@@ -23,7 +23,7 @@ open class BaseFragment : Fragment(), IProgressDialog {
     }
 
     override fun showProgressDialog(
-        @StringRes resId: Int,
+        @StringRes resId: Int
     ) {
         if (customProgressDialog == null) {
             customProgressDialog = CustomProgressDialog(context, context.resources.getString(resId))

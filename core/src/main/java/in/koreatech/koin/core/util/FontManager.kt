@@ -27,7 +27,7 @@ object FontManager {
     @JvmStatic
     fun getTypeface(
         context: Context,
-        fontType: KoinFontType,
+        fontType: KoinFontType
     ): Typeface {
         return cache[fontType] ?: run {
             val font = getFromResource(context, fontType)
@@ -38,7 +38,7 @@ object FontManager {
 
     private fun getFromAsset(
         context: Context,
-        font: KoinFontType,
+        font: KoinFontType
     ): Typeface {
         return when (font) {
             KoinFontType.PRETENDARD_BOLD -> {
@@ -57,7 +57,7 @@ object FontManager {
 
     private fun getFromResource(
         context: Context,
-        font: KoinFontType,
+        font: KoinFontType
     ): Typeface {
         return when (font) {
             KoinFontType.PRETENDARD_BOLD -> {
@@ -77,6 +77,6 @@ object FontManager {
     enum class KoinFontType {
         PRETENDARD_BOLD,
         PRETENDARD_MEDIUM,
-        PRETENDARD_REGULAR,
+        PRETENDARD_REGULAR
     }
 }

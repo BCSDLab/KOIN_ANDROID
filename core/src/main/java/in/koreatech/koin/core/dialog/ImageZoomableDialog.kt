@@ -92,7 +92,7 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
                         e: GlideException?,
                         model: Any?,
                         target: Target<Drawable>,
-                        isFirstResource: Boolean,
+                        isFirstResource: Boolean
                     ): Boolean = false
 
                     override fun onResourceReady(
@@ -100,7 +100,7 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
                         model: Any,
                         target: Target<Drawable>,
                         dataSource: DataSource,
-                        isFirstResource: Boolean,
+                        isFirstResource: Boolean
                     ): Boolean {
                         binding.photoView.post {
                             binding.photoView.scale = initialScale
@@ -114,7 +114,7 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
                         }
                         return false
                     }
-                },
+                }
             )
             .into(binding.photoView)
     }

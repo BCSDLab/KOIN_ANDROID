@@ -16,6 +16,6 @@ private val NOTIFICATION_REQUIRED_PERMISSION =
 fun Context.checkNotificationPermission() =
     NOTIFICATION_REQUIRED_PERMISSION.all {
         ContextCompat.checkSelfPermission(
-            this, it,
+            this, it
         ) == PackageManager.PERMISSION_GRANTED
     }

@@ -7,5 +7,5 @@ data class AlertModalDialogData(
     @StringRes val title: Int,
     @StringRes val message: Int,
     @StringRes val positiveButtonText: Int,
-    @StringRes val negativeButtonText: Int = R.string.close,
+    @StringRes val negativeButtonText: Int = R.string.close
 )

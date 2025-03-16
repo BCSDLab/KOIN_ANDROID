@@ -15,14 +15,14 @@ import kotlin.reflect.KProperty
 
 class ActivityDataBindingProperty<T : ViewDataBinding>(
     @LayoutRes private val layoutId: Int? = null,
-    private val rootView: ViewGroup? = null,
+    private val rootView: ViewGroup? = null
 ) :
     ReadOnlyProperty<ComponentActivity, T> {
     private var binding: T? = null
 
     override fun getValue(
         thisRef: ComponentActivity,
-        property: KProperty<*>,
+        property: KProperty<*>
     ): T {
         if (!isMainThread) {
             throw IllegalAccessException("You should call data binding property delegate only on main thread")
@@ -38,7 +38,7 @@ class ActivityDataBindingProperty<T : ViewDataBinding>(
                     thisRef.layoutInflater,
                     layoutId,
                     rootView ?: thisRef.findViewById(android.R.id.content),
-                    false,
+                    false
                 )
             return binding!!
         }
@@ -47,7 +47,7 @@ class ActivityDataBindingProperty<T : ViewDataBinding>(
 
         return checkNotNull(binding) {
             throw IllegalAccessException(
-                "You should call setContentView before using binding property or use Activity secondary constructor.",
+                "You should call setContentView before using binding property or use Activity secondary constructor."
             )
         }
     }
@@ -69,7 +69,7 @@ private fun Activity.getContentView() =
 
 @Suppress("unused")
 inline fun <reified T : ViewDataBinding> ComponentActivity.dataBinding(
-    @LayoutRes layoutId: Int? = null,
+    @LayoutRes layoutId: Int? = null
 ): ReadOnlyProperty<AppCompatActivity, T> {
     return ActivityDataBindingProperty(layoutId)
 }

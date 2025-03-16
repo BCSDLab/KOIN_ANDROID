@@ -6,11 +6,11 @@ import kotlin.math.abs
 
 class ScaledViewPager2Transformation(
     private val itemMarginPx: Float,
-    private val nextItemVisiblePx: Float,
+    private val nextItemVisiblePx: Float
 ) : ViewPager2.PageTransformer {
     override fun transformPage(
         page: View,
-        position: Float,
+        position: Float
     ) {
         val pageTranslationX = nextItemVisiblePx + itemMarginPx
 
