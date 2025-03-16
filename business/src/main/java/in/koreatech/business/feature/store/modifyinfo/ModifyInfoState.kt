@@ -21,11 +21,11 @@ data class ModifyInfoState(
             isCardOk = false,
             phone = "",
             bank = "",
-            accountNumber = "",
+            accountNumber = ""
         ),
     val operatingTimeList: List<OperatingTime> = listOf(),
     val fileInfo: MutableList<StoreUrl> = mutableListOf(),
     val showDialog: Boolean = false,
     val dayOfWeekIndex: Int = -1,
-    val isOpenTimeSetting: SettingTime = SettingTime.OPEN,
+    val isOpenTimeSetting: SettingTime = SettingTime.OPEN
 )

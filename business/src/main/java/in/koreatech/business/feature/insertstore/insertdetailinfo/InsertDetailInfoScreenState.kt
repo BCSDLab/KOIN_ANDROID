@@ -25,8 +25,8 @@ data class InsertDetailInfoScreenState(
             OperatingTimeState("00:00", false, "목", "00:00", "THURSDAY"),
             OperatingTimeState("00:00", false, "금", "00:00", "FRIDAY"),
             OperatingTimeState("00:00", false, "토", "00:00", "SATURDAY"),
-            OperatingTimeState("00:00", false, "일", "00:00", "SUNDAY"),
+            OperatingTimeState("00:00", false, "일", "00:00", "SUNDAY")
         ),
     val isDetailInfoValid: Boolean = false,
-    val settingTimeInfoList: List<TimeSettingState> = emptyList(),
+    val settingTimeInfoList: List<TimeSettingState> = emptyList()
 ) : Parcelable

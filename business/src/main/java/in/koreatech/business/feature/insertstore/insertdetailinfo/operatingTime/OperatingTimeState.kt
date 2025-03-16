@@ -10,5 +10,5 @@ data class OperatingTimeState(
     val dayOfWeek: String = "",
     val openTime: String = "",
     val dayOfWeekEnglish: String = "",
-    val priority: Int = 0,
+    val priority: Int = 0
 ) : Parcelable

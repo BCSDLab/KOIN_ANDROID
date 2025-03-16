@@ -23,32 +23,32 @@ import `in`.koreatech.business.ui.theme.ColorPrimary
 @Composable
 fun OwnerStoreAppBar(
     title: String,
-    showDeleteUserDialog: () -> Unit = {},
+    showDeleteUserDialog: () -> Unit = {}
 ) {
     Box(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(62.dp)
-                .background(ColorPrimary),
+        Modifier
+            .fillMaxWidth()
+            .height(62.dp)
+            .background(ColorPrimary)
     ) {
         Text(
             text = title,
             modifier = Modifier.align(Alignment.Center),
-            style = TextStyle(color = Color.White, fontSize = 18.sp),
+            style = TextStyle(color = Color.White, fontSize = 18.sp)
         )
         IconButton(
             modifier =
-                Modifier
-                    .align(Alignment.BottomEnd),
+            Modifier
+                .align(Alignment.BottomEnd),
             onClick = {
                 showDeleteUserDialog()
-            },
+            }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_delete),
                 contentDescription = stringResource(R.string.delete_user),
-                colorFilter = ColorFilter.tint(Color.White),
+                colorFilter = ColorFilter.tint(Color.White)
             )
         }
     }

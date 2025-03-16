@@ -14,17 +14,17 @@ import `in`.koreatech.business.navigation.toNavigateScreenWithMenuId
 fun NavGraphBuilder.manageMenuScreen(navController: NavHostController) {
     navigation(
         route = "$MANAGEMENUSCREEN/{menuId}",
-        startDestination = "${ManageMenuRoute.MODIFY_MENU.name}/{menuId}",
+        startDestination = "${ManageMenuRoute.MODIFY_MENU.name}/{menuId}"
     ) {
         composable(
             route = "${ManageMenuRoute.MODIFY_MENU.name}/{menuId}",
             arguments =
-                listOf(
-                    navArgument("menuId") {
-                        type = NavType.IntType
-                        defaultValue = -1
-                    },
-                ),
+            listOf(
+                navArgument("menuId") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
         ) {
             ManageMenuScreen(
                 onBackPressed = {
@@ -35,7 +35,7 @@ fun NavGraphBuilder.manageMenuScreen(navController: NavHostController) {
                 },
                 navigateToRegisterMenuScreen = { storeId ->
                     navController.toNavigateRegisterMenuScreen(storeId)
-                },
+                }
             )
         }
     }

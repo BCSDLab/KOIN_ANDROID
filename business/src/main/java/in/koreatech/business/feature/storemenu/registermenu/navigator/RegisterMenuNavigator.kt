@@ -17,10 +17,10 @@ import `in`.koreatech.business.navigation.sharedHiltViewModel
 fun NavGraphBuilder.registerMenuScreen(navController: NavHostController) {
     navigation(
         route = REGISTERMENUSCREEN,
-        startDestination = RegisterMenuRoute.REGISTER.name,
+        startDestination = RegisterMenuRoute.REGISTER.name
     ) {
         composable(
-            route = RegisterMenuRoute.REGISTER.name,
+            route = RegisterMenuRoute.REGISTER.name
         ) {
             val viewModel: RegisterMenuViewModel = it.sharedHiltViewModel(navController = navController)
             RegisterMenuScreen(
@@ -30,12 +30,12 @@ fun NavGraphBuilder.registerMenuScreen(navController: NavHostController) {
                 },
                 goToCheckMenuScreen = {
                     navController.navigate(RegisterMenuRoute.CHECK_MENU.name)
-                },
+                }
             )
         }
 
         composable(
-            route = RegisterMenuRoute.CHECK_MENU.name,
+            route = RegisterMenuRoute.CHECK_MENU.name
         ) {
             val viewModel: RegisterMenuViewModel = it.sharedHiltViewModel(navController = navController)
             RegisterMenuCheckScreen(
@@ -47,7 +47,7 @@ fun NavGraphBuilder.registerMenuScreen(navController: NavHostController) {
                             inclusive = true
                         }
                     }
-                },
+                }
             )
         }
     }

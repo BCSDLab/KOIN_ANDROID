@@ -50,28 +50,28 @@ fun EnterBusinessNumberScreen(
     viewModel: BusinessAuthViewModel = hiltViewModel(),
     scrollState: ScrollState = rememberScrollState(),
     onBackClicked: () -> Unit = {},
-    onNextClicked: () -> Unit = {},
+    onNextClicked: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
 
     Column(
         modifier =
-            modifier
-                .fillMaxSize(),
+        modifier
+            .fillMaxSize()
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = viewModel::onNavigateToBackScreen,
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -79,7 +79,7 @@ fun EnterBusinessNumberScreen(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
                 fontWeight = Bold,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
 
@@ -87,64 +87,64 @@ fun EnterBusinessNumberScreen(
 
         Column(
             modifier =
-                Modifier
-                    .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = Bold,
-                    text = stringResource(id = R.string.business_auth),
+                    text = stringResource(id = R.string.business_auth)
                 )
                 Text(
                     text = stringResource(id = R.string.three_third),
                     color = ColorPrimary,
-                    fontWeight = Bold,
+                    fontWeight = Bold
                 )
             }
 
             Canvas(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 40, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
             }
         }
 
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp)
-                    .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .fillMaxSize()
+                .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = stringResource(id = R.string.enter_business_registration_number),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.Medium
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -157,37 +157,37 @@ fun EnterBusinessNumberScreen(
                 modifier = Modifier.fillMaxWidth(),
                 isError = state.error != null,
                 errorText =
-                    if (state.signupContinuationState == SignupContinuationState.CompanyNumberIsDuplicated) {
-                        stringResource(id = R.string.business_registration_number_is_duplicated)
-                    } else {
-                        stringResource(id = R.string.error_network_unknown)
-                    },
+                if (state.signupContinuationState == SignupContinuationState.CompanyNumberIsDuplicated) {
+                    stringResource(id = R.string.business_registration_number_is_duplicated)
+                } else {
+                    stringResource(id = R.string.error_network_unknown)
+                },
                 label = stringResource(id = R.string.enter_business_registration_number),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(44.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
                 enabled = state.companyNumber.length == 10 && state.error == null,
                 colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
-                        disabledBackgroundColor = ColorDisabledButton,
-                        contentColor = Color.White,
-                        disabledContentColor = Color.White,
-                    ),
-                onClick = viewModel::onNavigateToNextScreen,
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorPrimary,
+                    disabledBackgroundColor = ColorDisabledButton,
+                    contentColor = Color.White,
+                    disabledContentColor = Color.White
+                ),
+                onClick = viewModel::onNavigateToNextScreen
             ) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
-                    color = Color.White,
+                    color = Color.White
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))

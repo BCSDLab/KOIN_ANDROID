@@ -35,7 +35,7 @@ fun SearchTextField(
     modifier: Modifier = Modifier,
     label: String,
     textStyle: TextStyle = TextStyle.Default.copy(fontSize = 15.sp, color = Color.Black),
-    isPassword: Boolean = false,
+    isPassword: Boolean = false
 ) {
     BasicTextField(
         modifier = modifier,
@@ -47,11 +47,11 @@ fun SearchTextField(
         decorationBox = { innerTextField ->
             Row(
                 modifier =
-                    Modifier.fillMaxWidth().height(40.dp)
-                        .background(color = ColorTextField, shape = RoundedCornerShape(4.dp))
-                        .padding(8.dp),
+                Modifier.fillMaxWidth().height(40.dp)
+                    .background(color = ColorTextField, shape = RoundedCornerShape(4.dp))
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Box {
                     if (value.isEmpty()) {
@@ -63,10 +63,10 @@ fun SearchTextField(
                     Icon(
                         modifier = Modifier.size(17.dp),
                         painter = painterResource(id = R.drawable.search),
-                        contentDescription = stringResource(id = R.string.search_icon),
+                        contentDescription = stringResource(id = R.string.search_icon)
                     )
                 }
             }
-        },
+        }
     )
 }

@@ -53,7 +53,7 @@ fun CheckTermScreen(
     modifier: Modifier = Modifier,
     viewModel: CheckTermViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
-    onNextClicked: () -> Unit = {},
+    onNextClicked: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val scrollState = rememberScrollState()
@@ -61,21 +61,21 @@ fun CheckTermScreen(
     val scrollStateKoin = rememberScrollState()
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = { viewModel.onBackButtonClicked() },
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -83,7 +83,7 @@ fun CheckTermScreen(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
 
@@ -91,94 +91,94 @@ fun CheckTermScreen(
 
         Column(
             modifier =
-                Modifier
-                    .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = FontWeight.Bold,
-                    text = stringResource(id = R.string.check_terms),
+                    text = stringResource(id = R.string.check_terms)
                 )
                 Text(
                     text = stringResource(id = R.string.one_third),
                     color = ColorPrimary,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
             Canvas(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset((size.width + 40) / 3, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
             }
         }
 
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp)
-                    .verticalScroll(scrollState),
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier =
-                    modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                        .clickable {
-                            viewModel.onAllTermCheckedChanged()
-                        }
-                        .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
-                verticalAlignment = Alignment.CenterVertically,
+                modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .clickable {
+                        viewModel.onAllTermCheckedChanged()
+                    }
+                    .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painter =
-                        if (state.isAllTermChecked) {
-                            painterResource(id = R.drawable.ic_check_selected)
-                        } else {
-                            painterResource(
-                                id = R.drawable.ic_check,
-                            )
-                        },
+                    if (state.isAllTermChecked) {
+                        painterResource(id = R.drawable.ic_check_selected)
+                    } else {
+                        painterResource(
+                            id = R.drawable.ic_check
+                        )
+                    },
                     contentDescription = stringResource(R.string.check),
                     modifier =
-                        modifier
-                            .padding(horizontal = 8.dp)
-                            .height(24.dp)
-                            .width(24.dp),
+                    modifier
+                        .padding(horizontal = 8.dp)
+                        .height(24.dp)
+                        .width(24.dp)
                 )
 
                 Text(
                     text = stringResource(R.string.check_all),
                     color = ColorPrimary,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
+                    fontSize = 15.sp
                 )
             }
 
@@ -186,48 +186,48 @@ fun CheckTermScreen(
 
             Row(
                 modifier =
-                    modifier
-                        .fillMaxWidth()
-                        .height(22.dp)
-                        .clickable {
-                            viewModel.onPrivacyTermCheckedChanged()
-                        },
+                modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+                    .clickable {
+                        viewModel.onPrivacyTermCheckedChanged()
+                    }
             ) {
                 Image(
                     painter =
-                        if (state.isCheckedPrivacyTerms || state.isAllTermChecked) {
-                            painterResource(
-                                id = R.drawable.ic_check_selected,
-                            )
-                        } else {
-                            painterResource(
-                                id = R.drawable.ic_check,
-                            )
-                        },
+                    if (state.isCheckedPrivacyTerms || state.isAllTermChecked) {
+                        painterResource(
+                            id = R.drawable.ic_check_selected
+                        )
+                    } else {
+                        painterResource(
+                            id = R.drawable.ic_check
+                        )
+                    },
                     contentDescription = stringResource(R.string.check),
                     modifier =
-                        modifier
-                            .padding(horizontal = 8.dp)
-                            .height(24.dp)
-                            .width(24.dp),
+                    modifier
+                        .padding(horizontal = 8.dp)
+                        .height(24.dp)
+                        .width(24.dp)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = stringResource(R.string.private_info_term),
                     color = Gray6,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
+                    fontSize = 15.sp
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))
             Box(
                 modifier =
-                    Modifier
-                        .padding(bottom = 16.dp)
-                        .border(width = 1.dp, color = Blue1, shape = RectangleShape)
-                        .padding(10.dp)
-                        .height(143.dp)
-                        .verticalScroll(scrollStatePrivacy),
+                Modifier
+                    .padding(bottom = 16.dp)
+                    .border(width = 1.dp, color = Blue1, shape = RectangleShape)
+                    .padding(10.dp)
+                    .height(143.dp)
+                    .verticalScroll(scrollStatePrivacy)
             ) {
                 Text(text = state.privacyTerm, fontSize = 10.sp, color = Color.Black)
             }
@@ -236,49 +236,49 @@ fun CheckTermScreen(
 
             Row(
                 modifier =
-                    modifier
-                        .fillMaxWidth()
-                        .height(22.dp)
-                        .clickable {
-                            viewModel.onKoinTermCheckedChanged()
-                        },
+                modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+                    .clickable {
+                        viewModel.onKoinTermCheckedChanged()
+                    }
             ) {
                 Image(
                     painter =
-                        if (state.isCheckedKoinTerms || state.isAllTermChecked) {
-                            painterResource(
-                                id = R.drawable.ic_check_selected,
-                            )
-                        } else {
-                            painterResource(
-                                id = R.drawable.ic_check,
-                            )
-                        },
+                    if (state.isCheckedKoinTerms || state.isAllTermChecked) {
+                        painterResource(
+                            id = R.drawable.ic_check_selected
+                        )
+                    } else {
+                        painterResource(
+                            id = R.drawable.ic_check
+                        )
+                    },
                     contentDescription = stringResource(R.string.check),
                     modifier =
-                        modifier
-                            .padding(horizontal = 8.dp)
-                            .height(24.dp)
-                            .width(24.dp),
+                    modifier
+                        .padding(horizontal = 8.dp)
+                        .height(24.dp)
+                        .width(24.dp)
                 )
 
                 Text(
                     text = stringResource(R.string.koin_essential_term),
                     color = Gray6,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
+                    fontSize = 15.sp
                 )
             }
 
             Spacer(modifier = Modifier.height(20.dp))
             Box(
                 modifier =
-                    Modifier
-                        .padding(bottom = 16.dp)
-                        .border(width = 1.dp, color = Blue1, shape = RectangleShape)
-                        .padding(10.dp)
-                        .height(143.dp)
-                        .verticalScroll(scrollStateKoin),
+                Modifier
+                    .padding(bottom = 16.dp)
+                    .border(width = 1.dp, color = Blue1, shape = RectangleShape)
+                    .padding(10.dp)
+                    .height(143.dp)
+                    .verticalScroll(scrollStateKoin)
             ) {
                 Text(text = state.koinTerm, fontSize = 10.sp, color = Color.Black)
             }
@@ -286,20 +286,20 @@ fun CheckTermScreen(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 modifier =
-                    modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 24.dp)
-                        .height(44.dp),
+                modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+                    .height(44.dp),
                 onClick = { viewModel.onNextButtonClicked() },
                 shape = RoundedCornerShape(4.dp),
                 colors =
-                    if (state.isAllTermChecked) {
-                        ButtonDefaults.buttonColors(ColorPrimary)
-                    } else {
-                        ButtonDefaults.buttonColors(
-                            Gray5,
-                        )
-                    },
+                if (state.isAllTermChecked) {
+                    ButtonDefaults.buttonColors(ColorPrimary)
+                } else {
+                    ButtonDefaults.buttonColors(
+                        Gray5
+                    )
+                }
             ) {
                 Text(text = stringResource(R.string.next))
             }
@@ -318,7 +318,7 @@ fun CheckTermScreen(
 @Composable
 fun previewTermPage() {
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         CheckTermScreen()
     }

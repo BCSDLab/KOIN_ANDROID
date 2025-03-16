@@ -37,41 +37,41 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 @Composable
 fun EventEditToolbar(
     viewModel: MyStoreDetailViewModel,
-    state: MyStoreDetailState,
+    state: MyStoreDetailState
 ) {
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(52.dp)
-                .background(Gray4),
+        Modifier
+            .fillMaxWidth()
+            .height(52.dp)
+            .background(Gray4),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier =
-                Modifier
-                    .padding(8.dp),
+            Modifier
+                .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy((-6).dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 painter =
-                    if (state.isAllEventSelected) {
-                        painterResource(id = R.drawable.ic_check_selected)
-                    } else {
-                        painterResource(
-                            id = R.drawable.ic_check,
-                        )
-                    },
+                if (state.isAllEventSelected) {
+                    painterResource(id = R.drawable.ic_check_selected)
+                } else {
+                    painterResource(
+                        id = R.drawable.ic_check
+                    )
+                },
                 contentDescription = stringResource(R.string.check),
-                modifier = Modifier.clickable { viewModel.onChangeAllEventSelected() },
+                modifier = Modifier.clickable { viewModel.onChangeAllEventSelected() }
             )
             Text(text = stringResource(R.string.all), color = Gray6, fontSize = 12.sp)
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Center
         ) {
             Button(
                 onClick = {
@@ -82,18 +82,18 @@ fun EventEditToolbar(
                     }
                 },
                 modifier =
-                    Modifier
-                        .width(100.dp)
-                        .padding(8.dp),
+                Modifier
+                    .width(100.dp)
+                    .padding(8.dp),
                 colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorTextField,
-                        contentColor = Gray6,
-                    ),
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField,
+                    contentColor = Gray6
+                )
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = stringResource(R.string.modify),
+                    contentDescription = stringResource(R.string.modify)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = stringResource(R.string.modify))
@@ -101,18 +101,18 @@ fun EventEditToolbar(
             Button(
                 onClick = viewModel::changeDialogVisibility,
                 modifier =
-                    Modifier
-                        .width(100.dp)
-                        .padding(8.dp),
+                Modifier
+                    .width(100.dp)
+                    .padding(8.dp),
                 colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorTextField,
-                        contentColor = Gray6,
-                    ),
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField,
+                    contentColor = Gray6
+                )
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_delete),
-                    contentDescription = stringResource(R.string.delete),
+                    contentDescription = stringResource(R.string.delete)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = stringResource(R.string.delete))
@@ -120,18 +120,18 @@ fun EventEditToolbar(
             Button(
                 onClick = { viewModel.onChangeEditMode() },
                 modifier =
-                    Modifier
-                        .width(100.dp)
-                        .padding(8.dp),
+                Modifier
+                    .width(100.dp)
+                    .padding(8.dp),
                 colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorTextField,
-                        contentColor = Gray6,
-                    ),
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField,
+                    contentColor = Gray6
+                )
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_complete),
-                    contentDescription = stringResource(R.string.complete),
+                    contentDescription = stringResource(R.string.complete)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = stringResource(R.string.complete))
@@ -140,41 +140,41 @@ fun EventEditToolbar(
     }
     Divider(
         color = Gray4,
-        modifier = Modifier.height(1.dp),
+        modifier = Modifier.height(1.dp)
     )
 }
 
 @Composable
 fun EventToolbar(
     context: Context,
-    viewModel: MyStoreDetailViewModel = hiltViewModel(),
+    viewModel: MyStoreDetailViewModel = hiltViewModel()
 ) {
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(52.dp),
+        Modifier
+            .fillMaxWidth()
+            .height(52.dp)
     ) {
         Button(
             onClick = {
                 // viewModel.onChangeEditMode()
                 ToastUtil.getInstance().makeShort(
-                    context.getString(R.string.update_soon),
+                    context.getString(R.string.update_soon)
                 )
             },
             modifier =
-                Modifier
-                    .weight(1f)
-                    .padding(8.dp),
+            Modifier
+                .weight(1f)
+                .padding(8.dp),
             colors =
-                ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField,
-                    contentColor = Color.Black,
-                ),
+            ButtonDefaults.buttonColors(
+                backgroundColor = ColorTextField,
+                contentColor = Color.Black
+            )
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_edit),
-                contentDescription = stringResource(R.string.edit),
+                contentDescription = stringResource(R.string.edit)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = stringResource(R.string.edit), color = Gray1)
@@ -184,18 +184,18 @@ fun EventToolbar(
                 viewModel.navigateToAddEventScreen()
             },
             modifier =
-                Modifier
-                    .weight(1f)
-                    .padding(8.dp),
+            Modifier
+                .weight(1f)
+                .padding(8.dp),
             colors =
-                ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField,
-                    contentColor = Color.Black,
-                ),
+            ButtonDefaults.buttonColors(
+                backgroundColor = ColorTextField,
+                contentColor = Color.Black
+            )
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_add_box),
-                contentDescription = stringResource(R.string.add),
+                contentDescription = stringResource(R.string.add)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = stringResource(R.string.add), color = Gray1)

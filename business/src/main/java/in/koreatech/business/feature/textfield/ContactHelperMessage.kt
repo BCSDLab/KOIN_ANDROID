@@ -23,28 +23,28 @@ fun ContactHelperMessage(errorText: String) {
     val uriHandler = LocalUriHandler.current
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp, top = 4.dp),
+        Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, top = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             modifier = Modifier.padding(start = 4.dp),
             text = errorText,
             fontSize = 16.sp,
-            color = Gray500,
+            color = Gray500
         )
         Text(
             modifier =
-                Modifier
-                    .padding(end = 8.dp)
-                    .clickable {
-                        uriHandler.openUri(CONTACT_URL)
-                    },
+            Modifier
+                .padding(end = 8.dp)
+                .clickable {
+                    uriHandler.openUri(CONTACT_URL)
+                },
             text = stringResource(id = R.string.contact),
             fontSize = 16.sp,
-            color = ColorPrimary,
+            color = ColorPrimary
         )
     }
 }

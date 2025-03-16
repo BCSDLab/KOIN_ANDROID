@@ -32,26 +32,26 @@ import `in`.koreatech.koin.core.R
 fun StartInsertScreen(
     modifier: Modifier = Modifier,
     goToSelectCategoryScreen: () -> Unit,
-    onBackPressed: () -> Unit,
+    onBackPressed: () -> Unit
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
     ) {
         Box(
             modifier =
-                modifier
-                    .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
-                    .width(40.dp)
-                    .height(40.dp)
-                    .clickable { onBackPressed() },
+            modifier
+                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
+                .width(40.dp)
+                .height(40.dp)
+                .clickable { onBackPressed() }
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_arrow_left),
                 contentDescription = "backArrow",
                 modifier =
-                    modifier
-                        .width(40.dp)
-                        .height(40.dp),
+                modifier
+                    .width(40.dp)
+                    .height(40.dp)
             )
         }
 
@@ -60,11 +60,11 @@ fun StartInsertScreen(
             contentDescription = "finish_mark",
             alignment = Alignment.Center,
             modifier =
-                modifier
-                    .fillMaxWidth()
-                    .padding(top = 103.dp, bottom = 30.dp)
-                    .height(55.dp)
-                    .width(55.dp),
+            modifier
+                .fillMaxWidth()
+                .padding(top = 103.dp, bottom = 30.dp)
+                .height(55.dp)
+                .width(55.dp)
         )
 
         Text(
@@ -74,10 +74,10 @@ fun StartInsertScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier =
-                modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 46.dp)
-                    .padding(bottom = 16.dp),
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = 46.dp)
+                .padding(bottom = 16.dp)
         )
 
         Text(
@@ -87,10 +87,10 @@ fun StartInsertScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier =
-                modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 46.dp)
-                    .padding(bottom = 51.dp),
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = 46.dp)
+                .padding(bottom = 51.dp)
         )
 
         Button(
@@ -98,16 +98,16 @@ fun StartInsertScreen(
             colors = ButtonDefaults.buttonColors(ColorPrimary),
             shape = RectangleShape,
             modifier =
-                modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 33.dp)
-                    .height(44.dp),
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = 33.dp)
+                .height(44.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.insert_store_start),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = Color.White
             )
         }
     }
@@ -119,6 +119,6 @@ fun PreviewStartInsertScreen() {
     StartInsertScreen(
         modifier = Modifier,
         goToSelectCategoryScreen = {},
-        onBackPressed = {},
+        onBackPressed = {}
     )
 }

@@ -73,7 +73,7 @@ fun InsertDetailInfoScreen(
     basicInfo: InsertBasicInfoScreenState,
     onBackPressed: () -> Unit,
     navigateToCheckScreen: (InsertDetailInfoScreenState) -> Unit,
-    viewModel: InsertDetailInfoScreenViewModel = hiltViewModel(),
+    viewModel: InsertDetailInfoScreenViewModel = hiltViewModel()
 ) {
     viewModel.getStoreBasicInfo(basicInfo)
 
@@ -112,7 +112,7 @@ fun InsertDetailInfoScreen(
         onBackPressed = onBackPressed,
         onChangeSettingTimeList = {
             viewModel.onChangeSettingTimeList(it)
-        },
+        }
     )
 
     HandleSideEffects(viewModel, navigateToCheckScreen)
@@ -137,59 +137,59 @@ fun InsertDetailInfoScreenImpl(
     onIsBankOkChange: () -> Unit = {},
     nextButtonClicked: () -> Unit = {},
     onBackPressed: () -> Unit = {},
-    onChangeSettingTimeList: (List<TimeSettingState>) -> Unit = {},
+    onChangeSettingTimeList: (List<TimeSettingState>) -> Unit = {}
 ) {
     val sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
+            skipHalfExpanded = true
         )
     val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
         modifier =
-            Modifier
-                .fillMaxSize(),
+        Modifier
+            .fillMaxSize(),
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
             Column(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(520.dp)
-                        .background(color = Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                Modifier
+                    .fillMaxWidth()
+                    .height(520.dp)
+                    .background(color = Color.White),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 SettingTimeDialog(
                     sheetState = sheetState,
                     coroutineScope = coroutineScope,
-                    onChangeSettingTimeList = onChangeSettingTimeList,
+                    onChangeSettingTimeList = onChangeSettingTimeList
                 )
             }
-        },
+        }
     ) {
         LazyColumn(
             modifier =
-                modifier
-                    .fillMaxSize(),
+            modifier
+                .fillMaxSize()
         ) {
             item {
                 Box(
                     modifier =
-                        Modifier
-                            .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
-                            .size(40.dp)
-                            .clickable {
-                                onBackPressed()
-                            },
+                    Modifier
+                        .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
+                        .size(40.dp)
+                        .clickable {
+                            onBackPressed()
+                        }
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_arrow_left),
                         contentDescription = "backArrow",
                         modifier =
-                            modifier
-                                .size(40.dp),
+                        modifier
+                            .size(40.dp)
                     )
                 }
             }
@@ -199,7 +199,7 @@ fun InsertDetailInfoScreenImpl(
                     modifier = Modifier.padding(top = 35.dp, start = 40.dp),
                     text = stringResource(id = R.string.insert_store),
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -208,7 +208,7 @@ fun InsertDetailInfoScreenImpl(
                     modifier = Modifier.padding(top = 34.dp, start = 40.dp),
                     text = stringResource(id = R.string.insert_store_detail),
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -222,7 +222,7 @@ fun InsertDetailInfoScreenImpl(
                     storePhoneNumber,
                     onStorePhoneNumberChange,
                     32.dp,
-                    KeyboardOptions(keyboardType = KeyboardType.Number),
+                    KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             }
 
@@ -232,29 +232,29 @@ fun InsertDetailInfoScreenImpl(
                     storeDeliveryFee,
                     onStoreDeliveryFeeChange,
                     24.dp,
-                    KeyboardOptions(keyboardType = KeyboardType.Number),
+                    KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             }
 
             item {
                 Row(
                     modifier =
-                        Modifier
-                            .padding(top = 24.dp)
-                            .padding(horizontal = 32.dp)
-                            .fillMaxWidth(),
+                    Modifier
+                        .padding(top = 24.dp)
+                        .padding(horizontal = 32.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         text = stringResource(id = R.string.operating_time),
                         fontSize = 14.sp,
                         color = ColorActiveButton,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Bold
                     )
 
                     Column(
                         modifier =
-                            Modifier
-                                .padding(start = 30.dp),
+                        Modifier
+                            .padding(start = 30.dp)
                     ) {
                         state.settingTimeInfoList.forEach { item ->
 
@@ -268,7 +268,7 @@ fun InsertDetailInfoScreenImpl(
                                 }
 
                             Text(
-                                text = coloredString,
+                                text = coloredString
                             )
                         }
                     }
@@ -288,20 +288,20 @@ fun InsertDetailInfoScreenImpl(
                         colors = ButtonDefaults.buttonColors(ColorPrimary),
                         shape = RectangleShape,
                         modifier =
-                            Modifier
-                                .height(29.dp)
-                                .width(58.dp),
-                        contentPadding = PaddingValues(vertical = 4.dp, horizontal = 13.dp),
+                        Modifier
+                            .height(29.dp)
+                            .width(58.dp),
+                        contentPadding = PaddingValues(vertical = 4.dp, horizontal = 13.dp)
                     ) {
                         Text(
                             modifier =
-                                Modifier
-                                    .fillMaxSize()
-                                    .wrapContentSize(align = Alignment.Center),
+                            Modifier
+                                .fillMaxSize()
+                                .wrapContentSize(align = Alignment.Center),
                             text = stringResource(id = R.string.revise),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White,
+                            color = Color.White
                         )
                     }
                 }
@@ -314,14 +314,14 @@ fun InsertDetailInfoScreenImpl(
             item {
                 Row(
                     modifier =
-                        Modifier
-                            .padding(top = 40.dp)
-                            .padding(horizontal = 32.dp),
+                    Modifier
+                        .padding(top = 40.dp)
+                        .padding(horizontal = 32.dp)
                 ) {
                     CreateOptionCheckBox(
                         stringResource(id = R.string.delivery_available),
                         isDeliveryOk,
-                        onIsDeliveryOkChange,
+                        onIsDeliveryOkChange
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -329,7 +329,7 @@ fun InsertDetailInfoScreenImpl(
                     CreateOptionCheckBox(
                         stringResource(id = R.string.card_available),
                         isCardOk,
-                        onIsCardOkChange,
+                        onIsCardOkChange
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -337,7 +337,7 @@ fun InsertDetailInfoScreenImpl(
                     CreateOptionCheckBox(
                         stringResource(id = R.string.account_transfer_avilable),
                         isBankOk,
-                        onIsBankOkChange,
+                        onIsBankOkChange
                     )
                 }
             }
@@ -345,32 +345,32 @@ fun InsertDetailInfoScreenImpl(
             item {
                 Row(
                     modifier =
-                        Modifier
-                            .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
-                            .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
+                    Modifier
+                        .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
                 ) {
                     Button(
                         onClick = nextButtonClicked,
                         colors =
-                            if (isDetailInfoValid) {
-                                ButtonDefaults.buttonColors(
-                                    ColorPrimary,
-                                )
-                            } else {
-                                ButtonDefaults.buttonColors(ColorDisabledButton)
-                            },
+                        if (isDetailInfoValid) {
+                            ButtonDefaults.buttonColors(
+                                ColorPrimary
+                            )
+                        } else {
+                            ButtonDefaults.buttonColors(ColorDisabledButton)
+                        },
                         shape = RectangleShape,
                         modifier =
-                            Modifier
-                                .height(38.dp)
-                                .width(105.dp),
+                        Modifier
+                            .height(38.dp)
+                            .width(105.dp)
                     ) {
                         Text(
                             text = stringResource(id = R.string.next),
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White,
+                            color = Color.White
                         )
                     }
                 }
@@ -385,21 +385,21 @@ fun NameTextField(
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
     paddingTopValue: Dp = 10.dp,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .padding(top = paddingTopValue),
-        verticalAlignment = CenterVertically,
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp)
+            .padding(top = paddingTopValue),
+        verticalAlignment = CenterVertically
     ) {
         Text(
             text = textString,
             fontSize = 14.sp,
             color = ColorActiveButton,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Bold
         )
 
         BorderTextField(inputString, onStringChange, keyboardOptions)
@@ -409,7 +409,7 @@ fun NameTextField(
 @Composable
 private fun HandleSideEffects(
     viewModel: InsertDetailInfoScreenViewModel,
-    navigateToCheckScreen: (InsertDetailInfoScreenState) -> Unit,
+    navigateToCheckScreen: (InsertDetailInfoScreenState) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -434,29 +434,29 @@ private fun HandleSideEffects(
 fun BorderTextField(
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     Box(
         modifier =
-            Modifier
-                .padding(start = 30.dp)
-                .border(width = 1.dp, color = ColorMinor)
-                .height(37.dp),
-        contentAlignment = Alignment.CenterStart,
+        Modifier
+            .padding(start = 30.dp)
+            .border(width = 1.dp, color = ColorMinor)
+            .height(37.dp),
+        contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
             value = inputString,
             onValueChange = onStringChange,
             keyboardOptions = keyboardOptions,
             textStyle =
-                TextStyle(
-                    color = Color.Black,
-                    fontSize = 14.sp,
-                ),
+            TextStyle(
+                color = Color.Black,
+                fontSize = 14.sp
+            ),
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 12.dp)
         )
     }
 }
@@ -465,30 +465,30 @@ fun BorderTextField(
 fun CreateOptionCheckBox(
     checkString: String = "",
     checkValue: Boolean = true,
-    onCheckValueChange: () -> Unit = {},
+    onCheckValueChange: () -> Unit = {}
 ) {
     Row(
         modifier =
-            Modifier.clickable {
-                onCheckValueChange()
-            },
-        verticalAlignment = CenterVertically,
+        Modifier.clickable {
+            onCheckValueChange()
+        },
+        verticalAlignment = CenterVertically
     ) {
         Image(
             painter =
-                if (checkValue) {
-                    painterResource(R.drawable.ic_insert_store_checked_box)
-                } else {
-                    painterResource(id = R.drawable.ic_insert_store_unchecked_box)
-                },
-            contentDescription = "checkBox",
+            if (checkValue) {
+                painterResource(R.drawable.ic_insert_store_checked_box)
+            } else {
+                painterResource(id = R.drawable.ic_insert_store_unchecked_box)
+            },
+            contentDescription = "checkBox"
         )
 
         Text(
             modifier = Modifier.padding(start = 8.dp),
             text = checkString,
             color = if (checkValue) ColorSecondary else ColorMinor,
-            fontSize = 14.sp,
+            fontSize = 14.sp
         )
     }
 }
@@ -513,5 +513,5 @@ val operatingTime: List<OperatingTimeState> =
         OperatingTimeState("00:00", false, "수", "00:00"),
         OperatingTimeState("00:00", true, "목", "00:00"),
         OperatingTimeState("00:00", true, "금", "00:00"),
-        OperatingTimeState("00:00", false, "토", "00:00"),
+        OperatingTimeState("00:00", false, "토", "00:00")
     )

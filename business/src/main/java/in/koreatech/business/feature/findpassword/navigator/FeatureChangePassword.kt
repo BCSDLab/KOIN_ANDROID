@@ -16,38 +16,38 @@ fun NavGraphBuilder.changePasswordScreen(
     navigateToFinish: () -> Unit = {},
     navigateToSignInScreen: () -> Unit = {},
     onBackPressed: () -> Unit = {},
-    navigateToChangeScreen: (String) -> Unit = {},
+    navigateToChangeScreen: (String) -> Unit = {}
 ) {
     navigation(
         route = CHANGEPASSWORDSCREEN,
-        startDestination = ChangePasswordRoute.Authentication.name,
+        startDestination = ChangePasswordRoute.Authentication.name
     ) {
         composable(route = ChangePasswordRoute.Authentication.name) {
             PasswordAuthenticationScreenImpl(
                 navigateToChangePassword = navigateToChangeScreen,
-                onBackPressed = onBackPressed,
+                onBackPressed = onBackPressed
             )
         }
 
         composable(
             route = "${ChangePasswordRoute.ChangePassword.name}/{phoneNumber}",
             arguments =
-                listOf(
-                    navArgument("phoneNumber") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    },
-                ),
+            listOf(
+                navArgument("phoneNumber") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
         ) {
             ChangePasswordScreenImpl(
                 navigateToFinish = navigateToFinish,
-                onBackPressed = onBackPressed,
+                onBackPressed = onBackPressed
             )
         }
 
         composable(route = ChangePasswordRoute.Finish.name) {
             FinishChangePasswordScreen(
-                navigateToSignInScreen = navigateToSignInScreen,
+                navigateToSignInScreen = navigateToSignInScreen
             )
         }
     }

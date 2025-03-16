@@ -49,7 +49,7 @@ fun ChangePasswordScreenImpl(
     modifier: Modifier = Modifier,
     navigateToFinish: () -> Unit,
     onBackPressed: () -> Unit,
-    viewModel: ChangePasswordViewModel = hiltViewModel(),
+    viewModel: ChangePasswordViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 
@@ -71,11 +71,11 @@ fun ChangePasswordScreenImpl(
             viewModel.changePassword(
                 state.phoneNumber.trim(),
                 state.password.trim(),
-                state.passwordChecked.trim(),
+                state.passwordChecked.trim()
             )
         },
         modifier = modifier,
-        buttonEnabled = state.isButtonEnabled,
+        buttonEnabled = state.isButtonEnabled
     )
 
     HandleSideEffects(viewModel, navigateToFinish)
@@ -94,26 +94,26 @@ fun ChangePasswordScreen(
     onBackPressed: () -> Unit,
     onChangePasswordClick: () -> Unit,
     modifier: Modifier = Modifier,
-    buttonEnabled: Boolean,
+    buttonEnabled: Boolean
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxSize()
-                .padding(top = 12.dp),
+        modifier
+            .fillMaxSize()
+            .padding(top = 12.dp)
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth()
         ) {
             IconButton(
                 onClick = { onBackPressed() },
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -121,46 +121,46 @@ fun ChangePasswordScreen(
                 text = stringResource(id = R.string.password_find),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
         Column(
             modifier =
-                Modifier
-                    .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     style = MaterialTheme.typography.h6,
-                    text = stringResource(R.string.change_password_step),
+                    text = stringResource(R.string.change_password_step)
                 )
                 Text(
                     text = stringResource(id = R.string.two_half),
                     color = ColorPrimary,
                     style = MaterialTheme.typography.h6,
-                    letterSpacing = 4.sp,
+                    letterSpacing = 4.sp
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Canvas(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth()
             ) {
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(0f, 0f),
                     end = Offset(size.width, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
             }
 
@@ -169,7 +169,7 @@ fun ChangePasswordScreen(
                 text = stringResource(R.string.new_password),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+                modifier = modifier.padding(start = 8.dp, bottom = 8.dp)
             )
             LinedTextField(
                 value = password,
@@ -178,14 +178,14 @@ fun ChangePasswordScreen(
                 helperText = stringResource(R.string.password_condition),
                 label = stringResource(R.string.input_new_password),
                 isError = password.isNotValidPassword() && !passwordIsEmpty,
-                errorText = stringResource(R.string.password_not_validate),
+                errorText = stringResource(R.string.password_not_validate)
             )
 
             Text(
                 text = stringResource(R.string.confirm_password),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp, top = 29.dp),
+                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp, top = 29.dp)
             )
             LinedTextField(
                 value = passwordChecked,
@@ -193,28 +193,28 @@ fun ChangePasswordScreen(
                 isPassword = true,
                 isError = notCoincidePassword,
                 errorText = stringResource(R.string.password_not_coincide),
-                label = stringResource(R.string.input_new_password_again),
+                label = stringResource(R.string.input_new_password_again)
             )
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = onChangePasswordClick,
                 colors =
-                    if (fillAllPasswords) {
-                        ButtonDefaults.buttonColors(ColorPrimary)
-                    } else {
-                        ButtonDefaults.buttonColors(Gray5)
-                    },
+                if (fillAllPasswords) {
+                    ButtonDefaults.buttonColors(ColorPrimary)
+                } else {
+                    ButtonDefaults.buttonColors(Gray5)
+                },
                 modifier =
-                    modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                enabled = buttonEnabled,
+                modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                enabled = buttonEnabled
             ) {
                 Text(
                     text = stringResource(id = R.string.complete),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (fillAllPasswords && buttonEnabled) Color.White else Gray1,
+                    color = if (fillAllPasswords && buttonEnabled) Color.White else Gray1
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -225,7 +225,7 @@ fun ChangePasswordScreen(
 @Composable
 fun HandleSideEffects(
     viewModel: ChangePasswordViewModel,
-    navigateToFinish: () -> Unit,
+    navigateToFinish: () -> Unit
 ) {
     viewModel.collectSideEffect {
         when (it) {
@@ -240,23 +240,23 @@ fun HandleSideEffects(
 fun WaringNotCoincidePW(modifier: Modifier) {
     Row(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(start = 32.dp),
+        modifier
+            .fillMaxWidth()
+            .padding(start = 32.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.exclamation),
             contentDescription = "examationMark",
             modifier =
-                modifier
-                    .padding(5.dp)
-                    .size(16.dp),
+            modifier
+                .padding(5.dp)
+                .size(16.dp)
         )
 
         Text(
             text = stringResource(R.string.password_not_coincide),
             fontSize = 16.sp,
-            color = ColorError,
+            color = ColorError
         )
     }
 }
@@ -278,6 +278,6 @@ fun PreviewChangePasswordScreen() {
         onBackPressed = {},
         onChangePasswordClick = {},
         modifier = Modifier.background(Color.White),
-        buttonEnabled = true,
+        buttonEnabled = true
     )
 }

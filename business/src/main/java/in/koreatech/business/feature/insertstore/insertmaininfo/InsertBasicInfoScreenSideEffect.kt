@@ -10,5 +10,5 @@ enum class BasicInfoErrorType {
     NullStoreName,
     NullStoreAddress,
     NullStoreImage,
-    FailUploadImage,
+    FailUploadImage
 }

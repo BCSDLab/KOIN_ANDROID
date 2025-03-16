@@ -44,7 +44,7 @@ fun PasswordTextField(
     errorText: String = "",
     successText: String = "",
     isError: Boolean = false,
-    isSuccess: Boolean = false,
+    isSuccess: Boolean = false
 ) {
     var visible by remember { mutableStateOf(false) }
     var focused by remember { mutableStateOf(false) }
@@ -59,25 +59,25 @@ fun PasswordTextField(
             Column(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(46.dp)
-                            .background(color = ColorTextField),
-                    verticalArrangement = Arrangement.Center,
+                    Modifier
+                        .fillMaxWidth()
+                        .height(46.dp)
+                        .background(color = ColorTextField),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Row(
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 12.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             modifier =
-                                Modifier
-                                    .fillMaxHeight(),
-                            contentAlignment = Alignment.CenterStart,
+                            Modifier
+                                .fillMaxHeight(),
+                            contentAlignment = Alignment.CenterStart
                         ) {
                             if (value.isEmpty()) {
                                 Text(text = label, fontSize = 13.sp, color = ColorHelper)
@@ -86,18 +86,18 @@ fun PasswordTextField(
                         }
                         IconButton(
                             onClick = { visible = !visible },
-                            modifier = Modifier.fillMaxHeight(),
+                            modifier = Modifier.fillMaxHeight()
                         ) {
                             Icon(
                                 painter =
-                                    if (visible) {
-                                        painterResource(
-                                            id = R.drawable.ic_visibility,
-                                        )
-                                    } else {
-                                        painterResource(id = R.drawable.ic_visibility_off)
-                                    },
-                                contentDescription = stringResource(R.string.password_visibility),
+                                if (visible) {
+                                    painterResource(
+                                        id = R.drawable.ic_visibility
+                                    )
+                                } else {
+                                    painterResource(id = R.drawable.ic_visibility_off)
+                                },
+                                contentDescription = stringResource(R.string.password_visibility)
                             )
                         }
                     }
@@ -108,10 +108,10 @@ fun PasswordTextField(
                     isSuccess = isSuccess,
                     errorText = errorText,
                     successText = successText,
-                    focused = focused,
+                    focused = focused
                 )
             }
-        },
+        }
     )
 }
 
@@ -124,6 +124,6 @@ fun PasswordTextFieldPreview() {
         label = "특수문자 포함 영어와 숫자 6~18자리로 입력해주세요.",
         helperText = "특수문자 포함 영어와 숫자 6~18자리로 입력해주세요.",
         errorText = "Password must be at least 8 characters long",
-        isError = true,
+        isError = true
     )
 }

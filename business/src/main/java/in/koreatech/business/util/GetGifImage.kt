@@ -14,7 +14,7 @@ import coil.size.Size
 fun GifImage(
     modifier: Modifier = Modifier,
     painterResource: Int,
-    imageSize: Size = Size.ORIGINAL,
+    imageSize: Size = Size.ORIGINAL
 ) {
     val context = LocalContext.current
     val imageLoader =
@@ -27,14 +27,14 @@ fun GifImage(
     Image(
         modifier = modifier,
         painter =
-            rememberAsyncImagePainter(
-                ImageRequest.Builder(context)
-                    .data(data = painterResource)
-                    .apply(block = {
-                        imageSize
-                    }).build(),
-                imageLoader = imageLoader,
-            ),
-        contentDescription = "",
+        rememberAsyncImagePainter(
+            ImageRequest.Builder(context)
+                .data(data = painterResource)
+                .apply(block = {
+                    imageSize
+                }).build(),
+            imageLoader = imageLoader
+        ),
+        contentDescription = ""
     )
 }

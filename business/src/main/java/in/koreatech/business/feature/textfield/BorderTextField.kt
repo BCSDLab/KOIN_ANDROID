@@ -28,15 +28,15 @@ fun MenuBorderTextField(
     index: Int = 0,
     getStringResource: Int = 0,
     onStringChange: (Pair<Int, String>) -> Unit = {},
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     Box(
         modifier =
-            modifier
-                .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
-                .height(37.dp)
-                .width(170.dp),
-        contentAlignment = Alignment.CenterStart,
+        modifier
+            .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(8.dp))
+            .height(37.dp)
+            .width(170.dp),
+        contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
             modifier = Modifier.padding(start = 8.dp),
@@ -45,24 +45,24 @@ fun MenuBorderTextField(
                 onStringChange(Pair(index, newValue))
             },
             textStyle =
-                TextStyle(
-                    color = Color.Black,
-                    fontSize = 14.sp,
-                ),
+            TextStyle(
+                color = Color.Black,
+                fontSize = 14.sp
+            ),
             keyboardOptions = keyboardOptions,
             decorationBox = { innerTextField ->
                 if (inputString == stringResource(id = R.string.temp_price)) {
                     Text(
                         text = stringResource(id = getStringResource),
                         style =
-                            TextStyle(
-                                color = Color.Gray,
-                                fontSize = 14.sp,
-                            ),
+                        TextStyle(
+                            color = Color.Gray,
+                            fontSize = 14.sp
+                        )
                     )
                 }
                 innerTextField()
-            },
+            }
         )
     }
 }

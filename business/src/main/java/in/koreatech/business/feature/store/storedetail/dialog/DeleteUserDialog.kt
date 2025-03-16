@@ -33,49 +33,49 @@ import `in`.koreatech.business.R
 fun DeleteUserDialog(
     onClickCancel: () -> Unit = {},
     deleteUser: () -> Unit = {},
-    dialogVisibility: Boolean = true,
+    dialogVisibility: Boolean = true
 ) {
     if (dialogVisibility) {
         Dialog(
             onDismissRequest = { onClickCancel() },
             properties =
-                DialogProperties(
-                    dismissOnBackPress = true,
-                    dismissOnClickOutside = true,
-                ),
+            DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            )
         ) {
             Card(
                 shape =
-                    RoundedCornerShape(
-                        topStart = 20.dp,
-                        topEnd = 20.dp,
-                        bottomStart = 20.dp,
-                        bottomEnd = 20.dp,
-                    ),
+                RoundedCornerShape(
+                    topStart = 20.dp,
+                    topEnd = 20.dp,
+                    bottomStart = 20.dp,
+                    bottomEnd = 20.dp
+                )
             ) {
                 Column(
                     modifier =
-                        Modifier
-                            .width(300.dp)
-                            .wrapContentHeight(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    Modifier
+                        .width(300.dp)
+                        .wrapContentHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
                         modifier =
-                            Modifier
-                                .padding(top = 16.dp)
-                                .fillMaxWidth(),
+                        Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth()
                     ) {
                         Image(
                             painter = painterResource(R.drawable.ic_x),
                             contentDescription = "",
                             modifier =
-                                Modifier
-                                    .align(Alignment.TopEnd)
-                                    .padding(end = 16.dp)
-                                    .clickable {
-                                        onClickCancel()
-                                    },
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(end = 16.dp)
+                                .clickable {
+                                    onClickCancel()
+                                }
                         )
                     }
 
@@ -84,7 +84,7 @@ fun DeleteUserDialog(
                         textAlign = TextAlign.Center,
                         color = Color.Black,
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Bold
                     )
 
                     Text(
@@ -92,22 +92,22 @@ fun DeleteUserDialog(
                         text = stringResource(id = R.string.delete_user_detail),
                         textAlign = TextAlign.Center,
                         color = Color.Black,
-                        fontSize = 15.sp,
+                        fontSize = 15.sp
                     )
 
                     Row(
                         modifier =
-                            Modifier
-                                .padding(top = 35.dp)
-                                .padding(horizontal = 40.dp)
-                                .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        Modifier
+                            .padding(top = 35.dp)
+                            .padding(horizontal = 40.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         Button(
                             modifier = Modifier.weight(1F),
                             onClick = {
                                 onClickCancel()
-                            },
+                            }
                         ) {
                             Text(text = stringResource(id = R.string.cancel))
                         }
@@ -117,7 +117,7 @@ fun DeleteUserDialog(
                             onClick = {
                                 onClickCancel()
                                 deleteUser()
-                            },
+                            }
                         ) {
                             Text(text = stringResource(id = R.string.check))
                         }

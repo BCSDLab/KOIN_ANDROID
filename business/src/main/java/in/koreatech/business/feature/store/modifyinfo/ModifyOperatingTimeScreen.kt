@@ -42,84 +42,84 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ModifyOperatingTimeScreen(
     viewModel: ModifyInfoViewModel = hiltViewModel(),
-    onBackClicked: () -> Unit = {},
+    onBackClicked: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
 
     Column {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(ColorPrimary),
+            Modifier
+                .fillMaxWidth()
+                .background(ColorPrimary)
         ) {
             IconButton(onClick = viewModel::onBackButtonClicked) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_flyer_before_arrow),
                     contentDescription = stringResource(R.string.back),
-                    colorFilter = ColorFilter.tint(Color.White),
+                    colorFilter = ColorFilter.tint(Color.White)
                 )
             }
             Text(
                 text = stringResource(id = R.string.operating_time),
                 modifier = Modifier.align(Alignment.Center),
-                style = TextStyle(color = Color.White, fontSize = 18.sp),
+                style = TextStyle(color = Color.White, fontSize = 18.sp)
             )
         }
 
         Text(
             modifier =
-                Modifier
-                    .padding(start = 16.dp, top = 20.dp),
+            Modifier
+                .padding(start = 16.dp, top = 20.dp),
             text = stringResource(id = R.string.insert_store_time_setting),
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight(500),
+            fontWeight = FontWeight(500)
         )
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp)
-                    .height(35.dp)
-                    .background(ColorTextBackgrond),
-            contentAlignment = Alignment.CenterStart,
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp)
+                .height(35.dp)
+                .background(ColorTextBackgrond),
+            contentAlignment = Alignment.CenterStart
         ) {
             Text(
                 modifier = Modifier.padding(start = 16.dp),
                 text = stringResource(id = R.string.insert_store_open_time_setting),
-                color = ColorSecondaryText,
+                color = ColorSecondaryText
             )
         }
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp)
-                    .padding(horizontal = 24.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp)
+                .padding(horizontal = 24.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.day_of_week),
-                fontSize = 18.sp,
+                fontSize = 18.sp
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.open_time),
-                fontSize = 18.sp,
+                fontSize = 18.sp
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.day_off),
-                fontSize = 18.sp,
+                fontSize = 18.sp
             )
         }
         Box {
             LazyColumn(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 25.dp)
-                        .padding(horizontal = 6.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 25.dp)
+                    .padding(horizontal = 6.dp)
             ) {
                 itemsIndexed(state.operatingTimeList) { index, item ->
                     OperatingTimeSetting(
@@ -131,7 +131,7 @@ fun ModifyOperatingTimeScreen(
                             viewModel.showCloseTimeDialog(index)
                         },
                         operatingTime = item,
-                        index = index,
+                        index = index
                     ) {
                         viewModel.isClosedDay(index)
                     }
@@ -143,28 +143,28 @@ fun ModifyOperatingTimeScreen(
                     OperatingTimeSettingDialog(
                         title = stringResource(id = R.string.store_open_time),
                         operatingTimeDialog =
-                            OperatingTimeDialog(
-                                state.showDialog,
-                                viewModel::hideAlertDialog,
-                                state.dayOfWeekIndex,
-                                onSettingStoreTime = {
-                                    viewModel.settingStoreOpenTime(it.first, it.second)
-                                },
-                            ),
+                        OperatingTimeDialog(
+                            state.showDialog,
+                            viewModel::hideAlertDialog,
+                            state.dayOfWeekIndex,
+                            onSettingStoreTime = {
+                                viewModel.settingStoreOpenTime(it.first, it.second)
+                            }
+                        )
                     )
                 }
                 SettingTime.CLOSE -> {
                     OperatingTimeSettingDialog(
                         title = stringResource(id = R.string.store_close_time),
                         operatingTimeDialog =
-                            OperatingTimeDialog(
-                                state.showDialog,
-                                viewModel::hideAlertDialog,
-                                state.dayOfWeekIndex,
-                                onSettingStoreTime = {
-                                    viewModel.settingStoreCloseTime(it.first, it.second)
-                                },
-                            ),
+                        OperatingTimeDialog(
+                            state.showDialog,
+                            viewModel::hideAlertDialog,
+                            state.dayOfWeekIndex,
+                            onSettingStoreTime = {
+                                viewModel.settingStoreCloseTime(it.first, it.second)
+                            }
+                        )
                     )
                 }
             }
@@ -189,7 +189,7 @@ fun OperatingTimeSetting(
     onShowOpenTimeDialog: (Int) -> Unit = {},
     onShowCloseTimeDialog: (Int) -> Unit = {},
     index: Int = 0,
-    onCheckBoxClicked: (Int) -> Unit = {},
+    onCheckBoxClicked: (Int) -> Unit = {}
 ) {
     val context = LocalContext.current
     val dayOfWeekIndex = DateFormatUtil.dayOfWeekToIndex(operatingTime.dayOfWeek)
@@ -197,52 +197,52 @@ fun OperatingTimeSetting(
         if (dayOfWeekIndex != -1) context.resources.getStringArray(R.array.days_one_letter)[dayOfWeekIndex] else operatingTime.dayOfWeek
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 18.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+            .padding(bottom = 18.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = dayOfWeekKorean, fontSize = 15.sp)
         Spacer(modifier = Modifier.weight(1f))
         Text(
             modifier =
-                Modifier.clickable {
-                    if (!state.storeInfo.operatingTime[index].closed) onShowOpenTimeDialog(index)
-                },
+            Modifier.clickable {
+                if (!state.storeInfo.operatingTime[index].closed) onShowOpenTimeDialog(index)
+            },
             text = state.operatingTimeList[index].openTime,
             color = if (state.storeInfo.operatingTime[index].closed) ColorMinor else Color.Black,
-            fontSize = 15.sp,
+            fontSize = 15.sp
         )
         Text(
             modifier = Modifier.padding(horizontal = 15.dp),
             text = " ~ ",
-            fontSize = 15.sp,
+            fontSize = 15.sp
         )
         Text(
             modifier =
-                Modifier.clickable {
-                    if (!operatingTime.closed) onShowCloseTimeDialog(index)
-                },
+            Modifier.clickable {
+                if (!operatingTime.closed) onShowCloseTimeDialog(index)
+            },
             text = state.operatingTimeList[index].closeTime,
             color = if (state.storeInfo.operatingTime[index].closed) ColorMinor else Color.Black,
-            fontSize = 15.sp,
+            fontSize = 15.sp
         )
         Spacer(modifier = Modifier.weight(1f))
         Image(
             modifier =
-                Modifier.clickable {
-                    onCheckBoxClicked(index)
-                },
+            Modifier.clickable {
+                onCheckBoxClicked(index)
+            },
             painter =
-                if (state.storeInfo.operatingTime[index].closed) {
-                    painterResource(
-                        R.drawable.ic_insert_store_time_setting_checked,
-                    )
-                } else {
-                    painterResource(id = R.drawable.ic_insert_store_time_setting_unchecked)
-                },
-            contentDescription = "checkBox",
+            if (state.storeInfo.operatingTime[index].closed) {
+                painterResource(
+                    R.drawable.ic_insert_store_time_setting_checked
+                )
+            } else {
+                painterResource(id = R.drawable.ic_insert_store_time_setting_unchecked)
+            },
+            contentDescription = "checkBox"
         )
     }
 }

@@ -49,7 +49,7 @@ fun SignInScreen(
     navigateToSignUp: () -> Unit,
     navigateToFindPassword: () -> Unit,
     navigateToMain: (Boolean) -> Unit,
-    viewModel: SignInViewModel = hiltViewModel(),
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 
@@ -65,7 +65,7 @@ fun SignInScreen(
             viewModel.login()
         },
         onSignUpClick = { viewModel.navigateToSignUp() },
-        onFindPasswordClick = { viewModel.navigateToFindPassword() },
+        onFindPasswordClick = { viewModel.navigateToFindPassword() }
     )
 
     HandleSideEffects(viewModel, navigateToSignUp, navigateToFindPassword, navigateToMain)
@@ -82,24 +82,24 @@ fun SignInScreenImpl(
     onPasswordChange: (String) -> Unit = {},
     onSignInClick: () -> Unit = {},
     onSignUpClick: () -> Unit = {},
-    onFindPasswordClick: () -> Unit = {},
+    onFindPasswordClick: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp, vertical = 95.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp, vertical = 95.dp),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = R.drawable.koin_owner_logo),
                 contentDescription = "Koin Owner Logo",
                 modifier =
-                    Modifier
-                        .size(150.dp),
-                alignment = Alignment.CenterStart,
+                Modifier
+                    .size(150.dp),
+                alignment = Alignment.CenterStart
             )
         }
 
@@ -112,20 +112,20 @@ fun SignInScreenImpl(
             decorationBox = { innerTextField ->
                 Column(
                     modifier =
-                        Modifier
-                            .fillMaxWidth(),
+                    Modifier
+                        .fillMaxWidth()
                 ) {
                     Box(
                         contentAlignment = Alignment.CenterStart,
                         modifier =
-                            Modifier
-                                .fillMaxWidth(),
+                        Modifier
+                            .fillMaxWidth()
                     ) {
                         if (id.isEmpty()) {
                             Text(
                                 stringResource(R.string.phone_number),
                                 color = Blue1,
-                                fontSize = 15.sp,
+                                fontSize = 15.sp
                             )
                         }
                         innerTextField()
@@ -134,17 +134,17 @@ fun SignInScreenImpl(
                         color = if (notValidateField) ColorAccent else Blue1,
                         thickness = 1.dp,
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(top = 4.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp)
                     )
                 }
             },
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-                    .padding(bottom = 28.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+                .padding(bottom = 28.dp)
         )
 
         BasicTextField(
@@ -156,20 +156,20 @@ fun SignInScreenImpl(
             decorationBox = { innerTextField ->
                 Column(
                     modifier =
-                        Modifier
-                            .fillMaxWidth(),
+                    Modifier
+                        .fillMaxWidth()
                 ) {
                     Box(
                         contentAlignment = Alignment.CenterStart,
                         modifier =
-                            Modifier
-                                .fillMaxWidth(),
+                        Modifier
+                            .fillMaxWidth()
                     ) {
                         if (password.isEmpty()) {
                             Text(
                                 stringResource(R.string.password),
                                 color = Blue1,
-                                fontSize = 15.sp,
+                                fontSize = 15.sp
                             )
                         }
                         innerTextField()
@@ -179,26 +179,26 @@ fun SignInScreenImpl(
                         color = if (notValidateField) ColorAccent else Blue1,
                         thickness = 1.dp,
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(top = 4.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp)
                     )
                 }
             },
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
         )
 
         Text(
             modifier =
-                Modifier
-                    .padding(horizontal = 32.dp)
-                    .padding(top = 4.dp),
+            Modifier
+                .padding(horizontal = 32.dp)
+                .padding(top = 4.dp),
             fontSize = 11.sp,
             text = if (notValidateField) errorMessage else "",
-            color = ColorAccent,
+            color = ColorAccent
         )
 
         Button(
@@ -206,18 +206,18 @@ fun SignInScreenImpl(
             shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(ColorAccent),
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-                    .padding(top = 40.dp)
-                    .padding(bottom = 16.dp)
-                    .height(44.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+                .padding(top = 40.dp)
+                .padding(bottom = 16.dp)
+                .height(44.dp)
         ) {
             Text(
                 stringResource(R.string.navigation_item_login),
                 color = Color.White,
                 fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -226,47 +226,47 @@ fun SignInScreenImpl(
             shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(ColorPrimary),
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-                    .padding(bottom = 24.dp)
-                    .height(44.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+                .padding(bottom = 24.dp)
+                .height(44.dp)
         ) {
             Text(
                 stringResource(R.string.sign_up),
                 color = Color.White,
                 fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
         }
 
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(35.dp)
-                    .padding(horizontal = 127.dp)
-                    .clickable {
-                        onFindPasswordClick()
-                    },
+            Modifier
+                .fillMaxWidth()
+                .height(35.dp)
+                .padding(horizontal = 127.dp)
+                .clickable {
+                    onFindPasswordClick()
+                },
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_password),
                 contentDescription = "password_icon",
                 modifier =
-                    Modifier
-                        .height(20.dp)
-                        .width(20.dp)
-                        .padding(end = 4.dp),
+                Modifier
+                    .height(20.dp)
+                    .width(20.dp)
+                    .padding(end = 4.dp)
             )
 
             Text(
                 stringResource(R.string.password_find),
                 color = ColorSecondaryText,
                 fontSize = 13.sp,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -277,7 +277,7 @@ private fun HandleSideEffects(
     viewModel: SignInViewModel,
     navigateToSignUp: () -> Unit,
     navigateToFindPassword: () -> Unit,
-    navigateToMain: (Boolean) -> Unit,
+    navigateToMain: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
     viewModel.collectSideEffect { sideEffect ->
@@ -315,7 +315,7 @@ fun PreViewSignInScreen(
     onPasswordChange: (String) -> Unit = {},
     onSignInClick: () -> Unit = {},
     onSignUpClick: () -> Unit = {},
-    onFindPasswordClick: () -> Unit = {},
+    onFindPasswordClick: () -> Unit = {}
 ) {
     SignInScreenImpl(
         modifier = modifier,
@@ -325,6 +325,6 @@ fun PreViewSignInScreen(
         onPasswordChange = onPasswordChange,
         onSignInClick = onSignInClick,
         onSignUpClick = onSignUpClick,
-        onFindPasswordClick = onFindPasswordClick,
+        onFindPasswordClick = onFindPasswordClick
     )
 }

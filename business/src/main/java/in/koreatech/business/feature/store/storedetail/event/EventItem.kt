@@ -53,14 +53,14 @@ fun EventItem(
     enabledScroll: Boolean,
     scrollState: ScrollState,
     viewModel: MyStoreDetailViewModel,
-    state: MyStoreDetailState,
+    state: MyStoreDetailState
 ) {
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(enabled = enabledScroll, state = scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(enabled = enabledScroll, state = scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         state.storeEvent?.forEachIndexed { index, item ->
             val eventOpenCloseTime =
@@ -74,7 +74,7 @@ fun EventItem(
                     state.storeEvent[index],
                     eventOpenCloseTime = eventOpenCloseTime,
                     pagerState = pagerState,
-                    onCollapse = { viewModel.toggleEventItem(index) },
+                    onCollapse = { viewModel.toggleEventItem(index) }
                 )
             } else {
                 EventFoldedItem(
@@ -85,21 +85,21 @@ fun EventItem(
                             viewModel.toggleEventItem(index)
                         } else {
                             viewModel.onChangeEventSelected(
-                                item.eventId,
+                                item.eventId
                             )
                         }
                     },
                     viewModel = viewModel,
-                    state = state,
+                    state = state
                 )
             }
             Divider(
                 modifier =
-                    Modifier
-                        .padding(horizontal = 10.dp)
-                        .fillMaxWidth()
-                        .height(1.dp),
-                color = ColorTextField,
+                Modifier
+                    .padding(horizontal = 10.dp)
+                    .fillMaxWidth()
+                    .height(1.dp),
+                color = ColorTextField
             )
         }
     }
@@ -111,101 +111,101 @@ fun EventFoldedItem(
     eventOpenCloseTime: String,
     onClicked: () -> Unit = {},
     viewModel: MyStoreDetailViewModel,
-    state: MyStoreDetailState,
+    state: MyStoreDetailState
 ) {
     Row(
         modifier =
-            Modifier
-                .clickable(onClick = { onClicked() })
-                .fillMaxWidth()
-                .height(104.dp),
+        Modifier
+            .clickable(onClick = { onClicked() })
+            .fillMaxWidth()
+            .height(104.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxHeight()
-                    .padding(4.dp),
-            contentAlignment = Alignment.TopEnd,
+            Modifier
+                .fillMaxHeight()
+                .padding(4.dp),
+            contentAlignment = Alignment.TopEnd
         ) {
             Image(
                 modifier =
-                    Modifier
-                        .padding(top = 4.dp, start = 10.dp)
-                        .align(Alignment.Center)
-                        .width(72.dp)
-                        .height(80.dp)
-                        .clip(RoundedCornerShape(5.dp)),
+                Modifier
+                    .padding(top = 4.dp, start = 10.dp)
+                    .align(Alignment.Center)
+                    .width(72.dp)
+                    .height(80.dp)
+                    .clip(RoundedCornerShape(5.dp)),
                 contentScale = ContentScale.FillBounds,
                 painter =
-                    if (item.thumbnailImages.isNullOrEmpty()) {
-                        painterResource(id = R.drawable.no_image)
-                    } else {
-                        rememberAsyncImagePainter(
-                            model = item.thumbnailImages?.getOrNull(0),
-                        )
-                    },
-                contentDescription = stringResource(R.string.event_default_image),
+                if (item.thumbnailImages.isNullOrEmpty()) {
+                    painterResource(id = R.drawable.no_image)
+                } else {
+                    rememberAsyncImagePainter(
+                        model = item.thumbnailImages?.getOrNull(0)
+                    )
+                },
+                contentDescription = stringResource(R.string.event_default_image)
             )
             if (state.isEditMode) {
                 viewModel.initEventItem()
                 Image(
                     modifier =
-                        Modifier
-                            .align(Alignment.TopStart)
-                            .height(24.dp)
-                            .width(24.dp)
-                            .clickable {
-                                viewModel.onChangeEventSelected(item.eventId)
-                            },
-                    painter =
-                        if (state.isAllEventSelected ||
-                            state.isSelectedEvent.contains(
-                                item.eventId,
-                            )
-                        ) {
-                            painterResource(
-                                id = R.drawable.ic_check_selected,
-                            )
-                        } else {
-                            painterResource(
-                                id = R.drawable.ic_check,
-                            )
+                    Modifier
+                        .align(Alignment.TopStart)
+                        .height(24.dp)
+                        .width(24.dp)
+                        .clickable {
+                            viewModel.onChangeEventSelected(item.eventId)
                         },
-                    contentDescription = stringResource(R.string.check),
+                    painter =
+                    if (state.isAllEventSelected ||
+                        state.isSelectedEvent.contains(
+                            item.eventId
+                        )
+                    ) {
+                        painterResource(
+                            id = R.drawable.ic_check_selected
+                        )
+                    } else {
+                        painterResource(
+                            id = R.drawable.ic_check
+                        )
+                    },
+                    contentDescription = stringResource(R.string.check)
                 )
             }
         }
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     modifier = Modifier.weight(3.5f),
                     text = item.title,
                     fontWeight = FontWeight(500),
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Row(
                     modifier = Modifier.weight(1f),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = stringResource(R.string.view_all),
                         fontWeight = FontWeight(500),
                         fontSize = 12.sp,
-                        color = Gray6,
+                        color = Gray6
                     )
                     Image(
                         painter = painterResource(id = R.drawable.ic_arrow_down),
-                        contentDescription = stringResource(R.string.view_all),
+                        contentDescription = stringResource(R.string.view_all)
                     )
                 }
             }
@@ -213,12 +213,12 @@ fun EventFoldedItem(
                 text = item.content,
                 maxLines = 2,
                 fontSize = 12.sp,
-                color = Gray6,
+                color = Gray6
             )
             Text(
                 text = eventOpenCloseTime,
                 fontSize = 10.sp,
-                color = Gray6,
+                color = Gray6
             )
         }
     }
@@ -230,71 +230,71 @@ fun EventExpandedItem(
     item: ShopEvent,
     eventOpenCloseTime: String,
     pagerState: PagerState,
-    onCollapse: () -> Unit = {},
+    onCollapse: () -> Unit = {}
 ) {
     Column(
         modifier =
-            Modifier
-                .padding(horizontal = 20.dp, vertical = 10.dp)
-                .fillMaxWidth(),
+        Modifier
+            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Center
     ) {
         HorizontalPager(
             modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
-            state = pagerState,
+            state = pagerState
         ) {
             Box(
                 modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .aspectRatio(0.7f)
-                        .background(Gray2),
-                contentAlignment = Alignment.Center,
+                Modifier
+                    .fillMaxSize()
+                    .aspectRatio(0.7f)
+                    .background(Gray2),
+                contentAlignment = Alignment.Center
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
                     painter =
-                        if (item.thumbnailImages.isNullOrEmpty()) {
-                            painterResource(id = R.drawable.no_event_image)
-                        } else {
-                            rememberAsyncImagePainter(
-                                model = item.thumbnailImages?.getOrNull(it),
-                            )
-                        },
+                    if (item.thumbnailImages.isNullOrEmpty()) {
+                        painterResource(id = R.drawable.no_event_image)
+                    } else {
+                        rememberAsyncImagePainter(
+                            model = item.thumbnailImages?.getOrNull(it)
+                        )
+                    },
                     contentDescription = stringResource(R.string.event_default_image),
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.FillBounds
                 )
             }
         }
         Column(
-            modifier = Modifier.padding(vertical = 5.dp),
+            modifier = Modifier.padding(vertical = 5.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     modifier = Modifier.weight(8f),
                     text = item.title,
-                    fontWeight = FontWeight(500),
+                    fontWeight = FontWeight(500)
                 )
                 Row(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(R.string.fold),
                         fontWeight = FontWeight(500),
                         fontSize = 12.sp,
-                        color = Gray6,
+                        color = Gray6
                     )
                     Image(
                         modifier =
-                            Modifier
-                                .rotate(180f)
-                                .clickable(onClick = { onCollapse() }),
+                        Modifier
+                            .rotate(180f)
+                            .clickable(onClick = { onCollapse() }),
                         painter = painterResource(id = R.drawable.ic_arrow_down),
-                        contentDescription = stringResource(R.string.fold),
+                        contentDescription = stringResource(R.string.fold)
                     )
                 }
             }
@@ -302,7 +302,7 @@ fun EventExpandedItem(
             Text(
                 text = eventOpenCloseTime,
                 fontSize = 10.sp,
-                color = Gray6,
+                color = Gray6
             )
         }
     }

@@ -58,27 +58,27 @@ fun SearchStoreScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchStoreViewModel = hiltViewModel(),
     businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),
-    onBackButtonClicked: () -> Unit = {},
+    onBackButtonClicked: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     Column(
         modifier =
-            modifier
-                .fillMaxSize(),
+        modifier
+            .fillMaxSize()
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = { viewModel.onNavigateToBackScreen() },
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -86,69 +86,69 @@ fun SearchStoreScreen(
                 text = stringResource(id = R.string.search_store),
                 fontSize = 18.sp,
                 fontWeight = Bold,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
 
         Column(
             modifier =
-                Modifier
-                    .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = Bold,
-                    text = stringResource(id = R.string.business_auth),
+                    text = stringResource(id = R.string.business_auth)
                 )
                 Text(
                     text = stringResource(id = R.string.three_third),
                     color = ColorPrimary,
-                    fontWeight = Bold,
+                    fontWeight = Bold
                 )
             }
 
             Canvas(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset((size.width + 40), size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
             }
         }
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(10.dp))
             SearchTextField(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(45.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .height(45.dp),
                 value = state.search,
                 onValueChange = {
                     viewModel.onSearchChanged(it)
                     viewModel.onSearchStore()
                 },
                 label = stringResource(id = R.string.search_shop),
-                textStyle = TextStyle(fontSize = 14.sp),
+                textStyle = TextStyle(fontSize = 14.sp)
             )
             Spacer(modifier = Modifier.height(5.dp))
             StoreList(state.stores, viewModel, businessAuthViewModel)
@@ -172,86 +172,86 @@ fun SearchStoreScreen(
 fun StoreList(
     item: List<Store>,
     viewModel: SearchStoreViewModel = hiltViewModel(),
-    businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),
+    businessAuthViewModel: BusinessAuthViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
     val selectedStoreState = businessAuthViewModel.collectAsState().value
     val sheetState =
         rememberModalBottomSheetState(
-            initialValue = ModalBottomSheetValue.Hidden,
+            initialValue = ModalBottomSheetValue.Hidden
         )
     val scope = rememberCoroutineScope()
 
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .height(200.dp),
+        Modifier
+            .fillMaxSize()
+            .height(200.dp)
     ) {
         LazyColumn(
             modifier =
-                Modifier
-                    .weight(9f)
-                    .padding(vertical = 8.dp)
-                    .fillMaxSize(),
+            Modifier
+                .weight(9f)
+                .padding(vertical = 8.dp)
+                .fillMaxSize()
         ) {
             items(item.size) { index ->
                 Row(
                     modifier =
-                        Modifier
-                            .padding(vertical = 8.dp)
-                            .fillMaxWidth()
-                            .height(55.dp)
-                            .clickable {
-                                scope.launch {
-                                    sheetState.show()
-                                }
-                                viewModel.onItemIndexChange(index)
+                    Modifier
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth()
+                        .height(55.dp)
+                        .clickable {
+                            scope.launch {
+                                sheetState.show()
                             }
-                            .border(
-                                BorderStroke(
-                                    width = if (state.itemIndex == index) 1.5.dp else 1.dp,
-                                    color = if (state.itemIndex == index) ColorPrimary else ColorHelper,
-                                ),
-                                shape = RoundedCornerShape(6.dp),
+                            viewModel.onItemIndexChange(index)
+                        }
+                        .border(
+                            BorderStroke(
+                                width = if (state.itemIndex == index) 1.5.dp else 1.dp,
+                                color = if (state.itemIndex == index) ColorPrimary else ColorHelper
                             ),
+                            shape = RoundedCornerShape(6.dp)
+                        )
                 ) {
                     Row(
                         modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .padding(16.dp),
+                        Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             modifier = Modifier.weight(1f),
                             text = item[index].name,
                             fontSize = 15.sp,
-                            color = Color.Black,
+                            color = Color.Black
                         )
                         Text(
                             buildAnnotatedString {
                                 withStyle(
-                                    style = if (item[index].isDeliveryOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11),
+                                    style = if (item[index].isDeliveryOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)
                                 ) {
                                     append(text = stringResource(id = R.string.delivery))
                                 }
                                 append(" ")
                                 withStyle(
-                                    style = if (item[index].isCardOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11),
+                                    style = if (item[index].isCardOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)
                                 ) {
                                     append(text = stringResource(id = R.string.card_payment))
                                 }
                                 append(" ")
                                 withStyle(
-                                    style = if (item[index].isBankOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11),
+                                    style = if (item[index].isBankOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)
                                 ) {
                                     append(text = stringResource(id = R.string.account_transfer))
                                 }
                             },
                             modifier = Modifier.weight(1f).wrapContentWidth(Alignment.End),
-                            fontSize = 12.sp,
+                            fontSize = 12.sp
                         )
                     }
                 }
@@ -261,28 +261,28 @@ fun StoreList(
 
         Button(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(44.dp),
+            Modifier
+                .fillMaxWidth()
+                .height(44.dp),
             shape = RoundedCornerShape(4.dp),
             enabled = state.itemIndex > -1,
             colors =
-                ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    contentColor = Color.White,
-                    disabledBackgroundColor = Gray2,
-                    disabledContentColor = Gray1,
-                ),
+            ButtonDefaults.buttonColors(
+                backgroundColor = ColorPrimary,
+                contentColor = Color.White,
+                disabledBackgroundColor = Gray2,
+                disabledContentColor = Gray1
+            ),
             onClick = {
                 viewModel.onNavigateToBackScreen()
                 selectedStoreState.shopId?.let { businessAuthViewModel.onShopIdChanged(state.itemIndex) }
                 businessAuthViewModel.onShopNameChanged(state.stores[state.itemIndex].name)
-            },
+            }
         ) {
             Text(
                 text = stringResource(id = R.string.next),
                 fontSize = 13.sp,
-                fontWeight = Bold,
+                fontWeight = Bold
             )
         }
         Spacer(modifier = Modifier.height(20.dp))

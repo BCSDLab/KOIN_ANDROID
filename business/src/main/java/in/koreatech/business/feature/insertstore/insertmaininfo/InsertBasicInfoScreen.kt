@@ -55,7 +55,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun InsertBasicInfoScreen(
     onBackPressed: () -> Unit,
     navigateToInsertDetailInfoScreen: (InsertBasicInfoScreenState) -> Unit,
-    viewModel: InsertBasicInfoScreenViewModel = hiltViewModel(),
+    viewModel: InsertBasicInfoScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 
@@ -80,7 +80,7 @@ fun InsertBasicInfoScreen(
         onNextButtonClicked = {
             viewModel.onNextButtonClick()
         },
-        onBackPressed = onBackPressed,
+        onBackPressed = onBackPressed
     )
 
     HandleSideEffects(viewModel, navigateToInsertDetailInfoScreen)
@@ -99,13 +99,13 @@ fun InsertBasicInfoScreenImpl(
     onStoreNameChange: (String) -> Unit = {},
     onStoreAddressChange: (String) -> Unit = {},
     onNextButtonClicked: () -> Unit = {},
-    onBackPressed: () -> Unit = {},
+    onBackPressed: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
     val galleryLauncher =
         rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
+            contract = ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
@@ -127,8 +127,8 @@ fun InsertBasicInfoScreenImpl(
                                         onUploadImage(
                                             Pair(
                                                 Pair(fileSize, "image/" + fileName.split(".")[1]),
-                                                Pair(fileName, uri.toString()),
-                                            ),
+                                                Pair(fileName, uri.toString())
+                                            )
                                         )
                                     }
                                     inputStream?.close()
@@ -142,23 +142,23 @@ fun InsertBasicInfoScreenImpl(
         }
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
     ) {
         Box(
             modifier =
-                modifier
-                    .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
-                    .size(40.dp)
-                    .clickable {
-                        onBackPressed()
-                    },
+            modifier
+                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
+                .size(40.dp)
+                .clickable {
+                    onBackPressed()
+                }
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_arrow_left),
                 contentDescription = "backArrow",
                 modifier =
-                    modifier
-                        .size(40.dp),
+                modifier
+                    .size(40.dp)
             )
         }
 
@@ -166,48 +166,48 @@ fun InsertBasicInfoScreenImpl(
             modifier = modifier.padding(top = 35.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store),
             fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Bold
         )
 
         Text(
             modifier = modifier.padding(top = 34.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store_main_info),
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Bold
         )
 
         InsertStoreProgressBar(modifier, 0.50f, R.string.insert_store_basic_info, R.string.page_two)
 
         Box(
             modifier =
-                Modifier
-                    .padding(top = 32.dp)
-                    .padding(horizontal = 32.dp)
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .border(width = 1.dp, color = ColorMinor)
-                    .clickable {
-                        galleryLauncher.launch(takePhotoFromAlbumIntent)
-                    },
-            contentAlignment = Alignment.Center,
+            Modifier
+                .padding(top = 32.dp)
+                .padding(horizontal = 32.dp)
+                .fillMaxWidth()
+                .height(200.dp)
+                .border(width = 1.dp, color = ColorMinor)
+                .clickable {
+                    galleryLauncher.launch(takePhotoFromAlbumIntent)
+                },
+            contentAlignment = Alignment.Center
         ) {
             if (storeImageIsEmpty) {
                 Image(
                     modifier =
-                        Modifier
-                            .padding(horizontal = 71.dp, vertical = 53.dp),
+                    Modifier
+                        .padding(horizontal = 71.dp, vertical = 53.dp),
                     painter = painterResource(R.drawable.ic_no_store_image),
-                    contentDescription = "emptyStoreImage",
+                    contentDescription = "emptyStoreImage"
                 )
             } else {
                 Image(
                     modifier = Modifier.fillMaxSize(),
                     painter =
-                        rememberAsyncImagePainter(
-                            storeImage,
-                        ),
+                    rememberAsyncImagePainter(
+                        storeImage
+                    ),
                     contentDescription = "storeImage",
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.FillBounds
                 )
             }
         }
@@ -216,41 +216,41 @@ fun InsertBasicInfoScreenImpl(
             stringResource(id = R.string.insert_store_store_name),
             storeName,
             onStoreNameChange,
-            32.dp,
+            32.dp
         )
 
         NameTextField(
             stringResource(id = R.string.insert_store_store_address),
             storeAddress,
             onStoreAddressChange,
-            24.dp,
+            24.dp
         )
         Row(
             modifier =
-                Modifier
-                    .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
-                    .fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
+            Modifier
+                .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
         ) {
             Button(
                 onClick = onNextButtonClicked,
                 colors =
-                    if (isBasicInfoValid) {
-                        ButtonDefaults.buttonColors(ColorPrimary)
-                    } else {
-                        ButtonDefaults.buttonColors(ColorDisabledButton)
-                    },
+                if (isBasicInfoValid) {
+                    ButtonDefaults.buttonColors(ColorPrimary)
+                } else {
+                    ButtonDefaults.buttonColors(ColorDisabledButton)
+                },
                 shape = RectangleShape,
                 modifier =
-                    modifier
-                        .height(38.dp)
-                        .width(105.dp),
+                modifier
+                    .height(38.dp)
+                    .width(105.dp)
             ) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = Color.White
                 )
             }
         }
@@ -260,7 +260,7 @@ fun InsertBasicInfoScreenImpl(
 @Composable
 private fun HandleSideEffects(
     viewModel: InsertBasicInfoScreenViewModel,
-    navigateToInsertDetailInfoScreen: (InsertBasicInfoScreenState) -> Unit,
+    navigateToInsertDetailInfoScreen: (InsertBasicInfoScreenState) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -268,7 +268,7 @@ private fun HandleSideEffects(
         when (sideEffect) {
             is InsertBasicInfoScreenSideEffect.NavigateToInsertDetailInfoScreen ->
                 navigateToInsertDetailInfoScreen(
-                    sideEffect.storeBasicInfo,
+                    sideEffect.storeBasicInfo
                 )
             is InsertBasicInfoScreenSideEffect.ShowMessage -> {
                 val message =
@@ -289,21 +289,21 @@ fun NameTextField(
     textString: String = "",
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
-    paddingTopValue: Dp = 10.dp,
+    paddingTopValue: Dp = 10.dp
 ) {
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .padding(top = paddingTopValue),
-        verticalAlignment = Alignment.CenterVertically,
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp)
+            .padding(top = paddingTopValue),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = textString,
             fontSize = 14.sp,
             color = ColorActiveButton,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Bold
         )
 
         BorderTextField(inputString, onStringChange)
@@ -313,28 +313,28 @@ fun NameTextField(
 @Composable
 fun BorderTextField(
     inputString: String = "",
-    onStringChange: (String) -> Unit = {},
+    onStringChange: (String) -> Unit = {}
 ) {
     Box(
         modifier =
-            Modifier
-                .padding(start = 30.dp)
-                .border(width = 1.dp, color = ColorMinor)
-                .height(37.dp),
-        contentAlignment = Alignment.CenterStart,
+        Modifier
+            .padding(start = 30.dp)
+            .border(width = 1.dp, color = ColorMinor)
+            .height(37.dp),
+        contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
             value = inputString,
             onValueChange = onStringChange,
             textStyle =
-                TextStyle(
-                    color = Color.Black,
-                    fontSize = 14.sp,
-                ),
+            TextStyle(
+                color = Color.Black,
+                fontSize = 14.sp
+            ),
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 12.dp)
         )
     }
 }
@@ -345,7 +345,7 @@ private val takePhotoFromAlbumIntent =
         action = Intent.ACTION_GET_CONTENT
         putExtra(
             Intent.EXTRA_MIME_TYPES,
-            arrayOf("image/jpeg", "image/png", "image/bmp", "image/webp"),
+            arrayOf("image/jpeg", "image/png", "image/bmp", "image/webp")
         )
         putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
     }

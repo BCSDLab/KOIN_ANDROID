@@ -57,10 +57,10 @@ fun SettingTime(
     sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
+            skipHalfExpanded = true
         ),
     addTimeState: (TimeSettingState) -> Unit = {},
-    updateIsSettingScreenState: (Boolean) -> Unit = {},
+    updateIsSettingScreenState: (Boolean) -> Unit = {}
 ) {
     val dayOfWeekList = remember { mutableStateListOf<KorDayOfWeek>() }
     var openTimeValue by remember { mutableStateOf<Hours>(FullHours(6, 0)) }
@@ -68,74 +68,74 @@ fun SettingTime(
     var isClosedChecked by remember { mutableStateOf(false) }
     var is24hoursChecked by remember { mutableStateOf(false) }
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
 
         LazyRow(
             modifier =
-                Modifier
-                    .padding(horizontal = 31.dp, vertical = 8.dp)
-                    .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            Modifier
+                .padding(horizontal = 31.dp, vertical = 8.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             itemsIndexed(storeOperatingTime) { index, item ->
                 DayCheckBox(
                     modifier =
-                        Modifier
-                            .size(40.dp)
-                            .clickable {
-                                if (dayOfWeekList.contains(item)) {
-                                    dayOfWeekList.remove(item)
-                                } else {
-                                    dayOfWeekList.add(item)
-                                }
-                            },
+                    Modifier
+                        .size(40.dp)
+                        .clickable {
+                            if (dayOfWeekList.contains(item)) {
+                                dayOfWeekList.remove(item)
+                            } else {
+                                dayOfWeekList.add(item)
+                            }
+                        },
                     dayName = item.kor,
-                    isChecked = dayOfWeekList.contains(item),
+                    isChecked = dayOfWeekList.contains(item)
                 )
             }
         }
 
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
 
         Row(
             modifier =
-                Modifier
-                    .padding(vertical = 4.dp)
-                    .fillMaxWidth()
-                    .height(120.dp),
+            Modifier
+                .padding(vertical = 4.dp)
+                .fillMaxWidth()
+                .height(120.dp)
         ) {
             Text(
                 modifier =
-                    Modifier
-                        .padding(start = 55.dp)
-                        .align(Alignment.CenterVertically),
+                Modifier
+                    .padding(start = 55.dp)
+                    .align(Alignment.CenterVertically),
                 text = stringResource(R.string.store_open_time),
                 style =
-                    TextStyle(
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                    ),
+                TextStyle(
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
             )
 
             HoursNumberPicker(
                 modifier =
-                    Modifier
-                        .padding(horizontal = 40.dp)
-                        .fillMaxHeight(),
+                Modifier
+                    .padding(horizontal = 40.dp)
+                    .fillMaxHeight(),
                 dividersColor = Gray3,
                 leadingZero = true,
                 value = openTimeValue,
@@ -147,45 +147,45 @@ fun SettingTime(
                     Text(
                         modifier = Modifier.size(24.dp),
                         textAlign = TextAlign.Center,
-                        text = ":",
+                        text = ":"
                     )
-                },
+                }
             )
         }
 
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
 
         Row(
             modifier =
-                Modifier
-                    .padding(vertical = 4.dp)
-                    .fillMaxWidth()
-                    .height(120.dp),
+            Modifier
+                .padding(vertical = 4.dp)
+                .fillMaxWidth()
+                .height(120.dp)
         ) {
             Text(
                 modifier =
-                    Modifier
-                        .padding(start = 55.dp)
-                        .align(Alignment.CenterVertically),
+                Modifier
+                    .padding(start = 55.dp)
+                    .align(Alignment.CenterVertically),
                 text = stringResource(R.string.store_close_time),
                 style =
-                    TextStyle(
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                    ),
+                TextStyle(
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
             )
 
             HoursNumberPicker(
                 modifier =
-                    Modifier
-                        .padding(horizontal = 40.dp)
-                        .fillMaxHeight(),
+                Modifier
+                    .padding(horizontal = 40.dp)
+                    .fillMaxHeight(),
                 dividersColor = Gray3,
                 leadingZero = true,
                 value = closeTimeValue,
@@ -197,72 +197,72 @@ fun SettingTime(
                     Text(
                         modifier = Modifier.size(24.dp),
                         textAlign = TextAlign.Center,
-                        text = ":",
+                        text = ":"
                     )
-                },
+                }
             )
         }
 
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
 
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
+            Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .padding(end = 56.dp),
+                Modifier
+                    .padding(end = 56.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "휴무",
+                    "휴무"
                 )
                 Checkbox(
                     checked = isClosedChecked,
                     onCheckedChange = { isClosedChecked = it },
                     colors =
-                        CheckboxDefaults.colors(
-                            checkedColor = ColorPrimary,
-                            uncheckedColor = Gray3,
-                        ),
+                    CheckboxDefaults.colors(
+                        checkedColor = ColorPrimary,
+                        uncheckedColor = Gray3
+                    )
                 )
             }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "24시간",
+                    "24시간"
                 )
                 Checkbox(
                     checked = is24hoursChecked,
                     onCheckedChange = { is24hoursChecked = it },
                     colors =
-                        CheckboxDefaults.colors(
-                            checkedColor = ColorPrimary,
-                            uncheckedColor = Gray3,
-                        ),
+                    CheckboxDefaults.colors(
+                        checkedColor = ColorPrimary,
+                        uncheckedColor = Gray3
+                    )
                 )
             }
         }
 
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
 
         SettingTimeButton(
@@ -277,23 +277,23 @@ fun SettingTime(
                 addTimeState(
                     TimeSettingState(
                         timeInfoString =
-                            makeTimeInfo(
-                                dayOfWeekList = dayOfWeekList.sortedBy { it.priority },
-                                openTime = openTimeValue.toTimeString(),
-                                closeTime = closeTimeValue.toTimeString(),
-                                isClosed = isClosedChecked,
-                                is24Hours = is24hoursChecked,
-                            ),
+                        makeTimeInfo(
+                            dayOfWeekList = dayOfWeekList.sortedBy { it.priority },
+                            openTime = openTimeValue.toTimeString(),
+                            closeTime = closeTimeValue.toTimeString(),
+                            isClosed = isClosedChecked,
+                            is24Hours = is24hoursChecked
+                        ),
                         dayOfWeekList = dayOfWeekList.sortedBy { it.priority },
                         openTime = openTimeValue.toTimeString(),
                         closeTime = closeTimeValue.toTimeString(),
                         isClosed = isClosedChecked,
-                        is24Hours = is24hoursChecked,
-                    ),
+                        is24Hours = is24hoursChecked
+                    )
                 )
 
                 updateIsSettingScreenState(false)
-            },
+            }
         )
     }
 }
@@ -302,7 +302,7 @@ fun SettingTime(
 @Composable
 fun PreviewSettingTime() {
     SettingTime(
-        storeOperatingTime = dayOfWeekList,
+        storeOperatingTime = dayOfWeekList
     )
 }
 
@@ -314,5 +314,5 @@ val dayOfWeekList: List<KorDayOfWeek> =
         KorDayOfWeek("목", "THURSDAY", 4),
         KorDayOfWeek("금", "FRIDAY", 5),
         KorDayOfWeek("토", "SATURDAY", 6),
-        KorDayOfWeek("일", "SUNDAY", 7),
+        KorDayOfWeek("일", "SUNDAY", 7)
     )

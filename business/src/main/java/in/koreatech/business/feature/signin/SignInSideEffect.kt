@@ -16,5 +16,5 @@ sealed class SignInSideEffect {
 
 enum class ErrorType {
     NullPhoneNumber,
-    NullPassword,
+    NullPassword
 }

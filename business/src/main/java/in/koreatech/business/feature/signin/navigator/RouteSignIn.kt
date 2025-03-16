@@ -11,17 +11,17 @@ import `in`.koreatech.business.navigation.SIGNINSCREEN
 fun NavGraphBuilder.signInScreen(
     navigateToMain: (Boolean) -> Unit = {},
     navigateToSignUp: () -> Unit = {},
-    navigateToFindPassword: () -> Unit = {},
+    navigateToFindPassword: () -> Unit = {}
 ) {
     navigation(
         route = SIGNINSCREEN,
-        startDestination = SignInNavigator.SignIn.name,
+        startDestination = SignInNavigator.SignIn.name
     ) {
         composable(route = SignInNavigator.SignIn.name) {
             SignInScreen(
                 navigateToMain = navigateToMain,
                 navigateToSignUp = navigateToSignUp,
-                navigateToFindPassword = navigateToFindPassword,
+                navigateToFindPassword = navigateToFindPassword
             )
         }
     }

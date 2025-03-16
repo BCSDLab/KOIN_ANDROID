@@ -28,14 +28,14 @@ import `in`.koreatech.koin.core.R
 fun SettingTimeButton(
     modifier: Modifier = Modifier,
     onCancelButtonClicked: () -> Unit = {},
-    onRegisterButtonClicked: () -> Unit = {},
+    onRegisterButtonClicked: () -> Unit = {}
 ) {
     Row(
         modifier =
-            modifier
-                .padding(top = 12.dp, bottom = 36.dp)
-                .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
+        modifier
+            .padding(top = 12.dp, bottom = 36.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
     ) {
         Button(
             onClick = onCancelButtonClicked,
@@ -43,18 +43,18 @@ fun SettingTimeButton(
             shape = RoundedCornerShape(8.dp),
             border = BorderStroke(1.dp, Gray3),
             modifier =
-                Modifier
-                    .height(44.dp)
-                    .width(128.dp),
+            Modifier
+                .height(44.dp)
+                .width(128.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.cancel),
                 style =
-                    TextStyle(
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        color = Gray3,
-                    ),
+                TextStyle(
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Gray3
+                )
             )
         }
 
@@ -66,18 +66,18 @@ fun SettingTimeButton(
             shape = RoundedCornerShape(8.dp),
             border = BorderStroke(1.dp, ColorPrimary),
             modifier =
-                Modifier
-                    .height(44.dp)
-                    .width(128.dp),
+            Modifier
+                .height(44.dp)
+                .width(128.dp)
         ) {
             Text(
                 text = stringResource(R.string.register),
                 style =
-                    TextStyle(
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
-                    ),
+                TextStyle(
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
+                )
             )
         }
     }

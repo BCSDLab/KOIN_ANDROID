@@ -44,57 +44,57 @@ fun CheckSettingTime(
     sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
+            skipHalfExpanded = true
         ),
     settingTimeList: List<TimeSettingState> = emptyList(),
     emptySpaceList: List<String> = emptyList(),
     removeTimeSetting: (Int) -> Unit = {},
     onChangeSettingTimeList: () -> Unit = {},
-    updateIsSettingScreenState: (Boolean) -> Unit = {},
+    updateIsSettingScreenState: (Boolean) -> Unit = {}
 ) {
     Divider(
         modifier =
-            Modifier
-                .fillMaxWidth(),
+        Modifier
+            .fillMaxWidth(),
         color = Gray3,
-        thickness = 0.5.dp,
+        thickness = 0.5.dp
     )
 
     LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
     ) {
         itemsIndexed(settingTimeList) { index, item ->
             TimeItem(
                 modifier =
-                    Modifier.clickable {
-                        removeTimeSetting(index)
-                    },
-                timeString = item.timeInfoString,
+                Modifier.clickable {
+                    removeTimeSetting(index)
+                },
+                timeString = item.timeInfoString
             )
             Divider(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth(),
                 color = Gray3,
-                thickness = 0.5.dp,
+                thickness = 0.5.dp
             )
         }
     }
 
     LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
     ) {
         itemsIndexed(emptySpaceList) { index, item ->
             if (index != emptySpaceList.lastIndex) {
                 TimeItem(
-                    timeString = item,
+                    timeString = item
                 )
                 Divider(
                     modifier =
-                        Modifier
-                            .fillMaxWidth(),
+                    Modifier
+                        .fillMaxWidth(),
                     color = Gray3,
-                    thickness = 0.5.dp,
+                    thickness = 0.5.dp
                 )
             }
         }
@@ -103,34 +103,34 @@ fun CheckSettingTime(
     if (emptySpaceList.isNotEmpty()) {
         Row(
             modifier =
-                Modifier
-                    .padding(vertical = 16.dp)
-                    .fillMaxWidth()
-                    .clickable {
-                        updateIsSettingScreenState(true)
-                    },
-            horizontalArrangement = Arrangement.Center,
+            Modifier
+                .padding(vertical = 16.dp)
+                .fillMaxWidth()
+                .clickable {
+                    updateIsSettingScreenState(true)
+                },
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 text = stringResource(R.string.add_setting_time),
                 style = KoinTheme.typography.medium16,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Image(
                 painter = painterResource(R.drawable.fi_plus),
-                contentDescription = stringResource(R.string.add_setting_time_plus),
+                contentDescription = stringResource(R.string.add_setting_time_plus)
             )
         }
 
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
     }
     SettingTimeButton(
@@ -146,22 +146,22 @@ fun CheckSettingTime(
                 sheetState.hide()
             }
             onChangeSettingTimeList()
-        },
+        }
     )
 }
 
 @Composable
 fun TimeItem(
     modifier: Modifier = Modifier,
-    timeString: String = "월, 화, 수, 목, 금 : 06:00 ~ 23:00",
+    timeString: String = "월, 화, 수, 목, 금 : 06:00 ~ 23:00"
 ) {
     Row(
         modifier =
-            modifier
-                .padding(horizontal = 24.dp, vertical = 16.dp)
-                .fillMaxWidth()
-                .height(25.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier
+            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .fillMaxWidth()
+            .height(25.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         if (timeString.isNotBlank()) {
             val stringList = timeString.split(" : ")
@@ -175,12 +175,12 @@ fun TimeItem(
 
             Text(
                 text = coloredString,
-                style = KoinTheme.typography.medium16,
+                style = KoinTheme.typography.medium16
             )
 
             Image(
                 painter = painterResource(R.drawable.ic_x),
-                contentDescription = "아이템 삭제",
+                contentDescription = "아이템 삭제"
             )
         }
     }

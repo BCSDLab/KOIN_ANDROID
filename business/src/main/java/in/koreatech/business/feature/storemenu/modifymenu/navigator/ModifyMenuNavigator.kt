@@ -18,17 +18,17 @@ import `in`.koreatech.business.navigation.sharedHiltViewModel
 fun NavGraphBuilder.modifyMenuScreen(navController: NavHostController) {
     navigation(
         route = "$MODIFYMENUSCREEN/{menuId}",
-        startDestination = "${ModifyMenuRoute.MODIFY_MENU.name}/{menuId}",
+        startDestination = "${ModifyMenuRoute.MODIFY_MENU.name}/{menuId}"
     ) {
         composable(
             route = "${ModifyMenuRoute.MODIFY_MENU.name}/{menuId}",
             arguments =
-                listOf(
-                    navArgument("menuId") {
-                        type = NavType.IntType
-                        defaultValue = -1
-                    },
-                ),
+            listOf(
+                navArgument("menuId") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
         ) {
             val viewModel: ModifyMenuViewModel = it.sharedHiltViewModel(navController = navController)
             ModifyMenuScreen(
@@ -38,12 +38,12 @@ fun NavGraphBuilder.modifyMenuScreen(navController: NavHostController) {
                 },
                 goToCheckMenuScreen = {
                     navController.navigate(ModifyMenuRoute.CHECK_MODIFY_MENU.name)
-                },
+                }
             )
         }
 
         composable(
-            route = ModifyMenuRoute.CHECK_MODIFY_MENU.name,
+            route = ModifyMenuRoute.CHECK_MODIFY_MENU.name
         ) {
             val viewModel: ModifyMenuViewModel = it.sharedHiltViewModel(navController = navController)
             ModifyMenuCheckScreen(
@@ -57,7 +57,7 @@ fun NavGraphBuilder.modifyMenuScreen(navController: NavHostController) {
                             inclusive = true
                         }
                     }
-                },
+                }
             )
         }
     }

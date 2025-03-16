@@ -31,19 +31,19 @@ import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 @Composable
 fun MenuItem(
     menuList: StoreMenuCategories,
-    onMenuClicked: (Int) -> Unit = {},
+    onMenuClicked: (Int) -> Unit = {}
 ) {
     menuList.menus?.forEach { item ->
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp, vertical = 10.dp)
-                    .clickable {
-                        onMenuClicked(item.id)
-                    },
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp, vertical = 10.dp)
+                .clickable {
+                    onMenuClicked(item.id)
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
                 Text(text = item.name, fontWeight = FontWeight(500))
@@ -51,24 +51,24 @@ fun MenuItem(
             }
             Image(
                 modifier =
-                    Modifier
-                        .width(68.dp)
-                        .height(68.dp),
+                Modifier
+                    .width(68.dp)
+                    .height(68.dp),
                 contentScale = ContentScale.Crop,
                 painter =
-                    rememberAsyncImagePainter(
-                        model = item.imageUrls?.firstOrNull() ?: R.drawable.ic_koin_logo,
-                    ),
-                contentDescription = stringResource(R.string.menu_default_image),
+                rememberAsyncImagePainter(
+                    model = item.imageUrls?.firstOrNull() ?: R.drawable.ic_koin_logo
+                ),
+                contentDescription = stringResource(R.string.menu_default_image)
             )
         }
         Divider(
             color = ColorTextField,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp)
-                    .height(1.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp)
+                .height(1.dp)
         )
     }
 }
@@ -77,32 +77,32 @@ fun MenuItem(
 fun MenuCategories(item: StoreMenuCategories) {
     Row(
         modifier =
-            Modifier
-                .padding(horizontal = 25.dp)
-                .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        Modifier
+            .padding(horizontal = 25.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             modifier = Modifier.size(20.dp),
             painter =
-                painterResource(
-                    id =
-                        when (item.id) {
-                            1 -> R.drawable.ic_recommend
-                            2 -> R.drawable.ic_main
-                            3 -> R.drawable.ic_set
-                            4 -> R.drawable.ic_side
-                            else -> R.drawable.ic_recommend
-                        },
-                ),
-            contentDescription = stringResource(R.string.category),
+            painterResource(
+                id =
+                when (item.id) {
+                    1 -> R.drawable.ic_recommend
+                    2 -> R.drawable.ic_main
+                    3 -> R.drawable.ic_set
+                    4 -> R.drawable.ic_side
+                    else -> R.drawable.ic_recommend
+                }
+            ),
+            contentDescription = stringResource(R.string.category)
         )
         Text(
             text = item.name ?: "",
             modifier = Modifier.padding(10.dp),
             color = ColorCategory,
             fontWeight = FontWeight(500),
-            fontSize = 18.sp,
+            fontSize = 18.sp
         )
     }
 }

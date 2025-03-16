@@ -7,5 +7,5 @@ data class SearchStoreState(
     val search: String = "",
     val stores: List<Store> = emptyList(),
     val itemIndex: Int = -1,
-    val searchJob: Job? = null,
+    val searchJob: Job? = null
 )

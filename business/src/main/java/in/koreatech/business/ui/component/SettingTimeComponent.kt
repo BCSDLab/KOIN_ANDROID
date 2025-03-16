@@ -32,9 +32,9 @@ fun SettingTimeDialog(
     sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
+            skipHalfExpanded = true
         ),
-    onChangeSettingTimeList: (List<TimeSettingState>) -> Unit = {},
+    onChangeSettingTimeList: (List<TimeSettingState>) -> Unit = {}
 ) {
     var isSettingScreen by remember { mutableStateOf(false) }
     val timeInfoList = remember { mutableStateListOf<TimeSettingState>() }
@@ -42,17 +42,17 @@ fun SettingTimeDialog(
 
     Column(
         modifier =
-            modifier
-                .fillMaxSize(),
+        modifier
+            .fillMaxSize()
     ) {
         Text(
             modifier =
-                Modifier
-                    .padding(vertical = 16.dp)
-                    .fillMaxWidth(),
+            Modifier
+                .padding(vertical = 16.dp)
+                .fillMaxWidth(),
             text = stringResource(R.string.insert_store_operating_time_setting),
             style = KoinTheme.typography.bold16,
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Center
         )
 
         if (isSettingScreen) {
@@ -63,7 +63,7 @@ fun SettingTimeDialog(
                 addTimeState = {
                     timeInfoList.add(it)
                     emptySpaceList.removeAt(emptySpaceList.lastIndex)
-                },
+                }
             ) {
                 isSettingScreen = it
             }
@@ -71,7 +71,7 @@ fun SettingTimeDialog(
             if (timeInfoList.isEmpty()) {
                 NullSettingTime(
                     coroutineScope = coroutineScope,
-                    sheetState = sheetState,
+                    sheetState = sheetState
                 ) {
                     isSettingScreen = it
                 }
@@ -87,7 +87,7 @@ fun SettingTimeDialog(
                     },
                     onChangeSettingTimeList = {
                         onChangeSettingTimeList(timeInfoList)
-                    },
+                    }
                 ) {
                     isSettingScreen = it
                 }

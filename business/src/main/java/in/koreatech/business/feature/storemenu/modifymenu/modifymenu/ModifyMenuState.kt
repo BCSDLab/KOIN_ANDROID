@@ -16,5 +16,5 @@ data class ModifyMenuState(
     val imageUrlList: List<String> = emptyList(),
     val isModify: Boolean = false,
     val menuCategoryLabel: String = "",
-    val imageIndex: Int = 0,
+    val imageIndex: Int = 0
 )

@@ -23,26 +23,26 @@ fun HelperMessage(
     isSuccess: Boolean,
     errorText: String,
     successText: String,
-    focused: Boolean,
+    focused: Boolean
 ) {
     Box(modifier = Modifier.padding(start = 8.dp, top = 4.dp)) {
         Text(
             text = if (isError) "" else helperText,
             fontSize = 16.sp,
-            color = ColorHelper,
+            color = ColorHelper
         )
         if (isError) {
             Row {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_error),
                     contentDescription = stringResource(id = R.string.error),
-                    tint = ColorSecondary,
+                    tint = ColorSecondary
                 )
                 Text(
                     modifier = Modifier.padding(start = 4.dp),
                     text = errorText,
                     fontSize = 16.sp,
-                    color = ColorSecondary,
+                    color = ColorSecondary
                 )
             }
         } else if (isSuccess && focused) {
@@ -50,13 +50,13 @@ fun HelperMessage(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_success),
                     contentDescription = stringResource(id = R.string.success),
-                    tint = ColorSuccess,
+                    tint = ColorSuccess
                 )
                 Text(
                     modifier = Modifier.padding(start = 4.dp),
                     text = successText,
                     fontSize = 16.sp,
-                    color = ColorSuccess,
+                    color = ColorSuccess
                 )
             }
         }
