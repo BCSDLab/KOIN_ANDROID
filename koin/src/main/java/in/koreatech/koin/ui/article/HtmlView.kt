@@ -23,9 +23,7 @@ import `in`.koreatech.koin.ui.article.HtmlView.OnPostDrawListener
 import `in`.koreatech.koin.ui.article.HtmlView.OnPreDrawListener
 import `in`.koreatech.koin.ui.article.state.HtmlElement
 
-class HtmlView
-@JvmOverloads
-constructor(
+class HtmlView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0

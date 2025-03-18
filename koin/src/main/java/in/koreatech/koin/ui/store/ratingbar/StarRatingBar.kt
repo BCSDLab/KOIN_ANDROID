@@ -8,9 +8,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatRatingBar
 import `in`.koreatech.koin.R
 
-class StarRatingBar
-@JvmOverloads
-constructor(
+class StarRatingBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

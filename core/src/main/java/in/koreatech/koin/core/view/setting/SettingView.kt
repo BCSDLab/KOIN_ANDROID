@@ -14,9 +14,7 @@ import `in`.koreatech.koin.core.view.setting.SettingView.OnSettingClickListener
 /**
  *
  */
-class SettingView
-@JvmOverloads
-constructor(
+class SettingView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {

@@ -9,9 +9,7 @@ import androidx.core.view.isVisible
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.NotificationRowBinding
 
-class NotificationRow
-@JvmOverloads
-constructor(
+class NotificationRow @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0

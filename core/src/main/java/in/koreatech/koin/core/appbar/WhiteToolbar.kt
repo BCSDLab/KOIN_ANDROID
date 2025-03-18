@@ -14,9 +14,7 @@ data class ToolbarMenu(
     val onClick: (Int) -> Unit
 )
 
-class WhiteToolbar
-@JvmOverloads
-constructor(
+class WhiteToolbar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

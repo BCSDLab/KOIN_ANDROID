@@ -9,9 +9,7 @@ import androidx.core.view.isVisible
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.NotificationHeaderBinding
 
-class NotificationHeader
-@JvmOverloads
-constructor(
+class NotificationHeader @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0

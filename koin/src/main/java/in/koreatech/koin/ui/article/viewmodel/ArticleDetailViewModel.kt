@@ -20,9 +20,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
-class ArticleDetailViewModel
-@AssistedInject
-constructor(
+class ArticleDetailViewModel @AssistedInject constructor(
     @Assisted("articleId") articleId: Int,
     @Assisted("navigatedBoardId") val navigatedBoardId: Int,
     private val articleRepository: ArticleRepository
