@@ -41,17 +41,17 @@ fun KoinBusinessAppScreen(viewModel: BusinessMainActivityViewModel = hiltViewMod
             VersionUpdatePriority.None -> {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background,
+                    color = MaterialTheme.colors.background
                 ) {
                     KoinBusinessNavHost(
-                        startDestination = state.destination,
+                        startDestination = state.destination
                     )
                 }
             }
             VersionUpdatePriority.Importance -> {
                 ForceUpdateScreen(
                     title = state.version.title,
-                    content = state.version.content,
+                    content = state.version.content
                 )
             }
         }

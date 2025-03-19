@@ -17,16 +17,16 @@ fun Modifier.clickableOnce(
     enabled: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) = composed(
     inspectorInfo =
-        debugInspectorInfo {
-            name = "clickable"
-            properties["enabled"] = enabled
-            properties["onClickLabel"] = onClickLabel
-            properties["role"] = role
-            properties["onClick"] = onClick
-        },
+    debugInspectorInfo {
+        name = "clickable"
+        properties["enabled"] = enabled
+        properties["onClickLabel"] = onClickLabel
+        properties["role"] = role
+        properties["onClick"] = onClick
+    }
 ) {
     val timer = rememberCoroutineScope()
     var duplicated by remember { mutableStateOf(false) }
@@ -34,7 +34,7 @@ fun Modifier.clickableOnce(
     Modifier.clickable(
         enabled = enabled && !duplicated,
         onClickLabel = onClickLabel,
-        role = role,
+        role = role
     ) {
         duplicated = true
         onClick()

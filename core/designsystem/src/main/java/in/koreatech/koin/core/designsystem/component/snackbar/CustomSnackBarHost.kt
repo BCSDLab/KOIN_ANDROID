@@ -35,27 +35,27 @@ fun CustomSnackBarHost(
     radius: Dp = 6.dp,
     messageTextStyle: TextStyle =
         KoinTheme.typography.regular14.copy(
-            color = KoinTheme.colors.neutral0,
+            color = KoinTheme.colors.neutral0
         ),
     actionLabelTextStyle: TextStyle =
         KoinTheme.typography.regular14.copy(
-            color = KoinTheme.colors.sub500,
+            color = KoinTheme.colors.sub500
         ),
     background: Color = KoinTheme.colors.primary700,
     alignment: Alignment = Alignment.BottomCenter,
     paddingValues: PaddingValues = PaddingValues(bottom = 20.dp, start = 10.dp, end = 10.dp),
     innerPaddingValues: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 20.dp),
-    onAction: (() -> Unit)? = null,
+    onAction: (() -> Unit)? = null
 ) {
     Box(
         modifier =
-            modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-        contentAlignment = alignment,
+        modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        contentAlignment = alignment
     ) {
         SnackbarHost(
-            hostState = hotState,
+            hostState = hotState
         ) { snackbarData ->
             SnackBarContent(
                 messageText = snackbarData.visuals.message,
@@ -68,7 +68,7 @@ fun CustomSnackBarHost(
                 onAction = {
                     onAction?.invoke()
                     snackbarData.dismiss()
-                },
+                }
             )
         }
     }
@@ -83,42 +83,42 @@ private fun SnackBarContent(
     background: Color = Color.Black,
     messageTextStyle: TextStyle =
         KoinTheme.typography.regular12.copy(
-            color = Color.White,
+            color = Color.White
         ),
     actionLabelTextStyle: TextStyle =
         KoinTheme.typography.regular12.copy(
-            color = Color.White,
+            color = Color.White
         ),
     innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp),
-    onAction: () -> Unit = {},
+    onAction: () -> Unit = {}
 ) {
     Box(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(radius))
-                .background(background)
-                .padding(innerPaddingValues),
+        modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(radius))
+            .background(background)
+            .padding(innerPaddingValues)
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = messageText,
                 style = messageTextStyle,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.weight(0.05f))
             if (actionLabelText.isNotEmpty()) {
                 Text(
                     modifier =
-                        Modifier
-                            .weight(0.2f)
-                            .noRippleClickable { onAction() },
+                    Modifier
+                        .weight(0.2f)
+                        .noRippleClickable { onAction() },
                     text = actionLabelText,
                     style = actionLabelTextStyle,
-                    textAlign = TextAlign.End,
+                    textAlign = TextAlign.End
                 )
             }
         }
@@ -134,13 +134,13 @@ fun SnackbarHostState.dismissIfShown() {
 suspend fun SnackbarHostState.showSnackBarWithDismiss(
     message: String,
     actionLabel: String = "",
-    duration: SnackbarDuration = SnackbarDuration.Short,
+    duration: SnackbarDuration = SnackbarDuration.Short
 ) {
     dismissIfShown()
     showSnackbar(
         message = message,
         actionLabel = actionLabel,
-        duration = duration,
+        duration = duration
     )
 }
 
@@ -149,6 +149,6 @@ suspend fun SnackbarHostState.showSnackBarWithDismiss(
 private fun SnackBarContentPreview() {
     SnackBarContent(
         messageText = "스낵바 메시지",
-        actionLabelText = "닫기",
+        actionLabelText = "닫기"
     )
 }

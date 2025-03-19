@@ -16,18 +16,18 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 internal fun CommonTimetableItem(
     arrival: DepartureState,
     textStyle: TextStyle,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Text(
             modifier = Modifier.padding(vertical = 16.dp),
             text = arrival.departureTime,
-            style = textStyle,
+            style = textStyle
         )
         HorizontalDivider(
-            color = KoinTheme.colors.neutral200,
+            color = KoinTheme.colors.neutral200
         )
     }
 }
@@ -37,13 +37,13 @@ internal fun CommonTimetableItem(
 private fun CommonTimetableItemPreview() {
     CommonTimetableItem(
         arrival =
-            DepartureState(
-                departureTime = "09:00",
-            ),
+        DepartureState(
+            departureTime = "09:00"
+        ),
         textStyle =
-            KoinTheme.typography.bold18.copy(
-                color = KoinTheme.colors.warning500,
-            ),
-        modifier = Modifier.padding(vertical = 12.dp),
+        KoinTheme.typography.bold18.copy(
+            color = KoinTheme.colors.warning500
+        ),
+        modifier = Modifier.padding(vertical = 12.dp)
     )
 }

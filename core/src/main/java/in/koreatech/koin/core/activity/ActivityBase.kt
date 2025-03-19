@@ -17,7 +17,7 @@ import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 abstract class ActivityBase : AppCompatActivity, IProgressDialog {
     constructor() : super()
     constructor(
-        @LayoutRes contentLayoutId: Int,
+        @LayoutRes contentLayoutId: Int
     ) : super(contentLayoutId)
 
     private var customProgressDialog: CustomProgressDialog? = null
@@ -48,7 +48,7 @@ abstract class ActivityBase : AppCompatActivity, IProgressDialog {
     }
 
     override fun showProgressDialog(
-        @StringRes resId: Int,
+        @StringRes resId: Int
     ) {
         if (customProgressDialog == null) {
             customProgressDialog = CustomProgressDialog(this, getResources().getString(resId))

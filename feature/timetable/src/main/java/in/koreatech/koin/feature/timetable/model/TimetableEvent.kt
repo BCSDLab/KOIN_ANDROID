@@ -5,7 +5,7 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 
 enum class DayOfWeekKorean(
-    val koreanName: String,
+    val koreanName: String
 ) {
     MONDAY("월"),
     TUESDAY("화"),
@@ -13,7 +13,7 @@ enum class DayOfWeekKorean(
     THURSDAY("목"),
     FRIDAY("금"),
     SATURDAY("토"),
-    SUNDAY("일"),
+    SUNDAY("일")
 }
 
 fun DayOfWeek.toKorean(): String =
@@ -29,7 +29,7 @@ fun DayOfWeek.toKorean(): String =
 
 data class TimetableColor(
     val header: Color,
-    val content: Color,
+    val content: Color
 )
 
 data class TimetableEvent(
@@ -42,7 +42,7 @@ data class TimetableEvent(
     val dayOfWeek: DayOfWeek? = null,
     val start: LocalTime,
     val end: LocalTime,
-    val description: String? = null,
+    val description: String? = null
 ) {
     /**
      * @test : TimetableEventTest.kt

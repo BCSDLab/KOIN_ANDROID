@@ -30,23 +30,23 @@ fun LazyListScope.storeDetailInfo(infoDataList: List<Pair<String, String>>) {
 
 fun LazyListScope.info(
     info: String,
-    data: String?,
+    data: String?
 ) {
     item {
         Column(
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = info,
-                    style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    style = TextStyle(color = Color.Black, fontSize = 15.sp)
                 )
                 Text(
                     text = data ?: "",
-                    style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    style = TextStyle(color = Color.Black, fontSize = 15.sp)
                 )
             }
         }
@@ -71,13 +71,13 @@ fun getInfoDataList(state: MyStoreDetailState): List<Pair<String, String>> {
                     "$dayOfWeekKorean " +
                         StoreUtil.generateOpenCloseTimeString(
                             it.openTime,
-                            it.closeTime,
+                            it.closeTime
                         )
                 } ?: ""
-            ) +
+                ) +
                 "\n" +
                 closedStores?.joinToString(
-                    separator = " ",
+                    separator = " "
                 ) {
                     val dayOfWeekIndex = dayOfWeekToIndex(it.dayOfWeek)
                     val dayOfWeekKorean =
@@ -89,13 +89,13 @@ fun getInfoDataList(state: MyStoreDetailState): List<Pair<String, String>> {
                     withStyle(style = SpanStyle(color = Color.Red)) {
                         append(stringResource(id = R.string.closed_day))
                     }
-                },
+                }
         ),
         Pair(stringResource(id = R.string.address), state.storeInfo?.address ?: ""),
         Pair(
             stringResource(id = R.string.delivery_amount),
-            "${state.storeInfo?.deliveryPrice ?: 0}원",
+            "${state.storeInfo?.deliveryPrice ?: 0}원"
         ),
-        Pair(stringResource(id = R.string.other_info), state.storeInfo?.description ?: ""),
+        Pair(stringResource(id = R.string.other_info), state.storeInfo?.description ?: "")
     )
 }

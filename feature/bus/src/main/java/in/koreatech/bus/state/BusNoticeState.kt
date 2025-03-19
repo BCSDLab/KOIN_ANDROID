@@ -4,11 +4,11 @@ import `in`.koreatech.koin.domain.model.bus.BusNotice
 
 data class BusNoticeState(
     val id: Int,
-    val title: String,
+    val title: String
 )
 
 fun BusNotice.toBusNoticeState() =
     BusNoticeState(
         id = id,
-        title = title,
+        title = title
     )

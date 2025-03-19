@@ -45,20 +45,20 @@ fun ChatBubble(
     message: ConvertedChatMessage,
     modifier: Modifier = Modifier,
     chatPartnerProfileImage: Uri? = null,
-    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> },
+    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     if (message.isSentByMe) {
         ChatBubbleFromMe(
             message = message,
             onShowImageChange = onShowImageChange,
-            modifier = modifier.then(chatBubbleDefaultModifier),
+            modifier = modifier.then(chatBubbleDefaultModifier)
         )
     } else {
         ChatBubbleFromOther(
             message = message,
             chatPartnerProfileImage = chatPartnerProfileImage,
             onShowImageChange = onShowImageChange,
-            modifier = modifier.then(chatBubbleDefaultModifier),
+            modifier = modifier.then(chatBubbleDefaultModifier)
         )
     }
 }
@@ -67,38 +67,38 @@ fun ChatBubble(
 private fun ChatBubbleFromMe(
     message: ConvertedChatMessage,
     modifier: Modifier = Modifier,
-    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> },
+    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.End,
+        horizontalArrangement = Arrangement.End
     ) {
         Text(
             text = message.timestamp.format(DateTimeFormatter.ofPattern("HH:mm")),
             style = KoinTheme.typography.regular12,
-            color = KoinTheme.colors.neutral500,
+            color = KoinTheme.colors.neutral500
         )
         Spacer(modifier = Modifier.width(12.dp))
         Box(
             modifier =
-                Modifier
-                    .background(
-                        color = KoinTheme.colors.neutral100.copy(alpha = 0.8f),
-                        shape = KoinTheme.shapes.small,
-                    )
-                    .then(
-                        if (message.isImage) {
-                            Modifier
-                        } else {
-                            Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
-                        },
-                    ),
+            Modifier
+                .background(
+                    color = KoinTheme.colors.neutral100.copy(alpha = 0.8f),
+                    shape = KoinTheme.shapes.small
+                )
+                .then(
+                    if (message.isImage) {
+                        Modifier
+                    } else {
+                        Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+                    }
+                )
         ) {
             if (message.isImage) {
                 ChatBubbleImage(
                     imageUrl = message.content,
-                    onShowImageChange = onShowImageChange,
+                    onShowImageChange = onShowImageChange
                 )
             } else {
                 ChatBubbleText(message.content)
@@ -112,68 +112,68 @@ private fun ChatBubbleFromOther(
     message: ConvertedChatMessage,
     modifier: Modifier = Modifier,
     chatPartnerProfileImage: Uri? = null,
-    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> },
+    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             if (chatPartnerProfileImage == null || chatPartnerProfileImage == Uri.EMPTY) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_chat_user_image),
                     contentDescription = stringResource(id = R.string.chat_user_profile_image),
                     modifier =
-                        Modifier
-                            .clip(KoinTheme.shapes.small)
-                            .background(KoinTheme.colors.primary500)
-                            .padding(2.dp)
-                            .size(24.dp),
+                    Modifier
+                        .clip(KoinTheme.shapes.small)
+                        .background(KoinTheme.colors.primary500)
+                        .padding(2.dp)
+                        .size(24.dp)
                 )
             } else {
                 AsyncImage(
                     model =
-                        ImageRequest.Builder(LocalContext.current)
-                            .data(chatPartnerProfileImage)
-                            .crossfade(true)
-                            .build(),
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(chatPartnerProfileImage)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = stringResource(id = R.string.chat_user_profile_image),
-                    placeholder = painterResource(id = R.drawable.ic_chat_user_image),
+                    placeholder = painterResource(id = R.drawable.ic_chat_user_image)
                 )
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = message.userNickname,
                 style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral600,
+                color = KoinTheme.colors.neutral600
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.Start
         ) {
             Box(
                 modifier =
-                    Modifier
-                        .background(
-                            color = KoinTheme.colors.info100,
-                            shape = KoinTheme.shapes.small,
-                        )
-                        .then(
-                            if (message.isImage) {
-                                Modifier
-                            } else {
-                                Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
-                            },
-                        ),
+                Modifier
+                    .background(
+                        color = KoinTheme.colors.info100,
+                        shape = KoinTheme.shapes.small
+                    )
+                    .then(
+                        if (message.isImage) {
+                            Modifier
+                        } else {
+                            Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+                        }
+                    )
             ) {
                 if (message.isImage) {
                     ChatBubbleImage(
                         imageUrl = message.content,
-                        onShowImageChange = onShowImageChange,
+                        onShowImageChange = onShowImageChange
                     )
                 } else {
                     ChatBubbleText(message.content)
@@ -183,7 +183,7 @@ private fun ChatBubbleFromOther(
             Text(
                 text = message.timestamp.format(DateTimeFormatter.ofPattern("HH:mm")),
                 style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral500,
+                color = KoinTheme.colors.neutral500
             )
         }
     }
@@ -194,66 +194,66 @@ private fun ChatBubbleText(message: String) {
     Text(
         text = message,
         style = KoinTheme.typography.regular12,
-        color = KoinTheme.colors.neutral800,
+        color = KoinTheme.colors.neutral800
     )
 }
 
 @Composable
 private fun ChatBubbleImage(
     imageUrl: String,
-    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> },
+    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
 ) {
     Box {
         SubcomposeAsyncImage(
             modifier =
-                Modifier.clip(KoinTheme.shapes.small).noRippleClickable {
-                    onShowImageChange(true, Uri.parse(imageUrl))
-                },
+            Modifier.clip(KoinTheme.shapes.small).noRippleClickable {
+                onShowImageChange(true, Uri.parse(imageUrl))
+            },
             model =
-                ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
-                    .crossfade(true)
-                    .build(),
+            ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(true)
+                .build(),
             loading = {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
+                    contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
             },
             contentScale = ContentScale.Fit,
-            contentDescription = null,
+            contentDescription = null
         )
         if (imageUrl.startsWith("content://")) {
             Box(
                 Modifier
                     .background(Color(0x66000000))
                     .matchParentSize(),
-                contentAlignment = Alignment.Center,
+                contentAlignment = Alignment.Center
             ) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
                         modifier = Modifier.size(40.dp),
-                        contentAlignment = Alignment.Center,
+                        contentAlignment = Alignment.Center
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_uploading_image),
-                            contentDescription = null,
+                            contentDescription = null
                         )
                         CircularProgressIndicator(
                             modifier = Modifier.matchParentSize(),
                             strokeWidth = 2.dp,
-                            color = KoinTheme.colors.neutral0,
+                            color = KoinTheme.colors.neutral0
                         )
                     }
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = stringResource(id = R.string.chat_loading),
                         color = KoinTheme.colors.neutral0,
-                        style = KoinTheme.typography.regular10,
+                        style = KoinTheme.typography.regular10
                     )
                 }
             }
@@ -267,14 +267,14 @@ fun ChatBubblePreview() {
     KoinSurface {
         ChatBubble(
             message =
-                ConvertedChatMessage(
-                    userId = 0,
-                    userNickname = "Me",
-                    content = "투명 케이스가 끼워져 있었어요! \n담헌실학관 401호 앞에 떨어져있었어요",
-                    timestamp = LocalDateTime.now(),
-                    isImage = false,
-                    isSentByMe = true,
-                ),
+            ConvertedChatMessage(
+                userId = 0,
+                userNickname = "Me",
+                content = "투명 케이스가 끼워져 있었어요! \n담헌실학관 401호 앞에 떨어져있었어요",
+                timestamp = LocalDateTime.now(),
+                isImage = false,
+                isSentByMe = true
+            )
         )
     }
 }

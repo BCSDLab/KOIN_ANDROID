@@ -16,11 +16,10 @@ class StoreDetailMenuRecyclerAdapter :
     ListAdapter<ShopMenus, RecyclerView.ViewHolder>(diffCallback) {
     private var category: String? = null
 
-    override fun getItemViewType(position: Int) =
-        when (position) {
-            0 -> HEADER
-            else -> ITEM
-        }
+    override fun getItemViewType(position: Int) = when (position) {
+        0 -> HEADER
+        else -> ITEM
+    }
 
     class HeaderViewHolder(private val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -33,7 +32,7 @@ class StoreDetailMenuRecyclerAdapter :
                     "세트 메뉴" -> R.drawable.ic_set
                     "사이드 메뉴" -> R.drawable.ic_side
                     else -> R.drawable.ic_represent
-                },
+                }
             )
         }
     }
@@ -49,7 +48,7 @@ class StoreDetailMenuRecyclerAdapter :
                     binding.storeDetailMenuPriceTextview.text =
                         binding.root.context.getString(
                             R.string.store_delivery_price,
-                            shopMenu.singlePrice,
+                            shopMenu.singlePrice
                         )
                 }
 
@@ -67,33 +66,29 @@ class StoreDetailMenuRecyclerAdapter :
                 .into(binding.storeDetailMenuImageview)
         }
 
-        private fun getOptionPriceText(menu: ShopMenus.ShopMenuOptions) =
-            when {
-                menu.price != null -> {
-                    val priceText =
-                        binding.root.context.getString(
-                            R.string.store_delivery_price,
-                            menu.price,
-                        )
-                    "${menu.option} - $priceText"
-                }
-
-                else -> menu.option
+        private fun getOptionPriceText(menu: ShopMenus.ShopMenuOptions) = when {
+            menu.price != null -> {
+                val priceText =
+                    binding.root.context.getString(
+                        R.string.store_delivery_price,
+                        menu.price
+                    )
+                "${menu.option} - $priceText"
             }
+
+            else -> menu.option
+        }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             HEADER ->
                 HeaderViewHolder(
                     StoreDetailMenuHeaderBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
-                        false,
-                    ),
+                        false
+                    )
                 )
 
             ITEM ->
@@ -101,8 +96,8 @@ class StoreDetailMenuRecyclerAdapter :
                     StoreDetailMenuListItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
-                        false,
-                    ),
+                        false
+                    )
                 )
 
             else -> throw IllegalArgumentException("Wrong viewtype")
@@ -113,10 +108,7 @@ class StoreDetailMenuRecyclerAdapter :
         category = data
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             ITEM -> (holder as ItemViewHolder).bind(getItem(position))
             HEADER -> (holder as HeaderViewHolder).setCategory(category)
@@ -132,24 +124,18 @@ class StoreDetailMenuRecyclerAdapter :
                 }
             } else {
                 null
-            },
+            }
         )
     }
 
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<ShopMenus>() {
-                override fun areItemsTheSame(
-                    oldItem: ShopMenus,
-                    newItem: ShopMenus,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: ShopMenus, newItem: ShopMenus): Boolean {
                     return oldItem.id == newItem.id
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: ShopMenus,
-                    newItem: ShopMenus,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: ShopMenus, newItem: ShopMenus): Boolean {
                     return oldItem == newItem
                 }
             }

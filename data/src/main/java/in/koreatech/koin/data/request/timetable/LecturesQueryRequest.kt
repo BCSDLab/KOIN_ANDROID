@@ -8,7 +8,7 @@ data class LecturesQueryRequest(
     @SerializedName("timetable_frame_id")
     val timetableFrameId: Int,
     @SerializedName("timetable_lecture")
-    val timetableLecture: List<LectureQueryRequest>,
+    val timetableLecture: List<LectureQueryRequest>
 )
 
 data class LectureQueryRequest(
@@ -23,7 +23,7 @@ data class LectureQueryRequest(
     @SerializedName("grades")
     val grades: String,
     @SerializedName("memo")
-    val memo: String,
+    val memo: String
 )
 
 fun TimetableLecture.toCustomLectureQueryRequest() =
@@ -33,7 +33,7 @@ fun TimetableLecture.toCustomLectureQueryRequest() =
         professor = professor,
         lectureId = null,
         grades = "0",
-        memo = "",
+        memo = ""
     )
 
 fun TimetableLecture.toLectureQueryRequest() =
@@ -43,7 +43,7 @@ fun TimetableLecture.toLectureQueryRequest() =
         professor = null,
         lectureId = lectureId,
         grades = "0",
-        memo = "",
+        memo = ""
     )
 
 fun Lecture.toCustomLectureQueryRequest(classInfos: List<TimetableLectureClassInfoRequest>) =
@@ -53,7 +53,7 @@ fun Lecture.toCustomLectureQueryRequest(classInfos: List<TimetableLectureClassIn
         professor = professor,
         lectureId = null,
         grades = "0",
-        memo = "",
+        memo = ""
     )
 
 fun Lecture.toLectureQueryRequest() =
@@ -63,5 +63,5 @@ fun Lecture.toLectureQueryRequest() =
         professor = null,
         lectureId = id,
         grades = "0",
-        memo = "",
+        memo = ""
     )

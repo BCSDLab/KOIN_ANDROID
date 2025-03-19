@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.model.timetable.Semester
 
 data class UserSemestersResponse(
     @SerializedName("semesters")
-    val semesters: List<SemesterResponse>,
+    val semesters: List<SemesterResponse>
 )
 
 internal fun UserSemestersResponse.toSemesters(): List<Semester> = this.semesters.map { it.toSemester() }

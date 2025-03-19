@@ -20,7 +20,7 @@ object TimetableConstants {
             "HRD학과",
             "교양학부",
             "안전공학과",
-            "융합학과",
+            "융합학과"
         )
     const val eventHeight = 64
 }
@@ -34,7 +34,7 @@ val dummyEvent =
         dayOfWeek = DayOfWeek.FRIDAY,
         start = LocalTime.of(16, 0),
         end = LocalTime.of(18, 0),
-        description = "설명",
+        description = "설명"
     )
 
 val dummyLecture =
@@ -52,12 +52,12 @@ val dummyLecture =
         isElearning = "",
         designScore = "0",
         classTime =
-            listOf(
-                310,
-                311,
-                312,
-                313,
-            ),
+        listOf(
+            310,
+            311,
+            312,
+            313
+        )
     )
 
 val defaultColors =
@@ -76,5 +76,5 @@ val defaultColors =
         TimetableColor(Color(0xFF074173), Color(0xFFCDD9E3)),
         TimetableColor(Color(0xFF523AE2), Color(0xFFDCD8F9)),
         TimetableColor(Color(0xFF6F6F6F), Color(0xFFE2E2E2)),
-        TimetableColor(Color(0xFFCBCBCB), Color(0xFFF5F5F5)),
+        TimetableColor(Color(0xFFCBCBCB), Color(0xFFF5F5F5))
     )

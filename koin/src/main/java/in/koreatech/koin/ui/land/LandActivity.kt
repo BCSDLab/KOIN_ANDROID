@@ -98,17 +98,22 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
                 .camera(
                     CameraPosition(
                         LatLng(LAND.INITIAL_LATITUDE, LAND.INITIAL_LONGITUDE),
-                        LAND.INITIAL_ZOOM,
-                    ),
+                        LAND.INITIAL_ZOOM
+                    )
                 )
         var mapFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_land_navermap) as NaverMapFragment?
+            supportFragmentManager.findFragmentById(
+                R.id.activity_land_navermap
+            ) as NaverMapFragment?
         if (mapFragment == null) {
             mapFragment = NaverMapFragment().newInstance(options)
         }
 
         if (!mapFragment!!.isAdded) {
-            supportFragmentManager.beginTransaction().add(R.id.activity_land_navermap, mapFragment!!)
+            supportFragmentManager.beginTransaction().add(
+                R.id.activity_land_navermap,
+                mapFragment!!
+            )
                 .commit()
         }
 
@@ -122,8 +127,8 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
             landViewModel.markerList.add(
                 Marker(
                     LatLng(land.latitude, land.longitude),
-                    OverlayImage.fromResource(R.drawable.ic_marker_normal),
-                ),
+                    OverlayImage.fromResource(R.drawable.ic_marker_normal)
+                )
             )
         }
         landViewModel.markerList.forEachIndexed { index, marker ->
@@ -141,10 +146,7 @@ class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun selectMarker(
-        markers: List<Marker>,
-        selectIndex: Int,
-    ) {
+    private fun selectMarker(markers: List<Marker>, selectIndex: Int) {
         markers.forEachIndexed { index, marker ->
             if (index == selectIndex) {
                 marker.icon =

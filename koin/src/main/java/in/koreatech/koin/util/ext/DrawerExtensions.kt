@@ -8,14 +8,11 @@ inline fun DrawerLayout.addDrawerListener(
     crossinline onDrawerOpened: (drawerView: View) -> Unit = {},
     crossinline onDrawerClosed: (drawerView: View) -> Unit = {},
     crossinline onDrawerStateChanged: (newState: Int) -> Unit = {},
-    crossinline onDrawerSlide: (drawerView: View, slideOffset: Float) -> Unit,
+    crossinline onDrawerSlide: (drawerView: View, slideOffset: Float) -> Unit
 ) {
     this.addDrawerListener(
         object : DrawerLayout.DrawerListener {
-            override fun onDrawerSlide(
-                drawerView: View,
-                slideOffset: Float,
-            ) {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                 onDrawerSlide(drawerView, slideOffset)
             }
 
@@ -30,7 +27,7 @@ inline fun DrawerLayout.addDrawerListener(
             override fun onDrawerStateChanged(newState: Int) {
                 onDrawerStateChanged(newState)
             }
-        },
+        }
     )
 }
 

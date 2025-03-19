@@ -10,12 +10,12 @@ data class TimetableFrameResponse(
     @SerializedName("timetable_name")
     val timetableName: String?,
     @SerializedName("is_main")
-    val isMain: Boolean,
+    val isMain: Boolean
 ) {
     fun toTimetableFrame(): TimetableFrame =
         TimetableFrame(
             id = id,
             timetableName = timetableName.orEmpty(),
-            isMain = isMain,
+            isMain = isMain
         )
 }

@@ -10,7 +10,7 @@ import `in`.koreatech.koin.domain.constant.LUNCH
 import `in`.koreatech.koin.ui.dining.DiningItemsFragment
 
 class DiningItemsViewPager2Adapter(
-    fragmentActivity: FragmentActivity,
+    fragmentActivity: FragmentActivity
 ) : FragmentStateAdapter(fragmentActivity) {
     private val fragments = SparseArray<Fragment>()
 

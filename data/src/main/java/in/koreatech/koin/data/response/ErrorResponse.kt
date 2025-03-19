@@ -10,5 +10,5 @@ data class ErrorResponse(
     @SerialName("code")
     val code: String?,
     @SerialName("errorTraceId")
-    val errorTraceId: String?,
+    val errorTraceId: String?
 )

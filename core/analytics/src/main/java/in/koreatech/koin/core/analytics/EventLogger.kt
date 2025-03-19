@@ -42,7 +42,7 @@ object EventLogger {
         action: EventAction,
         label: String,
         value: String,
-        vararg extras: EventExtra,
+        vararg extras: EventExtra
     ) {
         logEvent(action, EventCategory.CLICK, label, value, *extras)
     }
@@ -56,7 +56,7 @@ object EventLogger {
     fun logCampusClickEvent(
         label: String,
         value: String,
-        vararg extras: EventExtra,
+        vararg extras: EventExtra
     ) {
         logClickEvent(EventAction.CAMPUS, label, value, *extras)
     }
@@ -72,7 +72,7 @@ object EventLogger {
         action: EventAction,
         label: String,
         value: String,
-        vararg extras: EventExtra,
+        vararg extras: EventExtra
     ) {
         logEvent(action, EventCategory.SCROLL, label, value, *extras)
     }
@@ -88,7 +88,7 @@ object EventLogger {
         action: EventAction,
         label: String,
         value: String,
-        vararg extras: EventExtra,
+        vararg extras: EventExtra
     ) {
         logEvent(action, EventCategory.SWIPE, label, value, *extras)
     }
@@ -104,7 +104,7 @@ object EventLogger {
         action: EventAction,
         label: String,
         value: String,
-        vararg extras: EventExtra,
+        vararg extras: EventExtra
     ) {
         logEvent(action, EventCategory.NOTIFICATION, label, value, *extras)
     }
@@ -118,7 +118,7 @@ object EventLogger {
     fun logABTestEvent(
         category: String,
         label: String,
-        value: String,
+        value: String
     ) {
         logCustomEvent(EventAction.ABTEST.value, category, label, value)
     }
@@ -137,7 +137,7 @@ object EventLogger {
         action: String,
         category: String,
         label: String,
-        value: String,
+        value: String
     ) {
         if (BuildConfig.IS_DEBUG) {
             Firebase.analytics.logEvent("${action}_debug") {
@@ -181,7 +181,7 @@ object EventLogger {
         category: EventCategory,
         label: String,
         value: String,
-        vararg extras: EventExtra,
+        vararg extras: EventExtra
     ) {
         if (BuildConfig.IS_DEBUG) {
             Firebase.analytics.logEvent("${action.value}_debug") {
@@ -220,14 +220,14 @@ enum class EventAction(val value: String) {
     BUSINESS("BUSINESS"),
     CAMPUS("CAMPUS"),
     USER("USER"),
-    ABTEST("AB_TEST"),
+    ABTEST("AB_TEST")
 }
 
 enum class EventCategory(val value: String) {
     CLICK("click"),
     SCROLL("scroll"),
     SWIPE("swipe"), // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
-    NOTIFICATION("notification"),
+    NOTIFICATION("notification")
 }
 
 data class EventExtra(val key: String, val value: String)

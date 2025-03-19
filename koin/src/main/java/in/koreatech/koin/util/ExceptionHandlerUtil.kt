@@ -20,18 +20,12 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      * @param thread
      * @param throwable
      */
-    override fun uncaughtException(
-        thread: Thread,
-        throwable: Throwable,
-    ) {
+    override fun uncaughtException(thread: Thread, throwable: Throwable) {
         val stringWriter = StringWriter()
         createErrorMessage(throwable, stringWriter)
     }
 
-    private fun createErrorMessage(
-        throwable: Throwable,
-        stringWriter: StringWriter,
-    ) {
+    private fun createErrorMessage(throwable: Throwable, stringWriter: StringWriter) {
         throwable.printStackTrace(PrintWriter(stringWriter as Writer)) // 오류 메시지를 얻는다.
         val errorMessage = stringWriter.toString()
         startErrorActivity(context, errorMessage)
@@ -44,20 +38,23 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      * @param context
      * @param ErrorMessage
      */
-    private fun startErrorActivity(
-        context: Context,
-        ErrorMessage: String,
-    ) {
+    private fun startErrorActivity(context: Context, ErrorMessage: String) {
         val goToErrorActivityIntent = Intent(context.applicationContext, ErrorActivity::class.java)
         goToErrorActivityIntent.putExtra(EXTRA_ERROR_TEXT, ErrorMessage)
-        goToErrorActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        goToErrorActivityIntent.addFlags(
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        )
         context.startActivity(goToErrorActivityIntent)
     }
 
     private fun goToLoginActivity() {
         val handler = HandlerCompat.createAsync(Looper.getMainLooper())
         Intent(context.applicationContext, LoginActivity::class.java).run {
-            handler.post { context.applicationContext.showToast(context.getString(R.string.token_out_dated)) }
+            handler.post {
+                context.applicationContext.showToast(
+                    context.getString(R.string.token_out_dated)
+                )
+            }
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(this)
         }

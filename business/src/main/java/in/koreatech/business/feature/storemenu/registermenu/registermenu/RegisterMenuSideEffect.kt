@@ -14,7 +14,7 @@ enum class RegisterMenuErrorType {
     NullMenuCategory,
     NullMenuImage,
     FailUploadImage,
-    FailRegisterMenu,
+    FailRegisterMenu
 }
 
 sealed class PriceHolder {

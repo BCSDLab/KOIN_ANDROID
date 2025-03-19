@@ -19,7 +19,7 @@ fun KoinSurface(
     tonalElevation: Dp = 0.dp,
     shadowElevation: Dp = 0.dp,
     border: BorderStroke? = null,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Surface(
         modifier = modifier,
@@ -29,6 +29,6 @@ fun KoinSurface(
         tonalElevation = tonalElevation,
         shadowElevation = shadowElevation,
         border = border,
-        content = content,
+        content = content
     )
 }

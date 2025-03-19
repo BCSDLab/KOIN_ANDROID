@@ -50,7 +50,7 @@ fun ModifyMenuCheckScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
     viewModel: ModifyMenuViewModel = hiltViewModel(),
-    goToStoreMainScreen: () -> Unit = {},
+    goToStoreMainScreen: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val context = LocalContext.current
@@ -61,7 +61,7 @@ fun ModifyMenuCheckScreen(
         modifyMenuState = state,
         onPositiveButtonClicked = {
             viewModel.onPositiveButtonClicked(context)
-        },
+        }
     )
 
     HandleSideEffects(viewModel, goToStoreMainScreen)
@@ -73,56 +73,56 @@ fun ModifyMenuCheckScreenImpl(
     onBackPressed: () -> Unit = {},
     modifyMenuState: ModifyMenuState = ModifyMenuState(),
     menuName: String = "",
-    onPositiveButtonClicked: () -> Unit = {},
+    onPositiveButtonClicked: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(62.dp)
-                    .background(ColorPrimary),
+            Modifier
+                .fillMaxWidth()
+                .height(62.dp)
+                .background(ColorPrimary)
         ) {
             IconButton(
                 modifier =
-                    Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(start = 16.dp),
-                onClick = { onBackPressed() },
+                Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 16.dp),
+                onClick = { onBackPressed() }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_arrow_back),
-                    contentDescription = stringResource(R.string.back),
+                    contentDescription = stringResource(R.string.back)
                 )
             }
             Text(
                 text = stringResource(R.string.menu_modify),
                 modifier = Modifier.align(Alignment.Center),
-                style = TextStyle(color = Color.White, fontSize = 20.sp),
+                style = TextStyle(color = Color.White, fontSize = 20.sp)
             )
         }
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
         ) {
             item {
                 Box(
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
-                            .height(35.dp)
-                            .background(ColorTextBackgrond),
-                    contentAlignment = Alignment.CenterStart,
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .height(35.dp)
+                        .background(ColorTextBackgrond),
+                    contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
                         modifier =
-                            Modifier
-                                .padding(start = 16.dp),
+                        Modifier
+                            .padding(start = 16.dp),
                         text = stringResource(id = R.string.menu_info),
-                        color = ColorSecondaryText,
+                        color = ColorSecondaryText
                     )
                 }
             }
@@ -130,54 +130,54 @@ fun ModifyMenuCheckScreenImpl(
             item {
                 TitleAndContent(
                     stringId = R.string.menu_name,
-                    content = menuName,
+                    content = menuName
                 )
 
                 TitleAndOptionPrice(
                     optionPriceList = modifyMenuState.menuOptionPrice,
-                    menuPrice = modifyMenuState.menuPrice,
+                    menuPrice = modifyMenuState.menuPrice
                 )
 
                 TitleAndContent(
                     stringId = R.string.menu_category,
-                    content = modifyMenuState.menuCategoryLabel,
+                    content = modifyMenuState.menuCategoryLabel
                 )
 
                 TitleAndContent(
                     stringId = R.string.menu_composition,
-                    content = modifyMenuState.description,
+                    content = modifyMenuState.description
                 )
 
                 TitleAndImageString(
-                    imageStringList = modifyMenuState.imageUriList,
+                    imageStringList = modifyMenuState.imageUriList
                 )
             }
 
             item {
                 Row(
                     modifier =
-                        Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 24.dp, bottom = 52.dp)
-                            .fillMaxWidth()
-                            .height(43.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 24.dp, bottom = 52.dp)
+                        .fillMaxWidth()
+                        .height(43.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Button(
                         onClick = onBackPressed,
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.White),
                         modifier =
-                            modifier
-                                .border(1.dp, ColorSecondary)
-                                .fillMaxHeight()
-                                .width(113.dp),
+                        modifier
+                            .border(1.dp, ColorSecondary)
+                            .fillMaxHeight()
+                            .width(113.dp)
                     ) {
                         Text(
                             text = stringResource(id = R.string.cancel),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = ColorSecondary,
+                            color = ColorSecondary
                         )
                     }
 
@@ -186,14 +186,14 @@ fun ModifyMenuCheckScreenImpl(
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(ColorPrimary),
                         modifier =
-                            modifier
-                                .fillMaxSize(),
+                        modifier
+                            .fillMaxSize()
                     ) {
                         Text(
                             text = stringResource(id = R.string.positive),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White,
+                            color = Color.White
                         )
                     }
                 }
@@ -205,7 +205,7 @@ fun ModifyMenuCheckScreenImpl(
 @Composable
 private fun HandleSideEffects(
     viewModel: ModifyMenuViewModel,
-    goToCheckMenuScreen: () -> Unit,
+    goToCheckMenuScreen: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -234,7 +234,7 @@ private fun HandleSideEffects(
 fun PreviewRegisterMenuCheckScreen() {
     Surface {
         ModifyMenuCheckScreenImpl(
-            menuName = "불족발 + 막국수 저녁 Set",
+            menuName = "불족발 + 막국수 저녁 Set"
         )
     }
 }

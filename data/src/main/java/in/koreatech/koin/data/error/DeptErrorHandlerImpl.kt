@@ -9,18 +9,16 @@ import `in`.koreatech.koin.domain.error.dept.DeptErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import javax.inject.Inject
 
-class DeptErrorHandlerImpl
-    @Inject
-    constructor(
-        @ApplicationContext private val context: Context,
-    ) : DeptErrorHandler {
-        override fun getDeptNameFromDeptCodeError(throwable: Throwable) =
-            throwable.handleCommonError(context) {
-                ErrorHandler(context.getString(R.string.error_invalid_student_number))
-            }
+class DeptErrorHandlerImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) : DeptErrorHandler {
+    override fun getDeptNameFromDeptCodeError(throwable: Throwable) =
+        throwable.handleCommonError(context) {
+            ErrorHandler(context.getString(R.string.error_invalid_student_number))
+        }
 
-        override fun getDeptsError(throwable: Throwable) =
-            throwable.handleCommonError(context) {
-                unknownErrorHandler(context)
-            }
-    }
+    override fun getDeptsError(throwable: Throwable) =
+        throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+}

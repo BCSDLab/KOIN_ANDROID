@@ -24,19 +24,19 @@ fun CommonEmptyView(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             modifier = Modifier.width(120.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_empty_bus),
-            contentDescription = stringResource(R.string.no_result),
+            contentDescription = stringResource(R.string.no_result)
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             modifier = Modifier,
             text = stringResource(R.string.empty_description),
             style = KoinTheme.typography.bold15,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(64.dp))
     }

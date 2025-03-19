@@ -13,7 +13,7 @@ data class UserState(
     val phoneNumber: String,
     val gender: String,
     val studentNumber: String,
-    val major: String,
+    val major: String
 )
 
 fun User.toUserState(context: Context): UserState {
@@ -28,13 +28,13 @@ fun User.toUserState(context: Context): UserState {
                     userAnonymousNickname = anonymousNickname ?: "",
                     phoneNumber = phoneNumber ?: "",
                     gender =
-                        when (gender) {
-                            Gender.Woman -> getString(R.string.user_info_gender_female)
-                            Gender.Man -> getString(R.string.user_info_gender_male)
-                            Gender.Unknown -> ""
-                        },
+                    when (gender) {
+                        Gender.Woman -> getString(R.string.user_info_gender_female)
+                        Gender.Man -> getString(R.string.user_info_gender_male)
+                        Gender.Unknown -> ""
+                    },
                     studentNumber = studentNumber ?: "",
-                    major = major ?: "",
+                    major = major ?: ""
                 )
             }
     }

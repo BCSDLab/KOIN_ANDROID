@@ -7,5 +7,5 @@ data class OwnerEventResponse(
     @SerializedName("content") val content: String?,
     @SerializedName("thumbnail_images") val thumbnailImages: List<String>?,
     @SerializedName("start_date") val startDate: String?,
-    @SerializedName("end_date") val endDate: String?,
+    @SerializedName("end_date") val endDate: String?
 )

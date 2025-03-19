@@ -32,7 +32,7 @@ import `in`.koreatech.koin.core.R
 @Composable
 fun OperatingTimeSettingDialog(
     title: String = "",
-    operatingTimeDialog: OperatingTimeDialog = OperatingTimeDialog(),
+    operatingTimeDialog: OperatingTimeDialog = OperatingTimeDialog()
 ) {
     var timeValue by remember { mutableStateOf<Hours>(FullHours(0, 0)) }
 
@@ -41,25 +41,25 @@ fun OperatingTimeSettingDialog(
             Surface(
                 shape = RoundedCornerShape(16.dp),
                 color = Color.White,
-                elevation = 8.dp,
+                elevation = 8.dp
             ) {
                 Column(
                     modifier =
-                        Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
+                    Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         modifier = Modifier.padding(bottom = 8.dp),
                         text = title,
                         style = MaterialTheme.typography.h6,
-                        fontSize = 20.sp,
+                        fontSize = 20.sp
                     )
 
                     HoursNumberPicker(
                         modifier =
-                            Modifier
-                                .height(120.dp),
+                        Modifier
+                            .height(120.dp),
                         dividersColor = MaterialTheme.colors.primary,
                         leadingZero = true,
                         value = timeValue,
@@ -71,20 +71,20 @@ fun OperatingTimeSettingDialog(
                             Text(
                                 modifier = Modifier.size(24.dp),
                                 textAlign = TextAlign.Center,
-                                text = ":",
+                                text = ":"
                             )
-                        },
+                        }
                     )
                     Row(
                         modifier =
-                            Modifier
-                                .align(Alignment.End),
+                        Modifier
+                            .align(Alignment.End)
                     ) {
                         Button(
                             modifier = Modifier.padding(end = 5.dp),
                             onClick = {
                                 operatingTimeDialog.closeDialog()
-                            },
+                            }
                         ) {
                             Text(stringResource(id = R.string.cancel))
                         }
@@ -92,7 +92,7 @@ fun OperatingTimeSettingDialog(
                             onClick = {
                                 operatingTimeDialog.closeDialog()
                                 operatingTimeDialog.onSettingStoreTime(Pair(timeValue, operatingTimeDialog.dayOfWeekIndex))
-                            },
+                            }
                         ) {
                             Text(stringResource(id = R.string.positive))
                         }

@@ -12,25 +12,23 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 
 class ArticleAdapter(
-    private val onClick: (ArticleHeaderState) -> Unit,
+    private val onClick: (ArticleHeaderState) -> Unit
 ) : ListAdapter<ArticleHeaderState, RecyclerView.ViewHolder>(diffUtil) {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): ArticleViewHolder {
-        val binding = ItemArticleHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
+        val binding = ItemArticleHeaderBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ArticleViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ArticleViewHolder).bind(getItem(position))
     }
 
     inner class ArticleViewHolder(
-        private val binding: ItemArticleHeaderBinding,
+        private val binding: ItemArticleHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(articleHeader: ArticleHeaderState) {
             binding.apply {
@@ -42,7 +40,7 @@ class ArticleAdapter(
                         TextUtils.concat(
                             DateFormatUtil.getSimpleMonthAndDay(articleHeader.registeredAt),
                             " ",
-                            DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(articleHeader.registeredAt)),
+                            DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(articleHeader.registeredAt))
                         )
                 } catch (e: Exception) {
                 }
@@ -58,14 +56,14 @@ class ArticleAdapter(
             object : DiffUtil.ItemCallback<ArticleHeaderState>() {
                 override fun areItemsTheSame(
                     oldItem: ArticleHeaderState,
-                    newItem: ArticleHeaderState,
+                    newItem: ArticleHeaderState
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
                     oldItem: ArticleHeaderState,
-                    newItem: ArticleHeaderState,
+                    newItem: ArticleHeaderState
                 ): Boolean {
                     return oldItem == newItem
                 }

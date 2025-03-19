@@ -17,7 +17,7 @@ data class Lecture(
     val designScore: String = "",
     val isElearning: String = "",
     val classTime: List<Int>,
-    val place: String? = null,
+    val place: String? = null
 ) {
     fun toTimetableLecture() =
         TimetableLecture(
@@ -27,19 +27,19 @@ data class Lecture(
             code = code,
             designScore = designScore,
             classInfos =
-                listOf(
-                    TimetableLectureClassInfo(
-                        classTime = classTime,
-                        classPlace = place ?: "",
-                    ),
-                ),
+            listOf(
+                TimetableLectureClassInfo(
+                    classTime = classTime,
+                    classPlace = place ?: ""
+                )
+            ),
             memo = "",
             grades = grades,
             classTitle = name,
             lectureClass = lectureClass,
             target = target,
             professor = professor,
-            department = department,
+            department = department
         )
 
     /**
@@ -123,7 +123,7 @@ data class Lecture(
                 name,
                 name.take(0),
                 professor,
-                professor.take(0),
+                professor.take(0)
             )
 
         return matchingCombinations.any {

@@ -39,7 +39,7 @@ fun BusinessAlertDialog(
     dialogTitle: String,
     dialogText: String,
     positiveButtonText: String,
-    visibility: Boolean = false,
+    visibility: Boolean = false
 ) {
     if (!visibility) {
         return
@@ -47,18 +47,18 @@ fun BusinessAlertDialog(
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier =
-                Modifier
-                    .padding(7.dp)
-                    .fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
+            Modifier
+                .padding(7.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp)
         ) {
             Column(
                 modifier =
-                    Modifier
-                        .background(Color.White)
-                        .padding(vertical = 40.dp, horizontal = 14.dp),
+                Modifier
+                    .background(Color.White)
+                    .padding(vertical = 40.dp, horizontal = 14.dp),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -66,7 +66,7 @@ fun BusinessAlertDialog(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    color = Color.Black,
+                    color = Color.Black
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -76,7 +76,7 @@ fun BusinessAlertDialog(
                     fontSize = 13.sp,
                     color = Color.Black,
                     text = dialogText,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -88,14 +88,14 @@ fun BusinessAlertDialog(
                         border = BorderStroke(1.dp, Gray6),
                         shape = RoundedCornerShape(8.dp),
                         modifier =
-                            Modifier
-                                .width(128.dp)
-                                .height(48.dp),
+                        Modifier
+                            .width(128.dp)
+                            .height(48.dp)
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
                             text = stringResource(id = R.string.cancel_upload),
-                            color = ColorMinor,
+                            color = ColorMinor
                         )
                     }
 
@@ -106,22 +106,22 @@ fun BusinessAlertDialog(
                             onConfirmation()
                         },
                         colors =
-                            ButtonDefaults.buttonColors(
-                                backgroundColor = ColorActiveButton,
-                                disabledBackgroundColor = ColorDisabledButton,
-                                contentColor = Color.White,
-                                disabledContentColor = Color.White,
-                            ),
+                        ButtonDefaults.buttonColors(
+                            backgroundColor = ColorActiveButton,
+                            disabledBackgroundColor = ColorDisabledButton,
+                            contentColor = Color.White,
+                            disabledContentColor = Color.White
+                        ),
                         border = BorderStroke(1.dp, ColorActiveButton),
                         shape = RoundedCornerShape(8.dp),
                         modifier =
-                            Modifier
-                                .width(128.dp)
-                                .height(48.dp),
+                        Modifier
+                            .width(128.dp)
+                            .height(48.dp)
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
-                            text = positiveButtonText,
+                            text = positiveButtonText
                         )
                     }
                 }
@@ -138,6 +138,6 @@ fun PreviewDialog() {
         onConfirmation = {},
         dialogTitle = "",
         dialogText = "",
-        positiveButtonText = "",
+        positiveButtonText = ""
     )
 }

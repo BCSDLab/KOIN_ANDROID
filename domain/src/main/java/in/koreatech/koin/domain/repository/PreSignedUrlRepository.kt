@@ -7,13 +7,13 @@ interface PreSignedUrlRepository {
         url: String,
         inputStream: InputStream,
         mediaType: String,
-        mediaSize: Long,
+        mediaSize: Long
     ): Result<Unit>
 
     suspend fun uploadFile(
         url: String,
         imageUri: String,
         mediaType: String,
-        mediaSize: Long,
+        mediaSize: Long
     ): Result<Unit>
 }

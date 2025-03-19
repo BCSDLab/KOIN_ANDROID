@@ -10,5 +10,5 @@ internal val Shapes =
         small = RoundedCornerShape(8.dp),
         medium = RoundedCornerShape(12.dp),
         large = RoundedCornerShape(14.dp),
-        extraLarge = RoundedCornerShape(18.dp),
+        extraLarge = RoundedCornerShape(18.dp)
     )

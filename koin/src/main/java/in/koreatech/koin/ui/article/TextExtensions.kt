@@ -19,11 +19,7 @@ import `in`.koreatech.koin.domain.constant.LINE_THROUGH
 import `in`.koreatech.koin.domain.constant.UNDERLINE
 import `in`.koreatech.koin.domain.model.article.html.CssAttribute
 
-fun SpannableStringBuilder.setFontStyle(
-    start: Int,
-    end: Int,
-    styles: Map<CssAttribute, String>,
-) {
+fun SpannableStringBuilder.setFontStyle(start: Int, end: Int, styles: Map<CssAttribute, String>) {
     styles[CssAttribute.FONT_STYLE]?.let {
         setSpan(
             when (it) {
@@ -34,7 +30,7 @@ fun SpannableStringBuilder.setFontStyle(
             },
             start,
             end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
 }
@@ -42,7 +38,7 @@ fun SpannableStringBuilder.setFontStyle(
 fun SpannableStringBuilder.setTextDecoration(
     start: Int,
     end: Int,
-    styles: Map<CssAttribute, String>,
+    styles: Map<CssAttribute, String>
 ) {
     styles[CssAttribute.TEXT_DECORATION]?.let {
         setSpan(
@@ -53,22 +49,18 @@ fun SpannableStringBuilder.setTextDecoration(
             },
             start,
             end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
 }
 
-fun SpannableStringBuilder.setTextColor(
-    start: Int,
-    end: Int,
-    styles: Map<CssAttribute, String>,
-) {
+fun SpannableStringBuilder.setTextColor(start: Int, end: Int, styles: Map<CssAttribute, String>) {
     styles[CssAttribute.COLOR]?.let {
         setSpan(
             ForegroundColorSpan(it.parseColor(Color.BLACK)),
             start,
             end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
 }
@@ -76,14 +68,14 @@ fun SpannableStringBuilder.setTextColor(
 fun SpannableStringBuilder.setBackgroundColor(
     start: Int,
     end: Int,
-    styles: Map<CssAttribute, String>,
+    styles: Map<CssAttribute, String>
 ) {
     styles[CssAttribute.BACKGROUND_COLOR]?.let {
         setSpan(
             BackgroundColorSpan(it.parseColor(Color.WHITE)),
             start,
             end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
     styles[CssAttribute.BACKGROUND]?.let {
@@ -91,23 +83,19 @@ fun SpannableStringBuilder.setBackgroundColor(
             BackgroundColorSpan(it.parseColor(Color.WHITE)),
             start,
             end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
 }
 
-fun SpannableStringBuilder.setFontSize(
-    start: Int,
-    end: Int,
-    styles: Map<CssAttribute, String>,
-) {
+fun SpannableStringBuilder.setFontSize(start: Int, end: Int, styles: Map<CssAttribute, String>) {
     if (styles[CssAttribute.FONT_SIZE]?.endsWith("px") == true || styles[CssAttribute.FONT_SIZE]?.endsWith("pt") == true) {
         styles[CssAttribute.FONT_SIZE]?.let {
             setSpan(
                 AbsoluteSizeSpan(it.parseAbsoluteFontSize(), true),
                 start,
                 end,
-                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
+                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
     }
@@ -117,7 +105,7 @@ fun SpannableStringBuilder.setFontSize(
                 RelativeSizeSpan(it.parseFontRatio() * 12),
                 start,
                 end,
-                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
+                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
     }
@@ -127,7 +115,7 @@ fun SpannableStringBuilder.setFontSize(
                 RelativeSizeSpan(it.parseFontRatio() * 12),
                 start,
                 end,
-                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
+                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
     }

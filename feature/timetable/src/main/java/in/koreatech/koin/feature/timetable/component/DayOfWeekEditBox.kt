@@ -39,7 +39,7 @@ import java.time.DayOfWeek
 fun DayOfWeekEditBox(
     customContent: CustomExtraContentState,
     modifier: Modifier = Modifier,
-    onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
+    onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { }
 ) {
     val days =
         arrayOf(
@@ -47,14 +47,14 @@ fun DayOfWeekEditBox(
             DayOfWeek.TUESDAY,
             DayOfWeek.WEDNESDAY,
             DayOfWeek.THURSDAY,
-            DayOfWeek.FRIDAY,
+            DayOfWeek.FRIDAY
         )
 
     var isExpanded by rememberSaveable {
         mutableStateOf(false)
     }
     Box(
-        modifier = modifier,
+        modifier = modifier
     ) {
         DropdownMenu(
             expanded = isExpanded,
@@ -62,18 +62,18 @@ fun DayOfWeekEditBox(
                 isExpanded = false
             },
             modifier =
-                Modifier
-                    .width(74.dp)
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(4.dp),
-                    )
-                    .border(
-                        width = 1.dp,
-                        color = KoinTheme.colors.neutral300,
-                        shape = RoundedCornerShape(4.dp),
-                    )
-                    .align(alignment = Alignment.Center),
+            Modifier
+                .width(74.dp)
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .border(
+                    width = 1.dp,
+                    color = KoinTheme.colors.neutral300,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .align(alignment = Alignment.Center)
         ) {
             days.forEachIndexed { index, day ->
                 DropdownMenuItem(
@@ -83,7 +83,7 @@ fun DayOfWeekEditBox(
                             style = KoinTheme.typography.bold12,
                             color = KoinTheme.colors.neutral800,
                             modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
+                            textAlign = TextAlign.Center
                         )
                     },
                     onClick = {
@@ -91,51 +91,51 @@ fun DayOfWeekEditBox(
                         onDayOfWeekChange(customContent.copy(dayOfWeek = days[index]))
                     },
                     modifier =
-                        Modifier
-                            .height(35.dp)
-                            .background(Color.White)
-                            .drawBehind {
-                                if (index != (days.size - 1)) {
-                                    drawLine(
-                                        color = Color(0xFFE1E1E1),
-                                        start = Offset(0f, size.height),
-                                        end = Offset(size.width, size.height),
-                                        strokeWidth = 1.dp.toPx(),
-                                    )
-                                }
+                    Modifier
+                        .height(35.dp)
+                        .background(Color.White)
+                        .drawBehind {
+                            if (index != (days.size - 1)) {
+                                drawLine(
+                                    color = Color(0xFFE1E1E1),
+                                    start = Offset(0f, size.height),
+                                    end = Offset(size.width, size.height),
+                                    strokeWidth = 1.dp.toPx()
+                                )
                             }
-                            .align(Alignment.CenterHorizontally),
+                        }
+                        .align(Alignment.CenterHorizontally)
                 )
             }
         }
         Row(
             modifier =
-                Modifier
-                    .background(Color.White)
-                    .border(
-                        width = 1.dp,
-                        color = if (customContent.isError) KoinTheme.colors.sub500 else KoinTheme.colors.neutral300,
-                        shape = RoundedCornerShape(4.dp),
-                    )
-                    .padding((5.5).dp),
+            Modifier
+                .background(Color.White)
+                .border(
+                    width = 1.dp,
+                    color = if (customContent.isError) KoinTheme.colors.sub500 else KoinTheme.colors.neutral300,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .padding((5.5).dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = customContent.dayOfWeek.toKorean(),
                 style = KoinTheme.typography.bold12,
                 color = KoinTheme.colors.neutral800,
-                modifier = Modifier.padding(start = (3.5).dp),
+                modifier = Modifier.padding(start = (3.5).dp)
             )
 
             IconButton(
                 onClick = {
                     isExpanded = true
                 },
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(24.dp)
             ) {
                 StableIcon(
-                    drawableResId = R.drawable.ic_arrow_down,
+                    drawableResId = R.drawable.ic_arrow_down
                 )
             }
         }
@@ -146,6 +146,6 @@ fun DayOfWeekEditBox(
 @Composable
 private fun DayOfWeekEditBoxEditBoxPreview() {
     DayOfWeekEditBox(
-        customContent = CustomExtraContentState(),
+        customContent = CustomExtraContentState()
     )
 }

@@ -12,12 +12,9 @@ import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.store.activity.StoreDetailActivity
 
 class StoreDetailActivityContract(
-    private val storeCategoryFactory: StoreActivity.StoreCategoryFactory? = null,
+    private val storeCategoryFactory: StoreActivity.StoreCategoryFactory? = null
 ) : ActivityResultContract<Triple<Int, String?, Boolean>, Unit>() {
-    override fun createIntent(
-        context: Context,
-        input: Triple<Int, String?, Boolean>,
-    ): Intent {
+    override fun createIntent(context: Context, input: Triple<Int, String?, Boolean>): Intent {
         return Intent(context, StoreDetailActivity::class.java).apply {
             putExtra(STORE_ID, input.first)
             putExtra(CATEGORY, input.second)
@@ -25,10 +22,7 @@ class StoreDetailActivityContract(
         }
     }
 
-    override fun parseResult(
-        resultCode: Int,
-        intent: Intent?,
-    ) {
+    override fun parseResult(resultCode: Int, intent: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             val category = storeCategoryFactory?.getCurrentCategory() ?: return
             val elapsedTime = intent?.getDoubleExtra(StoreDetailActivity.ELAPSED_TIME, .0)
@@ -40,7 +34,7 @@ class StoreDetailActivityContract(
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                     storeName ?: "Unknown",
                     EventExtra(AnalyticsConstant.CURRENT_PAGE, category),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString()),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
                 )
             } else if (backAction == "click") {
                 EventLogger.logClickEvent(
@@ -48,7 +42,7 @@ class StoreDetailActivityContract(
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_BACK,
                     storeName ?: "Unknown",
                     EventExtra(AnalyticsConstant.CURRENT_PAGE, category),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString()),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
                 )
             }
         }

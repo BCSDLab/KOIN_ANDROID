@@ -22,34 +22,34 @@ fun TimetableScheduleBox(
     currentSemester: String,
     timetableName: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Box(
         modifier =
-            modifier
-                .background(Color.White)
-                .border(
-                    width = 1.dp,
-                    color = KoinTheme.colors.neutral300,
-                    shape = RoundedCornerShape(10.dp),
-                )
-                .widthIn(max = (LocalConfiguration.current.screenWidthDp / 2).dp)
-                .noRippleClickable { onClick() }
-                .padding(5.dp),
+        modifier
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = KoinTheme.colors.neutral300,
+                shape = RoundedCornerShape(10.dp)
+            )
+            .widthIn(max = (LocalConfiguration.current.screenWidthDp / 2).dp)
+            .noRippleClickable { onClick() }
+            .padding(5.dp)
     ) {
         Text(
             text =
-                if (currentSemester.isEmpty()) {
-                    "학기 추가하기"
-                } else {
-                    currentSemester.toSemesterTitle(
-                        timetableName,
-                    )
-                },
+            if (currentSemester.isEmpty()) {
+                "학기 추가하기"
+            } else {
+                currentSemester.toSemesterTitle(
+                    timetableName
+                )
+            },
             style = KoinTheme.typography.regular14,
             color = KoinTheme.colors.neutral800,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -104,6 +104,6 @@ private fun String.toSemesterTitle(timetableName: String): String {
 private fun TimetableScheduleBoxPreview() {
     TimetableScheduleBox(
         currentSemester = "2024-여름",
-        timetableName = "시간표1",
+        timetableName = "시간표1"
     )
 }

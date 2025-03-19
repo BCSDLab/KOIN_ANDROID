@@ -5,23 +5,23 @@ interface OwnerChangePasswordRepository {
 
     suspend fun authenticateCode(
         email: String,
-        authCode: String,
+        authCode: String
     ): Result<Unit>
 
     suspend fun changePassword(
         email: String,
-        password: String,
+        password: String
     ): Result<Unit>
 
     suspend fun requestSmsVerification(phoneNumber: String)
 
     suspend fun authenticateSmsCode(
         phoneNumber: String,
-        authCode: String,
+        authCode: String
     ): Result<Unit>
 
     suspend fun changePasswordSms(
         phoneNumber: String,
-        password: String,
+        password: String
     ): Result<Unit>
 }

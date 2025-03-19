@@ -11,5 +11,5 @@ enum class SignupRoute() {
     STORE_SETUP,
     BUSINESS_REGISTER_NUMBER,
     ATTACH_FILE,
-    SIGNUP_COMPLETED,
+    SIGNUP_COMPLETED
 }

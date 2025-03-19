@@ -9,11 +9,11 @@ fun TermEntity.toTerm(): Term =
     Term(
         header = header,
         articles = articles.map(TermArticleEntity::toTermArticle),
-        footer = footer,
+        footer = footer
     )
 
 fun TermArticleEntity.toTermArticle(): TermArticle =
     TermArticle(
         article = article,
-        content = content,
+        content = content
     )

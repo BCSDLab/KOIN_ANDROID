@@ -35,25 +35,25 @@ import `in`.koreatech.koin.feature.bus.R
 internal fun ExpressTimetableScreenContent(
     expressTimetable: ExpressTimetableState,
     modifier: Modifier = Modifier,
-    onDirectionChanged: (CommonDirectionType) -> Unit = {},
+    onDirectionChanged: (CommonDirectionType) -> Unit = {}
 ) {
     var selectedDirectionType by rememberSaveable { mutableStateOf(CommonDirectionType.TO_BYEONGCHEON) }
     val context = LocalContext.current
 
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp, horizontal = 24.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp, horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = stringResource(R.string.operating),
                 style = KoinTheme.typography.regular16,
-                color = KoinTheme.colors.neutral600,
+                color = KoinTheme.colors.neutral600
             )
 
             TextChipGroup(
@@ -64,18 +64,18 @@ internal fun ExpressTimetableScreenContent(
                         CommonDirectionType.entries.find { context.getString(it.titleRes) == title } ?: CommonDirectionType.TO_BYEONGCHEON
                     EventLogger.logCampusClickEvent(
                         "ds_bus_direction",
-                        context.getString(selectedDirectionType.titleRes),
+                        context.getString(selectedDirectionType.titleRes)
                     )
                 },
                 selectedChipIndexes = intArrayOf(selectedDirectionType.ordinal),
-                showClickRipple = false,
+                showClickRipple = false
             )
         }
 
         CommonTimetableView(
             timetable = expressTimetable.timetable,
             updatedAt = expressTimetable.updatedAt.formatUpdatedTime(),
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
         )
 
         Box(modifier = Modifier.background(Color.White).fillMaxWidth().height(115.dp))
@@ -91,6 +91,6 @@ internal fun ExpressTimetableScreenContent(
 private fun ExpressTimetableScreenPreview() {
     ExpressTimetableScreenContent(
         modifier = Modifier.fillMaxSize().background(KoinTheme.colors.neutral100),
-        expressTimetable = expressTimetableMock,
+        expressTimetable = expressTimetableMock
     )
 }

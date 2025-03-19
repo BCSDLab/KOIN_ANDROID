@@ -9,5 +9,5 @@ sealed class InsertDetailInfoScreenSideEffect {
 enum class DetailInfoErrorType {
     NullStorePhoneNumber,
     NullStoreDeliveryFee,
-    NullStoreOtherInfo,
+    NullStoreOtherInfo
 }

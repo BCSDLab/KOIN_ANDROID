@@ -29,48 +29,48 @@ interface TimetableAuthApi {
     @Deprecated("use getLecturesByTimetableFrameId instead")
     @GET("/v2/timetables/lecture")
     suspend fun getTimetableLectures(
-        @Query("timetable_frame_id") timetableFrameId: Int,
+        @Query("timetable_frame_id") timetableFrameId: Int
     ): TimetableLecturesResponse
 
     @GET("/v3/timetables/lecture")
     suspend fun getLecturesByFrameId(
-        @Query("timetable_frame_id") timetableFrameId: Int,
+        @Query("timetable_frame_id") timetableFrameId: Int
     ): TimetableLecturesResponseV3
 
     @Deprecated("use editTimetableRegularLecture and editTimetableCustomLecture instead")
     @PUT("/v2/timetables/lecture")
     suspend fun putTimetableLectures(
-        @Body lectures: TimetableLecturesQueryRequest,
+        @Body lectures: TimetableLecturesQueryRequest
     ): TimetableLecturesResponse
 
     // 시간표에 담긴 정규 강의의 정보를 수정
     @PUT("v3/timetables/lecture/regular")
     suspend fun editTimetableRegularLecture(
-        @Body regularLectureRequest: TimetableRegularLectureRequest,
+        @Body regularLectureRequest: TimetableRegularLectureRequest
     ): TimetableLecturesResponseV3
 
     // 시간표에 담긴 커스텀 강의의 정보를 수정
     @PUT("v3/timetables/lecture/custom")
     suspend fun editTimetableCustomLecture(
-        @Body customLectureRequest: TimetableCustomLectureRequest,
+        @Body customLectureRequest: TimetableCustomLectureRequest
     ): TimetableLecturesResponseV3
 
     @Deprecated("use addRegularLectureOnTimetable and addCustomLectureOnTimetable instead")
     @POST("/v2/timetables/lecture")
     suspend fun postTimetableLectures(
-        @Body lectures: LecturesQueryRequest,
+        @Body lectures: LecturesQueryRequest
     ): TimetableLecturesResponse
 
     // 시간표에 새로운 정규 강의 추가
     @POST("/v3/timetables/lecture/regular")
     suspend fun addRegularLectureOnTimetable(
-        @Body regularLectureRequest: TimetableRegularLectureRequest,
+        @Body regularLectureRequest: TimetableRegularLectureRequest
     ): TimetableLecturesResponseV3
 
     // 시간표에 새로운 커스텀 강의 추가
     @POST("/v3/timetables/lecture/custom")
     suspend fun addCustomLectureOnTimetable(
-        @Body customLectureRequest: TimetableCustomLectureRequest,
+        @Body customLectureRequest: TimetableCustomLectureRequest
     ): TimetableLecturesResponseV3
 
     // 프레임 수정
@@ -78,51 +78,51 @@ interface TimetableAuthApi {
     @PUT("/v2/timetables/frame/{id}")
     suspend fun putTimetableFrame(
         @Path("id") id: Int,
-        @Body frame: TimetableFrameQueryRequest,
+        @Body frame: TimetableFrameQueryRequest
     ): TimetableFrameResponse
 
     @PUT("/v3/timetables/frame/{id}")
     suspend fun editFrame(
         @Path("id") frameId: Int,
         @Query("name") frameName: String,
-        @Query("is_main") isMain: Boolean,
+        @Query("is_main") isMain: Boolean
     ): List<TimetableFrameResponseV3>
 
     // 프레임 생성
     @Deprecated("use createFrame instead")
     @POST("/v2/timetables/frame")
     suspend fun postTimetableFrame(
-        @Body frame: TimetableFrameCreateQueryRequest,
+        @Body frame: TimetableFrameCreateQueryRequest
     ): TimetableFrameResponse
 
     @POST("/v3/timetables/frame")
     suspend fun createFrame(
         @Query("year") year: Int,
-        @Query("term") term: String,
+        @Query("term") term: String
     ): List<TimetableFrameResponseV3>
 
     @Deprecated("use restoreFrameByFrameId instead")
     @POST("/v2/timetables/frame/rollback")
     suspend fun postRollbackFrame(
-        @Query("timetable_frame_id") frameId: Int,
+        @Query("timetable_frame_id") frameId: Int
     ): TimetableLecturesResponse
 
     // 삭제한 시간표 복구
     @POST("/v3/timetables/frame/rollback")
     suspend fun restoreFrameByFrameId(
-        @Query("timetable_frame_id") frameId: Int,
+        @Query("timetable_frame_id") frameId: Int
     ): TimetableLecturesResponseV3
 
     // 학기의 모든 프레임 삭제
     @DELETE("/v3/timetables/frames")
     suspend fun deleteFramesBySemester(
         @Query("year") year: Int,
-        @Query("term") term: String,
+        @Query("term") term: String
     ): Response<Unit>
 
     @DELETE("/v2/timetables/frame")
     suspend fun deleteTimetableFrame(
-        @Query("id") frameId: Int,
+        @Query("id") frameId: Int
     ): Response<Unit>
 
     /**
@@ -132,14 +132,14 @@ interface TimetableAuthApi {
     @Deprecated("use getFramesBySemester instead")
     @GET("/v2/timetables/frames")
     suspend fun getTimetableFrames(
-        @Query("semester") semester: String,
+        @Query("semester") semester: String
     ): List<TimetableFrameResponse>
 
     // 학기에 있는 프레임들 조회
     @GET("/v3/timetables/frame")
     suspend fun getFramesBySemester(
         @Query("year") year: Int,
-        @Query("term") term: String,
+        @Query("term") term: String
     ): List<TimetableFrameResponseV3>
 
     /**
@@ -155,23 +155,23 @@ interface TimetableAuthApi {
 
     @DELETE("/v2/timetables/lecture/{id}")
     suspend fun deleteTimetableLecture(
-        @Path("id") id: Int,
+        @Path("id") id: Int
     ): Response<Unit>
 
     @DELETE("/v2/timetables/frame/{frameId}/lecture/{lectureId}")
     suspend fun deleteTimetableFrameLecture(
         @Path("frameId") frameId: Int,
-        @Path("lectureId") lectureId: Int,
+        @Path("lectureId") lectureId: Int
     ): Response<Unit>
 
     @DELETE("/v2/timetables/lectures")
     suspend fun deleteTimetableLectures(
-        @Query("timetable_lecture_ids") lectureIds: List<Int>,
+        @Query("timetable_lecture_ids") lectureIds: List<Int>
     ): Response<Unit>
 
     @Deprecated("use deleteFramesBySemester instead")
     @DELETE("/v2/all/timetables/frame")
     suspend fun deleteAllTimetableFrame(
-        @Query("semester") semester: String,
+        @Query("semester") semester: String
     ): Response<Unit>
 }

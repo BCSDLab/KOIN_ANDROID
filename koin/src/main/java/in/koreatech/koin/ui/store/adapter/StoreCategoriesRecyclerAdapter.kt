@@ -14,14 +14,16 @@ import `in`.koreatech.koin.databinding.StoreCategoryItemBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 
 class StoreCategoriesRecyclerAdapter() : ListAdapter<StoreCategories, StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder>(
-    diffCallback,
+    diffCallback
 ) {
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
     var isDoubleClick: Boolean = false
     var preCategories: Int? = null
 
-    inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(
+        binding.root
+    ) {
         val container = binding.container
         val storeCategoryImage = binding.imageViewStoreCategory
         val storeCategoryName = binding.textViewStoreCategory
@@ -29,7 +31,7 @@ class StoreCategoriesRecyclerAdapter() : ListAdapter<StoreCategories, StoreCateg
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int,
+        viewType: Int
     ): StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = StoreCategoryItemBinding.inflate(inflater, parent, false)
@@ -38,7 +40,7 @@ class StoreCategoriesRecyclerAdapter() : ListAdapter<StoreCategories, StoreCateg
 
     override fun onBindViewHolder(
         holder: StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder,
-        position: Int,
+        position: Int
     ) {
         val events = getItem(position)
         with(holder) {
@@ -63,8 +65,8 @@ class StoreCategoriesRecyclerAdapter() : ListAdapter<StoreCategories, StoreCateg
             storeCategoryName.setTextColor(
                 ContextCompat.getColor(
                     itemView.context,
-                    if (selectPosition == position && !isDoubleClick)R.color.colorAccent else R.color.black,
-                ),
+                    if (selectPosition == position && !isDoubleClick)R.color.colorAccent else R.color.black
+                )
             )
         }
     }
@@ -95,14 +97,14 @@ class StoreCategoriesRecyclerAdapter() : ListAdapter<StoreCategories, StoreCateg
             object : DiffUtil.ItemCallback<StoreCategories>() {
                 override fun areItemsTheSame(
                     oldItem: StoreCategories,
-                    newItem: StoreCategories,
+                    newItem: StoreCategories
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
                     oldItem: StoreCategories,
-                    newItem: StoreCategories,
+                    newItem: StoreCategories
                 ): Boolean {
                     return oldItem == newItem
                 }

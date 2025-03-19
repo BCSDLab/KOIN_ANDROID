@@ -8,7 +8,7 @@ data class ArticleLostAndFoundPaginationResponse(
     @SerializedName("total_count") val totalCount: Int,
     @SerializedName("current_count") val currentCount: Int,
     @SerializedName("total_page") val totalPage: Int,
-    @SerializedName("current_page") val currentPage: Int,
+    @SerializedName("current_page") val currentPage: Int
 ) {
     fun toArticleLostAndFoundPagination() =
         ArticleLostAndFoundPagination(
@@ -16,6 +16,6 @@ data class ArticleLostAndFoundPaginationResponse(
             totalCount = totalCount,
             currentCount = currentCount,
             totalPage = totalPage,
-            currentPage = currentPage,
+            currentPage = currentPage
         )
 }

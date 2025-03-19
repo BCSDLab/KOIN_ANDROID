@@ -8,15 +8,14 @@ data class ArticleState(
     val prevArticleId: Int?,
     val nextArticleId: Int?,
     val attachments: List<AttachmentState>,
-    val url: String,
+    val url: String
 )
 
-fun Article.toArticleState() =
-    ArticleState(
-        header = header.toArticleHeaderState(),
-        content = content,
-        prevArticleId = prevArticleId,
-        nextArticleId = nextArticleId,
-        attachments = attachments.map { it.toAttachmentState() },
-        url = url,
-    )
+fun Article.toArticleState() = ArticleState(
+    header = header.toArticleHeaderState(),
+    content = content,
+    prevArticleId = prevArticleId,
+    nextArticleId = nextArticleId,
+    attachments = attachments.map { it.toAttachmentState() },
+    url = url
+)

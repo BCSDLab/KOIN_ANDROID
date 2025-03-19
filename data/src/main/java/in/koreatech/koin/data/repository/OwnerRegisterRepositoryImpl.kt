@@ -16,12 +16,12 @@ import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
 import `in`.koreatech.koin.domain.util.ext.toSHA256
+import java.io.EOFException
 import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
-import java.io.EOFException
 
 class OwnerRegisterRepositoryImpl(
-    private val ownerRemoteDataSource: OwnerRemoteDataSource,
+    private val ownerRemoteDataSource: OwnerRemoteDataSource
 ) : OwnerRegisterRepository {
     override suspend fun ownerEmailRegister(
         attachments: List<OwnerRegisterUrl>,
@@ -31,7 +31,7 @@ class OwnerRegisterRepositoryImpl(
         password: String,
         phoneNumber: String,
         shopId: Int?,
-        shopName: String,
+        shopName: String
     ): Result<Unit> {
         return try {
             ownerRemoteDataSource.postOwnerEmailRegister(
@@ -43,8 +43,8 @@ class OwnerRegisterRepositoryImpl(
                     password.toSHA256(),
                     phoneNumber,
                     shopId,
-                    shopName,
-                ),
+                    shopName
+                )
             )
 
             Result.success(Unit)
@@ -65,7 +65,7 @@ class OwnerRegisterRepositoryImpl(
         phoneNumber: String,
         shopNumber: String,
         shopId: Int?,
-        shopName: String,
+        shopName: String
     ) {
         ownerRemoteDataSource.postOwnerRegister(
             OwnerRegisterRequest(
@@ -76,8 +76,8 @@ class OwnerRegisterRepositoryImpl(
                 phoneNumber,
                 shopNumber,
                 shopId,
-                shopName,
-            ),
+                shopName
+            )
         )
     }
 
@@ -92,7 +92,7 @@ class OwnerRegisterRepositoryImpl(
         operatingTime: List<OperatingTime>,
         isDeliveryOk: Boolean,
         isCardOk: Boolean,
-        isBankOk: Boolean,
+        isBankOk: Boolean
     ): Result<Unit> {
         return runCatching {
             ownerRemoteDataSource.postStoreRegister(
@@ -108,8 +108,8 @@ class OwnerRegisterRepositoryImpl(
                     open = operatingTime.toMyStoreDayOffResponse(),
                     payBank = isBankOk,
                     payCard = isCardOk,
-                    phone = phoneNumber.toPhoneNumber() ?: "",
-                ),
+                    phone = phoneNumber.toPhoneNumber() ?: ""
+                )
             )
         }.onFailure { exception ->
             if (exception is CancellationException) throw exception
@@ -124,7 +124,7 @@ class OwnerRegisterRepositoryImpl(
         isSingle: Boolean,
         menuName: String,
         menuOptionPrice: List<StoreMenuOptionPrice>,
-        menuSinglePrice: String,
+        menuSinglePrice: String
     ): Result<Unit> {
         return runCatching {
             ownerRemoteDataSource.postStoreMenu(
@@ -136,8 +136,8 @@ class OwnerRegisterRepositoryImpl(
                     isSingle = isSingle,
                     name = menuName,
                     optionPrices = if (!isSingle)menuOptionPrice.toOptionPriceList() else null,
-                    singlePrice = if (isSingle)menuSinglePrice.toInt() else null,
-                ),
+                    singlePrice = if (isSingle)menuSinglePrice.toInt() else null
+                )
             )
         }.onFailure { exception ->
             if (exception is CancellationException) throw exception
@@ -152,7 +152,7 @@ class OwnerRegisterRepositoryImpl(
         isSingle: Boolean,
         menuName: String,
         menuOptionPrice: List<StoreMenuOptionPrice>,
-        menuSinglePrice: String,
+        menuSinglePrice: String
     ): Result<Unit> {
         return runCatching {
             ownerRemoteDataSource.putStoreModifiedMenu(
@@ -164,8 +164,8 @@ class OwnerRegisterRepositoryImpl(
                     isSingle = isSingle,
                     name = menuName,
                     optionPrices = if (!isSingle)menuOptionPrice.toOptionPriceList() else null,
-                    singlePrice = if (isSingle)menuSinglePrice.toInt() else null,
-                ),
+                    singlePrice = if (isSingle)menuSinglePrice.toInt() else null
+                )
             )
         }.onFailure { exception ->
             if (exception is CancellationException) throw exception

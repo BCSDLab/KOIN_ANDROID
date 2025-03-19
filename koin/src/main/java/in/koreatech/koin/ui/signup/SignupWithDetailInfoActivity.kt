@@ -43,15 +43,14 @@ class SignupWithDetailInfoActivity : ActivityBase() {
         observeData()
     }
 
-    private fun initView() =
-        with(binding) {
-            signupBackButton.setOnClickListener { finish() }
+    private fun initView() = with(binding) {
+        signupBackButton.setOnClickListener { finish() }
 
-            getUserDataFromSignupActivity()
-            checkNickname()
-            continueSignup()
-            initSpinner()
-        }
+        getUserDataFromSignupActivity()
+        checkNickname()
+        continueSignup()
+        initSpinner()
+    }
 
     private fun continueSignup() {
         with(binding) {
@@ -59,38 +58,37 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                 signupViewModel.continueDetailSignup(
                     portalAccount = signupViewModel.portalEmail,
                     gender =
-                        when {
-                            signupUserRadiobuttonGenderMan.isChecked -> Gender.Man
-                            signupUserRadiobuttonGenderWoman.isChecked -> Gender.Woman
-                            else -> Gender.Unknown
-                        },
+                    when {
+                        signupUserRadiobuttonGenderMan.isChecked -> Gender.Man
+                        signupUserRadiobuttonGenderWoman.isChecked -> Gender.Woman
+                        else -> Gender.Unknown
+                    },
                     isGraduated =
-                        when {
-                            signupUserRadiobuttonGraduate.isChecked -> Graduated.Graduate
-                            signupUserRadiobuttonStudent.isChecked -> Graduated.Student
-                            else -> null
-                        },
+                    when {
+                        signupUserRadiobuttonGraduate.isChecked -> Graduated.Graduate
+                        signupUserRadiobuttonStudent.isChecked -> Graduated.Student
+                        else -> null
+                    },
                     major = spinnerSignupUserMajor.text.toString(),
                     name = signupUserEdittextName.text.toString().trim(),
                     nickName = signupUserEdittextNickName.text.toString().trim(),
                     password = signupViewModel.password.trim(),
                     phoneNumber = signupUserEdittextPhoneNumber.text.toString(),
                     studentNumber = signupUserEdittextStudentId.text.toString(),
-                    isCheckNickname = signupViewModel.isCheckedNickname,
+                    isCheckNickname = signupViewModel.isCheckedNickname
                 )
                 EventLogger.logClickEvent(
                     EventAction.USER,
                     AnalyticsConstant.Label.COMPLETE_SIGN_UP,
-                    "회원가입 완료",
+                    "회원가입 완료"
                 )
             }
         }
     }
 
-    private fun initSpinner() =
-        with(binding.spinnerSignupUserMajor) {
-            lifecycleOwner = this@SignupWithDetailInfoActivity
-        }
+    private fun initSpinner() = with(binding.spinnerSignupUserMajor) {
+        lifecycleOwner = this@SignupWithDetailInfoActivity
+    }
 
     private fun checkNickname() {
         binding.signupUserButtonNicknameCheck.setOnClickListener {
@@ -103,82 +101,83 @@ class SignupWithDetailInfoActivity : ActivityBase() {
     private fun getUserDataFromSignupActivity() {
         signupViewModel.setAccount(
             intent.getStringExtra(SIGN_UP_EMAIL) ?: "",
-            intent.getStringExtra(SIGN_UP_PASSWORD) ?: "",
+            intent.getStringExtra(SIGN_UP_PASSWORD) ?: ""
         )
     }
 
-    private fun observeData() =
-        with(signupViewModel) {
-            withLoading(this@SignupWithDetailInfoActivity, this)
+    private fun observeData() = with(signupViewModel) {
+        withLoading(this@SignupWithDetailInfoActivity, this)
 
-            lifecycleScope.launch {
-                signupViewModel.signupContinuationState.flowWithLifecycle(
-                    lifecycle,
-                    Lifecycle.State.STARTED,
-                ).collect { state ->
-                    when (state) {
-                        SignupContinuationState.CheckNameFormat ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_init_name),
+        lifecycleScope.launch {
+            signupViewModel.signupContinuationState.flowWithLifecycle(
+                lifecycle,
+                Lifecycle.State.STARTED
+            ).collect { state ->
+                when (state) {
+                    SignupContinuationState.CheckNameFormat ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_init_name)
+                        )
+
+                    SignupContinuationState.CheckPhoneNumberFormat ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_init_phone_number)
+                        )
+
+                    SignupContinuationState.CheckNickNameDuplication ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_check_nickname_duplication)
+                        )
+
+                    SignupContinuationState.NicknameDuplicated ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.error_nickname_duplicated)
+                        )
+
+                    SignupContinuationState.AvailableNickname ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_nickname_available)
+                        )
+
+                    SignupContinuationState.RequestedEmailValidation -> {
+                        EventLogger.logCustomEvent(
+                            action = EventAction.USER.value,
+                            category = "signup",
+                            label = AnalyticsConstant.Label.COMPLETE_SIGN_UP,
+                            value = "회원가입 완료 성공"
+                        )
+                        startSignupCompleteActivity()
+                    }
+
+                    is SignupContinuationState.Failed -> {
+                        when (state.throwable) {
+                            is SignupAlreadySentEmailException -> getString(
+                                R.string.signup_error_email_already_send_or_email_requested
                             )
-
-                        SignupContinuationState.CheckPhoneNumberFormat ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_init_phone_number),
-                            )
-
-                        SignupContinuationState.CheckNickNameDuplication ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_check_nickname_duplication),
-                            )
-
-                        SignupContinuationState.NicknameDuplicated ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.error_nickname_duplicated),
-                            )
-
-                        SignupContinuationState.AvailableNickname ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_nickname_available),
-                            )
-
-                        SignupContinuationState.RequestedEmailValidation -> {
-                            EventLogger.logCustomEvent(
-                                action = EventAction.USER.value,
-                                category = "signup",
-                                label = AnalyticsConstant.Label.COMPLETE_SIGN_UP,
-                                value = "회원가입 완료 성공",
-                            )
-                            startSignupCompleteActivity()
-                        }
-
-                        is SignupContinuationState.Failed -> {
-                            when (state.throwable) {
-                                is SignupAlreadySentEmailException -> getString(R.string.signup_error_email_already_send_or_email_requested)
-                                else -> {
-                                    SnackbarUtil.makeShortSnackbar(binding.root, state.message)
-                                }
+                            else -> {
+                                SnackbarUtil.makeShortSnackbar(binding.root, state.message)
                             }
                         }
-
-                        else -> Unit
                     }
-                }
-            }
 
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    signupViewModel.depts.collect { deptNames ->
-                        binding.spinnerSignupUserMajor.setItems(deptNames)
-                    }
+                    else -> Unit
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                signupViewModel.depts.collect { deptNames ->
+                    binding.spinnerSignupUserMajor.setItems(deptNames)
+                }
+            }
+        }
+    }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         hideKeyboard(currentFocus ?: binding.root)

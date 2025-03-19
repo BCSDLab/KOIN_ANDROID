@@ -2,10 +2,10 @@ package `in`.koreatech.koin.feature.timetable
 
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectureClassInfo
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import java.time.DayOfWeek
 import java.time.LocalTime
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class TimetableLectureTest {
     private val dummyTimetableLecture =
@@ -21,14 +21,14 @@ class TimetableLectureTest {
             department = "HRD학과",
             target = "전기3",
             classInfos = emptyList(),
-            designScore = "0",
+            designScore = "0"
         )
 
     @Test
     fun `강의 시간이 없을 때, 빈 리스트를 반환한다`() {
         val lecture =
             dummyTimetableLecture.copy(
-                classInfos = emptyList(),
+                classInfos = emptyList()
             )
 
         val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
@@ -42,12 +42,12 @@ class TimetableLectureTest {
         val lecture =
             dummyTimetableLecture.copy(
                 classInfos =
-                    listOf(
-                        TimetableLectureClassInfo(
-                            classTime = listOf(0, 1, 100, 101),
-                            classPlace = "",
-                        ),
-                    ),
+                listOf(
+                    TimetableLectureClassInfo(
+                        classTime = listOf(0, 1, 100, 101),
+                        classPlace = ""
+                    )
+                )
             )
 
         val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
@@ -56,8 +56,8 @@ class TimetableLectureTest {
             formatDayOfWeekAndClassTime,
             listOf(
                 Triple(DayOfWeek.MONDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
-                Triple(DayOfWeek.TUESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
-            ),
+                Triple(DayOfWeek.TUESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), "")
+            )
         )
     }
 
@@ -66,16 +66,16 @@ class TimetableLectureTest {
         val lecture =
             dummyTimetableLecture.copy(
                 classInfos =
-                    listOf(
-                        TimetableLectureClassInfo(
-                            classTime = listOf(100, 101),
-                            classPlace = "",
-                        ),
-                        TimetableLectureClassInfo(
-                            classTime = listOf(200, 201),
-                            classPlace = "",
-                        ),
+                listOf(
+                    TimetableLectureClassInfo(
+                        classTime = listOf(100, 101),
+                        classPlace = ""
                     ),
+                    TimetableLectureClassInfo(
+                        classTime = listOf(200, 201),
+                        classPlace = ""
+                    )
+                )
             )
 
         val formatDayOfWeekAndClassTime = lecture.formatTimetableEventContent()
@@ -84,8 +84,8 @@ class TimetableLectureTest {
             formatDayOfWeekAndClassTime,
             listOf(
                 Triple(DayOfWeek.TUESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
-                Triple(DayOfWeek.WEDNESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), ""),
-            ),
+                Triple(DayOfWeek.WEDNESDAY, listOf(LocalTime.of(9, 0), LocalTime.of(9, 30)), "")
+            )
         )
     }
 }

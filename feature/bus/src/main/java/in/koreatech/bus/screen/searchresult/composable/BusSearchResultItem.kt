@@ -24,14 +24,14 @@ fun BusSearchResultItem(
     result: BusSearchResultState,
     currentTime: ImmutableLocalTime,
     showBeforeTime: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 BusTypeChip(busType = result.busType)
@@ -40,23 +40,23 @@ fun BusSearchResultItem(
                         modifier = Modifier.padding(start = 6.dp),
                         text = result.busName + "번",
                         style = KoinTheme.typography.medium14,
-                        color = KoinTheme.colors.neutral800,
+                        color = KoinTheme.colors.neutral800
                     )
                 }
             }
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 text = result.departureTime.formatTime(),
-                style = KoinTheme.typography.bold20,
+                style = KoinTheme.typography.bold20
             )
         }
         if (showBeforeTime) {
             Text(
                 text = result.departureTime.formatBeforeTime(currentTime.localTime),
                 style =
-                    KoinTheme.typography.bold16.copy(
-                        color = KoinTheme.colors.info700,
-                    ),
+                KoinTheme.typography.bold16.copy(
+                    color = KoinTheme.colors.info700
+                )
             )
         }
     }
@@ -68,6 +68,6 @@ private fun BusSearchResultItemPreview() {
     BusSearchResultItem(
         result = busSearchResultMock1,
         currentTime = ImmutableLocalTime(LocalTime.now()),
-        showBeforeTime = true,
+        showBeforeTime = true
     )
 }

@@ -29,39 +29,39 @@ fun TimeEditBox(
     localTime: LocalTime,
     content: CustomExtraContentState,
     modifier: Modifier = Modifier,
-    onClick: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClick: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> }
 ) {
     Row(
         modifier =
-            modifier
-                .background(Color.White)
-                .border(
-                    width = 1.dp,
-                    color = if (content.isError)KoinTheme.colors.sub500 else KoinTheme.colors.neutral300,
-                    shape = RoundedCornerShape(4.dp),
-                )
-                .padding((5.5).dp),
+        modifier
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = if (content.isError)KoinTheme.colors.sub500 else KoinTheme.colors.neutral300,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .padding((5.5).dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text =
-                if (localTime == LocalTime.of(23, 59)) {
-                    "24:00"
-                } else {
-                    localTime.format(hourFormatter)
-                },
+            if (localTime == LocalTime.of(23, 59)) {
+                "24:00"
+            } else {
+                localTime.format(hourFormatter)
+            },
             style = KoinTheme.typography.bold12,
             color = KoinTheme.colors.neutral800,
-            modifier = Modifier.padding(start = (3.5).dp),
+            modifier = Modifier.padding(start = (3.5).dp)
         )
 
         IconButton(
             onClick = { onClick(content, true) },
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(20.dp)
         ) {
             StableIcon(
-                drawableResId = R.drawable.ic_arrow_up_down,
+                drawableResId = R.drawable.ic_arrow_up_down
             )
         }
     }
@@ -72,6 +72,6 @@ fun TimeEditBox(
 private fun TimeEditBoxPreview() {
     TimeEditBox(
         localTime = LocalTime.of(9, 0),
-        content = CustomExtraContentState(),
+        content = CustomExtraContentState()
     )
 }

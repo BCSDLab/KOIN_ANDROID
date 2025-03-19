@@ -5,15 +5,13 @@ import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectures
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import javax.inject.Inject
 
-class AddTimetableLectureUseCase
-    @Inject
-    constructor(
-        private val timetableRepository: TimetableRepository,
-    ) {
-        suspend operator fun invoke(
-            frameId: Int,
-            lectures: List<Lecture>,
-        ): Result<TimetableLectures> {
-            return timetableRepository.postTimetableLectures(frameId, lectures)
-        }
+class AddTimetableLectureUseCase @Inject constructor(
+    private val timetableRepository: TimetableRepository
+) {
+    suspend operator fun invoke(
+        frameId: Int,
+        lectures: List<Lecture>
+    ): Result<TimetableLectures> {
+        return timetableRepository.postTimetableLectures(frameId, lectures)
     }
+}

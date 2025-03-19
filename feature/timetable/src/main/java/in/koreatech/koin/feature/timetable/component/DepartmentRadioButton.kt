@@ -16,7 +16,7 @@ fun DepartmentRadioButton(
     text: String,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     // TODO::버튼 색상 수정 필요
     val containerColor = if (isSelected) KoinTheme.colors.primary100 else KoinTheme.colors.neutral0
@@ -24,23 +24,23 @@ fun DepartmentRadioButton(
     val textColor = if (isSelected) KoinTheme.colors.primary500 else KoinTheme.colors.neutral500
     Surface(
         modifier =
-            modifier
-                .selectable(
-                    selected = isSelected,
-                    role = null,
-                    onClick = onClick,
-                ),
+        modifier
+            .selectable(
+                selected = isSelected,
+                role = null,
+                onClick = onClick
+            ),
         shape = KoinTheme.shapes.extraSmall,
         color = containerColor,
-        border = BorderStroke(0.5.dp, borderColor),
+        border = BorderStroke(0.5.dp, borderColor)
     ) {
         Text(
             modifier = Modifier.wrapContentSize(),
             text = text,
             style =
-                KoinTheme.typography.regular14.copy(
-                    color = textColor,
-                ),
+            KoinTheme.typography.regular14.copy(
+                color = textColor
+            )
         )
     }
 }
@@ -52,7 +52,7 @@ private fun DepartmentRadioButtonPreview() {
         DepartmentRadioButton(
             text = "버튼인데여",
             isSelected = false,
-            onClick = {},
+            onClick = {}
         )
     }
 }

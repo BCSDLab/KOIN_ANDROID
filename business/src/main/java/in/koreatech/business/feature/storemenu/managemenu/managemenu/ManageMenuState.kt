@@ -12,18 +12,18 @@ data class ManageMenuState(
             MenuCategory("추천 메뉴", true),
             MenuCategory("메인 메뉴", false),
             MenuCategory("세트 메뉴", false),
-            MenuCategory("사이드 메뉴", false),
+            MenuCategory("사이드 메뉴", false)
         ),
     val isRecommendMenuChecked: Boolean = true,
     val isMainMenuChecked: Boolean = false,
     val isSetMenuChecked: Boolean = false,
     val isSideMenuChecked: Boolean = false,
-    val currentCheckboxState: CheckBoxState = CheckBoxState.RECOMMENDMENU,
+    val currentCheckboxState: CheckBoxState = CheckBoxState.RECOMMENDMENU
 )
 
 enum class CheckBoxState {
     RECOMMENDMENU,
     MAINMENU,
     SETMENU,
-    SIDEMENU,
+    SIDEMENU
 }

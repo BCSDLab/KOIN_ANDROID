@@ -6,7 +6,7 @@ data class TimetableCustomLectureRequest(
     @SerializedName("timetable_frame_id")
     val timetableFrameId: Int,
     @SerializedName("timetable_lecture")
-    val timetableCustomLectureBody: TimetableCustomLectureBody,
+    val timetableCustomLectureBody: TimetableCustomLectureBody
 ) {
     data class TimetableCustomLectureBody(
         @SerializedName("id")
@@ -16,7 +16,7 @@ data class TimetableCustomLectureRequest(
         @SerializedName("lecture_infos")
         val lectureInfos: List<TimetableCustomLectureInfo>,
         @SerializedName("professor")
-        val professor: String?,
+        val professor: String?
     )
 
     data class TimetableCustomLectureInfo(
@@ -25,6 +25,6 @@ data class TimetableCustomLectureRequest(
         @SerializedName("end_time")
         val endTime: Int,
         @SerializedName("place")
-        val place: String?,
+        val place: String?
     )
 }

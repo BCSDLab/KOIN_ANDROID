@@ -6,10 +6,10 @@ import `in`.koreatech.koin.domain.constant.LUNCH
 
 enum class DiningType(
     val typeEnglish: String,
-    val typeKorean: String,
+    val typeKorean: String
 ) {
     Breakfast(BREAKFAST, "아침"),
     Lunch(LUNCH, "점심"),
     Dinner(DINNER, "저녁"),
-    NextBreakfast(BREAKFAST, "내일 아침"),
+    NextBreakfast(BREAKFAST, "내일 아침")
 }

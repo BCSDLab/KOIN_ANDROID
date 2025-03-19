@@ -14,10 +14,10 @@ fun GlobalLoadingScreen() {
         Dialog(
             onDismissRequest = { },
             properties =
-                DialogProperties(
-                    dismissOnBackPress = true,
-                    dismissOnClickOutside = true,
-                ),
+            DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            )
         ) {
             CircularProgressIndicator()
         }

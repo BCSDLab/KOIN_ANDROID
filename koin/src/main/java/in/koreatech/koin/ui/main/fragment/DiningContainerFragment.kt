@@ -29,53 +29,45 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
     private val viewModel by activityViewModels<MainActivityViewModel>()
     private val place by lazy { arguments?.getString(PLACE) }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
         initViewModel()
     }
 
-    private fun initView() =
-        with(binding) {
-            diningContainer.setOnClickListener {
-                if (activity is MainActivity) {
-                    val mainActivity = activity as MainActivity
-                    mainActivity.callDrawerItem(R.id.navi_item_dining)
-                }
-                val type = DiningUtil.getCurrentType()
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MAIN_MENU_MOVEDETAILVIEW,
-                    (if (type == DiningType.NextBreakfast) "내일 " else "오늘 ") + requireContext().getString(R.string.navigation_item_dining),
-                )
+    private fun initView() = with(binding) {
+        diningContainer.setOnClickListener {
+            if (activity is MainActivity) {
+                val mainActivity = activity as MainActivity
+                mainActivity.callDrawerItem(R.id.navi_item_dining)
+            }
+            val type = DiningUtil.getCurrentType()
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.MAIN_MENU_MOVEDETAILVIEW,
+                (if (type == DiningType.NextBreakfast) "내일 " else "오늘 ") + requireContext().getString(R.string.navigation_item_dining)
+            )
+        }
+    }
+
+    private fun initViewModel() = with(viewModel) {
+        observeLiveData(diningData) {
+            updateDining(it, selectedPosition.value ?: 0)
+        }
+
+        observeLiveData(selectedPosition) { position ->
+            diningData.value?.let { list ->
+                updateDining(list, position)
             }
         }
 
-    private fun initViewModel() =
-        with(viewModel) {
-            observeLiveData(diningData) {
-                updateDining(it, selectedPosition.value ?: 0)
-            }
-
-            observeLiveData(selectedPosition) { position ->
-                diningData.value?.let { list ->
-                    updateDining(list, position)
-                }
-            }
-
-            observeLiveData(selectedType) {
-                binding.textViewDiningTime.text = it.localized(requireActivity())
-            }
+        observeLiveData(selectedType) {
+            binding.textViewDiningTime.text = it.localized(requireActivity())
         }
+    }
 
-    fun updateDining(
-        originalList: List<Dining>,
-        position: Int,
-    ) {
+    fun updateDining(originalList: List<Dining>, position: Int) {
         val diningType = DiningUtil.getCurrentType()
         val diningArranged =
             originalList
@@ -86,18 +78,18 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         updateStatus(position, diningArranged)
     }
 
-    private fun updateMenu(
-        originalList: List<Dining>,
-        arrangedList: List<Dining>,
-        position: Int,
-    ) {
+    private fun updateMenu(originalList: List<Dining>, arrangedList: List<Dining>, position: Int) {
         if (originalList.isEmpty() || arrangedList[position].menu.isEmpty()) {
             binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
             return
         }
         binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
 
-        val menus = listOf(binding.textViewDiningContainerMenuLeft, binding.textViewDiningContainerMenuRight)
+        val menus =
+            listOf(
+                binding.textViewDiningContainerMenuLeft,
+                binding.textViewDiningContainerMenuRight
+            )
         val limit = arrangedList[position].menu.size.coerceAtMost(5)
         menus.forEachIndexed { index, textView ->
             textView.text =
@@ -108,10 +100,7 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         }
     }
 
-    private fun updateStatus(
-        position: Int,
-        arrangedList: List<Dining>,
-    ) {
+    private fun updateStatus(position: Int, arrangedList: List<Dining>) {
         val isSoldOut = arrangedList[position].soldOutAt.isNotEmpty()
         val isChanged = arrangedList[position].changedAt.isNotEmpty()
         with(binding.textViewDiningStatus) {
@@ -140,12 +129,11 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
     companion object {
         private const val PLACE = "place"
 
-        fun newInstance(place: String) =
-            DiningContainerFragment().apply {
-                arguments =
-                    Bundle().apply {
-                        putString(PLACE, place)
-                    }
-            }
+        fun newInstance(place: String) = DiningContainerFragment().apply {
+            arguments =
+                Bundle().apply {
+                    putString(PLACE, place)
+                }
+        }
     }
 }

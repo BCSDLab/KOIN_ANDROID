@@ -13,22 +13,22 @@ interface ArticleRepository {
     fun fetchArticlePagination(
         boardId: Int,
         page: Int,
-        limit: Int,
+        limit: Int
     ): Flow<ArticlePagination>
 
     fun fetchArticle(
         articleId: Int,
-        boardId: Int,
+        boardId: Int
     ): Flow<Article>
 
     fun fetchPreviousArticle(
         articleId: Int,
-        boardId: Int,
+        boardId: Int
     ): Flow<Article>
 
     fun fetchNextArticle(
         articleId: Int,
-        boardId: Int,
+        boardId: Int
     ): Flow<Article>
 
     fun fetchHotArticleHeaders(): Flow<List<ArticleHeader>>
@@ -49,7 +49,7 @@ interface ArticleRepository {
         query: String,
         boardId: Int?,
         page: Int,
-        limit: Int,
+        limit: Int
     ): Flow<ArticlePagination>
 
     fun fetchMostSearchedKeywords(count: Int): Flow<List<String>>
@@ -65,7 +65,7 @@ interface ArticleRepository {
     fun fetchArticleLostAndFoundPagination(
         page: Int,
         limit: Int,
-        type: String?,
+        type: String?
     ): Flow<ArticleLostAndFoundPagination>
 
     fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound>
@@ -76,6 +76,6 @@ interface ArticleRepository {
 
     suspend fun reportLostAndFoundArticle(
         articleId: Int,
-        articleLostAndFoundList: List<ArticleLostAndFoundReportItem>,
+        articleLostAndFoundList: List<ArticleLostAndFoundReportItem>
     ): Result<Unit>
 }

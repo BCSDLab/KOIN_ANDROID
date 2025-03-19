@@ -5,11 +5,11 @@ import `in`.koreatech.koin.domain.model.article.Attachment
 
 data class AttachmentResponse(
     @SerializedName("name") val name: String,
-    @SerializedName("url") val url: String,
+    @SerializedName("url") val url: String
 ) {
     fun toAttachment() =
         Attachment(
             name = name,
-            url = url,
+            url = url
         )
 }

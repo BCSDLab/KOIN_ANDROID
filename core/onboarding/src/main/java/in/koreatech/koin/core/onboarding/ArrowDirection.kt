@@ -6,7 +6,7 @@ enum class ArrowDirection {
     BOTTOM,
     TOP,
     LEFT,
-    RIGHT,
+    RIGHT
     ;
 
     fun toArrowOrientation(): ArrowOrientation {

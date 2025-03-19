@@ -37,7 +37,7 @@ fun LostAndFoundDetail(
     navigateToArticleList: () -> Unit = {},
     navigateToHotArticle: (HotArticleData) -> Unit,
     navigateToChatRoom: (articleId: Int) -> Unit = {},
-    navigateToReport: (articleId: Int) -> Unit = {},
+    navigateToReport: (articleId: Int) -> Unit = {}
 ) {
     KoinTheme {
         val uiState by viewModel.collectAsState()
@@ -49,7 +49,7 @@ fun LostAndFoundDetail(
             handleSideEffect(it, context, navigateToArticleList)
         }
         Column(
-            modifier = modifier.verticalScroll(rememberScrollState()),
+            modifier = modifier.verticalScroll(rememberScrollState())
         ) {
             DetailHeader(
                 lostOrFound = uiState.lostOrFound,
@@ -57,7 +57,7 @@ fun LostAndFoundDetail(
                 foundPlace = uiState.foundPlace,
                 foundDate = uiState.foundDate,
                 author = uiState.author,
-                registeredAt = uiState.registeredAt,
+                registeredAt = uiState.registeredAt
             )
 
             HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
@@ -65,7 +65,7 @@ fun LostAndFoundDetail(
             DetailContent(
                 imageUris = uiState.images,
                 content = uiState.content,
-                isWriterAdmin = uiState.isWriterCouncil,
+                isWriterAdmin = uiState.isWriterCouncil
             )
 
             val loggingLostMessageSend = stringResource(id = R.string.logging_lost_message_send)
@@ -92,24 +92,24 @@ fun LostAndFoundDetail(
                             loggingLostMessageSend
                         } else {
                             loggingFoundMessageSend
-                        },
+                        }
                     )
                     navigateToChatRoom(uiState.id)
                 },
                 onReportArticleClick = {
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
-                        loggingReport,
+                        loggingReport
                     )
                     navigateToReport(uiState.id)
-                },
+                }
             )
 
             HorizontalDivider(thickness = 6.dp, color = KoinTheme.colors.neutral100)
 
             HotArticle(
                 hotArticleList = hotArticle,
-                navigateToHotArticle = navigateToHotArticle,
+                navigateToHotArticle = navigateToHotArticle
             )
 
             if (isLoading) {
@@ -122,7 +122,7 @@ fun LostAndFoundDetail(
 private fun handleSideEffect(
     sideEffect: LostAndFoundDetailSideEffect,
     context: Context,
-    navigateToArticleList: () -> Unit = {},
+    navigateToArticleList: () -> Unit = {}
 ) {
     when (sideEffect) {
         // is LostAndFoundDetailSideEffect.FetchDetail -> {}
@@ -131,7 +131,7 @@ private fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_delete_toast),
-                Toast.LENGTH_SHORT,
+                Toast.LENGTH_SHORT
             ).show()
             navigateToArticleList()
         }
@@ -140,7 +140,7 @@ private fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_delete_failed_toast),
-                Toast.LENGTH_SHORT,
+                Toast.LENGTH_SHORT
             ).show()
         }
 
@@ -154,7 +154,7 @@ private fun handleSideEffect(
             Toast.makeText(
                 context,
                 context.getString(R.string.detail_deleted_article),
-                Toast.LENGTH_SHORT,
+                Toast.LENGTH_SHORT
             ).show()
         }
     }

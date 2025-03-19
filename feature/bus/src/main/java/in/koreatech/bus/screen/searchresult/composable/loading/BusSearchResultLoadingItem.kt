@@ -16,32 +16,32 @@ import `in`.koreatech.bus.animation.skeleton
 internal fun BusSearchResultLoadingItem(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f)
         ) {
             Spacer(
                 modifier =
-                    Modifier.width(30.dp)
-                        .height(16.dp)
-                        .skeleton(),
+                Modifier.width(30.dp)
+                    .height(16.dp)
+                    .skeleton()
             )
             Spacer(
                 modifier =
-                    Modifier
-                        .padding(top = 4.dp)
-                        .width(100.dp)
-                        .height(20.dp)
-                        .skeleton(),
+                Modifier
+                    .padding(top = 4.dp)
+                    .width(100.dp)
+                    .height(20.dp)
+                    .skeleton()
             )
         }
         Spacer(
             modifier =
-                Modifier
-                    .width(80.dp)
-                    .height(30.dp)
-                    .skeleton(),
+            Modifier
+                .width(80.dp)
+                .height(30.dp)
+                .skeleton()
         )
     }
 }

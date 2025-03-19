@@ -15,7 +15,7 @@ class FragmentDataBindingProperty<T : ViewDataBinding> :
 
     override fun getValue(
         thisRef: Fragment,
-        property: KProperty<*>,
+        property: KProperty<*>
     ): T {
         if (!isMainThread) {
             throw IllegalAccessException("You should call data binding property delegate only on main thread")

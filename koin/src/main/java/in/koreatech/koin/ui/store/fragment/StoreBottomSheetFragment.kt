@@ -27,17 +27,14 @@ class StoreBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         return SelectStoreBottomSheetBinding.inflate(inflater, container, false).also {
             _binding = it
         }.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch {
@@ -54,7 +51,12 @@ class StoreBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         binding.storeSelectButton.setOnClickListener {
-            viewModel.setNeedToProceedStoreInfo(true, binding.storeNameText.text.toString(), storeId, storePhoneNumber)
+            viewModel.setNeedToProceedStoreInfo(
+                true,
+                binding.storeNameText.text.toString(),
+                storeId,
+                storePhoneNumber
+            )
             dismiss()
         }
     }

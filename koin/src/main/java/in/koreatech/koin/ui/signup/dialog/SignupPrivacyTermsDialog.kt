@@ -28,7 +28,7 @@ class SignupPrivacyTermsDialog : DialogFragment(), IProgressDialog {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         initViewModel()
         binding.dialogTermsTitle.text = getString(R.string.signup_privacy_terms)
@@ -36,26 +36,22 @@ class SignupPrivacyTermsDialog : DialogFragment(), IProgressDialog {
         return binding.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         signupPrivacyTermViewModel.getPrivacyTermText()
     }
 
-    private fun initViewModel() =
-        with(signupPrivacyTermViewModel) {
-            withLoading(viewLifecycleOwner, this)
-            observeLiveData(content) {
-                binding.dialogTermsContent.text = it
-            }
-
-            observeLiveData(contentLoadingError) { t ->
-                if (t != null) binding.dialogTermsContent.text = getString(R.string.signup_privacy_terms_error, t.localizedMessage)
-            }
+    private fun initViewModel() = with(signupPrivacyTermViewModel) {
+        withLoading(viewLifecycleOwner, this)
+        observeLiveData(content) {
+            binding.dialogTermsContent.text = it
         }
+
+        observeLiveData(contentLoadingError) { t ->
+            if (t != null) binding.dialogTermsContent.text = getString(R.string.signup_privacy_terms_error, t.localizedMessage)
+        }
+    }
 
     override fun onResume() {
         super.onResume()

@@ -5,5 +5,5 @@ data class ChatMessage(
     val userNickname: String,
     val content: String,
     val timestamp: String,
-    val isImage: Boolean,
+    val isImage: Boolean
 )

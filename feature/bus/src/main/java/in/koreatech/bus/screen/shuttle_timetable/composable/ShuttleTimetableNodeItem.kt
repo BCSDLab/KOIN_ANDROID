@@ -30,20 +30,20 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun ShuttleTimetableNodeItem(
     nodes: ImmutableList<ShuttleTimetableNodeInfoState>,
     nodeItemHeightDp: Dp,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.width(IntrinsicSize.Max),
+        modifier = modifier.width(IntrinsicSize.Max)
     ) {
         Text(
             text = stringResource(R.string.node_name),
             style = KoinTheme.typography.regular14,
             color = KoinTheme.colors.neutral600,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(color = KoinTheme.colors.neutral100)
-                    .padding(horizontal = 24.dp, vertical = 8.dp),
+            Modifier
+                .fillMaxWidth()
+                .background(color = KoinTheme.colors.neutral100)
+                .padding(horizontal = 24.dp, vertical = 8.dp)
         )
 
         nodes.fastForEach { node ->
@@ -51,9 +51,9 @@ internal fun ShuttleTimetableNodeItem(
                 nodeTitle = node.name,
                 nodeDescription = node.detail,
                 modifier =
-                    Modifier
-                        .padding(horizontal = 24.dp, vertical = 4.dp)
-                        .height(nodeItemHeightDp),
+                Modifier
+                    .padding(horizontal = 24.dp, vertical = 4.dp)
+                    .height(nodeItemHeightDp)
             )
         }
     }
@@ -68,8 +68,8 @@ private fun ShuttleTimetableNodeItemPreview() {
             shuttleTimetableNodeInfoMock2,
             shuttleTimetableNodeInfoMock3,
             shuttleTimetableNodeInfoMock4,
-            shuttleTimetableNodeInfoMock5,
+            shuttleTimetableNodeInfoMock5
         ),
-        nodeItemHeightDp = 40.dp,
+        nodeItemHeightDp = 40.dp
     )
 }

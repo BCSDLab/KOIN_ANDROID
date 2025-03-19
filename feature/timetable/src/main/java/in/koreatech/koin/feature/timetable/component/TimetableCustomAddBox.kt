@@ -25,35 +25,35 @@ import `in`.koreatech.koin.feature.timetable.R
 @Composable
 fun TimetableCustomAddBox(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier =
-            modifier
-                .height(35.dp)
-                .fillMaxWidth()
-                .background(Color.White)
-                .border(
-                    width = 1.dp,
-                    color = KoinTheme.colors.neutral300,
-                    shape = RoundedCornerShape(4.dp),
-                )
-                .padding(top = 5.dp, bottom = 5.dp, start = 13.dp, end = 5.dp),
+        modifier
+            .height(35.dp)
+            .fillMaxWidth()
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = KoinTheme.colors.neutral300,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .padding(top = 5.dp, bottom = 5.dp, start = 13.dp, end = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = stringResource(id = R.string.timetable_add_time_and_place),
             style = KoinTheme.typography.bold12,
-            color = KoinTheme.colors.primary500,
+            color = KoinTheme.colors.primary500
         )
         IconButton(
             onClick = onClick,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(24.dp)
         ) {
             StableIcon(
                 drawableResId = R.drawable.ic_add,
-                tint = KoinTheme.colors.primary500,
+                tint = KoinTheme.colors.primary500
             )
         }
     }

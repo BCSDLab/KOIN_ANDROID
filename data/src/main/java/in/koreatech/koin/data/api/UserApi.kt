@@ -18,36 +18,36 @@ import retrofit2.http.Query
 interface UserApi {
     @POST(URLConstant.USER.LOGIN)
     suspend fun getToken(
-        @Body loginRequest: LoginRequest,
+        @Body loginRequest: LoginRequest
     ): AuthResponse
 
     @POST(URLConstant.OWNER.SIGNIN)
     suspend fun getOwnerToken(
-        @Body ownerLoginRequest: OwnerLoginRequest,
+        @Body ownerLoginRequest: OwnerLoginRequest
     ): OwnerAuthResponse
 
     @POST(URLConstant.USER.STUDENT.REGISTER)
     suspend fun postRegister(
-        @Body studentInfoRequest: StudentInfoRequest,
+        @Body studentInfoRequest: StudentInfoRequest
     )
 
     @POST(URLConstant.USER.FINDPASSWORD)
     suspend fun postPasswordReset(
-        @Body idRequest: IdRequest,
+        @Body idRequest: IdRequest
     )
 
     @GET(URLConstant.USER.CHECKNICKNAME)
     suspend fun checkNickname(
-        @Query("nickname") nickname: String,
+        @Query("nickname") nickname: String
     )
 
     @GET(URLConstant.USER.CHECKEMAIL)
     suspend fun checkEmail(
-        @Query("address") email: String,
+        @Query("address") email: String
     )
 
     @POST(URLConstant.USER.REFRESH)
     suspend fun postUserRefresh(
-        @Body refreshRequest: RefreshRequest,
+        @Body refreshRequest: RefreshRequest
     ): Response<RefreshResponse>
 }

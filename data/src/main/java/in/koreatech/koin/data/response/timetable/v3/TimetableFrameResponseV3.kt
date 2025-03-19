@@ -8,5 +8,5 @@ data class TimetableFrameResponseV3(
     @SerializedName("name")
     val name: String,
     @SerializedName("is_main")
-    val isMain: Boolean,
+    val isMain: Boolean
 )

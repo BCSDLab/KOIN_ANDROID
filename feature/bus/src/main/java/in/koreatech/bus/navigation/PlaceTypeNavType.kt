@@ -9,11 +9,11 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 internal object PlaceTypeNavType : NavType<PlaceType>(
-    isNullableAllowed = true,
+    isNullableAllowed = true
 ) {
     override fun get(
         bundle: Bundle,
-        key: String,
+        key: String
     ): PlaceType {
         return BundleCompat.getSerializable(bundle, key, PlaceType::class.java)!!
     }
@@ -25,7 +25,7 @@ internal object PlaceTypeNavType : NavType<PlaceType>(
     override fun put(
         bundle: Bundle,
         key: String,
-        value: PlaceType,
+        value: PlaceType
     ) {
         bundle.putSerializable(key, value)
     }

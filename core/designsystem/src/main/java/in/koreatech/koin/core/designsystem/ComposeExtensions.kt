@@ -25,7 +25,7 @@ fun Modifier.noRippleClickable(
     enabled: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) = composed {
     this.clickable(
         interactionSource = remember { MutableInteractionSource() },
@@ -33,7 +33,7 @@ fun Modifier.noRippleClickable(
         enabled = enabled,
         onClickLabel = onClickLabel,
         role = role,
-        onClick = onClick,
+        onClick = onClick
     )
 }
 
@@ -46,7 +46,7 @@ fun Modifier.dashedBorder(
     strokeWidth: Dp = 1.dp,
     dashLength: Dp = 3.dp,
     gapLength: Dp = 3.dp,
-    cap: StrokeCap = StrokeCap.Round,
+    cap: StrokeCap = StrokeCap.Round
 ) = dashedBorder(brush = SolidColor(color), shape, strokeWidth, dashLength, gapLength, cap)
 
 private fun Modifier.dashedBorder(
@@ -55,7 +55,7 @@ private fun Modifier.dashedBorder(
     strokeWidth: Dp,
     dashLength: Dp,
     gapLength: Dp,
-    cap: StrokeCap = StrokeCap.Round,
+    cap: StrokeCap = StrokeCap.Round
 ) = this.drawWithContent {
     val outline = shape.createOutline(size, layoutDirection, density = this)
 
@@ -64,9 +64,9 @@ private fun Modifier.dashedBorder(
             cap = cap,
             width = strokeWidth.toPx(),
             pathEffect =
-                PathEffect.dashPathEffect(
-                    intervals = floatArrayOf(dashLength.toPx(), gapLength.toPx()),
-                ),
+            PathEffect.dashPathEffect(
+                intervals = floatArrayOf(dashLength.toPx(), gapLength.toPx())
+            )
         )
 
     drawContent()
@@ -74,6 +74,6 @@ private fun Modifier.dashedBorder(
     drawOutline(
         outline = outline,
         style = dashedStroke,
-        brush = brush,
+        brush = brush
     )
 }

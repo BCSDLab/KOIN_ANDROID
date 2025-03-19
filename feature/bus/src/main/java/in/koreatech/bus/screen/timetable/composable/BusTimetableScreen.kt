@@ -17,7 +17,7 @@ internal fun BusTimetableScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
     onNavigateToShuttleTimetableScreen: (ShuttleCourseRouteState) -> Unit = {},
-    viewModel: BusTimetableViewModel = hiltViewModel(),
+    viewModel: BusTimetableViewModel = hiltViewModel()
 ) {
     val busTimetableUiState by viewModel.timetableUiState.collectAsStateWithLifecycle()
     val busNoticeUiState by viewModel.noticeUiState.collectAsStateWithLifecycle()
@@ -35,7 +35,7 @@ internal fun BusTimetableScreen(
             onCityBusNumberChange = viewModel::onCityBusNumberChanged,
             onCityDirectionChange = viewModel::onCityDirectionChanged,
             onCloseNotice = viewModel::closeNotice,
-            onNoticeClick = { context.goToArticle(it.id) },
+            onNoticeClick = { context.goToArticle(it.id) }
         )
     }
 }

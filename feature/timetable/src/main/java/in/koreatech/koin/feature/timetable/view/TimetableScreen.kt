@@ -87,7 +87,7 @@ fun TimetableScreen(
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickAddCustomContent: () -> Unit = {},
-    onClickRemoveCustomContent: (id: Int) -> Unit = {},
+    onClickRemoveCustomContent: (id: Int) -> Unit = {}
 ) {
     var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
 
@@ -124,7 +124,7 @@ fun TimetableScreen(
                         onClickStartTime = onClickStartTime,
                         onClickEndTime = onClickEndTime,
                         onClickAddCustomContent = onClickAddCustomContent,
-                        onClickRemoveCustomContent = onClickRemoveCustomContent,
+                        onClickRemoveCustomContent = onClickRemoveCustomContent
                     )
                 }
 
@@ -133,35 +133,35 @@ fun TimetableScreen(
                         lecture = detailLecture,
                         onBottomSheetHeightChange = { bottomSheetHeight = it },
                         onClickLectureDelete = onClickBottomSheetDetailDelete,
-                        onClickComplete = onClickBottomSheetDetailComplete,
+                        onClickComplete = onClickBottomSheetDetailComplete
                     )
                 }
             }
         },
         sheetPeekHeight = 0.dp,
-        sheetElevation = 20.dp,
+        sheetElevation = 20.dp
     ) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .fillMaxHeight()
-                    .background(Color.White)
-                    .dynamicPadding(sheetState, bottomSheetHeight),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            Modifier
+                .fillMaxSize()
+                .fillMaxHeight()
+                .background(Color.White)
+                .dynamicPadding(sheetState, bottomSheetHeight),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(14.dp))
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TimetableScheduleBox(
                     currentSemester = currentSemester,
                     timetableName = timetableName,
-                    onClick = onClickTimetableSchedule,
+                    onClick = onClickTimetableSchedule
                 )
                 TimetableDownloadBox(onClick = onClickDownloadTimetable)
             }
@@ -172,7 +172,7 @@ fun TimetableScreen(
                 events = timetableEvents,
                 clickEvent = clickedTimetableEvents,
                 etcClickEvent = etcClickedTimetableEvents,
-                onEventClick = onClickTimetableEvent,
+                onEventClick = onClickTimetableEvent
             )
         }
     }
@@ -181,22 +181,22 @@ fun TimetableScreen(
 @OptIn(ExperimentalMaterialApi::class)
 private fun Modifier.dynamicPadding(
     sheetState: BottomSheetState,
-    sheetHeight: Float,
+    sheetHeight: Float
 ) = padding(
     bottom =
-        if (sheetState.isExpanded) {
-            if (sheetState.progress == 1.0f) {
-                if (sheetState.currentValue == BottomSheetValue.Expanded && sheetState.targetValue == BottomSheetValue.Collapsed) {
-                    0.dp
-                } else {
-                    sheetHeight.pxToDp
-                }
+    if (sheetState.isExpanded) {
+        if (sheetState.progress == 1.0f) {
+            if (sheetState.currentValue == BottomSheetValue.Expanded && sheetState.targetValue == BottomSheetValue.Collapsed) {
+                0.dp
             } else {
-                sheetHeight.pxToDp * (1.0f - sheetState.progress)
+                sheetHeight.pxToDp
             }
         } else {
-            0.dp
-        },
+            sheetHeight.pxToDp * (1.0f - sheetState.progress)
+        }
+    } else {
+        0.dp
+    }
 )
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -217,10 +217,10 @@ private fun TimetableScreenPreview() {
         bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
         bottomSheetUI = BottomSheetUI.DEFAULT,
         sheetState =
-            rememberBottomSheetState(
-                initialValue = BottomSheetValue.Collapsed,
-            ),
+        rememberBottomSheetState(
+            initialValue = BottomSheetValue.Collapsed
+        ),
         sheetLazyListState = rememberLazyListState(),
-        scaffoldState = rememberBottomSheetScaffoldState(),
+        scaffoldState = rememberBottomSheetScaffoldState()
     )
 }

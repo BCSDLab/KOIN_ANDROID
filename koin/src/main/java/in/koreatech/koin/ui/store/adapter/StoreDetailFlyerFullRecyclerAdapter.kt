@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
 
 class StoreDetailFlyerFullRecyclerAdapter() : ListAdapter<String, StoreDetailFlyerFullRecyclerAdapter.ViewHolder>(
-    diffCallback,
+    diffCallback
 ) {
     private val glideOptions: RequestOptions =
         RequestOptions()
@@ -31,37 +31,25 @@ class StoreDetailFlyerFullRecyclerAdapter() : ListAdapter<String, StoreDetailFly
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView: View =
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.store_flyer_list_item_full, parent, false)
         return ViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<String>() {
-                override fun areItemsTheSame(
-                    oldItem: String,
-                    newItem: String,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
                     return oldItem == newItem
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: String,
-                    newItem: String,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
                     return oldItem == newItem
                 }
             }

@@ -4,5 +4,5 @@ enum class StoreDetailScrollType {
     NONE,
     MENU,
     EVENT,
-    REVIEW,
+    REVIEW
 }

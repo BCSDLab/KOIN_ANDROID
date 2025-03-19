@@ -8,5 +8,5 @@ data class CoopShop(
     val phone: String,
     val location: String,
     val remarks: String,
-    val updatedAt: String,
+    val updatedAt: String
 )

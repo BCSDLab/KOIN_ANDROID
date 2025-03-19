@@ -54,55 +54,53 @@ class BusinessSignupBaseActivity : ActivityBase(R.layout.activity_business_signu
         initViewModel()
     }
 
-    private fun initView() =
-        with(binding) {
-            signupBackButton.setOnClickListener {
-                when (curFragmentTag) {
-                    BASIC_INFO_FRAGMENT -> finish()
-                    else -> backFragment()
-                }
+    private fun initView() = with(binding) {
+        signupBackButton.setOnClickListener {
+            when (curFragmentTag) {
+                BASIC_INFO_FRAGMENT -> finish()
+                else -> backFragment()
             }
         }
+    }
 
-    private fun initViewModel() =
-        with(viewModel) {
-            observeLiveData(toBeShownFragment) {
-                curFragmentTag = it
-                currentFragment()
-            }
-
-            observeLiveData(saveFileUrls) {
-                fileUrls = it
-            }
-
-            observeLiveData(saveCompanyNumber) {
-                companyNumber = it
-            }
-
-            observeLiveData(saveEmail) {
-                email = it
-            }
-
-            observeLiveData(saveName) {
-                name = it
-            }
-
-            observeLiveData(savePassword) {
-                password = it
-            }
-
-            observeLiveData(savePhoneNumber) {
-                phoneNumber = it
-            }
-
-            observeLiveData(saveShopId) {
-                shopId = it
-            }
-
-            observeLiveData(saveShopName) {
-                shopName = it
-            }
+    private fun initViewModel() = with(viewModel) {
+        observeLiveData(toBeShownFragment) {
+            curFragmentTag = it
+            currentFragment()
         }
+
+        observeLiveData(saveFileUrls) {
+            fileUrls = it
+        }
+
+        observeLiveData(saveCompanyNumber) {
+            companyNumber = it
+        }
+
+        observeLiveData(saveEmail) {
+            email = it
+        }
+
+        observeLiveData(saveName) {
+            name = it
+        }
+
+        observeLiveData(savePassword) {
+            password = it
+        }
+
+        observeLiveData(savePhoneNumber) {
+            phoneNumber = it
+        }
+
+        observeLiveData(saveShopId) {
+            shopId = it
+        }
+
+        observeLiveData(saveShopName) {
+            shopName = it
+        }
+    }
 
     private fun currentFragment() {
         when (curFragmentTag) {
@@ -111,7 +109,11 @@ class BusinessSignupBaseActivity : ActivityBase(R.layout.activity_business_signu
             CERTIFICATION_FRAGMENT -> showFragment(certificationFragment)
             SEARCH_STORE_FRAGMENT -> showFragment(searchStoreFragment)
             COMPLETE_ACTIVITY -> {
-                val intent = Intent(this@BusinessSignupBaseActivity, BusinessSignUpCompleteActivity::class.java)
+                val intent =
+                    Intent(
+                        this@BusinessSignupBaseActivity,
+                        BusinessSignUpCompleteActivity::class.java
+                    )
 
                 intent.putExtra("fileUrls", fileUrls.toTypedArray())
                 intent.putExtra("companyNumber", companyNumber)

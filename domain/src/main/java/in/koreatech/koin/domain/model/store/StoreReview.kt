@@ -6,5 +6,5 @@ data class StoreReview(
     val totalPage: Int,
     val currentPage: Int,
     val statistics: StoreReviewStatistics,
-    val reviews: List<StoreReviewContent>,
+    val reviews: List<StoreReviewContent>
 )

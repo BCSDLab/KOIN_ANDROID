@@ -24,19 +24,19 @@ import `in`.koreatech.business.navigation.sharedHiltViewModel
 fun NavGraphBuilder.signUpScreen(navController: NavController) {
     navigation(
         route = SIGNUPSCREEN,
-        startDestination = SignupRoute.TERMS_OF_SERVICE.name,
+        startDestination = SignupRoute.TERMS_OF_SERVICE.name
     ) {
         composable(
-            route = SignupRoute.TERMS_OF_SERVICE.name,
+            route = SignupRoute.TERMS_OF_SERVICE.name
         ) {
             CheckTermScreen(
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = { navController.navigate(SignupRoute.BASIC_INFO_INPUT.name) },
+                onNextClicked = { navController.navigate(SignupRoute.BASIC_INFO_INPUT.name) }
             )
         }
 
         composable(
-            route = SignupRoute.BASIC_INFO_INPUT.name,
+            route = SignupRoute.BASIC_INFO_INPUT.name
         ) {
             val accountSetupViewModel: AccountSetupViewModel = it.sharedHiltViewModel(navController = navController)
             AccountSetupScreen(
@@ -44,12 +44,12 @@ fun NavGraphBuilder.signUpScreen(navController: NavController) {
                 onNextClicked = {
                     navController.navigate(SignupRoute.ENTER_PASSWORD.name)
                 },
-                viewModel = accountSetupViewModel,
+                viewModel = accountSetupViewModel
             )
         }
 
         composable(
-            route = SignupRoute.ENTER_PASSWORD.name,
+            route = SignupRoute.ENTER_PASSWORD.name
         ) {
             val accountSetupViewModel: AccountSetupViewModel = it.sharedHiltViewModel(navController = navController)
             EnterPasswordScreen(
@@ -57,24 +57,24 @@ fun NavGraphBuilder.signUpScreen(navController: NavController) {
                 onNextClicked = {
                     navController.navigate(SignupRoute.BUSINESS_AUTH.name)
                 },
-                viewModel = accountSetupViewModel,
+                viewModel = accountSetupViewModel
             )
         }
 
         composable(
-            route = SignupRoute.BUSINESS_AUTH.name,
+            route = SignupRoute.BUSINESS_AUTH.name
         ) {
             val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
             BusinessAuthScreen(
                 viewModel = businessAuthViewModel,
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = { navController.popBackStack() }
             ) {
                 navController.navigate(SignupRoute.ENTER_STORE_NAME.name)
             }
         }
 
         composable(
-            route = SignupRoute.ENTER_STORE_NAME.name,
+            route = SignupRoute.ENTER_STORE_NAME.name
         ) {
             val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
             EnterStoreNameScreen(
@@ -82,58 +82,58 @@ fun NavGraphBuilder.signUpScreen(navController: NavController) {
                 onBackClicked = { navController.popBackStack() },
                 onSearchClicked = {
                     navController.navigate(SignupRoute.STORE_SETUP.name)
-                },
+                }
             ) {
                 navController.navigate(SignupRoute.BUSINESS_REGISTER_NUMBER.name)
             }
         }
 
         composable(
-            route = SignupRoute.STORE_SETUP.name,
+            route = SignupRoute.STORE_SETUP.name
         ) {
             val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
             SearchStoreScreen(
                 businessAuthViewModel = businessAuthViewModel,
                 onBackButtonClicked = {
                     navController.popBackStack()
-                },
+                }
             )
         }
 
         composable(
-            route = SignupRoute.BUSINESS_REGISTER_NUMBER.name,
+            route = SignupRoute.BUSINESS_REGISTER_NUMBER.name
         ) {
             val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
             EnterBusinessNumberScreen(
                 viewModel = businessAuthViewModel,
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = { navController.popBackStack() }
             ) {
                 navController.navigate(SignupRoute.ATTACH_FILE.name)
             }
         }
 
         composable(
-            route = SignupRoute.ATTACH_FILE.name,
+            route = SignupRoute.ATTACH_FILE.name
         ) {
             val businessAuthViewModel: BusinessAuthViewModel = it.sharedHiltViewModel(navController = navController)
             val accountSetupViewModel: AccountSetupViewModel = it.sharedHiltViewModel(navController = navController)
             AttachFileScreen(
                 businessAuthViewModel = businessAuthViewModel,
                 accountSetupViewModel = accountSetupViewModel,
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = { navController.popBackStack() }
             ) {
                 navController.navigate(SignupRoute.SIGNUP_COMPLETED.name)
             }
         }
 
         composable(
-            route = SignupRoute.SIGNUP_COMPLETED.name,
+            route = SignupRoute.SIGNUP_COMPLETED.name
         ) {
             CompleteSignupScreen(
                 onBackClicked = {
                     navController.navigate(SIGNINSCREEN) {
                         popUpTo(
-                            SIGNUPSCREEN,
+                            SIGNUPSCREEN
                         ) {
                             inclusive = true
                         }
@@ -142,12 +142,12 @@ fun NavGraphBuilder.signUpScreen(navController: NavController) {
                 onNavigateToLoginScreen = {
                     navController.navigate(SIGNINSCREEN) {
                         popUpTo(
-                            SIGNUPSCREEN,
+                            SIGNUPSCREEN
                         ) {
                             inclusive = true
                         }
                     }
-                },
+                }
             )
         }
     }

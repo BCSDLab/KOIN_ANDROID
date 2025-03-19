@@ -13,12 +13,12 @@ import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagingRepository
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.ui.scheme.SchemeActivity
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class KoinFirebaseMessagingService : FirebaseMessagingService() {

@@ -24,30 +24,30 @@ object ErrorHandlerModule {
     @Provides
     @Singleton
     fun provideUserErrorHandler(
-        @ApplicationContext applicationContext: Context,
+        @ApplicationContext applicationContext: Context
     ): UserErrorHandler = UserErrorHandlerImpl(applicationContext)
 
     @Provides
     @Singleton
     fun provideDeptErrorHandler(
-        @ApplicationContext applicationContext: Context,
+        @ApplicationContext applicationContext: Context
     ): DeptErrorHandler = DeptErrorHandlerImpl(applicationContext)
 
     @Provides
     @Singleton
     fun provideTokenErrorHandler(
-        @ApplicationContext applicationContext: Context,
+        @ApplicationContext applicationContext: Context
     ): TokenErrorHandler = TokenErrorHandlerImpl(applicationContext)
 
     @Provides
     @Singleton
     fun provideOwnerErrorHandler(
-        @ApplicationContext applicationContext: Context,
+        @ApplicationContext applicationContext: Context
     ): OwnerErrorHandler = OwnerErrorHandlerImpl(applicationContext)
 
     @Provides
     @Singleton
     fun provideCoopShopErrorHandler(
-        @ApplicationContext applicationContext: Context,
+        @ApplicationContext applicationContext: Context
     ): CoopShopErrorHandler = CoopShopErrorHandlerImpl(applicationContext)
 }

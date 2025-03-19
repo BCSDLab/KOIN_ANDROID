@@ -11,5 +11,5 @@ data class UserResponse(
     @SerializedName("name") val name: String,
     @SerializedName("nickname") val nickname: String?,
     @SerializedName("phone_number") val phoneNumber: String?,
-    @SerializedName("student_number") val studentNumber: String?,
+    @SerializedName("student_number") val studentNumber: String?
 )

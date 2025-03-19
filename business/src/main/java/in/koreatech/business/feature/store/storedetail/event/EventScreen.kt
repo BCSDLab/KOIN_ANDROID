@@ -19,13 +19,13 @@ fun EventScreen(
     currentPage: Int,
     viewModel: MyStoreDetailViewModel,
     state: MyStoreDetailState,
-    onDeleteEvent: () -> Unit,
+    onDeleteEvent: () -> Unit
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
         verticalOffset,
-        scrollState.value,
+        scrollState.value
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
 
     LaunchedEffect(scrollState.value) {
@@ -51,6 +51,6 @@ fun EventScreen(
         dialogTitle = stringResource(R.string.event_delete_title),
         dialogText = stringResource(R.string.event_delete_text),
         positiveButtonText = stringResource(id = R.string.delete),
-        visibility = state.dialogVisibility,
+        visibility = state.dialogVisibility
     )
 }

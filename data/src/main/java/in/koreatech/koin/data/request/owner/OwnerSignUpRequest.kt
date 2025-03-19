@@ -5,5 +5,5 @@ import `in`.koreatech.koin.data.constant.URLConstant
 
 data class OwnerSignUpRequest(
     @SerializedName(URLConstant.OWNER.EMAIL)
-    val email: String,
+    val email: String
 )

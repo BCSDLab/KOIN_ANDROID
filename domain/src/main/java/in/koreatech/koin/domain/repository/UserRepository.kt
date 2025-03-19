@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     suspend fun getToken(
         portalAccount: String,
-        hashedPassword: String,
+        hashedPassword: String
     ): AuthToken
 
     suspend fun getOwnerToken(
         phoneNumber: String,
-        hashedPassword: String,
+        hashedPassword: String
     ): AuthToken
 
     fun ownerTokenIsValid(): Boolean
@@ -40,7 +40,7 @@ interface UserRepository {
 
     suspend fun updateUserPassword(
         user: User,
-        hashedPassword: String,
+        hashedPassword: String
     )
 
     suspend fun updateABTestToken()

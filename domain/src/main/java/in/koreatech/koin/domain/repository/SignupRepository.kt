@@ -18,7 +18,7 @@ interface SignupRepository {
         nickName: String?,
         password: String,
         phoneNumber: String?,
-        studentNumber: String?,
+        studentNumber: String?
     ): Result<Unit>
 
     suspend fun getPrivacyTerm(): Term

@@ -16,60 +16,58 @@ import `in`.koreatech.koin.ui.splash.state.TokenState
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel
-    @Inject
-    constructor(
-        private val getVersionInformationUseCase: GetVersionInformationUseCase,
-        private val updateLatestVersionUseCase: UpdateLatestVersionUseCase,
-        private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
-    ) : BaseViewModel() {
-        private val _version = MutableLiveData<Version>()
-        val version: LiveData<Version> get() = _version
+class SplashViewModel @Inject constructor(
+    private val getVersionInformationUseCase: GetVersionInformationUseCase,
+    private val updateLatestVersionUseCase: UpdateLatestVersionUseCase,
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
+) : BaseViewModel() {
+    private val _version = MutableLiveData<Version>()
+    val version: LiveData<Version> get() = _version
 
-        private val _checkVersionError = SingleLiveEvent<Throwable>()
-        val checkVersionError: LiveData<Throwable> get() = _checkVersionError
+    private val _checkVersionError = SingleLiveEvent<Throwable>()
+    val checkVersionError: LiveData<Throwable> get() = _checkVersionError
 
-        private val _tokenState = SingleLiveEvent<TokenState>()
-        val tokenState: LiveData<TokenState> get() = _tokenState
+    private val _tokenState = SingleLiveEvent<TokenState>()
+    val tokenState: LiveData<TokenState> get() = _tokenState
 
-        fun checkUpdate() {
-            viewModelScope.launchIgnoreCancellation {
-                getVersionInformationUseCase()
-                    .onSuccess {
-                        _version.value = it
-                        if (isVersionPriorityNone(it.versionUpdatePriority)) {
-                            checkToken()
-                        }
-                    }.onFailure {
-                        _checkVersionError.value = it
+    fun checkUpdate() {
+        viewModelScope.launchIgnoreCancellation {
+            getVersionInformationUseCase()
+                .onSuccess {
+                    _version.value = it
+                    if (isVersionPriorityNone(it.versionUpdatePriority)) {
                         checkToken()
                     }
-            }
-        }
-
-        private fun checkToken() {
-            viewModelScope.launchIgnoreCancellation {
-                if (isTokenSavedInDeviceUseCase()) {
-                    _tokenState.value = TokenState.Valid
-                } else {
-                    _tokenState.value = TokenState.Invalid
+                }.onFailure {
+                    _checkVersionError.value = it
+                    checkToken()
                 }
-            }
         }
+    }
 
-        private fun isVersionPriorityNone(priority: VersionUpdatePriority): Boolean {
-            if (priority == VersionUpdatePriority.None) {
-                return true
-            }
-            return false
-        }
-
-        fun updateLatestVersion(versionCode: Int) {
-            viewModelScope.launchIgnoreCancellation {
-                updateLatestVersionUseCase(versionCode)
-                    .onFailure {
-                        Log.d("SplashViewModel", "Fail to update latest version: ${it.message}")
-                    }
+    private fun checkToken() {
+        viewModelScope.launchIgnoreCancellation {
+            if (isTokenSavedInDeviceUseCase()) {
+                _tokenState.value = TokenState.Valid
+            } else {
+                _tokenState.value = TokenState.Invalid
             }
         }
     }
+
+    private fun isVersionPriorityNone(priority: VersionUpdatePriority): Boolean {
+        if (priority == VersionUpdatePriority.None) {
+            return true
+        }
+        return false
+    }
+
+    fun updateLatestVersion(versionCode: Int) {
+        viewModelScope.launchIgnoreCancellation {
+            updateLatestVersionUseCase(versionCode)
+                .onFailure {
+                    Log.d("SplashViewModel", "Fail to update latest version: ${it.message}")
+                }
+        }
+    }
+}

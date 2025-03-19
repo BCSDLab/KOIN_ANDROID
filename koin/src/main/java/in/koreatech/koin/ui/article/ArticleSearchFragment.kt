@@ -45,7 +45,7 @@ class ArticleSearchFragment : Fragment() {
     private val recentSearchedHistoryAdapter: RecentSearchedHistoryAdapter by lazy {
         RecentSearchedHistoryAdapter(
             onSearchHistoryClicked = ::onRecentSearchHistoryClicked,
-            onDeleteClicked = ::onRecentSearchHistoryDeleteClicked,
+            onDeleteClicked = ::onRecentSearchHistoryDeleteClicked
         )
     }
 
@@ -56,7 +56,7 @@ class ArticleSearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleSearchBinding.inflate(inflater, container, false)
@@ -66,7 +66,7 @@ class ArticleSearchFragment : Fragment() {
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
-                        "검색하기",
+                        "검색하기"
                     )
                     viewModel.search()
                     true
@@ -82,7 +82,7 @@ class ArticleSearchFragment : Fragment() {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.NOTICE_SEARCH_EVENT,
-                    "검색하기",
+                    "검색하기"
                 )
                 viewModel.search()
             }
@@ -128,7 +128,7 @@ class ArticleSearchFragment : Fragment() {
                         is SearchUiState.RequireInput ->
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.search_input_required),
+                                getString(R.string.search_input_required)
                             )
 
                         is SearchUiState.Loading -> Unit
@@ -147,7 +147,7 @@ class ArticleSearchFragment : Fragment() {
                         is SearchUiState.Error ->
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.error_network_unknown),
+                                getString(R.string.error_network_unknown)
                             )
                     }
                 }
@@ -188,7 +188,7 @@ class ArticleSearchFragment : Fragment() {
         EventLogger.logClickEvent(
             EventAction.CAMPUS,
             AnalyticsConstant.Label.POPULAR_SEARCH_WORD,
-            query,
+            query
         )
         binding.textInputSearch.setText(query)
         binding.textInputSearch.setSelection(query.length)
@@ -204,12 +204,15 @@ class ArticleSearchFragment : Fragment() {
             ArticleBoardType.LOSTANDFOUND ->
                 navController.navigate(
                     R.id.articleLostAndFoundDetailFragment,
-                    bundleOf(ARTICLE_ID to article.id),
+                    bundleOf(ARTICLE_ID to article.id)
                 )
             else ->
                 navController.navigate(
                     R.id.action_articleSearchFragment_to_articleDetailFragment,
-                    bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id),
+                    bundleOf(
+                        ARTICLE_ID to article.id,
+                        NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
+                    )
                 )
         }
     }

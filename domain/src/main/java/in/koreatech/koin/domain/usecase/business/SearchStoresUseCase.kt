@@ -5,13 +5,11 @@ import `in`.koreatech.koin.domain.repository.StoreRepository
 import `in`.koreatech.koin.domain.util.match
 import javax.inject.Inject
 
-class SearchStoresUseCase
-    @Inject
-    constructor(
-        private val storeRepository: StoreRepository,
-    ) {
-        suspend operator fun invoke(search: String? = null): List<Store> {
-            return storeRepository.getStores()
-                .filter { if (search != null) it.name.match(search) else true }
-        }
+class SearchStoresUseCase @Inject constructor(
+    private val storeRepository: StoreRepository
+) {
+    suspend operator fun invoke(search: String? = null): List<Store> {
+        return storeRepository.getStores()
+            .filter { if (search != null) it.name.match(search) else true }
     }
+}

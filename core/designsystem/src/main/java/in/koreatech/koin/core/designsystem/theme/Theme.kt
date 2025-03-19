@@ -39,19 +39,19 @@ internal val LocalKoinTypography =
             bold15 = BoldStyle4,
             bold16 = BoldStyle5,
             bold18 = BoldStyle6,
-            bold20 = BoldStyle7,
+            bold20 = BoldStyle7
         )
     }
 
 internal val KoinLightColorScheme =
     lightColorScheme(
-        primary = blue50,
+        primary = blue50
     )
 
 // 다크 테마 대응시 수정
 internal val KoinDarkColorScheme =
     lightColorScheme(
-        primary = blue50,
+        primary = blue50
     )
 
 internal val LocalShapes =
@@ -63,7 +63,7 @@ internal val LocalShapes =
 fun KoinTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicTheme: Boolean = true,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val extendedColors =
         if (darkTheme) {
@@ -103,7 +103,7 @@ fun KoinTheme(
             bold15 = BoldStyle4,
             bold16 = BoldStyle5,
             bold18 = BoldStyle6,
-            bold20 = BoldStyle7,
+            bold20 = BoldStyle7
         )
 
     val typography =
@@ -122,7 +122,7 @@ fun KoinTheme(
             bodySmall = RegularStyle3,
             labelLarge = RegularStyle3,
             labelMedium = RegularStyle2,
-            labelSmall = RegularStyle1,
+            labelSmall = RegularStyle1
         )
 
     val shapes = Shapes
@@ -130,13 +130,13 @@ fun KoinTheme(
     CompositionLocalProvider(
         LocalKoinColorPalette provides extendedColors,
         LocalKoinTypography provides koinTypography,
-        LocalShapes provides shapes,
+        LocalShapes provides shapes
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = typography,
             shapes = Shapes,
-            content = content,
+            content = content
         )
     }
 }

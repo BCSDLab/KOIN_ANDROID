@@ -10,7 +10,7 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseDialogFragment<B : ViewBinding>(
     @LayoutRes private val layoutResId: Int,
-    private val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> B,
+    private val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> B
 ) : DialogFragment() {
     private var _binding: B? = null
     protected val binding: B
@@ -19,7 +19,7 @@ abstract class BaseDialogFragment<B : ViewBinding>(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         _binding = bindingInflater.invoke(inflater, container, false)
         return binding.root
@@ -32,7 +32,7 @@ abstract class BaseDialogFragment<B : ViewBinding>(
 
     protected fun setLayoutSizeRatio(
         widthPercent: Float? = null,
-        heightPercent: Float? = null,
+        heightPercent: Float? = null
     ) {
         context?.resources?.displayMetrics?.let { metrics ->
             binding.root.layoutParams.apply {

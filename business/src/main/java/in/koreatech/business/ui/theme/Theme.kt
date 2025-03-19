@@ -16,13 +16,13 @@ import androidx.core.view.WindowCompat
 private val LightColorScheme =
     lightColors(
         primary = ColorPrimary,
-        secondary = ColorSecondary,
+        secondary = ColorSecondary
     )
 
 private val DarkColorScheme =
     darkColors(
         primary = Purple40,
-        secondary = PurpleGrey40,
+        secondary = PurpleGrey40
     )
 
 @Composable
@@ -30,7 +30,7 @@ fun KOIN_ANDROIDTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val colorScheme =
         when {
@@ -54,6 +54,6 @@ fun KOIN_ANDROIDTheme(
         colors = colorScheme,
         shapes = Shapes,
         content = content,
-        typography = Typography,
+        typography = Typography
     )
 }

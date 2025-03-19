@@ -8,17 +8,17 @@ import java.time.LocalDateTime
 @Immutable
 data class ExpressTimetableState(
     val timetable: CommonTimetableState,
-    val updatedAt: LocalDateTime,
+    val updatedAt: LocalDateTime
 )
 
 fun ExpressTimetable.toExpressTimetableState() =
     ExpressTimetableState(
         timetable = timetable.mapToCommonTimetableState(),
-        updatedAt = updatedAt,
+        updatedAt = updatedAt
     )
 
 private fun List<ExpressTimetableItem>.mapToCommonTimetableState() =
     CommonTimetableState(
         amDepartures = this.filter { it.departureTime.split(":")[0].toInt() < 12 }.map { DepartureState(it.departureTime) },
-        pmDepartures = this.filter { it.departureTime.split(":")[0].toInt() >= 12 }.map { DepartureState(it.departureTime) },
+        pmDepartures = this.filter { it.departureTime.split(":")[0].toInt() >= 12 }.map { DepartureState(it.departureTime) }
     )

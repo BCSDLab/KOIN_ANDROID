@@ -34,10 +34,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun NavGraphBuilder.myStoreScreen(navController: NavHostController) {
     navigation(
         route = MYSTORESCREEN,
-        startDestination = StoreRoute.MY_STORE.name,
+        startDestination = StoreRoute.MY_STORE.name
     ) {
         composable(
-            route = StoreRoute.MY_STORE.name,
+            route = StoreRoute.MY_STORE.name
         ) {
             val myStoreInfoViewModel: MyStoreDetailViewModel = it.sharedHiltViewModel(navController = navController)
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
@@ -70,12 +70,12 @@ fun NavGraphBuilder.myStoreScreen(navController: NavHostController) {
                 },
                 navigateToModifyMenuScreen = { menuId ->
                     navController.toNavigateScreenWithMenuId(MODIFYMENUSCREEN, menuId)
-                },
+                }
             )
         }
 
         composable(
-            route = StoreRoute.MODIFY_INFO.name,
+            route = StoreRoute.MODIFY_INFO.name
         ) {
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
             val myStoreInfoViewModel: MyStoreDetailViewModel = it.sharedHiltViewModel(navController = navController)
@@ -91,18 +91,18 @@ fun NavGraphBuilder.myStoreScreen(navController: NavHostController) {
                             inclusive = true
                         }
                     }
-                },
+                }
             )
         }
 
         composable(
-            route = StoreRoute.SETTING_OPERATING_TIME.name,
+            route = StoreRoute.SETTING_OPERATING_TIME.name
         ) {
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
 
             ModifyOperatingTimeScreen(
                 viewModel = modifyInfoViewModel,
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = { navController.popBackStack() }
             )
         }
     }
@@ -120,7 +120,7 @@ fun NavController.navigate(
     route: String,
     args: Bundle,
     navOptions: NavOptions? = null,
-    navigatorExtras: Navigator.Extras? = null,
+    navigatorExtras: Navigator.Extras? = null
 ) {
     val nodes = graph.findNode(MYSTORESCREEN) as? NavGraph
 

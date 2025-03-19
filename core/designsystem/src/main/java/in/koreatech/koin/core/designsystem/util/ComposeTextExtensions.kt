@@ -15,7 +15,7 @@ fun TextStyle.getMeasuredKoreanHeightDp(): Dp {
         with(LocalDensity.current) {
             measure(
                 "가",
-                this@getMeasuredKoreanHeightDp,
+                this@getMeasuredKoreanHeightDp
             ).size.height.toDp()
         }
     }

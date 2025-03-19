@@ -11,7 +11,7 @@ sealed class ChangePasswordContinuationState {
 
     data class Failed(
         val message: String = "",
-        val throwable: Throwable? = null,
+        val throwable: Throwable? = null
     ) : ChangePasswordContinuationState()
 }
 

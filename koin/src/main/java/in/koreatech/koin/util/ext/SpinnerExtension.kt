@@ -11,8 +11,8 @@ inline fun <T : Adapter> AdapterView<T>.setOnItemSelectedListener(
         parent: AdapterView<*>?,
         view: View?,
         position: Int,
-        id: Long,
-    ) -> Unit,
+        id: Long
+    ) -> Unit
 ) {
     this.onItemSelectedListener =
         object : OnItemSelectedListener {
@@ -20,7 +20,7 @@ inline fun <T : Adapter> AdapterView<T>.setOnItemSelectedListener(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
-                id: Long,
+                id: Long
             ) {
                 itemSelected(parent, view, position, id)
             }

@@ -19,12 +19,12 @@ fun launchImagePicker(
     maxItem: Int = 3,
     initImageUrls: () -> Unit,
     getPreSignedUrl: (Pair<Pair<Long, String>, Pair<String, String>>) -> Unit = {},
-    clearFileInfo: () -> Unit = {},
+    clearFileInfo: () -> Unit = {}
 ): ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>> {
     val coroutineScope = rememberCoroutineScope()
     val galleryLauncher =
         rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickMultipleVisualMedia(maxItem),
+            contract = ActivityResultContracts.PickMultipleVisualMedia(maxItem)
         ) { uriList ->
             clearFileInfo()
             initImageUrls()
@@ -52,8 +52,8 @@ fun launchImagePicker(
                                 getPreSignedUrl(
                                     Pair(
                                         Pair(fileSize, "image/" + fileName.split(".")[1]),
-                                        Pair(fileName, it.toString()),
-                                    ),
+                                        Pair(fileName, it.toString())
+                                    )
                                 )
                             }
                             inputStream?.close()

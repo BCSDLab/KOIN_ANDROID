@@ -18,7 +18,7 @@ class BusTimetableActivity : ComponentActivity() {
         setContent {
             KoinTheme {
                 BusTimetableNavigation(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }

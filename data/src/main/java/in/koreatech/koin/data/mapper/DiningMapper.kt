@@ -17,7 +17,7 @@ fun DiningResponse.toDining() =
         this.createdAt,
         this.updatedAt,
         this.soldoutAt ?: "",
-        this.changedAt ?: "",
+        this.changedAt ?: ""
     )
 
 fun List<String>.toLineChangingString(): String {

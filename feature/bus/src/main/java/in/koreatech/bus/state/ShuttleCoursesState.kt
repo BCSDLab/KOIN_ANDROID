@@ -6,13 +6,13 @@ import `in`.koreatech.koin.domain.model.bus.ShuttleCourses
 @Immutable
 data class ShuttleCoursesState(
     val courses: Map<ShuttleCourseRegionState, List<ShuttleCourseRouteState>>,
-    val semester: ShuttleSemesterState,
+    val semester: ShuttleSemesterState
 ) {
     companion object {
         val EMPTY =
             ShuttleCoursesState(
                 courses = emptyMap(),
-                semester = ShuttleSemesterState.EMPTY,
+                semester = ShuttleSemesterState.EMPTY
             )
     }
 }
@@ -20,12 +20,12 @@ data class ShuttleCoursesState(
 fun ShuttleCourses.toShuttleCoursesState() =
     ShuttleCoursesState(
         courses =
-            courses.associate { shuttleCourse ->
-                ShuttleCourseRegionState(shuttleCourse.region) to
-                    shuttleCourse.routes.map {
-                            shuttleCourseRoute ->
-                        shuttleCourseRoute.toShuttleCourseRouteState()
-                    }
-            },
-        semester = semester.toShuttleSemesterState(),
+        courses.associate { shuttleCourse ->
+            ShuttleCourseRegionState(shuttleCourse.region) to
+                shuttleCourse.routes.map {
+                        shuttleCourseRoute ->
+                    shuttleCourseRoute.toShuttleCourseRouteState()
+                }
+        },
+        semester = semester.toShuttleSemesterState()
     )

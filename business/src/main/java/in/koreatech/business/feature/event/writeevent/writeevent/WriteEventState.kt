@@ -23,5 +23,5 @@ data class WriteEventState(
     val showDateInputAlert: Boolean = false,
     val showDatePickerAlert: Boolean = false,
     val selectedYearMonth: YearMonth = YearMonth.now(),
-    val error: Throwable? = null,
+    val error: Throwable? = null
 )

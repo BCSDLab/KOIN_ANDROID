@@ -33,7 +33,7 @@ fun DetailButtonGroup(
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
     onChatRoomClick: () -> Unit = {},
-    onReportArticleClick: () -> Unit = {},
+    onReportArticleClick: () -> Unit = {}
 ) {
     if (showDeleteDialog) {
         DetailDialog(
@@ -42,38 +42,38 @@ fun DetailButtonGroup(
             onPositive = {
                 EventLogger.logCampusClickEvent(
                     AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE_CONFIRM,
-                    "확인",
+                    "확인"
                 )
                 onDeleteArticleClick()
                 onShowDeleteDialogChange(false)
             },
             onNegative = {
                 onShowDeleteDialogChange(false)
-            },
+            }
         )
     }
 
     Row(
         modifier =
-            modifier
-                .padding(horizontal = 24.dp, vertical = 16.dp)
-                .fillMaxWidth(),
+        modifier
+            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .fillMaxWidth()
     ) {
         Button(
             modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
             contentPadding = PaddingValues(12.dp, 6.dp),
             onClick = onArticleListClick,
             colors =
-                ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.neutral300,
-                    contentColor = KoinTheme.colors.neutral600,
-                ),
-            shape = KoinTheme.shapes.extraSmall,
+            ButtonDefaults.buttonColors(
+                containerColor = KoinTheme.colors.neutral300,
+                contentColor = KoinTheme.colors.neutral600
+            ),
+            shape = KoinTheme.shapes.extraSmall
         ) {
             Text(
                 modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                 style = KoinTheme.typography.regular12,
-                text = stringResource(R.string.detail_article_list_button),
+                text = stringResource(R.string.detail_article_list_button)
             )
         }
 
@@ -87,29 +87,29 @@ fun DetailButtonGroup(
                     onShowDeleteDialogChange(true)
                     EventLogger.logCampusClickEvent(
                         AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE,
-                        "삭제",
+                        "삭제"
                     )
                 },
                 colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = KoinTheme.colors.neutral300,
-                        contentColor = KoinTheme.colors.neutral600,
-                    ),
-                shape = KoinTheme.shapes.extraSmall,
+                ButtonDefaults.buttonColors(
+                    containerColor = KoinTheme.colors.neutral300,
+                    contentColor = KoinTheme.colors.neutral600
+                ),
+                shape = KoinTheme.shapes.extraSmall
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                         style = KoinTheme.typography.regular12,
-                        text = stringResource(R.string.detail_delete_button),
+                        text = stringResource(R.string.detail_delete_button)
                     )
                     Spacer(modifier = Modifier.width(2.dp))
                     Image(
                         modifier = Modifier.size(16.dp),
                         painter = painterResource(id = R.drawable.ic_article_delete),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
             }
@@ -120,26 +120,26 @@ fun DetailButtonGroup(
                     contentPadding = PaddingValues(10.dp, 6.dp),
                     onClick = onChatRoomClick,
                     colors =
-                        ButtonDefaults.buttonColors(
-                            containerColor = KoinTheme.colors.neutral300,
-                            contentColor = KoinTheme.colors.neutral600,
-                        ),
-                    shape = KoinTheme.shapes.extraSmall,
+                    ButtonDefaults.buttonColors(
+                        containerColor = KoinTheme.colors.neutral300,
+                        contentColor = KoinTheme.colors.neutral600
+                    ),
+                    shape = KoinTheme.shapes.extraSmall
                 ) {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
                             modifier = Modifier.size(20.dp),
                             painter = painterResource(id = R.drawable.ic_chat),
-                            contentDescription = null,
+                            contentDescription = null
                         )
 
                         Spacer(modifier = Modifier.width(4.dp))
 
                         Text(
                             style = KoinTheme.typography.regular12,
-                            text = stringResource(R.string.detail_chat_room_button),
+                            text = stringResource(R.string.detail_chat_room_button)
                         )
                     }
                 }
@@ -149,16 +149,16 @@ fun DetailButtonGroup(
                     contentPadding = PaddingValues(10.dp, 6.dp),
                     onClick = onReportArticleClick,
                     colors =
-                        ButtonDefaults.buttonColors(
-                            containerColor = KoinTheme.colors.neutral300,
-                            contentColor = KoinTheme.colors.neutral600,
-                        ),
-                    shape = KoinTheme.shapes.extraSmall,
+                    ButtonDefaults.buttonColors(
+                        containerColor = KoinTheme.colors.neutral300,
+                        contentColor = KoinTheme.colors.neutral600
+                    ),
+                    shape = KoinTheme.shapes.extraSmall
                 ) {
                     Image(
                         modifier = Modifier.size(20.dp),
                         painter = painterResource(id = R.drawable.ic_article_report),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
             }

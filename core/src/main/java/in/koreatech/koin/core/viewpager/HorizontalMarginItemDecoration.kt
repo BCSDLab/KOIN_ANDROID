@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HorizontalMarginItemDecoration(
     context: Context,
-    @DimenRes horizontalMarginInDp: Int,
+    @DimenRes horizontalMarginInDp: Int
 ) :
     RecyclerView.ItemDecoration() {
     private val horizontalMarginInPx: Int =
@@ -18,7 +18,7 @@ class HorizontalMarginItemDecoration(
         outRect: Rect,
         view: View,
         parent: RecyclerView,
-        state: RecyclerView.State,
+        state: RecyclerView.State
     ) {
         outRect.right = horizontalMarginInPx
         outRect.left = horizontalMarginInPx

@@ -11,46 +11,41 @@ import `in`.koreatech.koin.constant.LAND
 import `in`.koreatech.koin.databinding.LandDetailViewpagerPageBinding
 import javax.inject.Inject
 
-class LandDetailViewPagerAdapter
-    @Inject
-    constructor(
-        @ActivityContext private val context: Context,
-    ) : RecyclerView.Adapter<LandDetailViewPagerAdapter.LandDetailPagerViewHolder>() {
-        var imageUrlList: List<String> = listOf()
+class LandDetailViewPagerAdapter @Inject constructor(
+    @ActivityContext private val context: Context
+) : RecyclerView.Adapter<LandDetailViewPagerAdapter.LandDetailPagerViewHolder>() {
+    var imageUrlList: List<String> = listOf()
 
-        inner class LandDetailPagerViewHolder(val binding: LandDetailViewpagerPageBinding) :
-            RecyclerView.ViewHolder(binding.root)
+    inner class LandDetailPagerViewHolder(val binding: LandDetailViewpagerPageBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int,
-        ): LandDetailPagerViewHolder =
-            LandDetailPagerViewHolder(
-                LandDetailViewpagerPageBinding.inflate(
-                    LayoutInflater.from(context),
-                    parent,
-                    false,
-                ),
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LandDetailPagerViewHolder =
+        LandDetailPagerViewHolder(
+            LandDetailViewpagerPageBinding.inflate(
+                LayoutInflater.from(context),
+                parent,
+                false
             )
+        )
 
-        override fun onBindViewHolder(
-            holder: LandDetailPagerViewHolder,
-            position: Int,
-        ) {
-            with(holder.binding) {
-                landDetailPageTextview.text = "${position + 1} / ${imageUrlList.size}"
-                Glide.with(context).load(imageUrlList[position]).apply(
-                    RequestOptions()
-                        .fitCenter()
-                        .override(LAND.LAND_DETAIL_IMAGE_VIEW_WIDTH, LAND.LAND_DETAIL_IMAGE_VIEW_HEIGHT),
-                ).into(landDetailLandImageview)
-            }
-        }
-
-        override fun getItemCount() = imageUrlList.size
-
-        fun setData(urlList: List<String>) {
-            imageUrlList = urlList
-            notifyDataSetChanged()
+    override fun onBindViewHolder(holder: LandDetailPagerViewHolder, position: Int) {
+        with(holder.binding) {
+            landDetailPageTextview.text = "${position + 1} / ${imageUrlList.size}"
+            Glide.with(context).load(imageUrlList[position]).apply(
+                RequestOptions()
+                    .fitCenter()
+                    .override(
+                        LAND.LAND_DETAIL_IMAGE_VIEW_WIDTH,
+                        LAND.LAND_DETAIL_IMAGE_VIEW_HEIGHT
+                    )
+            ).into(landDetailLandImageview)
         }
     }
+
+    override fun getItemCount() = imageUrlList.size
+
+    fun setData(urlList: List<String>) {
+        imageUrlList = urlList
+        notifyDataSetChanged()
+    }
+}

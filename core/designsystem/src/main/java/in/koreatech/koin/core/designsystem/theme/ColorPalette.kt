@@ -62,7 +62,7 @@ data class KoinColorPalette(
     val info300: Color,
     val info200: Color,
     val info100: Color,
-    val info50: Color,
+    val info50: Color
 )
 
 internal val KoinLightColorPalette =
@@ -126,7 +126,7 @@ internal val KoinLightColorPalette =
         info300 = skyBlue30,
         info200 = skyBlue20,
         info100 = skyBlue10,
-        info50 = skyBlue5,
+        info50 = skyBlue5
     )
 
 // 다크 테마 대응시 수정
@@ -191,5 +191,5 @@ internal val KoinDarkColorPalette =
         info300 = skyBlue30,
         info200 = skyBlue20,
         info100 = skyBlue10,
-        info50 = skyBlue5,
+        info50 = skyBlue5
     )

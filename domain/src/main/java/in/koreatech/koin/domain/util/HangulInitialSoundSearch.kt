@@ -21,7 +21,7 @@ object HangulInitialSoundSearch {
             'ㅋ',
             'ㅌ',
             'ㅍ',
-            'ㅎ',
+            'ㅎ'
         )
     private const val HANGUL_BEGIN_UNICODE = 44032 // 가
     private const val HANGUL_LAST_UNICODE = 55203 // 힣
@@ -47,7 +47,7 @@ object HangulInitialSoundSearch {
      */
     fun match(
         value: String,
-        search: String,
+        search: String
     ): Boolean {
         val trimValue = value.replace(Regex("""\s"""), "")
         val trimSearch = search.replace(Regex("""\s"""), "")

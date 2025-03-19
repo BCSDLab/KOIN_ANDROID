@@ -10,7 +10,7 @@ import androidx.activity.enableEdgeToEdge
  */
 fun ComponentActivity.enableEdgeToEdgeWithLightStatusBar() =
     enableEdgeToEdge(
-        statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+        statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
     )
 
 /**
@@ -18,5 +18,5 @@ fun ComponentActivity.enableEdgeToEdgeWithLightStatusBar() =
  */
 fun ComponentActivity.enableEdgeToEdgeWithDarkStatusBar() =
     enableEdgeToEdge(
-        statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+        statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
     )

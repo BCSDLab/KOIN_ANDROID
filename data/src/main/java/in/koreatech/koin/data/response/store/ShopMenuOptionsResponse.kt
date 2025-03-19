@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class ShopMenuOptionsResponse(
     @SerializedName("option") val option: String?,
-    @SerializedName("price") val price: Int?,
+    @SerializedName("price") val price: Int?
 )

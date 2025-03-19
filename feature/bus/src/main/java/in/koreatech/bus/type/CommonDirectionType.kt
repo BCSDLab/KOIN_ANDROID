@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 enum class CommonDirectionType(
-    @StringRes val titleRes: Int,
+    @StringRes val titleRes: Int
 ) : Parcelable {
     TO_BYEONGCHEON(R.string.to_byeongcheon),
-    TO_CHEONAN(R.string.to_cheonan),
+    TO_CHEONAN(R.string.to_cheonan)
 }

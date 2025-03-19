@@ -4,7 +4,7 @@ data class TimetableLectures(
     val timetableFrameId: Int,
     val timetable: List<TimetableLecture>,
     val grades: Int,
-    val totalGrades: Int,
+    val totalGrades: Int
 ) {
     /**
      * @test : TimetableLecturesTest.kt

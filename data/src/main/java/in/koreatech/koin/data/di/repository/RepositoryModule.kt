@@ -63,10 +63,10 @@ import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.repository.VersionRepository
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -81,7 +81,7 @@ object RepositoryModule {
     @Singleton
     fun provideTokenRepository(
         tokenLocalDataSource: TokenLocalDataSource,
-        userLocalDataSource: UserLocalDataSource,
+        userLocalDataSource: UserLocalDataSource
     ): TokenRepository {
         return TokenRepositoryImpl(tokenLocalDataSource, userLocalDataSource)
     }
@@ -91,7 +91,7 @@ object RepositoryModule {
     fun provideUserRepository(
         userRemoteDataSource: UserRemoteDataSource,
         tokenLocalDataSource: TokenLocalDataSource,
-        userLocalDataSource: UserLocalDataSource,
+        userLocalDataSource: UserLocalDataSource
     ): UserRepository {
         return UserRepositoryImpl(userRemoteDataSource, tokenLocalDataSource, userLocalDataSource)
     }
@@ -100,7 +100,7 @@ object RepositoryModule {
     @Singleton
     fun provideSignupRepository(
         userRemoteDataSource: UserRemoteDataSource,
-        signupTermsLocalDataSource: SignupTermsLocalDataSource,
+        signupTermsLocalDataSource: SignupTermsLocalDataSource
     ): SignupRepository {
         return SignupRepositoryImpl(userRemoteDataSource, signupTermsLocalDataSource)
     }
@@ -109,7 +109,7 @@ object RepositoryModule {
     @Singleton
     fun provideOwnerSignupRepository(
         ownerRemoteDataSource: OwnerRemoteDataSource,
-        signupTermsLocalDataSource: SignupTermsLocalDataSource,
+        signupTermsLocalDataSource: SignupTermsLocalDataSource
     ): OwnerSignupRepository {
         return OwnerSignupRepositoryImpl(ownerRemoteDataSource, signupTermsLocalDataSource)
     }
@@ -136,11 +136,11 @@ object RepositoryModule {
     @Singleton
     fun provideVersionRepository(
         versionLocalDataSource: VersionLocalDataSource,
-        versionRemoteDataSource: VersionRemoteDataSource,
+        versionRemoteDataSource: VersionRemoteDataSource
     ): VersionRepository {
         return VersionRepositoryImpl(
             versionLocalDataSource,
-            versionRemoteDataSource,
+            versionRemoteDataSource
         )
     }
 
@@ -148,11 +148,11 @@ object RepositoryModule {
     @Singleton
     fun provideDeptRepository(
         deptRemoteDataSource: DeptRemoteDataSource,
-        deptLocalDataSource: DeptLocalDataSource,
+        deptLocalDataSource: DeptLocalDataSource
     ): DeptRepository {
         return DeptRepositoryImpl(
             deptRemoteDataSource,
-            deptLocalDataSource,
+            deptLocalDataSource
         )
     }
 
@@ -178,7 +178,7 @@ object RepositoryModule {
     @Singleton
     fun providePreSignedUrlRepository(
         preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource,
-        uploadImageLocalDataSource: UploadImageLocalDataSource,
+        uploadImageLocalDataSource: UploadImageLocalDataSource
     ): PreSignedUrlRepository {
         return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource, uploadImageLocalDataSource)
     }
@@ -201,13 +201,13 @@ object RepositoryModule {
         articleRemoteDataSource: ArticleRemoteDataSource,
         articleLocalDataSource: ArticleLocalDataSource,
         userRepository: UserRepository,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher
     ): ArticleRepository {
         return ArticleRepositoryImpl(
             articleRemoteDataSource,
             articleLocalDataSource,
             userRepository,
-            CoroutineScope(SupervisorJob() + dispatcher),
+            CoroutineScope(SupervisorJob() + dispatcher)
         )
     }
 

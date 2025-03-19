@@ -17,7 +17,7 @@ import `in`.koreatech.koin.util.ext.windowWidth
 
 class ReviewDeleteCheckDialog(
     val onDelete: () -> Unit,
-    val onCancel: () -> Unit,
+    val onCancel: () -> Unit
 ) : DialogFragment() {
     private lateinit var binding: ReviewDeleteDialogBinding
 
@@ -25,7 +25,7 @@ class ReviewDeleteCheckDialog(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         binding = ReviewDeleteDialogBinding.inflate(inflater, container, false)
         val spannableString = SpannableString(getString(R.string.check_delete_review))
@@ -33,7 +33,7 @@ class ReviewDeleteCheckDialog(
             ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorAccent)),
             4,
             6,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         binding.textViewTitle.text = spannableString
         binding.buttonDelete.setOnClickListener {

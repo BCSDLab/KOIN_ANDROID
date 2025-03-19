@@ -4,5 +4,5 @@ import `in`.koreatech.koin.domain.model.chat.ChatListItem
 
 data class ChatListState(
     val isLoading: Boolean = false,
-    val chatList: List<ChatListItem> = emptyList(),
+    val chatList: List<ChatListItem> = emptyList()
 )

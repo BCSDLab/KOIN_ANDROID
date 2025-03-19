@@ -37,30 +37,30 @@ fun TextChip(
     showClickRipple: Boolean = true,
     onSelect: () -> Unit = {},
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
-    chipColors: TextChipColors = TextChipDefaults.chipColors(),
+    chipColors: TextChipColors = TextChipDefaults.chipColors()
 ) {
     Box(
         modifier =
-            modifier
-                .clip(shape)
-                .then(
-                    if (showClickRipple) {
-                        Modifier.clickable {
-                            onSelect()
-                        }
-                    } else {
-                        Modifier.noRippleClickable {
-                            onSelect()
-                        }
-                    },
-                )
-                .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
-                .padding(contentPadding),
-        contentAlignment = Alignment.Center,
+        modifier
+            .clip(shape)
+            .then(
+                if (showClickRipple) {
+                    Modifier.clickable {
+                        onSelect()
+                    }
+                } else {
+                    Modifier.noRippleClickable {
+                        onSelect()
+                    }
+                }
+            )
+            .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
+            .padding(contentPadding),
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = title,
-            color = if (isSelected) chipColors.selectedContentColor else chipColors.unselectedContentColor,
+            color = if (isSelected) chipColors.selectedContentColor else chipColors.unselectedContentColor
         )
     }
 }
@@ -71,12 +71,12 @@ object TextChipDefaults {
         selectedContainerColor: Color = KoinTheme.colors.primary500,
         selectedContentColor: Color = Color.White,
         unselectedContainerColor: Color = KoinTheme.colors.neutral100,
-        unselectedContentColor: Color = KoinTheme.colors.neutral500,
+        unselectedContentColor: Color = KoinTheme.colors.neutral500
     ) = TextChipColors(
         selectedContainerColor = selectedContainerColor,
         selectedContentColor = selectedContentColor,
         unselectedContainerColor = unselectedContainerColor,
-        unselectedContentColor = unselectedContentColor,
+        unselectedContentColor = unselectedContentColor
     )
 }
 
@@ -84,7 +84,7 @@ class TextChipColors internal constructor(
     val selectedContainerColor: Color,
     val selectedContentColor: Color,
     val unselectedContainerColor: Color,
-    val unselectedContentColor: Color,
+    val unselectedContentColor: Color
 )
 
 @Preview
@@ -92,7 +92,7 @@ class TextChipColors internal constructor(
 private fun KoinTextChipPreview() {
     TextChip(
         title = "주중노선",
-        isSelected = false,
+        isSelected = false
     )
 }
 
@@ -101,6 +101,6 @@ private fun KoinTextChipPreview() {
 private fun KoinTextChipSelectedPreview() {
     TextChip(
         title = "주말노선",
-        isSelected = true,
+        isSelected = true
     )
 }

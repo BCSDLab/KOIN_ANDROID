@@ -10,5 +10,5 @@ data class TimetableLecturesResponseV3(
     @SerializedName("grades")
     val grades: Int?,
     @SerializedName("total_grades")
-    val totalGrades: Int?,
+    val totalGrades: Int?
 )

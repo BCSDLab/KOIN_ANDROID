@@ -19,7 +19,7 @@ import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
 class UserRemoteDataSource(
     private val userApi: UserApi,
-    private val userAuthApi: UserAuthApi,
+    private val userAuthApi: UserAuthApi
 ) {
     suspend fun getToken(loginRequest: LoginRequest): AuthResponse {
         return userApi.getToken(loginRequest)

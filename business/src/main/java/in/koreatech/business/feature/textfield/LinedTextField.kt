@@ -47,7 +47,7 @@ fun LinedTextField(
     successText: String = "",
     isError: Boolean = false,
     isSuccess: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.None),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.None)
 ) {
     var focused by remember { mutableStateOf(false) }
     BasicTextField(
@@ -62,23 +62,23 @@ fun LinedTextField(
             Column(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(46.dp)
-                            .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
-                    verticalArrangement = Arrangement.Center,
+                    Modifier
+                        .fillMaxWidth()
+                        .height(46.dp)
+                        .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Row(
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 12.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             modifier = Modifier.fillMaxHeight(),
-                            contentAlignment = Alignment.CenterStart,
+                            contentAlignment = Alignment.CenterStart
                         ) {
                             if (value.isEmpty()) {
                                 Text(text = label, fontSize = 16.sp, color = ColorHelper)
@@ -90,7 +90,7 @@ fun LinedTextField(
                                 text = timerText.formatTime(),
                                 fontSize = 16.sp,
                                 color = Gray500,
-                                modifier = Modifier.padding(top = 4.dp),
+                                modifier = Modifier.padding(top = 4.dp)
                             )
                         }
                     }
@@ -101,10 +101,10 @@ fun LinedTextField(
                     isSuccess = isSuccess,
                     errorText = errorText,
                     successText = successText,
-                    focused = if (timerText != null) true else focused,
+                    focused = if (timerText != null) true else focused
                 )
             }
-        },
+        }
     )
 }
 
@@ -112,6 +112,6 @@ fun LinedTextField(
 @Composable
 fun LinedTextFieldPreview() {
     ContactHelperMessage(
-        errorText = "Error Text",
+        errorText = "Error Text"
     )
 }

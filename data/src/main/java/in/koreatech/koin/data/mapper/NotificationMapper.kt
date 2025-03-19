@@ -12,20 +12,20 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesType
 fun NotificationPermissionInfoResponse.toNotificationPermissionInfo() =
     NotificationPermissionInfo(
         isPermit = isPermit,
-        subscribes = subscribes.map { it.toSubscribes() },
+        subscribes = subscribes.map { it.toSubscribes() }
     )
 
 fun SubscribesResponse.toSubscribes() =
     Subscribes(
         type = type.toSubscribesType(),
         isPermit = isPermit,
-        detailSubscribes = detailSubscribes.map { it.toSubscribesDetail() },
+        detailSubscribes = detailSubscribes.map { it.toSubscribesDetail() }
     )
 
 fun SubscribeDetailResponse.toSubscribesDetail() =
     SubscribesDetail(
         type = detailType.toSubscribesDetailType(),
-        isPermit = isPermit,
+        isPermit = isPermit
     )
 
 fun String.toSubscribesType(): SubscribesType =

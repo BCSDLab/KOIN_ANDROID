@@ -17,7 +17,7 @@ fun BusSearchScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
     onSearch: (departure: PlaceType, arrival: PlaceType) -> Unit = { _, _ -> },
-    viewModel: BusSearchViewModel = hiltViewModel(),
+    viewModel: BusSearchViewModel = hiltViewModel()
 ) {
     val departure by viewModel.departure.collectAsStateWithLifecycle()
     val arrival by viewModel.arrival.collectAsStateWithLifecycle()
@@ -41,7 +41,7 @@ fun BusSearchScreen(
             onDepartureSet = viewModel::setDeparture,
             onArrivalSet = viewModel::setArrival,
             onCloseNotice = viewModel::closeNotice,
-            onNoticeClick = { context.goToArticle(it.id) },
+            onNoticeClick = { context.goToArticle(it.id) }
         )
     }
 }

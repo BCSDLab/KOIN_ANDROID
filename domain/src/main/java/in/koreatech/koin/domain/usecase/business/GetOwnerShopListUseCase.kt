@@ -6,17 +6,15 @@ import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
 import `in`.koreatech.koin.domain.repository.OwnerShopRepository
 import javax.inject.Inject
 
-class GetOwnerShopListUseCase
-    @Inject
-    constructor(
-        private val storeRepository: OwnerShopRepository,
-        private val errorHandler: OwnerErrorHandler,
-    ) {
-        suspend operator fun invoke(): Pair<List<OwnerGetStore>, ErrorHandler?> {
-            return try {
-                storeRepository.getMyShopList() to null
-            } catch (throwable: Throwable) {
-                emptyList<OwnerGetStore>() to errorHandler.handleGetOwnerShopListError(throwable)
-            }
+class GetOwnerShopListUseCase @Inject constructor(
+    private val storeRepository: OwnerShopRepository,
+    private val errorHandler: OwnerErrorHandler
+) {
+    suspend operator fun invoke(): Pair<List<OwnerGetStore>, ErrorHandler?> {
+        return try {
+            storeRepository.getMyShopList() to null
+        } catch (throwable: Throwable) {
+            emptyList<OwnerGetStore>() to errorHandler.handleGetOwnerShopListError(throwable)
         }
     }
+}

@@ -33,18 +33,19 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         viewModel.getPermissionInfo()
-        return DiningNotificationOnBoardingBottomSheetBinding.inflate(inflater, container, false).also {
+        return DiningNotificationOnBoardingBottomSheetBinding.inflate(
+            inflater,
+            container,
+            false
+        ).also {
             binding = it
         }.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
             viewLifecycleOwner.lifecycleScope.launch {

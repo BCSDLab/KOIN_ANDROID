@@ -2,7 +2,7 @@ package `in`.koreatech.koin.domain.model.timetable
 
 data class Semester(
     val year: Int,
-    val season: Season,
+    val season: Season
 )
 
 internal fun Semester.toLegacySemester(): String =

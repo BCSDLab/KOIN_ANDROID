@@ -16,15 +16,15 @@ fun UserResponse.toUser(userType: String) =
         name = name,
         studentNumber = studentNumber,
         gender =
-            when (gender) {
-                0 -> Gender.Man
-                1 -> Gender.Woman
-                else -> Gender.Unknown
-            },
+        when (gender) {
+            0 -> Gender.Man
+            1 -> Gender.Woman
+            else -> Gender.Unknown
+        },
         nickname = nickname,
         phoneNumber = phoneNumber,
         major = major,
-        userType = userType,
+        userType = userType
     )
 
 fun User.Student.toUserRequest() =
@@ -35,14 +35,14 @@ fun User.Student.toUserRequest() =
         major = major,
         phoneNumber = phoneNumber,
         gender =
-            when (gender) {
-                Gender.Man -> 0
-                Gender.Woman -> 1
-                else -> null
-            },
+        when (gender) {
+            Gender.Man -> 0
+            Gender.Woman -> 1
+            else -> null
+        },
         identity = 0,
         isGraduated = isStudent,
-        hashedPassword = null,
+        hashedPassword = null
     )
 
 fun User.Student.toUserRequestWithPassword(hashedPassword: String) =
@@ -53,14 +53,14 @@ fun User.Student.toUserRequestWithPassword(hashedPassword: String) =
         major = major,
         phoneNumber = phoneNumber,
         gender =
-            when (gender) {
-                Gender.Man -> 0
-                Gender.Woman -> 1
-                else -> null
-            },
+        when (gender) {
+            Gender.Man -> 0
+            Gender.Woman -> 1
+            else -> null
+        },
         identity = 0,
         isGraduated = isStudent,
-        hashedPassword = hashedPassword,
+        hashedPassword = hashedPassword
     )
 
 fun Graduated.toBoolean(): Boolean {
@@ -82,14 +82,14 @@ fun String.toPhoneNumber(): String {
         11 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${
             phoneNumberDigitsOnly.substring(
                 3,
-                7,
+                7
             )
         }-${phoneNumberDigitsOnly.substring(7)}"
 
         10 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${
             phoneNumberDigitsOnly.substring(
                 3,
-                6,
+                6
             )
         }-${phoneNumberDigitsOnly.substring(6)}"
 
@@ -103,7 +103,7 @@ fun String.toBusinessNumber(): String {
         11 -> "${businessNumberDigitsOnly.substring(0, 3)}-${
             businessNumberDigitsOnly.substring(
                 3,
-                5,
+                5
             )
         }-${businessNumberDigitsOnly.substring(5)}"
 
@@ -117,5 +117,5 @@ fun RefreshResponse.toAuthToken() =
     AuthToken(
         token = this.token,
         refreshToken = this.refreshToken,
-        userType = null,
+        userType = null
     )

@@ -28,54 +28,64 @@ class BusinessSignUpCompleteActivity : ActivityBase(R.layout.activity_business_s
         initViewModel()
     }
 
-    private fun initView() =
-        with(binding) {
-            signupBackButton.setOnClickListener {
-                finish()
-            }
-
-            val fileUrls = intent.getStringArrayExtra("fileUrls")?.toList() ?: emptyList()
-            val storeNumber = intent.getStringExtra("companyNumber") ?: ""
-            val email = intent.getStringExtra("email") ?: "error"
-            val name = intent.getStringExtra("name") ?: "error"
-            val password = intent.getStringExtra("password") ?: "error"
-            val phoneNumber = intent.getStringExtra("phoneNumber") ?: "error"
-            val storeId = intent.getIntExtra("shopId", -1)
-            val storeName = intent.getStringExtra("shopName") ?: "error"
-
-            goLoginActivityButton.setOnClickListener {
-                businessSignUpCompleteViewModel.sendRegisterRequest(
-                    fileUrls.strToOwnerRegisterUrl(),
-                    storeNumber,
-                    email,
-                    name,
-                    password,
-                    phoneNumber,
-                    storeId,
-                    storeName,
-                )
-            }
+    private fun initView() = with(binding) {
+        signupBackButton.setOnClickListener {
+            finish()
         }
 
-    private fun initViewModel() =
-        with(businessSignUpCompleteViewModel) {
-            observeLiveData(businessCompleteContinuationState) {
-                startActivity(Intent(this@BusinessSignUpCompleteActivity, BusinessLoginActivity::class.java))
-            }
+        val fileUrls = intent.getStringArrayExtra("fileUrls")?.toList() ?: emptyList()
+        val storeNumber = intent.getStringExtra("companyNumber") ?: ""
+        val email = intent.getStringExtra("email") ?: "error"
+        val name = intent.getStringExtra("name") ?: "error"
+        val password = intent.getStringExtra("password") ?: "error"
+        val phoneNumber = intent.getStringExtra("phoneNumber") ?: "error"
+        val storeId = intent.getIntExtra("shopId", -1)
+        val storeName = intent.getStringExtra("shopName") ?: "error"
 
-            observeLiveData(businessCompleteContinuationError) { t ->
-                SnackbarUtil.makeShortSnackbar(
-                    binding.root,
-                    when (t) {
-                        is OwnerError.NotValidEmailException -> getString(R.string.is_not_valid_email)
-                        is OwnerError.AlreadyUsingEmailException -> getString(R.string.is_already_using_email)
-                        is OwnerError.AlreadyUsingRegistrationNumberException -> getString(R.string.is_already_registration_number)
-                        is OwnerError.AlreadyValidIdException -> getString(R.string.is_already_using_id)
-                        is OwnerError.OverDueTimeException -> getString(R.string.overdue_time)
-                        is OwnerError.IncorrectVerificationCodeException -> getString(R.string.incorrect_verification_code)
-                        else -> getString(R.string.failed_signup)
-                    },
-                )
-            }
+        goLoginActivityButton.setOnClickListener {
+            businessSignUpCompleteViewModel.sendRegisterRequest(
+                fileUrls.strToOwnerRegisterUrl(),
+                storeNumber,
+                email,
+                name,
+                password,
+                phoneNumber,
+                storeId,
+                storeName
+            )
         }
+    }
+
+    private fun initViewModel() = with(businessSignUpCompleteViewModel) {
+        observeLiveData(businessCompleteContinuationState) {
+            startActivity(
+                Intent(this@BusinessSignUpCompleteActivity, BusinessLoginActivity::class.java)
+            )
+        }
+
+        observeLiveData(businessCompleteContinuationError) { t ->
+            SnackbarUtil.makeShortSnackbar(
+                binding.root,
+                when (t) {
+                    is OwnerError.NotValidEmailException -> getString(
+                        R.string.is_not_valid_email
+                    )
+                    is OwnerError.AlreadyUsingEmailException -> getString(
+                        R.string.is_already_using_email
+                    )
+                    is OwnerError.AlreadyUsingRegistrationNumberException -> getString(
+                        R.string.is_already_registration_number
+                    )
+                    is OwnerError.AlreadyValidIdException -> getString(
+                        R.string.is_already_using_id
+                    )
+                    is OwnerError.OverDueTimeException -> getString(R.string.overdue_time)
+                    is OwnerError.IncorrectVerificationCodeException -> getString(
+                        R.string.incorrect_verification_code
+                    )
+                    else -> getString(R.string.failed_signup)
+                }
+            )
+        }
+    }
 }

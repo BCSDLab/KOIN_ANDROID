@@ -38,14 +38,21 @@ class ArticleActivity : ActivityBase() {
             val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, imeInsets.bottom or systemBars.bottom)
+            v.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                imeInsets.bottom or systemBars.bottom
+            )
             WindowInsetsCompat.CONSUMED
         }
 
         window.whiteStatusBar()
 
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_article_fragment) as NavHostFragment
+            supportFragmentManager.findFragmentById(
+                R.id.nav_host_article_fragment
+            ) as NavHostFragment
         navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, dest, _ ->
@@ -54,9 +61,15 @@ class ArticleActivity : ActivityBase() {
                 R.id.articleDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
                 R.id.articleSearchFragment -> setToolbar(ArticleToolbarState.ARTICLE_SEARCH)
                 R.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD)
-                R.id.articleLostAndFoundWriteLostFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_LOST_ITEM)
-                R.id.articleLostAndFoundWriteFoundFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM)
-                R.id.articleLostAndFoundDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
+                R.id.articleLostAndFoundWriteLostFragment -> setToolbar(
+                    ArticleToolbarState.ARTICLE_LOSTANDFOUND_LOST_ITEM
+                )
+                R.id.articleLostAndFoundWriteFoundFragment -> setToolbar(
+                    ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM
+                )
+                R.id.articleLostAndFoundDetailFragment -> setToolbar(
+                    ArticleToolbarState.ARTICLE_DETAIL
+                )
             }
         }
 
@@ -82,7 +95,9 @@ class ArticleActivity : ActivityBase() {
         when (link) {
             "article_keyword" -> {
                 setNavigationGraph()
-                navController.navigate(R.id.articleKeywordFragment) // See ArticleKeywordFragment, LoginActivity
+                navController.navigate(
+                    R.id.articleKeywordFragment
+                ) // See ArticleKeywordFragment, LoginActivity
             }
             "article_detail" -> {
                 setNavigationGraph()
@@ -92,8 +107,8 @@ class ArticleActivity : ActivityBase() {
                     R.id.articleDetailFragment,
                     bundleOf(
                         ARTICLE_ID to articleId,
-                        NAVIGATED_BOARD_ID to boardId,
-                    ),
+                        NAVIGATED_BOARD_ID to boardId
+                    )
                 )
             }
             "article_lost_and_found" -> {
@@ -120,8 +135,8 @@ class ArticleActivity : ActivityBase() {
                 navController.navigate(
                     R.id.articleLostAndFoundDetailFragment,
                     bundleOf(
-                        ARTICLE_ID to it,
-                    ),
+                        ARTICLE_ID to it
+                    )
                 )
             } else {
                 setNavigationGraph()
@@ -130,8 +145,8 @@ class ArticleActivity : ActivityBase() {
                     R.id.articleDetailFragment,
                     bundleOf(
                         ARTICLE_ID to it,
-                        NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id,
-                    ),
+                        NAVIGATED_BOARD_ID to ArticleBoardType.ALL.id
+                    )
                 )
             }
         }
@@ -150,13 +165,15 @@ class ArticleActivity : ActivityBase() {
                                 EventLogger.logClickEvent(
                                     EventAction.CAMPUS,
                                     AnalyticsConstant.Label.NOTICE_SEARCH,
-                                    getString(R.string.search),
+                                    getString(R.string.search)
                                 )
-                                navController.navigate(R.id.action_articleListFragment_to_articleSearchFragment)
+                                navController.navigate(
+                                    R.id.action_articleListFragment_to_articleSearchFragment
+                                )
                             }
                         }
-                    },
-                ),
+                    }
+                )
             )
         }
     }

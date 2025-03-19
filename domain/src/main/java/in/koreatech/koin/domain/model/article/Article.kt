@@ -6,5 +6,5 @@ data class Article(
     val prevArticleId: Int?,
     val nextArticleId: Int?,
     val attachments: List<Attachment>,
-    val url: String,
+    val url: String
 )

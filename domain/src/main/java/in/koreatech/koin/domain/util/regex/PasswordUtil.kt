@@ -7,7 +7,7 @@ import java.util.regex.Pattern
 class PasswordUtil {
     private fun hashString(
         message: String,
-        algorithm: String,
+        algorithm: String
     ): String {
         try {
             val digest = MessageDigest.getInstance(algorithm)

@@ -14,7 +14,7 @@ enum class ModifyMenuErrorType {
     NullMenuCategory,
     NullMenuImage,
     FailUploadImage,
-    FailModifyMenu,
+    FailModifyMenu
 }
 
 sealed class ImageHolder {

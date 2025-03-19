@@ -5,5 +5,5 @@ data class SignInState(
     val password: String = "",
     val errorMessage: String = "",
     val isFirst: Boolean = true,
-    val notValidateField: Boolean = false,
+    val notValidateField: Boolean = false
 )

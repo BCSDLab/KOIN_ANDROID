@@ -50,13 +50,13 @@ class ArticleKeywordFragment : Fragment() {
             AlertModalDialogData(
                 title = R.string.recommend_login_to_get_keyword_notification_title,
                 message = R.string.recommend_login_to_get_keyword_notification_message,
-                positiveButtonText = R.string.action_login,
+                positiveButtonText = R.string.action_login
             ),
             onPositiveButtonClicked = {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.action_login),
+                    getString(R.string.action_login)
                 )
                 val intent =
                     Intent(Intent.ACTION_VIEW).apply {
@@ -69,17 +69,17 @@ class ArticleKeywordFragment : Fragment() {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.close),
+                    getString(R.string.close)
                 )
                 it.dismiss()
-            },
+            }
         )
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         if (_binding == null) {
             _binding = FragmentArticleKeywordBinding.inflate(inflater, container, false)
@@ -130,8 +130,8 @@ class ArticleKeywordFragment : Fragment() {
                                 keyword,
                                 R.drawable.ic_close_round,
                                 binding.chipGroupMyKeyword,
-                                viewModel::deleteKeyword,
-                            ),
+                                viewModel::deleteKeyword
+                            )
                         )
                     }
                     binding.chipGroupSuggestionKeywords.children.forEach { chip ->
@@ -174,7 +174,7 @@ class ArticleKeywordFragment : Fragment() {
                                     EventLogger.logClickEvent(
                                         EventAction.CAMPUS,
                                         AnalyticsConstant.Label.RECOMMENDED_KEYWORD,
-                                        keyword,
+                                        keyword
                                     )
                                     viewModel.addKeyword(it)
                                 }
@@ -184,8 +184,8 @@ class ArticleKeywordFragment : Fragment() {
                                         R.drawable.ic_add_round,
                                         binding.chipGroupSuggestionKeywords,
                                         onCloseIconClicked = onClick,
-                                        onClick = onClick,
-                                    ),
+                                        onClick = onClick
+                                    )
                                 )
                             }
                         }
@@ -200,7 +200,7 @@ class ArticleKeywordFragment : Fragment() {
         @DrawableRes icon: Int,
         root: ViewGroup,
         onCloseIconClicked: (String) -> Unit = {},
-        onClick: (String) -> Unit = {},
+        onClick: (String) -> Unit = {}
     ): Chip? {
         val chip = layoutInflater.inflate(R.layout.chip_layout, root, false) as? Chip
         return chip?.apply {
@@ -226,35 +226,35 @@ class ArticleKeywordFragment : Fragment() {
                         KeywordAddUiState.RequireInput -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_require_input),
+                                getString(R.string.keyword_add_require_input)
                             )
                         }
 
                         KeywordAddUiState.LimitExceeded -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_limit_exceeded),
+                                getString(R.string.keyword_add_limit_exceeded)
                             )
                         }
 
                         KeywordAddUiState.InvalidLength -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_invalid_length),
+                                getString(R.string.keyword_add_invalid_length)
                             )
                         }
 
                         KeywordAddUiState.AlreadyExist -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_already_exist),
+                                getString(R.string.keyword_add_already_exist)
                             )
                         }
 
                         KeywordAddUiState.BlankNotAllowed -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_blank_not_allowed),
+                                getString(R.string.keyword_add_blank_not_allowed)
                             )
                         }
 
@@ -266,7 +266,7 @@ class ArticleKeywordFragment : Fragment() {
                                 binding.chipGroupSuggestionKeywords.removeView(
                                     binding.chipGroupSuggestionKeywords.children.first { chip ->
                                         (chip as? Chip)?.text == state.keyword
-                                    },
+                                    }
                                 )
                             } catch (_: Exception) {
                             }
@@ -276,7 +276,7 @@ class ArticleKeywordFragment : Fragment() {
                         KeywordAddUiState.Error -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.error_network_unknown),
+                                getString(R.string.error_network_unknown)
                             )
                         }
                     }
@@ -295,30 +295,30 @@ class ArticleKeywordFragment : Fragment() {
                                 is KeywordInputUiState.Empty ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.gray16,
+                                        R.color.gray16
                                     )
 
                                 is KeywordInputUiState.Valid ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.colorPrimary,
+                                        R.color.colorPrimary
                                     )
-                            },
+                            }
                         )
                         setTextColor(
                             when (state) {
                                 is KeywordInputUiState.Empty ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.gray14,
+                                        R.color.gray14
                                     )
 
                                 is KeywordInputUiState.Valid ->
                                     ContextCompat.getColor(
                                         requireContext(),
-                                        R.color.white,
+                                        R.color.white
                                     )
-                            },
+                            }
                         )
                     }
                 }
@@ -354,14 +354,14 @@ class ArticleKeywordFragment : Fragment() {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                    "on",
+                    "on"
                 )
                 notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD)
             } else {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                    "off",
+                    "off"
                 )
                 notificationViewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD)
             }

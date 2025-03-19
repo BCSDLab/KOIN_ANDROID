@@ -48,7 +48,7 @@ fun ManageMenuScreen(
     onBackPressed: () -> Unit = {},
     navigateToModifyMenuScreen: (Int) -> Unit,
     navigateToRegisterMenuScreen: (Int) -> Unit,
-    viewModel: ManageMenuViewModel = hiltViewModel(),
+    viewModel: ManageMenuViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
     ManageMenuScreenImpl(
@@ -57,7 +57,7 @@ fun ManageMenuScreen(
         state = state,
         onMenuItemClicked = viewModel::onModifyMenuClicked,
         onAddMenuClicked = viewModel::onRegisterMenuClicked,
-        onCheckBoxClicked = viewModel::onCheckBoxClicked,
+        onCheckBoxClicked = viewModel::onCheckBoxClicked
     )
     HandleSideEffects(viewModel, navigateToModifyMenuScreen, navigateToRegisterMenuScreen)
 }
@@ -69,90 +69,90 @@ fun ManageMenuScreenImpl(
     state: ManageMenuState = ManageMenuState(),
     onMenuItemClicked: (Int) -> Unit = {},
     onAddMenuClicked: () -> Unit = {},
-    onCheckBoxClicked: (Int) -> Unit = {},
+    onCheckBoxClicked: (Int) -> Unit = {}
 ) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(62.dp)
-                    .background(ColorPrimary),
+            Modifier
+                .fillMaxWidth()
+                .height(62.dp)
+                .background(ColorPrimary)
         ) {
             IconButton(
                 modifier =
-                    Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(start = 16.dp),
-                onClick = { onBackPressed() },
+                Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 16.dp),
+                onClick = { onBackPressed() }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_arrow_back),
-                    contentDescription = stringResource(R.string.back),
+                    contentDescription = stringResource(R.string.back)
                 )
             }
             Text(
                 text = stringResource(R.string.menu_edit),
                 modifier = Modifier.align(Alignment.Center),
                 style = KoinTheme.typography.medium18,
-                color = Color.White,
+                color = Color.White
             )
         }
 
         Text(
             modifier =
-                Modifier
-                    .padding(top = 32.dp)
-                    .padding(end = 24.dp)
-                    .align(Alignment.End)
-                    .clickable {
-                        onAddMenuClicked()
-                    },
+            Modifier
+                .padding(top = 32.dp)
+                .padding(end = 24.dp)
+                .align(Alignment.End)
+                .clickable {
+                    onAddMenuClicked()
+                },
             text = stringResource(R.string.menu_add_plus),
-            style = TextStyle(color = colorResource(R.color.primary_500), fontSize = 16.sp),
+            style = TextStyle(color = colorResource(R.color.primary_500), fontSize = 16.sp)
         )
 
         LazyRow(
             modifier =
-                Modifier
-                    .padding(top = 16.dp)
-                    .padding(horizontal = 24.dp)
-                    .fillMaxWidth()
-                    .height(32.dp),
+            Modifier
+                .padding(top = 16.dp)
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth()
+                .height(32.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             itemsIndexed(state.storeMenuCategoryList) { index, item ->
                 Box(
                     modifier =
-                        Modifier
-                            .background(color = if (item.isChecked) ColorPrimary else Color.White, shape = RoundedCornerShape(8.dp))
-                            .fillParentMaxWidth(0.228f)
-                            .fillMaxHeight()
-                            .clickable {
-                                coroutineScope.launch {
-                                    listState.animateScrollToItem(index)
-                                }
-                                onCheckBoxClicked(index)
+                    Modifier
+                        .background(color = if (item.isChecked) ColorPrimary else Color.White, shape = RoundedCornerShape(8.dp))
+                        .fillParentMaxWidth(0.228f)
+                        .fillMaxHeight()
+                        .clickable {
+                            coroutineScope.launch {
+                                listState.animateScrollToItem(index)
                             }
-                            .border(
-                                width = 1.dp,
-                                color = Gray3,
-                                shape = RoundedCornerShape(8.dp),
-                            ),
-                    contentAlignment = Alignment.Center,
+                            onCheckBoxClicked(index)
+                        }
+                        .border(
+                            width = 1.dp,
+                            color = Gray3,
+                            shape = RoundedCornerShape(8.dp)
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         modifier = Modifier.padding(1.dp),
                         text = item.categoryName,
                         style = KoinTheme.typography.medium12,
                         color = if (item.isChecked) Color.White else Gray3,
-                        fontWeight = FontWeight(500),
+                        fontWeight = FontWeight(500)
                     )
                 }
             }
@@ -161,9 +161,9 @@ fun ManageMenuScreenImpl(
         LazyColumn(
             state = listState,
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(top = 32.dp),
+            Modifier
+                .fillMaxSize()
+                .padding(top = 32.dp)
         ) {
             state.storeMenuList?.let { menuList ->
                 items(menuList) {
@@ -172,7 +172,7 @@ fun ManageMenuScreenImpl(
                         menuList = it,
                         onMenuClicked = { menuId ->
                             onMenuItemClicked(menuId)
-                        },
+                        }
                     )
                 }
             }
@@ -184,7 +184,7 @@ fun ManageMenuScreenImpl(
 private fun HandleSideEffects(
     viewModel: ManageMenuViewModel,
     navigateToModifyMenuScreen: (Int) -> Unit,
-    navigateToRegisterMenuScreen: (Int) -> Unit,
+    navigateToRegisterMenuScreen: (Int) -> Unit
 ) {
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {

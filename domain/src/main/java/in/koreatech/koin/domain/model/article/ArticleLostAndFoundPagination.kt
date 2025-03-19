@@ -5,5 +5,5 @@ data class ArticleLostAndFoundPagination(
     val totalCount: Int,
     val currentCount: Int,
     val totalPage: Int,
-    val currentPage: Int,
+    val currentPage: Int
 )

@@ -7,11 +7,11 @@ data class TimetableLectureClassInfoRequest(
     @SerializedName("class_time")
     val classTime: List<Int>?,
     @SerializedName("class_place")
-    val classPlace: String?,
+    val classPlace: String?
 )
 
 fun TimetableLectureClassInfo.toClassInfoRequest() =
     TimetableLectureClassInfoRequest(
         classTime = classTime,
-        classPlace = classPlace,
+        classPlace = classPlace
     )

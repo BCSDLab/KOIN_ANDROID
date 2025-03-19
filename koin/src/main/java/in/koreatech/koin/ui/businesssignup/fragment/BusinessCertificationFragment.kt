@@ -41,7 +41,7 @@ class BusinessCertificationFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBusinessCertificationBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -55,55 +55,61 @@ class BusinessCertificationFragment : BaseFragment() {
         return view
     }
 
-    private fun initView() =
-        with(binding) {
-            setFragmentResultListener("requestKey") { requestKey, bundle ->
-                val result = bundle.getString("storeName")
-                editStoreNameText.setText(result)
-            }
+    private fun initView() = with(binding) {
+        setFragmentResultListener("requestKey") { requestKey, bundle ->
+            val result = bundle.getString("storeName")
+            editStoreNameText.setText(result)
+        }
 
-            editPersonalContactText.doOnTextChanged { text, start, before, count ->
-                if (text?.length == 3 || text?.length == 8) {
-                    editPersonalContactText.setText(getString(R.string.set_form, text))
-                    editPersonalContactText.setSelection(editPersonalContactText.text.length)
-                }
-            }
-
-            editRegistrationNumberText.doOnTextChanged { text, start, before, count ->
-                if (text?.length == 3 || text?.length == 6) {
-                    editRegistrationNumberText.setText(getString(R.string.set_form, text))
-                    editRegistrationNumberText.setSelection(editRegistrationNumberText.text.length)
-                }
-            }
-
-            searchStoreButton.setOnClickListener {
-                val nextFragment = BusinessSearchStoreFragment()
-                parentFragmentManager.beginTransaction().replace(R.id.fragment_container_view, nextFragment).commit()
-            }
-
-            businessCertificationNextButton.setOnClickListener {
-                if (allWriteCheck) {
-                    businessSignupBaseViewModel.setName(editBusinessmanNameText.text.toString())
-                    businessSignupBaseViewModel.setShopName(editStoreNameText.text.toString())
-                    businessSignupBaseViewModel.setPhoneNumber(editPersonalContactText.text.toString())
-                    businessSignupBaseViewModel.setCompanyNumber(editRegistrationNumberText.text.toString())
-
-                    businessSignupBaseViewModel.setFragmentTag("completeActivity")
-                } else {
-                    SnackbarUtil.makeShortSnackbar(root, getString(R.string.not_enter_all_items))
-                }
-            }
-
-            transparentButton.setOnClickListener {
-                showDialog()
-            }
-
-            attachFileRecyclerView.apply {
-                setHasFixedSize(true)
-                layoutManager = LinearLayoutManager(this@BusinessCertificationFragment.context)
-                adapter = attachStoreAdapter
+        editPersonalContactText.doOnTextChanged { text, start, before, count ->
+            if (text?.length == 3 || text?.length == 8) {
+                editPersonalContactText.setText(getString(R.string.set_form, text))
+                editPersonalContactText.setSelection(editPersonalContactText.text.length)
             }
         }
+
+        editRegistrationNumberText.doOnTextChanged { text, start, before, count ->
+            if (text?.length == 3 || text?.length == 6) {
+                editRegistrationNumberText.setText(getString(R.string.set_form, text))
+                editRegistrationNumberText.setSelection(editRegistrationNumberText.text.length)
+            }
+        }
+
+        searchStoreButton.setOnClickListener {
+            val nextFragment = BusinessSearchStoreFragment()
+            parentFragmentManager.beginTransaction().replace(
+                R.id.fragment_container_view,
+                nextFragment
+            ).commit()
+        }
+
+        businessCertificationNextButton.setOnClickListener {
+            if (allWriteCheck) {
+                businessSignupBaseViewModel.setName(editBusinessmanNameText.text.toString())
+                businessSignupBaseViewModel.setShopName(editStoreNameText.text.toString())
+                businessSignupBaseViewModel.setPhoneNumber(
+                    editPersonalContactText.text.toString()
+                )
+                businessSignupBaseViewModel.setCompanyNumber(
+                    editRegistrationNumberText.text.toString()
+                )
+
+                businessSignupBaseViewModel.setFragmentTag("completeActivity")
+            } else {
+                SnackbarUtil.makeShortSnackbar(root, getString(R.string.not_enter_all_items))
+            }
+        }
+
+        transparentButton.setOnClickListener {
+            showDialog()
+        }
+
+        attachFileRecyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@BusinessCertificationFragment.context)
+            adapter = attachStoreAdapter
+        }
+    }
 
     private fun checkAllWrite() {
         binding.editBusinessmanNameText.addTextChangedListener {
@@ -129,91 +135,91 @@ class BusinessCertificationFragment : BaseFragment() {
         dialog.show(requireActivity().supportFragmentManager, dialog.tag)
     }
 
-    private fun initViewModel() =
-        with(businessCertificationViewModel) {
-            observeLiveData(businessCertificationContinuationError) { state ->
-                when (state) {
-                    UploadError.NotExistDomainException -> {
-                        SnackbarUtil.makeShortSnackbar(
-                            binding.root,
-                            getString(R.string.not_exist_domain),
-                        )
-                    }
-                    UploadError.BoundOfSizeException -> {
-                        SnackbarUtil.makeShortSnackbar(
-                            binding.root,
-                            getString(R.string.bound_of_size_domain),
-                        )
-                    }
-                    UploadError.NotAllowedDomainException -> {
-                        SnackbarUtil.makeShortSnackbar(
-                            binding.root,
-                            getString(R.string.not_allow_type_domain),
-                        )
-                    }
-                    UploadError.NotValidFileException -> {
-                        SnackbarUtil.makeShortSnackbar(
-                            binding.root,
-                            getString(R.string.is_not_valid_file),
-                        )
-                    }
+    private fun initViewModel() = with(businessCertificationViewModel) {
+        observeLiveData(businessCertificationContinuationError) { state ->
+            when (state) {
+                UploadError.NotExistDomainException -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.not_exist_domain)
+                    )
                 }
-            }
-
-            observeLiveData(shopImageUrlAndSize) {
-                val fileUrl = "https://${it.resultUrl}/${it.fileName}"
-                businessSignupBaseViewModel.setFileUrls(fileUrl)
-
-                val inputStream = requireActivity().contentResolver.openInputStream(it.uri.toUri())
-
-                if (inputStream == null) {
-                    SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.failed_file_upload))
-                } else {
-                    uploadPreSignedUrl(
-                        it.preSignedUrl,
-                        inputStream,
-                        it.mediaType,
-                        it.fileSize,
+                UploadError.BoundOfSizeException -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.bound_of_size_domain)
+                    )
+                }
+                UploadError.NotAllowedDomainException -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.not_allow_type_domain)
+                    )
+                }
+                UploadError.NotValidFileException -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.is_not_valid_file)
                     )
                 }
             }
+        }
 
-            observeLiveData(failUploadPreSignedUrl) {
+        observeLiveData(shopImageUrlAndSize) {
+            val fileUrl = "https://${it.resultUrl}/${it.fileName}"
+            businessSignupBaseViewModel.setFileUrls(fileUrl)
+
+            val inputStream = requireActivity().contentResolver.openInputStream(it.uri.toUri())
+
+            if (inputStream == null) {
                 SnackbarUtil.makeShortSnackbar(
                     binding.root,
-                    getString(R.string.failed_file_upload),
+                    getString(R.string.failed_file_upload)
+                )
+            } else {
+                uploadPreSignedUrl(
+                    it.preSignedUrl,
+                    inputStream,
+                    it.mediaType,
+                    it.fileSize
                 )
             }
+        }
 
-            observeLiveData(saveImageList) {
-                attachStoreAdapter.updateList(it)
+        observeLiveData(failUploadPreSignedUrl) {
+            SnackbarUtil.makeShortSnackbar(
+                binding.root,
+                getString(R.string.failed_file_upload)
+            )
+        }
 
-                viewModelScope.launch {
-                    repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                        isMinOneInfo.collectLatest { check ->
-                            if (check) {
-                                isMinOneStoreImage = true
-                                hiddenInitView()
-                                check()
-                            } else {
-                                hiddenRecyclerView()
-                                check()
-                            }
+        observeLiveData(saveImageList) {
+            attachStoreAdapter.updateList(it)
+
+            viewModelScope.launch {
+                repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    isMinOneInfo.collectLatest { check ->
+                        if (check) {
+                            isMinOneStoreImage = true
+                            hiddenInitView()
+                            check()
+                        } else {
+                            hiddenRecyclerView()
+                            check()
                         }
                     }
                 }
             }
         }
+    }
 
-    private fun hiddenInitView() =
-        with(binding) {
-            recyclerviewInitGroup.visibility = View.GONE
-        }
+    private fun hiddenInitView() = with(binding) {
+        recyclerviewInitGroup.visibility = View.GONE
+    }
 
-    private fun hiddenRecyclerView() =
-        with(binding) {
-            recyclerviewInitGroup.visibility = View.VISIBLE
-        }
+    private fun hiddenRecyclerView() = with(binding) {
+        recyclerviewInitGroup.visibility = View.VISIBLE
+    }
 
     private fun isAllWrite(): Boolean {
         if (binding.editBusinessmanNameText.textString.trim().isBlank()) {
@@ -236,12 +242,15 @@ class BusinessCertificationFragment : BaseFragment() {
         return true
     }
 
-    private fun check() =
-        with(binding) {
-            if (allWriteCheck && isMinOneStoreImage) {
-                businessCertificationNextButton.setBackgroundColor(context!!.getColor(R.color.colorPrimary))
-            } else {
-                businessCertificationNextButton.setBackgroundColor(context!!.getColor(R.color.gray5))
-            }
+    private fun check() = with(binding) {
+        if (allWriteCheck && isMinOneStoreImage) {
+            businessCertificationNextButton.setBackgroundColor(
+                context!!.getColor(R.color.colorPrimary)
+            )
+        } else {
+            businessCertificationNextButton.setBackgroundColor(
+                context!!.getColor(R.color.gray5)
+            )
         }
+    }
 }

@@ -23,31 +23,31 @@ import `in`.koreatech.koin.feature.timetable.R
 @Composable
 fun TimetableDownloadBox(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier =
-            modifier
-                .background(Color.White)
-                .border(
-                    width = 1.dp,
-                    color = KoinTheme.colors.neutral300,
-                    shape = RoundedCornerShape(10.dp),
-                )
-                .noRippleClickable { onClick() }
-                .padding(5.dp),
+        modifier
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = KoinTheme.colors.neutral300,
+                shape = RoundedCornerShape(10.dp)
+            )
+            .noRippleClickable { onClick() }
+            .padding(5.dp)
     ) {
         Text(
             text = "시간표 다운로드",
             style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral800,
+            color = KoinTheme.colors.neutral800
         )
         Spacer(modifier = Modifier.width(8.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_download),
             contentDescription = null,
             modifier = Modifier.size(20.dp).padding(1.dp),
-            tint = KoinTheme.colors.neutral800,
+            tint = KoinTheme.colors.neutral800
         )
     }
 }

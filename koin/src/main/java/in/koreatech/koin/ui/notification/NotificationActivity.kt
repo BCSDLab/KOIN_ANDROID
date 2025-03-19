@@ -39,7 +39,7 @@ class NotificationActivity : ActivityBase() {
         withLoading(this, viewModel)
         binding.koinBaseAppBar.setAppBarButtonClickedListener(
             leftButtonClicked = { onBackPressed() },
-            rightButtonClicked = {},
+            rightButtonClicked = {}
         )
 
         observeData()
@@ -190,7 +190,7 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_SOLD_OUT,
-                if (isChecked) "on" else "off",
+                if (isChecked) "on" else "off"
             )
             handleSubscription(isChecked, SubscribesType.DINING_SOLD_OUT)
             enableSubscriptionDetail(isChecked, SubscribesType.DINING_SOLD_OUT)
@@ -211,7 +211,7 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_MENU_IMAGE_UPLOAD,
-                if (isChecked) "on" else "off",
+                if (isChecked) "on" else "off"
             )
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
@@ -222,7 +222,7 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_BREAKFAST_SOLD_OUT,
-                if (isChecked) "on" else "off",
+                if (isChecked) "on" else "off"
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
         }
@@ -230,7 +230,7 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_LUNCH_SOLD_OUT,
-                if (isChecked) "on" else "off",
+                if (isChecked) "on" else "off"
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
         }
@@ -238,16 +238,13 @@ class NotificationActivity : ActivityBase() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTIFICATION_DINNER_SOLD_OUT,
-                if (isChecked) "on" else "off",
+                if (isChecked) "on" else "off"
             )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
         }
     }
 
-    private fun handleSubscription(
-        isChecked: Boolean,
-        type: SubscribesType,
-    ) {
+    private fun handleSubscription(isChecked: Boolean, type: SubscribesType) {
         if (isChecked) {
             viewModel.updateSubscription(type)
         } else {
@@ -255,10 +252,7 @@ class NotificationActivity : ActivityBase() {
         }
     }
 
-    private fun handleSubscriptionDetail(
-        isChecked: Boolean,
-        type: SubscribesDetailType,
-    ) {
+    private fun handleSubscriptionDetail(isChecked: Boolean, type: SubscribesDetailType) {
         if (isChecked) {
             viewModel.updateSubscriptionDetail(type)
         } else {
@@ -266,10 +260,7 @@ class NotificationActivity : ActivityBase() {
         }
     }
 
-    private fun enableSubscriptionDetail(
-        isChecked: Boolean,
-        subscribesType: SubscribesType,
-    ) {
+    private fun enableSubscriptionDetail(isChecked: Boolean, subscribesType: SubscribesType) {
         if (subscribesType == SubscribesType.DINING_SOLD_OUT) {
             updateDiningSoldOutVisibility(isChecked)
         }

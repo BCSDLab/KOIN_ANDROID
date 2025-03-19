@@ -47,13 +47,12 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
         observeData()
     }
 
-    private fun initView() =
-        with(binding) {
-            signupBackButton.setOnClickListener { finish() }
-            onTermsInteractions()
-            validationEmail()
-            moveToDetailView()
-        }
+    private fun initView() = with(binding) {
+        signupBackButton.setOnClickListener { finish() }
+        onTermsInteractions()
+        validationEmail()
+        moveToDetailView()
+    }
 
     private fun onTermsInteractions() {
         binding.signupTextViewPrivacyTerms.useUnderLine()
@@ -78,10 +77,13 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                     signupViewModel.checkEmailDuplicated(
                         getString(
                             R.string.koreatech_email_postfix,
-                            binding.signupEdittextId.textString.trim(),
-                        ),
+                            binding.signupEdittextId.textString.trim()
+                        )
                     )
-                else -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_forgotpassword_no_input))
+                else -> SnackbarUtil.makeShortSnackbar(
+                    binding.root,
+                    getString(R.string.error_forgotpassword_no_input)
+                )
             }
         }
     }
@@ -90,82 +92,96 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
         binding.signupNextButton.setOnClickListener {
             signupViewModel.continueSignup(
                 portalAccount =
-                    getString(
-                        R.string.koreatech_email_postfix,
-                        binding.signupEdittextId.textString.trim(),
-                    ),
+                getString(
+                    R.string.koreatech_email_postfix,
+                    binding.signupEdittextId.textString.trim()
+                ),
                 password = binding.signupEdittextPw.textString,
                 passwordConfirm = binding.signupEdittextPwConfirm.textString,
                 isAgreedPrivacyTerms = binding.signupCheckBoxPrivacyTerms.isChecked,
-                isAgreedKoinTerms = binding.signupCheckBoxKoinTerms.isChecked,
+                isAgreedKoinTerms = binding.signupCheckBoxKoinTerms.isChecked
             )
         }
     }
 
-    private fun observeData() =
-        with(signupViewModel) {
-            withLoading(this@SignupActivity, this)
+    private fun observeData() = with(signupViewModel) {
+        withLoading(this@SignupActivity, this)
 
-            lifecycleScope.launch {
-                signupContinuationState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
-                    when (it) {
-                        SignupContinuationState.EmailDuplicated ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.error_email_duplicated),
-                            )
+        lifecycleScope.launch {
+            signupContinuationState.flowWithLifecycle(
+                lifecycle,
+                Lifecycle.State.STARTED
+            ).collect {
+                when (it) {
+                    SignupContinuationState.EmailDuplicated ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.error_email_duplicated)
+                        )
 
-                        SignupContinuationState.AvailableEmail -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_email_check))
-                            binding.checkEmailDuplicatedButton.visibility = View.GONE
-                            binding.signupNextButton.visibility = View.VISIBLE
-                        }
-
-                        SignupContinuationState.EmailIsNotValidate ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_error_check_email),
-                            )
-
-                        SignupContinuationState.NotAgreedKoinTerms ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_error_check_koin_terms),
-                            )
-
-                        SignupContinuationState.NotAgreedPrivacyTerms ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_error_check_privacy_terms),
-                            )
-
-                        SignupContinuationState.PasswordIsNotValidate ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_error_check_password),
-                            )
-
-                        SignupContinuationState.PasswordNotMatching ->
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_error_check_password_match),
-                            )
-
-                        SignupContinuationState.CheckComplete -> {
-                            startSignupWithDetailActivity()
-                        }
-
-                        is SignupContinuationState.Failed -> SnackbarUtil.makeShortSnackbar(binding.root, it.message)
-                        else -> Unit
+                    SignupContinuationState.AvailableEmail -> {
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_email_check)
+                        )
+                        binding.checkEmailDuplicatedButton.visibility = View.GONE
+                        binding.signupNextButton.visibility = View.VISIBLE
                     }
+
+                    SignupContinuationState.EmailIsNotValidate ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_error_check_email)
+                        )
+
+                    SignupContinuationState.NotAgreedKoinTerms ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_error_check_koin_terms)
+                        )
+
+                    SignupContinuationState.NotAgreedPrivacyTerms ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_error_check_privacy_terms)
+                        )
+
+                    SignupContinuationState.PasswordIsNotValidate ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_error_check_password)
+                        )
+
+                    SignupContinuationState.PasswordNotMatching ->
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.signup_error_check_password_match)
+                        )
+
+                    SignupContinuationState.CheckComplete -> {
+                        startSignupWithDetailActivity()
+                    }
+
+                    is SignupContinuationState.Failed -> SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        it.message
+                    )
+                    else -> Unit
                 }
             }
         }
+    }
 
     private fun startSignupWithDetailActivity() {
         val intent =
             Intent(this@SignupActivity, SignupWithDetailInfoActivity::class.java).apply {
-                putExtra(SIGN_UP_EMAIL, getString(R.string.koreatech_email_postfix, binding.signupEdittextId.textString.trim()))
+                putExtra(
+                    SIGN_UP_EMAIL,
+                    getString(
+                        R.string.koreatech_email_postfix,
+                        binding.signupEdittextId.textString.trim()
+                    )
+                )
                 putExtra(SIGN_UP_PASSWORD, binding.signupEdittextPw.textString)
             }
         startActivity(intent)

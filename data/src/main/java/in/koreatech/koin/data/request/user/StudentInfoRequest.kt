@@ -20,5 +20,5 @@ data class StudentInfoRequest(
     @SerializedName("phone_number")
     val phoneNumber: String?,
     @SerializedName("student_number")
-    val studentNumber: String?,
+    val studentNumber: String?
 )

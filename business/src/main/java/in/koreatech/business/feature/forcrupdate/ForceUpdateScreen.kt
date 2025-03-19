@@ -42,7 +42,7 @@ import `in`.koreatech.koin.core.R
 @Composable
 fun ForceUpdateScreen(
     title: String = "",
-    content: String = "",
+    content: String = ""
 ) {
     val openDialog = remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -50,43 +50,43 @@ fun ForceUpdateScreen(
 
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(ColorPrimary600),
+        Modifier
+            .fillMaxSize()
+            .background(ColorPrimary600)
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .padding(top = 18.dp)
-                        .fillMaxWidth(),
+                Modifier
+                    .padding(top = 18.dp)
+                    .fillMaxWidth()
             ) {
                 Spacer(modifier = Modifier.weight(1f))
 
                 Box(
                     modifier =
-                        Modifier
-                            .padding(end = 29.dp)
-                            .size(24.dp)
-                            .clickable { (context as? Activity)?.finish() },
+                    Modifier
+                        .padding(end = 29.dp)
+                        .size(24.dp)
+                        .clickable { (context as? Activity)?.finish() }
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_exit),
                         contentDescription = "backArrow",
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
             GifImage(
                 modifier =
-                    Modifier
-                        .padding(top = 24.dp)
-                        .height(250.dp)
-                        .fillMaxWidth(),
+                Modifier
+                    .padding(top = 24.dp)
+                    .height(250.dp)
+                    .fillMaxWidth(),
                 painterResource = R.drawable.koin_logo_gif,
-                imageSize = Size(drawableResSize.first, drawableResSize.second),
+                imageSize = Size(drawableResSize.first, drawableResSize.second)
             )
         }
 
@@ -97,13 +97,13 @@ fun ForceUpdateScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 46.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 46.dp)
         )
 
         ForceUpdateDialog(
-            isShow = openDialog,
+            isShow = openDialog
         )
 
         Text(
@@ -112,9 +112,9 @@ fun ForceUpdateScreen(
             color = Color.White,
             textAlign = TextAlign.Center,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 48.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 48.dp)
         )
 
         Button(
@@ -124,16 +124,16 @@ fun ForceUpdateScreen(
             colors = ButtonDefaults.buttonColors(ColorSecondary),
             shape = RoundedCornerShape(4.dp),
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 100.dp)
-                    .padding(top = 72.dp)
-                    .height(48.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 100.dp)
+                .padding(top = 72.dp)
+                .height(48.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.force_update_do_update),
                 fontSize = 18.sp,
-                color = Color.White,
+                color = Color.White
             )
         }
 
@@ -144,12 +144,12 @@ fun ForceUpdateScreen(
             textAlign = TextAlign.Center,
             textDecoration = TextDecoration.Underline,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 48.dp)
-                    .clickable {
-                        openDialog.value = true
-                    },
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 48.dp)
+                .clickable {
+                    openDialog.value = true
+                }
         )
 
         Text(
@@ -158,9 +158,9 @@ fun ForceUpdateScreen(
             color = Color.White,
             textAlign = TextAlign.Center,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 103.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 103.dp)
         )
     }
 }

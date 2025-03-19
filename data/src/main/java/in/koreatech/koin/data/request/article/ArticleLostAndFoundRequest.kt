@@ -3,7 +3,7 @@ package `in`.koreatech.koin.data.request.article
 import com.google.gson.annotations.SerializedName
 
 data class ArticleLostAndFoundRequest(
-    @SerializedName("articles") val articles: List<ArticleLostAndFoundBody>,
+    @SerializedName("articles") val articles: List<ArticleLostAndFoundBody>
 ) {
     data class ArticleLostAndFoundBody(
         @SerializedName("type") val type: String,
@@ -11,6 +11,6 @@ data class ArticleLostAndFoundRequest(
         @SerializedName("found_place") val foundPlace: String,
         @SerializedName("found_date") val foundDate: String,
         @SerializedName("content") val content: String?,
-        @SerializedName("images") val images: List<String>?,
+        @SerializedName("images") val images: List<String>?
     )
 }

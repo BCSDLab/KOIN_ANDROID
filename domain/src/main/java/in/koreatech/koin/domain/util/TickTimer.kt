@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.flow
 
 fun <T> getTimerTickFlow(
     period: Long = 1.second,
-    data: (epochSeconds: Long) -> T,
+    data: (epochSeconds: Long) -> T
 ) = flow {
     var time = System.currentTimeMillis()
     var count = 0L

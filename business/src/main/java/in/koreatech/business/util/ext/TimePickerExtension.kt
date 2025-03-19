@@ -12,7 +12,7 @@ fun makeTimeInfo(
     openTime: String,
     closeTime: String,
     isClosed: Boolean,
-    is24Hours: Boolean,
+    is24Hours: Boolean
 ): String {
     var infoString = dayOfWeekList.joinToString(", ") { it.kor }
 

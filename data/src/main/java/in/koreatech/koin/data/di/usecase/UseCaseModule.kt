@@ -13,8 +13,8 @@ import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.store.SearchStoreUseCase
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,7 +23,7 @@ object UseCaseModule {
     @Singleton
     fun provideSearchStoreUseCase(
         storeRepository: StoreRepository,
-        @DefaultDispatcher coroutineDispatcher: CoroutineDispatcher,
+        @DefaultDispatcher coroutineDispatcher: CoroutineDispatcher
     ): SearchStoreUseCase {
         return SearchStoreUseCase(storeRepository, coroutineDispatcher)
     }
@@ -32,7 +32,7 @@ object UseCaseModule {
     @Singleton
     fun provideGetMarketPreSignedUrlUseCase(
         uploadUrlRepository: UploadUrlRepository,
-        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher
     ): GetMarketPreSignedUrlUseCase {
         return GetMarketPreSignedUrlUseCase(uploadUrlRepository, coroutineDispatcher)
     }
@@ -41,7 +41,7 @@ object UseCaseModule {
     @Singleton
     fun provideUploadFileUseCase(
         preSignedUrlRepository: PreSignedUrlRepository,
-        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher
     ): UploadFileUseCase {
         return UploadFileUseCase(preSignedUrlRepository, coroutineDispatcher)
     }
@@ -50,7 +50,7 @@ object UseCaseModule {
     @Singleton
     fun provideGetLostAndFoundPreSignedUrlUseCase(
         uploadUrlRepository: UploadUrlRepository,
-        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher
     ): GetLostAndFoundPreSignedUrlUseCase {
         return GetLostAndFoundPreSignedUrlUseCase(uploadUrlRepository, coroutineDispatcher)
     }

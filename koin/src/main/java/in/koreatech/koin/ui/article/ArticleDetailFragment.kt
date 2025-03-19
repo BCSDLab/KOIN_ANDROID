@@ -39,9 +39,9 @@ import `in`.koreatech.koin.ui.article.state.ArticleState
 import `in`.koreatech.koin.ui.article.state.AttachmentState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleDetailViewModel
 import `in`.koreatech.koin.util.ext.withLoading
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ArticleDetailFragment : Fragment() {
@@ -67,23 +67,20 @@ class ArticleDetailFragment : Fragment() {
         ArticleDetailViewModel.provideFactory(
             articleDetailViewModelFactory,
             requireArguments().getInt(ARTICLE_ID),
-            requireArguments().getInt(NAVIGATED_BOARD_ID),
+            requireArguments().getInt(NAVIGATED_BOARD_ID)
         )
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentArticleDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
         binding.htmlView.setOnPreDrawListener { viewModel.setIsLoading(true) }
@@ -122,7 +119,7 @@ class ArticleDetailFragment : Fragment() {
                     outRect: Rect,
                     view: View,
                     parent: RecyclerView,
-                    state: RecyclerView.State,
+                    state: RecyclerView.State
                 ) {
                     val offset = 25
                     val count = state.itemCount
@@ -132,7 +129,7 @@ class ArticleDetailFragment : Fragment() {
                         outRect.bottom = offset
                     }
                 }
-            },
+            }
         )
     }
 
@@ -170,7 +167,7 @@ class ArticleDetailFragment : Fragment() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.NOTICE_ORIGINAL_SHORTCUT,
-                binding.buttonToPortal.text.toString(),
+                binding.buttonToPortal.text.toString()
             )
             Intent(requireContext(), WebViewActivity::class.java).apply {
                 putExtra("url", url)
@@ -183,7 +180,7 @@ class ArticleDetailFragment : Fragment() {
             EventLogger.logClickEvent(
                 EventAction.CAMPUS,
                 AnalyticsConstant.Label.INVENTORY,
-                getString(R.string.list),
+                getString(R.string.list)
             )
             navController.popBackStack(R.id.articleListFragment, false)
         }
@@ -193,7 +190,7 @@ class ArticleDetailFragment : Fragment() {
                 Bundle().apply {
                     putInt(ARTICLE_ID, viewModel.article.value.prevArticleId!!)
                     putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
-                },
+                }
             )
         }
         binding.buttonToNextArticle.setOnClickListener {
@@ -202,7 +199,7 @@ class ArticleDetailFragment : Fragment() {
                 Bundle().apply {
                     putInt(ARTICLE_ID, viewModel.article.value.nextArticleId!!)
                     putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
-                },
+                }
             )
         }
     }
@@ -217,7 +214,7 @@ class ArticleDetailFragment : Fragment() {
                     TextUtils.concat(
                         DateFormatUtil.getSimpleMonthAndDay(article.header.registeredAt),
                         " ",
-                        DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(article.header.registeredAt)),
+                        DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(article.header.registeredAt))
                     )
             } catch (_: Exception) {
             }
@@ -253,9 +250,11 @@ class ArticleDetailFragment : Fragment() {
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, attachment.name)
                 .setTitle(attachment.name)
                 .setDescription(getString(R.string.downloading))
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setNotificationVisibility(
+                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
+                )
                 .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(true),
+                .setAllowedOverRoaming(true)
         )
     }
 
@@ -267,14 +266,14 @@ class ArticleDetailFragment : Fragment() {
         EventLogger.logClickEvent(
             EventAction.CAMPUS,
             AnalyticsConstant.Label.POPULAR_NOTICE,
-            article.title,
+            article.title
         )
         navController.navigate(
             R.id.action_articleDetailFragment_to_articleDetailFragment,
             Bundle().apply {
                 putInt(ARTICLE_ID, article.id)
                 putInt(NAVIGATED_BOARD_ID, article.board.id)
-            },
+            }
         )
     }
 

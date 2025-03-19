@@ -8,5 +8,5 @@ enum class ErrorType {
     NoEmail,
     IsNotEmail,
     NullAuthCode,
-    NotCoincideAuthCode,
+    NotCoincideAuthCode
 }

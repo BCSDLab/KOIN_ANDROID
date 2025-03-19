@@ -28,17 +28,14 @@ class StoreDetailEventFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         return FragmentStoreDetailEventBinding.inflate(inflater, container, false).also {
             _binding = it
         }.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModel()
@@ -88,7 +85,7 @@ class StoreDetailEventFragment : Fragment() {
                 EventLogger.logScrollEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
-                    viewModel.store.value?.name ?: "Unknown",
+                    viewModel.store.value?.name ?: "Unknown"
                 )
             }
         }
@@ -98,12 +95,15 @@ class StoreDetailEventFragment : Fragment() {
         binding.storeDetailEventRecyclerview.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
             val oldScrollRatio = oldScrollY.toFloat() / (v as RecyclerView).height
             val currentScrollRatio = scrollY.toFloat() / v.height
-            Log.d("StoreDetailEventFragment", "oldScrollRatio: $oldScrollRatio, currentScrollRatio: $currentScrollRatio")
+            Log.d(
+                "StoreDetailEventFragment",
+                "oldScrollRatio: $oldScrollRatio, currentScrollRatio: $currentScrollRatio"
+            )
             if (EventUtils.didCrossedScrollThreshold(oldScrollRatio, currentScrollRatio)) {
                 EventLogger.logScrollEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
-                    viewModel.store.value?.name ?: "",
+                    viewModel.store.value?.name ?: ""
                 )
             }
         }

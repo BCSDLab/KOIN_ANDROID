@@ -17,10 +17,10 @@ data class StoreWithMenu(
     val shopCategories: List<Category>?,
     val menuCategories: List<Category>?,
     val bank: String?,
-    val accountNumber: String?,
+    val accountNumber: String?
 ) {
     data class Category(
         val id: Int,
-        val name: String,
+        val name: String
     )
 }

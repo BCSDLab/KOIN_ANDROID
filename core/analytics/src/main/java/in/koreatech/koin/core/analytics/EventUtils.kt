@@ -6,7 +6,7 @@ object EventUtils {
     fun didCrossedScrollThreshold(
         prevScrollRatio: Float,
         currentScrollRatio: Float,
-        threshold: Float = SCROLL_THRESHOLD,
+        threshold: Float = SCROLL_THRESHOLD
     ): Boolean {
         return prevScrollRatio < threshold && currentScrollRatio >= threshold
     }

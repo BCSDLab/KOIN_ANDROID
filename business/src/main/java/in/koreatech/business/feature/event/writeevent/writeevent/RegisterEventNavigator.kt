@@ -10,17 +10,17 @@ import androidx.navigation.navArgument
 fun NavGraphBuilder.registerEventScreen(navController: NavHostController) {
     navigation(
         route = "$ADDEVENT/{storeId}",
-        startDestination = "${RegisterEventRoute.REGISTER_EVENT.name}/{storeId}",
+        startDestination = "${RegisterEventRoute.REGISTER_EVENT.name}/{storeId}"
     ) {
         composable(
             route = "${RegisterEventRoute.REGISTER_EVENT.name}/{storeId}",
             arguments =
-                listOf(
-                    navArgument("storeId") {
-                        type = NavType.IntType
-                        defaultValue = -1
-                    },
-                ),
+            listOf(
+                navArgument("storeId") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
         ) {
             WriteEventScreen(
                 onBackPressed = {
@@ -28,7 +28,7 @@ fun NavGraphBuilder.registerEventScreen(navController: NavHostController) {
                 },
                 goToMyStoreScreen = {
                     navController.navigateUp()
-                },
+                }
             )
         }
     }

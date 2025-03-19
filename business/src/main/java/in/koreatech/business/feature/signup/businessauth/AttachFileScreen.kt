@@ -70,7 +70,7 @@ fun AttachFileScreen(
     businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),
     scrollState: ScrollState = rememberScrollState(),
     onBackClicked: () -> Unit = {},
-    onNextClicked: () -> Unit = {},
+    onNextClicked: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val businessAuthState = businessAuthViewModel.collectAsState().value
@@ -81,29 +81,29 @@ fun AttachFileScreen(
             onResult = {
                 businessAuthViewModel.changeImageUri(
                     context,
-                    it,
+                    it
                 )
-            },
+            }
         )
 
     Column(
         modifier =
-            modifier
-                .fillMaxSize(),
+        modifier
+            .fillMaxSize()
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = businessAuthViewModel::onNavigateToBackScreen,
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -111,7 +111,7 @@ fun AttachFileScreen(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
                 fontWeight = Bold,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
 
@@ -119,69 +119,69 @@ fun AttachFileScreen(
 
         Column(
             modifier =
-                Modifier
-                    .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = Bold,
-                    text = stringResource(id = R.string.business_auth),
+                    text = stringResource(id = R.string.business_auth)
                 )
                 Text(
                     text = stringResource(id = R.string.three_third),
                     color = ColorPrimary,
-                    fontWeight = Bold,
+                    fontWeight = Bold
                 )
             }
 
             Canvas(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 40, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
             }
         }
 
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp)
-                    .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .fillMaxSize()
+                .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = stringResource(id = R.string.enter_shop_number_attach_file),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(40.dp))
             Text(
                 text = stringResource(id = R.string.shop_number),
-                fontSize = 14.sp,
+                fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -193,29 +193,29 @@ fun AttachFileScreen(
                 label = stringResource(id = R.string.enter_personal_contact),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 isError = businessAuthState.shopNumber.length !in 10..11 && businessAuthState.shopNumber.isNotEmpty(),
-                errorText = stringResource(id = R.string.shop_number_error),
+                errorText = stringResource(id = R.string.shop_number_error)
             )
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = stringResource(id = R.string.instruction_file),
-                fontSize = 14.sp,
+                fontSize = 14.sp
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
                     text = stringResource(id = R.string.file_upload_instruction),
                     fontSize = 12.sp,
-                    color = ColorTextDescription,
+                    color = ColorTextDescription
                 )
                 Text(
                     modifier = Modifier.padding(bottom = 20.dp),
                     text = "${businessAuthState.selectedImages.size}/5",
                     fontSize = 12.sp,
-                    color = if (businessAuthState.selectedImages.size == 0) ColorTextDescription else ColorSecondary,
+                    color = if (businessAuthState.selectedImages.size == 0) ColorTextDescription else ColorSecondary
                 )
             }
 
@@ -224,7 +224,7 @@ fun AttachFileScreen(
             if (businessAuthState.selectedImages.isNotEmpty()) {
                 UploadFileList(
                     modifier,
-                    businessAuthState.selectedImages,
+                    businessAuthState.selectedImages
                 ) {
                     val list = mutableListOf<String>()
                     businessAuthState.selectedImages.forEach {
@@ -235,57 +235,57 @@ fun AttachFileScreen(
                         list.map {
                             AttachStore(
                                 it,
-                                it,
+                                it
                             )
-                        }.toMutableList(),
+                        }.toMutableList()
                     )
                 }
             }
 
             Button(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(44.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .height(44.dp),
                 shape = RectangleShape,
                 enabled = businessAuthState.selectedImages.isEmpty(),
                 colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorTextField,
-                        contentColor = Gray1,
-                        disabledBackgroundColor = ColorTextField,
-                        disabledContentColor = Gray3,
-                    ),
-                onClick = { businessAuthViewModel.onDialogVisibilityChanged(true) },
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField,
+                    contentColor = Gray1,
+                    disabledBackgroundColor = ColorTextField,
+                    disabledContentColor = Gray3
+                ),
+                onClick = { businessAuthViewModel.onDialogVisibilityChanged(true) }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.attach_file_add),
-                    contentDescription = stringResource(id = R.string.attach_file),
+                    contentDescription = stringResource(id = R.string.attach_file)
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
                     text = stringResource(id = R.string.file_upload),
                     color = if (businessAuthState.selectedImages.isEmpty()) Gray1 else Gray3,
                     fontSize = 13.sp,
-                    fontWeight = Bold,
+                    fontWeight = Bold
                 )
             }
 
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(44.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
                 enabled = businessAuthState.isButtonEnabled,
                 colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
-                        disabledBackgroundColor = ColorDisabledButton,
-                        contentColor = Color.White,
-                        disabledContentColor = Color.White,
-                    ),
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorPrimary,
+                    disabledBackgroundColor = ColorDisabledButton,
+                    contentColor = Color.White,
+                    disabledContentColor = Color.White
+                ),
                 onClick = {
                     businessAuthViewModel.sendRegisterRequest(
                         fileUrls = businessAuthState.fileInfo.map { it.resultUrl },
@@ -295,14 +295,14 @@ fun AttachFileScreen(
                         name = businessAuthState.name,
                         password = accountSetupState.password,
                         shopId = businessAuthState.shopId,
-                        shopName = businessAuthState.shopName,
+                        shopName = businessAuthState.shopName
                     )
-                },
+                }
             ) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
-                    color = Color.White,
+                    color = Color.White
                 )
 
                 BusinessAlertDialog(
@@ -310,15 +310,15 @@ fun AttachFileScreen(
                     onConfirmation = {
                         multiplePhotoPickerLauncher.launch(
                             PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly,
-                            ),
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                            )
                         )
                         businessAuthViewModel.onDialogVisibilityChanged(false)
                     },
                     dialogTitle = stringResource(id = R.string.file_upload),
                     dialogText = stringResource(id = R.string.file_upload_requirements),
                     positiveButtonText = stringResource(id = R.string.select_file),
-                    visibility = businessAuthState.dialogVisibility,
+                    visibility = businessAuthState.dialogVisibility
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -338,35 +338,35 @@ fun AttachFileScreen(
 fun UploadFileList(
     modifier: Modifier,
     fileList: MutableList<AttachStore>,
-    onDelete: (Int) -> Unit = {},
+    onDelete: (Int) -> Unit = {}
 ) {
     Column(modifier = Modifier.height(fileList.size * 40.dp)) {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             items(fileList.size) { index ->
                 Row(
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .background(ColorTextField)
-                            .padding(6.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                    Modifier
+                        .fillMaxWidth()
+                        .background(ColorTextField)
+                        .padding(6.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
                         modifier =
-                            Modifier
-                                .size(24.dp)
-                                .clickable { onDelete(index) }
-                                .padding(end = 8.dp),
+                        Modifier
+                            .size(24.dp)
+                            .clickable { onDelete(index) }
+                            .padding(end = 8.dp),
                         painter = painterResource(id = R.drawable.ic_delete_button),
-                        contentDescription = stringResource(id = R.string.file_icon),
+                        contentDescription = stringResource(id = R.string.file_icon)
                     )
 
                     Text(
                         text = fileList[index].title,
                         fontSize = 15.sp,
-                        color = ColorMinor,
+                        color = ColorMinor
                     )
                 }
                 Spacer(modifier = Modifier.width(12.dp))

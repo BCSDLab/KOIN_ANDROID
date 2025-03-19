@@ -46,24 +46,24 @@ fun CompleteSignupScreen(
     modifier: Modifier = Modifier,
     viewModel: CompleteSignupViewModel = hiltViewModel(),
     onNavigateToLoginScreen: () -> Unit = {},
-    onBackClicked: () -> Unit = {},
+    onBackClicked: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = { viewModel.onBackButtonClicked() },
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -71,54 +71,54 @@ fun CompleteSignupScreen(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
                 fontWeight = Bold,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
 
         Column(
             modifier =
-                Modifier
-                    .padding(horizontal = 32.dp),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .padding(horizontal = 32.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = Bold,
-                    text = stringResource(id = R.string.business_auth),
+                    text = stringResource(id = R.string.business_auth)
                 )
                 Text(
                     text = stringResource(id = R.string.three_third),
                     color = ColorPrimary,
-                    fontWeight = Bold,
+                    fontWeight = Bold
                 )
             }
 
             Canvas(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset((size.width + 40), size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
             }
         }
@@ -127,12 +127,12 @@ fun CompleteSignupScreen(
         Column(
             modifier = Modifier.padding(horizontal = 32.dp),
             verticalArrangement = Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 modifier = Modifier.size(276.dp),
                 painter = painterResource(id = R.drawable.complete_signup),
-                contentDescription = stringResource(id = R.string.signup_request_complete),
+                contentDescription = stringResource(id = R.string.signup_request_complete)
             )
 
             Spacer(modifier = Modifier.height(25.dp))
@@ -142,7 +142,7 @@ fun CompleteSignupScreen(
                 text = stringResource(id = R.string.signup_request_complete),
                 fontSize = 24.sp,
                 color = ColorPrimary,
-                fontWeight = Bold,
+                fontWeight = Bold
             )
             Spacer(modifier = Modifier.height(18.dp))
 
@@ -150,29 +150,29 @@ fun CompleteSignupScreen(
                 textAlign = TextAlign.Center,
                 text = stringResource(id = R.string.signup_request_complete_description),
                 fontSize = 16.sp,
-                color = ColorDescription,
+                color = ColorDescription
             )
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 24.dp)
-                        .height(44.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+                    .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
                 colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
-                        disabledBackgroundColor = ColorDisabledButton,
-                        contentColor = Color.White,
-                        disabledContentColor = Color.White,
-                    ),
-                onClick = { viewModel.onNavigateToLoginScreen() },
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorPrimary,
+                    disabledBackgroundColor = ColorDisabledButton,
+                    contentColor = Color.White,
+                    disabledContentColor = Color.White
+                ),
+                onClick = { viewModel.onNavigateToLoginScreen() }
             ) {
                 Text(
                     text = stringResource(id = R.string.navigate_to_login_screen),
                     fontSize = 15.sp,
-                    color = Color.White,
+                    color = Color.White
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -195,11 +195,11 @@ fun CompleteSignupScreen(
 fun Preview() {
     Surface(
         modifier =
-            Modifier
-                .fillMaxSize(),
+        Modifier
+            .fillMaxSize()
     ) {
         CompleteSignupScreen(
-            onBackClicked = { },
+            onBackClicked = { }
         )
     }
 }

@@ -45,7 +45,7 @@ enum class CssAttribute {
     BACKGROUND_CLIP,
     BACKGROUND_ATTACHMENT,
     BOX_SHADOW,
-    TEXT_SHADOW,
+    TEXT_SHADOW
 }
 
 fun String.toCssAttribute(): CssAttribute {

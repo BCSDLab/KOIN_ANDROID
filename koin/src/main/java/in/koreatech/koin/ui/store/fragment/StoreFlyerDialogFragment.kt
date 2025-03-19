@@ -27,17 +27,14 @@ class StoreFlyerDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         return StoreFlyerActivityViewLayoutBinding.inflate(inflater, container, false).also {
             _binding = it
         }.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.storeFlyerViewPager.apply {
@@ -49,7 +46,7 @@ class StoreFlyerDialogFragment : DialogFragment() {
                         super.onPageSelected(position)
                         updateIndicatorText(position + 1, flyerAdapter.itemCount)
                     }
-                },
+                }
             )
         }
 
@@ -82,10 +79,7 @@ class StoreFlyerDialogFragment : DialogFragment() {
         }
     }
 
-    private fun updateIndicatorText(
-        current: Int,
-        pages: Int,
-    ) {
+    private fun updateIndicatorText(current: Int, pages: Int) {
         binding.currentPageTextView.text = requireActivity().getString(R.string.flyer_current_page_text, current, pages)
     }
 }

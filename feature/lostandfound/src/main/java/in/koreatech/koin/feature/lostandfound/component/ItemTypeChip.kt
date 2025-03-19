@@ -15,7 +15,7 @@ fun ItemTypeChip(
     chipItemList: List<LostItemCategory>,
     modifier: Modifier = Modifier,
     selectedChipIndexes: Int? = null,
-    onChipSelected: (index: Int) -> Unit = {},
+    onChipSelected: (index: Int) -> Unit = {}
 ) {
     LostAndFoundTextChipFlowGroup(
         titles = chipItemList.map { stringResource(it.stringRes) },
@@ -27,6 +27,6 @@ fun ItemTypeChip(
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         chipColors = keywordChipColors(),
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
     )
 }

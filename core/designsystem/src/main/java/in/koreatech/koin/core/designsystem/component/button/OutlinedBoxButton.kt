@@ -17,7 +17,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 enum class OutlinedBoxButtonColors {
     Primary,
-    Neutral,
+    Neutral
 }
 
 /**
@@ -40,7 +40,7 @@ fun OutlinedBoxButton(
     shape: Shape = KoinTheme.shapes.extraSmall,
     enabled: Boolean = true,
     colors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Primary,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding
 ) {
     val buttonColors = outlinedBoxButtonColorByType(colors)
     val buttonBorder = outlinedBoxButtonBorderByType(colors)
@@ -52,11 +52,11 @@ fun OutlinedBoxButton(
         shape = shape,
         colors = buttonColors,
         border = buttonBorder,
-        contentPadding = contentPadding,
+        contentPadding = contentPadding
     ) {
         Text(
             text = text,
-            style = textStyle,
+            style = textStyle
         )
     }
 }
@@ -86,10 +86,10 @@ fun OutlinedBoxButton(
             containerColor = KoinTheme.colors.neutral0,
             contentColor = KoinTheme.colors.neutral0,
             disabledContainerColor = KoinTheme.colors.neutral400,
-            disabledContentColor = KoinTheme.colors.neutral500,
+            disabledContentColor = KoinTheme.colors.neutral500
         ),
     border: BorderStroke,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding
 ) {
     OutlinedButton(
         modifier = modifier,
@@ -98,11 +98,11 @@ fun OutlinedBoxButton(
         shape = shape,
         colors = colors,
         border = border,
-        contentPadding = contentPadding,
+        contentPadding = contentPadding
     ) {
         Text(
             text = text,
-            style = textStyle,
+            style = textStyle
         )
     }
 }
@@ -116,7 +116,7 @@ internal fun outlinedBoxButtonColorByType(type: OutlinedBoxButtonColors): Button
                 containerColor = KoinTheme.colors.neutral0,
                 contentColor = KoinTheme.colors.primary500,
                 disabledContainerColor = KoinTheme.colors.neutral400,
-                disabledContentColor = KoinTheme.colors.neutral500,
+                disabledContentColor = KoinTheme.colors.neutral500
             )
 
         OutlinedBoxButtonColors.Neutral ->
@@ -124,7 +124,7 @@ internal fun outlinedBoxButtonColorByType(type: OutlinedBoxButtonColors): Button
                 containerColor = KoinTheme.colors.neutral0,
                 contentColor = KoinTheme.colors.neutral500,
                 disabledContainerColor = KoinTheme.colors.neutral400,
-                disabledContentColor = KoinTheme.colors.neutral500,
+                disabledContentColor = KoinTheme.colors.neutral500
             )
     }
 
@@ -135,13 +135,13 @@ internal fun outlinedBoxButtonBorderByType(type: OutlinedBoxButtonColors): Borde
         OutlinedBoxButtonColors.Primary ->
             BorderStroke(
                 1.0.dp,
-                color = KoinTheme.colors.primary500,
+                color = KoinTheme.colors.primary500
             )
 
         OutlinedBoxButtonColors.Neutral ->
             BorderStroke(
                 1.0.dp,
-                color = KoinTheme.colors.neutral500,
+                color = KoinTheme.colors.neutral500
             )
     }
 
@@ -151,7 +151,7 @@ private fun OutlinedButtonPrimaryPreview() {
     KoinTheme {
         OutlinedBoxButton(
             text = "대체하기",
-            onClick = {},
+            onClick = {}
         )
     }
 }
@@ -163,7 +163,7 @@ private fun OutlinedButtonNeutralPreview() {
         OutlinedBoxButton(
             text = "대체하기",
             colors = OutlinedBoxButtonColors.Neutral,
-            onClick = {},
+            onClick = {}
         )
     }
 }

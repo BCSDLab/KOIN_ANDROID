@@ -9,15 +9,17 @@ import `in`.koreatech.koin.databinding.ItemStoreDetailReviewMenuBinding
 
 class StoreDetailReviewMenuRecyclerAdapter() :
     ListAdapter<String, StoreDetailReviewMenuRecyclerAdapter.StoreDetailReviewViewHolder>(
-        diffCallback,
+        diffCallback
     ) {
-    inner class StoreDetailReviewViewHolder(val binding: ItemStoreDetailReviewMenuBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class StoreDetailReviewViewHolder(
+        val binding: ItemStoreDetailReviewMenuBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         val menuName = binding.storeReviewMenuTextview
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int,
+        viewType: Int
     ): StoreDetailReviewMenuRecyclerAdapter.StoreDetailReviewViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemStoreDetailReviewMenuBinding.inflate(inflater, parent, false)
@@ -26,7 +28,7 @@ class StoreDetailReviewMenuRecyclerAdapter() :
 
     override fun onBindViewHolder(
         holder: StoreDetailReviewMenuRecyclerAdapter.StoreDetailReviewViewHolder,
-        position: Int,
+        position: Int
     ) {
         with(holder) {
             menuName.text = getItem(position)
@@ -36,17 +38,11 @@ class StoreDetailReviewMenuRecyclerAdapter() :
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<String>() {
-                override fun areItemsTheSame(
-                    oldItem: String,
-                    newItem: String,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
                     return oldItem == newItem
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: String,
-                    newItem: String,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
                     return oldItem == newItem
                 }
             }

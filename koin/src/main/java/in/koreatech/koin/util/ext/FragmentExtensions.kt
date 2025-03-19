@@ -16,7 +16,7 @@ inline val Fragment.windowHeight: Int
             val insets =
                 WindowInsetsCompat.toWindowInsetsCompat(
                     view.rootWindowInsets,
-                    view,
+                    view
                 ).getInsets(WindowInsetsCompat.Type.systemBars())
             resources.displayMetrics.heightPixels - insets.bottom - insets.top
         }
@@ -33,7 +33,7 @@ inline val Fragment.windowWidth: Int
             val insets =
                 WindowInsetsCompat.toWindowInsetsCompat(
                     view.rootWindowInsets,
-                    view,
+                    view
                 ).getInsets(WindowInsetsCompat.Type.systemBars())
             resources.displayMetrics.widthPixels - insets.left - insets.right
         }

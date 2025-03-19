@@ -23,8 +23,8 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.navigation.utils.toHost
 import `in`.koreatech.koin.databinding.ActivitySchemeBinding
 import `in`.koreatech.koin.ui.main.activity.MainActivity
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SchemeActivity : ActivityBase() {
@@ -84,10 +84,16 @@ class SchemeActivity : ActivityBase() {
                             context = this,
                             targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
                             targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url ?: "")),
-                            targetArticleId = Pair(EXTRA_ARTICLE_ID, getArticleIdFromUrl(url ?: "")),
-                            targetChatId = Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url ?: "")),
+                            targetArticleId = Pair(
+                                EXTRA_ARTICLE_ID,
+                                getArticleIdFromUrl(url ?: "")
+                            ),
+                            targetChatId = Pair(
+                                EXTRA_CHAT_ROOM_ID,
+                                getChatRoomIdFromUrl(url ?: "")
+                            ),
                             type = Pair(EXTRA_TYPE, url?.toHost()),
-                            navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type),
+                            navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
                         )
                     navigateToActivity(intent)
                 }
@@ -99,7 +105,7 @@ class SchemeActivity : ActivityBase() {
                                 navigator.navigateToShop(
                                     context = this,
                                     targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
-                                    type = Pair(EXTRA_TYPE, host),
+                                    type = Pair(EXTRA_TYPE, host)
                                 )
                             navigateToActivity(intent)
                         }
@@ -109,7 +115,7 @@ class SchemeActivity : ActivityBase() {
                                 navigator.navigateToDinging(
                                     context = this,
                                     targetId = Pair(EXTRA_ID, ""),
-                                    type = Pair(EXTRA_TYPE, host),
+                                    type = Pair(EXTRA_TYPE, host)
                                 )
                             navigateToActivity(intent)
                         }
@@ -118,14 +124,14 @@ class SchemeActivity : ActivityBase() {
                             EventLogger.logNotificationEvent(
                                 EventAction.CAMPUS,
                                 AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
-                                getKeywordFromUrl(url),
+                                getKeywordFromUrl(url)
                             )
                             val intent =
                                 navigator.navigateToArticle(
                                     context = this,
                                     targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
                                     targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url)),
-                                    type = Pair(EXTRA_TYPE, host),
+                                    type = Pair(EXTRA_TYPE, host)
                                 )
                             navigateToActivity(intent)
                         }
@@ -134,9 +140,15 @@ class SchemeActivity : ActivityBase() {
                             val intent =
                                 navigator.navigateToChat(
                                     context = this,
-                                    targetArticleId = Pair(EXTRA_ARTICLE_ID, getArticleIdFromUrl(url)),
-                                    targetChatId = Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url)),
-                                    type = Pair(EXTRA_TYPE, host),
+                                    targetArticleId = Pair(
+                                        EXTRA_ARTICLE_ID,
+                                        getArticleIdFromUrl(url)
+                                    ),
+                                    targetChatId = Pair(
+                                        EXTRA_CHAT_ROOM_ID,
+                                        getChatRoomIdFromUrl(url)
+                                    ),
+                                    type = Pair(EXTRA_TYPE, host)
                                 )
                             navigateToActivity(intent)
                         }

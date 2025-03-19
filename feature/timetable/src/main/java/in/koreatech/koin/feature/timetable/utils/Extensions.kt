@@ -31,12 +31,12 @@ fun TimetableLecture.toTimetableEvents(index: Int): List<TimetableEvent> {
                 dayOfWeek = key,
                 start = value.firstOrNull() ?: return@forEach,
                 end =
-                    if (value.lastOrNull() == LocalTime.of(23, 30)) {
-                        LocalTime.of(23, 59)
-                    } else {
-                        value.lastOrNull()?.plusMinutes(30) ?: return@forEach
-                    },
-                description = "",
+                if (value.lastOrNull() == LocalTime.of(23, 30)) {
+                    LocalTime.of(23, 59)
+                } else {
+                    value.lastOrNull()?.plusMinutes(30) ?: return@forEach
+                },
+                description = ""
             )
         events.add(timetableEvent)
     }
@@ -68,12 +68,12 @@ fun Lecture.toTimetableEvents(): List<TimetableEvent> {
                 dayOfWeek = key,
                 start = value.firstOrNull() ?: LocalTime.of(0, 0),
                 end =
-                    if (value.lastOrNull() == LocalTime.of(23, 30)) {
-                        LocalTime.of(23, 59)
-                    } else {
-                        value.lastOrNull()?.plusMinutes(30) ?: return@forEach
-                    },
-                description = professor,
+                if (value.lastOrNull() == LocalTime.of(23, 30)) {
+                    LocalTime.of(23, 59)
+                } else {
+                    value.lastOrNull()?.plusMinutes(30) ?: return@forEach
+                },
+                description = professor
             )
         events.add(timetableEvent)
     }
@@ -104,7 +104,7 @@ fun List<TimetableEvent>.formatTimeRange(): Int {
 fun String.toSemesterModel(): SemesterModel =
     SemesterModel(
         year = substring(0, 4).toInt(),
-        type = substring(4).toSemesterType(),
+        type = substring(4).toSemesterType()
     )
 
 fun String.toSemesterType(): SemesterType =

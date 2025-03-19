@@ -5,7 +5,7 @@ sealed class Result<T> {
 
     data class Failure(
         val t: Throwable,
-        val errorMessage: String,
+        val errorMessage: String
     ) : Result<Nothing>()
 
     val isSuccess get() = this is Success<T>

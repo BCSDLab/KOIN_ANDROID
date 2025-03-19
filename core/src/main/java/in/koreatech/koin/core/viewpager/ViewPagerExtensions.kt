@@ -7,7 +7,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 
 fun ViewPager2.enableAutoScroll(
     lifecycleOwner: LifecycleOwner,
-    interval: Long,
+    interval: Long
 ) {
     val runnable =
         Runnable {
@@ -38,7 +38,7 @@ fun ViewPager2.enableAutoScroll(
                 removeCallbacks(runnable)
                 unregisterOnPageChangeCallback(callback)
             }
-        },
+        }
     )
 }
 
@@ -47,7 +47,7 @@ fun ViewPager2.enableAutoScroll(
  */
 fun ViewPager2.addOnPageScrollListener(
     lifecycleOwner: LifecycleOwner,
-    action: (Int) -> Unit,
+    action: (Int) -> Unit
 ) {
     val callback =
         object : OnPageChangeCallback() {
@@ -70,7 +70,7 @@ fun ViewPager2.addOnPageScrollListener(
 
 fun ViewPager2.addOnPageChangedListener(
     lifecycleOwner: LifecycleOwner,
-    onPageChangeCallback: OnPageChangeCallback,
+    onPageChangeCallback: OnPageChangeCallback
 ) {
     lifecycleOwner.lifecycle.addObserver(
         object : DefaultLifecycleObserver {
@@ -81,6 +81,6 @@ fun ViewPager2.addOnPageChangedListener(
             override fun onPause(owner: LifecycleOwner) {
                 unregisterOnPageChangeCallback(onPageChangeCallback)
             }
-        },
+        }
     )
 }

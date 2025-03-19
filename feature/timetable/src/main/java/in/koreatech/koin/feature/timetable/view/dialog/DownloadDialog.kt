@@ -35,71 +35,71 @@ import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 fun DownloadDialog(
     onConfirm: () -> Unit,
     onDismiss: (visible: Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     BasicAlertDialog(
         onDismissRequest = { onDismiss(false) },
-        modifier = modifier,
+        modifier = modifier
     ) {
         Surface(
             modifier =
-                Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
+            Modifier
+                .wrapContentWidth()
+                .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall,
-            color = Color.White,
+            color = Color.White
         ) {
             Column(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 32.dp,
-                            vertical = 24.dp,
-                        ),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 32.dp,
+                        vertical = 24.dp
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = stringResource(id = R.string.download_description),
                     color = KoinTheme.colors.neutral800,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.bold16,
+                    style = KoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.wrapContentHeight(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         colors =
-                            ButtonColors(
-                                containerColor = KoinTheme.colors.neutral0,
-                                contentColor = KoinTheme.colors.neutral500,
-                                disabledContainerColor = KoinTheme.colors.neutral400,
-                                disabledContentColor = KoinTheme.colors.neutral500,
-                            ),
+                        ButtonColors(
+                            containerColor = KoinTheme.colors.neutral0,
+                            contentColor = KoinTheme.colors.neutral500,
+                            disabledContainerColor = KoinTheme.colors.neutral400,
+                            disabledContentColor = KoinTheme.colors.neutral500
+                        ),
                         shape = MaterialTheme.shapes.extraSmall,
                         contentPadding = PaddingValues(0.dp),
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
-                        onClick = { onDismiss(false) },
+                        onClick = { onDismiss(false) }
                     ) {
                         Text(
                             text = stringResource(id = R.string.lecture_duplication_cancellation),
                             style = KoinTheme.typography.medium15,
-                            color = KoinTheme.colors.neutral600,
+                            color = KoinTheme.colors.neutral600
                         )
                     }
                     FilledTextButton(
                         modifier =
-                            Modifier
-                                .height(48.dp)
-                                .weight(1.0F),
+                        Modifier
+                            .height(48.dp)
+                            .weight(1.0F),
                         text = stringResource(id = R.string.download),
-                        onClick = { onConfirm() },
+                        onClick = { onConfirm() }
                     )
                 }
             }
@@ -112,6 +112,6 @@ fun DownloadDialog(
 private fun DownloadDialogPreview() {
     DownloadDialog(
         onConfirm = {},
-        onDismiss = {},
+        onDismiss = {}
     )
 }

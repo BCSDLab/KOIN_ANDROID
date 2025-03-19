@@ -9,24 +9,22 @@ import `in`.koreatech.koin.domain.usecase.signup.GetKoinTermTextUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupKoinTermViewModel
-    @Inject
-    constructor(
-        private val getKoinTermTextUseCase: GetKoinTermTextUseCase,
-    ) : BaseViewModel() {
-        private val _content = MutableLiveData<String>()
-        val content: LiveData<String> get() = _content
+class SignupKoinTermViewModel @Inject constructor(
+    private val getKoinTermTextUseCase: GetKoinTermTextUseCase
+) : BaseViewModel() {
+    private val _content = MutableLiveData<String>()
+    val content: LiveData<String> get() = _content
 
-        private val _contentLoadingError = MutableLiveData<Throwable?>()
-        val contentLoadingError: LiveData<Throwable?> get() = _contentLoadingError
+    private val _contentLoadingError = MutableLiveData<Throwable?>()
+    val contentLoadingError: LiveData<Throwable?> get() = _contentLoadingError
 
-        fun getKoinTermText() {
-            viewModelScope.launchWithLoading {
-                getKoinTermTextUseCase().onSuccess {
-                    _content.value = it
-                }.onFailure {
-                    _contentLoadingError.value = it
-                }
+    fun getKoinTermText() {
+        viewModelScope.launchWithLoading {
+            getKoinTermTextUseCase().onSuccess {
+                _content.value = it
+            }.onFailure {
+                _contentLoadingError.value = it
             }
         }
     }
+}

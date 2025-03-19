@@ -19,5 +19,5 @@ data class FinalCheckStoreScreenState(
     val isCardOk: Boolean = false,
     val isBankOk: Boolean = false,
     val operatingTimeList: List<OperatingTimeState> = emptyList(),
-    val settingTimeInfoList: List<TimeSettingState> = emptyList(),
+    val settingTimeInfoList: List<TimeSettingState> = emptyList()
 ) : Parcelable

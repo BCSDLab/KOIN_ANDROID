@@ -8,17 +8,17 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
-import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import timber.log.Timber
 
 class BitmapUtils(
-    private val context: Context,
+    private val context: Context
 ) {
     fun capture(
         view: View,
-        onSavedTimeTable: (Bitmap) -> Unit,
+        onSavedTimeTable: (Bitmap) -> Unit
     ) {
         val bitmap = generateBitmap(view)
         onSavedTimeTable(bitmap)
@@ -77,7 +77,7 @@ class BitmapUtils(
                     values.put(MediaStore.Images.Media.DATA, imageFile.absolutePath)
                     context.contentResolver.insert(
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        values,
+                        values
                     )
 
                     Timber.e("Saved...")
@@ -96,14 +96,14 @@ class BitmapUtils(
             Bitmap.createBitmap(
                 view.width,
                 view.height,
-                Bitmap.Config.ARGB_8888,
+                Bitmap.Config.ARGB_8888
             )
         val canvas = Canvas(bitmap)
         view.layout(
             view.left,
             view.top,
             view.right,
-            view.bottom,
+            view.bottom
         )
         view.draw(canvas)
         return bitmap

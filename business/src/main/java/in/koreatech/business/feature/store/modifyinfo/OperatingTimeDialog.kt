@@ -6,5 +6,5 @@ data class OperatingTimeDialog(
     val showDialog: Boolean = true,
     val closeDialog: () -> Unit = {},
     val dayOfWeekIndex: Int = 0,
-    val onSettingStoreTime: (Pair<Hours, Int>) -> Unit = {},
+    val onSettingStoreTime: (Pair<Hours, Int>) -> Unit = {}
 )

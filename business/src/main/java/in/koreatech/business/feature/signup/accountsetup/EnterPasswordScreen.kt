@@ -48,27 +48,27 @@ fun EnterPasswordScreen(
     modifier: Modifier = Modifier,
     viewModel: AccountSetupViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
-    onNextClicked: () -> Unit = {},
+    onNextClicked: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     val state = viewModel.collectAsState().value
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = viewModel::onBackButtonClicked,
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -76,7 +76,7 @@ fun EnterPasswordScreen(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
 
@@ -84,66 +84,66 @@ fun EnterPasswordScreen(
 
         Column(
             modifier =
-                Modifier
-                    .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = FontWeight.Medium,
-                    text = stringResource(id = R.string.input_basic_information),
+                    text = stringResource(id = R.string.input_basic_information)
                 )
                 Text(
                     text = stringResource(id = R.string.two_third),
                     color = ColorPrimary,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.Medium
                 )
             }
 
             Canvas(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 drawLine(
                     color = ColorUnarchived,
                     start = Offset(-40f, 0f),
                     end = Offset(size.width + 40, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
                     end = Offset((size.width + 35) / 3 * 2, size.height),
                     strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round,
+                    cap = StrokeCap.Round
                 )
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp)
-                    .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.Center,
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = stringResource(id = R.string.enter_password),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.Medium
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -157,46 +157,46 @@ fun EnterPasswordScreen(
                 errorText = stringResource(id = R.string.enter_password_condition),
                 successText = stringResource(id = R.string.available_password),
                 isError = state.password.isNotValidPassword() && state.password.isNotEmpty(),
-                isSuccess = state.password.isValidPassword(),
+                isSuccess = state.password.isValidPassword()
             )
 
             PasswordTextField(
                 value = state.passwordConfirm,
                 onValueChange = { viewModel.onPasswordConfirmChanged(it) },
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp),
                 label = stringResource(id = R.string.enter_password_confirm),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
                 errorText = stringResource(id = R.string.password_not_coincide),
                 successText = stringResource(id = R.string.match_password),
                 isError = state.password != state.passwordConfirm && state.passwordConfirm.isNotEmpty(),
-                isSuccess = state.password == state.passwordConfirm && state.passwordConfirm.isNotEmpty(),
+                isSuccess = state.password == state.passwordConfirm && state.passwordConfirm.isNotEmpty()
             )
 
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 24.dp)
-                        .heightIn(50.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+                    .heightIn(50.dp),
                 shape = RectangleShape,
                 enabled = state.password == state.passwordConfirm && state.passwordConfirm.isNotEmpty(),
                 colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
-                        contentColor = White,
-                        disabledBackgroundColor = Gray2,
-                        disabledContentColor = Gray1,
-                    ),
-                onClick = viewModel::onNavigateToNextScreen,
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorPrimary,
+                    contentColor = White,
+                    disabledBackgroundColor = Gray2,
+                    disabledContentColor = Gray1
+                ),
+                onClick = viewModel::onNavigateToNextScreen
             ) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 16.sp,
-                    color = if (state.password == state.passwordConfirm && state.passwordConfirm.isNotEmpty()) White else Gray1,
+                    color = if (state.password == state.passwordConfirm && state.passwordConfirm.isNotEmpty()) White else Gray1
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))

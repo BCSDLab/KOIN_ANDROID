@@ -9,6 +9,8 @@ fun EditText.setTransparentBackground() {
 }
 
 fun EditText.setDefaultBackground() {
-    val typedArray = context.theme.obtainStyledAttributes(intArrayOf(android.R.attr.editTextBackground))
+    val typedArray = context.theme.obtainStyledAttributes(
+        intArrayOf(android.R.attr.editTextBackground)
+    )
     this.background = typedArray.getDrawable(0)
 }

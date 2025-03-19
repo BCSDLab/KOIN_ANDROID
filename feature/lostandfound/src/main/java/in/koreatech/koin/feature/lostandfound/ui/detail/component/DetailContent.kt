@@ -44,7 +44,7 @@ fun DetailContent(
     imageUris: List<Uri>?,
     content: String,
     isWriterAdmin: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val imageLoader =
         ImageLoader.Builder(LocalContext.current)
@@ -59,9 +59,9 @@ fun DetailContent(
 
     Column(
         modifier =
-            modifier
-                .padding(vertical = 24.dp, horizontal = 24.dp)
-                .fillMaxWidth(),
+        modifier
+            .padding(vertical = 24.dp, horizontal = 24.dp)
+            .fillMaxWidth()
     ) {
         if (imageUris != null) {
             val pagerState =
@@ -70,26 +70,26 @@ fun DetailContent(
                 })
             HorizontalPager(
                 modifier = Modifier.fillMaxWidth(),
-                state = pagerState,
+                state = pagerState
             ) { page ->
                 SubcomposeAsyncImage(
                     modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
                     model =
-                        ImageRequest.Builder(LocalContext.current)
-                            .data(imageUris[page])
-                            .crossfade(true)
-                            .build(),
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(imageUris[page])
+                        .crossfade(true)
+                        .build(),
                     imageLoader = imageLoader,
                     loading = {
                         Box(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
+                            contentAlignment = Alignment.Center
                         ) {
                             CircularProgressIndicator()
                         }
                     },
                     contentScale = ContentScale.Fit,
-                    contentDescription = null,
+                    contentDescription = null
                 )
             }
 
@@ -97,29 +97,29 @@ fun DetailContent(
 
             Row(
                 modifier =
-                    Modifier
-                        .padding(vertical = 12.dp)
-                        .fillMaxWidth(),
+                Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 imageUris.indices.forEach { index ->
                     Image(
                         modifier =
-                            if (index == pagerState.currentPage) {
-                                Modifier.size(6.dp)
-                            } else {
-                                Modifier.size(
-                                    4.dp,
-                                )
-                            },
+                        if (index == pagerState.currentPage) {
+                            Modifier.size(6.dp)
+                        } else {
+                            Modifier.size(
+                                4.dp
+                            )
+                        },
                         painter =
-                            if (index == pagerState.currentPage) {
-                                painterResource(R.drawable.ic_image_page_indicator_filled)
-                            } else {
-                                painterResource(id = R.drawable.ic_image_page_indicator_not_filled)
-                            },
-                        contentDescription = null,
+                        if (index == pagerState.currentPage) {
+                            painterResource(R.drawable.ic_image_page_indicator_filled)
+                        } else {
+                            painterResource(id = R.drawable.ic_image_page_indicator_not_filled)
+                        },
+                        contentDescription = null
                     )
                 }
             }
@@ -130,7 +130,7 @@ fun DetailContent(
         Text(
             text = content,
             style = KoinTheme.typography.regular14,
-            color = KoinTheme.colors.neutral800,
+            color = KoinTheme.colors.neutral800
         )
 
         if (isWriterAdmin) {
@@ -138,12 +138,12 @@ fun DetailContent(
 
             Box(
                 modifier =
-                    Modifier
-                        .clip(KoinTheme.shapes.medium)
-                        .fillMaxWidth()
-                        .background(KoinTheme.colors.neutral100)
-                        .padding(vertical = 16.dp, horizontal = 18.dp),
-                contentAlignment = Alignment.Center,
+                Modifier
+                    .clip(KoinTheme.shapes.medium)
+                    .fillMaxWidth()
+                    .background(KoinTheme.colors.neutral100)
+                    .padding(vertical = 16.dp, horizontal = 18.dp),
+                contentAlignment = Alignment.Center
             ) {
                 val infoMessage =
                     buildAnnotatedString {
@@ -152,7 +152,7 @@ fun DetailContent(
                         }
                         withStyle(
                             KoinTheme.typography.regular12.copy(fontWeight = FontWeight.Bold)
-                                .toSpanStyle(),
+                                .toSpanStyle()
                         ) {
                             append(stringResource(R.string.detail_student_association_info_2))
                         }
@@ -163,7 +163,7 @@ fun DetailContent(
                 Text(
                     text = infoMessage,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.regular12,
+                    style = KoinTheme.typography.regular12
                 )
             }
         }

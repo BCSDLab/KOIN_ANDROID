@@ -11,25 +11,23 @@ import `in`.koreatech.koin.domain.usecase.land.GetLandDetailUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class LandDetailViewModel
-    @Inject
-    constructor(
-        private val landDetailUseCase: GetLandDetailUseCase,
-    ) : BaseViewModel() {
-        lateinit var naverMap: NaverMap
-        private val _landDetail = MutableLiveData<LandDetail?>()
-        val landDetail: LiveData<LandDetail?>
-            get() = _landDetail
+class LandDetailViewModel @Inject constructor(
+    private val landDetailUseCase: GetLandDetailUseCase
+) : BaseViewModel() {
+    lateinit var naverMap: NaverMap
+    private val _landDetail = MutableLiveData<LandDetail?>()
+    val landDetail: LiveData<LandDetail?>
+        get() = _landDetail
 
-        fun getLandDetail(id: Int) {
-            viewModelScope.launchWithLoading {
-                landDetailUseCase(id)
-                    .onSuccess {
-                        _landDetail.value = it
-                    }
-                    .onFailure {
-                        _landDetail.value = null
-                    }
-            }
+    fun getLandDetail(id: Int) {
+        viewModelScope.launchWithLoading {
+            landDetailUseCase(id)
+                .onSuccess {
+                    _landDetail.value = it
+                }
+                .onFailure {
+                    _landDetail.value = null
+                }
         }
     }
+}

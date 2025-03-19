@@ -12,6 +12,6 @@ sealed class UiStatus : Parcelable {
     object Success : UiStatus()
 
     data class Failed(
-        val message: String = "",
+        val message: String = ""
     ) : UiStatus()
 }

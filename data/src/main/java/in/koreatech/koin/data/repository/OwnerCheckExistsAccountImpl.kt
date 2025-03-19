@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.repository.OwnerCheckExistsAccountRepository
 import retrofit2.HttpException
 
 class OwnerCheckExistsAccountImpl(
-    private val ownerRemoteDataSource: OwnerRemoteDataSource,
+    private val ownerRemoteDataSource: OwnerRemoteDataSource
 ) : OwnerCheckExistsAccountRepository {
     override suspend fun checkExistsAccount(phoneNumber: String): Boolean {
         return try {

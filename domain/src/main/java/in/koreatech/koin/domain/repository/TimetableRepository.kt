@@ -29,27 +29,27 @@ interface TimetableRepository {
 
     suspend fun putTimetableLectures(
         key: String,
-        value: TimetableLectures,
+        value: TimetableLectures
     ): Result<TimetableLectures>
 
     suspend fun putTimetableFrame(
         id: Int,
-        frame: TimetableFrameQuery,
+        frame: TimetableFrameQuery
     ): Result<TimetableFrame>
 
     suspend fun postTimetableLectures(
         frameId: Int,
-        lectures: List<Lecture>,
+        lectures: List<Lecture>
     ): Result<TimetableLectures>
 
     suspend fun postTimetableCustomLectures(
         frameId: Int,
-        lectures: List<Lecture>,
+        lectures: List<Lecture>
     ): Result<TimetableLectures>
 
     suspend fun postTimetableBasicLectures(
         frameId: Int,
-        lectures: List<TimetableLecture>,
+        lectures: List<TimetableLecture>
     ): Result<TimetableLectures>
 
     suspend fun postTimetableFrame(frame: TimetableFrameCreateQuery): Result<TimetableFrame>
@@ -64,7 +64,7 @@ interface TimetableRepository {
 
     suspend fun deleteTimetableFrameLecture(
         frameId: Int,
-        lectureId: Int,
+        lectureId: Int
     ): Result<Unit>
 
     suspend fun deleteAllTimetableFrame(semester: String): Result<Unit>

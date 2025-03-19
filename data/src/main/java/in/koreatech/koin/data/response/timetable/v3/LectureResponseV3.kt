@@ -45,5 +45,5 @@ data class LectureResponseV3(
     @SerializedName("is_elearning")
     val isElearning: String,
     @SerializedName("lecture_infos")
-    val lectureInfos: List<LectureInfoResponse>,
+    val lectureInfos: List<LectureInfoResponse>
 )

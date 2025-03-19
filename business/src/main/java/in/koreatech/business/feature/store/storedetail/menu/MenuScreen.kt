@@ -46,19 +46,19 @@ fun MenuScreen(
     currentPage: Int,
     state: MyStoreDetailState,
     onMenuItemClicked: (Int) -> Unit = {},
-    onManageMenuClicked: () -> Unit = {},
+    onManageMenuClicked: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
         verticalOffset,
-        scrollState.value,
+        scrollState.value
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
     val categories =
         listOf(
             stringResource(R.string.recommend_menu),
             stringResource(R.string.main_menu),
             stringResource(R.string.set_menu),
-            stringResource(R.string.side_menu),
+            stringResource(R.string.side_menu)
         )
     LaunchedEffect(scrollState.value) {
         if (scrollState.value != 0 && currentPage != 0) {
@@ -71,19 +71,19 @@ fun MenuScreen(
             onManageMenuClicked()
         },
         modifier =
-            Modifier
-                .padding(horizontal = 20.dp, vertical = 16.dp)
-                .fillMaxWidth()
-                .height(40.dp),
+        Modifier
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+            .fillMaxWidth()
+            .height(40.dp),
         colors =
-            ButtonDefaults.buttonColors(
-                backgroundColor = ColorTextField,
-                contentColor = Color.Black,
-            ),
+        ButtonDefaults.buttonColors(
+            backgroundColor = ColorTextField,
+            contentColor = Color.Black
+        )
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_edit),
-            contentDescription = stringResource(R.string.edit),
+            contentDescription = stringResource(R.string.edit)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = stringResource(R.string.edit_menu), color = Gray1)
@@ -91,51 +91,51 @@ fun MenuScreen(
 
     Divider(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(1.dp),
-        color = colorResource(R.color.neutral_300),
+        Modifier
+            .fillMaxWidth()
+            .height(1.dp),
+        color = colorResource(R.color.neutral_300)
     )
 
     LazyRow(
         modifier =
-            Modifier
-                .padding(horizontal = 20.dp)
-                .padding(top = 16.dp)
-                .padding(bottom = 9.dp)
-                .fillMaxWidth()
-                .height(40.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        Modifier
+            .padding(horizontal = 20.dp)
+            .padding(top = 16.dp)
+            .padding(bottom = 9.dp)
+            .fillMaxWidth()
+            .height(40.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         items(categories.size) {
             Box(
                 modifier =
-                    Modifier
-                        .fillParentMaxWidth(0.25f)
-                        .height(40.dp)
-                        .padding(end = 10.dp)
-                        .border(
-                            width = 1.dp,
-                            color = Gray3,
-                            shape = RoundedCornerShape(4.dp),
-                        ),
-                contentAlignment = Alignment.Center,
+                Modifier
+                    .fillParentMaxWidth(0.25f)
+                    .height(40.dp)
+                    .padding(end = 10.dp)
+                    .border(
+                        width = 1.dp,
+                        color = Gray3,
+                        shape = RoundedCornerShape(4.dp)
+                    ),
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
                     text = categories[it],
                     fontSize = 12.sp,
                     style = TextStyle(color = Gray6, fontSize = 13.sp),
-                    fontWeight = FontWeight(500),
+                    fontWeight = FontWeight(500)
                 )
             }
         }
     }
     LazyColumn(
         modifier =
-            Modifier
-                .fillMaxSize(),
-        userScrollEnabled = enabledScroll,
+        Modifier
+            .fillMaxSize(),
+        userScrollEnabled = enabledScroll
     ) {
         state.storeMenu?.let {
             items(state.storeMenu) {
@@ -144,7 +144,7 @@ fun MenuScreen(
                     menuList = it,
                     onMenuClicked = { menuId ->
                         onMenuItemClicked(menuId)
-                    },
+                    }
                 )
             }
         }

@@ -7,12 +7,12 @@ import androidx.annotation.StringRes
  * @property descriptionResId 툴팁 내용 리소스 아이디. 툴팁이 아닐 경우 0 할당
  */
 enum class OnboardingType(
-    @StringRes val descriptionResId: Int,
+    @StringRes val descriptionResId: Int
 ) {
     DINING_IMAGE(R.string.dining_image_tooltip),
     DINING_NOTIFICATION(0),
     DINING_SHARE(0),
     ARTICLE_KEYWORD(R.string.article_keyword_tooltip),
     REVIEW_SORTING(R.string.store_review_sorting_tooltip),
-    SHOW_BUS_HEAD_ARTICLE(0),
+    SHOW_BUS_HEAD_ARTICLE(0)
 }

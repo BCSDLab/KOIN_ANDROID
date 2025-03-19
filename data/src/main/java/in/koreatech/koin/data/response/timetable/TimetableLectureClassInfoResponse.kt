@@ -8,11 +8,11 @@ data class TimetableLectureClassInfoResponse(
     @SerializedName("class_time")
     val classTime: List<Int>?,
     @SerializedName("class_place")
-    val classPlace: String?,
+    val classPlace: String?
 ) {
     fun toTimetableLectureClassInfo() =
         TimetableLectureClassInfo(
             classTime = classTime ?: emptyList(),
-            classPlace = classPlace ?: "",
+            classPlace = classPlace ?: ""
         )
 }

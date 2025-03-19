@@ -35,69 +35,69 @@ fun NullSettingTime(
     sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
+            skipHalfExpanded = true
         ),
-    updateIsSettingScreenState: (Boolean) -> Unit = {},
+    updateIsSettingScreenState: (Boolean) -> Unit = {}
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
 
         Text(
             modifier =
-                Modifier
-                    .padding(vertical = 135.dp)
-                    .fillMaxWidth(),
+            Modifier
+                .padding(vertical = 135.dp)
+                .fillMaxWidth(),
             text = stringResource(R.string.setting_time_is_null),
             style = KoinTheme.typography.medium16,
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Center
         )
 
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
 
         Row(
             modifier =
-                Modifier
-                    .padding(vertical = 16.dp)
-                    .fillMaxWidth()
-                    .clickable {
-                        updateIsSettingScreenState(true)
-                    },
-            horizontalArrangement = Arrangement.Center,
+            Modifier
+                .padding(vertical = 16.dp)
+                .fillMaxWidth()
+                .clickable {
+                    updateIsSettingScreenState(true)
+                },
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 text = stringResource(R.string.add_setting_time),
                 style = KoinTheme.typography.medium16,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Image(
                 painter = painterResource(R.drawable.fi_plus),
-                contentDescription = "플러스버튼",
+                contentDescription = "플러스버튼"
             )
         }
 
         Divider(
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             color = Gray3,
-            thickness = 0.5.dp,
+            thickness = 0.5.dp
         )
     }
 
@@ -111,6 +111,6 @@ fun NullSettingTime(
         },
         onRegisterButtonClicked = {
             updateIsSettingScreenState(true)
-        },
+        }
     )
 }

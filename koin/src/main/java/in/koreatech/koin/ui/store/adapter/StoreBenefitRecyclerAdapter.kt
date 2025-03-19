@@ -15,10 +15,10 @@ import `in`.koreatech.koin.domain.model.store.BenefitCategory
 
 class StoreBenefitRecyclerAdapter(
     private val onItemClick: (Int) -> Unit,
-    private val getPosition: (Int) -> Unit,
+    private val getPosition: (Int) -> Unit
 ) : ListAdapter<BenefitCategory, RecyclerView.ViewHolder>(
-        diffCallback,
-    ) {
+    diffCallback
+) {
     private var currentId = 0
 
     inner class ViewHolder(private val binding: ViewDataBinding) :
@@ -28,13 +28,17 @@ class StoreBenefitRecyclerAdapter(
             with(binding as ItemStoreBenefitBinding) {
                 if (currentId == benefitCategory.id) {
                     storeBenefitItemLayout.background = ContextCompat.getDrawable(binding.root.context, R.drawable.button_rect_primary_line_radius_5dp)
-                    benefitTitle.setTextColor(ContextCompat.getColor(binding.root.context, R.color.primary_500))
+                    benefitTitle.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.primary_500)
+                    )
                     Glide.with(binding.root.context)
                         .load(benefitCategory.onImageUrl)
                         .into(binding.benefitIcon)
                 } else {
                     storeBenefitItemLayout.background = ContextCompat.getDrawable(binding.root.context, R.drawable.button_rect_gray18_radius_5dp)
-                    benefitTitle.setTextColor(ContextCompat.getColor(binding.root.context, R.color.gray20))
+                    benefitTitle.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.gray20)
+                    )
                     Glide.with(binding.root.context)
                         .load(benefitCategory.offImageUrl)
                         .into(binding.benefitIcon)
@@ -52,23 +56,17 @@ class StoreBenefitRecyclerAdapter(
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
             ItemStoreBenefitBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false,
-            ),
+                false
+            )
         )
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolder).bind(getItem(position))
     }
 
@@ -81,14 +79,14 @@ class StoreBenefitRecyclerAdapter(
             object : DiffUtil.ItemCallback<BenefitCategory>() {
                 override fun areItemsTheSame(
                     oldItem: BenefitCategory,
-                    newItem: BenefitCategory,
+                    newItem: BenefitCategory
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
                     oldItem: BenefitCategory,
-                    newItem: BenefitCategory,
+                    newItem: BenefitCategory
                 ): Boolean {
                     return oldItem == newItem
                 }

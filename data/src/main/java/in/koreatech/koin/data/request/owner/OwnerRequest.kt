@@ -10,5 +10,5 @@ data class OwnerRequest(
     @SerializedName("password") val password: String,
     @SerializedName("phone_number") val phoneNumber: String?,
     @SerializedName("shop_id") val shopId: String,
-    @SerializedName("shop_name") val shopName: String,
+    @SerializedName("shop_name") val shopName: String
 )

@@ -31,14 +31,16 @@ import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DiningActivity : KoinNavigationDrawerActivity() {
     override val menuState: MenuState = MenuState.Dining
-    val binding: ActivityDiningBinding by dataBinding<ActivityDiningBinding>(R.layout.activity_dining)
+    val binding: ActivityDiningBinding by dataBinding<ActivityDiningBinding>(
+        R.layout.activity_dining
+    )
     override val screenTitle = "식단"
     private val viewModel by viewModels<DiningViewModel>()
     private val dates = mutableListOf<Date>()
@@ -94,11 +96,11 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 if (it != null && it.isAnonymous.not()) {
                     with(onboardingManager) {
                         showOnboardingIfNeeded(
-                            OnboardingType.DINING_NOTIFICATION,
+                            OnboardingType.DINING_NOTIFICATION
                         ) {
                             diningOnBoardingBottomSheet.show(
                                 supportFragmentManager,
-                                diningOnBoardingBottomSheet.tag,
+                                diningOnBoardingBottomSheet.tag
                             )
                         }
                     }
@@ -113,7 +115,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.CAFETERIA_INFO,
-                        getString(R.string.cafeteria_info),
+                        getString(R.string.cafeteria_info)
                     )
                     startActivity(Intent(this@DiningActivity, DiningNoticeActivity::class.java))
                 }
@@ -149,7 +151,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                         EventLogger.logClickEvent(
                             EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_SHARE,
-                            "코인으로 이동",
+                            "코인으로 이동"
                         )
                     }
                 } catch (_: Exception) {
@@ -167,7 +169,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     EventLogger.logScrollEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_TIME,
-                        tabsDiningTime.getTabAt(it)?.text.toString(),
+                        tabsDiningTime.getTabAt(it)?.text.toString()
                     )
                 }
                 addOnPageChangedListener(this@DiningActivity, diningPageChangeListener)
@@ -191,7 +193,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_TIME,
-                        tab.text.toString(),
+                        tab.text.toString()
                     )
                 }
             }

@@ -25,11 +25,11 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun ShuttleTimetableRouteItem(
     route: ShuttleTimetableRouteInfoState,
     nodeItemHeightDp: Dp,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.width(IntrinsicSize.Max),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = route.name,
@@ -37,24 +37,24 @@ fun ShuttleTimetableRouteItem(
             color = KoinTheme.colors.neutral600,
             textAlign = TextAlign.Center,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(color = KoinTheme.colors.neutral100)
-                    .padding(vertical = 8.dp),
+            Modifier
+                .fillMaxWidth()
+                .background(color = KoinTheme.colors.neutral100)
+                .padding(vertical = 8.dp)
         )
 
         route.arrivalTimes.fastForEach { time ->
             Box(
                 modifier =
-                    Modifier
-                        .padding(horizontal = 16.dp, vertical = 4.dp)
-                        .height(nodeItemHeightDp),
-                contentAlignment = Alignment.Center,
+                Modifier
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .height(nodeItemHeightDp),
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = time,
                     style = KoinTheme.typography.bold16,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -66,6 +66,6 @@ fun ShuttleTimetableRouteItem(
 private fun ShuttleTimetableItemPreview() {
     ShuttleTimetableRouteItem(
         route = shuttleTimetableRouteInfoMock1,
-        nodeItemHeightDp = 40.dp,
+        nodeItemHeightDp = 40.dp
     )
 }

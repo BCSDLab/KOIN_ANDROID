@@ -60,7 +60,7 @@ fun KoinPicker(
     selectedTextStyle: TextStyle = KoinTheme.typography.medium16,
     unselectedTextStyle: TextStyle = KoinTheme.typography.medium16,
     selectedItemColor: Color = KoinTheme.colors.primary500,
-    unselectedItemColor: Color = KoinTheme.colors.neutral500,
+    unselectedItemColor: Color = KoinTheme.colors.neutral500
 ) {
     val newItems =
         if (infiniteScroll) {
@@ -89,9 +89,9 @@ fun KoinPicker(
         state = listState,
         flingBehavior = flingBehavior,
         modifier =
-            modifier
-                .height(itemHeight * visibleItemsCount)
-                .fadingEdge(fadingEdgeGradient),
+        modifier
+            .height(itemHeight * visibleItemsCount)
+            .fadingEdge(fadingEdgeGradient)
     ) {
         items(listScrollCount) { index ->
             Text(
@@ -101,15 +101,15 @@ fun KoinPicker(
                 style = if (selectedItemIndex == index) selectedTextStyle else unselectedTextStyle,
                 color = if (selectedItemIndex == index) selectedItemColor else unselectedItemColor,
                 modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .onSizeChanged {
-                            itemHeight =
-                                with(density) {
-                                    it.height.toDp()
-                                }
-                        }
-                        .padding(contentPadding),
+                Modifier
+                    .fillMaxSize()
+                    .onSizeChanged {
+                        itemHeight =
+                            with(density) {
+                                it.height.toDp()
+                            }
+                    }
+                    .padding(contentPadding)
             )
         }
     }

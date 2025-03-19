@@ -44,15 +44,15 @@ import java.time.YearMonth
 @Composable
 fun CalendarScreen(
     viewModel: WriteEventViewModel = hiltViewModel(),
-    selectedYearMonth: YearMonth = YearMonth.now(),
+    selectedYearMonth: YearMonth = YearMonth.now()
 ) {
     Column {
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButton(onClick = {
                 viewModel.onSelectedYearMonthChanged(selectedYearMonth.minusMonths(1))
@@ -62,21 +62,21 @@ fun CalendarScreen(
 
             TextButton(onClick = {
                 viewModel.onDatePickerVisibilityChanged(
-                    true,
+                    true
                 )
             }) {
                 Text(
                     text = "${selectedYearMonth.year}년 ${selectedYearMonth.monthValue}월",
                     fontSize = 18.sp,
-                    color = ColorPrimary,
+                    color = ColorPrimary
                 )
             }
 
             IconButton(onClick = {
                 viewModel.onSelectedYearMonthChanged(
                     selectedYearMonth.plusMonths(
-                        1,
-                    ),
+                        1
+                    )
                 )
             }) {
                 Icon(painterResource(R.drawable.ic_arrow_right), contentDescription = "다음 달")
@@ -90,7 +90,7 @@ fun CalendarScreen(
             onDateSelected = { startDate, endDate ->
                 viewModel.onStartDateChanged(startDate?.toString() ?: "")
                 viewModel.onEndDateChanged(endDate?.toString() ?: "")
-            },
+            }
         )
     }
 }
@@ -100,7 +100,7 @@ fun CalendarGrid(
     yearMonth: YearMonth = YearMonth.now(),
     startDate: LocalDate?,
     endDate: LocalDate?,
-    onDateSelected: (LocalDate?, LocalDate?) -> Unit,
+    onDateSelected: (LocalDate?, LocalDate?) -> Unit
 ) {
     var selectedStartDate by remember { mutableStateOf(startDate) }
     var selectedEndDate by remember { mutableStateOf(endDate) }
@@ -111,7 +111,7 @@ fun CalendarGrid(
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.SpaceAround
         ) {
             listOf("일", "월", "화", "수", "목", "금", "토").forEachIndexed { index, day ->
                 Text(
@@ -119,13 +119,13 @@ fun CalendarGrid(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color =
-                        when (index) {
-                            0 -> Color.Red
-                            6 -> Color.Blue
-                            else -> Color.Black
-                        },
+                    when (index) {
+                        0 -> Color.Red
+                        6 -> Color.Blue
+                        else -> Color.Black
+                    },
                     modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -134,7 +134,7 @@ fun CalendarGrid(
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(7),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             items(firstDayOfMonth) {
                 Box(modifier = Modifier.size(40.dp))
@@ -148,54 +148,54 @@ fun CalendarGrid(
 
                 Box(
                     modifier =
-                        Modifier
-                            .size(40.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(
-                                when {
-                                    date == selectedStartDate -> ColorPrimary400
-                                    date == selectedEndDate -> ColorPrimary400
-                                    isInRange -> ColorPrimary400.copy(alpha = 0.5f)
-                                    else -> Color.Transparent
-                                },
-                            )
-                            .clickable {
-                                when {
-                                    selectedStartDate == null -> {
-                                        selectedStartDate = date
-                                        onDateSelected(selectedStartDate, selectedStartDate)
-                                    }
-
-                                    selectedEndDate == null -> {
-                                        if (date.isBefore(selectedStartDate)) {
-                                            selectedEndDate = selectedStartDate
-                                            selectedStartDate = date
-                                        } else {
-                                            selectedEndDate = date
-                                        }
-                                        onDateSelected(selectedStartDate, selectedEndDate)
-                                    }
-
-                                    else -> {
-                                        selectedStartDate = date
-                                        selectedEndDate = null
-                                        onDateSelected(selectedStartDate, selectedStartDate)
-                                    }
+                    Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(
+                            when {
+                                date == selectedStartDate -> ColorPrimary400
+                                date == selectedEndDate -> ColorPrimary400
+                                isInRange -> ColorPrimary400.copy(alpha = 0.5f)
+                                else -> Color.Transparent
+                            }
+                        )
+                        .clickable {
+                            when {
+                                selectedStartDate == null -> {
+                                    selectedStartDate = date
+                                    onDateSelected(selectedStartDate, selectedStartDate)
                                 }
-                            },
-                    contentAlignment = Alignment.Center,
+
+                                selectedEndDate == null -> {
+                                    if (date.isBefore(selectedStartDate)) {
+                                        selectedEndDate = selectedStartDate
+                                        selectedStartDate = date
+                                    } else {
+                                        selectedEndDate = date
+                                    }
+                                    onDateSelected(selectedStartDate, selectedEndDate)
+                                }
+
+                                else -> {
+                                    selectedStartDate = date
+                                    selectedEndDate = null
+                                    onDateSelected(selectedStartDate, selectedStartDate)
+                                }
+                            }
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = date.dayOfMonth.toString(),
                         fontSize = 14.sp,
                         color =
-                            when {
-                                date == selectedStartDate || date == selectedEndDate -> Color.White
-                                isInRange -> Color.White
-                                dayOfWeek == 6 -> Color.Blue
-                                dayOfWeek == 0 -> Color.Red
-                                else -> Color.Black
-                            },
+                        when {
+                            date == selectedStartDate || date == selectedEndDate -> Color.White
+                            isInRange -> Color.White
+                            dayOfWeek == 6 -> Color.Blue
+                            dayOfWeek == 0 -> Color.Red
+                            else -> Color.Black
+                        }
                     )
                 }
             }
@@ -210,7 +210,7 @@ fun PreviewCalendarGrid() {
         yearMonth = YearMonth.now(),
         startDate = LocalDate.now().minusDays(5),
         endDate = LocalDate.now().plusDays(5),
-        onDateSelected = { _, _ -> },
+        onDateSelected = { _, _ -> }
     )
 }
 

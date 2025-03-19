@@ -13,64 +13,64 @@ import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
-class NotificationViewModel
-    @Inject
-    constructor(
-        private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
-        private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
-        private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
-        private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
-        private val deleteNotificationSubscriptionDetailUseCase: DeleteNotificationSubscriptionDetailUseCase,
-    ) : BaseViewModel() {
-        private val _notificationUiState =
-            MutableStateFlow<NotificationUiState>(NotificationUiState.Nothing)
-        val notificationUiState = _notificationUiState.asStateFlow()
+class NotificationViewModel @Inject constructor(
+    private val getNotificationPermissionInfoUseCase: GetNotificationPermissionInfoUseCase,
+    private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
+    private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
+    private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
+    private val deleteNotificationSubscriptionDetailUseCase: DeleteNotificationSubscriptionDetailUseCase
+) : BaseViewModel() {
+    private val _notificationUiState =
+        MutableStateFlow<NotificationUiState>(NotificationUiState.Nothing)
+    val notificationUiState = _notificationUiState.asStateFlow()
 
-        fun getPermissionInfo() {
-            viewModelScope.launchWithLoading {
-                getNotificationPermissionInfoUseCase().onSuccess { info ->
-                    _notificationUiState.update {
-                        NotificationUiState.Success(info)
-                    }
-                }.onFailure {
-                    _notificationUiState.update { NotificationUiState.Failed }
+    fun getPermissionInfo() {
+        viewModelScope.launchWithLoading {
+            getNotificationPermissionInfoUseCase().onSuccess { info ->
+                _notificationUiState.update {
+                    NotificationUiState.Success(info)
                 }
-            }
-        }
-
-        fun updateSubscription(type: SubscribesType) {
-            viewModelScope.launchWithLoading {
-                updateNotificationSubscriptionUseCase(type)
-            }
-        }
-
-        fun updateSubscriptionDetail(type: SubscribesDetailType) {
-            viewModelScope.launchWithLoading {
-                updateNotificationSubscriptionDetailUseCase(type)
-            }
-        }
-
-        fun deleteSubscription(type: SubscribesType) {
-            viewModelScope.launchWithLoading {
-                deleteNotificationSubscriptionUseCase(type)
-            }
-        }
-
-        fun deleteSubscriptionDetail(type: SubscribesDetailType) {
-            viewModelScope.launchWithLoading {
-                deleteNotificationSubscriptionDetailUseCase(type)
+            }.onFailure {
+                _notificationUiState.update { NotificationUiState.Failed }
             }
         }
     }
 
+    fun updateSubscription(type: SubscribesType) {
+        viewModelScope.launchWithLoading {
+            updateNotificationSubscriptionUseCase(type)
+        }
+    }
+
+    fun updateSubscriptionDetail(type: SubscribesDetailType) {
+        viewModelScope.launchWithLoading {
+            updateNotificationSubscriptionDetailUseCase(type)
+        }
+    }
+
+    fun deleteSubscription(type: SubscribesType) {
+        viewModelScope.launchWithLoading {
+            deleteNotificationSubscriptionUseCase(type)
+        }
+    }
+
+    fun deleteSubscriptionDetail(type: SubscribesDetailType) {
+        viewModelScope.launchWithLoading {
+            deleteNotificationSubscriptionDetailUseCase(type)
+        }
+    }
+}
+
 sealed class NotificationUiState {
-    data class Success(val notificationPermissionInfo: NotificationPermissionInfo) : NotificationUiState()
+    data class Success(
+        val notificationPermissionInfo: NotificationPermissionInfo
+    ) : NotificationUiState()
 
     data object Failed : NotificationUiState()
 

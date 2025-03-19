@@ -27,25 +27,19 @@ import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 
 class DiningAdapter(
-    private val onShareClick: (Dining) -> Unit,
+    private val onShareClick: (Dining) -> Unit
 ) : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as DiningViewHolder).bind(getItem(position))
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return DiningViewHolder(
             ItemDiningBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false,
-            ),
+                false
+            )
         )
     }
 
@@ -75,7 +69,7 @@ class DiningAdapter(
                                     e: GlideException?,
                                     model: Any?,
                                     target: Target<Drawable>,
-                                    isFirstResource: Boolean,
+                                    isFirstResource: Boolean
                                 ): Boolean {
                                     return false
                                 }
@@ -85,13 +79,13 @@ class DiningAdapter(
                                     model: Any,
                                     target: Target<Drawable>,
                                     dataSource: DataSource,
-                                    isFirstResource: Boolean,
+                                    isFirstResource: Boolean
                                 ): Boolean {
                                     binding.lottieImageLoading.pauseAnimation()
                                     binding.lottieImageLoading.visibility = View.GONE
                                     return false
                                 }
-                            },
+                            }
                         )
                         .into(imageViewDining)
 
@@ -102,7 +96,7 @@ class DiningAdapter(
                         EventLogger.logClickEvent(
                             EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_IMAGE,
-                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place,
+                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                         )
                     }
                 } else {
@@ -110,12 +104,12 @@ class DiningAdapter(
                         TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_DIP,
                             1f,
-                            context.resources.displayMetrics,
+                            context.resources.displayMetrics
                         ).toInt()
                     textViewNoPhoto.text =
                         if (TimeUtil.isWeekend(dining.date)) {
                             context.getString(
-                                R.string.photo_not_provided_on_weekend,
+                                R.string.photo_not_provided_on_weekend
                             )
                         } else {
                             context.getString(R.string.no_photo)
@@ -128,7 +122,7 @@ class DiningAdapter(
                         EventLogger.logClickEvent(
                             EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_IMAGE,
-                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place,
+                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                         )
                     }
                 }
@@ -150,10 +144,7 @@ class DiningAdapter(
             }
         }
 
-        private fun setDiningCard(
-            context: Context,
-            dining: Dining,
-        ) {
+        private fun setDiningCard(context: Context, dining: Dining) {
             with(dining) {
                 // 능수관, 2캠퍼스일 때 이미지 카드 노출 X
                 if (place == DiningPlace.Nungsu.place || place == DiningPlace.Campus2.place) {
@@ -184,13 +175,10 @@ class DiningAdapter(
             }
         }
 
-        private fun setDiningImageVisibility(
-            context: Context,
-            dining: Dining,
-        ) {
+        private fun setDiningImageVisibility(context: Context, dining: Dining) {
             when (dining.place) {
                 context.getString(R.string.dining_nungsu),
-                context.getString(R.string.dining_2campus),
+                context.getString(R.string.dining_2campus)
                 ->
                     binding.cardViewDining.visibility =
                         View.GONE
@@ -199,10 +187,7 @@ class DiningAdapter(
             }
         }
 
-        private fun showDiningImage(
-            context: Context,
-            dining: Dining,
-        ) {
+        private fun showDiningImage(context: Context, dining: Dining) {
             with(binding) {
                 cardViewDining.visibility = View.VISIBLE
                 cardViewDining.strokeWidth = 0
@@ -222,23 +207,20 @@ class DiningAdapter(
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_IMAGE,
-                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                     )
                 }
             }
         }
 
-        private fun showEmptyDiningImage(
-            context: Context,
-            dining: Dining,
-        ) {
+        private fun showEmptyDiningImage(context: Context, dining: Dining) {
             with(binding) {
                 cardViewDining.visibility = View.VISIBLE
                 cardViewDining.strokeWidth =
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
                         1f,
-                        context.resources.displayMetrics,
+                        context.resources.displayMetrics
                     ).toInt()
                 textViewNoPhoto.visibility = View.VISIBLE
                 imageViewNoPhoto.visibility = View.VISIBLE
@@ -247,7 +229,7 @@ class DiningAdapter(
                     EventLogger.logClickEvent(
                         EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_IMAGE,
-                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                     )
                 }
             }
@@ -279,10 +261,7 @@ class DiningAdapter(
             }
         }
 
-        private fun setDiningData(
-            context: Context,
-            dining: Dining,
-        ) {
+        private fun setDiningData(context: Context, dining: Dining) {
             with(binding) {
                 textViewDiningCorner.text = dining.place
                 textViewKcal.text =
@@ -302,17 +281,11 @@ class DiningAdapter(
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<Dining>() {
-                override fun areItemsTheSame(
-                    oldItem: Dining,
-                    newItem: Dining,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: Dining, newItem: Dining): Boolean {
                     return oldItem.id == newItem.id
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: Dining,
-                    newItem: Dining,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: Dining, newItem: Dining): Boolean {
                     return oldItem == newItem
                 }
             }

@@ -30,12 +30,12 @@ import `in`.koreatech.koin.ui.store.adapter.review.MenuImageRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.MenuRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.WriteReviewViewModel
 import `in`.koreatech.koin.util.ext.withLoading
+import java.io.Serializable
+import kotlin.properties.Delegates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.Serializable
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
@@ -69,7 +69,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                                         fileSize,
                                         "image/" + fileName.split(".")[1],
                                         fileName,
-                                        uri.toString(),
+                                        uri.toString()
                                     )
                                 }
                                 inputStream?.close()
@@ -117,7 +117,9 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
             }
 
             uploadImageButton.debounce(300, lifecycleScope) {
-                pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                pickMultipleMedia.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
             }
             addMenuButton.setOnClickListener {
                 menuRecyclerViewAdapter.addMenu()
@@ -133,7 +135,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                         s: CharSequence,
                         start: Int,
                         before: Int,
-                        count: Int,
+                        count: Int
                     ) {
                         super.onTextChanged(s, start, before, count)
 
@@ -142,19 +144,19 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                             charactersNumber.setTextColor(
                                 ContextCompat.getColor(
                                     this@WriteReviewActivity,
-                                    R.color.colorAccent,
-                                ),
+                                    R.color.colorAccent
+                                )
                             )
                         } else {
                             charactersNumber.setTextColor(
                                 ContextCompat.getColor(
                                     this@WriteReviewActivity,
-                                    R.color.gray19,
-                                ),
+                                    R.color.gray19
+                                )
                             )
                         }
                     }
-                },
+                }
             )
             writeReviewButton.debounce(300, lifecycleScope) {
                 elapsedTime = System.currentTimeMillis() - currentTime
@@ -166,8 +168,8 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                             starRating.rating.toInt(),
                             reviewEditText.text.toString(),
                             viewModel.menuImageUrls.value,
-                            menuRecyclerViewAdapter.getMenuList(),
-                        ),
+                            menuRecyclerViewAdapter.getMenuList()
+                        )
                     )
                 } else {
                     viewModel.writeReview(
@@ -176,83 +178,78 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                             starRating.rating.toInt(),
                             reviewEditText.text.toString(),
                             viewModel.menuImageUrls.value,
-                            menuRecyclerViewAdapter.getMenuList(),
-                        ),
+                            menuRecyclerViewAdapter.getMenuList()
+                        )
                     )
                 }
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE,
                     (storeName ?: "Unknown"),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, (elapsedTime / 1000.0).toString()),
+                    EventExtra(AnalyticsConstant.DURATION_TIME, (elapsedTime / 1000.0).toString())
                 )
                 finish()
             }
         }
     }
 
-    private fun initViewModel() =
-        with(viewModel) {
-            withLoading(this@WriteReviewActivity, this)
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    menuImageUrls.collect {
-                        menuImageRecyclerViewAdapter.submitList(it)
-                        if (it.isNotEmpty()) {
-                            binding.imageContainer.visibility =
-                                View.VISIBLE
-                        } else {
-                            binding.imageContainer.visibility =
-                                View.GONE
-                        }
-
-                        if (viewModel.menuImageUrls.value.size >= 3) {
-                            binding.uploadImageButton.isEnabled = false
-                            binding.uploadImageButton.alpha = 0.5f
-                            binding.uploadImageButton.setTextColor(
-                                ContextCompat.getColor(
-                                    this@WriteReviewActivity,
-                                    R.color.gray19,
-                                ),
-                            )
-                            binding.imageNumber.setTextColor(
-                                ContextCompat.getColor(
-                                    this@WriteReviewActivity,
-                                    R.color.colorAccent,
-                                ),
-                            )
-                        } else {
-                            binding.uploadImageButton.isEnabled = true
-                            binding.uploadImageButton.setTextColor(
-                                ContextCompat.getColor(
-                                    this@WriteReviewActivity,
-                                    R.color.gray14,
-                                ),
-                            )
-                            binding.uploadImageButton.alpha = 1f
-                            binding.imageNumber.setTextColor(
-                                ContextCompat.getColor(
-                                    this@WriteReviewActivity,
-                                    R.color.gray19,
-                                ),
-                            )
-                        }
-                        binding.imageNumber.text = "${it.size}/3"
+    private fun initViewModel() = with(viewModel) {
+        withLoading(this@WriteReviewActivity, this)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                menuImageUrls.collect {
+                    menuImageRecyclerViewAdapter.submitList(it)
+                    if (it.isNotEmpty()) {
+                        binding.imageContainer.visibility =
+                            View.VISIBLE
+                    } else {
+                        binding.imageContainer.visibility =
+                            View.GONE
                     }
+
+                    if (viewModel.menuImageUrls.value.size >= 3) {
+                        binding.uploadImageButton.isEnabled = false
+                        binding.uploadImageButton.alpha = 0.5f
+                        binding.uploadImageButton.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray19
+                            )
+                        )
+                        binding.imageNumber.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.colorAccent
+                            )
+                        )
+                    } else {
+                        binding.uploadImageButton.isEnabled = true
+                        binding.uploadImageButton.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray14
+                            )
+                        )
+                        binding.uploadImageButton.alpha = 1f
+                        binding.imageNumber.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray19
+                            )
+                        )
+                    }
+                    binding.imageNumber.text = "${it.size}/3"
                 }
             }
         }
+    }
 
     override fun onResume() {
         super.onResume()
         currentTime = System.currentTimeMillis()
     }
 
-    fun View.debounce(
-        delayMillis: Long = 300L,
-        scope: CoroutineScope,
-        action: (Unit) -> Unit,
-    ) {
+    fun View.debounce(delayMillis: Long = 300L, scope: CoroutineScope, action: (Unit) -> Unit) {
         var job: Job? = null
         this.setOnClickListener {
             job?.cancel()
@@ -264,10 +261,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
         }
     }
 
-    fun <T : Serializable> Intent.intentSerializable(
-        key: String,
-        clazz: Class<T>,
-    ): T? {
+    fun <T : Serializable> Intent.intentSerializable(key: String, clazz: Class<T>): T? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             this.getSerializableExtra(key, clazz)
         } else {

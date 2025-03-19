@@ -15,5 +15,5 @@ data class DiningResponse(
     @SerializedName("created_at") val createdAt: String,
     @SerializedName("updated_at") val updatedAt: String,
     @SerializedName("soldout_at") val soldoutAt: String?,
-    @SerializedName("changed_at") val changedAt: String?,
+    @SerializedName("changed_at") val changedAt: String?
 )

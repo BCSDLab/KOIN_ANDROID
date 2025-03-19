@@ -26,24 +26,24 @@ import `in`.koreatech.koin.feature.lostandfound.model.ArticleHeaderState
 fun HotArticle(
     hotArticleList: List<ArticleHeaderState>,
     modifier: Modifier = Modifier,
-    navigateToHotArticle: (HotArticleData) -> Unit,
+    navigateToHotArticle: (HotArticleData) -> Unit
 ) {
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(vertical = 14.dp, horizontal = 24.dp),
             style = KoinTheme.typography.bold16,
-            text = stringResource(R.string.hot_article_title),
+            text = stringResource(R.string.hot_article_title)
         )
 
         hotArticleList.forEach { hotArticle ->
             HotArticleItem(
                 hotArticleData =
-                    HotArticleData(
-                        articleId = hotArticle.id,
-                        articleTitle = hotArticle.title,
-                        board = hotArticle.board,
-                    ),
-                navigateToHotArticle = navigateToHotArticle,
+                HotArticleData(
+                    articleId = hotArticle.id,
+                    articleTitle = hotArticle.title,
+                    board = hotArticle.board
+                ),
+                navigateToHotArticle = navigateToHotArticle
             )
             HorizontalDivider(color = KoinTheme.colors.neutral100)
         }
@@ -54,23 +54,23 @@ fun HotArticle(
 fun HotArticleItem(
     hotArticleData: HotArticleData,
     modifier: Modifier = Modifier,
-    navigateToHotArticle: (HotArticleData) -> Unit,
+    navigateToHotArticle: (HotArticleData) -> Unit
 ) {
     Row(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .noRippleClickable { navigateToHotArticle(hotArticleData) }
-                .padding(vertical = 12.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier
+            .fillMaxWidth()
+            .noRippleClickable { navigateToHotArticle(hotArticleData) }
+            .padding(vertical = 12.dp, horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = stringResource(hotArticleData.board.koreanName),
             style =
-                KoinTheme.typography.bold12.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    color = KoinTheme.colors.primary600,
-                ),
+            KoinTheme.typography.bold12.copy(
+                fontWeight = FontWeight.SemiBold,
+                color = KoinTheme.colors.primary600
+            )
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
@@ -78,10 +78,10 @@ fun HotArticleItem(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style =
-                KoinTheme.typography.bold14.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
-                ),
+            KoinTheme.typography.bold14.copy(
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black
+            )
         )
     }
 }
@@ -89,5 +89,5 @@ fun HotArticleItem(
 data class HotArticleData(
     val articleId: Int,
     val articleTitle: String,
-    val board: ArticleBoardType,
+    val board: ArticleBoardType
 )

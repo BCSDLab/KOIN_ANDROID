@@ -15,7 +15,7 @@ import androidx.lifecycle.LifecycleOwner
 
 class FileDownloadManager(
     private val lifecycleOwner: LifecycleOwner,
-    private val context: Context,
+    private val context: Context
 ) {
     private val downloadManager: DownloadManager = context.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
 
@@ -28,7 +28,7 @@ class FileDownloadManager(
         object : BroadcastReceiver() {
             override fun onReceive(
                 context: Context?,
-                intent: Intent?,
+                intent: Intent?
             ) {
                 if (intent?.action == DownloadManager.ACTION_DOWNLOAD_COMPLETE) {
                     val query = DownloadManager.Query()
@@ -67,7 +67,7 @@ class FileDownloadManager(
                 override fun onPause(owner: LifecycleOwner) {
                     context.unregisterReceiver(broadcastReceiver)
                 }
-            },
+            }
         )
     }
 

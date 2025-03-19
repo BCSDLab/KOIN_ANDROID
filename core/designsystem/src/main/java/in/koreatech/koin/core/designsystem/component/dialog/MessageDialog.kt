@@ -42,36 +42,36 @@ fun MessageDialog(
     onNegative: () -> Unit = {},
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     positiveButtonText: String = stringResource(id = R.string.navigate_back_content_description),
-    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
+    positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary
 ) {
     BasicAlertDialog(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(
-                    color = KoinTheme.colors.neutral0,
-                    shape = KoinTheme.shapes.large,
-                )
-                .padding(horizontal = 32.dp, vertical = 24.dp),
-        onDismissRequest = { onNegative() },
+        modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(
+                color = KoinTheme.colors.neutral0,
+                shape = KoinTheme.shapes.large
+            )
+            .padding(horizontal = 32.dp, vertical = 24.dp),
+        onDismissRequest = { onNegative() }
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = title,
-                style = titleStyle,
+                style = titleStyle
             )
             Spacer(modifier = Modifier.height(32.dp))
 
             FilledButton(
                 modifier =
-                    Modifier
-                        .wrapContentWidth(),
+                Modifier
+                    .wrapContentWidth(),
                 text = positiveButtonText,
                 onClick = onPositive,
-                colors = positiveButtonColors,
+                colors = positiveButtonColors
             )
         }
     }
@@ -81,6 +81,6 @@ fun MessageDialog(
 @Composable
 fun PreviewMassageDialog() {
     MessageDialog(
-        title = "요일을 선택해 주세요.",
+        title = "요일을 선택해 주세요."
     )
 }

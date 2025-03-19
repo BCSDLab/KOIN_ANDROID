@@ -20,7 +20,7 @@ enum class FilledButtonColors {
     Primary,
     Warning,
     Danger,
-    Success,
+    Success
 }
 
 @Composable
@@ -32,7 +32,7 @@ fun FilledButton(
     shape: Shape = RoundedCornerShape(5.dp),
     enabled: Boolean = true,
     colors: FilledButtonColors = FilledButtonColors.Primary,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding
 ) {
     val buttonColors = filledButtonColorByType(type = colors)
     Button(
@@ -41,11 +41,11 @@ fun FilledButton(
         shape = shape,
         enabled = enabled,
         colors = buttonColors,
-        contentPadding = contentPadding,
+        contentPadding = contentPadding
     ) {
         Text(
             text = text,
-            style = textStyle,
+            style = textStyle
         )
     }
 }
@@ -59,7 +59,7 @@ fun FilledButton(
     shape: Shape = RoundedCornerShape(5.dp),
     enabled: Boolean = true,
     colors: ButtonColors,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding
 ) {
     Button(
         modifier = modifier,
@@ -67,11 +67,11 @@ fun FilledButton(
         shape = shape,
         enabled = enabled,
         colors = colors,
-        contentPadding = contentPadding,
+        contentPadding = contentPadding
     ) {
         Text(
             text = text,
-            style = textStyle,
+            style = textStyle
         )
     }
 }
@@ -85,7 +85,7 @@ internal fun filledButtonColorByType(type: FilledButtonColors): ButtonColors =
                 containerColor = KoinTheme.colors.primary500,
                 contentColor = KoinTheme.colors.neutral0,
                 disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600,
+                disabledContentColor = KoinTheme.colors.neutral600
             )
 
         FilledButtonColors.Warning ->
@@ -93,7 +93,7 @@ internal fun filledButtonColorByType(type: FilledButtonColors): ButtonColors =
                 containerColor = KoinTheme.colors.sub500,
                 contentColor = KoinTheme.colors.neutral0,
                 disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600,
+                disabledContentColor = KoinTheme.colors.neutral600
             )
 
         FilledButtonColors.Danger ->
@@ -101,7 +101,7 @@ internal fun filledButtonColorByType(type: FilledButtonColors): ButtonColors =
                 containerColor = KoinTheme.colors.danger700,
                 contentColor = KoinTheme.colors.neutral0,
                 disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600,
+                disabledContentColor = KoinTheme.colors.neutral600
             )
 
         FilledButtonColors.Success ->
@@ -109,7 +109,7 @@ internal fun filledButtonColorByType(type: FilledButtonColors): ButtonColors =
                 containerColor = KoinTheme.colors.success700,
                 contentColor = KoinTheme.colors.neutral0,
                 disabledContainerColor = KoinTheme.colors.neutral300,
-                disabledContentColor = KoinTheme.colors.neutral600,
+                disabledContentColor = KoinTheme.colors.neutral600
             )
     }
 

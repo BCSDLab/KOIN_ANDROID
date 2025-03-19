@@ -6,5 +6,5 @@ enum class InsertStoreRoute() {
     BASIC_INFO,
     DETAIL_INFO,
     CHECK_SCREEN,
-    FINISH_SCREEN,
+    FINISH_SCREEN
 }

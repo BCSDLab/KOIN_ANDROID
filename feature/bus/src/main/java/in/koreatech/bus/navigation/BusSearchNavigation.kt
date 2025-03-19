@@ -25,7 +25,7 @@ import kotlin.reflect.typeOf
 @Composable
 fun BusSearchNavigation(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController()
 ) {
     val context = LocalContext.current
     NavHost(
@@ -43,39 +43,39 @@ fun BusSearchNavigation(
         },
         popExitTransition = {
             defaultPopExitTransition()
-        },
+        }
     ) {
         composable<Routes.BusSearch>(
             typeMap =
-                mapOf(
-                    typeOf<PlaceType>() to PlaceTypeNavType,
-                ),
+            mapOf(
+                typeOf<PlaceType>() to PlaceTypeNavType
+            )
         ) {
             BusSearchScreen(
                 modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(Color.White),
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.White),
                 onNavigationIconClick = { context.findActivity()?.finish() },
                 onSearch = { departure, arrival ->
                     navController.navigate(Routes.BusSearchResult(departure, arrival))
-                },
+                }
             )
         }
 
         composable<Routes.BusSearchResult> {
             BusSearchResultScreen(
                 modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(Color.White),
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.White),
                 onNavigationIconClick = {
                     EventLogger.logCampusClickEvent(
                         "search_result_back",
-                        "뒤로가기",
+                        "뒤로가기"
                     )
                     navController.popBackStack()
-                },
+                }
             )
         }
     }

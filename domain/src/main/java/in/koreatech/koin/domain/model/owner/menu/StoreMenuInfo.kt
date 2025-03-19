@@ -8,5 +8,5 @@ data class StoreMenuInfo(
     val optionPrice: List<StoreMenuOptionPrice>,
     val description: String,
     val categoryIds: List<Int>,
-    val imageUrl: List<String>,
+    val imageUrl: List<String>
 )

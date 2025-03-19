@@ -8,25 +8,25 @@ import `in`.koreatech.koin.core.R
 
 fun WebView.loadKoreatechHtml(
     context: Context,
-    html: String,
+    html: String
 ) {
     this.loadDataWithBaseURL(
         context.getString(R.string.koreatech_url),
         html.addImageClickScript().addImageWidthStyle(),
         "text/html",
         "utf-8",
-        null,
+        null
     )
 }
 
 fun WebView.setOnImageClickListener(
     activity: Activity,
-    onClick: (String) -> Unit,
+    onClick: (String) -> Unit
 ) {
     settings.javaScriptEnabled = true
     addJavascriptInterface(
         ImageHandler(activity, onClick),
-        ImageHandler::class.java.simpleName,
+        ImageHandler::class.java.simpleName
     )
 }
 
@@ -57,7 +57,7 @@ private fun String.addImageWidthStyle(): String {
 
 private class ImageHandler(
     private val activity: Activity,
-    private val onClick: (String) -> Unit,
+    private val onClick: (String) -> Unit
 ) {
     @JavascriptInterface
     fun onImageClick(imageUrl: String) {

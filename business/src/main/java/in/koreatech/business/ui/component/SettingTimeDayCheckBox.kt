@@ -24,7 +24,7 @@ import `in`.koreatech.business.ui.theme.Info700
 fun DayCheckBox(
     modifier: Modifier = Modifier,
     dayName: String = "월",
-    isChecked: Boolean,
+    isChecked: Boolean
 ) {
     val textColor =
         when (dayName) {
@@ -35,26 +35,26 @@ fun DayCheckBox(
 
     Box(
         modifier =
-            modifier
-                .shadow(
-                    elevation = 2.dp,
-                    shape = RoundedCornerShape(16.dp),
-                    clip = false,
-                )
-                .background(
-                    color = if (isChecked) ColorCategory else Color.White,
-                    shape = RoundedCornerShape(16.dp),
-                ),
-        contentAlignment = Alignment.TopCenter,
+        modifier
+            .shadow(
+                elevation = 2.dp,
+                shape = RoundedCornerShape(16.dp),
+                clip = false
+            )
+            .background(
+                color = if (isChecked) ColorCategory else Color.White,
+                shape = RoundedCornerShape(16.dp)
+            ),
+        contentAlignment = Alignment.TopCenter
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = dayName,
             style =
-                TextStyle(
-                    color = if (isChecked) Color.White else textColor,
-                    fontSize = 14.sp,
-                ),
+            TextStyle(
+                color = if (isChecked) Color.White else textColor,
+                fontSize = 14.sp
+            )
         )
     }
 }
@@ -64,11 +64,11 @@ fun DayCheckBox(
 fun PreviewDayCheckBox(modifier: Modifier = Modifier) {
     Row {
         DayCheckBox(
-            isChecked = true,
+            isChecked = true
         )
         Spacer(modifier = Modifier.width(20.dp))
         DayCheckBox(
-            isChecked = false,
+            isChecked = false
         )
     }
 }

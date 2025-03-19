@@ -39,7 +39,9 @@ class StoreDetailEventRecyclerAdapter() :
                 .load(shopEvent.thumbnailImages?.getOrNull(0) ?: R.drawable.no_image)
                 .into(binding.storeDetailEventImageview)
             Glide.with(binding.root.context)
-                .load(shopEvent.thumbnailImages?.getOrNull(0) ?: R.drawable.no_event_thumbnail_image)
+                .load(
+                    shopEvent.thumbnailImages?.getOrNull(0) ?: R.drawable.no_event_thumbnail_image
+                )
                 .into(binding.storeDetailEventExpandImageview)
 
             if (shopEvent.thumbnailImages?.isEmpty() == true) {
@@ -50,40 +52,28 @@ class StoreDetailEventRecyclerAdapter() :
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
             ItemStoreDetailEventBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false,
+                false
             )
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolder).bind(getItem(position))
     }
 
     companion object {
         private val diffCallback =
             object : DiffUtil.ItemCallback<ShopEvent>() {
-                override fun areItemsTheSame(
-                    oldItem: ShopEvent,
-                    newItem: ShopEvent,
-                ): Boolean {
+                override fun areItemsTheSame(oldItem: ShopEvent, newItem: ShopEvent): Boolean {
                     return oldItem.shopId == newItem.shopId
                 }
 
-                override fun areContentsTheSame(
-                    oldItem: ShopEvent,
-                    newItem: ShopEvent,
-                ): Boolean {
+                override fun areContentsTheSame(oldItem: ShopEvent, newItem: ShopEvent): Boolean {
                     return oldItem == newItem
                 }
             }

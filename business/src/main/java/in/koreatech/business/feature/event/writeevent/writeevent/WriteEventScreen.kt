@@ -66,14 +66,14 @@ import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.koin.core.R
-import org.orbitmvi.orbit.compose.collectAsState
 import java.time.YearMonth
+import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun WriteEventScreen(
     goToMyStoreScreen: () -> Unit = {},
     onBackPressed: () -> Unit = {},
-    viewModel: WriteEventViewModel = hiltViewModel(),
+    viewModel: WriteEventViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 
@@ -90,14 +90,14 @@ fun WriteEventScreen(
             onNextButtonClicked = {
                 viewModel.registerEvent()
                 goToMyStoreScreen()
-            },
+            }
         )
 
         if (state.showCalendarAlert) {
             CalendarBottomDialog(
                 viewModel = viewModel,
                 onDismiss = { viewModel.onCalendarVisibilityChanged(false) },
-                selectedYearMonth = state.selectedYearMonth,
+                selectedYearMonth = state.selectedYearMonth
             )
         }
     }
@@ -113,7 +113,7 @@ fun WriteEventScreenImpl(
     onDeleteImage: (Int) -> Unit = {},
     onSelectedYearMonthChanged: (YearMonth) -> Unit = {},
     onDialogVisibilityChanged: (Boolean) -> Unit = {},
-    onNextButtonClicked: () -> Unit = {},
+    onNextButtonClicked: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val singlePhotoPickerLauncher =
@@ -123,7 +123,7 @@ fun WriteEventScreenImpl(
                 if (uri != null) {
                     onRegisterImage(context, uri)
                 }
-            },
+            }
         )
     if (writeEventState.showDatePickerAlert) {
         DatePickerDialog(
@@ -133,57 +133,57 @@ fun WriteEventScreenImpl(
             onConfirm = { year, month ->
                 onSelectedYearMonthChanged(YearMonth.of(year, month))
                 onDialogVisibilityChanged(false)
-            },
+            }
         )
     }
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         Box(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(62.dp)
-                    .background(ColorPrimary),
+            Modifier
+                .fillMaxWidth()
+                .height(62.dp)
+                .background(ColorPrimary)
         ) {
             IconButton(
                 modifier =
-                    Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(start = 16.dp),
-                onClick = { onBackPressed() },
+                Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 16.dp),
+                onClick = { onBackPressed() }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_arrow_back),
-                    contentDescription = stringResource(R.string.back),
+                    contentDescription = stringResource(R.string.back)
                 )
             }
             Text(
                 text = stringResource(R.string.event_write),
                 modifier = Modifier.align(Alignment.Center),
-                style = TextStyle(color = Color.White, fontSize = 20.sp),
+                style = TextStyle(color = Color.White, fontSize = 20.sp)
             )
         }
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
         ) {
             item {
                 Text(
                     modifier = Modifier.padding(start = 24.dp, top = 24.dp),
                     text = stringResource(id = R.string.menu_name),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
                 Row(
                     modifier =
-                        Modifier
-                            .fillMaxWidth(),
+                    Modifier
+                        .fillMaxWidth()
                 ) {
                     Text(
                         modifier = Modifier.padding(start = 24.dp),
                         text = stringResource(id = R.string.event_upload_image_instruction),
                         fontSize = 12.sp,
-                        color = Gray6,
+                        color = Gray6
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -191,60 +191,60 @@ fun WriteEventScreenImpl(
                     CountLimitText(
                         text = "${writeEventState.images.size}/${WriteEventViewModel.MAX_IMAGE_LENGTH}",
                         inputTextLength = writeEventState.images.size,
-                        limit = WriteEventViewModel.MAX_IMAGE_LENGTH,
+                        limit = WriteEventViewModel.MAX_IMAGE_LENGTH
                     )
                 }
 
                 if (writeEventState.images.isNotEmpty()) {
                     EventImageView(
                         modifier =
-                            Modifier
-                                .padding(horizontal = 24.dp)
-                                .padding(top = 5.dp)
-                                .fillMaxWidth()
-                                .height(112.dp),
+                        Modifier
+                            .padding(horizontal = 24.dp)
+                            .padding(top = 5.dp)
+                            .fillMaxWidth()
+                            .height(112.dp),
                         imageList = writeEventState.images,
-                        onDeleteImage = onDeleteImage,
+                        onDeleteImage = onDeleteImage
                     )
                 }
                 Row(
                     modifier =
-                        Modifier
-                            .padding(top = 5.dp)
-                            .padding(horizontal = 24.dp)
-                            .fillMaxWidth()
-                            .clickable(
-                                enabled = writeEventState.images.size < WriteEventViewModel.MAX_IMAGE_LENGTH,
-                            ) {
-                                singlePhotoPickerLauncher.launch(
-                                    PickVisualMediaRequest(
-                                        ActivityResultContracts.PickVisualMedia.ImageOnly,
-                                    ),
+                    Modifier
+                        .padding(top = 5.dp)
+                        .padding(horizontal = 24.dp)
+                        .fillMaxWidth()
+                        .clickable(
+                            enabled = writeEventState.images.size < WriteEventViewModel.MAX_IMAGE_LENGTH
+                        ) {
+                            singlePhotoPickerLauncher.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
                                 )
-                            }
-                            .clip(RoundedCornerShape(5.dp))
-                            .background(ColorTextField),
+                            )
+                        }
+                        .clip(RoundedCornerShape(5.dp))
+                        .background(ColorTextField),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_add_image),
                         contentDescription = stringResource(id = R.string.register_image),
                         modifier = Modifier.size(20.dp),
                         colorFilter =
-                            if (writeEventState.images.size == WriteEventViewModel.MAX_IMAGE_LENGTH) {
-                                ColorFilter.tint(
-                                    Gray6,
-                                )
-                            } else {
-                                null
-                            },
+                        if (writeEventState.images.size == WriteEventViewModel.MAX_IMAGE_LENGTH) {
+                            ColorFilter.tint(
+                                Gray6
+                            )
+                        } else {
+                            null
+                        }
                     )
                     Text(
                         text = stringResource(id = R.string.register_image),
                         modifier = Modifier.padding(start = 8.dp, top = 12.dp, bottom = 12.dp),
                         fontWeight = FontWeight.Bold,
-                        color = if (writeEventState.images.size == WriteEventViewModel.MAX_IMAGE_LENGTH) Gray6 else Gray1,
+                        color = if (writeEventState.images.size == WriteEventViewModel.MAX_IMAGE_LENGTH) Gray6 else Gray1
                     )
                 }
             }
@@ -252,14 +252,14 @@ fun WriteEventScreenImpl(
             item {
                 Row(
                     modifier =
-                        Modifier
-                            .padding(start = 24.dp, top = 22.dp)
-                            .fillMaxWidth(),
+                    Modifier
+                        .padding(start = 24.dp, top = 22.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         text = stringResource(id = R.string.event_title),
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Bold
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -267,37 +267,37 @@ fun WriteEventScreenImpl(
                     CountLimitText(
                         text = "${writeEventState.title.length}/${WriteEventViewModel.MAX_TITLE_LENGTH}",
                         inputTextLength = writeEventState.title.length,
-                        limit = WriteEventViewModel.MAX_TITLE_LENGTH,
+                        limit = WriteEventViewModel.MAX_TITLE_LENGTH
                     )
                 }
 
                 BorderTextField(
                     modifier =
-                        Modifier
-                            .padding(horizontal = 24.dp)
-                            .padding(top = 5.dp),
+                    Modifier
+                        .padding(horizontal = 24.dp)
+                        .padding(top = 5.dp),
                     textFieldModifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                    Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                     inputString = writeEventState.title,
                     onStringChange = onChangeTitle,
-                    hintString = stringResource(id = R.string.event_input_title_instruction),
+                    hintString = stringResource(id = R.string.event_input_title_instruction)
                 )
             }
 
             item {
                 Row(
                     modifier =
-                        Modifier
-                            .padding(start = 24.dp, top = 22.dp)
-                            .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(186.dp),
+                    Modifier
+                        .padding(start = 24.dp, top = 22.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(186.dp)
                 ) {
                     Text(
                         text = stringResource(id = R.string.event_content),
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Bold
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -305,22 +305,22 @@ fun WriteEventScreenImpl(
                     CountLimitText(
                         text = "${writeEventState.content.length}/${WriteEventViewModel.MAX_CONTENT_LENGTH}",
                         inputTextLength = writeEventState.content.length,
-                        limit = WriteEventViewModel.MAX_CONTENT_LENGTH,
+                        limit = WriteEventViewModel.MAX_CONTENT_LENGTH
                     )
                 }
                 BorderTextField(
                     modifier =
-                        Modifier
-                            .padding(horizontal = 24.dp)
-                            .padding(top = 5.dp)
-                            .height(123.dp),
+                    Modifier
+                        .padding(horizontal = 24.dp)
+                        .padding(top = 5.dp)
+                        .height(123.dp),
                     textFieldModifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                    Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                     inputString = writeEventState.content,
                     onStringChange = onChangeContent,
-                    hintString = stringResource(id = R.string.event_input_content_instruction),
+                    hintString = stringResource(id = R.string.event_input_content_instruction)
                 )
             }
 
@@ -329,54 +329,54 @@ fun WriteEventScreenImpl(
                     modifier = Modifier.padding(start = 24.dp, top = 22.dp),
                     text = stringResource(id = R.string.event_period),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
 
                 DateInputRow(
                     modifier =
-                        Modifier
-                            .height(40.dp),
+                    Modifier
+                        .height(40.dp),
                     optionString = stringResource(id = R.string.start_date),
-                    date = writeEventState.startDate,
+                    date = writeEventState.startDate
                 )
 
                 DateInputRow(
                     modifier =
-                        Modifier
-                            .height(40.dp),
+                    Modifier
+                        .height(40.dp),
                     optionString = stringResource(id = R.string.end_date),
-                    date = writeEventState.endDate,
+                    date = writeEventState.endDate
                 )
             }
 
             item {
                 Row(
                     modifier =
-                        Modifier
-                            .padding(horizontal = 24.dp)
-                            .padding(top = 200.dp, bottom = 20.dp)
-                            .fillMaxWidth()
-                            .height(43.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    Modifier
+                        .padding(horizontal = 24.dp)
+                        .padding(top = 200.dp, bottom = 20.dp)
+                        .fillMaxWidth()
+                        .height(43.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Button(
                         onClick = { onBackPressed() },
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(ColorTextField),
                         modifier =
-                            Modifier
-                                .fillMaxHeight()
-                                .width(120.dp),
+                        Modifier
+                            .fillMaxHeight()
+                            .width(120.dp)
                     ) {
                         Text(
                             text = stringResource(id = R.string.common_do_cancellation),
                             fontSize = 15.sp,
-                            color = Gray1,
+                            color = Gray1
                         )
 
                         Image(
                             painter = painterResource(id = R.drawable.ic_cancel),
-                            contentDescription = stringResource(id = R.string.common_do_cancellation),
+                            contentDescription = stringResource(id = R.string.common_do_cancellation)
                         )
                     }
 
@@ -386,17 +386,17 @@ fun WriteEventScreenImpl(
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(ColorPrimary),
                         modifier =
-                            Modifier
-                                .fillMaxSize(),
+                        Modifier
+                            .fillMaxSize()
                     ) {
                         Text(
                             text = stringResource(id = R.string.register),
                             fontSize = 15.sp,
-                            color = Color.White,
+                            color = Color.White
                         )
                         Image(
                             painter = painterResource(id = R.drawable.ic_register),
-                            contentDescription = stringResource(id = R.string.register),
+                            contentDescription = stringResource(id = R.string.register)
                         )
                     }
                 }
@@ -414,46 +414,46 @@ fun BorderTextField(
     hintString: String = "",
     textAlign: TextAlign = TextAlign.Unspecified,
     contentAlignment: Alignment = Alignment.TopStart,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     Box(
         modifier =
-            modifier
-                .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(4.dp)),
-        contentAlignment = Alignment.CenterStart,
+        modifier
+            .border(width = 1.dp, color = ColorMinor, shape = RoundedCornerShape(4.dp)),
+        contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
             value = inputString,
             onValueChange = onStringChange,
             textStyle =
-                TextStyle(
-                    color = Color.Black,
-                    fontSize = 14.sp,
-                    textAlign = textAlign,
-                ),
+            TextStyle(
+                color = Color.Black,
+                fontSize = 14.sp,
+                textAlign = textAlign
+            ),
             keyboardOptions = keyboardOptions,
             modifier = textFieldModifier,
             decorationBox = { innerTextField ->
                 Box(
                     modifier =
-                        Modifier
-                            .fillMaxWidth(),
-                    contentAlignment = contentAlignment,
+                    Modifier
+                        .fillMaxWidth(),
+                    contentAlignment = contentAlignment
                 ) {
                     if (inputString.isEmpty()) {
                         Text(
                             text = hintString,
                             style =
-                                TextStyle(
-                                    color = Color.Gray,
-                                    fontSize = 14.sp,
-                                    textAlign = textAlign,
-                                ),
+                            TextStyle(
+                                color = Color.Gray,
+                                fontSize = 14.sp,
+                                textAlign = textAlign
+                            )
                         )
                     }
                     innerTextField()
                 }
-            },
+            }
         )
     }
 }
@@ -462,50 +462,50 @@ fun BorderTextField(
 fun EventImageView(
     modifier: Modifier = Modifier,
     imageList: List<String> = emptyList(),
-    onDeleteImage: (Int) -> Unit = {},
+    onDeleteImage: (Int) -> Unit = {}
 ) {
     Box(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .background(ColorTextField),
+        modifier
+            .fillMaxWidth()
+            .background(ColorTextField)
     ) {
         LazyRow(
             modifier =
-                Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(top = 8.dp),
+            Modifier
+                .padding(horizontal = 10.dp)
+                .padding(top = 8.dp)
         ) {
             itemsIndexed(imageList) { index, item ->
                 Box(
                     modifier =
-                        Modifier
-                            .size(110.dp)
-                            .padding(end = 10.dp)
-                            .padding(bottom = 8.dp),
-                    contentAlignment = Alignment.TopEnd,
+                    Modifier
+                        .size(110.dp)
+                        .padding(end = 10.dp)
+                        .padding(bottom = 8.dp),
+                    contentAlignment = Alignment.TopEnd
                 ) {
                     Image(
                         modifier =
-                            Modifier
-                                .size(96.dp),
+                        Modifier
+                            .size(96.dp),
                         painter =
-                            rememberAsyncImagePainter(
-                                item,
-                            ),
+                        rememberAsyncImagePainter(
+                            item
+                        ),
                         contentDescription = "",
-                        contentScale = ContentScale.Crop,
+                        contentScale = ContentScale.Crop
                     )
                     Image(
                         modifier =
-                            Modifier
-                                .size(16.dp)
-                                .offset(x = 7.dp, y = (-7).dp)
-                                .clickable {
-                                    onDeleteImage(index)
-                                },
+                        Modifier
+                            .size(16.dp)
+                            .offset(x = 7.dp, y = (-7).dp)
+                            .clickable {
+                                onDeleteImage(index)
+                            },
                         painter = painterResource(id = R.drawable.ic_delete_button),
-                        contentDescription = "",
+                        contentDescription = ""
                     )
                 }
             }
@@ -517,13 +517,13 @@ fun EventImageView(
 private fun CountLimitText(
     text: String,
     inputTextLength: Int,
-    limit: Int,
+    limit: Int
 ) {
     Text(
         color = if (inputTextLength == limit) ColorSecondary else ColorTextDescription,
         modifier = Modifier.padding(end = 24.dp),
         fontSize = 12.sp,
-        text = text,
+        text = text
     )
 }
 
@@ -532,27 +532,27 @@ private fun DateInputRow(
     modifier: Modifier = Modifier,
     viewModel: WriteEventViewModel = hiltViewModel(),
     optionString: String = "시작일",
-    date: String = "",
+    date: String = ""
 ) {
     Row(
         modifier =
-            Modifier
-                .padding(top = 11.dp)
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        Modifier
+            .padding(top = 11.dp)
+            .padding(horizontal = 24.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier =
-                Modifier
-                    .clip(RoundedCornerShape(999.dp))
-                    .background(ColorTextField),
+            Modifier
+                .clip(RoundedCornerShape(999.dp))
+                .background(ColorTextField)
         ) {
             Text(
                 text = optionString,
                 fontWeight = FontWeight.Bold,
                 color = Black1,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
 
@@ -560,27 +560,27 @@ private fun DateInputRow(
 
         Box(
             modifier = Modifier.wrapContentWidth(),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = date,
                 maxLines = 1,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
-                color = ColorPrimary400,
+                color = ColorPrimary400
             )
         }
         IconButton(
             onClick = { viewModel.onCalendarVisibilityChanged(true) },
             modifier =
-                Modifier
-                    .padding(start = 8.dp)
-                    .size(24.dp),
+            Modifier
+                .padding(start = 8.dp)
+                .size(24.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_calendar),
                 contentDescription = stringResource(R.string.id),
-                tint = ColorPrimary400,
+                tint = ColorPrimary400
             )
         }
     }

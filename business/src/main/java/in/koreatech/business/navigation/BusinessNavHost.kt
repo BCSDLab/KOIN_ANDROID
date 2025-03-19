@@ -38,11 +38,11 @@ const val EMPTYTOKEN = "empty_token"
 @Composable
 fun KoinBusinessNavHost(
     startDestination: String = "",
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController()
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = startDestination
     ) {
         signInScreen(
             navigateToMain = { isFirst ->
@@ -53,35 +53,35 @@ fun KoinBusinessNavHost(
                 }
             },
             navigateToSignUp = { navController.navigate(SIGNUPSCREEN) },
-            navigateToFindPassword = { navController.navigate(CHANGEPASSWORDSCREEN) },
+            navigateToFindPassword = { navController.navigate(CHANGEPASSWORDSCREEN) }
         )
 
         signUpScreen(
-            navController = navController,
+            navController = navController
         )
 
         registerStoreScreen(
-            navController = navController,
+            navController = navController
         )
 
         myStoreScreen(
-            navController = navController,
+            navController = navController
         )
 
         registerEventScreen(
-            navController = navController,
+            navController = navController
         )
 
         manageMenuScreen(
-            navController = navController,
+            navController = navController
         )
 
         modifyMenuScreen(
-            navController = navController,
+            navController = navController
         )
 
         registerMenuScreen(
-            navController = navController,
+            navController = navController
         )
 
         changePasswordScreen(
@@ -98,16 +98,16 @@ fun KoinBusinessNavHost(
                 navigateToScreenWithStringArgument(
                     navController = navController,
                     route = ChangePasswordRoute.ChangePassword.name,
-                    argument = it,
+                    argument = it
                 )
-            },
+            }
         )
     }
 }
 
 fun NavController.toNavigateScreenWithStoreId(
     screenRoute: String,
-    storeId: Int,
+    storeId: Int
 ) {
     val bundle =
         Bundle().apply {
@@ -119,7 +119,7 @@ fun NavController.toNavigateScreenWithStoreId(
 
 fun NavController.toNavigateScreenWithMenuId(
     screenRoute: String,
-    menuId: Int,
+    menuId: Int
 ) {
     val bundle =
         Bundle().apply {
@@ -141,7 +141,7 @@ fun NavController.navigate(
     route: String,
     args: Bundle,
     navOptions: NavOptions? = null,
-    navigatorExtras: Navigator.Extras? = null,
+    navigatorExtras: Navigator.Extras? = null
 ) {
     val nodeId = graph.findNode(route = route)?.id
     if (nodeId != null) {
@@ -152,7 +152,7 @@ fun NavController.navigate(
 private fun navigateToScreenWithStringArgument(
     navController: NavController,
     route: String,
-    argument: String,
+    argument: String
 ) {
     navController.navigate("$route/$argument")
 }
@@ -169,7 +169,7 @@ private fun getToken(context: Context): String {
             "token",
             masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
 
     return sharedOwnerPreferences.getString("accessToken", null) ?: EMPTYTOKEN

@@ -10,5 +10,5 @@ data class TimetableLectureInfoResponse(
     @SerializedName("end_time")
     val endTime: Int,
     @SerializedName("place")
-    val place: String?,
+    val place: String?
 )

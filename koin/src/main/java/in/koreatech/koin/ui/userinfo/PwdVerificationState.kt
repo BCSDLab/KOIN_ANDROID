@@ -4,5 +4,5 @@ import `in`.koreatech.koin.common.UiStatus
 
 data class PwdVerificationState(
     val status: UiStatus = UiStatus.Init,
-    val isEdited: Boolean,
+    val isEdited: Boolean
 )

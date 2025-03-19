@@ -8,5 +8,5 @@ import kotlinx.parcelize.Parcelize
 data class LostAndFoundWriteArticleState(
     val lostOrFoundType: LostOrFoundType = LostOrFoundType.FOUND,
     val itemList: List<LostAndFoundWriteArticleItemState> = emptyList(),
-    val isAllFieldValid: Boolean = false,
+    val isAllFieldValid: Boolean = false
 ) : Parcelable

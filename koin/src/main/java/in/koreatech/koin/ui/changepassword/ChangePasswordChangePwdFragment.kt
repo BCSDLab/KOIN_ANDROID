@@ -31,10 +31,7 @@ class ChangePasswordChangePwdFragment : Fragment(R.layout.fragment_change_passwo
         }
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initListeners()

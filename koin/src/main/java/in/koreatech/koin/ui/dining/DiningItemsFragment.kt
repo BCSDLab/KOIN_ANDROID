@@ -38,11 +38,11 @@ import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.ui.dining.adapter.DiningAdapter
 import `in`.koreatech.koin.ui.dining.adapter.DiningOriginalAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
@@ -54,17 +54,14 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     lateinit var onboardingManager: OnboardingManager
     private lateinit var diningAdapter: ListAdapter<Dining, RecyclerView.ViewHolder>
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 combine(
                     viewModel.abTestExperimentGroup,
-                    viewModel.dining,
+                    viewModel.dining
                 ) { experimentGroup, diningList ->
                     when (experimentGroup) {
                         ExperimentGroup.SHARE_ORIGINAL -> {
@@ -73,7 +70,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                                 0,
                                 0,
                                 0,
-                                40,
+                                40
                             )
                         }
                         ExperimentGroup.SHARE_NEW -> {
@@ -82,7 +79,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                                 24,
                                 20,
                                 24,
-                                40,
+                                40
                             )
                         }
                     }
@@ -108,7 +105,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     private fun onListItemAttached() {
         with(onboardingManager) {
             viewLifecycleOwner.showOnboardingIfNeeded(
-                OnboardingType.DINING_SHARE,
+                OnboardingType.DINING_SHARE
             ) {
                 lifecycleScope.launch {
                     delay(200)
@@ -119,7 +116,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                                 layoutParams =
                                     FrameLayout.LayoutParams(
                                         550,
-                                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                                        FrameLayout.LayoutParams.WRAP_CONTENT
                                     ).apply {
                                         gravity = Gravity.CENTER_HORIZONTAL
                                     }
@@ -131,7 +128,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                                 Glide.with(requireContext())
                                     .load(R.drawable.tooltip_share)
                                     .into(this)
-                            },
+                            }
                         )
                     }
                 }
@@ -143,14 +140,14 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
         EventLogger.logClickEvent(
             EventAction.CAMPUS,
             AnalyticsConstant.Label.MENU_SHARE,
-            "공유하기",
+            "공유하기"
         )
         val messageTemplate = createFeedMessageTemplate(dining)
 
         if (ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
             ShareClient.instance.shareDefault(
                 requireContext(),
-                messageTemplate,
+                messageTemplate
             ) { sharingResult, error ->
                 error?.printStackTrace()
                 sharingResult?.let {
@@ -165,55 +162,54 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
             mapOf(
                 "date" to dining.date,
                 "type" to dining.type,
-                "place" to dining.place,
+                "place" to dining.place
             )
         val link =
             Link(
                 androidExecutionParams = executionParams,
-                iosExecutionParams = executionParams,
+                iosExecutionParams = executionParams
             )
         return FeedTemplate(
             content =
-                Content(
-                    title = "ㅤ",
-                    imageUrl = dining.imageUrl,
-                    link = link,
-                ),
+            Content(
+                title = "ㅤ",
+                imageUrl = dining.imageUrl,
+                link = link
+            ),
             itemContent =
-                ItemContent(
-                    profileText = "${
-                        if (TimeUtil.isToday(dining.date)) {
-                            "오늘"
-                        } else if (TimeUtil.isTomorrow(dining.date)) {
-                            "내일"
-                        } else {
-                            TimeUtil.formatDateToKorean(dining.date)
-                        }
-                    } ${DiningUtil.getKoreanName(dining.type)} 식단",
-                    items =
-                        listOf(
-                            ItemInfo(
-                                item = dining.place,
-                                itemOp = dining.menu.joinToString(", "),
-                            ),
-                        ),
-                ),
-            buttons =
+            ItemContent(
+                profileText = "${
+                    if (TimeUtil.isToday(dining.date)) {
+                        "오늘"
+                    } else if (TimeUtil.isTomorrow(dining.date)) {
+                        "내일"
+                    } else {
+                        TimeUtil.formatDateToKorean(dining.date)
+                    }
+                } ${DiningUtil.getKoreanName(dining.type)} 식단",
+                items =
                 listOf(
-                    Button("코인에서 식단 전체보기", link),
-                ),
+                    ItemInfo(
+                        item = dining.place,
+                        itemOp = dining.menu.joinToString(", ")
+                    )
+                )
+            ),
+            buttons =
+            listOf(
+                Button("코인에서 식단 전체보기", link)
+            )
         )
     }
 
     companion object {
         private const val TYPE = "type"
 
-        fun newInstance(type: String) =
-            DiningItemsFragment().apply {
-                arguments =
-                    Bundle().apply {
-                        putString(TYPE, type)
-                    }
-            }
+        fun newInstance(type: String) = DiningItemsFragment().apply {
+            arguments =
+                Bundle().apply {
+                    putString(TYPE, type)
+                }
+        }
     }
 }

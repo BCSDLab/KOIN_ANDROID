@@ -45,7 +45,12 @@ class SettingActivity : ActivityBase() {
 
     private val changePasswordResult =
         registerForActivityResult(ChangePasswordContract()) { isChanged ->
-            if (isChanged) SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.change_password_change_complete))
+            if (isChanged) {
+                SnackbarUtil.makeShortSnackbar(
+                    binding.root,
+                    getString(R.string.change_password_change_complete)
+                )
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,14 +101,14 @@ class SettingActivity : ActivityBase() {
                 startActivity(
                     Intent(this@SettingActivity, TermActivity::class.java).apply {
                         putExtra(TermActivity.KEY_TERM, TermActivity.TERM_PRIVACY_POLICY)
-                    },
+                    }
                 )
             }
             svKoinTerms.setOnSettingClickListener {
                 startActivity(
                     Intent(this@SettingActivity, TermActivity::class.java).apply {
                         putExtra(TermActivity.KEY_TERM, TermActivity.TERM_KOIN)
-                    },
+                    }
                 )
             }
             svOpenSourceLicense.setOnSettingClickListener {

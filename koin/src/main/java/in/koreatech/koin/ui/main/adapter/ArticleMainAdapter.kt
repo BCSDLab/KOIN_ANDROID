@@ -12,11 +12,11 @@ import `in`.koreatech.koin.ui.main.state.ArticleMainState
 
 class ArticleMainAdapter(
     private val onNotiClick: (ArticleMainState.Noti) -> Unit,
-    private val onArticleClick: (ArticleMainState.Content) -> Unit,
+    private val onArticleClick: (ArticleMainState.Content) -> Unit
 ) :
     ListAdapter<ArticleMainState, RecyclerView.ViewHolder>(diffCallback) {
     inner class KeywordNotiViewHolder(
-        private val binding: MainCardArticleNotiBinding,
+        private val binding: MainCardArticleNotiBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(content: ArticleMainState.Noti) {
             binding.textArticleNotiTitle.text = content.title
@@ -25,14 +25,14 @@ class ArticleMainAdapter(
                 when (content.type) {
                     ArticleNotiType.KEYWORD -> `in`.koreatech.koin.core.R.drawable.ic_main_article_bell
                     ArticleNotiType.LOST_AND_FOUND -> `in`.koreatech.koin.core.R.drawable.ic_main_lost_and_found_icon
-                },
+                }
             )
             binding.cardViewArticleNoti.setOnClickListener { onNotiClick(content) }
         }
     }
 
     inner class HotArticleViewHolder(
-        private val binding: MainCardArticleBinding,
+        private val binding: MainCardArticleBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(content: ArticleMainState.Content) {
             binding.textArticleTitle.text = content.title
@@ -48,18 +48,15 @@ class ArticleMainAdapter(
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_NOTI -> {
                 KeywordNotiViewHolder(
                     MainCardArticleNotiBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
-                        false,
-                    ),
+                        false
+                    )
                 )
             }
             TYPE_ARTICLE -> {
@@ -67,18 +64,15 @@ class ArticleMainAdapter(
                     MainCardArticleBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
-                        false,
-                    ),
+                        false
+                    )
                 )
             }
             else -> throw IllegalArgumentException("Invalid type of view type $viewType")
         }
     }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position)) {
             is ArticleMainState.Noti -> (holder as KeywordNotiViewHolder).bind(item)
             is ArticleMainState.Content -> (holder as HotArticleViewHolder).bind(item)
@@ -93,7 +87,7 @@ class ArticleMainAdapter(
             object : DiffUtil.ItemCallback<ArticleMainState>() {
                 override fun areItemsTheSame(
                     oldItem: ArticleMainState,
-                    newItem: ArticleMainState,
+                    newItem: ArticleMainState
                 ): Boolean {
                     return when {
                         oldItem is ArticleMainState.Noti && newItem is ArticleMainState.Noti -> oldItem.title == newItem.title
@@ -104,7 +98,7 @@ class ArticleMainAdapter(
 
                 override fun areContentsTheSame(
                     oldItem: ArticleMainState,
-                    newItem: ArticleMainState,
+                    newItem: ArticleMainState
                 ): Boolean {
                     return oldItem == newItem
                 }

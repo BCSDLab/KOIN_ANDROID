@@ -25,7 +25,7 @@ class ArticleListLostAndFoundFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         val navController = findNavController()
         return ComposeView(requireContext()).apply {
@@ -37,24 +37,26 @@ class ArticleListLostAndFoundFragment : Fragment() {
                             "LOST" ->
                                 navController.navigate(
                                     R.id.articleLostAndFoundWriteLostFragment,
-                                    bundleOf(LOST_OR_FOUND_TYPE to "LOST"),
+                                    bundleOf(LOST_OR_FOUND_TYPE to "LOST")
                                 )
 
                             "FOUND" ->
                                 navController.navigate(
                                     R.id.articleLostAndFoundWriteFoundFragment,
-                                    bundleOf(LOST_OR_FOUND_TYPE to "FOUND"),
+                                    bundleOf(LOST_OR_FOUND_TYPE to "FOUND")
                                 )
                         }
                     },
                     navigateToLostAndFoundDetail = { articleId ->
                         navController.navigate(
                             R.id.articleLostAndFoundDetailFragment,
-                            bundleOf(ARTICLE_ID to articleId),
+                            bundleOf(ARTICLE_ID to articleId)
                         )
                     },
                     navigateToKeywordFragment = {
-                        navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
+                        navController.navigate(
+                            R.id.action_articleListFragment_to_articleKeywordFragment
+                        )
                     },
                     navigateToLoginActivity = {
                         Intent(requireContext(), LoginActivity::class.java).apply {
@@ -62,13 +64,13 @@ class ArticleListLostAndFoundFragment : Fragment() {
                                 BUNDLE_ARTICLE_EXTRA_KEY,
                                 bundleOf(
                                     NAV_ARTICLE to true,
-                                    START_BOARD to ArticleBoardType.LOSTANDFOUND.id,
-                                ),
+                                    START_BOARD to ArticleBoardType.LOSTANDFOUND.id
+                                )
                             )
                             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                             requireActivity().finish()
                         }.let(::startActivity)
-                    },
+                    }
                 )
             }
         }

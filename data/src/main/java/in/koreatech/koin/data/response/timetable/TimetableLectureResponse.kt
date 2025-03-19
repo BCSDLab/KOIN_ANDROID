@@ -30,7 +30,7 @@ data class TimetableLectureResponse(
     @SerializedName("professor") // "이돈우"
     val professor: String?,
     @SerializedName("department") // "디자인ㆍ건축공학부"
-    val department: String?,
+    val department: String?
 ) {
     fun toTimetableLecture() =
         TimetableLecture(
@@ -46,6 +46,6 @@ data class TimetableLectureResponse(
             lectureClass = lectureClass.orEmpty(),
             target = target.orEmpty(),
             professor = professor.orEmpty(),
-            department = department.orEmpty(),
+            department = department.orEmpty()
         )
 }

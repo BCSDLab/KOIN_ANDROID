@@ -18,26 +18,26 @@ fun HighlightedText(
     highlightIndices: List<Int>,
     defaultStyle: TextStyle,
     highlightStyle: TextStyle,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val annotatedString =
         buildAnnotatedString {
             pushStyle(
                 ParagraphStyle(
                     lineBreak =
-                        LineBreak(
-                            strategy = LineBreak.Strategy.Balanced,
-                            wordBreak = LineBreak.WordBreak.Phrase,
-                            strictness = LineBreak.Strictness.Normal,
-                        ),
-                ),
+                    LineBreak(
+                        strategy = LineBreak.Strategy.Balanced,
+                        wordBreak = LineBreak.WordBreak.Phrase,
+                        strictness = LineBreak.Strictness.Normal
+                    )
+                )
             )
             texts.forEachIndexed { idx, text ->
                 withStyle(
                     style =
-                        highlightIndices.find { it == idx }
-                            ?.let { highlightStyle.toSpanStyle() }
-                            ?: defaultStyle.toSpanStyle(),
+                    highlightIndices.find { it == idx }
+                        ?.let { highlightStyle.toSpanStyle() }
+                        ?: defaultStyle.toSpanStyle()
                 ) {
                     append(text)
                 }
@@ -48,7 +48,7 @@ fun HighlightedText(
         text = annotatedString,
         style = defaultStyle,
         textAlign = TextAlign.Center,
-        modifier = modifier,
+        modifier = modifier
     )
 }
 
@@ -60,7 +60,7 @@ private fun HighlightedTextPreview() {
             texts = arrayOf("안녕하세요 ", "강조", "입니다"),
             highlightIndices = listOf(1),
             defaultStyle = KoinTheme.typography.regular15,
-            highlightStyle = KoinTheme.typography.bold15,
+            highlightStyle = KoinTheme.typography.bold15
         )
     }
 }

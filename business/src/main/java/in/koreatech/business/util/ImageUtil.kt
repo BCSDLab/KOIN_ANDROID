@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 suspend fun getImageInfo(
     context: Context,
-    uri: Uri,
+    uri: Uri
 ): ImageInfo {
     return withContext(Dispatchers.IO) {
         lateinit var imageInfo: ImageInfo
@@ -40,7 +40,7 @@ suspend fun getImageInfo(
 
 fun getDrawableResSize(
     context: Context,
-    drawableResId: Int,
+    drawableResId: Int
 ): Pair<Int, Int> {
     val resources = context.resources
 

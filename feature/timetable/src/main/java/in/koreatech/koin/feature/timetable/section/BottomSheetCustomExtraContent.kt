@@ -35,42 +35,42 @@ fun BottomSheetCustomExtraContent(
     onPlaceNameChange: (id: Int, text: String) -> Unit,
     onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
-    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .border(
-                    width = 1.dp,
-                    color = KoinTheme.colors.neutral300,
-                    shape = RoundedCornerShape(4.dp),
-                ),
+        modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = KoinTheme.colors.neutral300,
+                shape = RoundedCornerShape(4.dp)
+            )
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             IconButton(
                 onClick = { onClickCancel(customContent.id) },
                 modifier =
-                    Modifier
-                        .padding(5.dp)
-                        .size(24.dp),
+                Modifier
+                    .padding(5.dp)
+                    .size(24.dp)
             ) {
                 StableIcon(
-                    drawableResId = R.drawable.ic_close,
+                    drawableResId = R.drawable.ic_close
                 )
             }
         }
 
         Column(
-            modifier = Modifier.padding(horizontal = 13.dp),
+            modifier = Modifier.padding(horizontal = 13.dp)
         ) {
             Spacer(modifier = Modifier.height(4.dp))
             TimetableTimeContentRow(
                 customContent = customContent,
                 onDayOfWeekChange = onDayOfWeekChange,
                 onClickStartTime = onClickStartTime,
-                onClickEndTime = onClickEndTime,
+                onClickEndTime = onClickEndTime
             )
             if (customContent.isError) {
                 Text(
@@ -78,7 +78,7 @@ fun BottomSheetCustomExtraContent(
                     style = KoinTheme.typography.regular12,
                     color = KoinTheme.colors.sub500,
                     modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.End,
+                    textAlign = TextAlign.End
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -87,7 +87,7 @@ fun BottomSheetCustomExtraContent(
                 title = stringResource(id = R.string.timetable_input_field_title_place),
                 onValueChange = {
                     onPlaceNameChange(customContent.id, it)
-                },
+                }
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -100,6 +100,6 @@ private fun BottomSheetCustomExtraContentPreview() {
     BottomSheetCustomExtraContent(
         customContent = CustomExtraContentState(),
         modifier = Modifier.padding(10.dp),
-        onPlaceNameChange = { _, _ -> },
+        onPlaceNameChange = { _, _ -> }
     )
 }

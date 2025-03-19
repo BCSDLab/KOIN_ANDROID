@@ -37,12 +37,12 @@ import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 @Composable
 fun MenuItem(
     menuList: StoreMenuCategories,
-    onMenuClicked: (Int) -> Unit = {},
+    onMenuClicked: (Int) -> Unit = {}
 ) {
     Log.e("로그 아이템", menuList.menus.toString())
     menuList.menus?.forEach { item ->
         MenuItemFactor(
-            item = item,
+            item = item
         )
     }
 }
@@ -51,32 +51,32 @@ fun MenuItem(
 fun MenuCategories(item: StoreMenuCategories) {
     Row(
         modifier =
-            Modifier
-                .padding(horizontal = 25.dp)
-                .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        Modifier
+            .padding(horizontal = 25.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             modifier = Modifier.size(20.dp),
             painter =
-                painterResource(
-                    id =
-                        when (item.id) {
-                            1 -> R.drawable.ic_recommend
-                            2 -> R.drawable.ic_main
-                            3 -> R.drawable.ic_set
-                            4 -> R.drawable.ic_side
-                            else -> R.drawable.ic_recommend
-                        },
-                ),
-            contentDescription = stringResource(R.string.category),
+            painterResource(
+                id =
+                when (item.id) {
+                    1 -> R.drawable.ic_recommend
+                    2 -> R.drawable.ic_main
+                    3 -> R.drawable.ic_set
+                    4 -> R.drawable.ic_side
+                    else -> R.drawable.ic_recommend
+                }
+            ),
+            contentDescription = stringResource(R.string.category)
         )
         Text(
             text = item.name ?: "",
             modifier = Modifier.padding(10.dp),
             style = KoinTheme.typography.medium18,
             color = ColorCategory,
-            fontWeight = FontWeight(500),
+            fontWeight = FontWeight(500)
         )
     }
 }
@@ -85,67 +85,67 @@ fun MenuCategories(item: StoreMenuCategories) {
 fun MenuItemFactor(
     modifier: Modifier = Modifier,
     onMenuClicked: (Int) -> Unit = {},
-    item: ShopMenus,
+    item: ShopMenus
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxWidth(),
+        modifier
+            .fillMaxWidth()
     ) {
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp, vertical = 10.dp)
-                    .clickable {
-                        onMenuClicked(item.id)
-                    },
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp, vertical = 10.dp)
+                .clickable {
+                    onMenuClicked(item.id)
+                },
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
                 Row(
                     modifier = Modifier,
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = item.name,
-                        style = KoinTheme.typography.medium16,
+                        style = KoinTheme.typography.medium16
                     )
 
                     Box(
                         modifier =
-                            Modifier
-                                .padding(start = 12.dp, end = 5.dp)
-                                .border(1.dp, ColorPrimary, RoundedCornerShape(8.dp))
-                                .clickable {
-                                },
+                        Modifier
+                            .padding(start = 12.dp, end = 5.dp)
+                            .border(1.dp, ColorPrimary, RoundedCornerShape(8.dp))
+                            .clickable {
+                            }
                     ) {
                         Text(
                             modifier =
-                                Modifier
-                                    .padding(horizontal = 9.dp, vertical = 5.dp),
+                            Modifier
+                                .padding(horizontal = 9.dp, vertical = 5.dp),
                             text = stringResource(R.string.common_change),
                             style = KoinTheme.typography.regular10,
-                            color = ColorPrimary,
+                            color = ColorPrimary
                         )
                     }
 
                     Box(
                         modifier =
-                            Modifier
-                                .border(1.dp, KoinTheme.colors.danger500, RoundedCornerShape(8.dp))
-                                .clickable {
-                                },
+                        Modifier
+                            .border(1.dp, KoinTheme.colors.danger500, RoundedCornerShape(8.dp))
+                            .clickable {
+                            }
                     ) {
                         Text(
                             modifier =
-                                Modifier
-                                    .padding(horizontal = 9.dp, vertical = 5.dp),
+                            Modifier
+                                .padding(horizontal = 9.dp, vertical = 5.dp),
                             text = stringResource(R.string.common_delete),
                             style = KoinTheme.typography.regular10,
-                            color = KoinTheme.colors.danger500,
+                            color = KoinTheme.colors.danger500
                         )
                     }
                 }
@@ -153,29 +153,29 @@ fun MenuItemFactor(
                 Text(
                     modifier = Modifier.padding(top = 5.dp),
                     text = item.singlePrice.toString() + "원",
-                    color = ColorPrimary,
+                    color = ColorPrimary
                 )
             }
             Image(
                 modifier =
-                    Modifier
-                        .width(68.dp)
-                        .height(68.dp),
+                Modifier
+                    .width(68.dp)
+                    .height(68.dp),
                 contentScale = ContentScale.Crop,
                 painter =
-                    rememberAsyncImagePainter(
-                        model = item.imageUrls?.firstOrNull() ?: R.drawable.ic_koin_logo,
-                    ),
-                contentDescription = stringResource(R.string.menu_default_image),
+                rememberAsyncImagePainter(
+                    model = item.imageUrls?.firstOrNull() ?: R.drawable.ic_koin_logo
+                ),
+                contentDescription = stringResource(R.string.menu_default_image)
             )
         }
         Divider(
             color = ColorTextField,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp)
-                    .height(1.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp)
+                .height(1.dp)
         )
     }
 }
@@ -191,19 +191,19 @@ fun PreviewMenuItemFactor(modifier: Modifier = Modifier) {
             isSingle = false,
             singlePrice = null,
             optionPrices =
-                listOf(
-                    ShopMenus.ShopMenuOptions(option = "123123", price = 123213),
-                    ShopMenus.ShopMenuOptions(option = "3232", price = 321312213),
-                ),
+            listOf(
+                ShopMenus.ShopMenuOptions(option = "123123", price = 123213),
+                ShopMenus.ShopMenuOptions(option = "3232", price = 321312213)
+            ),
             description = "saadafgsdrtddffewrsfdsfwerewrs",
             imageUrls =
-                listOf(
-                    "https://stage-static.koreatech.in/upload/MARKET/2024/8/21/1fb3219e-dc58-4f73-85f0-8ae9f1c1eea7/1000000043.jpg",
-                    "https://stage-static.koreatech.in/upload/MARKET/2024/8/21/5e95c4a1-bca6-4d9e-bf8c-2b3f3929b7d0/1000000039.jpg",
-                ),
+            listOf(
+                "https://stage-static.koreatech.in/upload/MARKET/2024/8/21/1fb3219e-dc58-4f73-85f0-8ae9f1c1eea7/1000000043.jpg",
+                "https://stage-static.koreatech.in/upload/MARKET/2024/8/21/5e95c4a1-bca6-4d9e-bf8c-2b3f3929b7d0/1000000039.jpg"
+            )
         )
 
     MenuItemFactor(
-        item = item,
+        item = item
     )
 }
