@@ -17,10 +17,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -43,6 +43,7 @@ import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAn
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundKeywordGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundPagination
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.lostAndFoundDialogStyle
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -56,11 +57,8 @@ fun LostAndFoundList(
     navigateToLoginActivity: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
-    viewModel.collectSideEffect { sideEffect ->
-        handleSideEffect(sideEffect, viewModel)
-    }
     val isLoading = uiState.isLoading
-
+    val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
     val firstItemPosition by remember { derivedStateOf { lazyListState.firstVisibleItemIndex } }
     val fabBottomPadding: Dp by animateDpAsState(
@@ -70,6 +68,18 @@ fun LostAndFoundList(
             0.dp
         }
     )
+
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(
+            sideEffect = sideEffect,
+            viewModel = viewModel,
+            scrollToTop = {
+                coroutineScope.launch {
+                    lazyListState.scrollToItem(0)
+                }
+            }
+        )
+    }
 
     val context = LocalContext.current
 
@@ -236,10 +246,6 @@ fun LostAndFoundList(
                     }
                 }
 
-                LaunchedEffect(uiState.currentPage) {
-                    lazyListState.scrollToItem(0)
-                }
-
                 if (isLoading) {
                     LoadingDialog()
                 }
@@ -269,11 +275,13 @@ fun LostAndFoundList(
 
 fun handleSideEffect(
     sideEffect: LostAndFoundSideEffect,
-    viewModel: LostAndFoundViewModel
+    viewModel: LostAndFoundViewModel,
+    scrollToTop: () -> Unit = {}
 ) {
     when (sideEffect) {
         is LostAndFoundSideEffect.PageChanged -> {
             viewModel.fetchLostAndFoundList()
+            scrollToTop()
         }
 
         LostAndFoundSideEffect.KeywordUpdated -> {
