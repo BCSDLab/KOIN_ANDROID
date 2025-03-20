@@ -22,7 +22,7 @@ class ChatListViewModel @Inject constructor(
             getChatListUseCase().collect { data ->
                 intent {
                     reduce {
-                        state.copy(chatList = data)
+                        state.copy(chatList = data, isLoading = false)
                     }
                 }
             }
