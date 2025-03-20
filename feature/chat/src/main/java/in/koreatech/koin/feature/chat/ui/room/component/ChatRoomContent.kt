@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ChatRoomContent(
+    isLoading: Boolean,
     messages: List<Pair<LocalDate, List<ConvertedChatMessage>>>,
     uploadingImage: List<ConvertedChatMessage>,
     chatPartnerProfileImage: Uri?,
@@ -44,6 +45,15 @@ fun ChatRoomContent(
     onShowImageChange: (Boolean, Uri) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (isLoading) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -54,8 +64,7 @@ fun ChatRoomContent(
         Box(
             modifier =
             modifier
-                .fillMaxSize()
-                .background(KoinTheme.colors.neutral800),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             SubcomposeAsyncImage(

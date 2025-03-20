@@ -85,6 +85,7 @@ class ChatRoomViewModel @Inject constructor(
                     if (it is User.Student) {
                         reduce {
                             state.copy(
+                                isLoading = true,
                                 userNickName = it.nickname ?: it.anonymousNickname ?: ""
                             )
                         }
@@ -269,6 +270,7 @@ class ChatRoomViewModel @Inject constructor(
                 reduce {
                     if (messages.isEmpty()) {
                         state.copy(
+                            isLoading = false,
                             chatMessage =
                             listOf(
                                 Pair(
@@ -279,6 +281,7 @@ class ChatRoomViewModel @Inject constructor(
                         )
                     } else {
                         state.copy(
+                            isLoading = false,
                             chatMessage =
                             messages.map { it.toConvertedChatMessage(state.userId) }
                                 .groupBy { it.timestamp.toLocalDate() }.toList()
