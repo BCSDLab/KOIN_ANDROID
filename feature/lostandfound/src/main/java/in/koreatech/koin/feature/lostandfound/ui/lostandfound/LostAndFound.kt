@@ -141,10 +141,9 @@ fun LostAndFoundList(
         ) { contentPadding ->
             val myKeywords = uiState.myKeywords
             Column(
-                modifier =
-                    modifier
-                        .padding(contentPadding)
-                        .consumeWindowInsets(contentPadding)
+                modifier = modifier
+                    .padding(contentPadding)
+                    .consumeWindowInsets(contentPadding)
             ) {
                 LazyColumn(
                     modifier = modifier,
@@ -153,11 +152,10 @@ fun LostAndFoundList(
                     item {
                         LostAndFoundKeywordGroup(
                             keyWords = myKeywords,
-                            selectedKeywordIndex =
-                                when (uiState.selectedKeyword) {
-                                    "" -> 0
-                                    else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
-                                },
+                            selectedKeywordIndex = when (uiState.selectedKeyword) {
+                                "" -> 0
+                                else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
+                            },
                             navigateToKeywordFragment = navigateToKeywordFragment
                         ) {
                             viewModel.selectKeyword(it)
@@ -194,10 +192,9 @@ fun LostAndFoundList(
                     if (uiState.lostAndFoundList.isEmpty()) {
                         item {
                             Text(
-                                modifier =
-                                    modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 16.dp),
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 16.dp),
                                 textAlign = TextAlign.Center,
                                 fontSize = 16.sp,
                                 text = stringResource(R.string.empty_articles)
@@ -231,9 +228,8 @@ fun LostAndFoundList(
                         }
                         item {
                             LostAndFoundPagination(
-                                modifier =
-                                    Modifier
-                                        .fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth(),
                                 currentPage = uiState.currentPage,
                                 totalPage = uiState.totalPage
                             ) {
@@ -254,11 +250,10 @@ fun LostAndFoundList(
                     LostAndFoundDialog(
                         title = stringResource(R.string.request_login_dialog_title),
                         description = stringResource(R.string.request_login_dialog_description),
-                        lostAndFoundDialogStyle =
-                            lostAndFoundDialogStyle().copy(
-                                titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
-                                descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center)
-                            ),
+                        lostAndFoundDialogStyle = lostAndFoundDialogStyle().copy(
+                            titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
+                            descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center)
+                        ),
                         onPositive = {
                             navigateToLoginActivity()
                             viewModel.setShowLoginRequestDialog(false)
