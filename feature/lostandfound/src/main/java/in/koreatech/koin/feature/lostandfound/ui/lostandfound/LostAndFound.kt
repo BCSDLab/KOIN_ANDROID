@@ -67,8 +67,9 @@ fun LostAndFoundList(
 
     val lazyListState = rememberLazyListState()
     val firstItemPosition by remember { derivedStateOf { lazyListState.firstVisibleItemIndex } }
+    val isScrolledToTheEnd by remember { derivedStateOf { lazyListState.isScrolledToTheEnd() } }
     val fabBottomPadding: Dp by animateDpAsState(
-        if (lazyListState.isScrolledToTheEnd() && firstItemPosition != 0) {
+        if (isScrolledToTheEnd && firstItemPosition != 0) {
             64.dp
         } else {
             0.dp
