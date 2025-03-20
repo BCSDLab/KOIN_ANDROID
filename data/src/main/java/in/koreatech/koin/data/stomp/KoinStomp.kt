@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.stomp
 
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.DeserializationStrategy
@@ -26,8 +27,8 @@ class KoinStomp @Inject constructor(
     var stompSession: StompSession? = null
     lateinit var jsonStompSession: StompSessionWithKxSerialization
 
-    suspend fun connect() {
-        if (stompSession == null) {
+    suspend fun connect(retry: Boolean) {
+        if (stompSession == null || retry) {
             stompSession =
                 stompClient.connect(
                     url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
@@ -53,8 +54,7 @@ class KoinStomp @Inject constructor(
                         .collect { emit(it) }
                 } catch (e: WebSocketException) {
                     Timber.d("WebSocketException, reconnecting...")
-                    disconnect()
-                    connect()
+                    connect(true)
                     Timber.d("Reconnected. Retrying subscription...")
                 } catch (e: CancellationException) {
                     throw e
@@ -70,7 +70,11 @@ class KoinStomp @Inject constructor(
         body: T? = null,
         serializer: SerializationStrategy<T>
     ): StompReceipt? {
-        return jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
+        return try {
+            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
+        } catch (e: UninitializedPropertyAccessException) {
+            throw e
+        }
     }
 
     suspend inline fun <reified T : Any> convertAndSend(
@@ -78,6 +82,10 @@ class KoinStomp @Inject constructor(
         body: T
     ): StompReceipt? {
         val serializer = serializersModule.serializer<T>()
-        return jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
+        return try {
+            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
+        } catch (e: UninitializedPropertyAccessException) {
+            throw e
+        }
     }
 }

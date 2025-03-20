@@ -7,16 +7,16 @@ import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 class ChatRemoteDataSource @Inject constructor(
     private val chatApi: ChatApi,
     private val chatAuthApi: ChatAuthApi,
     private val koinStomp: KoinStomp
 ) {
-    suspend fun connectWS() {
-        koinStomp.connect()
+    suspend fun connectWS(retry: Boolean) {
+        koinStomp.connect(retry)
     }
 
     suspend fun disconnectWS() {
@@ -59,8 +59,13 @@ class ChatRemoteDataSource @Inject constructor(
         articleId: Int,
         chatRoomId: Int,
         message: ChatMessageRequest
-    ) {
-        koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
+    ): Result<Unit> {
+        return try {
+            koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
+            Result.success(Unit)
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
     }
 
     suspend fun blockUser(
