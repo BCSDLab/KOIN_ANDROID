@@ -61,10 +61,6 @@ fun LostAndFoundList(
     }
     val isLoading = uiState.isLoading
 
-    LaunchedEffect(uiState.selectedKeyword) {
-        viewModel.fetchLostAndFoundList()
-    }
-
     val lazyListState = rememberLazyListState()
     val firstItemPosition by remember { derivedStateOf { lazyListState.firstVisibleItemIndex } }
     val fabBottomPadding: Dp by animateDpAsState(
@@ -136,9 +132,9 @@ fun LostAndFoundList(
             val myKeywords = uiState.myKeywords
             Column(
                 modifier =
-                modifier
-                    .padding(contentPadding)
-                    .consumeWindowInsets(contentPadding)
+                    modifier
+                        .padding(contentPadding)
+                        .consumeWindowInsets(contentPadding)
             ) {
                 LazyColumn(
                     modifier = modifier,
@@ -148,10 +144,10 @@ fun LostAndFoundList(
                         LostAndFoundKeywordGroup(
                             keyWords = myKeywords,
                             selectedKeywordIndex =
-                            when (uiState.selectedKeyword) {
-                                "" -> 0
-                                else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
-                            },
+                                when (uiState.selectedKeyword) {
+                                    "" -> 0
+                                    else -> myKeywords.indexOf(uiState.selectedKeyword) + 1
+                                },
                             navigateToKeywordFragment = navigateToKeywordFragment
                         ) {
                             viewModel.selectKeyword(it)
@@ -189,9 +185,9 @@ fun LostAndFoundList(
                         item {
                             Text(
                                 modifier =
-                                modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp),
+                                    modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp),
                                 textAlign = TextAlign.Center,
                                 fontSize = 16.sp,
                                 text = stringResource(R.string.empty_articles)
@@ -226,8 +222,8 @@ fun LostAndFoundList(
                         item {
                             LostAndFoundPagination(
                                 modifier =
-                                Modifier
-                                    .fillMaxWidth(),
+                                    Modifier
+                                        .fillMaxWidth(),
                                 currentPage = uiState.currentPage,
                                 totalPage = uiState.totalPage
                             ) {
@@ -253,10 +249,10 @@ fun LostAndFoundList(
                         title = stringResource(R.string.request_login_dialog_title),
                         description = stringResource(R.string.request_login_dialog_description),
                         lostAndFoundDialogStyle =
-                        lostAndFoundDialogStyle().copy(
-                            titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
-                            descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center)
-                        ),
+                            lostAndFoundDialogStyle().copy(
+                                titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
+                                descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center)
+                            ),
                         onPositive = {
                             navigateToLoginActivity()
                             viewModel.setShowLoginRequestDialog(false)
@@ -277,6 +273,10 @@ fun handleSideEffect(
 ) {
     when (sideEffect) {
         is LostAndFoundSideEffect.PageChanged -> {
+            viewModel.fetchLostAndFoundList()
+        }
+
+        LostAndFoundSideEffect.KeywordUpdated -> {
             viewModel.fetchLostAndFoundList()
         }
     }

@@ -39,6 +39,7 @@ class LostAndFoundViewModel @Inject constructor(
         )
 
     init {
+        fetchLostAndFoundList()
         fetchMyKeyword()
         getUserType()
     }
@@ -135,6 +136,7 @@ class LostAndFoundViewModel @Inject constructor(
                             myKeywords = it
                         )
                     }
+                    postSideEffect(LostAndFoundSideEffect.KeywordUpdated)
                 }
             }
         }
