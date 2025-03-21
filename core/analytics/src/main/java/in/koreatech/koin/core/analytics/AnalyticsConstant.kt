@@ -99,6 +99,8 @@ object AnalyticsConstant {
         const val POPULAR_NOTICE_BANNER = "popular_notice_banner"
         const val TO_MANAGE_KEYWORD = "to_manage_keyword"
 
+        const val LOGIN_PROMPT = "login_prompt"
+
         object LostAndFound {
             const val LOST_ITEM_ADD_ITEM = "lost_item_add_item"
             const val FIND_USER_ADD_ITEM = "find_user_add_item"
