@@ -53,11 +53,6 @@ class ArticleKeywordFragment : Fragment() {
                 positiveButtonText = R.string.action_login
             ),
             onPositiveButtonClicked = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.action_login)
-                )
                 val intent =
                     Intent(Intent.ACTION_VIEW).apply {
                         data = Uri.parse("koin://login/login?link=koin://article/activity?fragment=article_keyword")
@@ -66,11 +61,6 @@ class ArticleKeywordFragment : Fragment() {
                 startActivity(intent)
             },
             onNegativeButtonClicked = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.close)
-                )
                 it.dismiss()
             }
         )

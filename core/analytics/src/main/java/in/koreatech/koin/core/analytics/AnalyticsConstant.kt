@@ -84,7 +84,6 @@ object AnalyticsConstant {
         const val ADD_KEYWORD = "add_keyword"
         const val RECOMMENDED_KEYWORD = "recommended_keyword"
         const val KEYWORD_NOTIFICATION = "keyword_notification"
-        const val LOGIN_POPUP_KEYWORD = "login_popup_keyword"
         const val NOTICE_SEARCH_EVENT = "notice_search_event"
         const val NOTICE_ORIGINAL_SHORTCUT = "notice_original_shortcut"
 
