@@ -53,6 +53,10 @@ class ArticleKeywordFragment : Fragment() {
                 positiveButtonText = R.string.action_login
             ),
             onPositiveButtonClicked = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LOGIN_PROMPT,
+                    "키워드 알림 팝업"
+                )
                 val intent =
                     Intent(Intent.ACTION_VIEW).apply {
                         data = Uri.parse("koin://login/login?link=koin://article/activity?fragment=article_keyword")
