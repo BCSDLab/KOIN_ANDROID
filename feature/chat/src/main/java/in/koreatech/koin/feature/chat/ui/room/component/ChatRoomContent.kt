@@ -24,6 +24,7 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import java.time.LocalDate
 import kotlinx.coroutines.launch
@@ -46,12 +47,7 @@ fun ChatRoomContent(
     modifier: Modifier = Modifier
 ) {
     if (isLoading) {
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
+        ChatProgressIndicator()
         return
     }
     val scrollState = rememberLazyListState()
