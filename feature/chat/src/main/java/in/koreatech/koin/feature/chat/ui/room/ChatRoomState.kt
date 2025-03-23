@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ChatRoomState(
+    val isLoading: Boolean = true,
     val articleId: Int = 0,
     val chatRoomId: Int = 0,
     val userId: Int = 0,

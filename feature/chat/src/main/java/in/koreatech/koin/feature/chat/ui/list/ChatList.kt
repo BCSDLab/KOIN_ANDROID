@@ -29,6 +29,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.list.component.ChatListItem
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
@@ -88,6 +89,7 @@ fun ChatList(
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
         ChatListContent(
+            isLoading = uiState.isLoading,
             chatList = uiState.chatList,
             navigateToChatRoom = { articleId, chatRoomId ->
                 EventLogger.logCampusClickEvent(
@@ -106,10 +108,15 @@ fun ChatList(
 
 @Composable
 fun ChatListContent(
+    isLoading: Boolean,
     chatList: List<ChatListItem>,
     navigateToChatRoom: (Int, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (isLoading) {
+        ChatProgressIndicator()
+        return
+    }
     LazyColumn(
         modifier = modifier
     ) {

@@ -24,12 +24,14 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import java.time.LocalDate
 import kotlinx.coroutines.launch
 
 @Composable
 fun ChatRoomContent(
+    isLoading: Boolean,
     messages: List<Pair<LocalDate, List<ConvertedChatMessage>>>,
     uploadingImage: List<ConvertedChatMessage>,
     chatPartnerProfileImage: Uri?,
@@ -44,6 +46,10 @@ fun ChatRoomContent(
     onShowImageChange: (Boolean, Uri) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (isLoading) {
+        ChatProgressIndicator()
+        return
+    }
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -54,8 +60,7 @@ fun ChatRoomContent(
         Box(
             modifier =
             modifier
-                .fillMaxSize()
-                .background(KoinTheme.colors.neutral800),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             SubcomposeAsyncImage(

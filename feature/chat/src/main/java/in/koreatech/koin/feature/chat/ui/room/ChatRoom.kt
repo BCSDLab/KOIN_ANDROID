@@ -138,12 +138,13 @@ fun ChatRoom(
         contentWindowInsets =
         ScaffoldDefaults.contentWindowInsets
             .exclude(WindowInsets.navigationBars)
-            .exclude(WindowInsets.ime)
+            .exclude(WindowInsets.ime),
+        containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
         ChatRoomContent(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(contentPadding),
+            isLoading = uiState.isLoading,
             messages = uiState.chatMessage,
             uploadingImage = uiState.uploadingImage,
             chatPartnerProfileImage = uiState.chatPartnerProfileImage,
