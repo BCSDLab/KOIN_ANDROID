@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 
 class ChatRemoteDataSource @Inject constructor(
@@ -60,11 +61,10 @@ class ChatRemoteDataSource @Inject constructor(
         chatRoomId: Int,
         message: ChatMessageRequest
     ): Result<Unit> {
-        return try {
+        return runCatching {
             koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
+        }.onFailure {
+            if (it is CancellationException) throw it
         }
     }
 

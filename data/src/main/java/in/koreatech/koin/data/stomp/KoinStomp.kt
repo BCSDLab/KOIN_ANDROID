@@ -9,7 +9,6 @@ import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json.Default.serializersModule
 import kotlinx.serialization.serializer
 import org.hildan.krossbow.stomp.StompClient
-import org.hildan.krossbow.stomp.StompReceipt
 import org.hildan.krossbow.stomp.StompSession
 import org.hildan.krossbow.stomp.conversions.kxserialization.StompSessionWithKxSerialization
 import org.hildan.krossbow.stomp.conversions.kxserialization.json.withJsonConversions
@@ -68,8 +67,8 @@ class KoinStomp @Inject constructor(
         headers: String,
         body: T? = null,
         serializer: SerializationStrategy<T>
-    ): StompReceipt? {
-        return try {
+    ) {
+        try {
             jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
         } catch (e: UninitializedPropertyAccessException) {
             throw e
@@ -79,9 +78,9 @@ class KoinStomp @Inject constructor(
     suspend inline fun <reified T : Any> convertAndSend(
         headers: String,
         body: T
-    ): StompReceipt? {
+    ) {
         val serializer = serializersModule.serializer<T>()
-        return try {
+        try {
             jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
         } catch (e: UninitializedPropertyAccessException) {
             throw e
