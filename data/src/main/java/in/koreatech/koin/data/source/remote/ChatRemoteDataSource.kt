@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 
 class ChatRemoteDataSource @Inject constructor(
@@ -15,8 +16,8 @@ class ChatRemoteDataSource @Inject constructor(
     private val chatAuthApi: ChatAuthApi,
     private val koinStomp: KoinStomp
 ) {
-    suspend fun connectWS() {
-        koinStomp.connect()
+    suspend fun connectWS(retry: Boolean) {
+        koinStomp.connect(retry)
     }
 
     suspend fun disconnectWS() {
@@ -59,8 +60,12 @@ class ChatRemoteDataSource @Inject constructor(
         articleId: Int,
         chatRoomId: Int,
         message: ChatMessageRequest
-    ) {
-        koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
+    ): Result<Unit> {
+        return runCatching {
+            koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
+        }.onFailure {
+            if (it is CancellationException) throw it
+        }
     }
 
     suspend fun blockUser(
