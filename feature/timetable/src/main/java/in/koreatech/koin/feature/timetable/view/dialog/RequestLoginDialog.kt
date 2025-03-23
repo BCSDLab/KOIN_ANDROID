@@ -26,6 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
@@ -106,7 +109,14 @@ fun RequestLoginDialog(
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.request_login_confirmation),
-                        onClick = { onConfirm() }
+                        onClick = {
+                            EventLogger.logClickEvent(
+                                EventAction.USER,
+                                AnalyticsConstant.Label.LOGIN_PROMPT,
+                                "시간표 관리 팝업"
+                            )
+                            onConfirm()
+                        }
                     )
                 }
             }

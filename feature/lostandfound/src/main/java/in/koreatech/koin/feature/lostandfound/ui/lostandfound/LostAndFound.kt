@@ -258,6 +258,10 @@ fun LostAndFoundList(
                             descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center)
                         ),
                         onPositive = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LOGIN_PROMPT,
+                                "게시글 작성 팝업"
+                            )
                             navigateToLoginActivity()
                             viewModel.setShowLoginRequestDialog(false)
                         },

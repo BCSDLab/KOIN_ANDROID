@@ -53,10 +53,9 @@ class ArticleKeywordFragment : Fragment() {
                 positiveButtonText = R.string.action_login
             ),
             onPositiveButtonClicked = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.action_login)
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LOGIN_PROMPT,
+                    "키워드 알림 팝업"
                 )
                 val intent =
                     Intent(Intent.ACTION_VIEW).apply {
@@ -66,11 +65,6 @@ class ArticleKeywordFragment : Fragment() {
                 startActivity(intent)
             },
             onNegativeButtonClicked = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.close)
-                )
                 it.dismiss()
             }
         )

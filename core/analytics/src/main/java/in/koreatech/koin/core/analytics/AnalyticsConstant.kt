@@ -84,7 +84,6 @@ object AnalyticsConstant {
         const val ADD_KEYWORD = "add_keyword"
         const val RECOMMENDED_KEYWORD = "recommended_keyword"
         const val KEYWORD_NOTIFICATION = "keyword_notification"
-        const val LOGIN_POPUP_KEYWORD = "login_popup_keyword"
         const val NOTICE_SEARCH_EVENT = "notice_search_event"
         const val NOTICE_ORIGINAL_SHORTCUT = "notice_original_shortcut"
 
@@ -98,6 +97,8 @@ object AnalyticsConstant {
         const val APP_MAIN_NOTICE_DETAIL = "app_main_notice_detail"
         const val POPULAR_NOTICE_BANNER = "popular_notice_banner"
         const val TO_MANAGE_KEYWORD = "to_manage_keyword"
+
+        const val LOGIN_PROMPT = "login_prompt"
 
         object LostAndFound {
             const val LOST_ITEM_ADD_ITEM = "lost_item_add_item"
