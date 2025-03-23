@@ -10,8 +10,8 @@ class ChatWSConnectUseCase @Inject constructor(
         return try {
             chatRepository.connectWS()
             Result.success(Unit)
-        } catch (t: Throwable) {
-            Result.failure(t)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }

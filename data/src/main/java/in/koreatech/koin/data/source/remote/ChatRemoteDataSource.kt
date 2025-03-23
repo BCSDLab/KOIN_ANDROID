@@ -63,8 +63,8 @@ class ChatRemoteDataSource @Inject constructor(
         return try {
             koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
             Result.success(Unit)
-        } catch (t: Throwable) {
-            Result.failure(t)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

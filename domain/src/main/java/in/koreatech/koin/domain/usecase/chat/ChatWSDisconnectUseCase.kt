@@ -10,8 +10,8 @@ class ChatWSDisconnectUseCase @Inject constructor(
         return try {
             chatRepository.disconnectWS()
             Result.success(Unit)
-        } catch (t: Throwable) {
-            Result.failure(t)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }
