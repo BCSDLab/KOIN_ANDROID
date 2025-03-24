@@ -55,20 +55,18 @@ fun DetailButtonGroup(
     }
 
     Row(
-        modifier =
-            modifier
-                .padding(horizontal = 24.dp, vertical = 16.dp)
-                .fillMaxWidth()
+        modifier = modifier
+            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .fillMaxWidth()
     ) {
         Button(
             modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
             contentPadding = PaddingValues(12.dp, 6.dp),
             onClick = onArticleListClick,
-            colors =
-                ButtonDefaults.buttonColors(
-                    containerColor = KoinTheme.colors.neutral300,
-                    contentColor = KoinTheme.colors.neutral600
-                ),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = KoinTheme.colors.neutral300,
+                contentColor = KoinTheme.colors.neutral600
+            ),
             shape = KoinTheme.shapes.extraSmall
         ) {
             Text(
@@ -91,11 +89,10 @@ fun DetailButtonGroup(
                         "삭제"
                     )
                 },
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = KoinTheme.colors.neutral300,
-                        contentColor = KoinTheme.colors.neutral600
-                    ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = KoinTheme.colors.neutral300,
+                    contentColor = KoinTheme.colors.neutral600
+                ),
                 shape = KoinTheme.shapes.extraSmall
             ) {
                 Row(
@@ -150,11 +147,10 @@ fun DetailButtonGroup(
                     modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                     contentPadding = PaddingValues(10.dp, 6.dp),
                     onClick = onReportArticleClick,
-                    colors =
-                        ButtonDefaults.buttonColors(
-                            containerColor = KoinTheme.colors.neutral300,
-                            contentColor = KoinTheme.colors.neutral600
-                        ),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = KoinTheme.colors.neutral300,
+                        contentColor = KoinTheme.colors.neutral600
+                    ),
                     shape = KoinTheme.shapes.extraSmall
                 ) {
                     Image(
