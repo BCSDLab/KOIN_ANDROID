@@ -29,7 +29,7 @@ fun DetailButtonGroup(
     showDeleteButton: Boolean = false,
     showDeleteDialog: Boolean = false,
     isLoggedIn: Boolean = false,
-    isAuthorWithDraw: Boolean = false,
+    isAuthorWithdraw: Boolean = false,
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
