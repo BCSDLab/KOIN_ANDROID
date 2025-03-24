@@ -76,6 +76,7 @@ fun LostAndFoundDetail(
                 showDeleteButton = uiState.isMine,
                 showDeleteDialog = uiState.showDeleteDialog,
                 isLoggedIn = uiState.isLoggedIn,
+                isAuthorWithDraw = uiState.isAuthorWithdraw,
                 onArticleListClick = {
                     navigateToArticleList()
                 },

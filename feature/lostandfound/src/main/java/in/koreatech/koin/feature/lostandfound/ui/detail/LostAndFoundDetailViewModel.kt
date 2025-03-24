@@ -94,6 +94,7 @@ class LostAndFoundDetailViewModel @Inject constructor(
                             updatedAt = article.updatedAt,
                             isWriterCouncil = article.isWriterCouncil,
                             isMine = state.currentLoggedInUser == article.author,
+                            isAuthorWithdraw = article.author == "탈퇴한 사용자",
                             isLoading = false
                         )
                     }
