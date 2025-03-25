@@ -5,7 +5,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:paddingHorizontal="18dp"
+        android:background="@drawable/border_dialog">
 
         <TextView
             android:id="@+id/text_view_title"
@@ -13,7 +14,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:lineHeight="27sp"
-            android:paddingHorizontal="32dp"
             android:text="리뷰 작성 시 로그인을 해주세요."
             android:textColor="@color/black"
             android:textSize="18sp"
