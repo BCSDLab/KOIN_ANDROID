@@ -182,7 +182,7 @@
 
                 <data android:host="${appLinkUri}"
                     tools:replace="host"/>
-                <data android:path="/articles/lost-item"/>
+                <data android:pathPrefix="/articles/lost-item"/>
             </intent-filter>
         </activity>
         <activity
