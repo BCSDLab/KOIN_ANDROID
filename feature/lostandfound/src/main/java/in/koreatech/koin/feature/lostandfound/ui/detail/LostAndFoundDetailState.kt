@@ -27,6 +27,7 @@ data class LostAndFoundDetailState(
     val updatedAt: String = "",
     val isWriterCouncil: Boolean = false,
     val isMine: Boolean = false,
+    val isAuthorWithdraw: Boolean = false,
     val hotArticles: List<ArticleHeaderState> = emptyList()
 ) : Parcelable
 

@@ -29,6 +29,7 @@ fun DetailButtonGroup(
     showDeleteButton: Boolean = false,
     showDeleteDialog: Boolean = false,
     isLoggedIn: Boolean = false,
+    isAuthorWithdraw: Boolean = false,
     onShowDeleteDialogChange: (Boolean) -> Unit = {},
     onArticleListClick: () -> Unit = {},
     onDeleteArticleClick: () -> Unit = {},
@@ -54,8 +55,7 @@ fun DetailButtonGroup(
     }
 
     Row(
-        modifier =
-        modifier
+        modifier = modifier
             .padding(horizontal = 24.dp, vertical = 16.dp)
             .fillMaxWidth()
     ) {
@@ -63,8 +63,7 @@ fun DetailButtonGroup(
             modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
             contentPadding = PaddingValues(12.dp, 6.dp),
             onClick = onArticleListClick,
-            colors =
-            ButtonDefaults.buttonColors(
+            colors = ButtonDefaults.buttonColors(
                 containerColor = KoinTheme.colors.neutral300,
                 contentColor = KoinTheme.colors.neutral600
             ),
@@ -90,8 +89,7 @@ fun DetailButtonGroup(
                         "삭제"
                     )
                 },
-                colors =
-                ButtonDefaults.buttonColors(
+                colors = ButtonDefaults.buttonColors(
                     containerColor = KoinTheme.colors.neutral300,
                     contentColor = KoinTheme.colors.neutral600
                 ),
@@ -115,32 +113,33 @@ fun DetailButtonGroup(
             }
         } else {
             if (isLoggedIn) {
-                Button(
-                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                    contentPadding = PaddingValues(10.dp, 6.dp),
-                    onClick = onChatRoomClick,
-                    colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = KoinTheme.colors.neutral300,
-                        contentColor = KoinTheme.colors.neutral600
-                    ),
-                    shape = KoinTheme.shapes.extraSmall
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                if (!isAuthorWithdraw) {
+                    Button(
+                        modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                        contentPadding = PaddingValues(10.dp, 6.dp),
+                        onClick = onChatRoomClick,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = KoinTheme.colors.neutral300,
+                            contentColor = KoinTheme.colors.neutral600
+                        ),
+                        shape = KoinTheme.shapes.extraSmall
                     ) {
-                        Image(
-                            modifier = Modifier.size(20.dp),
-                            painter = painterResource(id = R.drawable.ic_chat),
-                            contentDescription = null
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                modifier = Modifier.size(20.dp),
+                                painter = painterResource(id = R.drawable.ic_chat),
+                                contentDescription = null
+                            )
 
-                        Spacer(modifier = Modifier.width(4.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
 
-                        Text(
-                            style = KoinTheme.typography.regular12,
-                            text = stringResource(R.string.detail_chat_room_button)
-                        )
+                            Text(
+                                style = KoinTheme.typography.regular12,
+                                text = stringResource(R.string.detail_chat_room_button)
+                            )
+                        }
                     }
                 }
 
@@ -148,8 +147,7 @@ fun DetailButtonGroup(
                     modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                     contentPadding = PaddingValues(10.dp, 6.dp),
                     onClick = onReportArticleClick,
-                    colors =
-                    ButtonDefaults.buttonColors(
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = KoinTheme.colors.neutral300,
                         contentColor = KoinTheme.colors.neutral600
                     ),
