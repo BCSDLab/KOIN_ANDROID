@@ -71,6 +71,7 @@ object URLConstant {
 
         object STUDENT {
             const val STUDENT = "student"
+            const val LOGIN = "$STUDENT/login"
             const val REGISTER: String = "$USER/$STUDENT/register"
         }
     }
