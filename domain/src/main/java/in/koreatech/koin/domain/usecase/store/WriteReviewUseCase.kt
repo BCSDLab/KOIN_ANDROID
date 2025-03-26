@@ -17,7 +17,7 @@ class WriteReviewUseCase @Inject constructor(
             Result.success(Unit)
         } catch (e: CancellationException) {
             throw e
-        }  catch (e: Exception) {
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }
