@@ -9,8 +9,10 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseC
 import `in`.koreatech.koin.domain.usecase.store.ModifyReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.WriteReviewUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -27,10 +29,15 @@ class WriteReviewViewModel @Inject constructor(
     private val _menuImageUrls = MutableStateFlow<List<String>>(emptyList())
     val menuImageUrls: StateFlow<List<String>> get() = _menuImageUrls.asStateFlow()
 
+    private val _toastEvent = MutableSharedFlow<Unit>()
+    val toastEvent = _toastEvent.asSharedFlow()
+
     fun writeReview(storeId: Int, content: Review) {
         viewModelScope.launch {
             writeReviewUseCase(storeId, content).also {
                 _review.value = content
+            }.onFailure {
+                _toastEvent.emit(Unit)
             }
         }
     }

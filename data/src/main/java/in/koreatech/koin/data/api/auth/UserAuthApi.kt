@@ -86,7 +86,7 @@ interface UserAuthApi {
     suspend fun writeReview(
         @Path("shopId") shopId: Int,
         @Body reviewRequest: ReviewRequest
-    ): Response<Unit?>
+    )
 
     @DELETE("/shops/{shopId}/reviews/{reviewId}")
     suspend fun deleteReview(

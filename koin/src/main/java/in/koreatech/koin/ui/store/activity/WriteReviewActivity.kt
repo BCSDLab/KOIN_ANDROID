@@ -29,6 +29,7 @@ import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.ui.store.adapter.review.MenuImageRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.MenuRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.WriteReviewViewModel
+import `in`.koreatech.koin.util.ext.showToast
 import `in`.koreatech.koin.util.ext.withLoading
 import java.io.Serializable
 import kotlin.properties.Delegates
@@ -239,6 +240,14 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                         )
                     }
                     binding.imageNumber.text = "${it.size}/3"
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.toastEvent.collect {
+                    showToast(getString(R.string.write_review_error))
                 }
             }
         }
