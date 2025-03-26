@@ -113,7 +113,7 @@ fun DetailButtonGroup(
             }
         } else {
             if (isLoggedIn) {
-                if (!isAuthorWithDraw) {
+                if (!isAuthorWithdraw) {
                     Button(
                         modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                         contentPadding = PaddingValues(10.dp, 6.dp),
