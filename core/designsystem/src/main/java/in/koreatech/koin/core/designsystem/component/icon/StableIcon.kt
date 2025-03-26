@@ -15,7 +15,7 @@ fun StableIcon(
     modifier: Modifier = Modifier,
     @DrawableRes drawableResId: Int,
     description: String? = null,
-    tint: Color = LocalContentColor.current,
+    tint: Color = LocalContentColor.current
 ) {
     val painter = painterResource(id = drawableResId)
     Icon(

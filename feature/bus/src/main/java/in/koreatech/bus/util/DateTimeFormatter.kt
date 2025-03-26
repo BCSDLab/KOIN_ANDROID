@@ -12,10 +12,12 @@ import java.util.Locale
  * 오늘, 내일 그리고 이후부터는 ex) 11월 27일(수)
  */
 internal fun LocalDate.formatDateValue(): String {
-    if (LocalDate.now() == this)
+    if (LocalDate.now() == this) {
         return "오늘"
-    if (LocalDate.now().plusDays(1) == this)
+    }
+    if (LocalDate.now().plusDays(1) == this) {
         return "내일"
+    }
 
     return this.format(
         DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
@@ -33,7 +35,7 @@ internal fun formatDepartureTime(
     hour: String,
     minute: String
 ): String {
-    return "$date $daytime ${hour}:${minute.padStart(2, '0')}"
+    return "$date $daytime $hour:${minute.padStart(2, '0')}"
 }
 
 /**
@@ -65,14 +67,16 @@ internal fun LocalTime.formatTime(): String {
  * ex) 2시간 33분 전
  */
 internal fun LocalTime.formatBeforeTime(compareTo: LocalTime): String {
-    val (hour, minute) = this.minusHours(compareTo.hour.toLong()).minusMinutes(compareTo.minute.toLong()).let {
-        it.hour to it.minute
-    }
+    val (hour, minute) =
+        this.minusHours(compareTo.hour.toLong()).minusMinutes(compareTo.minute.toLong()).let {
+            it.hour to it.minute
+        }
 
-    return if (hour == 0)
+    return if (hour == 0) {
         "${minute}분 전"
-    else
+    } else {
         "${hour}시간 ${minute.coerceAtLeast(0)}분 전"
+    }
 }
 
 /**

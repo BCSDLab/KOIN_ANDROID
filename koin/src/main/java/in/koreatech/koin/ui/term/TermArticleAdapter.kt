@@ -11,7 +11,10 @@ class TermArticleAdapter(
     private val onClickArticle: (Int) -> Unit
 ) : ListAdapter<String, TermArticleAdapter.TermArticleViewHolder>(diffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TermArticleViewHolder {
-        return TermArticleViewHolder(ItemTermArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false), onClickArticle)
+        return TermArticleViewHolder(
+            ItemTermArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onClickArticle
+        )
     }
 
     override fun onBindViewHolder(holder: TermArticleViewHolder, position: Int) {
@@ -28,22 +31,16 @@ class TermArticleAdapter(
         }
     }
 
-
     private companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<String>() {
-            override fun areItemsTheSame(
-                oldItem: String,
-                newItem: String
-            ): Boolean {
-                return oldItem == newItem
-            }
+        val diffCallback =
+            object : DiffUtil.ItemCallback<String>() {
+                override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(
-                oldItem: String,
-                newItem: String
-            ): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

@@ -12,13 +12,15 @@ data class CityTimetableState(
     val updatedAt: LocalDateTime
 )
 
-fun CityTimetable.toCityTimetableState() = CityTimetableState(
-    departureTimes = timetable[0].mapToCommonTimetableState(),
-    busInfo = busInfo.toCityBusInfoState(),
-    updatedAt = updatedAt
-)
+fun CityTimetable.toCityTimetableState() =
+    CityTimetableState(
+        departureTimes = timetable[0].mapToCommonTimetableState(),
+        busInfo = busInfo.toCityBusInfoState(),
+        updatedAt = updatedAt
+    )
 
-private fun CityTimetableItem.mapToCommonTimetableState() = CommonTimetableState(
-    amDepartures = this.departureTimes.filter { it.split(":")[0].toInt() < 12 }.map { DepartureState(it) },
-    pmDepartures = this.departureTimes.filter { it.split(":")[0].toInt() >= 12 }.map { DepartureState(it) },
-)
+private fun CityTimetableItem.mapToCommonTimetableState() =
+    CommonTimetableState(
+        amDepartures = this.departureTimes.filter { it.split(":")[0].toInt() < 12 }.map { DepartureState(it) },
+        pmDepartures = this.departureTimes.filter { it.split(":")[0].toInt() >= 12 }.map { DepartureState(it) }
+    )

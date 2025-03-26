@@ -12,7 +12,6 @@ import `in`.koreatech.koin.domain.model.coopshop.OpenCloseInfo
 
 class DiningNoticeAdapter :
     ListAdapter<OpenCloseInfo, DiningNoticeAdapter.DiningNoticeViewHolder>(diffUtil) {
-
     inner class DiningNoticeViewHolder(private val binding: ItemTableWithTitleBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: OpenCloseInfo) {
@@ -42,17 +41,21 @@ class DiningNoticeAdapter :
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<OpenCloseInfo>() {
-            override fun areItemsTheSame(oldItem: OpenCloseInfo, newItem: OpenCloseInfo): Boolean {
-                return oldItem.dayOfWeek == newItem.dayOfWeek
-            }
+        val diffUtil =
+            object : DiffUtil.ItemCallback<OpenCloseInfo>() {
+                override fun areItemsTheSame(
+                    oldItem: OpenCloseInfo,
+                    newItem: OpenCloseInfo
+                ): Boolean {
+                    return oldItem.dayOfWeek == newItem.dayOfWeek
+                }
 
-            override fun areContentsTheSame(
-                oldItem: OpenCloseInfo,
-                newItem: OpenCloseInfo
-            ): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: OpenCloseInfo,
+                    newItem: OpenCloseInfo
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

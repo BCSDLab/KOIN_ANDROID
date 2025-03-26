@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class BusinessSearchStoreFragment: BaseFragment() {
+class BusinessSearchStoreFragment : BaseFragment() {
     private var _binding: FragmentBusinessSearchStoreBinding? = null
     private val binding get() = _binding!!
 
@@ -40,27 +40,32 @@ class BusinessSearchStoreFragment: BaseFragment() {
 
     private var isSearchMode: Boolean = false
         set(value) {
-            if (value) activity?.showSoftKeyboard()
-            else activity?.hideSoftKeyboard()
+            if (value) {
+                activity?.showSoftKeyboard()
+            } else {
+                activity?.hideSoftKeyboard()
+            }
             field = value
         }
 
-    private var showRemoveQueryButton : Boolean = false
+    private var showRemoveQueryButton: Boolean = false
         set(value) {
             if (!value) {
-                binding.searchStoreButton.background = ContextCompat.getDrawable(
-                    this.requireContext(),
-                    R.drawable.ic_search
-                )
+                binding.searchStoreButton.background =
+                    ContextCompat.getDrawable(
+                        this.requireContext(),
+                        R.drawable.ic_search
+                    )
                 binding.searchStoreButton.layoutParams.apply {
                     width = this@BusinessSearchStoreFragment.requireActivity().dpToPx(24)
                     height = this@BusinessSearchStoreFragment.requireActivity().dpToPx(24)
                 }
             } else {
-                binding.searchStoreButton.background = ContextCompat.getDrawable(
-                    this.requireContext(),
-                    R.drawable.ic_search_close
-                )
+                binding.searchStoreButton.background =
+                    ContextCompat.getDrawable(
+                        this.requireContext(),
+                        R.drawable.ic_search_close
+                    )
                 binding.searchStoreButton.layoutParams.apply {
                     width = this@BusinessSearchStoreFragment.requireActivity().dpToPx(16)
                     height = this@BusinessSearchStoreFragment.requireActivity().dpToPx(16)
@@ -68,6 +73,7 @@ class BusinessSearchStoreFragment: BaseFragment() {
             }
             field = value
         }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -99,7 +105,7 @@ class BusinessSearchStoreFragment: BaseFragment() {
         }
 
         binding.searchStoreButton.setOnClickListener {
-            if(showRemoveQueryButton) binding.storeNameEditTextView.setText("")
+            if (showRemoveQueryButton) binding.storeNameEditTextView.setText("")
         }
 
         initViewModel()
@@ -124,7 +130,7 @@ class BusinessSearchStoreFragment: BaseFragment() {
                 needToProceedStoreInfo.collectLatest {
                     businessSignupBaseViewModel.setShopId(it.shopId)
 
-                    if(it.checkState) {
+                    if (it.checkState) {
                         setFragmentResult("requestKey", bundleOf("storeName" to it.shopName))
                         businessSignupBaseViewModel.setFragmentTag("certificationFragment")
                     }

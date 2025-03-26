@@ -2,8 +2,8 @@ package `in`.koreatech.koin.feature.chat.ui.model
 
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ConvertedChatMessage(

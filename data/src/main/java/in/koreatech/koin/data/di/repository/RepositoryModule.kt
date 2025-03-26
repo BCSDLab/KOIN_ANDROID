@@ -63,19 +63,17 @@ import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.repository.VersionRepository
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
     @Provides
     @Singleton
-    fun provideNotificationRepository(
-        notificationRemoteDataSource: NotificationRemoteDataSource
-    ): NotificationRepository {
+    fun provideNotificationRepository(notificationRemoteDataSource: NotificationRemoteDataSource): NotificationRepository {
         return NotificationRepositoryImpl(notificationRemoteDataSource)
     }
 
@@ -118,38 +116,31 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideOwnerVerificationCodeRepository(
-        ownerRemoteDataSource: OwnerRemoteDataSource
-    ): OwnerVerificationCodeRepository {
+    fun provideOwnerVerificationCodeRepository(ownerRemoteDataSource: OwnerRemoteDataSource): OwnerVerificationCodeRepository {
         return OwnerVerificationCodeRepositoryImpl(ownerRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideUploadUrlRepository(
-        uploadUrlRemoteDataSource: UploadUrlRemoteDataSource
-    ): UploadUrlRepository {
+    fun provideUploadUrlRepository(uploadUrlRemoteDataSource: UploadUrlRemoteDataSource): UploadUrlRepository {
         return UploadUrlRepositoryImpl(uploadUrlRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideRegisterRepository(
-        ownerRemoteDataSource: OwnerRemoteDataSource
-    ): OwnerRegisterRepository {
+    fun provideRegisterRepository(ownerRemoteDataSource: OwnerRemoteDataSource): OwnerRegisterRepository {
         return OwnerRegisterRepositoryImpl(ownerRemoteDataSource)
     }
-
 
     @Provides
     @Singleton
     fun provideVersionRepository(
         versionLocalDataSource: VersionLocalDataSource,
-        versionRemoteDataSource: VersionRemoteDataSource,
+        versionRemoteDataSource: VersionRemoteDataSource
     ): VersionRepository {
         return VersionRepositoryImpl(
             versionLocalDataSource,
-            versionRemoteDataSource,
+            versionRemoteDataSource
         )
     }
 
@@ -160,31 +151,26 @@ object RepositoryModule {
         deptLocalDataSource: DeptLocalDataSource
     ): DeptRepository {
         return DeptRepositoryImpl(
-            deptRemoteDataSource, deptLocalDataSource
+            deptRemoteDataSource,
+            deptLocalDataSource
         )
     }
 
     @Provides
     @Singleton
-    fun provideDiningRepository(
-        diningRemoteDataSource: DiningRemoteDataSource
-    ): DiningRepository {
+    fun provideDiningRepository(diningRemoteDataSource: DiningRemoteDataSource): DiningRepository {
         return DiningRepositoryImpl(diningRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideStoreRepository(
-        storeRemoteDataSource: StoreRemoteDataSource
-    ): StoreRepository {
+    fun provideStoreRepository(storeRemoteDataSource: StoreRemoteDataSource): StoreRepository {
         return StoreRepositoryImpl(storeRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideLandRepository(
-        landRemoteDataSource: LandRemoteDataSource
-    ): LandRepository {
+    fun provideLandRepository(landRemoteDataSource: LandRemoteDataSource): LandRepository {
         return LandRepositoryImpl(landRemoteDataSource)
     }
 
@@ -199,17 +185,13 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideOwnerChangePasswordRepository(
-        ownerRemoteDataSource: OwnerRemoteDataSource
-    ): OwnerChangePasswordRepository {
+    fun provideOwnerChangePasswordRepository(ownerRemoteDataSource: OwnerRemoteDataSource): OwnerChangePasswordRepository {
         return OwnerChangePasswordRepositoryImpl(ownerRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideOwnerShopRepository(
-        ownerRemoteDataSource: OwnerRemoteDataSource
-    ): OwnerShopRepository {
+    fun provideOwnerShopRepository(ownerRemoteDataSource: OwnerRemoteDataSource): OwnerShopRepository {
         return OwnerShopRepositoryImpl(ownerRemoteDataSource)
     }
 
@@ -231,17 +213,13 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideCoopShopRepository(
-        coopShopRemoteDataSource: CoopShopRemoteDataSource
-    ): CoopShopRepository {
+    fun provideCoopShopRepository(coopShopRemoteDataSource: CoopShopRemoteDataSource): CoopShopRepository {
         return CoopShopRepositoryImpl(coopShopRemoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideChatRepository(
-        chatRemoteDataSource: ChatRemoteDataSource
-    ): ChatRepository {
+    fun provideChatRepository(chatRemoteDataSource: ChatRemoteDataSource): ChatRepository {
         return ChatRepositoryImpl(chatRemoteDataSource)
     }
 }

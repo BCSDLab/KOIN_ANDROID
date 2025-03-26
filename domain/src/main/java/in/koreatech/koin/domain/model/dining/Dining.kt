@@ -13,5 +13,5 @@ data class Dining(
     val createdAt: String,
     val updatedAt: String,
     val soldOutAt: String,
-    val changedAt: String,
+    val changedAt: String
 )

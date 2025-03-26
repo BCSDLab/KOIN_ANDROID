@@ -37,7 +37,6 @@ import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
-import org.hildan.krossbow.stomp.StompClient
 import javax.inject.Singleton
 
 @Module
@@ -45,9 +44,7 @@ import javax.inject.Singleton
 object RemoteDataSourceModule {
     @Provides
     @Singleton
-    fun provideNotificationRemoteDataSource(
-        userAuthApi: UserAuthApi,
-    ): NotificationRemoteDataSource {
+    fun provideNotificationRemoteDataSource(userAuthApi: UserAuthApi): NotificationRemoteDataSource {
         return NotificationRemoteDataSource(userAuthApi)
     }
 
@@ -55,7 +52,7 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideUserRemoteDataSource(
         userApi: UserApi,
-        userAuthApi: UserAuthApi,
+        userAuthApi: UserAuthApi
     ): UserRemoteDataSource {
         return UserRemoteDataSource(userApi, userAuthApi)
     }
@@ -64,40 +61,32 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideOwnerRemoteDataSource(
         ownerApi: OwnerApi,
-        ownerAuthApi: OwnerAuthApi,
+        ownerAuthApi: OwnerAuthApi
     ): OwnerRemoteDataSource {
         return OwnerRemoteDataSource(ownerApi, ownerAuthApi)
     }
 
     @Provides
     @Singleton
-    fun provideUploadUrlRemoteDataSource(
-        uploadUrlApi: UploadUrlApi,
-    ): UploadUrlRemoteDataSource {
+    fun provideUploadUrlRemoteDataSource(uploadUrlApi: UploadUrlApi): UploadUrlRemoteDataSource {
         return UploadUrlRemoteDataSource(uploadUrlApi)
     }
 
     @Provides
     @Singleton
-    fun provideVersionRemoteDataSource(
-        versionApi: VersionApi,
-    ): VersionRemoteDataSource {
+    fun provideVersionRemoteDataSource(versionApi: VersionApi): VersionRemoteDataSource {
         return VersionRemoteDataSource(versionApi)
     }
 
     @Provides
     @Singleton
-    fun provideDeptRemoteDataSource(
-        deptApi: DeptApi,
-    ): DeptRemoteDataSource {
+    fun provideDeptRemoteDataSource(deptApi: DeptApi): DeptRemoteDataSource {
         return DeptRemoteDataSource(deptApi)
     }
 
     @Provides
     @Singleton
-    fun provideDiningRemoteDataSource(
-        diningApi: DiningApi,
-    ): DiningRemoteDataSource {
+    fun provideDiningRemoteDataSource(diningApi: DiningApi): DiningRemoteDataSource {
         return DiningRemoteDataSource(diningApi)
     }
 
@@ -112,17 +101,13 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
-    fun provideLandRemoteDataSource(
-        landApi: LandApi,
-    ): LandRemoteDataSource {
+    fun provideLandRemoteDataSource(landApi: LandApi): LandRemoteDataSource {
         return LandRemoteDataSource(landApi)
     }
 
     @Provides
     @Singleton
-    fun providePreSignedUrlRemoteDataSource(
-        preSignedUrlApi: PreSignedUrlApi,
-    ): PreSignedUrlRemoteDataSource {
+    fun providePreSignedUrlRemoteDataSource(preSignedUrlApi: PreSignedUrlApi): PreSignedUrlRemoteDataSource {
         return PreSignedUrlRemoteDataSource(preSignedUrlApi)
     }
 
@@ -137,9 +122,7 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
-    fun provideCoopShopRemoteDataSource(
-        coopShopApi: CoopShopApi,
-    ): CoopShopRemoteDataSource {
+    fun provideCoopShopRemoteDataSource(coopShopApi: CoopShopApi): CoopShopRemoteDataSource {
         return CoopShopRemoteDataSource(coopShopApi)
     }
 

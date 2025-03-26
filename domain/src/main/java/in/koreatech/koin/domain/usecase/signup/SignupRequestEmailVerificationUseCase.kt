@@ -22,13 +22,13 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
         studentNumber: String?,
         isCheckNickname: Boolean
     ): Result<SignupContinuationState> {
-
-        if (!name.isNullOrBlank() && !name.isNameFormat())
+        if (!name.isNullOrBlank() && !name.isNameFormat()) {
             return Result.success(SignupContinuationState.CheckNameFormat)
-        else if (!phoneNumber.isNullOrBlank() && (phoneNumber.length != 11))
+        } else if (!phoneNumber.isNullOrBlank() && (phoneNumber.length != 11)) {
             return Result.success(SignupContinuationState.CheckPhoneNumberFormat)
-        else if (!nickName.isNullOrBlank() && !isCheckNickname)
+        } else if (!nickName.isNullOrBlank() && !isCheckNickname) {
             return Result.success(SignupContinuationState.CheckNickNameDuplication)
+        }
 
         return signupRepository.requestEmailVerification(
             portalAccount = portalAccount,
@@ -39,7 +39,7 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
             nickName = if (nickName.isNullOrBlank()) null else nickName,
             password = password,
             phoneNumber = if (phoneNumber.isNullOrBlank()) null else phoneNumber,
-            studentNumber = if (studentNumber.isNullOrBlank()) null else studentNumber,
+            studentNumber = if (studentNumber.isNullOrBlank()) null else studentNumber
         ).map {
             SignupContinuationState.RequestedEmailValidation
         }

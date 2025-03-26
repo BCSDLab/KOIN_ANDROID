@@ -1,10 +1,9 @@
 package `in`.koreatech.koin.data.request.article
 
 import com.google.gson.annotations.SerializedName
-import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse.ArticleLostAndFoundImageResponse
 
 data class ArticleLostAndFoundRequest(
-    @SerializedName("articles") val articles: List<ArticleLostAndFoundBody>,
+    @SerializedName("articles") val articles: List<ArticleLostAndFoundBody>
 ) {
     data class ArticleLostAndFoundBody(
         @SerializedName("type") val type: String,

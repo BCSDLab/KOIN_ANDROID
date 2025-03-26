@@ -8,6 +8,7 @@ data class UserState(
 ) {
     companion object {
         val anonymous get() = UserState(null, true)
+
         fun user(user: User) = UserState(user, false)
     }
 }

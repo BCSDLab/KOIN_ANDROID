@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class OwnerVerificationCodeUseCase @Inject constructor(
     private val ownerVerificationCodeRepository: OwnerVerificationCodeRepository,
-    private val tokenRepository: TokenRepository,
+    private val tokenRepository: TokenRepository
 ) {
     suspend operator fun invoke(
         address: String,

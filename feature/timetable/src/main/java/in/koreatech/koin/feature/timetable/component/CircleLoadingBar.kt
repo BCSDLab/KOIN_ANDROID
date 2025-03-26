@@ -21,7 +21,8 @@ fun CircleLoadingBar(
     if (loading.not()) return
 
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .background(Color(0x80FFFFFF))
             .fillMaxSize(),
         contentAlignment = Alignment.Center

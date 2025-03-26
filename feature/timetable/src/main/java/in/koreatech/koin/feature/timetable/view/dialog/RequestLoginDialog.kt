@@ -26,6 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
@@ -39,17 +42,19 @@ fun RequestLoginDialog(
 ) {
     BasicAlertDialog(
         onDismissRequest = { onDismiss(false) },
-        modifier = modifier,
+        modifier = modifier
     ) {
         Surface(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(
                         horizontal = 32.dp,
@@ -61,14 +66,14 @@ fun RequestLoginDialog(
                     text = stringResource(id = R.string.request_login_title),
                     color = KoinTheme.colors.neutral800,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.bold16,
+                    style = KoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(id = R.string.request_login_description),
                     color = KoinTheme.colors.neutral800,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.regular14,
+                    style = KoinTheme.typography.regular14
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
@@ -76,10 +81,12 @@ fun RequestLoginDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        colors = ButtonColors(
+                        colors =
+                        ButtonColors(
                             containerColor = KoinTheme.colors.neutral0,
                             contentColor = KoinTheme.colors.neutral500,
                             disabledContainerColor = KoinTheme.colors.neutral400,
@@ -90,14 +97,26 @@ fun RequestLoginDialog(
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
                         onClick = { onDismiss(false) }
                     ) {
-                        Text(text = stringResource(id = R.string.lecture_duplication_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
+                        Text(
+                            text = stringResource(id = R.string.lecture_duplication_cancellation),
+                            style = KoinTheme.typography.medium15,
+                            color = KoinTheme.colors.neutral600
+                        )
                     }
                     FilledTextButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.request_login_confirmation),
-                        onClick = { onConfirm() }
+                        onClick = {
+                            EventLogger.logClickEvent(
+                                EventAction.USER,
+                                AnalyticsConstant.Label.LOGIN_PROMPT,
+                                "시간표 관리 팝업"
+                            )
+                            onConfirm()
+                        }
                     )
                 }
             }

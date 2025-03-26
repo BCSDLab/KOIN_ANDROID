@@ -7,11 +7,14 @@ data class AccountSetupState(
     val passwordConfirm: String = "",
     val phoneNumber: String = "",
     val authCode: String = "",
+    val sendCodeIsClicked: Boolean = false,
     val isPasswordError: Boolean = false,
     val isPasswordConfirmError: Boolean = false,
-    val verifyState : SignupContinuationState = SignupContinuationState.AvailablePhoneNumber,
+    val verifyState: SignupContinuationState = SignupContinuationState.AvailablePhoneNumber,
     val phoneNumberState: SignupContinuationState = SignupContinuationState.AvailablePhoneNumber,
-    val verifyError:Throwable? = null,
-    val sendCodeError:Throwable? = null,
-    val isButtonEnabled: Boolean = false
+    val verifyError: Throwable? = null,
+    val sendCodeError: Throwable? = null,
+    val isButtonEnabled: Boolean = false,
+    val dialogVisibility: Boolean = false,
+    val hasRequestedSmsValidation: Boolean = false
 )

@@ -8,18 +8,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import `in`.koreatech.bus.screen.timetable.viewmodel.BusTimetableViewModel
-import `in`.koreatech.bus.util.goToArticle
 import `in`.koreatech.bus.state.ShuttleCourseRouteState
 import `in`.koreatech.bus.util.LocalOnRefresh
+import `in`.koreatech.bus.util.goToArticle
 
 @Composable
 internal fun BusTimetableScreen(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {},
     onNavigateToShuttleTimetableScreen: (ShuttleCourseRouteState) -> Unit = {},
-    viewModel: BusTimetableViewModel = hiltViewModel(),
+    viewModel: BusTimetableViewModel = hiltViewModel()
 ) {
-
     val busTimetableUiState by viewModel.timetableUiState.collectAsStateWithLifecycle()
     val busNoticeUiState by viewModel.noticeUiState.collectAsStateWithLifecycle()
 

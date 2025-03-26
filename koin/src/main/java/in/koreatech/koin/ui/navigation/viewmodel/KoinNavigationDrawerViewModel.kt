@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class KoinNavigationDrawerViewModel @Inject constructor(
@@ -32,8 +32,9 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     private val _menuEvent = SingleLiveEvent<MenuState>()
     val menuEvent: LiveData<MenuState> get() = _menuEvent
 
-    val userInfoFlow: StateFlow<User> = getUserStatusUseCase()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), User.Anonymous)
+    val userInfoFlow: StateFlow<User> =
+        getUserStatusUseCase()
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), User.Anonymous)
 
     private val _unReadMessageCount = MutableStateFlow(0)
     val unReadMessageCount: StateFlow<Int> = _unReadMessageCount.asStateFlow()
@@ -46,7 +47,7 @@ class KoinNavigationDrawerViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 updateDeviceTokenUseCase()
-            } catch (e:Exception) {
+            } catch (e: Exception) {
                 Timber.e("Failed Update Fcm Token : ${e.message}")
             }
         }
@@ -61,8 +62,11 @@ class KoinNavigationDrawerViewModel @Inject constructor(
             }
         }
 
-        if (tempUnReadMessageCount == _unReadMessageCount.value) return@launch
-        else _unReadMessageCount.value = tempUnReadMessageCount
+        if (tempUnReadMessageCount == _unReadMessageCount.value) {
+            return@launch
+        } else {
+            _unReadMessageCount.value = tempUnReadMessageCount
+        }
     }
 
     fun logout() = viewModelScope.launch {

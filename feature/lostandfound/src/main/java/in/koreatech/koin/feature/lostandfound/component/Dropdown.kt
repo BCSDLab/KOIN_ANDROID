@@ -44,11 +44,13 @@ fun Dropdown(
     onItemSelected: (Int) -> Unit = {}
 ) = Column(modifier = modifier) {
     val rotateDegree: Float by animateFloatAsState(
-        targetValue = if (isDropdownExpanded) 180f else 0f, label = "degree"
+        targetValue = if (isDropdownExpanded) 180f else 0f,
+        label = "degree"
     )
 
     Row(
-        modifier = Modifier
+        modifier =
+        Modifier
             .clip(KoinTheme.shapes.medium)
             .background(
                 color = KoinTheme.colors.info200
@@ -69,7 +71,7 @@ fun Dropdown(
         Icon(
             modifier = Modifier.rotate(rotateDegree),
             painter = painterResource(id = R.drawable.ic_dropdown_arrow),
-            contentDescription = "",
+            contentDescription = ""
         )
     }
 
@@ -79,7 +81,8 @@ fun Dropdown(
      * @see [androidx.compose.material3.DropdownMenu]
      */
     DropdownMenu(
-        modifier = Modifier
+        modifier =
+        Modifier
             .width(96.dp)
             .padding(0.dp),
         expanded = isDropdownExpanded,
@@ -89,7 +92,8 @@ fun Dropdown(
         shadowElevation = 0.dp
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize()
                 .clip(KoinTheme.shapes.medium)
                 .background(
@@ -102,14 +106,15 @@ fun Dropdown(
                         text = it,
                         style = KoinTheme.typography.medium14.copy(textAlign = TextAlign.Center),
                         color = KoinTheme.colors.primary600,
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .fillMaxWidth()
                             .noRippleClickable {
                                 onItemSelected(index)
                                 onDropdownExpandChange(false)
                             }
                             .padding(vertical = 8.dp, horizontal = 12.dp),
-                        maxLines = 1,
+                        maxLines = 1
                     )
                 }
             }

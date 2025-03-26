@@ -26,14 +26,16 @@ class MenuRecyclerViewAdapter() :
                     binding.menuNameEditText.addTextChangedListener(it)
                 }
             }
-            val textWatcher = @SuppressLint("RestrictedApi")
-            object : TextWatcherAdapter() {
+            val textWatcher =
                 @SuppressLint("RestrictedApi")
-                override fun afterTextChanged(s: Editable) {
-                    if (position < menuList.size)
-                        menuList[position] = s.toString()
+                object : TextWatcherAdapter() {
+                    @SuppressLint("RestrictedApi")
+                    override fun afterTextChanged(s: Editable) {
+                        if (position < menuList.size) {
+                            menuList[position] = s.toString()
+                        }
+                    }
                 }
-            }
             textWatcherMap.add(textWatcher)
             binding.menuNameEditText.addTextChangedListener(textWatcherMap[position])
             binding.menuNameEditText.setText(menuList[position])
@@ -53,7 +55,6 @@ class MenuRecyclerViewAdapter() :
     override fun getItemCount(): Int {
         return menuList.size
     }
-
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as MenuViewHolder).bind(position)

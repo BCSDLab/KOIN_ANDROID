@@ -28,10 +28,11 @@ fun LectureBottomSheet(
     modifier: Modifier = Modifier,
     onBottomSheetHeightChange: (Float) -> Unit = {},
     onClickLectureDelete: (TimetableLecture) -> Unit = {},
-    onClickComplete: () -> Unit = {},
+    onClickComplete: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .height(220.dp)
             .fillMaxWidth()
             .background(Color.White)
@@ -64,10 +65,11 @@ fun LectureBottomSheet(
 fun LectureBottomSheetHeader(
     modifier: Modifier = Modifier,
     onClickLectureDelete: () -> Unit = {},
-    onClickComplete: () -> Unit = {},
+    onClickComplete: () -> Unit = {}
 ) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -75,7 +77,8 @@ fun LectureBottomSheetHeader(
             text = stringResource(id = R.string.timetable_bottom_sheet_lecture_delete),
             style = KoinTheme.typography.bold18,
             color = KoinTheme.colors.danger700,
-            modifier = Modifier.clickable {
+            modifier =
+            Modifier.clickable {
                 onClickLectureDelete()
             }
         )
@@ -89,7 +92,8 @@ fun LectureBottomSheetHeader(
             text = stringResource(id = R.string.timetable_bottom_sheet_complete),
             style = KoinTheme.typography.medium18,
             color = KoinTheme.colors.neutral800,
-            modifier = Modifier.clickable {
+            modifier =
+            Modifier.clickable {
                 onClickComplete()
             }
         )

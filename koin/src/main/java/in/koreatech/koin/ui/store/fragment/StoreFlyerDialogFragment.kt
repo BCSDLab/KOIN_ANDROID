@@ -40,12 +40,14 @@ class StoreFlyerDialogFragment : DialogFragment() {
         binding.storeFlyerViewPager.apply {
             adapter = flyerAdapter
             orientation = ViewPager2.ORIENTATION_HORIZONTAL
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    updateIndicatorText(position + 1, flyerAdapter.itemCount)
+            registerOnPageChangeCallback(
+                object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        updateIndicatorText(position + 1, flyerAdapter.itemCount)
+                    }
                 }
-            })
+            )
         }
 
         binding.storeFlyerCloseImagebutton.setOnClickListener {

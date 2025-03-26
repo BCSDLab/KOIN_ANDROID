@@ -1,9 +1,7 @@
 package `in`.koreatech.koin.domain.usecase.business.menu
 
-import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
-import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 
 class RegisterMenuUseCase @Inject constructor(

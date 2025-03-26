@@ -42,19 +42,20 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
 
             val phoneNumber = rawPhoneNumber?.trim()?.formatPhoneNumber()
 
-            val newUser: User = when (beforeUser) {
-                User.Anonymous -> throw IllegalAccessException()
-                is User.Student -> {
-                    beforeUser.copy(
-                        name = name?.trim()?.ifBlank { null },
-                        nickname = nickname?.trim()?.ifBlank { null },
-                        phoneNumber = phoneNumber?.ifBlank { null },
-                        gender = gender,
-                        studentNumber = studentId?.trim()?.ifBlank { null },
-                        major = major?.ifBlank { null }
-                    )
+            val newUser: User =
+                when (beforeUser) {
+                    User.Anonymous -> throw IllegalAccessException()
+                    is User.Student -> {
+                        beforeUser.copy(
+                            name = name?.trim()?.ifBlank { null },
+                            nickname = nickname?.trim()?.ifBlank { null },
+                            phoneNumber = phoneNumber?.ifBlank { null },
+                            gender = gender,
+                            studentNumber = studentId?.trim()?.ifBlank { null },
+                            major = major?.ifBlank { null }
+                        )
+                    }
                 }
-            }
 
             userRepository.updateUser(newUser)
             null

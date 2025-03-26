@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.timetable.view.dialog
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,8 +36,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
-import timber.log.Timber
 import java.time.LocalTime
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,11 +49,12 @@ fun TimetableTimePickerDialog(
     onDismiss: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onConfirm: (customContent: CustomExtraContentState) -> Unit = { }
 ) {
-    val hourItems = if (isStartTime) {
-        (9..23).map { it.toString() }
-    } else {
-        (9..24).map { it.toString() }
-    }
+    val hourItems =
+        if (isStartTime) {
+            (9..23).map { it.toString() }
+        } else {
+            (9..24).map { it.toString() }
+        }
     val minutesItems = listOf("00", "30")
 
     val hourPickerState = rememberPickerState()
@@ -62,7 +62,6 @@ fun TimetableTimePickerDialog(
 
     val hourItemsState = rememberSaveable { mutableStateOf(hourItems) }
     val minutesItemsState = rememberSaveable { mutableStateOf(minutesItems) }
-
 
     LaunchedEffect(hourPickerState) {
         snapshotFlow { hourPickerState.selectedItem }
@@ -86,7 +85,6 @@ fun TimetableTimePickerDialog(
             }
     }
 
-
     BasicAlertDialog(
         onDismissRequest = { onDismiss(customContent, false) },
         modifier = modifier
@@ -96,13 +94,14 @@ fun TimetableTimePickerDialog(
             color = Color.White
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .background(color = Color.White)
                     .padding(
                         top = 24.dp,
                         bottom = 19.dp,
                         start = (31.5).dp,
-                        end = (31.5).dp,
+                        end = (31.5).dp
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -113,15 +112,17 @@ fun TimetableTimePickerDialog(
                     color = KoinTheme.colors.neutral800
                 )
                 Row(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     KoinPicker(
                         items = hourItemsState.value,
                         pickerState = hourPickerState,
                         visibleItemsCount = 5,
-                        startIndex = if (isStartTime) {
+                        startIndex =
+                        if (isStartTime) {
                             (customContent.startTime.hour - 9)
                         } else {
                             if (customContent.endTime.hour == 23 && customContent.endTime.minute == 59) {
@@ -130,20 +131,23 @@ fun TimetableTimePickerDialog(
                                 (customContent.endTime.hour - 9)
                             }
                         },
-                        selectedTextStyle = KoinTheme.typography.bold20.copy(
+                        selectedTextStyle =
+                        KoinTheme.typography.bold20.copy(
                             textAlign = TextAlign.End
                         ),
-                        unselectedTextStyle = KoinTheme.typography.bold20.copy(
+                        unselectedTextStyle =
+                        KoinTheme.typography.bold20.copy(
                             textAlign = TextAlign.End
                         ),
                         selectedItemColor = KoinTheme.colors.neutral700,
                         unselectedItemColor = KoinTheme.colors.neutral500,
-                        brushVerticalGradient = Brush.verticalGradient(
+                        brushVerticalGradient =
+                        Brush.verticalGradient(
                             0f to Color.Transparent,
                             0.5f to Color.Black,
                             1f to Color.Transparent
                         ),
-                        modifier = Modifier.weight(.45f),
+                        modifier = Modifier.weight(.45f)
                     )
                     Text(
                         text = ":",
@@ -156,7 +160,8 @@ fun TimetableTimePickerDialog(
                         items = minutesItemsState.value,
                         pickerState = minutesPickerState,
                         visibleItemsCount = 5,
-                        startIndex = if (isStartTime) {
+                        startIndex =
+                        if (isStartTime) {
                             if (customContent.startTime.minute == 0) {
                                 0
                             } else {
@@ -174,7 +179,8 @@ fun TimetableTimePickerDialog(
                         selectedItemColor = KoinTheme.colors.neutral700,
                         unselectedItemColor = KoinTheme.colors.neutral500,
                         modifier = Modifier.weight(.45f),
-                        brushVerticalGradient = Brush.verticalGradient(
+                        brushVerticalGradient =
+                        Brush.verticalGradient(
                             0f to Color.Transparent,
                             0.5f to Color.Black,
                             1f to Color.Transparent
@@ -187,10 +193,12 @@ fun TimetableTimePickerDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        colors = ButtonColors(
+                        colors =
+                        ButtonColors(
                             containerColor = KoinTheme.colors.neutral0,
                             contentColor = KoinTheme.colors.neutral500,
                             disabledContainerColor = KoinTheme.colors.neutral400,
@@ -208,7 +216,8 @@ fun TimetableTimePickerDialog(
                         )
                     }
                     FilledTextButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.common_confirmation),
@@ -216,7 +225,8 @@ fun TimetableTimePickerDialog(
                             if (isStartTime) {
                                 onConfirm(
                                     customContent.copy(
-                                        startTime = LocalTime.of(
+                                        startTime =
+                                        LocalTime.of(
                                             hourPickerState.selectedItem.toInt(),
                                             minutesPickerState.selectedItem.toInt()
                                         )
@@ -226,7 +236,8 @@ fun TimetableTimePickerDialog(
                                 if (hourPickerState.selectedItem == "9") {
                                     onConfirm(
                                         customContent.copy(
-                                            endTime = LocalTime.of(
+                                            endTime =
+                                            LocalTime.of(
                                                 hourPickerState.selectedItem.toInt(),
                                                 30
                                             )
@@ -241,7 +252,8 @@ fun TimetableTimePickerDialog(
                                 } else {
                                     onConfirm(
                                         customContent.copy(
-                                            endTime = LocalTime.of(
+                                            endTime =
+                                            LocalTime.of(
                                                 hourPickerState.selectedItem.toInt(),
                                                 minutesPickerState.selectedItem.toInt()
                                             )
@@ -263,6 +275,6 @@ private fun TimetableTimePickerDialogPreview() {
     TimetableTimePickerDialog(
         title = "시작시간을 선택해주세요.",
         isStartTime = true,
-        customContent = CustomExtraContentState(),
+        customContent = CustomExtraContentState()
     )
 }

@@ -13,7 +13,7 @@ data class ArticleHeaderState(
     val author: String,
     val viewCount: Int,
     val registeredAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 ) : Parcelable
 
 fun ArticleHeader.toArticleHeaderState() = ArticleHeaderState(
@@ -23,5 +23,5 @@ fun ArticleHeader.toArticleHeaderState() = ArticleHeaderState(
     author = author,
     viewCount = viewCount,
     registeredAt = registeredAt,
-    updatedAt = updatedAt,
+    updatedAt = updatedAt
 )

@@ -12,7 +12,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 internal fun NodeItem(
     nodeTitle: String,
     modifier: Modifier = Modifier,
-    nodeDescription: String = "",
+    nodeDescription: String = ""
 ) {
     Column(
         modifier = modifier,
@@ -22,12 +22,13 @@ internal fun NodeItem(
             text = nodeTitle,
             style = KoinTheme.typography.medium15
         )
-        if (nodeDescription.isNotBlank())
+        if (nodeDescription.isNotBlank()) {
             Text(
                 text = nodeDescription,
                 style = KoinTheme.typography.regular12,
                 color = KoinTheme.colors.neutral500
             )
+        }
     }
 }
 

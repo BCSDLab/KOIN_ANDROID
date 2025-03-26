@@ -15,9 +15,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.animation.skeleton
 
 @Composable
-internal fun ShuttleTimetableLoading(
-    modifier: Modifier = Modifier
-) {
+internal fun ShuttleTimetableLoading(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
     ) {
@@ -25,40 +23,44 @@ internal fun ShuttleTimetableLoading(
             modifier = Modifier
         ) {
             Spacer(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .width(30.dp)
                     .height(16.dp)
                     .skeleton()
             )
 
             Spacer(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(top = 6.dp)
                     .width(120.dp)
                     .height(24.dp)
-                    .skeleton(),
+                    .skeleton()
             )
         }
 
         Spacer(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .height(24.dp)
         )
 
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min),
+                .height(IntrinsicSize.Min)
         ) {
-
             Column(
                 modifier = Modifier.padding(end = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 repeat(25) {
                     Spacer(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .width(90.dp)
                             .height(30.dp)
                             .skeleton()
@@ -72,7 +74,8 @@ internal fun ShuttleTimetableLoading(
             ) {
                 repeat(25) {
                     Spacer(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .fillMaxWidth()
                             .height(30.dp)
                             .skeleton()
@@ -82,7 +85,8 @@ internal fun ShuttleTimetableLoading(
         }
 
         Spacer(
-            modifier = Modifier.fillMaxWidth()
+            modifier =
+            Modifier.fillMaxWidth()
                 .height(120.dp)
         )
     }

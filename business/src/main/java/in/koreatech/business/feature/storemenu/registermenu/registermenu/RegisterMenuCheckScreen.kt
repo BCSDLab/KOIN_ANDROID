@@ -1,30 +1,21 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
-import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -33,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,7 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.feature.storemenu.TitleAndContent
 import `in`.koreatech.business.feature.storemenu.TitleAndImageUri
 import `in`.koreatech.business.feature.storemenu.TitleAndOptionPrice
@@ -51,9 +40,6 @@ import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
 import `in`.koreatech.business.ui.theme.ColorTextBackgrond
-import `in`.koreatech.business.ui.theme.ColorTransparency
-import `in`.koreatech.business.ui.theme.Gray6
-import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
@@ -81,7 +67,6 @@ fun RegisterMenuCheckScreen(
     HandleSideEffects(viewModel, goToStoreMainScreen)
 }
 
-
 @Composable
 fun RegisterMenuCheckScreenImpl(
     modifier: Modifier = Modifier,
@@ -94,26 +79,28 @@ fun RegisterMenuCheckScreenImpl(
         modifier = Modifier.fillMaxSize()
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .height(62.dp)
-                .background(ColorPrimary),
+                .background(ColorPrimary)
         ) {
             IconButton(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .align(Alignment.CenterStart)
                     .padding(start = 16.dp),
                 onClick = { onBackPressed() }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_arrow_back),
-                    contentDescription = stringResource(R.string.back),
+                    contentDescription = stringResource(R.string.back)
                 )
             }
             Text(
                 text = stringResource(R.string.menu_add),
                 modifier = Modifier.align(Alignment.Center),
-                style = TextStyle(color = Color.White, fontSize = 20.sp),
+                style = TextStyle(color = Color.White, fontSize = 20.sp)
             )
         }
 
@@ -122,7 +109,8 @@ fun RegisterMenuCheckScreenImpl(
         ) {
             item {
                 Box(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)
                         .height(35.dp)
@@ -130,7 +118,8 @@ fun RegisterMenuCheckScreenImpl(
                     contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .padding(start = 16.dp),
                         text = stringResource(id = R.string.menu_info),
                         color = ColorSecondaryText
@@ -166,7 +155,8 @@ fun RegisterMenuCheckScreenImpl(
 
             item {
                 Row(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(horizontal = 16.dp)
                         .padding(top = 24.dp, bottom = 52.dp)
                         .fillMaxWidth()
@@ -177,7 +167,8 @@ fun RegisterMenuCheckScreenImpl(
                         onClick = onBackPressed,
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.White),
-                        modifier = modifier
+                        modifier =
+                        modifier
                             .border(1.dp, ColorSecondary)
                             .fillMaxHeight()
                             .width(113.dp)
@@ -194,7 +185,8 @@ fun RegisterMenuCheckScreenImpl(
                         onClick = onPositiveButtonClicked,
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(ColorPrimary),
-                        modifier = modifier
+                        modifier =
+                        modifier
                             .fillMaxSize()
                     ) {
                         Text(
@@ -211,22 +203,25 @@ fun RegisterMenuCheckScreenImpl(
 }
 
 @Composable
-private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScreen: () -> Unit) {
+private fun HandleSideEffects(
+    viewModel: RegisterMenuViewModel,
+    goToCheckMenuScreen: () -> Unit
+) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is RegisterMenuSideEffect.FinishRegisterMenu -> {
-
                 ToastUtil.getInstance().makeShort(context.getString(R.string.menu_success_register_menu))
                 goToCheckMenuScreen()
             }
             is RegisterMenuSideEffect.ShowMessage -> {
-                val message = when (sideEffect.type) {
-                    RegisterMenuErrorType.FailRegisterMenu ->context.getString(R.string.menu_fail_register_menu)
-                    RegisterMenuErrorType.FailUploadImage ->context.getString(R.string.menu_fail_upload_image)
-                    else -> ""
-                }
+                val message =
+                    when (sideEffect.type) {
+                        RegisterMenuErrorType.FailRegisterMenu -> context.getString(R.string.menu_fail_register_menu)
+                        RegisterMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
+                        else -> ""
+                    }
                 ToastUtil.getInstance().makeShort(message)
             }
             else -> ""

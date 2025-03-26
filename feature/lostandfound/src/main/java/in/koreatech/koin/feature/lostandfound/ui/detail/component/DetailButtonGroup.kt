@@ -41,7 +41,7 @@ fun DetailButtonGroup(
             titleStyle = KoinTheme.typography.medium14.copy(color = KoinTheme.colors.neutral600),
             onPositive = {
                 EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_DELETE_CONFIRM,
+                    AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE_CONFIRM,
                     "확인"
                 )
                 onDeleteArticleClick()
@@ -54,7 +54,8 @@ fun DetailButtonGroup(
     }
 
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .padding(horizontal = 24.dp, vertical = 16.dp)
             .fillMaxWidth()
     ) {
@@ -62,7 +63,8 @@ fun DetailButtonGroup(
             modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
             contentPadding = PaddingValues(12.dp, 6.dp),
             onClick = onArticleListClick,
-            colors = ButtonDefaults.buttonColors(
+            colors =
+            ButtonDefaults.buttonColors(
                 containerColor = KoinTheme.colors.neutral300,
                 contentColor = KoinTheme.colors.neutral600
             ),
@@ -84,11 +86,12 @@ fun DetailButtonGroup(
                 onClick = {
                     onShowDeleteDialogChange(true)
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_DELETE,
+                        AnalyticsConstant.Label.LostAndFound.FIND_USER_DELETE,
                         "삭제"
                     )
                 },
-                colors = ButtonDefaults.buttonColors(
+                colors =
+                ButtonDefaults.buttonColors(
                     containerColor = KoinTheme.colors.neutral300,
                     contentColor = KoinTheme.colors.neutral600
                 ),
@@ -116,7 +119,8 @@ fun DetailButtonGroup(
                     modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                     contentPadding = PaddingValues(10.dp, 6.dp),
                     onClick = onChatRoomClick,
-                    colors = ButtonDefaults.buttonColors(
+                    colors =
+                    ButtonDefaults.buttonColors(
                         containerColor = KoinTheme.colors.neutral300,
                         contentColor = KoinTheme.colors.neutral600
                     ),
@@ -144,7 +148,8 @@ fun DetailButtonGroup(
                     modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                     contentPadding = PaddingValues(10.dp, 6.dp),
                     onClick = onReportArticleClick,
-                    colors = ButtonDefaults.buttonColors(
+                    colors =
+                    ButtonDefaults.buttonColors(
                         containerColor = KoinTheme.colors.neutral300,
                         contentColor = KoinTheme.colors.neutral600
                     ),

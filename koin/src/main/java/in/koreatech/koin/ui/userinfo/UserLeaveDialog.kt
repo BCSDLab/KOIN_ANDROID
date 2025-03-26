@@ -18,14 +18,12 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.util.ext.setWidthPercent
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
 class UserLeaveDialog : DialogFragment(R.layout.dialog_user_leave) {
     private val binding by dataBinding<DialogUserLeaveBinding>()
     private val viewModel by viewModels<UserLeaveViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         initView()
         initObservers()
 

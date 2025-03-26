@@ -42,7 +42,7 @@ class WriteReviewViewModel @Inject constructor(
         }
     }
 
-    fun setImage(imageUri: List<String>){
+    fun setImage(imageUri: List<String>) {
         _menuImageUrls.value = imageUri
     }
 
@@ -54,15 +54,12 @@ class WriteReviewViewModel @Inject constructor(
         }
     }
 
-    fun getPreSignedUrl(
-        fileSize: Long,
-        fileType: String,
-        fileName: String,
-        imageUri: String
-    ) {
-        viewModelScope.launchWithLoading{
+    fun getPreSignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) {
+        viewModelScope.launchWithLoading {
             getMarketPreSignedUrlUseCase(
-                fileSize, fileType, fileName
+                fileSize,
+                fileType,
+                fileName
             ).onSuccess {
                 uploadImage(
                     preSignedUrl = it.second,
@@ -74,7 +71,6 @@ class WriteReviewViewModel @Inject constructor(
             }.onFailure {
                 _menuImageUrls.value = emptyList()
             }
-
         }
     }
 

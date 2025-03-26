@@ -37,7 +37,6 @@ internal fun ExpressTimetableScreenContent(
     modifier: Modifier = Modifier,
     onDirectionChanged: (CommonDirectionType) -> Unit = {}
 ) {
-
     var selectedDirectionType by rememberSaveable { mutableStateOf(CommonDirectionType.TO_BYEONGCHEON) }
     val context = LocalContext.current
 
@@ -45,7 +44,8 @@ internal fun ExpressTimetableScreenContent(
         modifier = modifier
     ) {
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp, horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically

@@ -22,7 +22,6 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -88,7 +87,7 @@ fun TimetableScreen(
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickAddCustomContent: () -> Unit = {},
-    onClickRemoveCustomContent: (id: Int) -> Unit = {},
+    onClickRemoveCustomContent: (id: Int) -> Unit = {}
 ) {
     var bottomSheetHeight by remember { mutableFloatStateOf(0f) }
 
@@ -134,7 +133,7 @@ fun TimetableScreen(
                         lecture = detailLecture,
                         onBottomSheetHeightChange = { bottomSheetHeight = it },
                         onClickLectureDelete = onClickBottomSheetDetailDelete,
-                        onClickComplete = onClickBottomSheetDetailComplete,
+                        onClickComplete = onClickBottomSheetDetailComplete
                     )
                 }
             }
@@ -143,7 +142,8 @@ fun TimetableScreen(
         sheetElevation = 20.dp
     ) {
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize()
                 .fillMaxHeight()
                 .background(Color.White)
@@ -152,10 +152,11 @@ fun TimetableScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TimetableScheduleBox(
                     currentSemester = currentSemester,
@@ -177,13 +178,13 @@ fun TimetableScreen(
     }
 }
 
-
 @OptIn(ExperimentalMaterialApi::class)
 private fun Modifier.dynamicPadding(
     sheetState: BottomSheetState,
-    sheetHeight: Float,
+    sheetHeight: Float
 ) = padding(
-    bottom = if (sheetState.isExpanded) {
+    bottom =
+    if (sheetState.isExpanded) {
         if (sheetState.progress == 1.0f) {
             if (sheetState.currentValue == BottomSheetValue.Expanded && sheetState.targetValue == BottomSheetValue.Collapsed) {
                 0.dp
@@ -215,10 +216,11 @@ private fun TimetableScreenPreview() {
         searchText = "",
         bottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
         bottomSheetUI = BottomSheetUI.DEFAULT,
-        sheetState = rememberBottomSheetState(
+        sheetState =
+        rememberBottomSheetState(
             initialValue = BottomSheetValue.Collapsed
         ),
         sheetLazyListState = rememberLazyListState(),
-        scaffoldState = rememberBottomSheetScaffoldState(),
+        scaffoldState = rememberBottomSheetScaffoldState()
     )
 }

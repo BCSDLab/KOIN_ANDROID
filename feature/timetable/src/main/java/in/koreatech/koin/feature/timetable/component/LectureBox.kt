@@ -41,18 +41,19 @@ fun LectureBox(
     onClickAddLecture: (lecture: Lecture) -> Unit = {},
     onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
     onSelectedLecture: (lecture: Lecture?) -> Unit = {},
-    onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {},
+    onClickLecture: (timetableEvents: List<TimetableEvent>) -> Unit = {}
 ) {
     val events = lecture.toTimetableEvents()
     val isSelected by remember(lecture, selectedLecture) {
         derivedStateOf { selectedLecture == lecture }
     }
     val isAdded by remember(lecture, timetableEvents) {
-        derivedStateOf { timetableEvents.any {lecture.id == it.lectureId} }
+        derivedStateOf { timetableEvents.any { lecture.id == it.lectureId } }
     }
 
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .selectable(
                 selected = isSelected,
@@ -67,11 +68,12 @@ fun LectureBox(
                 }
             )
             .background(
-                color = if (isSelected) {
+                color =
+                if (isSelected) {
                     Color(0xFFF2F6FA)
                 } else {
                     Color.White
-                },
+                }
             )
             .padding(top = if (position != 0) 8.dp else 0.dp)
             .padding(end = 7.dp),
@@ -84,7 +86,7 @@ fun LectureBox(
             Text(
                 text = lecture.name,
                 style = KoinTheme.typography.bold12,
-                color = KoinTheme.colors.neutral800,
+                color = KoinTheme.colors.neutral800
             )
             Text(
                 text = lecture.professor.ifEmpty { "미배정" },
@@ -134,10 +136,11 @@ private fun LectureBoxPreview() {
     KoinTheme {
         LectureBox(
             position = 1,
-            lecture = dummyLecture.copy(
+            lecture =
+            dummyLecture.copy(
                 classTime = listOf(310, 311, 312, 313, 410, 411, 412, 413)
             ),
-            selectedLecture = null,
+            selectedLecture = null
         )
     }
 }
@@ -150,7 +153,7 @@ private fun LectureBoxPreview_Added() {
             position = 2,
             lecture = dummyLecture,
             timetableEvents = dummyLecture.toTimetableEvents(),
-            selectedLecture = dummyLecture,
+            selectedLecture = dummyLecture
         )
     }
 }
@@ -162,7 +165,7 @@ private fun LectureBoxPreview_Selected() {
         LectureBox(
             position = 2,
             lecture = dummyLecture,
-            selectedLecture = dummyLecture,
+            selectedLecture = dummyLecture
         )
     }
 }

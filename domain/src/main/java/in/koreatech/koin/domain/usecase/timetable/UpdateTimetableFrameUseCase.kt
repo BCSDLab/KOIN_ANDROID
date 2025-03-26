@@ -5,7 +5,6 @@ import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
 import `in`.koreatech.koin.domain.repository.TimetableRepository
 import javax.inject.Inject
 
-
 class UpdateTimetableFrameUseCase @Inject constructor(
     private val timetableRepository: TimetableRepository
 ) {
@@ -15,7 +14,11 @@ class UpdateTimetableFrameUseCase @Inject constructor(
      * @param name 변경할 프레임 이름
      * @param isMain 변경할 프레임 기본 시간표 여부
      */
-    suspend operator fun invoke(id: Int, name: String, isMain: Boolean): Result<TimetableFrame> {
+    suspend operator fun invoke(
+        id: Int,
+        name: String,
+        isMain: Boolean
+    ): Result<TimetableFrame> {
         return timetableRepository.putTimetableFrame(
             id,
             TimetableFrameQuery(

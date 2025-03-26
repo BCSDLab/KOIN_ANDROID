@@ -16,4 +16,3 @@ object LoadingState {
         _isLoading.value = false
     }
 }
-

@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.response.store
 
 import com.google.gson.annotations.SerializedName
-import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 
 data class StoreMenuRegisterResponse(
     @SerializedName("category_ids") val menuCategoryId: List<Int>,
@@ -11,9 +10,9 @@ data class StoreMenuRegisterResponse(
     @SerializedName("name") val name: String,
     @SerializedName("option_prices") val optionPrices: List<OptionPrice>?,
     @SerializedName("single_price") val singlePrice: Int?
-){
+) {
     data class OptionPrice(
         @SerializedName("option") val option: String?,
-        @SerializedName("price") val price: Int?,
+        @SerializedName("price") val price: Int?
     )
 }

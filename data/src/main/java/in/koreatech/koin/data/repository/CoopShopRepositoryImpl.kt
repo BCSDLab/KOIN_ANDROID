@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class CoopShopRepositoryImpl @Inject constructor(
     private val coopShopRemoteDataSource: CoopShopRemoteDataSource
-): CoopShopRepository {
+) : CoopShopRepository {
     override suspend fun getCoopShopAll(): List<CoopShop> {
         return coopShopRemoteDataSource.getCoopShopAll().map(CoopShopResponse::toCoopShop)
     }
@@ -17,5 +17,4 @@ class CoopShopRepositoryImpl @Inject constructor(
     override suspend fun getCoopShopById(id: Int): CoopShop {
         return coopShopRemoteDataSource.getCoopShopById(id).toCoopShop()
     }
-
 }

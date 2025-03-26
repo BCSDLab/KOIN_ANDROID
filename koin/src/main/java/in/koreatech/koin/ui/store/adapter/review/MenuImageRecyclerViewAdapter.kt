@@ -15,10 +15,8 @@ class MenuImageRecyclerViewAdapter(
     ListAdapter<String, MenuImageRecyclerViewAdapter.MenuImageRecyclerViewHolder>(
         diffCallback
     ) {
-
     inner class MenuImageRecyclerViewHolder(val binding: ItemWriteReviewImageBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -55,14 +53,15 @@ class MenuImageRecyclerViewAdapter(
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<String>() {
-            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-                return oldItem == newItem
-            }
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<String>() {
+                override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

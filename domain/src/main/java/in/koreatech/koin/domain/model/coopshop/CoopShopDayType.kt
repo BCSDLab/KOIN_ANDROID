@@ -8,8 +8,9 @@ enum class CoopShopDayType(
 }
 
 val String.toCoopShopDayType
-    get() = when (this) {
-        "평일" -> CoopShopDayType.Weekday
-        "주말" -> CoopShopDayType.Weekend
-        else -> throw IllegalArgumentException("Invalid day type")
-    }
+    get() =
+        when (this) {
+            "평일" -> CoopShopDayType.Weekday
+            "주말" -> CoopShopDayType.Weekend
+            else -> throw IllegalArgumentException("Invalid day type")
+        }

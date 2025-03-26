@@ -9,40 +9,42 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.ui.businesslogin.BusinessLoginActivity
+import java.net.HttpURLConnection
+import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
-import java.net.HttpURLConnection
-import javax.inject.Inject
 
 class OwnerTokenAuthenticator @Inject constructor(
     @ApplicationContext private val context: Context,
     private val tokenLocalDataSource: TokenLocalDataSource
-): Authenticator {
+) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
-        val request = try {
-            if(response.code != HttpURLConnection.HTTP_UNAUTHORIZED) null
-            else {
-                val accessToken = tokenLocalDataSource.getOwnerAccessToken()
-                if(accessToken == response.request.header("OwnerAuthorization")) {
-                    tokenLocalDataSource.removeAccessToken()
-                    goToLoginActivity()
+        val request =
+            try {
+                if (response.code != HttpURLConnection.HTTP_UNAUTHORIZED) {
                     null
                 } else {
-                    if(accessToken.isNullOrEmpty()) {
+                    val accessToken = tokenLocalDataSource.getOwnerAccessToken()
+                    if (accessToken == response.request.header("OwnerAuthorization")) {
+                        tokenLocalDataSource.removeAccessToken()
                         goToLoginActivity()
                         null
                     } else {
-                        getRequest(response, accessToken)
+                        if (accessToken.isNullOrEmpty()) {
+                            goToLoginActivity()
+                            null
+                        } else {
+                            getRequest(response, accessToken)
+                        }
                     }
                 }
+            } catch (e: Exception) {
+                goToLoginActivity()
+                null
             }
-        } catch (e: Exception) {
-            goToLoginActivity()
-            null
-        }
 
         request
     }

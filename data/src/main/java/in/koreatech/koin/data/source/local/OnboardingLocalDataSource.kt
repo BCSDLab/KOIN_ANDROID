@@ -5,15 +5,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class OnboardingLocalDataSource @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
-
     suspend fun getShouldOnboarding(onboardingType: String): Boolean {
         return dataStore.data.catch {
             emit(emptyPreferences())
@@ -22,15 +21,19 @@ class OnboardingLocalDataSource @Inject constructor(
         }.firstOrNull() ?: true
     }
 
-    suspend fun updateShouldOnboarding(onboardingType: String, shouldShow: Boolean) {
+    suspend fun updateShouldOnboarding(
+        onboardingType: String,
+        shouldShow: Boolean
+    ) {
         dataStore.edit { preferences ->
             preferences[booleanPreferencesKey(onboardingType)] = shouldShow
         }
     }
 
-    fun getShouldOnboardingFlow(onboardingType: String) = dataStore.data.catch {
-        emit(emptyPreferences())
-    }.map { preferences ->
-        preferences[booleanPreferencesKey(onboardingType)] ?: true
-    }
+    fun getShouldOnboardingFlow(onboardingType: String) =
+        dataStore.data.catch {
+            emit(emptyPreferences())
+        }.map { preferences ->
+            preferences[booleanPreferencesKey(onboardingType)] ?: true
+        }
 }

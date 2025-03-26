@@ -17,23 +17,24 @@ import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.IconForm
 import com.skydoves.balloon.IconGravity
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class OnboardingManager @Inject internal constructor(
     private val onboardingRepository: OnboardingRepository,
-    private val context: Context,
+    private val context: Context
 ) {
-
     private lateinit var tooltip: Balloon
-    private val tooltipDismissObserver = object : DefaultLifecycleObserver {
-        override fun onPause(owner: LifecycleOwner) {
-            if (::tooltip.isInitialized)
-                tooltip.dismiss()
-            super.onPause(owner)
+    private val tooltipDismissObserver =
+        object : DefaultLifecycleObserver {
+            override fun onPause(owner: LifecycleOwner) {
+                if (::tooltip.isInitialized) {
+                    tooltip.dismiss()
+                }
+                super.onPause(owner)
+            }
         }
-    }
 
     /**
      * 앱 실행 최초 1회에만 툴팁 표시
@@ -64,7 +65,7 @@ class OnboardingManager @Inject internal constructor(
         type: OnboardingType,
         view: View,
         @FloatRange(from = 0.0, to = 1.0) arrowPosition: Float = 0.5f,
-        arrowDirection: ArrowDirection,
+        arrowDirection: ArrowDirection
     ) {
         lifecycle.addObserver(tooltipDismissObserver)
         lifecycleScope.launch {
@@ -99,13 +100,9 @@ class OnboardingManager @Inject internal constructor(
         }
     }
 
-    fun getShouldOnboardFlow(
-        type: OnboardingType
-    ) = onboardingRepository.getShouldOnboardingFlow(type.name)
+    fun getShouldOnboardFlow(type: OnboardingType) = onboardingRepository.getShouldOnboardingFlow(type.name)
 
-    suspend fun getShouldOnboard(
-        type: OnboardingType,
-    ) : Boolean {
+    suspend fun getShouldOnboard(type: OnboardingType): Boolean {
         return onboardingRepository.getShouldOnboarding(type.name)
     }
 
@@ -117,8 +114,9 @@ class OnboardingManager @Inject internal constructor(
     }
 
     fun dismissTooltip() {
-        if (::tooltip.isInitialized)
+        if (::tooltip.isInitialized) {
             tooltip.dismiss()
+        }
     }
 
     private fun createTooltip(
@@ -126,11 +124,12 @@ class OnboardingManager @Inject internal constructor(
         arrowDirection: ArrowDirection,
         arrowPosition: Float
     ): Balloon {
-        val iconForm = IconForm.Builder(context)
-            .setDrawable(AppCompatResources.getDrawable(context, R.drawable.round_close_24))
-            .setIconSize(32)
-            .setDrawableGravity(IconGravity.END)
-            .build()
+        val iconForm =
+            IconForm.Builder(context)
+                .setDrawable(AppCompatResources.getDrawable(context, R.drawable.round_close_24))
+                .setIconSize(32)
+                .setDrawableGravity(IconGravity.END)
+                .build()
 
         return Balloon.Builder(context)
             .setHeight(BalloonSizeSpec.WRAP)
@@ -152,13 +151,17 @@ class OnboardingManager @Inject internal constructor(
             .setCornerRadius(8f)
             .setBalloonAnimation(BalloonAnimation.FADE)
             .apply {
-                if (type.descriptionResId != 0)
+                if (type.descriptionResId != 0) {
                     setText(context.getString(type.descriptionResId))
+                }
             }
             .build()
     }
 
-    private fun Balloon.showAlign(view: View, arrowDirection: ArrowDirection) {
+    private fun Balloon.showAlign(
+        view: View,
+        arrowDirection: ArrowDirection
+    ) {
         when (arrowDirection) {
             ArrowDirection.BOTTOM -> showAlignTop(view)
             ArrowDirection.TOP -> showAlignBottom(view)

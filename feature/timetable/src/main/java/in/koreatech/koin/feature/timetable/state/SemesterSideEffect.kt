@@ -3,11 +3,11 @@ package `in`.koreatech.koin.feature.timetable.state
 sealed class SemesterSideEffect {
     data class SnackBar(
         val message: String
-    ): SemesterSideEffect()
+    ) : SemesterSideEffect()
 
     data class Toast(
         val message: String
-    ): SemesterSideEffect()
+    ) : SemesterSideEffect()
 
-    data object Nothing: SemesterSideEffect()
+    data object Nothing : SemesterSideEffect()
 }

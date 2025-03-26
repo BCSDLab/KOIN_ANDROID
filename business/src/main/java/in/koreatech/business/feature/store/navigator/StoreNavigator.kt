@@ -1,7 +1,6 @@
 package `in`.koreatech.business.feature.store.navigator
 
 import android.os.Bundle
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
@@ -18,50 +17,59 @@ import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyOperatingTimeScreen
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailScreen
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
+import `in`.koreatech.business.navigation.ADDEVENT
+import `in`.koreatech.business.navigation.MANAGEMENUSCREEN
+import `in`.koreatech.business.navigation.MODIFYMENUSCREEN
 import `in`.koreatech.business.navigation.MYSTORESCREEN
 import `in`.koreatech.business.navigation.REGISTERSTORESCREEN
 import `in`.koreatech.business.navigation.SIGNINSCREEN
 import `in`.koreatech.business.navigation.navigate
 import `in`.koreatech.business.navigation.sharedHiltViewModel
-import `in`.koreatech.business.navigation.toNavigateModifyMenuScreen
 import `in`.koreatech.business.navigation.toNavigateRegisterMenuScreen
+import `in`.koreatech.business.navigation.toNavigateScreenWithMenuId
+import `in`.koreatech.business.navigation.toNavigateScreenWithStoreId
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.myStoreScreen(
-    navController: NavHostController
-){
+fun NavGraphBuilder.myStoreScreen(navController: NavHostController) {
     navigation(
         route = MYSTORESCREEN,
         startDestination = StoreRoute.MY_STORE.name
-    ){
+    ) {
         composable(
-            route = StoreRoute.MY_STORE.name,
+            route = StoreRoute.MY_STORE.name
         ) {
             val myStoreInfoViewModel: MyStoreDetailViewModel = it.sharedHiltViewModel(navController = navController)
             val modifyInfoViewModel: ModifyInfoViewModel = it.sharedHiltViewModel(navController = navController)
+            val myStoreInfoState = myStoreInfoViewModel.collectAsState().value
             MyStoreDetailScreen(
                 modifier = Modifier.fillMaxSize(),
                 navigateToLoginScreen = {
-                    navController.navigate(SIGNINSCREEN){
-                        popUpTo(MYSTORESCREEN){
+                    navController.navigate(SIGNINSCREEN) {
+                        popUpTo(MYSTORESCREEN) {
                             inclusive = true
                         }
                     }
                 },
-                navigateToModifyScreen = {storeId ->
+                navigateToModifyScreen = { storeId ->
                     navController.navigate(StoreRoute.MODIFY_INFO.name)
-                                         },
+                },
                 viewModel = myStoreInfoViewModel,
                 modifyInfoViewModel = modifyInfoViewModel,
+                navigateToAddEventScreen = { storeId ->
+                    navController.toNavigateScreenWithStoreId(ADDEVENT, storeId)
+                },
+                navigateToManageMenuScreen = { storeId ->
+                    navController.toNavigateScreenWithMenuId(MANAGEMENUSCREEN, storeId)
+                },
                 navigateToRegisterStoreScreen = {
                     navController.navigate(REGISTERSTORESCREEN)
                 },
-                navigateToRegisterMenuScreen = {  storeId ->
+                navigateToRegisterMenuScreen = { storeId ->
                     navController.toNavigateRegisterMenuScreen(storeId)
                 },
-                navigateToModifyMenuScreen = {menuId ->
-                    navController.toNavigateModifyMenuScreen(menuId)
-
+                navigateToModifyMenuScreen = { menuId ->
+                    navController.toNavigateScreenWithMenuId(MODIFYMENUSCREEN, menuId)
                 }
             )
         }
@@ -74,12 +82,12 @@ fun NavGraphBuilder.myStoreScreen(
 
             ModifyInfoScreen(
                 viewModel = modifyInfoViewModel,
-                storeInfoViewModel= myStoreInfoViewModel,
+                storeInfoViewModel = myStoreInfoViewModel,
                 onSettingOperatingClicked = { navController.navigate(StoreRoute.SETTING_OPERATING_TIME.name) },
                 onBackClicked = { navController.popBackStack() },
                 onModifyButtonClicked = {
-                    navController.navigate(StoreRoute.MY_STORE.name){
-                        popUpTo(StoreRoute.MODIFY_INFO.name){
+                    navController.navigate(StoreRoute.MY_STORE.name) {
+                        popUpTo(StoreRoute.MODIFY_INFO.name) {
                             inclusive = true
                         }
                     }
@@ -100,12 +108,14 @@ fun NavGraphBuilder.myStoreScreen(
     }
 }
 
-fun NavController.toNaviGateModifyStoreScreen(storeId: Int){
-    val bundle = Bundle().apply {
-        putInt("storeId", storeId)
-    }
+fun NavController.toNaviGateModifyStoreScreen(storeId: Int) {
+    val bundle =
+        Bundle().apply {
+            putInt("storeId", storeId)
+        }
     navigate(StoreRoute.MODIFY_INFO.name, bundle)
 }
+
 fun NavController.navigate(
     route: String,
     args: Bundle,

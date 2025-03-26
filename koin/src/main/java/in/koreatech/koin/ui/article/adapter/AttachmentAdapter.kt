@@ -12,9 +12,12 @@ class AttachmentAdapter(
     private val onClick: (AttachmentState) -> Unit,
     private val onLongClick: (AttachmentState) -> Unit
 ) : ListAdapter<AttachmentState, RecyclerView.ViewHolder>(diffUtil) {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttachmentViewHolder {
-        val binding = ItemAttachmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemAttachmentBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return AttachmentViewHolder(binding)
     }
 
@@ -25,7 +28,6 @@ class AttachmentAdapter(
     inner class AttachmentViewHolder(
         private val binding: ItemAttachmentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(attachment: AttachmentState) {
             binding.apply {
                 textViewAttachmentTitle.text = attachment.name
@@ -43,14 +45,21 @@ class AttachmentAdapter(
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<AttachmentState>() {
-            override fun areItemsTheSame(oldItem: AttachmentState, newItem: AttachmentState): Boolean {
-                return oldItem.url == newItem.url
-            }
+        private val diffUtil =
+            object : DiffUtil.ItemCallback<AttachmentState>() {
+                override fun areItemsTheSame(
+                    oldItem: AttachmentState,
+                    newItem: AttachmentState
+                ): Boolean {
+                    return oldItem.url == newItem.url
+                }
 
-            override fun areContentsTheSame(oldItem: AttachmentState, newItem: AttachmentState): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: AttachmentState,
+                    newItem: AttachmentState
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

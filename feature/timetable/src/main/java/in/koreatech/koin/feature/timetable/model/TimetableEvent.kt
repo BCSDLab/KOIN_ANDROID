@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.timetable.model
 import androidx.compose.ui.graphics.Color
 import java.time.DayOfWeek
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 enum class DayOfWeekKorean(
     val koreanName: String
@@ -17,15 +16,16 @@ enum class DayOfWeekKorean(
     SUNDAY("일")
 }
 
-fun DayOfWeek.toKorean(): String = when (this) {
-    DayOfWeek.MONDAY -> "월요일"
-    DayOfWeek.TUESDAY -> "화요일"
-    DayOfWeek.WEDNESDAY -> "수요일"
-    DayOfWeek.THURSDAY -> "목요일"
-    DayOfWeek.FRIDAY -> "금요일"
-    DayOfWeek.SATURDAY -> "토요일"
-    DayOfWeek.SUNDAY -> "일요일"
-}
+fun DayOfWeek.toKorean(): String =
+    when (this) {
+        DayOfWeek.MONDAY -> "월요일"
+        DayOfWeek.TUESDAY -> "화요일"
+        DayOfWeek.WEDNESDAY -> "수요일"
+        DayOfWeek.THURSDAY -> "목요일"
+        DayOfWeek.FRIDAY -> "금요일"
+        DayOfWeek.SATURDAY -> "토요일"
+        DayOfWeek.SUNDAY -> "일요일"
+    }
 
 data class TimetableColor(
     val header: Color,
@@ -42,7 +42,7 @@ data class TimetableEvent(
     val dayOfWeek: DayOfWeek? = null,
     val start: LocalTime,
     val end: LocalTime,
-    val description: String? = null,
+    val description: String? = null
 ) {
     /**
      * @test : TimetableEventTest.kt

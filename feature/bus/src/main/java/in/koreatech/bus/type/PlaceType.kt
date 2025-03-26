@@ -10,5 +10,5 @@ enum class PlaceType(
 ) {
     KOREATECH(R.string.koreatech),
     STATION(R.string.cheonan_station),
-    TERMINAL(R.string.cheonan_terminal);
+    TERMINAL(R.string.cheonan_terminal)
 }

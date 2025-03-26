@@ -12,13 +12,15 @@ data class ShuttleCourseRouteState(
     val subName: String
 )
 
-fun ShuttleCourseRoute.toShuttleCourseRouteState() = ShuttleCourseRouteState(
-    id = id,
-    type = when(type) {
-        CIRCULATION -> ShuttleBusOperationType.CIRCULATION
-        WEEKEND -> ShuttleBusOperationType.WEEKEND
-        else -> ShuttleBusOperationType.WEEKDAY
-    },
-    routeName = routeName,
-    subName = subName
-)
+fun ShuttleCourseRoute.toShuttleCourseRouteState() =
+    ShuttleCourseRouteState(
+        id = id,
+        type =
+        when (type) {
+            CIRCULATION -> ShuttleBusOperationType.CIRCULATION
+            WEEKEND -> ShuttleBusOperationType.WEEKEND
+            else -> ShuttleBusOperationType.WEEKDAY
+        },
+        routeName = routeName,
+        subName = subName
+    )

@@ -22,9 +22,10 @@ class OwnerSignupRequestEmailVerificationUseCase @Inject constructor(
             password != passwordConfirm -> Result.success(SignupContinuationState.PasswordNotMatching)
             !isAgreedPrivacyTerms -> Result.success(SignupContinuationState.NotAgreedPrivacyTerms)
             !isAgreedKoinTerms -> Result.success(SignupContinuationState.NotAgreedKoinTerms)
-            else -> ownerSignupRepository.requestEmailVerification(
-                email = email
-            ).map { SignupContinuationState.RequestedEmailValidation }
+            else ->
+                ownerSignupRepository.requestEmailVerification(
+                    email = email
+                ).map { SignupContinuationState.RequestedEmailValidation }
         }
     }
 }

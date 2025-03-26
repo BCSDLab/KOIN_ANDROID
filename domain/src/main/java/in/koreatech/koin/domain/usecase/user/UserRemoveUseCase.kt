@@ -9,13 +9,14 @@ class UserRemoveUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val userErrorHandler: UserErrorHandler
 ) {
-    suspend operator fun invoke() : Pair<Unit, ErrorHandler?> {
-        return Unit to try {
-            userRepository.deleteDeviceToken()
-            userRepository.deleteUser()
-            null
-        } catch (t: Throwable) {
-            userErrorHandler.handleDeleteUserError(t)
-        }
+    suspend operator fun invoke(): Pair<Unit, ErrorHandler?> {
+        return Unit to
+            try {
+                userRepository.deleteDeviceToken()
+                userRepository.deleteUser()
+                null
+            } catch (t: Throwable) {
+                userErrorHandler.handleDeleteUserError(t)
+            }
     }
 }

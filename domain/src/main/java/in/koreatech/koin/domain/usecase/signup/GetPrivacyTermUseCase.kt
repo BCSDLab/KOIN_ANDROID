@@ -7,7 +7,8 @@ import javax.inject.Inject
 class GetPrivacyTermUseCase @Inject constructor(
     private val signupRepository: SignupRepository
 ) {
-    suspend operator fun invoke(): Result<Term> = kotlin.runCatching {
-        signupRepository.getPrivacyTerm()
-    }
+    suspend operator fun invoke(): Result<Term> =
+        kotlin.runCatching {
+            signupRepository.getPrivacyTerm()
+        }
 }

@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.timetable.viewmodel
 
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.bottomsheet.BottomSheetBehavior.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableFrame
@@ -20,6 +19,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.timetable.model.SemesterModel
 import `in`.koreatech.koin.feature.timetable.state.SemesterSideEffect
 import `in`.koreatech.koin.feature.timetable.utils.toSemesterModel
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +35,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @Stable
 data class ScreenState(
@@ -56,7 +55,9 @@ data class ScreenState(
 // 학기가 비었을 때 상태
 @Stable
 enum class ScreenStateUIMode {
-    BASIC, EMPTY, IDLE
+    BASIC,
+    EMPTY,
+    IDLE
 }
 
 @HiltViewModel
@@ -73,14 +74,13 @@ class SemesterViewModel @Inject constructor(
     private val getAllFramesUseCase: GetAllFramesUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
-
     private val _dialogUiState: MutableStateFlow<SemesterDialogUiState> = MutableStateFlow(SemesterDialogUiState())
     val dialogUiState: StateFlow<SemesterDialogUiState> = _dialogUiState.asStateFlow()
 
     private val _sideEffect: MutableStateFlow<SemesterSideEffect> = MutableStateFlow(SemesterSideEffect.Nothing)
     val sideEffect: StateFlow<SemesterSideEffect> = _sideEffect.asStateFlow()
 
-    //_currentXXXX 변수들은 시간표로 이동할 때 전달하는 정보
+    // _currentXXXX 변수들은 시간표로 이동할 때 전달하는 정보
     private val _currentTimetableSemester: MutableStateFlow<String> = MutableStateFlow("")
     val currentTimetableSemester: StateFlow<String> = _currentTimetableSemester.asStateFlow()
 
@@ -100,48 +100,59 @@ class SemesterViewModel @Inject constructor(
     private val _deletedFrame: MutableStateFlow<TimetableFrame?> = MutableStateFlow(null)
     private val _deletedFrameSemester: MutableStateFlow<SemesterModel?> = MutableStateFlow(null)
 
-    private val availableYears: Flow<List<Int>> = getSemestersUseCase()
-        .map { it.map { it.toSemesterModel().year }.distinct() }
+    private val availableYears: Flow<List<Int>> =
+        getSemestersUseCase()
+            .map { it.map { it.toSemesterModel().year }.distinct() }
 
     // TODO::hyeok 리프래시 로직 추가
-    private val initialScreenState = flow {
-        Timber.d("dhk| initialScreenState")
-        val availableYears = availableYears.first()
-        val isAnonymous = getUserStatusUseCase().first().isAnonymous
-        val userFrames = if (isAnonymous) {
-            getUserSemestersUseCase(isAnonymous)
-                .catch { Timber.d("Fail to getUserSemestersUseCase on initialScreenState| message: ${it.message}") }
-                .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) } }
-                .first()
-        } else {
-            getAllFramesUseCase()
-                .catch { Timber.d("Fail to getAllFramesUseCase on initialScreenState| message: ${it.message}") }
-                .map { it.mapKeys { it.key.toSemesterModel() } }
-                .first()
+    private val initialScreenState =
+        flow {
+            Timber.d("dhk| initialScreenState")
+            val availableYears = availableYears.first()
+            val isAnonymous = getUserStatusUseCase().first().isAnonymous
+            val userFrames =
+                if (isAnonymous) {
+                    getUserSemestersUseCase(isAnonymous)
+                        .catch { Timber.d("Fail to getUserSemestersUseCase on initialScreenState| message: ${it.message}") }
+                        .map { it.associate { it.toSemesterModel() to listOf(TimetableFrame(0, "시간표1", isMain = true)) } }
+                        .first()
+                } else {
+                    getAllFramesUseCase()
+                        .catch { Timber.d("Fail to getAllFramesUseCase on initialScreenState| message: ${it.message}") }
+                        .map { it.mapKeys { it.key.toSemesterModel() } }
+                        .first()
+                }
+            emit(
+                ScreenState(
+                    availableYears = availableYears,
+                    userTimetableFrames = userFrames,
+                    mode = if (userFrames.isEmpty()) ScreenStateUIMode.EMPTY else ScreenStateUIMode.BASIC,
+                    isAnonymous = isAnonymous
+                )
+            )
+        }.catch {
+            // TODO::hyeok Error 상태 추가
+            emit(ScreenState())
         }
-        emit(ScreenState(
-            availableYears = availableYears,
-            userTimetableFrames = userFrames,
-            mode = if(userFrames.isEmpty()) ScreenStateUIMode.EMPTY else ScreenStateUIMode.BASIC,
-            isAnonymous = isAnonymous
-        ))
-    }.catch {
-        // TODO::hyeok Error 상태 추가
-        emit(ScreenState())
-    }
 
     private val _screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState())
 
-    val screenState: StateFlow<ScreenState> = flow {
-        val initialState = initialScreenState.first()
-        _screenState.value = initialState
-        emit(initialState)
-        emitAll(_screenState)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), ScreenState())
+    val screenState: StateFlow<ScreenState> =
+        flow {
+            val initialState = initialScreenState.first()
+            _screenState.value = initialState
+            emit(initialState)
+            emitAll(_screenState)
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), ScreenState())
 
     private var _isRestorePerformed = false
 
-    fun updateIntentData(isAnonymous: Boolean, timetableFrameId: Int, semester: String, frameName: String) {
+    fun updateIntentData(
+        isAnonymous: Boolean,
+        timetableFrameId: Int,
+        semester: String,
+        frameName: String
+    ) {
         viewModelScope.launch {
             _currentTimetableId.value = timetableFrameId
             _originalTimetableId.value = timetableFrameId
@@ -183,9 +194,10 @@ class SemesterViewModel @Inject constructor(
     }
 
     fun updateScreenMode(mode: ScreenStateUIMode) {
-        _screenState.value = _screenState.value.copy(
-            mode = mode
-        )
+        _screenState.value =
+            _screenState.value.copy(
+                mode = mode
+            )
     }
 
     fun onClickAddTimetable(target: SemesterModel) {
@@ -196,10 +208,11 @@ class SemesterViewModel @Inject constructor(
             ).onSuccess { addedFrame ->
                 updateUserTimetableFrames(
                     screenState.value.userTimetableFrames.mapValues {
-                        if (it.key == target)
+                        if (it.key == target) {
                             it.value + addedFrame
-                        else
+                        } else {
                             it.value
+                        }
                     }
                 )
             }.onFailure {
@@ -208,12 +221,16 @@ class SemesterViewModel @Inject constructor(
         }
     }
 
-    fun onClickEditTimetable(targetSemester: SemesterModel, targetFrame: TimetableFrame) {
+    fun onClickEditTimetable(
+        targetSemester: SemesterModel,
+        targetFrame: TimetableFrame
+    ) {
         _screenState.value = _screenState.value.copy(isEditTimetableDialogVisible = true)
-        _dialogUiState.value = _dialogUiState.value.copy(
-            editedSemester = targetSemester,
-            editedTimetableFrame = targetFrame
-        )
+        _dialogUiState.value =
+            _dialogUiState.value.copy(
+                editedSemester = targetSemester,
+                editedTimetableFrame = targetFrame
+            )
     }
 
     fun updateUserSemesters() {
@@ -247,12 +264,12 @@ class SemesterViewModel @Inject constructor(
     }
 
     fun editTimetableFrame(timetableFrame: TimetableFrame) {
-        Timber.d("change timetable from ${dialogUiState} to $timetableFrame")
+        Timber.d("change timetable from $dialogUiState to $timetableFrame")
         viewModelScope.launch {
             updateTimetableFrameUseCase(
                 id = timetableFrame.id,
                 name = timetableFrame.timetableName,
-                isMain = timetableFrame.isMain,
+                isMain = timetableFrame.isMain
             ).onSuccess {
                 dialogUiState.value.editedSemester?.let {
                     refreshSemesterTimetableFrames(it)
@@ -262,7 +279,6 @@ class SemesterViewModel @Inject constructor(
                 if (timetableFrame.id == currentTimetableId.value) {
                     _currentTimetableName.value = timetableFrame.timetableName
                 }
-
             }.onFailure {
                 Timber.d("시간표 프레임 수정 실패")
             }
@@ -334,8 +350,9 @@ class SemesterViewModel @Inject constructor(
                                 _currentTimetableId.value = restoredFrame.id
                                 _currentTimetableName.value = restoredFrame.timetableName
 
-                                if (isRestoredSemester)
+                                if (isRestoredSemester) {
                                     _currentTimetableSemester.value = _deletedFrameSemester.value!!.toSemester()
+                                }
                             }
 
                             _deletedFrame.value = null
@@ -350,7 +367,6 @@ class SemesterViewModel @Inject constructor(
         }
     }
 
-
     /**
      * 인자로 들어온 학기의 프레임을 서버 데이터로 갱신
      */
@@ -364,7 +380,6 @@ class SemesterViewModel @Inject constructor(
                         screenState.value.userTimetableFrames - semester
                     )
                 } else {
-
                     updateUserTimetableFrames(
                         screenState.value.userTimetableFrames.let {
                             if (it.containsKey(semester)) {

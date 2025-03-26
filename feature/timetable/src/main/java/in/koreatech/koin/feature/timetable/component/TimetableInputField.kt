@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,8 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastCbrt
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.R
 
@@ -42,13 +38,14 @@ fun TimetableInputField(
     isError: Boolean = false,
     modifier: Modifier = Modifier,
     optional: Boolean = true,
-    onValueChange: (text: String) -> Unit = {},
+    onValueChange: (text: String) -> Unit = {}
 ) {
     val textMeasurer = rememberTextMeasurer()
-    val textLayoutResult = textMeasurer.measure(
-        text = stringResource(id = R.string.timetable_input_field_option_character),
-        style = KoinTheme.typography.regular16,
-    )
+    val textLayoutResult =
+        textMeasurer.measure(
+            text = stringResource(id = R.string.timetable_input_field_option_character),
+            style = KoinTheme.typography.regular16
+        )
     val optionalCharacterWidth = textLayoutResult.size.width
     Column(
         modifier = modifier
@@ -62,23 +59,27 @@ fun TimetableInputField(
                     "장소" -> if (it.length <= 30) onValueChange(it)
                 }
             },
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .height(35.dp),
             maxLines = 1,
             cursorBrush = SolidColor(Color.Black),
-            textStyle = KoinTheme.typography.regular12.copy(
+            textStyle =
+            KoinTheme.typography.regular12.copy(
                 color = KoinTheme.colors.neutral500
             ),
             decorationBox = { innerTextField ->
                 Row(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .height(IntrinsicSize.Min)
                         .fillMaxWidth()
                         .background(Color.White)
                         .border(
                             width = 1.dp,
-                            color = if (isError) {
+                            color =
+                            if (isError) {
                                 KoinTheme.colors.sub500
                             } else {
                                 KoinTheme.colors.neutral300
@@ -95,7 +96,7 @@ fun TimetableInputField(
                             text = stringResource(id = R.string.timetable_input_field_option_character),
                             style = KoinTheme.typography.regular16,
                             color = KoinTheme.colors.sub500,
-                            modifier = Modifier.padding(end = 1.dp, bottom = 1.dp),
+                            modifier = Modifier.padding(end = 1.dp, bottom = 1.dp)
                         )
                     }
                     Text(
@@ -113,7 +114,8 @@ fun TimetableInputField(
                     Box {
                         text.ifEmpty {
                             Text(
-                                text = stringResource(
+                                text =
+                                stringResource(
                                     id = R.string.timetable_input_field_placeholder,
                                     title
                                 ),
@@ -130,7 +132,7 @@ fun TimetableInputField(
             Text(
                 text = stringResource(R.string.timetable_input_field_lecture_name_placeholder),
                 style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.sub500,
+                color = KoinTheme.colors.sub500
             )
         }
     }

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class UpdateNotificationSubscriptionDetailUseCase @Inject constructor(
     private val notificationRepository: NotificationRepository,
-    private val userErrorHandler: UserErrorHandler,
+    private val userErrorHandler: UserErrorHandler
 ) {
     suspend operator fun invoke(type: SubscribesDetailType): Pair<Unit?, ErrorHandler?> {
         return try {

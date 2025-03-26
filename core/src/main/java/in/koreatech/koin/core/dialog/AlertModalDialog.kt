@@ -14,7 +14,6 @@ class AlertModalDialog(
     private val onPositiveButtonClicked: (Dialog) -> Unit,
     private val onNegativeButtonClicked: (Dialog) -> Unit
 ) : Dialog(context) {
-
     private lateinit var binding: AlertModalDialogBinding
 
     override fun onStart() {

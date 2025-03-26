@@ -6,6 +6,5 @@ import javax.inject.Inject
 class DeleteArticleLostAndFoundUseCase @Inject constructor(
     private val articleRepository: ArticleRepository
 ) {
-    suspend operator fun invoke(articleId: Int): Result<Unit> =
-        articleRepository.deleteArticleLostAndFound(articleId)
+    suspend operator fun invoke(articleId: Int): Result<Unit> = articleRepository.deleteArticleLostAndFound(articleId)
 }

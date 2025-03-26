@@ -9,14 +9,13 @@ import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
-import `in`.koreatech.koin.ui.login.LoginState
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class BusinessLoginViewModel @Inject constructor(
     private val userLoginUseCase: UserLoginUseCase
-): BaseViewModel() {
+) : BaseViewModel() {
     private val _isEmptyIdText = MutableLiveData(true)
     val isEmptyIdText: LiveData<Boolean> get() = _isEmptyIdText
 
@@ -32,10 +31,7 @@ class BusinessLoginViewModel @Inject constructor(
         }
     }
 
-    fun login(
-        email: String,
-        password: String
-    ) {
+    fun login(email: String, password: String) {
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 userLoginUseCase(email, password)

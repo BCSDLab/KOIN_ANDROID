@@ -52,7 +52,10 @@ class SystemBarsUtils(
         }
     }
 
-    private fun setAppearanceNavigationBarSdk26(window: Window, isLightNavigationBar: Boolean) {
+    private fun setAppearanceNavigationBarSdk26(
+        window: Window,
+        isLightNavigationBar: Boolean
+    ) {
         if (isLightNavigationBar) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         } else {
@@ -63,9 +66,7 @@ class SystemBarsUtils(
     /**
      * 전체 화면(몰입형) 모드
      */
-    fun setImmersiveMode(
-        window: Window
-    ) {
+    fun setImmersiveMode(window: Window) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
             WindowInsetsControllerCompat(window, window.decorView).let { controller ->
                 controller.hide(WindowInsetsCompat.Type.systemBars())

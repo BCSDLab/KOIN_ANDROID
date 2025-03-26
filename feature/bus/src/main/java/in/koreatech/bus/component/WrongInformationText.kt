@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import `in`.koreatech.bus.type.BusType
-import `in`.koreatech.bus.util.LocalSelectedTimetableTab
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -24,7 +22,8 @@ internal fun WrongInformationText(
     val context = LocalContext.current
 
     LeadingIconText(
-        modifier = modifier.noRippleClickable {
+        modifier =
+        modifier.noRippleClickable {
             EventLogger.logCampusClickEvent(
                 "error_feedback_button",
                 loggingEventValue
@@ -36,7 +35,8 @@ internal fun WrongInformationText(
         text = stringResource(R.string.request_for_incorrect_information),
         iconRes = R.drawable.ic_caution,
         iconTint = KoinTheme.colors.neutral500,
-        textStyle = KoinTheme.typography.regular12.copy(
+        textStyle =
+        KoinTheme.typography.regular12.copy(
             color = KoinTheme.colors.neutral500
         )
     )

@@ -18,7 +18,6 @@ class BusRepositoryImpl @Inject constructor(
     private val busRemoteDataSource: BusRemoteDataSource,
     private val busLocalDataSource: BusLocalDataSource
 ) : BusRepository {
-
     override suspend fun fetchBusNotice(): Result<BusNotice> {
         return runCatching {
             busRemoteDataSource.fetchBusNotice().toBusNotice()
@@ -43,7 +42,10 @@ class BusRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchCityTimetable(number: Int, direction: String): Result<CityTimetable> {
+    override suspend fun fetchCityTimetable(
+        number: Int,
+        direction: String
+    ): Result<CityTimetable> {
         return runCatching {
             busRemoteDataSource.fetchCityTimetable(number, direction).toCityTimetable()
         }

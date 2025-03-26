@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
-import `in`.koreatech.koin.feature.lostandfound.util.getKoreanDayOfWeekShortName
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import `in`.koreatech.koin.feature.lostandfound.util.getKoreanDayOfWeekShortName
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -55,12 +55,15 @@ fun LostAndFoundItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) = Column(
-    modifier = modifier.noRippleClickable {
+    modifier =
+    modifier.noRippleClickable {
         onClick()
     }
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
-    val convertedRegisteredAt by remember { mutableStateOf("${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}")}
+    val convertedRegisteredAt by remember {
+        mutableStateOf("${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}")
+    }
 
     val foundDateFormatType = DateTimeFormatter.ofPattern("yy.MM.dd")
 
@@ -88,7 +91,7 @@ fun LostAndFoundItem(
             }
         } else {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 LostItemTypeChip(category = lostItemCategory)
                 Spacer(modifier = Modifier.width(8.dp))
@@ -101,7 +104,7 @@ fun LostAndFoundItem(
             Text(
                 text = content,
                 style = KoinTheme.typography.regular12.copy(color = KoinTheme.colors.neutral800),
-                maxLines = 1,
+                maxLines = 1
             )
         }
         Spacer(modifier = Modifier.height(4.dp))

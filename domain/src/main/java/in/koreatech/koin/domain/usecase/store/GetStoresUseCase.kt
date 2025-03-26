@@ -7,7 +7,7 @@ import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 
 class GetStoresUseCase @Inject constructor(
-    private val storeRepository: StoreRepository,
+    private val storeRepository: StoreRepository
 ) {
     suspend operator fun invoke(
         category: StoreCategories? = null,

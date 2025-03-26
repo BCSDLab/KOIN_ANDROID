@@ -3,7 +3,6 @@ package `in`.koreatech.business.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -33,15 +32,13 @@ class BusinessMainActivity : ComponentActivity() {
 }
 
 @Composable
-fun KoinBusinessAppScreen(
-    viewModel: BusinessMainActivityViewModel = hiltViewModel()
-) {
+fun KoinBusinessAppScreen(viewModel: BusinessMainActivityViewModel = hiltViewModel()) {
     val state = viewModel.collectAsState().value
     HandleSideEffects(viewModel)
 
-    if(state.version != null){
-        when(state.version.versionUpdatePriority){
-            VersionUpdatePriority.None ->{
+    if (state.version != null) {
+        when (state.version.versionUpdatePriority) {
+            VersionUpdatePriority.None -> {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -51,7 +48,7 @@ fun KoinBusinessAppScreen(
                     )
                 }
             }
-            VersionUpdatePriority.Importance->{
+            VersionUpdatePriority.Importance -> {
                 ForceUpdateScreen(
                     title = state.version.title,
                     content = state.version.content
@@ -65,7 +62,7 @@ fun KoinBusinessAppScreen(
 private fun HandleSideEffects(viewModel: BusinessMainActivityViewModel) {
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            BusinessMainSideEffect.NetWorkError->{
+            BusinessMainSideEffect.NetWorkError -> {
                 ToastUtil.getInstance().makeShort(R.string.version_check_failed)
             }
         }

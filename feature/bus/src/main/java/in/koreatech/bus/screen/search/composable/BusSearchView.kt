@@ -45,7 +45,6 @@ internal fun BusSearchView(
     onDepartureFieldClicked: () -> Unit = {},
     onArrivalFieldClicked: () -> Unit = {}
 ) {
-
     KoinSurface {
         Column(modifier = modifier) {
             Text(
@@ -63,7 +62,8 @@ internal fun BusSearchView(
             )
 
             ConstraintLayout(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(top = 46.dp)
                     .height(IntrinsicSize.Min)
@@ -71,7 +71,8 @@ internal fun BusSearchView(
                 val (departureText, arrivalText, departureField, arrivalField, iconSwap) = createRefs()
 
                 Text(
-                    modifier = Modifier.constrainAs(departureText) {
+                    modifier =
+                    Modifier.constrainAs(departureText) {
                         start.linkTo(departureField.start)
                         top.linkTo(parent.top)
                         end.linkTo(departureField.end)
@@ -81,7 +82,8 @@ internal fun BusSearchView(
                     color = KoinTheme.colors.primary500
                 )
                 Text(
-                    modifier = Modifier.constrainAs(arrivalText) {
+                    modifier =
+                    Modifier.constrainAs(arrivalText) {
                         top.linkTo(parent.top)
                         start.linkTo(arrivalField.start)
                         end.linkTo(arrivalField.end)
@@ -94,7 +96,8 @@ internal fun BusSearchView(
                 BusSearchInput(
                     place = departure,
                     placeholder = stringResource(R.string.select_departure),
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(top = 10.dp)
                         .noRippleClickable {
                             onDepartureFieldClicked()
@@ -112,7 +115,8 @@ internal fun BusSearchView(
 
                 IconButton(
                     onClick = onSwapIconClicked,
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(top = 10.dp)
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                         .constrainAs(iconSwap) {
@@ -138,7 +142,8 @@ internal fun BusSearchView(
                 BusSearchInput(
                     place = arrival,
                     placeholder = stringResource(R.string.select_arrival),
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(top = 10.dp)
                         .noRippleClickable {
                             onArrivalFieldClicked()
@@ -157,7 +162,8 @@ internal fun BusSearchView(
 
             Spacer(modifier = Modifier.weight(1f))
             FilledButton(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
                 enabled = searchButtonEnabled,
@@ -173,9 +179,8 @@ internal fun BusSearchView(
 private fun BusSearchInput(
     place: String,
     placeholder: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-
     val isPlaceDetermined = place.isNotEmpty()
 
     Column(
@@ -183,20 +188,21 @@ private fun BusSearchInput(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .clip(RoundedCornerShape(4.dp))
                 .background(if (isPlaceDetermined.not()) KoinTheme.colors.neutral100 else Color.Transparent)
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            if (isPlaceDetermined.not())
+            if (isPlaceDetermined.not()) {
                 Text(
                     text = placeholder,
                     maxLines = 1,
                     style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral400     // TODO neutral450 ?
+                    color = KoinTheme.colors.neutral400 // TODO neutral450 ?
                 )
-            else {
+            } else {
                 Text(
                     text = place,
                     maxLines = 1,

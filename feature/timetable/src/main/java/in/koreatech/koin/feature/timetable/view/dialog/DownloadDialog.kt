@@ -39,17 +39,19 @@ fun DownloadDialog(
 ) {
     BasicAlertDialog(
         onDismissRequest = { onDismiss(false) },
-        modifier = modifier,
+        modifier = modifier
     ) {
         Surface(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(
                         horizontal = 32.dp,
@@ -61,7 +63,7 @@ fun DownloadDialog(
                     text = stringResource(id = R.string.download_description),
                     color = KoinTheme.colors.neutral800,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.bold16,
+                    style = KoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
@@ -69,10 +71,12 @@ fun DownloadDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        colors = ButtonColors(
+                        colors =
+                        ButtonColors(
                             containerColor = KoinTheme.colors.neutral0,
                             contentColor = KoinTheme.colors.neutral500,
                             disabledContainerColor = KoinTheme.colors.neutral400,
@@ -90,7 +94,8 @@ fun DownloadDialog(
                         )
                     }
                     FilledTextButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.download),

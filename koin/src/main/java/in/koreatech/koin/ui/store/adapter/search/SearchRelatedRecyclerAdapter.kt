@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.store.adapter.search
 
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
@@ -15,7 +14,6 @@ import `in`.koreatech.koin.domain.model.store.ShopSearchRelated
 
 class SearchRelatedRecyclerAdapter(val onItemClick: (Int) -> Unit) :
     ListAdapter<ShopSearchRelated, ViewHolder>(diffCallback) {
-
     inner class ViewHolder(private val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(shopSearchRelated: ShopSearchRelated, onItemClick: (Int) -> Unit) {
@@ -42,38 +40,32 @@ class SearchRelatedRecyclerAdapter(val onItemClick: (Int) -> Unit) :
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemStoreSearchBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
-
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolder).bind(getItem(position), onItemClick)
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<ShopSearchRelated>() {
-            override fun areItemsTheSame(
-                oldItem: ShopSearchRelated,
-                newItem: ShopSearchRelated
-            ): Boolean {
-                return oldItem.shopId == newItem.shopId
-            }
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<ShopSearchRelated>() {
+                override fun areItemsTheSame(
+                    oldItem: ShopSearchRelated,
+                    newItem: ShopSearchRelated
+                ): Boolean {
+                    return oldItem.shopId == newItem.shopId
+                }
 
-            override fun areContentsTheSame(
-                oldItem: ShopSearchRelated,
-                newItem: ShopSearchRelated
-            ): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: ShopSearchRelated,
+                    newItem: ShopSearchRelated
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

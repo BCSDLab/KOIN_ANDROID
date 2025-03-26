@@ -14,11 +14,16 @@ fun makeTimeInfo(
     isClosed: Boolean,
     is24Hours: Boolean
 ): String {
-    var infoString = dayOfWeekList.joinToString(", "){it.kor}
+    var infoString = dayOfWeekList.joinToString(", ") { it.kor }
 
-    infoString = if(isClosed) "$infoString : 휴무"
-    else if (is24Hours) "$infoString : 24시간 운영"
-    else "$infoString : $openTime ~ $closeTime"
+    infoString =
+        if (isClosed) {
+            "$infoString : 휴무"
+        } else if (is24Hours) {
+            "$infoString : 24시간 운영"
+        } else {
+            "$infoString : $openTime ~ $closeTime"
+        }
 
     return infoString
 }

@@ -87,7 +87,7 @@ fun LostAndFoundDetail(
                 },
                 onChatRoomClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_MESSAGE_SEND,
+                        AnalyticsConstant.Label.LostAndFound.ITEM_MESSAGE_SEND,
                         if (uiState.lostOrFound == LostOrFoundType.LOST) {
                             loggingLostMessageSend
                         } else {
@@ -98,7 +98,7 @@ fun LostAndFoundDetail(
                 },
                 onReportArticleClick = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT,
+                        AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT,
                         loggingReport
                     )
                     navigateToReport(uiState.id)
@@ -125,8 +125,8 @@ private fun handleSideEffect(
     navigateToArticleList: () -> Unit = {}
 ) {
     when (sideEffect) {
-        //is LostAndFoundDetailSideEffect.FetchDetail -> {}
-        //LostAndFoundDetailSideEffect.FetchHotArticles -> {}
+        // is LostAndFoundDetailSideEffect.FetchDetail -> {}
+        // LostAndFoundDetailSideEffect.FetchHotArticles -> {}
         is LostAndFoundDetailSideEffect.DeleteArticle -> {
             Toast.makeText(
                 context,
@@ -146,9 +146,10 @@ private fun handleSideEffect(
 
         LostAndFoundDetailSideEffect.DeletedArticle -> {
             context.findActivity()?.finish()
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-            }
+            val intent =
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                }
             context.startActivity(intent)
             Toast.makeText(
                 context,
@@ -158,5 +159,3 @@ private fun handleSideEffect(
         }
     }
 }
-
-

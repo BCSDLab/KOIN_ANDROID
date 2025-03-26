@@ -36,6 +36,7 @@ class ArticleLostAndFoundWriteLostFragment : Fragment() {
             }
         }
     }
+
     companion object {
         const val ARTICLE_ID = "article_id"
     }

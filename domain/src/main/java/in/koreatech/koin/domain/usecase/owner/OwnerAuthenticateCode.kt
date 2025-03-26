@@ -14,11 +14,11 @@ class OwnerAuthenticateCode @Inject constructor(
     ): Result<ChangePasswordContinuationState> {
         return when (authCode) {
             "" -> Result.failure(ChangePasswordExceptionState.ToastNullAuthCode)
-            else -> ownerChangePasswordRepository.authenticateCode(
-                email = email,
-                authCode = authCode
-            ).map { ChangePasswordContinuationState.GotoChangePasswordScreen}
+            else ->
+                ownerChangePasswordRepository.authenticateCode(
+                    email = email,
+                    authCode = authCode
+                ).map { ChangePasswordContinuationState.GotoChangePasswordScreen }
         }
     }
-
 }

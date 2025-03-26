@@ -42,7 +42,6 @@ internal fun BusSearchScreenContent(
     onCloseNotice: () -> Unit = {},
     onNoticeClick: (BusNoticeState) -> Unit = {}
 ) {
-
     val context = LocalContext.current
 
     val searchButtonEnabled by remember(
@@ -90,7 +89,8 @@ internal fun BusSearchScreenContent(
         }
 
         BusSearchView(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize()
                 .padding(top = 16.dp)
                 .padding(horizontal = 24.dp),
@@ -156,7 +156,6 @@ internal fun BusSearchScreenContent(
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

@@ -1,23 +1,22 @@
 package `in`.koreatech.koin.ui.businesssignup.viewmodel
 
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
-import `in`.koreatech.koin.domain.usecase.owner.OwnerVerificationCodeUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
+import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
+import `in`.koreatech.koin.domain.usecase.owner.OwnerVerificationCodeUseCase
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @HiltViewModel
 class BusinessVerificationViewModel @Inject constructor(
     private val ownerVerificationCodeUseCase: OwnerVerificationCodeUseCase
-): BaseViewModel() {
+) : BaseViewModel() {
     private val _businessVerificationContinuationState = SingleLiveEvent<Unit>()
     val businessVerificationContinuationState: LiveData<Unit>
         get() = _businessVerificationContinuationState
@@ -38,14 +37,12 @@ class BusinessVerificationViewModel @Inject constructor(
         _curTime.value = "05:00"
     }
 
-    fun continueVerificationEmail(
-        email: String,
-        verificationCode: String
-    ) {
-        if(isLoading.value == false) {
+    fun continueVerificationEmail(email: String, verificationCode: String) {
+        if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 ownerVerificationCodeUseCase(
-                    email, verificationCode
+                    email,
+                    verificationCode
                 ).onSuccess {
                     _businessVerificationContinuationState.value = it
                 }.onFailure {
@@ -62,7 +59,7 @@ class BusinessVerificationViewModel @Inject constructor(
     }
 
     fun startTimer() {
-        if(::timer.isInitialized && !timer.isCancelled) timer.cancel()
+        if (::timer.isInitialized && !timer.isCancelled) timer.cancel()
 
         var delayTime = 10L
         var prevSystemMillis: Long
@@ -70,23 +67,24 @@ class BusinessVerificationViewModel @Inject constructor(
         var timeError: Long
         var timeRemaining = TimeUnit.MINUTES.toMillis(5)
 
-        timer = viewModelScope.launch {
-            prevSystemMillis = System.currentTimeMillis()
+        timer =
+            viewModelScope.launch {
+                prevSystemMillis = System.currentTimeMillis()
 
-            while(timeRemaining > 0L) {
-                delay(delayTime)
+                while (timeRemaining > 0L) {
+                    delay(delayTime)
 
-                curSystemMillis = System.currentTimeMillis()
-                timeError = curSystemMillis - 10L - prevSystemMillis
-                delayTime -= timeError
-                prevSystemMillis = curSystemMillis
+                    curSystemMillis = System.currentTimeMillis()
+                    timeError = curSystemMillis - 10L - prevSystemMillis
+                    delayTime -= timeError
+                    prevSystemMillis = curSystemMillis
 
-                val curMinutes = TimeUnit.MILLISECONDS.toMinutes(timeRemaining)
-                val curSeconds = TimeUnit.MILLISECONDS.toSeconds(timeRemaining) - TimeUnit.MINUTES.toSeconds(curMinutes)
-                _curTime.value = String.format("%02d:%02d", curMinutes, curSeconds)
+                    val curMinutes = TimeUnit.MILLISECONDS.toMinutes(timeRemaining)
+                    val curSeconds = TimeUnit.MILLISECONDS.toSeconds(timeRemaining) - TimeUnit.MINUTES.toSeconds(curMinutes)
+                    _curTime.value = String.format("%02d:%02d", curMinutes, curSeconds)
 
-                timeRemaining -= 10
+                    timeRemaining -= 10
+                }
             }
-        }
     }
 }

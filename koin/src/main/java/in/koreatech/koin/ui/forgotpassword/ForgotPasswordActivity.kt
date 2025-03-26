@@ -1,5 +1,8 @@
 package `in`.koreatech.koin.ui.forgotpassword
 
+import android.os.Bundle
+import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
 import `in`.koreatech.koin.core.activity.DataBindingActivity
@@ -10,9 +13,6 @@ import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
-import android.os.Bundle
-import androidx.activity.viewModels
-import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding>() {
@@ -50,7 +50,12 @@ class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding
     private fun initView() = with(binding) {
         resetPasswordButton.setOnClickListener {
             hideSoftKeyboard()
-            forgotPasswordViewModel.requestFindPasswordEmail(getString(R.string.koreatech_email_postfix, forgotPasswordIdEdittext.textString.trim()))
+            forgotPasswordViewModel.requestFindPasswordEmail(
+                getString(
+                    R.string.koreatech_email_postfix,
+                    forgotPasswordIdEdittext.textString.trim()
+                )
+            )
         }
 
         forgotPasswordIdEdittext.setOnEditorActionListener { v, actionId, event ->

@@ -7,13 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.usecase.owner.OwnerEmailRegisterUseCase
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class BusinessSignUpCompleteViewModel @Inject constructor(
-    private val ownerEmailRegisterUseCase: OwnerEmailRegisterUseCase,
-): BaseViewModel() {
+    private val ownerEmailRegisterUseCase: OwnerEmailRegisterUseCase
+) : BaseViewModel() {
     private val _businessCompleteContinuationState = MutableLiveData<Boolean>()
     val businessCompleteContinuationState: LiveData<Boolean> get() = _businessCompleteContinuationState
 
@@ -32,7 +32,14 @@ class BusinessSignUpCompleteViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             ownerEmailRegisterUseCase(
-                attachments, companyNumber, email, name, password, phoneNumber, shopId, shopName
+                attachments,
+                companyNumber,
+                email,
+                name,
+                password,
+                phoneNumber,
+                shopId,
+                shopName
             ).onSuccess {
                 _businessCompleteContinuationState.value = true
             }.onFailure {

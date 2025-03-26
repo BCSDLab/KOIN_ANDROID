@@ -7,8 +7,11 @@ import javax.inject.Inject
 class ModifyReviewUseCase @Inject constructor(
     private val storeRepository: StoreRepository
 ) {
-    suspend operator fun invoke(reviewId:Int, storeId: Int, content: Review) {
+    suspend operator fun invoke(
+        reviewId: Int,
+        storeId: Int,
+        content: Review
+    ) {
         storeRepository.modifyReview(reviewId, storeId, content)
     }
 }
-

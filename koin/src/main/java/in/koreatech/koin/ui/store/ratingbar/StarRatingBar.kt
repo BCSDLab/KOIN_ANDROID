@@ -13,11 +13,11 @@ class StarRatingBar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : AppCompatRatingBar(context, attrs, defStyleAttr) {
-
-    private val starImages = arrayOf(
-        R.drawable.star_empty,
-        R.drawable.star_filled
-    )
+    private val starImages =
+        arrayOf(
+            R.drawable.star_empty,
+            R.drawable.star_filled
+        )
 
     private var starDrawable: Drawable? = null
 
@@ -28,7 +28,6 @@ class StarRatingBar @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         val starWidth = width / numStars
         for (i in 0 until numStars) {
-
             when {
                 rating >= i + 1 -> starDrawable = AppCompatResources.getDrawable(context, starImages[1])
                 else -> starDrawable = AppCompatResources.getDrawable(context, starImages[0])

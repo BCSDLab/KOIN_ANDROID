@@ -9,7 +9,7 @@ import `in`.koreatech.koin.domain.repository.NotificationRepository
 import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
-    private val notificationRemoteDataSource: NotificationRemoteDataSource,
+    private val notificationRemoteDataSource: NotificationRemoteDataSource
 ) : NotificationRepository {
     override suspend fun getPermissionInfo(): NotificationPermissionInfo {
         return notificationRemoteDataSource.getPermissionInfo().toNotificationPermissionInfo()

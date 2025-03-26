@@ -5,9 +5,9 @@ import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundHeader
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LostAndFoundItemState(
@@ -21,22 +21,23 @@ data class LostAndFoundItemState(
     val author: String,
     val isReported: Boolean,
     val registeredAt: LocalDate,
-    val updatedAt: String,
+    val updatedAt: String
 ) : Parcelable
 
-fun ArticleLostAndFoundHeader.toLostAndFoundItemState() = LostAndFoundItemState(
-    id = id,
-    boardId = boardId,
-    lostOrFound = LostOrFoundType.entries.find { it.name == type } ?: LostOrFoundType.FOUND, // Hardcode value to FOUND for now
-    category = LostItemCategory.safeValueOf(category),
-    foundPlace = foundPlace,
-    foundDate = LocalDate.parse(foundDate),
-    content = content ?: "",
-    author = author,
-    isReported = isReported,
-    registeredAt = LocalDate.parse(registeredAt),
-    updatedAt = updatedAt
-)
+fun ArticleLostAndFoundHeader.toLostAndFoundItemState() =
+    LostAndFoundItemState(
+        id = id,
+        boardId = boardId,
+        lostOrFound = LostOrFoundType.entries.find { it.name == type } ?: LostOrFoundType.FOUND, // Hardcode value to FOUND for now
+        category = LostItemCategory.safeValueOf(category),
+        foundPlace = foundPlace,
+        foundDate = LocalDate.parse(foundDate),
+        content = content ?: "",
+        author = author,
+        isReported = isReported,
+        registeredAt = LocalDate.parse(registeredAt),
+        updatedAt = updatedAt
+    )
 
 fun ArticleHeader.toLostAndFoundItemState(): LostAndFoundItemState {
     val title = title.split("|") // Backend saves title as "category|foundPlace|foundDate"

@@ -17,10 +17,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -43,6 +43,7 @@ import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAn
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundKeywordGroup
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.LostAndFoundPagination
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.component.lostAndFoundDialogStyle
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -56,24 +57,30 @@ fun LostAndFoundList(
     navigateToLoginActivity: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
-    viewModel.collectSideEffect { sideEffect ->
-        handleSideEffect(sideEffect, viewModel)
-    }
     val isLoading = uiState.isLoading
-
-    LaunchedEffect(uiState.selectedKeyword) {
-        viewModel.fetchLostAndFoundList()
-    }
-
+    val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
     val firstItemPosition by remember { derivedStateOf { lazyListState.firstVisibleItemIndex } }
+    val isScrolledToTheEnd by remember { derivedStateOf { lazyListState.isScrolledToTheEnd() } }
     val fabBottomPadding: Dp by animateDpAsState(
-        if (lazyListState.isScrolledToTheEnd() && firstItemPosition != 0) {
+        if (isScrolledToTheEnd && firstItemPosition != 0) {
             64.dp
         } else {
             0.dp
         }
     )
+
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(
+            sideEffect = sideEffect,
+            viewModel = viewModel,
+            scrollToTop = {
+                coroutineScope.launch {
+                    lazyListState.scrollToItem(0)
+                }
+            }
+        )
+    }
 
     val context = LocalContext.current
 
@@ -99,7 +106,7 @@ fun LostAndFoundList(
                             viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LOST_AND_FOUND.FOUND_WRITE,
+                                AnalyticsConstant.Label.LostAndFound.FOUND_WRITE,
                                 fabFoundText
                             )
                             navigateToWriteFoundItem(
@@ -113,7 +120,7 @@ fun LostAndFoundList(
                             viewModel.setShowLoginRequestDialog(true)
                         } else {
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.LOST_AND_FOUND.LOST_WRITE,
+                                AnalyticsConstant.Label.LostAndFound.LOST_WRITE,
                                 fabLostText
                             )
                             navigateToWriteFoundItem(
@@ -124,7 +131,7 @@ fun LostAndFoundList(
                     },
                     onDialogExpandedChange = {
                         EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_WRITE,
+                            AnalyticsConstant.Label.LostAndFound.ITEM_WRITE,
                             fabWrite
                         )
                         viewModel.setFabDialogExpanded(it)
@@ -162,7 +169,7 @@ fun LostAndFoundList(
                             },
                             onItemSelected = {
                                 EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_TYPE,
+                                    AnalyticsConstant.Label.LostAndFound.ITEM_POST_TYPE,
                                     when (it) {
                                         0 -> "물품 전체"
                                         1 -> "습득물"
@@ -204,10 +211,14 @@ fun LostAndFoundList(
                                 author = it.author,
                                 isReported = it.isReported,
                                 foundDate = it.foundDate,
-                                registeredAt = it.registeredAt,
+                                registeredAt = it.registeredAt
                             ) {
                                 if (it.isReported) {
-                                    Toast.makeText(context, context.getString(R.string.reported_article_click_toast), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.reported_article_click_toast),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 } else {
                                     navigateToLostAndFoundDetail(it.id)
                                 }
@@ -232,10 +243,6 @@ fun LostAndFoundList(
                     }
                 }
 
-                LaunchedEffect(uiState.currentPage) {
-                    lazyListState.scrollToItem(0)
-                }
-
                 if (isLoading) {
                     LoadingDialog()
                 }
@@ -246,29 +253,38 @@ fun LostAndFoundList(
                         description = stringResource(R.string.request_login_dialog_description),
                         lostAndFoundDialogStyle = lostAndFoundDialogStyle().copy(
                             titleStyle = KoinTheme.typography.medium18.copy(textAlign = TextAlign.Center),
-                            descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center),
+                            descriptionStyle = KoinTheme.typography.regular14.copy(textAlign = TextAlign.Center)
                         ),
                         onPositive = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LOGIN_PROMPT,
+                                "게시글 작성 팝업"
+                            )
                             navigateToLoginActivity()
                             viewModel.setShowLoginRequestDialog(false)
                         },
                         onNegative = {
                             viewModel.setShowLoginRequestDialog(false)
-                        },
+                        }
                     )
                 }
             }
         }
-
     }
 }
 
 fun handleSideEffect(
     sideEffect: LostAndFoundSideEffect,
-    viewModel: LostAndFoundViewModel
+    viewModel: LostAndFoundViewModel,
+    scrollToTop: () -> Unit = {}
 ) {
     when (sideEffect) {
         is LostAndFoundSideEffect.PageChanged -> {
+            viewModel.fetchLostAndFoundList()
+            scrollToTop()
+        }
+
+        LostAndFoundSideEffect.KeywordUpdated -> {
             viewModel.fetchLostAndFoundList()
         }
     }

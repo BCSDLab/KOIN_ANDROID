@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.core.analytics
 
 object AnalyticsConstant {
-
     object Category {
         const val CLICK = "click"
         const val SCROLL = "scroll"
@@ -59,7 +58,6 @@ object AnalyticsConstant {
         const val SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE = "shop_detail_view_review_delete_done"
         const val SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL = "shop_detail_view_review_delete_cancel"
 
-
         const val SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN = "shop_detail_view_review_write_login"
         const val SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL = "shop_detail_view_review_write_cancel"
 
@@ -86,7 +84,6 @@ object AnalyticsConstant {
         const val ADD_KEYWORD = "add_keyword"
         const val RECOMMENDED_KEYWORD = "recommended_keyword"
         const val KEYWORD_NOTIFICATION = "keyword_notification"
-        const val LOGIN_POPUP_KEYWORD = "login_popup_keyword"
         const val NOTICE_SEARCH_EVENT = "notice_search_event"
         const val NOTICE_ORIGINAL_SHORTCUT = "notice_original_shortcut"
 
@@ -101,7 +98,9 @@ object AnalyticsConstant {
         const val POPULAR_NOTICE_BANNER = "popular_notice_banner"
         const val TO_MANAGE_KEYWORD = "to_manage_keyword"
 
-        object LOST_AND_FOUND {
+        const val LOGIN_PROMPT = "login_prompt"
+
+        object LostAndFound {
             const val LOST_ITEM_ADD_ITEM = "lost_item_add_item"
             const val FIND_USER_ADD_ITEM = "find_user_add_item"
             const val LOST_ITEM_CATEGORY = "lost_item_category"

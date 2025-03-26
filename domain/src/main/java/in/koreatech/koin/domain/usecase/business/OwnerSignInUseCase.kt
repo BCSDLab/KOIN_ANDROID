@@ -10,11 +10,11 @@ import javax.inject.Inject
 class OwnerSignInUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val tokenRepository: TokenRepository,
-    private val userErrorHandler: UserErrorHandler,
+    private val userErrorHandler: UserErrorHandler
 ) {
     suspend operator fun invoke(
         phoneNumber: String,
-        password: String,
+        password: String
     ): Pair<Unit?, ErrorHandler?> {
         return try {
             val authToken = userRepository.getOwnerToken(phoneNumber, password.toSHA256())

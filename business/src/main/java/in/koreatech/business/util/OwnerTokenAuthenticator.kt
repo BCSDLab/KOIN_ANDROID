@@ -6,49 +6,57 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
-import `in`.koreatech.business.main.BusinessMainActivity
 import `in`.koreatech.business.R
+import `in`.koreatech.business.main.BusinessMainActivity
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-
+import java.net.HttpURLConnection
+import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
-import java.net.HttpURLConnection
-import javax.inject.Inject
 
 class OwnerTokenAuthenticator @Inject constructor(
     @ApplicationContext private val context: Context,
     private val tokenLocalDataSource: TokenLocalDataSource
-): Authenticator {
-    override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
-        val request = try {
-            if(response.code != HttpURLConnection.HTTP_UNAUTHORIZED) null
-            else {
-                val accessToken = tokenLocalDataSource.getOwnerAccessToken()
-                if(accessToken == response.request.header("OwnerAuthorization")) {
-                    tokenLocalDataSource.removeAccessToken()
-                    goToLoginActivity()
-                    null
-                } else {
-                    if(accessToken.isNullOrEmpty()) {
-                        goToLoginActivity()
+) : Authenticator {
+    override fun authenticate(
+        route: Route?,
+        response: Response
+    ): Request? =
+        runBlocking {
+            val request =
+                try {
+                    if (response.code != HttpURLConnection.HTTP_UNAUTHORIZED) {
                         null
                     } else {
-                        getRequest(response, accessToken)
+                        val accessToken = tokenLocalDataSource.getOwnerAccessToken()
+                        if (accessToken == response.request.header("OwnerAuthorization")) {
+                            tokenLocalDataSource.removeAccessToken()
+                            goToLoginActivity()
+                            null
+                        } else {
+                            if (accessToken.isNullOrEmpty()) {
+                                goToLoginActivity()
+                                null
+                            } else {
+                                getRequest(response, accessToken)
+                            }
+                        }
                     }
+                } catch (e: Exception) {
+                    goToLoginActivity()
+                    null
                 }
-            }
-        } catch (e: Exception) {
-            goToLoginActivity()
-            null
+
+            request
         }
 
-        request
-    }
-
-    private fun getRequest(response: Response, token: String): Request {
+    private fun getRequest(
+        response: Response,
+        token: String
+    ): Request {
         return response.request
             .newBuilder()
             .removeHeader("OwnerAuthorization")

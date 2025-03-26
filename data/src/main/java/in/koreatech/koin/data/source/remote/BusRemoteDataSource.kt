@@ -12,7 +12,6 @@ import javax.inject.Inject
 class BusRemoteDataSource @Inject constructor(
     private val busApi: BusApi
 ) {
-
     suspend fun fetchBusNotice(): BusNoticeResponse {
         return busApi.fetchBusNotice()
     }
@@ -29,7 +28,10 @@ class BusRemoteDataSource @Inject constructor(
         return busApi.fetchExpressTimetable(direction)
     }
 
-    suspend fun fetchCityTimetable(busNumber: Int, direction: String): CityTimetableResponse {
+    suspend fun fetchCityTimetable(
+        busNumber: Int,
+        direction: String
+    ): CityTimetableResponse {
         return busApi.fetchCityTimetable(busNumber, direction)
     }
 

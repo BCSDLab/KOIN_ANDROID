@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.data.stomp
 
+import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.DeserializationStrategy
@@ -9,7 +9,6 @@ import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json.Default.serializersModule
 import kotlinx.serialization.serializer
 import org.hildan.krossbow.stomp.StompClient
-import org.hildan.krossbow.stomp.StompReceipt
 import org.hildan.krossbow.stomp.StompSession
 import org.hildan.krossbow.stomp.conversions.kxserialization.StompSessionWithKxSerialization
 import org.hildan.krossbow.stomp.conversions.kxserialization.json.withJsonConversions
@@ -17,7 +16,6 @@ import org.hildan.krossbow.stomp.conversions.kxserialization.subscribe
 import org.hildan.krossbow.stomp.headers.StompSendHeaders
 import org.hildan.krossbow.websocket.WebSocketException
 import timber.log.Timber
-import javax.inject.Inject
 
 class KoinStomp @Inject constructor(
     private val baseUrl: String,
@@ -27,12 +25,13 @@ class KoinStomp @Inject constructor(
     var stompSession: StompSession? = null
     lateinit var jsonStompSession: StompSessionWithKxSerialization
 
-    suspend fun connect() {
-        if (stompSession == null) {
-            stompSession = stompClient.connect(
-                url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
-                customStompConnectHeaders = mapOf("Authorization" to authToken)
-            )
+    suspend fun connect(retry: Boolean) {
+        if (stompSession == null || retry) {
+            stompSession =
+                stompClient.connect(
+                    url = "${baseUrl.replaceFirst("https", "wss")}/ws-stomp",
+                    customStompConnectHeaders = mapOf("Authorization" to authToken)
+                )
             jsonStompSession = stompSession!!.withJsonConversions()
         }
     }
@@ -44,7 +43,7 @@ class KoinStomp @Inject constructor(
 
     fun <T : Any> subscribe(
         destination: String,
-        deserializer: DeserializationStrategy<T>,
+        deserializer: DeserializationStrategy<T>
     ): Flow<T> {
         return flow {
             while (true) {
@@ -53,8 +52,7 @@ class KoinStomp @Inject constructor(
                         .collect { emit(it) }
                 } catch (e: WebSocketException) {
                     Timber.d("WebSocketException, reconnecting...")
-                    disconnect()
-                    connect()
+                    connect(true)
                     Timber.d("Reconnected. Retrying subscription...")
                 } catch (e: CancellationException) {
                     throw e
@@ -68,16 +66,24 @@ class KoinStomp @Inject constructor(
     suspend fun <T : Any> convertAndSend(
         headers: String,
         body: T? = null,
-        serializer: SerializationStrategy<T>,
-    ): StompReceipt? {
-        return jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
+        serializer: SerializationStrategy<T>
+    ) {
+        try {
+            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
+        } catch (e: UninitializedPropertyAccessException) {
+            throw e
+        }
     }
 
     suspend inline fun <reified T : Any> convertAndSend(
         headers: String,
         body: T
-    ): StompReceipt? {
+    ) {
         val serializer = serializersModule.serializer<T>()
-        return jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
+        try {
+            jsonStompSession.convertAndSend(StompSendHeaders(headers), body, serializer)
+        } catch (e: UninitializedPropertyAccessException) {
+            throw e
+        }
     }
 }

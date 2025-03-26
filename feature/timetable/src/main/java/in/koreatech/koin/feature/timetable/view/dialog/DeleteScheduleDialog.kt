@@ -48,7 +48,8 @@ fun DeleteScheduleDialog(
             color = Color.White
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .wrapContentSize()
                     .padding(
                         horizontal = 32.dp,
@@ -56,24 +57,28 @@ fun DeleteScheduleDialog(
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val title = stringArrayResource(id = R.array.delete_schedule_title).apply {
-                    this[0] = String.format(this[0], scheduleName)
-                }
+                val title =
+                    stringArrayResource(id = R.array.delete_schedule_title).apply {
+                        this[0] = String.format(this[0], scheduleName)
+                    }
                 HighlightedText(
                     texts = title,
                     highlightIndices = listOf(1),
-                    defaultStyle = KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral800,
+                    defaultStyle =
+                    KoinTheme.typography.medium16.copy(
+                        color = KoinTheme.colors.neutral800
                     ),
-                    highlightStyle = KoinTheme.typography.bold16.copy(
-                        color = KoinTheme.colors.danger700,
+                    highlightStyle =
+                    KoinTheme.typography.bold16.copy(
+                        color = KoinTheme.colors.danger700
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(id = R.string.delete_schedule_description),
-                    style = KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral800,
+                    style =
+                    KoinTheme.typography.medium16.copy(
+                        color = KoinTheme.colors.neutral800
                     )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -82,10 +87,12 @@ fun DeleteScheduleDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        colors = ButtonColors(
+                        colors =
+                        ButtonColors(
                             containerColor = KoinTheme.colors.neutral0,
                             contentColor = KoinTheme.colors.neutral500,
                             disabledContainerColor = KoinTheme.colors.neutral400,
@@ -96,10 +103,15 @@ fun DeleteScheduleDialog(
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
                         onClick = { onDismiss() }
                     ) {
-                        Text(text = stringResource(id = R.string.common_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
+                        Text(
+                            text = stringResource(id = R.string.common_cancellation),
+                            style = KoinTheme.typography.medium15,
+                            color = KoinTheme.colors.neutral600
+                        )
                     }
                     FilledTextButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.delete_schedule_confirmation),
@@ -108,7 +120,6 @@ fun DeleteScheduleDialog(
                     )
                 }
             }
-
         }
     }
 }
@@ -120,7 +131,7 @@ private fun DeleteScheduleDialogPreview() {
         DeleteScheduleDialog(
             scheduleName = "일정명",
             onConfirm = {},
-            onDismiss = {},
+            onDismiss = {}
         )
     }
 }

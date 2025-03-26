@@ -18,7 +18,7 @@ fun WriteArticleTextField(
     modifier: Modifier = Modifier,
     singleLine: Boolean = false,
     textPaddingValues: PaddingValues = PaddingValues(0.dp),
-    onValueChange: (String) -> Unit = {},
+    onValueChange: (String) -> Unit = {}
 ) {
     Box(modifier = modifier) {
         if (value.isEmpty()) {
@@ -31,7 +31,8 @@ fun WriteArticleTextField(
         }
 
         BasicTextField(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(textPaddingValues)
                 .fillMaxWidth(),
             value = value,

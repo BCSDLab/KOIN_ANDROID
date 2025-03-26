@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class OwnerRegisterUseCase @Inject constructor(
     private val ownerRegisterRepository: OwnerRegisterRepository,
-    private val ownerErrorHandler: OwnerErrorHandler,
+    private val ownerErrorHandler: OwnerErrorHandler
 ) {
     suspend operator fun invoke(
         attachments: List<OwnerRegisterUrl>,
@@ -16,6 +16,7 @@ class OwnerRegisterUseCase @Inject constructor(
         name: String,
         password: String,
         phoneNumber: String,
+        shopNumber: String,
         shopId: Int?,
         shopName: String
     ): Pair<Unit?, ErrorHandler?> {
@@ -26,6 +27,7 @@ class OwnerRegisterUseCase @Inject constructor(
                 name,
                 password,
                 phoneNumber,
+                shopNumber,
                 shopId,
                 shopName
             )
@@ -33,6 +35,5 @@ class OwnerRegisterUseCase @Inject constructor(
         } catch (t: Throwable) {
             null to ownerErrorHandler.handleOwnerRegisterError(t)
         }
-
     }
 }

@@ -1,6 +1,6 @@
 package `in`.koreatech.business.feature.insertstore.navigator
 
-enum class InsertStoreRoute(){
+enum class InsertStoreRoute() {
     START,
     SELECT_CATEGORY,
     BASIC_INFO,

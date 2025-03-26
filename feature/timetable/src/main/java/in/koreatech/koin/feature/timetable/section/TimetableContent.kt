@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.component.TimetableEventTime
 import `in`.koreatech.koin.feature.timetable.component.TimetableEventType
@@ -48,7 +47,11 @@ fun TimetableContent(
     height: Dp = (TimetableConstants.eventHeight).dp,
     clickEvent: List<TimetableEvent> = emptyList(),
     etcClickEvent: List<TimetableEvent> = emptyList(),
-    content: @Composable (event: TimetableEvent, eventType: TimetableEventType, onEventTimeClick: (TimetableEvent) -> Unit) -> Unit = { event, eventType, onClick ->
+    content: @Composable (
+        event: TimetableEvent,
+        eventType: TimetableEventType,
+        onEventTimeClick: (TimetableEvent) -> Unit
+    ) -> Unit = { event, eventType, onClick ->
         TimetableEventTime(
             range = range,
             event = event,
@@ -66,9 +69,14 @@ fun TimetableContent(
     Layout(
         content = {
             TimetableConstants.days.forEach { day ->
-                Box(modifier = Modifier.then(object : ParentDataModifier {
-                    override fun Density.modifyParentData(parentData: Any?): String = day
-                })) {
+                Box(
+                    modifier =
+                    Modifier.then(
+                        object : ParentDataModifier {
+                            override fun Density.modifyParentData(parentData: Any?): String = day
+                        }
+                    )
+                ) {
                     Text(
                         text = day,
                         style = KoinTheme.typography.medium13,
@@ -80,9 +88,14 @@ fun TimetableContent(
             }
             repeat(range) {
                 val time = (initStartTime.hour + it).toString()
-                Box(modifier = Modifier.then(object : ParentDataModifier {
-                    override fun Density.modifyParentData(parentData: Any?): String = time
-                })) {
+                Box(
+                    modifier =
+                    Modifier.then(
+                        object : ParentDataModifier {
+                            override fun Density.modifyParentData(parentData: Any?): String = time
+                        }
+                    )
+                ) {
                     Text(
                         text = time,
                         style = KoinTheme.typography.regular12,
@@ -112,7 +125,8 @@ fun TimetableContent(
                 }
             }
         },
-        modifier = modifier
+        modifier =
+        modifier
             .background(Color.White, shape = RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
             .border(
@@ -137,7 +151,8 @@ fun TimetableContent(
                             if (it % 2 == 1) {
                                 drawLine(
                                     color = neutral300,
-                                    start = Offset(
+                                    start =
+                                    Offset(
                                         timeWidth.toPx(),
                                         it * innerHeight + headerHeight
                                     ),
@@ -185,45 +200,54 @@ fun TimetableContent(
         val innerWidth = (timetableWidth - timeWidth.roundToPx()) / dayCount
 
         // 요일 측정
-        val placeablesWithDays = measureables.take(dayCount).map { measurable ->
-            measurable.measure(
-                constraints.copy(
-                    minWidth = innerWidth, maxWidth = innerWidth,
-                    minHeight = dayHeight.roundToPx(), maxHeight = dayHeight.roundToPx()
+        val placeablesWithDays =
+            measureables.take(dayCount).map { measurable ->
+                measurable.measure(
+                    constraints.copy(
+                        minWidth = innerWidth,
+                        maxWidth = innerWidth,
+                        minHeight = dayHeight.roundToPx(),
+                        maxHeight = dayHeight.roundToPx()
+                    )
                 )
-            )
-        }
+            }
 
         // 시간 측정
         val placeaablesWithTimes =
             measureables.slice((dayCount)..<(dayCount + range)).map { measurable ->
                 measurable.measure(
                     constraints.copy(
-                        minWidth = timeWidth.roundToPx(), maxWidth = timeWidth.roundToPx(),
-                        minHeight = height.roundToPx(), maxHeight = height.roundToPx()
+                        minWidth = timeWidth.roundToPx(),
+                        maxWidth = timeWidth.roundToPx(),
+                        minHeight = height.roundToPx(),
+                        maxHeight = height.roundToPx()
                     )
                 )
             }
 
-
         // 강의 이벤트 박스 측정
-        val placeablesWithEvents = measureables.drop(dayCount + range).map { measurable ->
-            val event = measurable.parentData as TimetableEvent
+        val placeablesWithEvents =
+            measureables.drop(dayCount + range).map { measurable ->
+                val event = measurable.parentData as TimetableEvent
 
-            val eventDurationMinutes = if (event.end == LocalTime.of(23, 59)) {
-                ChronoUnit.MINUTES.between(event.start, event.end) + 1L
-            } else {
-                ChronoUnit.MINUTES.between(event.start, event.end)
+                val eventDurationMinutes =
+                    if (event.end == LocalTime.of(23, 59)) {
+                        ChronoUnit.MINUTES.between(event.start, event.end) + 1L
+                    } else {
+                        ChronoUnit.MINUTES.between(event.start, event.end)
+                    }
+                val eventHeight = ((eventDurationMinutes / 60f) * height.toPx()).roundToInt()
+                val placeable =
+                    measurable.measure(
+                        constraints.copy(
+                            minWidth = innerWidth + 1,
+                            maxWidth = innerWidth + 1,
+                            minHeight = eventHeight,
+                            maxHeight = eventHeight
+                        )
+                    )
+                Pair(placeable, event)
             }
-            val eventHeight = ((eventDurationMinutes / 60f) * height.toPx()).roundToInt()
-            val placeable = measurable.measure(
-                constraints.copy(
-                    minWidth = innerWidth + 1, maxWidth = innerWidth + 1,
-                    minHeight = eventHeight, maxHeight = eventHeight
-                )
-            )
-            Pair(placeable, event)
-        }
 
         layout(timetableWidth + 1, timetableHeight + 1) {
             // 요일 배치
@@ -245,18 +269,19 @@ fun TimetableContent(
                 val eventY =
                     (((eventOffsetMinutes / 60f) + 0.5) * (height).toPx()).roundToInt() + (dayHeight).roundToPx() - (height / 2).roundToPx()
 
-                val eventOffsetDays: Int = when (event.dayOfWeek) {
-                    DayOfWeek.MONDAY -> 0
-                    DayOfWeek.TUESDAY -> 1
-                    DayOfWeek.WEDNESDAY -> 2
-                    DayOfWeek.THURSDAY -> 3
-                    DayOfWeek.FRIDAY -> 4
-                    DayOfWeek.SATURDAY -> 5
-                    DayOfWeek.SUNDAY -> 6
-                    else -> -1
-                }
+                val eventOffsetDays: Int =
+                    when (event.dayOfWeek) {
+                        DayOfWeek.MONDAY -> 0
+                        DayOfWeek.TUESDAY -> 1
+                        DayOfWeek.WEDNESDAY -> 2
+                        DayOfWeek.THURSDAY -> 3
+                        DayOfWeek.FRIDAY -> 4
+                        DayOfWeek.SATURDAY -> 5
+                        DayOfWeek.SUNDAY -> 6
+                        else -> -1
+                    }
                 val eventX = eventOffsetDays * innerWidth + timeWidth.roundToPx()
-                if(event in clickEvent) {
+                if (event in clickEvent) {
                     onEventY(eventY)
                 }
                 placeable.place(eventX, eventY)
@@ -266,17 +291,18 @@ fun TimetableContent(
 }
 
 @Composable
-private fun measureEventWidth(horizontalPadding: Dp, dayCount: Int): Dp =
-    LocalConfiguration.current.screenWidthDp.dp / (dayCount + 1) - (horizontalPadding / (dayCount + 1))
+private fun measureEventWidth(
+    horizontalPadding: Dp,
+    dayCount: Int
+): Dp = LocalConfiguration.current.screenWidthDp.dp / (dayCount + 1) - (horizontalPadding / (dayCount + 1))
 
 private class EventDataModifier(
-    val event: TimetableEvent,
+    val event: TimetableEvent
 ) : ParentDataModifier {
     override fun Density.modifyParentData(parentData: Any?) = event
 }
 
-private fun Modifier.eventData(event: TimetableEvent) =
-    this.then(EventDataModifier(event))
+private fun Modifier.eventData(event: TimetableEvent) = this.then(EventDataModifier(event))
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -284,12 +310,22 @@ private fun TimetableContentPreview() {
     TimetableContent(
         range = 9,
         horizontalPadding = 24.dp,
-        events = listOf(
+        events =
+        listOf(
             dummyEvent,
-            dummyEvent.copy(name = "제목제목제목제목제목제목제목제목제목제목", professor = "교수교수교수교수교수교수교수교수", place = "장소", dayOfWeek = DayOfWeek.MONDAY, start = LocalTime.of(15, 0), end = LocalTime.of(18, 0)),
+            dummyEvent.copy(
+                name = "제목제목제목제목제목제목제목제목제목제목",
+                professor = "교수교수교수교수교수교수교수교수",
+                place = "장소",
+                dayOfWeek = DayOfWeek.MONDAY,
+                start = LocalTime.of(15, 0),
+                end = LocalTime.of(18, 0)
+            ),
             dummyEvent.copy(start = LocalTime.of(9, 0), dayOfWeek = DayOfWeek.WEDNESDAY),
             dummyEvent.copy(
-                end = LocalTime.of(17, 0), dayOfWeek = DayOfWeek.THURSDAY),
+                end = LocalTime.of(17, 0),
+                dayOfWeek = DayOfWeek.THURSDAY
+            ),
             dummyEvent.copy(
                 start = LocalTime.of(9, 0),
                 end = LocalTime.of(16, 30),

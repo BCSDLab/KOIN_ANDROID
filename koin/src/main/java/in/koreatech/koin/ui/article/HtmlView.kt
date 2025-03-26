@@ -26,11 +26,10 @@ import `in`.koreatech.koin.ui.article.state.HtmlElement
 class HtmlView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = 0
 ) : LinearLayout(context, attributeSet, defStyleAttr) {
-
     private var html: HtmlElement? = null
-    private var lastAddedView: View = this  // 가장 마지막으로 추가된 View. 이미 추가된 View의 재활용을 위함
+    private var lastAddedView: View = this // 가장 마지막으로 추가된 View. 이미 추가된 View의 재활용을 위함
 
     private var onPreDrawListener: OnPreDrawListener? = null
     private var onPostDrawListener: OnPostDrawListener? = null
@@ -58,18 +57,26 @@ class HtmlView @JvmOverloads constructor(
         html.children.forEachIndexed { i, self ->
             when (self.tag) {
                 HtmlTag.P, HtmlTag.DIV, HtmlTag.SPAN, HtmlTag.A, HtmlTag.BR, HtmlTag.LI, HtmlTag.OL, HtmlTag.UL -> {
-                    if (lastAddedView is TextView       // 직전 View가 TextView이고
-                        && lastAddedView.textAlignment == self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()) {    // Text-align이 같으면 TextView 재사용
-                        val frontLineBreak = when(self.tag) {
-                            HtmlTag.P, HtmlTag.DIV, HtmlTag.BR, HtmlTag.LI, HtmlTag.OL, HtmlTag.UL -> if (self.children.isEmpty()) "" else "\n"
-                            else -> ""
-                        }
+                    if (lastAddedView is TextView && // 직전 View가 TextView이고
+                        lastAddedView.textAlignment == self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()
+                    ) { // Text-align이 같으면 TextView 재사용
+                        val frontLineBreak =
+                            when (self.tag) {
+                                HtmlTag.P, HtmlTag.DIV, HtmlTag.BR, HtmlTag.LI, HtmlTag.OL, HtmlTag.UL -> if (self.children.isEmpty()) "" else "\n"
+                                else -> ""
+                            }
 
                         val listMarker = createListMarker(self.tag, html.tag, i)
 
-                        val originalText = SpannableStringBuilder((lastAddedView as TextView).text)
-                        val newTextBuilder = SpannableStringBuilder(frontLineBreak + listMarker + self.content)
-                        val newSpanned = newTextBuilder.getStyledText(0, newTextBuilder.length, self.styles)
+                        val originalText =
+                            SpannableStringBuilder((lastAddedView as TextView).text)
+                        val newTextBuilder =
+                            SpannableStringBuilder(frontLineBreak + listMarker + self.content)
+                        val newSpanned = newTextBuilder.getStyledText(
+                            0,
+                            newTextBuilder.length,
+                            self.styles
+                        )
 
                         (lastAddedView as TextView).text = originalText.append(newSpanned)
                     } else {
@@ -80,7 +87,8 @@ class HtmlView @JvmOverloads constructor(
 
                             val listMarker = createListMarker(self.tag, html.tag, i)
 
-                            val newTextBuilder = SpannableStringBuilder(listMarker + self.content)
+                            val newTextBuilder =
+                                SpannableStringBuilder(listMarker + self.content)
                             text = newTextBuilder.getStyledText(0, newTextBuilder.length, self.styles)
 
                             this.textAlignment = self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()
@@ -91,10 +99,11 @@ class HtmlView @JvmOverloads constructor(
                     addHtmlView(self)
                 }
                 HtmlTag.HR -> {
-                    val hr = View(context).apply {
-                        //layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 1)
-                        //setBackgroundColor(Color.BLACK)
-                    }
+                    val hr =
+                        View(context).apply {
+                            // layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 1)
+                            // setBackgroundColor(Color.BLACK)
+                        }
                     addView(hr)
                     lastAddedView = hr
                 }
@@ -107,9 +116,9 @@ class HtmlView @JvmOverloads constructor(
     }
 
     private fun createListMarker(selfTag: HtmlTag, parentTag: HtmlTag, index: Int): String {
-        return when(selfTag) {
+        return when (selfTag) {
             HtmlTag.LI -> {
-                when(parentTag) {
+                when (parentTag) {
                     HtmlTag.UL -> "• "
                     HtmlTag.OL -> "${index + 1}. "
                     else -> "• "
@@ -120,36 +129,43 @@ class HtmlView @JvmOverloads constructor(
     }
 
     private fun drawImage(self: HtmlElement): ImageView {
-        val imageView = ImageView(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        }
+        val imageView =
+            ImageView(context).apply {
+                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            }
         addView(imageView)
         Glide.with(context).load(self.attributes[HtmlAttribute.SRC]).error(
-            Glide.with(context).load(context.getString(R.string.koreatech_url) + self.attributes[HtmlAttribute.SRC])
-        ).addListener(object : RequestListener<Drawable> {
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: com.bumptech.glide.request.target.Target<Drawable>,
-                isFirstResource: Boolean
-            ): Boolean {
-                return false
-            }
-
-            override fun onResourceReady(
-                resource: Drawable,
-                model: Any,
-                target: com.bumptech.glide.request.target.Target<Drawable>,
-                dataSource: DataSource,
-                isFirstResource: Boolean
-            ): Boolean {
-                val dialog = ImageZoomableDialog(context, model as String)
-                imageView.setOnClickListener {
-                    dialog.show()
+            Glide.with(
+                context
+            ).load(
+                context.getString(R.string.koreatech_url) + self.attributes[HtmlAttribute.SRC]
+            )
+        ).addListener(
+            object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: com.bumptech.glide.request.target.Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
                 }
-                return false
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: com.bumptech.glide.request.target.Target<Drawable>,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    val dialog = ImageZoomableDialog(context, model as String)
+                    imageView.setOnClickListener {
+                        dialog.show()
+                    }
+                    return false
+                }
             }
-        }).into(imageView)
+        ).into(imageView)
         return imageView
     }
 
@@ -190,6 +206,4 @@ fun SpannableStringBuilder.getStyledText(
 private class HtmlTableView(
     context: Context,
     html: HtmlElement
-) : AppCompatTextView(context) {
-
-}
+) : AppCompatTextView(context)

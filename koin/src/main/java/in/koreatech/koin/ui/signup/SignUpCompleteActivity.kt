@@ -9,7 +9,6 @@ import `in`.koreatech.koin.databinding.ActivitySignupCompleteBinding
 import `in`.koreatech.koin.ui.login.LoginActivity
 
 class SignUpCompleteActivity : ActivityBase() {
-
     private lateinit var binding: ActivitySignupCompleteBinding
     override val screenTitle = "회원가입 완료"
 
@@ -28,9 +27,9 @@ class SignUpCompleteActivity : ActivityBase() {
         }
 
         btnGoCollegePortal.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.koreatech_url)))
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.koreatech_url)))
             startActivity(intent)
         }
     }
-
 }

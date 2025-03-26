@@ -4,5 +4,5 @@ data class Review(
     val rating: Int,
     val content: String?,
     val imageUrls: List<String>?,
-    val menuNames: List<String>?,
+    val menuNames: List<String>?
 )

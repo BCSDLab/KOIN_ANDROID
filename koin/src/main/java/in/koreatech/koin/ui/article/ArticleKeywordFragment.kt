@@ -19,9 +19,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.AlertModalDialog
 import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
@@ -38,7 +38,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ArticleKeywordFragment : Fragment() {
-
     private var _binding: FragmentArticleKeywordBinding? = null
     private val binding get() = _binding!!
 
@@ -54,24 +53,21 @@ class ArticleKeywordFragment : Fragment() {
                 positiveButtonText = R.string.action_login
             ),
             onPositiveButtonClicked = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.action_login)
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.LOGIN_PROMPT,
+                    "키워드 알림 팝업"
                 )
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("koin://login/login?link=koin://article/activity?fragment=article_keyword")
-                }
+                val intent =
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse("koin://login/login?link=koin://article/activity?fragment=article_keyword")
+                    }
                 it.dismiss()
                 startActivity(intent)
-            }, onNegativeButtonClicked = {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.LOGIN_POPUP_KEYWORD,
-                    getString(R.string.close)
-                )
+            },
+            onNegativeButtonClicked = {
                 it.dismiss()
-            })
+            }
+        )
     }
 
     override fun onCreateView(
@@ -90,7 +86,9 @@ class ArticleKeywordFragment : Fragment() {
                 if (id == EditorInfo.IME_ACTION_DONE) {
                     viewModel.addKeyword(binding.textInputSearch.text.toString())
                     true
-                } else false
+                } else {
+                    false
+                }
             }
             binding.textInputSearch.addTextChangedListener {
                 viewModel.onKeywordInputChanged(it.toString())
@@ -120,7 +118,7 @@ class ArticleKeywordFragment : Fragment() {
         binding.run {
             if (chipGroupMyKeyword.childCount < keywords.size) {
                 keywords.forEach { keyword ->
-                    if (chipGroupMyKeyword.children.none { (it as? Chip)?.text == keyword })
+                    if (chipGroupMyKeyword.children.none { (it as? Chip)?.text == keyword }) {
                         chipGroupMyKeyword.addView(
                             createChip(
                                 keyword,
@@ -129,6 +127,7 @@ class ArticleKeywordFragment : Fragment() {
                                 viewModel::deleteKeyword
                             )
                         )
+                    }
                     binding.chipGroupSuggestionKeywords.children.forEach { chip ->
                         if ((chip as? Chip)?.text == keyword) {
                             chipGroupSuggestionKeywords.removeView(chip)
@@ -160,8 +159,9 @@ class ArticleKeywordFragment : Fragment() {
                     binding.chipGroupSuggestionKeywords.removeAllViews()
                     suggests.forEach { keyword ->
                         binding.run {
-                            if (chipGroupSuggestionKeywords.childCount >= ArticleKeywordViewModel.MAX_SUGGEST_KEYWORD_COUNT)
+                            if (chipGroupSuggestionKeywords.childCount >= ArticleKeywordViewModel.MAX_SUGGEST_KEYWORD_COUNT) {
                                 return@forEach
+                            }
 
                             if (viewModel.myKeywords.value.contains(keyword).not()) {
                                 val onClick: (String) -> Unit = {
@@ -220,35 +220,35 @@ class ArticleKeywordFragment : Fragment() {
                         KeywordAddUiState.RequireInput -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_require_input),
+                                getString(R.string.keyword_add_require_input)
                             )
                         }
 
                         KeywordAddUiState.LimitExceeded -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_limit_exceeded),
+                                getString(R.string.keyword_add_limit_exceeded)
                             )
                         }
 
                         KeywordAddUiState.InvalidLength -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_invalid_length),
+                                getString(R.string.keyword_add_invalid_length)
                             )
                         }
 
                         KeywordAddUiState.AlreadyExist -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_already_exist),
+                                getString(R.string.keyword_add_already_exist)
                             )
                         }
 
                         KeywordAddUiState.BlankNotAllowed -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.keyword_add_blank_not_allowed),
+                                getString(R.string.keyword_add_blank_not_allowed)
                             )
                         }
 
@@ -262,14 +262,15 @@ class ArticleKeywordFragment : Fragment() {
                                         (chip as? Chip)?.text == state.keyword
                                     }
                                 )
-                            } catch (_: Exception) {}
+                            } catch (_: Exception) {
+                            }
                             binding.textInputSearch.text = null
                         }
 
                         KeywordAddUiState.Error -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                getString(R.string.error_network_unknown),
+                                getString(R.string.error_network_unknown)
                             )
                         }
                     }
@@ -285,28 +286,32 @@ class ArticleKeywordFragment : Fragment() {
                     binding.buttonAddKeyword.apply {
                         background.setTint(
                             when (state) {
-                                is KeywordInputUiState.Empty -> ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.gray16
-                                )
+                                is KeywordInputUiState.Empty ->
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.gray16
+                                    )
 
-                                is KeywordInputUiState.Valid -> ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.colorPrimary
-                                )
+                                is KeywordInputUiState.Valid ->
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.colorPrimary
+                                    )
                             }
                         )
                         setTextColor(
                             when (state) {
-                                is KeywordInputUiState.Empty -> ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.gray14
-                                )
+                                is KeywordInputUiState.Empty ->
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.gray14
+                                    )
 
-                                is KeywordInputUiState.Valid -> ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.white
-                                )
+                                is KeywordInputUiState.Valid ->
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.white
+                                    )
                             }
                         )
                     }
@@ -346,8 +351,7 @@ class ArticleKeywordFragment : Fragment() {
                     "on"
                 )
                 notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD)
-            }
-            else {
+            } else {
                 EventLogger.logClickEvent(
                     EventAction.CAMPUS,
                     AnalyticsConstant.Label.KEYWORD_NOTIFICATION,

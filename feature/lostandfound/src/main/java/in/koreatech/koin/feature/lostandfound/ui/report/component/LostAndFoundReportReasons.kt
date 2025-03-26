@@ -39,10 +39,10 @@ fun LostAndFoundReportReasons(
     onSelectedItemChange: (Int) -> Unit = {},
     otherReason: String,
     onOtherReasonChange: (String) -> Unit = {},
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.padding(vertical = 8.dp, horizontal = 20.dp),
+        modifier = modifier.padding(vertical = 8.dp, horizontal = 20.dp)
     ) {
         itemList.forEachIndexed { index, reportReason ->
             if (reportReason == ReportReason.OTHER) {
@@ -52,11 +52,12 @@ fun LostAndFoundReportReasons(
                     },
                     isSelected = selectedItem.contains(index),
                     reason = otherReason,
-                    onOtherReasonChange = onOtherReasonChange,
+                    onOtherReasonChange = onOtherReasonChange
                 )
             } else {
                 LostAndFoundReportReasonItem(
-                    modifier = Modifier.noRippleClickable {
+                    modifier =
+                    Modifier.noRippleClickable {
                         onSelectedItemChange(index)
                     },
                     reportReason = reportReason,
@@ -75,7 +76,7 @@ fun LostAndFoundReportReasons(
 fun LostAndFoundReportReasonItem(
     modifier: Modifier = Modifier,
     reportReason: ReportReason = ReportReason.SPAM,
-    isSelected: Boolean = false,
+    isSelected: Boolean = false
 ) {
     Row(
         modifier = modifier.padding(vertical = 14.dp),
@@ -84,7 +85,7 @@ fun LostAndFoundReportReasonItem(
         Image(
             modifier = Modifier.padding(horizontal = 8.dp),
             painter = painterResource(id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected),
-            contentDescription = null,
+            contentDescription = null
         )
         Column(
             modifier = Modifier.padding(horizontal = 8.dp)
@@ -109,22 +110,26 @@ fun LostAndFoundReportReasonOtherItem(
     onOtherReasonChange: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     onFocused: () -> Unit = {},
-    isSelected: Boolean = false,
+    isSelected: Boolean = false
 ) {
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .padding(vertical = 14.dp)
             .noRippleClickable {
                 onFocused()
-            },
+            }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                painter = painterResource(id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected),
-                contentDescription = null,
+                painter =
+                painterResource(
+                    id = if (isSelected) R.drawable.ic_report_item_selected else R.drawable.ic_report_item_unselected
+                ),
+                contentDescription = null
             )
             Row(
                 modifier = Modifier.padding(horizontal = 8.dp),
@@ -167,7 +172,7 @@ fun ReportTextField(
     modifier: Modifier = Modifier,
     placeholder: String = "",
     maxLength: Int = REPORT_OTHER_REASON_MAX_LENGTH,
-    onFocused: () -> Unit = {},
+    onFocused: () -> Unit = {}
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -179,7 +184,8 @@ fun ReportTextField(
     }
 
     BasicTextField(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .border(1.dp, color = KoinTheme.colors.neutral300, shape = KoinTheme.shapes.extraSmall)
             .padding(vertical = 12.dp, horizontal = 16.dp),
@@ -201,7 +207,7 @@ fun ReportTextField(
                     Text(
                         text = placeholder,
                         style = KoinTheme.typography.regular14,
-                        color = Color(0xFF8E8E8E),
+                        color = Color(0xFF8E8E8E)
                     )
                 } else {
                     innerTextField()

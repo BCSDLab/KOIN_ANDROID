@@ -1,10 +1,5 @@
 package `in`.koreatech.koin.ui.land.adapter
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.constant.LAND
-import `in`.koreatech.koin.databinding.LandRecyclerviewItemBinding
-import `in`.koreatech.koin.domain.model.land.Land
-import `in`.koreatech.koin.ui.land.LandDetailActivity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -13,6 +8,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.qualifiers.ActivityContext
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.LAND
+import `in`.koreatech.koin.databinding.LandRecyclerviewItemBinding
+import `in`.koreatech.koin.domain.model.land.Land
+import `in`.koreatech.koin.ui.land.LandDetailActivity
 import javax.inject.Inject
 
 class LandRecyclerViewAdapter @Inject constructor(
@@ -24,18 +24,17 @@ class LandRecyclerViewAdapter @Inject constructor(
     inner class LandViewHolder(val binding: LandRecyclerviewItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        LandViewHolder(
-            LandRecyclerviewItemBinding.inflate(
-                LayoutInflater.from(context),
-                parent,
-                false
-            )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LandViewHolder(
+        LandRecyclerviewItemBinding.inflate(
+            LayoutInflater.from(context),
+            parent,
+            false
         )
+    )
 
     override fun onBindViewHolder(holder: LandViewHolder, position: Int) {
         with(holder.binding) {
-            if(position == selectedPosition) {
+            if (position == selectedPosition) {
                 container.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.bg_rect_accent)
             } else {
                 container.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.bg_rect_blue1)
@@ -49,7 +48,11 @@ class LandRecyclerViewAdapter @Inject constructor(
                     intent.putExtra(LAND.LAND_EXTRA_NAME, landData[position].id)
                     context.startActivity(intent)
                 } else {
-                    Toast.makeText(context, context.getString(R.string.land_can_not_find_land), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.land_can_not_find_land),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

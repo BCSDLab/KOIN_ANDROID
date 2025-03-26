@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -104,7 +103,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         binding.composeView.setContent {
             val state by viewModel.state.collectAsStateWithLifecycle()
             val dialogState by viewModel.dialogState.collectAsStateWithLifecycle()
-            val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle(TimetableSideEffect.Nothing)
+            val sideEffect by viewModel.sideEffect.collectAsStateWithLifecycle(
+                TimetableSideEffect.Nothing
+            )
             val customContentState by viewModel.customContentState.collectAsStateWithLifecycle()
             val searchEngineState by viewModel.searchEngineState.collectAsStateWithLifecycle()
             val lectures by viewModel.lectures.collectAsStateWithLifecycle()
@@ -119,7 +120,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
             setAppbarEvent {
                 state.semesters.ifEmpty {
-                    viewModel.updateSideEffect(TimetableSideEffect.SnackBar(getString(R.string.timetable_error_no_semester)))
+                    viewModel.updateSideEffect(
+                        TimetableSideEffect.SnackBar(
+                            getString(R.string.timetable_error_no_semester)
+                        )
+                    )
                     return@setAppbarEvent
                 }
                 scope.launch {
@@ -221,9 +226,13 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                             scope.launch {
                                 saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap()) {
                                     if (it) {
-                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지가 저장되었어요."))
+                                        viewModel.updateSideEffect(
+                                            TimetableSideEffect.SnackBar("이미지가 저장되었어요.")
+                                        )
                                     } else {
-                                        viewModel.updateSideEffect(TimetableSideEffect.SnackBar("이미지 저장을 실패했어요."))
+                                        viewModel.updateSideEffect(
+                                            TimetableSideEffect.SnackBar("이미지 저장을 실패했어요.")
+                                        )
                                     }
                                     viewModel.updateIsDownloadDialogVisible(false)
                                 }
@@ -308,7 +317,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                                     if (sheetState.isExpanded) {
                                         sheetState.collapse()
                                         sheetState.expand()
-                                    } else sheetState.expand()
+                                    } else {
+                                        sheetState.expand()
+                                    }
                                 } else {
                                     if (sheetState.isCollapsed) sheetState.expand()
                                 }
@@ -348,7 +359,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                     is TimetableSideEffect.Toast -> {
                         // TODO::현재는 에러 메세지를 띄우는 용로도 토스트가 사용되기에 임시 메세지 사용, 배포 후 수정 필요
                         Timber.d("TimetableSideEffect.Toast| ${effect.message}")
-                        Toast.makeText(this@TimetableActivity, "인터넷 연결을 확인하고 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@TimetableActivity,
+                            "인터넷 연결을 확인하고 다시 시도해주세요.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     is TimetableSideEffect.Nothing -> Unit
@@ -356,7 +371,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             }
         }
     }
-
 
     private fun initEvent() {
         setAppbarEvent()
@@ -375,16 +389,18 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun startToTimetableSemesterActivity() {
-        val intent = Intent(this, TimetableSemesterActivity::class.java).apply {
-            putExtra(
-                BUNDLE_EXTRA_KEY, bundleOf(
-                    IS_ANONYMOUS to viewModel.state.value.isAnonymous,
-                    SEMESTER to viewModel.state.value.currentSemester,
-                    FRAME_ID to viewModel.state.value.frameId,
-                    FRAME_NAME to viewModel.state.value.timetableName
+        val intent =
+            Intent(this, TimetableSemesterActivity::class.java).apply {
+                putExtra(
+                    BUNDLE_EXTRA_KEY,
+                    bundleOf(
+                        IS_ANONYMOUS to viewModel.state.value.isAnonymous,
+                        SEMESTER to viewModel.state.value.currentSemester,
+                        FRAME_ID to viewModel.state.value.frameId,
+                        FRAME_NAME to viewModel.state.value.timetableName
+                    )
                 )
-            )
-        }
+            }
         registerTimetableSemesterActivityResult.launch(intent)
     }
 

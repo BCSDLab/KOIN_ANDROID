@@ -35,30 +35,30 @@ import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.BUNDLE_LOG
 import `in`.koreatech.koin.ui.timetablev2.TimetableActivity.Companion.NAV_TIMETABLE
 import timber.log.Timber
 
-
 @AndroidEntryPoint
 class TimetableSemesterActivity : ActivityBase() {
     override val screenTitle = SCREEN_TITLE
     private val binding by dataBinding<ActivityTimetableSemesterBinding>()
     private val viewModel by viewModels<SemesterViewModel>()
 
-    override val onBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            if (viewModel.screenState.value.userTimetableFrames.isEmpty()) {
-                finishActivityWithResult(
-                    semester = "",
-                    frameId = -1,
-                    timetableName = ""
-                )
-            } else {
-                finishActivityWithResult(
-                    semester = viewModel.currentTimetableSemester.value,
-                    frameId = viewModel.currentTimetableId.value,
-                    timetableName = viewModel.currentTimetableName.value
-                )
+    override val onBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (viewModel.screenState.value.userTimetableFrames.isEmpty()) {
+                    finishActivityWithResult(
+                        semester = "",
+                        frameId = -1,
+                        timetableName = ""
+                    )
+                } else {
+                    finishActivityWithResult(
+                        semester = viewModel.currentTimetableSemester.value,
+                        frameId = viewModel.currentTimetableId.value,
+                        timetableName = viewModel.currentTimetableName.value
+                    )
+                }
             }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,9 +99,9 @@ class TimetableSemesterActivity : ActivityBase() {
                         onClickSelectYear = { viewModel.updateSelectYearDialogVisible(true) },
                         onConfirm = { selectedSemesters ->
                             viewModel.updateSelectedSemesters(selectedSemesters)
-                            if (selectedSemesters.any { it in screenState.userSemesters })
+                            if (selectedSemesters.any { it in screenState.userSemesters }) {
                                 viewModel.updateDeleteSemesterDialogVisible(true)
-                            else {
+                            } else {
                                 viewModel.updateEditSemesterDialogVisible(false)
                                 viewModel.updateUserSemesters()
                             }
@@ -120,7 +120,11 @@ class TimetableSemesterActivity : ActivityBase() {
                         onDeleteFrame = {
                             viewModel.deleteTimetableFrame()
                             viewModel.updateEditTimetableDialogVisible(false)
-                            viewModel.updateSideEffect(SemesterSideEffect.SnackBar("${dialogUiState.editedTimetableFrame?.timetableName}가 삭제되었어요"))
+                            viewModel.updateSideEffect(
+                                SemesterSideEffect.SnackBar(
+                                    "${dialogUiState.editedTimetableFrame?.timetableName}가 삭제되었어요"
+                                )
+                            )
                         }
                     )
                 }
@@ -222,7 +226,6 @@ class TimetableSemesterActivity : ActivityBase() {
         }
     }
 
-
     private fun getIntentBundle(callback: (bundle: Bundle) -> Unit) {
         intent.getBundleExtra(TimetableActivity.BUNDLE_EXTRA_KEY)?.let {
             callback(it)
@@ -230,28 +233,31 @@ class TimetableSemesterActivity : ActivityBase() {
     }
 
     private fun startToLoginActivity() {
-        val intent = Intent().apply {
-            putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
-        }
+        val intent =
+            Intent().apply {
+                putExtra(BUNDLE_LOGIN_EXTRA_KEY, bundleOf(NAV_TIMETABLE to true))
+            }
         setResult(REQUEST_CODE_LOGIN_ACTIVITY, intent)
         finish()
     }
 
     private fun finishActivityWithResult(semester: SemesterModel, timetableFrame: TimetableFrame) {
-        val intent = Intent().apply {
-            val bundle = if (!viewModel.screenState.value.isAnonymous) {
-                bundleOf(
-                    SEMESTER to semester.toSemester(),
-                    TIMETABLE_FRAME_ID to timetableFrame.id,
-                    TIMETABLE_FRAME_NAME to timetableFrame.timetableName
-                )
-            } else {
-                bundleOf(
-                    SEMESTER to semester.toSemester()
-                )
+        val intent =
+            Intent().apply {
+                val bundle =
+                    if (!viewModel.screenState.value.isAnonymous) {
+                        bundleOf(
+                            SEMESTER to semester.toSemester(),
+                            TIMETABLE_FRAME_ID to timetableFrame.id,
+                            TIMETABLE_FRAME_NAME to timetableFrame.timetableName
+                        )
+                    } else {
+                        bundleOf(
+                            SEMESTER to semester.toSemester()
+                        )
+                    }
+                putExtra(BUNDLE_EXTRA_KEY, bundle)
             }
-            putExtra(BUNDLE_EXTRA_KEY, bundle)
-        }
 
         setResult(RESULT_OK, intent)
         finish()
@@ -261,20 +267,22 @@ class TimetableSemesterActivity : ActivityBase() {
         Timber.d("semester: ${viewModel.currentTimetableSemester.value}")
         Timber.d("Timetable frame id: ${viewModel.currentTimetableId.value}")
         Timber.d("timetable frame name: ${viewModel.currentTimetableName.value}")
-        val intent = Intent().apply {
-            val bundle = if (!viewModel.screenState.value.isAnonymous) {
-                bundleOf(
-                    SEMESTER to semester,
-                    TIMETABLE_FRAME_ID to frameId,
-                    TIMETABLE_FRAME_NAME to timetableName,
-                )
-            } else {
-                bundleOf(
-                    SEMESTER to viewModel.currentTimetableSemester.value
-                )
+        val intent =
+            Intent().apply {
+                val bundle =
+                    if (!viewModel.screenState.value.isAnonymous) {
+                        bundleOf(
+                            SEMESTER to semester,
+                            TIMETABLE_FRAME_ID to frameId,
+                            TIMETABLE_FRAME_NAME to timetableName
+                        )
+                    } else {
+                        bundleOf(
+                            SEMESTER to viewModel.currentTimetableSemester.value
+                        )
+                    }
+                putExtra(BUNDLE_EXTRA_KEY, bundle)
             }
-            putExtra(BUNDLE_EXTRA_KEY, bundle)
-        }
 
         setResult(RESULT_OK, intent)
         finish()

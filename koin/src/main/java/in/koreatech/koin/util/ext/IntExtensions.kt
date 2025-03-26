@@ -5,5 +5,6 @@ import android.util.TypedValue
 
 fun Int.dpToIntPx(): Int = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,
-    this.toFloat(), DisplayMetrics()
+    this.toFloat(),
+    DisplayMetrics()
 ).toInt()

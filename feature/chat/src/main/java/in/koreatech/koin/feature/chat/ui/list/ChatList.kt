@@ -29,13 +29,14 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.list.component.ChatListItem
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
+import java.time.LocalDateTime
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
-import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +54,7 @@ fun ChatList(
         if (showBlockedMessage) {
             scope.launch {
                 snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.block_snackbar_message),
+                    message = context.getString(R.string.block_snackbar_message)
                 )
             }
         }
@@ -88,6 +89,7 @@ fun ChatList(
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
         ChatListContent(
+            isLoading = uiState.isLoading,
             chatList = uiState.chatList,
             navigateToChatRoom = { articleId, chatRoomId ->
                 EventLogger.logCampusClickEvent(
@@ -106,10 +108,15 @@ fun ChatList(
 
 @Composable
 fun ChatListContent(
+    isLoading: Boolean,
     chatList: List<ChatListItem>,
     navigateToChatRoom: (Int, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (isLoading) {
+        ChatProgressIndicator()
+        return
+    }
     LazyColumn(
         modifier = modifier
     ) {
@@ -118,10 +125,12 @@ fun ChatListContent(
                 title = it.title,
                 recentMessage = it.recentMessage,
                 imageUrl = it.imageUrl ?: "",
-                lastMessageAt = LocalDateTime.parse(it.lastMessageAt)
+                lastMessageAt =
+                LocalDateTime.parse(it.lastMessageAt)
                     .toLocalTime(),
                 unReadMessageCount = it.unReadMessageCount,
-                modifier = Modifier.clickable {
+                modifier =
+                Modifier.clickable {
                     navigateToChatRoom(it.articleId, it.chatRoomId)
                 }
             )

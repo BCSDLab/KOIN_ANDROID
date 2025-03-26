@@ -20,13 +20,15 @@ fun ChatDateTitle(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 24.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .background(
                     color = KoinTheme.colors.neutral200.copy(alpha = 0.8f),
                     shape = KoinTheme.shapes.medium

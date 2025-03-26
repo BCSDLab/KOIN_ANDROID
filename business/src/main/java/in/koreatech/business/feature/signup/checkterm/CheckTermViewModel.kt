@@ -5,19 +5,18 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.signup.GetKoinTermTextUseCase
 import `in`.koreatech.koin.domain.usecase.signup.GetPrivacyTermTextUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
-
 
 @HiltViewModel
 class CheckTermViewModel @Inject constructor(
     private val getKoinTermUseCase: GetKoinTermTextUseCase,
-    private val getPrivacyTermUseCase: GetPrivacyTermTextUseCase,
+    private val getPrivacyTermUseCase: GetPrivacyTermTextUseCase
 ) :
     ContainerHost<CheckTermState, CheckTermSideEffect>, ViewModel() {
     override val container =
@@ -68,32 +67,31 @@ class CheckTermViewModel @Inject constructor(
         }
     }
 
-    fun loadKoinTerm() = intent {
-        viewModelScope.launch {
-            getKoinTermUseCase()
-                .onSuccess {
-                    reduce { state.copy(koinTerm = it) }
-                }
-                .onFailure {
-                    reduce { state.copy(throwable = it) }
-                }
+    fun loadKoinTerm() =
+        intent {
+            viewModelScope.launch {
+                getKoinTermUseCase()
+                    .onSuccess {
+                        reduce { state.copy(koinTerm = it) }
+                    }
+                    .onFailure {
+                        reduce { state.copy(throwable = it) }
+                    }
+            }
         }
 
-
-    }
-
-    fun loadPrivacyTerm() = intent {
-        viewModelScope.launch {
-            getPrivacyTermUseCase()
-                .onSuccess {
-                    reduce { state.copy(privacyTerm = it) }
-                }
-                .onFailure {
-                    reduce { state.copy(throwable = it) }
-                }
+    fun loadPrivacyTerm() =
+        intent {
+            viewModelScope.launch {
+                getPrivacyTermUseCase()
+                    .onSuccess {
+                        reduce { state.copy(privacyTerm = it) }
+                    }
+                    .onFailure {
+                        reduce { state.copy(throwable = it) }
+                    }
+            }
         }
-
-    }
 
     fun onNextButtonClicked() {
         intent {

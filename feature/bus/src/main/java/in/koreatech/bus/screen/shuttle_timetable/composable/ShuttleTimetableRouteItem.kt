@@ -25,7 +25,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 fun ShuttleTimetableRouteItem(
     route: ShuttleTimetableRouteInfoState,
     nodeItemHeightDp: Dp,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.width(IntrinsicSize.Max),
@@ -36,7 +36,8 @@ fun ShuttleTimetableRouteItem(
             style = KoinTheme.typography.regular14,
             color = KoinTheme.colors.neutral600,
             textAlign = TextAlign.Center,
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .background(color = KoinTheme.colors.neutral100)
                 .padding(vertical = 8.dp)
@@ -44,7 +45,8 @@ fun ShuttleTimetableRouteItem(
 
         route.arrivalTimes.fastForEach { time ->
             Box(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(horizontal = 16.dp, vertical = 4.dp)
                     .height(nodeItemHeightDp),
                 contentAlignment = Alignment.Center
@@ -52,7 +54,7 @@ fun ShuttleTimetableRouteItem(
                 Text(
                     text = time,
                     style = KoinTheme.typography.bold16,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
             }
         }

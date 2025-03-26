@@ -24,9 +24,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import `in`.koreatech.koin.core.R
 import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.koin.core.R
 
 @Composable
 fun StartInsertScreen(
@@ -38,17 +38,18 @@ fun StartInsertScreen(
         modifier = modifier.fillMaxSize()
     ) {
         Box(
-            modifier = modifier
-                .padding(top = 56.dp, start = 10.dp , bottom = 18.dp)
+            modifier =
+            modifier
+                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
                 .width(40.dp)
                 .height(40.dp)
                 .clickable { onBackPressed() }
-
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_arrow_left),
                 contentDescription = "backArrow",
-                modifier = modifier
+                modifier =
+                modifier
                     .width(40.dp)
                     .height(40.dp)
             )
@@ -58,7 +59,8 @@ fun StartInsertScreen(
             painter = painterResource(id = R.drawable.ic_edit),
             contentDescription = "finish_mark",
             alignment = Alignment.Center,
-            modifier = modifier
+            modifier =
+            modifier
                 .fillMaxWidth()
                 .padding(top = 103.dp, bottom = 30.dp)
                 .height(55.dp)
@@ -71,7 +73,8 @@ fun StartInsertScreen(
             color = ColorPrimary,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier =
+            modifier
                 .fillMaxWidth()
                 .padding(horizontal = 46.dp)
                 .padding(bottom = 16.dp)
@@ -83,7 +86,8 @@ fun StartInsertScreen(
             color = Blue1,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier =
+            modifier
                 .fillMaxWidth()
                 .padding(horizontal = 46.dp)
                 .padding(bottom = 51.dp)
@@ -93,7 +97,8 @@ fun StartInsertScreen(
             onClick = goToSelectCategoryScreen,
             colors = ButtonDefaults.buttonColors(ColorPrimary),
             shape = RectangleShape,
-            modifier = modifier
+            modifier =
+            modifier
                 .fillMaxWidth()
                 .padding(horizontal = 33.dp)
                 .height(44.dp)
@@ -108,13 +113,12 @@ fun StartInsertScreen(
     }
 }
 
-
 @Preview
 @Composable
-fun PreviewStartInsertScreen(){
+fun PreviewStartInsertScreen() {
     StartInsertScreen(
         modifier = Modifier,
-        goToSelectCategoryScreen = {} ,
+        goToSelectCategoryScreen = {},
         onBackPressed = {}
     )
 }

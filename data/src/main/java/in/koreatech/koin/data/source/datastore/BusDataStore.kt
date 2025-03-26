@@ -5,15 +5,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class BusDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
-
     suspend fun getLastShownNoticeId(): Int {
         return dataStore.data.catch {
             emit(emptyPreferences())

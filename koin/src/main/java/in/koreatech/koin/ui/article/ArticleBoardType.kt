@@ -8,22 +8,33 @@ enum class ArticleBoardType(
     @StringRes val koreanName: Int,
     @StringRes val simpleKoreanName: Int,
     val linkType: LinkType,
-    val exposedInAll: Boolean = true,
+    val exposedInAll: Boolean = true
 ) {
     // FREE(1, R.string.article_free),              // NOT USED
     // EMPLOYMENT(2, R.string.article_employment),  // NOT USED
     // ANONYMOUS(3, R.string.article_anonymous),    // NOT USED
     ALL(4, R.string.article_all, R.string.article_all, LinkType.NONE),
-    LOSTANDFOUND(14, R.string.article_lost_and_found, R.string.article_lost_and_found, LinkType.NONE),
+    LOSTANDFOUND(
+        14,
+        R.string.article_lost_and_found,
+        R.string.article_lost_and_found,
+        LinkType.NONE
+    ),
     NORMAL(5, R.string.article_normal, R.string.article_normal_simple, LinkType.ARTICLE),
-    SCHOLARSHIP(6, R.string.article_scholarship, R.string.article_scholarship_simple, LinkType.ARTICLE),
+    SCHOLARSHIP(
+        6,
+        R.string.article_scholarship,
+        R.string.article_scholarship_simple,
+        LinkType.ARTICLE
+    ),
     SCHOOL(7, R.string.article_school, R.string.article_school_simple, LinkType.ARTICLE),
     RECRUIT(8, R.string.article_recruit, R.string.article_recruit_simple, LinkType.STEMS),
+
     // QNA(10, R.string.article_qna),               // NOT USED
     // PROMOTION(11, R.string.article_promotion),   // NOT USED
     IPP(12, R.string.article_ipp, R.string.article_ipp_simple, LinkType.PORTAL),
     STUDENT(13, R.string.article_student, R.string.article_student_simple, LinkType.PORTAL, false),
-    KOIN(9, R.string.article_koin, R.string.article_koin, LinkType.NONE, false), ;
+    KOIN(9, R.string.article_koin, R.string.article_koin, LinkType.NONE, false) ;
 
     companion object {
         fun fromId(id: Int): ArticleBoardType {
@@ -51,5 +62,8 @@ enum class ArticleBoardType(
  * @property STEMS 학생종합경력개발로 이동 (로그인 필요한 게시판)
  */
 enum class LinkType {
-    NONE, ARTICLE, PORTAL, STEMS
+    NONE,
+    ARTICLE,
+    PORTAL,
+    STEMS
 }

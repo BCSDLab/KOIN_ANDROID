@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.user.VerifyPasswordFormatUseCase
 import `in`.koreatech.koin.domain.usecase.user.VerifyUserPasswordUseCase
 import `in`.koreatech.koin.util.EventFlow
 import `in`.koreatech.koin.util.MutableEventFlow
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -19,7 +20,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
@@ -29,18 +29,33 @@ class ChangePasswordViewModel @Inject constructor(
     private val updateUserPasswordUseCase: UpdateUserPasswordUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    val currentStep: StateFlow<ChangePasswordPage> = savedStateHandle.getStateFlow(
+        KEY_CURRENT_PAGE,
+        ChangePasswordPage.Verify
+    )
 
-    val currentStep: StateFlow<ChangePasswordPage> = savedStateHandle.getStateFlow(KEY_CURRENT_PAGE, ChangePasswordPage.Verify)
-
-    val verifyUiStatus: StateFlow<UiStatus> = savedStateHandle.getStateFlow(KEY_VERIFY_UI_STATUS, UiStatus.Init)
+    val verifyUiStatus: StateFlow<UiStatus> = savedStateHandle.getStateFlow(
+        KEY_VERIFY_UI_STATUS,
+        UiStatus.Init
+    )
 
     val enteredPwd: StateFlow<String> = savedStateHandle.getStateFlow(KEY_ENTERED_PASSWORD, "")
 
-    val enteredNewPwd: StateFlow<String> = savedStateHandle.getStateFlow(KEY_ENTERED_NEW_PASSWORD, "")
+    val enteredNewPwd: StateFlow<String> = savedStateHandle.getStateFlow(
+        KEY_ENTERED_NEW_PASSWORD,
+        ""
+    )
 
-    val enteredConfirmPwd: StateFlow<String> = savedStateHandle.getStateFlow(KEY_ENTERED_CONFIRM_PASSWORD, "")
+    val enteredConfirmPwd: StateFlow<String> = savedStateHandle.getStateFlow(
+        KEY_ENTERED_CONFIRM_PASSWORD,
+        ""
+    )
 
-    val confirmPwdFormat: StateFlow<PasswordFormatState> = savedStateHandle.getStateFlow(KEY_CONFIRM_PASSWORD_FORMAT, PasswordFormatState())
+    val confirmPwdFormat: StateFlow<PasswordFormatState> =
+        savedStateHandle.getStateFlow(
+            KEY_CONFIRM_PASSWORD_FORMAT,
+            PasswordFormatState()
+        )
 
     private val _isPasswordChangeSuccess: MutableEventFlow<Boolean> = MutableEventFlow()
     val isPasswordChangeSuccess: EventFlow<Boolean> get() = _isPasswordChangeSuccess
@@ -48,22 +63,28 @@ class ChangePasswordViewModel @Inject constructor(
     private val _onFinishStep: MutableEventFlow<Unit> = MutableEventFlow()
     val onFinishStep: EventFlow<Unit> get() = _onFinishStep
 
-    val isConfirmPwdSame = combine(enteredNewPwd, enteredConfirmPwd, ::Pair)
-        .filter { it.first.isNotBlank() && it.second.isNotBlank() }
-        .map { it.first == it.second }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
+    val isConfirmPwdSame =
+        combine(enteredNewPwd, enteredConfirmPwd, ::Pair)
+            .filter { it.first.isNotBlank() && it.second.isNotBlank() }
+            .map { it.first == it.second }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
 
-    val isAbleToComplete = combine(confirmPwdFormat, isConfirmPwdSame, ::Pair)
-        .map { it.first.isValidFormat && it.second }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
+    val isAbleToComplete =
+        combine(confirmPwdFormat, isConfirmPwdSame, ::Pair)
+            .map { it.first.isValidFormat && it.second }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
 
-    private val _userInfo: StateFlow<User> = getUserStateUseCase().stateIn(viewModelScope, SharingStarted.Lazily, User.Anonymous)
+    private val _userInfo: StateFlow<User> = getUserStateUseCase().stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        User.Anonymous
+    )
 
-    val userEmail: StateFlow<String> = _userInfo
-        .filter { it.isStudent }
-        .map { (it as User.Student).email ?: "Unknown Email" }
-        .stateIn(viewModelScope, SharingStarted.Lazily, "")
-
+    val userEmail: StateFlow<String> =
+        _userInfo
+            .filter { it.isStudent }
+            .map { (it as User.Student).email ?: "Unknown Email" }
+            .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     fun setCurrentPage(newPage: ChangePasswordPage) {
         savedStateHandle[KEY_CURRENT_PAGE] = newPage
@@ -119,7 +140,6 @@ class ChangePasswordViewModel @Inject constructor(
                 }
         }
     }
-
 
     private companion object {
         const val KEY_CURRENT_PAGE = "current_page"

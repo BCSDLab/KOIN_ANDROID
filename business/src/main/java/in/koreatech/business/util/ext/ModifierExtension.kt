@@ -19,22 +19,23 @@ fun Modifier.clickableOnce(
     role: Role? = null,
     onClick: () -> Unit
 ) = composed(
-    inspectorInfo = debugInspectorInfo {
+    inspectorInfo =
+    debugInspectorInfo {
         name = "clickable"
         properties["enabled"] = enabled
         properties["onClickLabel"] = onClickLabel
         properties["role"] = role
         properties["onClick"] = onClick
     }
-){
+) {
     val timer = rememberCoroutineScope()
     var duplicated by remember { mutableStateOf(false) }
 
     Modifier.clickable(
         enabled = enabled && !duplicated,
         onClickLabel = onClickLabel,
-        role = role,
-    ){
+        role = role
+    ) {
         duplicated = true
         onClick()
 

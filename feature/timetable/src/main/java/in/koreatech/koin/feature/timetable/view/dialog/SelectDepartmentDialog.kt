@@ -44,11 +44,13 @@ fun SelectDepartmentDialog(
     var selectedDepartment by remember { mutableStateOf(department) }
 
     BasicAlertDialog(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         onDismissRequest = { onDismiss(false) },
-        properties = DialogProperties(
+        properties =
+        DialogProperties(
             usePlatformDefaultWidth = false
         )
     ) {
@@ -57,7 +59,8 @@ fun SelectDepartmentDialog(
             color = Color.White
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(
                         horizontal = 12.dp,
                         vertical = 18.dp
@@ -66,7 +69,8 @@ fun SelectDepartmentDialog(
             ) {
                 Text(
                     text = stringResource(id = R.string.select_department_title),
-                    style = KoinTheme.typography.medium18.copy(
+                    style =
+                    KoinTheme.typography.medium18.copy(
                         color = KoinTheme.colors.primary500
                     )
                 )
@@ -82,7 +86,8 @@ fun SelectDepartmentDialog(
                     }
                 )
                 FilledTextButton(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .height(30.dp)
                         .width(60.dp)
                         .align(Alignment.End),
@@ -102,14 +107,16 @@ fun DepartmentRadioButtons(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .wrapContentSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         departments.chunked(2).forEach { rowDepartments ->
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .height(32.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -117,7 +124,8 @@ fun DepartmentRadioButtons(
             ) {
                 rowDepartments.forEach { department ->
                     DepartmentRadioButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .fillMaxHeight()
                             .weight(1.0F),
                         text = department,
@@ -125,8 +133,9 @@ fun DepartmentRadioButtons(
                         onClick = { onClickDepartment(department) }
                     )
                 }
-                if (rowDepartments.size == 1)
+                if (rowDepartments.size == 1) {
                     Spacer(modifier = Modifier.weight(1.0F))
+                }
             }
         }
     }
@@ -140,8 +149,7 @@ private fun SelectDepartmentDialogPreview() {
             department = "",
             departments = departments,
             onConfirm = {},
-            onDismiss = {},
+            onDismiss = {}
         )
     }
 }
-

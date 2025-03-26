@@ -1,22 +1,20 @@
 package `in`.koreatech.koin.ui.businesslogin
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.databinding.ActivityBusinessLoginBinding
-import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCheckActivity
-import `in`.koreatech.koin.ui.login.LoginActivity
-import `in`.koreatech.koin.util.SnackbarUtil
-import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.textString
-import `in`.koreatech.koin.util.ext.withLoading
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.databinding.ActivityBusinessLoginBinding
 import `in`.koreatech.koin.ui.businesslogin.viewmodel.BusinessLoginViewModel
-import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
+import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCheckActivity
+import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.util.SnackbarUtil
+import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
 class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
@@ -35,8 +33,11 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
 
     private fun initView() = with(binding) {
         businessLoginButton.setOnClickListener {
-            if(businessLoginViewModel.isEmptyIdText.value == true) {
-                SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.login_required_field_not_filled))
+            if (businessLoginViewModel.isEmptyIdText.value == true) {
+                SnackbarUtil.makeShortSnackbar(
+                    binding.root,
+                    getString(R.string.login_required_field_not_filled)
+                )
             } else {
                 businessLoginViewModel.login(
                     loginEdittextId.text.toString(),
@@ -44,14 +45,19 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
                 )
             }
         }
-        
+
         loginEdittextId.doOnTextChanged { text, _, _, _ ->
-            if(text.isNullOrBlank()) businessLoginViewModel.setIdTextState(true)
-            else businessLoginViewModel.setIdTextState(false)
+            if (text.isNullOrBlank()) {
+                businessLoginViewModel.setIdTextState(true)
+            } else {
+                businessLoginViewModel.setIdTextState(false)
+            }
         }
 
         businessSignupButton.setOnClickListener {
-            startActivity(Intent(this@BusinessLoginActivity, BusinessSignUpCheckActivity::class.java))
+            startActivity(
+                Intent(this@BusinessLoginActivity, BusinessSignUpCheckActivity::class.java)
+            )
         }
 
         isStudentButton.setOnClickListener {

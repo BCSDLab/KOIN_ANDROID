@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetCoopShopAllUseCase @Inject constructor(
     private val coopShopRepository: CoopShopRepository,
     private val coopShopErrorHandler: CoopShopErrorHandler
-)  {
+) {
     suspend operator fun invoke(): Pair<List<CoopShop>?, ErrorHandler?> {
         return try {
             coopShopRepository.getCoopShopAll() to null

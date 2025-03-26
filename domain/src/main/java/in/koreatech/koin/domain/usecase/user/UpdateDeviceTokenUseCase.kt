@@ -4,7 +4,7 @@ import `in`.koreatech.koin.domain.repository.firebase.messaging.FirebaseMessagin
 import javax.inject.Inject
 
 class UpdateDeviceTokenUseCase @Inject constructor(
-    private val firebaseMessagingRepository: FirebaseMessagingRepository,
+    private val firebaseMessagingRepository: FirebaseMessagingRepository
 ) {
     suspend operator fun invoke() {
         val deviceToken = firebaseMessagingRepository.getFcmToken()

@@ -11,5 +11,5 @@ data class VerificationSmsRequest(
 )
 
 data class CheckExistsAccount(
-    @SerializedName("account") val phoneNumber: String?,
+    @SerializedName("account") val phoneNumber: String?
 )

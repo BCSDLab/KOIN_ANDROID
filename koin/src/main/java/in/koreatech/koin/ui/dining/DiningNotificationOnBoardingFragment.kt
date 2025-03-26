@@ -36,7 +36,11 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         viewModel.getPermissionInfo()
-        return DiningNotificationOnBoardingBottomSheetBinding.inflate(inflater, container, false).also {
+        return DiningNotificationOnBoardingBottomSheetBinding.inflate(
+            inflater,
+            container,
+            false
+        ).also {
             binding = it
         }.root
     }
@@ -46,26 +50,26 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
         binding?.apply {
             viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-
                     viewModel.notificationUiState.collect { uiState ->
                         when (uiState) {
                             is NotificationUiState.Success -> {
                                 uiState.notificationPermissionInfo.subscribes.forEach {
                                     when (it.type) {
-
-                                        SubscribesType.DINING_SOLD_OUT -> with(notificationDiningSoldOut) {
-                                            if (isChecked != it.isPermit) {
-                                                fakeChecked = it.isPermit
-                                                isChecked = it.isPermit
+                                        SubscribesType.DINING_SOLD_OUT ->
+                                            with(notificationDiningSoldOut) {
+                                                if (isChecked != it.isPermit) {
+                                                    fakeChecked = it.isPermit
+                                                    isChecked = it.isPermit
+                                                }
                                             }
-                                        }
 
-                                        SubscribesType.DINING_IMAGE_UPLOAD -> with(notificationSetImageUploadNotification) {
-                                            if (isChecked != it.isPermit) {
-                                                fakeChecked = it.isPermit
-                                                isChecked = it.isPermit
+                                        SubscribesType.DINING_IMAGE_UPLOAD ->
+                                            with(notificationSetImageUploadNotification) {
+                                                if (isChecked != it.isPermit) {
+                                                    fakeChecked = it.isPermit
+                                                    isChecked = it.isPermit
+                                                }
                                             }
-                                        }
 
                                         SubscribesType.NOTHING -> Unit
                                         else -> Unit
@@ -94,13 +98,17 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
                     viewModel.updateSubscriptionDetail(SubscribesDetailType.BREAKFAST)
                     viewModel.updateSubscriptionDetail(SubscribesDetailType.LUNCH)
                     viewModel.updateSubscriptionDetail(SubscribesDetailType.DINNER)
+                } else {
+                    viewModel.deleteSubscription(SubscribesType.DINING_SOLD_OUT)
                 }
-                else viewModel.deleteSubscription(SubscribesType.DINING_SOLD_OUT)
             }
 
             notificationSetImageUploadNotification.setOnSwitchClickListener { isChecked ->
-                if (isChecked) viewModel.updateSubscription(SubscribesType.DINING_IMAGE_UPLOAD)
-                else viewModel.deleteSubscription(SubscribesType.DINING_IMAGE_UPLOAD)
+                if (isChecked) {
+                    viewModel.updateSubscription(SubscribesType.DINING_IMAGE_UPLOAD)
+                } else {
+                    viewModel.deleteSubscription(SubscribesType.DINING_IMAGE_UPLOAD)
+                }
             }
         }
     }

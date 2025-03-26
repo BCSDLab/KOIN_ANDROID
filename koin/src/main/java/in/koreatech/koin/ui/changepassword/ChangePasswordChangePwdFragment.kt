@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChangePasswordChangePwdFragment : Fragment(R.layout.fragment_change_password_change_pwd) {
-
     private val binding by dataBinding<FragmentChangePasswordChangePwdBinding>()
     private val viewModel by activityViewModels<ChangePasswordViewModel>()
 
@@ -66,11 +65,12 @@ class ChangePasswordChangePwdFragment : Fragment(R.layout.fragment_change_passwo
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isConfirmPwdSame.collect { isSame ->
                     with(binding) {
-                        groupWarning.visibility = if (!isSame && !tietConfirmPassword.text.isNullOrBlank()){
-                            View.VISIBLE
-                        } else {
-                            View.GONE
-                        }
+                        groupWarning.visibility =
+                            if (!isSame && !tietConfirmPassword.text.isNullOrBlank()) {
+                                View.VISIBLE
+                            } else {
+                                View.GONE
+                            }
                     }
                 }
             }
@@ -91,7 +91,6 @@ class ChangePasswordChangePwdFragment : Fragment(R.layout.fragment_change_passwo
         }
         super.onDestroyView()
     }
-
 
     companion object {
         fun getInstance(): ChangePasswordChangePwdFragment = ChangePasswordChangePwdFragment()

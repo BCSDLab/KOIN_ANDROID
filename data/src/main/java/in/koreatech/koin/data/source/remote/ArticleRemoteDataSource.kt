@@ -12,7 +12,6 @@ import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
-import timber.log.Timber
 import javax.inject.Inject
 
 class ArticleRemoteDataSource @Inject constructor(
@@ -27,15 +26,24 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchArticlePagination(boardId, page, limit)
     }
 
-    suspend fun fetchArticle(articleId: Int, boardId: Int): ArticleResponse {
+    suspend fun fetchArticle(
+        articleId: Int,
+        boardId: Int
+    ): ArticleResponse {
         return articleApi.fetchArticle(articleId, boardId)
     }
 
-    suspend fun fetchPreviousArticle(articleId: Int, boardId: Int): ArticleResponse {
+    suspend fun fetchPreviousArticle(
+        articleId: Int,
+        boardId: Int
+    ): ArticleResponse {
         return articleApi.fetchArticle(articleId, boardId)
     }
 
-    suspend fun fetchNextArticle(articleId: Int, boardId: Int): ArticleResponse {
+    suspend fun fetchNextArticle(
+        articleId: Int,
+        boardId: Int
+    ): ArticleResponse {
         return articleApi.fetchArticle(articleId, boardId)
     }
 
@@ -102,7 +110,10 @@ class ArticleRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun reportLostAndFoundArticle(articleId: Int, reportReasons: ArticleLostAndFoundReportRequest): Result<Unit> {
+    suspend fun reportLostAndFoundArticle(
+        articleId: Int,
+        reportReasons: ArticleLostAndFoundReportRequest
+    ): Result<Unit> {
         return try {
             val response = articleAuthApi.reportLostAndFound(articleId, reportReasons)
             if (response.isSuccessful) {

@@ -11,9 +11,15 @@ class RecentSearchedHistoryAdapter(
     private val onSearchHistoryClicked: (String) -> Unit,
     private val onDeleteClicked: (String) -> Unit
 ) : ListAdapter<String, RecyclerView.ViewHolder>(diffUtil) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentSearchedKeywordViewHolder {
-        val binding = ItemRecentSearchedHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecentSearchedKeywordViewHolder {
+        val binding = ItemRecentSearchedHistoryBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return RecentSearchedKeywordViewHolder(binding)
     }
 
@@ -24,7 +30,6 @@ class RecentSearchedHistoryAdapter(
     inner class RecentSearchedKeywordViewHolder(
         private val binding: ItemRecentSearchedHistoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(keyword: String) {
             binding.apply {
                 textViewKeyword.text = keyword
@@ -36,14 +41,15 @@ class RecentSearchedHistoryAdapter(
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<String>() {
-            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-                return oldItem == newItem
-            }
+        private val diffUtil =
+            object : DiffUtil.ItemCallback<String>() {
+                override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

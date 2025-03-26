@@ -18,7 +18,6 @@ class SettingView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-
     private lateinit var binding: SettingViewBinding
 
     private var paddingVertical = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, resources.displayMetrics).toInt()
@@ -50,6 +49,7 @@ class SettingView @JvmOverloads constructor(
     private var labelImageRes = R.drawable.ic_arrow_right
 
     private var isEnableDivider = true
+
     @ColorRes
     private var dividerColorRes = R.color.neutral_100
 
@@ -86,7 +86,6 @@ class SettingView @JvmOverloads constructor(
 
                 isEnableDivider = getBoolean(R.styleable.SettingView_enableDivider, isEnableDivider)
                 dividerColorRes = getResourceId(R.styleable.SettingView_dividerColor, dividerColorRes)
-
             } finally {
                 recycle()
             }
@@ -142,7 +141,7 @@ class SettingView @JvmOverloads constructor(
             }
 
             tvLabel.setOnClickListener {
-                if(onTextLabelClickListener == null) {
+                if (onTextLabelClickListener == null) {
                     onSettingClickListener?.onClick()
                 } else {
                     onTextLabelClickListener!!.onClick()
@@ -150,7 +149,7 @@ class SettingView @JvmOverloads constructor(
             }
 
             ivLabel.setOnClickListener {
-                if(onImageLabelClickListener == null) {
+                if (onImageLabelClickListener == null) {
                     onSettingClickListener?.onClick()
                 } else {
                     onImageLabelClickListener!!.onClick()
@@ -168,9 +167,10 @@ class SettingView @JvmOverloads constructor(
     }
 
     fun setOnSettingClickListener(block: () -> Unit) {
-        this.onSettingClickListener = OnSettingClickListener {
-            block()
-        }
+        this.onSettingClickListener =
+            OnSettingClickListener {
+                block()
+            }
     }
 
     fun setOnImageLabelClickListener(value: OnSettingClickListener) {
@@ -178,9 +178,10 @@ class SettingView @JvmOverloads constructor(
     }
 
     fun setOnImageLabelClickListener(block: () -> Unit) {
-        this.onImageLabelClickListener = OnSettingClickListener {
-            block()
-        }
+        this.onImageLabelClickListener =
+            OnSettingClickListener {
+                block()
+            }
     }
 
     fun setOnTextLabelClickListener(value: OnSettingClickListener) {
@@ -188,17 +189,15 @@ class SettingView @JvmOverloads constructor(
     }
 
     fun setOnTextLabelClickListener(block: () -> Unit) {
-        this.onTextLabelClickListener = OnSettingClickListener {
-            block()
-        }
+        this.onTextLabelClickListener =
+            OnSettingClickListener {
+                block()
+            }
     }
-
-
 
     private companion object {
         const val LABEL_TYPE_NONE = -1
         const val LABEL_TYPE_TEXT = 0
         const val LABEL_TYPE_IMAGE = 1
-
     }
 }

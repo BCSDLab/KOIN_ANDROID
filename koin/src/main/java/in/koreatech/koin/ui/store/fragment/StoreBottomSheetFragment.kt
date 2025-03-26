@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import `in`.koreatech.koin.databinding.SelectStoreBottomSheetBinding
-import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.databinding.SelectStoreBottomSheetBinding
+import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -25,7 +25,8 @@ class StoreBottomSheetFragment : BottomSheetDialogFragment() {
     private var storePhoneNumber = ""
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return SelectStoreBottomSheetBinding.inflate(inflater, container, false).also {
@@ -50,7 +51,12 @@ class StoreBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         binding.storeSelectButton.setOnClickListener {
-            viewModel.setNeedToProceedStoreInfo(true, binding.storeNameText.text.toString(), storeId, storePhoneNumber)
+            viewModel.setNeedToProceedStoreInfo(
+                true,
+                binding.storeNameText.text.toString(),
+                storeId,
+                storePhoneNumber
+            )
             dismiss()
         }
     }

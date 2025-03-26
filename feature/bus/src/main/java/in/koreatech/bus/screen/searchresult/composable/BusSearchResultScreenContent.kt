@@ -60,10 +60,10 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDate
 import java.time.LocalTime
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,7 +113,8 @@ internal fun BusSearchResultScreenContent(
         modifier = modifier
     ) {
         KoinTopAppBar(
-            title = stringResource(
+            title =
+            stringResource(
                 R.string.search_result_direction_title,
                 stringResource(departure.titleRes),
                 stringResource(arrival.titleRes)
@@ -123,7 +124,8 @@ internal fun BusSearchResultScreenContent(
 
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp, horizontal = 24.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -135,7 +137,8 @@ internal fun BusSearchResultScreenContent(
                 ) {
                     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                         Row(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .clip(RoundedCornerShape(12.dp))
                                 .clickable {
                                     isDropdownExpanded = !isDropdownExpanded
@@ -148,9 +151,15 @@ internal fun BusSearchResultScreenContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = stringResource(selectedBusType.titleRes) + if (selectedBusType != BusType.ALL) stringResource(
-                                    R.string.bus
-                                ) else "",
+                                text =
+                                stringResource(selectedBusType.titleRes) +
+                                    if (selectedBusType != BusType.ALL) {
+                                        stringResource(
+                                            R.string.bus
+                                        )
+                                    } else {
+                                        ""
+                                    },
                                 style = KoinTheme.typography.medium14,
                                 color = KoinTheme.colors.neutral800,
                                 modifier = Modifier.padding(start = 8.dp),
@@ -160,7 +169,7 @@ internal fun BusSearchResultScreenContent(
                             Icon(
                                 modifier = Modifier.padding(start = 4.dp),
                                 imageVector = Icons.Rounded.KeyboardArrowDown,
-                                contentDescription = stringResource(R.string.select_bus_type_content_description),
+                                contentDescription = stringResource(R.string.select_bus_type_content_description)
                             )
                         }
 
@@ -169,16 +178,22 @@ internal fun BusSearchResultScreenContent(
                             expanded = isDropdownExpanded,
                             onDismissRequest = { isDropdownExpanded = false },
                             shape = RoundedCornerShape(12.dp),
-                            containerColor = KoinTheme.colors.neutral50,
+                            containerColor = KoinTheme.colors.neutral50
                         ) {
                             BusType.entries.fastForEach { busType ->
                                 DropdownMenuItem(
                                     text = {
                                         Text(
-                                            text = stringResource(busType.titleRes) + if (busType != BusType.ALL) stringResource(
-                                                R.string.bus
-                                            ) else "",
-                                            style = KoinTheme.typography.medium14,
+                                            text =
+                                            stringResource(busType.titleRes) +
+                                                if (busType != BusType.ALL) {
+                                                    stringResource(
+                                                        R.string.bus
+                                                    )
+                                                } else {
+                                                    ""
+                                                },
+                                            style = KoinTheme.typography.medium14
                                         )
                                     },
                                     onClick = {
@@ -196,13 +211,15 @@ internal fun BusSearchResultScreenContent(
                 }
 
                 Row(
-                    modifier = Modifier.noRippleClickable {
+                    modifier =
+                    Modifier.noRippleClickable {
                         EventLogger.logCampusClickEvent(
                             "search_result_departure_time",
                             "출발 시각 설정"
                         )
                         showSelectDialog = true
-                    }, verticalAlignment = Alignment.CenterVertically
+                    },
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         modifier = Modifier.padding(start = 4.dp),
@@ -211,51 +228,62 @@ internal fun BusSearchResultScreenContent(
                         tint = KoinTheme.colors.neutral500
                     )
                     Text(
-                        text = buildAnnotatedString {
+                        text =
+                        buildAnnotatedString {
                             append(departureTime)
                             withStyle(
-                                style = SpanStyle(
+                                style =
+                                SpanStyle(
                                     fontWeight = FontWeight.Medium,
                                     color = Color.Black
                                 )
                             ) {
                                 append(" " + stringResource(R.string.departure))
                             }
-                        }, style = KoinTheme.typography.bold16,
+                        },
+                        style = KoinTheme.typography.bold16,
                         color = KoinTheme.colors.info700,
                         fontSize = departureTimeTextSize,
                         maxLines = 1,
                         onTextLayout = {
-                            if (it.didOverflowWidth)
+                            if (it.didOverflowWidth) {
                                 departureTimeTextSize = (departureTimeTextSize.value - .25f).sp
-                        }, softWrap = false
+                            }
+                        },
+                        softWrap = false
                     )
                 }
             }
         }
 
         when (searchResultUiState) {
-            is BusSearchResultUiState.Success -> LazyColumn {
-                items(searchResultUiState.results) { result ->
-                    BusSearchResultItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 32.dp, vertical = 10.dp),
-                        result = result,
-                        currentTime = currentTime,
-                        showBeforeTime = (selectedDateIndex == 0 && result.departureTime.isAfter(
-                            currentTime.localTime
-                        )),
-                    )
+            is BusSearchResultUiState.Success ->
+                LazyColumn {
+                    items(searchResultUiState.results) { result ->
+                        BusSearchResultItem(
+                            modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 32.dp, vertical = 10.dp),
+                            result = result,
+                            currentTime = currentTime,
+                            showBeforeTime = (
+                                selectedDateIndex == 0 &&
+                                    result.departureTime.isAfter(
+                                        currentTime.localTime
+                                    )
+                                )
+                        )
+                    }
+                    item {
+                        Spacer(
+                            modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(120.dp)
+                        )
+                    }
                 }
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                    )
-                }
-            }
 
             is BusSearchResultUiState.ResultEmpty -> {
                 CommonEmptyView(modifier = Modifier.fillMaxSize())
@@ -264,7 +292,8 @@ internal fun BusSearchResultScreenContent(
             is BusSearchResultUiState.Loading -> {
                 repeat(25) {
                     BusSearchResultLoadingItem(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 32.dp, vertical = 8.dp)
                     )
@@ -279,7 +308,8 @@ internal fun BusSearchResultScreenContent(
 
     if (showSelectDialog) {
         BusSearchConditionSelectDialog(
-            modifier = Modifier.background(
+            modifier =
+            Modifier.background(
                 color = Color.White,
                 shape = RoundedCornerShape(4.dp)
             ),
@@ -295,12 +325,16 @@ internal fun BusSearchResultScreenContent(
             onComplete = { date, daytime, hour, minute ->
                 EventLogger.logCampusClickEvent(
                     "departure_time_setting_done",
-                    "시간설정: " + if (selectedDateIndex == date
-                        && selectedDaytimeIndex == daytime
-                        && selectedHourIndex == hour
-                        && selectedMinuteIndex == minute
-                    )
-                        "N" else "Y"
+                    "시간설정: " +
+                        if (selectedDateIndex == date &&
+                            selectedDaytimeIndex == daytime &&
+                            selectedHourIndex == hour &&
+                            selectedMinuteIndex == minute
+                        ) {
+                            "N"
+                        } else {
+                            "Y"
+                        }
                 )
                 onCompleteMinDepartureTime(date, daytime, hour, minute)
                 showSelectDialog = false
@@ -322,7 +356,8 @@ private fun BusSearchResultScreenPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = BusSearchResultUiState.Success(busSearchResultsMock),
-        dateList = List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }
+        dateList =
+        List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }
             .toImmutableList(),
         daytimeList = listOf("오전", "오후").toImmutableList(),
         hourList = (1..12).map { it.toString() }.toImmutableList(),
@@ -344,7 +379,8 @@ private fun BusSearchResultScreenLoadingPreview() {
     BusSearchResultScreenContent(
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = BusSearchResultUiState.Loading,
-        dateList = List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }
+        dateList =
+        List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }
             .toImmutableList(),
         daytimeList = listOf("오전", "오후").toImmutableList(),
         hourList = (1..12).map { it.toString() }.toImmutableList(),

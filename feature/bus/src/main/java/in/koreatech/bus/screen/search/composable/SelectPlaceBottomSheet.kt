@@ -40,39 +40,45 @@ internal fun SelectPlaceBottomSheet(
     selectMode: PlaceSelectMode,
     onConfirmSelection: (selectedPlace: PlaceType) -> Unit,
     modifier: Modifier = Modifier,
-    disabledPlace: PlaceType? = null,
+    disabledPlace: PlaceType? = null
 ) {
     require(selectMode != PlaceSelectMode.NONE) {
         "SelectPlaceBottomSheet should not be used with PlaceSelectMode.NONE"
     }
 
-    var selectedPlace by remember(disabledPlace) { mutableStateOf(PlaceType.entries.first {
-        it != disabledPlace
-    }) }
+    var selectedPlace by remember(disabledPlace) {
+        mutableStateOf(
+            PlaceType.entries.first {
+                it != disabledPlace
+            }
+        )
+    }
 
-    val sheetTitle = when (selectMode) {
-        PlaceSelectMode.DEPARTURE -> stringResource(R.string.question_departure)
-        PlaceSelectMode.ARRIVAL -> stringResource(R.string.question_arrival)
-        PlaceSelectMode.NONE -> ""
-    }
-    val buttonText = when (selectMode) {
-        PlaceSelectMode.DEPARTURE -> stringResource(R.string.action_select_arrival)
-        PlaceSelectMode.ARRIVAL -> stringResource(R.string.confirm_selection)
-        PlaceSelectMode.NONE -> ""
-    }
+    val sheetTitle =
+        when (selectMode) {
+            PlaceSelectMode.DEPARTURE -> stringResource(R.string.question_departure)
+            PlaceSelectMode.ARRIVAL -> stringResource(R.string.question_arrival)
+            PlaceSelectMode.NONE -> ""
+        }
+    val buttonText =
+        when (selectMode) {
+            PlaceSelectMode.DEPARTURE -> stringResource(R.string.action_select_arrival)
+            PlaceSelectMode.ARRIVAL -> stringResource(R.string.confirm_selection)
+            PlaceSelectMode.NONE -> ""
+        }
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
         containerColor = Color.White,
-        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
     ) {
-
         Text(
             text = sheetTitle,
             style = KoinTheme.typography.medium18,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(horizontal = 32.dp)
                 .padding(bottom = 12.dp)
         )
@@ -89,13 +95,18 @@ internal fun SelectPlaceBottomSheet(
                     showClickRipple = false,
                     title = stringResource(it.titleRes),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
-                    chipColors = if (disabledPlace == it) TextChipDefaults.chipColors(
-                        unselectedContainerColor = KoinTheme.colors.neutral50,
-                        unselectedContentColor = KoinTheme.colors.neutral300
-                    ) else TextChipDefaults.chipColors(
-                        unselectedContainerColor = KoinTheme.colors.neutral200,
-                        unselectedContentColor = KoinTheme.colors.neutral600
-                    ),
+                    chipColors =
+                    if (disabledPlace == it) {
+                        TextChipDefaults.chipColors(
+                            unselectedContainerColor = KoinTheme.colors.neutral50,
+                            unselectedContentColor = KoinTheme.colors.neutral300
+                        )
+                    } else {
+                        TextChipDefaults.chipColors(
+                            unselectedContainerColor = KoinTheme.colors.neutral200,
+                            unselectedContentColor = KoinTheme.colors.neutral600
+                        )
+                    },
                     isSelected = selectedPlace == it,
                     onSelect = {
                         if (it != disabledPlace) {
@@ -110,7 +121,8 @@ internal fun SelectPlaceBottomSheet(
 
         Spacer(modifier = Modifier.height(140.dp))
         FilledButton(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
                 .padding(bottom = 36.dp),

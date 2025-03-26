@@ -1,9 +1,6 @@
 package `in`.koreatech.koin.ui.changepassword
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,7 +17,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChangePasswordVerifyPwdFragment : Fragment(R.layout.fragment_change_password_verify_pwd) {
-
     private val binding by dataBinding<FragmentChangePasswordVerifyPwdBinding>()
     private val viewModel by activityViewModels<ChangePasswordViewModel>()
 
@@ -29,6 +25,7 @@ class ChangePasswordVerifyPwdFragment : Fragment(R.layout.fragment_change_passwo
             viewModel.verifyPassword(password)
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,10 +44,14 @@ class ChangePasswordVerifyPwdFragment : Fragment(R.layout.fragment_change_passwo
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.verifyUiStatus.collect { status ->
-                    when(status) {
+                    when (status) {
                         is UiStatus.Init -> {}
-                        is UiStatus.Success -> { hideError() }
-                        is UiStatus.Failed -> { showError() }
+                        is UiStatus.Success -> {
+                            hideError()
+                        }
+                        is UiStatus.Failed -> {
+                            showError()
+                        }
                         is UiStatus.Loading -> Unit
                     }
                 }

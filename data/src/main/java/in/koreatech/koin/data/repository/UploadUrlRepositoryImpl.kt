@@ -3,9 +3,9 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.request.upload.UploadUrlRequest
 import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
+import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
-import javax.inject.Inject
 
 class UploadUrlRepositoryImpl @Inject constructor(
     private val uploadUrlRemoteDataSource: UploadUrlRemoteDataSource
@@ -16,13 +16,15 @@ class UploadUrlRepositoryImpl @Inject constructor(
         fileName: String
     ): Result<Pair<String, String>> {
         return try {
-            val fileUrl = uploadUrlRemoteDataSource.postUploadUrl(
-                UploadUrlRequest(contentLength, contentType, fileName)
-            ).fileUrl
+            val fileUrl =
+                uploadUrlRemoteDataSource.postUploadUrl(
+                    UploadUrlRequest(contentLength, contentType, fileName)
+                ).fileUrl
 
-            val preSignedUrl = uploadUrlRemoteDataSource.postUploadUrl(
-                UploadUrlRequest(contentLength, contentType, fileName)
-            ).preSignedUrl
+            val preSignedUrl =
+                uploadUrlRemoteDataSource.postUploadUrl(
+                    UploadUrlRequest(contentLength, contentType, fileName)
+                ).preSignedUrl
 
             Result.success(Pair(fileUrl, preSignedUrl))
         } catch (e: HttpException) {
@@ -38,9 +40,10 @@ class UploadUrlRepositoryImpl @Inject constructor(
         fileName: String
     ): Result<Pair<String, String>> {
         return try {
-            val dataSource = uploadUrlRemoteDataSource.postUploadMarketUrl(
-                UploadUrlRequest(contentLength, contentType, fileName)
-            )
+            val dataSource =
+                uploadUrlRemoteDataSource.postUploadMarketUrl(
+                    UploadUrlRequest(contentLength, contentType, fileName)
+                )
 
             val preSignedUrl = dataSource.preSignedUrl
             val fileUrl = dataSource.fileUrl
@@ -59,9 +62,10 @@ class UploadUrlRepositoryImpl @Inject constructor(
         fileName: String
     ): Result<Pair<String, String>> {
         return try {
-            val dataSource = uploadUrlRemoteDataSource.postUploadLostAndFoundUrl(
-                UploadUrlRequest(contentLength, contentType, fileName)
-            )
+            val dataSource =
+                uploadUrlRemoteDataSource.postUploadLostAndFoundUrl(
+                    UploadUrlRequest(contentLength, contentType, fileName)
+                )
 
             val preSignedUrl = dataSource.preSignedUrl
             val fileUrl = dataSource.fileUrl

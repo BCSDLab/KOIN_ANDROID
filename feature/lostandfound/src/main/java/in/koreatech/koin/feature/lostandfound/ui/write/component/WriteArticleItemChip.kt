@@ -34,7 +34,8 @@ fun WriteArticleItemChip(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .background(
                     color = KoinTheme.colors.info200,
                     shape = RoundedCornerShape(12.dp)
@@ -43,8 +44,11 @@ fun WriteArticleItemChip(
         ) {
             Text(
                 text = "${
-                    if (type == LostOrFoundType.LOST) stringResource(R.string.lost_item)
-                    else stringResource(R.string.found_item)
+                    if (type == LostOrFoundType.LOST) {
+                        stringResource(R.string.lost_item)
+                    } else {
+                        stringResource(R.string.found_item)
+                    }
                 } ${index + 1}",
                 color = KoinTheme.colors.primary600,
                 style = KoinTheme.typography.medium14,
@@ -54,7 +58,8 @@ fun WriteArticleItemChip(
         }
         if (shouldShowDelete) {
             Image(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .width(36.dp)
                     .height(28.dp)
                     .padding(vertical = 4.dp, horizontal = 8.dp)
@@ -62,7 +67,7 @@ fun WriteArticleItemChip(
                         onDeleteItemClick()
                     },
                 painter = painterResource(id = R.drawable.ic_item_delete),
-                contentDescription = null,
+                contentDescription = null
             )
         }
     }

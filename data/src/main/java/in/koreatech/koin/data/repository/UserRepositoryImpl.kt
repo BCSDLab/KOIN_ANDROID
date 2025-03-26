@@ -15,29 +15,37 @@ import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
-import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val tokenLocalDataSource: TokenLocalDataSource,
-    private val userLocalDataSource: UserLocalDataSource,
+    private val userLocalDataSource: UserLocalDataSource
 ) : UserRepository {
-    override suspend fun getToken(email: String, hashedPassword: String): AuthToken {
-        val authResponse = userRemoteDataSource.getToken(
-            LoginRequest(email, hashedPassword)
-        )
+    override suspend fun getToken(
+        email: String,
+        hashedPassword: String
+    ): AuthToken {
+        val authResponse =
+            userRemoteDataSource.getToken(
+                LoginRequest(email, hashedPassword)
+            )
 
         return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
     }
 
-    override suspend fun getOwnerToken(phoneNumber: String, hashedPassword: String): AuthToken {
-        val authResponse = userRemoteDataSource.getOwnerToken(
-            OwnerLoginRequest(phoneNumber, hashedPassword)
-        )
+    override suspend fun getOwnerToken(
+        phoneNumber: String,
+        hashedPassword: String
+    ): AuthToken {
+        val authResponse =
+            userRemoteDataSource.getOwnerToken(
+                OwnerLoginRequest(phoneNumber, hashedPassword)
+            )
 
         return AuthToken(authResponse.token, authResponse.refreshToken)
     }
@@ -48,10 +56,12 @@ class UserRepositoryImpl @Inject constructor(
                 userRemoteDataSource.ownerTokenIsValid()
                 true
             } catch (e: HttpException) {
-                if (e.code() == 401) false
-                else throw e
+                if (e.code() == 401) {
+                    false
+                } else {
+                    throw e
+                }
             }
-
         }
     }
 
@@ -94,8 +104,11 @@ class UserRepositoryImpl @Inject constructor(
             userRemoteDataSource.checkNickname(nickname)
             false
         } catch (e: HttpException) {
-            if (e.code() == 409) true
-            else throw e
+            if (e.code() == 409) {
+                true
+            } else {
+                throw e
+            }
         }
     }
 
@@ -104,8 +117,11 @@ class UserRepositoryImpl @Inject constructor(
             userRemoteDataSource.checkEmail(email)
             false
         } catch (e: HttpException) {
-            if (e.code() == 409) true
-            else throw e
+            if (e.code() == 409) {
+                true
+            } else {
+                throw e
+            }
         }
     }
 
@@ -140,7 +156,10 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUserPassword(user: User, hashedPassword: String) {
+    override suspend fun updateUserPassword(
+        user: User,
+        hashedPassword: String
+    ) {
         when (user) {
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
             is User.Student -> {

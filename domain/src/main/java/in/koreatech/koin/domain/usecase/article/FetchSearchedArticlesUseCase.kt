@@ -2,8 +2,8 @@ package `in`.koreatech.koin.domain.usecase.article
 
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import `in`.koreatech.koin.domain.repository.ArticleRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class FetchSearchedArticlesUseCase @Inject constructor(
     private val articleRepository: ArticleRepository
@@ -13,6 +13,5 @@ class FetchSearchedArticlesUseCase @Inject constructor(
         boardId: Int,
         page: Int,
         limit: Int
-    ): Flow<ArticlePagination> =
-        articleRepository.fetchSearchedArticles(query, boardId, page, limit)
+    ): Flow<ArticlePagination> = articleRepository.fetchSearchedArticles(query, boardId, page, limit)
 }

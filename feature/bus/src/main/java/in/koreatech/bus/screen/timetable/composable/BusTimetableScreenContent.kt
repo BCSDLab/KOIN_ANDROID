@@ -70,14 +70,14 @@ internal fun BusTimetableScreenContent(
     onNoticeClick: (BusNoticeState) -> Unit = {},
     previewTab: BusType = BusType.SHUTTLE
 ) {
-
     var selectedTimetableTypeTab by rememberSaveable { mutableStateOf(BusType.SHUTTLE) }
-    val busTypeHeadTitle = when(selectedTimetableTypeTab) {
-        BusType.SHUTTLE -> stringResource(R.string.shuttle_timetable)
-        BusType.EXPRESS -> stringResource(R.string.express_timetable)
-        BusType.CITY -> stringResource(R.string.city_timetable)
-        else -> ""
-    }
+    val busTypeHeadTitle =
+        when (selectedTimetableTypeTab) {
+            BusType.SHUTTLE -> stringResource(R.string.shuttle_timetable)
+            BusType.EXPRESS -> stringResource(R.string.express_timetable)
+            BusType.CITY -> stringResource(R.string.city_timetable)
+            else -> ""
+        }
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -97,7 +97,8 @@ internal fun BusTimetableScreenContent(
             modifier = Modifier.fillMaxSize()
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .background(Color.White)
                     .padding(horizontal = 24.dp)
@@ -111,12 +112,14 @@ internal fun BusTimetableScreenContent(
                         if (busTimetableUiState is BusTimetableUiState.Success) {
                             Spacer(modifier = Modifier.weight(1f))
                             Text(
-                                text = when (pagerState.currentPage + 1) {
+                                text =
+                                when (pagerState.currentPage + 1) {
                                     BusType.EXPRESS.ordinal -> expressDirectionGuideText
-                                    BusType.CITY.ordinal -> context.getString(
-                                        R.string.ride,
-                                        busTimetableUiState.cityTimetable.busInfo.departNode
-                                    )
+                                    BusType.CITY.ordinal ->
+                                        context.getString(
+                                            R.string.ride,
+                                            busTimetableUiState.cityTimetable.busInfo.departNode
+                                        )
                                     else -> ""
                                 },
                                 style = KoinTheme.typography.regular13.copy(color = KoinTheme.colors.primary500)
@@ -156,9 +159,12 @@ internal fun BusTimetableScreenContent(
             KoinTabRow(
                 modifier = Modifier.padding(top = 8.dp),
                 titles = BusType.entriesExceptAll.map { stringResource(it.titleRes) },
-                selectedTabIndex = if (LocalInspectionMode.current)
-                        previewTab.ordinal
-                    else pagerState.currentPage,
+                selectedTabIndex =
+                if (LocalInspectionMode.current) {
+                    previewTab.ordinal
+                } else {
+                    pagerState.currentPage
+                },
                 onTabSelected = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(it)
@@ -166,11 +172,13 @@ internal fun BusTimetableScreenContent(
                 }
             )
 
-            if (LocalInspectionMode.current)
+            if (LocalInspectionMode.current) {
                 selectedTimetableTypeTab = previewTab
+            }
 
             HorizontalPager(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxSize()
                     .background(Color.White),
                 state = pagerState,
@@ -178,15 +186,16 @@ internal fun BusTimetableScreenContent(
             ) { page ->
                 when (busTimetableUiState) {
                     is BusTimetableUiState.Success -> {
-                        when (page + 1) {   // BusType.ALL 때문에 +1
+                        when (page + 1) { // BusType.ALL 때문에 +1
                             BusType.SHUTTLE.ordinal -> {
                                 CompositionLocalProvider(LocalSelectedTimetableTab provides BusType.SHUTTLE) {
                                     ShuttleCoursesScreenContent(
-                                        modifier = Modifier
+                                        modifier =
+                                        Modifier
                                             .background(KoinTheme.colors.neutral100)
                                             .verticalScroll(rememberScrollState()),
                                         shuttleCourses = busTimetableUiState.shuttleCourses,
-                                        onItemClicked = onShuttleCourseRouteClick,
+                                        onItemClicked = onShuttleCourseRouteClick
                                     )
                                 }
                             }
@@ -194,15 +203,20 @@ internal fun BusTimetableScreenContent(
                             BusType.EXPRESS.ordinal -> {
                                 CompositionLocalProvider(LocalSelectedTimetableTab provides BusType.EXPRESS) {
                                     ExpressTimetableScreenContent(
-                                        modifier = Modifier
+                                        modifier =
+                                        Modifier
                                             .background(KoinTheme.colors.neutral100)
                                             .verticalScroll(rememberScrollState()),
                                         expressTimetable = busTimetableUiState.expressTimetable,
                                         onDirectionChanged = {
                                             expressDirectionGuideText =
-                                                if (it == CommonDirectionType.TO_CHEONAN) context.getString(
-                                                    R.string.guide_koreatech_station
-                                                ) else context.getString(R.string.guide_cheonan_station)
+                                                if (it == CommonDirectionType.TO_CHEONAN) {
+                                                    context.getString(
+                                                        R.string.guide_koreatech_station
+                                                    )
+                                                } else {
+                                                    context.getString(R.string.guide_cheonan_station)
+                                                }
 
                                             onExpressDirectionChange(it)
                                         }
@@ -213,12 +227,13 @@ internal fun BusTimetableScreenContent(
                             BusType.CITY.ordinal -> {
                                 CompositionLocalProvider(LocalSelectedTimetableTab provides BusType.CITY) {
                                     CityTimetableScreenContent(
-                                        modifier = Modifier
+                                        modifier =
+                                        Modifier
                                             .background(KoinTheme.colors.neutral100)
                                             .verticalScroll(rememberScrollState()),
                                         timetable = busTimetableUiState.cityTimetable,
                                         onBusNumberChanged = { onCityBusNumberChange(it) },
-                                        onDirectionChanged = { onCityDirectionChange(it) },
+                                        onDirectionChanged = { onCityDirectionChange(it) }
                                     )
                                 }
                             }
@@ -227,7 +242,8 @@ internal fun BusTimetableScreenContent(
 
                     is BusTimetableUiState.Loading -> {
                         CommonLoadingView(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .fillMaxSize()
                                 .padding(top = 100.dp)
                         )
@@ -265,6 +281,7 @@ private fun BusTimetableShuttleScreenPreview() {
         busNoticeUiState = busNoticeUiStateMock
     )
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun BusTimetableExpressScreenPreview() {
@@ -275,6 +292,7 @@ private fun BusTimetableExpressScreenPreview() {
         busNoticeUiState = busNoticeUiStateMock
     )
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun BusTimetableCityScreenPreview() {
@@ -285,6 +303,7 @@ private fun BusTimetableCityScreenPreview() {
         busNoticeUiState = busNoticeUiStateMock
     )
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun BusTimetableLoadingScreenPreview() {
@@ -296,8 +315,9 @@ private fun BusTimetableLoadingScreenPreview() {
     )
 }
 
-private val previewUiState = BusTimetableUiState.Success(
-    shuttleCourses = shuttleCoursesMock,
-    expressTimetable = expressTimetableMock,
-    cityTimetable = cityTimetableMock
-)
+private val previewUiState =
+    BusTimetableUiState.Success(
+        shuttleCourses = shuttleCoursesMock,
+        expressTimetable = expressTimetableMock,
+        cityTimetable = cityTimetableMock
+    )

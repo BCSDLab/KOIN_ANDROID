@@ -4,18 +4,11 @@ import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.model.version.Version
 import `in`.koreatech.koin.domain.repository.VersionRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.retry
 import javax.inject.Inject
 
 class VersionRepositoryImpl @Inject constructor(
     private val versionLocalDataSource: VersionLocalDataSource,
-    private val versionRemoteDataSource: VersionRemoteDataSource,
+    private val versionRemoteDataSource: VersionRemoteDataSource
 ) : VersionRepository {
     override suspend fun getCurrentVersion(): String? {
         return versionLocalDataSource.getCurrentVersionName()
@@ -28,7 +21,7 @@ class VersionRepositoryImpl @Inject constructor(
     override suspend fun getOwnerLatestVersionFromRemote(): Version {
         return versionRemoteDataSource.getOwnerAppVersion().toVersion()
     }
-     
+
     override suspend fun updateLatestVersionCode(versionCode: Int) {
         versionLocalDataSource.updateLatestVersionCode(versionCode)
     }

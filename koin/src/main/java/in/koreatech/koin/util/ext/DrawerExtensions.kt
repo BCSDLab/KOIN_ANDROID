@@ -10,23 +10,25 @@ inline fun DrawerLayout.addDrawerListener(
     crossinline onDrawerStateChanged: (newState: Int) -> Unit = {},
     crossinline onDrawerSlide: (drawerView: View, slideOffset: Float) -> Unit
 ) {
-    this.addDrawerListener(object : DrawerLayout.DrawerListener {
-        override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-            onDrawerSlide(drawerView, slideOffset)
-        }
+    this.addDrawerListener(
+        object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                onDrawerSlide(drawerView, slideOffset)
+            }
 
-        override fun onDrawerOpened(drawerView: View) {
-            onDrawerOpened(drawerView)
-        }
+            override fun onDrawerOpened(drawerView: View) {
+                onDrawerOpened(drawerView)
+            }
 
-        override fun onDrawerClosed(drawerView: View) {
-            onDrawerClosed(drawerView)
-        }
+            override fun onDrawerClosed(drawerView: View) {
+                onDrawerClosed(drawerView)
+            }
 
-        override fun onDrawerStateChanged(newState: Int) {
-            onDrawerStateChanged(newState)
+            override fun onDrawerStateChanged(newState: Int) {
+                onDrawerStateChanged(newState)
+            }
         }
-    })
+    )
 }
 
 fun DrawerLayout.isDrawerOpened(gravity: Int = GravityCompat.END) = isDrawerOpen(gravity)
@@ -40,5 +42,5 @@ fun DrawerLayout.closeDrawer() {
 }
 
 fun DrawerLayout.toggleDrawer(gravity: Int = GravityCompat.END) {
-    if(isDrawerOpened(gravity)) closeDrawer(gravity) else openDrawer(gravity)
+    if (isDrawerOpened(gravity)) closeDrawer(gravity) else openDrawer(gravity)
 }

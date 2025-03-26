@@ -20,22 +20,24 @@ fun TimetableLecture.toTimetableEvents(index: Int): List<TimetableEvent> {
      * @input : {MONDAY=[09:00, 09:30], TUESDAY=[09:00, 09:30]}
      */
     formatTimetableEventContent().forEach { (key, value, place) ->
-        val timetableEvent = TimetableEvent(
-            id = id,
-            lectureId = lectureId,
-            name = classTitle,
-            professor = professor,
-            place = place,
-            color = defaultColors[index % defaultColors.size],
-            dayOfWeek = key,
-            start = value.firstOrNull() ?: return@forEach,
-            end = if (value.lastOrNull() == LocalTime.of(23, 30)) {
-                LocalTime.of(23, 59)
-            } else {
-                value.lastOrNull()?.plusMinutes(30) ?: return@forEach
-            },
-            description = ""
-        )
+        val timetableEvent =
+            TimetableEvent(
+                id = id,
+                lectureId = lectureId,
+                name = classTitle,
+                professor = professor,
+                place = place,
+                color = defaultColors[index % defaultColors.size],
+                dayOfWeek = key,
+                start = value.firstOrNull() ?: return@forEach,
+                end =
+                if (value.lastOrNull() == LocalTime.of(23, 30)) {
+                    LocalTime.of(23, 59)
+                } else {
+                    value.lastOrNull()?.plusMinutes(30) ?: return@forEach
+                },
+                description = ""
+            )
         events.add(timetableEvent)
     }
 
@@ -55,22 +57,24 @@ fun Lecture.toTimetableEvents(): List<TimetableEvent> {
      * @input : {MONDAY=[09:00, 09:30], TUESDAY=[09:00, 09:30]}
      */
     findDayOfWeekAndLocalTime().forEach { (key, value) ->
-        val timetableEvent = TimetableEvent(
-            id = id,
-            lectureId = 1, // 상관 없음
-            name = name,
-            professor = professor,
-            place = place ?: "",
-            color = TimetableColor(Color(0xFFFFFF), Color(0xFFFFFF)),
-            dayOfWeek = key,
-            start = value.firstOrNull() ?: LocalTime.of(0, 0),
-            end = if (value.lastOrNull() == LocalTime.of(23, 30)) {
-                LocalTime.of(23, 59)
-            } else {
-                value.lastOrNull()?.plusMinutes(30) ?: return@forEach
-            },
-            description = professor
-        )
+        val timetableEvent =
+            TimetableEvent(
+                id = id,
+                lectureId = 1, // 상관 없음
+                name = name,
+                professor = professor,
+                place = place ?: "",
+                color = TimetableColor(Color(0xFFFFFF), Color(0xFFFFFF)),
+                dayOfWeek = key,
+                start = value.firstOrNull() ?: LocalTime.of(0, 0),
+                end =
+                if (value.lastOrNull() == LocalTime.of(23, 30)) {
+                    LocalTime.of(23, 59)
+                } else {
+                    value.lastOrNull()?.plusMinutes(30) ?: return@forEach
+                },
+                description = professor
+            )
         events.add(timetableEvent)
     }
     /**
@@ -91,19 +95,23 @@ fun List<TimetableEvent>.formatTimeRange(): Int {
         } else {
             (maxEndEvent.end.hour - 9)
         }
-    } else 9
+    } else {
+        9
+    }
 }
 
 // TODO::UseCase 에서 변환하는게 좋아보이네
-fun String.toSemesterModel(): SemesterModel = SemesterModel(
-    year = substring(0, 4).toInt(),
-    type = substring(4).toSemesterType()
-)
+fun String.toSemesterModel(): SemesterModel =
+    SemesterModel(
+        year = substring(0, 4).toInt(),
+        type = substring(4).toSemesterType()
+    )
 
-fun String.toSemesterType(): SemesterType = when (this) {
-    "1" -> SemesterType.Spring
-    "-여름" -> SemesterType.Summer
-    "2" -> SemesterType.Fall
-    "-겨울" -> SemesterType.Winter
-    else -> throw (Exception("\"$this\""))
-}
+fun String.toSemesterType(): SemesterType =
+    when (this) {
+        "1" -> SemesterType.Spring
+        "-여름" -> SemesterType.Summer
+        "2" -> SemesterType.Fall
+        "-겨울" -> SemesterType.Winter
+        else -> throw (Exception("\"$this\""))
+    }

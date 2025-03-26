@@ -24,9 +24,9 @@ import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
@@ -38,11 +38,11 @@ import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.ui.dining.adapter.DiningAdapter
 import `in`.koreatech.koin.ui.dining.adapter.DiningOriginalAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
@@ -88,10 +88,11 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                         adapter = diningAdapter
                     }
 
-                    val filteredDiningList = diningList
-                        .filter { dining -> dining.type == type }
-                        .arrange()
-                        .filter { dining -> dining.menu.isNotEmpty() && dining.menu.first() != "미운영" }
+                    val filteredDiningList =
+                        diningList
+                            .filter { dining -> dining.type == type }
+                            .arrange()
+                            .filter { dining -> dining.menu.isNotEmpty() && dining.menu.first() != "미운영" }
 
                     diningAdapter.submitList(filteredDiningList) {
                         if (filteredDiningList.isNotEmpty() && diningAdapter is DiningAdapter) onListItemAttached()
@@ -104,7 +105,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     private fun onListItemAttached() {
         with(onboardingManager) {
             viewLifecycleOwner.showOnboardingIfNeeded(
-                OnboardingType.DINING_SHARE,
+                OnboardingType.DINING_SHARE
             ) {
                 lifecycleScope.launch {
                     delay(200)
@@ -112,12 +113,13 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                         val bottomOffset = it.bottom
                         binding.frameLayoutDiningItems.addView(
                             ImageView(requireContext()).apply {
-                                layoutParams = FrameLayout.LayoutParams(
-                                    550,
-                                    FrameLayout.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    gravity = Gravity.CENTER_HORIZONTAL
-                                }
+                                layoutParams =
+                                    FrameLayout.LayoutParams(
+                                        550,
+                                        FrameLayout.LayoutParams.WRAP_CONTENT
+                                    ).apply {
+                                        gravity = Gravity.CENTER_HORIZONTAL
+                                    }
 
                                 translationY = bottomOffset.toFloat() - 90f
                                 setOnClickListener {
@@ -129,7 +131,6 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
                             }
                         )
                     }
-
                 }
             }
         }
@@ -157,34 +158,45 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
     }
 
     private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
-        val executionParams = mapOf(
-            "date" to dining.date,
-            "type" to dining.type,
-            "place" to dining.place
-        )
-        val link = Link(
-            androidExecutionParams = executionParams,
-            iosExecutionParams = executionParams
-        )
+        val executionParams =
+            mapOf(
+                "date" to dining.date,
+                "type" to dining.type,
+                "place" to dining.place
+            )
+        val link =
+            Link(
+                androidExecutionParams = executionParams,
+                iosExecutionParams = executionParams
+            )
         return FeedTemplate(
-            content = Content(
+            content =
+            Content(
                 title = "ㅤ",
                 imageUrl = dining.imageUrl,
                 link = link
             ),
-            itemContent = ItemContent(
+            itemContent =
+            ItemContent(
                 profileText = "${
-                    if (TimeUtil.isToday(dining.date)) "오늘" else if (TimeUtil.isTomorrow(dining.date)) "내일" else
+                    if (TimeUtil.isToday(dining.date)) {
+                        "오늘"
+                    } else if (TimeUtil.isTomorrow(dining.date)) {
+                        "내일"
+                    } else {
                         TimeUtil.formatDateToKorean(dining.date)
+                    }
                 } ${DiningUtil.getKoreanName(dining.type)} 식단",
-                items = listOf(
+                items =
+                listOf(
                     ItemInfo(
                         item = dining.place,
                         itemOp = dining.menu.joinToString(", ")
                     )
                 )
             ),
-            buttons = listOf(
+            buttons =
+            listOf(
                 Button("코인에서 식단 전체보기", link)
             )
         )
@@ -192,10 +204,12 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
 
     companion object {
         private const val TYPE = "type"
+
         fun newInstance(type: String) = DiningItemsFragment().apply {
-            arguments = Bundle().apply {
-                putString(TYPE, type)
-            }
+            arguments =
+                Bundle().apply {
+                    putString(TYPE, type)
+                }
         }
     }
 }

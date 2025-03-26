@@ -46,32 +46,36 @@ fun DetailContent(
     isWriterAdmin: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val imageLoader = ImageLoader.Builder(LocalContext.current)
-        .components {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                add(ImageDecoderDecoder.Factory())
-            } else {
-                add(GifDecoder.Factory())
+    val imageLoader =
+        ImageLoader.Builder(LocalContext.current)
+            .components {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
+                }
             }
-        }
-        .build()
+            .build()
 
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .padding(vertical = 24.dp, horizontal = 24.dp)
             .fillMaxWidth()
     ) {
         if (imageUris != null) {
-            val pagerState = rememberPagerState(pageCount = {
-                imageUris.size
-            })
+            val pagerState =
+                rememberPagerState(pageCount = {
+                    imageUris.size
+                })
             HorizontalPager(
                 modifier = Modifier.fillMaxWidth(),
                 state = pagerState
             ) { page ->
                 SubcomposeAsyncImage(
                     modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
-                    model = ImageRequest.Builder(LocalContext.current)
+                    model =
+                    ImageRequest.Builder(LocalContext.current)
                         .data(imageUris[page])
                         .crossfade(true)
                         .build(),
@@ -92,7 +96,8 @@ fun DetailContent(
             Spacer(modifier = Modifier.height(8.dp))
 
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(vertical = 12.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
@@ -100,14 +105,21 @@ fun DetailContent(
             ) {
                 imageUris.indices.forEach { index ->
                     Image(
-                        modifier = if (index == pagerState.currentPage) Modifier.size(6.dp) else Modifier.size(
-                            4.dp
-                        ),
-                        painter = if (index == pagerState.currentPage)
+                        modifier =
+                        if (index == pagerState.currentPage) {
+                            Modifier.size(6.dp)
+                        } else {
+                            Modifier.size(
+                                4.dp
+                            )
+                        },
+                        painter =
+                        if (index == pagerState.currentPage) {
                             painterResource(R.drawable.ic_image_page_indicator_filled)
-                        else
-                            painterResource(id = R.drawable.ic_image_page_indicator_not_filled),
-                        contentDescription = null,
+                        } else {
+                            painterResource(id = R.drawable.ic_image_page_indicator_not_filled)
+                        },
+                        contentDescription = null
                     )
                 }
             }
@@ -125,31 +137,33 @@ fun DetailContent(
             Spacer(modifier = Modifier.height(24.dp))
 
             Box(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .clip(KoinTheme.shapes.medium)
                     .fillMaxWidth()
                     .background(KoinTheme.colors.neutral100)
                     .padding(vertical = 16.dp, horizontal = 18.dp),
                 contentAlignment = Alignment.Center
             ) {
-                val infoMessage = buildAnnotatedString {
-                    withStyle(KoinTheme.typography.regular12.toSpanStyle()) {
-                        append(stringResource(R.string.detail_student_association_info_1))
+                val infoMessage =
+                    buildAnnotatedString {
+                        withStyle(KoinTheme.typography.regular12.toSpanStyle()) {
+                            append(stringResource(R.string.detail_student_association_info_1))
+                        }
+                        withStyle(
+                            KoinTheme.typography.regular12.copy(fontWeight = FontWeight.Bold)
+                                .toSpanStyle()
+                        ) {
+                            append(stringResource(R.string.detail_student_association_info_2))
+                        }
+                        withStyle(KoinTheme.typography.regular12.toSpanStyle()) {
+                            append(stringResource(R.string.detail_student_association_info_3))
+                        }
                     }
-                    withStyle(
-                        KoinTheme.typography.regular12.copy(fontWeight = FontWeight.Bold)
-                            .toSpanStyle()
-                    ) {
-                        append(stringResource(R.string.detail_student_association_info_2))
-                    }
-                    withStyle(KoinTheme.typography.regular12.toSpanStyle()) {
-                        append(stringResource(R.string.detail_student_association_info_3))
-                    }
-                }
                 Text(
                     text = infoMessage,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.regular12,
+                    style = KoinTheme.typography.regular12
                 )
             }
         }

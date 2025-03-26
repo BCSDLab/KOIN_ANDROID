@@ -24,20 +24,24 @@ fun WriteArticleDoneButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) = Column(
-    horizontalAlignment = Alignment.CenterHorizontally,
+    horizontalAlignment = Alignment.CenterHorizontally
 ) {
     HorizontalDivider(
         thickness = 1.dp,
         modifier = Modifier.fillMaxWidth(),
         color = KoinTheme.colors.neutral100
     )
-    Box(modifier = modifier
-        .padding(24.dp)
-        .fillMaxWidth(), contentAlignment = Alignment.Center) {
-
+    Box(
+        modifier =
+        modifier
+            .padding(24.dp)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
         Button(
             onClick = onClick,
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(vertical = 8.dp, horizontal = 24.dp)
                 .width(160.dp)
                 .height(38.dp),
@@ -46,7 +50,7 @@ fun WriteArticleDoneButton(
         ) {
             Text(
                 style = KoinTheme.typography.regular14,
-                text = stringResource(id = R.string.write_done),
+                text = stringResource(id = R.string.write_done)
             )
         }
     }

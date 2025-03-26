@@ -22,45 +22,55 @@ import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(
     private val storeApi: StoreApi,
-    private val userAuthApi: UserAuthApi,
+    private val userAuthApi: UserAuthApi
 ) {
-    suspend fun getStoreItems() : List<StoreItemResponse> {
+    suspend fun getStoreItems(): List<StoreItemResponse> {
         return storeApi.getShopList().shops
     }
 
-    suspend fun getStoreItemsWithSorting(storeSorter: StoreSorter?, query: String?) : List<StoreItemResponse> {
+    suspend fun getStoreItemsWithSorting(
+        storeSorter: StoreSorter?,
+        query: String?
+    ): List<StoreItemResponse> {
         return if (storeSorter != null) {
             storeApi.getShopListWithSorting(storeSorter.name, query).shops
-        } else{
+        } else {
             storeApi.getShopListWithSorting(StoreSorter.NONE.name, query).shops
         }
     }
 
-    suspend fun getStoreItemsWithOneFilter(storeSorter: StoreSorter?, filter: String, query: String?) : List<StoreItemResponse> {
+    suspend fun getStoreItemsWithOneFilter(
+        storeSorter: StoreSorter?,
+        filter: String,
+        query: String?
+    ): List<StoreItemResponse> {
         return if (storeSorter != null) {
             storeApi.getShopListWithOneFilter(storeSorter.name, filter, query).shops
-        } else{
+        } else {
             storeApi.getShopListWithOneFilter(StoreSorter.NONE.name, filter, query).shops
         }
     }
 
-    suspend fun getStoreItemsWithTwoFilter(storeSorter: StoreSorter?, query: String?) : List<StoreItemResponse> {
+    suspend fun getStoreItemsWithTwoFilter(
+        storeSorter: StoreSorter?,
+        query: String?
+    ): List<StoreItemResponse> {
         return if (storeSorter != null) {
-            storeApi.getShopListWithTwoFilter(storeSorter.name, query= query).shops
-        } else{
-            storeApi.getShopListWithTwoFilter(StoreSorter.NONE.name,  query= query).shops
+            storeApi.getShopListWithTwoFilter(storeSorter.name, query = query).shops
+        } else {
+            storeApi.getShopListWithTwoFilter(StoreSorter.NONE.name, query = query).shops
         }
     }
 
-    suspend fun getStoreEvents(): List<StoreEventItemReponse>{
+    suspend fun getStoreEvents(): List<StoreEventItemReponse> {
         return storeApi.getEventShopList().events
     }
 
-    suspend fun getStoreCategories(): List<StoreCategoriesItemResponse>{
+    suspend fun getStoreCategories(): List<StoreCategoriesItemResponse> {
         return storeApi.getCategories().shop_categories
     }
 
-    suspend fun getStoreMenu(storeUid: Int) : StoreItemWithMenusResponse {
+    suspend fun getStoreMenu(storeUid: Int): StoreItemWithMenusResponse {
         return storeApi.getStore(storeUid)
     }
 
@@ -80,18 +90,33 @@ class StoreRemoteDataSource @Inject constructor(
         return userAuthApi.getShopReviewsWithAuth(storeUid)
     }
 
-    suspend fun writeReview(shopId: Int, reviewRequest: ReviewRequest) {
+    suspend fun writeReview(
+        shopId: Int,
+        reviewRequest: ReviewRequest
+    ) {
         userAuthApi.writeReview(shopId, reviewRequest)
     }
 
-    suspend fun deleteReview(reviewId: Int, shopId:Int) {
+    suspend fun deleteReview(
+        reviewId: Int,
+        shopId: Int
+    ) {
         userAuthApi.deleteReview(reviewId, shopId)
     }
 
-    suspend fun modifyReview(reviewId: Int, shopId: Int, reviewRequest: ReviewRequest) {
+    suspend fun modifyReview(
+        reviewId: Int,
+        shopId: Int,
+        reviewRequest: ReviewRequest
+    ) {
         userAuthApi.modifyReview(reviewId, shopId, reviewRequest)
     }
-    suspend fun postReviewReports(storeUid: Int, reviewId: Int, reportList:List<StoreReport>){
+
+    suspend fun postReviewReports(
+        storeUid: Int,
+        reviewId: Int,
+        reportList: List<StoreReport>
+    ) {
         userAuthApi.postStoreReviewReports(
             storeUid,
             reviewId,
@@ -110,5 +135,4 @@ class StoreRemoteDataSource @Inject constructor(
     suspend fun getShopSearchRelated(query: String): ShopRelatedListResponse {
         return storeApi.getShopSearchRelated(query)
     }
-
 }

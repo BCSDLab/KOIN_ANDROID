@@ -8,20 +8,24 @@ data class ShuttleCoursesState(
     val courses: Map<ShuttleCourseRegionState, List<ShuttleCourseRouteState>>,
     val semester: ShuttleSemesterState
 ) {
-
     companion object {
-        val EMPTY = ShuttleCoursesState(
-            courses = emptyMap(),
-            semester = ShuttleSemesterState.EMPTY
-        )
+        val EMPTY =
+            ShuttleCoursesState(
+                courses = emptyMap(),
+                semester = ShuttleSemesterState.EMPTY
+            )
     }
 }
 
-fun ShuttleCourses.toShuttleCoursesState() = ShuttleCoursesState(
-    courses = courses.associate { shuttleCourse ->
-        ShuttleCourseRegionState(shuttleCourse.region) to shuttleCourse.routes.map {
-            shuttleCourseRoute -> shuttleCourseRoute.toShuttleCourseRouteState()
-        }
-    },
-    semester = semester.toShuttleSemesterState()
-)
+fun ShuttleCourses.toShuttleCoursesState() =
+    ShuttleCoursesState(
+        courses =
+        courses.associate { shuttleCourse ->
+            ShuttleCourseRegionState(shuttleCourse.region) to
+                shuttleCourse.routes.map {
+                        shuttleCourseRoute ->
+                    shuttleCourseRoute.toShuttleCourseRouteState()
+                }
+        },
+        semester = semester.toShuttleSemesterState()
+    )

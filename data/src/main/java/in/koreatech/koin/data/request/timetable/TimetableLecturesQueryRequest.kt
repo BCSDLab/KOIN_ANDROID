@@ -3,13 +3,12 @@ package `in`.koreatech.koin.data.request.timetable
 import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLectureQuery
 import `in`.koreatech.koin.domain.model.timetable.request.TimetableLecturesQuery
-import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectureClassInfo
 
 data class TimetableLecturesQueryRequest(
     @SerializedName("timetable_frame_id")
     val timetableFrameId: Int,
     @SerializedName("timetable_lecture")
-    val timetableLecture: List<TimetableLectureQueryRequest>,
+    val timetableLecture: List<TimetableLectureQueryRequest>
 )
 
 data class TimetableLectureQueryRequest(
@@ -26,20 +25,22 @@ data class TimetableLectureQueryRequest(
     @SerializedName("grades")
     val grades: String,
     @SerializedName("memo")
-    val memo: String,
+    val memo: String
 )
 
-fun TimetableLecturesQuery.toTimetableLecturesQueryRequest() = TimetableLecturesQueryRequest(
-    timetableFrameId = timetableFrameId,
-    timetableLecture = timetableLecture.map { it.toTimetableLectureQueryRequest() }
-)
+fun TimetableLecturesQuery.toTimetableLecturesQueryRequest() =
+    TimetableLecturesQueryRequest(
+        timetableFrameId = timetableFrameId,
+        timetableLecture = timetableLecture.map { it.toTimetableLectureQueryRequest() }
+    )
 
-fun TimetableLectureQuery.toTimetableLectureQueryRequest() = TimetableLectureQueryRequest(
-    id = id,
-    lectureId = lectureId,
-    classTitle = classTitle,
-    classInfos = classInfos.map { it.toClassInfoRequest() },
-    professor = professor,
-    grades = grades,
-    memo = memo
-)
+fun TimetableLectureQuery.toTimetableLectureQueryRequest() =
+    TimetableLectureQueryRequest(
+        id = id,
+        lectureId = lectureId,
+        classTitle = classTitle,
+        classInfos = classInfos.map { it.toClassInfoRequest() },
+        professor = professor,
+        grades = grades,
+        memo = memo
+    )

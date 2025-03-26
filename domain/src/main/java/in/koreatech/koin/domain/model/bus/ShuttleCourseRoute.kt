@@ -4,5 +4,5 @@ data class ShuttleCourseRoute(
     val id: String,
     val type: String,
     val routeName: String,
-    val subName: String,
+    val subName: String
 )

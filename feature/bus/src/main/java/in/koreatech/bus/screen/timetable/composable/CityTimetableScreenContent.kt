@@ -37,9 +37,8 @@ internal fun CityTimetableScreenContent(
     timetable: CityTimetableState,
     modifier: Modifier = Modifier,
     onBusNumberChanged: (CityBusNumberType) -> Unit = {},
-    onDirectionChanged: (CommonDirectionType) -> Unit = {},
+    onDirectionChanged: (CommonDirectionType) -> Unit = {}
 ) {
-
     var selectedBusNumberType by rememberSaveable { mutableStateOf(CityBusNumberType.N400) }
     var selectedDirectionType by rememberSaveable { mutableStateOf(CommonDirectionType.TO_BYEONGCHEON) }
     val context = LocalContext.current
@@ -48,7 +47,8 @@ internal fun CityTimetableScreenContent(
         modifier = modifier
     ) {
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 8.dp, bottom = 4.dp),
@@ -75,7 +75,8 @@ internal fun CityTimetableScreenContent(
             )
         }
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 4.dp, bottom = 8.dp),

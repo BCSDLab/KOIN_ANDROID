@@ -49,7 +49,6 @@ import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinua
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-
 @Composable
 fun PasswordAuthenticationScreenImpl(
     modifier: Modifier = Modifier,
@@ -99,17 +98,17 @@ fun PasswordAuthenticationScreen(
     authenticateCode: () -> Unit,
     accountState: ChangePasswordContinuationState,
     sendSmsError: Throwable?,
-    authState: ChangePasswordContinuationState,
+    authState: ChangePasswordContinuationState
 ) {
-
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxSize()
-            .padding(top = 12.dp),
+            .padding(top = 12.dp)
     ) {
-
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
         ) {
             IconButton(
@@ -118,7 +117,7 @@ fun PasswordAuthenticationScreen(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -130,12 +129,14 @@ fun PasswordAuthenticationScreen(
             )
         }
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -143,18 +144,19 @@ fun PasswordAuthenticationScreen(
                     modifier = Modifier,
                     color = ColorPrimary,
                     text = stringResource(R.string.account_verification_step),
-                    style = MaterialTheme.typography.h6,
+                    style = MaterialTheme.typography.h6
                 )
                 Text(
                     text = stringResource(id = R.string.one_half),
                     color = ColorPrimary,
                     style = MaterialTheme.typography.h6,
-                    letterSpacing = 4.sp,
+                    letterSpacing = 4.sp
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Canvas(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
             ) {
                 drawLine(
@@ -179,7 +181,7 @@ fun PasswordAuthenticationScreen(
                 text = stringResource(R.string.phone_number),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+                modifier = modifier.padding(start = 8.dp, bottom = 8.dp)
             )
 
             LinedTextField(
@@ -187,12 +189,14 @@ fun PasswordAuthenticationScreen(
                 onValueChange = insertPhoneNumber,
                 label = stringResource(R.string.enter_phone_number),
                 isError = sendSmsError != null,
-                errorText = when (sendSmsError) {
+                errorText =
+                when (sendSmsError) {
                     OwnerError.NotValidPhoneNumberException -> stringResource(id = R.string.error_invalid_phone_number)
                     OwnerError.NotExistsPhoneNumberException -> stringResource(id = R.string.phone_number_not_validate)
-                    else -> stringResource(
-                        R.string.error_network_unknown
-                    )
+                    else ->
+                        stringResource(
+                            R.string.error_network_unknown
+                        )
                 },
                 isSuccess = accountState == ChangePasswordContinuationState.SendAuthCode,
                 successText = stringResource(R.string.success_send_sms_code),
@@ -203,12 +207,12 @@ fun PasswordAuthenticationScreen(
                 text = stringResource(R.string.authentication_code),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(start = 8.dp, bottom = 8.dp, top = 4.dp),
+                modifier = modifier.padding(start = 8.dp, bottom = 8.dp, top = 4.dp)
             )
 
             Row(
                 modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 LinedTextField(
                     modifier = Modifier.widthIn(max = 220.dp),
@@ -222,25 +226,37 @@ fun PasswordAuthenticationScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
                     onClick = sendAuthCode,
-                    colors = if (authState is ChangePasswordContinuationState.Failed) ButtonDefaults.buttonColors(
-                        ColorAccent
-                    ) else buttonColors(ColorPrimary),
-                    modifier = modifier
+                    colors =
+                    if (authState is ChangePasswordContinuationState.Failed) {
+                        ButtonDefaults.buttonColors(
+                            ColorAccent
+                        )
+                    } else {
+                        buttonColors(ColorPrimary)
+                    },
+                    modifier =
+                    modifier
                         .width(135.dp)
                         .height(41.dp)
                         .clickableOnce { }
                 ) {
                     Text(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .fillMaxSize()
                             .wrapContentSize(align = Alignment.Center),
-                        text = if (authenticationBtnIsClicked) stringResource(R.string.auth_code_resend) else stringResource(
-                            R.string.auth_code_send
-                        ),
+                        text =
+                        if (authenticationBtnIsClicked) {
+                            stringResource(R.string.auth_code_resend)
+                        } else {
+                            stringResource(
+                                R.string.auth_code_send
+                            )
+                        },
                         letterSpacing = (-0.3).sp,
                         fontSize = 13.sp,
                         color = Color.White,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -248,7 +264,8 @@ fun PasswordAuthenticationScreen(
             Button(
                 onClick = authenticateCode,
                 colors = buttonColors(ColorPrimary),
-                modifier = modifier
+                modifier =
+                modifier
                     .fillMaxWidth()
                     .height(48.dp),
                 enabled = authState !is ChangePasswordContinuationState.Failed && !authCodeIsEmpty && !phoneNumberIsEmpty
@@ -273,9 +290,10 @@ private fun HandleSideEffects(
 ) {
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(
-                email
-            )
+            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen ->
+                navigateToChangePassword(
+                    email
+                )
 
             else -> {}
         }

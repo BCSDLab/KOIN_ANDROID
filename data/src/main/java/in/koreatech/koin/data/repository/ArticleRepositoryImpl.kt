@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
     private val articleRemoteDataSource: ArticleRemoteDataSource,
@@ -34,40 +34,43 @@ class ArticleRepositoryImpl @Inject constructor(
     private val userRepository: UserRepository,
     private val coroutineScope: CoroutineScope
 ) : ArticleRepository {
-
-    val user = userRepository.getUserInfoFlow().distinctUntilChanged()
-        .onEach { user ->
-            if (user.isStudent) {
-                _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
-            } else {
-                _myKeywords.emit(articleLocalDataSource.fetchMyKeyword().map {
-                    ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
-                })
-            }
-        }.stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = User.Anonymous
-        )
+    val user =
+        userRepository.getUserInfoFlow().distinctUntilChanged()
+            .onEach { user ->
+                if (user.isStudent) {
+                    _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
+                } else {
+                    _myKeywords.emit(
+                        articleLocalDataSource.fetchMyKeyword().map {
+                            ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
+                        }
+                    )
+                }
+            }.stateIn(
+                scope = coroutineScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = User.Anonymous
+            )
 
     private val _myKeywords =
         MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
-    private val myKeywords = _myKeywords.stateIn(
-        scope = coroutineScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
-    )
+    private val myKeywords =
+        _myKeywords.stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
 
-    private val hotArticleHeaders: StateFlow<List<ArticleHeader>> = flow {
-        emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
-    }.catch {
-        emit(emptyList())
-    }.stateIn(
-        scope = coroutineScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = listOf()
-    )
-
+    private val hotArticleHeaders: StateFlow<List<ArticleHeader>> =
+        flow {
+            emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
+        }.catch {
+            emit(emptyList())
+        }.stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = listOf()
+        )
 
     init {
         user.launchIn(coroutineScope)
@@ -86,19 +89,28 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchArticle(articleId: Int, boardId: Int): Flow<Article> {
+    override fun fetchArticle(
+        articleId: Int,
+        boardId: Int
+    ): Flow<Article> {
         return flow {
             emit(articleRemoteDataSource.fetchArticle(articleId, boardId).toArticle())
         }
     }
 
-    override fun fetchPreviousArticle(articleId: Int, boardId: Int): Flow<Article> {
+    override fun fetchPreviousArticle(
+        articleId: Int,
+        boardId: Int
+    ): Flow<Article> {
         return flow {
             emit(articleRemoteDataSource.fetchPreviousArticle(articleId, boardId).toArticle())
         }
     }
 
-    override fun fetchNextArticle(articleId: Int, boardId: Int): Flow<Article> {
+    override fun fetchNextArticle(
+        articleId: Int,
+        boardId: Int
+    ): Flow<Article> {
         return flow {
             emit(articleRemoteDataSource.fetchNextArticle(articleId, boardId).toArticle())
         }
@@ -124,33 +136,39 @@ class ArticleRepositoryImpl @Inject constructor(
 
     override fun saveKeyword(keyword: String): Flow<Unit> {
         return flow {
-            if (user.value.isStudent)
+            if (user.value.isStudent) {
                 emit(articleRemoteDataSource.saveKeyword(keyword))
-            else {
+            } else {
                 articleLocalDataSource.saveKeyword(keyword)
                 emit(ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, keyword))
             }
         }.onEach {
-            _myKeywords.emit(buildList {
-                addAll(myKeywords.value)
-                add(it)
-            })
+            _myKeywords.emit(
+                buildList {
+                    addAll(myKeywords.value)
+                    add(it)
+                }
+            )
         }.map { Unit }
     }
 
     override fun deleteKeyword(keyword: String): Flow<Unit> {
         return flow {
-            if (user.value.isStudent)
+            if (user.value.isStudent) {
                 emit(articleRemoteDataSource.deleteKeyword(myKeywords.value.first { it.keyword == keyword }.id))
-            else
+            } else {
                 emit(articleLocalDataSource.deleteKeyword(keyword))
+            }
         }.onEach {
-            _myKeywords.emit(buildList {
-                myKeywords.value.forEach {
-                    if (it.keyword != keyword)
-                        add(it)
+            _myKeywords.emit(
+                buildList {
+                    myKeywords.value.forEach {
+                        if (it.keyword != keyword) {
+                            add(it)
+                        }
+                    }
                 }
-            })
+            )
         }
     }
 
@@ -229,7 +247,9 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun uploadArticleLostAndFound(articleLostAndFoundList: List<ArticleLostAndFoundUpload>): Result<ArticleLostAndFound> {
+    override suspend fun uploadArticleLostAndFound(
+        articleLostAndFoundList: List<ArticleLostAndFoundUpload>
+    ): Result<ArticleLostAndFound> {
         return articleRemoteDataSource.uploadArticleLostAndFound(articleLostAndFoundList).map { it.toArticleLostAndFound() }
     }
 

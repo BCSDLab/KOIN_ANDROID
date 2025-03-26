@@ -11,25 +11,25 @@ import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
-import `in`.koreatech.koin.data.response.user.*
+import `in`.koreatech.koin.data.response.user.ABTestResponse
+import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
+import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
 class UserRemoteDataSource(
     private val userApi: UserApi,
     private val userAuthApi: UserAuthApi
 ) {
-    suspend fun getToken(
-        loginRequest: LoginRequest
-    ): AuthResponse {
+    suspend fun getToken(loginRequest: LoginRequest): AuthResponse {
         return userApi.getToken(loginRequest)
     }
 
-    suspend fun getOwnerToken(
-        ownerLoginRequest: OwnerLoginRequest
-    ): OwnerAuthResponse {
+    suspend fun getOwnerToken(ownerLoginRequest: OwnerLoginRequest): OwnerAuthResponse {
         return userApi.getOwnerToken(ownerLoginRequest)
     }
 
-    suspend fun ownerTokenIsValid(){
+    suspend fun ownerTokenIsValid() {
         userAuthApi.getOwnerTokenIsValid()
     }
 
@@ -37,15 +37,11 @@ class UserRemoteDataSource(
         return userAuthApi.getUser()
     }
 
-    suspend fun sendRegisterEmail(
-        studentInfoRequest: StudentInfoRequest
-    ) {
+    suspend fun sendRegisterEmail(studentInfoRequest: StudentInfoRequest) {
         userApi.postRegister(studentInfoRequest)
     }
 
-    suspend fun sendPasswordResetEmail(
-        idRequest: IdRequest
-    ) {
+    suspend fun sendPasswordResetEmail(idRequest: IdRequest) {
         return userApi.postPasswordReset(idRequest)
     }
 

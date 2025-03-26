@@ -16,7 +16,7 @@ data class TimetableLecture(
     val lectureClass: String = "",
     val target: String = "",
     val professor: String = "",
-    val department: String = "",
+    val department: String = ""
 ) {
     /**
      * @test : TimetableLectureTest.kt
@@ -49,19 +49,21 @@ data class TimetableLecture(
         return grouped
     }
 
-    private fun Int.toDayOfWeek(): DayOfWeek? = when(this) {
-        0 -> DayOfWeek.MONDAY
-        1 -> DayOfWeek.TUESDAY
-        2 -> DayOfWeek.WEDNESDAY
-        3 -> DayOfWeek.THURSDAY
-        4 -> DayOfWeek.FRIDAY
-        else -> null
-    }
+    private fun Int.toDayOfWeek(): DayOfWeek? =
+        when (this) {
+            0 -> DayOfWeek.MONDAY
+            1 -> DayOfWeek.TUESDAY
+            2 -> DayOfWeek.WEDNESDAY
+            3 -> DayOfWeek.THURSDAY
+            4 -> DayOfWeek.FRIDAY
+            else -> null
+        }
 
-    private fun List<Int>.toLocalTimes(): List<LocalTime> = map {
-        val time = it % 100
-        LocalTime.of(9 + time / 2, (time % 2) * 30)
-    }
+    private fun List<Int>.toLocalTimes(): List<LocalTime> =
+        map {
+            val time = it % 100
+            LocalTime.of(9 + time / 2, (time % 2) * 30)
+        }
 
     fun getDetailTime(): String {
         val times = formatTimetableEventContent()
@@ -70,22 +72,24 @@ data class TimetableLecture(
 
         times.forEachIndexed { index, (dayOfWeekContent, localTimes, place) ->
             if (index > 0) timeContent.append(", ")
-            val dayOfWeekText = when (dayOfWeekContent) {
-                DayOfWeek.MONDAY -> "월"
-                DayOfWeek.TUESDAY -> "화"
-                DayOfWeek.WEDNESDAY -> "수"
-                DayOfWeek.THURSDAY -> "목"
-                DayOfWeek.FRIDAY -> "금"
-                else -> ""
-            }
+            val dayOfWeekText =
+                when (dayOfWeekContent) {
+                    DayOfWeek.MONDAY -> "월"
+                    DayOfWeek.TUESDAY -> "화"
+                    DayOfWeek.WEDNESDAY -> "수"
+                    DayOfWeek.THURSDAY -> "목"
+                    DayOfWeek.FRIDAY -> "금"
+                    else -> ""
+                }
             timeContent.append(dayOfWeekText)
 
             fun localTimeToString(localTime: LocalTime): String {
-                val hour = if (localTime.hour - 8 < 10) {
-                    "0${(localTime.hour - 8)}"
-                } else {
-                    (localTime.hour - 8).toString()
-                }
+                val hour =
+                    if (localTime.hour - 8 < 10) {
+                        "0${(localTime.hour - 8)}"
+                    } else {
+                        (localTime.hour - 8).toString()
+                    }
                 val minutes = if (localTime.minute == 0) "A" else "B"
                 return hour + minutes
             }

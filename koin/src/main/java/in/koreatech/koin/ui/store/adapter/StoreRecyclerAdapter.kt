@@ -38,28 +38,32 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
 
     inner class ViewHolder(private val binding: StoreListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(store: Store) {
             binding.storeNameTextview.text = store.name
             binding.storeNameTextview.setStoreNameState(store.isOpen)
             binding.storeRatingScoreTextview.text = String.format("%.1f", store.averageRate)
 
             binding.isRatingImageview.setImageResource(
-                if (store.reviewCount > 0)
+                if (store.reviewCount > 0) {
                     R.drawable.ic_rating
-                else
+                } else {
                     R.drawable.ic_no_rating
+                }
             )
 
-            binding.storeReviewTextview.text = (
-                    if (store.reviewCount == 0) itemView.context.getString(R.string.store_no_review)
-                    else if (store.reviewCount > 10) itemView.context.getString(R.string.store_many_review)
-                    else itemView.context.getString(
-                        R.string.store_review_count,
-                        store.reviewCount.toString()
-                    )
+            binding.storeReviewTextview.text =
+                (
+                    if (store.reviewCount == 0) {
+                        itemView.context.getString(R.string.store_no_review)
+                    } else if (store.reviewCount > 10) {
+                        itemView.context.getString(R.string.store_many_review)
+                    } else {
+                        itemView.context.getString(
+                            R.string.store_review_count,
+                            store.reviewCount.toString()
+                        )
+                    }
                     ).toString()
-
 
             if (!store.isOpen) {
                 binding.readyStoreFrameLayout.isVisible = true
@@ -110,7 +114,6 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
                     binding.viewFlipper.isInvisible = false
                     binding.viewFlipper.removeAllViews()
                 }
-
             }
 
             for (text in store.benefitDetails) {
@@ -122,10 +125,11 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
                         R.color.blue_alpha20
                     )
                 )
-                newTextView.layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+                newTextView.layoutParams =
+                    ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
 
                 binding.viewFlipper.addView(newTextView)
             }
@@ -165,11 +169,12 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
     }
 
     inline fun setOnItemClickListener(crossinline onItemClick: (store: Store) -> Unit) {
-        onItemClickListener = object : OnItemClickListener {
-            override fun onItemClick(store: Store) {
-                onItemClick(store)
+        onItemClickListener =
+            object : OnItemClickListener {
+                override fun onItemClick(store: Store) {
+                    onItemClick(store)
+                }
             }
-        }
     }
 
     interface OnItemClickListener {
@@ -177,14 +182,15 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Store>() {
-            override fun areItemsTheSame(oldItem: Store, newItem: Store): Boolean {
-                return oldItem.uid == newItem.uid
-            }
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<Store>() {
+                override fun areItemsTheSame(oldItem: Store, newItem: Store): Boolean {
+                    return oldItem.uid == newItem.uid
+                }
 
-            override fun areContentsTheSame(oldItem: Store, newItem: Store): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(oldItem: Store, newItem: Store): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

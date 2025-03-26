@@ -37,7 +37,6 @@ import `in`.koreatech.bus.util.formatPeriod
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipGroup
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinSurface
-import `in`.koreatech.koin.core.designsystem.component.text.LeadingIconText
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.bus.R
 import kotlinx.collections.immutable.ImmutableList
@@ -47,9 +46,8 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun ShuttleCoursesScreenContent(
     shuttleCourses: ShuttleCoursesState,
     modifier: Modifier = Modifier,
-    onItemClicked: (ShuttleCourseRouteState) -> Unit = {},
+    onItemClicked: (ShuttleCourseRouteState) -> Unit = {}
 ) {
-
     var selectedRouteType by rememberSaveable { mutableStateOf(ShuttleBusOperationType.ALL) }
     val context = LocalContext.current
 
@@ -57,7 +55,8 @@ internal fun ShuttleCoursesScreenContent(
         modifier = modifier
     ) {
         TextChipGroup(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 24.dp),
             titles = ShuttleBusOperationType.entries.map { stringResource(it.titleRes) },
@@ -72,14 +71,19 @@ internal fun ShuttleCoursesScreenContent(
             showClickRipple = false
         )
         shuttleCourses.courses.forEach { courseEntry ->
-            val filteredValue = courseEntry.value.filter { courseRouteState ->
-                if (selectedRouteType == ShuttleBusOperationType.ALL) true
-                else courseRouteState.type == selectedRouteType
-            }
+            val filteredValue =
+                courseEntry.value.filter { courseRouteState ->
+                    if (selectedRouteType == ShuttleBusOperationType.ALL) {
+                        true
+                    } else {
+                        courseRouteState.type == selectedRouteType
+                    }
+                }
 
             if (filteredValue.isNotEmpty()) {
-                if (courseEntry.key != shuttleCourses.courses.keys.first())
+                if (courseEntry.key != shuttleCourses.courses.keys.first()) {
                     Spacer(modifier = Modifier.height(10.dp))
+                }
 
                 ShuttleCourseView(
                     modifier = Modifier,
@@ -96,26 +100,35 @@ internal fun ShuttleCoursesScreenContent(
             }
         }
 
-        Column(modifier = Modifier
-            .background(Color.White)
-            .padding(top = 8.dp)
-            .fillMaxWidth()) {
+        Column(
+            modifier =
+            Modifier
+                .background(Color.White)
+                .padding(top = 8.dp)
+                .fillMaxWidth()
+        ) {
             Text(
                 modifier = Modifier.padding(horizontal = 24.dp),
-                text = stringResource(R.string.timetable_semester_information,
+                text =
+                stringResource(
+                    R.string.timetable_semester_information,
                     shuttleCourses.semester.name,
                     shuttleCourses.semester.from.formatPeriod(),
                     shuttleCourses.semester.to.formatPeriod()
-                ), style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500,
+                ),
+                style = KoinTheme.typography.regular14,
+                color = KoinTheme.colors.neutral500
             )
             WrongInformationText(
                 modifier = Modifier.padding(top = 4.dp, start = 24.dp),
                 loggingEventValue = LocalSelectedTimetableTab.current.getEventValue()
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp))
+            Spacer(
+                modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+            )
         }
     }
 }
@@ -131,24 +144,26 @@ private fun ShuttleCourseView(
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 16.dp, bottom = 4.dp)
         ) {
             Text(
                 text = region.name,
-                style = KoinTheme.typography.bold18,
+                style = KoinTheme.typography.bold18
             )
             shuttleCourseRoutes.forEach {
                 ShuttleRouteItem(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxWidth()
                         .clickable {
                             onItemClicked(it)
                         }
                         .padding(horizontal = 8.dp, vertical = 10.dp),
-                    shuttleCourseRoute = it,
+                    shuttleCourseRoute = it
                 )
             }
         }
@@ -158,7 +173,7 @@ private fun ShuttleCourseView(
 @Composable
 private fun ShuttleRouteItem(
     shuttleCourseRoute: ShuttleCourseRouteState,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -168,7 +183,7 @@ private fun ShuttleRouteItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ShuttleBusOperationChip(
-                operationType = shuttleCourseRoute.type,
+                operationType = shuttleCourseRoute.type
             )
 
             Text(
@@ -183,12 +198,13 @@ private fun ShuttleRouteItem(
                 tint = KoinTheme.colors.neutral400
             )
         }
-        if (shuttleCourseRoute.subName.isNotEmpty())
+        if (shuttleCourseRoute.subName.isNotEmpty()) {
             Text(
                 text = shuttleCourseRoute.subName,
                 style = KoinTheme.typography.regular12,
-                color = KoinTheme.colors.neutral500,
+                color = KoinTheme.colors.neutral500
             )
+        }
     }
 }
 
@@ -196,7 +212,8 @@ private fun ShuttleRouteItem(
 @Composable
 private fun ShuttleCoursesScreenPreview() {
     ShuttleCoursesScreenContent(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
             .background(KoinTheme.colors.neutral100),
         shuttleCourses = shuttleCoursesMock

@@ -1,13 +1,7 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -29,84 +22,58 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
-import `in`.koreatech.business.feature.signup.dialog.BusinessAlertDialog
 import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
-import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.ColorUnarchived
-import `in`.koreatech.business.ui.theme.Gray1
-import `in`.koreatech.business.ui.theme.Gray3
-import `in`.koreatech.koin.domain.model.store.AttachStore
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
-import kotlinx.coroutines.CoroutineScope
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun BusinessAuthScreen(
     modifier: Modifier = Modifier,
-    accountSetupViewModel: AccountSetupViewModel = hiltViewModel(),
-    businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),
+    viewModel: BusinessAuthViewModel = hiltViewModel(),
     scrollState: ScrollState = rememberScrollState(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     onBackClicked: () -> Unit = {},
-    onSearchClicked: () -> Unit = {},
-    onNextClicked: () -> Unit = {},
+    onNextClicked: () -> Unit = {}
 ) {
-    val context = LocalContext.current
-    val businessAuthState = businessAuthViewModel.collectAsState().value
-    val accountSetupState = accountSetupViewModel.collectAsState().value
-    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(5),
-        onResult = {
-            businessAuthViewModel.changeImageUri(
-                context,
-                accountSetupState.phoneNumber,
-                accountSetupState.password,
-                it
-            )
-        }
-    )
+    val state = viewModel.collectAsState().value
 
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxSize()
-            .padding(top = 12.dp),
     ) {
-
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
-                onClick = businessAuthViewModel::onNavigateToBackScreen,
+                onClick = viewModel::onNavigateToBackScreen,
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
-
             Text(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 18.sp,
@@ -118,12 +85,14 @@ fun BusinessAuthScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -136,12 +105,13 @@ fun BusinessAuthScreen(
                 Text(
                     text = stringResource(id = R.string.three_third),
                     color = ColorPrimary,
-                    fontWeight = Bold,
+                    fontWeight = Bold
                 )
             }
 
             Canvas(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
@@ -163,188 +133,57 @@ fun BusinessAuthScreen(
         }
 
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize()
                 .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp)
                 .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
+            Text(
+                text = stringResource(id = R.string.enter_owner_name),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium
+            )
 
-            Text(
-                text = stringResource(id = R.string.master_name),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
+            Spacer(modifier = Modifier.height(40.dp))
+
             LinedTextField(
-                value = businessAuthState.name,
-                onValueChange = { businessAuthViewModel.onNameChanged(it) },
-                label = stringResource(id = R.string.enter_name)
-            )
-            Text(
-                text = stringResource(id = R.string.shop_name),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
-            Row(
+                value = state.name,
+                onValueChange = { viewModel.onNameChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top,
-            ) {
-
-                LinedTextField(
-                    modifier = Modifier.width(197.dp),
-                    value = businessAuthState.shopName,
-                    onValueChange = {
-                        businessAuthViewModel.onShopNameChanged(it)
-                        businessAuthViewModel.onShopIdChanged(null)
-                    },
-                    label = stringResource(id = R.string.enter_store_name)
-                )
-
-                Button(modifier = Modifier
-                    .height(41.dp),
-                    shape = RoundedCornerShape(4.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
-                        contentColor = Color.White,
-                    ),
-                    onClick = {
-                        businessAuthViewModel.onNavigateToSearchStore()
-                    }) {
-                    Text(text = stringResource(id = R.string.search_store))
-                }
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = stringResource(id = R.string.business_registration_number),
-                fontSize = 14.sp,
-                fontWeight = Bold
+                label = stringResource(id = R.string.enter_name),
+                textStyle = TextStyle.Default.copy(fontSize = 15.sp)
             )
-            LinedTextField(
-                value = businessAuthState.shopNumber,
-                onValueChange = {
-                    businessAuthViewModel.onStoreNumberChanged(it)
-                    businessAuthViewModel.storeNumberCheck()
-                },
-                label = stringResource(id = R.string.enter_business_registration_number),
-                isError = businessAuthState.signupContinuationState == SignupContinuationState.BusinessNumberIsNotValidate ||
-                        businessAuthState.signupContinuationState is SignupContinuationState.Failed,
-                errorText = if (businessAuthState.signupContinuationState is SignupContinuationState.Failed)
-                    businessAuthState.signupContinuationState.message
-                else stringResource(id = R.string.business_number_not_validate)
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = stringResource(id = R.string.instruction_file),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
-
-            if (businessAuthState.selectedImages.isNotEmpty()) {
-                UploadFileList(
-                    modifier,
-                    businessAuthState.selectedImages,
-                ) {
-                    val list = mutableListOf<String>()
-                    businessAuthState.selectedImages.forEach {
-                        list.add(it.title)
-                    }
-                    list.removeAt(it)
-                    businessAuthViewModel.onImageUrlsChanged(
-                        list.map {
-                            AttachStore(
-                                it,
-                                it
-                            )
-                        }.toMutableList()
-                    )
-                }
-            }
+            Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .height(44.dp),
-                shape = RectangleShape,
-                enabled = businessAuthState.selectedImages.isEmpty(),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField,
-                    contentColor = Gray1,
-                    disabledBackgroundColor = ColorTextField,
-                    disabledContentColor = Gray3,
-                ),
-                onClick = { businessAuthViewModel.onDialogVisibilityChanged(true) }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.attach_file_add),
-                    contentDescription = stringResource(id = R.string.attach_file)
-                )
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = stringResource(id = R.string.file_upload),
-                    color = if (businessAuthState.selectedImages.isEmpty()) Gray1 else Gray3,
-                    fontSize = 13.sp,
-                    fontWeight = Bold,
-                )
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-            Button(modifier = Modifier
-                .fillMaxWidth()
-                .height(44.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = businessAuthState.isButtonEnabled,
-                colors = ButtonDefaults.buttonColors(
+                enabled = state.name.isNotEmpty(),
+                colors =
+                ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     disabledBackgroundColor = ColorDisabledButton,
                     contentColor = Color.White,
-                    disabledContentColor = Color.White,
+                    disabledContentColor = Color.White
                 ),
-
-                onClick = {
-                    businessAuthViewModel.sendRegisterRequest(
-                        fileUrls = businessAuthState.fileInfo.map { it.resultUrl },
-                        companyNumber = businessAuthState.shopNumber,
-                        phoneNumber = accountSetupState.phoneNumber,
-                        name = businessAuthState.name,
-                        password = accountSetupState.password,
-                        shopId = businessAuthState.shopId,
-                        shopName = businessAuthState.shopName,
-                    )
-                }) {
+                onClick = viewModel::onNavigateToNextScreen
+            ) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
-                    color = Color.White,
-                )
-
-                BusinessAlertDialog(
-                    onDismissRequest = { businessAuthViewModel.onDialogVisibilityChanged(false) },
-                    onConfirmation = {
-                        multiplePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
-                            )
-                        )
-                        businessAuthViewModel.onDialogVisibilityChanged(false)
-                    },
-                    dialogTitle = stringResource(id = R.string.file_upload),
-                    dialogText = stringResource(id = R.string.file_upload_requirements),
-                    positiveButtonText = stringResource(id = R.string.select_file),
-                    visibility = businessAuthState.dialogVisibility
+                    color = Color.White
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
-
         }
-
     }
-    businessAuthViewModel.collectSideEffect {
+    viewModel.collectSideEffect {
         when (it) {
-            BusinessAuthSideEffect.NavigateToSearchStore -> {
-                onSearchClicked()
-            }
-
             BusinessAuthSideEffect.NavigateToBackScreen -> {
                 onBackClicked()
             }
@@ -352,48 +191,8 @@ fun BusinessAuthScreen(
             BusinessAuthSideEffect.NavigateToNextScreen -> {
                 onNextClicked()
             }
-        }
 
-    }
-
-}
-
-@Composable
-fun UploadFileList(
-    modifier: Modifier,
-    fileList: MutableList<AttachStore>,
-    onDelete: (Int) -> Unit = {}
-) {
-    Column(modifier = Modifier.height(fileList.size * 40.dp)) {
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            items(fileList.size) { index ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(ColorTextField)
-                        .padding(6.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable { onDelete(index) }
-                            .padding(end = 8.dp),
-                        painter = painterResource(id = R.drawable.ic_delete_button),
-                        contentDescription = stringResource(id = R.string.file_icon),
-                    )
-
-                    Text(
-                        text = fileList[index].title,
-                        fontSize = 15.sp,
-                        color = ColorMinor
-                    )
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-            }
+            BusinessAuthSideEffect.NavigateToSearchStore -> {}
         }
     }
 }
-

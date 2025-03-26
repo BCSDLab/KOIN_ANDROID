@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.store.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,7 +9,6 @@ import `in`.koreatech.koin.domain.model.store.NeedSignUpStoreInfo
 import `in`.koreatech.koin.domain.model.store.ShopSearchRelatedList
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
-import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
@@ -19,6 +17,7 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.InvalidateStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.SearchStoreUseCase
 import `in`.koreatech.koin.domain.usecase.store.search.GetRelatedStoreUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +30,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class StoreViewModel @Inject constructor(
@@ -40,7 +38,7 @@ class StoreViewModel @Inject constructor(
     private val invalidateStoresUseCase: InvalidateStoresUseCase,
     private val getStoreEventUseCase: GetStoreEventUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
-    private val getStoreWithMenuUseCase: GetRelatedStoreUseCase,
+    private val getStoreWithMenuUseCase: GetRelatedStoreUseCase
 ) : BaseViewModel() {
     private val _search = MutableStateFlow("")
     private val refreshEvent = MutableSharedFlow<Unit>()
@@ -80,10 +78,9 @@ class StoreViewModel @Inject constructor(
         _storeSorter.value = StoreSorter.COUNT
         getStoreCategories()
         getStoreEvents()
-        //changeCategory()
+        // changeCategory()
         searchStore()
         getRelatedStore()
-
     }
 
     fun searchResult() {
@@ -99,13 +96,12 @@ class StoreViewModel @Inject constructor(
     }
 
     fun setCategory(categoryPosition: Int?) {
-        if(categoryPosition == null || _categoryPosition.value == categoryPosition){
+        if (categoryPosition == null || _categoryPosition.value == categoryPosition) {
             _categoryPosition.value = 0
             _category.value = _storeCategoryList.value?.get(0)
-        }
-        else{
+        } else {
             _categoryPosition.value = categoryPosition
-            _category.value =_storeCategoryList.value?.get(categoryPosition)
+            _category.value = _storeCategoryList.value?.get(categoryPosition)
         }
     }
 
@@ -152,7 +148,6 @@ class StoreViewModel @Inject constructor(
                     _isLoading.value = false
                     _stores.value = it
                 }
-
         }
     }
 
@@ -203,7 +198,7 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    private fun getStoreEvents(){
+    private fun getStoreEvents() {
         viewModelScope.launch {
             _storeEvents.value = getStoreEventUseCase()
         }

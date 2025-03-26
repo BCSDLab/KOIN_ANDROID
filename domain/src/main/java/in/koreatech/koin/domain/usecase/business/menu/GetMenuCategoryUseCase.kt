@@ -5,11 +5,9 @@ import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 
 class GetMenuCategoryUseCase @Inject constructor(
-    private val storeRepository: StoreRepository,
+    private val storeRepository: StoreRepository
 ) {
-    suspend operator fun invoke(
-        storeId: Int
-    ): List<StoreMenuCategory> {
+    suspend operator fun invoke(storeId: Int): List<StoreMenuCategory> {
         return storeRepository.getStoreMenuCategory(storeId)
     }
 }

@@ -8,11 +8,9 @@ import `in`.koreatech.koin.domain.util.ext.sortedOpenStore
 import javax.inject.Inject
 
 class GetRecommendStoresUseCase @Inject constructor(
-    private val storeRepository: StoreRepository,
+    private val storeRepository: StoreRepository
 ) {
-    suspend operator fun invoke(
-        store: StoreWithMenu,
-    ): List<Store> {
+    suspend operator fun invoke(store: StoreWithMenu): List<Store> {
         return storeRepository.getStores()
             .filter {
                 val shopRandomCategoryId =

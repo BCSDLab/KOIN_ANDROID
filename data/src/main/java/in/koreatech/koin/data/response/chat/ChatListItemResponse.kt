@@ -13,12 +13,13 @@ data class ChatListItemResponse(
     @SerializedName("chat_room_id") val chatRoomId: Int
 )
 
-fun ChatListItemResponse.toChatListItem() = ChatListItem(
-    title = title.replace("\n", " "),
-    recentMessage = recentMessage,
-    imageUrl = imageUrl,
-    unReadMessageCount = unReadMessageCount,
-    lastMessageAt = lastMessageAt,
-    articleId = articleId,
-    chatRoomId = chatRoomId
-)
+fun ChatListItemResponse.toChatListItem() =
+    ChatListItem(
+        title = title.replace("\n", " "),
+        recentMessage = recentMessage,
+        imageUrl = imageUrl,
+        unReadMessageCount = unReadMessageCount,
+        lastMessageAt = lastMessageAt,
+        articleId = articleId,
+        chatRoomId = chatRoomId
+    )

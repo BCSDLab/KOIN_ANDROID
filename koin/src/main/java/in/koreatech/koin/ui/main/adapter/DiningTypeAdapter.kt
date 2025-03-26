@@ -1,20 +1,18 @@
 package `in`.koreatech.koin.ui.main.adapter
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.ui.main.state.DiningTypeUiState
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.ui.main.state.DiningTypeUiState
 
 class DiningTypeAdapter :
     ListAdapter<DiningTypeUiState, DiningTypeAdapter.DiningTypeTextViewHolder>(
         diffCallback
     ) {
-
     var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiningTypeTextViewHolder {
@@ -43,24 +41,26 @@ class DiningTypeAdapter :
     }
 
     inline fun setOnItemClickListener(crossinline onItemClick: (Int) -> Unit) {
-        onItemClickListener = object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                onItemClick(position)
+        onItemClickListener =
+            object : OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    onItemClick(position)
+                }
             }
-        }
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<DiningTypeUiState>() {
-            override fun areItemsTheSame(
-                oldItem: DiningTypeUiState,
-                newItem: DiningTypeUiState
-            ): Boolean = oldItem.name == newItem.name
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<DiningTypeUiState>() {
+                override fun areItemsTheSame(
+                    oldItem: DiningTypeUiState,
+                    newItem: DiningTypeUiState
+                ): Boolean = oldItem.name == newItem.name
 
-            override fun areContentsTheSame(
-                oldItem: DiningTypeUiState,
-                newItem: DiningTypeUiState
-            ): Boolean = oldItem == newItem
-        }
+                override fun areContentsTheSame(
+                    oldItem: DiningTypeUiState,
+                    newItem: DiningTypeUiState
+                ): Boolean = oldItem == newItem
+            }
     }
 }

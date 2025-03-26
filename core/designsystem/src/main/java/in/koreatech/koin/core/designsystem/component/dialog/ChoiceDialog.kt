@@ -29,7 +29,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
-
 /**
  * 긍정, 부정 버튼이 있는 다이얼로그
  * @param title 다이얼로그 제목 텍스트
@@ -56,11 +55,12 @@ fun ChoiceDialog(
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
+    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
@@ -103,7 +103,6 @@ fun ChoiceDialog(
     }
 }
 
-
 /**
  * 긍정, 부정 버튼이 있는 다이얼로그
  * @param title 다이얼로그 제목 컴포저블
@@ -126,11 +125,12 @@ fun ChoiceDialog(
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
+    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
 //    cancellable: Boolean = true,
 ) {
     BasicAlertDialog(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
@@ -174,15 +174,15 @@ private fun ChoiceDialogPreview() {
         ChoiceDialog(
             title = "다이얼로그 제목",
             description = "이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 이러쿵 저러쿵 ",
-            descriptionStyle = KoinTheme.typography.regular14.copy(
+            descriptionStyle =
+            KoinTheme.typography.regular14.copy(
                 color = KoinTheme.colors.neutral500
             ),
             onPositive = {},
-            onNegative = {},
+            onNegative = {}
         )
     }
 }
-
 
 @Preview
 @Composable
@@ -191,7 +191,8 @@ private fun ChoiceDialogComposableTextPreview() {
         ChoiceDialog(
             title = {
                 Text(
-                    text = buildAnnotatedString {
+                    text =
+                    buildAnnotatedString {
                         withStyle(KoinTheme.typography.medium16.toSpanStyle()) {
                             append("이렇게 ")
                         }
@@ -207,7 +208,8 @@ private fun ChoiceDialogComposableTextPreview() {
             },
             description = {
                 Text(
-                    text = buildAnnotatedString {
+                    text =
+                    buildAnnotatedString {
                         withStyle(KoinTheme.typography.regular16.toSpanStyle()) {
                             append("설명하는 부분도 ")
                         }

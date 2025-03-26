@@ -43,29 +43,31 @@ fun TextChipGroup(
     chipColors: TextChipColors = TextChipDefaults.chipColors()
 ) {
     when (chipOverflowStrategy) {
-        is Flow -> KoinTextChipFlowGroup(
-            modifier = modifier,
-            titles = titles,
-            shape = shape,
-            onChipSelected = onChipSelected,
-            selectedChipIndexes = selectedChipIndexes,
-            horizontalArrangement = horizontalArrangement,
-            showClickRipple = showClickRipple,
-            contentPadding = contentPadding,
-            chipColors = chipColors,
-            verticalArrangement = chipOverflowStrategy.verticalArrangement
-        )
-        Scroll -> KoinTextChipScrollGroup(
-            modifier = modifier,
-            titles = titles,
-            shape = shape,
-            onChipSelected = onChipSelected,
-            selectedChipIndexes = selectedChipIndexes,
-            horizontalArrangement = horizontalArrangement,
-            showClickRipple = showClickRipple,
-            contentPadding = contentPadding,
-            chipColors = chipColors
-        )
+        is Flow ->
+            KoinTextChipFlowGroup(
+                modifier = modifier,
+                titles = titles,
+                shape = shape,
+                onChipSelected = onChipSelected,
+                selectedChipIndexes = selectedChipIndexes,
+                horizontalArrangement = horizontalArrangement,
+                showClickRipple = showClickRipple,
+                contentPadding = contentPadding,
+                chipColors = chipColors,
+                verticalArrangement = chipOverflowStrategy.verticalArrangement
+            )
+        Scroll ->
+            KoinTextChipScrollGroup(
+                modifier = modifier,
+                titles = titles,
+                shape = shape,
+                onChipSelected = onChipSelected,
+                selectedChipIndexes = selectedChipIndexes,
+                horizontalArrangement = horizontalArrangement,
+                showClickRipple = showClickRipple,
+                contentPadding = contentPadding,
+                chipColors = chipColors
+            )
     }
 }
 
@@ -76,6 +78,7 @@ fun TextChipGroup(
  */
 sealed interface ChipOverflowStrategy {
     data object Scroll : ChipOverflowStrategy
+
     data class Flow(
         val verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(6.dp)
     ) : ChipOverflowStrategy

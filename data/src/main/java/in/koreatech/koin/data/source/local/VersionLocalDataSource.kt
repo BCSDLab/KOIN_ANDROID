@@ -9,11 +9,11 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.IOException
+import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import java.io.IOException
-import javax.inject.Inject
 
 class VersionLocalDataSource @Inject constructor(
     @ApplicationContext private val applicationContext: Context
@@ -60,21 +60,25 @@ class VersionLocalDataSource @Inject constructor(
 
     // 이후 버전 코드가 2^31 이상이 되는 경우 개선
     @Suppress("DEPRECATION")
-    fun getCurrentVersionCode(): Int? = try {
-        applicationContext.packageManager.getPackageInfo(
-            applicationContext.packageName, 0
-        ).versionCode
-    } catch (e: Exception) {
-        null
-    }
+    fun getCurrentVersionCode(): Int? =
+        try {
+            applicationContext.packageManager.getPackageInfo(
+                applicationContext.packageName,
+                0
+            ).versionCode
+        } catch (e: Exception) {
+            null
+        }
 
-    fun getCurrentVersionName(): String? = try {
-        applicationContext.packageManager.getPackageInfo(
-            applicationContext.packageName, 0
-        ).versionName
-    } catch (e: Exception) {
-        null
-    }
+    fun getCurrentVersionName(): String? =
+        try {
+            applicationContext.packageManager.getPackageInfo(
+                applicationContext.packageName,
+                0
+            ).versionName
+        } catch (e: Exception) {
+            null
+        }
 
     private companion object {
         const val PREF_NAME = "PREF_VERSION"

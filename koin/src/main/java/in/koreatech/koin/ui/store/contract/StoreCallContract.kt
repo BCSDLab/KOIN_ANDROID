@@ -11,6 +11,5 @@ class StoreCallContract : ActivityResultContract<String, Unit>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?) {
-
     }
 }

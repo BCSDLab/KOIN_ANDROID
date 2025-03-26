@@ -17,7 +17,6 @@ fun BusSearchResultScreen(
     onNavigationIconClick: () -> Unit = {},
     viewModel: BusSearchResultViewModel = hiltViewModel()
 ) {
-
     val searchResultUiState by viewModel.searchResultUiState.collectAsStateWithLifecycle()
     val selectedDateIndex by viewModel.selectedDateIndex.collectAsStateWithLifecycle()
     val selectedDaytimeIndex by viewModel.selectedDaytimeIndex.collectAsStateWithLifecycle()
@@ -45,7 +44,7 @@ fun BusSearchResultScreen(
             departure = viewModel.departure,
             arrival = viewModel.arrival,
             onBusTypeChange = viewModel::onBusTypeMenuChanged,
-            selectedBusType = selectedBusMenu,
+            selectedBusType = selectedBusMenu
         )
     }
 }

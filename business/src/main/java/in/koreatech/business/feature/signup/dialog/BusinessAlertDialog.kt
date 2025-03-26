@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.signup.dialog
 
-import android.opengl.Visibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +15,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +32,6 @@ import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.Gray6
 
-
 @Composable
 fun BusinessAlertDialog(
     onDismissRequest: () -> Unit,
@@ -49,26 +46,27 @@ fun BusinessAlertDialog(
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(7.dp)
                 .fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(16.dp)
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .background(Color.White)
                     .padding(vertical = 40.dp, horizontal = 14.dp),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-
-                ) {
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = dialogTitle,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    color = Color.Black,
+                    color = Color.Black
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -78,7 +76,7 @@ fun BusinessAlertDialog(
                     fontSize = 13.sp,
                     color = Color.Black,
                     text = dialogText,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -89,14 +87,15 @@ fun BusinessAlertDialog(
                         },
                         border = BorderStroke(1.dp, Gray6),
                         shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .width(128.dp)
-                            .height(48.dp),
+                            .height(48.dp)
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
                             text = stringResource(id = R.string.cancel_upload),
-                            color = ColorMinor,
+                            color = ColorMinor
                         )
                     }
 
@@ -106,17 +105,19 @@ fun BusinessAlertDialog(
                         onClick = {
                             onConfirmation()
                         },
-                        colors = ButtonDefaults.buttonColors(
+                        colors =
+                        ButtonDefaults.buttonColors(
                             backgroundColor = ColorActiveButton,
                             disabledBackgroundColor = ColorDisabledButton,
                             contentColor = Color.White,
-                            disabledContentColor = Color.White,
+                            disabledContentColor = Color.White
                         ),
                         border = BorderStroke(1.dp, ColorActiveButton),
                         shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .width(128.dp)
-                            .height(48.dp),
+                            .height(48.dp)
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
@@ -134,9 +135,9 @@ fun BusinessAlertDialog(
 fun PreviewDialog() {
     BusinessAlertDialog(
         onDismissRequest = {},
-        onConfirmation ={},
-        dialogTitle ="",
-        dialogText ="",
-        positiveButtonText ="",
+        onConfirmation = {},
+        dialogTitle = "",
+        dialogText = "",
+        positiveButtonText = ""
     )
 }

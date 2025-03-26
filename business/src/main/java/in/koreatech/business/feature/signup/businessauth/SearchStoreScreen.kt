@@ -13,19 +13,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,11 +43,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.SearchTextField
-import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
-import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
+import `in`.koreatech.business.ui.theme.Gray11
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.koin.domain.model.store.Store
 import kotlinx.coroutines.launch
@@ -66,11 +62,13 @@ fun SearchStoreScreen(
 ) {
     val state = viewModel.collectAsState().value
     Column(
-        modifier = modifier,
-
+        modifier =
+        modifier
+            .fillMaxSize()
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)
         ) {
@@ -80,7 +78,7 @@ fun SearchStoreScreen(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -92,14 +90,15 @@ fun SearchStoreScreen(
             )
         }
 
-
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -107,21 +106,21 @@ fun SearchStoreScreen(
                     modifier = Modifier,
                     color = ColorPrimary,
                     fontWeight = Bold,
-                    text = stringResource(id = R.string.business_auth),
+                    text = stringResource(id = R.string.business_auth)
                 )
                 Text(
                     text = stringResource(id = R.string.three_third),
                     color = ColorPrimary,
-                    fontWeight = Bold,
+                    fontWeight = Bold
                 )
             }
 
             Canvas(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(-40f, 0f),
@@ -132,26 +131,28 @@ fun SearchStoreScreen(
             }
         }
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(10.dp))
             SearchTextField(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .height(45.dp),
                 value = state.search,
-                onValueChange = { viewModel.onSearchChanged(it)
-                                  viewModel.onSearchStore()},
+                onValueChange = {
+                    viewModel.onSearchChanged(it)
+                    viewModel.onSearchStore()
+                },
                 label = stringResource(id = R.string.search_shop),
-                textStyle = TextStyle(fontSize = 14.sp),
+                textStyle = TextStyle(fontSize = 14.sp)
             )
             Spacer(modifier = Modifier.height(5.dp))
             StoreList(state.stores, viewModel, businessAuthViewModel)
-
         }
-
 
         viewModel.collectSideEffect {
             when (it) {
@@ -165,11 +166,8 @@ fun SearchStoreScreen(
             }
         }
     }
-
 }
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StoreList(
     item: List<Store>,
@@ -178,26 +176,29 @@ fun StoreList(
 ) {
     val state = viewModel.collectAsState().value
     val selectedStoreState = businessAuthViewModel.collectAsState().value
-    val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
-    )
+    val sheetState =
+        rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden
+        )
     val scope = rememberCoroutineScope()
 
     Column(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
             .height(200.dp)
-
     ) {
         LazyColumn(
-            modifier = Modifier
-                .weight(1f)
+            modifier =
+            Modifier
+                .weight(9f)
                 .padding(vertical = 8.dp)
                 .fillMaxSize()
         ) {
             items(item.size) { index ->
                 Row(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(vertical = 8.dp)
                         .fillMaxWidth()
                         .height(55.dp)
@@ -212,67 +213,78 @@ fun StoreList(
                                 width = if (state.itemIndex == index) 1.5.dp else 1.dp,
                                 color = if (state.itemIndex == index) ColorPrimary else ColorHelper
                             ),
-                            shape = RoundedCornerShape(6.dp),
-                        ),
+                            shape = RoundedCornerShape(6.dp)
+                        )
                 ) {
                     Row(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .fillMaxSize()
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            modifier = Modifier,
+                            modifier = Modifier.weight(1f),
                             text = item[index].name,
                             fontSize = 15.sp,
-                            color = Color.Black,
-
-                            )
-                        Spacer(modifier = Modifier.width(74.dp))
+                            color = Color.Black
+                        )
                         Text(
                             buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
+                                withStyle(
+                                    style = if (item[index].isDeliveryOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)
+                                ) {
                                     append(text = stringResource(id = R.string.delivery))
                                 }
                                 append(" ")
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
+                                withStyle(
+                                    style = if (item[index].isCardOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)
+                                ) {
                                     append(text = stringResource(id = R.string.card_payment))
                                 }
                                 append(" ")
-                                withStyle(style = SpanStyle(color = ColorPrimary)) {
+                                withStyle(
+                                    style = if (item[index].isBankOk) SpanStyle(color = ColorPrimary) else SpanStyle(color = Gray11)
+                                ) {
                                     append(text = stringResource(id = R.string.account_transfer))
                                 }
                             },
+                            modifier = Modifier.weight(1f).wrapContentWidth(Alignment.End),
                             fontSize = 12.sp
                         )
                     }
                 }
             }
         }
-        Spacer(modifier =Modifier.height(70.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
+        Button(
+            modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(44.dp),
             shape = RoundedCornerShape(4.dp),
             enabled = state.itemIndex > -1,
-            colors = ButtonDefaults.buttonColors(
+            colors =
+            ButtonDefaults.buttonColors(
                 backgroundColor = ColorPrimary,
                 contentColor = Color.White,
                 disabledBackgroundColor = Gray2,
-                disabledContentColor = Gray1,
+                disabledContentColor = Gray1
             ),
             onClick = {
                 viewModel.onNavigateToBackScreen()
                 selectedStoreState.shopId?.let { businessAuthViewModel.onShopIdChanged(state.itemIndex) }
                 businessAuthViewModel.onShopNameChanged(state.stores[state.itemIndex].name)
-            }) {
+            }
+        ) {
             Text(
                 text = stringResource(id = R.string.next),
                 fontSize = 13.sp,
-                fontWeight = Bold,
+                fontWeight = Bold
             )
         }
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }

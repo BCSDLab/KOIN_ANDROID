@@ -2,34 +2,30 @@ package `in`.koreatech.koin.ui.article
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.enableEdgeToEdge
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.ToolbarMenu
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityArticleBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
-import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
 import `in`.koreatech.koin.util.ext.whiteStatusBar
 import timber.log.Timber
 
 @AndroidEntryPoint
 class ArticleActivity : ActivityBase() {
-
     private val binding by dataBinding<ActivityArticleBinding>()
     private lateinit var navController: NavController
     override val screenTitle: String = "공지사항"
@@ -42,14 +38,21 @@ class ArticleActivity : ActivityBase() {
             val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, imeInsets.bottom or systemBars.bottom)
+            v.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                imeInsets.bottom or systemBars.bottom
+            )
             WindowInsetsCompat.CONSUMED
         }
 
         window.whiteStatusBar()
 
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_article_fragment) as NavHostFragment
+            supportFragmentManager.findFragmentById(
+                R.id.nav_host_article_fragment
+            ) as NavHostFragment
         navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, dest, _ ->
@@ -58,9 +61,15 @@ class ArticleActivity : ActivityBase() {
                 R.id.articleDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
                 R.id.articleSearchFragment -> setToolbar(ArticleToolbarState.ARTICLE_SEARCH)
                 R.id.articleKeywordFragment -> setToolbar(ArticleToolbarState.ARTICLE_KEYWORD)
-                R.id.articleLostAndFoundWriteLostFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_LOST_ITEM)
-                R.id.articleLostAndFoundWriteFoundFragment -> setToolbar(ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM)
-                R.id.articleLostAndFoundDetailFragment -> setToolbar(ArticleToolbarState.ARTICLE_DETAIL)
+                R.id.articleLostAndFoundWriteLostFragment -> setToolbar(
+                    ArticleToolbarState.ARTICLE_LOSTANDFOUND_LOST_ITEM
+                )
+                R.id.articleLostAndFoundWriteFoundFragment -> setToolbar(
+                    ArticleToolbarState.ARTICLE_LOSTANDFOUND_FOUND_ITEM
+                )
+                R.id.articleLostAndFoundDetailFragment -> setToolbar(
+                    ArticleToolbarState.ARTICLE_DETAIL
+                )
             }
         }
 
@@ -72,23 +81,23 @@ class ArticleActivity : ActivityBase() {
         super.onNewIntent(intent)
     }
 
-    private fun setNavigationGraph(
-        startBoard: Int = ArticleBoardType.ALL.id
-    ) {
+    private fun setNavigationGraph(startBoard: Int = ArticleBoardType.ALL.id) {
         navController.setGraph(R.navigation.nav_graph_article, bundleOf(START_BOARD to startBoard))
     }
 
     // 지정된 프래그먼트로 이동 (extra로 전달받은 경우에만)
     private fun navigateToDetailFragment() {
         val uri = intent.data
-        val link = uri?.getQueryParameter("fragment")   // 내부에서만 사용하는 딥링크
+        val link = uri?.getQueryParameter("fragment") // 내부에서만 사용하는 딥링크
 
         navigateToArticleDetail(intent)
 
         when (link) {
             "article_keyword" -> {
                 setNavigationGraph()
-                navController.navigate(R.id.articleKeywordFragment)    // See ArticleKeywordFragment, LoginActivity
+                navController.navigate(
+                    R.id.articleKeywordFragment
+                ) // See ArticleKeywordFragment, LoginActivity
             }
             "article_detail" -> {
                 setNavigationGraph()
@@ -147,21 +156,25 @@ class ArticleActivity : ActivityBase() {
         binding.toolbarArticleList.apply {
             setOnNavigationIconClickListener { finish() }
             setTitle(getString(state.title))
-            setMenus(ToolbarMenu(
-                menuRes = state.menuRes,
-                onClick = { itemId ->
-                    when (itemId) {
-                        R.id.action_search_article -> {
-                            EventLogger.logClickEvent(
-                                EventAction.CAMPUS,
-                                AnalyticsConstant.Label.NOTICE_SEARCH,
-                                getString(R.string.search)
-                            )
-                            navController.navigate(R.id.action_articleListFragment_to_articleSearchFragment)
+            setMenus(
+                ToolbarMenu(
+                    menuRes = state.menuRes,
+                    onClick = { itemId ->
+                        when (itemId) {
+                            R.id.action_search_article -> {
+                                EventLogger.logClickEvent(
+                                    EventAction.CAMPUS,
+                                    AnalyticsConstant.Label.NOTICE_SEARCH,
+                                    getString(R.string.search)
+                                )
+                                navController.navigate(
+                                    R.id.action_articleListFragment_to_articleSearchFragment
+                                )
+                            }
                         }
                     }
-                }
-            ))
+                )
+            )
         }
     }
 

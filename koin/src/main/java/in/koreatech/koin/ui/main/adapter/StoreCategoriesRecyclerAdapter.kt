@@ -3,36 +3,43 @@ package `in`.koreatech.koin.ui.main.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import `in`.koreatech.koin.databinding.MainItemStoreBinding
 import `in`.koreatech.koin.databinding.StoreCategoryItemBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 
-class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories,StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder>(
-diffCallback
-){
+class StoreCategoriesRecyclerAdapter() : ListAdapter<StoreCategories, StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder>(
+    diffCallback
+) {
     var onItemClickListener: OnItemClickListener? = null
 
-    inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(
+        binding.root
+    ) {
         val container = binding.container
         val storeCategoryImage = binding.imageViewStoreCategory
         val storeCategoryName = binding.textViewStoreCategory
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = StoreCategoryItemBinding.inflate(inflater, parent, false)
         return StoreCategoriesViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder,
+        position: Int
+    ) {
         val event = getItem(position)
 
-        with(holder){
+        with(holder) {
             container.setOnClickListener {
                 onItemClickListener?.onItemClick(position, event.name)
             }
@@ -52,22 +59,30 @@ diffCallback
     }
 
     inline fun setOnItemClickListener(crossinline onItemClick: (id: Int, name: String) -> Unit) {
-        onItemClickListener = object : StoreCategoriesRecyclerAdapter.OnItemClickListener {
-            override fun onItemClick(id: Int, name: String) {
-                onItemClick(id, name)
+        onItemClickListener =
+            object : StoreCategoriesRecyclerAdapter.OnItemClickListener {
+                override fun onItemClick(id: Int, name: String) {
+                    onItemClick(id, name)
+                }
             }
-        }
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<StoreCategories>() {
-            override fun areItemsTheSame(oldItem: StoreCategories, newItem: StoreCategories): Boolean {
-                return oldItem.id == newItem.id
-            }
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<StoreCategories>() {
+                override fun areItemsTheSame(
+                    oldItem: StoreCategories,
+                    newItem: StoreCategories
+                ): Boolean {
+                    return oldItem.id == newItem.id
+                }
 
-            override fun areContentsTheSame(oldItem: StoreCategories, newItem: StoreCategories): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: StoreCategories,
+                    newItem: StoreCategories
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

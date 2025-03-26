@@ -59,8 +59,9 @@ fun ChatRoom(
                             if (fileNameIndex != -1 && fileSizeIndex != -1) {
                                 val fileName = cursor.getString(fileNameIndex)
                                 val fileSize = cursor.getLong(fileSizeIndex)
-                                val fileType = context.contentResolver.getType(uri)
-                                    ?: "image/${fileName.split(".").last()}"
+                                val fileType =
+                                    context.contentResolver.getType(uri)
+                                        ?: "image/${fileName.split(".").last()}"
 
                                 viewModel.getPreSignedUrl(
                                     fileSize,
@@ -107,13 +108,13 @@ fun ChatRoom(
                         expanded = uiState.showMenu,
                         onDismissRequest = { viewModel.changeMenuState(false) },
                         shape = KoinTheme.shapes.medium,
-                        containerColor = KoinTheme.colors.neutral50,
+                        containerColor = KoinTheme.colors.neutral50
                     ) {
                         DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(id = R.string.chat_block_user),
-                                    style = KoinTheme.typography.medium14,
+                                    style = KoinTheme.typography.medium14
                                 )
                             },
                             trailingIcon = {
@@ -132,16 +133,18 @@ fun ChatRoom(
                     (context as Activity).finish()
                 }
             )
-
         },
         // Handle the navigation bar and IME insets on ChatInput
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
+        contentWindowInsets =
+        ScaffoldDefaults.contentWindowInsets
             .exclude(WindowInsets.navigationBars)
-            .exclude(WindowInsets.ime)
+            .exclude(WindowInsets.ime),
+        containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
         ChatRoomContent(
             modifier = Modifier
                 .padding(contentPadding),
+            isLoading = uiState.isLoading,
             messages = uiState.chatMessage,
             uploadingImage = uiState.uploadingImage,
             chatPartnerProfileImage = uiState.chatPartnerProfileImage,

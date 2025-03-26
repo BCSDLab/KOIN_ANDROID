@@ -39,7 +39,7 @@ fun ReadOnlyTextChip(
     shape: Shape = RoundedCornerShape(50),
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
     chipColor: Color = KoinTheme.colors.primary500,
-    textColor: Color = Color.White,
+    textColor: Color = Color.White
 ) {
     LostAndFoundTextChip(
         title = title,
@@ -48,7 +48,8 @@ fun ReadOnlyTextChip(
         showClickRipple = false,
         onSelect = {},
         contentPadding = contentPadding,
-        chipColors = TextChipDefaults.chipColors(
+        chipColors =
+        TextChipDefaults.chipColors(
             selectedContainerColor = chipColor,
             unselectedContainerColor = chipColor,
             selectedContentColor = textColor,

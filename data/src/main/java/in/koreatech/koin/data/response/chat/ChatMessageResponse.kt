@@ -23,11 +23,12 @@ data class ChatMessageResponse(
     @SerialName("is_image")
     val isImage: Boolean
 ) {
-    fun toChatMessage() = ChatMessage(
-        userId = userId,
-        userNickname = userNickname,
-        content = content,
-        timestamp = timestamp,
-        isImage = isImage
-    )
+    fun toChatMessage() =
+        ChatMessage(
+            userId = userId,
+            userNickname = userNickname,
+            content = content,
+            timestamp = timestamp,
+            isImage = isImage
+        )
 }

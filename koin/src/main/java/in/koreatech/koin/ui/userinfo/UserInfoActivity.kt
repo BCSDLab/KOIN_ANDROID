@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.userinfo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -31,9 +30,10 @@ class UserInfoActivity : ActivityBase() {
     override val screenTitle = "내 정보"
     private val userInfoViewModel by viewModels<UserInfoViewModel>()
 
-    private val userInfoEditActivityNew = registerForActivityResult(UserInfoEditContract()) { edited ->
-        if (edited) userInfoViewModel.getUserInfo()
-    }
+    private val userInfoEditActivityNew =
+        registerForActivityResult(UserInfoEditContract()) { edited ->
+            if (edited) userInfoViewModel.getUserInfo()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -9,15 +9,14 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import `in`.koreatech.koin.data.constant.WEEK_IN_MILLIS
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class ArticleDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
-
     private val gson = Gson()
 
     fun fetchSearchHistory(): Flow<List<String>> {
@@ -59,7 +58,6 @@ class ArticleDataStore @Inject constructor(
         return dataStore.data.first()[KEY_MY_KEYWORD]?.let {
             gson.fromJson<List<String>>(it, List::class.java) ?: emptyList()
         } ?: emptyList()
-
     }
 
     suspend fun saveKeyword(keyword: String) {

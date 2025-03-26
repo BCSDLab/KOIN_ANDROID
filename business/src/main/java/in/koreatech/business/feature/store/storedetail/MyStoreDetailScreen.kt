@@ -57,7 +57,6 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyStoreDetailScreen(
@@ -68,9 +67,11 @@ fun MyStoreDetailScreen(
     navigateToUploadEventScreen: () -> Unit = {},
     navigateToModifyScreen: (Int) -> Unit = {},
     navigateToRegisterStoreScreen: () -> Unit = {},
-    navigateToManageMenuScreen: () -> Unit = {},
+    navigateToAddEventScreen: (Int) -> Unit = {},
+    navigateToManageMenuScreen: (Int) -> Unit = {},
     navigateToRegisterMenuScreen: (Int) -> Unit = {},
-    navigateToModifyMenuScreen: (Int) -> Unit = {}
+    navigateToModifyMenuScreen: (Int) -> Unit = {},
+    navigateToSettingMenuScreen: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
@@ -83,7 +84,8 @@ fun MyStoreDetailScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OwnerStoreAppBar(
             stringResource(R.string.my_shop),
@@ -92,7 +94,7 @@ fun MyStoreDetailScreen(
         DeleteUserDialog(
             onClickCancel = viewModel::closeDeleteUserDialog,
             deleteUser = viewModel::deleteUser,
-            dialogVisibility = state.deleteUserDialogVisibility,
+            dialogVisibility = state.deleteUserDialogVisibility
         )
         MyStoreSelectDialog(
             dialogVisibility = state.selectDialogVisibility,
@@ -111,7 +113,8 @@ fun MyStoreDetailScreen(
                 }
             },
             onDeleteEvent = viewModel::deleteEventAll,
-            onMenuItemClicked = viewModel::onModifyMenuClicked
+            onMenuItemClicked = viewModel::onModifyMenuClicked,
+            onManageMenuClicked = viewModel::onManageMenuClicked
         )
     }
     viewModel.collectSideEffect {
@@ -126,29 +129,35 @@ fun MyStoreDetailScreen(
                 navigateToModifyScreen(it.storeId)
             }
             MyStoreDetailSideEffect.NavigateToRegisterStoreScreen -> navigateToRegisterStoreScreen()
-            MyStoreDetailSideEffect.NavigateToManageMenuScreen -> navigateToManageMenuScreen()
+
+            is MyStoreDetailSideEffect.NavigateToManageMenuScreen -> {
+                navigateToManageMenuScreen(it.storeId)
+            }
+
+            is MyStoreDetailSideEffect.NavigateToAddEventScreen -> {
+                navigateToAddEventScreen(it.storeId)
+            }
 
             MyStoreDetailSideEffect.NavigateToRegisterMenuScreen -> {
                 navigateToRegisterMenuScreen(state.storeId)
             }
 
-            is MyStoreDetailSideEffect.NavigateToModifyMenuScreen ->{
+            is MyStoreDetailSideEffect.NavigateToModifyMenuScreen -> {
                 navigateToModifyMenuScreen(it.menuId)
             }
 
-            MyStoreDetailSideEffect.ShowErrorModifyEventToast -> ToastUtil.getInstance().makeShort(
-                context.getString(R.string.error_modify_event)
-            )
+            MyStoreDetailSideEffect.ShowErrorModifyEventToast ->
+                ToastUtil.getInstance().makeShort(
+                    context.getString(R.string.error_modify_event)
+                )
 
             MyStoreDetailSideEffect.DeleteUser -> {
                 ToastUtil.getInstance().makeShort(context.getString(R.string.delete_user_success))
                 navigateToLoginScreen()
             }
-
         }
     }
 }
-
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class)
@@ -161,7 +170,7 @@ fun MyStoreScrollScreen(
     onTabSelected: (Int) -> Unit = {},
     onDeleteEvent: () -> Unit = {},
     onMenuItemClicked: (Int) -> Unit,
-
+    onManageMenuClicked: () -> Unit
 ) {
     val toolBarHeight = 145.dp
     val configuration = LocalConfiguration.current
@@ -174,29 +183,31 @@ fun MyStoreScrollScreen(
     }
     val infoDataList = getInfoDataList(state)
 
-    val available = mutableMapOf(
-        stringResource(
-            R.string.delivery_available
-        ) to state.storeInfo?.isDeliveryOk,
-        stringResource(
-            R.string.card_payment_available
-        ) to state.storeInfo?.isCardOk,
-        stringResource(
-            R.string.bank_transfer_available
-        ) to state.storeInfo?.isBankOk
-    )
+    val available =
+        mutableMapOf(
+            stringResource(
+                R.string.delivery_available
+            ) to state.storeInfo?.isDeliveryOk,
+            stringResource(
+                R.string.card_payment_available
+            ) to state.storeInfo?.isCardOk,
+            stringResource(
+                R.string.bank_transfer_available
+            ) to state.storeInfo?.isBankOk
+        )
     Box {
         CollapsedTopBar(
             modifier = Modifier.zIndex(2f),
             isCollapsed = isCollapsedTopBar,
             onNavigateToModifyScreen = viewModel::navigateToModifyScreen,
-            state = state,
+            state = state
         )
         LazyColumn(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize(),
             state = listState,
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Top
         ) {
             item {
                 StoreInfoScreen(viewModel)
@@ -206,7 +217,8 @@ fun MyStoreScrollScreen(
                 LazyRow(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
                     items(available.size) {
                         Box(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .border(
                                     width = 1.dp,
                                     color = if (available[available.keys.elementAt(it)] == true) Blue2 else Gray3,
@@ -218,7 +230,7 @@ fun MyStoreScrollScreen(
                                 text = available.keys.elementAt(it),
                                 fontSize = 12.sp,
                                 style = TextStyle(fontSize = 15.sp),
-                                color = if (available[available.keys.elementAt(it)] == true) Blue2 else Gray3,
+                                color = if (available[available.keys.elementAt(it)] == true) Blue2 else Gray3
                             )
                         }
                         Spacer(modifier = Modifier.width(10.dp))
@@ -227,24 +239,29 @@ fun MyStoreScrollScreen(
             }
             item {
                 Divider(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(vertical = 5.dp)
                         .height(12.dp),
-                    color = ColorTextField,
+                    color = ColorTextField
                 )
             }
             stickyHeader {
-                TabRow(modifier = Modifier.height(45.dp),
+                TabRow(
+                    modifier = Modifier.height(45.dp),
                     selectedTabIndex = pagerState.currentPage,
                     backgroundColor = Color.White,
                     contentColor = Color.Black,
                     indicator = { tabPositions ->
                         TabRowDefaults.Indicator(
-                            modifier = Modifier.tabIndicatorOffset(
-                                tabPositions[pagerState.currentPage],
-                            ), color = ColorPrimary
+                            modifier =
+                            Modifier.tabIndicatorOffset(
+                                tabPositions[pagerState.currentPage]
+                            ),
+                            color = ColorPrimary
                         )
-                    }) {
+                    }
+                ) {
                     Tab(selected = true, onClick = {
                         onTabSelected(0)
                     }) {
@@ -259,31 +276,37 @@ fun MyStoreScrollScreen(
             }
             item {
                 HorizontalPager(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxSize()
                         .height(screenHeight - toolBarHeight),
-                    state = pagerState,
+                    state = pagerState
                 ) { page ->
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         when (page) {
-                            0 -> MenuScreen(
-                                verticalOffset = isCollapsed,
-                                currentPage = pagerState.currentPage,
-                                state = state,
-                                onMenuItemClicked = {
-                                    onMenuItemClicked(it)
+                            0 ->
+                                MenuScreen(
+                                    verticalOffset = isCollapsed,
+                                    currentPage = pagerState.currentPage,
+                                    state = state,
+                                    onMenuItemClicked = {
+                                        onMenuItemClicked(it)
+                                    },
+                                    onManageMenuClicked = {
+                                        onManageMenuClicked()
+                                    }
+                                )
+                            1 ->
+                                EventScreen(
+                                    isCollapsed,
+                                    pagerState.currentPage,
+                                    viewModel,
+                                    state
+                                ) {
+                                    onDeleteEvent()
                                 }
-                            )
-                            1 -> EventScreen(
-                                isCollapsed,
-                                pagerState.currentPage,
-                                viewModel,
-                                state,
-                            ) {
-                                onDeleteEvent()
-                            }
                         }
                     }
                 }

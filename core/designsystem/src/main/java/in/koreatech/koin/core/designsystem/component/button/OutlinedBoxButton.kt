@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
-
 enum class OutlinedBoxButtonColors {
     Primary,
     Neutral
@@ -41,7 +40,7 @@ fun OutlinedBoxButton(
     shape: Shape = KoinTheme.shapes.extraSmall,
     enabled: Boolean = true,
     colors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Primary,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding
 ) {
     val buttonColors = outlinedBoxButtonColorByType(colors)
     val buttonBorder = outlinedBoxButtonBorderByType(colors)
@@ -53,7 +52,7 @@ fun OutlinedBoxButton(
         shape = shape,
         colors = buttonColors,
         border = buttonBorder,
-        contentPadding = contentPadding,
+        contentPadding = contentPadding
     ) {
         Text(
             text = text,
@@ -61,7 +60,6 @@ fun OutlinedBoxButton(
         )
     }
 }
-
 
 /**
  * 테두리 선이 있는 텍스트 버튼
@@ -83,14 +81,15 @@ fun OutlinedBoxButton(
     textStyle: TextStyle = KoinTheme.typography.medium15,
     shape: Shape = KoinTheme.shapes.extraSmall,
     enabled: Boolean = true,
-    colors: ButtonColors = ButtonColors(
-        containerColor = KoinTheme.colors.neutral0,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral400,
-        disabledContentColor = KoinTheme.colors.neutral500
-    ),
+    colors: ButtonColors =
+        ButtonColors(
+            containerColor = KoinTheme.colors.neutral0,
+            contentColor = KoinTheme.colors.neutral0,
+            disabledContainerColor = KoinTheme.colors.neutral400,
+            disabledContentColor = KoinTheme.colors.neutral500
+        ),
     border: BorderStroke,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding
 ) {
     OutlinedButton(
         modifier = modifier,
@@ -99,7 +98,7 @@ fun OutlinedBoxButton(
         shape = shape,
         colors = colors,
         border = border,
-        contentPadding = contentPadding,
+        contentPadding = contentPadding
     ) {
         Text(
             text = text,
@@ -110,37 +109,41 @@ fun OutlinedBoxButton(
 
 @Composable
 @Stable
-internal fun outlinedBoxButtonColorByType(type: OutlinedBoxButtonColors): ButtonColors = when (type) {
-    OutlinedBoxButtonColors.Primary -> ButtonColors(
-        containerColor = KoinTheme.colors.neutral0,
-        contentColor = KoinTheme.colors.primary500,
-        disabledContainerColor = KoinTheme.colors.neutral400,
-        disabledContentColor = KoinTheme.colors.neutral500
-    )
+internal fun outlinedBoxButtonColorByType(type: OutlinedBoxButtonColors): ButtonColors =
+    when (type) {
+        OutlinedBoxButtonColors.Primary ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.neutral0,
+                contentColor = KoinTheme.colors.primary500,
+                disabledContainerColor = KoinTheme.colors.neutral400,
+                disabledContentColor = KoinTheme.colors.neutral500
+            )
 
-    OutlinedBoxButtonColors.Neutral -> ButtonColors(
-        containerColor = KoinTheme.colors.neutral0,
-        contentColor = KoinTheme.colors.neutral500,
-        disabledContainerColor = KoinTheme.colors.neutral400,
-        disabledContentColor = KoinTheme.colors.neutral500
-    )
-}
-
+        OutlinedBoxButtonColors.Neutral ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.neutral0,
+                contentColor = KoinTheme.colors.neutral500,
+                disabledContainerColor = KoinTheme.colors.neutral400,
+                disabledContentColor = KoinTheme.colors.neutral500
+            )
+    }
 
 @Composable
 @Stable
-internal fun outlinedBoxButtonBorderByType(type: OutlinedBoxButtonColors): BorderStroke = when (type) {
-    OutlinedBoxButtonColors.Primary -> BorderStroke(
-        1.0.dp,
-        color = KoinTheme.colors.primary500
-    )
+internal fun outlinedBoxButtonBorderByType(type: OutlinedBoxButtonColors): BorderStroke =
+    when (type) {
+        OutlinedBoxButtonColors.Primary ->
+            BorderStroke(
+                1.0.dp,
+                color = KoinTheme.colors.primary500
+            )
 
-    OutlinedBoxButtonColors.Neutral -> BorderStroke(
-        1.0.dp,
-        color = KoinTheme.colors.neutral500
-    )
-}
-
+        OutlinedBoxButtonColors.Neutral ->
+            BorderStroke(
+                1.0.dp,
+                color = KoinTheme.colors.neutral500
+            )
+    }
 
 @Preview
 @Composable

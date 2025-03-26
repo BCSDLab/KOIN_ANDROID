@@ -39,17 +39,16 @@ internal fun BusSearchConditionSelectDialog(
     selectedDaytimeIndex: Int,
     selectedHourIndex: Int,
     selectedMinuteIndex: Int,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-
     val datePickerState = rememberPickerState()
     val daytimePickerState = rememberPickerState()
     val hourPickerState = rememberPickerState()
     val minutePickerState = rememberPickerState()
 
-    BasicAlertDialog (
+    BasicAlertDialog(
         modifier = modifier,
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = onDismissRequest
     ) {
         Column {
             Text(
@@ -63,7 +62,8 @@ internal fun BusSearchConditionSelectDialog(
                 style = KoinTheme.typography.regular14
             )
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)
                     .background(KoinTheme.colors.neutral50)
@@ -76,9 +76,12 @@ internal fun BusSearchConditionSelectDialog(
                     visibleItemsCount = VISIBLE_ITEMS_COUNT,
                     infiniteScroll = false,
                     contentPadding = PaddingValues(vertical = 3.dp),
-                    selectedTextStyle = KoinTheme.typography.medium16.copy(
+                    selectedTextStyle =
+                    KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
-                    ), unselectedTextStyle = KoinTheme.typography.medium16.copy(
+                    ),
+                    unselectedTextStyle =
+                    KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.45f)
@@ -90,9 +93,12 @@ internal fun BusSearchConditionSelectDialog(
                     visibleItemsCount = VISIBLE_ITEMS_COUNT,
                     infiniteScroll = false,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 18.dp),
-                    selectedTextStyle = KoinTheme.typography.medium16.copy(
+                    selectedTextStyle =
+                    KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
-                    ), unselectedTextStyle = KoinTheme.typography.medium16.copy(
+                    ),
+                    unselectedTextStyle =
+                    KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.25f)
@@ -104,9 +110,12 @@ internal fun BusSearchConditionSelectDialog(
                     visibleItemsCount = VISIBLE_ITEMS_COUNT,
                     infiniteScroll = true,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 10.dp),
-                    selectedTextStyle = KoinTheme.typography.medium16.copy(
+                    selectedTextStyle =
+                    KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
-                    ), unselectedTextStyle = KoinTheme.typography.medium16.copy(
+                    ),
+                    unselectedTextStyle =
+                    KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.2f)
@@ -118,16 +127,20 @@ internal fun BusSearchConditionSelectDialog(
                     visibleItemsCount = VISIBLE_ITEMS_COUNT,
                     infiniteScroll = true,
                     contentPadding = PaddingValues(top = 3.dp, bottom = 3.dp, start = 10.dp),
-                    selectedTextStyle = KoinTheme.typography.medium16.copy(
+                    selectedTextStyle =
+                    KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
-                    ), unselectedTextStyle = KoinTheme.typography.medium16.copy(
+                    ),
+                    unselectedTextStyle =
+                    KoinTheme.typography.medium16.copy(
                         textAlign = TextAlign.End
                     ),
                     modifier = Modifier.weight(.2f)
                 )
             }
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(vertical = 24.dp)
                     .padding(horizontal = 32.dp),
@@ -137,10 +150,12 @@ internal fun BusSearchConditionSelectDialog(
                 FilledButton(
                     text = stringResource(R.string.departure_now),
                     onClick = onDepartureNow,
-                    colors = ButtonDefaults.buttonColors(
+                    colors =
+                    ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
                         contentColor = KoinTheme.colors.neutral600
-                    ), modifier = Modifier.weight(1f),
+                    ),
+                    modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(vertical = 12.dp)
                 )
                 FilledButton(

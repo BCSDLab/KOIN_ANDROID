@@ -9,14 +9,15 @@ data class ShuttleTimetableResponse(
     @SerializedName("route_name") val routeName: String?,
     @SerializedName("sub_name") val subTitle: String?,
     @SerializedName("node_info") val nodeInfo: List<ShuttleTimetableNodeInfoResponse>?,
-    @SerializedName("route_info") val routeInfo: List<ShuttleTimetableRouteInfoResponse>?,
+    @SerializedName("route_info") val routeInfo: List<ShuttleTimetableRouteInfoResponse>?
 ) {
-    fun toShuttleTimetable() = ShuttleTimetable(
-        region = region.orEmpty(),
-        routeType = routeType.orEmpty(),
-        routeName = routeName.orEmpty(),
-        subTitle = subTitle.orEmpty(),
-        nodeInfo = nodeInfo?.map { it.toShuttleTimetableNodeInfo() }.orEmpty(),
-        routeInfo = routeInfo?.map { it.toShuttleTimetableRouteInfo() }.orEmpty()
-    )
+    fun toShuttleTimetable() =
+        ShuttleTimetable(
+            region = region.orEmpty(),
+            routeType = routeType.orEmpty(),
+            routeName = routeName.orEmpty(),
+            subTitle = subTitle.orEmpty(),
+            nodeInfo = nodeInfo?.map { it.toShuttleTimetableNodeInfo() }.orEmpty(),
+            routeInfo = routeInfo?.map { it.toShuttleTimetableRouteInfo() }.orEmpty()
+        )
 }

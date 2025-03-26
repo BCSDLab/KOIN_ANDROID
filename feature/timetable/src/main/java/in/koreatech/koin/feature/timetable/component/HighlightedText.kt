@@ -20,26 +20,29 @@ fun HighlightedText(
     highlightStyle: TextStyle,
     modifier: Modifier = Modifier
 ) {
-    val annotatedString = buildAnnotatedString {
-        pushStyle(
-            ParagraphStyle(
-                lineBreak = LineBreak(
-                    strategy = LineBreak.Strategy.Balanced,
-                    wordBreak = LineBreak.WordBreak.Phrase,
-                    strictness = LineBreak.Strictness.Normal
+    val annotatedString =
+        buildAnnotatedString {
+            pushStyle(
+                ParagraphStyle(
+                    lineBreak =
+                    LineBreak(
+                        strategy = LineBreak.Strategy.Balanced,
+                        wordBreak = LineBreak.WordBreak.Phrase,
+                        strictness = LineBreak.Strictness.Normal
+                    )
                 )
             )
-        )
-        texts.forEachIndexed { idx, text ->
-            withStyle(
-                style = highlightIndices.find { it == idx }
-                    ?.let { highlightStyle.toSpanStyle() }
-                    ?: defaultStyle.toSpanStyle()
-            ) {
-                append(text)
+            texts.forEachIndexed { idx, text ->
+                withStyle(
+                    style =
+                    highlightIndices.find { it == idx }
+                        ?.let { highlightStyle.toSpanStyle() }
+                        ?: defaultStyle.toSpanStyle()
+                ) {
+                    append(text)
+                }
             }
         }
-    }
 
     Text(
         text = annotatedString,
@@ -57,7 +60,7 @@ private fun HighlightedTextPreview() {
             texts = arrayOf("안녕하세요 ", "강조", "입니다"),
             highlightIndices = listOf(1),
             defaultStyle = KoinTheme.typography.regular15,
-            highlightStyle = KoinTheme.typography.bold15,
+            highlightStyle = KoinTheme.typography.bold15
         )
     }
 }

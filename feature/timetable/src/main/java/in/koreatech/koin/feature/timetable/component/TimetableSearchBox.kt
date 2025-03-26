@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -37,7 +36,7 @@ fun TimetableSearchBox(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = { onClickSettingIcon(true) }) {
             StableIcon(
@@ -50,13 +49,14 @@ fun TimetableSearchBox(
         TextField(
             value = searchText,
             onValueChange = onSearchTextChange,
-            colors = TextFieldDefaults.colors(
+            colors =
+            TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White, // 배경색 (클릭 X)
                 focusedContainerColor = Color.White, // 배경색 (클릭 O)
                 unfocusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 X)
                 focusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 O)
                 cursorColor = Color.Black, // 클릭 시, 커서색
-                focusedTextColor = Color.Black, // 클릭 시, 입력 텍스트 색
+                focusedTextColor = Color.Black // 클릭 시, 입력 텍스트 색
             ),
             maxLines = 1,
             placeholder = {
@@ -75,7 +75,8 @@ fun TimetableSearchBox(
                     )
                 }
             },
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .defaultMinSize(
                     minHeight = 52.dp
@@ -84,7 +85,7 @@ fun TimetableSearchBox(
                     width = 1.dp,
                     color = Color(0xFFD2DAE2),
                     shape = RoundedCornerShape(4.dp)
-                ),
+                )
         )
     }
 }

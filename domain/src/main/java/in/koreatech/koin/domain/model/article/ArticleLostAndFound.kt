@@ -13,7 +13,7 @@ data class ArticleLostAndFound(
     val isMine: Boolean,
     val images: List<ArticleLostAndFoundImage>?,
     val registeredAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 ) {
     data class ArticleLostAndFoundImage(
         val id: Int,

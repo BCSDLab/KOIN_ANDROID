@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class EmailAuthUseCase @Inject constructor(
     private val ownerVerificationCodeRepository: OwnerVerificationCodeRepository,
-    private val tokenRepository: TokenRepository,
+    private val tokenRepository: TokenRepository
 ) {
     suspend operator fun invoke(
         address: String,

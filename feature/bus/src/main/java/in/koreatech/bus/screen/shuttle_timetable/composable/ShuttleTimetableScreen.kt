@@ -15,7 +15,6 @@ fun ShuttleTimetableScreen(
     viewModel: ShuttleTimetableViewModel = hiltViewModel(),
     onNavigationIconClick: () -> Unit = {}
 ) {
-
     val timetableUiState by viewModel.timetableUiState.collectAsState()
 
     CompositionLocalProvider(LocalOnRefresh provides viewModel::refresh) {

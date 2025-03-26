@@ -45,17 +45,19 @@ fun LectureDuplicationDialog(
 ) {
     BasicAlertDialog(
         onDismissRequest = { onDismiss(false) },
-        modifier = modifier,
+        modifier = modifier
     ) {
         Surface(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(
                         horizontal = 32.dp,
@@ -67,17 +69,19 @@ fun LectureDuplicationDialog(
                     text = stringResource(id = R.string.lecture_duplication_title),
                     color = KoinTheme.colors.neutral800,
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.bold16,
+                    style = KoinTheme.typography.bold16
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 HighlightedText(
                     texts = stringArrayResource(id = R.array.lecture_duplication_description),
                     highlightIndices = listOf(1),
-                    defaultStyle = KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.neutral600,
+                    defaultStyle =
+                    KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.neutral600
                     ),
-                    highlightStyle = KoinTheme.typography.regular14.copy(
-                        color = KoinTheme.colors.warning600,
+                    highlightStyle =
+                    KoinTheme.typography.regular14.copy(
+                        color = KoinTheme.colors.warning600
                     )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -86,10 +90,12 @@ fun LectureDuplicationDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        colors = ButtonColors(
+                        colors =
+                        ButtonColors(
                             containerColor = KoinTheme.colors.neutral0,
                             contentColor = KoinTheme.colors.neutral500,
                             disabledContainerColor = KoinTheme.colors.neutral400,
@@ -100,10 +106,15 @@ fun LectureDuplicationDialog(
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
                         onClick = { onDismiss(false) }
                     ) {
-                        Text(text = stringResource(id = R.string.common_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
+                        Text(
+                            text = stringResource(id = R.string.common_cancellation),
+                            style = KoinTheme.typography.medium15,
+                            color = KoinTheme.colors.neutral600
+                        )
                     }
                     FilledTextButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.lecture_duplication_confirmation),
@@ -113,7 +124,6 @@ fun LectureDuplicationDialog(
             }
         }
     }
-
 }
 
 @FontScalePreviews

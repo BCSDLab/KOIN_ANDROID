@@ -12,7 +12,7 @@ import `in`.koreatech.koin.ui.splash.SplashActivity
 import `in`.koreatech.koin.util.ext.navigateToPlayStore
 
 @AndroidEntryPoint
-class ForceUpdateActivity: ActivityBase() {
+class ForceUpdateActivity : ActivityBase() {
     companion object {
         private const val screenTitle = "강제업데이트"
         private const val action = "force_update"
@@ -21,6 +21,7 @@ class ForceUpdateActivity: ActivityBase() {
         private const val updateCategory = "update"
         private const val clickCategory = "click"
     }
+
     override val screenTitle: String
         get() = ForceUpdateActivity.screenTitle
 

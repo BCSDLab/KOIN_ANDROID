@@ -20,7 +20,7 @@ fun BottomSheetCustomContent(
     onPlaceNameChange: (id: Int, text: String) -> Unit = { _, _ -> },
     onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = {},
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
-    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier = modifier,
@@ -31,7 +31,7 @@ fun BottomSheetCustomContent(
             customContent = customExtraContentState,
             onDayOfWeekChange = onDayOfWeekChange,
             onClickStartTime = onClickStartTime,
-            onClickEndTime = onClickEndTime,
+            onClickEndTime = onClickEndTime
         )
         TimetableInputField(
             text = customExtraContentState.place,

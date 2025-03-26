@@ -14,4 +14,4 @@ data class InsertBasicInfoScreenState(
     val storeImageIsEmpty: Boolean = true,
     val storeCategory: Int = 0,
     val isBasicInfoValid: Boolean = false
-): Parcelable
+) : Parcelable

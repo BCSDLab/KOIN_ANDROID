@@ -18,13 +18,15 @@ internal fun BusTypeChip(
     ReadOnlyTextChip(
         modifier = modifier,
         title = stringResource(busType.titleRes),
-        containerColor = when (busType) {
+        containerColor =
+        when (busType) {
             BusType.SHUTTLE -> Color(0xFFFBEBD7)
             BusType.EXPRESS -> Color(0xFFD7E6FB)
             BusType.CITY -> Color(0xFFD7FBEB)
             else -> Color.Transparent
         },
-        textStyle = KoinTheme.typography.regular12.copy(
+        textStyle =
+        KoinTheme.typography.regular12.copy(
             color = KoinTheme.colors.neutral600,
             fontSize = 11.sp
         )
