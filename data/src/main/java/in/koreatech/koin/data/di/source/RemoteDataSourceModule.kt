@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.api.ArticleApi
+import `in`.koreatech.koin.data.api.BannerApi
 import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
@@ -23,6 +24,7 @@ import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.BannerRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
@@ -144,4 +146,13 @@ object RemoteDataSourceModule {
     ): ChatRemoteDataSource {
         return ChatRemoteDataSource(chatApi, chatAuthApi, koinStomp)
     }
+
+    @Provides
+    @Singleton
+    fun provideBannerRemoteDataSource(
+        bannerApi: BannerApi
+    ): BannerRemoteDataSource {
+        return BannerRemoteDataSource(bannerApi)
+    }
+
 }
