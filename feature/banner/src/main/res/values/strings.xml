@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dismiss_for_a_week">일주일 동안 그만 보기</string>
+    <string name="dismiss">닫기</string>
+</resources>
