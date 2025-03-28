@@ -15,11 +15,9 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.lostandfound.R
 
 @Composable
-fun LostAndFoundReportHeader(
-    modifier: Modifier = Modifier,
-) {
+fun LostAndFoundReportHeader(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.padding(24.dp),
+        modifier = modifier.padding(24.dp)
     ) {
         Text(
             text = stringResource(id = R.string.report_header_title),

@@ -17,7 +17,7 @@ import `in`.koreatech.koin.util.ext.windowWidth
 
 class ReviewDeleteCheckDialog(
     val onDelete: () -> Unit,
-    val onCancel: () -> Unit,
+    val onCancel: () -> Unit
 ) : DialogFragment() {
     private lateinit var binding: ReviewDeleteDialogBinding
 
@@ -54,6 +54,4 @@ class ReviewDeleteCheckDialog(
         params?.width = (windowWidth * 0.9).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
-
-
 }

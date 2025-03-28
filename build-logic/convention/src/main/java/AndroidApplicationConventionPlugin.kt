@@ -11,6 +11,9 @@ import org.gradle.kotlin.dsl.getByType
 internal class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
+            with(pluginManager) {
+                apply("org.jlleitschuh.gradle.ktlint")
+            }
             val extension = extensions.getByType<BaseAppModuleExtension>()
             extensions.configure<ApplicationExtension> {
                 configureAndroidProject(extension)

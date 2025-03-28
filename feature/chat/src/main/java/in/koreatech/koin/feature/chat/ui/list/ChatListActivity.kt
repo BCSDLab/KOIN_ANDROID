@@ -11,7 +11,6 @@ import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 
 @AndroidEntryPoint
 class ChatListActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeWithLightStatusBar()
@@ -22,7 +21,8 @@ class ChatListActivity : ComponentActivity() {
             }
             KoinTheme {
                 ChatList(
-                    showBlockedMessage = intent.extras?.getBoolean(ChatRoomActivity.IS_BLOCKED)
+                    showBlockedMessage =
+                    intent.extras?.getBoolean(ChatRoomActivity.IS_BLOCKED)
                         ?: false
                 )
             }

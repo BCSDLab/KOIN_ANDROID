@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 
 class SearchStoreUseCase constructor(
     private val storeRepository: StoreRepository,
-    private val coroutineDispatcher: CoroutineDispatcher,
+    private val coroutineDispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(
         search: String = "",
@@ -19,7 +19,6 @@ class SearchStoreUseCase constructor(
         isDelivery: Boolean? = null
     ): List<Store> {
         return withContext(coroutineDispatcher) {
-
             storeRepository.getStores(
                 storeSorter = storeSorter,
                 isOperating = isOperating,
@@ -29,7 +28,6 @@ class SearchStoreUseCase constructor(
                 .filter {
                     if (search == "") category?.id in it.categoryIds else true
                 }
-            
         }
     }
 }

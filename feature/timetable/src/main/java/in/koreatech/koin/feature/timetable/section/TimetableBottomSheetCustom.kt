@@ -31,11 +31,12 @@ fun TimetableBottomSheetCustom(
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
     onClickAddCustomContent: () -> Unit = {},
-    onClickRemoveCustomContent: (id: Int) -> Unit = {},
+    onClickRemoveCustomContent: (id: Int) -> Unit = {}
 ) {
     val nestedScroll = rememberNestedScrollInteropConnection()
     LazyColumn(
-        modifier = modifier
+        modifier =
+        modifier
             .nestedScroll(nestedScroll),
         state = sheetLazyListState,
         contentPadding = PaddingValues(bottom = 16.dp)
@@ -64,7 +65,7 @@ fun TimetableBottomSheetCustom(
                     onPlaceNameChange = onExtraPlaceNameChange,
                     onDayOfWeekChange = onDayOfWeekChange,
                     onClickStartTime = onClickStartTime,
-                    onClickEndTime = onClickEndTime,
+                    onClickEndTime = onClickEndTime
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -76,7 +77,7 @@ fun TimetableBottomSheetCustom(
                     onPlaceNameChange = onExtraPlaceNameChange,
                     onDayOfWeekChange = onDayOfWeekChange,
                     onClickStartTime = onClickStartTime,
-                    onClickEndTime = onClickEndTime,
+                    onClickEndTime = onClickEndTime
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -98,4 +99,3 @@ fun TimetableBottomSheetCustomPreview() {
         sheetLazyListState = rememberLazyListState()
     )
 }
-

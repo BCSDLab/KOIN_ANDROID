@@ -12,8 +12,9 @@ data class BusSearchResultState(
     val departureTime: LocalTime
 )
 
-fun BusSearchResult.toBusSearchResultState() = BusSearchResultState(
-    busType = BusType.valueOf(busType.uppercase()),
-    busName = busName,
-    departureTime = departureTime
-)
+fun BusSearchResult.toBusSearchResultState() =
+    BusSearchResultState(
+        busType = BusType.valueOf(busType.uppercase()),
+        busName = busName,
+        departureTime = departureTime
+    )

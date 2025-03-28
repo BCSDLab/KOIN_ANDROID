@@ -13,11 +13,10 @@ import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscri
 import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
@@ -25,12 +24,11 @@ class NotificationViewModel @Inject constructor(
     private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase,
     private val updateNotificationSubscriptionDetailUseCase: UpdateNotificationSubscriptionDetailUseCase,
     private val deleteNotificationSubscriptionUseCase: DeleteNotificationSubscriptionUseCase,
-    private val deleteNotificationSubscriptionDetailUseCase: DeleteNotificationSubscriptionDetailUseCase,
+    private val deleteNotificationSubscriptionDetailUseCase: DeleteNotificationSubscriptionDetailUseCase
 ) : BaseViewModel() {
     private val _notificationUiState =
         MutableStateFlow<NotificationUiState>(NotificationUiState.Nothing)
     val notificationUiState = _notificationUiState.asStateFlow()
-
 
     fun getPermissionInfo() {
         viewModelScope.launchWithLoading {
@@ -70,8 +68,11 @@ class NotificationViewModel @Inject constructor(
 }
 
 sealed class NotificationUiState {
-    data class Success(val notificationPermissionInfo: NotificationPermissionInfo) : NotificationUiState()
+    data class Success(
+        val notificationPermissionInfo: NotificationPermissionInfo
+    ) : NotificationUiState()
 
     data object Failed : NotificationUiState()
+
     data object Nothing : NotificationUiState()
 }

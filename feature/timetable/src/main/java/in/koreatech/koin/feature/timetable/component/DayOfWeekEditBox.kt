@@ -35,20 +35,20 @@ import `in`.koreatech.koin.feature.timetable.model.toKorean
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 import java.time.DayOfWeek
 
-
 @Composable
 fun DayOfWeekEditBox(
     customContent: CustomExtraContentState,
     modifier: Modifier = Modifier,
     onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { }
 ) {
-    val days = arrayOf(
-        DayOfWeek.MONDAY,
-        DayOfWeek.TUESDAY,
-        DayOfWeek.WEDNESDAY,
-        DayOfWeek.THURSDAY,
-        DayOfWeek.FRIDAY,
-    )
+    val days =
+        arrayOf(
+            DayOfWeek.MONDAY,
+            DayOfWeek.TUESDAY,
+            DayOfWeek.WEDNESDAY,
+            DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY
+        )
 
     var isExpanded by rememberSaveable {
         mutableStateOf(false)
@@ -61,7 +61,8 @@ fun DayOfWeekEditBox(
             onDismissRequest = {
                 isExpanded = false
             },
-            modifier = Modifier
+            modifier =
+            Modifier
                 .width(74.dp)
                 .background(
                     color = Color.White,
@@ -89,7 +90,8 @@ fun DayOfWeekEditBox(
                         isExpanded = false
                         onDayOfWeekChange(customContent.copy(dayOfWeek = days[index]))
                     },
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .height(35.dp)
                         .background(Color.White)
                         .drawBehind {
@@ -107,7 +109,8 @@ fun DayOfWeekEditBox(
             }
         }
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .background(Color.White)
                 .border(
                     width = 1.dp,
@@ -135,7 +138,6 @@ fun DayOfWeekEditBox(
                     drawableResId = R.drawable.ic_arrow_down
                 )
             }
-
         }
     }
 }

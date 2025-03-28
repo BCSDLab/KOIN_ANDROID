@@ -23,6 +23,8 @@ import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateUserRefreshTokenUseCase
 import `in`.koreatech.koin.util.OwnerTokenAuthenticator
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Interceptor
@@ -31,8 +33,6 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -40,17 +40,16 @@ object AuthNetworkModule {
     @Auth
     @Provides
     @Singleton
-    fun provideAuthInterceptor(
-        tokenLocalDataSource: TokenLocalDataSource,
-    ): Interceptor {
+    fun provideAuthInterceptor(tokenLocalDataSource: TokenLocalDataSource): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val accessToken = tokenLocalDataSource.getAccessToken() ?: ""
                 val historyId = tokenLocalDataSource.getAccessHistoryId() ?: ""
-                val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $accessToken")
-                    .addHeader("access_history_id", historyId)
-                    .build()
+                val newRequest: Request =
+                    chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $accessToken")
+                        .addHeader("access_history_id", historyId)
+                        .build()
                 chain.proceed(newRequest)
             }
         }
@@ -64,9 +63,14 @@ object AuthNetworkModule {
         tokenLocalDataSource: TokenLocalDataSource,
         updateUserRefreshTokenUseCase: UpdateUserRefreshTokenUseCase,
         deleteUserRefreshTokenUseCase: DeleteUserRefreshTokenUseCase,
-        userApi: UserApi,
-    ): Authenticator = AuthAuthenticator(context, tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
-
+        userApi: UserApi
+    ): Authenticator = AuthAuthenticator(
+        context,
+        tokenLocalDataSource,
+        updateUserRefreshTokenUseCase,
+        deleteUserRefreshTokenUseCase,
+        userApi
+    )
 
     @Auth
     @Provides
@@ -74,7 +78,7 @@ object AuthNetworkModule {
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @Auth authInterceptor: Interceptor,
-        @Refresh refreshInterceptor: Authenticator,
+        @Refresh refreshInterceptor: Authenticator
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
@@ -100,44 +104,34 @@ object AuthNetworkModule {
             .build()
     }
 
-    /* Auth retrofit instances below */
+    // Auth retrofit instances below
     @Provides
     @Singleton
-    fun provideUserAuthApi(
-        @Auth retrofit: Retrofit
-    ) : UserAuthApi {
+    fun provideUserAuthApi(@Auth retrofit: Retrofit): UserAuthApi {
         return retrofit.create(UserAuthApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideUploadUrlApi(
-        @Auth retrofit: Retrofit
-    ): UploadUrlApi {
+    fun provideUploadUrlApi(@Auth retrofit: Retrofit): UploadUrlApi {
         return retrofit.create(UploadUrlApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideArticleAuthApi(
-        @Auth retrofit: Retrofit
-    ): ArticleAuthApi {
+    fun provideArticleAuthApi(@Auth retrofit: Retrofit): ArticleAuthApi {
         return retrofit.create(ArticleAuthApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideTimetableAuthApi(
-        @Auth retrofit: Retrofit
-    ): TimetableAuthApi {
+    fun provideTimetableAuthApi(@Auth retrofit: Retrofit): TimetableAuthApi {
         return retrofit.create(TimetableAuthApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideChatAuthApi(
-        @Auth retrofit: Retrofit
-    ): ChatAuthApi {
+    fun provideChatAuthApi(@Auth retrofit: Retrofit): ChatAuthApi {
         return retrofit.create(ChatAuthApi::class.java)
     }
 }
@@ -148,15 +142,14 @@ object OwnerAuthNetworkModule {
     @OwnerAuth
     @Provides
     @Singleton
-    fun provideOwnerAuthInterceptor(
-        tokenLocalDataSource: TokenLocalDataSource
-    ): Interceptor {
+    fun provideOwnerAuthInterceptor(tokenLocalDataSource: TokenLocalDataSource): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val ownerAccessToken = tokenLocalDataSource.getOwnerAccessToken() ?: ""
-                val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $ownerAccessToken")
-                    .build()
+                val newRequest: Request =
+                    chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $ownerAccessToken")
+                        .build()
                 chain.proceed(newRequest)
             }
         }
@@ -204,9 +197,7 @@ object OwnerAuthNetworkModule {
 
     @Provides
     @Singleton
-    fun provideOwnerAuthApi(
-        @OwnerAuth retrofit: Retrofit
-    ): OwnerAuthApi {
+    fun provideOwnerAuthApi(@OwnerAuth retrofit: Retrofit): OwnerAuthApi {
         return retrofit.create(OwnerAuthApi::class.java)
     }
 }
@@ -217,9 +208,7 @@ object PreSignedUrlNetworkModule {
     @PreSignedUrl
     @Provides
     @Singleton
-    fun provideOwnerAuthOkHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
+    fun provideOwnerAuthOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
@@ -245,9 +234,7 @@ object PreSignedUrlNetworkModule {
 
     @Provides
     @Singleton
-    fun provideUploadUrlApi(
-        @PreSignedUrl retrofit: Retrofit
-    ): PreSignedUrlApi {
+    fun provideUploadUrlApi(@PreSignedUrl retrofit: Retrofit): PreSignedUrlApi {
         return retrofit.create(PreSignedUrlApi::class.java)
     }
 }

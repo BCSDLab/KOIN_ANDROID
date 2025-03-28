@@ -5,7 +5,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerTimeActivity : KoinNavigationDrawerActivity() {
-
     private var startTime = 0L
     private var elapsedTime = 0L
 

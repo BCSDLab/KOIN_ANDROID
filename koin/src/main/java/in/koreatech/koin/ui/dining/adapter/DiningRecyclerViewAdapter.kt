@@ -1,14 +1,14 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.data.mapper.toLineChangingString
-import `in`.koreatech.koin.databinding.DiningListItemBinding
-import `in`.koreatech.koin.domain.model.dining.Dining
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.qualifiers.ActivityContext
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.data.mapper.toLineChangingString
+import `in`.koreatech.koin.databinding.DiningListItemBinding
+import `in`.koreatech.koin.domain.model.dining.Dining
 import javax.inject.Inject
 
 class DiningRecyclerViewAdapter @Inject constructor(
@@ -19,11 +19,10 @@ class DiningRecyclerViewAdapter @Inject constructor(
     inner class DiningViewHolder(val binding: DiningListItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): DiningViewHolder =
-        DiningViewHolder(DiningListItemBinding.inflate(LayoutInflater.from(context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiningViewHolder =
+        DiningViewHolder(
+            DiningListItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        )
 
     override fun onBindViewHolder(holder: DiningViewHolder, position: Int) {
         with(holder.binding) {

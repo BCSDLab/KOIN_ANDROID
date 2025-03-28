@@ -3,27 +3,27 @@ package `in`.koreatech.koin.ui.store.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.databinding.StoreEventCardBinding
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.databinding.StoreEventCardBinding
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 
-class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.StoreEventCardViewHolder>(
+class StoreEventPagerAdapter() : ListAdapter<StoreEvent, StoreEventPagerAdapter.StoreEventCardViewHolder>(
     diffCallback
-){
-
+) {
     var onItemClickListener: OnItemClickListener? = null
 
     inner class StoreEventCardViewHolder(
         val binding: StoreEventCardBinding
-    ): RecyclerView.ViewHolder(binding.root){
+    ) : RecyclerView.ViewHolder(binding.root) {
         val container = binding.storeEventContainer
         val eventStoreImage = binding.eventImageView
         val eventStoreName = binding.eventStoreNameTv
+
         fun bind(storeEvent: StoreEvent) {
             binding.root.setOnClickListener {
                 onItemClickListener?.onItemClick(storeEvent)
@@ -31,26 +31,25 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int): StoreEventCardViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreEventCardViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = StoreEventCardBinding.inflate(inflater, parent, false)
         return StoreEventCardViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: StoreEventPagerAdapter.StoreEventCardViewHolder, position: Int) {
-
+    override fun onBindViewHolder(
+        holder: StoreEventPagerAdapter.StoreEventCardViewHolder,
+        position: Int
+    ) {
         val event = getItem(position % itemCount)
-        with(holder){
+        with(holder) {
             bind(event)
 
             eventStoreName.text = event.shopName
 
-            if(event.thumbnailImages?.isEmpty() == true){
+            if (event.thumbnailImages?.isEmpty() == true) {
                 eventStoreImage.setImageResource(R.drawable.default_event_image)
-            }
-            else{
+            } else {
                 Glide.with(eventStoreImage)
                     .load(event.thumbnailImages?.getOrNull(0))
                     .override(100, 100)
@@ -61,11 +60,12 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
     }
 
     inline fun setOnItemClickListener(crossinline onItemClick: (storeEvent: StoreEvent) -> Unit) {
-        onItemClickListener = object : OnItemClickListener {
-            override fun onItemClick(storeEvent: StoreEvent) {
-                onItemClick(storeEvent)
+        onItemClickListener =
+            object : OnItemClickListener {
+                override fun onItemClick(storeEvent: StoreEvent) {
+                    onItemClick(storeEvent)
+                }
             }
-        }
     }
 
     interface OnItemClickListener {
@@ -73,14 +73,15 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<StoreEvent>() {
-            override fun areItemsTheSame(oldItem: StoreEvent, newItem: StoreEvent): Boolean {
-                return oldItem.shopId == newItem.shopId
-            }
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<StoreEvent>() {
+                override fun areItemsTheSame(oldItem: StoreEvent, newItem: StoreEvent): Boolean {
+                    return oldItem.shopId == newItem.shopId
+                }
 
-            override fun areContentsTheSame(oldItem: StoreEvent, newItem: StoreEvent): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(oldItem: StoreEvent, newItem: StoreEvent): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

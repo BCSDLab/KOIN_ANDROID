@@ -11,14 +11,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
 
-class StoreDetailFlyerFullRecyclerAdapter(
-) : ListAdapter<String, StoreDetailFlyerFullRecyclerAdapter.ViewHolder>(
+class StoreDetailFlyerFullRecyclerAdapter() : ListAdapter<String, StoreDetailFlyerFullRecyclerAdapter.ViewHolder>(
     diffCallback
 ) {
-    private val glideOptions: RequestOptions = RequestOptions()
-        .fitCenter()
-        .error(R.drawable.image_no_image)
-        .placeholder(R.color.white)
+    private val glideOptions: RequestOptions =
+        RequestOptions()
+            .fitCenter()
+            .error(R.drawable.image_no_image)
+            .placeholder(R.color.white)
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var flyerImageview: ImageView = itemView.findViewById(R.id.store_flyer_image_view_scalable)
@@ -32,8 +32,9 @@ class StoreDetailFlyerFullRecyclerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.store_flyer_list_item_full, parent, false)
+        val itemView: View =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.store_flyer_list_item_full, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -42,15 +43,15 @@ class StoreDetailFlyerFullRecyclerAdapter(
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<String>() {
-            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-                return oldItem == newItem
-            }
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<String>() {
+                override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
-
 }

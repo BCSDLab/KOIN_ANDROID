@@ -25,7 +25,8 @@ fun LoadingDialog() {
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
     ) {
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .background(KoinTheme.colors.primary500)
                 .padding(vertical = 24.dp, horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically

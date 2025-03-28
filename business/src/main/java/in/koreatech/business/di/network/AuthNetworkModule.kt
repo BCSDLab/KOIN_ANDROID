@@ -19,6 +19,8 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -26,8 +28,6 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -35,15 +35,14 @@ object AuthNetworkModule {
     @Auth
     @Provides
     @Singleton
-    fun provideAuthInterceptor(
-        tokenLocalDataSource: TokenLocalDataSource
-    ): Interceptor {
+    fun provideAuthInterceptor(tokenLocalDataSource: TokenLocalDataSource): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val accessToken = tokenLocalDataSource.getAccessToken() ?: ""
-                val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $accessToken")
-                    .build()
+                val newRequest: Request =
+                    chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $accessToken")
+                        .build()
                 chain.proceed(newRequest)
             }
         }
@@ -57,7 +56,6 @@ object AuthNetworkModule {
         tokenLocalDataSource: TokenLocalDataSource,
         userApi: UserApi
     ): Interceptor = RefreshTokenInterceptor(applicationContext, tokenLocalDataSource, userApi)
-
 
     @Auth
     @Provides
@@ -91,7 +89,7 @@ object AuthNetworkModule {
             .build()
     }
 
-    /* Auth retrofit instances below */
+    // Auth retrofit instances below
     @Provides
     @Singleton
     fun provideUserAuthApi(
@@ -99,9 +97,7 @@ object AuthNetworkModule {
     ): UserAuthApi {
         return retrofit.create(UserAuthApi::class.java)
     }
-
 }
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -109,15 +105,14 @@ object BusinessAuthNetworkModule {
     @OwnerAuth
     @Provides
     @Singleton
-    fun provideOwnerAuthInterceptor(
-        tokenLocalDataSource: TokenLocalDataSource
-    ): Interceptor {
+    fun provideOwnerAuthInterceptor(tokenLocalDataSource: TokenLocalDataSource): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val ownerAccessToken = tokenLocalDataSource.getOwnerAccessToken() ?: ""
-                val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $ownerAccessToken")
-                    .build()
+                val newRequest: Request =
+                    chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $ownerAccessToken")
+                        .build()
                 chain.proceed(newRequest)
             }
         }
@@ -180,16 +175,13 @@ object BusinessAuthNetworkModule {
     }
 }
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object PreSignedUrlNetworkModule {
     @PreSignedUrl
     @Provides
     @Singleton
-    fun provideOwnerAuthOkHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
+    fun provideOwnerAuthOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)

@@ -13,10 +13,10 @@ class StoreDetailImageViewpagerAdapter(
     private val onClick: (String) -> Unit
 ) :
     RecyclerView.Adapter<StoreDetailImageViewpagerAdapter.ImageViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_store_detail_image, parent, false)
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_store_detail_image, parent, false)
         return ImageViewHolder(view)
     }
 
@@ -27,7 +27,6 @@ class StoreDetailImageViewpagerAdapter(
     override fun getItemCount(): Int {
         return images?.size ?: 0
     }
-
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.store_detail_image_imageview)

@@ -10,7 +10,6 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 
-
 @Composable
 fun GifImage(
     modifier: Modifier = Modifier,
@@ -18,19 +17,22 @@ fun GifImage(
     imageSize: Size = Size.ORIGINAL
 ) {
     val context = LocalContext.current
-    val imageLoader = ImageLoader.Builder(context)
-        .components {
-            add(ImageDecoderDecoder.Factory())
-        }
-        .build()
+    val imageLoader =
+        ImageLoader.Builder(context)
+            .components {
+                add(ImageDecoderDecoder.Factory())
+            }
+            .build()
 
     Image(
         modifier = modifier,
-        painter = rememberAsyncImagePainter(
-                    ImageRequest.Builder(context)
-                        .data(data = painterResource)
-                        .apply(block = {imageSize
-                    }).build(),
+        painter =
+        rememberAsyncImagePainter(
+            ImageRequest.Builder(context)
+                .data(data = painterResource)
+                .apply(block = {
+                    imageSize
+                }).build(),
             imageLoader = imageLoader
         ),
         contentDescription = ""

@@ -5,8 +5,8 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFoundUpload
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory.Companion.getCategoryKoreanWord
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LostAndFoundWriteArticleItemState(

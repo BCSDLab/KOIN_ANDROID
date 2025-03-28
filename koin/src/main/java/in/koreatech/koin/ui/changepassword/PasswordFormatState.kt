@@ -4,7 +4,6 @@ import android.os.Parcelable
 import `in`.koreatech.koin.domain.model.user.PasswordFormat
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
 data class PasswordFormatState(
     val isIncludeEnglish: Boolean = false,

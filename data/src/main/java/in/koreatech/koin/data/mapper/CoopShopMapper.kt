@@ -25,7 +25,8 @@ fun List<OpenCloseInfoResponse>.groupByDayOfWeek(): List<OpenCloseInfo> =
     this.groupBy { it.dayOfWeek }.map { (day, infoList) ->
         OpenCloseInfo(
             dayOfWeek = day.toCoopShopDayType,
-            opensByDayType = infoList.map { info ->
+            opensByDayType =
+            infoList.map { info ->
                 OpenCloseTimeInfo(
                     type = info.type.orEmpty(),
                     openTime = info.openTime.orEmpty().checkIfNotOpen,

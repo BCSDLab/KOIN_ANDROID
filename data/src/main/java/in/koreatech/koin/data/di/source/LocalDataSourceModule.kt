@@ -14,8 +14,8 @@ import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -57,16 +57,14 @@ object LocalDataSourceModule {
     @Provides
     @Singleton
     fun provideUserLocalDataSource(
-        @ApplicationContext applicationContext: Context,
+        @ApplicationContext applicationContext: Context
     ): UserLocalDataSource {
         return UserLocalDataSource(applicationContext)
     }
 
     @Provides
     @Singleton
-    fun provideArticleLocalDataSource(
-        articleDataStore: ArticleDataStore
-    ): ArticleLocalDataSource {
+    fun provideArticleLocalDataSource(articleDataStore: ArticleDataStore): ArticleLocalDataSource {
         return ArticleLocalDataSource(articleDataStore)
     }
 }

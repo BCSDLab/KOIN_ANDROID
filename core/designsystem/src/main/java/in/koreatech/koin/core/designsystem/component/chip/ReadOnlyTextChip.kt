@@ -36,7 +36,8 @@ fun ReadOnlyTextChip(
     contentPadding: PaddingValues = PaddingValues(horizontal = 4.dp)
 ) {
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .clip(shape)
             .background(containerColor)
             .padding(contentPadding),
@@ -44,7 +45,7 @@ fun ReadOnlyTextChip(
     ) {
         Text(
             text = title,
-            style = textStyle,
+            style = textStyle
         )
     }
 }

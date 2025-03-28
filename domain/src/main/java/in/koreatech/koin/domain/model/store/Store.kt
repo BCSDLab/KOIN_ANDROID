@@ -15,22 +15,22 @@ data class Store(
     val isBankOk: Boolean,
     val isEvent: Boolean,
     val isOpen: Boolean,
-    val averageRate : Double,
-    val reviewCount : Int,
+    val averageRate: Double,
+    val reviewCount: Int,
     val open: OpenData,
     val categoryIds: List<Int>,
-    val benefitDetails: List<String>,
+    val benefitDetails: List<String>
 ) {
     data class OpenData(
         val dayOfWeek: String,
         val closed: Boolean,
         val openTime: String,
-        val closeTime: String,
+        val closeTime: String
     ) {
         fun openStore(): Boolean {
-            return if(openTime.isNotEmpty() && closeTime.isNotEmpty()) {
-                val openTime = LocalTime.parse(if(openTime == "24:00") "00:00" else openTime)
-                val closeTime = LocalTime.parse(if(closeTime == "24:00") "00:00" else closeTime)
+            return if (openTime.isNotEmpty() && closeTime.isNotEmpty()) {
+                val openTime = LocalTime.parse(if (openTime == "24:00") "00:00" else openTime)
+                val closeTime = LocalTime.parse(if (closeTime == "24:00") "00:00" else closeTime)
                 val currentTime = LocalTime.parse(localTimeNow.HHMM)
 
                 if (openTime.isBefore(closeTime)) { // 17:00(오픈 시간) < 23:00(종료 시간)

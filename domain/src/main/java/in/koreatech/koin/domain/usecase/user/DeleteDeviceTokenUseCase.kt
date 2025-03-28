@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class DeleteDeviceTokenUseCase @Inject constructor(
     private val userRepository: UserRepository,
-    private val userErrorHandler: UserErrorHandler,
+    private val userErrorHandler: UserErrorHandler
 ) {
     suspend operator fun invoke(): Pair<Unit?, ErrorHandler?> {
         return try {

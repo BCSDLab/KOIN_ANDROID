@@ -1,15 +1,14 @@
 package `in`.koreatech.koin.data.repository
 
 import OwnerRegisterRequest
-
 import `in`.koreatech.koin.data.mapper.toCategory
 import `in`.koreatech.koin.data.mapper.toFileUrlList
 import `in`.koreatech.koin.data.mapper.toMyStoreDayOffResponse
 import `in`.koreatech.koin.data.mapper.toOptionPriceList
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.data.mapper.toStringArray
-import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
+import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
@@ -17,9 +16,9 @@ import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
 import `in`.koreatech.koin.domain.util.ext.toSHA256
+import java.io.EOFException
 import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
-import java.io.EOFException
 
 class OwnerRegisterRepositoryImpl(
     private val ownerRemoteDataSource: OwnerRemoteDataSource
@@ -64,6 +63,7 @@ class OwnerRegisterRepositoryImpl(
         name: String,
         password: String,
         phoneNumber: String,
+        shopNumber: String,
         shopId: Int?,
         shopName: String
     ) {
@@ -74,12 +74,12 @@ class OwnerRegisterRepositoryImpl(
                 name,
                 password.toSHA256(),
                 phoneNumber,
+                shopNumber,
                 shopId,
                 shopName
             )
         )
     }
-
 
     override suspend fun storeRegister(
         name: String,
@@ -111,8 +111,8 @@ class OwnerRegisterRepositoryImpl(
                     phone = phoneNumber.toPhoneNumber() ?: ""
                 )
             )
-        }.onFailure {exception ->
-            if(exception is CancellationException) throw exception
+        }.onFailure { exception ->
+            if (exception is CancellationException) throw exception
         }
     }
 
@@ -132,15 +132,15 @@ class OwnerRegisterRepositoryImpl(
                 StoreMenuRegisterResponse(
                     menuCategoryId = menuCategoryId,
                     description = description,
-                    imageUrls=menuImageUrlList,
+                    imageUrls = menuImageUrlList,
                     isSingle = isSingle,
                     name = menuName,
-                    optionPrices = if(!isSingle)menuOptionPrice.toOptionPriceList() else null,
-                    singlePrice = if(isSingle)menuSinglePrice.toInt() else null
+                    optionPrices = if (!isSingle)menuOptionPrice.toOptionPriceList() else null,
+                    singlePrice = if (isSingle)menuSinglePrice.toInt() else null
                 )
             )
-        }.onFailure {exception ->
-            if(exception is CancellationException) throw exception
+        }.onFailure { exception ->
+            if (exception is CancellationException) throw exception
         }
     }
 
@@ -160,16 +160,15 @@ class OwnerRegisterRepositoryImpl(
                 StoreMenuRegisterResponse(
                     menuCategoryId = menuCategoryId,
                     description = description,
-                    imageUrls=menuImageUrlList,
+                    imageUrls = menuImageUrlList,
                     isSingle = isSingle,
                     name = menuName,
-                    optionPrices = if(!isSingle)menuOptionPrice.toOptionPriceList() else null,
-                    singlePrice = if(isSingle)menuSinglePrice.toInt() else null
+                    optionPrices = if (!isSingle)menuOptionPrice.toOptionPriceList() else null,
+                    singlePrice = if (isSingle)menuSinglePrice.toInt() else null
                 )
             )
-        }.onFailure {exception ->
-            if(exception is CancellationException) throw exception
+        }.onFailure { exception ->
+            if (exception is CancellationException) throw exception
         }
-
     }
 }

@@ -12,9 +12,11 @@ class OwnerCheckExistsAccountImpl(
             ownerRemoteDataSource.checkExistsAccount(phoneNumber)
             false
         } catch (e: HttpException) {
-            if (e.code() == 409) true
-            else throw e
+            if (e.code() == 409) {
+                true
+            } else {
+                throw e
+            }
         }
-
     }
 }

@@ -19,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
@@ -37,13 +36,12 @@ import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListNoticeViewModel
 import `in`.koreatech.koin.util.ext.withLoading
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ArticleListNoticeFragment : Fragment() {
-
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
@@ -53,14 +51,14 @@ class ArticleListNoticeFragment : Fragment() {
 
     private val viewModel: ArticleListNoticeViewModel by viewModels()
 
-    private var scrollPercentage = 0.0f     // for GA4
-
+    private var scrollPercentage = 0.0f // for GA4
 
     private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
     private lateinit var pageChips: ArrayList<Chip>
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         if (_binding == null) {
@@ -68,13 +66,14 @@ class ArticleListNoticeFragment : Fragment() {
             initArgument()
             initArticleRecyclerView()
             initPageButtonSelectedListener()
-            pageChips = arrayListOf(
-                binding.chipPage1,
-                binding.chipPage2,
-                binding.chipPage3,
-                binding.chipPage4,
-                binding.chipPage5
-            )
+            pageChips =
+                arrayListOf(
+                    binding.chipPage1,
+                    binding.chipPage2,
+                    binding.chipPage3,
+                    binding.chipPage4,
+                    binding.chipPage5
+                )
             binding.textViewNextPage.setOnClickListener {
                 viewModel.setCurrentPage(viewModel.currentPage.value + 1)
             }
@@ -110,7 +109,9 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun initArgument() {
         arguments?.getInt("boardId")?.let {
-            viewModel.setCurrentBoard(ArticleBoardType.entries.find { board -> board.id == it } ?: ArticleBoardType.ALL)
+            viewModel.setCurrentBoard(
+                ArticleBoardType.entries.find { board -> board.id == it } ?: ArticleBoardType.ALL
+            )
         }
     }
 
@@ -135,12 +136,18 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun initArticleRecyclerView() {
         binding.recyclerViewArticleList.adapter = articleAdapter
-        binding.recyclerViewArticleList.addItemDecoration(object :
-            DividerItemDecoration(requireContext(), VERTICAL) {
-            override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-                drawArticleDivider(c, parent)
+        binding.recyclerViewArticleList.addItemDecoration(
+            object :
+                DividerItemDecoration(requireContext(), VERTICAL) {
+                override fun onDrawOver(
+                    c: Canvas,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    drawArticleDivider(c, parent)
+                }
             }
-        })
+        )
     }
 
     private fun onArticleClicked(article: ArticleHeaderState) {
@@ -196,12 +203,12 @@ class ArticleListNoticeFragment : Fragment() {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.selectedKeyword.collect { keyword ->
-                        /* 다른 화면을 갔다가 돌아와도 키워드 선택 상태 유지 */
+                        // 다른 화면을 갔다가 돌아와도 키워드 선택 상태 유지
                         var isKeywordSelected = false
                         if (keyword.isEmpty()) {
                             binding.chipSeeAll.isChecked = true
                             isKeywordSelected = true
-                        } else
+                        } else {
                             binding.chipGroupMyKeywords.children.forEach {
                                 if ("#$keyword" == (it as? Chip)?.text.toString()) {
                                     (it as? Chip)?.isChecked = true
@@ -209,7 +216,8 @@ class ArticleListNoticeFragment : Fragment() {
                                     return@forEach
                                 }
                             }
-                        if (isKeywordSelected.not()) {      // 원래 선택된 상태였던 키워드가 삭제된 경우 "모두보기" 선택
+                        }
+                        if (isKeywordSelected.not()) { // 원래 선택된 상태였던 키워드가 삭제된 경우 "모두보기" 선택
                             viewModel.selectKeyword("")
                             binding.chipSeeAll.isChecked = true
                         }
@@ -221,28 +229,34 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun removeKeywordChip(keywords: List<String>) {
         binding.chipGroupMyKeywords.children.forEachIndexed { i, chip ->
-            if (i != 0)
-                if (keywords.contains((chip as? Chip)?.text.toString().substring(1)).not())
+            if (i != 0) {
+                if (keywords.contains((chip as? Chip)?.text.toString().substring(1)).not()) {
                     binding.chipGroupMyKeywords.removeView(chip)
+                }
+            }
         }
     }
 
     private fun addKeywordChip(keywords: List<String>) {
         keywords.forEach { keyword ->
             if (binding.chipGroupMyKeywords.children.any {
-                    (it as? Chip)?.text == TextUtils.concat(
-                        "#",
-                        keyword
-                    )
-                }.not())
+                    (it as? Chip)?.text ==
+                        TextUtils.concat(
+                            "#",
+                            keyword
+                        )
+                }.not()
+            ) {
                 binding.chipGroupMyKeywords.addView(
                     createChip(
-                        TextUtils.concat("#", keyword).toString(), true,
+                        TextUtils.concat("#", keyword).toString(),
+                        true,
                         onChipClicked = {
                             viewModel.selectKeyword(keyword)
                         }
                     )
                 )
+            }
         }
     }
 
@@ -252,7 +266,11 @@ class ArticleListNoticeFragment : Fragment() {
 
     private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip? {
         val chip =
-            layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as? Chip
+            layoutInflater.inflate(
+                R.layout.chip_layout,
+                binding.chipGroupMyKeywords,
+                false
+            ) as? Chip
         return chip?.apply {
             id = View.generateViewId()
             this.isCheckable = isCheckable

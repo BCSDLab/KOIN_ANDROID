@@ -32,7 +32,8 @@ fun WriteArticleAddItemButton(
         Button(
             modifier = Modifier.align(Alignment.CenterEnd),
             onClick = onItemAdd,
-            colors = ButtonDefaults.buttonColors(
+            colors =
+            ButtonDefaults.buttonColors(
                 containerColor = KoinTheme.colors.info200
             ),
             shape = RoundedCornerShape(8.dp),

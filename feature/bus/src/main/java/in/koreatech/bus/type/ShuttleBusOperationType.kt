@@ -13,5 +13,5 @@ enum class ShuttleBusOperationType(
     ALL(R.string.all_routes, 0),
     WEEKDAY(R.string.weekday_routes, R.string.weekday_routes_simple),
     WEEKEND(R.string.weekend_routes, R.string.weekend_routes_simple),
-    CIRCULATION(R.string.circulation_routes, R.string.circulation_routes_simple),
+    CIRCULATION(R.string.circulation_routes, R.string.circulation_routes_simple)
 }

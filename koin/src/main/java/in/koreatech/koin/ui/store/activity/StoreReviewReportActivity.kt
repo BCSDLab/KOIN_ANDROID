@@ -13,10 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.StoreActivityReportReviewBinding
 import `in`.koreatech.koin.domain.state.store.StoreReviewExceptionState
@@ -26,8 +26,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StoreReviewReportActivity:  ActivityBase() {
-
+class StoreReviewReportActivity : ActivityBase() {
     private lateinit var binding: StoreActivityReportReviewBinding
     override val screenTitle = "리뷰 신고"
     private val viewModel by viewModels<StoreReviewReportViewModel>()
@@ -52,8 +51,7 @@ class StoreReviewReportActivity:  ActivityBase() {
         return super.dispatchTouchEvent(ev)
     }
 
-    private fun initView() = with(binding){
-
+    private fun initView() = with(binding) {
         reportAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressedDispatcher.onBackPressed()
@@ -117,8 +115,7 @@ class StoreReviewReportActivity:  ActivityBase() {
         }
     }
 
-    private fun initViewModel() = with(binding){
-
+    private fun initViewModel() = with(binding) {
         observeLiveData(viewModel.isNotRelation) {
             if (it) {
                 noRelationRadioButton.setImageResource(R.drawable.ic_check_selected_24dp)
@@ -154,26 +151,47 @@ class StoreReviewReportActivity:  ActivityBase() {
         observeLiveData(viewModel.isEtc) {
             inputReportReasonEdittext.isEnabled = it
 
-            if (it){
+            if (it) {
                 etcRadioButton.setImageResource(R.drawable.ic_check_selected_24dp)
                 inputReportReasonEdittext.background = getDrawable(R.drawable.selected_edittext_border_5dp_radius)
-                inputReportReasonEdittext.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                inputReportReasonEdittext.addTextChangedListener(
+                    object : TextWatcher {
+                        override fun beforeTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            count: Int,
+                            after: Int
+                        ) {
+                        }
 
+                        override fun onTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            before: Int,
+                            count: Int
+                        ) {
+                        }
+
+                        override fun afterTextChanged(s: Editable?) {
+                            characterRangeTextview.text = "${s?.length ?: 0}/150"
+                            if (s?.length == 150) {
+                                characterRangeTextview.setTextColor(
+                                    ContextCompat.getColor(
+                                        this@StoreReviewReportActivity,
+                                        R.color.colorAccent
+                                    )
+                                )
+                            } else {
+                                characterRangeTextview.setTextColor(
+                                    ContextCompat.getColor(
+                                        this@StoreReviewReportActivity,
+                                        R.color.gray10
+                                    )
+                                )
+                            }
+                        }
                     }
-
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                    }
-
-                    override fun afterTextChanged(s: Editable?) {
-                        characterRangeTextview.text = "${s?.length ?: 0}/150"
-                        if(s?.length == 150)
-                            characterRangeTextview.setTextColor(ContextCompat.getColor(this@StoreReviewReportActivity, R.color.colorAccent))
-                        else
-                            characterRangeTextview.setTextColor(ContextCompat.getColor(this@StoreReviewReportActivity, R.color.gray10))
-                    }
-                })
+                )
             } else {
                 etcRadioButton.setImageResource(R.drawable.ic_check_24dp)
                 inputReportReasonEdittext.text = null
@@ -182,10 +200,15 @@ class StoreReviewReportActivity:  ActivityBase() {
         }
 
         lifecycleScope.launch {
-            viewModel.storeReviewState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
+            viewModel.storeReviewState.flowWithLifecycle(
+                lifecycle,
+                Lifecycle.State.STARTED
+            ).collect {
                 when (it) {
                     StoreReviewState.ReportComplete -> {
-                        ToastUtil.getInstance().makeShort(getString(R.string.review_report_complete))
+                        ToastUtil.getInstance().makeShort(
+                            getString(R.string.review_report_complete)
+                        )
                         finish()
                     }
                 }
@@ -193,16 +216,21 @@ class StoreReviewReportActivity:  ActivityBase() {
         }
 
         lifecycleScope.launch {
-
-            viewModel.storeReviewExceptionState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
-                when(it){
-                    StoreReviewExceptionState.ToastNullCheckBox ->  ToastUtil.getInstance().makeShort(getString(R.string.review_null_check_box))
-                    StoreReviewExceptionState.ToastNullEtcReason -> ToastUtil.getInstance().makeShort(getString(R.string.review_null_etc_reason))
+            viewModel.storeReviewExceptionState.flowWithLifecycle(
+                lifecycle,
+                Lifecycle.State.STARTED
+            ).collect {
+                when (it) {
+                    StoreReviewExceptionState.ToastNullCheckBox ->
+                        ToastUtil.getInstance().makeShort(
+                            getString(R.string.review_null_check_box)
+                        )
+                    StoreReviewExceptionState.ToastNullEtcReason ->
+                        ToastUtil.getInstance().makeShort(
+                            getString(R.string.review_null_etc_reason)
+                        )
                 }
             }
         }
-
     }
-
-
 }

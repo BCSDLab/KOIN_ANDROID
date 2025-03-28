@@ -1,12 +1,9 @@
 package `in`.koreatech.business.ui.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -16,12 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.ui.theme.ColorCategory
-import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Danger700
 import `in`.koreatech.business.ui.theme.Info700
 
@@ -31,31 +26,33 @@ fun DayCheckBox(
     dayName: String = "월",
     isChecked: Boolean
 ) {
-
-    val textColor = when(dayName){
-        "일" -> Danger700
-        "토" -> Info700
-        else -> Color.Black
-    }
+    val textColor =
+        when (dayName) {
+            "일" -> Danger700
+            "토" -> Info700
+            else -> Color.Black
+        }
 
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .shadow(
                 elevation = 2.dp,
                 shape = RoundedCornerShape(16.dp),
-                clip = false)
-            .background(
-                color = if(isChecked) ColorCategory else Color.White,
-                shape = RoundedCornerShape(16.dp)
+                clip = false
             )
-        ,
+            .background(
+                color = if (isChecked) ColorCategory else Color.White,
+                shape = RoundedCornerShape(16.dp)
+            ),
         contentAlignment = Alignment.TopCenter
-    ){
+    ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = dayName,
-            style = TextStyle(
-                color = if(isChecked) Color.White else textColor,
+            style =
+            TextStyle(
+                color = if (isChecked) Color.White else textColor,
                 fontSize = 14.sp
             )
         )
@@ -65,7 +62,7 @@ fun DayCheckBox(
 @Preview
 @Composable
 fun PreviewDayCheckBox(modifier: Modifier = Modifier) {
-    Row(){
+    Row {
         DayCheckBox(
             isChecked = true
         )
@@ -74,5 +71,4 @@ fun PreviewDayCheckBox(modifier: Modifier = Modifier) {
             isChecked = false
         )
     }
-
 }

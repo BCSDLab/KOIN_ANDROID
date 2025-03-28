@@ -1,22 +1,20 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
-import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.mapper.safeApiCall
 import `in`.koreatech.koin.data.requestbody.S3RequestBody
 import `in`.koreatech.koin.data.source.local.UploadImageLocalDataSource
 import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
 import `in`.koreatech.koin.domain.repository.PreSignedUrlRepository
+import java.io.InputStream
+import javax.inject.Inject
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
-import java.io.InputStream
-import javax.inject.Inject
 
 class PreSignedUrlRepositoryImpl @Inject constructor(
     private val preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource,
-    private val uploadImageLocalDataSource : UploadImageLocalDataSource
+    private val uploadImageLocalDataSource: UploadImageLocalDataSource
 ) : PreSignedUrlRepository {
     override suspend fun putPreSignedUrl(
         url: String,
@@ -43,7 +41,6 @@ class PreSignedUrlRepositoryImpl @Inject constructor(
         mediaSize: Long
     ): Result<Unit> {
         return safeApiCall {
-
             val file = uploadImageLocalDataSource.uriToBitmap(imageUri, mediaSize).toRequestBody(mediaType.toMediaTypeOrNull())
             preSignedUrlRemoteDataSource.putPreSignedUrl(url, file)
         }

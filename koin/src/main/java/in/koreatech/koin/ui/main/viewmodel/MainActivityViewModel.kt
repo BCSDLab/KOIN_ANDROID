@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
-import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.article.articleNotiContent
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -22,6 +20,7 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.state.toContent
 import `in`.koreatech.koin.ui.main.state.toNoti
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -31,7 +30,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
@@ -43,36 +41,37 @@ class MainActivityViewModel @Inject constructor(
     private val _variableName = MutableLiveData<String>()
     val variableName: LiveData<String> get() = _variableName
 
-    val bannerABTestExperimentGroup = flow {
-        abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
-            emit(it)
-        }.onFailure {
-            emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = null
-    ).filterNotNull()
+    val bannerABTestExperimentGroup =
+        flow {
+            abTestUseCase(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentTitle).onSuccess {
+                emit(it)
+            }.onFailure {
+                emit(Experiment.MAIN_ARTICLE_KEYWORD_BANNER.experimentGroups.first())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = null
+        ).filterNotNull()
 
-    val diningABTestExperimentGroup = flow {
-        abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
-            emit(it)
-        }.onFailure {
-            emit(Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first())
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first()
-    )
+    val diningABTestExperimentGroup =
+        flow {
+            abTestUseCase(Experiment.MAIN_DINING_SEE_MORE.experimentTitle).onSuccess {
+                emit(it)
+            }.onFailure {
+                emit(Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = Experiment.MAIN_DINING_SEE_MORE.experimentGroups.first()
+        )
 
     val hotArticles: StateFlow<List<ArticleMainState.Content>> =
         articleRepository.fetchHotArticleHeaders()
             .map {
                 it.take(HOT_ARTICLE_COUNT).map { article -> article.toContent() }
             }.catch {
-
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
@@ -87,19 +86,22 @@ class MainActivityViewModel @Inject constructor(
                 initialValue = articleNotiContent.first().toNoti()
             )
 
-    val articleMain: StateFlow<List<ArticleMainState>> = combine(
-        bannerABTestExperimentGroup, articleNoti, hotArticles
-    ) { experimentGroup, noti, articles ->
-        when (experimentGroup) {
-            ExperimentGroup.MAIN_BANNER_NEW -> listOf(noti) + articles
-            ExperimentGroup.MAIN_BANNER_ORIGINAL -> articles
-            else -> articles
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = emptyList()
-    )
+    val articleMain: StateFlow<List<ArticleMainState>> =
+        combine(
+            bannerABTestExperimentGroup,
+            articleNoti,
+            hotArticles
+        ) { experimentGroup, noti, articles ->
+            when (experimentGroup) {
+                ExperimentGroup.MAIN_BANNER_NEW -> listOf(noti) + articles
+                ExperimentGroup.MAIN_BANNER_ORIGINAL -> articles
+                else -> articles
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
 
     private val _selectedPosition = MutableLiveData(0)
     val selectedPosition: LiveData<Int> get() = _selectedPosition

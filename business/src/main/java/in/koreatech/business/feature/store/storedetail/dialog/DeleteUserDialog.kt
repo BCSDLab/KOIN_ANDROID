@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.store.storedetail.dialog
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,13 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Card
@@ -33,46 +28,49 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import `in`.koreatech.business.R
-import `in`.koreatech.koin.domain.model.store.Store
 
 @Composable
 fun DeleteUserDialog(
     onClickCancel: () -> Unit = {},
     deleteUser: () -> Unit = {},
-    dialogVisibility: Boolean = true,
+    dialogVisibility: Boolean = true
 ) {
-    if(dialogVisibility){
+    if (dialogVisibility) {
         Dialog(
             onDismissRequest = { onClickCancel() },
-            properties = DialogProperties(
+            properties =
+            DialogProperties(
                 dismissOnBackPress = true,
-                dismissOnClickOutside = true,
+                dismissOnClickOutside = true
             )
         ) {
             Card(
-                shape = RoundedCornerShape(
+                shape =
+                RoundedCornerShape(
                     topStart = 20.dp,
                     topEnd = 20.dp,
                     bottomStart = 20.dp,
                     bottomEnd = 20.dp
-                ),
-            )
-            {
+                )
+            ) {
                 Column(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .width(300.dp)
                         .wrapContentHeight(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .padding(top = 16.dp)
                             .fillMaxWidth()
                     ) {
                         Image(
                             painter = painterResource(R.drawable.ic_x),
                             contentDescription = "",
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .align(Alignment.TopEnd)
                                 .padding(end = 16.dp)
                                 .clickable {
@@ -98,13 +96,13 @@ fun DeleteUserDialog(
                     )
 
                     Row(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .padding(top = 35.dp)
                             .padding(horizontal = 40.dp)
-                            .fillMaxWidth()
-                        ,
+                            .fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ){
+                    ) {
                         Button(
                             modifier = Modifier.weight(1F),
                             onClick = {
@@ -124,7 +122,6 @@ fun DeleteUserDialog(
                             Text(text = stringResource(id = R.string.check))
                         }
                     }
-
                 }
             }
         }

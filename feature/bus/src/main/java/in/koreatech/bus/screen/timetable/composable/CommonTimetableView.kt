@@ -47,7 +47,8 @@ internal fun CommonTimetableView(
                     timetable.amDepartures.fastForEach {
                         CommonTimetableItem(
                             arrival = it,
-                            textStyle = KoinTheme.typography.bold18.copy(
+                            textStyle =
+                            KoinTheme.typography.bold18.copy(
                                 color = KoinTheme.colors.warning500
                             ),
                             modifier = Modifier
@@ -67,7 +68,8 @@ internal fun CommonTimetableView(
                     timetable.pmDepartures.fastForEach {
                         CommonTimetableItem(
                             arrival = it,
-                            textStyle = KoinTheme.typography.bold18.copy(
+                            textStyle =
+                            KoinTheme.typography.bold18.copy(
                                 color = KoinTheme.colors.info700
                             ),
                             modifier = Modifier

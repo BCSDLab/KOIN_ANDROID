@@ -43,7 +43,6 @@ import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.component.HighlightedText
 import `in`.koreatech.koin.feature.timetable.component.TextCheckbox
 
-
 @Composable
 fun EditTimetableFrameDialog(
     timetableFrameState: TimetableFrame?,
@@ -74,7 +73,6 @@ fun EditTimetableFrameDialog(
                     )
                 )
             }
-
         },
         onClickDelete = { showingDeleteDialog = true },
         onValueChanged = {
@@ -87,7 +85,7 @@ fun EditTimetableFrameDialog(
         },
         onCheckChanged = {
             isMain = it
-        },
+        }
     )
 
     if (showingDeleteDialog) {
@@ -117,20 +115,21 @@ private fun EditTimetableFrameDialog(
     onCheckChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     BasicAlertDialog(
         modifier = modifier,
         onDismissRequest = onDismiss
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .wrapContentWidth()
                 .wrapContentHeight()
                 .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
                 .padding(horizontal = 24.dp)
         ) {
             FilledTextButton(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(top = 16.dp)
                     .height(24.dp),
                 text = stringResource(id = R.string.edit_titletable_frame_delete),
@@ -139,7 +138,8 @@ private fun EditTimetableFrameDialog(
                 onClick = onClickDelete
             )
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(vertical = 26.dp, horizontal = 0.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -151,20 +151,24 @@ private fun EditTimetableFrameDialog(
                 )
                 // TODO:: 높이 수정 필요
                 TextField(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxWidth()
                         .border(
-                            border = BorderStroke(
+                            border =
+                            BorderStroke(
                                 width = 1.dp,
                                 color = KoinTheme.colors.neutral300
                             ),
                             shape = KoinTheme.shapes.extraSmall
                         ),
                     value = timetableName,
-                    textStyle = KoinTheme.typography.regular14.copy(
+                    textStyle =
+                    KoinTheme.typography.regular14.copy(
                         color = KoinTheme.colors.neutral500
                     ),
-                    colors = TextFieldDefaults.colors(
+                    colors =
+                    TextFieldDefaults.colors(
                         unfocusedContainerColor = KoinTheme.colors.neutral100, // 배경색 (클릭 X)
                         focusedContainerColor = KoinTheme.colors.neutral100, // 배경색 (클릭 O)
                         unfocusedIndicatorColor = Color.Transparent, // 밑줄색 (클릭 X)
@@ -187,7 +191,8 @@ private fun EditTimetableFrameDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedBoxButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.common_cancellation),
@@ -195,7 +200,8 @@ private fun EditTimetableFrameDialog(
                         colors = OutlinedBoxButtonColors.Neutral
                     )
                     FilledTextButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.common_save),
@@ -204,7 +210,6 @@ private fun EditTimetableFrameDialog(
                 }
             }
         }
-
     }
 }
 
@@ -216,23 +221,26 @@ private fun DeleteTimetableFrameDialog(
     onConfirm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val title = stringArrayResource(id = R.array.delete_titletable_frame_title).apply {
-        this[0] = String.format(this[0], timetableName)
-    }
+    val title =
+        stringArrayResource(id = R.array.delete_titletable_frame_title).apply {
+            this[0] = String.format(this[0], timetableName)
+        }
 
     BasicAlertDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier,
+        modifier = modifier
     ) {
         Surface(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .wrapContentWidth()
                 .wrapContentHeight(),
             shape = KoinTheme.shapes.extraSmall,
             color = Color.White
         ) {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(
                         horizontal = 32.dp,
@@ -243,11 +251,13 @@ private fun DeleteTimetableFrameDialog(
                 HighlightedText(
                     texts = title,
                     highlightIndices = listOf(1),
-                    defaultStyle = KoinTheme.typography.medium16.copy(
-                        color = KoinTheme.colors.neutral600,
+                    defaultStyle =
+                    KoinTheme.typography.medium16.copy(
+                        color = KoinTheme.colors.neutral600
                     ),
-                    highlightStyle = KoinTheme.typography.bold16.copy(
-                        color = KoinTheme.colors.danger700,
+                    highlightStyle =
+                    KoinTheme.typography.bold16.copy(
+                        color = KoinTheme.colors.danger700
                     )
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -256,7 +266,8 @@ private fun DeleteTimetableFrameDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedBoxButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.common_cancellation),
@@ -264,7 +275,8 @@ private fun DeleteTimetableFrameDialog(
                         colors = OutlinedBoxButtonColors.Neutral
                     )
                     FilledButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.delete_titletable_frame_confirmation),
@@ -277,13 +289,13 @@ private fun DeleteTimetableFrameDialog(
     }
 }
 
-
 @Preview
 @Composable
 private fun EditTimetableFrameDialogPreview() {
     KoinTheme {
         EditTimetableFrameDialog(
-            timetableFrameState = TimetableFrame(
+            timetableFrameState =
+            TimetableFrame(
                 id = 1,
                 timetableName = "시간표1",
                 isMain = true
@@ -302,7 +314,7 @@ private fun DeleteTimetableFrameDialogPreview() {
         DeleteTimetableFrameDialog(
             timetableName = "시간표1",
             onDismiss = {},
-            onConfirm = {},
+            onConfirm = {}
         )
     }
 }

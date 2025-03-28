@@ -9,7 +9,7 @@ class CheckEmailValidationUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val userErrorHandler: UserErrorHandler
 ) {
-    suspend operator fun invoke(email: String) : Pair<Boolean?, ErrorHandler?> {
+    suspend operator fun invoke(email: String): Pair<Boolean?, ErrorHandler?> {
         return try {
             userRepository.isUserEmailDuplicated(email) to null
         } catch (t: Throwable) {

@@ -14,8 +14,8 @@ import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.util.ext.toSHA256
-import retrofit2.HttpException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class SignupRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
@@ -46,7 +46,7 @@ class SignupRepositoryImpl @Inject constructor(
         nickName: String?,
         password: String,
         phoneNumber: String?,
-        studentNumber: String?,
+        studentNumber: String?
     ): Result<Unit> {
         return try {
             userRemoteDataSource.sendRegisterEmail(
@@ -64,8 +64,11 @@ class SignupRepositoryImpl @Inject constructor(
             )
             Result.success(Unit)
         } catch (e: HttpException) {
-            if (e.code() == 409) Result.failure(SignupAlreadySentEmailException())
-            else Result.failure(Throwable(e.getErrorResponse()?.message ?: ""))
+            if (e.code() == 409) {
+                Result.failure(SignupAlreadySentEmailException())
+            } else {
+                Result.failure(Throwable(e.getErrorResponse()?.message ?: ""))
+            }
         } catch (t: Throwable) {
             Result.failure(t)
         }

@@ -7,6 +7,20 @@ import javax.inject.Inject
 class SendMessageUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
-    suspend operator fun invoke(articleId: Int, chatRoomId: Int, message: ChatMessage) =
-        chatRepository.sendMessage(articleId, chatRoomId, message)
+    suspend operator fun invoke(
+        articleId: Int,
+        chatRoomId: Int,
+        message: ChatMessage
+    ): Result<Unit> = chatRepository.sendMessage(articleId, chatRoomId, message).onFailure {
+        when (it) {
+            is UninitializedPropertyAccessException -> {
+                chatRepository.connectWS(retry = true)
+                invoke(articleId, chatRoomId, message)
+            }
+
+            else -> {
+                throw it
+            }
+        }
+    }
 }

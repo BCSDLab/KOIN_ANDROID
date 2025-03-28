@@ -13,15 +13,17 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val LightColorScheme = lightColors(
-    primary = ColorPrimary,
-    secondary = ColorSecondary,
-)
+private val LightColorScheme =
+    lightColors(
+        primary = ColorPrimary,
+        secondary = ColorSecondary
+    )
 
-private val DarkColorScheme = darkColors(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-)
+private val DarkColorScheme =
+    darkColors(
+        primary = Purple40,
+        secondary = PurpleGrey40
+    )
 
 @Composable
 fun KOIN_ANDROIDTheme(
@@ -30,14 +32,15 @@ fun KOIN_ANDROIDTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            if (darkTheme) DarkColorScheme else LightColorScheme
-        }
+    val colorScheme =
+        when {
+            dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                if (darkTheme) DarkColorScheme else LightColorScheme
+            }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+            darkTheme -> DarkColorScheme
+            else -> LightColorScheme
+        }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {

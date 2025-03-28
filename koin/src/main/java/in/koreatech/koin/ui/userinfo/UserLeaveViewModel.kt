@@ -7,17 +7,16 @@ import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.domain.usecase.user.UserRemoveUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class UserLeaveViewModel @Inject constructor(
     private val userRemoveUseCase: UserRemoveUseCase
 ) : ViewModel() {
-
     private val _uiStatus = MutableStateFlow<UiStatus>(UiStatus.Init)
     val uiStatus: StateFlow<UiStatus> = _uiStatus.asStateFlow()
 
@@ -31,6 +30,5 @@ class UserLeaveViewModel @Inject constructor(
                     _uiStatus.value = UiStatus.Failed(errorHandler.message)
                 }
         }
-
     }
 }

@@ -4,7 +4,6 @@ import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 
-
 internal fun CustomContentState.isValidationPlace(): Boolean {
     val content = this.data
     content.forEach { it ->
@@ -23,13 +22,14 @@ internal fun CustomContentState.permuteDuplicationLecture(): List<CustomExtraCon
             if (duplicate(content[j], content[i])) {
                 var editContents = content.toMutableList()
 
-                editContents = editContents.map {
-                    if (it.id == content[j].id) {
-                        it.copy(isError = true)
-                    } else {
-                        it
-                    }
-                }.toMutableList()
+                editContents =
+                    editContents.map {
+                        if (it.id == content[j].id) {
+                            it.copy(isError = true)
+                        } else {
+                            it
+                        }
+                    }.toMutableList()
 
                 return editContents
             }
@@ -42,7 +42,7 @@ internal fun CustomContentState.permuteDuplicationLecture(): List<CustomExtraCon
 // 직접 강의 추가 시, 기존 강의와 중복 검증
 internal fun CustomContentState.duplicationByTimeTableEvents(events: List<TimetableEvent>): TimetableEvent? {
     events.forEach { event ->
-        this.data.forEach {content ->
+        this.data.forEach { content ->
             duplicateWithTimetableEvent(event, content).let {
                 if (it) {
                     return event
@@ -53,7 +53,6 @@ internal fun CustomContentState.duplicationByTimeTableEvents(events: List<Timeta
 
     return null
 }
-
 
 private fun duplicate(
     content: CustomExtraContentState,

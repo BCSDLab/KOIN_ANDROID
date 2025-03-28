@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -15,42 +16,44 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class InsertBasicInfoScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
-): ViewModel(), ContainerHost<InsertBasicInfoScreenState, InsertBasicInfoScreenSideEffect> {
-    override val container: Container<InsertBasicInfoScreenState,InsertBasicInfoScreenSideEffect> =
-        container(InsertBasicInfoScreenState(), savedStateHandle = savedStateHandle){
+) : ViewModel(), ContainerHost<InsertBasicInfoScreenState, InsertBasicInfoScreenSideEffect> {
+    override val container: Container<InsertBasicInfoScreenState, InsertBasicInfoScreenSideEffect> =
+        container(InsertBasicInfoScreenState(), savedStateHandle = savedStateHandle) {
             val categoryId = savedStateHandle.get<Int>("categoryId")
             checkNotNull(categoryId)
             getCategoryId(categoryId)
         }
 
-    fun insertStoreName(storeName: String) = blockingIntent {
-        reduce {
-            state.copy(storeName = storeName)
+    fun insertStoreName(storeName: String) =
+        blockingIntent {
+            reduce {
+                state.copy(storeName = storeName)
+            }
+            isBasicInfoValidate()
         }
-        isBasicInfoValidate()
-    }
 
-    fun insertStoreAddress(storeAddress: String) = blockingIntent{
-        reduce {
-            state.copy(storeAddress = storeAddress)
+    fun insertStoreAddress(storeAddress: String) =
+        blockingIntent {
+            reduce {
+                state.copy(storeAddress = storeAddress)
+            }
+            isBasicInfoValidate()
         }
-        isBasicInfoValidate()
-    }
 
-    fun insertStoreImage(storeImage: Uri) = intent{
-        reduce {
-            state.copy(storeImage = storeImage)
+    fun insertStoreImage(storeImage: Uri) =
+        intent {
+            reduce {
+                state.copy(storeImage = storeImage)
+            }
+            isBasicInfoValidate()
+            storeImageIsEmpty()
         }
-        isBasicInfoValidate()
-        storeImageIsEmpty()
-    }
 
     fun getPreSignedUrl(
         fileSize: Long,
@@ -59,10 +62,12 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         imageUri: String
     ) {
         intent {
-            if(state.storeImagePreSignedUrl == ""){
-                viewModelScope.launch{
+            if (state.storeImagePreSignedUrl == "") {
+                viewModelScope.launch {
                     getMarketPreSignedUrlUseCase(
-                        fileSize, fileType, fileName
+                        fileSize,
+                        fileType,
+                        fileName
                     ).onSuccess {
                         uploadImage(
                             preSignedUrl = it.second,
@@ -75,8 +80,7 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
                         failUploadImage()
                     }
                 }
-            }
-            else{
+            } else {
                 uploadImage(
                     preSignedUrl = state.storeImagePreSignedUrl,
                     fileUrl = state.storeImageFileUrl,
@@ -95,7 +99,7 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         mediaSize: Long,
         imageUri: String
     ) {
-        viewModelScope.launch{
+        viewModelScope.launch {
             uploadFilesUseCase(
                 preSignedUrl,
                 mediaType,
@@ -110,40 +114,52 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         }
     }
 
-    fun onNextButtonClick(){
-        intent{
-            if(state.isBasicInfoValid){
-                val storeBasicInfo = InsertBasicInfoScreenState(
-                    storeName = state.storeName,
-                    storeAddress = state.storeAddress,
-                    storeImageFileUrl = state.storeImageFileUrl,
-                    storeCategory = state.storeCategory
-                )
+    fun onNextButtonClick() {
+        intent {
+            if (state.isBasicInfoValid) {
+                val storeBasicInfo =
+                    InsertBasicInfoScreenState(
+                        storeName = state.storeName,
+                        storeAddress = state.storeAddress,
+                        storeImageFileUrl = state.storeImageFileUrl,
+                        storeCategory = state.storeCategory
+                    )
                 postSideEffect(InsertBasicInfoScreenSideEffect.NavigateToInsertDetailInfoScreen(storeBasicInfo))
                 return@intent
             }
 
-                when {
-                    state.storeImageIsEmpty -> postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreImage))
-                    state.storeName.isEmpty() -> postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreName))
-                    state.storeAddress.isEmpty() -> postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreAddress))
-                }
+            when {
+                state.storeImageIsEmpty ->
+                    postSideEffect(
+                        InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreImage)
+                    )
+                state.storeName.isEmpty() ->
+                    postSideEffect(
+                        InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreName)
+                    )
+                state.storeAddress.isEmpty() ->
+                    postSideEffect(
+                        InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreAddress)
+                    )
+            }
         }
     }
 
-    private fun failUploadImage() = intent{
-        postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.FailUploadImage))
-    }
-
-    private fun storeImageIsEmpty() = intent{
-        reduce {
-            state.copy(storeImageIsEmpty = state.storeImage == Uri.EMPTY)
+    private fun failUploadImage() =
+        intent {
+            postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.FailUploadImage))
         }
-        isBasicInfoValidate()
-    }
 
-    private fun getCategoryId(id: Int){
-        intent{
+    private fun storeImageIsEmpty() =
+        intent {
+            reduce {
+                state.copy(storeImageIsEmpty = state.storeImage == Uri.EMPTY)
+            }
+            isBasicInfoValidate()
+        }
+
+    private fun getCategoryId(id: Int) {
+        intent {
             reduce {
                 state.copy(
                     storeCategory = id
@@ -152,8 +168,8 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         }
     }
 
-    private fun insertStorePreSignedUrl(url: String){
-        intent{
+    private fun insertStorePreSignedUrl(url: String) {
+        intent {
             reduce {
                 state.copy(
                     storeImagePreSignedUrl = url
@@ -162,8 +178,8 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         }
     }
 
-    private fun insertStoreFileUrl(url: String){
-        intent{
+    private fun insertStoreFileUrl(url: String) {
+        intent {
             reduce {
                 state.copy(
                     storeImageFileUrl = url
@@ -172,12 +188,12 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         }
     }
 
-    private fun isBasicInfoValidate() = intent {
-        reduce {
-            state.copy(
-                isBasicInfoValid = state.storeAddress.isNotBlank() && state.storeName.isNotBlank() && state.storeImage != Uri.EMPTY
-            )
+    private fun isBasicInfoValidate() =
+        intent {
+            reduce {
+                state.copy(
+                    isBasicInfoValid = state.storeAddress.isNotBlank() && state.storeName.isNotBlank() && state.storeImage != Uri.EMPTY
+                )
+            }
         }
-    }
-
 }

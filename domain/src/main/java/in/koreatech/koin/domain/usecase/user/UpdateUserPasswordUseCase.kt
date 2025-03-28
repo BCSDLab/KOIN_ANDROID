@@ -8,8 +8,10 @@ import javax.inject.Inject
 class UpdateUserPasswordUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
-
-    suspend operator fun invoke(user: User, password: String): Result<Unit> {
+    suspend operator fun invoke(
+        user: User,
+        password: String
+    ): Result<Unit> {
         return runCatching {
             when (user) {
                 is User.Anonymous -> {

@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.findpassword.passwordauthentication
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,6 +7,7 @@ import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import `in`.koreatech.koin.domain.usecase.business.changepassword.AuthenticateSmsCodeUseCase
 import `in`.koreatech.koin.domain.usecase.business.changepassword.SendAuthSmsCodeUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -17,7 +17,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class PasswordAuthenticationViewModel @Inject constructor(
@@ -50,29 +49,31 @@ class PasswordAuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun insertPhoneNumber(phoneNumber: String) = blockingIntent {
-        reduce {
-            state.copy(
-                phoneNumber = phoneNumber,
-                authenticationBtnIsClicked = false,
-                accountContinuationState = ChangePasswordContinuationState.RequestedSmsValidation,
-            )
+    fun insertPhoneNumber(phoneNumber: String) =
+        blockingIntent {
+            reduce {
+                state.copy(
+                    phoneNumber = phoneNumber,
+                    authenticationBtnIsClicked = false,
+                    accountContinuationState = ChangePasswordContinuationState.RequestedSmsValidation
+                )
+            }
         }
-    }
 
-    fun insertAuthCode(authCode: String) = blockingIntent {
-        reduce {
-            state.copy(
-                authenticationCode = authCode,
-                smsAuthContinuationState = ChangePasswordContinuationState.RequestedSmsValidation,
-            )
+    fun insertAuthCode(authCode: String) =
+        blockingIntent {
+            reduce {
+                state.copy(
+                    authenticationCode = authCode,
+                    smsAuthContinuationState = ChangePasswordContinuationState.RequestedSmsValidation
+                )
+            }
         }
-    }
 
-    private fun goToPasswordChangeScreen() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.GotoChangePasswordScreen(state.phoneNumber))
-    }
-
+    private fun goToPasswordChangeScreen() =
+        intent {
+            postSideEffect(PasswordAuthenticationSideEffect.GotoChangePasswordScreen(state.phoneNumber))
+        }
 
     fun sendAuthCode(phoneNumber: String) {
         viewModelScope.launch {
@@ -80,7 +81,10 @@ class PasswordAuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun authenticateCode(email: String, authCode: String) {
+    fun authenticateCode(
+        email: String,
+        authCode: String
+    ) {
         viewModelScope.launch {
             authenticateCodeFlow.emit(email to authCode)
         }
@@ -94,7 +98,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
                         state.copy(
                             accountContinuationState = ChangePasswordContinuationState.SendAuthCode,
                             authenticationBtnIsClicked = true,
-                            sendSmsError = null,
+                            sendSmsError = null
                         )
                     }
                 }
@@ -103,7 +107,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
                 intent {
                     reduce {
                         state.copy(
-                            sendSmsError = it,
+                            sendSmsError = it
                         )
                     }
                 }
@@ -123,13 +127,14 @@ class PasswordAuthenticationViewModel @Inject constructor(
             }
                 .onFailure {
                     when (it) {
-                        OwnerError.IncorrectParaMeter -> intent {
-                            reduce {
-                                state.copy(
-                                    smsAuthContinuationState = ChangePasswordContinuationState.Failed()
-                                )
+                        OwnerError.IncorrectParaMeter ->
+                            intent {
+                                reduce {
+                                    state.copy(
+                                        smsAuthContinuationState = ChangePasswordContinuationState.Failed()
+                                    )
+                                }
                             }
-                        }
                     }
                 }
         }

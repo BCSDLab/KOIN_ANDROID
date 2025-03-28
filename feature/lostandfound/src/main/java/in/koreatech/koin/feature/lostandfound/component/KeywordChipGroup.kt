@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +24,6 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.chip.ChipOverflowStrategy.Flow
 import `in`.koreatech.koin.core.designsystem.component.chip.TextChipColors
@@ -51,7 +49,6 @@ fun KeywordChipGroup(
         modifier = modifier
     )
 }
-
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -113,13 +110,15 @@ internal fun LostAndFoundTextChipScrollGroup(
     chipColors: TextChipColors = TextChipDefaults.chipColors()
 ) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .horizontalScroll(rememberScrollState())
             .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
             .drawWithContent {
                 drawContent()
                 drawRect(
-                    brush = Brush.horizontalGradient(
+                    brush =
+                    Brush.horizontalGradient(
                         0f to Color.White,
                         0.1f to Color.Transparent,
                         0.9f to Color.Transparent,
@@ -142,7 +141,6 @@ internal fun LostAndFoundTextChipScrollGroup(
         }
     }
 }
-
 
 /**
  * 텍스트 칩
@@ -169,13 +167,18 @@ fun LostAndFoundTextChip(
     onSelect: () -> Unit = {}
 ) {
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .clip(shape)
             .then(
-                if (showClickRipple) Modifier.clickable {
-                    onSelect()
-                } else Modifier.noRippleClickable {
-                    onSelect()
+                if (showClickRipple) {
+                    Modifier.clickable {
+                        onSelect()
+                    }
+                } else {
+                    Modifier.noRippleClickable {
+                        onSelect()
+                    }
                 }
             )
             .background(if (isSelected) chipColors.selectedContainerColor else chipColors.unselectedContainerColor)
@@ -190,11 +193,11 @@ fun LostAndFoundTextChip(
     }
 }
 
-
 @Composable
-fun keywordChipColors() = TextChipDefaults.chipColors(
-    selectedContainerColor = KoinTheme.colors.primary500,
-    unselectedContainerColor = KoinTheme.colors.neutral100,
-    selectedContentColor = KoinTheme.colors.neutral100,
-    unselectedContentColor = KoinTheme.colors.neutral500
-)
+fun keywordChipColors() =
+    TextChipDefaults.chipColors(
+        selectedContainerColor = KoinTheme.colors.primary500,
+        unselectedContainerColor = KoinTheme.colors.neutral100,
+        selectedContentColor = KoinTheme.colors.neutral100,
+        unselectedContentColor = KoinTheme.colors.neutral500
+    )

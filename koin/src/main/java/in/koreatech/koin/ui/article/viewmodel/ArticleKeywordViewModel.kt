@@ -7,6 +7,7 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,7 +20,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 @HiltViewModel
 class ArticleKeywordViewModel @Inject constructor(
@@ -27,47 +27,53 @@ class ArticleKeywordViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
     getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
+    val user: StateFlow<User> =
+        getUserStatusUseCase()
+            .stateIn(viewModelScope, SharingStarted.Eagerly, User.Anonymous)
 
-    val user: StateFlow<User> = getUserStatusUseCase()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, User.Anonymous)
-
-    val keywordInputUiState: StateFlow<KeywordInputUiState> = savedStateHandle.getStateFlow(KEYWORD_INPUT, "").map {
-        if (it.isEmpty()) KeywordInputUiState.Empty else KeywordInputUiState.Valid(it)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = KeywordInputUiState.Empty
-    )
-
-    val myKeywords: StateFlow<List<String>> = articleRepository.fetchMyKeyword()
-        .stateIn(
+    val keywordInputUiState: StateFlow<KeywordInputUiState> =
+        savedStateHandle.getStateFlow(KEYWORD_INPUT, "").map {
+            if (it.isEmpty()) KeywordInputUiState.Empty else KeywordInputUiState.Valid(it)
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = listOf()
+            initialValue = KeywordInputUiState.Empty
         )
 
-    private val _keywordAddUiState = MutableSharedFlow<KeywordAddUiState>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
-    val keywordAddUiState: SharedFlow<KeywordAddUiState> = _keywordAddUiState
-        .shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-        )
+    val myKeywords: StateFlow<List<String>> =
+        articleRepository.fetchMyKeyword()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = listOf()
+            )
 
-    val suggestedKeywords: StateFlow<List<String>> = articleRepository.fetchKeywordSuggestions()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = listOf()
+    private val _keywordAddUiState =
+        MutableSharedFlow<KeywordAddUiState>(
+            extraBufferCapacity = 1,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST
         )
+    val keywordAddUiState: SharedFlow<KeywordAddUiState> =
+        _keywordAddUiState
+            .shareIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000)
+            )
+
+    val suggestedKeywords: StateFlow<List<String>> =
+        articleRepository.fetchKeywordSuggestions()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = listOf()
+            )
 
     fun addKeyword(keyword: String) {
-        val trimmedKeyword = keyword.trim().ifEmpty {
-            _keywordAddUiState.tryEmit(KeywordAddUiState.RequireInput)
-            return
-        }
+        val trimmedKeyword =
+            keyword.trim().ifEmpty {
+                _keywordAddUiState.tryEmit(KeywordAddUiState.RequireInput)
+                return
+            }
         if (myKeywords.value.size >= MAX_KEYWORD_COUNT) {
             _keywordAddUiState.tryEmit(KeywordAddUiState.LimitExceeded)
             return
@@ -120,17 +126,26 @@ class ArticleKeywordViewModel @Inject constructor(
 
 sealed interface KeywordAddUiState {
     data object Nothing : KeywordAddUiState
+
     data object Loading : KeywordAddUiState
+
     data class Success(val keyword: String) : KeywordAddUiState
+
     data object AlreadyExist : KeywordAddUiState
+
     data object LimitExceeded : KeywordAddUiState
+
     data object BlankNotAllowed : KeywordAddUiState
+
     data object InvalidLength : KeywordAddUiState
+
     data object RequireInput : KeywordAddUiState
+
     data object Error : KeywordAddUiState
 }
 
 sealed interface KeywordInputUiState {
     data object Empty : KeywordInputUiState
+
     data class Valid(val keyword: String) : KeywordInputUiState
 }

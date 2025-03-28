@@ -3,11 +3,12 @@ package `in`.koreatech.koin.feature.chat.ui.room
 import android.net.Uri
 import android.os.Parcelable
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ChatRoomState(
+    val isLoading: Boolean = true,
     val articleId: Int = 0,
     val chatRoomId: Int = 0,
     val userId: Int = 0,

@@ -8,7 +8,7 @@ data class ShopMenus(
     val singlePrice: Int?,
     val optionPrices: List<ShopMenuOptions>?,
     val description: String?,
-    val imageUrls: List<String>?,
+    val imageUrls: List<String>?
 ) {
     data class ShopMenuOptions(
         val option: String,

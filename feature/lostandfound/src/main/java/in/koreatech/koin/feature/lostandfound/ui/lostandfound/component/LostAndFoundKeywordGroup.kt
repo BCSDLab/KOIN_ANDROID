@@ -48,41 +48,47 @@ fun LostAndFoundKeywordGroup(
      * TextStyle for keyword chip
      * for match design with xml based view
      */
-    val textStyle = TextStyle(
-        fontSize = 14.sp,
-        fontStyle = FontStyle.Normal,
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.None
-        ),
-        letterSpacing = 0.2.sp,
-        lineHeight = 20.sp,
-    )
+    val textStyle =
+        TextStyle(
+            fontSize = 14.sp,
+            fontStyle = FontStyle.Normal,
+            platformStyle =
+            PlatformTextStyle(
+                includeFontPadding = false
+            ),
+            lineHeightStyle =
+            LineHeightStyle(
+                alignment = LineHeightStyle.Alignment.Center,
+                trim = LineHeightStyle.Trim.None
+            ),
+            letterSpacing = 0.2.sp,
+            lineHeight = 20.sp
+        )
 
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .padding(vertical = 16.dp, horizontal = 24.dp)
             .horizontalFadingEdge(scrollState, 24.dp, Color.White)
             .horizontalScroll(scrollState),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier
-            .size(32.dp)
-            .background(
-                color = Color(0xFFF5F5F5),
-                shape = RoundedCornerShape(size = 999.dp)
-            )
-            .noRippleClickable {
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MANAGE_KEYWORD,
-                    "키워드관리"
+        Box(
+            modifier =
+            Modifier
+                .size(32.dp)
+                .background(
+                    color = Color(0xFFF5F5F5),
+                    shape = RoundedCornerShape(size = 999.dp)
                 )
-                navigateToKeywordFragment()
-            },
+                .noRippleClickable {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.MANAGE_KEYWORD,
+                        "키워드관리"
+                    )
+                    navigateToKeywordFragment()
+                },
             contentAlignment = Alignment.Center
         ) {
             Image(
@@ -95,7 +101,8 @@ fun LostAndFoundKeywordGroup(
         Spacer(modifier = Modifier.width(8.dp))
 
         LostAndFoundTextChip(
-            modifier = Modifier.defaultMinSize(
+            modifier =
+            Modifier.defaultMinSize(
                 minWidth = Dp.Unspecified,
                 minHeight = 32.dp
             ),
@@ -116,7 +123,8 @@ fun LostAndFoundKeywordGroup(
 
         keyWords.forEachIndexed { index, it ->
             LostAndFoundTextChip(
-                modifier = Modifier.defaultMinSize(
+                modifier =
+                Modifier.defaultMinSize(
                     minWidth = Dp.Unspecified,
                     minHeight = 32.dp
                 ),
@@ -132,7 +140,8 @@ fun LostAndFoundKeywordGroup(
 
         if (keyWords.isEmpty()) {
             LostAndFoundTextChip(
-                modifier = Modifier.defaultMinSize(
+                modifier =
+                Modifier.defaultMinSize(
                     minWidth = Dp.Unspecified,
                     minHeight = 32.dp
                 ),

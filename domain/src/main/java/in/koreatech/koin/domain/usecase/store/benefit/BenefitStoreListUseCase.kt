@@ -7,7 +7,8 @@ import javax.inject.Inject
 class BenefitStoreListUseCase @Inject constructor(
     private val storeRepository: StoreRepository
 ) {
-    suspend operator fun invoke(uid: Int): Result<StoreBenefit> = runCatching {
-        storeRepository.getStoreBenefitShopList(uid)
-    }
+    suspend operator fun invoke(uid: Int): Result<StoreBenefit> =
+        runCatching {
+            storeRepository.getStoreBenefitShopList(uid)
+        }
 }

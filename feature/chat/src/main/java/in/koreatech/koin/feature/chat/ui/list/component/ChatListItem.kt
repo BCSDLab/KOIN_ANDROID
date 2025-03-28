@@ -53,28 +53,32 @@ fun ChatListItem(
     }
 
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .padding(vertical = 18.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (URLUtil.isValidUrl(imageUrl) && imageUrl.isNotEmpty()) {
             SubcomposeAsyncImage(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .size(48.dp),
-                model = ImageRequest.Builder(LocalContext.current)
+                model =
+                ImageRequest.Builder(LocalContext.current)
                     .data(imageUrl)
                     .crossfade(true)
                     .build(),
                 loading = {
                     Box(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .border(1.dp, KoinTheme.colors.neutral300, shape = KoinTheme.shapes.medium),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_chat_list_thumbnail),
-                            contentDescription = null,
+                            contentDescription = null
                         )
                     }
                 },
@@ -83,14 +87,15 @@ fun ChatListItem(
             )
         } else {
             Box(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .size(48.dp)
                     .border(1.dp, KoinTheme.colors.neutral300, shape = KoinTheme.shapes.medium),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_chat_list_thumbnail),
-                    contentDescription = null,
+                    contentDescription = null
                 )
             }
         }
@@ -131,7 +136,8 @@ fun ChatListItem(
 
                 if (unReadMessageCount > 0) {
                     Box(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .clip(CircleShape)
                             .background(KoinTheme.colors.primary500)
                             .padding(horizontal = 6.dp),
@@ -140,7 +146,7 @@ fun ChatListItem(
                         Text(
                             text = "$unReadMessageCount",
                             style = KoinTheme.typography.regular12,
-                            color = KoinTheme.colors.neutral0,
+                            color = KoinTheme.colors.neutral0
                         )
                     }
                 }

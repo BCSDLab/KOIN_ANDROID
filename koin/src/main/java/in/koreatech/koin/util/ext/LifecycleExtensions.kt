@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.util.ext
 
-import android.app.Activity
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

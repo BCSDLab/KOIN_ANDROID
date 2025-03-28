@@ -59,7 +59,7 @@ fun LostAndFoundFAB(
 
     LostAndFoundFABButton(
         painter = dialogExpandButtonPainter,
-        text = dialogExpandButtonText,
+        text = dialogExpandButtonText
     ) {
         onDialogExpandedChange(!isDialogExpanded)
     }
@@ -72,7 +72,8 @@ fun LostAndFoundFABButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) = Box(
-    modifier = modifier
+    modifier =
+    modifier
         .border(width = 1.dp, color = KoinTheme.colors.neutral300, shape = RoundedCornerShape(50))
         .background(color = KoinTheme.colors.neutral0, shape = RoundedCornerShape(50))
         .padding(vertical = 8.dp, horizontal = 12.dp)

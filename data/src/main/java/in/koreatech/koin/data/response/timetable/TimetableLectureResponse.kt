@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.response.timetable
 import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.timetable.response.TimetableLecture
 
+@Deprecated("use TimetableLectureResponseV3 instead")
 data class TimetableLectureResponse(
     @SerializedName("id")
     val id: Int,
@@ -29,21 +30,22 @@ data class TimetableLectureResponse(
     @SerializedName("professor") // "이돈우"
     val professor: String?,
     @SerializedName("department") // "디자인ㆍ건축공학부"
-    val department: String?,
+    val department: String?
 ) {
-    fun toTimetableLecture() = TimetableLecture(
-        id = id,
-        lectureId = lectureId ?: 0,
-        regularNumber = regularNumber.orEmpty(),
-        code = code.orEmpty(),
-        designScore = designScore.orEmpty(),
-        classInfos = classInfos.map { it.toTimetableLectureClassInfo() },
-        memo = memo.orEmpty(),
-        grades = grades.orEmpty(),
-        classTitle = classTitle.orEmpty(),
-        lectureClass = lectureClass.orEmpty(),
-        target = target.orEmpty(),
-        professor = professor.orEmpty(),
-        department = department.orEmpty()
-    )
+    fun toTimetableLecture() =
+        TimetableLecture(
+            id = id,
+            lectureId = lectureId ?: 0,
+            regularNumber = regularNumber.orEmpty(),
+            code = code.orEmpty(),
+            designScore = designScore.orEmpty(),
+            classInfos = classInfos.map { it.toTimetableLectureClassInfo() },
+            memo = memo.orEmpty(),
+            grades = grades.orEmpty(),
+            classTitle = classTitle.orEmpty(),
+            lectureClass = lectureClass.orEmpty(),
+            target = target.orEmpty(),
+            professor = professor.orEmpty(),
+            department = department.orEmpty()
+        )
 }

@@ -1,13 +1,5 @@
 package `in`.koreatech.koin.ui.signup.dialog
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.databinding.DialogTermsBinding
-import `in`.koreatech.koin.core.progressdialog.IProgressDialog
-import `in`.koreatech.koin.ui.signup.viewmodel.SignupKoinTermViewModel
-import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.windowHeight
-import `in`.koreatech.koin.util.ext.windowWidth
-import `in`.koreatech.koin.util.ext.withLoading
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +9,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.databinding.DialogTermsBinding
+import `in`.koreatech.koin.core.progressdialog.IProgressDialog
+import `in`.koreatech.koin.ui.signup.viewmodel.SignupKoinTermViewModel
+import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.windowHeight
+import `in`.koreatech.koin.util.ext.windowWidth
+import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
 class SignupKoinTermsDialog : DialogFragment(), IProgressDialog {
@@ -49,7 +49,7 @@ class SignupKoinTermsDialog : DialogFragment(), IProgressDialog {
         }
 
         observeLiveData(contentLoadingError) { t ->
-            if(t != null) binding.dialogTermsContent.text = getString(R.string.signup_koin_terms_error, t.localizedMessage)
+            if (t != null) binding.dialogTermsContent.text = getString(R.string.signup_koin_terms_error, t.localizedMessage)
         }
     }
 

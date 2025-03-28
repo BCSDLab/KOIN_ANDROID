@@ -46,18 +46,20 @@ fun LostAndFoundReport(
                 KoinTopAppBar(
                     title = stringResource(R.string.report_title),
                     onNavigationIconClick = { (context as Activity).finish() },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
+                    colors =
+                    TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
                         containerColor = KoinTheme.colors.primary500,
                         navigationIconContentColor = KoinTheme.colors.neutral0,
                         titleContentColor = KoinTheme.colors.neutral0,
-                        actionIconContentColor = KoinTheme.colors.neutral0,
+                        actionIconContentColor = KoinTheme.colors.neutral0
                     )
                 )
             },
             containerColor = KoinTheme.colors.neutral0
         ) { contentPadding ->
             LostAndFoundReportContent(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(contentPadding)
                     .consumeWindowInsets(contentPadding),
                 itemList = lostAndFoundReportReasonList,
@@ -71,7 +73,7 @@ fun LostAndFoundReport(
                 },
                 onReport = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.LOST_AND_FOUND.ITEM_POST_REPORT_CONFIRM,
+                        AnalyticsConstant.Label.LostAndFound.ITEM_POST_REPORT_CONFIRM,
                         "신고하기"
                     )
                     viewModel.reportArticle(articleId)

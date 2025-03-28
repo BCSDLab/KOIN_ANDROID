@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.domain.usecase.presignedurl
 
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 class GetLostAndFoundPreSignedUrlUseCase @Inject constructor(
     private val uploadUrlRepository: UploadUrlRepository,
@@ -14,7 +14,7 @@ class GetLostAndFoundPreSignedUrlUseCase @Inject constructor(
         contentType: String,
         fileName: String
     ): Result<Pair<String, String>> {
-        return withContext(coroutineDispatcher){
+        return withContext(coroutineDispatcher) {
             uploadUrlRepository.getUploadLostAndFoundUrlResult(contentLength, contentType, fileName)
         }
     }

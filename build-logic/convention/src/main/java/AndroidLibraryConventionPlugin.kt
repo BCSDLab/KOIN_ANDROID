@@ -14,6 +14,7 @@ internal class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
                 apply("com.google.devtools.ksp")
+                apply("org.jlleitschuh.gradle.ktlint")
             }
             extensions.configure<LibraryExtension> {
                 configureAndroidLibrary(this)

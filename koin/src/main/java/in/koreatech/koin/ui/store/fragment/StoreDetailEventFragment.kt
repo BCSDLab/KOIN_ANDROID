@@ -9,10 +9,10 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailEventBinding
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
@@ -44,7 +44,6 @@ class StoreDetailEventFragment : Fragment() {
     }
 
     private fun initViews() {
-
         binding.storeDetailEventRecyclerview.apply {
             adapter = storeDetailEventAdapter
         }
@@ -60,7 +59,6 @@ class StoreDetailEventFragment : Fragment() {
                 binding.storeDetailNoEventTextView.visibility = View.VISIBLE
             }
         }
-
     }
 
     private fun initViewModel() {
@@ -68,13 +66,12 @@ class StoreDetailEventFragment : Fragment() {
             storeDetailEventAdapter.submitList(it)
         }
 
-        observeLiveData(viewModel.scrollUp){
-            if(it == StoreDetailScrollType.EVENT){
+        observeLiveData(viewModel.scrollUp) {
+            if (it == StoreDetailScrollType.EVENT) {
                 binding.storeEventScrollView.fullScroll(ScrollView.FOCUS_UP)
                 viewModel.scrollReset()
             }
         }
-
     }
 
     private fun initEventScrollCallback() {
@@ -98,13 +95,17 @@ class StoreDetailEventFragment : Fragment() {
         binding.storeDetailEventRecyclerview.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
             val oldScrollRatio = oldScrollY.toFloat() / (v as RecyclerView).height
             val currentScrollRatio = scrollY.toFloat() / v.height
-            Log.d("StoreDetailEventFragment", "oldScrollRatio: $oldScrollRatio, currentScrollRatio: $currentScrollRatio")
-            if (EventUtils.didCrossedScrollThreshold(oldScrollRatio, currentScrollRatio))
+            Log.d(
+                "StoreDetailEventFragment",
+                "oldScrollRatio: $oldScrollRatio, currentScrollRatio: $currentScrollRatio"
+            )
+            if (EventUtils.didCrossedScrollThreshold(oldScrollRatio, currentScrollRatio)) {
                 EventLogger.logScrollEvent(
                     EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
-                    viewModel.store.value?.name ?: "",
+                    viewModel.store.value?.name ?: ""
                 )
             }
+        }
     }
 }

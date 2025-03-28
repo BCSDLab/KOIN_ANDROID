@@ -1,9 +1,7 @@
 package `in`.koreatech.koin.util.ext
 
-import android.content.Context
 import android.graphics.Paint
 import android.graphics.Rect
-import android.view.View
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 

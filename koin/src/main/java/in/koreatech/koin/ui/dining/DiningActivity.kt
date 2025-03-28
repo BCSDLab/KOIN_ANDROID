@@ -11,15 +11,15 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.core.viewpager.addOnPageScrollListener
 import `in`.koreatech.koin.core.viewpager.addOnPageChangedListener
+import `in`.koreatech.koin.core.viewpager.addOnPageScrollListener
 import `in`.koreatech.koin.databinding.ActivityDiningBinding
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
@@ -31,14 +31,16 @@ import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DiningActivity : KoinNavigationDrawerActivity() {
     override val menuState: MenuState = MenuState.Dining
-    val binding: ActivityDiningBinding by dataBinding<ActivityDiningBinding>(R.layout.activity_dining)
+    val binding: ActivityDiningBinding by dataBinding<ActivityDiningBinding>(
+        R.layout.activity_dining
+    )
     override val screenTitle = "식단"
     private val viewModel by viewModels<DiningViewModel>()
     private val dates = mutableListOf<Date>()
@@ -52,25 +54,28 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private val diningOnBoardingBottomSheet by lazy {
         DiningNotificationOnBoardingFragment()
     }
-    private val diningPageChangeListener = object : OnPageChangeCallback() {
-        override fun onPageScrollStateChanged(state: Int) {
-            super.onPageScrollStateChanged(state)
-            binding.swipeRefreshLayoutDining.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
-        }
-    }
-
-    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            if (isTaskRoot) {
-                val intent = Intent(this@DiningActivity, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                isEnabled = false
-                onBackPressedDispatcher.onBackPressed()
+    private val diningPageChangeListener =
+        object : OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                binding.swipeRefreshLayoutDining.setEnabled(state == ViewPager.SCROLL_STATE_IDLE)
             }
         }
-    }
+
+    override val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isTaskRoot) {
+                    val intent = Intent(this@DiningActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
@@ -170,12 +175,13 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 addOnPageChangedListener(this@DiningActivity, diningPageChangeListener)
             }
             TabLayoutMediator(tabsDiningTime, diningViewPager) { tab, position ->
-                tab.text = when (position) {
-                    0 -> getString(R.string.dining_breakfast)
-                    1 -> getString(R.string.dining_lunch)
-                    2 -> getString(R.string.dining_dinner)
-                    else -> throw IllegalArgumentException("Position must be lower than ${diningViewPager.offscreenPageLimit}")
-                }
+                tab.text =
+                    when (position) {
+                        0 -> getString(R.string.dining_breakfast)
+                        1 -> getString(R.string.dining_lunch)
+                        2 -> getString(R.string.dining_dinner)
+                        else -> throw IllegalArgumentException("Position must be lower than ${diningViewPager.offscreenPageLimit}")
+                    }
             }.attach()
 
             initialDiningTab = getDiningTabByType(DiningUtil.getCurrentType())
@@ -210,7 +216,8 @@ class DiningActivity : KoinNavigationDrawerActivity() {
 
             val todayPos = dates.size / 2
             scrollDateTodayToCenter(todayPos)
-            initialDateTab = todayPos
+            initialDateTab =
+                if (DiningUtil.getCurrentType() == DiningType.NextBreakfast) todayPos + 1 else todayPos
         }
     }
 

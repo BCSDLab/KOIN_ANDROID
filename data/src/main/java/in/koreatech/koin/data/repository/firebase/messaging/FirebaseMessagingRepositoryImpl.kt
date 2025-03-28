@@ -6,8 +6,9 @@ import javax.inject.Inject
 
 class FirebaseMessagingRepositoryImpl @Inject constructor(
     private val firebaseMessageDataSource: FirebaseMessageDataSource
-): FirebaseMessagingRepository {
+) : FirebaseMessagingRepository {
     override suspend fun getFcmToken(): String = firebaseMessageDataSource.getFcmToken()
+
     override suspend fun updateNewFcmToken(token: String) {
         firebaseMessageDataSource.updateNewFcmToken(token)
     }

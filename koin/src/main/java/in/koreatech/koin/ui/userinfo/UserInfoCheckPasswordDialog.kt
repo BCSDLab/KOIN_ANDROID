@@ -19,7 +19,6 @@ import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoCheckPasswordViewModel
 import `in`.koreatech.koin.util.ext.setWidthPercent
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
 class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_check_password) {
     private val binding by dataBinding<DialogUserInfoCheckPasswordBinding>()
@@ -42,7 +41,6 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
             }
 
             override fun afterTextChanged(s: Editable?) {}
-
         }
     }
 
@@ -76,7 +74,9 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
                             is UiStatus.Loading -> Unit
                             is UiStatus.Success -> {
                                 hideErrors()
-                                startActivity(Intent(requireContext(), UserInfoEditActivity::class.java))
+                                startActivity(
+                                    Intent(requireContext(), UserInfoEditActivity::class.java)
+                                )
                                 dismiss()
                             }
 
@@ -88,7 +88,6 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
                         }
                     }
                 }
-
             }
         }
     }

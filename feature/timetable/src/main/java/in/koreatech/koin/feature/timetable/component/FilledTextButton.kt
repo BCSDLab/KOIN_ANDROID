@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
-
 enum class FilledButtonType {
     Normal,
     Danger,
@@ -28,28 +27,32 @@ enum class FilledButtonType {
 
 @Composable
 @Stable
-private fun buttonStyleByType(type: FilledButtonType): ButtonColors = when (type) {
-    FilledButtonType.Normal -> ButtonColors(
-        containerColor = KoinTheme.colors.primary500,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
-    )
+private fun buttonStyleByType(type: FilledButtonType): ButtonColors =
+    when (type) {
+        FilledButtonType.Normal ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.primary500,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600
+            )
 
-    FilledButtonType.Danger -> ButtonColors(
-        containerColor = KoinTheme.colors.danger700,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
-    )
+        FilledButtonType.Danger ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.danger700,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600
+            )
 
-    FilledButtonType.Neutral -> ButtonColors(
-        containerColor = KoinTheme.colors.neutral300,
-        contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300,
-        disabledContentColor = KoinTheme.colors.neutral600
-    )
-}
+        FilledButtonType.Neutral ->
+            ButtonColors(
+                containerColor = KoinTheme.colors.neutral300,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600
+            )
+    }
 
 @Composable
 fun FilledTextButton(
@@ -83,18 +86,17 @@ object FilledTextButtonDefaults {
     val contentPadding = PaddingValues(0.dp)
 
     val colors
-        @Composable get() = ButtonColors(
-            containerColor = KoinTheme.colors.primary500,
-            contentColor = KoinTheme.colors.neutral0,
-            disabledContainerColor = KoinTheme.colors.neutral300,
-            disabledContentColor = KoinTheme.colors.neutral600
-        )
+        @Composable get() =
+            ButtonColors(
+                containerColor = KoinTheme.colors.primary500,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600
+            )
     val shape @Composable get() = KoinTheme.shapes.extraSmall
     val textColor @Composable get() = KoinTheme.colors.neutral0
     val textStyle @Composable get() = KoinTheme.typography.medium15
-
 }
-
 
 @Preview
 @Composable
@@ -102,14 +104,14 @@ private fun FilledTextButtonNormalPreview() {
     KoinTheme {
         Surface(modifier = Modifier.padding(24.dp)) {
             FilledTextButton(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .width(96.dp)
                     .height(48.dp),
                 text = "Preview",
                 buttonStyle = FilledButtonType.Normal,
                 onClick = {}
             )
-
         }
     }
 }
@@ -120,14 +122,14 @@ private fun FilledTextButtonDangerPreview() {
     KoinTheme {
         Surface(modifier = Modifier.padding(24.dp)) {
             FilledTextButton(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .width(96.dp)
                     .height(48.dp),
                 text = "Preview",
                 buttonStyle = FilledButtonType.Danger,
                 onClick = {}
             )
-
         }
     }
 }

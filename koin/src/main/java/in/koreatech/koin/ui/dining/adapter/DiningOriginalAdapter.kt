@@ -15,9 +15,9 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningOriginalBinding
 import `in`.koreatech.koin.domain.constant.BREAKFAST
@@ -27,9 +27,8 @@ import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 
 class DiningOriginalAdapter(
-    private val onShareClick: (Dining) -> Unit,
+    private val onShareClick: (Dining) -> Unit
 ) : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as DiningViewHolder).bind(getItem(position))
     }
@@ -46,7 +45,6 @@ class DiningOriginalAdapter(
 
     inner class DiningViewHolder(private val binding: ItemDiningOriginalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(dining: Dining) {
             with(binding) {
                 val context = root.context
@@ -65,28 +63,30 @@ class DiningOriginalAdapter(
 
                     Glide.with(context)
                         .load(dining.imageUrl)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                return false
-                            }
+                        .listener(
+                            object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    return false
+                                }
 
-                            override fun onResourceReady(
-                                resource: Drawable,
-                                model: Any,
-                                target: Target<Drawable>,
-                                dataSource: DataSource,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                binding.lottieImageLoading.pauseAnimation()
-                                binding.lottieImageLoading.visibility = View.GONE
-                                return false
+                                override fun onResourceReady(
+                                    resource: Drawable,
+                                    model: Any,
+                                    target: Target<Drawable>,
+                                    dataSource: DataSource,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    binding.lottieImageLoading.pauseAnimation()
+                                    binding.lottieImageLoading.visibility = View.GONE
+                                    return false
+                                }
                             }
-                        })
+                        )
                         .into(imageViewDining)
 
                     val dialog = ImageZoomableDialog(context, dining.imageUrl)
@@ -106,9 +106,14 @@ class DiningOriginalAdapter(
                             1f,
                             context.resources.displayMetrics
                         ).toInt()
-                    textViewNoPhoto.text = if (TimeUtil.isWeekend(dining.date)) context.getString(
-                        R.string.photo_not_provided_on_weekend
-                    ) else context.getString(R.string.no_photo)
+                    textViewNoPhoto.text =
+                        if (TimeUtil.isWeekend(dining.date)) {
+                            context.getString(
+                                R.string.photo_not_provided_on_weekend
+                            )
+                        } else {
+                            context.getString(R.string.no_photo)
+                        }
 
                     textViewNoPhoto.visibility = View.VISIBLE
                     imageViewNoPhoto.visibility = View.VISIBLE
@@ -147,13 +152,19 @@ class DiningOriginalAdapter(
                 }
                 // 아침 이미지 분기처리
                 else if (type == BREAKFAST) {
-                    if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
-                    else binding.cardViewDining.visibility = View.GONE
+                    if (imageUrl.isNotEmpty()) {
+                        showDiningImage(context, dining)
+                    } else {
+                        binding.cardViewDining.visibility = View.GONE
+                    }
                 }
                 // 점심, 저녁
                 else {
-                    if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
-                    else showEmptyDiningImage(context, dining)
+                    if (imageUrl.isNotEmpty()) {
+                        showDiningImage(context, dining)
+                    } else {
+                        showEmptyDiningImage(context, dining)
+                    }
                 }
             }
         }
@@ -167,8 +178,10 @@ class DiningOriginalAdapter(
         private fun setDiningImageVisibility(context: Context, dining: Dining) {
             when (dining.place) {
                 context.getString(R.string.dining_nungsu),
-                context.getString(R.string.dining_2campus) -> binding.cardViewDining.visibility =
-                    View.GONE
+                context.getString(R.string.dining_2campus)
+                ->
+                    binding.cardViewDining.visibility =
+                        View.GONE
 
                 else -> binding.cardViewDining.visibility = View.VISIBLE
             }
@@ -266,20 +279,15 @@ class DiningOriginalAdapter(
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Dining>() {
-            override fun areItemsTheSame(
-                oldItem: Dining,
-                newItem: Dining
-            ): Boolean {
-                return oldItem.id == newItem.id
-            }
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<Dining>() {
+                override fun areItemsTheSame(oldItem: Dining, newItem: Dining): Boolean {
+                    return oldItem.id == newItem.id
+                }
 
-            override fun areContentsTheSame(
-                oldItem: Dining,
-                newItem: Dining
-            ): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(oldItem: Dining, newItem: Dining): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

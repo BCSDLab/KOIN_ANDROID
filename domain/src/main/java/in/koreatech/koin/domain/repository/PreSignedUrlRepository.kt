@@ -2,7 +2,6 @@ package `in`.koreatech.koin.domain.repository
 
 import java.io.InputStream
 
-
 interface PreSignedUrlRepository {
     suspend fun putPreSignedUrl(
         url: String,
@@ -17,5 +16,4 @@ interface PreSignedUrlRepository {
         mediaType: String,
         mediaSize: Long
     ): Result<Unit>
-
 }

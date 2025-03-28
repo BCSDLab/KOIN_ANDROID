@@ -35,27 +35,29 @@ fun BottomSheetCustomExtraContent(
     onPlaceNameChange: (id: Int, text: String) -> Unit,
     onDayOfWeekChange: (content: CustomExtraContentState) -> Unit = { },
     onClickStartTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
-    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> },
+    onClickEndTime: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> }
 ) {
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .background(Color.White)
             .border(
                 width = 1.dp,
                 color = KoinTheme.colors.neutral300,
                 shape = RoundedCornerShape(4.dp)
-            ),
+            )
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             IconButton(
                 onClick = { onClickCancel(customContent.id) },
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(5.dp)
                     .size(24.dp)
             ) {
                 StableIcon(
-                    drawableResId = R.drawable.ic_close,
+                    drawableResId = R.drawable.ic_close
                 )
             }
         }
@@ -68,7 +70,7 @@ fun BottomSheetCustomExtraContent(
                 customContent = customContent,
                 onDayOfWeekChange = onDayOfWeekChange,
                 onClickStartTime = onClickStartTime,
-                onClickEndTime = onClickEndTime,
+                onClickEndTime = onClickEndTime
             )
             if (customContent.isError) {
                 Text(

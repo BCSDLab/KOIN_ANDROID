@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class BusinessCertificationFragment: BaseFragment() {
+class BusinessCertificationFragment : BaseFragment() {
     private var _binding: FragmentBusinessCertificationBinding? = null
     private val binding get() = _binding!!
 
@@ -62,14 +62,14 @@ class BusinessCertificationFragment: BaseFragment() {
         }
 
         editPersonalContactText.doOnTextChanged { text, start, before, count ->
-            if(text?.length == 3 || text?.length == 8) {
+            if (text?.length == 3 || text?.length == 8) {
                 editPersonalContactText.setText(getString(R.string.set_form, text))
                 editPersonalContactText.setSelection(editPersonalContactText.text.length)
             }
         }
 
         editRegistrationNumberText.doOnTextChanged { text, start, before, count ->
-            if(text?.length == 3 || text?.length == 6) {
+            if (text?.length == 3 || text?.length == 6) {
                 editRegistrationNumberText.setText(getString(R.string.set_form, text))
                 editRegistrationNumberText.setSelection(editRegistrationNumberText.text.length)
             }
@@ -77,19 +77,27 @@ class BusinessCertificationFragment: BaseFragment() {
 
         searchStoreButton.setOnClickListener {
             val nextFragment = BusinessSearchStoreFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_container_view, nextFragment).commit()
+            parentFragmentManager.beginTransaction().replace(
+                R.id.fragment_container_view,
+                nextFragment
+            ).commit()
         }
 
         businessCertificationNextButton.setOnClickListener {
-            if(allWriteCheck) {
+            if (allWriteCheck) {
                 businessSignupBaseViewModel.setName(editBusinessmanNameText.text.toString())
                 businessSignupBaseViewModel.setShopName(editStoreNameText.text.toString())
-                businessSignupBaseViewModel.setPhoneNumber(editPersonalContactText.text.toString())
-                businessSignupBaseViewModel.setCompanyNumber(editRegistrationNumberText.text.toString())
+                businessSignupBaseViewModel.setPhoneNumber(
+                    editPersonalContactText.text.toString()
+                )
+                businessSignupBaseViewModel.setCompanyNumber(
+                    editRegistrationNumberText.text.toString()
+                )
 
                 businessSignupBaseViewModel.setFragmentTag("completeActivity")
+            } else {
+                SnackbarUtil.makeShortSnackbar(root, getString(R.string.not_enter_all_items))
             }
-            else SnackbarUtil.makeShortSnackbar(root, getString(R.string.not_enter_all_items))
         }
 
         transparentButton.setOnClickListener {
@@ -129,7 +137,7 @@ class BusinessCertificationFragment: BaseFragment() {
 
     private fun initViewModel() = with(businessCertificationViewModel) {
         observeLiveData(businessCertificationContinuationError) { state ->
-            when(state) {
+            when (state) {
                 UploadError.NotExistDomainException -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
@@ -163,8 +171,11 @@ class BusinessCertificationFragment: BaseFragment() {
 
             val inputStream = requireActivity().contentResolver.openInputStream(it.uri.toUri())
 
-            if(inputStream == null) {
-                SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.failed_file_upload))
+            if (inputStream == null) {
+                SnackbarUtil.makeShortSnackbar(
+                    binding.root,
+                    getString(R.string.failed_file_upload)
+                )
             } else {
                 uploadPreSignedUrl(
                     it.preSignedUrl,
@@ -185,17 +196,14 @@ class BusinessCertificationFragment: BaseFragment() {
         observeLiveData(saveImageList) {
             attachStoreAdapter.updateList(it)
 
-
-
             viewModelScope.launch {
                 repeatOnLifecycle(Lifecycle.State.RESUMED) {
                     isMinOneInfo.collectLatest { check ->
-                        if(check) {
+                        if (check) {
                             isMinOneStoreImage = true
                             hiddenInitView()
                             check()
-                        }
-                        else {
+                        } else {
                             hiddenRecyclerView()
                             check()
                         }
@@ -214,19 +222,19 @@ class BusinessCertificationFragment: BaseFragment() {
     }
 
     private fun isAllWrite(): Boolean {
-        if(binding.editBusinessmanNameText.textString.trim().isBlank()) {
+        if (binding.editBusinessmanNameText.textString.trim().isBlank()) {
             check()
             return false
         }
-        if(binding.editStoreNameText.textString.trim().isBlank()) {
+        if (binding.editStoreNameText.textString.trim().isBlank()) {
             check()
             return false
         }
-        if(binding.editRegistrationNumberText.textString.trim().isBlank()) {
+        if (binding.editRegistrationNumberText.textString.trim().isBlank()) {
             check()
             return false
         }
-        if(binding.editPersonalContactText.textString.trim().isBlank()) {
+        if (binding.editPersonalContactText.textString.trim().isBlank()) {
             check()
             return false
         }
@@ -235,11 +243,14 @@ class BusinessCertificationFragment: BaseFragment() {
     }
 
     private fun check() = with(binding) {
-        if(allWriteCheck && isMinOneStoreImage) {
-            businessCertificationNextButton.setBackgroundColor(context!!.getColor(R.color.colorPrimary))
-        }
-        else {
-            businessCertificationNextButton.setBackgroundColor(context!!.getColor(R.color.gray5))
+        if (allWriteCheck && isMinOneStoreImage) {
+            businessCertificationNextButton.setBackgroundColor(
+                context!!.getColor(R.color.colorPrimary)
+            )
+        } else {
+            businessCertificationNextButton.setBackgroundColor(
+                context!!.getColor(R.color.gray5)
+            )
         }
     }
 }

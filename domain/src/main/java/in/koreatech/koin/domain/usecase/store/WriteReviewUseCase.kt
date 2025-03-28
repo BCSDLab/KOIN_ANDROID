@@ -1,13 +1,12 @@
 package `in`.koreatech.koin.domain.usecase.store
 
-import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
 class WriteReviewUseCase @Inject constructor(
-    private val storeRepository: StoreRepository,
+    private val storeRepository: StoreRepository
 ) {
     suspend operator fun invoke(
         storeId: Int,
@@ -18,9 +17,8 @@ class WriteReviewUseCase @Inject constructor(
             Result.success(Unit)
         } catch (e: CancellationException) {
             throw e
-        }  catch (e: Exception) {
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }
 }
-

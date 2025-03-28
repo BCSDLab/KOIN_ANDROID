@@ -29,8 +29,8 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.splash.state.TokenState
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
@@ -43,10 +43,8 @@ class StoreDetailViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val reviewPromptUscCase: ReviewPromptUscCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
-    private val abTestUseCase: ABTestUseCase,
+    private val abTestUseCase: ABTestUseCase
 ) : BaseViewModel() {
-
-
     val store: LiveData<StoreWithMenu> get() = _store
     private val _store = MutableLiveData<StoreWithMenu>()
     val categories: LiveData<StoreMenu> get() = _categories
@@ -101,29 +99,31 @@ class StoreDetailViewModel @Inject constructor(
     fun getShopMenus(storeId: Int) = viewModelScope.launchWithLoading {
         getShopMenusUseCase(storeId).also { shop ->
             _categories.value = shop
-            _storeMenu.value = if (shop.menuCategories?.isEmpty() == true) {
-                emptyList()
-            } else {
-                shop.menuCategories?.first()?.menus ?: emptyList()
-            }
+            _storeMenu.value =
+                if (shop.menuCategories?.isEmpty() == true) {
+                    emptyList()
+                } else {
+                    shop.menuCategories?.first()?.menus ?: emptyList()
+                }
         }
     }
 
     fun getShopEvents(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreEventsUseCase(storeId).also { events ->
-            _storeEvent.value = events.events.ifEmpty {
-                emptyList()
-            }
-
+            _storeEvent.value =
+                events.events.ifEmpty {
+                    emptyList()
+                }
         }
     }
 
     fun getShopReviews(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreReviewUseCase(storeId).also { reviews ->
             _storeReview.value = reviews
-            _storeReviewContent.value = reviews.reviews.sortedByDescending {
-                it.createdAt
-            }
+            _storeReviewContent.value =
+                reviews.reviews.sortedByDescending {
+                    it.createdAt
+                }
         }
     }
 
@@ -134,27 +134,32 @@ class StoreDetailViewModel @Inject constructor(
 
     fun checkShowMyReview(isChecked: Boolean) {
         if (isChecked) {
-            _storeReviewContent.value = _storeReview.value?.reviews?.filter {
-                it.isMine
-            }
-        } else _storeReviewContent.value = _storeReview.value?.reviews
+            _storeReviewContent.value =
+                _storeReview.value?.reviews?.filter {
+                    it.isMine
+                }
+        } else {
+            _storeReviewContent.value = _storeReview.value?.reviews
+        }
     }
 
     fun filterReview(filter: ReviewFilterEnum, isMine: Boolean) {
         val reviews = _storeReview.value?.reviews ?: return
 
-        val sortedReviews = when (filter) {
-            ReviewFilterEnum.LATEST -> reviews.sortedByDescending { it.createdAt }
-            ReviewFilterEnum.OLDEST -> reviews.sortedBy { it.createdAt }
-            ReviewFilterEnum.HIGH_RATTING -> reviews.sortedByDescending { it.rating }
-            ReviewFilterEnum.LOW_RATIONG -> reviews.sortedBy { it.rating }
-        }
+        val sortedReviews =
+            when (filter) {
+                ReviewFilterEnum.LATEST -> reviews.sortedByDescending { it.createdAt }
+                ReviewFilterEnum.OLDEST -> reviews.sortedBy { it.createdAt }
+                ReviewFilterEnum.HIGH_RATTING -> reviews.sortedByDescending { it.rating }
+                ReviewFilterEnum.LOW_RATIONG -> reviews.sortedBy { it.rating }
+            }
 
-        _storeReviewContent.value = if (isMine) {
-            sortedReviews.filter { it.isMine }
-        } else {
-            sortedReviews
-        }
+        _storeReviewContent.value =
+            if (isMine) {
+                sortedReviews.filter { it.isMine }
+            } else {
+                sortedReviews
+            }
     }
 
     fun settingFragmentIndex(index: Int) {
@@ -176,11 +181,13 @@ class StoreDetailViewModel @Inject constructor(
     fun checkToken() {
         viewModelScope.launchIgnoreCancellation {
             isTokenSavedInDeviceUseCase().also {
-                if (it) getUserInfoUseCase().let { (user, error) ->
-                    if (error != null) {
-                        _tokenState.value = TokenState.Invalid
-                    } else {
-                        _tokenState.value = TokenState.Valid
+                if (it) {
+                    getUserInfoUseCase().let { (user, error) ->
+                        if (error != null) {
+                            _tokenState.value = TokenState.Invalid
+                        } else {
+                            _tokenState.value = TokenState.Valid
+                        }
                     }
                 } else {
                     _tokenState.value = TokenState.Invalid

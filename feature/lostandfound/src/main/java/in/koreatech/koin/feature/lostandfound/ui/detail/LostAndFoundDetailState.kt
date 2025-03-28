@@ -6,8 +6,8 @@ import `in`.koreatech.koin.domain.model.article.ArticleLostAndFound
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.model.ArticleHeaderState
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LostAndFoundDetailState(
@@ -27,7 +27,8 @@ data class LostAndFoundDetailState(
     val updatedAt: String = "",
     val isWriterCouncil: Boolean = false,
     val isMine: Boolean = false,
-    val hotArticles: List<ArticleHeaderState> = emptyList(),
+    val isAuthorWithdraw: Boolean = false,
+    val hotArticles: List<ArticleHeaderState> = emptyList()
 ) : Parcelable
 
 fun ArticleLostAndFound.toLostAndFoundDetailState(): LostAndFoundDetailState {

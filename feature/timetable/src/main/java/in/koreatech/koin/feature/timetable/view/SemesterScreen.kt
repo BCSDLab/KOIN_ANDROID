@@ -50,21 +50,24 @@ fun SemesterScreen(
     onClickLoginText: () -> Unit = {}
 ) {
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxSize()
             .background(KoinTheme.colors.neutral0)
     ) {
         when (state.mode) {
             ScreenStateUIMode.BASIC -> {
                 Column(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(horizontal = 24.dp)
                 ) {
                     if (isAnonymous) {
                         HighlightedText(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .padding(vertical = 6.dp)
                                 .noRippleClickable { onClickLoginText() },
                             texts = stringArrayResource(id = R.array.semester_anonymous_login),
@@ -78,7 +81,7 @@ fun SemesterScreen(
                         modifier = Modifier
                     ) {
                         userTimetables.forEach { semesterModel, timetableFrames ->
-                            SemesterBlock(
+                            semesterBlock(
                                 semesterModel = semesterModel,
                                 timetableFrames = timetableFrames,
                                 isAnonymous = isAnonymous,
@@ -98,11 +101,13 @@ fun SemesterScreen(
             }
             ScreenStateUIMode.EMPTY -> { // 유저의 학기가 없는 경우
                 Text(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .align(Alignment.Center),
                     text = stringResource(id = R.string.semester_empty),
                     textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.medium13.copy(
+                    style =
+                    KoinTheme.typography.medium13.copy(
                         color = KoinTheme.colors.neutral600
                     )
                 )
@@ -110,10 +115,9 @@ fun SemesterScreen(
             ScreenStateUIMode.IDLE -> {}
         }
     }
-
 }
 
-private fun LazyListScope.SemesterBlock(
+private fun LazyListScope.semesterBlock(
     semesterModel: SemesterModel,
     timetableFrames: List<TimetableFrame>,
     isAnonymous: Boolean,
@@ -130,25 +134,28 @@ private fun LazyListScope.SemesterBlock(
                 color = KoinTheme.colors.neutral300
             )
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .height(60.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Text(
-                    text = stringResource(
+                    text =
+                    stringResource(
                         id = R.string.semester_semester_format,
                         semesterModel.year,
                         stringResource(id = semesterModel.type.stringRes)
                     ),
-                    style = KoinTheme.typography.bold20.copy(
+                    style =
+                    KoinTheme.typography.bold20.copy(
                         color = KoinTheme.colors.neutral800
                     )
                 )
                 Box(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .size(40.dp)
                         .noRippleClickable { onClickAddTimetable() }
                 ) {
@@ -162,7 +169,7 @@ private fun LazyListScope.SemesterBlock(
     }
 
     timetableFrames.forEach { frame ->
-        TimetableFrameBlock(
+        timetableFrameBlock(
             timetableFrame = frame,
             isAnonymous = isAnonymous,
             onClickTimetable = onClickTimetable,
@@ -171,7 +178,7 @@ private fun LazyListScope.SemesterBlock(
     }
 }
 
-private fun LazyListScope.TimetableFrameBlock(
+private fun LazyListScope.timetableFrameBlock(
     timetableFrame: TimetableFrame,
     isAnonymous: Boolean,
     onClickTimetable: (TimetableFrame) -> Unit = {},
@@ -183,7 +190,8 @@ private fun LazyListScope.TimetableFrameBlock(
             color = KoinTheme.colors.neutral300
         )
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .height(54.dp)
                 .noRippleClickable { onClickTimetable(timetableFrame) }
@@ -199,7 +207,8 @@ private fun LazyListScope.TimetableFrameBlock(
                 Text(
                     modifier = Modifier.weight(1f),
                     text = timetableFrame.timetableName,
-                    style = KoinTheme.typography.medium18.copy(
+                    style =
+                    KoinTheme.typography.medium18.copy(
                         KoinTheme.colors.neutral800
                     ),
                     overflow = TextOverflow.Ellipsis,
@@ -217,7 +226,8 @@ private fun LazyListScope.TimetableFrameBlock(
 
             if (!isAnonymous) {
                 Text(
-                    modifier = Modifier.noRippleClickable {
+                    modifier =
+                    Modifier.noRippleClickable {
                         onClickEditTimetable(timetableFrame)
                     },
                     text = stringResource(id = R.string.semester_edit_timetable_frame),
@@ -233,19 +243,22 @@ private fun LazyListScope.TimetableFrameBlock(
 private fun SemesterScreenPreview() {
     SemesterScreen(
         state = ScreenState(mode = ScreenStateUIMode.BASIC),
-        userTimetables = mutableMapOf(
-            SemesterModel(2024, SemesterType.Fall) to listOf(
-                TimetableFrame(0, "시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3", true),
-                TimetableFrame(1, "시간표2", false),
-                TimetableFrame(2, "시간표3", false),
-            ),
+        userTimetables =
+        mutableMapOf(
+            SemesterModel(2024, SemesterType.Fall) to
+                listOf(
+                    TimetableFrame(0, "시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3", true),
+                    TimetableFrame(1, "시간표2", false),
+                    TimetableFrame(2, "시간표3", false)
+                ),
             SemesterModel(2024, SemesterType.Spring) to listOf(TimetableFrame(0, "시간표1", true)),
-            SemesterModel(2024, SemesterType.Winter) to listOf(
-                TimetableFrame(0, "시간표1", true),
-                TimetableFrame(2, "시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3", false)
-            ),
+            SemesterModel(2024, SemesterType.Winter) to
+                listOf(
+                    TimetableFrame(0, "시간표1", true),
+                    TimetableFrame(2, "시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3시간표3", false)
+                )
         ),
-        isAnonymous = false,
+        isAnonymous = false
     )
 }
 
@@ -254,16 +267,19 @@ private fun SemesterScreenPreview() {
 private fun SemesterScreenAnonymousPreview() {
     SemesterScreen(
         state = ScreenState(mode = ScreenStateUIMode.BASIC),
-        userTimetables = mutableMapOf(
-            SemesterModel(2024, SemesterType.Fall) to listOf(
-                TimetableFrame(0, "시간표1", true),
-            ),
+        userTimetables =
+        mutableMapOf(
+            SemesterModel(2024, SemesterType.Fall) to
+                listOf(
+                    TimetableFrame(0, "시간표1", true)
+                ),
             SemesterModel(2024, SemesterType.Spring) to listOf(TimetableFrame(0, "시간표1", true)),
-            SemesterModel(2024, SemesterType.Winter) to listOf(
-                TimetableFrame(0, "시간표1", true),
-            ),
+            SemesterModel(2024, SemesterType.Winter) to
+                listOf(
+                    TimetableFrame(0, "시간표1", true)
+                )
         ),
-        isAnonymous = true,
+        isAnonymous = true
     )
 }
 

@@ -29,10 +29,11 @@ fun TimeEditBox(
     localTime: LocalTime,
     content: CustomExtraContentState,
     modifier: Modifier = Modifier,
-    onClick: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ ->}
+    onClick: (content: CustomExtraContentState, visible: Boolean) -> Unit = { _, _ -> }
 ) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .background(Color.White)
             .border(
                 width = 1.dp,
@@ -44,7 +45,8 @@ fun TimeEditBox(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = if (localTime == LocalTime.of(23,59)) {
+            text =
+            if (localTime == LocalTime.of(23, 59)) {
                 "24:00"
             } else {
                 localTime.format(hourFormatter)
@@ -62,7 +64,6 @@ fun TimeEditBox(
                 drawableResId = R.drawable.ic_arrow_up_down
             )
         }
-
     }
 }
 

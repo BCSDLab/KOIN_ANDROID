@@ -4,9 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.ui.article.ArticleBoardType
-import `in`.koreatech.koin.ui.article.viewmodel.ArticleListNoticeViewModel.Companion
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
 @HiltViewModel

@@ -7,7 +7,8 @@ import javax.inject.Inject
 class GetKoinTermUseCase @Inject constructor(
     private val signupRepository: SignupRepository
 ) {
-    suspend operator fun invoke(): Result<Term> = kotlin.runCatching {
-        signupRepository.getKoinTerm()
-    }
+    suspend operator fun invoke(): Result<Term> =
+        kotlin.runCatching {
+            signupRepository.getKoinTerm()
+        }
 }

@@ -12,7 +12,7 @@ import `in`.koreatech.koin.core.databinding.NotificationHeaderBinding
 class NotificationHeader @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attributeSet, defStyleAttr) {
     private lateinit var binding: NotificationHeaderBinding
     var onSwitchClickListener: OnSwitchClickListener? = null
@@ -22,7 +22,6 @@ class NotificationHeader @JvmOverloads constructor(
             binding.btnSwitch.isEnabled = value == true
             field = value
         }
-
 
     var isChecked: Boolean? = null
         set(value) {
@@ -53,7 +52,10 @@ class NotificationHeader @JvmOverloads constructor(
     init {
         initView()
         context.theme.obtainStyledAttributes(
-            attributeSet, R.styleable.Notification, 0, 0
+            attributeSet,
+            R.styleable.Notification,
+            0,
+            0
         ).apply {
             binding.tvTitle.text = getString(R.styleable.Notification_text)
             binding.tvDescription.text = getString(R.styleable.Notification_description)
@@ -62,11 +64,12 @@ class NotificationHeader @JvmOverloads constructor(
     }
 
     private fun initView() {
-        binding = NotificationHeaderBinding.bind(
-            inflate(context, R.layout.notification_header, this)
-        ).apply {
-            btnSwitch.setOnClickListener { onSwitchClickListener?.onSwitch(btnSwitch.isChecked) }
-        }
+        binding =
+            NotificationHeaderBinding.bind(
+                inflate(context, R.layout.notification_header, this)
+            ).apply {
+                btnSwitch.setOnClickListener { onSwitchClickListener?.onSwitch(btnSwitch.isChecked) }
+            }
     }
 
     fun disableAll() {
@@ -79,12 +82,12 @@ class NotificationHeader @JvmOverloads constructor(
         fun onSwitch(isChecked: Boolean)
     }
 
-
     inline fun setOnSwitchClickListener(crossinline onSwitch: (Boolean) -> Unit) {
-        this.onSwitchClickListener = object : OnSwitchClickListener {
-            override fun onSwitch(isChecked: Boolean) {
-                onSwitch(isChecked)
+        this.onSwitchClickListener =
+            object : OnSwitchClickListener {
+                override fun onSwitch(isChecked: Boolean) {
+                    onSwitch(isChecked)
+                }
             }
-        }
     }
 }

@@ -1,19 +1,18 @@
 package `in`.koreatech.koin.ui.businesssignup.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.owner.OwnerSignupRequestEmailVerificationUseCase
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class BusinessSignUpBasicInfoViewModel @Inject constructor(
     private val ownerSignupRequestEmailVerificationUseCase: OwnerSignupRequestEmailVerificationUseCase
-): BaseViewModel() {
-
+) : BaseViewModel() {
     private val _businessSignupContinuationSate = SingleLiveEvent<SignupContinuationState>()
     val businessSignupContinuationState: LiveData<SignupContinuationState>
         get() = _businessSignupContinuationSate
@@ -29,10 +28,14 @@ class BusinessSignUpBasicInfoViewModel @Inject constructor(
         isAgreedPrivacyTerms: Boolean,
         isAgreedKoinTerms: Boolean
     ) {
-        if(isLoading.value == false) {
+        if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 ownerSignupRequestEmailVerificationUseCase(
-                    email, password, passwordConfirm, isAgreedPrivacyTerms, isAgreedKoinTerms
+                    email,
+                    password,
+                    passwordConfirm,
+                    isAgreedPrivacyTerms,
+                    isAgreedKoinTerms
                 ).onSuccess {
                     _businessSignupContinuationSate.value = it
                 }.onFailure {

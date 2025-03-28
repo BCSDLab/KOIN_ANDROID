@@ -29,7 +29,7 @@ import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 fun LazyItemScope.TitleAndContent(
     stringId: Int,
     content: String
-){
+) {
     Text(
         modifier = Modifier.padding(start = 16.dp, top = 16.dp),
         text = stringResource(id = stringId),
@@ -38,7 +38,8 @@ fun LazyItemScope.TitleAndContent(
         fontWeight = FontWeight.Bold
     )
     Text(
-        modifier = Modifier
+        modifier =
+        Modifier
             .padding(horizontal = 16.dp)
             .padding(top = 12.dp),
         text = content,
@@ -46,7 +47,8 @@ fun LazyItemScope.TitleAndContent(
         fontWeight = FontWeight.Bold
     )
     Divider(
-        modifier = Modifier
+        modifier =
+        Modifier
             .padding(horizontal = 16.dp)
             .padding(top = 16.dp),
         thickness = 1.dp,
@@ -58,7 +60,7 @@ fun LazyItemScope.TitleAndContent(
 fun LazyItemScope.TitleAndOptionPrice(
     optionPriceList: List<StoreMenuOptionPrice>,
     menuPrice: String
-){
+) {
     Text(
         modifier = Modifier.padding(start = 16.dp, top = 16.dp),
         text = stringResource(id = R.string.menu_price),
@@ -68,23 +70,24 @@ fun LazyItemScope.TitleAndOptionPrice(
     )
 
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .padding(horizontal = 16.dp)
             .padding(top = 8.dp)
-    ){
-        if(optionPriceList.isEmpty()){
+    ) {
+        if (optionPriceList.isEmpty()) {
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 text = stringResource(id = R.string.menu_price_won, menuPrice),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
             )
-        }
-        else{
+        } else {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
-            ){
+            ) {
                 optionPriceList.forEach { menuDetailPrice ->
                     Text(
                         modifier = Modifier.padding(top = 4.dp),
@@ -97,7 +100,8 @@ fun LazyItemScope.TitleAndOptionPrice(
         }
     }
     Divider(
-        modifier = Modifier
+        modifier =
+        Modifier
             .padding(horizontal = 16.dp)
             .padding(top = 16.dp),
         thickness = 1.dp,
@@ -106,9 +110,7 @@ fun LazyItemScope.TitleAndOptionPrice(
 }
 
 @Composable
-fun LazyItemScope.TitleAndImageString(
-    imageStringList: List<String>,
-){
+fun LazyItemScope.TitleAndImageString(imageStringList: List<String>) {
     Text(
         modifier = Modifier.padding(start = 16.dp, top = 16.dp),
         text = stringResource(id = R.string.menu_image),
@@ -118,19 +120,22 @@ fun LazyItemScope.TitleAndImageString(
     )
 
     LazyRow(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .padding(top = 16.dp)
     ) {
         items(imageStringList) { item ->
-            if (item != stringResource(id = R.string.temp_uri)){
+            if (item != stringResource(id = R.string.temp_uri)) {
                 Image(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .size(137.dp)
                         .padding(bottom = 16.dp)
                         .padding(end = 16.dp),
-                    painter = rememberAsyncImagePainter(
+                    painter =
+                    rememberAsyncImagePainter(
                         item
                     ),
                     contentDescription = "",
@@ -142,9 +147,7 @@ fun LazyItemScope.TitleAndImageString(
 }
 
 @Composable
-fun LazyItemScope.TitleAndImageUri(
-    imageUriList: List<Uri>,
-){
+fun LazyItemScope.TitleAndImageUri(imageUriList: List<Uri>) {
     Text(
         modifier = Modifier.padding(start = 16.dp, top = 16.dp),
         text = stringResource(id = R.string.menu_image),
@@ -154,20 +157,22 @@ fun LazyItemScope.TitleAndImageUri(
     )
 
     LazyRow(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .padding(top = 16.dp)
     ) {
         items(imageUriList) { item ->
-            if (item != Uri.EMPTY){
+            if (item != Uri.EMPTY) {
                 Image(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .size(137.dp)
                         .padding(bottom = 16.dp)
-                        .padding(end = 16.dp)
-                    ,
-                    painter = rememberAsyncImagePainter(
+                        .padding(end = 16.dp),
+                    painter =
+                    rememberAsyncImagePainter(
                         item
                     ),
                     contentDescription = "",

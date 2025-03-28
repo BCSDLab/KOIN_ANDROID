@@ -55,7 +55,6 @@ fun ShuttleTimetableScreenContent(
     modifier: Modifier = Modifier,
     onNavigationIconClick: () -> Unit = {}
 ) {
-
     val nodeItemHeightDp =
         KoinTheme.typography.medium15.getMeasuredKoreanHeightDp() + KoinTheme.typography.regular12.getMeasuredKoreanHeightDp()
 
@@ -75,14 +74,18 @@ fun ShuttleTimetableScreenContent(
             )
 
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxSize()
             ) {
                 when (timetableUiState) {
                     is ShuttleTimetableUiState.Success -> {
-                        val eventValue = "${stringResource(timetableUiState.timetable.routeType.simpleTitleRes)}_${timetableUiState.timetable.routeName}"
+                        val eventValue = "${stringResource(
+                            timetableUiState.timetable.routeType.simpleTitleRes
+                        )}_${timetableUiState.timetable.routeName}"
                         Column(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .padding(horizontal = 24.dp, vertical = 16.dp)
                         ) {
                             ShuttleBusOperationChip(
@@ -98,7 +101,8 @@ fun ShuttleTimetableScreenContent(
 
                         if (timetableUiState.timetable.showTabs()) {
                             KoinTabRow(
-                                titles = listOf(
+                                titles =
+                                listOf(
                                     stringResource(R.string.tab_title_going),
                                     stringResource(R.string.tab_title_return)
                                 ),
@@ -113,30 +117,38 @@ fun ShuttleTimetableScreenContent(
                                 state = pagerState,
                                 modifier = Modifier.weight(1f),
                                 verticalAlignment = Alignment.Top,
-                                flingBehavior = PagerDefaults.flingBehavior(
+                                flingBehavior =
+                                PagerDefaults.flingBehavior(
                                     state = pagerState,
-                                    snapPositionalThreshold = .1f,
+                                    snapPositionalThreshold = .1f
                                 )
                             ) { page ->
                                 Column(
-                                    modifier = Modifier.fillMaxSize()
+                                    modifier =
+                                    Modifier.fillMaxSize()
                                         .verticalScroll(rememberScrollState())
                                 ) {
                                     Box(
-                                        modifier = Modifier
+                                        modifier =
+                                        Modifier
                                             .fillMaxWidth()
                                             .height(14.dp)
                                             .background(color = KoinTheme.colors.neutral100)
                                     )
                                     Row(
-                                        modifier = Modifier
+                                        modifier =
+                                        Modifier
                                             .fillMaxWidth()
-                                            .height(IntrinsicSize.Min),
+                                            .height(IntrinsicSize.Min)
                                     ) {
                                         ShuttleTimetableNodeItem(
                                             nodeItemHeightDp = nodeItemHeightDp,
-                                            nodes = if (page == 0) timetableUiState.timetable.nodeInfo.toPersistentList()
-                                            else timetableUiState.timetable.nodeInfo.reversed().toPersistentList()
+                                            nodes =
+                                            if (page == 0) {
+                                                timetableUiState.timetable.nodeInfo.toPersistentList()
+                                            } else {
+                                                timetableUiState.timetable.nodeInfo.reversed().toPersistentList()
+                                            }
                                         )
 
                                         VerticalDivider(
@@ -145,22 +157,28 @@ fun ShuttleTimetableScreenContent(
                                         )
 
                                         Row(
-                                            modifier = Modifier
+                                            modifier =
+                                            Modifier
                                                 .fillMaxWidth()
                                                 .horizontalScroll(rememberScrollState())
                                         ) {
                                             ShuttleTimetableRouteItem(
-                                                route = if (page == 0) timetableUiState.timetable.routeInfo[page]
-                                                else timetableUiState.timetable.routeInfo[page].copy(
-                                                    arrivalTimes = timetableUiState.timetable.routeInfo[page].arrivalTimes.reversed()
-                                                ),
-                                                nodeItemHeightDp = nodeItemHeightDp,
+                                                route =
+                                                if (page == 0) {
+                                                    timetableUiState.timetable.routeInfo[page]
+                                                } else {
+                                                    timetableUiState.timetable.routeInfo[page].copy(
+                                                        arrivalTimes = timetableUiState.timetable.routeInfo[page].arrivalTimes.reversed()
+                                                    )
+                                                },
+                                                nodeItemHeightDp = nodeItemHeightDp
                                             )
 
                                             /** 시간표가 화면을 못 채울 때, 상단의 회색 배경을 채우기 위함 (프리뷰 참조)
                                              * 더 좋은 방법을 모르겠음... */
                                             Spacer(
-                                                modifier = Modifier.weight(1f).height(
+                                                modifier =
+                                                Modifier.weight(1f).height(
                                                     KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp
                                                 ).background(KoinTheme.colors.neutral100)
                                             )
@@ -176,7 +194,7 @@ fun ShuttleTimetableScreenContent(
 
                             LaunchedEffect(pagerState.currentPage) {
                                 EventLogger.logCampusClickEvent(
-                                    when(pagerState.currentPage) {
+                                    when (pagerState.currentPage) {
                                         0 -> "go_to_school"
                                         1 -> "go_home"
                                         else -> "unknown"
@@ -184,10 +202,10 @@ fun ShuttleTimetableScreenContent(
                                     eventValue
                                 )
                             }
-
                         } else {
                             Column(
-                                modifier = Modifier.fillMaxSize()
+                                modifier =
+                                Modifier.fillMaxSize()
                                     .verticalScroll(rememberScrollState())
                             ) {
                                 HorizontalDivider(
@@ -195,15 +213,17 @@ fun ShuttleTimetableScreenContent(
                                 )
 
                                 Box(
-                                    modifier = Modifier
+                                    modifier =
+                                    Modifier
                                         .fillMaxWidth()
                                         .height(14.dp)
                                         .background(color = KoinTheme.colors.neutral100)
                                 )
                                 Row(
-                                    modifier = Modifier
+                                    modifier =
+                                    Modifier
                                         .fillMaxWidth()
-                                        .height(IntrinsicSize.Min),
+                                        .height(IntrinsicSize.Min)
                                 ) {
                                     ShuttleTimetableNodeItem(
                                         nodeItemHeightDp = nodeItemHeightDp,
@@ -216,21 +236,23 @@ fun ShuttleTimetableScreenContent(
                                     )
 
                                     Row(
-                                        modifier = Modifier
+                                        modifier =
+                                        Modifier
                                             .fillMaxWidth()
                                             .horizontalScroll(rememberScrollState())
                                     ) {
                                         timetableUiState.timetable.routeInfo.fastForEach { route ->
                                             ShuttleTimetableRouteItem(
                                                 route = route,
-                                                nodeItemHeightDp = nodeItemHeightDp,
+                                                nodeItemHeightDp = nodeItemHeightDp
                                             )
                                         }
 
                                         /** 시간표가 화면을 못 채울 때, 상단의 회색 배경을 채우기 위함 (프리뷰 참조)
                                          * 더 좋은 방법을 모르겠음... */
                                         Spacer(
-                                            modifier = Modifier.weight(1f).height(
+                                            modifier =
+                                            Modifier.weight(1f).height(
                                                 KoinTheme.typography.regular14.getMeasuredKoreanHeightDp() + 16.dp
                                             ).background(KoinTheme.colors.neutral100)
                                         )
@@ -247,14 +269,16 @@ fun ShuttleTimetableScreenContent(
 
                     is ShuttleTimetableUiState.Loading -> {
                         ShuttleTimetableLoading(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .padding(horizontal = 24.dp, vertical = 16.dp)
                         )
                     }
 
                     is ShuttleTimetableUiState.LoadFailed -> {
                         CommonFailureView(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .padding(top = 200.dp)
                                 .fillMaxSize()
                         )

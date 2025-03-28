@@ -32,7 +32,6 @@ import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity : ActivityBase(R.layout.activity_login) {
@@ -74,10 +73,11 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
 
         if (link != null) {
             try {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    flags = FLAG_ACTIVITY_CLEAR_TOP
-                    data = Uri.parse(link)
-                }
+                val intent =
+                    Intent(Intent.ACTION_VIEW).apply {
+                        flags = FLAG_ACTIVITY_CLEAR_TOP
+                        data = Uri.parse(link)
+                    }
                 startActivity(intent)
                 finish()
             } catch (e: Exception) {
@@ -92,13 +92,16 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
             } else if (handleArticleIntent()) {
                 val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
                 val startBoard = bundle?.getInt(ArticleActivity.START_BOARD, 4)
-                startActivity(Intent(this@LoginActivity, ArticleActivity::class.java).apply {
-                    putExtra(
-                        BUNDLE_ARTICLE_EXTRA_KEY, bundleOf(
-                            ArticleActivity.START_BOARD to startBoard
+                startActivity(
+                    Intent(this@LoginActivity, ArticleActivity::class.java).apply {
+                        putExtra(
+                            BUNDLE_ARTICLE_EXTRA_KEY,
+                            bundleOf(
+                                ArticleActivity.START_BOARD to startBoard
+                            )
                         )
-                    )
-                })
+                    }
+                )
                 finish()
                 return
             }
@@ -133,7 +136,8 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                 )
             } else {
                 loginViewModel.login(
-                    email = getString(
+                    email =
+                    getString(
                         R.string.koreatech_email_postfix,
                         loginEdittextId.text.trim()
                     ),
@@ -173,7 +177,6 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         isBusinessButton.setOnClickListener {
             startActivity(Intent(this@LoginActivity, BusinessLoginActivity::class.java))
         }
-
     }
 
     private fun handleTimetableIntent(): Boolean {

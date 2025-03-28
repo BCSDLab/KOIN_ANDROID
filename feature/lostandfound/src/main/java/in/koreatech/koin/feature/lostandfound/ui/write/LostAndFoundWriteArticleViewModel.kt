@@ -11,14 +11,14 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedU
 import `in`.koreatech.koin.feature.lostandfound.IMAGE_MAX_COUNT
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
+import java.time.LocalDate
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.time.LocalDate
-import javax.inject.Inject
 
 @HiltViewModel
 class LostAndFoundWriteArticleViewModel @Inject constructor(
@@ -28,16 +28,16 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
     private val uploadFilesUseCase: UploadFileUseCase
 ) : ViewModel(),
     ContainerHost<LostAndFoundWriteArticleState, LostAndFoundWriteArticleSideEffect> {
-
     override val container =
         container<LostAndFoundWriteArticleState, LostAndFoundWriteArticleSideEffect>(
             LostAndFoundWriteArticleState(),
             savedStateHandle
         ) {
             val rawLostOrFoundType = savedStateHandle.get<String>(LOST_OR_FOUND_TYPE)
-            val lostOrFoundType = LostOrFoundType.entries.find {
-                it.name == rawLostOrFoundType
-            } ?: LostOrFoundType.FOUND
+            val lostOrFoundType =
+                LostOrFoundType.entries.find {
+                    it.name == rawLostOrFoundType
+                } ?: LostOrFoundType.FOUND
             setLostOrFoundType(lostOrFoundType)
             addItem(
                 LostAndFoundWriteArticleItemState(
@@ -46,32 +46,39 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
             )
         }
 
-    private fun setLostOrFoundType(lostOrFoundType: LostOrFoundType) = intent {
-        reduce {
-            state.copy(lostOrFoundType = lostOrFoundType)
-        }
-    }
-
-    fun addItem(item: LostAndFoundWriteArticleItemState) = intent {
-        //postSideEffect(LostAndFoundWriteArticleSideEffect.AddItem(item))
-        reduce {
-            state.copy(itemList = state.itemList + item)
-        }
-    }
-
-    fun removeItem(index: Int) = intent {
-        //postSideEffect(LostAndFoundWriteArticleSideEffect.RemoveItem(index))
-        reduce {
-            state.copy(itemList = state.itemList.filterIndexed { i, _ -> i != index })
-        }
-    }
-
-    fun updateItemType(index: Int, category: LostItemCategory) {
+    private fun setLostOrFoundType(lostOrFoundType: LostOrFoundType) =
         intent {
-            //postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateItemType(index, category))
+            reduce {
+                state.copy(lostOrFoundType = lostOrFoundType)
+            }
+        }
+
+    fun addItem(item: LostAndFoundWriteArticleItemState) =
+        intent {
+            // postSideEffect(LostAndFoundWriteArticleSideEffect.AddItem(item))
+            reduce {
+                state.copy(itemList = state.itemList + item)
+            }
+        }
+
+    fun removeItem(index: Int) =
+        intent {
+            // postSideEffect(LostAndFoundWriteArticleSideEffect.RemoveItem(index))
+            reduce {
+                state.copy(itemList = state.itemList.filterIndexed { i, _ -> i != index })
+            }
+        }
+
+    fun updateItemType(
+        index: Int,
+        category: LostItemCategory
+    ) {
+        intent {
+            // postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateItemType(index, category))
             reduce {
                 state.copy(
-                    itemList = state.itemList.mapIndexed { i, item ->
+                    itemList =
+                    state.itemList.mapIndexed { i, item ->
                         if (i == index) {
                             return@mapIndexed item.copy(
                                 category = category,
@@ -104,15 +111,19 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
             intent {
                 reduce {
                     state.copy(
-                        itemList = state.itemList.mapIndexed { i, item ->
+                        itemList =
+                        state.itemList.mapIndexed { i, item ->
                             if (i == itemIndex) {
-                                return@mapIndexed item.copy(images = item.images.mapIndexed { j, currentValue ->
-                                    if (j == imageIndex) {
-                                        return@mapIndexed fileUrl // Replace placeholder to real image url
-                                    } else {
-                                        currentValue
+                                return@mapIndexed item.copy(
+                                    images =
+                                    item.images.mapIndexed { j, currentValue ->
+                                        if (j == imageIndex) {
+                                            return@mapIndexed fileUrl // Replace placeholder to real image url
+                                        } else {
+                                            currentValue
+                                        }
                                     }
-                                })
+                                )
                             } else {
                                 item
                             }
@@ -136,7 +147,9 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         imageIndex: Int
     ) = viewModelScope.launch {
         getLostAndFoundPreSignedUrlUseCase(
-            fileSize, fileType, fileName
+            fileSize,
+            fileType,
+            fileName
         ).onSuccess {
             uploadImage(
                 preSignedUrl = it.second,
@@ -165,13 +178,16 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         }
 
         reduce {
-            state.copy(itemList = state.itemList.mapIndexed { i, item ->
-                if (i == itemIndex) {
-                    return@mapIndexed item.copy(images = item.images + "") // Add empty string as placeholder
-                } else {
-                    item
+            state.copy(
+                itemList =
+                state.itemList.mapIndexed { i, item ->
+                    if (i == itemIndex) {
+                        return@mapIndexed item.copy(images = item.images + "") // Add empty string as placeholder
+                    } else {
+                        item
+                    }
                 }
-            })
+            )
         }
 
         postSideEffect(
@@ -184,10 +200,14 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         )
     }
 
-    fun removeImage(itemIndex: Int, imageIndex: Int) = intent {
+    fun removeImage(
+        itemIndex: Int,
+        imageIndex: Int
+    ) = intent {
         reduce {
             state.copy(
-                itemList = state.itemList.mapIndexed { i, item ->
+                itemList =
+                state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
                         return@mapIndexed item.copy(images = item.images.filterIndexed { j, _ -> j != imageIndex })
                     } else {
@@ -198,11 +218,15 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         }
     }
 
-    fun updateDescription(itemIndex: Int, content: String) = intent {
-        //postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateDescription(itemIndex, content))
+    fun updateDescription(
+        itemIndex: Int,
+        content: String
+    ) = intent {
+        // postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateDescription(itemIndex, content))
         reduce {
             state.copy(
-                itemList = state.itemList.mapIndexed { i, item ->
+                itemList =
+                state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
                         return@mapIndexed item.copy(content = content)
                     } else {
@@ -213,11 +237,15 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         }
     }
 
-    fun updateLocation(itemIndex: Int, foundPlace: String) = intent {
-        //postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateLocation(itemIndex, foundPlace))
+    fun updateLocation(
+        itemIndex: Int,
+        foundPlace: String
+    ) = intent {
+        // postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateLocation(itemIndex, foundPlace))
         reduce {
             state.copy(
-                itemList = state.itemList.mapIndexed { i, item ->
+                itemList =
+                state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
                         return@mapIndexed item.copy(
                             foundPlace = foundPlace,
@@ -231,11 +259,15 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         }
     }
 
-    fun updateDate(itemIndex: Int, date: LocalDate?) = intent {
-        //postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateDate(itemIndex, date))
+    fun updateDate(
+        itemIndex: Int,
+        date: LocalDate?
+    ) = intent {
+        // postSideEffect(LostAndFoundWriteArticleSideEffect.UpdateDate(itemIndex, date))
         reduce {
             state.copy(
-                itemList = state.itemList.mapIndexed { i, item ->
+                itemList =
+                state.itemList.mapIndexed { i, item ->
                     if (i == itemIndex) {
                         return@mapIndexed item.copy(foundDate = date, dateRequired = date == null)
                     } else {
@@ -246,21 +278,25 @@ class LostAndFoundWriteArticleViewModel @Inject constructor(
         }
     }
 
-    fun checkAllFieldValid() = intent {
-        postSideEffect(LostAndFoundWriteArticleSideEffect.CheckAllFieldValid(state.itemList))
-    }
-
-    fun writeArticle() = viewModelScope.launch {
+    fun checkAllFieldValid() =
         intent {
-            uploadLostAndFoundArticleUseCase(state.itemList.map {
-                it.toArticleLostAndFoundUpload()
-            }).onSuccess {
-                postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle(it.id))
-            }.onFailure {
-                postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticleFailed)
+            postSideEffect(LostAndFoundWriteArticleSideEffect.CheckAllFieldValid(state.itemList))
+        }
+
+    fun writeArticle() =
+        viewModelScope.launch {
+            intent {
+                uploadLostAndFoundArticleUseCase(
+                    state.itemList.map {
+                        it.toArticleLostAndFoundUpload()
+                    }
+                ).onSuccess {
+                    postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle(it.id))
+                }.onFailure {
+                    postSideEffect(LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticleFailed)
+                }
             }
         }
-    }
 
     companion object {
         const val LOST_OR_FOUND_TYPE = "lost_or_found_type"

@@ -19,7 +19,7 @@ class GetUserInfoUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(): Pair<User?, ErrorHandler?> {
         return if (tokenRepository.getAccessToken() == null) {
-            //익명
+            // 익명
             User.Anonymous to null
         } else {
             try {

@@ -15,7 +15,6 @@ class ArticleMainAdapter(
     private val onArticleClick: (ArticleMainState.Content) -> Unit
 ) :
     ListAdapter<ArticleMainState, RecyclerView.ViewHolder>(diffCallback) {
-
     inner class KeywordNotiViewHolder(
         private val binding: MainCardArticleNotiBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -35,7 +34,6 @@ class ArticleMainAdapter(
     inner class HotArticleViewHolder(
         private val binding: MainCardArticleBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(content: ArticleMainState.Content) {
             binding.textArticleTitle.text = content.title
             binding.cardViewArticleHeader.setOnClickListener { onArticleClick(content) }
@@ -50,10 +48,7 @@ class ArticleMainAdapter(
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_NOTI -> {
                 KeywordNotiViewHolder(
@@ -88,24 +83,25 @@ class ArticleMainAdapter(
         const val TYPE_NOTI = 0
         const val TYPE_ARTICLE = 1
 
-        private val diffCallback = object : DiffUtil.ItemCallback<ArticleMainState>() {
-            override fun areItemsTheSame(
-                oldItem: ArticleMainState,
-                newItem: ArticleMainState
-            ): Boolean {
-                return when {
-                    oldItem is ArticleMainState.Noti && newItem is ArticleMainState.Noti -> oldItem.title == newItem.title
-                    oldItem is ArticleMainState.Content && newItem is ArticleMainState.Content -> oldItem.id == newItem.id
-                    else -> false
+        private val diffCallback =
+            object : DiffUtil.ItemCallback<ArticleMainState>() {
+                override fun areItemsTheSame(
+                    oldItem: ArticleMainState,
+                    newItem: ArticleMainState
+                ): Boolean {
+                    return when {
+                        oldItem is ArticleMainState.Noti && newItem is ArticleMainState.Noti -> oldItem.title == newItem.title
+                        oldItem is ArticleMainState.Content && newItem is ArticleMainState.Content -> oldItem.id == newItem.id
+                        else -> false
+                    }
+                }
+
+                override fun areContentsTheSame(
+                    oldItem: ArticleMainState,
+                    newItem: ArticleMainState
+                ): Boolean {
+                    return oldItem == newItem
                 }
             }
-
-            override fun areContentsTheSame(
-                oldItem: ArticleMainState,
-                newItem: ArticleMainState
-            ): Boolean {
-                return oldItem == newItem
-            }
-        }
     }
 }

@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.response.timetable
 import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 
+@Deprecated("use LectureResponseV3 instead")
 data class LectureResponse(
     @SerializedName("id")
     val id: Int,
@@ -29,21 +30,22 @@ data class LectureResponse(
     @SerializedName("is_elearning") //
     val isElearning: String?,
     @SerializedName("class_time")
-    val classTime: List<Int>,
+    val classTime: List<Int>
 ) {
-    fun toLecture() = Lecture(
-        id = id,
-        code = code.orEmpty(),
-        name = name.orEmpty(),
-        grades = grades.orEmpty(),
-        lectureClass = lectureClass.orEmpty(),
-        regularNumber = regularNumber.orEmpty(),
-        department = department.orEmpty(),
-        target = target.orEmpty(),
-        professor = professor.orEmpty(),
-        isEnglish = isEnglish.orEmpty(),
-        designScore = designScore.orEmpty(),
-        isElearning = isElearning.orEmpty(),
-        classTime = classTime
-    )
+    fun toLecture() =
+        Lecture(
+            id = id,
+            code = code.orEmpty(),
+            name = name.orEmpty(),
+            grades = grades.orEmpty(),
+            lectureClass = lectureClass.orEmpty(),
+            regularNumber = regularNumber.orEmpty(),
+            department = department.orEmpty(),
+            target = target.orEmpty(),
+            professor = professor.orEmpty(),
+            isEnglish = isEnglish.orEmpty(),
+            designScore = designScore.orEmpty(),
+            isElearning = isElearning.orEmpty(),
+            classTime = classTime
+        )
 }

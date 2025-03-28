@@ -4,12 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class BusinessSignUpBaseViewModel: BaseViewModel() {
+class BusinessSignUpBaseViewModel : BaseViewModel() {
     private val _toBeShownFragment = MutableLiveData<String>()
     val toBeShownFragment: LiveData<String> get() = _toBeShownFragment
 

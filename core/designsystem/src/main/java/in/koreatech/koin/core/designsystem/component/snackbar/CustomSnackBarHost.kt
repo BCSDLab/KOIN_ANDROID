@@ -33,13 +33,14 @@ fun CustomSnackBarHost(
     hotState: SnackbarHostState,
     modifier: Modifier = Modifier,
     radius: Dp = 6.dp,
-
-    messageTextStyle: TextStyle =KoinTheme.typography.regular14.copy(
-        color = KoinTheme.colors.neutral0
-    ),
-    actionLabelTextStyle: TextStyle = KoinTheme.typography.regular14.copy(
-        color = KoinTheme.colors.sub500
-    ),
+    messageTextStyle: TextStyle =
+        KoinTheme.typography.regular14.copy(
+            color = KoinTheme.colors.neutral0
+        ),
+    actionLabelTextStyle: TextStyle =
+        KoinTheme.typography.regular14.copy(
+            color = KoinTheme.colors.sub500
+        ),
     background: Color = KoinTheme.colors.primary700,
     alignment: Alignment = Alignment.BottomCenter,
     paddingValues: PaddingValues = PaddingValues(bottom = 20.dp, start = 10.dp, end = 10.dp),
@@ -47,13 +48,14 @@ fun CustomSnackBarHost(
     onAction: (() -> Unit)? = null
 ) {
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxSize()
             .padding(paddingValues),
         contentAlignment = alignment
     ) {
         SnackbarHost(
-            hostState = hotState,
+            hostState = hotState
         ) { snackbarData ->
             SnackBarContent(
                 messageText = snackbarData.visuals.message,
@@ -69,7 +71,6 @@ fun CustomSnackBarHost(
                 }
             )
         }
-
     }
 }
 
@@ -80,35 +81,39 @@ private fun SnackBarContent(
     modifier: Modifier = Modifier,
     radius: Dp = 0.dp,
     background: Color = Color.Black,
-    messageTextStyle: TextStyle = KoinTheme.typography.regular12.copy(
-        color = Color.White
-    ),
-    actionLabelTextStyle: TextStyle = KoinTheme.typography.regular12.copy(
-        color = Color.White
-    ),
+    messageTextStyle: TextStyle =
+        KoinTheme.typography.regular12.copy(
+            color = Color.White
+        ),
+    actionLabelTextStyle: TextStyle =
+        KoinTheme.typography.regular12.copy(
+            color = Color.White
+        ),
     innerPaddingValues: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 16.dp),
     onAction: () -> Unit = {}
 ) {
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(radius))
             .background(background)
             .padding(innerPaddingValues)
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = messageText,
                 style = messageTextStyle,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.weight(0.05f))
             if (actionLabelText.isNotEmpty()) {
                 Text(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .weight(0.2f)
                         .noRippleClickable { onAction() },
                     text = actionLabelText,
@@ -144,6 +149,6 @@ suspend fun SnackbarHostState.showSnackBarWithDismiss(
 private fun SnackBarContentPreview() {
     SnackBarContent(
         messageText = "스낵바 메시지",
-        actionLabelText = "닫기",
+        actionLabelText = "닫기"
     )
 }

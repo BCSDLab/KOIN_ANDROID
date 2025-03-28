@@ -9,7 +9,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ArticleApi {
-
     /**
      * 게시글 목록과 페이지 정보를 가져옴
      * @param boardId 게시판 아이디
@@ -56,7 +55,9 @@ interface ArticleApi {
      * @param count 키워드 수
      */
     @GET("articles/hot/keyword")
-    suspend fun fetchMostSearchedKeywords(@Query("count") count: Int): KeywordsResponse
+    suspend fun fetchMostSearchedKeywords(
+        @Query("count") count: Int
+    ): KeywordsResponse
 
     /**
      * 분실물 게시글 조회

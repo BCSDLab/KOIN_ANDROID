@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.repository.TokenRepository
 import javax.inject.Inject
 
 class UpdateUserRefreshTokenUseCase @Inject constructor(
-    private val tokenRepository: TokenRepository,
+    private val tokenRepository: TokenRepository
 ) {
     suspend operator fun invoke(refreshBody: AuthToken) {
         tokenRepository.saveAccessToken(refreshBody.token)

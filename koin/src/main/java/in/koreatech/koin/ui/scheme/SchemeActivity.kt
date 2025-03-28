@@ -7,14 +7,14 @@ import android.os.Bundle
 import androidx.core.content.getSystemService
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.NavigatorType
 import `in`.koreatech.koin.core.navigation.SchemeType
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
@@ -23,8 +23,8 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.navigation.utils.toHost
 import `in`.koreatech.koin.databinding.ActivitySchemeBinding
 import `in`.koreatech.koin.ui.main.activity.MainActivity
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SchemeActivity : ActivityBase() {
@@ -38,7 +38,6 @@ class SchemeActivity : ActivityBase() {
     override val screenTitle: String
         get() = SchemeActivity.screenTitle
     private lateinit var binding: ActivitySchemeBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,22 +53,24 @@ class SchemeActivity : ActivityBase() {
 
     private fun handleIntent() {
         intent.getStringExtra(EXTRA_URL).let { url ->
-            val tasks = getSystemService<ActivityManager>()?.appTasks?.map {
-                /**
-                 * class Name : in.koreatech.koin.ui.main.activity.MainActivity
-                 */
-                it.taskInfo.baseActivity?.className?.equals(MainActivity::class.qualifiedName) == true
-            }
-
-            val navigatorType = tasks?.any { it }.let {
-                if (it == true) {
-                    NavigatorType.DETAIL
-                } else {
-                    NavigatorType.MAIN
+            val tasks =
+                getSystemService<ActivityManager>()?.appTasks?.map {
+                    /**
+                     * class Name : in.koreatech.koin.ui.main.activity.MainActivity
+                     */
+                    it.taskInfo.baseActivity?.className?.equals(MainActivity::class.qualifiedName) == true
                 }
-            }
+
+            val navigatorType =
+                tasks?.any { it }.let {
+                    if (it == true) {
+                        NavigatorType.DETAIL
+                    } else {
+                        NavigatorType.MAIN
+                    }
+                }
             Timber.e("navigatorType : $navigatorType")
-            Timber.e("url : ${url}")
+            Timber.e("url : $url")
             Timber.e("url to host : ${url?.toHost()}")
 
             /**
@@ -78,35 +79,44 @@ class SchemeActivity : ActivityBase() {
              */
             when (navigatorType) {
                 NavigatorType.MAIN -> {
-                    val intent = navigator.navigateToSplash(
-                        context = this,
-                        targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
-                        targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url ?: "")),
-                        targetArticleId = Pair(EXTRA_ARTICLE_ID, getArticleIdFromUrl(url ?: "")),
-                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url ?: "")),
-                        type = Pair(EXTRA_TYPE, url?.toHost()),
-                        navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
-                    )
+                    val intent =
+                        navigator.navigateToSplash(
+                            context = this,
+                            targetId = Pair(EXTRA_ID, getIdFromUrl(url ?: "")),
+                            targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url ?: "")),
+                            targetArticleId = Pair(
+                                EXTRA_ARTICLE_ID,
+                                getArticleIdFromUrl(url ?: "")
+                            ),
+                            targetChatId = Pair(
+                                EXTRA_CHAT_ROOM_ID,
+                                getChatRoomIdFromUrl(url ?: "")
+                            ),
+                            type = Pair(EXTRA_TYPE, url?.toHost()),
+                            navType = Pair(EXTRA_NAV_TYPE, NavigatorType.MAIN.type)
+                        )
                     navigateToActivity(intent)
                 }
 
                 NavigatorType.DETAIL -> {
                     when (val host = url?.toHost()) {
                         SchemeType.SHOP.type -> {
-                            val intent = navigator.navigateToShop(
-                                context = this,
-                                targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
-                                type = Pair(EXTRA_TYPE, host)
-                            )
+                            val intent =
+                                navigator.navigateToShop(
+                                    context = this,
+                                    targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
+                                    type = Pair(EXTRA_TYPE, host)
+                                )
                             navigateToActivity(intent)
                         }
 
                         SchemeType.DINING.type -> {
-                            val intent = navigator.navigateToDinging(
-                                context = this,
-                                targetId = Pair(EXTRA_ID, ""),
-                                type = Pair(EXTRA_TYPE, host)
-                            )
+                            val intent =
+                                navigator.navigateToDinging(
+                                    context = this,
+                                    targetId = Pair(EXTRA_ID, ""),
+                                    type = Pair(EXTRA_TYPE, host)
+                                )
                             navigateToActivity(intent)
                         }
 
@@ -116,22 +126,30 @@ class SchemeActivity : ActivityBase() {
                                 AnalyticsConstant.Label.KEYWORD_NOTIFICATION,
                                 getKeywordFromUrl(url)
                             )
-                            val intent = navigator.navigateToArticle(
-                                context = this,
-                                targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
-                                targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url)),
-                                type = Pair(EXTRA_TYPE, host)
-                            )
+                            val intent =
+                                navigator.navigateToArticle(
+                                    context = this,
+                                    targetId = Pair(EXTRA_ID, getIdFromUrl(url)),
+                                    targetBoardId = Pair(EXTRA_BOARD_ID, getBoardIdFromUrl(url)),
+                                    type = Pair(EXTRA_TYPE, host)
+                                )
                             navigateToActivity(intent)
                         }
 
                         SchemeType.CHAT.type -> {
-                            val intent = navigator.navigateToChat(
-                                context = this,
-                                targetArticleId = Pair(EXTRA_ARTICLE_ID, getArticleIdFromUrl(url)),
-                                targetChatId = Pair(EXTRA_CHAT_ROOM_ID, getChatRoomIdFromUrl(url)),
-                                type = Pair(EXTRA_TYPE, host)
-                            )
+                            val intent =
+                                navigator.navigateToChat(
+                                    context = this,
+                                    targetArticleId = Pair(
+                                        EXTRA_ARTICLE_ID,
+                                        getArticleIdFromUrl(url)
+                                    ),
+                                    targetChatId = Pair(
+                                        EXTRA_CHAT_ROOM_ID,
+                                        getChatRoomIdFromUrl(url)
+                                    ),
+                                    type = Pair(EXTRA_TYPE, host)
+                                )
                             navigateToActivity(intent)
                         }
 

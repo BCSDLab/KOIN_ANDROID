@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.ui.businesssignup
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.util.dataBinding
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
@@ -11,7 +9,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityBusinessSignupCheckBinding
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpCheckViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -58,12 +58,15 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
         }
 
         checkButton.setOnClickListener {
-            if(isActivateCheckButton) {
+            if (isActivateCheckButton) {
                 val intent = Intent(applicationContext, BusinessSignupBaseActivity::class.java)
                 startActivity(intent)
-            }
-            else {
-                Toast.makeText(applicationContext, getString(R.string.is_not_all_check), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.is_not_all_check),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -75,7 +78,7 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
                     binding.allCheckButton.setImageDrawable(getDrawable(it))
                     isAllCheckButton = it != R.drawable.check
 
-                    if(it == R.drawable.check_selected) {
+                    if (it == R.drawable.check_selected) {
                         binding.checkButton.setBackgroundColor(getColor(R.color.colorPrimary))
                     }
                 }
@@ -102,23 +105,24 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
     }
 
     private fun isButtonClickCheck() = with(binding) {
-        isActivateCheckButton = if(isAgreedPrivacyTermsButton && isAgreedKoinTerms) {
-            checkButton.setBackgroundColor(getColor(R.color.colorPrimary))
-            allCheckButton.setImageDrawable(getDrawable(R.drawable.check_selected))
-            viewModel.updateButtonState(R.drawable.check_selected, 1)
-            isAllCheckButton = true
-            true
-        } else {
-            checkButton.setBackgroundColor(getColor(R.color.gray5))
-            allCheckButton.setImageDrawable(getDrawable(R.drawable.check))
-            viewModel.updateButtonState(R.drawable.check, 1)
-            isAllCheckButton = false
-            false
-        }
+        isActivateCheckButton =
+            if (isAgreedPrivacyTermsButton && isAgreedKoinTerms) {
+                checkButton.setBackgroundColor(getColor(R.color.colorPrimary))
+                allCheckButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+                viewModel.updateButtonState(R.drawable.check_selected, 1)
+                isAllCheckButton = true
+                true
+            } else {
+                checkButton.setBackgroundColor(getColor(R.color.gray5))
+                allCheckButton.setImageDrawable(getDrawable(R.drawable.check))
+                viewModel.updateButtonState(R.drawable.check, 1)
+                isAllCheckButton = false
+                false
+            }
     }
 
     private fun isAllCheckButtonClickEvent() = with(binding) {
-        when(isAllCheckButton) {
+        when (isAllCheckButton) {
             true -> {
                 allCheckButton.setImageDrawable(getDrawable(R.drawable.check))
                 agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check))
@@ -134,7 +138,9 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
             }
             false -> {
                 allCheckButton.setImageDrawable(getDrawable(R.drawable.check_selected))
-                agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+                agreedPrivacyTermsButton.setImageDrawable(
+                    getDrawable(R.drawable.check_selected)
+                )
                 agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
 
                 viewModel.updateButtonState(R.drawable.check_selected, 1)
@@ -150,28 +156,30 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
     }
 
     private fun checkButtonClickEvent(button: ImageView) = with(binding) {
-        when(button) {
+        when (button) {
             agreedPrivacyTermsButton -> {
-                isAgreedPrivacyTermsButton = if(isAgreedPrivacyTermsButton) {
-                    agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check))
-                    viewModel.updateButtonState(R.drawable.check, 2)
-                    false
-                } else {
-                    agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
-                    viewModel.updateButtonState(R.drawable.check_selected, 2)
-                    true
-                }
+                isAgreedPrivacyTermsButton =
+                    if (isAgreedPrivacyTermsButton) {
+                        agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check))
+                        viewModel.updateButtonState(R.drawable.check, 2)
+                        false
+                    } else {
+                        agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+                        viewModel.updateButtonState(R.drawable.check_selected, 2)
+                        true
+                    }
             }
             agreedKoinTermsButton -> {
-                isAgreedKoinTerms = if(isAgreedKoinTerms) {
-                    agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check))
-                    viewModel.updateButtonState(R.drawable.check, 3)
-                    false
-                } else {
-                    agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
-                    viewModel.updateButtonState(R.drawable.check_selected, 3)
-                    true
-                }
+                isAgreedKoinTerms =
+                    if (isAgreedKoinTerms) {
+                        agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check))
+                        viewModel.updateButtonState(R.drawable.check, 3)
+                        false
+                    } else {
+                        agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+                        viewModel.updateButtonState(R.drawable.check_selected, 3)
+                        true
+                    }
             }
         }
         isButtonClickCheck()

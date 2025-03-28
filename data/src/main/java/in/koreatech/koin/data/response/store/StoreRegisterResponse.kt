@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.response.store
 
 import com.google.gson.annotations.SerializedName
 
-data class StoreRegisterResponse (
+data class StoreRegisterResponse(
     @SerializedName("address") val address: String,
     @SerializedName("main_category_id") val mainCategoryId: Int,
     @SerializedName("category_ids") val categoryIds: List<Int>,

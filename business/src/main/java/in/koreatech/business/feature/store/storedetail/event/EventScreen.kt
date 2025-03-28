@@ -9,9 +9,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.store.OwnerStoreDialog
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailState
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
-import `in`.koreatech.business.feature.store.OwnerStoreDialog
 
 @Composable
 fun EventScreen(
@@ -24,7 +24,8 @@ fun EventScreen(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
-        verticalOffset, scrollState.value
+        verticalOffset,
+        scrollState.value
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
 
     LaunchedEffect(scrollState.value) {
@@ -41,7 +42,7 @@ fun EventScreen(
     if (state.isEditMode) {
         EventEditToolbar(viewModel, state)
     } else {
-        EventToolbar(context)
+        EventToolbar(context, viewModel)
     }
     EventItem(enabledScroll, scrollState, viewModel, state)
     OwnerStoreDialog(
@@ -52,5 +53,4 @@ fun EventScreen(
         positiveButtonText = stringResource(id = R.string.delete),
         visibility = state.dialogVisibility
     )
-
 }

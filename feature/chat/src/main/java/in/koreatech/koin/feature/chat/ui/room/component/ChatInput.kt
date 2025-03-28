@@ -34,9 +34,10 @@ import `in`.koreatech.koin.feature.chat.ui.CHAT_MESSAGE_MAX_LENGTH
 object ChatInputDefaults {
     val windowInsets: WindowInsets
         @Composable
-        get() = WindowInsets.systemBars.only(
-            WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
-        )
+        get() =
+            WindowInsets.systemBars.only(
+                WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+            )
 }
 
 @Composable
@@ -49,33 +50,37 @@ fun ChatInput(
     windowInsets: WindowInsets = ChatInputDefaults.windowInsets
 ) {
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .background(KoinTheme.colors.neutral100)
             .padding(16.dp)
             .windowInsetsPadding(windowInsets)
     ) {
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .height(intrinsicSize = IntrinsicSize.Max),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .background(KoinTheme.colors.info200, KoinTheme.shapes.medium)
                     .noRippleClickable { onImageButtonClick() }
                     .padding(12.dp),
                 painter = painterResource(id = R.drawable.ic_chat_add_photo),
-                contentDescription = stringResource(id = R.string.chat_add_image),
+                contentDescription = stringResource(id = R.string.chat_add_image)
             )
 
             ChatTextField(
                 value = value,
                 onValueChange = onValueChange,
                 placeholder = stringResource(id = R.string.chat_input_placeholder),
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(horizontal = 8.dp)
                     .background(
                         color = KoinTheme.colors.neutral0,
@@ -87,12 +92,13 @@ fun ChatInput(
             )
 
             Image(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .background(KoinTheme.colors.info200, KoinTheme.shapes.medium)
                     .noRippleClickable { onSendClick() }
                     .padding(12.dp),
                 painter = painterResource(id = R.drawable.ic_chat_send),
-                contentDescription = stringResource(id = R.string.chat_send),
+                contentDescription = stringResource(id = R.string.chat_send)
             )
         }
     }
@@ -109,20 +115,22 @@ fun ChatTextField(
         modifier = modifier,
         value = value,
         textStyle = KoinTheme.typography.regular14,
-        onValueChange = { if (value.length < CHAT_MESSAGE_MAX_LENGTH) {
-            onValueChange(it)
-        } else {
-            onValueChange(it.take(CHAT_MESSAGE_MAX_LENGTH))
-        } },
+        onValueChange = {
+            if (value.length < CHAT_MESSAGE_MAX_LENGTH) {
+                onValueChange(it)
+            } else {
+                onValueChange(it.take(CHAT_MESSAGE_MAX_LENGTH))
+            }
+        },
         decorationBox = { innerTextField ->
             Box(
-                contentAlignment = Alignment.CenterStart,
+                contentAlignment = Alignment.CenterStart
             ) {
                 if (value.isEmpty()) {
                     Text(
                         text = placeholder,
                         style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral500,
+                        color = KoinTheme.colors.neutral500
                     )
                 } else {
                     innerTextField()
@@ -141,6 +149,7 @@ fun ChatInputPreview() {
             value = "",
             onValueChange = {},
             onImageButtonClick = {},
-            onSendClick = {})
+            onSendClick = {}
+        )
     }
 }

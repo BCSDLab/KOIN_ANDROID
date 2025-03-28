@@ -5,8 +5,6 @@ import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinua
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
 import javax.inject.Inject
 
-
-
 class AuthenticateSmsCodeUseCase @Inject constructor(
     private val ownerChangePasswordRepository: OwnerChangePasswordRepository
 ) {
@@ -16,11 +14,11 @@ class AuthenticateSmsCodeUseCase @Inject constructor(
     ): Result<ChangePasswordContinuationState> {
         return when (authCode) {
             "" -> Result.failure(ChangePasswordExceptionState.ToastNullAuthCode)
-            else -> ownerChangePasswordRepository.authenticateSmsCode(
-                phoneNumber = phoneNumber,
-                authCode = authCode
-            ).map { ChangePasswordContinuationState.GotoChangePasswordScreen}
+            else ->
+                ownerChangePasswordRepository.authenticateSmsCode(
+                    phoneNumber = phoneNumber,
+                    authCode = authCode
+                ).map { ChangePasswordContinuationState.GotoChangePasswordScreen }
         }
     }
-
 }

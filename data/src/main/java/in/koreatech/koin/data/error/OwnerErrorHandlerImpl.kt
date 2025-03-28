@@ -8,13 +8,12 @@ import `in`.koreatech.koin.data.util.unknownErrorHandler
 import `in`.koreatech.koin.data.util.withUnknown
 import `in`.koreatech.koin.domain.error.owner.OwnerErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
-import retrofit2.HttpException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class OwnerErrorHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : OwnerErrorHandler {
-
     override fun handleGetTokenError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when (it) {
@@ -80,7 +79,6 @@ class OwnerErrorHandlerImpl @Inject constructor(
             }.withUnknown(context)
         }
     }
-
 
     override fun handleOwnerRegisterError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {

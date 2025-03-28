@@ -6,5 +6,5 @@ data class CheckTermState(
     val isCheckedKoinTerms: Boolean = false,
     val privacyTerm: String = "",
     val koinTerm: String = "",
-    val throwable: Throwable? = null,
+    val throwable: Throwable? = null
 )

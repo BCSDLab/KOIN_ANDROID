@@ -13,8 +13,8 @@ import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_GENDER_NOT_SET
 import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_NICKNAME_VALIDATION_NOT_CHECK
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
-import retrofit2.HttpException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class UserErrorHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context

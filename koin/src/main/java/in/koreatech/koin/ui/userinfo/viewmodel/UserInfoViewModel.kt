@@ -13,19 +13,18 @@ import `in`.koreatech.koin.domain.usecase.user.UserRemoveUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.userinfo.UserInfoState
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
 class UserInfoViewModel @Inject constructor(
     private val userInfoUseCase: GetUserInfoUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
-    private val userRemoveUseCase: UserRemoveUseCase,
+    private val userRemoveUseCase: UserRemoveUseCase
 ) : BaseViewModel() {
-
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> get() = _user
 
@@ -34,10 +33,13 @@ class UserInfoViewModel @Inject constructor(
 
     fun getUserInfo() = viewModelScope.launchWithLoading {
         userInfoUseCase().let { (user, error) ->
-            if (error != null) _userInfoState.update {
-                it.copy(status = UiStatus.Failed(error.message))
+            if (error != null) {
+                _userInfoState.update {
+                    it.copy(status = UiStatus.Failed(error.message))
+                }
+            } else {
+                _user.value = user
             }
-            else _user.value = user
         }
     }
 
@@ -47,7 +49,11 @@ class UserInfoViewModel @Inject constructor(
                 _userInfoState.update { it.copy(status = UiStatus.Success) }
             }
             .onFailure { errorHandler ->
-                _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+                _userInfoState.update {
+                    it.copy(
+                        status = UiStatus.Failed(errorHandler.message)
+                    )
+                }
             }
     }
 
@@ -57,7 +63,11 @@ class UserInfoViewModel @Inject constructor(
                 _userInfoState.update { it.copy(status = UiStatus.Success) }
             }
             .onFailure { errorHandler ->
-                _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+                _userInfoState.update {
+                    it.copy(
+                        status = UiStatus.Failed(errorHandler.message)
+                    )
+                }
             }
     }
 }

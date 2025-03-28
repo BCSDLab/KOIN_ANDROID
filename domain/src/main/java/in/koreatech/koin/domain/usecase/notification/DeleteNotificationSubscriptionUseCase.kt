@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class DeleteNotificationSubscriptionUseCase @Inject constructor(
     private val notificationRepository: NotificationRepository,
-    private val userErrorHandler: UserErrorHandler,
+    private val userErrorHandler: UserErrorHandler
 ) {
     suspend operator fun invoke(type: SubscribesType): Pair<Unit?, ErrorHandler?> {
         return try {

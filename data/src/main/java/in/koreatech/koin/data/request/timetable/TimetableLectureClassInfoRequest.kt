@@ -10,7 +10,8 @@ data class TimetableLectureClassInfoRequest(
     val classPlace: String?
 )
 
-fun TimetableLectureClassInfo.toClassInfoRequest() = TimetableLectureClassInfoRequest(
-    classTime = classTime,
-    classPlace = classPlace
-)
+fun TimetableLectureClassInfo.toClassInfoRequest() =
+    TimetableLectureClassInfoRequest(
+        classTime = classTime,
+        classPlace = classPlace
+    )

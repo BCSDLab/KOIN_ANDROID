@@ -8,7 +8,10 @@ import javax.inject.Inject
 class AddTimetableLectureUseCase @Inject constructor(
     private val timetableRepository: TimetableRepository
 ) {
-    suspend operator fun invoke(frameId: Int, lectures: List<Lecture>): Result<TimetableLectures> {
+    suspend operator fun invoke(
+        frameId: Int,
+        lectures: List<Lecture>
+    ): Result<TimetableLectures> {
         return timetableRepository.postTimetableLectures(frameId, lectures)
     }
 }

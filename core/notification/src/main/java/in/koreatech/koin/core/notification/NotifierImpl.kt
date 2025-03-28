@@ -16,9 +16,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
 import java.net.URL
 import javax.inject.Inject
+import timber.log.Timber
 
 class NotifierImpl @Inject constructor(
     @ApplicationContext private val context: Context
@@ -32,7 +32,10 @@ class NotifierImpl @Inject constructor(
         private const val CHANNEL_DESCRIPTION = "koin_notification_channel"
     }
 
-    override fun sendNotification(data: Map<String, String>, intent: Intent) {
+    override fun sendNotification(
+        data: Map<String, String>,
+        intent: Intent
+    ) {
         if (checkSelfPermission()) return
 
         val notificationManager = NotificationManagerCompat.from(context)
@@ -42,46 +45,47 @@ class NotifierImpl @Inject constructor(
         val content = data[KEY_CONTENT]
         val imageUrl = data[KEY_IMAGE_URL]
 
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            notificationId,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val pendingIntent =
+            PendingIntent.getActivity(
+                context,
+                notificationId,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val imageUrlToBitmap = try {
-            BitmapFactory.decodeStream(URL(imageUrl).openConnection().getInputStream())
-        } catch (e: Exception) {
-            Timber.e("Notification Image Url to Bitmap Error : ${e.message}")
-            null
-        }
+        val imageUrlToBitmap =
+            try {
+                BitmapFactory.decodeStream(URL(imageUrl).openConnection().getInputStream())
+            } catch (e: Exception) {
+                Timber.e("Notification Image Url to Bitmap Error : ${e.message}")
+                null
+            }
 
         val notificationLayout = createRemoteViewLayout(R.layout.layout_small_content, title, content, imageUrlToBitmap)
         val notificationExpandedLayout = createRemoteViewLayout(R.layout.layout_big_content, title, content, imageUrlToBitmap)
 
-        val notificationBuilder = context.createNotification {
-            setSmallIcon(R.drawable.ic_notification_koin_logo)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(pendingIntent)
-                .setGroup(null)
-                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayout)
-                .setCustomBigContentView(notificationExpandedLayout)
-                .setCustomHeadsUpContentView(notificationLayout)
-        }
+        val notificationBuilder =
+            context.createNotification {
+                setSmallIcon(R.drawable.ic_notification_koin_logo)
+                    .setContentTitle(title)
+                    .setContentText(content)
+                    .setAutoCancel(true)
+                    .setSound(defaultSoundUri)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(pendingIntent)
+                    .setGroup(null)
+                    .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                    .setCustomContentView(notificationLayout)
+                    .setCustomBigContentView(notificationExpandedLayout)
+                    .setCustomHeadsUpContentView(notificationLayout)
+            }
 
         notificationManager.notify(notificationId, notificationBuilder)
     }
 
-    private fun Context.createNotification(
-        block: NotificationCompat.Builder.() -> Unit,
-    ): Notification {
+    private fun Context.createNotification(block: NotificationCompat.Builder.() -> Unit): Notification {
         ensureNotificationChannelExists()
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -90,13 +94,14 @@ class NotifierImpl @Inject constructor(
     }
 
     private fun Context.ensureNotificationChannelExists() {
-        val channel = NotificationChannel(
-            CHANNEL_ID,
-            CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_DEFAULT,
-        ).apply {
-            description = CHANNEL_DESCRIPTION
-        }
+        val channel =
+            NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = CHANNEL_DESCRIPTION
+            }
 
         NotificationManagerCompat.from(this).createNotificationChannel(channel)
     }

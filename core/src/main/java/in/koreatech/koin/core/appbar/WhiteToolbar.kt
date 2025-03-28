@@ -17,15 +17,17 @@ data class ToolbarMenu(
 class WhiteToolbar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = 0
 ) : Toolbar(context, attrs, defStyleAttr) {
-
     private lateinit var binding: WhiteToolbarBinding
 
     init {
         initView()
         context.theme.obtainStyledAttributes(
-            attrs, R.styleable.WhiteToolbar, 0, 0
+            attrs,
+            R.styleable.WhiteToolbar,
+            0,
+            0
         ).apply {
             setTitle(getString(R.styleable.WhiteToolbar_title))
             setNavigationIconEnabled(getBoolean(R.styleable.WhiteToolbar_navigationIconEnabled, true))
@@ -45,11 +47,12 @@ class WhiteToolbar @JvmOverloads constructor(
     }
 
     private fun setNavigationIconEnabled(enabled: Boolean) {
-        binding.toolbarWhite.navigationIcon = if (enabled) {
-            AppCompatResources.getDrawable(context, R.drawable.ic_arrow_left)
-        } else {
-            null
-        }
+        binding.toolbarWhite.navigationIcon =
+            if (enabled) {
+                AppCompatResources.getDrawable(context, R.drawable.ic_arrow_left)
+            } else {
+                null
+            }
     }
 
     fun setMenus(toolbarMenu: ToolbarMenu) {

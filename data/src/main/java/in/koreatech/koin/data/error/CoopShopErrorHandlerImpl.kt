@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.error
 
 import android.content.Context
-import retrofit2.HttpException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.data.R
 import `in`.koreatech.koin.data.util.handleCommonError
@@ -10,10 +9,11 @@ import `in`.koreatech.koin.data.util.withUnknown
 import `in`.koreatech.koin.domain.error.coopshop.CoopShopErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class CoopShopErrorHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
-): CoopShopErrorHandler {
+) : CoopShopErrorHandler {
     override fun handleGetCoopShopAllError(throwable: Throwable): ErrorHandler =
         throwable.handleCommonError(context) {
             unknownErrorHandler(context)

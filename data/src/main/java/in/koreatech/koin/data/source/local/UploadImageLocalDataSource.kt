@@ -13,7 +13,10 @@ import javax.inject.Inject
 class UploadImageLocalDataSource @Inject constructor(
     @ApplicationContext private val applicationContext: Context
 ) {
-    fun uriToBitmap(uriString: String, fileSize: Long): ByteArray{
+    fun uriToBitmap(
+        uriString: String,
+        fileSize: Long
+    ): ByteArray {
         val uri = Uri.parse(uriString)
         val bitmapInputStream = applicationContext.contentResolver.openInputStream(uri)
         val exifInterfaceInputStream = applicationContext.contentResolver.openInputStream(uri)
@@ -23,19 +26,19 @@ class UploadImageLocalDataSource @Inject constructor(
             val cursor = applicationContext.contentResolver.query(uri, null, null, null, null)
             cursor.use {
                 if (cursor != null && cursor.moveToFirst()) {
-
                     if (bitmapInputStream != null && exifInterfaceInputStream != null) {
                         val bitmap = bitmapInputStream.toResizeBitmap(fileSize)
-                            val exif = ExifInterface(exifInterfaceInputStream)
-                            val rotatedBitmap = when (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)) {
+                        val exif = ExifInterface(exifInterfaceInputStream)
+                        val rotatedBitmap =
+                            when (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)) {
                                 ExifInterface.ORIENTATION_ROTATE_90 -> bitmap?.rotateBitmap(90f)
                                 ExifInterface.ORIENTATION_ROTATE_180 -> bitmap?.rotateBitmap(180f)
                                 ExifInterface.ORIENTATION_ROTATE_270 -> bitmap?.rotateBitmap(270f)
                                 else -> bitmap
                             }
-                            if(rotatedBitmap != null){
-                                imageBitmap = rotatedBitmap
-                            }
+                        if (rotatedBitmap != null) {
+                            imageBitmap = rotatedBitmap
+                        }
                     }
 
                     bitmapInputStream?.close()

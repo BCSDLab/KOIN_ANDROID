@@ -23,9 +23,8 @@ import kotlinx.coroutines.flow.stateIn
 class ArticleDetailViewModel @AssistedInject constructor(
     @Assisted("articleId") articleId: Int,
     @Assisted("navigatedBoardId") val navigatedBoardId: Int,
-    private val articleRepository: ArticleRepository,
+    private val articleRepository: ArticleRepository
 ) : BaseViewModel() {
-
     val article: StateFlow<ArticleState> =
         articleRepository.fetchArticle(articleId, navigatedBoardId)
             .onStart {
@@ -37,37 +36,41 @@ class ArticleDetailViewModel @AssistedInject constructor(
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = ArticleState(
-                    header = ArticleHeaderState(
+                initialValue =
+                ArticleState(
+                    header =
+                    ArticleHeaderState(
                         id = 0,
                         board = ArticleBoardType.ALL,
                         title = "",
                         author = "",
                         viewCount = 0,
                         registeredAt = "",
-                        updatedAt = "",
+                        updatedAt = ""
                     ),
                     content = "",
                     prevArticleId = null,
                     nextArticleId = null,
                     attachments = listOf(),
-                    url = "",
+                    url = ""
                 )
             )
 
-    val hotArticles: StateFlow<List<ArticleHeaderState>> = articleRepository.fetchHotArticleHeaders()
-        .map {
-            var doesHotContainsThis = false
-            it.filterIndexed { index, hotArticleHeader ->
-                if (articleId == hotArticleHeader.id)
-                    doesHotContainsThis = true
-                articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if (doesHotContainsThis) 1 else 0)
-            }.map { it.toArticleHeaderState() }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = listOf()
-        )
+    val hotArticles: StateFlow<List<ArticleHeaderState>> =
+        articleRepository.fetchHotArticleHeaders()
+            .map {
+                var doesHotContainsThis = false
+                it.filterIndexed { index, hotArticleHeader ->
+                    if (articleId == hotArticleHeader.id) {
+                        doesHotContainsThis = true
+                    }
+                    articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if (doesHotContainsThis) 1 else 0)
+                }.map { it.toArticleHeaderState() }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = listOf()
+            )
 
     fun setIsLoading(isLoading: Boolean) {
         _isLoading.value = isLoading
@@ -77,7 +80,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             @Assisted("articleId") articleId: Int,
-            @Assisted("navigatedBoardId") navigatedBoardId: Int,
+            @Assisted("navigatedBoardId") navigatedBoardId: Int
         ): ArticleDetailViewModel
     }
 

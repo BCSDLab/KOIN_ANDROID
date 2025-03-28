@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.domain.usecase.chat
 
 import `in`.koreatech.koin.domain.repository.ChatRepository
-import kotlinx.coroutines.flow.retryWhen
 import javax.inject.Inject
+import kotlinx.coroutines.flow.retryWhen
 
 class GetChatRoomFromArticleIdUseCase @Inject constructor(
     private val chatRepository: ChatRepository

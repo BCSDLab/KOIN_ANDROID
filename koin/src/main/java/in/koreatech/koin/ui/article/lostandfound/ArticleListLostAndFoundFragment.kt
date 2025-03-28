@@ -34,15 +34,17 @@ class ArticleListLostAndFoundFragment : Fragment() {
                 LostAndFoundList(
                     navigateToWriteFoundItem = {
                         when (it) {
-                            "LOST" -> navController.navigate(
-                                R.id.articleLostAndFoundWriteLostFragment,
-                                bundleOf(LOST_OR_FOUND_TYPE to "LOST")
-                            )
+                            "LOST" ->
+                                navController.navigate(
+                                    R.id.articleLostAndFoundWriteLostFragment,
+                                    bundleOf(LOST_OR_FOUND_TYPE to "LOST")
+                                )
 
-                            "FOUND" -> navController.navigate(
-                                R.id.articleLostAndFoundWriteFoundFragment,
-                                bundleOf(LOST_OR_FOUND_TYPE to "FOUND")
-                            )
+                            "FOUND" ->
+                                navController.navigate(
+                                    R.id.articleLostAndFoundWriteFoundFragment,
+                                    bundleOf(LOST_OR_FOUND_TYPE to "FOUND")
+                                )
                         }
                     },
                     navigateToLostAndFoundDetail = { articleId ->
@@ -52,7 +54,9 @@ class ArticleListLostAndFoundFragment : Fragment() {
                         )
                     },
                     navigateToKeywordFragment = {
-                        navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
+                        navController.navigate(
+                            R.id.action_articleListFragment_to_articleKeywordFragment
+                        )
                     },
                     navigateToLoginActivity = {
                         Intent(requireContext(), LoginActivity::class.java).apply {
@@ -76,4 +80,3 @@ class ArticleListLostAndFoundFragment : Fragment() {
         const val ARTICLE_ID = "article_id"
     }
 }
-

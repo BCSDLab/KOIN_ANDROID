@@ -34,11 +34,14 @@ import `in`.koreatech.business.ui.theme.Gray4
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.koin.core.toast.ToastUtil
 
-
 @Composable
-fun EventEditToolbar(viewModel: MyStoreDetailViewModel, state: MyStoreDetailState) {
+fun EventEditToolbar(
+    viewModel: MyStoreDetailViewModel,
+    state: MyStoreDetailState
+) {
     Row(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .height(52.dp)
             .background(Gray4),
@@ -46,32 +49,46 @@ fun EventEditToolbar(viewModel: MyStoreDetailViewModel, state: MyStoreDetailStat
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy((-6).dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(painter = if (state.isAllEventSelected) painterResource(id = R.drawable.ic_check_selected) else painterResource(
-                id = R.drawable.ic_check
-            ),
+            Image(
+                painter =
+                if (state.isAllEventSelected) {
+                    painterResource(id = R.drawable.ic_check_selected)
+                } else {
+                    painterResource(
+                        id = R.drawable.ic_check
+                    )
+                },
                 contentDescription = stringResource(R.string.check),
-                modifier = Modifier.clickable { viewModel.onChangeAllEventSelected() })
+                modifier = Modifier.clickable { viewModel.onChangeAllEventSelected() }
+            )
             Text(text = stringResource(R.string.all), color = Gray6, fontSize = 12.sp)
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Center
         ) {
             Button(
                 onClick = {
-                    if (state.isSelectedEvent.size > 1) viewModel.modifyEventError()
-                    else viewModel.navigateToModifyScreen()
+                    if (state.isSelectedEvent.size > 1) {
+                        viewModel.modifyEventError()
+                    } else {
+                        viewModel.navigateToModifyScreen()
+                    }
                 },
-                modifier = Modifier
+                modifier =
+                Modifier
                     .width(100.dp)
                     .padding(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField, contentColor = Gray6
+                colors =
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField,
+                    contentColor = Gray6
                 )
             ) {
                 Image(
@@ -83,11 +100,14 @@ fun EventEditToolbar(viewModel: MyStoreDetailViewModel, state: MyStoreDetailStat
             }
             Button(
                 onClick = viewModel::changeDialogVisibility,
-                modifier = Modifier
+                modifier =
+                Modifier
                     .width(100.dp)
                     .padding(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField, contentColor = Gray6
+                colors =
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField,
+                    contentColor = Gray6
                 )
             ) {
                 Image(
@@ -99,11 +119,14 @@ fun EventEditToolbar(viewModel: MyStoreDetailViewModel, state: MyStoreDetailStat
             }
             Button(
                 onClick = { viewModel.onChangeEditMode() },
-                modifier = Modifier
+                modifier =
+                Modifier
                     .width(100.dp)
                     .padding(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField, contentColor = Gray6
+                colors =
+                ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField,
+                    contentColor = Gray6
                 )
             ) {
                 Image(
@@ -116,32 +139,37 @@ fun EventEditToolbar(viewModel: MyStoreDetailViewModel, state: MyStoreDetailStat
         }
     }
     Divider(
-        color = Gray4, modifier = Modifier.height(1.dp)
+        color = Gray4,
+        modifier = Modifier.height(1.dp)
     )
 }
 
 @Composable
 fun EventToolbar(
-    context: Context
+    context: Context,
+    viewModel: MyStoreDetailViewModel = hiltViewModel()
 ) {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
     Row(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .height(52.dp)
     ) {
         Button(
             onClick = {
-                //viewModel.onChangeEditMode()
+                // viewModel.onChangeEditMode()
                 ToastUtil.getInstance().makeShort(
                     context.getString(R.string.update_soon)
                 )
             },
-            modifier = Modifier
+            modifier =
+            Modifier
                 .weight(1f)
                 .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = ColorTextField, contentColor = Color.Black
+            colors =
+            ButtonDefaults.buttonColors(
+                backgroundColor = ColorTextField,
+                contentColor = Color.Black
             )
         ) {
             Image(
@@ -149,19 +177,20 @@ fun EventToolbar(
                 contentDescription = stringResource(R.string.edit)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = stringResource(R.string.edit), color= Gray1)
+            Text(text = stringResource(R.string.edit), color = Gray1)
         }
         Button(
             onClick = {
-                ToastUtil.getInstance().makeShort(
-                    context.getString(R.string.update_soon)
-                )
+                viewModel.navigateToAddEventScreen()
             },
-            modifier = Modifier
+            modifier =
+            Modifier
                 .weight(1f)
                 .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = ColorTextField, contentColor = Color.Black
+            colors =
+            ButtonDefaults.buttonColors(
+                backgroundColor = ColorTextField,
+                contentColor = Color.Black
             )
         ) {
             Image(
@@ -169,8 +198,7 @@ fun EventToolbar(
                 contentDescription = stringResource(R.string.add)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = stringResource(R.string.add), color= Gray1)
+            Text(text = stringResource(R.string.add), color = Gray1)
         }
     }
 }
-

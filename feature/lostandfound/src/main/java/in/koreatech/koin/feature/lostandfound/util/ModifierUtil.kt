@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.Dp
 fun Modifier.horizontalFadingEdge(
     scrollState: ScrollState,
     length: Dp,
-    edgeColor: Color = Color.White,
+    edgeColor: Color = Color.White
 ) = composed {
     val color = edgeColor
 
@@ -29,30 +29,35 @@ fun Modifier.horizontalFadingEdge(
         drawContent()
 
         drawRect(
-            brush = Brush.horizontalGradient(
-                colors = listOf(
+            brush =
+            Brush.horizontalGradient(
+                colors =
+                listOf(
                     color,
-                    Color.Transparent,
+                    Color.Transparent
                 ),
                 startX = 0f,
-                endX = startFadingEdgeStrength,
+                endX = startFadingEdgeStrength
             ),
-            size = Size(
+            size =
+            Size(
                 startFadingEdgeStrength,
-                this.size.height,
-            ),
+                this.size.height
+            )
         )
 
         drawRect(
-            brush = Brush.horizontalGradient(
-                colors = listOf(
+            brush =
+            Brush.horizontalGradient(
+                colors =
+                listOf(
                     Color.Transparent,
-                    color,
+                    color
                 ),
                 startX = size.width - endFadingEdgeStrength,
-                endX = size.width,
+                endX = size.width
             ),
-            topLeft = Offset(x = size.width - endFadingEdgeStrength, y = 0f),
+            topLeft = Offset(x = size.width - endFadingEdgeStrength, y = 0f)
         )
     }
 }

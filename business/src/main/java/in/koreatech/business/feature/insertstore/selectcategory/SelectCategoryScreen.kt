@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
@@ -68,15 +66,13 @@ fun SelectCategoryScreen(
         },
         categoryIdIsValid = state.categoryIdIsValid,
         nextButtonClicked = {
-                            viewModel.goToInsertBasicInfoScreen()
+            viewModel.goToInsertBasicInfoScreen()
         },
-        onBackPressed =  onBackPressed
+        onBackPressed = onBackPressed
     )
 
     HandleSideEffects(viewModel, state.categoryId, navigateToInsertBasicInfoScreen)
 }
-
-
 
 @Composable
 fun SelectCategoryScreenImpl(
@@ -92,7 +88,8 @@ fun SelectCategoryScreenImpl(
         modifier = modifier.fillMaxSize()
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
                 .width(40.dp)
                 .height(40.dp)
@@ -101,7 +98,8 @@ fun SelectCategoryScreenImpl(
             Image(
                 painter = painterResource(R.drawable.ic_arrow_left),
                 contentDescription = "backArrow",
-                modifier = modifier
+                modifier =
+                modifier
                     .width(40.dp)
                     .height(40.dp)
             )
@@ -131,7 +129,8 @@ fun SelectCategoryScreenImpl(
 
         LazyHorizontalGrid(
             rows = GridCells.Fixed(3),
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(top = 28.dp)
                 .padding(horizontal = 15.dp)
                 .height(200.dp)
@@ -140,7 +139,8 @@ fun SelectCategoryScreenImpl(
         ) {
             items(categories) { category ->
                 CategoryItem(
-                    modifier = Modifier.clickable {
+                    modifier =
+                    Modifier.clickable {
                         chooseCategory(category.id)
                     },
                     imageUrl = category.imageUrl.toString(),
@@ -152,17 +152,25 @@ fun SelectCategoryScreenImpl(
         }
 
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
-                .fillMaxWidth()
-            ,
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
-        ){
+        ) {
             Button(
                 onClick = nextButtonClicked,
-                colors = if(categoryIdIsValid)ButtonDefaults.buttonColors(ColorPrimary) else ButtonDefaults.buttonColors(ColorDisabledButton),
+                colors =
+                if (categoryIdIsValid) {
+                    ButtonDefaults.buttonColors(
+                        ColorPrimary
+                    )
+                } else {
+                    ButtonDefaults.buttonColors(ColorDisabledButton)
+                },
                 shape = RectangleShape,
-                modifier = modifier
+                modifier =
+                modifier
                     .height(38.dp)
                     .width(105.dp)
             ) {
@@ -175,7 +183,6 @@ fun SelectCategoryScreenImpl(
             }
         }
     }
-
 }
 
 @Composable
@@ -186,7 +193,8 @@ fun InsertStoreProgressBar(
     pageId: Int
 ) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .padding(top = 24.dp)
             .padding(horizontal = 32.dp),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -202,15 +210,14 @@ fun InsertStoreProgressBar(
             fontSize = 15.sp,
             color = ColorSecondary
         )
-
     }
     LinearProgressIndicator(
-        modifier = Modifier
+        modifier =
+        Modifier
             .padding(top = 4.dp)
             .padding(horizontal = 32.dp)
             .fillMaxWidth()
-            .height(3.dp)
-        ,
+            .height(3.dp),
         color = ColorSecondary,
         backgroundColor = Color.Gray,
         progress = range
@@ -228,10 +235,14 @@ private fun HandleSideEffects(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is SelectCategoryScreenSideEffect.NavigateToInsertBasicInfoScreen -> navigateToInsertMainInfoScreen(categoryId)
-            is SelectCategoryScreenSideEffect.NotSelectCategory -> ToastUtil.getInstance().makeShort(context.getString(R.string.insert_store_choose_category))
+            is SelectCategoryScreenSideEffect.NotSelectCategory ->
+                ToastUtil.getInstance().makeShort(
+                    context.getString(R.string.insert_store_choose_category)
+                )
         }
     }
 }
+
 @Composable
 fun CategoryItem(
     modifier: Modifier,
@@ -241,26 +252,28 @@ fun CategoryItem(
     choosedCategoryId: Int
 ) {
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .width(70.dp)
             .wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Image(
-            modifier = modifier
+            modifier =
+            modifier
                 .size(44.dp)
                 .border(
                     width = 2.dp,
                     color = if (categoryId == choosedCategoryId) ColorSecondary else Color.Transparent,
                     shape = CircleShape
-                )
-            ,
-            painter = rememberAsyncImagePainter(
-                ImageRequest.Builder(LocalContext.current).data(data = imageUrl)
-                    .apply<ImageRequest.Builder>(block = fun ImageRequest.Builder.() {
-                        crossfade(true)
-                        transformations(CircleCropTransformation())
-                    }).build()
+                ),
+            painter =
+            rememberAsyncImagePainter(
+                ImageRequest.Builder(LocalContext.current)
+                    .data(data = imageUrl)
+                    .crossfade(true)
+                    .transformations(CircleCropTransformation())
+                    .build()
             ),
             alignment = Alignment.Center,
             contentDescription = "category_image"
@@ -271,7 +284,7 @@ fun CategoryItem(
             textAlign = TextAlign.Center,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
-            color = if(categoryId == choosedCategoryId) ColorSecondary else Color.Black
+            color = if (categoryId == choosedCategoryId) ColorSecondary else Color.Black
         )
     }
 }
@@ -290,20 +303,21 @@ fun PreviewCategoryItem() {
 
 @Preview
 @Composable
-fun PreviewSelectCategoryScreen(){
+fun PreviewSelectCategoryScreen() {
     SelectCategoryScreenImpl(
         categories = sampleCategories
     )
 }
 
-val sampleCategories = listOf(
-    StoreCategories(1,"imageUrl1", "일반음식점"),
-    StoreCategories(1, "imageUrl2", "패스트푸드"),
-    StoreCategories(1,"imageUrl3", "카페"),
-    StoreCategories(1,"imageUrl4", "디저트"),
-    StoreCategories(1,"imageUrl5", "바베큐"),
-    StoreCategories(1,"imageUrl5", "바베큐"),
-    StoreCategories(1,"imageUrl5", "바베큐"),
-    StoreCategories(1,"imageUrl5", "바베큐"),
-    StoreCategories(1,"imageUrl5", "바베큐")
-)
+val sampleCategories =
+    listOf(
+        StoreCategories(1, "imageUrl1", "일반음식점"),
+        StoreCategories(1, "imageUrl2", "패스트푸드"),
+        StoreCategories(1, "imageUrl3", "카페"),
+        StoreCategories(1, "imageUrl4", "디저트"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+        StoreCategories(1, "imageUrl5", "바베큐"),
+        StoreCategories(1, "imageUrl5", "바베큐")
+    )

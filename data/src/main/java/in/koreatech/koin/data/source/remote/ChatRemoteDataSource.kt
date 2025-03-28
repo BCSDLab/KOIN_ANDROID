@@ -7,17 +7,17 @@ import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
-import kotlinx.coroutines.flow.Flow
-
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.Flow
 
 class ChatRemoteDataSource @Inject constructor(
     private val chatApi: ChatApi,
     private val chatAuthApi: ChatAuthApi,
     private val koinStomp: KoinStomp
 ) {
-    suspend fun connectWS() {
-        koinStomp.connect()
+    suspend fun connectWS(retry: Boolean) {
+        koinStomp.connect(retry)
     }
 
     suspend fun disconnectWS() {
@@ -32,26 +32,46 @@ class ChatRemoteDataSource @Inject constructor(
         return chatAuthApi.getChatRoomFromArticleId(articleId)
     }
 
-    suspend fun getChatRoom(articleId: Int, chatRoomId: Int): ChatRoomResponse {
+    suspend fun getChatRoom(
+        articleId: Int,
+        chatRoomId: Int
+    ): ChatRoomResponse {
         return chatAuthApi.getChatRoom(articleId, chatRoomId)
     }
 
-    suspend fun getChatMessages(articleId: Int, chatRoomId: Int): List<ChatMessageResponse> {
+    suspend fun getChatMessages(
+        articleId: Int,
+        chatRoomId: Int
+    ): List<ChatMessageResponse> {
         return chatAuthApi.getChatMessages(articleId, chatRoomId)
     }
 
-    fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessageResponse> {
+    fun subscribeChatRoom(
+        articleId: Int,
+        chatRoomId: Int
+    ): Flow<ChatMessageResponse> {
         return koinStomp.subscribe(
             "/topic/chat/$articleId/$chatRoomId",
             ChatMessageResponse.serializer()
         )
     }
 
-    suspend fun sendMessage(articleId: Int, chatRoomId: Int, message: ChatMessageRequest) {
-        koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
+    suspend fun sendMessage(
+        articleId: Int,
+        chatRoomId: Int,
+        message: ChatMessageRequest
+    ): Result<Unit> {
+        return runCatching {
+            koinStomp.convertAndSend("/app/chat/$articleId/$chatRoomId", message)
+        }.onFailure {
+            if (it is CancellationException) throw it
+        }
     }
 
-    suspend fun blockUser(articleId: Int, chatRoomId: Int): Result<Unit> {
+    suspend fun blockUser(
+        articleId: Int,
+        chatRoomId: Int
+    ): Result<Unit> {
         val response = chatAuthApi.blockUser(articleId, chatRoomId)
         if (response.isSuccessful) {
             return Result.success(Unit)

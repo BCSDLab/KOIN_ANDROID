@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextCheckbox(
@@ -31,8 +30,9 @@ fun TextCheckbox(
     enabled: Boolean = true
 ) {
     Row(
-        modifier = modifier.noRippleClickable {
-            if(enabled) onCheckChanged(!isChecked)
+        modifier =
+        modifier.noRippleClickable {
+            if (enabled) onCheckChanged(!isChecked)
         },
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -42,7 +42,8 @@ fun TextCheckbox(
                 state = ToggleableState(isChecked),
                 onClick = null,
                 enabled = enabled,
-                colors = CheckboxDefaults.colors().copy(
+                colors =
+                CheckboxDefaults.colors().copy(
                     checkedBoxColor = KoinTheme.colors.primary500,
                     checkedCheckmarkColor = KoinTheme.colors.neutral0,
                     checkedBorderColor = KoinTheme.colors.primary500,
@@ -50,7 +51,7 @@ fun TextCheckbox(
                     uncheckedCheckmarkColor = KoinTheme.colors.neutral0,
                     uncheckedBorderColor = KoinTheme.colors.neutral400,
                     disabledCheckedBoxColor = KoinTheme.colors.primary300,
-                    disabledBorderColor = KoinTheme.colors.primary300,
+                    disabledBorderColor = KoinTheme.colors.primary300
                 )
             )
         }
@@ -88,6 +89,7 @@ private fun TextCheckboxUncheckedPreview() {
         )
     }
 }
+
 @Preview()
 @Composable
 private fun TextCheckboxDisabledPreview() {

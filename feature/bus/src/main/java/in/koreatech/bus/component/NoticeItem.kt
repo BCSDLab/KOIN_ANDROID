@@ -37,7 +37,8 @@ internal fun NoticeItem(
     val textHeightDp = textStyle.getMeasuredKoreanHeightDp()
 
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
             .clip(RoundedCornerShape(8.dp))
@@ -57,7 +58,8 @@ internal fun NoticeItem(
             overflow = TextOverflow.Ellipsis
         )
         Icon(
-            modifier = Modifier.padding(start = 4.dp).padding(vertical = (textHeightDp - 16.dp) / 2).size(16.dp).noRippleClickable {
+            modifier =
+            Modifier.padding(start = 4.dp).padding(vertical = (textHeightDp - 16.dp) / 2).size(16.dp).noRippleClickable {
                 onCloseIconClick()
             },
             imageVector = Icons.Rounded.Close,

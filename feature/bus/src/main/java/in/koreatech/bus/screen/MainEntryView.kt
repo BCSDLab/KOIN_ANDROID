@@ -53,7 +53,8 @@ fun MainEntryView(
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .clip(
                         RoundedCornerShape(8.dp)
                     )
@@ -84,7 +85,8 @@ fun MainEntryView(
             MainEntryCard(
                 title = stringResource(R.string.main_title_bus_timetable),
                 description = stringResource(R.string.shortcut),
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(top = 20.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(color = KoinTheme.colors.neutral50)
@@ -100,7 +102,8 @@ fun MainEntryView(
             MainEntryCard(
                 title = stringResource(R.string.main_title_bus_search),
                 description = stringResource(R.string.see),
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(top = 20.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(color = KoinTheme.colors.neutral50)
@@ -120,7 +123,7 @@ fun MainEntryView(
 private fun MainEntryCard(
     title: String,
     description: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
@@ -148,7 +151,7 @@ private fun MainEntryCard(
 
 @Composable
 @Preview(showBackground = true)
-private fun MainEntryViewPreview(){
+private fun MainEntryViewPreview() {
     MainEntryView(
         onShuttleTicketClicked = {},
         onTimetableCardClicked = {},

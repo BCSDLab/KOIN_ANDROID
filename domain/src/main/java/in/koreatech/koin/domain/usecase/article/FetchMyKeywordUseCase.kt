@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.domain.usecase.article
 
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.retryWhen
-import javax.inject.Inject
 
 class FetchMyKeywordUseCase @Inject constructor(
     private val articleRepository: ArticleRepository

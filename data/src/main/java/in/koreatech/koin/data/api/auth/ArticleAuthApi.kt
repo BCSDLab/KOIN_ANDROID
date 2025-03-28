@@ -2,8 +2,8 @@ package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundReportRequest
-import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundRequest
+import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundPaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleLostAndFoundResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
@@ -23,10 +23,14 @@ interface ArticleAuthApi {
     suspend fun fetchKeywordSuggestions(): KeywordsResponse
 
     @POST("articles/keyword")
-    suspend fun saveKeyword(@Body keywordRequest: ArticleKeywordRequest): ArticleKeywordWrapperResponse.ArticleKeywordResponse
+    suspend fun saveKeyword(
+        @Body keywordRequest: ArticleKeywordRequest
+    ): ArticleKeywordWrapperResponse.ArticleKeywordResponse
 
     @DELETE("articles/keyword/{id}")
-    suspend fun deleteKeyword(@Path("id") keywordId: Int): Response<Unit>
+    suspend fun deleteKeyword(
+        @Path("id") keywordId: Int
+    ): Response<Unit>
 
     /**
      * 분실물 게시글 목록과 페이지 정보를 가져옴

@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.findpassword.changepassword
 
-
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -76,7 +75,7 @@ fun ChangePasswordScreenImpl(
             )
         },
         modifier = modifier,
-        buttonEnabled = state.isButtonEnabled,
+        buttonEnabled = state.isButtonEnabled
     )
 
     HandleSideEffects(viewModel, navigateToFinish)
@@ -97,14 +96,15 @@ fun ChangePasswordScreen(
     modifier: Modifier = Modifier,
     buttonEnabled: Boolean
 ) {
-
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxSize()
-            .padding(top = 12.dp),
+            .padding(top = 12.dp)
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
         ) {
             IconButton(
@@ -113,7 +113,7 @@ fun ChangePasswordScreen(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                    contentDescription = stringResource(id = R.string.back_icon)
                 )
             }
 
@@ -125,12 +125,14 @@ fun ChangePasswordScreen(
             )
         }
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -144,15 +146,15 @@ fun ChangePasswordScreen(
                     text = stringResource(id = R.string.two_half),
                     color = ColorPrimary,
                     style = MaterialTheme.typography.h6,
-                    letterSpacing = 4.sp,
+                    letterSpacing = 4.sp
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Canvas(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
             ) {
-
                 drawLine(
                     color = ColorPrimary,
                     start = Offset(0f, 0f),
@@ -167,7 +169,7 @@ fun ChangePasswordScreen(
                 text = stringResource(R.string.new_password),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+                modifier = modifier.padding(start = 8.dp, bottom = 8.dp)
             )
             LinedTextField(
                 value = password,
@@ -176,14 +178,14 @@ fun ChangePasswordScreen(
                 helperText = stringResource(R.string.password_condition),
                 label = stringResource(R.string.input_new_password),
                 isError = password.isNotValidPassword() && !passwordIsEmpty,
-                errorText = stringResource(R.string.password_not_validate),
+                errorText = stringResource(R.string.password_not_validate)
             )
 
             Text(
                 text = stringResource(R.string.confirm_password),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp, top = 29.dp),
+                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp, top = 29.dp)
             )
             LinedTextField(
                 value = passwordChecked,
@@ -196,9 +198,14 @@ fun ChangePasswordScreen(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = onChangePasswordClick,
-                colors = if (fillAllPasswords) ButtonDefaults.buttonColors(ColorPrimary)
-                else ButtonDefaults.buttonColors(Gray5),
-                modifier = modifier
+                colors =
+                if (fillAllPasswords) {
+                    ButtonDefaults.buttonColors(ColorPrimary)
+                } else {
+                    ButtonDefaults.buttonColors(Gray5)
+                },
+                modifier =
+                modifier
                     .fillMaxWidth()
                     .height(48.dp),
                 enabled = buttonEnabled
@@ -216,8 +223,10 @@ fun ChangePasswordScreen(
 }
 
 @Composable
-fun HandleSideEffects(viewModel: ChangePasswordViewModel, navigateToFinish: () -> Unit) {
-
+fun HandleSideEffects(
+    viewModel: ChangePasswordViewModel,
+    navigateToFinish: () -> Unit
+) {
     viewModel.collectSideEffect {
         when (it) {
             is ChangePasswordSideEffect.GotoFinishScreen -> navigateToFinish()
@@ -228,18 +237,18 @@ fun HandleSideEffects(viewModel: ChangePasswordViewModel, navigateToFinish: () -
 }
 
 @Composable
-fun WaringNotCoincidePW(
-    modifier: Modifier
-) {
+fun WaringNotCoincidePW(modifier: Modifier) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .padding(start = 32.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.exclamation),
             contentDescription = "examationMark",
-            modifier = modifier
+            modifier =
+            modifier
                 .padding(5.dp)
                 .size(16.dp)
         )
@@ -269,6 +278,6 @@ fun PreviewChangePasswordScreen() {
         onBackPressed = {},
         onChangePasswordClick = {},
         modifier = Modifier.background(Color.White),
-        buttonEnabled = true,
+        buttonEnabled = true
     )
 }

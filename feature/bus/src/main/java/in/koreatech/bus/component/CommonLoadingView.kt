@@ -21,7 +21,7 @@ import `in`.koreatech.koin.feature.bus.R
 internal fun CommonLoadingView(
     modifier: Modifier = Modifier,
     size: Dp = 200.dp,
-    @RawRes rawRes: Int = R.raw.lottie_loading,
+    @RawRes rawRes: Int = R.raw.lottie_loading
 ) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(rawRes)

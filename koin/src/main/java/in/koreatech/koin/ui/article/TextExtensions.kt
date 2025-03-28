@@ -19,14 +19,10 @@ import `in`.koreatech.koin.domain.constant.LINE_THROUGH
 import `in`.koreatech.koin.domain.constant.UNDERLINE
 import `in`.koreatech.koin.domain.model.article.html.CssAttribute
 
-fun SpannableStringBuilder.setFontStyle(
-    start: Int,
-    end: Int,
-    styles: Map<CssAttribute, String>
-) {
+fun SpannableStringBuilder.setFontStyle(start: Int, end: Int, styles: Map<CssAttribute, String>) {
     styles[CssAttribute.FONT_STYLE]?.let {
         setSpan(
-            when(it) {
+            when (it) {
                 BOLD -> StyleSpan(Typeface.BOLD)
                 ITALIC -> StyleSpan(Typeface.ITALIC)
                 BOLD_ITALIC -> StyleSpan(Typeface.BOLD_ITALIC)
@@ -46,7 +42,7 @@ fun SpannableStringBuilder.setTextDecoration(
 ) {
     styles[CssAttribute.TEXT_DECORATION]?.let {
         setSpan(
-            when(it) {
+            when (it) {
                 UNDERLINE -> UnderlineSpan()
                 LINE_THROUGH -> StrikethroughSpan()
                 else -> null
@@ -58,11 +54,7 @@ fun SpannableStringBuilder.setTextDecoration(
     }
 }
 
-fun SpannableStringBuilder.setTextColor(
-    start: Int,
-    end: Int,
-    styles: Map<CssAttribute, String>
-) {
+fun SpannableStringBuilder.setTextColor(start: Int, end: Int, styles: Map<CssAttribute, String>) {
     styles[CssAttribute.COLOR]?.let {
         setSpan(
             ForegroundColorSpan(it.parseColor(Color.BLACK)),
@@ -96,11 +88,7 @@ fun SpannableStringBuilder.setBackgroundColor(
     }
 }
 
-fun SpannableStringBuilder.setFontSize(
-    start: Int,
-    end: Int,
-    styles: Map<CssAttribute, String>
-) {
+fun SpannableStringBuilder.setFontSize(start: Int, end: Int, styles: Map<CssAttribute, String>) {
     if (styles[CssAttribute.FONT_SIZE]?.endsWith("px") == true || styles[CssAttribute.FONT_SIZE]?.endsWith("pt") == true) {
         styles[CssAttribute.FONT_SIZE]?.let {
             setSpan(
@@ -134,7 +122,7 @@ fun SpannableStringBuilder.setFontSize(
 }
 
 fun String?.parseTextAlignment(): Int {
-    return when(this) {
+    return when (this) {
         "left" -> View.TEXT_ALIGNMENT_VIEW_START
         "start" -> View.TEXT_ALIGNMENT_VIEW_START
         "center" -> View.TEXT_ALIGNMENT_CENTER

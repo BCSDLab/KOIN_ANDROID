@@ -28,7 +28,9 @@ interface UserAuthApi {
     suspend fun getUser(): UserResponse
 
     @PUT(URLConstant.USER.ME)
-    suspend fun putUser(@Body userRequest: UserRequest): UserResponse
+    suspend fun putUser(
+        @Body userRequest: UserRequest
+    ): UserResponse
 
     @DELETE(URLConstant.USER.USER)
     suspend fun deleteUser(): Response<Unit?>
@@ -40,31 +42,45 @@ interface UserAuthApi {
     suspend fun getUserType(): UserTypeResponse
 
     @POST("/notification")
-    suspend fun updateDeviceToken(@Body deviceTokenRequest: DeviceTokenRequest)
+    suspend fun updateDeviceToken(
+        @Body deviceTokenRequest: DeviceTokenRequest
+    )
 
     @GET("/notification")
     suspend fun getNotificationPermissionInfo(): NotificationPermissionInfoResponse
 
     @POST("/notification/subscribe")
-    suspend fun updateSubscription(@Query("type") type: String)
+    suspend fun updateSubscription(
+        @Query("type") type: String
+    )
 
     @POST("/notification/subscribe/detail")
-    suspend fun updateSubscriptionDetail(@Query("detail_type") type: String)
+    suspend fun updateSubscriptionDetail(
+        @Query("detail_type") type: String
+    )
 
     @DELETE("/notification/subscribe")
-    suspend fun deleteSubscription(@Query("type") type: String): Response<Unit?>
+    suspend fun deleteSubscription(
+        @Query("type") type: String
+    ): Response<Unit?>
 
     @DELETE("/notification/subscribe/detail")
-    suspend fun deleteSubscriptionDetail(@Query("detail_type") type: String): Response<Unit?>
+    suspend fun deleteSubscriptionDetail(
+        @Query("detail_type") type: String
+    ): Response<Unit?>
 
     @DELETE("/notification")
     suspend fun deleteDeviceToken(): Response<Unit?>
 
     @POST(URLConstant.USER.CHECKPASSWORD)
-    suspend fun checkPassword(@Body passwordRequest: PasswordRequest)
+    suspend fun checkPassword(
+        @Body passwordRequest: PasswordRequest
+    )
 
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/reviews")
-    suspend fun getShopReviewsWithAuth(@Path("id") uid: Int): StoreReviewResponse
+    suspend fun getShopReviewsWithAuth(
+        @Path("id") uid: Int
+    ): StoreReviewResponse
 
     @POST("/shops/{shopId}/reviews")
     suspend fun writeReview(
@@ -75,14 +91,14 @@ interface UserAuthApi {
     @DELETE("/shops/{shopId}/reviews/{reviewId}")
     suspend fun deleteReview(
         @Path("reviewId") reviewId: Int,
-        @Path("shopId") shopId: Int,
+        @Path("shopId") shopId: Int
     ): Response<Unit?>
 
     @PUT("/shops/{shopId}/reviews/{reviewId}")
     suspend fun modifyReview(
         @Path("reviewId") reviewId: Int,
         @Path("shopId") shopId: Int,
-        @Body reviewRequest: ReviewRequest,
+        @Body reviewRequest: ReviewRequest
     ): Response<Unit?>
 
     @POST(URLConstant.SHOPS.SHOPS + "/{storeId}" + "/reviews" + "/{reviewId}" + "/reports")
@@ -99,9 +115,12 @@ interface UserAuthApi {
     suspend fun updateABTestToken(): ABTestTokenResponse
 
     @POST("abtest/assign")
-    suspend fun postABTestAssign(@Body abTestRequest: ABTestRequest): ABTestResponse
+    suspend fun postABTestAssign(
+        @Body abTestRequest: ABTestRequest
+    ): ABTestResponse
 
     @POST(URLConstant.SHOPS.SHOPS + "/{storeId}/call-notification")
-    suspend fun postReviewPromptNotification(@Path("storeId") storeId: Int)
-
+    suspend fun postReviewPromptNotification(
+        @Path("storeId") storeId: Int
+    )
 }

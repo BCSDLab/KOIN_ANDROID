@@ -5,9 +5,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
@@ -19,11 +16,9 @@ import `in`.koreatech.koin.ui.businesssignup.fragment.BusinessSignUpBasicInfoFra
 import `in`.koreatech.koin.ui.businesssignup.fragment.BusinessVerificationFragment
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBaseViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class BusinessSignupBaseActivity: ActivityBase(R.layout.activity_business_signup_base) {
+class BusinessSignupBaseActivity : ActivityBase(R.layout.activity_business_signup_base) {
     companion object {
         private const val BASIC_INFO_FRAGMENT = "basicInfoFragment"
         private const val VERIFICATION_FRAGMENT = "verificationFragment"
@@ -61,7 +56,7 @@ class BusinessSignupBaseActivity: ActivityBase(R.layout.activity_business_signup
 
     private fun initView() = with(binding) {
         signupBackButton.setOnClickListener {
-            when(curFragmentTag) {
+            when (curFragmentTag) {
                 BASIC_INFO_FRAGMENT -> finish()
                 else -> backFragment()
             }
@@ -114,7 +109,11 @@ class BusinessSignupBaseActivity: ActivityBase(R.layout.activity_business_signup
             CERTIFICATION_FRAGMENT -> showFragment(certificationFragment)
             SEARCH_STORE_FRAGMENT -> showFragment(searchStoreFragment)
             COMPLETE_ACTIVITY -> {
-                val intent = Intent(this@BusinessSignupBaseActivity, BusinessSignUpCompleteActivity::class.java)
+                val intent =
+                    Intent(
+                        this@BusinessSignupBaseActivity,
+                        BusinessSignUpCompleteActivity::class.java
+                    )
 
                 intent.putExtra("fileUrls", fileUrls.toTypedArray())
                 intent.putExtra("companyNumber", companyNumber)
@@ -131,7 +130,7 @@ class BusinessSignupBaseActivity: ActivityBase(R.layout.activity_business_signup
     }
 
     private fun backFragment() {
-        when(curFragmentTag) {
+        when (curFragmentTag) {
             VERIFICATION_FRAGMENT -> viewModel.setFragmentTag("basicInfoFragment")
             CERTIFICATION_FRAGMENT -> showFragment(verificationFragment)
             SEARCH_STORE_FRAGMENT -> showFragment(certificationFragment)

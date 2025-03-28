@@ -1,13 +1,13 @@
 package `in`.koreatech.koin.ui.land.viewmodel
 
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.land.LandDetail
-import `in`.koreatech.koin.domain.usecase.land.GetLandDetailUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.naver.maps.map.NaverMap
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.land.LandDetail
+import `in`.koreatech.koin.domain.usecase.land.GetLandDetailUseCase
 import javax.inject.Inject
 
 @HiltViewModel

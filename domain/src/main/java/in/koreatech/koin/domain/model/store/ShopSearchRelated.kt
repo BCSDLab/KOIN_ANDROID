@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.domain.model.store
 
-data class ShopSearchRelated (
+data class ShopSearchRelated(
     val keyword: String,
     val shopIds: List<Int>,
-    val shopId: Int?,
+    val shopId: Int?
 )
 
 data class ShopSearchRelatedList(

@@ -32,10 +32,11 @@ class ChangePasswordActivity : ActivityBase() {
     override val onBackPressedCallback: OnBackPressedCallback by lazy {
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (viewModel.currentStep.value == ChangePasswordPage.entries.first())
+                if (viewModel.currentStep.value == ChangePasswordPage.entries.first()) {
                     finish()
-                else
+                } else {
                     viewModel.changePrevPage()
+                }
             }
         }
     }
@@ -50,11 +51,12 @@ class ChangePasswordActivity : ActivityBase() {
     }
 
     private fun initView() {
-
         with(binding) {
             appbarChangePassword.setOnClickListener {
-                when(it.id) {
-                    AppBarBase.getLeftButtonId() -> { onBackPressedDispatcher.onBackPressed() }
+                when (it.id) {
+                    AppBarBase.getLeftButtonId() -> {
+                        onBackPressedDispatcher.onBackPressed()
+                    }
                 }
             }
         }
@@ -84,11 +86,10 @@ class ChangePasswordActivity : ActivityBase() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isPasswordChangeSuccess.collect { isSuccessful ->
-                    if(isSuccessful) {
+                    if (isSuccessful) {
                         setResult(ChangePasswordContract.RESULT_PASSWORD_CHANGED)
                         finish()
-                    }
-                    else {
+                    } else {
                         ToastUtil.getInstance().makeShort(R.string.server_failed)
                     }
                 }
@@ -98,13 +99,15 @@ class ChangePasswordActivity : ActivityBase() {
 
     class ChangePasswordPageAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = CHANGE_PASSWORD_PAGES.size
+
         override fun createFragment(position: Int): Fragment = CHANGE_PASSWORD_PAGES[position]()
     }
 
     companion object {
-        private val CHANGE_PASSWORD_PAGES = arrayOf(
-            { ChangePasswordVerifyPwdFragment.getInstance() },
-            { ChangePasswordChangePwdFragment.getInstance() }
-        )
+        private val CHANGE_PASSWORD_PAGES =
+            arrayOf(
+                { ChangePasswordVerifyPwdFragment.getInstance() },
+                { ChangePasswordChangePwdFragment.getInstance() }
+            )
     }
 }

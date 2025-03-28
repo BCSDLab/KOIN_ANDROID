@@ -19,20 +19,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.bus.screen.MainEntryView
-import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
@@ -57,9 +56,9 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerTimeActivity() {
@@ -76,55 +75,73 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     @Inject
     lateinit var onboardingManager: OnboardingManager
 
-    private val articleMainAdapter = ArticleMainAdapter(
-        onNotiClick = {
-            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.TO_MANAGE_KEYWORD, it.value)
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = when (it.type) {
-                    ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
-                    ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
-                }
+    private val articleMainAdapter =
+        ArticleMainAdapter(
+            onNotiClick = {
+                EventLogger.logClickEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.TO_MANAGE_KEYWORD,
+                    it.value
+                )
+                val intent =
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data =
+                            when (it.type) {
+                                ArticleNotiType.KEYWORD -> Uri.parse("koin://article/activity?fragment=article_keyword")
+                                ArticleNotiType.LOST_AND_FOUND -> Uri.parse("koin://article/activity?fragment=article_lost_and_found")
+                            }
+                    }
+                startActivity(intent)
+            },
+            onArticleClick = {
+                EventLogger.logClickEvent(
+                    EventAction.CAMPUS,
+                    AnalyticsConstant.Label.POPULAR_NOTICE_BANNER,
+                    it.title
+                )
+                val intent =
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data =
+                            Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
+                    }
+                startActivity(intent)
             }
-            startActivity(intent)
-        },
-        onArticleClick = {
-            EventLogger.logClickEvent(EventAction.CAMPUS, AnalyticsConstant.Label.POPULAR_NOTICE_BANNER, it.title)
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data =
-                    Uri.parse("koin://article/activity?fragment=article_detail&article_id=${it.id}&board_id=${it.boardId}")
-            }
-            startActivity(intent)
-        }
-    )
+        )
 
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
-    private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
-        setOnItemClickListener { id, name ->
-            if(id == 0){
-                startActivity(Intent(this@MainActivity, CallBenefitStoreActivity::class.java))
-                EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
-                    name,
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                    EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-                )
-            }
-            else{
-                EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                    name,
-                    EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
-                    EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
-                    EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
-                )
-                gotoStoreActivity(id)
+    private val storeCategoriesRecyclerAdapter =
+        StoreCategoriesRecyclerAdapter().apply {
+            setOnItemClickListener { id, name ->
+                if (id == 0) {
+                    startActivity(Intent(this@MainActivity, CallBenefitStoreActivity::class.java))
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.MAIN_SHOP_BENEFIT,
+                        name,
+                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                        EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                        EventExtra(
+                            AnalyticsConstant.DURATION_TIME,
+                            getElapsedTimeAndReset().toString()
+                        )
+                    )
+                } else {
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
+                        name,
+                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                        EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
+                        EventExtra(
+                            AnalyticsConstant.DURATION_TIME,
+                            getElapsedTimeAndReset().toString()
+                        )
+                    )
+                    gotoStoreActivity(id)
+                }
             }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,7 +194,10 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 "전화주문혜택",
                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
+                EventExtra(
+                    AnalyticsConstant.DURATION_TIME,
+                    getElapsedTimeAndReset().toString()
+                )
             )
             val intent = Intent(this@MainActivity, CallBenefitStoreActivity::class.java)
             startActivity(intent)
@@ -213,14 +233,16 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         val intent = Intent(this@MainActivity, WebViewActivity::class.java)
                         intent.putExtra("url", "https://koreatech.unibus.kr/")
                         startActivity(intent)
-                    }, onTimetableCardClicked = {
+                    },
+                    onTimetableCardClicked = {
                         EventLogger.logCampusClickEvent(
                             "main_bus_timetable",
                             "버스 시간표 바로가기"
                         )
                         val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
                         startActivity(intent)
-                    }, onSearchCardClicked = {
+                    },
+                    onSearchCardClicked = {
                         EventLogger.logCampusClickEvent(
                             "main_bus_search",
                             "가장 빠른 버스 조회하기"
@@ -228,7 +250,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
                         startActivity(intent)
                     },
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
                 )
@@ -255,21 +278,22 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             tab.text = DiningPlace.entries[position].place
         }.attach()
 
-        tabDining.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewModel.setSelectedPosition(tab.position)
-                EventLogger.logClickEvent(
-                    EventAction.CAMPUS,
-                    AnalyticsConstant.Label.MAIN_MENU_CORNER,
-                    tab.text.toString()
-                )
+        tabDining.addOnTabSelectedListener(
+            object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    viewModel.setSelectedPosition(tab.position)
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.MAIN_MENU_CORNER,
+                        tab.text.toString()
+                    )
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {}
+
+                override fun onTabReselected(tab: TabLayout.Tab) {}
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-
-
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
+        )
     }
 
     private fun initViewModel() = with(viewModel) {
@@ -333,40 +357,44 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
         when (type) {
             SchemeType.SHOP.type -> {
-                val intent = navigator.navigateToShop(
-                    context = this,
-                    targetId = Pair(EXTRA_ID, targetId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
+                val intent =
+                    navigator.navigateToShop(
+                        context = this,
+                        targetId = Pair(EXTRA_ID, targetId),
+                        type = Pair(EXTRA_TYPE, type)
+                    )
                 startActivity(intent)
             }
 
             SchemeType.DINING.type -> {
-                val intent = navigator.navigateToDinging(
-                    context = this,
-                    targetId = Pair(EXTRA_ID, targetId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
+                val intent =
+                    navigator.navigateToDinging(
+                        context = this,
+                        targetId = Pair(EXTRA_ID, targetId),
+                        type = Pair(EXTRA_TYPE, type)
+                    )
                 startActivity(intent)
             }
 
             SchemeType.ARTICLE.type -> {
-                val intent = navigator.navigateToArticle(
-                    context = this,
-                    targetId = Pair(EXTRA_ID, targetId),
-                    targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
+                val intent =
+                    navigator.navigateToArticle(
+                        context = this,
+                        targetId = Pair(EXTRA_ID, targetId),
+                        targetBoardId = Pair(EXTRA_BOARD_ID, targetBoardId),
+                        type = Pair(EXTRA_TYPE, type)
+                    )
                 startActivity(intent)
             }
 
             SchemeType.CHAT.type -> {
-                val intent = navigator.navigateToChat(
-                    context = this,
-                    targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
-                    targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
-                    type = Pair(EXTRA_TYPE, type),
-                )
+                val intent =
+                    navigator.navigateToChat(
+                        context = this,
+                        targetArticleId = Pair(EXTRA_ARTICLE_ID, targetArticleId),
+                        targetChatId = Pair(EXTRA_CHAT_ROOM_ID, targetChatId),
+                        type = Pair(EXTRA_TYPE, type)
+                    )
                 startActivity(intent)
             }
 

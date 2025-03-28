@@ -25,13 +25,15 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserInfoEditActivity : ActivityBase() {
-    private val binding by dataBinding<ActivityUserInfoEditedBinding>(R.layout.activity_user_info_edited)
+    private val binding by dataBinding<ActivityUserInfoEditedBinding>(
+        R.layout.activity_user_info_edited
+    )
     override val screenTitle = "내 정보 수정"
     private val userInfoEditViewModel by viewModels<UserInfoEditViewModel>()
 
@@ -40,7 +42,6 @@ class UserInfoEditActivity : ActivityBase() {
             userInfoEditViewModel.onNickNameChanged(it)
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,12 +70,13 @@ class UserInfoEditActivity : ActivityBase() {
                 nickname = etNickname.text.toString(),
                 rawPhoneNumber = etPhoneNumber.text.toString(),
                 gender =
-                if (rbGenderMan.isChecked)
+                if (rbGenderMan.isChecked) {
                     Gender.Man
-                else if (rbGenderWoman.isChecked)
+                } else if (rbGenderWoman.isChecked) {
                     Gender.Woman
-                else
-                    Gender.Unknown,
+                } else {
+                    Gender.Unknown
+                },
                 studentId = etStudentId.text.toString(),
                 major = spinnerMajor.text.toString()
             )
@@ -141,7 +143,10 @@ class UserInfoEditActivity : ActivityBase() {
                     }
 
                     NicknameCheckState.EXIST -> {
-                        SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_nickname_duplicated))
+                        SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.error_nickname_duplicated)
+                        )
                     }
                 }
             }
@@ -151,13 +156,21 @@ class UserInfoEditActivity : ActivityBase() {
                     EventAction.USER,
                     "header",
                     "정보수정",
-                    EventExtra("gender", when {
-                        binding.rbGenderMan.isChecked -> "0"
-                        binding.rbGenderWoman.isChecked -> "1"
-                        else -> "2"
-                    }),
+                    EventExtra(
+                        "gender",
+                        when {
+                            binding.rbGenderMan.isChecked -> "0"
+                            binding.rbGenderWoman.isChecked -> "1"
+                            else -> "2"
+                        }
+                    ),
                     EventExtra("department", binding.spinnerMajor.text.toString()),
-                    EventExtra("updated_at", ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")))
+                    EventExtra(
+                        "updated_at",
+                        ZonedDateTime.now().format(
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                        )
+                    )
                 )
                 ToastUtil.getInstance().makeShort(getString(R.string.user_info_edited))
                 setResult(UserInfoEditContract.RESULT_USER_INFO_EDITED)

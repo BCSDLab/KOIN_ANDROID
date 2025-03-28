@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.ui.land.adapter
 
-import `in`.koreatech.koin.constant.LAND
-import `in`.koreatech.koin.databinding.LandDetailViewpagerPageBinding
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import dagger.hilt.android.qualifiers.ActivityContext
+import `in`.koreatech.koin.constant.LAND
+import `in`.koreatech.koin.databinding.LandDetailViewpagerPageBinding
 import javax.inject.Inject
 
 class LandDetailViewPagerAdapter @Inject constructor(
@@ -34,7 +34,10 @@ class LandDetailViewPagerAdapter @Inject constructor(
             Glide.with(context).load(imageUrlList[position]).apply(
                 RequestOptions()
                     .fitCenter()
-                    .override(LAND.LAND_DETAIL_IMAGE_VIEW_WIDTH, LAND.LAND_DETAIL_IMAGE_VIEW_HEIGHT)
+                    .override(
+                        LAND.LAND_DETAIL_IMAGE_VIEW_WIDTH,
+                        LAND.LAND_DETAIL_IMAGE_VIEW_HEIGHT
+                    )
             ).into(landDetailLandImageview)
         }
     }

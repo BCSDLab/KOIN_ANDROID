@@ -7,10 +7,10 @@ enum class HtmlAttribute {
     HREF,
     TITLE,
     SRC,
-    ALT,  // 이미지 대체 이미지
+    ALT, // 이미지 대체 이미지
     DOWNLOAD,
     COLSPAN,
-    ROWSPAN;
+    ROWSPAN
 }
 
 fun String.toHtmlAttribute(): HtmlAttribute {

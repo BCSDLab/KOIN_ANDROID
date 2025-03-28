@@ -7,8 +7,8 @@ buildscript {
     }
 
     extra.apply {
-        set("versionName", "4.3.4")
-        set("versionCode", 40304)
+        set("versionName", "4.3.5")
+        set("versionCode", 40305)
         // 코인 버전 관리
 
         set("versionBusinessName", "1.0.1")
@@ -35,6 +35,7 @@ plugins {
     alias(libs.plugins.google.service) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.ktlint) apply false
 }
 
 tasks.register<Delete>("clean") {

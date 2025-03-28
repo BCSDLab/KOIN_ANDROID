@@ -10,17 +10,18 @@ import javax.inject.Inject
 class OwnerVerificationCodeUseCase @Inject constructor(
     private val ownerVerificationCodeRepository: OwnerVerificationCodeRepository,
     private val tokenRepository: TokenRepository,
-    private val ownerErrorHandler: OwnerErrorHandler,
+    private val ownerErrorHandler: OwnerErrorHandler
 ) {
     suspend operator fun invoke(
         phoneNumber: String,
         verificationCode: String
     ): Pair<Unit?, ErrorHandler?> {
         return try {
-            val authToken = ownerVerificationCodeRepository.verifySmsCode(
-                phoneNumber,
-                verificationCode
-            )
+            val authToken =
+                ownerVerificationCodeRepository.verifySmsCode(
+                    phoneNumber,
+                    verificationCode
+                )
             tokenRepository.saveOwnerAccessToken(authToken.token)
             Result.success(SignupContinuationState.CheckComplete)
             Unit to null

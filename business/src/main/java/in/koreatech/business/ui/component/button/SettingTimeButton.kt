@@ -11,12 +11,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -27,8 +23,6 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.koin.core.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun SettingTimeButton(
@@ -37,25 +31,26 @@ fun SettingTimeButton(
     onRegisterButtonClicked: () -> Unit = {}
 ) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .padding(top = 12.dp, bottom = 36.dp)
-            .fillMaxWidth()
-        ,
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
-    ){
+    ) {
         Button(
             onClick = onCancelButtonClicked,
             colors = ButtonDefaults.buttonColors(Color.White),
             shape = RoundedCornerShape(8.dp),
             border = BorderStroke(1.dp, Gray3),
-            modifier = Modifier
+            modifier =
+            Modifier
                 .height(44.dp)
                 .width(128.dp)
-
         ) {
             Text(
                 text = stringResource(id = R.string.cancel),
-                style = TextStyle(
+                style =
+                TextStyle(
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     color = Gray3
@@ -70,13 +65,15 @@ fun SettingTimeButton(
             colors = ButtonDefaults.buttonColors(ColorPrimary),
             shape = RoundedCornerShape(8.dp),
             border = BorderStroke(1.dp, ColorPrimary),
-            modifier = Modifier
+            modifier =
+            Modifier
                 .height(44.dp)
                 .width(128.dp)
         ) {
             Text(
                 text = stringResource(R.string.register),
-                style = TextStyle(
+                style =
+                TextStyle(
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     color = Color.White

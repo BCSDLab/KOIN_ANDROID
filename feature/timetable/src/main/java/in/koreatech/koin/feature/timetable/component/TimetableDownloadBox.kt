@@ -2,15 +2,12 @@ package `in`.koreatech.koin.feature.timetable.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +26,8 @@ fun TimetableDownloadBox(
     onClick: () -> Unit = {}
 ) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .background(Color.White)
             .border(
                 width = 1.dp,
@@ -37,7 +35,7 @@ fun TimetableDownloadBox(
                 shape = RoundedCornerShape(10.dp)
             )
             .noRippleClickable { onClick() }
-            .padding(5.dp),
+            .padding(5.dp)
     ) {
         Text(
             text = "시간표 다운로드",

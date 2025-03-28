@@ -22,7 +22,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
-class BusinessSignUpBasicInfoFragment: BaseFragment() {
+class BusinessSignUpBasicInfoFragment : BaseFragment() {
     private var _binding: FragmentBusinessSignupBasicInfoBinding? = null
     private val binding get() = _binding!!
     private val viewModel by activityViewModels<BusinessSignUpBasicInfoViewModel>()
@@ -34,7 +34,8 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBusinessSignupBasicInfoBinding.inflate(inflater, container, false)
@@ -52,7 +53,7 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
 
         signupSendVerificationButton.setOnClickListener {
             viewModel.continueBusinessSignup(
-                email =  signupEdittextId.text.toString(),
+                email = signupEdittextId.text.toString(),
                 password = signupEdittextPw.text.toString(),
                 passwordConfirm = signupEdittextPwConfirm.text.toString(),
                 isAgreedPrivacyTerms = true,
@@ -63,39 +64,79 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
 
     private fun inputTextEffect() = with(binding) {
         signupEdittextId.doOnTextChanged { text, _, _, _ ->
-            if(text.isNullOrBlank()) divideLine1.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.blue1))
-            else divideLine1.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.black))
+            if (text.isNullOrBlank()) {
+                divideLine1.setBackgroundColor(
+                    this@BusinessSignUpBasicInfoFragment.requireContext().getColor(
+                        R.color.blue1
+                    )
+                )
+            } else {
+                divideLine1.setBackgroundColor(
+                    this@BusinessSignUpBasicInfoFragment.requireContext().getColor(
+                        R.color.black
+                    )
+                )
+            }
             isAllWrite()
         }
 
         signupEdittextPw.doOnTextChanged { text, _, _, _ ->
-            if(text.isNullOrBlank()) divideLine2.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.blue1))
-            else divideLine2.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.black))
+            if (text.isNullOrBlank()) {
+                divideLine2.setBackgroundColor(
+                    this@BusinessSignUpBasicInfoFragment.requireContext().getColor(
+                        R.color.blue1
+                    )
+                )
+            } else {
+                divideLine2.setBackgroundColor(
+                    this@BusinessSignUpBasicInfoFragment.requireContext().getColor(
+                        R.color.black
+                    )
+                )
+            }
             isAllWrite()
         }
 
         signupEdittextPwConfirm.doOnTextChanged { text, _, _, _ ->
-            if(text.isNullOrBlank()) divideLine3.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.blue1))
-            else divideLine3.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.black))
+            if (text.isNullOrBlank()) {
+                divideLine3.setBackgroundColor(
+                    this@BusinessSignUpBasicInfoFragment.requireContext().getColor(
+                        R.color.blue1
+                    )
+                )
+            } else {
+                divideLine3.setBackgroundColor(
+                    this@BusinessSignUpBasicInfoFragment.requireContext().getColor(
+                        R.color.black
+                    )
+                )
+            }
             isAllWrite()
         }
     }
 
     private fun isAllWrite() {
         var check = true
-        if(binding.signupEdittextId.text.toString().isBlank()) check = false
-        if(binding.signupEdittextPw.text.toString().isBlank()) check = false
-        if(binding.signupEdittextPwConfirm.text.toString().isBlank()) check = false
+        if (binding.signupEdittextId.text.toString().isBlank()) check = false
+        if (binding.signupEdittextPw.text.toString().isBlank()) check = false
+        if (binding.signupEdittextPwConfirm.text.toString().isBlank()) check = false
 
-        if(check) binding.signupSendVerificationButton.setBackgroundColor(this.requireContext().getColor(R.color.colorPrimary))
-        else binding.signupSendVerificationButton.setBackgroundColor(this.requireContext().getColor(R.color.gray5))
+        if (check) {
+            binding.signupSendVerificationButton.setBackgroundColor(
+                this.requireContext().getColor(R.color.colorPrimary)
+            )
+        } else {
+            binding.signupSendVerificationButton.setBackgroundColor(
+                this.requireContext().getColor(R.color.gray5)
+            )
+        }
     }
 
     private fun initViewModel() = with(viewModel) {
         withLoading(this@BusinessSignUpBasicInfoFragment, this)
 
         observeLiveData(businessSignupContinuationState) { state ->
-            when(state) {
+            when (state) {
                 SignupContinuationState.EmailIsNotValidate -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
@@ -122,7 +163,11 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
 
                     businessSignupBaseViewModel.setEmail(email)
                     businessSignupBaseViewModel.setPassword(password)
-                    businessVerificationViewModel.setSignUpInfo(email, password, passwordConfirm)
+                    businessVerificationViewModel.setSignUpInfo(
+                        email,
+                        password,
+                        passwordConfirm
+                    )
 
                     businessSignupBaseViewModel.setFragmentTag("verificationFragment")
                 }
@@ -145,9 +190,13 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
         observeLiveData(businessSignupContinuationError) { t ->
             SnackbarUtil.makeShortSnackbar(
                 binding.root,
-                when(t) {
-                    is SignupAlreadySentEmailException -> getString(R.string.signup_error_email_already_send_or_email_requested)
-                    is InCorrectEmailAddressException -> getString(R.string.signup_error_incorrect_email_address)
+                when (t) {
+                    is SignupAlreadySentEmailException -> getString(
+                        R.string.signup_error_email_already_send_or_email_requested
+                    )
+                    is InCorrectEmailAddressException -> getString(
+                        R.string.signup_error_incorrect_email_address
+                    )
                     else -> getString(R.string.signup_error_when_email_validation)
                 }
             )

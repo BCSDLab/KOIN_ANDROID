@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -40,10 +39,11 @@ fun DeleteSemesterDialog(
 ) {
     BasicAlertDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier,
+        modifier = modifier
     ) {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .wrapContentWidth()
                 .wrapContentHeight()
                 .background(color = KoinTheme.colors.neutral0, shape = KoinTheme.shapes.extraSmall)
@@ -54,7 +54,8 @@ fun DeleteSemesterDialog(
                     texts = stringArrayResource(id = R.array.delete_semester_title),
                     highlightIndices = listOf(1),
                     defaultStyle = KoinTheme.typography.medium16,
-                    highlightStyle = KoinTheme.typography.bold16.copy(
+                    highlightStyle =
+                    KoinTheme.typography.bold16.copy(
                         color = KoinTheme.colors.danger700
                     )
                 )
@@ -64,10 +65,12 @@ fun DeleteSemesterDialog(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     OutlinedButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
-                        colors = ButtonColors(
+                        colors =
+                        ButtonColors(
                             containerColor = KoinTheme.colors.neutral0,
                             contentColor = KoinTheme.colors.neutral500,
                             disabledContainerColor = KoinTheme.colors.neutral400,
@@ -78,10 +81,15 @@ fun DeleteSemesterDialog(
                         border = BorderStroke(1.dp, KoinTheme.colors.neutral500),
                         onClick = { onDismiss() }
                     ) {
-                        Text(text = stringResource(id = R.string.common_cancellation), style = KoinTheme.typography.medium15, color = KoinTheme.colors.neutral600)
+                        Text(
+                            text = stringResource(id = R.string.common_cancellation),
+                            style = KoinTheme.typography.medium15,
+                            color = KoinTheme.colors.neutral600
+                        )
                     }
                     FilledTextButton(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(48.dp)
                             .weight(1.0F),
                         text = stringResource(id = R.string.delete_semester_confirmation),
@@ -90,11 +98,9 @@ fun DeleteSemesterDialog(
                     )
                 }
             }
-
         }
     }
 }
-
 
 @Preview
 @Composable

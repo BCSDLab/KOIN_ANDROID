@@ -76,72 +76,79 @@ fun ModifyInfoScreen(
     val listState = rememberLazyListState()
     val context = LocalContext.current
     val pagerState = rememberPagerState { state.storeInfo.imageUrls.size }
-    val galleryLauncher = launchImagePicker(
-        contentResolver = context.contentResolver,
-        initImageUrls = viewModel::initStoreImageUrls,
-        getPreSignedUrl = {
-            viewModel.getPreSignedUrl(
-                it.first.first,
-                it.first.second,
-                it.second.first,
-                it.second.second
-            )
-        },
-        clearFileInfo = { state.fileInfo.clear() }
-    )
-    
+    val galleryLauncher =
+        launchImagePicker(
+            contentResolver = context.contentResolver,
+            initImageUrls = viewModel::initStoreImageUrls,
+            getPreSignedUrl = {
+                viewModel.getPreSignedUrl(
+                    it.first.first,
+                    it.first.second,
+                    it.second.first,
+                    it.second.second
+                )
+            },
+            clearFileInfo = { state.fileInfo.clear() }
+        )
+
     Column {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .height(62.dp)
-                .background(ColorPrimary),
+                .background(ColorPrimary)
         ) {
             IconButton(onClick = viewModel::onBackButtonClicked) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_flyer_before_arrow),
                     contentDescription = stringResource(R.string.back),
-                    colorFilter = ColorFilter.tint(Color.White),
+                    colorFilter = ColorFilter.tint(Color.White)
                 )
             }
             Text(
                 text = stringResource(id = R.string.my_shop),
                 modifier = Modifier.align(Alignment.Center),
-                style = TextStyle(color = Color.White, fontSize = 18.sp),
+                style = TextStyle(color = Color.White, fontSize = 18.sp)
             )
         }
         LazyColumn(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize(),
             state = listState,
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Top
         ) {
             item {
                 Box(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxSize()
                         .background(Gray2),
-                    contentAlignment = Alignment.Center,
+                    contentAlignment = Alignment.Center
                 ) {
                     HorizontalPager(
                         state = pagerState,
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .fillMaxWidth()
                             .height(255.dp)
-                            .align(Alignment.Center),
+                            .align(Alignment.Center)
                     ) { page ->
                         Box(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .fillMaxSize(),
-                            contentAlignment = Alignment.Center,
+                            contentAlignment = Alignment.Center
                         ) {
                             Image(
                                 modifier = Modifier.height(255.dp),
-                                painter = rememberAsyncImagePainter(
+                                painter =
+                                rememberAsyncImagePainter(
                                     model = if (state.storeInfo.imageUrls.isNotEmpty()) state.storeInfo.imageUrls[page] else R.drawable.no_image
                                 ),
                                 contentDescription = stringResource(R.string.shop_image),
-                                contentScale = ContentScale.Crop,
+                                contentScale = ContentScale.Crop
                             )
                         }
                     }
@@ -153,15 +160,16 @@ fun ModifyInfoScreen(
                                     ActivityResultContracts.PickVisualMedia.ImageOnly
                                 )
                             )
-
                         },
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .align(Alignment.BottomEnd)
                             .width(100.dp)
                             .height(50.dp)
                             .padding(bottom = 15.dp, end = 15.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.Black.copy(alpha = 0.5f),
+                        colors =
+                        ButtonDefaults.buttonColors(
+                            backgroundColor = Color.Black.copy(alpha = 0.5f)
                         ),
                         elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
                     ) {
@@ -169,7 +177,7 @@ fun ModifyInfoScreen(
                             modifier = Modifier.fillMaxSize(),
                             text = stringResource(R.string.change_image),
                             color = Color.White,
-                            textAlign = TextAlign.Center,
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -191,7 +199,8 @@ fun ModifyInfoScreen(
             }
             item {
                 Row(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -199,39 +208,70 @@ fun ModifyInfoScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.operating_time),
-                        style = TextStyle(
+                        style =
+                        TextStyle(
                             color = ColorPrimary,
                             fontWeight = FontWeight(500),
                             fontSize = 15.sp
-                        ),
+                        )
                     )
                     Row(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .fillMaxWidth()
                             .padding(start = 20.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column {
-                            state.storeInfo?.operatingTime?.forEach { item ->
+                            val closedStores = state.storeInfo.operatingTime.filter { it.closed }
+                            val openStores = state.storeInfo.operatingTime.filter { !it.closed }
+
+                            openStores.forEach { item ->
                                 val dayOfWeekIndex = dayOfWeekToIndex(item.dayOfWeek)
                                 val dayOfWeekKorean =
-                                    if (dayOfWeekIndex != -1) context.resources.getStringArray(R.array.days_one_letter)[dayOfWeekIndex] else item.dayOfWeek
+                                    if (dayOfWeekIndex != -1) {
+                                        context.resources.getStringArray(
+                                            R.array.days_one_letter
+                                        )[dayOfWeekIndex]
+                                    } else {
+                                        item.dayOfWeek
+                                    }
                                 Text(
-                                    text = if (item.closed) stringResource(
-                                        id = R.string.insert_store_closed_day,
-                                        dayOfWeekKorean
-                                    )
-                                    else "$dayOfWeekKorean " +
-                                            StoreUtil.generateOpenCloseTimeString(
-                                                item.openTime,
-                                                item.closeTime
-                                            ),
-                                    color = ColorMinor,
+                                    text =
+                                    "$dayOfWeekKorean " +
+                                        StoreUtil.generateOpenCloseTimeString(
+                                            item.openTime,
+                                            item.closeTime
+                                        ),
+                                    color = ColorMinor
                                 )
+                            }
+                            Row {
+                                closedStores.forEach { item ->
+                                    val dayOfWeekIndex = dayOfWeekToIndex(item.dayOfWeek)
+                                    val dayOfWeekKorean =
+                                        if (dayOfWeekIndex != -1) {
+                                            context.resources.getStringArray(
+                                                R.array.days_one_letter
+                                            )[dayOfWeekIndex]
+                                        } else {
+                                            item.dayOfWeek
+                                        }
+                                    Text(
+                                        text = "$dayOfWeekKorean "
+                                    )
+                                }
+                                if (closedStores.isNotEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.closed_day),
+                                        color = Color.Red
+                                    )
+                                }
                             }
                         }
                         Button(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .width(70.dp)
                                 .height(40.dp),
                             onClick = viewModel::onSettingOperatingTimeClicked
@@ -240,7 +280,7 @@ fun ModifyInfoScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 text = stringResource(R.string.modify),
                                 color = Color.White,
-                                textAlign = TextAlign.Center,
+                                textAlign = TextAlign.Center
                             )
                         }
                     }
@@ -273,7 +313,7 @@ fun ModifyInfoScreen(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start,
+                    horizontalArrangement = Arrangement.Start
                 ) {
                     AvailableRadioButton(
                         text = stringResource(id = R.string.delivery_available),
@@ -287,7 +327,7 @@ fun ModifyInfoScreen(
                     )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.bank_transfer_available),
-                        selected = state.storeInfo.isBankOk ,
+                        selected = state.storeInfo.isBankOk,
                         onClick = viewModel::onTransferAvailableChanged
                     )
                 }
@@ -302,19 +342,22 @@ fun ModifyInfoScreen(
                                 state.storeInfo
                             )
                         },
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .width(130.dp)
                             .height(40.dp)
                             .align(Alignment.CenterEnd)
                             .padding(horizontal = 20.dp),
-                        colors = ButtonDefaults.buttonColors(
+                        colors =
+                        ButtonDefaults.buttonColors(
                             backgroundColor = ColorPrimary,
                             contentColor = Color.White
                         )
                     ) {
                         Text(
                             text = stringResource(R.string.save),
-                            style = TextStyle(
+                            style =
+                            TextStyle(
                                 color = Color.White,
                                 fontSize = 15.sp
                             )
@@ -351,7 +394,8 @@ fun InputStoreInfo(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     Row(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -359,22 +403,25 @@ fun InputStoreInfo(
     ) {
         Text(
             text = info,
-            style = TextStyle(
+            style =
+            TextStyle(
                 color = ColorPrimary,
                 fontWeight = FontWeight(500),
                 fontSize = 15.sp
-            ),
+            )
         )
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .height(40.dp)
                 .padding(start = 20.dp)
                 .border(0.5.dp, Gray9, RectangleShape),
-            contentAlignment = Alignment.CenterEnd,
+            contentAlignment = Alignment.CenterEnd
         ) {
             BasicTextField(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(5.dp)
                     .fillMaxWidth(),
                 value = data,
@@ -387,7 +434,11 @@ fun InputStoreInfo(
 }
 
 @Composable
-fun AvailableRadioButton(text: String, selected: Boolean, onClick: () -> Unit) {
+fun AvailableRadioButton(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier,
         verticalAlignment = Alignment.CenterVertically
@@ -395,16 +446,19 @@ fun AvailableRadioButton(text: String, selected: Boolean, onClick: () -> Unit) {
         RadioButton(
             selected = selected,
             onClick = { onClick() },
-            colors = RadioButtonDefaults.colors(
-                ColorSecondary, Gray6
+            colors =
+            RadioButtonDefaults.colors(
+                ColorSecondary,
+                Gray6
             )
         )
         Text(
             text = text,
-            style = TextStyle(
+            style =
+            TextStyle(
                 color = if (selected) ColorSecondary else Gray6,
                 fontSize = 15.sp
-            ),
+            )
         )
     }
 }

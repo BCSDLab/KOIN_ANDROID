@@ -49,10 +49,11 @@ fun DetailDialog(
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     negativeButtonText: String = stringResource(id = R.string.common_cancellation),
     positiveButtonColors: FilledButtonColors = FilledButtonColors.Primary,
-    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral,
+    negativeButtonColors: OutlinedBoxButtonColors = OutlinedBoxButtonColors.Neutral
 ) {
     BasicAlertDialog(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(

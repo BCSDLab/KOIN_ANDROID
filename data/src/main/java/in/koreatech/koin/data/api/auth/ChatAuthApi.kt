@@ -13,7 +13,9 @@ interface ChatAuthApi {
     suspend fun getChatRoomList(): List<ChatListItemResponse>
 
     @POST("chatroom/lost-item/{articleId}")
-    suspend fun getChatRoomFromArticleId(@Path("articleId") articleId: Int): ChatRoomResponse
+    suspend fun getChatRoomFromArticleId(
+        @Path("articleId") articleId: Int
+    ): ChatRoomResponse
 
     @GET("chatroom/lost-item/{article_id}/{chat_room_id}")
     suspend fun getChatRoom(

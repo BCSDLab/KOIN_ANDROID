@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.net.Uri
 
-
 val Context.isKakaoTalkInstalled: Boolean
     get() {
         return try {
@@ -18,11 +17,12 @@ val Context.isKakaoTalkInstalled: Boolean
     }
 
 fun Context.goToKakaoTalkBcsdlabFriend() {
-    val link = if(isKakaoTalkInstalled) {
-        "kakaoplus://plusfriend/friend/@bcsdlab"
-    } else {
-        "https://goto.kakao.com/@bcsdlab"
-    }
+    val link =
+        if (isKakaoTalkInstalled) {
+            "kakaoplus://plusfriend/friend/@bcsdlab"
+        } else {
+            "https://goto.kakao.com/@bcsdlab"
+        }
 
     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
 }

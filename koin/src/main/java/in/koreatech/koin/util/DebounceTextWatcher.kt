@@ -12,14 +12,15 @@ class DebounceTextWatcher(
     val debounceTime: Long = 500L,
     val onTextChangeCallback: (String) -> Unit
 ) : TextWatcher {
-
     private var job: Job? = null
+
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         job?.takeIf { it.isActive }?.cancel()
-        job = scope.launch {
-            delay(debounceTime)
-            onTextChangeCallback(s.toString())
-        }
+        job =
+            scope.launch {
+                delay(debounceTime)
+                onTextChangeCallback(s.toString())
+            }
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

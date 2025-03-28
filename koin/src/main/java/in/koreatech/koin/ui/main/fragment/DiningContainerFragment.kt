@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.databinding.FragmentDiningContainerBinding
@@ -69,9 +69,10 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
 
     fun updateDining(originalList: List<Dining>, position: Int) {
         val diningType = DiningUtil.getCurrentType()
-        val diningArranged = originalList
-            .typeFilter(diningType)
-            .arrange()
+        val diningArranged =
+            originalList
+                .typeFilter(diningType)
+                .arrange()
 
         updateMenu(originalList, diningArranged, position)
         updateStatus(position, diningArranged)
@@ -84,13 +85,18 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         }
         binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
 
-        val menus = listOf(binding.textViewDiningContainerMenuLeft, binding.textViewDiningContainerMenuRight)
+        val menus =
+            listOf(
+                binding.textViewDiningContainerMenuLeft,
+                binding.textViewDiningContainerMenuRight
+            )
         val limit = arrangedList[position].menu.size.coerceAtMost(5)
         menus.forEachIndexed { index, textView ->
-            textView.text =  when (index) {
-                0 -> arrangedList[position].menu.subList(0, limit).joinToString("\n")
-                else -> arrangedList[position].menu.subList(limit, arrangedList[position].menu.size).joinToString("\n")
-            }
+            textView.text =
+                when (index) {
+                    0 -> arrangedList[position].menu.subList(0, limit).joinToString("\n")
+                    else -> arrangedList[position].menu.subList(limit, arrangedList[position].menu.size).joinToString("\n")
+                }
         }
     }
 
@@ -122,11 +128,12 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
 
     companion object {
         private const val PLACE = "place"
-        fun newInstance(place: String) =
-            DiningContainerFragment().apply {
-                arguments = Bundle().apply {
+
+        fun newInstance(place: String) = DiningContainerFragment().apply {
+            arguments =
+                Bundle().apply {
                     putString(PLACE, place)
                 }
-            }
+        }
     }
 }

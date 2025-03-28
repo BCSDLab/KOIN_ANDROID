@@ -7,5 +7,6 @@ class DeptRemoteDataSource @Inject constructor(
     private val deptApi: DeptApi
 ) {
     suspend fun getAllDepts() = deptApi.getDepts()
+
     suspend fun getDeptFromDeptCode(deptCode: String) = deptApi.getDept(deptCode)
 }

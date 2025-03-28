@@ -23,7 +23,7 @@ import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class BusinessVerificationFragment: BaseFragment() {
+class BusinessVerificationFragment : BaseFragment() {
     private var _binding: FragmentBusinessVerificationBinding? = null
     private val binding get() = _binding!!
     private val businessVerificationViewModel by activityViewModels<BusinessVerificationViewModel>()
@@ -77,16 +77,23 @@ class BusinessVerificationFragment: BaseFragment() {
 
         observeLiveData(businessVerificationContinuationState) {
             val nextFragment = BusinessCertificationFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_container_view, nextFragment).commit()
+            parentFragmentManager.beginTransaction().replace(
+                R.id.fragment_container_view,
+                nextFragment
+            ).commit()
         }
 
         observeLiveData(businessVerificationContinuationError) { t ->
             SnackbarUtil.makeShortSnackbar(
                 binding.root,
-                when(t) {
-                    is SignupAlreadySentEmailException -> getString(R.string.signup_error_email_already_send_or_email_requested)
+                when (t) {
+                    is SignupAlreadySentEmailException -> getString(
+                        R.string.signup_error_email_already_send_or_email_requested
+                    )
                     is OwnerError.OverDueTimeException -> getString(R.string.overdue_time)
-                    is OwnerError.IncorrectVerificationCodeException -> getString(R.string.incorrect_verification_code)
+                    is OwnerError.IncorrectVerificationCodeException -> getString(
+                        R.string.incorrect_verification_code
+                    )
                     else -> getString(R.string.business_sign_up_error_when_verification_code)
                 }
             )

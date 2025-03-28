@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.timetable.viewmodel
 
-import androidx.compose.ui.util.fastFilter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +31,7 @@ import `in`.koreatech.koin.feature.timetable.utils.isValidationPlace
 import `in`.koreatech.koin.feature.timetable.utils.permuteDuplicationLecture
 import `in`.koreatech.koin.feature.timetable.utils.toTimetableEvents
 import `in`.koreatech.koin.feature.timetable.view.TimetableBottomSheetContentMode
+import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,8 +42,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class TimetableViewModel @Inject constructor(
@@ -71,25 +69,29 @@ class TimetableViewModel @Inject constructor(
     val searchEngineState: StateFlow<SearchEngineState> = _searchEngineState.asStateFlow()
 
     private val _lectures = MutableStateFlow<List<Lecture>>(emptyList())
-    val lectures = combine(_searchEngineState, _lectures) { searchEngineState, lectures ->
-        if (searchEngineState.text.isBlank() && searchEngineState.department.isBlank()) {
-            lectures
-        } else if (searchEngineState.department.isBlank()) {
-            lectures.filter { lecture ->
-                lecture.doesMatchSearchQuery(searchEngineState.text)
+    val lectures =
+        combine(_searchEngineState, _lectures) { searchEngineState, lectures ->
+            if (searchEngineState.text.isBlank() && searchEngineState.department.isBlank()) {
+                lectures
+            } else if (searchEngineState.department.isBlank()) {
+                lectures.filter { lecture ->
+                    lecture.doesMatchSearchQuery(searchEngineState.text)
+                }
+            } else {
+                lectures.filter { lecture ->
+                    lecture.doesMatchDepartmentSearchQuery(searchEngineState.department) && (
+                        searchEngineState.text.isBlank() ||
+                            lecture.doesMatchSearchQuery(
+                                searchEngineState.text
+                            )
+                        )
+                }
             }
-        } else {
-            lectures.filter { lecture ->
-                lecture.doesMatchDepartmentSearchQuery(searchEngineState.department) && (searchEngineState.text.isBlank() || lecture.doesMatchSearchQuery(
-                    searchEngineState.text
-                ))
-            }
-        }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        emptyList()
-    )
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            emptyList()
+        )
 
     fun getInitData() {
         viewModelScope.launch {
@@ -109,14 +111,15 @@ class TimetableViewModel @Inject constructor(
                 true -> {
                     timetableRepository.getTimetableLectures(semester)
                         .onSuccess { timetableLectures ->
-                            _state.value = _state.value.copy(
-                                range = timetableLectures.formatTimeRange(),
-                                semesters = semesters,
-                                timetableEvents = timetableLectures.getTimetableEvents(),
-                                currentSemester = semester,
-                                timetableLectures = timetableLectures,
-                                loading = false
-                            )
+                            _state.value =
+                                _state.value.copy(
+                                    range = timetableLectures.formatTimeRange(),
+                                    semesters = semesters,
+                                    timetableEvents = timetableLectures.getTimetableEvents(),
+                                    currentSemester = semester,
+                                    timetableLectures = timetableLectures,
+                                    loading = false
+                                )
                         }.onFailure {
                             updateLoading(false)
                             _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
@@ -124,10 +127,11 @@ class TimetableViewModel @Inject constructor(
                 }
 
                 false -> {
-                    val timetableFrames = getTimetableFrames(semester).ifEmpty {
-                        updateSemesters(semesters, semester)
-                        return@launch
-                    }
+                    val timetableFrames =
+                        getTimetableFrames(semester).ifEmpty {
+                            updateSemesters(semesters, semester)
+                            return@launch
+                        }
                     val frame = timetableFrames.find { it.isMain }
                     if (frame == null) {
                         updateSemesters(semesters, semester)
@@ -136,16 +140,17 @@ class TimetableViewModel @Inject constructor(
 
                     timetableRepository.getTimetableLectures(frame.id)
                         .onSuccess { timetableLectures ->
-                            _state.value = _state.value.copy(
-                                range = timetableLectures.formatTimeRange(),
-                                frameId = timetableLectures.timetableFrameId,
-                                timetableName = frame.timetableName,
-                                semesters = semesters,
-                                timetableEvents = timetableLectures.getTimetableEvents(),
-                                currentSemester = semester,
-                                timetableLectures = timetableLectures,
-                                loading = false
-                            )
+                            _state.value =
+                                _state.value.copy(
+                                    range = timetableLectures.formatTimeRange(),
+                                    frameId = timetableLectures.timetableFrameId,
+                                    timetableName = frame.timetableName,
+                                    semesters = semesters,
+                                    timetableEvents = timetableLectures.getTimetableEvents(),
+                                    currentSemester = semester,
+                                    timetableLectures = timetableLectures,
+                                    loading = false
+                                )
                         }.onFailure {
                             updateLoading(false)
                             _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
@@ -155,7 +160,11 @@ class TimetableViewModel @Inject constructor(
         }
     }
 
-    fun getRefreshData(frameId: Int, semester: String, frameName: String) {
+    fun getRefreshData(
+        frameId: Int,
+        semester: String,
+        frameName: String
+    ) {
         viewModelScope.launch {
             updateLoading(true)
 
@@ -174,19 +183,20 @@ class TimetableViewModel @Inject constructor(
                     _lectures.value = getLectures(semester)
                     timetableRepository.getTimetableLectures(semester)
                         .onSuccess { timetableLectures ->
-                            _state.value = _state.value.copy(
-                                range = timetableLectures.formatTimeRange(),
-                                timetableEvents = timetableLectures.getTimetableEvents(),
-                                currentSemester = semester,
-                                timetableLectures = timetableLectures,
-                                bottomSheetCollapse = true,
-                                selectedLecture = null,
-                                etcClickedTimetableEvents = emptyList(),
-                                clickedTimetableEvents = emptyList(),
-                                bottomSheetUI = BottomSheetUI.DEFAULT,
-                                bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
-                                loading = false
-                            )
+                            _state.value =
+                                _state.value.copy(
+                                    range = timetableLectures.formatTimeRange(),
+                                    timetableEvents = timetableLectures.getTimetableEvents(),
+                                    currentSemester = semester,
+                                    timetableLectures = timetableLectures,
+                                    bottomSheetCollapse = true,
+                                    selectedLecture = null,
+                                    etcClickedTimetableEvents = emptyList(),
+                                    clickedTimetableEvents = emptyList(),
+                                    bottomSheetUI = BottomSheetUI.DEFAULT,
+                                    bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
+                                    loading = false
+                                )
                         }.onFailure {
                             updateLoading(false)
                             _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
@@ -194,46 +204,49 @@ class TimetableViewModel @Inject constructor(
                 }
                 false -> {
                     if (state.value.frameId == frameId) {
-                        _state.value = _state.value.copy(
-                            timetableName = frameName
-                        )
+                        _state.value =
+                            _state.value.copy(
+                                timetableName = frameName
+                            )
                         updateLoading(false)
                         return@launch
                     }
                     _lectures.value = getLectures(semester)
                     val semesters = getSemester(state.value.isAnonymous)
                     if (frameId == -1) {
-                        _state.value = TimetableState().copy(
-                            isAnonymous = state.value.isAnonymous,
-                            semesters = semesters,
-                            bottomSheetCollapse = true,
-                            selectedLecture = null,
-                            etcClickedTimetableEvents = emptyList(),
-                            clickedTimetableEvents = emptyList(),
-                            bottomSheetUI = BottomSheetUI.DEFAULT,
-                            bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
-                            loading = false
-                        )
-                        return@launch
-                    }
-                    timetableRepository.getTimetableLectures(frameId)
-                        .onSuccess { timetableLectures ->
-                            _state.value = _state.value.copy(
-                                range = timetableLectures.formatTimeRange(),
-                                frameId = timetableLectures.timetableFrameId,
-                                timetableName = frameName,
-                                timetableEvents = timetableLectures.getTimetableEvents(),
-                                currentSemester = semester,
+                        _state.value =
+                            TimetableState().copy(
+                                isAnonymous = state.value.isAnonymous,
                                 semesters = semesters,
+                                bottomSheetCollapse = true,
                                 selectedLecture = null,
                                 etcClickedTimetableEvents = emptyList(),
                                 clickedTimetableEvents = emptyList(),
-                                bottomSheetCollapse = true,
-                                timetableLectures = timetableLectures,
                                 bottomSheetUI = BottomSheetUI.DEFAULT,
                                 bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
                                 loading = false
                             )
+                        return@launch
+                    }
+                    timetableRepository.getTimetableLectures(frameId)
+                        .onSuccess { timetableLectures ->
+                            _state.value =
+                                _state.value.copy(
+                                    range = timetableLectures.formatTimeRange(),
+                                    frameId = timetableLectures.timetableFrameId,
+                                    timetableName = frameName,
+                                    timetableEvents = timetableLectures.getTimetableEvents(),
+                                    currentSemester = semester,
+                                    semesters = semesters,
+                                    selectedLecture = null,
+                                    etcClickedTimetableEvents = emptyList(),
+                                    clickedTimetableEvents = emptyList(),
+                                    bottomSheetCollapse = true,
+                                    timetableLectures = timetableLectures,
+                                    bottomSheetUI = BottomSheetUI.DEFAULT,
+                                    bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
+                                    loading = false
+                                )
                         }.onFailure {
                             updateLoading(false)
                             _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
@@ -265,12 +278,16 @@ class TimetableViewModel @Inject constructor(
         _state.value = _state.value.copy(loading = loading)
     }
 
-    private fun updateSemesters(semesters: List<String>, semester: String) {
-        _state.value = _state.value.copy(
-            semesters = semesters,
-            currentSemester = semester,
-            loading = false
-        )
+    private fun updateSemesters(
+        semesters: List<String>,
+        semester: String
+    ) {
+        _state.value =
+            _state.value.copy(
+                semesters = semesters,
+                currentSemester = semester,
+                loading = false
+            )
     }
 
     fun updateIsAnonymous(isAnonymous: Boolean) {
@@ -293,9 +310,10 @@ class TimetableViewModel @Inject constructor(
     fun updateBottomSheetUI(bottomSheetUI: BottomSheetUI) {
         _state.value = _state.value.copy(bottomSheetUI = bottomSheetUI)
         if (bottomSheetUI == BottomSheetUI.DEFAULT && state.value.bottomSheetMode == TimetableBottomSheetContentMode.CUSTOM) {
-            _state.value = _state.value.copy(
-                clickedTimetableEvents = customContentState.value.data.map { it.toTimetableEvent() },
-            )
+            _state.value =
+                _state.value.copy(
+                    clickedTimetableEvents = customContentState.value.data.map { it.toTimetableEvent() }
+                )
         }
     }
 
@@ -306,47 +324,54 @@ class TimetableViewModel @Inject constructor(
     fun updateTimetableBottomSheetMode(mode: TimetableBottomSheetContentMode) {
         when (mode) {
             TimetableBottomSheetContentMode.CUSTOM -> {
-                _state.value = _state.value.copy(
-                    bottomSheetMode = mode,
-                    clickedTimetableEvents = customContentState.value.data.map { it.toTimetableEvent() },
-                    etcClickedTimetableEvents = emptyList(),
-                    selectedLecture = null
-                )
+                _state.value =
+                    _state.value.copy(
+                        bottomSheetMode = mode,
+                        clickedTimetableEvents = customContentState.value.data.map { it.toTimetableEvent() },
+                        etcClickedTimetableEvents = emptyList(),
+                        selectedLecture = null
+                    )
             }
 
             TimetableBottomSheetContentMode.BASIC -> {
-                _state.value = _state.value.copy(
-                    bottomSheetMode = mode,
-                    clickedTimetableEvents = emptyList(),
-                    etcClickedTimetableEvents = emptyList(),
-                    selectedLecture = null
-                )
+                _state.value =
+                    _state.value.copy(
+                        bottomSheetMode = mode,
+                        clickedTimetableEvents = emptyList(),
+                        etcClickedTimetableEvents = emptyList(),
+                        selectedLecture = null
+                    )
                 _customContentState.value = CustomContentState()
             }
         }
     }
 
     fun updateScheduleTextChange(text: String) {
-        _customContentState.value = _customContentState.value.copy(
-            schedule = text,
-            isScheduleError = text.isEmpty()
-        )
+        _customContentState.value =
+            _customContentState.value.copy(
+                schedule = text,
+                isScheduleError = text.isEmpty()
+            )
     }
 
     fun updateProfessorTextChange(text: String) {
         _customContentState.value = _customContentState.value.copy(professor = text)
     }
 
-    fun updateExtraPlaceByIdTextChange(id: Int, text: String) {
+    fun updateExtraPlaceByIdTextChange(
+        id: Int,
+        text: String
+    ) {
         var editContents = customContentState.value.data.toMutableList()
 
-        editContents = editContents.map { event ->
-            if (event.id == id) {
-                event.copy(place = text)
-            } else {
-                event
-            }
-        }.toMutableList()
+        editContents =
+            editContents.map { event ->
+                if (event.id == id) {
+                    event.copy(place = text)
+                } else {
+                    event
+                }
+            }.toMutableList()
 
         _customContentState.value =
             _customContentState.value.copy(data = editContents.toImmutableList())
@@ -355,38 +380,40 @@ class TimetableViewModel @Inject constructor(
     fun updateDayOfWeekChange(content: CustomExtraContentState) {
         var editContents = customContentState.value.data.toMutableList()
 
-        editContents = editContents.map { event ->
-            if (event.id == content.id) {
-                event.copy(dayOfWeek = content.dayOfWeek, isError = false)
-            } else {
-                event
-            }
-        }.toMutableList()
+        editContents =
+            editContents.map { event ->
+                if (event.id == content.id) {
+                    event.copy(dayOfWeek = content.dayOfWeek, isError = false)
+                } else {
+                    event
+                }
+            }.toMutableList()
 
         _customContentState.value =
             _customContentState.value.copy(data = editContents.toImmutableList())
 
         val updateClickedEvents = mutableListOf<TimetableEvent>()
         updateClickedEvents.addAll(customContentState.value.data.map { it.toTimetableEvent() })
-        _state.value = _state.value.copy(
-            clickedTimetableEvents = updateClickedEvents
-        )
+        _state.value =
+            _state.value.copy(
+                clickedTimetableEvents = updateClickedEvents
+            )
     }
 
     fun updateClickedTimetableEvents(timetableEvents: List<TimetableEvent>) {
         if (timetableEvents.isEmpty()) {
-            _state.value = _state.value.copy(
-                clickedTimetableEvents = emptyList(),
-                etcClickedTimetableEvents = emptyList(),
-                range = state.value.timetableLectures.formatTimeRange()
-            )
+            _state.value =
+                _state.value.copy(
+                    clickedTimetableEvents = emptyList(),
+                    etcClickedTimetableEvents = emptyList(),
+                    range = state.value.timetableLectures.formatTimeRange()
+                )
         } else {
             val events =
                 lectures.value.filter { it.name == timetableEvents.firstOrNull()?.name.orEmpty() }
                     .flatMap { timetableLecture ->
                         timetableLecture.toTimetableEvents()
                     }
-
 
             val adaptRange = state.value.timetableLectures.formatTimeRange()
             val eventRange = events.formatTimeRange()
@@ -400,30 +427,33 @@ class TimetableViewModel @Inject constructor(
                 }
             }
 
-            _state.value = _state.value.copy(
-                clickedTimetableEvents = timetableEvents,
-                etcClickedTimetableEvents = etcClickedTimetableEvents,
-                range = if (eventRange > 9) {
-                    if (adaptRange > eventRange) {
-                        adaptRange
+            _state.value =
+                _state.value.copy(
+                    clickedTimetableEvents = timetableEvents,
+                    etcClickedTimetableEvents = etcClickedTimetableEvents,
+                    range =
+                    if (eventRange > 9) {
+                        if (adaptRange > eventRange) {
+                            adaptRange
+                        } else {
+                            eventRange
+                        }
                     } else {
-                        eventRange
+                        if (adaptRange > 9) {
+                            adaptRange
+                        } else {
+                            9
+                        }
                     }
-                } else {
-                    if (adaptRange > 9) {
-                        adaptRange
-                    } else {
-                        9
-                    }
-                }
-            )
+                )
         }
     }
 
     fun updateSelectedLecture(lecture: Lecture?) {
-        _state.value = _state.value.copy(
-            selectedLecture = lecture
-        )
+        _state.value =
+            _state.value.copy(
+                selectedLecture = lecture
+            )
     }
 
     fun updateIsDownloadDialogVisible(visible: Boolean) {
@@ -446,17 +476,26 @@ class TimetableViewModel @Inject constructor(
         _dialogState.value = _dialogState.value.copy(isLoginVisible = visible)
     }
 
-    fun updateIsDeleteLectureDialogVisible(lecture: TimetableLecture? = null, visible: Boolean) {
+    fun updateIsDeleteLectureDialogVisible(
+        lecture: TimetableLecture? = null,
+        visible: Boolean
+    ) {
         _dialogState.value = _dialogState.value.copy(isDeleteLectureVisible = visible)
         _state.value = _state.value.copy(deleteLecture = lecture)
     }
 
-    fun updateIsStartTimePickerDialogVisible(content: CustomExtraContentState, visible: Boolean) {
+    fun updateIsStartTimePickerDialogVisible(
+        content: CustomExtraContentState,
+        visible: Boolean
+    ) {
         _state.value = _state.value.copy(customTimeData = content)
         _dialogState.value = _dialogState.value.copy(isStartTimePickerVisible = visible)
     }
 
-    fun updateIsEndTimePickerDialogVisible(content: CustomExtraContentState, visible: Boolean) {
+    fun updateIsEndTimePickerDialogVisible(
+        content: CustomExtraContentState,
+        visible: Boolean
+    ) {
         _state.value = _state.value.copy(customTimeData = content)
         _dialogState.value = _dialogState.value.copy(isEndTimePickerVisible = visible)
     }
@@ -464,54 +503,58 @@ class TimetableViewModel @Inject constructor(
     fun updateStarTimeContent(content: CustomExtraContentState) {
         var editContents = customContentState.value.data.toMutableList()
 
-        editContents = editContents.map { event ->
-            if (event.id == content.id) {
-                event.copy(
-                    startTime = content.startTime,
-                    endTime = content.calculateEndTime(),
-                    isError = false,
-                )
-            } else {
-                event
-            }
-        }.toMutableList()
+        editContents =
+            editContents.map { event ->
+                if (event.id == content.id) {
+                    event.copy(
+                        startTime = content.startTime,
+                        endTime = content.calculateEndTime(),
+                        isError = false
+                    )
+                } else {
+                    event
+                }
+            }.toMutableList()
 
         _customContentState.value =
             _customContentState.value.copy(data = editContents.toImmutableList())
 
         val updateClickedEvents = mutableListOf<TimetableEvent>()
         updateClickedEvents.addAll(customContentState.value.data.map { it.toTimetableEvent() })
-        _state.value = _state.value.copy(
-            range = updateClickedEvents.formatTimeRange(),
-            clickedTimetableEvents = updateClickedEvents,
-        )
+        _state.value =
+            _state.value.copy(
+                range = updateClickedEvents.formatTimeRange(),
+                clickedTimetableEvents = updateClickedEvents
+            )
         _dialogState.value = _dialogState.value.copy(isStartTimePickerVisible = false)
     }
 
     fun updateEndTimeContent(content: CustomExtraContentState) {
         var editContents = customContentState.value.data.toMutableList()
 
-        editContents = editContents.map { event ->
-            if (event.id == content.id) {
-                event.copy(
-                    startTime = content.calculateStartTime(),
-                    endTime = content.endTime,
-                    isError = false,
-                )
-            } else {
-                event
-            }
-        }.toMutableList()
+        editContents =
+            editContents.map { event ->
+                if (event.id == content.id) {
+                    event.copy(
+                        startTime = content.calculateStartTime(),
+                        endTime = content.endTime,
+                        isError = false
+                    )
+                } else {
+                    event
+                }
+            }.toMutableList()
 
         _customContentState.value =
             _customContentState.value.copy(data = editContents.toImmutableList())
 
         val updateClickedEvents = mutableListOf<TimetableEvent>()
         updateClickedEvents.addAll(customContentState.value.data.map { it.toTimetableEvent() })
-        _state.value = _state.value.copy(
-            range = updateClickedEvents.formatTimeRange(),
-            clickedTimetableEvents = updateClickedEvents
-        )
+        _state.value =
+            _state.value.copy(
+                range = updateClickedEvents.formatTimeRange(),
+                clickedTimetableEvents = updateClickedEvents
+            )
         _dialogState.value = _dialogState.value.copy(isEndTimePickerVisible = false)
     }
 
@@ -559,17 +602,18 @@ class TimetableViewModel @Inject constructor(
                 frameId = state.value.frameId,
                 lectures = customContentState.value.toLectures()
             ).onSuccess { timetableLectures ->
-                _state.value = _state.value.copy(
-                    range = timetableLectures.formatTimeRange(),
-                    frameId = timetableLectures.timetableFrameId,
-                    timetableLectures = timetableLectures,
-                    timetableEvents = timetableLectures.getTimetableEvents(),
-                    clickedTimetableEvents = emptyList(),
-                    etcClickedTimetableEvents = emptyList(),
-                    selectedLecture = null,
-                    bottomSheetCollapse = true,
-                    loading = false
-                )
+                _state.value =
+                    _state.value.copy(
+                        range = timetableLectures.formatTimeRange(),
+                        frameId = timetableLectures.timetableFrameId,
+                        timetableLectures = timetableLectures,
+                        timetableEvents = timetableLectures.getTimetableEvents(),
+                        clickedTimetableEvents = emptyList(),
+                        etcClickedTimetableEvents = emptyList(),
+                        selectedLecture = null,
+                        bottomSheetCollapse = true,
+                        loading = false
+                    )
                 _customContentState.value = CustomContentState()
                 updateIsLectureDuplicationDialogVisible(false)
             }.onFailure {
@@ -578,7 +622,6 @@ class TimetableViewModel @Inject constructor(
             }
         }
     }
-
 
     fun updateDuplicationTimetableLecture() {
         when (state.value.isAnonymous) {
@@ -589,7 +632,7 @@ class TimetableViewModel @Inject constructor(
                 state.value.duplicationLecture?.classTime?.forEach { duplicationTime ->
                     state.value.timetableLectures.timetable.filter {
                         it.classInfos.flatMap { it.classTime }.contains(duplicationTime)
-                    }.forEach {  lecture ->
+                    }.forEach { lecture ->
                         updatedTimetableLectures.remove(lecture)
                     }
                 }
@@ -598,9 +641,10 @@ class TimetableViewModel @Inject constructor(
                     updatedTimetableLectures.add(timetableLecture)
                 }
 
-                val timetables = _state.value.timetableLectures.copy(
-                    timetable = updatedTimetableLectures
-                )
+                val timetables =
+                    _state.value.timetableLectures.copy(
+                        timetable = updatedTimetableLectures
+                    )
 
                 postLocalTimetableLectures(timetables)
             }
@@ -611,7 +655,7 @@ class TimetableViewModel @Inject constructor(
                 state.value.duplicationLecture?.classTime?.forEach { duplicationTime ->
                     state.value.timetableLectures.timetable.filter {
                         it.classInfos.flatMap { it.classTime }.contains(duplicationTime)
-                    }.forEach {  lecture ->
+                    }.forEach { lecture ->
                         ids.add(lecture.id)
                     }
                 }
@@ -622,9 +666,10 @@ class TimetableViewModel @Inject constructor(
                             addTimetableLectures(lecture)
                         } ?: return@onSuccess
                     }.onFailure {
-                        _dialogState.value = _dialogState.value.copy(
-                            isLectureDuplicationVisible = false
-                        )
+                        _dialogState.value =
+                            _dialogState.value.copy(
+                                isLectureDuplicationVisible = false
+                            )
                         _sideEffect.value = TimetableSideEffect.Toast("Failed delete timetable lectures : " + it.message.orEmpty())
                     }
                 }
@@ -639,27 +684,30 @@ class TimetableViewModel @Inject constructor(
         }
         val editContent = customContentState.value.data.toMutableList()
         editContent.add(CustomExtraContentState(id = editContent.last().id + 1))
-        _customContentState.value = _customContentState.value.copy(
-            data = editContent.toImmutableList()
-        )
+        _customContentState.value =
+            _customContentState.value.copy(
+                data = editContent.toImmutableList()
+            )
 
-        _state.value = _state.value.copy(
-            clickedTimetableEvents = _customContentState.value.data.map { it.toTimetableEvent() }
-        )
+        _state.value =
+            _state.value.copy(
+                clickedTimetableEvents = _customContentState.value.data.map { it.toTimetableEvent() }
+            )
     }
 
     fun updateDetailLectures(timetableEvent: TimetableEvent) {
         val lecture = state.value.timetableLectures.timetable.find { it.id == timetableEvent.id }
         lecture?.let {
-            _state.value = _state.value.copy(
-                detailLecture = it,
-                clickedTimetableEvents = emptyList(),
-                etcClickedTimetableEvents = emptyList(),
-                selectedLecture = null,
-                customTimeData = CustomExtraContentState(),
-                bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
-                bottomSheetUI = BottomSheetUI.DETAIL
-            )
+            _state.value =
+                _state.value.copy(
+                    detailLecture = it,
+                    clickedTimetableEvents = emptyList(),
+                    etcClickedTimetableEvents = emptyList(),
+                    selectedLecture = null,
+                    customTimeData = CustomExtraContentState(),
+                    bottomSheetMode = TimetableBottomSheetContentMode.BASIC,
+                    bottomSheetUI = BottomSheetUI.DETAIL
+                )
             _customContentState.value = CustomContentState()
         }
     }
@@ -670,9 +718,10 @@ class TimetableViewModel @Inject constructor(
                 val updatedTimetableLectures =
                     _state.value.timetableLectures.timetable.toMutableList()
                 updatedTimetableLectures.add(lecture.toTimetableLecture())
-                val timetables = _state.value.timetableLectures.copy(
-                    timetable = updatedTimetableLectures
-                )
+                val timetables =
+                    _state.value.timetableLectures.copy(
+                        timetable = updatedTimetableLectures
+                    )
 
                 postLocalTimetableLectures(timetables)
             }
@@ -684,16 +733,17 @@ class TimetableViewModel @Inject constructor(
                         frameId = state.value.frameId,
                         lectures = listOf(lecture)
                     ).onSuccess { timetableLectures ->
-                        _state.value = _state.value.copy(
-                            range = timetableLectures.formatTimeRange(),
-                            frameId = timetableLectures.timetableFrameId,
-                            timetableLectures = timetableLectures,
-                            timetableEvents = timetableLectures.getTimetableEvents(),
-                            clickedTimetableEvents = emptyList(),
-                            etcClickedTimetableEvents = emptyList(),
-                            selectedLecture = null,
-                            loading = false
-                        )
+                        _state.value =
+                            _state.value.copy(
+                                range = timetableLectures.formatTimeRange(),
+                                frameId = timetableLectures.timetableFrameId,
+                                timetableLectures = timetableLectures,
+                                timetableEvents = timetableLectures.getTimetableEvents(),
+                                clickedTimetableEvents = emptyList(),
+                                etcClickedTimetableEvents = emptyList(),
+                                selectedLecture = null,
+                                loading = false
+                            )
                         updateIsLectureDuplicationDialogVisible(false)
                     }.onFailure {
                         updateLoading(false)
@@ -702,26 +752,28 @@ class TimetableViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     fun removeCustomExtraContent(id: Int) {
         var editContents = customContentState.value.data.toMutableList()
 
         editContents.removeIf { it.id == id }
-        editContents = editContents.map { event ->
-            event.copy(
-                isError = false,
+        editContents =
+            editContents.map { event ->
+                event.copy(
+                    isError = false
+                )
+            }.toMutableList()
+        _customContentState.value =
+            _customContentState.value.copy(
+                data = editContents.toImmutableList()
             )
-        }.toMutableList()
-        _customContentState.value = _customContentState.value.copy(
-            data = editContents.toImmutableList(),
-        )
 
-        _state.value = _state.value.copy(
-            range = _customContentState.value.formatTimeRange(),
-            clickedTimetableEvents = editContents.map { it.toTimetableEvent() }
-        )
+        _state.value =
+            _state.value.copy(
+                range = _customContentState.value.formatTimeRange(),
+                clickedTimetableEvents = editContents.map { it.toTimetableEvent() }
+            )
     }
 
     fun removeTimetableLectures(lecture: Lecture) {
@@ -730,9 +782,10 @@ class TimetableViewModel @Inject constructor(
                 val updatedTimetableLectures =
                     _state.value.timetableLectures.timetable.toMutableList()
                 updatedTimetableLectures.remove(lecture.toTimetableLecture())
-                val timetables = _state.value.timetableLectures.copy(
-                    timetable = updatedTimetableLectures
-                )
+                val timetables =
+                    _state.value.timetableLectures.copy(
+                        timetable = updatedTimetableLectures
+                    )
 
                 postLocalTimetableLectures(timetables)
             }
@@ -746,16 +799,17 @@ class TimetableViewModel @Inject constructor(
                     ).onSuccess {
                         timetableRepository.getTimetableLectures(state.value.frameId)
                             .onSuccess { timetableLectures ->
-                                _state.value = _state.value.copy(
-                                    range = timetableLectures.formatTimeRange(),
-                                    frameId = timetableLectures.timetableFrameId,
-                                    timetableEvents = timetableLectures.getTimetableEvents(),
-                                    clickedTimetableEvents = emptyList(),
-                                    etcClickedTimetableEvents = emptyList(),
-                                    selectedLecture = null,
-                                    timetableLectures = timetableLectures,
-                                    loading = false
-                                )
+                                _state.value =
+                                    _state.value.copy(
+                                        range = timetableLectures.formatTimeRange(),
+                                        frameId = timetableLectures.timetableFrameId,
+                                        timetableEvents = timetableLectures.getTimetableEvents(),
+                                        clickedTimetableEvents = emptyList(),
+                                        etcClickedTimetableEvents = emptyList(),
+                                        selectedLecture = null,
+                                        timetableLectures = timetableLectures,
+                                        loading = false
+                                    )
                             }.onFailure {
                                 updateLoading(false)
                                 _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
@@ -765,7 +819,6 @@ class TimetableViewModel @Inject constructor(
                         _sideEffect.value = TimetableSideEffect.Toast("Failed delete timetable lectures : " + it.message.orEmpty())
                     }
                 }
-
             }
         }
     }
@@ -774,24 +827,26 @@ class TimetableViewModel @Inject constructor(
         if (state.value.isAnonymous) {
             val updatedTimetableLectures = _state.value.timetableLectures.timetable.toMutableList()
             updatedTimetableLectures.removeIf { it.id == id }
-            val timetables = _state.value.timetableLectures.copy(
-                timetable = updatedTimetableLectures
-            )
+            val timetables =
+                _state.value.timetableLectures.copy(
+                    timetable = updatedTimetableLectures
+                )
 
             viewModelScope.launch {
                 updateLoading(true)
                 timetableRepository.putTimetableLectures(state.value.currentSemester, timetables)
                     .onSuccess { timetableLectures ->
-                        _state.value = _state.value.copy(
-                            range = timetableLectures.formatTimeRange(),
-                            timetableLectures = timetableLectures,
-                            timetableEvents = timetableLectures.getTimetableEvents(),
-                            clickedTimetableEvents = emptyList(),
-                            etcClickedTimetableEvents = emptyList(),
-                            bottomSheetCollapse = true,
-                            selectedLecture = null,
-                            loading = false
-                        )
+                        _state.value =
+                            _state.value.copy(
+                                range = timetableLectures.formatTimeRange(),
+                                timetableLectures = timetableLectures,
+                                timetableEvents = timetableLectures.getTimetableEvents(),
+                                clickedTimetableEvents = emptyList(),
+                                etcClickedTimetableEvents = emptyList(),
+                                bottomSheetCollapse = true,
+                                selectedLecture = null,
+                                loading = false
+                            )
                         updateIsLectureDuplicationDialogVisible(false)
                     }.onFailure {
                         updateLoading(false)
@@ -805,17 +860,18 @@ class TimetableViewModel @Inject constructor(
                 deleteTimetableLectureUseCase(id).onSuccess {
                     timetableRepository.getTimetableLectures(state.value.frameId)
                         .onSuccess { timetableLectures ->
-                            _state.value = _state.value.copy(
-                                range = timetableLectures.formatTimeRange(),
-                                frameId = timetableLectures.timetableFrameId,
-                                timetableEvents = timetableLectures.getTimetableEvents(),
-                                clickedTimetableEvents = emptyList(),
-                                etcClickedTimetableEvents = emptyList(),
-                                bottomSheetCollapse = true,
-                                selectedLecture = null,
-                                timetableLectures = timetableLectures,
-                                loading = false,
-                            )
+                            _state.value =
+                                _state.value.copy(
+                                    range = timetableLectures.formatTimeRange(),
+                                    frameId = timetableLectures.timetableFrameId,
+                                    timetableEvents = timetableLectures.getTimetableEvents(),
+                                    clickedTimetableEvents = emptyList(),
+                                    etcClickedTimetableEvents = emptyList(),
+                                    bottomSheetCollapse = true,
+                                    selectedLecture = null,
+                                    timetableLectures = timetableLectures,
+                                    loading = false
+                                )
                         }.onFailure {
                             updateLoading(false)
                             _sideEffect.value = TimetableSideEffect.Toast("Failed get timetable lectures : " + it.message.orEmpty())
@@ -833,15 +889,16 @@ class TimetableViewModel @Inject constructor(
             updateLoading(true)
             timetableRepository.putTimetableLectures(state.value.currentSemester, timetables)
                 .onSuccess { timetableLectures ->
-                    _state.value = _state.value.copy(
-                        range = timetableLectures.formatTimeRange(),
-                        timetableLectures = timetableLectures,
-                        timetableEvents = timetableLectures.getTimetableEvents(),
-                        clickedTimetableEvents = emptyList(),
-                        etcClickedTimetableEvents = emptyList(),
-                        selectedLecture = null,
-                        loading = false
-                    )
+                    _state.value =
+                        _state.value.copy(
+                            range = timetableLectures.formatTimeRange(),
+                            timetableLectures = timetableLectures,
+                            timetableEvents = timetableLectures.getTimetableEvents(),
+                            clickedTimetableEvents = emptyList(),
+                            etcClickedTimetableEvents = emptyList(),
+                            selectedLecture = null,
+                            loading = false
+                        )
                     updateIsLectureDuplicationDialogVisible(false)
                 }.onFailure {
                     updateLoading(false)
@@ -854,10 +911,9 @@ class TimetableViewModel @Inject constructor(
     private fun isDuplicateClassTime(lecture: Lecture): Boolean {
         state.value.timetableLectures.timetable.forEach { timetableLecture ->
             timetableLecture.classInfos.flatMap { it.classTime }.forEach { time ->
-                if (lecture.classTime.any {it == time}) return true
+                if (lecture.classTime.any { it == time }) return true
             }
         }
         return false
     }
 }
-

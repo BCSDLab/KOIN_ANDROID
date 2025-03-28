@@ -27,21 +27,22 @@ fun DetailHeader(
     foundDate: LocalDate,
     author: String,
     registeredAt: LocalDate,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val registeredAtFormatType = DateTimeFormatter.ofPattern("MM.dd")
     val convertedRegisteredAt =
         remember(key1 = registeredAt) { "${registeredAt.format(registeredAtFormatType)} ${registeredAt.getKoreanDayOfWeekShortName()}" }
 
     val foundDateFormatType = DateTimeFormatter.ofPattern("yy.MM.dd")
-    val headerText = remember(key1 = foundPlace, key2 = foundDate) {
-        "${
-            foundPlace.replace(
-                "\n",
-                " "
-            )
-        } | ${foundDate.format(foundDateFormatType)}"
-    }
+    val headerText =
+        remember(key1 = foundPlace, key2 = foundDate) {
+            "${
+                foundPlace.replace(
+                    "\n",
+                    " "
+                )
+            } | ${foundDate.format(foundDateFormatType)}"
+        }
 
     Column(
         modifier = modifier.padding(vertical = 12.dp, horizontal = 24.dp)

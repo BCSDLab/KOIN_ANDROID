@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.signup.CheckEmailValidationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.SignupCheckingUseCase
 import `in`.koreatech.koin.domain.usecase.signup.SignupRequestEmailVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckNicknameValidationUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,7 +20,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
@@ -27,7 +27,7 @@ class SignupViewModel @Inject constructor(
     private val signupRequestEmailVerificationUseCase: SignupRequestEmailVerificationUseCase,
     private val checkNicknameValidationUseCase: CheckNicknameValidationUseCase,
     private val checkEmailValidationUseCase: CheckEmailValidationUseCase,
-    private val getDeptNamesUseCase: GetDeptNamesUseCase,
+    private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : BaseViewModel() {
     var portalEmail: String = ""
     var password: String = ""
@@ -36,8 +36,9 @@ class SignupViewModel @Inject constructor(
     private val _signupContinuationState = MutableSharedFlow<SignupContinuationState>()
     val signupContinuationState: SharedFlow<SignupContinuationState> = _signupContinuationState.asSharedFlow()
 
-    val depts: StateFlow<List<String>> = flow { emit(getDeptNamesUseCase()) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf())
+    val depts: StateFlow<List<String>> =
+        flow { emit(getDeptNamesUseCase()) }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf())
 
     fun setAccount(portalEmail: String, password: String) {
         this.portalEmail = portalEmail
@@ -49,11 +50,15 @@ class SignupViewModel @Inject constructor(
         password: String,
         passwordConfirm: String,
         isAgreedPrivacyTerms: Boolean,
-        isAgreedKoinTerms: Boolean,
+        isAgreedKoinTerms: Boolean
     ) {
         viewModelScope.launch {
             signupCheckingUseCase(
-                portalAccount, password, passwordConfirm, isAgreedPrivacyTerms, isAgreedKoinTerms
+                portalAccount,
+                password,
+                passwordConfirm,
+                isAgreedPrivacyTerms,
+                isAgreedKoinTerms
             ).let {
                 _signupContinuationState.emit(it)
             }
@@ -70,7 +75,7 @@ class SignupViewModel @Inject constructor(
         password: String,
         phoneNumber: String,
         studentNumber: String,
-        isCheckNickname: Boolean,
+        isCheckNickname: Boolean
     ) {
         if (isLoading.value == false) {
             viewModelScope.launch {
@@ -79,7 +84,9 @@ class SignupViewModel @Inject constructor(
                 ).onSuccess {
                     _signupContinuationState.emit(it)
                 }.onFailure {
-                    _signupContinuationState.emit(SignupContinuationState.Failed(it.message ?: "", it))
+                    _signupContinuationState.emit(
+                        SignupContinuationState.Failed(it.message ?: "", it)
+                    )
                 }
             }
         }
@@ -89,7 +96,9 @@ class SignupViewModel @Inject constructor(
         checkNicknameValidationUseCase(nickname).let { (isDuplicated, error) ->
             isDuplicated?.let { isSuccess ->
                 if (isSuccess) {
-                    _signupContinuationState.emit(SignupContinuationState.NicknameDuplicated)
+                    _signupContinuationState.emit(
+                        SignupContinuationState.NicknameDuplicated
+                    )
                 } else {
                     isCheckedNickname = true
                     _signupContinuationState.emit(SignupContinuationState.AvailableNickname)

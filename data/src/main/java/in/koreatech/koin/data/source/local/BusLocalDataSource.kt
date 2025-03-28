@@ -6,7 +6,6 @@ import javax.inject.Inject
 class BusLocalDataSource @Inject constructor(
     private val busDataStore: BusDataStore
 ) {
-
     suspend fun getLastShownNoticeId(): Int {
         return busDataStore.getLastShownNoticeId()
     }

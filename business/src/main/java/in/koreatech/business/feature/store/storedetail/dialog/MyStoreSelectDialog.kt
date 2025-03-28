@@ -29,48 +29,51 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import `in`.koreatech.business.R
-import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.owner.OwnerGetStore
 
 @Composable
 fun MyStoreSelectDialog(
     onClickCancel: () -> Unit = {},
     dialogVisibility: Boolean = true,
-    storeList: List<Store> = emptyList(),
+    storeList: List<OwnerGetStore> = emptyList(),
     selectStore: (Int) -> Unit = {}
 ) {
-    if(dialogVisibility){
+    if (dialogVisibility) {
         Dialog(
             onDismissRequest = { onClickCancel() },
-            properties = DialogProperties(
+            properties =
+            DialogProperties(
                 dismissOnBackPress = true,
-                dismissOnClickOutside = true,
+                dismissOnClickOutside = true
             )
         ) {
             Card(
-                shape = RoundedCornerShape(
+                shape =
+                RoundedCornerShape(
                     topStart = 20.dp,
                     topEnd = 20.dp,
                     bottomStart = 20.dp,
                     bottomEnd = 20.dp
-                ),
-            )
-            {
+                )
+            ) {
                 Column(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .width(300.dp)
                         .wrapContentHeight(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
                     Box(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .padding(top = 16.dp)
                             .fillMaxWidth()
                     ) {
                         Image(
                             painter = painterResource(R.drawable.ic_x),
                             contentDescription = "",
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .align(Alignment.TopEnd)
                                 .padding(end = 16.dp)
                                 .clickable {
@@ -88,21 +91,22 @@ fun MyStoreSelectDialog(
                     )
 
                     LazyColumn(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .padding(top = 8.dp, bottom = 8.dp)
                             .heightIn(max = 200.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ){
-                        itemsIndexed(storeList){ index, store ->
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        itemsIndexed(storeList) { index, store ->
                             Text(
-                                modifier = Modifier
+                                modifier =
+                                Modifier
                                     .height(30.dp)
                                     .padding(horizontal = 40.dp)
                                     .clickable {
                                         selectStore(store.uid)
                                         onClickCancel()
-                                    }
-                                ,
+                                    },
                                 text = "${index + 1}. ${store.name}",
                                 fontSize = 15.sp,
                                 textAlign = TextAlign.Start
@@ -118,6 +122,5 @@ fun MyStoreSelectDialog(
 @Preview
 @Composable
 private fun PreviewMyStoreSelectDialog() {
-    MyStoreSelectDialog(
-    )
+    MyStoreSelectDialog()
 }

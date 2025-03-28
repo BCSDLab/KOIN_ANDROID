@@ -28,14 +28,13 @@ import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
-import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
@@ -58,7 +57,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-abstract class KoinNavigationDrawerActivity : ActivityBase(),
+abstract class KoinNavigationDrawerActivity :
+    ActivityBase(),
     NavigationView.OnNavigationItemSelectedListener {
     protected abstract val menuState: MenuState
 
@@ -130,22 +130,23 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         findViewById<AppCompatImageView>(R.id.navi_item_chat)
     }
 
-    private val requestMainPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permission ->
-        var permissionGranted = true
-        permission.entries.forEach {
-            if (it.key in MAIN_REQUIRED_PERMISSION && it.value == false) {
-                permissionGranted = false
+    private val requestMainPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permission ->
+            var permissionGranted = true
+            permission.entries.forEach {
+                if (it.key in MAIN_REQUIRED_PERMISSION && it.value == false) {
+                    permissionGranted = false
+                }
+            }
+
+            if (!permissionGranted) {
+                // handle permission granted
+            } else {
+                // handle permission denied
             }
         }
-
-        if (!permissionGranted) {
-            // handle permission granted
-        } else {
-            // handle permission denied
-        }
-    }
 
     private val loginAlertDialog: AlertDialog by lazy {
         AlertDialog.Builder(this)
@@ -161,25 +162,28 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             }.create()
     }
 
-    override val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            if (drawerLayout.isDrawerOpened()) {
-                drawerLayout.closeDrawer()
-            } else {
-                if (menuState == MenuState.Main) {
-                    if (System.currentTimeMillis() > pressTime + 2000) {
-                        pressTime = System.currentTimeMillis()
-                        ToastUtil.getInstance().makeShort(getString(R.string.press_again_to_exit))
-                    } else {
-                        finishAffinity()
-                    }
+    override val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpened()) {
+                    drawerLayout.closeDrawer()
                 } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
+                    if (menuState == MenuState.Main) {
+                        if (System.currentTimeMillis() > pressTime + 2000) {
+                            pressTime = System.currentTimeMillis()
+                            ToastUtil.getInstance().makeShort(
+                                getString(R.string.press_again_to_exit)
+                            )
+                        } else {
+                            finishAffinity()
+                        }
+                    } else {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                    }
                 }
             }
         }
-    }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
@@ -196,10 +200,17 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             view.setOnClickListener {
                 when (state) {
                     MenuState.Owner -> {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            if(BuildConfig.IS_DEBUG) Uri.parse(URLConstant.OWNER_URL_STAGE) else Uri.parse(URLConstant.OWNER_URL_PRODUCTION)
-                        )
+                        val intent =
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                if (BuildConfig.IS_DEBUG) {
+                                    Uri.parse(
+                                        URLConstant.OWNER_URL_STAGE
+                                    )
+                                } else {
+                                    Uri.parse(URLConstant.OWNER_URL_PRODUCTION)
+                                }
+                            )
                         startActivity(intent)
                     }
 
@@ -234,7 +245,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 EventLogger.logClickEvent(
                                     EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER,
-                                    getString(R.string.navigation_item_koreatech_operating_information)
+                                    getString(
+                                        R.string.navigation_item_koreatech_operating_information
+                                    )
                                 )
                             }
 
@@ -284,11 +297,18 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
 
         val leftArrowButton = findViewById<View>(R.id.drawer_left_arrow_button)
-        leftArrowButton.setOnClickListener { //왼쪽화살표  클릭리스너 등록
+        leftArrowButton.setOnClickListener { // 왼쪽화살표  클릭리스너 등록
             drawerLayout.closeDrawer()
         }
 
         initDrawerViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (drawerLayout.isDrawerOpened(GravityCompat.END)) {
+            window.whiteStatusBar()
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -356,13 +376,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             }
 
                             is User.Student -> {
-                                nameTextView.text = if (user.nickname?.isNotEmpty() == true) {
-                                    user.nickname!!
-                                } else if (user.name?.isNotEmpty() == true) {
-                                    user.name!!
-                                } else {
-                                    "회원"
-                                }
+                                nameTextView.text =
+                                    if (user.nickname?.isNotEmpty() == true) {
+                                        user.nickname!!
+                                    } else if (user.name?.isNotEmpty() == true) {
+                                        user.name!!
+                                    } else {
+                                        "회원"
+                                    }
                                 nameTextView.visibility = View.VISIBLE
                                 helloMessageTextView.text = getString(R.string.navigation_hello_message)
                                 loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
@@ -371,9 +392,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                                 when (menuState) {
                                     MenuState.Main -> {
-                                        if (!checkMainPermission()) requestMainPermissionLauncher.launch(
-                                            MAIN_REQUIRED_PERMISSION
-                                        )
+                                        if (!checkMainPermission()) {
+                                            requestMainPermissionLauncher.launch(
+                                                MAIN_REQUIRED_PERMISSION
+                                            )
+                                        }
                                         koinNavigationDrawerViewModel.updateDeviceToken()
                                     }
 
@@ -407,7 +430,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         drawerLayout.closeDrawer(GravityCompat.END)
         return true
     }
-
 
     open fun callDrawerItem(itemId: Int) {
         when (itemId) {
@@ -500,15 +522,21 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private fun goToTimetableActivity() {
         if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
+            goToActivityFinish(
+                Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java)
+            )
         } else {
-            val intent = Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
-                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
-                    putExtra("isAnonymous", true)
-                } else {
-                    putExtra("isAnonymous", false)
+            val intent =
+                Intent(
+                    this,
+                    `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java
+                ).apply {
+                    if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
+                        putExtra("isAnonymous", true)
+                    } else {
+                        putExtra("isAnonymous", false)
+                    }
                 }
-            }
             EventLogger.logClickEvent(
                 action = EventAction.USER,
                 label = "hamburger",
@@ -561,10 +589,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             .setMessage(getString(R.string.login_request))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
-                val intent = Intent(
-                    this,
-                    LoginActivity::class.java
-                )
+                val intent =
+                    Intent(
+                        this,
+                        LoginActivity::class.java
+                    )
                 intent.putExtra("FIRST_LOGIN", false)
                 startActivity(intent)
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
@@ -581,7 +610,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
         finish()
     }
-
 
     private fun goToContactWebActivity() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(URL.KOIN_ASK_FORM)))
@@ -607,11 +635,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     companion object {
-        private val MAIN_REQUIRED_PERMISSION = mutableListOf<String>().apply {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }.toTypedArray()
+        private val MAIN_REQUIRED_PERMISSION =
+            mutableListOf<String>().apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    add(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }.toTypedArray()
     }
 
     override fun onDestroy() {

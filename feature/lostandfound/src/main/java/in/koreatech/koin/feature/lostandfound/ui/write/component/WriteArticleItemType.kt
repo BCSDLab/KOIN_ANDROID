@@ -29,7 +29,8 @@ fun WriteArticleItemType(
     onItemSelected: (Int) -> Unit = {}
 ) {
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .padding(bottom = 24.dp)
     ) {
@@ -40,7 +41,7 @@ fun WriteArticleItemType(
         ) {
             Text(
                 style = KoinTheme.typography.medium14,
-                text = stringResource(id = R.string.item_type),
+                text = stringResource(id = R.string.item_type)
             )
 
             if (itemTypeRequired) {

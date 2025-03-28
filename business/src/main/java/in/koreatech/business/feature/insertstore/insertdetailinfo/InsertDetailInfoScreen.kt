@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.insertstore.insertdetailinfo
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -51,12 +50,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.KorDayOfWeek
-import `in`.koreatech.business.ui.component.SettingTimeDialog
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.business.feature.insertstore.selectcategory.InsertStoreProgressBar
+import `in`.koreatech.business.ui.component.SettingTimeDialog
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorMinor
@@ -149,18 +147,19 @@ fun InsertDetailInfoScreenImpl(
     val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
-        modifier = Modifier
-            .fillMaxSize()
-        ,
+        modifier =
+        Modifier
+            .fillMaxSize(),
         sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
             Column(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth()
                     .height(520.dp)
-                    .background(color = Color.White,),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .background(color = Color.White),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 SettingTimeDialog(
                     sheetState = sheetState,
@@ -169,14 +168,16 @@ fun InsertDetailInfoScreenImpl(
                 )
             }
         }
-    ){
+    ) {
         LazyColumn(
-            modifier = modifier
+            modifier =
+            modifier
                 .fillMaxSize()
         ) {
             item {
                 Box(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
                         .size(40.dp)
                         .clickable {
@@ -186,7 +187,8 @@ fun InsertDetailInfoScreenImpl(
                     Image(
                         painter = painterResource(R.drawable.ic_arrow_left),
                         contentDescription = "backArrow",
-                        modifier = modifier
+                        modifier =
+                        modifier
                             .size(40.dp)
                     )
                 }
@@ -236,7 +238,8 @@ fun InsertDetailInfoScreenImpl(
 
             item {
                 Row(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(top = 24.dp)
                         .padding(horizontal = 32.dp)
                         .fillMaxWidth()
@@ -249,18 +252,20 @@ fun InsertDetailInfoScreenImpl(
                     )
 
                     Column(
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .padding(start = 30.dp)
                     ) {
                         state.settingTimeInfoList.forEach { item ->
 
                             val stringList = item.timeInfoString.split(" : ")
-                            val coloredString = buildAnnotatedString {
-                                append(stringList[0] + " : ")
-                                withStyle(style = SpanStyle(color = if (stringList[1] == "휴무") Red2 else ColorPrimary)){
-                                    append(stringList[1])
+                            val coloredString =
+                                buildAnnotatedString {
+                                    append(stringList[0] + " : ")
+                                    withStyle(style = SpanStyle(color = if (stringList[1] == "휴무") Red2 else ColorPrimary)) {
+                                        append(stringList[1])
+                                    }
                                 }
-                            }
 
                             Text(
                                 text = coloredString
@@ -282,14 +287,15 @@ fun InsertDetailInfoScreenImpl(
                         },
                         colors = ButtonDefaults.buttonColors(ColorPrimary),
                         shape = RectangleShape,
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(29.dp)
-                            .width(58.dp)
-                        ,
+                            .width(58.dp),
                         contentPadding = PaddingValues(vertical = 4.dp, horizontal = 13.dp)
                     ) {
                         Text(
-                            modifier = Modifier
+                            modifier =
+                            Modifier
                                 .fillMaxSize()
                                 .wrapContentSize(align = Alignment.Center),
                             text = stringResource(id = R.string.revise),
@@ -307,10 +313,11 @@ fun InsertDetailInfoScreenImpl(
 
             item {
                 Row(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(top = 40.dp)
                         .padding(horizontal = 32.dp)
-                ){
+                ) {
                     CreateOptionCheckBox(
                         stringResource(id = R.string.delivery_available),
                         isDeliveryOk,
@@ -337,17 +344,25 @@ fun InsertDetailInfoScreenImpl(
 
             item {
                 Row(
-                    modifier = Modifier
+                    modifier =
+                    Modifier
                         .padding(top = 57.dp, end = 32.dp, bottom = 20.dp)
-                        .fillMaxWidth()
-                    ,
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
-                ){
+                ) {
                     Button(
                         onClick = nextButtonClicked,
-                        colors = if(isDetailInfoValid)ButtonDefaults.buttonColors(ColorPrimary) else ButtonDefaults.buttonColors(ColorDisabledButton),
+                        colors =
+                        if (isDetailInfoValid) {
+                            ButtonDefaults.buttonColors(
+                                ColorPrimary
+                            )
+                        } else {
+                            ButtonDefaults.buttonColors(ColorDisabledButton)
+                        },
                         shape = RectangleShape,
-                        modifier = Modifier
+                        modifier =
+                        Modifier
                             .height(38.dp)
                             .width(105.dp)
                     ) {
@@ -371,14 +386,15 @@ fun NameTextField(
     onStringChange: (String) -> Unit = {},
     paddingTopValue: Dp = 10.dp,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
-){
+) {
     Row(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp)
             .padding(top = paddingTopValue),
         verticalAlignment = CenterVertically
-    ){
+    ) {
         Text(
             text = textString,
             fontSize = 14.sp,
@@ -391,18 +407,22 @@ fun NameTextField(
 }
 
 @Composable
-private fun HandleSideEffects(viewModel: InsertDetailInfoScreenViewModel, navigateToCheckScreen: (InsertDetailInfoScreenState) -> Unit) {
+private fun HandleSideEffects(
+    viewModel: InsertDetailInfoScreenViewModel,
+    navigateToCheckScreen: (InsertDetailInfoScreenState) -> Unit
+) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is InsertDetailInfoScreenSideEffect.NavigateToCheckScreen -> navigateToCheckScreen(sideEffect.storeDetailInfo)
             is InsertDetailInfoScreenSideEffect.ShowMessage -> {
-                val message = when (sideEffect.type) {
-                    DetailInfoErrorType.NullStorePhoneNumber -> context.getString(R.string.insert_store_null_store_phone_number)
-                    DetailInfoErrorType.NullStoreDeliveryFee -> context.getString(R.string.insert_store_null_store_delivery_fee)
-                    DetailInfoErrorType.NullStoreOtherInfo -> context.getString(R.string.insert_store_null_store_other_info)
-                }
+                val message =
+                    when (sideEffect.type) {
+                        DetailInfoErrorType.NullStorePhoneNumber -> context.getString(R.string.insert_store_null_store_phone_number)
+                        DetailInfoErrorType.NullStoreDeliveryFee -> context.getString(R.string.insert_store_null_store_delivery_fee)
+                        DetailInfoErrorType.NullStoreOtherInfo -> context.getString(R.string.insert_store_null_store_other_info)
+                    }
                 ToastUtil.getInstance().makeShort(message)
             }
             else -> {}
@@ -415,9 +435,10 @@ fun BorderTextField(
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
-){
+) {
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .padding(start = 30.dp)
             .border(width = 1.dp, color = ColorMinor)
             .height(37.dp),
@@ -427,11 +448,13 @@ fun BorderTextField(
             value = inputString,
             onValueChange = onStringChange,
             keyboardOptions = keyboardOptions,
-            textStyle = TextStyle(
+            textStyle =
+            TextStyle(
                 color = Color.Black,
                 fontSize = 14.sp
             ),
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
                 .padding(start = 12.dp)
         )
@@ -443,22 +466,28 @@ fun CreateOptionCheckBox(
     checkString: String = "",
     checkValue: Boolean = true,
     onCheckValueChange: () -> Unit = {}
-){
+) {
     Row(
-        modifier = Modifier.clickable {
+        modifier =
+        Modifier.clickable {
             onCheckValueChange()
         },
         verticalAlignment = CenterVertically
     ) {
         Image(
-            painter = if(checkValue) painterResource(R.drawable.ic_insert_store_checked_box)
-            else painterResource(id = R.drawable.ic_insert_store_unchecked_box),
-            contentDescription = "checkBox")
+            painter =
+            if (checkValue) {
+                painterResource(R.drawable.ic_insert_store_checked_box)
+            } else {
+                painterResource(id = R.drawable.ic_insert_store_unchecked_box)
+            },
+            contentDescription = "checkBox"
+        )
 
         Text(
             modifier = Modifier.padding(start = 8.dp),
             text = checkString,
-            color = if(checkValue) ColorSecondary else ColorMinor,
+            color = if (checkValue) ColorSecondary else ColorMinor,
             fontSize = 14.sp
         )
     }
@@ -466,23 +495,23 @@ fun CreateOptionCheckBox(
 
 @Preview
 @Composable
-fun PreviewCreateCheckBox(){
+fun PreviewCreateCheckBox() {
     CreateOptionCheckBox()
 }
 
 @Preview
 @Composable
-fun PreviewInsertDetailInfoScreen(){
-    InsertDetailInfoScreenImpl(
-    )
+fun PreviewInsertDetailInfoScreen() {
+    InsertDetailInfoScreenImpl()
 }
 
-val operatingTime: List<OperatingTimeState> = listOf(
-    OperatingTimeState("00:00", false, "일", "00:00"),
-    OperatingTimeState("00:00", false, "월", "00:00"),
-    OperatingTimeState("00:00", false, "화", "00:00"),
-    OperatingTimeState("00:00", false, "수", "00:00"),
-    OperatingTimeState("00:00", true, "목", "00:00"),
-    OperatingTimeState("00:00", true, "금", "00:00"),
-    OperatingTimeState("00:00", false, "토", "00:00"),
-)
+val operatingTime: List<OperatingTimeState> =
+    listOf(
+        OperatingTimeState("00:00", false, "일", "00:00"),
+        OperatingTimeState("00:00", false, "월", "00:00"),
+        OperatingTimeState("00:00", false, "화", "00:00"),
+        OperatingTimeState("00:00", false, "수", "00:00"),
+        OperatingTimeState("00:00", true, "목", "00:00"),
+        OperatingTimeState("00:00", true, "금", "00:00"),
+        OperatingTimeState("00:00", false, "토", "00:00")
+    )

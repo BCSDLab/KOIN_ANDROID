@@ -8,16 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.ItemTermContentBinding
 import `in`.koreatech.koin.domain.model.term.TermArticle
 
-class TermContentAdapter: ListAdapter<TermArticle, TermContentAdapter.TermContentViewHolder>(diffCallback) {
+class TermContentAdapter : ListAdapter<TermArticle, TermContentAdapter.TermContentViewHolder>(
+    diffCallback
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TermContentViewHolder {
-        return TermContentViewHolder(ItemTermContentBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return TermContentViewHolder(
+            ItemTermContentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: TermContentViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class TermContentViewHolder(private val binding: ItemTermContentBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class TermContentViewHolder(private val binding: ItemTermContentBinding) : RecyclerView.ViewHolder(
+        binding.root
+    ) {
         fun bind(article: TermArticle) {
             with(binding) {
                 tvContentTitle.text = article.article
@@ -27,20 +33,18 @@ class TermContentAdapter: ListAdapter<TermArticle, TermContentAdapter.TermConten
     }
 
     private companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<TermArticle>() {
-            override fun areItemsTheSame(
-                oldItem: TermArticle,
-                newItem: TermArticle
-            ): Boolean {
-                return oldItem == newItem
-            }
+        val diffCallback =
+            object : DiffUtil.ItemCallback<TermArticle>() {
+                override fun areItemsTheSame(oldItem: TermArticle, newItem: TermArticle): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(
-                oldItem: TermArticle,
-                newItem: TermArticle
-            ): Boolean {
-                return oldItem.article == newItem.article
+                override fun areContentsTheSame(
+                    oldItem: TermArticle,
+                    newItem: TermArticle
+                ): Boolean {
+                    return oldItem.article == newItem.article
+                }
             }
-        }
     }
 }

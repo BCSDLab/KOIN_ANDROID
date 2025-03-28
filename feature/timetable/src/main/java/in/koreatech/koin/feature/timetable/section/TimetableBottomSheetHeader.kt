@@ -23,41 +23,49 @@ fun TimetableBottomSheetHeader(
     mode: TimetableBottomSheetContentMode = TimetableBottomSheetContentMode.BASIC,
     onComplete: () -> Unit = {},
     onClickAddLectureMode: (mode: TimetableBottomSheetContentMode) -> Unit = {},
-    onClickAddCustomLectureMode: () -> Unit = {},
+    onClickAddCustomLectureMode: () -> Unit = {}
 ) {
     val textMeasurer = rememberTextMeasurer()
-    val textLayoutResult = textMeasurer.measure(
-        text = stringResource(R.string.timetable_bottom_sheet_extra_custom_lecture),
-        style = KoinTheme.typography.medium18
-    )
+    val textLayoutResult =
+        textMeasurer.measure(
+            text = stringResource(R.string.timetable_bottom_sheet_extra_custom_lecture),
+            style = KoinTheme.typography.medium18
+        )
     with(LocalDensity.current) {
         Row(
-            modifier = modifier
+            modifier =
+            modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = stringResource(id = R.string.timetable_bottom_sheet_extra_custom_lecture),
-                style = when (mode) {
-                    TimetableBottomSheetContentMode.BASIC -> KoinTheme.typography.medium18.copy(
-                        color = KoinTheme.colors.primary500
-                    )
+                style =
+                when (mode) {
+                    TimetableBottomSheetContentMode.BASIC ->
+                        KoinTheme.typography.medium18.copy(
+                            color = KoinTheme.colors.primary500
+                        )
 
                     TimetableBottomSheetContentMode.CUSTOM -> KoinTheme.typography.bold18.copy(color = KoinTheme.colors.primary600)
                 },
-                modifier = Modifier.noRippleClickable {
+                modifier =
+                Modifier.noRippleClickable {
                     onClickAddCustomLectureMode()
                 }
             )
             Text(
                 text = stringResource(id = R.string.timetable_bottom_sheet_extra_lecture),
-                style = when (mode) {
+                style =
+                when (mode) {
                     TimetableBottomSheetContentMode.BASIC -> KoinTheme.typography.bold18.copy(color = KoinTheme.colors.primary600)
-                    TimetableBottomSheetContentMode.CUSTOM -> KoinTheme.typography.medium18.copy(
-                        color = KoinTheme.colors.primary500
-                    )
+                    TimetableBottomSheetContentMode.CUSTOM ->
+                        KoinTheme.typography.medium18.copy(
+                            color = KoinTheme.colors.primary500
+                        )
                 },
-                modifier = Modifier.noRippleClickable {
+                modifier =
+                Modifier.noRippleClickable {
                     onClickAddLectureMode(TimetableBottomSheetContentMode.BASIC)
                 }
             )
@@ -66,7 +74,8 @@ fun TimetableBottomSheetHeader(
                 style = KoinTheme.typography.medium18,
                 color = KoinTheme.colors.neutral800,
                 textAlign = TextAlign.End,
-                modifier = Modifier
+                modifier =
+                Modifier
                     .width(textLayoutResult.size.width.toDp())
                     .noRippleClickable {
                         onComplete()

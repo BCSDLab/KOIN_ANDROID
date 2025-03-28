@@ -12,12 +12,11 @@ import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserDataUseCase
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 @HiltAndroidApp
 class KoinApplication : Application() {
-
     @Inject
     lateinit var tokenRepository: TokenRepository
 
@@ -55,17 +54,18 @@ class KoinApplication : Application() {
     }
 
     private fun plantReleaseTimberTree() {
-        val releaseTree = object : Timber.Tree() {
-            override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-                if (t != null) {
-                    when (priority) {
-                        Log.ERROR -> {
-                            crashlytics.recordException(t)
+        val releaseTree =
+            object : Timber.Tree() {
+                override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+                    if (t != null) {
+                        when (priority) {
+                            Log.ERROR -> {
+                                crashlytics.recordException(t)
+                            }
                         }
                     }
                 }
             }
-        }
 
         Timber.plant(releaseTree)
     }

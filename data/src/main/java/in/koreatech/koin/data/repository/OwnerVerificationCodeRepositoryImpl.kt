@@ -6,8 +6,8 @@ import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.OwnerAuthToken
 import `in`.koreatech.koin.domain.repository.OwnerVerificationCodeRepository
-import retrofit2.HttpException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class OwnerVerificationCodeRepositoryImpl @Inject constructor(
     private val ownerRemoteDataSource: OwnerRemoteDataSource
@@ -17,12 +17,13 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
         verificationCode: String
     ): Result<OwnerAuthToken?> {
         return try {
-            val tempToken = ownerRemoteDataSource.postVerificationCode(
-                OwnerVerificationCodeRequest(
-                    address = address,
-                    certificationCode = verificationCode
+            val tempToken =
+                ownerRemoteDataSource.postVerificationCode(
+                    OwnerVerificationCodeRequest(
+                        address = address,
+                        certificationCode = verificationCode
+                    )
                 )
-            )
 
             Result.success(tempToken.toAuthToken())
         } catch (e: HttpException) {

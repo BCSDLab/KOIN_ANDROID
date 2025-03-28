@@ -16,6 +16,7 @@ import `in`.koreatech.koin.domain.usecase.user.UpdateStudentUserInfoUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -23,16 +24,14 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 @HiltViewModel
 class UserInfoEditViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val checkNicknameValidationUseCase: CheckNicknameValidationUseCase,
     private val updateStudentUserInfoUseCase: UpdateStudentUserInfoUseCase,
-    private val getDeptNamesUseCase: GetDeptNamesUseCase,
+    private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : BaseViewModel() {
-
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
@@ -45,11 +44,16 @@ class UserInfoEditViewModel @Inject constructor(
     private val _userInfoEditedEvent = SingleLiveEvent<Unit>()
     val userInfoEditedEvent: LiveData<Unit> get() = _userInfoEditedEvent
 
-    val depts: StateFlow<Pair<List<String>, String?>> = flow { emit(getDeptNamesUseCase()) }
-        .combine(user.asFlow()) { depts, user -> depts to user }
-        .filter { it.second.isStudent }
-        .map { it.first to (it.second as User.Student).major }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf<String>() to null)
+    val depts: StateFlow<Pair<List<String>, String?>> =
+        flow { emit(getDeptNamesUseCase()) }
+            .combine(user.asFlow()) { depts, user -> depts to user }
+            .filter { it.second.isStudent }
+            .map { it.first to (it.second as User.Student).major }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                listOf<String>() to null
+            )
 
     fun getUserInfo() = viewModelScope.launchWithLoading {
         getUserInfoUseCase()
@@ -98,7 +102,6 @@ class UserInfoEditViewModel @Inject constructor(
     }
 
     fun onNickNameChanged(newNickname: String) {
-
         if (newNickname.isBlank()) {
             _nicknameDuplicatedEvent.value = NicknameCheckState.POSSIBLE
         } else if (newNickname == (user.value as? User.Student)?.nickname) {

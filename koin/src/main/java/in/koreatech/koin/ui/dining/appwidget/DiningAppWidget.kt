@@ -1,11 +1,5 @@
 package `in`.koreatech.koin.ui.dining.appwidget
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.constant.DINING
-import `in`.koreatech.koin.domain.model.dining.Dining
-import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
-import `in`.koreatech.koin.domain.util.DiningUtil
-import `in`.koreatech.koin.domain.util.TimeUtil
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.appwidget.AppWidgetManager
@@ -18,13 +12,19 @@ import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.DINING
+import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
+import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.domain.util.TimeUtil
+import java.util.Date
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Date
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiningAppWidget : AppWidgetProvider() {
@@ -92,21 +92,22 @@ class DiningAppWidget : AppWidgetProvider() {
             DINING.WIDGET_ACTION_REFRESH_CLICKED,
             R.id.dining_widget_refresh_imageview
         )
-        job = CoroutineScope(Dispatchers.IO).launch {
-            getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay))
-                .onSuccess {
-                    withContext(Dispatchers.Main) {
-                        setDiningList(it, context)
+        job =
+            CoroutineScope(Dispatchers.IO).launch {
+                getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay))
+                    .onSuccess {
+                        withContext(Dispatchers.Main) {
+                            setDiningList(it, context)
+                        }
                     }
-                }
-                .onFailure {
-                    Toast.makeText(
-                        context,
-                        R.string.error_network,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-        }
+                    .onFailure {
+                        Toast.makeText(
+                            context,
+                            R.string.error_network,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
     }
 
     private fun setDiningType(remoteViews: RemoteViews) {
@@ -125,8 +126,10 @@ class DiningAppWidget : AppWidgetProvider() {
         with(DiningUtil.typeFiltering(diningList, currentType)) {
             var isCurrentPlaceInDining = false
             forEachIndexed { index, dining ->
-                if (index < DINING.WIDGET_PLACE_NUMBERS && dining.place == currentDiningPlace) isCurrentPlaceInDining =
-                    true
+                if (index < DINING.WIDGET_PLACE_NUMBERS && dining.place == currentDiningPlace) {
+                    isCurrentPlaceInDining =
+                        true
+                }
             }
             if (!isCurrentPlaceInDining) currentDiningPlace = null
             forEachIndexed { index, dining ->
@@ -192,20 +195,19 @@ class DiningAppWidget : AppWidgetProvider() {
         remoteViews.setViewVisibility(R.id.dining_widget_no_menulist_linearlayout, View.GONE)
         clearDiningMenu(remoteViews, context)
         for (i in 0 until if (diningMenuList.size >= DINING.WIDGET_MAX_MENU_NUMBERS) DINING.WIDGET_MAX_MENU_NUMBERS else diningMenuList.size) {
-            val resId: Int = context.resources
-                .getIdentifier(DINING.WIDGET_MENU_TEXT_VIEW_ID + i, "id", context.packageName)
+            val resId: Int =
+                context.resources
+                    .getIdentifier(DINING.WIDGET_MENU_TEXT_VIEW_ID + i, "id", context.packageName)
             if (diningMenuList[i] == "") continue
             remoteViews.setTextViewText(resId, diningMenuList[i])
         }
     }
 
-    private fun clearDiningMenu(
-        remoteViews: RemoteViews,
-        context: Context
-    ) {
+    private fun clearDiningMenu(remoteViews: RemoteViews, context: Context) {
         for (i in 0 until DINING.WIDGET_MAX_MENU_NUMBERS) {
-            val resId: Int = context.resources
-                .getIdentifier(DINING.WIDGET_MENU_TEXT_VIEW_ID + i, "id", context.packageName)
+            val resId: Int =
+                context.resources
+                    .getIdentifier(DINING.WIDGET_MENU_TEXT_VIEW_ID + i, "id", context.packageName)
             remoteViews.setTextViewText(resId, "")
         }
     }

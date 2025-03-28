@@ -10,36 +10,34 @@ import `in`.koreatech.koin.data.BuildConfig
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
+import javax.inject.Singleton
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.config.HeartBeat
 import org.hildan.krossbow.websocket.okhttp.OkHttpWebSocketClient
-import javax.inject.Singleton
-import kotlin.time.Duration.Companion.milliseconds
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(
-
-    ) = HttpLoggingInterceptor().apply {
-        level = if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.BODY
-        } else {
-            HttpLoggingInterceptor.Level.HEADERS
+    fun provideHttpLoggingInterceptor() =
+        HttpLoggingInterceptor().apply {
+            level =
+                if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.BODY
+                } else {
+                    HttpLoggingInterceptor.Level.HEADERS
+                }
         }
-    }
 
     @ServerUrl
     @Provides
     @Singleton
-    fun provideServerUrl(
-
-    ): String {
+    fun provideServerUrl(): String {
         return if (BuildConfig.DEBUG) {
             URLConstant.BASE_URL_STAGE
         } else {
@@ -57,14 +55,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideStompClient(
-        okHttpWebSocketClient: OkHttpWebSocketClient,
-    ): StompClient {
+    fun provideStompClient(okHttpWebSocketClient: OkHttpWebSocketClient): StompClient {
         return StompClient(okHttpWebSocketClient) {
-            heartBeat = HeartBeat(
-                minSendPeriod = 4000.milliseconds, // Follow backend recommendation
-                expectedPeriod = 4000.milliseconds
-            )
+            heartBeat =
+                HeartBeat(
+                    minSendPeriod = 4000.milliseconds, // Follow backend recommendation
+                    expectedPeriod = 4000.milliseconds
+                )
         }
     }
 

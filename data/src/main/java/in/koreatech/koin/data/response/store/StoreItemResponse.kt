@@ -11,12 +11,12 @@ data class StoreItemResponse(
     @SerializedName("pay_bank") val isBankOk: Boolean?,
     @SerializedName("open") val open: List<OpenResponseDTO>?,
     @SerializedName("category_ids") val categoryIds: List<Int>,
-    @SerializedName("is_event") val  isEvent: Boolean?,
-    @SerializedName("is_open") val  isOpen: Boolean?,
-    @SerializedName("average_rate") val averageRate : Double,
-    @SerializedName("review_count") val reviewCount : Int,
+    @SerializedName("is_event") val isEvent: Boolean?,
+    @SerializedName("is_open") val isOpen: Boolean?,
+    @SerializedName("average_rate") val averageRate: Double,
+    @SerializedName("review_count") val reviewCount: Int,
     @SerializedName("benefit_details") val benefitDetails: List<String>?,
-    @SerializedName("benefit_detail") val benefitDetail: String?,
+    @SerializedName("benefit_detail") val benefitDetail: String?
 ) {
     data class OpenResponseDTO(
         @SerializedName("day_of_week")
@@ -26,6 +26,6 @@ data class StoreItemResponse(
         @SerializedName("open_time")
         val openTime: String?,
         @SerializedName("close_time")
-        val closeTime: String?,
+        val closeTime: String?
     )
 }

@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.response.coopshop
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
 
 data class CoopShopResponse(
     @SerializedName("id") val id: Int,
@@ -18,5 +17,5 @@ data class OpenCloseInfoResponse(
     @SerializedName("day_of_week") val dayOfWeek: String,
     @SerializedName("type") val type: String?,
     @SerializedName("open_time") val openTime: String?,
-    @SerializedName("close_time") val closeTime: String?,
+    @SerializedName("close_time") val closeTime: String?
 )

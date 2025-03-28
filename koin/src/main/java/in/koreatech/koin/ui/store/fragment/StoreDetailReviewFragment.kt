@@ -15,9 +15,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.contract.LoginContract
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
@@ -44,26 +44,26 @@ class StoreDetailReviewFragment : Fragment() {
                 goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
                 goToReviewScreen.putExtra("review", it)
                 startActivity(goToReviewScreen)
-
             },
             onDeleteItem = {
-                val reviewDeleteDialog = ReviewDeleteCheckDialog(
-                    onDelete = {
-                        viewModel.deleteReview(it, viewModel.store.value!!.uid)
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
-                            viewModel.store.value?.name ?: "Unknown"
-                        )
-                    },
-                    onCancel = {
-                        EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL,
-                            viewModel.store.value?.name ?: "Unknown"
-                        )
-                    }
-                )
+                val reviewDeleteDialog =
+                    ReviewDeleteCheckDialog(
+                        onDelete = {
+                            viewModel.deleteReview(it, viewModel.store.value!!.uid)
+                            EventLogger.logClickEvent(
+                                EventAction.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
+                                viewModel.store.value?.name ?: "Unknown"
+                            )
+                        },
+                        onCancel = {
+                            EventLogger.logClickEvent(
+                                EventAction.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL,
+                                viewModel.store.value?.name ?: "Unknown"
+                            )
+                        }
+                    )
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 EventLogger.logClickEvent(
                     EventAction.BUSINESS,
@@ -85,23 +85,24 @@ class StoreDetailReviewFragment : Fragment() {
                         startActivity(intent)
                     }
                 } else {
-                    val loginRequestDialog = LoginRequestDialog(
-                        goToLogin = {
-                            loginActivityLauncher.launch(Unit)
-                            EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN,
-                                viewModel.store.value?.name ?: "Unknown"
-                            )
-                        },
-                        onCancel = {
-                            EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
-                                viewModel.store.value?.name ?: "Unknown"
-                            )
-                        }
-                    )
+                    val loginRequestDialog =
+                        LoginRequestDialog(
+                            goToLogin = {
+                                loginActivityLauncher.launch(Unit)
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN,
+                                    viewModel.store.value?.name ?: "Unknown"
+                                )
+                            },
+                            onCancel = {
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
+                                    viewModel.store.value?.name ?: "Unknown"
+                                )
+                            }
+                        )
                     loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
                 EventLogger.logClickEvent(
@@ -137,7 +138,6 @@ class StoreDetailReviewFragment : Fragment() {
     private fun initViews() {
         viewModel.checkToken()
         with(binding) {
-
             reviewContentRecyclerview.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = storeDetailReviewRecyclerAdapter
@@ -149,23 +149,24 @@ class StoreDetailReviewFragment : Fragment() {
                     goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
                     startActivity(goToReviewScreen)
                 } else {
-                    val loginRequestDialog = LoginRequestDialog(
-                        goToLogin = {
-                            loginActivityLauncher.launch(Unit)
-                            EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN,
-                                viewModel.store.value?.name ?: "Unknown"
-                            )
-                        },
-                        onCancel = {
-                            EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL,
-                                viewModel.store.value?.name ?: "Unknown"
-                            )
-                        }
-                    )
+                    val loginRequestDialog =
+                        LoginRequestDialog(
+                            goToLogin = {
+                                loginActivityLauncher.launch(Unit)
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN,
+                                    viewModel.store.value?.name ?: "Unknown"
+                                )
+                            },
+                            onCancel = {
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL,
+                                    viewModel.store.value?.name ?: "Unknown"
+                                )
+                            }
+                        )
                     loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
                 EventLogger.logClickEvent(
@@ -176,7 +177,6 @@ class StoreDetailReviewFragment : Fragment() {
             }
 
             observeLiveData(viewModel.storeReview) {
-
                 scoreText.text = String.format("%.1f", it.statistics.averageRating)
                 storeTotalRating.rating = it.statistics.averageRating.toFloat()
 
@@ -199,7 +199,6 @@ class StoreDetailReviewFragment : Fragment() {
                 ratingOneCountTv.text = it.statistics.ratings["1"].toString()
                 ratingOneProgressbar.progress =
                     calculateScore(it.totalCount, it.statistics.ratings["1"])
-
 
                 if (it.totalCount == 0) {
                     yesReviewLayout.isGone = true
@@ -262,9 +261,7 @@ class StoreDetailReviewFragment : Fragment() {
             isMineCheckbox.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.checkShowMyReview(isChecked)
             }
-
         }
-
     }
 
     private fun initViewModel() {

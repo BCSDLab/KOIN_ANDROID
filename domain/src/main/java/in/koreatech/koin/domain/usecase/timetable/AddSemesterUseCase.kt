@@ -8,11 +8,12 @@ import javax.inject.Inject
 class AddSemesterUseCase @Inject constructor(
     private val timetableRepository: TimetableRepository
 ) {
-
     suspend operator fun invoke(semester: String): Result<TimetableFrame> {
-        return timetableRepository.postTimetableFrame(TimetableFrameCreateQuery(
-            semester = semester,
-            null
-        ))
+        return timetableRepository.postTimetableFrame(
+            TimetableFrameCreateQuery(
+                semester = semester,
+                null
+            )
+        )
     }
 }

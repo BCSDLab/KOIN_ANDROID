@@ -12,12 +12,12 @@ import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.feature.bus.BuildConfig
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class BusSearchViewModel @Inject constructor(
@@ -25,42 +25,48 @@ class BusSearchViewModel @Inject constructor(
     private val onboardingManager: OnboardingManager,
     private val busRepository: BusRepository
 ) : BaseBusViewModel() {
+    private val shouldShowNotice =
+        onboardingManager.getShouldOnboardFlow(
+            OnboardingType.SHOW_BUS_HEAD_ARTICLE
+        )
 
-    private val shouldShowNotice = onboardingManager.getShouldOnboardFlow(
-        OnboardingType.SHOW_BUS_HEAD_ARTICLE
-    )
-
-    private val notice = flow {
-        busRepository.fetchBusNotice().onSuccess {
-            emit(it.toBusNoticeState())
-        }.onFailure {
-            if (BuildConfig.DEBUG) emit(busNoticeMock)
-            else emit(null)
-        }
-    }
-
-    val noticeUiState = combine(notice, shouldShowNotice) { notice, shouldShow ->
-        if (notice == null)
-            BusNoticeUiState.LoadFailed
-        else {
-            val lastNoticeId = busRepository.getLastShownNoticeId().getOrElse { -1 }
-
-            busRepository.saveLastShownNoticeId(notice.id).getOrNull() ?: return@combine BusNoticeUiState.LoadFailed
-            if (notice.id == lastNoticeId) {
-                if (shouldShow)
-                    BusNoticeUiState.Show(notice)
-                else
-                    BusNoticeUiState.NotShow
-            } else {
-                onboardingManager.updateShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE, true)
-                BusNoticeUiState.Show(notice)
+    private val notice =
+        flow {
+            busRepository.fetchBusNotice().onSuccess {
+                emit(it.toBusNoticeState())
+            }.onFailure {
+                if (BuildConfig.DEBUG) {
+                    emit(busNoticeMock)
+                } else {
+                    emit(null)
+                }
             }
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = BusNoticeUiState.Loading
-    )
+
+    val noticeUiState =
+        combine(notice, shouldShowNotice) { notice, shouldShow ->
+            if (notice == null) {
+                BusNoticeUiState.LoadFailed
+            } else {
+                val lastNoticeId = busRepository.getLastShownNoticeId().getOrElse { -1 }
+
+                busRepository.saveLastShownNoticeId(notice.id).getOrNull() ?: return@combine BusNoticeUiState.LoadFailed
+                if (notice.id == lastNoticeId) {
+                    if (shouldShow) {
+                        BusNoticeUiState.Show(notice)
+                    } else {
+                        BusNoticeUiState.NotShow
+                    }
+                } else {
+                    onboardingManager.updateShouldOnboard(OnboardingType.SHOW_BUS_HEAD_ARTICLE, true)
+                    BusNoticeUiState.Show(notice)
+                }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = BusNoticeUiState.Loading
+        )
 
     fun closeNotice() {
         viewModelScope.launch {

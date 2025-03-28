@@ -4,7 +4,7 @@ import `in`.koreatech.koin.domain.model.timetable.response.TimetableLectureClass
 
 data class TimetableLecturesQuery(
     val timetableFrameId: Int,
-    val timetableLecture: List<TimetableLectureQuery> = emptyList(),
+    val timetableLecture: List<TimetableLectureQuery> = emptyList()
 )
 
 data class TimetableLectureQuery(
@@ -14,5 +14,5 @@ data class TimetableLectureQuery(
     val classInfos: List<TimetableLectureClassInfo> = emptyList(),
     val professor: String = "",
     val grades: String = "",
-    val memo: String = "",
+    val memo: String = ""
 )

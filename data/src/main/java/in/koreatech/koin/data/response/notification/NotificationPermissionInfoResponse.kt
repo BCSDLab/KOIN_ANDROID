@@ -6,7 +6,7 @@ data class NotificationPermissionInfoResponse(
     @SerializedName("is_permit")
     val isPermit: Boolean,
     @SerializedName("subscribes")
-    val subscribes: List<SubscribesResponse>,
+    val subscribes: List<SubscribesResponse>
 )
 
 data class SubscribesResponse(
@@ -15,12 +15,12 @@ data class SubscribesResponse(
     @SerializedName("is_permit")
     val isPermit: Boolean,
     @SerializedName("detail_subscribes")
-    val detailSubscribes: List<SubscribeDetailResponse>,
+    val detailSubscribes: List<SubscribeDetailResponse>
 )
 
 data class SubscribeDetailResponse(
     @SerializedName("detail_type")
     val detailType: String,
     @SerializedName("is_permit")
-    val isPermit: Boolean,
+    val isPermit: Boolean
 )

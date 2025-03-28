@@ -40,13 +40,15 @@ fun SemesterButton(
                 text = text,
                 textStyle = KoinTheme.typography.medium16,
                 onClick = onClick,
-                colors = ButtonColors(
+                colors =
+                ButtonColors(
                     containerColor = KoinTheme.colors.neutral0,
                     contentColor = KoinTheme.colors.neutral800,
                     disabledContainerColor = KoinTheme.colors.neutral300,
                     disabledContentColor = KoinTheme.colors.neutral800
                 ),
-                border = BorderStroke(
+                border =
+                BorderStroke(
                     width = 1.dp,
                     color = KoinTheme.colors.neutral300
                 )

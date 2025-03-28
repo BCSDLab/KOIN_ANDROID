@@ -11,7 +11,6 @@ import javax.inject.Inject
 class RollbackFrameUseCase @Inject constructor(
     private val timetableRepository: TimetableRepository
 ) {
-
     suspend operator fun invoke(frameId: Int): Result<TimetableLectures> {
         return timetableRepository.postRollbackFrame(frameId)
     }

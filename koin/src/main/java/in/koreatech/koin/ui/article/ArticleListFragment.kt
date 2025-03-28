@@ -24,10 +24,8 @@ import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
 class ArticleListFragment : Fragment() {
-
     private var _binding: FragmentArticleListBinding? = null
     private val binding get() = _binding!!
 
@@ -45,6 +43,7 @@ class ArticleListFragment : Fragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         }
 
@@ -90,7 +89,8 @@ class ArticleListFragment : Fragment() {
                     ArticleBoardType.RECRUIT,
                     ArticleBoardType.IPP,
                     ArticleBoardType.STUDENT,
-                    ArticleBoardType.KOIN -> {
+                    ArticleBoardType.KOIN
+                    -> {
                         val articleListNoticeFragment = ArticleListNoticeFragment()
                         val bundle = Bundle()
                         bundle.putInt("boardId", board.id)
@@ -114,10 +114,12 @@ class ArticleListFragment : Fragment() {
 
     private fun addCategoryTabs() {
         ArticleBoardType.entries.forEach {
-            binding.tabLayoutArticleBoard.addTab(binding.tabLayoutArticleBoard.newTab().apply {
-                id = View.generateViewId()
-                text = getString(it.simpleKoreanName)
-            })
+            binding.tabLayoutArticleBoard.addTab(
+                binding.tabLayoutArticleBoard.newTab().apply {
+                    id = View.generateViewId()
+                    text = getString(it.simpleKoreanName)
+                }
+            )
         }
     }
 

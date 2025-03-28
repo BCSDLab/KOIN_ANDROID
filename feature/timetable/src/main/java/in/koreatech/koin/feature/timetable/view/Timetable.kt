@@ -1,14 +1,9 @@
 package `in`.koreatech.koin.feature.timetable.view
 
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,21 +12,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyEvent
 import `in`.koreatech.koin.feature.timetable.section.TimetableContent
 import java.time.DayOfWeek
-
 
 @Composable
 fun Timetable(
@@ -41,11 +32,10 @@ fun Timetable(
     modifier: Modifier = Modifier,
     clickEvent: List<TimetableEvent> = emptyList(),
     etcClickEvent: List<TimetableEvent> = emptyList(),
-    onEventClick: (TimetableEvent) -> Unit = {},
+    onEventClick: (TimetableEvent) -> Unit = {}
 ) {
     val verticalScrollState: ScrollState = rememberScrollState()
     var scrollValue by remember { mutableStateOf(0) }
-
 
     LaunchedEffect(key1 = scrollValue) {
         if (clickEvent.isNotEmpty()) {
@@ -55,7 +45,8 @@ fun Timetable(
 
     Box(modifier = Modifier) {
         TimetableContent( // 다운로드 용 시간표 화면
-            modifier = modifier.zIndex(0f)
+            modifier =
+            modifier.zIndex(0f)
                 .verticalScroll(verticalScrollState)
                 .padding(vertical = 14.dp)
                 .drawWithContent {
@@ -68,11 +59,12 @@ fun Timetable(
             horizontalPadding = 48.dp,
             events = events,
             clickEvent = emptyList(),
-            etcClickEvent = emptyList(),
+            etcClickEvent = emptyList()
         )
 
         TimetableContent(
-            modifier = modifier
+            modifier =
+            modifier
                 .verticalScroll(verticalScrollState)
                 .padding(vertical = 14.dp),
             range = range,
@@ -86,10 +78,7 @@ fun Timetable(
             }
         )
     }
-
-
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -106,6 +95,6 @@ private fun TimetablePreview() {
 private fun TimetablePreview_Scroll() {
     Timetable(
         range = 15,
-        events = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.MONDAY)),
+        events = listOf(dummyEvent, dummyEvent.copy(dayOfWeek = DayOfWeek.MONDAY))
     )
 }

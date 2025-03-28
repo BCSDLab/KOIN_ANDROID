@@ -7,16 +7,16 @@ import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import `in`.koreatech.koin.domain.repository.ChatRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject constructor(
     private val chatRemoteDataSource: ChatRemoteDataSource
 ) : ChatRepository {
-    override suspend fun connectWS() {
-        chatRemoteDataSource.connectWS()
+    override suspend fun connectWS(retry: Boolean) {
+        chatRemoteDataSource.connectWS(retry)
     }
 
     override suspend fun disconnectWS() {
@@ -35,29 +35,46 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatRoom> {
+    override suspend fun getChatRoom(
+        articleId: Int,
+        chatRoomId: Int
+    ): Flow<ChatRoom> {
         return flow {
             emit(chatRemoteDataSource.getChatRoom(articleId, chatRoomId).toChatRoom())
         }
     }
 
-    override suspend fun getChatMessages(articleId: Int, chatRoomId: Int): Flow<List<ChatMessage>> {
+    override suspend fun getChatMessages(
+        articleId: Int,
+        chatRoomId: Int
+    ): Flow<List<ChatMessage>> {
         return flow {
             emit(
                 chatRemoteDataSource.getChatMessages(articleId, chatRoomId)
-                    .map { it.toChatMessage() })
+                    .map { it.toChatMessage() }
+            )
         }
     }
 
-    override fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessage> {
+    override fun subscribeChatRoom(
+        articleId: Int,
+        chatRoomId: Int
+    ): Flow<ChatMessage> {
         return chatRemoteDataSource.subscribeChatRoom(articleId, chatRoomId).map { it.toChatMessage() }
     }
 
-    override suspend fun sendMessage(articleId: Int, chatRoomId: Int, message: ChatMessage) {
-        chatRemoteDataSource.sendMessage(articleId, chatRoomId, message.toChatMessageRequest())
+    override suspend fun sendMessage(
+        articleId: Int,
+        chatRoomId: Int,
+        message: ChatMessage
+    ): Result<Unit> {
+        return chatRemoteDataSource.sendMessage(articleId, chatRoomId, message.toChatMessageRequest())
     }
 
-    override suspend fun blockUser(articleId: Int, chatRoomId: Int): Result<Unit> {
+    override suspend fun blockUser(
+        articleId: Int,
+        chatRoomId: Int
+    ): Result<Unit> {
         return chatRemoteDataSource.blockUser(articleId, chatRoomId)
     }
 }

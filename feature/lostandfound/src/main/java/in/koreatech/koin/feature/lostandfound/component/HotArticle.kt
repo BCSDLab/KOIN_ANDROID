@@ -32,12 +32,13 @@ fun HotArticle(
         Text(
             modifier = Modifier.padding(vertical = 14.dp, horizontal = 24.dp),
             style = KoinTheme.typography.bold16,
-            text = stringResource(R.string.hot_article_title),
+            text = stringResource(R.string.hot_article_title)
         )
 
         hotArticleList.forEach { hotArticle ->
             HotArticleItem(
-                hotArticleData = HotArticleData(
+                hotArticleData =
+                HotArticleData(
                     articleId = hotArticle.id,
                     articleTitle = hotArticle.title,
                     board = hotArticle.board
@@ -56,7 +57,8 @@ fun HotArticleItem(
     navigateToHotArticle: (HotArticleData) -> Unit
 ) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .noRippleClickable { navigateToHotArticle(hotArticleData) }
             .padding(vertical = 12.dp, horizontal = 24.dp),
@@ -64,17 +66,19 @@ fun HotArticleItem(
     ) {
         Text(
             text = stringResource(hotArticleData.board.koreanName),
-            style = KoinTheme.typography.bold12.copy(
+            style =
+            KoinTheme.typography.bold12.copy(
                 fontWeight = FontWeight.SemiBold,
                 color = KoinTheme.colors.primary600
-            ),
+            )
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = hotArticleData.articleTitle,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = KoinTheme.typography.bold14.copy(
+            style =
+            KoinTheme.typography.bold14.copy(
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Black
             )

@@ -5,10 +5,9 @@ import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfo
 import javax.inject.Inject
 
 class NotificationRemoteDataSource @Inject constructor(
-    private val userAuthApi: UserAuthApi,
+    private val userAuthApi: UserAuthApi
 ) {
-    suspend fun getPermissionInfo(): NotificationPermissionInfoResponse =
-        userAuthApi.getNotificationPermissionInfo()
+    suspend fun getPermissionInfo(): NotificationPermissionInfoResponse = userAuthApi.getNotificationPermissionInfo()
 
     suspend fun postReviewPromptNotification(storeId: Int) {
         userAuthApi.postReviewPromptNotification(storeId)

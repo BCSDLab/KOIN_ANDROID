@@ -24,12 +24,14 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.chat.R
+import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import kotlinx.coroutines.launch
 import java.time.LocalDate
+import kotlinx.coroutines.launch
 
 @Composable
 fun ChatRoomContent(
+    isLoading: Boolean,
     messages: List<Pair<LocalDate, List<ConvertedChatMessage>>>,
     uploadingImage: List<ConvertedChatMessage>,
     chatPartnerProfileImage: Uri?,
@@ -44,6 +46,10 @@ fun ChatRoomContent(
     onShowImageChange: (Boolean, Uri) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (isLoading) {
+        ChatProgressIndicator()
+        return
+    }
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -52,13 +58,14 @@ fun ChatRoomContent(
             onShowImageChange(false, Uri.EMPTY)
         }
         Box(
-            modifier = modifier
-                .fillMaxSize()
-                .background(KoinTheme.colors.neutral800),
+            modifier =
+            modifier
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             SubcomposeAsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
+                model =
+                ImageRequest.Builder(LocalContext.current)
                     .data(showImage.second)
                     .crossfade(true)
                     .build(),
@@ -85,7 +92,8 @@ fun ChatRoomContent(
             modifier = modifier.fillMaxSize()
         ) {
             LazyColumn(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxSize()
                     .background(KoinTheme.colors.neutral0)
                     .weight(1f),

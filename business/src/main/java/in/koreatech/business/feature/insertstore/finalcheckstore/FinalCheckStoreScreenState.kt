@@ -5,20 +5,19 @@ import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTim
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.TimeSettingState
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
 data class FinalCheckStoreScreenState(
     val storeCategory: Int = -1,
-    val storeCategoryString: String ="",
+    val storeCategoryString: String = "",
     val storeName: String = "",
     val storeAddress: String = "",
     val storeImage: String = "",
     val storePhoneNumber: String = "",
-    val storeDeliveryFee: String ="",
+    val storeDeliveryFee: String = "",
     val storeOtherInfo: String = "",
     val isDeliveryOk: Boolean = false,
     val isCardOk: Boolean = false,
     val isBankOk: Boolean = false,
     val operatingTimeList: List<OperatingTimeState> = emptyList(),
     val settingTimeInfoList: List<TimeSettingState> = emptyList()
-): Parcelable
+) : Parcelable

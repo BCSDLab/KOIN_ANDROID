@@ -21,7 +21,6 @@ fun KoinSurface(
     border: BorderStroke? = null,
     content: @Composable () -> Unit
 ) {
-
     Surface(
         modifier = modifier,
         shape = shape,

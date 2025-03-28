@@ -36,11 +36,12 @@ fun TimetableBottomSheetBasic(
     onClickAddLecture: (lecture: Lecture) -> Unit = {},
     onClickRemoveLecture: (lecture: Lecture) -> Unit = {},
     onClickLecture: (events: List<TimetableEvent>) -> Unit = {},
-    onSelectedLecture: (lecture: Lecture?) -> Unit = {},
+    onSelectedLecture: (lecture: Lecture?) -> Unit = {}
 ) {
     val nestedScroll = rememberNestedScrollInteropConnection()
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .background(Color.White)
     ) {
         TimetableSearchBox(
@@ -82,4 +83,3 @@ fun TimetableBottomSheetBasicPreview() {
         sheetLazyListState = rememberLazyListState()
     )
 }
-

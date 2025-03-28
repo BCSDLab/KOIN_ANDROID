@@ -14,16 +14,13 @@ import `in`.koreatech.business.navigation.REGISTERMENUSCREEN
 import `in`.koreatech.business.navigation.sharedHiltViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.registerMenuScreen(
-    navController: NavHostController
-){
+fun NavGraphBuilder.registerMenuScreen(navController: NavHostController) {
     navigation(
         route = REGISTERMENUSCREEN,
-        startDestination = RegisterMenuRoute.REGISTER.name,
+        startDestination = RegisterMenuRoute.REGISTER.name
     ) {
-
         composable(
-            route = RegisterMenuRoute.REGISTER.name,
+            route = RegisterMenuRoute.REGISTER.name
         ) {
             val viewModel: RegisterMenuViewModel = it.sharedHiltViewModel(navController = navController)
             RegisterMenuScreen(
@@ -39,14 +36,14 @@ fun NavGraphBuilder.registerMenuScreen(
 
         composable(
             route = RegisterMenuRoute.CHECK_MENU.name
-        ){
+        ) {
             val viewModel: RegisterMenuViewModel = it.sharedHiltViewModel(navController = navController)
             RegisterMenuCheckScreen(
                 viewModel = viewModel,
                 onBackPressed = { navController.navigateUp() },
                 goToStoreMainScreen = {
-                    navController.navigate(MYSTORESCREEN){
-                        this.popUpTo(MODIFYMENUSCREEN){
+                    navController.navigate(MYSTORESCREEN) {
+                        this.popUpTo(MODIFYMENUSCREEN) {
                             inclusive = true
                         }
                     }

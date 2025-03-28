@@ -13,9 +13,8 @@ data class ShuttleTimetableState(
     val routeName: String,
     val subTitle: String,
     val nodeInfo: List<ShuttleTimetableNodeInfoState>,
-    val routeInfo: List<ShuttleTimetableRouteInfoState>,
+    val routeInfo: List<ShuttleTimetableRouteInfoState>
 ) {
-
     /**
      * 등교 하교 시간표가 모두 있는 경우에만 탭 표시
      */
@@ -24,15 +23,17 @@ data class ShuttleTimetableState(
     }
 }
 
-fun ShuttleTimetable.toShuttleTimetableState() = ShuttleTimetableState(
-    region = region,
-    routeType = when (routeType) {
-        CIRCULATION -> ShuttleBusOperationType.CIRCULATION
-        WEEKEND -> ShuttleBusOperationType.WEEKEND
-        else -> ShuttleBusOperationType.WEEKDAY
-    },
-    routeName = routeName,
-    subTitle = subTitle,
-    nodeInfo = nodeInfo.map { it.toShuttleTimetableNodeInfoState() },
-    routeInfo = routeInfo.map { it.toShuttleTimetableRouteInfoState() }
-)
+fun ShuttleTimetable.toShuttleTimetableState() =
+    ShuttleTimetableState(
+        region = region,
+        routeType =
+        when (routeType) {
+            CIRCULATION -> ShuttleBusOperationType.CIRCULATION
+            WEEKEND -> ShuttleBusOperationType.WEEKEND
+            else -> ShuttleBusOperationType.WEEKDAY
+        },
+        routeName = routeName,
+        subTitle = subTitle,
+        nodeInfo = nodeInfo.map { it.toShuttleTimetableNodeInfoState() },
+        routeInfo = routeInfo.map { it.toShuttleTimetableRouteInfoState() }
+    )

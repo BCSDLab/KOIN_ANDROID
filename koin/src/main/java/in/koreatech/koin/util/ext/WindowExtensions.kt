@@ -1,18 +1,15 @@
 package `in`.koreatech.koin.util.ext
 
-import `in`.koreatech.koin.R
 import android.os.Build
 import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import `in`.koreatech.koin.R
 
-fun Window.statusBarColor(
-    @ColorInt color: Int,
-    lightStatusBar: Boolean = false
-) {
-    if(color != statusBarColor) {
+fun Window.statusBarColor(@ColorInt color: Int, lightStatusBar: Boolean = false) {
+    if (color != statusBarColor) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
             insetsController?.setSystemBarsAppearance(
                 if (lightStatusBar) APPEARANCE_LIGHT_STATUS_BARS else 0,
@@ -22,18 +19,18 @@ fun Window.statusBarColor(
             this.statusBarColor = color
         } else {
             var flags: Int = decorView.systemUiVisibility
-            flags = if(lightStatusBar) {
-                flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            } else {
-                flags xor View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            }
+            flags =
+                if (lightStatusBar) {
+                    flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                } else {
+                    flags xor View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
 
             decorView.systemUiVisibility = flags
 
             statusBarColor = color
         }
     }
-
 }
 
 fun Window.blueStatusBar() {

@@ -12,15 +12,16 @@ data class ArticleLostAndFoundReportRequestItem(
     @SerializedName("title")
     val title: String,
     @SerializedName("content")
-    val content: String,
+    val content: String
 )
 
 internal fun List<ArticleLostAndFoundReportItem>.toRequest(): ArticleLostAndFoundReportRequest {
     return ArticleLostAndFoundReportRequest(
-        reports = map {
+        reports =
+        map {
             ArticleLostAndFoundReportRequestItem(
                 title = it.title,
-                content = it.content,
+                content = it.content
             )
         }
     )

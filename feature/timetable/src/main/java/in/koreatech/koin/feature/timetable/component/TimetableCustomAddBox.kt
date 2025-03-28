@@ -28,7 +28,8 @@ fun TimetableCustomAddBox(
     onClick: () -> Unit = {}
 ) {
     Row(
-        modifier = modifier
+        modifier =
+        modifier
             .height(35.dp)
             .fillMaxWidth()
             .background(Color.White)

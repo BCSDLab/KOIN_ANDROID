@@ -8,8 +8,8 @@ import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.store.ModifyReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.WriteReviewUseCase
-import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -42,7 +42,7 @@ class WriteReviewViewModel @Inject constructor(
         }
     }
 
-    fun setImage(imageUri: List<String>){
+    fun setImage(imageUri: List<String>) {
         _menuImageUrls.value = imageUri
     }
 
@@ -54,15 +54,12 @@ class WriteReviewViewModel @Inject constructor(
         }
     }
 
-    fun getPreSignedUrl(
-        fileSize: Long,
-        fileType: String,
-        fileName: String,
-        imageUri: String
-    ) {
-        viewModelScope.launchWithLoading{
+    fun getPreSignedUrl(fileSize: Long, fileType: String, fileName: String, imageUri: String) {
+        viewModelScope.launchWithLoading {
             getMarketPreSignedUrlUseCase(
-                fileSize, fileType, fileName
+                fileSize,
+                fileType,
+                fileName
             ).onSuccess {
                 uploadImage(
                     preSignedUrl = it.second,
@@ -74,7 +71,6 @@ class WriteReviewViewModel @Inject constructor(
             }.onFailure {
                 _menuImageUrls.value = emptyList()
             }
-
         }
     }
 

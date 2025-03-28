@@ -46,9 +46,9 @@ import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleI
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleItemDetail
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleItemType
 import `in`.koreatech.koin.feature.lostandfound.ui.write.component.WriteArticleUploadImage
+import java.time.LocalDate
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import java.time.LocalDate
 
 @Composable
 fun LostAndFoundWriteArticle(
@@ -68,15 +68,17 @@ fun LostAndFoundWriteArticle(
             bottomBar = {
                 WriteArticleDoneButton {
                     when (uiState.lostOrFoundType) {
-                        LostOrFoundType.FOUND -> EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_WRITE_CONFIRM,
-                            "작성 완료"
-                        )
+                        LostOrFoundType.FOUND ->
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LostAndFound.FIND_USER_WRITE_CONFIRM,
+                                "작성 완료"
+                            )
 
-                        LostOrFoundType.LOST -> EventLogger.logCampusClickEvent(
-                            AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_WRITE_CONFIRM,
-                            "작성 완료"
-                        )
+                        LostOrFoundType.LOST ->
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.LostAndFound.LOST_ITEM_WRITE_CONFIRM,
+                                "작성 완료"
+                            )
                     }
                     viewModel.checkAllFieldValid()
                 }
@@ -105,7 +107,8 @@ fun LostAndFoundWriteArticle(
 
             LazyColumn(
                 state = lazyColumnState,
-                modifier = Modifier
+                modifier =
+                Modifier
                     .padding(contentPadding)
                     .consumeWindowInsets(contentPadding)
             ) {
@@ -132,8 +135,8 @@ fun LostAndFoundWriteArticle(
                         onChangeItemType = { itemType ->
                             EventLogger.logCampusClickEvent(
                                 when (uiState.lostOrFoundType) {
-                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_CATEGORY
-                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_CATEGORY
+                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LostAndFound.FIND_USER_CATEGORY
+                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LostAndFound.LOST_ITEM_CATEGORY
                                 },
                                 itemType.getCategoryKoreanWord()
                             )
@@ -161,8 +164,8 @@ fun LostAndFoundWriteArticle(
                         ) {
                             EventLogger.logCampusClickEvent(
                                 when (uiState.lostOrFoundType) {
-                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LOST_AND_FOUND.FIND_USER_ADD_ITEM
-                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LOST_AND_FOUND.LOST_ITEM_ADD_ITEM
+                                    LostOrFoundType.FOUND -> AnalyticsConstant.Label.LostAndFound.FIND_USER_ADD_ITEM
+                                    LostOrFoundType.LOST -> AnalyticsConstant.Label.LostAndFound.LOST_ITEM_ADD_ITEM
                                 },
                                 "물품 추가"
                             )
@@ -204,7 +207,6 @@ fun WriteFoundItemArticleImpl(
                 }
             }
         }
-
 
     val imageList = articleData.images
 
@@ -286,8 +288,9 @@ fun handleSideEffect(
                     if (fileNameIndex != -1 && fileSizeIndex != -1) {
                         val fileName = cursor.getString(fileNameIndex)
                         val fileSize = cursor.getLong(fileSizeIndex)
-                        val fileType = context.contentResolver.getType(imageContextUri)
-                            ?: "image/${fileName.split(".").last()}"
+                        val fileType =
+                            context.contentResolver.getType(imageContextUri)
+                                ?: "image/${fileName.split(".").last()}"
 
                         viewModel.getPreSignedUrl(
                             fileSize,
@@ -307,7 +310,7 @@ fun handleSideEffect(
         is LostAndFoundWriteArticleSideEffect.UpdateDescription -> {}
         is LostAndFoundWriteArticleSideEffect.UpdateLocation -> {}
         is LostAndFoundWriteArticleSideEffect.UpdateDate -> {}
-        */
+         */
         is LostAndFoundWriteArticleSideEffect.LostAndFoundWriteArticle -> {
             onWriteComplete(sideEffect.articleId)
         }

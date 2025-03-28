@@ -38,11 +38,11 @@ fun KoinTabRow(
     },
     divider: @Composable () -> Unit = @Composable {
         HorizontalDivider(
-            color = KoinTheme.colors.neutral400,
+            color = KoinTheme.colors.neutral400
         )
     }
 ) {
-    TabRow (
+    TabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = modifier,
         containerColor = containerColor,
@@ -54,11 +54,11 @@ fun KoinTabRow(
                     selected = selectedTabIndex == index,
                     selectedContentColor = selectedTextColor,
                     unselectedContentColor = unselectedTextColor,
-                    onClick = { onTabSelected(index) },
+                    onClick = { onTabSelected(index) }
                 ) {
                     Text(
                         modifier = Modifier.padding(vertical = 12.dp),
-                        text = title,
+                        text = title
                     )
                 }
             }
@@ -72,6 +72,6 @@ private fun KoinTabRowPreview() {
     KoinTabRow(
         selectedTabIndex = 0,
         titles = listOf("Tab1", "Tab2", "Tab3"),
-        onTabSelected = {},
+        onTabSelected = {}
     )
 }

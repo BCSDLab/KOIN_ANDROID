@@ -8,7 +8,10 @@ class DeleteOwnerEventsUseCase @Inject constructor(
     private val storeRepository: OwnerShopRepository,
     private val ownerErrorHandler: OwnerErrorHandler
 ) {
-    suspend operator fun invoke(shopId: Int, eventId: Int) {
+    suspend operator fun invoke(
+        shopId: Int,
+        eventId: Int
+    ) {
         try {
             storeRepository.deleteOwnerShopEvent(shopId, eventId)
         } catch (throwable: Throwable) {
