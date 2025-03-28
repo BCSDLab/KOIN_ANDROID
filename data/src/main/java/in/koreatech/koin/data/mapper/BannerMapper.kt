@@ -8,8 +8,8 @@ import `in`.koreatech.koin.domain.model.banner.BannerCategory
 fun BannerListResponse.BannerResponse.toBanner() = Banner(
     id,
     imageUrl,
-    redirectLink,
-    version
+    redirectLink ?: "",
+    version ?: ""
 )
 
 fun List<BannerListResponse.BannerResponse>.toListOfBanner(): List<Banner> {
