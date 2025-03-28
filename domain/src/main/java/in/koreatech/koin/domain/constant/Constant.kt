@@ -10,3 +10,5 @@ const val SIGN_UP_IMAGE_MAX = 5
 const val BREAKFAST = "BREAKFAST"
 const val LUNCH = "LUNCH"
 const val DINNER = "DINNER"
+
+const val KOIN_PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=in.koreatech.koin"
