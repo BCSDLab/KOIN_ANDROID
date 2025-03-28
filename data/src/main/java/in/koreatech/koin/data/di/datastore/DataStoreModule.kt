@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.source.datastore.ArticleDataStore
+import `in`.koreatech.koin.data.source.datastore.BannerDataStore
 import `in`.koreatech.koin.data.source.datastore.BusDataStore
 import `in`.koreatech.koin.data.source.datastore.TimetableDataStore
 import javax.inject.Singleton
@@ -27,6 +28,10 @@ object DataStoreModule {
 
     private val Context.busDataStore: DataStore<Preferences> by preferencesDataStore(
         name = "bus.ds"
+    )
+
+    private val Context.bannerDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "banner_data_Store"
     )
 
     @Provides
@@ -51,5 +56,13 @@ object DataStoreModule {
         @ApplicationContext context: Context
     ): BusDataStore {
         return BusDataStore(context.busDataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBannerDataStore(
+        @ApplicationContext context: Context
+    ): BannerDataStore {
+        return BannerDataStore(context.bannerDataStore)
     }
 }

@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toListOfBanner
 import `in`.koreatech.koin.data.mapper.toListOfBannerCategory
+import `in`.koreatech.koin.data.source.local.BannerLocalDataSource
 import `in`.koreatech.koin.data.source.remote.BannerRemoteDataSource
 import `in`.koreatech.koin.domain.model.banner.Banner
 import `in`.koreatech.koin.domain.model.banner.BannerCategory
@@ -11,7 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class BannerRepositoryImpl @Inject constructor(
-    private val bannerRemoteDataSource: BannerRemoteDataSource
+    private val bannerRemoteDataSource: BannerRemoteDataSource,
+    private val bannerLocalDataSource: BannerLocalDataSource
 ) : BannerRepository {
     override suspend fun getBannersByCategory(
         categoryId: Int,
@@ -30,5 +32,12 @@ class BannerRepositoryImpl @Inject constructor(
                 bannerRemoteDataSource.getBannerCategories().categories.toListOfBannerCategory()
             )
         }
+    }
+
+    override suspend fun getBannerRefusalDate(): Int =
+        bannerLocalDataSource.getBannerRefusalDate()
+
+    override suspend fun saveBannerRefusalDate(date: Int) {
+        bannerLocalDataSource.saveBannerRefusalDate(date)
     }
 }
