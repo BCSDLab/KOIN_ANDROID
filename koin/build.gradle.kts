@@ -106,6 +106,7 @@ dependencies {
     implementation(project(":feature:bus"))
     implementation(project(":feature:lostandfound"))
     implementation(project(":feature:chat"))
+    implementation(project(":feature:banner"))
 
     implementation(libs.guava)
 
