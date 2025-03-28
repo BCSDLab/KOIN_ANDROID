@@ -32,7 +32,7 @@ object NoAuthNetworkModule {
     @NoAuth
     @Provides
     @Singleton
-    fun provideAuthOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideNoAuthOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
@@ -44,7 +44,7 @@ object NoAuthNetworkModule {
     @NoAuth
     @Provides
     @Singleton
-    fun provideAuthRetrofit(
+    fun provideNoAuthRetrofit(
         @ServerUrl baseUrl: String,
         @NoAuth okHttpClient: OkHttpClient
     ): Retrofit {
