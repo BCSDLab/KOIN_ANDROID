@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.ArticleApi
+import `in`.koreatech.koin.data.api.BannerApi
 import `in`.koreatech.koin.data.api.BusApi
 import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.CoopShopApi
@@ -149,5 +150,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): ChatApi {
         return retrofit.create(ChatApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBannerApi(
+        @NoAuth retrofit: Retrofit
+    ): BannerApi {
+        return retrofit.create(BannerApi::class.java)
     }
 }
