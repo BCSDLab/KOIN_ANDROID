@@ -11,4 +11,8 @@ interface BannerRepository {
     ): Flow<List<Banner>>
 
     suspend fun getBannerCategories(): Flow<List<BannerCategory>>
+
+    suspend fun getBannerRefusalDate(): Int
+
+    suspend fun saveBannerRefusalDate(date: Int)
 }
