@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.koin.library)
     alias(libs.plugins.koin.hilt)
-    alias(libs.plugins.koin.library.orbit)
     alias(libs.plugins.kotlin.android)
 }
 
@@ -15,13 +14,6 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
     }
 }
 
