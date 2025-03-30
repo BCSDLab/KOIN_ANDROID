@@ -22,7 +22,11 @@ fun Banner.toLocalBanner() = LocalBanner(
     id = id,
     imageUrl = imageUrl,
     redirectLink = redirectLink,
-    version = version?.split(".")?.joinToString("") {
-        String.format(Locale.KOREA, "%02d", it.toInt())
-    }?.toInt() ?: 0
+    version = if (version.isNullOrEmpty()) 0 else try {
+        version?.split(".")?.joinToString("") {
+            String.format(Locale.KOREA, "%02d", it.toInt())
+        }?.toInt() ?: 0
+    } catch (e: NumberFormatException) {
+        0
+    }
 )
