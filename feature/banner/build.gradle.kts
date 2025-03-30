@@ -39,9 +39,6 @@ dependencies {
     implementation(libs.bundles.compose.m3)
     implementation(libs.coil.compose)
     implementation(libs.timber)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.nav.fragment.ktx)
-    implementation(libs.nav.ui.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
