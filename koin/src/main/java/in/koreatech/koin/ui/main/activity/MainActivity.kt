@@ -252,10 +252,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         val intent = Intent(this@MainActivity, BusSearchActivity::class.java)
                         startActivity(intent)
                     },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
                 )
             }
         }
@@ -346,7 +345,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 }
             }
         }
-
     }
 
     private fun initDiningTooltip() {

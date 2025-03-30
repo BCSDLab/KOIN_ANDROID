@@ -1,11 +1,8 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
@@ -24,8 +21,8 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.state.toContent
 import `in`.koreatech.koin.ui.main.state.toNoti
-import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch

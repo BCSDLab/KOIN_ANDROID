@@ -79,7 +79,6 @@ class BannerActivity : ComponentActivity() {
                             }
                         )
                     }
-
                 }
             }
         }

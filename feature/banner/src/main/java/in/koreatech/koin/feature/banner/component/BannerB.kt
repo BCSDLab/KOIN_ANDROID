@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.banner.Banner
 import `in`.koreatech.koin.feature.banner.R
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
 
@@ -42,7 +41,7 @@ fun BannerB(
         Column(
             modifier = modifier
                 .padding(horizontal = 24.dp)
-                .clip(KoinTheme.shapes.large),
+                .clip(KoinTheme.shapes.large)
         ) {
             BannerImage(
                 bannerList = bannerList,
