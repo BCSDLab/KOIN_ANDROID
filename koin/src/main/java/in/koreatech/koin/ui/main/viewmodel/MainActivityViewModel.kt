@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import timber.log.Timber
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
@@ -174,7 +173,6 @@ class MainActivityViewModel @Inject constructor(
     private fun checkBannerRefusal() {
         viewModelScope.launchWithLoading {
             checkBannerRefusalUseCase().let {
-                Timber.d("Banner refusal: $it")
                 _isBannerRefusal.value = it
             }
         }
