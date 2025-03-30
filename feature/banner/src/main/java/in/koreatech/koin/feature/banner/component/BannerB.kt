@@ -29,7 +29,8 @@ fun BannerB(
     bannerList: List<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
-    dismiss: () -> Unit = {}
+    dismiss: () -> Unit = {},
+    dismissWithRefusal: () -> Unit = {}
 ) {
     if (bannerList.isEmpty()) return
     Box(
@@ -63,7 +64,7 @@ fun BannerB(
                     textStyle = KoinTheme.typography.medium15.copy(color = KoinTheme.colors.primary500),
                     shape = KoinTheme.shapes.small,
                     onClick = {
-                        dismiss()
+                        dismissWithRefusal()
                     }
                 )
 

@@ -31,7 +31,8 @@ fun BannerA(
     bannerList: List<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
-    dismiss: () -> Unit = {}
+    dismiss: () -> Unit = {},
+    dismissWithRefusal: () -> Unit = {}
 ) {
     if (bannerList.isEmpty()) return
     Box(
@@ -56,7 +57,7 @@ fun BannerA(
             ) {
                 TextButton(
                     onClick = {
-                        dismiss()
+                        dismissWithRefusal()
                     },
                 ) {
                     Text(

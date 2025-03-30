@@ -58,15 +58,26 @@ class BannerActivity : ComponentActivity() {
                         BannerA(
                             bannerList = uiState.bannerList,
                             currentKoinVersion = uiState.currentVersionCode,
-                        ) {
-                            finish()
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                                overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
-                                overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
-                            } else {
-                                overridePendingTransition(0, 0)
+                            dismiss = {
+                                finish()
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+                                    overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
+                                } else {
+                                    overridePendingTransition(0, 0)
+                                }
+                            },
+                            dismissWithRefusal = {
+                                viewModel.setBannerRefusal()
+                                finish()
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+                                    overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
+                                } else {
+                                    overridePendingTransition(0, 0)
+                                }
                             }
-                        }
+                        )
                     }
 
                 }

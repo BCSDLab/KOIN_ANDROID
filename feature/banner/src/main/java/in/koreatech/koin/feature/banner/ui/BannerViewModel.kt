@@ -3,8 +3,10 @@ package `in`.koreatech.koin.feature.banner.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.banner.GetBannerCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.banner.GetBannersByCategoryUseCase
+import `in`.koreatech.koin.domain.usecase.banner.SetBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetCurrentVersionCodeUseCase
 import `in`.koreatech.koin.feature.banner.model.BannerState
 import `in`.koreatech.koin.feature.banner.model.toLocalBanner
@@ -21,7 +23,8 @@ import javax.inject.Inject
 class BannerViewModel @Inject constructor(
     private val getBannersByCategoryUseCase: GetBannersByCategoryUseCase,
     private val getBannerCategoryUseCase: GetBannerCategoriesUseCase,
-    private val getCurrentVersionCodeUseCase: GetCurrentVersionCodeUseCase
+    private val getCurrentVersionCodeUseCase: GetCurrentVersionCodeUseCase,
+    private val saveBannerRefusalUseCase: SetBannerRefusalUseCase
 ) : ViewModel() {
     private val _bannerState = MutableStateFlow(BannerState())
     val bannerState: StateFlow<BannerState> = _bannerState.asStateFlow()
@@ -59,5 +62,9 @@ class BannerViewModel @Inject constructor(
         }.onFailure {
             Timber.e(it)
         }
+    }
+
+    fun setBannerRefusal() = viewModelScope.launch {
+        saveBannerRefusalUseCase()
     }
 }
