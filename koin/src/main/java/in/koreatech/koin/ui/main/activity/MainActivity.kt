@@ -253,9 +253,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         startActivity(intent)
                     },
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
                 )
             }
         }
@@ -330,13 +330,23 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it)
         }
+
         binding.recyclerViewStoreCategory.visibility = View.GONE
         binding.storeButtonLayout.visibility = View.VISIBLE
     }
 
     private fun initBanner() {
-        val intent = Intent(this, BannerActivity::class.java)
-        startActivity(intent)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isBannerRefusal.collectLatest {
+                    if (it != null && !it) {
+                        val intent = Intent(this@MainActivity, BannerActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+
     }
 
     private fun initDiningTooltip() {
