@@ -89,8 +89,10 @@ private fun BannerContent(
                 val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
                 context.startActivity(intent)
             } else {
-                val intent = Intent(Intent.ACTION_VIEW, banner.redirectLink?.toUri())
-                context.startActivity(intent)
+                if (!banner.redirectLink.isNullOrEmpty()) {
+                    val intent = Intent(Intent.ACTION_VIEW, banner.redirectLink.toUri())
+                    context.startActivity(intent)
+                }
             }
             dismiss()
         },
