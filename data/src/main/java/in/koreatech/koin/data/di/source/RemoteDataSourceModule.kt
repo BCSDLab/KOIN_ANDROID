@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.api.ArticleApi
+import `in`.koreatech.koin.data.api.BannerApi
 import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
@@ -18,7 +19,6 @@ import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
-import `in`.koreatech.koin.data.api.auth.BannerAuthApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
@@ -150,8 +150,8 @@ object RemoteDataSourceModule {
     @Provides
     @Singleton
     fun provideBannerRemoteDataSource(
-        bannerAuthApi: BannerAuthApi
+        bannerApi: BannerApi
     ): BannerRemoteDataSource {
-        return BannerRemoteDataSource(bannerAuthApi)
+        return BannerRemoteDataSource(bannerApi)
     }
 }
