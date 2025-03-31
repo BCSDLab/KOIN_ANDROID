@@ -7,6 +7,7 @@ import `in`.koreatech.koin.domain.model.banner.BannerCategory
 
 fun BannerListResponse.BannerResponse.toBanner() = Banner(
     id,
+    title,
     imageUrl,
     redirectLink,
     version

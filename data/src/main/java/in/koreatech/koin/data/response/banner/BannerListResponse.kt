@@ -8,6 +8,7 @@ data class BannerListResponse(
 ) {
     data class BannerResponse(
         @SerializedName("id") val id: Int,
+        @SerializedName("title") val title: String,
         @SerializedName("image_url") val imageUrl: String,
         @SerializedName("redirect_link") val redirectLink: String?,
         @SerializedName("version") val version: String?
