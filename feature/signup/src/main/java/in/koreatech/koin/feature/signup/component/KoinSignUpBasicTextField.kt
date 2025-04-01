@@ -1,24 +1,29 @@
 package `in`.koreatech.koin.feature.signup.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,6 +56,9 @@ fun KoinSignUpBasicTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
+    val localDensity = LocalDensity.current
+    var textFieldWidth by remember { mutableStateOf(0.dp) }
+
     BasicTextField(
         modifier = modifier,
         value = value,
@@ -61,14 +69,24 @@ fun KoinSignUpBasicTextField(
         maxLines = maxLines,
         visualTransformation = visualTransformation,
         decorationBox = { innerTextField ->
-            Column {
+            Column(
+                Modifier.width(IntrinsicSize.Max)
+            ) {
                 Row(
                     modifier = Modifier
-                        .height(IntrinsicSize.Max)
-                        .padding(vertical = 8.dp, horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp, horizontal = 4.dp)
+                        .onGloballyPositioned {
+                            with(localDensity) {
+                                textFieldWidth = it.size.width.toDp()
+                            }
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Box {
+                    Box(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         if (value.isEmpty()) {
                             Text(
                                 text = hint,
@@ -81,23 +99,23 @@ fun KoinSignUpBasicTextField(
                         innerTextField()
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Image(
-                        modifier = Modifier
-                            .size(20.dp)
-                            .alpha(if (value.isEmpty()) 0f else 1f)
-                            .noRippleClickable {
-                                if (value.isNotEmpty()) {
-                                    onValueChange("")
-                                }
-                            }
-                            .fillMaxHeight(),
-                        painter = painterResource(id = R.drawable.ic_sign_up_text_field_clean),
-                        contentDescription = null
-                    )
+                    if (value.isNotEmpty()) {
+                        Image(
+                            modifier = Modifier
+                                .size(20.dp)
+                                .noRippleClickable {
+                                    if (value.isNotEmpty()) {
+                                        onValueChange("")
+                                    }
+                                },
+                            painter = painterResource(id = R.drawable.ic_sign_up_text_field_clean),
+                            contentDescription = null
+                        )
+                    }
                 }
-                HorizontalDivider()
+                HorizontalDivider(
+                    modifier = Modifier.width(textFieldWidth)
+                )
             }
         }
     )
