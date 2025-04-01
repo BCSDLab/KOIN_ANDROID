@@ -35,7 +35,7 @@ fun BannerImage(
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {}
 ) {
-    val pagerState = rememberPagerState { bannerList.size }
+    val pagerState = rememberPagerState { Int.MAX_VALUE }
 
     Box(
         modifier = modifier
@@ -44,8 +44,9 @@ fun BannerImage(
             modifier = Modifier,
             state = pagerState
         ) { page ->
+            val realPage = page % bannerList.size
             BannerContent(
-                banner = bannerList[page],
+                banner = bannerList[realPage],
                 dismiss = dismiss,
                 currentKoinVersion = currentKoinVersion
             )
@@ -63,7 +64,7 @@ fun BannerImage(
                     .padding(horizontal = 12.dp),
                 text = buildAnnotatedString {
                     withStyle(SpanStyle(color = KoinTheme.colors.neutral0)) {
-                        append("${pagerState.currentPage + 1}")
+                        append("${(pagerState.currentPage % bannerList.size) + 1}")
                     }
                     withStyle(SpanStyle(color = KoinTheme.colors.neutral400)) {
                         append("/${bannerList.size}")
