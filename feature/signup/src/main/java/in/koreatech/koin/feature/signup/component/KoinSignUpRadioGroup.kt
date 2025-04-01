@@ -70,7 +70,6 @@ fun KoinSignUpRadioButton(
         },
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
             RadioButton(
                 selected = selected,
@@ -78,7 +77,7 @@ fun KoinSignUpRadioButton(
                 colors = RadioButtonDefaults.colors(
                     selectedColor = KoinTheme.colors.primary500,
                     unselectedColor = KoinTheme.colors.primary500
-                ),
+                )
             )
         }
 

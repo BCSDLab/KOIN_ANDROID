@@ -105,6 +105,6 @@ fun KoinSignUpPasswordTextFieldPreview() {
     KoinSignUpPasswordTextField(
         value = "",
         onValueChange = {},
-        hint = "비밀번호",
+        hint = "비밀번호"
     )
 }

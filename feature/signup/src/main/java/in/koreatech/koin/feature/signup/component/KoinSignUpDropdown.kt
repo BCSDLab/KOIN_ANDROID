@@ -57,7 +57,7 @@ fun KoinSignUpDropdown(
     items: ImmutableList<String>,
     modifier: Modifier = Modifier,
     onDropdownExpandChange: (Boolean) -> Unit = {},
-    onItemSelected: (Int) -> Unit = {},
+    onItemSelected: (Int) -> Unit = {}
 ) = ExposedDropdownMenuBox(
     expanded = isDropdownExpanded,
     onExpandedChange = onDropdownExpandChange,
@@ -65,16 +65,16 @@ fun KoinSignUpDropdown(
 ) {
     val rotateDegree: Float by animateFloatAsState(
         targetValue = if (isDropdownExpanded) 180f else 0f,
-        label = "degree",
+        label = "degree"
     )
 
     val dropdownCorner: Dp by animateDpAsState(
-        targetValue = if (isDropdownExpanded) 0.dp else 14.dp,
+        targetValue = if (isDropdownExpanded) 0.dp else 14.dp
     )
 
     val dropdownShape = KoinTheme.shapes.large.copy(
         bottomStart = CornerSize(dropdownCorner),
-        bottomEnd = CornerSize(dropdownCorner),
+        bottomEnd = CornerSize(dropdownCorner)
     )
 
     Row(
@@ -89,20 +89,20 @@ fun KoinSignUpDropdown(
             )
             .padding(vertical = 8.dp, horizontal = 12.dp)
             .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = if (isSelected) text else hint,
             style = KoinTheme.typography.regular14,
             color = if (isSelected) Color.Unspecified else KoinTheme.colors.neutral400,
-            maxLines = 1,
+            maxLines = 1
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(
             modifier = Modifier.rotate(rotateDegree),
             painter = painterResource(id = R.drawable.ic_arrow_down),
             tint = KoinTheme.colors.neutral400,
-            contentDescription = "",
+            contentDescription = ""
         )
     }
 
@@ -119,7 +119,7 @@ fun KoinSignUpDropdown(
         containerColor = KoinTheme.colors.neutral0,
         shape = KoinTheme.shapes.large.copy(
             topEnd = CornerSize(0.dp),
-            topStart = CornerSize(0.dp),
+            topStart = CornerSize(0.dp)
         )
     ) {
         Box(
@@ -133,14 +133,14 @@ fun KoinSignUpDropdown(
                         text = it,
                         style = KoinTheme.typography.medium14,
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .noRippleClickable {
-                                    onItemSelected(index)
-                                    onDropdownExpandChange(false)
-                                }
-                                .padding(vertical = 8.dp, horizontal = 12.dp),
-                        maxLines = 1,
+                        Modifier
+                            .fillMaxWidth()
+                            .noRippleClickable {
+                                onItemSelected(index)
+                                onDropdownExpandChange(false)
+                            }
+                            .padding(vertical = 8.dp, horizontal = 12.dp),
+                        maxLines = 1
                     )
 
                     if (index != items.size - 1) {
@@ -162,6 +162,6 @@ fun PreviewKoinSignUpDropdown() {
         hint = "학과를 선택해주세요",
         isSelected = false,
         isDropdownExpanded = false,
-        items = persistentListOf("컴퓨터공학과", "전자공학과", "기계공학과"),
+        items = persistentListOf("컴퓨터공학과", "전자공학과", "기계공학과")
     )
 }
