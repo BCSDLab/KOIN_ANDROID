@@ -11,6 +11,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +27,9 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
+import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
+import kotlinx.coroutines.delay
 
 @Composable
 fun BannerImage(
@@ -36,6 +39,13 @@ fun BannerImage(
     dismiss: () -> Unit = {}
 ) {
     val pagerState = rememberPagerState { Int.MAX_VALUE }
+
+    LaunchedEffect(Unit) {
+        while (bannerList.size > 1) {
+            delay(BANNER_AUTO_SCROLL_MILLISECONDS)
+            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+        }
+    }
 
     Box(
         modifier = modifier
