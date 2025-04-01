@@ -28,10 +28,11 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun BannerImage(
-    bannerList: List<LocalBanner>,
+    bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {}

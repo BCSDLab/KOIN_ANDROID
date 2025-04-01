@@ -28,10 +28,12 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.banner.R
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BannerA(
-    bannerList: List<LocalBanner>,
+    bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {},
@@ -59,7 +61,9 @@ fun BannerA(
                 .navigationBarsPadding()
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
             ) {
                 TextButton(
                     onClick = {
@@ -98,5 +102,5 @@ fun BannerA(
 @Preview
 @Composable
 fun BannerPreview() {
-    BannerA(listOf(), 0)
+    BannerA(persistentListOf(), 0)
 }

@@ -27,17 +27,17 @@ import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.banner.R
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BannerB(
-    bannerList: List<LocalBanner>,
+    bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {},
     dismissWithRefusal: () -> Unit = {}
 ) {
-    if (bannerList.isEmpty()) return
-
     val configuration = LocalConfiguration.current
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp - 48.dp) } // minus horizontal padding
     val maxImageHeight by remember { mutableStateOf(screenWidth / 4 * 3) }
@@ -101,7 +101,7 @@ fun BannerB(
 fun BannerBPreview() {
     KoinTheme {
         BannerB(
-            bannerList = listOf(),
+            bannerList = persistentListOf(),
             currentKoinVersion = 0
         )
     }

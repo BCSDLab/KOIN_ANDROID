@@ -1,12 +1,16 @@
 package `in`.koreatech.koin.feature.banner.model
 
+import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.domain.model.banner.Banner
 import `in`.koreatech.koin.domain.model.banner.BannerCategory
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.util.Locale
 
+@Immutable
 data class BannerState(
-    val bannerList: List<LocalBanner> = emptyList(),
-    val bannerCategory: List<BannerCategory> = emptyList(),
+    val bannerList: ImmutableList<LocalBanner> = persistentListOf(),
+    val bannerCategory: ImmutableList<BannerCategory> = persistentListOf(),
     val isLoading: Boolean = true,
     val currentVersionCode: Int = 0
 )
