@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.banner.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.banner.GetBannerCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.banner.GetBannersByCategoryUseCase
 import `in`.koreatech.koin.domain.usecase.banner.SetBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetCurrentVersionCodeUseCase
