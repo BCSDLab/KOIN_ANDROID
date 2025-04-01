@@ -9,8 +9,8 @@ import `in`.koreatech.koin.domain.usecase.banner.SetBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetCurrentVersionCodeUseCase
 import `in`.koreatech.koin.feature.banner.model.BannerState
 import `in`.koreatech.koin.feature.banner.model.toLocalBanner
-import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

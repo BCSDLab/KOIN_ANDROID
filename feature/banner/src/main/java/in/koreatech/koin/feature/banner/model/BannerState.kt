@@ -3,9 +3,9 @@ package `in`.koreatech.koin.feature.banner.model
 import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.domain.model.banner.Banner
 import `in`.koreatech.koin.domain.model.banner.BannerCategory
+import java.util.Locale
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import java.util.Locale
 
 @Immutable
 data class BannerState(
