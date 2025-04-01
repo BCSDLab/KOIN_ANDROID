@@ -4,6 +4,12 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -11,6 +17,8 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Koin Sign Up Progress Indicator
@@ -32,12 +40,25 @@ fun KoinSignUpProgressIndicator(
         throw IllegalArgumentException("Current step should be less than or equal to max step")
     }
 
+    var animateCurrentStep by remember { mutableFloatStateOf((currentStep - 1).toFloat()) }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            while (animateCurrentStep < currentStep) {
+                animateCurrentStep += 0.01f
+                delay(1)
+            }
+        }
+    }
+
     Canvas(
         modifier = modifier.fillMaxWidth()
     ) {
         drawLine(
             color = backgroundColor,
-            start = Offset(size.width / maxStep * currentStep, 0f),
+            start = Offset(0f, 0f),
             end = Offset(size.width, size.height),
             strokeWidth = 4.dp.toPx(),
             cap = StrokeCap.Round
@@ -46,7 +67,7 @@ fun KoinSignUpProgressIndicator(
         drawLine(
             color = stepColor,
             start = Offset(0f, 0f),
-            end = Offset(size.width / maxStep * currentStep, size.height),
+            end = Offset(size.width / maxStep * animateCurrentStep, size.height),
             strokeWidth = 4.dp.toPx(),
             cap = StrokeCap.Round
         )
