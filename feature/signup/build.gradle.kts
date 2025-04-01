@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.bundles.compose.m3)
     implementation(libs.compose.navigation)
 
+    implementation(libs.kotlinxCollectionsImmutable)
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.timber)
