@@ -19,9 +19,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.feature.banner.component.BannerA
+import `in`.koreatech.koin.feature.banner.component.BannerB
 
 @AndroidEntryPoint
 class BannerActivity : ComponentActivity() {
@@ -34,6 +36,7 @@ class BannerActivity : ComponentActivity() {
 
         setContent {
             val uiState by viewModel.bannerState.collectAsState()
+            val experimentGroup by viewModel.mainBannerABTestExperimentGroup.collectAsState(null)
 
             LaunchedEffect(uiState.isLoading) {
                 if (!uiState.isLoading && uiState.bannerList.isEmpty()) {
@@ -58,29 +61,58 @@ class BannerActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(contentPadding)
                     ) {
-                        BannerA(
-                            bannerList = uiState.bannerList,
-                            currentKoinVersion = uiState.currentVersionCode,
-                            dismiss = {
-                                finish()
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
-                                    overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
-                                } else {
-                                    overridePendingTransition(0, 0)
-                                }
-                            },
-                            dismissWithRefusal = {
-                                viewModel.setBannerRefusal()
-                                finish()
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
-                                    overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
-                                } else {
-                                    overridePendingTransition(0, 0)
-                                }
+                        when (experimentGroup) {
+                            ExperimentGroup.BOTTOM_BANNER -> {
+                                BannerA(
+                                    bannerList = uiState.bannerList,
+                                    currentKoinVersion = uiState.currentVersionCode,
+                                    dismiss = {
+                                        finish()
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+                                            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
+                                        } else {
+                                            overridePendingTransition(0, 0)
+                                        }
+                                    },
+                                    dismissWithRefusal = {
+                                        viewModel.setBannerRefusal()
+                                        finish()
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+                                            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
+                                        } else {
+                                            overridePendingTransition(0, 0)
+                                        }
+                                    }
+                                )
                             }
-                        )
+                            ExperimentGroup.CENTER_BANNER -> {
+                                BannerB(
+                                    bannerList = uiState.bannerList,
+                                    currentKoinVersion = uiState.currentVersionCode,
+                                    dismiss = {
+                                        finish()
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+                                            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
+                                        } else {
+                                            overridePendingTransition(0, 0)
+                                        }
+                                    },
+                                    dismissWithRefusal = {
+                                        viewModel.setBannerRefusal()
+                                        finish()
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+                                            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
+                                        } else {
+                                            overridePendingTransition(0, 0)
+                                        }
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }

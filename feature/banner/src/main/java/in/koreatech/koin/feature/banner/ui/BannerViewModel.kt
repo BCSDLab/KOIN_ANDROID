@@ -3,18 +3,24 @@ package `in`.koreatech.koin.feature.banner.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.domain.usecase.banner.GetBannerCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.banner.GetBannersByCategoryUseCase
 import `in`.koreatech.koin.domain.usecase.banner.SetBannerRefusalUseCase
+import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetCurrentVersionCodeUseCase
 import `in`.koreatech.koin.feature.banner.model.BannerState
 import `in`.koreatech.koin.feature.banner.model.toLocalBanner
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -23,7 +29,8 @@ class BannerViewModel @Inject constructor(
     private val getBannersByCategoryUseCase: GetBannersByCategoryUseCase,
     private val getBannerCategoryUseCase: GetBannerCategoriesUseCase,
     private val getCurrentVersionCodeUseCase: GetCurrentVersionCodeUseCase,
-    private val saveBannerRefusalUseCase: SetBannerRefusalUseCase
+    private val saveBannerRefusalUseCase: SetBannerRefusalUseCase,
+    private val abTestUseCase: ABTestUseCase
 ) : ViewModel() {
     private val _bannerState = MutableStateFlow(BannerState())
     val bannerState: StateFlow<BannerState> = _bannerState.asStateFlow()
@@ -32,6 +39,19 @@ class BannerViewModel @Inject constructor(
         fetchCurrentVersionCode()
         fetchBannerCategory()
     }
+
+    val mainBannerABTestExperimentGroup =
+        flow {
+            abTestUseCase(Experiment.MAIN_BANNER_UI.experimentTitle).onSuccess {
+                emit(it)
+            }.onFailure {
+                emit(Experiment.MAIN_BANNER_UI.experimentGroups.first())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = null
+        ).filterNotNull()
 
     private fun fetchBannerCategory() = viewModelScope.launch {
         getBannerCategoryUseCase().collectLatest {
