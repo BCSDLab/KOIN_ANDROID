@@ -37,8 +37,6 @@ fun BannerA(
     dismiss: () -> Unit = {},
     dismissWithRefusal: () -> Unit = {}
 ) {
-    if (bannerList.isEmpty()) return
-
     val configuration = LocalConfiguration.current
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp) }
     val maxImageHeight by remember { mutableStateOf(screenWidth / 4 * 3) }
