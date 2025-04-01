@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -84,7 +85,7 @@ private fun BannerContent(
 ) {
     val context = LocalContext.current
     SubcomposeAsyncImage(
-        modifier = modifier.noRippleClickable {
+        modifier = modifier.fillMaxSize().noRippleClickable {
             if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
                 val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
                 context.startActivity(intent)
