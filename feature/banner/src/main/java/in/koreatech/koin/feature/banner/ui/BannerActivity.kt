@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -35,24 +34,17 @@ class BannerActivity : ComponentActivity() {
         setContent {
             val uiState by viewModel.bannerState.collectAsState()
 
-            LaunchedEffect(uiState.isLoading) {
-                if (!uiState.isLoading && uiState.bannerList.isEmpty()) {
-                    finish()
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                        overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
-                        overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
-                    } else {
-                        overridePendingTransition(0, 0)
-                    }
-                }
-            }
-
             KoinTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     containerColor = Color.Transparent,
                     contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.navigationBars)
                 ) { contentPadding ->
+                    if (uiState.isLoading) return@Scaffold // Don't render banner if not loaded yet
+                    if (uiState.bannerList.isEmpty()) { // Finish activity if banner list is empty
+                        finishActivity()
+                        return@Scaffold
+                    }
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -62,28 +54,25 @@ class BannerActivity : ComponentActivity() {
                             bannerList = uiState.bannerList,
                             currentKoinVersion = uiState.currentVersionCode,
                             dismiss = {
-                                finish()
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
-                                    overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
-                                } else {
-                                    overridePendingTransition(0, 0)
-                                }
+                                finishActivity()
                             },
                             dismissWithRefusal = {
                                 viewModel.setBannerRefusal()
-                                finish()
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
-                                    overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
-                                } else {
-                                    overridePendingTransition(0, 0)
-                                }
+                                finishActivity()
                             }
                         )
                     }
                 }
             }
+        }
+    }
+    private fun finishActivity() {
+        finish()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
+        } else {
+            overridePendingTransition(0, 0)
         }
     }
 }
