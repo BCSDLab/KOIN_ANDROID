@@ -98,11 +98,12 @@ private fun BannerContent(
     val context = LocalContext.current
     SubcomposeAsyncImage(
         modifier = modifier.fillMaxSize().noRippleClickable {
+            if (banner.redirectLink == null) return@noRippleClickable
             if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
                 val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
                 context.startActivity(intent)
             } else {
-                if (!banner.redirectLink.isNullOrEmpty()) {
+                if (banner.redirectLink.isNotEmpty()) {
                     val intent = Intent(Intent.ACTION_VIEW, banner.redirectLink.toUri())
                     context.startActivity(intent)
                 }
