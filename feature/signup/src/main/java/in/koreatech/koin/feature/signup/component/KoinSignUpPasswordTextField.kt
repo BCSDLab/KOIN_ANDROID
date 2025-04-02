@@ -61,9 +61,13 @@ fun KoinSignUpPasswordTextField(
         ),
         singleLine = singleLine,
         maxLines = maxLines,
-        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(
-            mask = '●'
-        ),
+        visualTransformation = if (showPassword) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation(
+                mask = '●'
+            )
+        },
         decorationBox = { innerTextField ->
             Column(
                 modifier = Modifier.width(IntrinsicSize.Min)
