@@ -1,0 +1,115 @@
+package `in`.koreatech.koin.feature.banner.component
+
+import android.content.Intent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
+import `in`.koreatech.koin.feature.banner.model.LocalBanner
+import kotlinx.collections.immutable.ImmutableList
+
+@Composable
+fun BannerImage(
+    bannerList: ImmutableList<LocalBanner>,
+    currentKoinVersion: Int,
+    modifier: Modifier = Modifier,
+    dismiss: () -> Unit = {}
+) {
+    val pagerState = rememberPagerState { bannerList.size }
+
+    Box(
+        modifier = modifier
+    ) {
+        HorizontalPager(
+            modifier = Modifier,
+            state = pagerState
+        ) { page ->
+            BannerContent(
+                banner = bannerList[page],
+                dismiss = dismiss,
+                currentKoinVersion = currentKoinVersion
+            )
+        }
+
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                modifier = Modifier
+                    .clip(KoinTheme.shapes.medium)
+                    .background(Color(0x80000000))
+                    .padding(horizontal = 12.dp),
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(color = KoinTheme.colors.neutral0)) {
+                        append("${pagerState.currentPage + 1}")
+                    }
+                    withStyle(SpanStyle(color = KoinTheme.colors.neutral400)) {
+                        append("/${bannerList.size}")
+                    }
+                },
+                style = KoinTheme.typography.regular14
+            )
+        }
+    }
+}
+
+@Composable
+private fun BannerContent(
+    banner: LocalBanner,
+    currentKoinVersion: Int,
+    modifier: Modifier = Modifier,
+    dismiss: () -> Unit = {}
+) {
+    val context = LocalContext.current
+    SubcomposeAsyncImage(
+        modifier = modifier.fillMaxSize().noRippleClickable {
+            if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
+                val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
+                context.startActivity(intent)
+            } else {
+                if (!banner.redirectLink.isNullOrEmpty()) {
+                    val intent = Intent(Intent.ACTION_VIEW, banner.redirectLink.toUri())
+                    context.startActivity(intent)
+                }
+            }
+            dismiss()
+        },
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(banner.imageUrl)
+            .crossfade(true)
+            .build(),
+        alignment = Alignment.BottomCenter,
+        loading = {
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        },
+        contentDescription = "Banner ${banner.id}"
+    )
+}

@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.usecase.banner.CheckBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
@@ -21,6 +22,7 @@ import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.state.toContent
 import `in`.koreatech.koin.ui.main.state.toNoti
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -36,6 +38,7 @@ class MainActivityViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
     private val abTestUseCase: ABTestUseCase,
+    private val checkBannerRefusalUseCase: CheckBannerRefusalUseCase,
     private val articleRepository: ArticleRepository
 ) : BaseViewModel() {
     private val _variableName = MutableLiveData<String>()
@@ -113,7 +116,11 @@ class MainActivityViewModel @Inject constructor(
     private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
 
+    private val _isBannerRefusal = MutableStateFlow<Boolean?>(null)
+    val isBannerRefusal: StateFlow<Boolean?> get() = _isBannerRefusal
+
     init {
+        checkBannerRefusal()
         updateDining()
     }
 
@@ -160,6 +167,14 @@ class MainActivityViewModel @Inject constructor(
             val categoryList = getStoreCategoriesUseCase().drop(1).toMutableList()
             categoryList.add(0, storeCategory)
             _storeCategories.value = categoryList
+        }
+    }
+
+    private fun checkBannerRefusal() {
+        viewModelScope.launchWithLoading {
+            checkBannerRefusalUseCase().let {
+                _isBannerRefusal.value = it
+            }
         }
     }
 
