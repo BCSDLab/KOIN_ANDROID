@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.banner.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.banner.GetBannerCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.banner.GetBannersByCategoryUseCase
 import `in`.koreatech.koin.domain.usecase.banner.SetBannerRefusalUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetCurrentVersionCodeUseCase
@@ -21,7 +20,6 @@ import timber.log.Timber
 @HiltViewModel
 class BannerViewModel @Inject constructor(
     private val getBannersByCategoryUseCase: GetBannersByCategoryUseCase,
-    private val getBannerCategoryUseCase: GetBannerCategoriesUseCase,
     private val getCurrentVersionCodeUseCase: GetCurrentVersionCodeUseCase,
     private val saveBannerRefusalUseCase: SetBannerRefusalUseCase
 ) : ViewModel() {
@@ -30,22 +28,11 @@ class BannerViewModel @Inject constructor(
 
     init {
         fetchCurrentVersionCode()
-        fetchBannerCategory()
+        fetchBanners()
     }
 
-    private fun fetchBannerCategory() = viewModelScope.launch {
-        getBannerCategoryUseCase().collectLatest {
-            _bannerState.value = _bannerState.value.copy(
-                bannerCategory = it.toImmutableList()
-            )
-            _bannerState.value.bannerCategory.forEach { category ->
-                fetchBannersByCategory(category.id)
-            }
-        }
-    }
-
-    private fun fetchBannersByCategory(category: Int) = viewModelScope.launch {
-        getBannersByCategoryUseCase(category).collectLatest {
+    private fun fetchBanners() = viewModelScope.launch {
+        getBannersByCategoryUseCase(MAIN_BANNER_CATEGORY).collectLatest {
             _bannerState.value = _bannerState.value.copy(
                 bannerList = it.map { banner -> banner.toLocalBanner() }.toImmutableList(),
                 isLoading = false
@@ -65,5 +52,9 @@ class BannerViewModel @Inject constructor(
 
     fun setBannerRefusal() = viewModelScope.launch {
         saveBannerRefusalUseCase()
+    }
+
+    companion object {
+        const val MAIN_BANNER_CATEGORY = 1
     }
 }
