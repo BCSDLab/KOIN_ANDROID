@@ -101,7 +101,7 @@ fun KoinSignUpPasswordTextField(
 
 @Preview
 @Composable
-fun KoinSignUpPasswordTextFieldPreview() {
+private fun KoinSignUpPasswordTextFieldPreview() {
     KoinSignUpPasswordTextField(
         value = "",
         onValueChange = {},

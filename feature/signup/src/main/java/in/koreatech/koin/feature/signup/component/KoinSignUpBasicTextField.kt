@@ -123,7 +123,7 @@ fun KoinSignUpBasicTextField(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinSignUpBasicTextFieldPreview() {
+private fun KoinSignUpBasicTextFieldPreview() {
     KoinSignUpBasicTextField(
         value = "",
         onValueChange = {},

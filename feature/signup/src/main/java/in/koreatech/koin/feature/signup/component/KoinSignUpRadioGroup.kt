@@ -92,7 +92,7 @@ fun KoinSignUpRadioButton(
 
 @Preview
 @Composable
-fun KoinSignUpSingleChoiceRadioGroupPreview() {
+private fun KoinSignUpSingleChoiceRadioGroupPreview() {
     KoinSignUpSingleChoiceRadioGroup(
         items = persistentListOf("Option 1", "Option 2", "Option 3"),
         selected = 0,
@@ -102,7 +102,7 @@ fun KoinSignUpSingleChoiceRadioGroupPreview() {
 
 @Preview
 @Composable
-fun KoinSignUpRadioButtonPreview() {
+private fun KoinSignUpRadioButtonPreview() {
     KoinSignUpRadioButton(
         text = "Option 1",
         selected = true,

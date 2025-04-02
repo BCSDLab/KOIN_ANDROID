@@ -41,7 +41,7 @@ fun KoinSignUpTerm(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewKoinSignUpTerm() {
+private fun PreviewKoinSignUpTerm() {
     KoinSignUpTerm(
         text = "Lorem ipsum dolor sit amet"
     )

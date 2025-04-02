@@ -74,7 +74,7 @@ fun KoinSignUpProgressIndicator(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinSignUpProgressIndicatorPreview() {
+private fun KoinSignUpProgressIndicatorPreview() {
     KoinSignUpProgressIndicator(
         modifier = Modifier.padding(16.dp),
         currentStep = 1,

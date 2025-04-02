@@ -63,7 +63,7 @@ fun KoinSignUpCheckAllBox(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewKoinSignUpCheckAllBox() {
+private fun PreviewKoinSignUpCheckAllBox() {
     KoinSignUpCheckAllBox(
         checked = false,
         trailingText = "전체 동의",

@@ -59,7 +59,7 @@ fun KoinSignUpCheckBox(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewKoinSignUpCheckBox() {
+private fun PreviewKoinSignUpCheckBox() {
     KoinTheme {
         KoinSignUpCheckBox(
             checked = true,

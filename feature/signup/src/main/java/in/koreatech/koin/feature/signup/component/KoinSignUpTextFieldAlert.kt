@@ -50,7 +50,7 @@ fun KoinSignUpTextFieldAlert(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinSignUpTextFieldAlertWarningPreview() {
+private fun KoinSignUpTextFieldAlertWarningPreview() {
     KoinTheme {
         KoinSignUpTextFieldAlert(
             text = "This is a warning alert",
@@ -61,7 +61,7 @@ fun KoinSignUpTextFieldAlertWarningPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun KoinSignUpTextFieldAlertSuccessPreview() {
+private fun KoinSignUpTextFieldAlertSuccessPreview() {
     KoinTheme {
         KoinSignUpTextFieldAlert(
             text = "This is a success alert",

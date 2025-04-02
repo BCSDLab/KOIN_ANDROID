@@ -45,7 +45,7 @@ fun KoinSignUpProgressHeader(
 
 @Preview(showBackground = true)
 @Composable
-fun KoinSignUpProgressPreview() {
+private fun KoinSignUpProgressPreview() {
     KoinTheme {
         KoinSignUpProgressHeader(
             text = "약관 동의",

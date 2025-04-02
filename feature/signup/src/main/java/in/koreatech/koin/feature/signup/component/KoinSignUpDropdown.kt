@@ -156,7 +156,7 @@ fun KoinSignUpDropdown(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewKoinSignUpDropdown() {
+private fun PreviewKoinSignUpDropdown() {
     KoinSignUpDropdown(
         text = "컴퓨터공학과",
         hint = "학과를 선택해주세요",
