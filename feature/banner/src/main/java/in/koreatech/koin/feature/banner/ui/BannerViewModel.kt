@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.usecase.version.GetCurrentVersionCodeUseCase
 import `in`.koreatech.koin.feature.banner.model.BannerState
 import `in`.koreatech.koin.feature.banner.model.toLocalBanner
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +36,7 @@ class BannerViewModel @Inject constructor(
     private fun fetchBannerCategory() = viewModelScope.launch {
         getBannerCategoryUseCase().collectLatest {
             _bannerState.value = _bannerState.value.copy(
-                bannerCategory = it
+                bannerCategory = it.toImmutableList()
             )
             _bannerState.value.bannerCategory.forEach { category ->
                 fetchBannersByCategory(category.id)
@@ -46,7 +47,7 @@ class BannerViewModel @Inject constructor(
     private fun fetchBannersByCategory(category: Int) = viewModelScope.launch {
         getBannersByCategoryUseCase(category).collectLatest {
             _bannerState.value = _bannerState.value.copy(
-                bannerList = it.map { banner -> banner.toLocalBanner() },
+                bannerList = it.map { banner -> banner.toLocalBanner() }.toImmutableList(),
                 isLoading = false
             )
         }

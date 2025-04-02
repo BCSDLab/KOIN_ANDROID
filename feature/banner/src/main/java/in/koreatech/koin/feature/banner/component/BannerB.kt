@@ -7,13 +7,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,16 +27,21 @@ import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.banner.R
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun BannerB(
-    bannerList: List<LocalBanner>,
+    bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {},
     dismissWithRefusal: () -> Unit = {}
 ) {
-    if (bannerList.isEmpty()) return
+    val configuration = LocalConfiguration.current
+    val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp - 48.dp) } // minus horizontal padding
+    val maxImageHeight by remember { mutableStateOf(screenWidth / 4 * 3) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -44,6 +54,7 @@ fun BannerB(
                 .clip(KoinTheme.shapes.large)
         ) {
             BannerImage(
+                modifier = Modifier.height(maxImageHeight),
                 bannerList = bannerList,
                 dismiss = dismiss,
                 currentKoinVersion = currentKoinVersion
@@ -90,7 +101,7 @@ fun BannerB(
 fun BannerBPreview() {
     KoinTheme {
         BannerB(
-            bannerList = listOf(),
+            bannerList = persistentListOf(),
             currentKoinVersion = 0
         )
     }

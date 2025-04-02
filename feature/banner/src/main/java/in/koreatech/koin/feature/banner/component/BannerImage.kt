@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -30,10 +31,11 @@ import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
 import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
 import kotlinx.coroutines.delay
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun BannerImage(
-    bannerList: List<LocalBanner>,
+    bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {}
@@ -95,7 +97,7 @@ private fun BannerContent(
 ) {
     val context = LocalContext.current
     SubcomposeAsyncImage(
-        modifier = modifier.noRippleClickable {
+        modifier = modifier.fillMaxSize().noRippleClickable {
             if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
                 val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
                 context.startActivity(intent)
