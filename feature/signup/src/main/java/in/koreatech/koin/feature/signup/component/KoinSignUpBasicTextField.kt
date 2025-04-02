@@ -56,9 +56,6 @@ fun KoinSignUpBasicTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
-    val localDensity = LocalDensity.current
-    var textFieldWidth by remember { mutableStateOf(0.dp) }
-
     BasicTextField(
         modifier = modifier,
         value = value,
@@ -70,17 +67,12 @@ fun KoinSignUpBasicTextField(
         visualTransformation = visualTransformation,
         decorationBox = { innerTextField ->
             Column(
-                Modifier.width(IntrinsicSize.Max)
+                Modifier.width(IntrinsicSize.Min)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp, horizontal = 4.dp)
-                        .onGloballyPositioned {
-                            with(localDensity) {
-                                textFieldWidth = it.size.width.toDp()
-                            }
-                        },
+                        .padding(vertical = 8.dp, horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -114,7 +106,7 @@ fun KoinSignUpBasicTextField(
                     }
                 }
                 HorizontalDivider(
-                    modifier = Modifier.width(textFieldWidth)
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
