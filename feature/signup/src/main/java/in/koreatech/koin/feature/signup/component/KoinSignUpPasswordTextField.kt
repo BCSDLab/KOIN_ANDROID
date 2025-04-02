@@ -1,15 +1,15 @@
 package `in`.koreatech.koin.feature.signup.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
@@ -56,18 +56,28 @@ fun KoinSignUpPasswordTextField(
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Password
         ),
+        textStyle = KoinTheme.typography.regular14.copy(
+            lineHeightStyle = null // Remove line height
+        ),
         singleLine = singleLine,
         maxLines = maxLines,
-        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(
+            mask = '●'
+        ),
         decorationBox = { innerTextField ->
-            Column {
+            Column(
+                modifier = Modifier.width(IntrinsicSize.Min)
+            ) {
                 Row(
                     modifier = Modifier
-                        .height(IntrinsicSize.Max)
+                        .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Box {
+                    Box(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         if (value.isEmpty()) {
                             Text(
                                 text = hint,
@@ -80,20 +90,19 @@ fun KoinSignUpPasswordTextField(
                         innerTextField()
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
-
                     Image(
                         modifier = Modifier
                             .size(20.dp)
                             .noRippleClickable {
                                 onShowPasswordChange(!showPassword)
-                            }
-                            .fillMaxHeight(),
+                            },
                         painter = painterResource(id = R.drawable.ic_sign_up_show_password),
                         contentDescription = null
                     )
                 }
-                HorizontalDivider()
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     )
