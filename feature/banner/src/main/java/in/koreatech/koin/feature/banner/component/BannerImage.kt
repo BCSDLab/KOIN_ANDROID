@@ -12,6 +12,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,8 +28,10 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
+import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.delay
 
 @Composable
 fun BannerImage(
@@ -37,7 +40,14 @@ fun BannerImage(
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {}
 ) {
-    val pagerState = rememberPagerState { bannerList.size }
+    val pagerState = rememberPagerState { Int.MAX_VALUE }
+
+    LaunchedEffect(Unit) {
+        while (bannerList.size > 1) {
+            delay(BANNER_AUTO_SCROLL_MILLISECONDS)
+            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+        }
+    }
 
     Box(
         modifier = modifier
@@ -46,8 +56,9 @@ fun BannerImage(
             modifier = Modifier,
             state = pagerState
         ) { page ->
+            val realPage = page % bannerList.size
             BannerContent(
-                banner = bannerList[page],
+                banner = bannerList[realPage],
                 dismiss = dismiss,
                 currentKoinVersion = currentKoinVersion
             )
@@ -65,7 +76,7 @@ fun BannerImage(
                     .padding(horizontal = 12.dp),
                 text = buildAnnotatedString {
                     withStyle(SpanStyle(color = KoinTheme.colors.neutral0)) {
-                        append("${pagerState.currentPage + 1}")
+                        append("${(pagerState.currentPage % bannerList.size) + 1}")
                     }
                     withStyle(SpanStyle(color = KoinTheme.colors.neutral400)) {
                         append("/${bannerList.size}")
