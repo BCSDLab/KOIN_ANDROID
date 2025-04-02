@@ -45,7 +45,9 @@ fun BannerImage(
     LaunchedEffect(Unit) {
         while (bannerList.size > 1) {
             delay(BANNER_AUTO_SCROLL_MILLISECONDS)
-            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+            if (!pagerState.isScrollInProgress) {
+                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+            }
         }
     }
 
