@@ -22,9 +22,7 @@ fun KoinSignUpProgressHeader(
     maxStep: Int,
     modifier: Modifier = Modifier
 ) {
-    if (currentStep > maxStep) {
-        throw IllegalArgumentException("Current step should be less than or equal to max step")
-    }
+    require(currentStep <= maxStep) { "Current step should be less than or equal to max step" }
 
     Row(
         modifier = modifier

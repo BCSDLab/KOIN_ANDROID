@@ -36,9 +36,7 @@ fun KoinSignUpProgressIndicator(
     stepColor: Color = KoinTheme.colors.primary500,
     backgroundColor: Color = KoinTheme.colors.neutral400
 ) {
-    if (currentStep > maxStep) {
-        throw IllegalArgumentException("Current step should be less than or equal to max step")
-    }
+    require(currentStep <= maxStep) { "Current step should be less than or equal to max step" }
 
     var animateCurrentStep by remember { mutableFloatStateOf((currentStep - 1).toFloat()) }
 
