@@ -2,6 +2,7 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.CheckResponse
 import `in`.koreatech.koin.domain.model.user.User
 import kotlinx.coroutines.flow.Flow
 
@@ -46,4 +47,34 @@ interface UserRepository {
     suspend fun updateABTestToken()
 
     suspend fun postABTestAssign(title: String): ABTest
+
+    suspend fun isUsernameDuplicated2(nickname: String): CheckResponse
+
+    suspend fun isPhoneDuplicated(phone: String): CheckResponse
+
+    suspend fun isStudentRegister(
+        name: String,
+        phoneNumber: String,
+        userId: String,
+        password: String,
+        department: String,
+        studentNumber:String,
+        gender: String,
+        email: String,
+        nickname: String
+    ): Boolean
+
+    suspend fun isGeneralRegister(
+        name: String,
+        phoneNumber: String,
+        userId: String,
+        password: String,
+        gender: String,
+        email: String,
+        nickname: String
+    ): Boolean
+
+    suspend fun sendSMS(phoneNumber: String): Boolean
+
+    suspend fun sendRegisterEmail(phoneNumber: String, certificationCode: String): Boolean
 }

@@ -4,8 +4,10 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
+import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
@@ -122,5 +124,15 @@ interface UserAuthApi {
     @POST(URLConstant.SHOPS.SHOPS + "/{storeId}/call-notification")
     suspend fun postReviewPromptNotification(
         @Path("storeId") storeId: Int
+    )
+
+    @POST(URLConstant.USER.SMSSEND)
+    suspend fun smsVerify(
+        @Query("phone_number") phoneNumber: String
+    )
+
+    @POST(URLConstant.USER.SMSVERIFY)
+    suspend fun smsVerify(
+        @Body smsVerifyRequest: SmsVerifyRequest
     )
 }

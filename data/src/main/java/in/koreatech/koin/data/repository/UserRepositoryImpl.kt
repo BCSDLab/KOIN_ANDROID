@@ -5,14 +5,18 @@ import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
+import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
+import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest2
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.CheckResponse
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
@@ -164,6 +168,137 @@ class UserRepositoryImpl @Inject constructor(
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
             is User.Student -> {
                 userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
+            }
+        }
+    }
+
+    override suspend fun isUsernameDuplicated2(nickname: String): CheckResponse {
+        return try {
+            userRemoteDataSource.checkNickname2(nickname)
+            CheckResponse.OK
+        } catch (e: HttpException) {
+            if (e.code() == 200) {
+                CheckResponse.OK
+            } else if (e.code() == 400) {
+                CheckResponse.BAD_REQUEST
+            } else if (e.code() == 409) {
+                CheckResponse.CONFLICT
+            } else {
+                CheckResponse.UNDEFINED
+            }
+        }
+    }
+
+    override suspend fun isPhoneDuplicated(phone: String): CheckResponse {
+        return try {
+            userRemoteDataSource.checkPhone(phone)
+            CheckResponse.OK
+        } catch (e: HttpException) {
+            if (e.code() == 200) {
+                CheckResponse.OK
+            } else if (e.code() == 400) {
+                CheckResponse.BAD_REQUEST
+            } else if (e.code() == 409) {
+                CheckResponse.CONFLICT
+            } else {
+                CheckResponse.UNDEFINED
+            }
+        }
+    }
+
+    override suspend fun isStudentRegister(
+        name: String,
+        phoneNumber: String,
+        userId: String,
+        password: String,
+        department: String,
+        studentNumber:String,
+        gender: String,
+        email: String,
+        nickname: String
+    ): Boolean {
+        return try {
+            userRemoteDataSource.postStudentRegister(
+                StudentInfoRequest2(
+                    name = name,
+                    phoneNumber = phoneNumber,
+                    userId = userId,
+                    password = password,
+                    department = department,
+                    studentNumber = studentNumber,
+                    gender = gender,
+                    email = email,
+                    nickname = nickname
+                )
+            )
+            false
+        } catch (e: HttpException) {
+            if (e.code() == 201) {
+                true
+            } else {
+                throw e
+            }
+        }
+    }
+
+    override suspend fun isGeneralRegister(
+        name: String,
+        phoneNumber: String,
+        userId: String,
+        password: String,
+        gender: String,
+        email: String,
+        nickname: String
+    ): Boolean {
+        return try {
+            userRemoteDataSource.postGeneralRegister(
+                GeneralInfoRequest(
+                    name = name,
+                    phoneNumber = phoneNumber,
+                    userId = userId,
+                    password =  password,
+                    gender = gender,
+                    email = email,
+                    nickname = nickname
+                )
+            )
+            false
+        } catch (e: HttpException) {
+            if (e.code() == 201) {
+                true
+            } else {
+                throw e
+            }
+        }
+    }
+
+    override suspend fun sendSMS(phoneNumber: String): Boolean {
+        return try {
+            userRemoteDataSource.sendSMS(phoneNumber)
+            false
+        } catch (e: HttpException) {
+            if (e.code() == 200) {
+                true
+            } else {
+                throw e
+            }
+        }
+    }
+
+    override suspend fun sendRegisterEmail(phoneNumber: String, certificationCode: String): Boolean {
+        return try {
+            userRemoteDataSource.verifySMS(
+                SmsVerifyRequest(
+                    phoneNumber = phoneNumber,
+                    certificationCode = certificationCode
+                )
+            )
+            false
+        } catch (e: HttpException) {
+            if (e.code() == 200) {
+                true
+            } else {
+                throw e
             }
         }
     }

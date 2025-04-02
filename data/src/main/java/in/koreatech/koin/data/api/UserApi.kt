@@ -6,6 +6,8 @@ import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest2
+import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
@@ -50,4 +52,24 @@ interface UserApi {
     suspend fun postUserRefresh(
         @Body refreshRequest: RefreshRequest
     ): Response<RefreshResponse>
+
+    @GET(URLConstant.USER.CHECKPHONE)
+    suspend fun checkPhone(
+        @Query("phone") phone: String
+    )
+
+    @GET(URLConstant.USER.CHECKNICKNAME2)
+    suspend fun checkNickname2(
+        @Query("nickname") nickname: String
+    )
+
+    @POST(URLConstant.USER.STUDENT.REGISTER2)
+    suspend fun postStudentRegister(
+        @Body studentInfoRequest: StudentInfoRequest2
+    )
+
+    @POST(URLConstant.USER.GENERAL.REGISTER)
+    suspend fun postGeneralRegister(
+        @Body generalInfoRequest: GeneralInfoRequest
+    )
 }

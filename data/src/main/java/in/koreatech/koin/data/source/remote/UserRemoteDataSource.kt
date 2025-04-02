@@ -5,10 +5,13 @@ import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
+import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest2
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
@@ -83,5 +86,24 @@ class UserRemoteDataSource(
 
     suspend fun getUserType(): UserTypeResponse {
         return userAuthApi.getUserType()
+    }
+
+    suspend fun checkPhone(phone: String) {
+        userApi.checkPhone(phone)
+    }
+    suspend fun checkNickname2(nickname: String) {
+        userApi.checkNickname2(nickname)
+    }
+    suspend fun postStudentRegister(studentInfoRequest: StudentInfoRequest2) {
+        userApi.postStudentRegister(studentInfoRequest)
+    }
+    suspend fun postGeneralRegister(generalInfoRequest: GeneralInfoRequest) {
+        userApi.postGeneralRegister(generalInfoRequest)
+    }
+    suspend fun sendSMS(phoneNumber: String) {
+        userAuthApi.smsVerify(phoneNumber)
+    }
+    suspend fun verifySMS(smsVerifyRequest: SmsVerifyRequest) {
+        userAuthApi.smsVerify(smsVerifyRequest)
     }
 }
