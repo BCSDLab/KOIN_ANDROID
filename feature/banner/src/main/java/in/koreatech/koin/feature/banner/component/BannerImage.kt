@@ -30,8 +30,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
 import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
-import kotlinx.coroutines.delay
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.delay
 
 @Composable
 fun BannerImage(
