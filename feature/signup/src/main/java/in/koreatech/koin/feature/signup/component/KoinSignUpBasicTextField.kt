@@ -16,14 +16,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,12 +57,15 @@ fun KoinSignUpBasicTextField(
         onValueChange = onValueChange,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
+        textStyle = KoinTheme.typography.regular14.copy(
+            lineHeightStyle = null // Remove line height
+        ),
         singleLine = singleLine,
         maxLines = maxLines,
         visualTransformation = visualTransformation,
         decorationBox = { innerTextField ->
             Column(
-                Modifier.width(IntrinsicSize.Min)
+                modifier = Modifier.width(IntrinsicSize.Min)
             ) {
                 Row(
                     modifier = Modifier
@@ -91,19 +89,18 @@ fun KoinSignUpBasicTextField(
                         innerTextField()
                     }
 
-                    if (value.isNotEmpty()) {
-                        Image(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .noRippleClickable {
-                                    if (value.isNotEmpty()) {
-                                        onValueChange("")
-                                    }
-                                },
-                            painter = painterResource(id = R.drawable.ic_sign_up_text_field_clean),
-                            contentDescription = null
-                        )
-                    }
+                    Image(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .alpha(if (value.isEmpty()) 0f else 1f)
+                            .noRippleClickable {
+                                if (value.isNotEmpty()) {
+                                    onValueChange("")
+                                }
+                            },
+                        painter = painterResource(id = R.drawable.ic_sign_up_text_field_clean),
+                        contentDescription = null
+                    )
                 }
                 HorizontalDivider(
                     modifier = Modifier.fillMaxWidth()
