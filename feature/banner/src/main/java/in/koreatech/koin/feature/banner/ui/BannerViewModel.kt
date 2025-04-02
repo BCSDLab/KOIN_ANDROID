@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetCurrentVersionCodeUseCase
 import `in`.koreatech.koin.feature.banner.model.BannerState
 import `in`.koreatech.koin.feature.banner.model.toLocalBanner
+import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,7 +22,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class BannerViewModel @Inject constructor(
