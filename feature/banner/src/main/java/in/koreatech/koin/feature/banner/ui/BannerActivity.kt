@@ -35,32 +35,33 @@ class BannerActivity : ComponentActivity() {
             val uiState by viewModel.bannerState.collectAsState()
 
             KoinTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = Color.Transparent,
-                    contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.navigationBars)
-                ) { contentPadding ->
-                    if (uiState.isLoading) return@Scaffold // Don't render banner if not loaded yet
+                if (!uiState.isLoading) {
                     if (uiState.bannerList.isEmpty()) { // Finish activity if banner list is empty
                         finishActivity()
-                        return@Scaffold
+                        return@KoinTheme
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(contentPadding)
-                    ) {
-                        BannerA(
-                            bannerList = uiState.bannerList,
-                            currentKoinVersion = uiState.currentVersionCode,
-                            dismiss = {
-                                finishActivity()
-                            },
-                            dismissWithRefusal = {
-                                viewModel.setBannerRefusal()
-                                finishActivity()
-                            }
-                        )
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        containerColor = Color.Transparent,
+                        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.navigationBars)
+                    ) { contentPadding ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(contentPadding)
+                        ) {
+                            BannerA(
+                                bannerList = uiState.bannerList,
+                                currentKoinVersion = uiState.currentVersionCode,
+                                dismiss = {
+                                    finishActivity()
+                                },
+                                dismissWithRefusal = {
+                                    viewModel.setBannerRefusal()
+                                    finishActivity()
+                                }
+                            )
+                        }
                     }
                 }
             }
