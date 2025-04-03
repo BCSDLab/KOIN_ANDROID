@@ -34,7 +34,8 @@ import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun BannerImage(
