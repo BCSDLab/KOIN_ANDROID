@@ -47,10 +47,9 @@ fun BannerImage(
 
     LaunchedEffect(Unit) {
         snapshotFlow { pagerState.isScrollInProgress }
-            .distinctUntilChanged()
             .filter { it == false }
             .collectLatest {
-                if (bannerList.size > 1 && !pagerState.isScrollInProgress) {
+                if (bannerList.size > 1) {
                     delay(BANNER_AUTO_SCROLL_MILLISECONDS)
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
