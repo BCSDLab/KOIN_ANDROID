@@ -1,15 +1,12 @@
 package `in`.koreatech.koin.feature.signup.component
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -17,8 +14,6 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  * Koin Sign Up Progress Indicator
@@ -38,17 +33,9 @@ fun KoinSignUpProgressIndicator(
 ) {
     require(currentStep <= maxStep) { "Current step should be less than or equal to max step" }
 
-    var animateCurrentStep by remember { mutableFloatStateOf((currentStep - 1).toFloat()) }
-
-    val coroutineScope = rememberCoroutineScope()
-
+    val animatedStep = remember { Animatable((currentStep - 1).toFloat()) }
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            while (animateCurrentStep < currentStep) {
-                animateCurrentStep += 0.01f
-                delay(1)
-            }
-        }
+        animatedStep.animateTo(currentStep.toFloat())
     }
 
     Canvas(
@@ -65,7 +52,7 @@ fun KoinSignUpProgressIndicator(
         drawLine(
             color = stepColor,
             start = Offset(0f, 0f),
-            end = Offset(size.width / maxStep * animateCurrentStep, size.height),
+            end = Offset(size.width / maxStep * animatedStep.value, size.height),
             strokeWidth = 4.dp.toPx(),
             cap = StrokeCap.Round
         )
