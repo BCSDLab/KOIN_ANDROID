@@ -30,6 +30,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
 import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
+import `in`.koreatech.koin.feature.banner.util.ImageUtil
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 
@@ -111,7 +112,7 @@ private fun BannerContent(
             dismiss()
         },
         model = ImageRequest.Builder(LocalContext.current)
-            .data(banner.imageUrl)
+            .data(ImageUtil.getResizedImageUrl(banner.imageUrl, width = 400))
             .crossfade(true)
             .build(),
         alignment = Alignment.BottomCenter,
