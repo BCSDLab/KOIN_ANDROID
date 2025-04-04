@@ -27,8 +27,10 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
 import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
+import `in`.koreatech.koin.feature.banner.R
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
 import `in`.koreatech.koin.feature.banner.util.ImageUtil
 import kotlinx.collections.immutable.ImmutableList
@@ -101,6 +103,7 @@ private fun BannerContent(
         modifier = modifier.fillMaxSize().noRippleClickable {
             if (banner.redirectLink == null) return@noRippleClickable
             if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
+                ToastUtil.getInstance().makeShort(R.string.banner_require_new_version)
                 val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
                 context.startActivity(intent)
             } else {
