@@ -13,6 +13,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +37,8 @@ import `in`.koreatech.koin.feature.banner.model.LocalBanner
 import `in`.koreatech.koin.feature.banner.util.ImageUtil
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun BannerImage(
@@ -46,10 +50,14 @@ fun BannerImage(
     val pagerState = rememberPagerState { Int.MAX_VALUE }
 
     LaunchedEffect(Unit) {
-        while (bannerList.size > 1) {
-            delay(BANNER_AUTO_SCROLL_MILLISECONDS)
-            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-        }
+        snapshotFlow { pagerState.isScrollInProgress }
+            .filter { it == false }
+            .collectLatest {
+                if (bannerList.size > 1) {
+                    delay(BANNER_AUTO_SCROLL_MILLISECONDS)
+                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                }
+            }
     }
 
     Box(
