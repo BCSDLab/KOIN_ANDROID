@@ -77,6 +77,7 @@ interface UserApi {
 
     @POST(URLConstant.USER.GENERAL.REGISTER)
     suspend fun postGeneralRegister(
+        @Header("Authorization") token: String,
         @Body generalInfoRequest: GeneralInfoRequest
     )
 }

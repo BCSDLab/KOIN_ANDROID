@@ -66,6 +66,7 @@ interface UserRepository {
     ): Boolean
 
     suspend fun postGeneralRegister(
+        token: String,
         name: String,
         phoneNumber: String,
         userId: String,

@@ -231,17 +231,10 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postGeneralRegister(
-        name: String,
-        phoneNumber: String,
-        userId: String,
-        password: String,
-        gender: String,
-        email: String,
-        nickname: String
-    ): Boolean {
+    override suspend fun postGeneralRegister(token: String, name: String, phoneNumber: String, userId: String, password: String, gender: String, email: String, nickname: String): Boolean {
         return try {
             userRemoteDataSource.postGeneralRegister(
+                token,
                 GeneralInfoRequest(
                     name = name,
                     phoneNumber = phoneNumber,

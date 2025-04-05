@@ -102,8 +102,8 @@ class UserRemoteDataSource(
         userApi.postStudentRegister(token, studentInfoRequest)
     }
 
-    suspend fun postGeneralRegister(generalInfoRequest: GeneralInfoRequest) {
-        userApi.postGeneralRegister(generalInfoRequest)
+    suspend fun postGeneralRegister(token:String, generalInfoRequest: GeneralInfoRequest) {
+        userApi.postGeneralRegister(token, generalInfoRequest)
     }
 
     suspend fun sendSMS(phoneNumber: String) {
