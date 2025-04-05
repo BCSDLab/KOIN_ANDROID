@@ -59,7 +59,7 @@ interface UserRepository {
         userId: String,
         password: String,
         department: String,
-        studentNumber:String,
+        studentNumber: String,
         gender: String,
         email: String,
         nickname: String
