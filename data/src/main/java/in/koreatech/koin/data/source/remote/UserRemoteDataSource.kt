@@ -11,7 +11,7 @@ import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
-import `in`.koreatech.koin.data.request.user.StudentInfoRequest_V2
+import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
@@ -94,11 +94,11 @@ class UserRemoteDataSource(
         userApi.checkPhoneNumberDuplicate(phone)
     }
 
-    suspend fun checkNickname_V2(nickname: String) {
-        userApi.checkNickname_V2(nickname)
+    suspend fun checkNicknameV2(nickname: String) {
+        userApi.checkNicknameV2(nickname)
     }
 
-    suspend fun postStudentRegister(token:String, studentInfoRequest: StudentInfoRequest_V2) {
+    suspend fun postStudentRegister(token:String, studentInfoRequest: StudentInfoRequestV2) {
         userApi.postStudentRegister(token, studentInfoRequest)
     }
 

@@ -10,7 +10,7 @@ import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
-import `in`.koreatech.koin.data.request.user.StudentInfoRequest_V2
+import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
@@ -172,13 +172,13 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isUsernameDuplicated_V2(nickname: String): Duplicated {
+    override suspend fun isUsernameDuplicatedV2(nickname: String): Duplicated {
         return try {
-            userRemoteDataSource.checkNickname_V2(nickname)
+            userRemoteDataSource.checkNicknameV2(nickname)
             Duplicated.OK
         } catch (e: HttpException) {
             when (e.code()) {
-                400 -> Duplicated.INVALID_FORMAT
+                400 -> Duplicated.INVALID
                 409 -> Duplicated.CONFLICT
                 else -> Duplicated.UNDEFINED
             }
@@ -191,7 +191,7 @@ class UserRepositoryImpl @Inject constructor(
             Duplicated.OK
         } catch (e: HttpException) {
             when (e.code()) {
-                400 -> Duplicated.INVALID_FORMAT
+                400 -> Duplicated.INVALID
                 409 -> Duplicated.CONFLICT
                 else -> Duplicated.UNDEFINED
             }
@@ -213,7 +213,7 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             userRemoteDataSource.postStudentRegister(
                 token,
-                StudentInfoRequest_V2(
+                StudentInfoRequestV2(
                     name = name,
                     phoneNumber = phoneNumber,
                     userId = userId,

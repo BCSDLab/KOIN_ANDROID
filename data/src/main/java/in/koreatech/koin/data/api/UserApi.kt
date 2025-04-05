@@ -6,7 +6,7 @@ import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
-import `in`.koreatech.koin.data.request.user.StudentInfoRequest_V2
+import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
@@ -60,7 +60,7 @@ interface UserApi {
     )
 
     @GET(URLConstant.USER.CHECKNICKNAME_V2)
-    suspend fun checkNickname_V2(
+    suspend fun checkNicknameV2(
         @Query("nickname") nickname: String
     )
 
@@ -72,7 +72,7 @@ interface UserApi {
     @POST(URLConstant.USER.STUDENT.REGISTER_V2)
     suspend fun postStudentRegister(
         @Header("Authorization") token: String,
-        @Body studentInfoRequest: StudentInfoRequest_V2
+        @Body studentInfoRequest: StudentInfoRequestV2
     )
 
     @POST(URLConstant.USER.GENERAL.REGISTER)

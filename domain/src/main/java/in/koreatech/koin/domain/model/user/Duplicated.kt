@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.domain.model.user
 
 sealed class Duplicated {
-    object OK : Duplicated()
-    object INVALID_FORMAT : Duplicated()
-    object CONFLICT : Duplicated()
-    object UNDEFINED : Duplicated()
+    data object OK : Duplicated()
+    data object INVALID : Duplicated()
+    data object CONFLICT : Duplicated()
+    data object UNDEFINED : Duplicated()
 }

@@ -48,7 +48,7 @@ interface UserRepository {
 
     suspend fun postABTestAssign(title: String): ABTest
 
-    suspend fun isUsernameDuplicated_V2(nickname: String): Duplicated
+    suspend fun isUsernameDuplicatedV2(nickname: String): Duplicated
 
     suspend fun isPhoneDuplicated(phone: String): Duplicated
 
