@@ -1,0 +1,21 @@
+name: "Pick Reviewer"
+on:
+  pull_request:
+    types: opened
+
+jobs:
+  pick-reviewer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Pick reviewer
+        id: pick_reviewer
+        run: kotlinc -script ./.github/scripts/pick_reviewer.kts
+
+      - name: Add Reviewer
+        uses: madrapps/add-reviewers@v1
+        with:
+          reviewers: ${{ steps.pick_reviewer.outputs.reviewer }}
+          token: ${{ secrets.GITHUB_TOKEN }}
