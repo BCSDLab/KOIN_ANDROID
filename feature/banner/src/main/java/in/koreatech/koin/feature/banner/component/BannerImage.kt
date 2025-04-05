@@ -13,6 +13,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,11 +29,16 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
 import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
+import `in`.koreatech.koin.feature.banner.R
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
+import `in`.koreatech.koin.feature.banner.util.ImageUtil
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun BannerImage(
@@ -43,10 +50,14 @@ fun BannerImage(
     val pagerState = rememberPagerState { Int.MAX_VALUE }
 
     LaunchedEffect(Unit) {
-        while (bannerList.size > 1) {
-            delay(BANNER_AUTO_SCROLL_MILLISECONDS)
-            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-        }
+        snapshotFlow { pagerState.isScrollInProgress }
+            .filter { it == false }
+            .collectLatest {
+                if (bannerList.size > 1) {
+                    delay(BANNER_AUTO_SCROLL_MILLISECONDS)
+                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                }
+            }
     }
 
     Box(
@@ -98,11 +109,13 @@ private fun BannerContent(
     val context = LocalContext.current
     SubcomposeAsyncImage(
         modifier = modifier.fillMaxSize().noRippleClickable {
+            if (banner.redirectLink == null) return@noRippleClickable
             if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
+                ToastUtil.getInstance().makeShort(R.string.banner_require_new_version)
                 val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
                 context.startActivity(intent)
             } else {
-                if (!banner.redirectLink.isNullOrEmpty()) {
+                if (banner.redirectLink.isNotEmpty()) {
                     val intent = Intent(Intent.ACTION_VIEW, banner.redirectLink.toUri())
                     context.startActivity(intent)
                 }
@@ -110,7 +123,7 @@ private fun BannerContent(
             dismiss()
         },
         model = ImageRequest.Builder(LocalContext.current)
-            .data(banner.imageUrl)
+            .data(ImageUtil.getResizedImageUrl(banner.imageUrl, width = 400))
             .crossfade(true)
             .build(),
         alignment = Alignment.BottomCenter,

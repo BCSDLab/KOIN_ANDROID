@@ -52,6 +52,7 @@ fun BannerB(
             modifier = modifier
                 .padding(horizontal = 24.dp)
                 .clip(KoinTheme.shapes.large)
+                .background(KoinTheme.colors.neutral0)
         ) {
             BannerImage(
                 modifier = Modifier.height(maxImageHeight),
