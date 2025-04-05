@@ -4,7 +4,6 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
-import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
@@ -130,5 +129,5 @@ interface UserAuthApi {
     @POST(URLConstant.USER.SMSVERIFY)
     suspend fun codeVerify(
         @Body smsVerifyRequest: SmsVerifyRequest
-    ) : TokenResponse
+    ): TokenResponse
 }
