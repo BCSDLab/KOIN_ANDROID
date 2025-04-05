@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName
 
 data class GeneralInfoRequest(
     @SerializedName("name")
-    val name: String?,
+    val name: String,
     @SerializedName("phone_number")
-    val phoneNumber: String?,
+    val phoneNumber: String,
     @SerializedName("user_id")
-    val userId: String?,
+    val userId: String,
     @SerializedName("password")
-    val password: String?,
+    val password: String,
     @SerializedName("gender")
-    val gender: String?,
+    val gender: String,
     @SerializedName("email")
-    val email: String?,
+    val email: String,
     @SerializedName("nickname")
-    val nickname: String?,
+    val nickname: String,
 )

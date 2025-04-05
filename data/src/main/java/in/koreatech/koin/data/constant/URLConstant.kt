@@ -65,7 +65,7 @@ object URLConstant {
         const val CHECKPASSWORD: String = "$USER/check/password"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
         const val CHECKPHONE: String = "$USER/check/phone"
-        const val CHECKNICKNAME2: String = "$USER/check/nickname"
+        const val CHECKNICKNAME_V2: String = "$USER/check/nickname"
         const val SMSSEND: String = "$USER/sms/send"
         const val SMSVERIFY: String = "$USER/sms/verify"
         const val AUTH: String = "$USER/auth"
@@ -77,7 +77,7 @@ object URLConstant {
         object STUDENT {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
-            const val REGISTER2: String = "$VERSION/$USER/$STUDENT/register"
+            const val REGISTER_V2: String = "$VERSION/$USER/$STUDENT/register"
         }
         object GENERAL {
             const val GENERAL = "general"

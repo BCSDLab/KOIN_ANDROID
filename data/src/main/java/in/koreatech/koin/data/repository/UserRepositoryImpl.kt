@@ -10,13 +10,13 @@ import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
-import `in`.koreatech.koin.data.request.user.StudentInfoRequest2
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest_V2
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
-import `in`.koreatech.koin.domain.model.user.CheckResponse
+import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
@@ -172,41 +172,34 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isUsernameDuplicated2(nickname: String): CheckResponse {
+    override suspend fun isUsernameDuplicated_V2(nickname: String): Duplicated {
         return try {
-            userRemoteDataSource.checkNickname2(nickname)
-            CheckResponse.OK
+            userRemoteDataSource.checkNickname_V2(nickname)
+            Duplicated.OK
         } catch (e: HttpException) {
-            if (e.code() == 200) {
-                CheckResponse.OK
-            } else if (e.code() == 400) {
-                CheckResponse.BAD_REQUEST
-            } else if (e.code() == 409) {
-                CheckResponse.CONFLICT
-            } else {
-                CheckResponse.UNDEFINED
+            when (e.code()) {
+                400 -> Duplicated.INVALID_FORMAT
+                409 -> Duplicated.CONFLICT
+                else -> Duplicated.UNDEFINED
             }
         }
     }
 
-    override suspend fun isPhoneDuplicated(phone: String): CheckResponse {
+    override suspend fun isPhoneDuplicated(phone: String): Duplicated {
         return try {
-            userRemoteDataSource.checkPhone(phone)
-            CheckResponse.OK
+            userRemoteDataSource.checkPhoneNumberDuplicate(phone)
+            Duplicated.OK
         } catch (e: HttpException) {
-            if (e.code() == 200) {
-                CheckResponse.OK
-            } else if (e.code() == 400) {
-                CheckResponse.BAD_REQUEST
-            } else if (e.code() == 409) {
-                CheckResponse.CONFLICT
-            } else {
-                CheckResponse.UNDEFINED
+            when (e.code()) {
+                400 -> Duplicated.INVALID_FORMAT
+                409 -> Duplicated.CONFLICT
+                else -> Duplicated.UNDEFINED
             }
         }
     }
 
-    override suspend fun isStudentRegister(
+    override suspend fun postStudentRegister(
+        token: String,
         name: String,
         phoneNumber: String,
         userId: String,
@@ -219,7 +212,8 @@ class UserRepositoryImpl @Inject constructor(
     ): Boolean {
         return try {
             userRemoteDataSource.postStudentRegister(
-                StudentInfoRequest2(
+                token,
+                StudentInfoRequest_V2(
                     name = name,
                     phoneNumber = phoneNumber,
                     userId = userId,
@@ -231,17 +225,13 @@ class UserRepositoryImpl @Inject constructor(
                     nickname = nickname
                 )
             )
-            false
+            true
         } catch (e: HttpException) {
-            if (e.code() == 201) {
-                true
-            } else {
-                throw e
-            }
+            false
         }
     }
 
-    override suspend fun isGeneralRegister(
+    override suspend fun postGeneralRegister(
         name: String,
         phoneNumber: String,
         userId: String,
@@ -264,42 +254,29 @@ class UserRepositoryImpl @Inject constructor(
             )
             false
         } catch (e: HttpException) {
-            if (e.code() == 201) {
-                true
-            } else {
-                throw e
-            }
+            false
         }
     }
 
     override suspend fun sendSMS(phoneNumber: String): Boolean {
         return try {
             userRemoteDataSource.sendSMS(phoneNumber)
-            false
+            true
         } catch (e: HttpException) {
-            if (e.code() == 200) {
-                true
-            } else {
-                throw e
-            }
+            false
         }
     }
 
-    override suspend fun sendRegisterEmail(phoneNumber: String, certificationCode: String): Boolean {
+    override suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): String {
         return try {
-            userRemoteDataSource.verifySMS(
+            userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
                     phoneNumber = phoneNumber,
                     certificationCode = certificationCode
                 )
-            )
-            false
+            ).token
         } catch (e: HttpException) {
-            if (e.code() == 200) {
-                true
-            } else {
-                throw e
-            }
+            ""
         }
     }
 }

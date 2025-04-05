@@ -18,6 +18,4 @@ interface UserErrorHandler {
     fun handleUpdateUserError(throwable: Throwable): ErrorHandler
 
     fun handleVerifyUserPasswordError(throwable: Throwable): ErrorHandler
-
-    fun handlePhoneDuplicatedError(throwable: Throwable): ErrorHandler
 }

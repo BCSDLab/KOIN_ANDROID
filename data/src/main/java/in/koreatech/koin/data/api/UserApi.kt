@@ -6,7 +6,7 @@ import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
-import `in`.koreatech.koin.data.request.user.StudentInfoRequest2
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest_V2
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
@@ -14,6 +14,7 @@ import `in`.koreatech.koin.data.response.user.RefreshResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -54,18 +55,24 @@ interface UserApi {
     ): Response<RefreshResponse>
 
     @GET(URLConstant.USER.CHECKPHONE)
-    suspend fun checkPhone(
+    suspend fun checkPhoneNumberDuplicate(
         @Query("phone") phone: String
     )
 
-    @GET(URLConstant.USER.CHECKNICKNAME2)
-    suspend fun checkNickname2(
+    @GET(URLConstant.USER.CHECKNICKNAME_V2)
+    suspend fun checkNickname_V2(
         @Query("nickname") nickname: String
     )
 
-    @POST(URLConstant.USER.STUDENT.REGISTER2)
+    @POST(URLConstant.USER.SMSSEND)
+    suspend fun smsSend(
+        @Query("phone_number") phoneNumber: String
+    )
+
+    @POST(URLConstant.USER.STUDENT.REGISTER_V2)
     suspend fun postStudentRegister(
-        @Body studentInfoRequest: StudentInfoRequest2
+        @Header("Authorization") token: String,
+        @Body studentInfoRequest: StudentInfoRequest_V2
     )
 
     @POST(URLConstant.USER.GENERAL.REGISTER)

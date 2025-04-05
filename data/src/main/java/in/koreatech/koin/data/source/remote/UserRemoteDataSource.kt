@@ -11,14 +11,16 @@ import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
-import `in`.koreatech.koin.data.request.user.StudentInfoRequest2
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest_V2
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.TokenResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
+import retrofit2.Response
 
 class UserRemoteDataSource(
     private val userApi: UserApi,
@@ -88,22 +90,27 @@ class UserRemoteDataSource(
         return userAuthApi.getUserType()
     }
 
-    suspend fun checkPhone(phone: String) {
-        userApi.checkPhone(phone)
+    suspend fun checkPhoneNumberDuplicate(phone: String) {
+        userApi.checkPhoneNumberDuplicate(phone)
     }
-    suspend fun checkNickname2(nickname: String) {
-        userApi.checkNickname2(nickname)
+
+    suspend fun checkNickname_V2(nickname: String) {
+        userApi.checkNickname_V2(nickname)
     }
-    suspend fun postStudentRegister(studentInfoRequest: StudentInfoRequest2) {
-        userApi.postStudentRegister(studentInfoRequest)
+
+    suspend fun postStudentRegister(token:String, studentInfoRequest: StudentInfoRequest_V2) {
+        userApi.postStudentRegister(token, studentInfoRequest)
     }
+
     suspend fun postGeneralRegister(generalInfoRequest: GeneralInfoRequest) {
         userApi.postGeneralRegister(generalInfoRequest)
     }
+
     suspend fun sendSMS(phoneNumber: String) {
-        userAuthApi.smsVerify(phoneNumber)
+        userApi.smsSend(phoneNumber)
     }
-    suspend fun verifySMS(smsVerifyRequest: SmsVerifyRequest) {
-        userAuthApi.smsVerify(smsVerifyRequest)
+
+    suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) : TokenResponse {
+        return userAuthApi.codeVerify(smsVerifyRequest)
     }
 }

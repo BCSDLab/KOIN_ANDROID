@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
+import `in`.koreatech.koin.data.response.user.TokenResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
@@ -126,13 +127,8 @@ interface UserAuthApi {
         @Path("storeId") storeId: Int
     )
 
-    @POST(URLConstant.USER.SMSSEND)
-    suspend fun smsVerify(
-        @Query("phone_number") phoneNumber: String
-    )
-
     @POST(URLConstant.USER.SMSVERIFY)
-    suspend fun smsVerify(
+    suspend fun codeVerify(
         @Body smsVerifyRequest: SmsVerifyRequest
-    )
+    ) : TokenResponse
 }

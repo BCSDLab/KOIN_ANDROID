@@ -2,23 +2,23 @@ package `in`.koreatech.koin.data.request.user
 
 import com.google.gson.annotations.SerializedName
 
-data class StudentInfoRequest2(
+data class StudentInfoRequest_V2(
     @SerializedName("name")
-    val name: String?,
+    val name: String,
     @SerializedName("phone_number")
-    val phoneNumber: String?,
+    val phoneNumber: String,
     @SerializedName("user_id")
-    val userId: String?,
+    val userId: String,
     @SerializedName("password")
-    val password: String?,
+    val password: String,
     @SerializedName("department")
-    val department: String?,
+    val department: String,
     @SerializedName("student_number")
-    val studentNumber: String?,
+    val studentNumber: String,
     @SerializedName("gender")
-    val gender: String?,
+    val gender: String,
     @SerializedName("email")
-    val email: String?,
+    val email: String,
     @SerializedName("nickname")
-    val nickname: String?,
+    val nickname: String,
 )
