@@ -336,7 +336,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     private fun initBanner() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.isBannerRefusal.collectLatest {
                     if (it == false) {
                         val intent = Intent(this@MainActivity, BannerActivity::class.java)
