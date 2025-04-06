@@ -20,7 +20,6 @@ import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.TokenResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
-import retrofit2.Response
 
 class UserRemoteDataSource(
     private val userApi: UserApi,
@@ -98,11 +97,11 @@ class UserRemoteDataSource(
         userApi.checkNicknameV2(nickname)
     }
 
-    suspend fun postStudentRegister(token:String, studentInfoRequest: StudentInfoRequestV2) {
+    suspend fun postStudentRegister(token: String, studentInfoRequest: StudentInfoRequestV2) {
         userApi.postStudentRegister(token, studentInfoRequest)
     }
 
-    suspend fun postGeneralRegister(token:String, generalInfoRequest: GeneralInfoRequest) {
+    suspend fun postGeneralRegister(token: String, generalInfoRequest: GeneralInfoRequest) {
         userApi.postGeneralRegister("Bearer $token", generalInfoRequest)
     }
 
@@ -110,7 +109,7 @@ class UserRemoteDataSource(
         userApi.smsSend(phoneNumber)
     }
 
-    suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) : TokenResponse {
+    suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest): TokenResponse {
         return userAuthApi.codeVerify(smsVerifyRequest)
     }
 }

@@ -205,7 +205,7 @@ class UserRepositoryImpl @Inject constructor(
         userId: String,
         password: String,
         department: String,
-        studentNumber:String,
+        studentNumber: String,
         gender: String,
         email: String,
         nickname: String
@@ -239,7 +239,7 @@ class UserRepositoryImpl @Inject constructor(
                     name = name,
                     phoneNumber = phoneNumber,
                     userId = userId,
-                    password =  password,
+                    password = password,
                     gender = gender,
                     email = email,
                     nickname = nickname
