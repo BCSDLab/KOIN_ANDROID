@@ -13,7 +13,8 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -41,7 +42,7 @@ fun KoinSignUpCheckAllBox(
         verticalAlignment = CenterVertically
     ) {
         Image(
-            painter = painterResource(if (checked) R.drawable.ic_checkbox_checked else R.drawable.ic_checkbox_unchecked),
+            imageVector = ImageVector.vectorResource(if (checked) R.drawable.ic_checkbox_checked else R.drawable.ic_checkbox_unchecked),
             contentDescription = trailingText,
             modifier = Modifier.noRippleClickable {
                 onCheckedChange(!checked)
@@ -63,7 +64,7 @@ fun KoinSignUpCheckAllBox(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewKoinSignUpCheckAllBox() {
+private fun PreviewKoinSignUpCheckAllBox() {
     KoinSignUpCheckAllBox(
         checked = false,
         trailingText = "전체 동의",
