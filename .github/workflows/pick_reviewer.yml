@@ -19,3 +19,10 @@ jobs:
         with:
           reviewers: ${{ steps.pick_reviewer.outputs.reviewer }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add Mentor
+        if: ${{ steps.pick_reviewer.outputs.mentor }}
+        uses: madrapps/add-reviewers@v1
+        with:
+          reviewers: ${{ steps.pick_reviewer.outputs.mentor }}
+          token: ${{ secrets.GITHUB_TOKEN }}

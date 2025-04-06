@@ -5,6 +5,7 @@
  */
 
 import java.io.File
+import kotlin.random.Random
 
 enum class KoinTeam {
     BUSINESS,
@@ -12,7 +13,8 @@ enum class KoinTeam {
     USER
 }
 
-enum class Developer(val githubName: String, val team: Set<KoinTeam>) {
+enum class Developer(val githubName: String, val team: Set<KoinTeam>, val isMentor: Boolean = false) {
+    YUNJAENA("yunjaena", setOf(), true),
     SKDUD0629("skdud0629", setOf(KoinTeam.BUSINESS)),
     JAEYOUNG290("JaeYoung290", setOf(KoinTeam.BUSINESS)),
     KONGWOOJIN("kongwoojin", setOf(KoinTeam.CAMPUS, KoinTeam.USER)),
@@ -26,6 +28,7 @@ enum class Developer(val githubName: String, val team: Set<KoinTeam>) {
  *
  * Pair rule
  * developer and reviewer should not be in the same team
+ * don't add mentor here
  */
 val reviewerPair = listOf(
     Developer.SKDUD0629 to Developer.KYM_P,
@@ -45,6 +48,15 @@ fun exportReviewer(name: String) {
 }
 
 /**
+ * Export the mentor name to GitHub Actions output.
+ * @param name The name of the mentor.
+ */
+fun exportMentor(name: String) {
+    val githubOutput = System.getenv("GITHUB_OUTPUT")
+    File(githubOutput).appendText("mentor=$name\n")
+}
+
+/**
  * Pick a paired reviewer for the developer.
  * The developer and reviewer should not be in the same team.
  */
@@ -60,9 +72,21 @@ fun pickPairedReviewer(developer: Developer) {
 fun pickRandomReviewer(developer: Developer) {
     val otherTeamDevelopers = Developer.entries
         .filter { it != developer }
+        .filter { !it.isMentor }
         .filter { it.team.intersect(developer.team).isEmpty() }
     val randomReviewer = otherTeamDevelopers.random()
     exportReviewer(randomReviewer.githubName)
+}
+
+/**
+ * Pick a mentor.
+ */
+fun pickMentor() {
+    val shouldAddMentor = Random.nextInt() % 4 == 0 // 25%
+    if (shouldAddMentor) {
+        val mentor = Developer.entries.filter { it.isMentor }.random()
+        exportMentor(mentor.githubName)
+    }
 }
 
 fun main() {
@@ -74,6 +98,7 @@ fun main() {
     }
 
     pickPairedReviewer(developer)
+    pickMentor()
 }
 
 main()
