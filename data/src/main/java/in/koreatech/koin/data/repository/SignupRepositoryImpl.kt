@@ -67,7 +67,7 @@ class SignupRepositoryImpl @Inject constructor(
             if (e.code() == 409) {
                 Result.failure(SignupAlreadySentEmailException())
             } else {
-                Result.failure(Throwable(e.getErrorResponse()?.message ?: ""))
+                Result.failure(Throwable(e.getErrorResponse().message ?: ""))
             }
         } catch (t: Throwable) {
             Result.failure(t)

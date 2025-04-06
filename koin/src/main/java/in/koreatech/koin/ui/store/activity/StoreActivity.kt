@@ -508,6 +508,20 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
             }
 
             goToBenefitActivityButton.setOnClickListener {
+                val previousPage = viewModel.category.value?.name
+                if (previousPage != null) {
+                    EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES_BENEFIT,
+                        "혜택이 있는 상점 모아보기",
+                        EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousPage),
+                        EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
+                        EventExtra(
+                            AnalyticsConstant.DURATION_TIME,
+                            getElapsedTimeAndReset().toString()
+                        )
+                    )
+                }
                 startActivity(Intent(this@StoreActivity, CallBenefitStoreActivity::class.java))
             }
         }

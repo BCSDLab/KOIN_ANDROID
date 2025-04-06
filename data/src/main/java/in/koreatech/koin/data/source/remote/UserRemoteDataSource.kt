@@ -5,15 +5,19 @@ import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
+import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
+import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.TokenResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
@@ -83,5 +87,29 @@ class UserRemoteDataSource(
 
     suspend fun getUserType(): UserTypeResponse {
         return userAuthApi.getUserType()
+    }
+
+    suspend fun checkPhoneNumberDuplicate(phone: String) {
+        userApi.checkPhoneNumberDuplicate(phone)
+    }
+
+    suspend fun checkNicknameV2(nickname: String) {
+        userApi.checkNicknameV2(nickname)
+    }
+
+    suspend fun postStudentRegister(token: String, studentInfoRequest: StudentInfoRequestV2) {
+        userApi.postStudentRegister(token, studentInfoRequest)
+    }
+
+    suspend fun postGeneralRegister(token: String, generalInfoRequest: GeneralInfoRequest) {
+        userApi.postGeneralRegister("Bearer $token", generalInfoRequest)
+    }
+
+    suspend fun sendSMS(phoneNumber: String) {
+        userApi.smsSend(phoneNumber)
+    }
+
+    suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest): TokenResponse {
+        return userAuthApi.codeVerify(smsVerifyRequest)
     }
 }
