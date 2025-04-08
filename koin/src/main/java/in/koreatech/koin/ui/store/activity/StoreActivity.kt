@@ -512,7 +512,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 if (previousPage != null) {
                     EventLogger.logClickEvent(
                         EventAction.BUSINESS,
-                        AnalyticsConstant.Label.BENEFIT_SHOP_CATEGORIES,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES_BENEFIT,
                         "혜택이 있는 상점 모아보기",
                         EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousPage),
                         EventExtra(AnalyticsConstant.CURRENT_PAGE, "benefit"),
