@@ -17,7 +17,6 @@ import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
-import `in`.koreatech.koin.data.response.user.TokenResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
@@ -97,19 +96,19 @@ class UserRemoteDataSource(
         userApi.checkNicknameV2(nickname)
     }
 
-    suspend fun postStudentRegister(token: String, studentInfoRequest: StudentInfoRequestV2) {
-        userApi.postStudentRegister(token, studentInfoRequest)
+    suspend fun postStudentRegister(studentInfoRequest: StudentInfoRequestV2) {
+        userApi.postStudentRegister(studentInfoRequest)
     }
 
-    suspend fun postGeneralRegister(token: String, generalInfoRequest: GeneralInfoRequest) {
-        userApi.postGeneralRegister("Bearer $token", generalInfoRequest)
+    suspend fun postGeneralRegister(generalInfoRequest: GeneralInfoRequest) {
+        userApi.postGeneralRegister(generalInfoRequest)
     }
 
     suspend fun sendSMS(phoneNumber: String) {
         userApi.smsSend(phoneNumber)
     }
 
-    suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest): TokenResponse {
-        return userAuthApi.codeVerify(smsVerifyRequest)
+    suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) {
+        userApi.codeVerify(smsVerifyRequest)
     }
 }

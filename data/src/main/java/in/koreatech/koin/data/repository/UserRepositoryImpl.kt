@@ -199,7 +199,6 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postStudentRegister(
-        token: String,
         name: String,
         phoneNumber: String,
         userId: String,
@@ -212,7 +211,6 @@ class UserRepositoryImpl @Inject constructor(
     ): Boolean {
         return try {
             userRemoteDataSource.postStudentRegister(
-                token,
                 StudentInfoRequestV2(
                     name = name,
                     phoneNumber = phoneNumber,
@@ -231,10 +229,17 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postGeneralRegister(token: String, name: String, phoneNumber: String, userId: String, password: String, gender: String, email: String, nickname: String): Boolean {
+    override suspend fun postGeneralRegister(
+        name: String,
+        phoneNumber: String,
+        userId: String,
+        password: String,
+        gender: String,
+        email: String,
+        nickname: String
+    ): Boolean {
         return try {
             userRemoteDataSource.postGeneralRegister(
-                token,
                 GeneralInfoRequest(
                     name = name,
                     phoneNumber = phoneNumber,
@@ -260,16 +265,17 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): String {
+    override suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): Boolean {
         return try {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
                     phoneNumber = phoneNumber,
                     certificationCode = certificationCode
                 )
-            ).token
+            )
+            true
         } catch (e: HttpException) {
-            ""
+            false
         }
     }
 }

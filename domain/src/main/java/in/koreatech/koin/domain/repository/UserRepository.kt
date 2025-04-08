@@ -53,7 +53,6 @@ interface UserRepository {
     suspend fun isPhoneDuplicated(phone: String): Duplicated
 
     suspend fun postStudentRegister(
-        token: String,
         name: String,
         phoneNumber: String,
         userId: String,
@@ -66,7 +65,6 @@ interface UserRepository {
     ): Boolean
 
     suspend fun postGeneralRegister(
-        token: String,
         name: String,
         phoneNumber: String,
         userId: String,
@@ -78,5 +76,5 @@ interface UserRepository {
 
     suspend fun sendSMS(phoneNumber: String): Boolean
 
-    suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): String
+    suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): Boolean
 }

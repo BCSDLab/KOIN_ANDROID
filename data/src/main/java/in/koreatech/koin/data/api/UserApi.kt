@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
+import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
@@ -71,13 +72,16 @@ interface UserApi {
 
     @POST(URLConstant.USER.STUDENT.REGISTER_V2)
     suspend fun postStudentRegister(
-        @Header("Authorization") token: String,
         @Body studentInfoRequest: StudentInfoRequestV2
     )
 
     @POST(URLConstant.USER.GENERAL.REGISTER)
     suspend fun postGeneralRegister(
-        @Header("Authorization") token: String,
         @Body generalInfoRequest: GeneralInfoRequest
+    )
+
+    @POST(URLConstant.USER.SMSVERIFY)
+    suspend fun codeVerify(
+        @Body smsVerifyRequest: SmsVerifyRequest
     )
 }
