@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dismiss_for_a_week">일주일 동안 그만 보기</string>
+    <string name="dismiss">닫기</string>
+    <string name="banner_require_new_version">해당 기능을 사용하기 위해서는 업데이트가 꼭 필요해요</string>
+</resources>
