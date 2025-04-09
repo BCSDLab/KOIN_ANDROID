@@ -76,9 +76,9 @@ interface UserRepository {
         nickname: String
     ): Boolean
 
-    suspend fun sendSMS(target: String): Verification
+    suspend fun sendSMS(target: String): Boolean
 
     suspend fun verifyCertificationCode(target: String, code: String): Verification
 
-    suspend fun countSMS(target: String): CodeRequestCount
+    suspend fun countSMS(target: String): Result<CodeRequestCount>
 }

@@ -115,7 +115,7 @@ class UserRemoteDataSource(
         userApi.codeVerify(smsVerifyRequest)
     }
 
-    suspend fun countSMS(target: String): Response<CodeRequestCountResponse> {
+    suspend fun countSMS(target: String): CodeRequestCountResponse {
         return userApi.smsCount(target)
     }
 }

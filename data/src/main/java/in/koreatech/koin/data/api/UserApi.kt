@@ -89,5 +89,5 @@ interface UserApi {
     @POST(URLConstant.USER.SMSCOUNT)
     suspend fun smsCount(
         @Query("target") target: String
-    ): Response<CodeRequestCountResponse>
+    ): CodeRequestCountResponse
 }

@@ -259,15 +259,12 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun sendSMS(target: String): Verification {
+    override suspend fun sendSMS(target: String): Boolean {
         return try {
             userRemoteDataSource.sendSMS(SmsSendRequest(target = target))
-            Verification.OK
+            false
         } catch (e: HttpException) {
-            when (e.code()) {
-                400 -> Verification.INVALID
-                else -> Verification.UNDEFINED
-            }
+            false
         }
     }
 
@@ -283,22 +280,19 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: HttpException) {
             when (e.code()) {
                 400 -> Verification.INVALID
-                409 -> Verification.NOCODE
+                404 -> Verification.NOCODE
                 else -> Verification.UNDEFINED
             }
         }
     }
 
-    override suspend fun countSMS(target: String): CodeRequestCount {
+    override suspend fun countSMS(target: String): Result<CodeRequestCount> {
         return try {
-            userRemoteDataSource.countSMS(target = target).body()?.let {
-                return CodeRequestCount(it.target, it.totalCount, it.remainingCount, it.currentCount)
-            } ?: throw Exception("response is null")
-        } catch (e: HttpException) {
-            when (e.code()) {
-                400 -> CodeRequestCount("", 0, 0, 0)
-                else -> throw e
+            userRemoteDataSource.countSMS(target = target).let {
+                Result.success(CodeRequestCount(it.target, it.totalCount, it.remainingCount, it.currentCount))
             }
+        } catch (e: HttpException) {
+            Result.failure(e)
         }
     }
 }
