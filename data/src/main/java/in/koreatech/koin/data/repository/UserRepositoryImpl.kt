@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
+import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
@@ -16,8 +17,10 @@ import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.CodeRequestCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.Verification
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -256,26 +259,46 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun sendSMS(phoneNumber: String): Boolean {
+    override suspend fun sendSMS(target: String): Verification {
         return try {
-            userRemoteDataSource.sendSMS(phoneNumber)
-            true
+            userRemoteDataSource.sendSMS(SmsSendRequest(target = target))
+            Verification.OK
         } catch (e: HttpException) {
-            false
+            when (e.code()) {
+                400 -> Verification.INVALID
+                else -> Verification.UNDEFINED
+            }
         }
     }
 
-    override suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): Boolean {
+    override suspend fun verifyCertificationCode(target: String, code: String): Verification {
         return try {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
-                    phoneNumber = phoneNumber,
-                    certificationCode = certificationCode
+                    target = target,
+                    code = code
                 )
             )
-            true
+            Verification.OK
         } catch (e: HttpException) {
-            false
+            when (e.code()) {
+                400 -> Verification.INVALID
+                409 -> Verification.NOCODE
+                else -> Verification.UNDEFINED
+            }
+        }
+    }
+
+    override suspend fun countSMS(target: String): CodeRequestCount {
+        return try {
+            userRemoteDataSource.countSMS(target = target).body()?.let {
+                return CodeRequestCount(it.target, it.totalCount, it.remainingCount, it.currentCount)
+            } ?: throw Exception("response is null")
+        } catch (e: HttpException) {
+            when (e.code()) {
+                400 -> CodeRequestCount("", 0, 0, 0)
+                else -> throw e
+            }
         }
     }
 }

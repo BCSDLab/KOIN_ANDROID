@@ -2,8 +2,10 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.CodeRequestCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.Verification
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
@@ -74,7 +76,9 @@ interface UserRepository {
         nickname: String
     ): Boolean
 
-    suspend fun sendSMS(phoneNumber: String): Boolean
+    suspend fun sendSMS(target: String): Verification
 
-    suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): Boolean
+    suspend fun verifyCertificationCode(target: String, code: String): Verification
+
+    suspend fun countSMS(target: String): CodeRequestCount
 }

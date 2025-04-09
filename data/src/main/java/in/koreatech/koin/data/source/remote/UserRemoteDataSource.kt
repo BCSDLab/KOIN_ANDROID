@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
+import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
@@ -17,8 +18,10 @@ import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
+import retrofit2.Response
 
 class UserRemoteDataSource(
     private val userApi: UserApi,
@@ -104,11 +107,15 @@ class UserRemoteDataSource(
         userApi.postGeneralRegister(generalInfoRequest)
     }
 
-    suspend fun sendSMS(phoneNumber: String) {
-        userApi.smsSend(phoneNumber)
+    suspend fun sendSMS(smsSendRequest: SmsSendRequest) {
+        userApi.smsSend(smsSendRequest)
     }
 
     suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) {
         userApi.codeVerify(smsVerifyRequest)
+    }
+
+    suspend fun countSMS(target: String): Response<CodeRequestCountResponse> {
+        return userApi.smsCount(target)
     }
 }

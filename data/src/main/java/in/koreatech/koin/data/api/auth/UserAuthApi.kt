@@ -125,9 +125,4 @@ interface UserAuthApi {
     suspend fun postReviewPromptNotification(
         @Path("storeId") storeId: Int
     )
-
-    @POST(URLConstant.USER.SMSVERIFY)
-    suspend fun codeVerify(
-        @Body smsVerifyRequest: SmsVerifyRequest
-    ): TokenResponse
 }
