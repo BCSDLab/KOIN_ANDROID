@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.domain.model.user
 
-data class CodeRequestCount(
+data class CodeCount(
     val target: String,
     val totalCount: Int,
     val remainingCount: Int,

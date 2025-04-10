@@ -17,7 +17,7 @@ import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
-import `in`.koreatech.koin.domain.model.user.CodeRequestCount
+import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.Verification
@@ -286,10 +286,10 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun countSMS(target: String): Result<CodeRequestCount> {
+    override suspend fun countSMS(target: String): Result<CodeCount> {
         return try {
             userRemoteDataSource.countSMS(target = target).let {
-                Result.success(CodeRequestCount(it.target, it.totalCount, it.remainingCount, it.currentCount))
+                Result.success(CodeCount(it.target, it.totalCount, it.remainingCount, it.currentCount))
             }
         } catch (e: HttpException) {
             Result.failure(e)

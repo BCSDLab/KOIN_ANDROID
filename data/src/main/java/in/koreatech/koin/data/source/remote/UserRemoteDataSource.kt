@@ -21,7 +21,6 @@ import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
-import retrofit2.Response
 
 class UserRemoteDataSource(
     private val userApi: UserApi,

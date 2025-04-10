@@ -2,7 +2,7 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
-import `in`.koreatech.koin.domain.model.user.CodeRequestCount
+import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.Verification
@@ -80,5 +80,5 @@ interface UserRepository {
 
     suspend fun verifyCertificationCode(target: String, code: String): Verification
 
-    suspend fun countSMS(target: String): Result<CodeRequestCount>
+    suspend fun countSMS(target: String): Result<CodeCount>
 }
