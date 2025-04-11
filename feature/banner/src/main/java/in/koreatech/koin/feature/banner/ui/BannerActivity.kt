@@ -76,7 +76,7 @@ class BannerActivity : ComponentActivity() {
                                         dismissWithRefusal = {
                                             viewModel.setBannerRefusal()
                                             finishActivity()
-                                        },
+                                        }
                                     )
                                 }
 
@@ -95,7 +95,7 @@ class BannerActivity : ComponentActivity() {
                                         dismissWithRefusal = {
                                             viewModel.setBannerRefusal()
                                             finishActivity()
-                                        },
+                                        }
                                     )
                                 }
                             }

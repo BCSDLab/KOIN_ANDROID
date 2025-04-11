@@ -39,7 +39,7 @@ fun BannerB(
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {},
-    dismissWithRefusal: () -> Unit = {},
+    dismissWithRefusal: () -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp - 48.dp) } // minus horizontal padding
