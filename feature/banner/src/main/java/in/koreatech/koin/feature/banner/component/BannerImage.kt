@@ -118,6 +118,11 @@ private fun BannerContent(
     val context = LocalContext.current
     SubcomposeAsyncImage(
         modifier = modifier.fillMaxSize().noRippleClickable {
+            EventLogger.logClickEvent(
+                action = EventAction.CAMPUS,
+                label = "main_modal",
+                value = banner.title
+            )
             if (banner.redirectLink == null) return@noRippleClickable
             if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
                 ToastUtil.getInstance().makeShort(R.string.banner_require_new_version)
