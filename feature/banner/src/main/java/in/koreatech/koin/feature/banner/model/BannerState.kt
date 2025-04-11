@@ -17,6 +17,7 @@ data class BannerState(
 
 data class LocalBanner(
     val id: Int = 0,
+    val title: String = "",
     val imageUrl: String = "",
     val redirectLink: String? = null,
     val version: Int = 0
@@ -24,6 +25,7 @@ data class LocalBanner(
 
 fun Banner.toLocalBanner() = LocalBanner(
     id = id,
+    title = title,
     imageUrl = imageUrl,
     redirectLink = redirectLink,
     version = if (version.isNullOrEmpty()) {
