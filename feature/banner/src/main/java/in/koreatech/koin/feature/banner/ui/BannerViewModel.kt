@@ -74,12 +74,6 @@ class BannerViewModel @Inject constructor(
         saveBannerRefusalUseCase()
     }
 
-    fun setBannerIndex(index: Int) {
-        _bannerState.value = _bannerState.value.copy(
-            currentBannerIndex = index
-        )
-    }
-
     companion object {
         const val MAIN_BANNER_CATEGORY = 1
     }

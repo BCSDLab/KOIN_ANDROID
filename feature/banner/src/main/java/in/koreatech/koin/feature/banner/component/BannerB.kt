@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,15 +37,15 @@ import kotlinx.collections.immutable.persistentListOf
 fun BannerB(
     bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
-    bannerIndex: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {},
     dismissWithRefusal: () -> Unit = {},
-    onBannerIndexChange: (Int) -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp - 48.dp) } // minus horizontal padding
     val maxImageHeight by remember { mutableStateOf(screenWidth / 4 * 3) }
+
+    var bannerIndex: Int by remember { mutableIntStateOf(0) }
 
     Box(
         modifier = modifier
@@ -62,7 +64,9 @@ fun BannerB(
                 bannerList = bannerList,
                 dismiss = dismiss,
                 currentKoinVersion = currentKoinVersion,
-                onBannerIndexChange = onBannerIndexChange
+                onBannerIndexChange = {
+                    bannerIndex = it
+                }
             )
 
             Row(
@@ -115,8 +119,7 @@ fun BannerBPreview() {
     KoinTheme {
         BannerB(
             bannerList = persistentListOf(),
-            currentKoinVersion = 0,
-            bannerIndex = 0,
+            currentKoinVersion = 0
         )
     }
 }

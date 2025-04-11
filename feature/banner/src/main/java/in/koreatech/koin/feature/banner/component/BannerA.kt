@@ -15,8 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,15 +38,15 @@ import kotlinx.collections.immutable.persistentListOf
 fun BannerA(
     bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
-    bannerIndex: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {},
-    dismissWithRefusal: () -> Unit = {},
-    onBannerIndexChange: (Int) -> Unit = {}
+    dismissWithRefusal: () -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp) }
     val maxImageHeight by remember { mutableStateOf(screenWidth / 4 * 3) }
+
+    var bannerIndex: Int by remember { mutableIntStateOf(0) }
 
     Box(
         modifier = modifier
@@ -105,7 +107,9 @@ fun BannerA(
                 bannerList = bannerList,
                 dismiss = dismiss,
                 currentKoinVersion = currentKoinVersion,
-                onBannerIndexChange = onBannerIndexChange
+                onBannerIndexChange = {
+                    bannerIndex = it
+                }
             )
         }
     }
@@ -114,5 +118,5 @@ fun BannerA(
 @Preview
 @Composable
 fun BannerPreview() {
-    BannerA(persistentListOf(), 0, 0)
+    BannerA(persistentListOf(), 0)
 }

@@ -12,7 +12,6 @@ data class BannerState(
     val bannerList: ImmutableList<LocalBanner> = persistentListOf(),
     val bannerCategory: ImmutableList<BannerCategory> = persistentListOf(),
     val isLoading: Boolean = true,
-    val currentBannerIndex: Int = 0, // Need for logging
     val currentVersionCode: Int = 0
 )
 

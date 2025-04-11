@@ -112,11 +112,6 @@ private fun BannerContent(
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {}
 ) {
-    EventLogger.logEntryEvent(
-        action = EventAction.CAMPUS,
-        label = "main_modal_entry",
-        value = banner.title
-    )
     val context = LocalContext.current
     SubcomposeAsyncImage(
         modifier = modifier.fillMaxSize().noRippleClickable {
