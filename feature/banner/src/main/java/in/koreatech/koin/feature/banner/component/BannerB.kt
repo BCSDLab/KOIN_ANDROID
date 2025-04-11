@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -34,9 +35,11 @@ import kotlinx.collections.immutable.persistentListOf
 fun BannerB(
     bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
+    bannerIndex: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {},
-    dismissWithRefusal: () -> Unit = {}
+    dismissWithRefusal: () -> Unit = {},
+    onBannerIndexChange: (Int) -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp - 48.dp) } // minus horizontal padding
@@ -58,7 +61,8 @@ fun BannerB(
                 modifier = Modifier.height(maxImageHeight),
                 bannerList = bannerList,
                 dismiss = dismiss,
-                currentKoinVersion = currentKoinVersion
+                currentKoinVersion = currentKoinVersion,
+                onBannerIndexChange = onBannerIndexChange
             )
 
             Row(
@@ -89,6 +93,10 @@ fun BannerB(
                     textStyle = KoinTheme.typography.medium15.copy(color = KoinTheme.colors.neutral0),
                     shape = KoinTheme.shapes.small,
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            label = "main_modal_close",
+                            value = bannerList[bannerIndex].title
+                        )
                         dismiss()
                     }
                 )
@@ -103,7 +111,8 @@ fun BannerBPreview() {
     KoinTheme {
         BannerB(
             bannerList = persistentListOf(),
-            currentKoinVersion = 0
+            currentKoinVersion = 0,
+            bannerIndex = 0,
         )
     }
 }

@@ -47,7 +47,8 @@ fun BannerImage(
     bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
-    dismiss: () -> Unit = {}
+    dismiss: () -> Unit = {},
+    onBannerIndexChange: (Int) -> Unit = {}
 ) {
     val pagerState = rememberPagerState(
         initialPage = (Int.MAX_VALUE / 2) - (Int.MAX_VALUE / 2) % bannerList.size
@@ -72,6 +73,7 @@ fun BannerImage(
             state = pagerState
         ) { page ->
             val realPage = page % bannerList.size
+            onBannerIndexChange(realPage)
             BannerContent(
                 banner = bannerList[realPage],
                 dismiss = dismiss,

@@ -64,12 +64,16 @@ class BannerActivity : ComponentActivity() {
                                     BannerA(
                                         bannerList = uiState.bannerList,
                                         currentKoinVersion = uiState.currentVersionCode,
+                                        bannerIndex = uiState.currentBannerIndex,
                                         dismiss = {
                                             finishActivity()
                                         },
                                         dismissWithRefusal = {
                                             viewModel.setBannerRefusal()
                                             finishActivity()
+                                        },
+                                        onBannerIndexChange = {
+                                            viewModel.setBannerIndex(it)
                                         }
                                     )
                                 }
@@ -83,12 +87,16 @@ class BannerActivity : ComponentActivity() {
                                     BannerB(
                                         bannerList = uiState.bannerList,
                                         currentKoinVersion = uiState.currentVersionCode,
+                                        bannerIndex = uiState.currentBannerIndex,
                                         dismiss = {
                                             finishActivity()
                                         },
                                         dismissWithRefusal = {
                                             viewModel.setBannerRefusal()
                                             finishActivity()
+                                        },
+                                        onBannerIndexChange = {
+                                            viewModel.setBannerIndex(it)
                                         }
                                     )
                                 }

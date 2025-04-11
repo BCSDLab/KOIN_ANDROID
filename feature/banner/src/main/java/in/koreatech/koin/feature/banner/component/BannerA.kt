@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.banner.R
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
@@ -35,9 +36,11 @@ import kotlinx.collections.immutable.persistentListOf
 fun BannerA(
     bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
+    bannerIndex: Int,
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {},
-    dismissWithRefusal: () -> Unit = {}
+    dismissWithRefusal: () -> Unit = {},
+    onBannerIndexChange: (Int) -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp) }
@@ -79,6 +82,10 @@ fun BannerA(
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            label = "main_modal_close",
+                            value = bannerList[bannerIndex].title
+                        )
                         dismiss()
                     }
                 ) {
@@ -93,7 +100,8 @@ fun BannerA(
                 modifier = Modifier.height(maxImageHeight),
                 bannerList = bannerList,
                 dismiss = dismiss,
-                currentKoinVersion = currentKoinVersion
+                currentKoinVersion = currentKoinVersion,
+                onBannerIndexChange = onBannerIndexChange
             )
         }
     }
@@ -102,5 +110,5 @@ fun BannerA(
 @Preview
 @Composable
 fun BannerPreview() {
-    BannerA(persistentListOf(), 0)
+    BannerA(persistentListOf(), 0, 0)
 }
