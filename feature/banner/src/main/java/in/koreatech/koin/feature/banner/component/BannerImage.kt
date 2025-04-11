@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -108,6 +110,11 @@ private fun BannerContent(
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {}
 ) {
+    EventLogger.logEntryEvent(
+        action = EventAction.CAMPUS,
+        label = "main_modal_entry",
+        value = banner.title
+    )
     val context = LocalContext.current
     SubcomposeAsyncImage(
         modifier = modifier.fillMaxSize().noRippleClickable {
