@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
@@ -44,6 +45,11 @@ class BannerActivity : ComponentActivity() {
                         finishActivity()
                         return@KoinTheme
                     }
+                    EventLogger.logEntryEvent(
+                        action = EventAction.CAMPUS,
+                        label = "main_modal_entry",
+                        value = uiState.bannerList[0].title
+                    )
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         containerColor = Color.Transparent,
