@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
+import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
@@ -16,8 +17,10 @@ import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.Verification
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -199,7 +202,6 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postStudentRegister(
-        token: String,
         name: String,
         phoneNumber: String,
         userId: String,
@@ -212,7 +214,6 @@ class UserRepositoryImpl @Inject constructor(
     ): Boolean {
         return try {
             userRemoteDataSource.postStudentRegister(
-                token,
                 StudentInfoRequestV2(
                     name = name,
                     phoneNumber = phoneNumber,
@@ -231,10 +232,17 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postGeneralRegister(token: String, name: String, phoneNumber: String, userId: String, password: String, gender: String, email: String, nickname: String): Boolean {
+    override suspend fun postGeneralRegister(
+        name: String,
+        phoneNumber: String,
+        userId: String,
+        password: String,
+        gender: String,
+        email: String,
+        nickname: String
+    ): Boolean {
         return try {
             userRemoteDataSource.postGeneralRegister(
-                token,
                 GeneralInfoRequest(
                     name = name,
                     phoneNumber = phoneNumber,
@@ -251,25 +259,40 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun sendSMS(phoneNumber: String): Boolean {
+    override suspend fun sendSMS(target: String): Boolean {
         return try {
-            userRemoteDataSource.sendSMS(phoneNumber)
-            true
+            userRemoteDataSource.sendSMS(SmsSendRequest(target = target))
+            false
         } catch (e: HttpException) {
             false
         }
     }
 
-    override suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): String {
+    override suspend fun verifyCertificationCode(target: String, code: String): Verification {
         return try {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
-                    phoneNumber = phoneNumber,
-                    certificationCode = certificationCode
+                    target = target,
+                    code = code
                 )
-            ).token
+            )
+            Verification.OK
         } catch (e: HttpException) {
-            ""
+            when (e.code()) {
+                400 -> Verification.INVALID
+                404 -> Verification.NOCODE
+                else -> Verification.UNDEFINED
+            }
+        }
+    }
+
+    override suspend fun countSMS(target: String): Result<CodeCount> {
+        return try {
+            userRemoteDataSource.countSMS(target = target).let {
+                Result.success(CodeCount(it.target, it.totalCount, it.remainingCount, it.currentCount))
+            }
+        } catch (e: HttpException) {
+            Result.failure(e)
         }
     }
 }

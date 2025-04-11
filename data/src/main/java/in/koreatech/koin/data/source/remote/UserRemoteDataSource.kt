@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
+import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
@@ -17,7 +18,7 @@ import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
-import `in`.koreatech.koin.data.response.user.TokenResponse
+import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
@@ -97,19 +98,23 @@ class UserRemoteDataSource(
         userApi.checkNicknameV2(nickname)
     }
 
-    suspend fun postStudentRegister(token: String, studentInfoRequest: StudentInfoRequestV2) {
-        userApi.postStudentRegister(token, studentInfoRequest)
+    suspend fun postStudentRegister(studentInfoRequest: StudentInfoRequestV2) {
+        userApi.postStudentRegister(studentInfoRequest)
     }
 
-    suspend fun postGeneralRegister(token: String, generalInfoRequest: GeneralInfoRequest) {
-        userApi.postGeneralRegister("Bearer $token", generalInfoRequest)
+    suspend fun postGeneralRegister(generalInfoRequest: GeneralInfoRequest) {
+        userApi.postGeneralRegister(generalInfoRequest)
     }
 
-    suspend fun sendSMS(phoneNumber: String) {
-        userApi.smsSend(phoneNumber)
+    suspend fun sendSMS(smsSendRequest: SmsSendRequest) {
+        userApi.smsSend(smsSendRequest)
     }
 
-    suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest): TokenResponse {
-        return userAuthApi.codeVerify(smsVerifyRequest)
+    suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) {
+        userApi.codeVerify(smsVerifyRequest)
+    }
+
+    suspend fun countSMS(target: String): CodeRequestCountResponse {
+        return userApi.smsCount(target)
     }
 }

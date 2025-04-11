@@ -2,8 +2,10 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.Verification
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
@@ -53,7 +55,6 @@ interface UserRepository {
     suspend fun isPhoneDuplicated(phone: String): Duplicated
 
     suspend fun postStudentRegister(
-        token: String,
         name: String,
         phoneNumber: String,
         userId: String,
@@ -66,7 +67,6 @@ interface UserRepository {
     ): Boolean
 
     suspend fun postGeneralRegister(
-        token: String,
         name: String,
         phoneNumber: String,
         userId: String,
@@ -76,7 +76,9 @@ interface UserRepository {
         nickname: String
     ): Boolean
 
-    suspend fun sendSMS(phoneNumber: String): Boolean
+    suspend fun sendSMS(target: String): Boolean
 
-    suspend fun verifyCertificationCode(phoneNumber: String, certificationCode: String): String
+    suspend fun verifyCertificationCode(target: String, code: String): Verification
+
+    suspend fun countSMS(target: String): Result<CodeCount>
 }
