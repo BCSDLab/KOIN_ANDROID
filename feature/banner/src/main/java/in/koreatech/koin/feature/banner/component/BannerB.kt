@@ -79,6 +79,10 @@ fun BannerB(
                     textStyle = KoinTheme.typography.medium15.copy(color = KoinTheme.colors.primary500),
                     shape = KoinTheme.shapes.small,
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            label = "main_modal_hide_7d",
+                            value = bannerList[bannerIndex].title
+                        )
                         dismissWithRefusal()
                     }
                 )

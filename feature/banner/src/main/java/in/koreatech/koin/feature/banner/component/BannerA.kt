@@ -70,6 +70,10 @@ fun BannerA(
             ) {
                 TextButton(
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            label = "main_modal_hide_7d",
+                            value = bannerList[bannerIndex].title
+                        )
                         dismissWithRefusal()
                     }
                 ) {
