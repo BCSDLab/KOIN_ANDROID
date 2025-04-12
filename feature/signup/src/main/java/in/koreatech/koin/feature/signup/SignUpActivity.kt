@@ -40,7 +40,19 @@ class SignUpActivity : ComponentActivity() {
                     },
                     containerColor = KoinTheme.colors.neutral0
                 ) { contentPadding ->
-
+                    NavHost(
+                        modifier = Modifier.padding(contentPadding),
+                        navController = navController,
+                        enterTransition = {
+                            EnterTransition.None
+                        },
+                        exitTransition = {
+                            ExitTransition.None
+                        },
+                        startDestination = SignUpNavType.Term.route
+                    ) {
+                        koinSignUpGraph(navController = navController)
+                    }
                 }
             }
         }
