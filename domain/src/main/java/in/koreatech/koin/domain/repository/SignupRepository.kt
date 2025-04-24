@@ -54,5 +54,5 @@ interface SignupRepository {
 
     suspend fun requestSmsVerification(phoneNumber: String): SignupContinuationState
 
-    suspend fun verifyCertificationCode(target: String, code: String): SignupContinuationState
+    suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): SignupContinuationState
 }

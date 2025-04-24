@@ -188,12 +188,12 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun verifyCertificationCode(target: String, code: String): SignupContinuationState {
+    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): SignupContinuationState {
         return try {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
-                    target = target,
-                    code = code
+                    phoneNumber = phoneNumber,
+                    verificationCode = verificationCode
                 )
             )
             SignupContinuationState.SmsCodeIsValidated
