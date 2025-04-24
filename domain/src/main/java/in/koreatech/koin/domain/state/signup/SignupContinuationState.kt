@@ -29,7 +29,11 @@ sealed class SignupContinuationState {
 
     object CompanyNumberIsNotValidate : SignupContinuationState()
 
+    object SmsCodeIsValidated : SignupContinuationState()
+
     object SmsCodeIsNotValidate : SignupContinuationState()
+
+    object SmsCodeIsExpired : SignupContinuationState()
 
     object PhoneNumberIsNotValidate : SignupContinuationState()
 

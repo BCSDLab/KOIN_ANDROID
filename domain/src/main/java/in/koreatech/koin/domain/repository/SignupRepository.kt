@@ -2,10 +2,8 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.CodeCount
-import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
-import `in`.koreatech.koin.domain.model.user.Verification
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 
 interface SignupRepository {
@@ -57,7 +55,7 @@ interface SignupRepository {
 
     suspend fun sendSMS(target: String): Boolean
 
-    suspend fun verifyCertificationCode(target: String, code: String): Verification
+    suspend fun verifyCertificationCode(target: String, code: String): SignupContinuationState
 
     suspend fun countSMS(target: String): Result<CodeCount>
 }

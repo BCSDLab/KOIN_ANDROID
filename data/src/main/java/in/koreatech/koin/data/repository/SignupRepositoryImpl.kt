@@ -17,12 +17,11 @@ import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
-import `in`.koreatech.koin.domain.model.user.Verification
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.toSHA256
-import retrofit2.HttpException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class SignupRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
@@ -178,7 +177,7 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun verifyCertificationCode(target: String, code: String): Verification {
+    override suspend fun verifyCertificationCode(target: String, code: String): SignupContinuationState {
         return try {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
@@ -186,12 +185,11 @@ class SignupRepositoryImpl @Inject constructor(
                     code = code
                 )
             )
-            Verification.OK
+            SignupContinuationState.SmsCodeIsValidated
         } catch (e: HttpException) {
             when (e.code()) {
-                400 -> Verification.INVALID
-                404 -> Verification.NOCODE
-                else -> Verification.UNDEFINED
+                404 -> SignupContinuationState.SmsCodeIsExpired
+                else -> SignupContinuationState.SmsCodeIsNotValidate
             }
         }
     }
