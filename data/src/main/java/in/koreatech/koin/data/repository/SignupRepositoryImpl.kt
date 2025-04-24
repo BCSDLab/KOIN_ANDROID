@@ -15,14 +15,14 @@ import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.CodeCount
-import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.Verification
 import `in`.koreatech.koin.domain.repository.SignupRepository
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.toSHA256
-import javax.inject.Inject
 import retrofit2.HttpException
+import javax.inject.Inject
 
 class SignupRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
@@ -81,28 +81,32 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isUsernameDuplicatedV2(nickname: String): Duplicated {
+    override suspend fun isUsernameDuplicatedV2(nickname: String): SignupContinuationState {
         return try {
             userRemoteDataSource.checkNicknameV2(nickname)
-            Duplicated.OK
+            SignupContinuationState.AvailableNickname
         } catch (e: HttpException) {
             when (e.code()) {
-                400 -> Duplicated.INVALID
-                409 -> Duplicated.CONFLICT
-                else -> Duplicated.UNDEFINED
+                409 -> SignupContinuationState.NicknameDuplicated
+                else -> SignupContinuationState.Failed(
+                    message = e.getErrorResponse().message ?: "",
+                    throwable = e
+                )
             }
         }
     }
 
-    override suspend fun isPhoneDuplicated(phone: String): Duplicated {
+    override suspend fun isPhoneDuplicated(phone: String): SignupContinuationState {
         return try {
             userRemoteDataSource.checkPhoneNumberDuplicate(phone)
-            Duplicated.OK
+            SignupContinuationState.AvailablePhoneNumber
         } catch (e: HttpException) {
             when (e.code()) {
-                400 -> Duplicated.INVALID
-                409 -> Duplicated.CONFLICT
-                else -> Duplicated.UNDEFINED
+                409 -> SignupContinuationState.NicknameDuplicated
+                else -> SignupContinuationState.Failed(
+                    message = e.getErrorResponse().message ?: "",
+                    throwable = e
+                )
             }
         }
     }
