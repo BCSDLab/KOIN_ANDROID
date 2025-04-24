@@ -10,6 +10,8 @@ interface SignupRepository {
 
     suspend fun getKoinTermText(): String
 
+    suspend fun getMarketingTermText(): String
+
     suspend fun requestEmailVerification(
         portalAccount: String,
         gender: Gender,
@@ -25,6 +27,8 @@ interface SignupRepository {
     suspend fun getPrivacyTerm(): Term
 
     suspend fun getKoinTerm(): Term
+
+    suspend fun getMarketingTerm(): Term
 
     suspend fun isUsernameDuplicatedV2(nickname: String): SignupContinuationState
 
