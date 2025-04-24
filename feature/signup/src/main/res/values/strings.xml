@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="sign_up_title">회원가입</string>
+
+    <string name="sign_up_agree_terms">약관 동의</string>
+    <string name="sign_up_verification">본인 인증</string>
+    <string name="sign_up_user_type">회원 유형 선택</string>
+    <string name="sign_up_user_info">정보 입력</string>
+
+    <string name="sign_up_agree_all">모두 동의합니다.</string>
+    <string name="sign_up_private_info_term">개인정보 이용약관 (필수)</string>
+    <string name="sign_up_koin_term">코인 이용약관 (필수)</string>
+    <string name="sign_up_marketing_term">마케팅 수신 동의약관 (선택)</string>
+    <string name="sign_up_failed_to_fetch_terms">약관을 가져오는데 실패했습니다.</string>
+
+    <string name="sign_up_next">다음</string>
 </resources>
