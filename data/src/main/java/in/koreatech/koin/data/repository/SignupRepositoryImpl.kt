@@ -179,6 +179,7 @@ class SignupRepositoryImpl @Inject constructor(
         } catch (e: HttpException) {
             when (e.code()) {
                 429 -> SignupContinuationState.SmsCodeRequestCountIsExceeded
+                400 -> SignupContinuationState.CheckPhoneNumberFormat
                 else -> SignupContinuationState.Failed(
                     message = e.getErrorResponse().message ?: "",
                     throwable = e
