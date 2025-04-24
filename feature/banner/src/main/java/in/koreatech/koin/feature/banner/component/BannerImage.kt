@@ -47,7 +47,9 @@ fun BannerImage(
     modifier: Modifier = Modifier,
     dismiss: () -> Unit = {}
 ) {
-    val pagerState = rememberPagerState { Int.MAX_VALUE }
+    val pagerState = rememberPagerState(
+        initialPage = (Int.MAX_VALUE / 2) - (Int.MAX_VALUE / 2) % bannerList.size
+    ) { Int.MAX_VALUE }
 
     LaunchedEffect(Unit) {
         snapshotFlow { pagerState.isScrollInProgress }

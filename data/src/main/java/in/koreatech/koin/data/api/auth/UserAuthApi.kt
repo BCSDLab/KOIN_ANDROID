@@ -6,13 +6,11 @@ import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
-import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
-import `in`.koreatech.koin.data.response.user.TokenResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
@@ -125,9 +123,4 @@ interface UserAuthApi {
     suspend fun postReviewPromptNotification(
         @Path("storeId") storeId: Int
     )
-
-    @POST(URLConstant.USER.SMSVERIFY)
-    suspend fun codeVerify(
-        @Body smsVerifyRequest: SmsVerifyRequest
-    ): TokenResponse
 }

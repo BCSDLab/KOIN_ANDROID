@@ -5,6 +5,7 @@
         <activity
             android:name=".ui.BannerActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:theme="@style/KAPTheme.Transparent.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
     </application>

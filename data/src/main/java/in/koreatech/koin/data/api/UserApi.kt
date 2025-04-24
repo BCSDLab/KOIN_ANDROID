@@ -6,15 +6,17 @@ import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
+import `in`.koreatech.koin.data.request.user.SmsSendRequest
+import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -66,18 +68,26 @@ interface UserApi {
 
     @POST(URLConstant.USER.SMSSEND)
     suspend fun smsSend(
-        @Query("phone_number") phoneNumber: String
+        @Body smsSendRequest: SmsSendRequest
     )
 
     @POST(URLConstant.USER.STUDENT.REGISTER_V2)
     suspend fun postStudentRegister(
-        @Header("Authorization") token: String,
         @Body studentInfoRequest: StudentInfoRequestV2
     )
 
     @POST(URLConstant.USER.GENERAL.REGISTER)
     suspend fun postGeneralRegister(
-        @Header("Authorization") token: String,
         @Body generalInfoRequest: GeneralInfoRequest
     )
+
+    @POST(URLConstant.USER.SMSVERIFY)
+    suspend fun codeVerify(
+        @Body smsVerifyRequest: SmsVerifyRequest
+    )
+
+    @POST(URLConstant.USER.SMSCOUNT)
+    suspend fun smsCount(
+        @Query("target") target: String
+    ): CodeRequestCountResponse
 }

@@ -29,12 +29,20 @@ class SignupRepositoryImpl @Inject constructor(
         return signupTermsLocalDataSource.getKoinTermText()
     }
 
+    override suspend fun getMarketingTermText(): String {
+        return signupTermsLocalDataSource.getMarketingTermText()
+    }
+
     override suspend fun getPrivacyTerm(): Term {
         return signupTermsLocalDataSource.getPrivacyTerm().toTerm()
     }
 
     override suspend fun getKoinTerm(): Term {
         return signupTermsLocalDataSource.getKoinTerms().toTerm()
+    }
+
+    override suspend fun getMarketingTerm(): Term {
+        return signupTermsLocalDataSource.getMarketingTerms().toTerm()
     }
 
     override suspend fun requestEmailVerification(
@@ -67,7 +75,7 @@ class SignupRepositoryImpl @Inject constructor(
             if (e.code() == 409) {
                 Result.failure(SignupAlreadySentEmailException())
             } else {
-                Result.failure(Throwable(e.getErrorResponse().message ?: ""))
+                Result.failure(Throwable(e.getErrorResponse()?.message ?: ""))
             }
         } catch (t: Throwable) {
             Result.failure(t)

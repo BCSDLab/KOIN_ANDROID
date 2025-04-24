@@ -122,8 +122,7 @@ class UserErrorHandlerImpl @Inject constructor(
             when (it) {
                 is HttpException -> {
                     when (it.code()) {
-                        400 -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_invalid_phone_number))
-                        409 -> ErrorHandler(it.getErrorResponse().message ?: context.getString(R.string.error_account_duplicated))
+                        400 -> ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_verify_password))
                         else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }
