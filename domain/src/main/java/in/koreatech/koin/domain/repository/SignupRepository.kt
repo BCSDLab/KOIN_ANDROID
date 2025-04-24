@@ -56,6 +56,4 @@ interface SignupRepository {
     suspend fun sendSMS(target: String): Boolean
 
     suspend fun verifyCertificationCode(target: String, code: String): SignupContinuationState
-
-    suspend fun countSMS(target: String): Result<CodeCount>
 }

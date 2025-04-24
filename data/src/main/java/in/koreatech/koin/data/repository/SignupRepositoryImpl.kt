@@ -14,7 +14,6 @@ import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.term.Term
-import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.repository.SignupRepository
@@ -191,16 +190,6 @@ class SignupRepositoryImpl @Inject constructor(
                 404 -> SignupContinuationState.SmsCodeIsExpired
                 else -> SignupContinuationState.SmsCodeIsNotValidate
             }
-        }
-    }
-
-    override suspend fun countSMS(target: String): Result<CodeCount> {
-        return try {
-            userRemoteDataSource.countSMS(target = target).let {
-                Result.success(CodeCount(it.target, it.totalCount, it.remainingCount, it.currentCount))
-            }
-        } catch (e: HttpException) {
-            Result.failure(e)
         }
     }
 }
