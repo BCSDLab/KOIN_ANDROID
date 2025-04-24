@@ -29,12 +29,20 @@ class SignupRepositoryImpl @Inject constructor(
         return signupTermsLocalDataSource.getKoinTermText()
     }
 
+    override suspend fun getMarketingTermText(): String {
+        return signupTermsLocalDataSource.getMarketingTermText()
+    }
+
     override suspend fun getPrivacyTerm(): Term {
         return signupTermsLocalDataSource.getPrivacyTerm().toTerm()
     }
 
     override suspend fun getKoinTerm(): Term {
         return signupTermsLocalDataSource.getKoinTerms().toTerm()
+    }
+
+    override suspend fun getMarketingTerm(): Term {
+        return signupTermsLocalDataSource.getMarketingTerms().toTerm()
     }
 
     override suspend fun requestEmailVerification(
