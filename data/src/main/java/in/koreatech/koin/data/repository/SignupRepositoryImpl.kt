@@ -167,12 +167,23 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun sendSMS(target: String): Boolean {
+    override suspend fun requestSmsVerification(phoneNumber: String): SignupContinuationState {
         return try {
-            userRemoteDataSource.sendSMS(SmsSendRequest(target = target))
-            false
+            userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber = phoneNumber)).let {
+                SignupContinuationState.RequestedSmsValidationWithRemainingCount(
+                    totalCount = it.totalCount,
+                    remainingCount = it.remainingCount,
+                    currentCount = it.currentCount
+                )
+            }
         } catch (e: HttpException) {
-            false
+            when (e.code()) {
+                429 -> SignupContinuationState.SmsCodeRequestCountIsExceeded
+                else -> SignupContinuationState.Failed(
+                    message = e.getErrorResponse().message ?: "",
+                    throwable = e
+                )
+            }
         }
     }
 

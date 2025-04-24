@@ -12,6 +12,7 @@ import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -68,7 +69,7 @@ interface UserApi {
     @POST(URLConstant.USER.SMSSEND)
     suspend fun smsSend(
         @Body smsSendRequest: SmsSendRequest
-    )
+    ): CodeRequestCountResponse
 
     @POST(URLConstant.USER.STUDENT.REGISTER_V2)
     suspend fun postStudentRegister(

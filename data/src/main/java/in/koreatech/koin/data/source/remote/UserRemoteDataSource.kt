@@ -18,6 +18,7 @@ import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
@@ -105,8 +106,8 @@ class UserRemoteDataSource(
         userApi.postGeneralRegister(generalInfoRequest)
     }
 
-    suspend fun sendSMS(smsSendRequest: SmsSendRequest) {
-        userApi.smsSend(smsSendRequest)
+    suspend fun sendSMS(smsSendRequest: SmsSendRequest): CodeRequestCountResponse {
+        return userApi.smsSend(smsSendRequest)
     }
 
     suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) {

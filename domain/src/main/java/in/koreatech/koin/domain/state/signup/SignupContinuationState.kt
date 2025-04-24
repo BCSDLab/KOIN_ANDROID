@@ -19,6 +19,8 @@ sealed class SignupContinuationState {
 
     object RequestedSmsValidation : SignupContinuationState()
 
+    data class RequestedSmsValidationWithRemainingCount(val totalCount: Int, val remainingCount: Int, val currentCount: Int) : SignupContinuationState()
+
     object RequestedOwnerRegister : SignupContinuationState() // 사장님 회원가입 요청
 
     object CheckNickNameDuplication : SignupContinuationState() // 닉네임 중복 검사를 했는지 확인
@@ -34,6 +36,8 @@ sealed class SignupContinuationState {
     object SmsCodeIsNotValidate : SignupContinuationState()
 
     object SmsCodeIsExpired : SignupContinuationState()
+
+    object SmsCodeRequestCountIsExceeded : SignupContinuationState()
 
     object PhoneNumberIsNotValidate : SignupContinuationState()
 
