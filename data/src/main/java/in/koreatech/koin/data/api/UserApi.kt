@@ -69,7 +69,7 @@ interface UserApi {
     @POST(URLConstant.USER.SMSSEND)
     suspend fun smsSend(
         @Body smsSendRequest: SmsSendRequest
-    )
+    ): CodeRequestCountResponse
 
     @POST(URLConstant.USER.STUDENT.REGISTER_V2)
     suspend fun postStudentRegister(
@@ -85,9 +85,4 @@ interface UserApi {
     suspend fun codeVerify(
         @Body smsVerifyRequest: SmsVerifyRequest
     )
-
-    @POST(URLConstant.USER.SMSCOUNT)
-    suspend fun smsCount(
-        @Query("target") target: String
-    ): CodeRequestCountResponse
 }

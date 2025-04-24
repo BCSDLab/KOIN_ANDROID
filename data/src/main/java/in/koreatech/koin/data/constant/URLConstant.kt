@@ -68,7 +68,6 @@ object URLConstant {
         const val CHECKNICKNAME_V2: String = "$USER/check/nickname"
         const val SMSSEND: String = "$USER/verification/send"
         const val SMSVERIFY: String = "$USER/verification/verify"
-        const val SMSCOUNT: String = "$USER/verification/count"
         const val AUTH: String = "$USER/auth"
         const val ID = "portal_account"
         const val EMAIL = "email"
