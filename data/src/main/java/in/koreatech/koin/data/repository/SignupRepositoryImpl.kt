@@ -108,7 +108,7 @@ class SignupRepositoryImpl @Inject constructor(
             SignupContinuationState.AvailablePhoneNumber
         } catch (e: HttpException) {
             when (e.code()) {
-                409 -> SignupContinuationState.NicknameDuplicated
+                409 -> SignupContinuationState.PhoneNumberDuplicated
                 else -> SignupContinuationState.Failed(
                     message = e.getErrorResponse().message ?: "",
                     throwable = e
