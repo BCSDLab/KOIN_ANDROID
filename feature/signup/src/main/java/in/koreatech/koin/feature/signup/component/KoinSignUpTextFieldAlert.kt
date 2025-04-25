@@ -28,6 +28,7 @@ fun KoinSignUpTextFieldAlert(
     ) {
         Image(
             painter = when (state) {
+                KoinSignUpTextFieldAlertState.Error -> painterResource(R.drawable.ic_sign_up_alert_error)
                 KoinSignUpTextFieldAlertState.Warning -> painterResource(R.drawable.ic_sign_up_alert_warning)
                 KoinSignUpTextFieldAlertState.Success -> painterResource(R.drawable.ic_sign_up_alert_success)
             },
@@ -41,9 +42,21 @@ fun KoinSignUpTextFieldAlert(
             text = text,
             style = KoinTheme.typography.regular12,
             color = when (state) {
+                KoinSignUpTextFieldAlertState.Error -> KoinTheme.colors.danger600
                 KoinSignUpTextFieldAlertState.Warning -> KoinTheme.colors.sub500
                 KoinSignUpTextFieldAlertState.Success -> KoinTheme.colors.success700
             }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun KoinSignUpTextFieldAlertErrorPreview() {
+    KoinTheme {
+        KoinSignUpTextFieldAlert(
+            text = "This is an error alert",
+            state = KoinSignUpTextFieldAlertState.Error
         )
     }
 }
@@ -70,7 +83,8 @@ private fun KoinSignUpTextFieldAlertSuccessPreview() {
     }
 }
 
-sealed class KoinSignUpTextFieldAlertState() {
+sealed class KoinSignUpTextFieldAlertState {
+    data object Error : KoinSignUpTextFieldAlertState()
     data object Warning : KoinSignUpTextFieldAlertState()
     data object Success : KoinSignUpTextFieldAlertState()
 }
