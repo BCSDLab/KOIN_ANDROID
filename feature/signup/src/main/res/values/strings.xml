@@ -35,5 +35,8 @@
     <string name="sign_up_verification_code_incorrect">인증번호가 일치하지 않습니다. 다시 입력해 주세요.</string>
     <string name="sign_up_verification_code_timeout">유효시간이 지났습니다. 인증번호를 재발송 해주세요.</string>
 
+    <string name="sign_up_user_type_student">한국기술교육대학교 학생</string>
+    <string name="sign_up_user_type_general">외부인</string>
+
     <string name="sign_up_next">다음</string>
 </resources>

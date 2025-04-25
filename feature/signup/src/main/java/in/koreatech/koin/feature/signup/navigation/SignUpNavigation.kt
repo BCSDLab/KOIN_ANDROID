@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.signup.ui.term.SignUpTermScreen
+import `in`.koreatech.koin.feature.signup.ui.usertype.SignUpUserType
 import `in`.koreatech.koin.feature.signup.ui.verification.SignUpVerification
 
 fun NavGraphBuilder.koinSignUpGraph(
@@ -33,6 +34,17 @@ fun NavGraphBuilder.koinSignUpGraph(
             navArgument(GENDER) { type = NavType.StringType }
         )
     ) {
+        val name = it.arguments?.getString(NAME) ?: ""
+        val phoneNumber = it.arguments?.getString(PHONE_NUMBER) ?: ""
+        val gender = it.arguments?.getString(GENDER) ?: ""
+        SignUpUserType(
+            navigateToStudentScreen = {
+                navController.navigate("${SignUpNavType.StudentUserInfo.route}/$name/$phoneNumber/$gender")
+            },
+            navigateToGeneralScreen = {
+                navController.navigate("${SignUpNavType.GeneralUserInfo.route}/$name/$phoneNumber/$gender")
+            }
+        )
     }
     composable(
         route = "${SignUpNavType.GeneralUserInfo.route}/{$NAME}/{$PHONE_NUMBER}/{$GENDER}",
