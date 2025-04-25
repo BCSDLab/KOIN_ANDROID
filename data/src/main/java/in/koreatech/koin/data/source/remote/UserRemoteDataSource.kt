@@ -106,15 +106,11 @@ class UserRemoteDataSource(
         userApi.postGeneralRegister(generalInfoRequest)
     }
 
-    suspend fun sendSMS(smsSendRequest: SmsSendRequest) {
-        userApi.smsSend(smsSendRequest)
+    suspend fun sendSMS(smsSendRequest: SmsSendRequest): CodeRequestCountResponse {
+        return userApi.smsSend(smsSendRequest)
     }
 
     suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) {
         userApi.codeVerify(smsVerifyRequest)
-    }
-
-    suspend fun countSMS(target: String): CodeRequestCountResponse {
-        return userApi.smsCount(target)
     }
 }
