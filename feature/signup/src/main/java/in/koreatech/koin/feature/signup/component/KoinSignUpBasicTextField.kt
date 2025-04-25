@@ -37,6 +37,7 @@ import `in`.koreatech.koin.feature.signup.R
  * @param keyboardActions [KeyboardActions]
  * @param singleLine Single line flag
  * @param maxLines Maximum lines
+ * @param maxLength Maximum length of the text field
  * @param visualTransformation [VisualTransformation]
  */
 @Composable
@@ -49,12 +50,19 @@ fun KoinSignUpBasicTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    maxLength: Int = Int.MAX_VALUE,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     BasicTextField(
         modifier = modifier,
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if (it.length < maxLength) {
+                onValueChange(it)
+            } else {
+                onValueChange(it.take(maxLength))
+            }
+        },
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         textStyle = KoinTheme.typography.regular14.copy(
