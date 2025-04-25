@@ -68,6 +68,7 @@ class SignUpVerificationViewModel @Inject constructor(
                 )
             }
         }
+        checkNextStep()
         AccountTimer.cancel()
     }
 
