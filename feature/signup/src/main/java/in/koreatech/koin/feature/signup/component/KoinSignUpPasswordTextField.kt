@@ -35,6 +35,7 @@ import `in`.koreatech.koin.feature.signup.R
  * @param hint [String] hint of the text field
  * @param singleLine Single line flag
  * @param maxLines Maximum lines
+ * @param maxLength Maximum length of the text field
  * @param showPassword Show password flag
  * @param onShowPasswordChange Callback when show password flag changes
  */
@@ -46,13 +47,20 @@ fun KoinSignUpPasswordTextField(
     hint: String = "",
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    maxLength: Int = Int.MAX_VALUE,
     showPassword: Boolean = false,
     onShowPasswordChange: (Boolean) -> Unit = {}
 ) {
     BasicTextField(
         modifier = modifier,
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if (it.length < maxLength) {
+                onValueChange(it)
+            } else {
+                onValueChange(it.take(maxLength))
+            }
+        },
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Password
         ),
