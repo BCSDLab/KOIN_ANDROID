@@ -13,5 +13,27 @@
     <string name="sign_up_marketing_term">마케팅 수신 동의약관 (선택)</string>
     <string name="sign_up_failed_to_fetch_terms">약관을 가져오는데 실패했습니다.</string>
 
+    <string name="sign_up_name_gender_title">성함과 성별을 알려주세요.</string>
+    <string name="sign_up_name_field_hint">실명을 입력해 주세요.</string>
+    <string name="sign_up_phone_number_title">휴대전화 번호를 입력해 주세요.</string>
+    <string name="sign_up_phone_number_field_hint">-  없이 번호를 입력해 주세요.</string>
+    <string name="sign_up_phone_number_send_verification">인증번호 발송</string>
+    <string name="sign_up_phone_number_resend_verification">인증번호 재발송</string>
+    <string name="sign_up_phone_number_duplicated">이미 가입된 전화 번호입니다.</string>
+    <string name="sign_up_phone_number_already_sign_up">로그인 하기</string>
+    <string name="sign_up_phone_number_never_sign_up_before">해당 전화번호로 가입하신 적 없으신가요?</string>
+    <string name="sign_up_phone_number_never_sign_up_before_inquiry">문의하기</string>
+    <string name="sign_up_phone_number_invalid">올바른 전화번호 양식이 아닙니다. 다시 입력해 주세요.</string>
+    <string name="sign_up_phone_number_code_request_exceeded">1일 발송 한도를 초과했습니다. 24시간 이후 재시도 바랍니다.</string>
+    <string name="sign_up_verification_code_field_hint">인증번호를 입력해주세요.</string>
+    <string name="sign_up_verification_code_check">인증번호 확인</string>
+    <string name="sign_up_verification_code_sent">인증번호가 발송되었습니다.</string>
+    <string name="sign_up_verification_code_remaining_count">(%1$d/%2$d)</string>
+    <string name="sign_up_verification_code_if_not_sent_alert">인증번호 발송이 안 되시나요?</string>
+    <string name="sign_up_verification_code_not_sent_inquiry">문의하기</string>
+    <string name="sign_up_verification_code_correct">인증번호가 일치합니다.</string>
+    <string name="sign_up_verification_code_incorrect">인증번호가 일치하지 않습니다. 다시 입력해 주세요.</string>
+    <string name="sign_up_verification_code_timeout">유효시간이 지났습니다. 인증번호를 재발송 해주세요.</string>
+
     <string name="sign_up_next">다음</string>
 </resources>
