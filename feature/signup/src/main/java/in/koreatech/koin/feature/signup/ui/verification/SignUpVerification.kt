@@ -257,7 +257,7 @@ fun SignUpVerificationPhoneNumberStep(
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
             FilledButton(
                 modifier = Modifier.widthIn(min = 86.dp),
-                text = if (phoneNumberState == SignupContinuationState.AvailablePhoneNumber) {
+                text = if (phoneNumberState is SignupContinuationState.RequestedSmsValidationWithRemainingCount) {
                     stringResource(R.string.sign_up_phone_number_resend_verification)
                 } else {
                     stringResource(R.string.sign_up_phone_number_send_verification)
