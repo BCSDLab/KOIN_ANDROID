@@ -14,8 +14,8 @@ class PostGeneralRegisterUseCase @Inject constructor(
         gender: String,
         email: String,
         nickname: String
-    ) {
-        signupRepository.postGeneralRegister(
+    ): Result<Unit> {
+        return signupRepository.postGeneralRegister(
             name = name,
             phoneNumber = phoneNumber,
             userId = userId,
