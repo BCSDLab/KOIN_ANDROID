@@ -121,6 +121,7 @@ fun KoinSignUpDropdown(
          */
         ExposedDropdownMenu(
             modifier = Modifier
+                .height(180.dp) // Set a fixed height for the dropdown menu
                 .wrapContentSize(),
             expanded = isDropdownExpanded,
             onDismissRequest = { onDropdownExpandChange(false) },
