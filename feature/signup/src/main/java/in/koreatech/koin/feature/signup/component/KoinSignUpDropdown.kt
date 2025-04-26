@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CornerSize
@@ -26,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -58,95 +60,102 @@ fun KoinSignUpDropdown(
     modifier: Modifier = Modifier,
     onDropdownExpandChange: (Boolean) -> Unit = {},
     onItemSelected: (Int) -> Unit = {}
-) = ExposedDropdownMenuBox(
-    expanded = isDropdownExpanded,
-    onExpandedChange = onDropdownExpandChange,
-    modifier = modifier
 ) {
-    val rotateDegree: Float by animateFloatAsState(
-        targetValue = if (isDropdownExpanded) 180f else 0f,
-        label = "degree"
-    )
+    val focusManager = LocalFocusManager.current
 
-    val dropdownCorner: Dp by animateDpAsState(
-        targetValue = if (isDropdownExpanded) 0.dp else 14.dp
-    )
-
-    val dropdownShape = KoinTheme.shapes.large.copy(
-        bottomStart = CornerSize(dropdownCorner),
-        bottomEnd = CornerSize(dropdownCorner)
-    )
-
-    Row(
-        modifier = Modifier
-            .shadow(
-                elevation = 9.dp,
-                shape = dropdownShape
-            )
-            .background(
-                color = KoinTheme.colors.neutral0,
-                shape = dropdownShape
-            )
-            .padding(vertical = 8.dp, horizontal = 12.dp)
-            .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = if (isSelected) text else hint,
-            style = KoinTheme.typography.regular14,
-            color = if (isSelected) Color.Unspecified else KoinTheme.colors.neutral400,
-            maxLines = 1
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Icon(
-            modifier = Modifier.rotate(rotateDegree),
-            painter = painterResource(id = R.drawable.ic_arrow_down),
-            tint = KoinTheme.colors.neutral400,
-            contentDescription = ""
-        )
-    }
-
-    /**
-     * Vertical padding of DropdownMenu is hardcoded to 8.dp by google.
-     * So, we will leave vertical padding value to 0.dp
-     * @see [androidx.compose.material3.DropdownMenu]
-     */
-    ExposedDropdownMenu(
-        modifier = Modifier
-            .wrapContentSize(),
+    ExposedDropdownMenuBox(
         expanded = isDropdownExpanded,
-        onDismissRequest = { onDropdownExpandChange(false) },
-        containerColor = KoinTheme.colors.neutral0,
-        shape = KoinTheme.shapes.large.copy(
-            topEnd = CornerSize(0.dp),
-            topStart = CornerSize(0.dp)
-        )
+        onExpandedChange = {
+            focusManager.clearFocus()
+            onDropdownExpandChange(it)
+        },
+        modifier = modifier
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(KoinTheme.shapes.large)
-        ) {
-            Column {
-                items.forEachIndexed { index, it ->
-                    Text(
-                        text = it,
-                        style = KoinTheme.typography.medium14,
-                        modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .noRippleClickable {
-                                onItemSelected(index)
-                                onDropdownExpandChange(false)
-                            }
-                            .padding(vertical = 8.dp, horizontal = 12.dp),
-                        maxLines = 1
-                    )
+        val rotateDegree: Float by animateFloatAsState(
+            targetValue = if (isDropdownExpanded) 180f else 0f,
+            label = "degree"
+        )
 
-                    if (index != items.size - 1) {
-                        HorizontalDivider(
-                            color = KoinTheme.colors.neutral200
+        val dropdownCorner: Dp by animateDpAsState(
+            targetValue = if (isDropdownExpanded) 0.dp else 14.dp
+        )
+
+        val dropdownShape = KoinTheme.shapes.large.copy(
+            bottomStart = CornerSize(dropdownCorner),
+            bottomEnd = CornerSize(dropdownCorner)
+        )
+
+        Row(
+            modifier = Modifier
+                .shadow(
+                    elevation = 9.dp,
+                    shape = dropdownShape
+                )
+                .background(
+                    color = KoinTheme.colors.neutral0,
+                    shape = dropdownShape
+                )
+                .padding(vertical = 8.dp, horizontal = 12.dp)
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = if (isSelected) text else hint,
+                style = KoinTheme.typography.regular14,
+                color = if (isSelected) Color.Unspecified else KoinTheme.colors.neutral400,
+                maxLines = 1
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                modifier = Modifier.rotate(rotateDegree),
+                painter = painterResource(id = R.drawable.ic_arrow_down),
+                tint = KoinTheme.colors.neutral400,
+                contentDescription = ""
+            )
+        }
+
+        /**
+         * Vertical padding of DropdownMenu is hardcoded to 8.dp by google.
+         * So, we will leave vertical padding value to 0.dp
+         * @see [androidx.compose.material3.DropdownMenu]
+         */
+        ExposedDropdownMenu(
+            modifier = Modifier
+                .wrapContentSize(),
+            expanded = isDropdownExpanded,
+            onDismissRequest = { onDropdownExpandChange(false) },
+            containerColor = KoinTheme.colors.neutral0,
+            shape = KoinTheme.shapes.large.copy(
+                topEnd = CornerSize(0.dp),
+                topStart = CornerSize(0.dp)
+            )
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(KoinTheme.shapes.large)
+            ) {
+                Column {
+                    items.forEachIndexed { index, it ->
+                        Text(
+                            text = it,
+                            style = KoinTheme.typography.medium14,
+                            modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .noRippleClickable {
+                                    onItemSelected(index)
+                                    onDropdownExpandChange(false)
+                                }
+                                .padding(vertical = 8.dp, horizontal = 12.dp),
+                            maxLines = 1
                         )
+
+                        if (index != items.size - 1) {
+                            HorizontalDivider(
+                                color = KoinTheme.colors.neutral200
+                            )
+                        }
                     }
                 }
             }
