@@ -127,7 +127,7 @@ class SignupRepositoryImpl @Inject constructor(
         gender: String,
         email: String,
         nickname: String
-    ): Boolean {
+    ): Result<Unit> {
         return try {
             userRemoteDataSource.postStudentRegister(
                 StudentInfoRequestV2(
@@ -142,9 +142,9 @@ class SignupRepositoryImpl @Inject constructor(
                     nickname = nickname
                 )
             )
-            true
+            Result.success(Unit)
         } catch (e: HttpException) {
-            false
+            Result.failure(e)
         }
     }
 
@@ -156,7 +156,7 @@ class SignupRepositoryImpl @Inject constructor(
         gender: String,
         email: String,
         nickname: String
-    ): Boolean {
+    ): Result<Unit> {
         return try {
             userRemoteDataSource.postGeneralRegister(
                 GeneralInfoRequest(
@@ -169,9 +169,9 @@ class SignupRepositoryImpl @Inject constructor(
                     nickname = nickname
                 )
             )
-            false
+            Result.success(Unit)
         } catch (e: HttpException) {
-            false
+            Result.failure(e)
         }
     }
 

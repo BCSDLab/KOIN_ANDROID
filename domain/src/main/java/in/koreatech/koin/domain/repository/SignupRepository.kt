@@ -44,7 +44,7 @@ interface SignupRepository {
         gender: String,
         email: String,
         nickname: String
-    ): Boolean
+    ): Result<Unit>
 
     suspend fun postGeneralRegister(
         name: String,
@@ -54,7 +54,7 @@ interface SignupRepository {
         gender: String,
         email: String,
         nickname: String
-    ): Boolean
+    ): Result<Unit>
 
     suspend fun requestSmsVerification(phoneNumber: String): SignupContinuationState
 
