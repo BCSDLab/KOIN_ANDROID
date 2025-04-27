@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostStudentRegisterUseCase
+import `in`.koreatech.koin.domain.util.ext.isUserIdFormat
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.signup.navigation.NAME
@@ -48,7 +49,7 @@ class SignUpStudentViewModel @Inject constructor(
     fun setUserId(userId: String) {
         blockingIntent {
             reduce {
-                state.copy(userId = userId, isUserIdValid = userId.isNotEmpty())
+                state.copy(userId = userId, isUserIdValid = userId.isUserIdFormat())
             }
         }
     }
