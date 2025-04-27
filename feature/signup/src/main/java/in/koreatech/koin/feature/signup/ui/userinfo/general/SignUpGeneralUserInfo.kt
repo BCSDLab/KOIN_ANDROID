@@ -128,7 +128,6 @@ fun SignUpGeneralUserInfoImpl(
         Spacer(modifier = Modifier.height(64.dp))
 
         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-
             SignUpGeneralUserInfoInitialStep(
                 userId = userId,
                 isUserIdAvailable = isUserIdAvailable,
@@ -392,7 +391,7 @@ fun SignUpGeneralUserInfoPreview() {
             showPassword = false,
             isPasswordValid = true,
             isPasswordEqual = true,
-            email = "test@test.com",
+            email = "test@test.com"
         )
     }
 }

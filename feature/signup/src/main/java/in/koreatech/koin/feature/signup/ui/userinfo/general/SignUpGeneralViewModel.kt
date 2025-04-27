@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostGeneralRegisterUseCase
@@ -13,6 +12,7 @@ import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.signup.navigation.NAME
 import `in`.koreatech.koin.feature.signup.navigation.PHONE_NUMBER
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -20,8 +20,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class SignUpGeneralViewModel @Inject constructor(
