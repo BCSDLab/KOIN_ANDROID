@@ -91,7 +91,7 @@ fun SignUpVerification(
         checkVerificationCode = { viewModel.checkVerificationCode() },
         modifier = modifier,
         navigateToNextScreen = { name, phoneNumber, gender ->
-            navigateToNextScreen(name, phoneNumber, gender.toString())
+            navigateToNextScreen(name, phoneNumber, if (gender is Gender.Man) "0" else "1")
         }
     )
 }
