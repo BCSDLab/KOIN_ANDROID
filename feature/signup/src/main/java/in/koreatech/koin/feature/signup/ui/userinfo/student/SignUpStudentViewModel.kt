@@ -74,7 +74,7 @@ class SignUpStudentViewModel @Inject constructor(
     fun setPassword(password: String) {
         blockingIntent {
             reduce {
-                state.copy(password = password, isPasswordValid = password.isValidPassword())
+                state.copy(password = password, isPasswordValid = password.isValidPassword(), isPasswordEqual = password == state.passwordConfirm)
             }
         }
         checkNextStep()
