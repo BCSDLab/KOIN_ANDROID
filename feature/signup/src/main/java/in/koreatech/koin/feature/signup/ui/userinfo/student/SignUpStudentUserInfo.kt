@@ -394,9 +394,9 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
         }
     }
 
-    Spacer(modifier = Modifier.height(8.dp))
-
     if (nickname.isNotEmpty() && !nickname.isNicknameFormat()) {
+        Spacer(modifier = Modifier.height(8.dp))
+
         KoinSignUpTextFieldAlert(
             text = stringResource(R.string.sign_up_user_info_nickname_wrong_format),
             state = KoinSignUpTextFieldAlertState.Warning
@@ -404,13 +404,15 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
     }
 
     if (isNicknameAvailable != null) {
+        Spacer(modifier = Modifier.height(8.dp))
+
         KoinSignUpTextFieldAlert(
             text = if (isNicknameAvailable == true) stringResource(R.string.sign_up_user_info_nickname_available) else stringResource(R.string.sign_up_user_info_nickname_duplicate),
             state = if (isNicknameAvailable == true) KoinSignUpTextFieldAlertState.Success else KoinSignUpTextFieldAlertState.Warning
         )
     }
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(12.dp))
 
     Row(
         modifier = Modifier.fillMaxWidth(),
