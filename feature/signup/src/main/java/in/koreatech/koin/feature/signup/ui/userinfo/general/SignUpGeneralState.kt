@@ -25,5 +25,5 @@ data class SignUpGeneralState(
 
 enum class SignUpGeneralStep {
     INITIAL,
-    NICK_NANE_AND_EMAIL
+    NICKNANE_AND_EMAIL
 }
