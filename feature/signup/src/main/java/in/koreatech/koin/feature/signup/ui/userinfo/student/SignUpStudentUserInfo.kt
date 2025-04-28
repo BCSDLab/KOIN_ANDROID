@@ -18,7 +18,6 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import `in`.koreatech.koin.feature.signup.R
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpBasicTextField
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpDropdown
@@ -363,6 +363,15 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
         value = studentNumber,
         onValueChange = { onStudentNumberChange(it) }
     )
+
+    if (studentNumber.isNotEmpty() && !studentNumber.isValidStudentId) {
+        Spacer(modifier = Modifier.height(8.dp))
+
+        KoinSignUpTextFieldAlert(
+            text = stringResource(R.string.sign_up_user_info_student_number_wrong_format),
+            state = KoinSignUpTextFieldAlertState.Warning
+        )
+    }
 
     Spacer(modifier = Modifier.height(12.dp))
 
