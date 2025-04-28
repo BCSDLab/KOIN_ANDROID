@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.signup.ui.term.SignUpTermScreen
+import `in`.koreatech.koin.feature.signup.ui.userinfo.general.SignUpGeneralUserInfo
 import `in`.koreatech.koin.feature.signup.ui.usertype.SignUpUserType
 import `in`.koreatech.koin.feature.signup.ui.verification.SignUpVerification
 
@@ -54,6 +55,9 @@ fun NavGraphBuilder.koinSignUpGraph(
             navArgument(GENDER) { type = NavType.StringType }
         )
     ) {
+        SignUpGeneralUserInfo {
+            navController.navigate(SignUpNavType.SignUpComplete.route)
+        }
     }
 
     composable(
