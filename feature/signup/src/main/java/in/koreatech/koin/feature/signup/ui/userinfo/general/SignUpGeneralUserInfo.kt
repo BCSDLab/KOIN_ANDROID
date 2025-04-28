@@ -18,6 +18,7 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +47,7 @@ fun SignUpGeneralUserInfo(
     navigateToNextScreen: () -> Unit
 ) {
     val uiState by viewModel.collectAsState()
+    val enabled by viewModel.enabled.collectAsState(false)
 
     viewModel.collectSideEffect {
         handleSideEffect(
@@ -67,6 +69,7 @@ fun SignUpGeneralUserInfo(
         isPasswordValid = uiState.isPasswordValid,
         isPasswordEqual = uiState.isPasswordEqual,
         email = uiState.email,
+        enabled = enabled,
         modifier = modifier,
         onNicknameChange = { viewModel.setNickname(it) },
         checkNicknameDuplicate = { viewModel.checkNicknameDuplicate() },
@@ -94,6 +97,7 @@ fun SignUpGeneralUserInfoImpl(
     isPasswordValid: Boolean,
     isPasswordEqual: Boolean,
     email: String,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
     onNicknameChange: (String) -> Unit = {},
     checkNicknameDuplicate: () -> Unit = {},
@@ -165,7 +169,7 @@ fun SignUpGeneralUserInfoImpl(
         FilledButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.sign_up_next),
-            enabled = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && isUserIdAvailable == true,
+            enabled = enabled,
             contentPadding = PaddingValues(12.dp),
             onClick = {
                 onSignUpButtonClick()
@@ -391,7 +395,8 @@ fun SignUpGeneralUserInfoPreview() {
             showPassword = false,
             isPasswordValid = true,
             isPasswordEqual = true,
-            email = "test@test.com"
+            email = "test@test.com",
+            enabled = true
         )
     }
 }
