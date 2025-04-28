@@ -149,7 +149,7 @@ class SignUpStudentViewModel @Inject constructor(
         intent {
             if (state.isPasswordValid && state.isPasswordEqual) {
                 reduce {
-                    state.copy(step = SignUpStudentStep.NICK_NANE_AND_EMAIL)
+                    state.copy(step = SignUpStudentStep.NICKNANE_AND_EMAIL)
                 }
             } else {
                 reduce {
