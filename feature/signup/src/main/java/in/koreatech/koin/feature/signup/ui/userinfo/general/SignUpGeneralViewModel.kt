@@ -125,7 +125,7 @@ class SignUpGeneralViewModel @Inject constructor(
         intent {
             if (state.isPasswordValid && state.isPasswordEqual) {
                 reduce {
-                    state.copy(step = SignUpGeneralStep.NICK_NANE_AND_EMAIL)
+                    state.copy(step = SignUpGeneralStep.NICKNANE_AND_EMAIL)
                 }
             } else {
                 reduce {
