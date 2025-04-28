@@ -23,6 +23,9 @@ data class SignUpGeneralState(
     val isSignUpSuccess: Boolean = false
 ) : Parcelable
 
+val SignUpGeneralState.isEnabled
+    get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && isUserIdAvailable == true
+
 enum class SignUpGeneralStep {
     INITIAL,
     NICK_NANE_AND_EMAIL

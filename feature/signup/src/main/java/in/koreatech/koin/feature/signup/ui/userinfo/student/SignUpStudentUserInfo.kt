@@ -49,7 +49,6 @@ fun SignUpStudentUserInfo(
     navigateToNextScreen: () -> Unit
 ) {
     val uiState by viewModel.collectAsState()
-    val enabled by viewModel.enabled.collectAsState(false)
 
     viewModel.collectSideEffect {
         handleSideEffect(
@@ -75,7 +74,7 @@ fun SignUpStudentUserInfo(
         isDropdownExpanded = uiState.isDropdownExpanded,
         isDepartmentSelected = uiState.isDepartmentSelected,
         email = uiState.email,
-        enabled = enabled,
+        enabled = uiState.isEnabled,
         modifier = modifier,
         onNicknameChange = { viewModel.setNickname(it) },
         checkNicknameDuplicate = { viewModel.checkNicknameDuplicate() },

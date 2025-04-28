@@ -13,7 +13,6 @@ import `in`.koreatech.koin.feature.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.signup.navigation.NAME
 import `in`.koreatech.koin.feature.signup.navigation.PHONE_NUMBER
 import javax.inject.Inject
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -37,12 +36,6 @@ class SignUpStudentViewModel @Inject constructor(
         checkNotNull(gender)
 
         setInitData(phoneNumber, name, gender)
-    }
-
-    val enabled = container.stateFlow.map {
-        with(it) {
-            (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && department.isNotEmpty() && studentNumber.isNotEmpty() && isUserIdAvailable == true
-        }
     }
 
     private fun setInitData(phoneNumber: String, name: String, gender: String) {

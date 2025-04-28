@@ -27,6 +27,9 @@ data class SignUpStudentState(
     val isSignUpSuccess: Boolean = false
 ) : Parcelable
 
+val SignUpStudentState.isEnabled
+    get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && department.isNotEmpty() && studentNumber.isNotEmpty() && isUserIdAvailable == true
+
 enum class SignUpStudentStep {
     INITIAL,
     NICKNANE_AND_EMAIL
