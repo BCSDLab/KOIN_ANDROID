@@ -110,8 +110,21 @@
             android:exported="false" />
         <activity
             android:name=".ui.main.activity.MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+            <data
+                android:host="home"
+                android:pathPrefix="/home"
+                android:scheme="koin" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name=".ui.dining.appwidget.DiningAppWidget"
