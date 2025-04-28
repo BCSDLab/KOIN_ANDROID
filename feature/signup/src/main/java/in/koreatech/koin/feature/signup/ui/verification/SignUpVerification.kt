@@ -118,9 +118,9 @@ fun SignUpVerificationImpl(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .imePadding()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
-            .imePadding()
     ) {
         KoinSignUpProgressHeader(
             text = stringResource(R.string.sign_up_verification),
