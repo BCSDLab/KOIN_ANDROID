@@ -66,6 +66,11 @@ interface UserApi {
         @Query("nickname") nickname: String
     )
 
+    @GET(URLConstant.USER.CHECKUSERID)
+    suspend fun checkUserId(
+        @Query("loginId") id: String
+    )
+
     @POST(URLConstant.USER.SMSSEND)
     suspend fun smsSend(
         @Body smsSendRequest: SmsSendRequest

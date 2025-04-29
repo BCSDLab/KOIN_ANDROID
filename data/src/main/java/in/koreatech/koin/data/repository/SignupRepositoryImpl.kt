@@ -109,6 +109,7 @@ class SignupRepositoryImpl @Inject constructor(
         } catch (e: HttpException) {
             when (e.code()) {
                 409 -> SignupContinuationState.PhoneNumberDuplicated
+                400 -> SignupContinuationState.CheckPhoneNumberFormat
                 else -> SignupContinuationState.Failed(
                     message = e.getErrorResponse().message ?: "",
                     throwable = e
@@ -145,6 +146,22 @@ class SignupRepositoryImpl @Inject constructor(
             Result.success(Unit)
         } catch (e: HttpException) {
             Result.failure(e)
+        }
+    }
+
+    override suspend fun isUserIdDuplicated(userId: String): SignupContinuationState {
+        return try {
+            userRemoteDataSource.checkUserId(userId)
+            SignupContinuationState.AvailableUserId
+        } catch (e: HttpException) {
+            when (e.code()) {
+                409 -> SignupContinuationState.UserIdDuplicated
+                400 -> SignupContinuationState.CheckUserIdFormat
+                else -> SignupContinuationState.Failed(
+                    message = e.getErrorResponse().message ?: "",
+                    throwable = e
+                )
+            }
         }
     }
 
