@@ -63,4 +63,8 @@
     <string name="sign_up_user_info_student_number_wrong_format">올바른 학번 양식이 아닙니다. 다시 입력해 주세요.</string>
 
     <string name="sign_up_next">다음</string>
+
+    <string name="sign_up_complete">회원가입이 완료되었습니다.</string>
+    <string name="sign_up_complete_login">로그인 바로가기</string>
+    <string name="sign_up_complete_home">홈화면 바로가기</string>
 </resources>

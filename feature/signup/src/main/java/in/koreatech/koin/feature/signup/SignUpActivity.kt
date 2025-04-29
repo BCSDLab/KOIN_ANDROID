@@ -3,9 +3,9 @@ package `in`.koreatech.koin.feature.signup
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.feature.signup.navigation.SignUpNavType
 import `in`.koreatech.koin.feature.signup.navigation.koinSignUpGraph
 
@@ -24,7 +25,7 @@ class SignUpActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdgeWithLightStatusBar()
         setContent {
             KoinTheme {
                 val navController = rememberNavController()
@@ -41,7 +42,9 @@ class SignUpActivity : ComponentActivity() {
                     containerColor = KoinTheme.colors.neutral0
                 ) { contentPadding ->
                     NavHost(
-                        modifier = Modifier.padding(contentPadding),
+                        modifier = Modifier
+                            .padding(contentPadding)
+                            .consumeWindowInsets(contentPadding),
                         navController = navController,
                         enterTransition = {
                             EnterTransition.None
