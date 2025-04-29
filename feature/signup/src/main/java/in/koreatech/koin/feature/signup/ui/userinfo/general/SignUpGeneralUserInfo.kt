@@ -56,7 +56,7 @@ fun SignUpGeneralUserInfo(
     }
 
     SignUpGeneralUserInfoImpl(
-        step = uiState.step,
+        step = uiState.currentStep,
         userId = uiState.userId,
         isUserIdAvailable = uiState.isUserIdAvailable,
         isUserIdValid = uiState.isUserIdValid,

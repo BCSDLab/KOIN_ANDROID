@@ -60,7 +60,6 @@ class SignUpStudentViewModel @Inject constructor(
                 state.copy(isUserIdAvailable = true)
             }
         }
-        checkNextStep()
     }
 
     fun setEmail(email: String) {
@@ -77,7 +76,6 @@ class SignUpStudentViewModel @Inject constructor(
                 state.copy(password = password, isPasswordValid = password.isValidPassword(), isPasswordEqual = password == state.passwordConfirm)
             }
         }
-        checkNextStep()
     }
 
     fun setPasswordConfirm(passwordConfirm: String) {
@@ -86,7 +84,6 @@ class SignUpStudentViewModel @Inject constructor(
                 state.copy(passwordConfirm = passwordConfirm, isPasswordEqual = state.password == passwordConfirm)
             }
         }
-        checkNextStep()
     }
 
     fun setPasswordVisibility(showPassword: Boolean) {
@@ -141,20 +138,6 @@ class SignUpStudentViewModel @Inject constructor(
         blockingIntent {
             reduce {
                 state.copy(studentNumber = studentNumber)
-            }
-        }
-    }
-
-    private fun checkNextStep() {
-        intent {
-            if (state.isPasswordValid && state.isPasswordEqual) {
-                reduce {
-                    state.copy(step = SignUpStudentStep.NICKNAME_AND_EMAIL)
-                }
-            } else {
-                reduce {
-                    state.copy(step = SignUpStudentStep.INITIAL)
-                }
             }
         }
     }
