@@ -50,6 +50,7 @@
     <string name="sign_up_user_info_nickname_available">사용 가능한 닉네임입니다.</string>
     <string name="sign_up_user_info_nickname_wrong_format">한글, 영문 및 숫자 포함하여 10자 내로 입력해 주세요.</string>
     <string name="sign_up_user_info_email_hint">이메일을 입력해 주세요. (선택)</string>
+    <string name="sign_up_user_info_email_koreatech_suffix">\@koreatech.ac.kr</string>
     <string name="sign_up_user_info_password_title">사용하실 비밀번호를 입력해 주세요.</string>
     <string name="sign_up_user_info_password_hint">특수문자 포함 영어와 숫자 6~18자리로 입력해 주세요.</string>
     <string name="sign_up_user_info_password_not_valid">올바른 비밀번호 양식이 아닙니다. 다시 입력해 주세요.</string>
@@ -59,6 +60,7 @@
     <string name="sign_up_user_info_department_and_student_number_title">학부와 학번을 알려주세요.</string>
     <string name="sign_up_user_info_department_hint">학부를 선택해주세요.</string>
     <string name="sign_up_user_info_student_number_hint">학번을 입력해주세요.</string>
+    <string name="sign_up_user_info_student_number_wrong_format">올바른 학번 양식이 아닙니다. 다시 입력해 주세요.</string>
 
     <string name="sign_up_next">다음</string>
 

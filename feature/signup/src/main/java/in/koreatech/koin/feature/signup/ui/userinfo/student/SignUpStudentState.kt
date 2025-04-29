@@ -1,11 +1,11 @@
-package `in`.koreatech.koin.feature.signup.ui.userinfo.general
+package `in`.koreatech.koin.feature.signup.ui.userinfo.student
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SignUpGeneralState(
-    val step: SignUpGeneralStep = SignUpGeneralStep.INITIAL,
+data class SignUpStudentState(
+    val step: SignUpStudentStep = SignUpStudentStep.INITIAL,
     val phoneNumber: String = "",
     val name: String = "",
     val gender: String = "",
@@ -17,16 +17,20 @@ data class SignUpGeneralState(
     val isPasswordValid: Boolean = false,
     val isPasswordEqual: Boolean = false,
     val showPassword: Boolean = false,
+    val department: String = "",
+    val studentNumber: String = "",
+    val isDropdownExpanded: Boolean = false,
+    val isDepartmentSelected: Boolean = false,
     val nickname: String = "",
     val isNicknameAvailable: Boolean? = null,
     val email: String = "",
     val isSignUpSuccess: Boolean = false
 ) : Parcelable
 
-val SignUpGeneralState.isEnabled
-    get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && isUserIdAvailable == true
+val SignUpStudentState.isEnabled
+    get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && department.isNotEmpty() && studentNumber.isNotEmpty() && isUserIdAvailable == true
 
-enum class SignUpGeneralStep {
+enum class SignUpStudentStep {
     INITIAL,
     NICKNAME_AND_EMAIL
 }

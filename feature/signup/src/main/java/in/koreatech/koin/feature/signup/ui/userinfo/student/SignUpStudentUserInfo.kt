@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.signup.ui.userinfo.general
+package `in`.koreatech.koin.feature.signup.ui.userinfo.student
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -18,7 +18,6 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,20 +29,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import `in`.koreatech.koin.feature.signup.R
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpBasicTextField
+import `in`.koreatech.koin.feature.signup.component.KoinSignUpDropdown
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpPasswordTextField
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpProgressHeader
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpProgressIndicator
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpTextFieldAlert
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpTextFieldAlertState
+import `in`.koreatech.koin.feature.signup.departmentStringList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun SignUpGeneralUserInfo(
+fun SignUpStudentUserInfo(
     modifier: Modifier = Modifier,
-    viewModel: SignUpGeneralViewModel = hiltViewModel(),
+    viewModel: SignUpStudentViewModel = hiltViewModel(),
     navigateToNextScreen: () -> Unit
 ) {
     val uiState by viewModel.collectAsState()
@@ -55,7 +57,7 @@ fun SignUpGeneralUserInfo(
         )
     }
 
-    SignUpGeneralUserInfoImpl(
+    SignUpStudentUserInfoImpl(
         step = uiState.step,
         userId = uiState.userId,
         isUserIdAvailable = uiState.isUserIdAvailable,
@@ -67,6 +69,10 @@ fun SignUpGeneralUserInfo(
         showPassword = uiState.showPassword,
         isPasswordValid = uiState.isPasswordValid,
         isPasswordEqual = uiState.isPasswordEqual,
+        department = uiState.department,
+        studentNumber = uiState.studentNumber,
+        isDropdownExpanded = uiState.isDropdownExpanded,
+        isDepartmentSelected = uiState.isDepartmentSelected,
         email = uiState.email,
         enabled = uiState.isEnabled,
         modifier = modifier,
@@ -77,14 +83,17 @@ fun SignUpGeneralUserInfo(
         onPasswordChange = { viewModel.setPassword(it) },
         onPasswordConfirmChange = { viewModel.setPasswordConfirm(it) },
         onShowPasswordChange = { viewModel.setPasswordVisibility(it) },
+        onDropdownExpandChange = { viewModel.setDepartmentDropdownExpanded(it) },
+        onDepartmentSelected = { viewModel.setDepartment(it) },
+        onStudentNumberChange = { viewModel.setStudentNumber(it) },
         onEmailChange = { viewModel.setEmail(it) },
         onSignUpButtonClick = { viewModel.signUp() }
     )
 }
 
 @Composable
-fun SignUpGeneralUserInfoImpl(
-    step: SignUpGeneralStep,
+fun SignUpStudentUserInfoImpl(
+    step: SignUpStudentStep,
     userId: String,
     isUserIdAvailable: Boolean?,
     isUserIdValid: Boolean,
@@ -95,6 +104,10 @@ fun SignUpGeneralUserInfoImpl(
     showPassword: Boolean,
     isPasswordValid: Boolean,
     isPasswordEqual: Boolean,
+    department: String,
+    studentNumber: String,
+    isDropdownExpanded: Boolean,
+    isDepartmentSelected: Boolean,
     email: String,
     enabled: Boolean,
     modifier: Modifier = Modifier,
@@ -105,14 +118,19 @@ fun SignUpGeneralUserInfoImpl(
     onPasswordChange: (String) -> Unit = {},
     onPasswordConfirmChange: (String) -> Unit = {},
     onShowPasswordChange: (Boolean) -> Unit = {},
+    onDropdownExpandChange: (Boolean) -> Unit = {},
+    onDepartmentSelected: (String) -> Unit = {},
+    onStudentNumberChange: (String) -> Unit = {},
     onEmailChange: (String) -> Unit = {},
     onSignUpButtonClick: () -> Unit = {}
 ) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .imePadding()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
             .padding(horizontal = 24.dp)
     ) {
         KoinSignUpProgressHeader(
@@ -131,7 +149,7 @@ fun SignUpGeneralUserInfoImpl(
         Spacer(modifier = Modifier.height(64.dp))
 
         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-            SignUpGeneralUserInfoInitialStep(
+            SignUpStudentUserInfoInitialStep(
                 userId = userId,
                 isUserIdAvailable = isUserIdAvailable,
                 isUserIdValid = isUserIdValid,
@@ -147,13 +165,20 @@ fun SignUpGeneralUserInfoImpl(
                 onShowPasswordChange = { onShowPasswordChange(it) }
             )
 
-            if (step == SignUpGeneralStep.NICKNAME_AND_EMAIL) {
+            if (step == SignUpStudentStep.NICKNAME_AND_EMAIL) {
                 Spacer(modifier = Modifier.height(32.dp))
 
-                SignUpGeneralUserInfoNickNameEmailStep(
+                SignUpStudentUserInfoNickNameEmailStep(
                     nickname = nickname,
                     isNicknameAvailable = isNicknameAvailable,
                     email = email,
+                    department = department,
+                    isDepartmentSelected = isDepartmentSelected,
+                    isDropdownExpanded = isDropdownExpanded,
+                    studentNumber = studentNumber,
+                    onDropdownExpandChange = { onDropdownExpandChange(it) },
+                    onDepartmentSelected = { onDepartmentSelected(it) },
+                    onStudentNumberChange = { onStudentNumberChange(it) },
                     checkNicknameDuplicate = { checkNicknameDuplicate() },
                     onNicknameChange = { onNicknameChange(it) },
                     onEmailChange = { onEmailChange(it) }
@@ -178,7 +203,7 @@ fun SignUpGeneralUserInfoImpl(
 }
 
 @Composable
-private fun SignUpGeneralUserInfoInitialStep(
+private fun SignUpStudentUserInfoInitialStep(
     userId: String,
     isUserIdAvailable: Boolean?,
     isUserIdValid: Boolean,
@@ -296,14 +321,60 @@ private fun SignUpGeneralUserInfoInitialStep(
 }
 
 @Composable
-private fun SignUpGeneralUserInfoNickNameEmailStep(
+private fun SignUpStudentUserInfoNickNameEmailStep(
     nickname: String,
     isNicknameAvailable: Boolean?,
     email: String,
+    department: String,
+    isDepartmentSelected: Boolean,
+    isDropdownExpanded: Boolean,
+    studentNumber: String,
+    onDropdownExpandChange: (Boolean) -> Unit,
+    onDepartmentSelected: (String) -> Unit = {},
+    onStudentNumberChange: (String) -> Unit = {},
     checkNicknameDuplicate: () -> Unit = {},
     onNicknameChange: (String) -> Unit = {},
     onEmailChange: (String) -> Unit = {}
 ) {
+    Text(
+        text = stringResource(R.string.sign_up_user_info_department_and_student_number_title),
+        style = KoinTheme.typography.medium18
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    KoinSignUpDropdown(
+        text = department,
+        hint = stringResource(R.string.sign_up_user_info_department_hint),
+        isSelected = isDepartmentSelected,
+        isDropdownExpanded = isDropdownExpanded,
+        items = departmentStringList,
+        onDropdownExpandChange = onDropdownExpandChange,
+        onItemSelected = {
+            onDepartmentSelected(departmentStringList[it])
+        }
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    KoinSignUpBasicTextField(
+        modifier = Modifier.fillMaxWidth(),
+        hint = stringResource(R.string.sign_up_user_info_student_number_hint),
+        value = studentNumber,
+        onValueChange = { onStudentNumberChange(it) }
+    )
+
+    if (studentNumber.isNotEmpty() && !studentNumber.isValidStudentId) {
+        Spacer(modifier = Modifier.height(8.dp))
+
+        KoinSignUpTextFieldAlert(
+            text = stringResource(R.string.sign_up_user_info_student_number_wrong_format),
+            state = KoinSignUpTextFieldAlertState.Warning
+        )
+    }
+
+    Spacer(modifier = Modifier.height(12.dp))
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -335,9 +406,9 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
         }
     }
 
-    Spacer(modifier = Modifier.height(8.dp))
-
     if (nickname.isNotEmpty() && !nickname.isNicknameFormat()) {
+        Spacer(modifier = Modifier.height(8.dp))
+
         KoinSignUpTextFieldAlert(
             text = stringResource(R.string.sign_up_user_info_nickname_wrong_format),
             state = KoinSignUpTextFieldAlertState.Warning
@@ -345,34 +416,49 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
     }
 
     if (isNicknameAvailable != null) {
+        Spacer(modifier = Modifier.height(8.dp))
+
         KoinSignUpTextFieldAlert(
             text = if (isNicknameAvailable == true) stringResource(R.string.sign_up_user_info_nickname_available) else stringResource(R.string.sign_up_user_info_nickname_duplicate),
             state = if (isNicknameAvailable == true) KoinSignUpTextFieldAlertState.Success else KoinSignUpTextFieldAlertState.Warning
         )
     }
 
-    Spacer(modifier = Modifier.height(24.dp))
+    Spacer(modifier = Modifier.height(12.dp))
 
-    KoinSignUpBasicTextField(
+    Row(
         modifier = Modifier.fillMaxWidth(),
-        hint = stringResource(R.string.sign_up_user_info_email_hint),
-        value = email,
-        onValueChange = {
-            onEmailChange(it)
-        }
-    )
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        KoinSignUpBasicTextField(
+            modifier = Modifier.weight(1f),
+            hint = stringResource(R.string.sign_up_user_info_email_hint),
+            value = email,
+            onValueChange = {
+                onEmailChange(it)
+            }
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Text(
+            style = KoinTheme.typography.regular14,
+            color = KoinTheme.colors.neutral400,
+            text = stringResource(R.string.sign_up_user_info_email_koreatech_suffix)
+        )
+    }
 }
 
 private fun handleSideEffect(
-    sideEffect: SignUpGeneralSideEffect,
+    sideEffect: SignUpStudentSideEffect,
     navigateToNextScreen: () -> Unit
 ) {
     when (sideEffect) {
-        is SignUpGeneralSideEffect.SignUpSuccess -> {
+        is SignUpStudentSideEffect.SignUpSuccess -> {
             navigateToNextScreen()
         }
 
-        is SignUpGeneralSideEffect.SignUpFailure -> {
+        is SignUpStudentSideEffect.SignUpFailure -> {
             // TODO: Handle sign up failure
         }
     }
@@ -380,13 +466,14 @@ private fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun SignUpGeneralUserInfoPreview() {
+fun SignUpStudentUserInfoPreview() {
     KoinTheme {
-        SignUpGeneralUserInfoImpl(
-            step = SignUpGeneralStep.NICKNAME_AND_EMAIL,
-            userId = "userid",
+        SignUpStudentUserInfoImpl(
+            step = SignUpStudentStep.NICKNAME_AND_EMAIL,
+            userId = "userId",
             isUserIdAvailable = true,
             isUserIdValid = true,
+            email = "email",
             nickname = "nickname",
             isNicknameAvailable = true,
             password = "password",
@@ -394,7 +481,10 @@ fun SignUpGeneralUserInfoPreview() {
             showPassword = false,
             isPasswordValid = true,
             isPasswordEqual = true,
-            email = "test@test.com",
+            department = "컴퓨터공학과",
+            studentNumber = "2000000000",
+            isDropdownExpanded = false,
+            isDepartmentSelected = false,
             enabled = true
         )
     }

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.signup.ui.userinfo.general
+package `in`.koreatech.koin.feature.signup.ui.userinfo.student
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
-import `in`.koreatech.koin.domain.usecase.signup.PostGeneralRegisterUseCase
+import `in`.koreatech.koin.domain.usecase.signup.PostStudentRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.isUserIdFormat
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
@@ -22,12 +22,12 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
-class SignUpGeneralViewModel @Inject constructor(
+class SignUpStudentViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
-    private val postGeneralRegisterUseCase: PostGeneralRegisterUseCase
-) : ViewModel(), ContainerHost<SignUpGeneralState, SignUpGeneralSideEffect> {
-    override val container = container<SignUpGeneralState, SignUpGeneralSideEffect>(SignUpGeneralState(), savedStateHandle) {
+    private val postStudentRegisterUseCase: PostStudentRegisterUseCase
+) : ViewModel(), ContainerHost<SignUpStudentState, SignUpStudentSideEffect> {
+    override val container = container<SignUpStudentState, SignUpStudentSideEffect>(SignUpStudentState(), savedStateHandle) {
         val phoneNumber = savedStateHandle.get<String>(PHONE_NUMBER)
         val name = savedStateHandle.get<String>(NAME)
         val gender = savedStateHandle.get<String>(GENDER)
@@ -42,6 +42,31 @@ class SignUpGeneralViewModel @Inject constructor(
         intent {
             reduce {
                 state.copy(phoneNumber = phoneNumber, name = name, gender = gender)
+            }
+        }
+    }
+
+    fun setUserId(userId: String) {
+        blockingIntent {
+            reduce {
+                state.copy(userId = userId, isUserIdValid = userId.isUserIdFormat())
+            }
+        }
+    }
+
+    fun checkUserIdDuplicate() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(isUserIdAvailable = true)
+            }
+        }
+        checkNextStep()
+    }
+
+    fun setEmail(email: String) {
+        blockingIntent {
+            reduce {
+                state.copy(email = email)
             }
         }
     }
@@ -96,27 +121,26 @@ class SignUpGeneralViewModel @Inject constructor(
         }
     }
 
-    fun setUserId(userId: String) {
+    fun setDepartmentDropdownExpanded(isExpanded: Boolean) {
         blockingIntent {
             reduce {
-                state.copy(userId = userId, isUserIdValid = userId.isUserIdFormat())
+                state.copy(isDropdownExpanded = isExpanded)
             }
         }
     }
 
-    fun checkUserIdDuplicate() = viewModelScope.launch {
-        intent {
-            reduce {
-                state.copy(isUserIdAvailable = true)
-            }
-        }
-        checkNextStep()
-    }
-
-    fun setEmail(email: String) {
+    fun setDepartment(department: String) {
         blockingIntent {
             reduce {
-                state.copy(email = email)
+                state.copy(department = department, isDepartmentSelected = department.isNotEmpty())
+            }
+        }
+    }
+
+    fun setStudentNumber(studentNumber: String) {
+        blockingIntent {
+            reduce {
+                state.copy(studentNumber = studentNumber)
             }
         }
     }
@@ -125,11 +149,11 @@ class SignUpGeneralViewModel @Inject constructor(
         intent {
             if (state.isPasswordValid && state.isPasswordEqual) {
                 reduce {
-                    state.copy(step = SignUpGeneralStep.NICKNAME_AND_EMAIL)
+                    state.copy(step = SignUpStudentStep.NICKNAME_AND_EMAIL)
                 }
             } else {
                 reduce {
-                    state.copy(step = SignUpGeneralStep.INITIAL)
+                    state.copy(step = SignUpStudentStep.INITIAL)
                 }
             }
         }
@@ -137,18 +161,20 @@ class SignUpGeneralViewModel @Inject constructor(
 
     fun signUp() = viewModelScope.launch {
         intent {
-            postGeneralRegisterUseCase(
+            postStudentRegisterUseCase(
                 name = state.name,
                 phoneNumber = state.phoneNumber,
                 userId = state.userId,
                 password = state.password,
                 gender = state.gender,
                 email = state.email,
-                nickname = state.nickname
+                nickname = state.nickname,
+                studentNumber = state.studentNumber,
+                department = state.department
             ).onSuccess {
-                postSideEffect(SignUpGeneralSideEffect.SignUpSuccess)
+                postSideEffect(SignUpStudentSideEffect.SignUpSuccess)
             }.onFailure {
-                postSideEffect(SignUpGeneralSideEffect.SignUpFailure)
+                postSideEffect(SignUpStudentSideEffect.SignUpFailure)
             }
         }
     }
