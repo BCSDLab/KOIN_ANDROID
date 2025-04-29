@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import javax.inject.Inject
 
 class CheckUserIdDuplicateUseCase @Inject constructor(
-    private val signupRepository: SignupRepository,
+    private val signupRepository: SignupRepository
 ) {
     suspend operator fun invoke(userId: String): SignupContinuationState {
         return signupRepository.isUserIdDuplicated(userId)
