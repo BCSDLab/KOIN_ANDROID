@@ -28,5 +28,5 @@ val SignUpGeneralState.isEnabled
 
 enum class SignUpGeneralStep {
     INITIAL,
-    NICKNANE_AND_EMAIL
+    NICKNAME_AND_EMAIL
 }

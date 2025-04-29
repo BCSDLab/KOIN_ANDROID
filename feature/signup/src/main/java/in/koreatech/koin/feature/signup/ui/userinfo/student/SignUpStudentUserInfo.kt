@@ -165,7 +165,7 @@ fun SignUpStudentUserInfoImpl(
                 onShowPasswordChange = { onShowPasswordChange(it) }
             )
 
-            if (step == SignUpStudentStep.NICKNANE_AND_EMAIL) {
+            if (step == SignUpStudentStep.NICKNAME_AND_EMAIL) {
                 Spacer(modifier = Modifier.height(32.dp))
 
                 SignUpStudentUserInfoNickNameEmailStep(
@@ -469,7 +469,7 @@ private fun handleSideEffect(
 fun SignUpStudentUserInfoPreview() {
     KoinTheme {
         SignUpStudentUserInfoImpl(
-            step = SignUpStudentStep.NICKNANE_AND_EMAIL,
+            step = SignUpStudentStep.NICKNAME_AND_EMAIL,
             userId = "userId",
             isUserIdAvailable = true,
             isUserIdValid = true,

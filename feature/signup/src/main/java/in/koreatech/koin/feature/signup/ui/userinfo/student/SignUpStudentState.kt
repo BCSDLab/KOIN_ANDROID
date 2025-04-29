@@ -32,5 +32,5 @@ val SignUpStudentState.isEnabled
 
 enum class SignUpStudentStep {
     INITIAL,
-    NICKNANE_AND_EMAIL
+    NICKNAME_AND_EMAIL
 }
