@@ -33,6 +33,8 @@ sealed class SignupContinuationState {
 
     object CheckPhoneNumberFormat : SignupContinuationState() // 전화번호를 올바른 형식으로 작성했는지 확인
 
+    object CheckUserIdFormat : SignupContinuationState() // 아이디를 올바른 형식으로 작성했는지 확인
+
     object CompanyNumberIsNotValidate : SignupContinuationState()
 
     object SmsCodeIsValidated : SignupContinuationState()
