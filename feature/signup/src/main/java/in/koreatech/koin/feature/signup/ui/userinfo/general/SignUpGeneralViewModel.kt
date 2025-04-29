@@ -102,7 +102,7 @@ class SignUpGeneralViewModel @Inject constructor(
     fun setUserId(userId: String) {
         blockingIntent {
             reduce {
-                state.copy(userId = userId, isUserIdValid = userId.isUserIdFormat())
+                state.copy(userId = userId, isUserIdValid = userId.isUserIdFormat(), isUserIdAvailable = null)
             }
         }
     }
