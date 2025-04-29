@@ -46,7 +46,7 @@ fun SignUpUserType(
             maxStep = 4
         )
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Image(
             modifier = Modifier.width(96.dp),
@@ -77,6 +77,8 @@ fun SignUpUserType(
             colors = FilledButtonColors.Primary,
             onClick = { navigateToGeneralScreen() }
         )
+
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
