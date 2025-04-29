@@ -44,7 +44,7 @@
     <string name="sign_up_user_info_id_duplicate">이미 사용 중인 아이디입니다.</string>
     <string name="sign_up_user_info_id_available">사용 가능한 아이디입니다.</string>
     <string name="sign_up_user_info_id_wrong_format">올바른 아이디 양식이 아닙니다. 다시 입력해 주세요.</string>
-    <string name="sign_up_user_info_nickname_hint">닉네임을 입력해 주세요. (선택)</string>
+    <string name="sign_up_user_info_nickname_hint">닉네임은 변경 가능합니다. (선택)</string>
     <string name="sign_up_user_info_nickname_check_duplicate">중복 확인</string>
     <string name="sign_up_user_info_nickname_duplicate">중복된 닉네임입니다. 다시 입력해 주세요.</string>
     <string name="sign_up_user_info_nickname_available">사용 가능한 닉네임입니다.</string>
