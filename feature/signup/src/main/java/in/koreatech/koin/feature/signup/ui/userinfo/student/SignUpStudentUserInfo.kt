@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
@@ -22,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -238,7 +240,10 @@ private fun SignUpStudentUserInfoInitialStep(
             onValueChange = {
                 onUserIdChange(it)
             },
-            showTrailingClearButton = false
+            showTrailingClearButton = false,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -288,7 +293,10 @@ private fun SignUpStudentUserInfoInitialStep(
         value = password,
         onValueChange = { onPasswordChange(it) },
         showPassword = showPassword,
-        onShowPasswordChange = { onShowPasswordChange(it) }
+        onShowPasswordChange = { onShowPasswordChange(it) },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next
+        )
     )
 
     if (isPasswordValid) {
@@ -300,7 +308,10 @@ private fun SignUpStudentUserInfoInitialStep(
             value = passwordConfirm,
             onValueChange = { onPasswordConfirmChange(it) },
             showPassword = showPassword,
-            onShowPasswordChange = { onShowPasswordChange(it) }
+            onShowPasswordChange = { onShowPasswordChange(it) },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
         )
     }
 
@@ -362,7 +373,10 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
         modifier = Modifier.fillMaxWidth(),
         hint = stringResource(R.string.sign_up_user_info_student_number_hint),
         value = studentNumber,
-        onValueChange = { onStudentNumberChange(it) }
+        onValueChange = { onStudentNumberChange(it) },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next
+        )
     )
 
     if (studentNumber.isNotEmpty() && !studentNumber.isValidStudentId) {
@@ -388,7 +402,10 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
             value = nickname,
             onValueChange = {
                 onNicknameChange(it)
-            }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -437,7 +454,10 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
             value = email,
             onValueChange = {
                 onEmailChange(it)
-            }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            )
         )
 
         Spacer(modifier = Modifier.width(4.dp))

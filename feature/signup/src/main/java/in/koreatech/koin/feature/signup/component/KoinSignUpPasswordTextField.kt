@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -45,6 +46,8 @@ fun KoinSignUpPasswordTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     hint: String = "",
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     maxLength: Int = Int.MAX_VALUE,
@@ -61,9 +64,10 @@ fun KoinSignUpPasswordTextField(
                 onValueChange(it.take(maxLength))
             }
         },
-        keyboardOptions = KeyboardOptions.Default.copy(
+        keyboardOptions = keyboardOptions.copy(
             keyboardType = KeyboardType.Password
         ),
+        keyboardActions = keyboardActions,
         textStyle = KoinTheme.typography.regular14.copy(
             lineHeightStyle = null // Remove line height
         ),
