@@ -75,7 +75,7 @@ class SignUpGeneralViewModel @Inject constructor(
     fun setNickname(nickname: String) {
         blockingIntent {
             reduce {
-                state.copy(nickname = nickname)
+                state.copy(nickname = nickname, isNicknameAvailable = null)
             }
         }
     }
