@@ -237,7 +237,8 @@ private fun SignUpStudentUserInfoInitialStep(
             value = userId,
             onValueChange = {
                 onUserIdChange(it)
-            }
+            },
+            showTrailingClearButton = false
         )
 
         Spacer(modifier = Modifier.width(16.dp))

@@ -51,6 +51,7 @@ fun KoinSignUpBasicTextField(
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     maxLength: Int = Int.MAX_VALUE,
+    showTrailingClearButton: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     BasicTextField(
@@ -97,18 +98,20 @@ fun KoinSignUpBasicTextField(
                         innerTextField()
                     }
 
-                    Image(
-                        modifier = Modifier
-                            .size(20.dp)
-                            .alpha(if (value.isEmpty()) 0f else 1f)
-                            .noRippleClickable {
-                                if (value.isNotEmpty()) {
-                                    onValueChange("")
-                                }
-                            },
-                        painter = painterResource(id = R.drawable.ic_sign_up_text_field_clean),
-                        contentDescription = null
-                    )
+                    if (showTrailingClearButton) {
+                        Image(
+                            modifier = Modifier
+                                .size(20.dp)
+                                .alpha(if (value.isEmpty()) 0f else 1f)
+                                .noRippleClickable {
+                                    if (value.isNotEmpty()) {
+                                        onValueChange("")
+                                    }
+                                },
+                            painter = painterResource(id = R.drawable.ic_sign_up_text_field_clean),
+                            contentDescription = null
+                        )
+                    }
                 }
                 HorizontalDivider(
                     modifier = Modifier.fillMaxWidth()
