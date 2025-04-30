@@ -239,8 +239,6 @@ private fun SignUpGeneralUserInfoInitialStep(
         }
     }
 
-    Spacer(modifier = Modifier.height(8.dp))
-
     if (userId.isNotEmpty() && !isUserIdValid) {
         KoinSignUpTextFieldAlert(
             text = stringResource(R.string.sign_up_user_info_id_wrong_format),
@@ -291,8 +289,6 @@ private fun SignUpGeneralUserInfoInitialStep(
             )
         )
     }
-
-    Spacer(modifier = Modifier.height(8.dp))
 
     if (password.isNotEmpty() && !isPasswordValid) {
         KoinSignUpTextFieldAlert(
@@ -352,8 +348,6 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
             )
         }
     }
-
-    Spacer(modifier = Modifier.height(8.dp))
 
     if (nickname.isNotEmpty() && !nickname.isNicknameFormat()) {
         KoinSignUpTextFieldAlert(

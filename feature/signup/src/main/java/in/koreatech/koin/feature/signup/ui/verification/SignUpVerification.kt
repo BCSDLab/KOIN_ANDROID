@@ -366,8 +366,6 @@ fun SignUpVerificationCodeVerificationStep(
         }
     }
 
-    Spacer(modifier = Modifier.height(8.dp))
-
     if (verificationCodeState != null) {
         KoinSignUpTextFieldAlert(
             text = when (verificationCodeState) {
@@ -391,8 +389,6 @@ private fun VerificationCodeSentSuccessMessage(
     remainingCount: Int,
     totalCount: Int
 ) {
-    Spacer(modifier = Modifier.height(8.dp))
-
     Row {
         KoinSignUpTextFieldAlert(
             text = stringResource(R.string.sign_up_verification_code_sent),
@@ -475,8 +471,6 @@ private fun PhoneNumberDuplicateMessage() {
 
 @Composable
 private fun PhoneNumberInvalidMessage() {
-    Spacer(modifier = Modifier.height(8.dp))
-
     KoinSignUpTextFieldAlert(
         text = stringResource(R.string.sign_up_phone_number_invalid),
         state = KoinSignUpTextFieldAlertState.Warning
@@ -485,8 +479,6 @@ private fun PhoneNumberInvalidMessage() {
 
 @Composable
 private fun PhoneNumberRequestCountExceeded() {
-    Spacer(modifier = Modifier.height(8.dp))
-
     KoinSignUpTextFieldAlert(
         text = stringResource(R.string.sign_up_phone_number_code_request_exceeded),
         state = KoinSignUpTextFieldAlertState.Error
