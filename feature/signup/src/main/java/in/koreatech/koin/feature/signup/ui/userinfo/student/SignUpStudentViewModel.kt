@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
+import `in`.koreatech.koin.domain.usecase.signup.CheckUserIdDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostStudentRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.isUserIdFormat
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
@@ -20,12 +21,14 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class SignUpStudentViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
-    private val postStudentRegisterUseCase: PostStudentRegisterUseCase
+    private val postStudentRegisterUseCase: PostStudentRegisterUseCase,
+    private val checkUserIdDuplicateUseCase: CheckUserIdDuplicateUseCase
 ) : ViewModel(), ContainerHost<SignUpStudentState, SignUpStudentSideEffect> {
     override val container = container<SignUpStudentState, SignUpStudentSideEffect>(SignUpStudentState(), savedStateHandle) {
         val phoneNumber = savedStateHandle.get<String>(PHONE_NUMBER)
@@ -49,15 +52,37 @@ class SignUpStudentViewModel @Inject constructor(
     fun setUserId(userId: String) {
         blockingIntent {
             reduce {
-                state.copy(userId = userId, isUserIdValid = userId.isUserIdFormat())
+                state.copy(userId = userId, isUserIdValid = userId.isUserIdFormat(), isUserIdAvailable = null)
             }
         }
     }
 
     fun checkUserIdDuplicate() = viewModelScope.launch {
         intent {
-            reduce {
-                state.copy(isUserIdAvailable = true)
+            checkUserIdDuplicateUseCase(state.userId).let {
+                when (it) {
+                    is SignupContinuationState.AvailableUserId -> {
+                        reduce {
+                            state.copy(isUserIdAvailable = true, isUserIdValid = true)
+                        }
+                    }
+
+                    is SignupContinuationState.UserIdDuplicated -> {
+                        reduce {
+                            state.copy(isUserIdAvailable = false, isUserIdValid = true)
+                        }
+                    }
+
+                    is SignupContinuationState.CheckUserIdFormat -> {
+                        reduce {
+                            state.copy(isUserIdAvailable = null, isUserIdValid = false)
+                        }
+                    }
+
+                    else -> {
+                        Timber.d(it.toString())
+                    }
+                }
             }
         }
         checkNextStep()

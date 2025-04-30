@@ -98,6 +98,10 @@ class UserRemoteDataSource(
         userApi.checkNicknameV2(nickname)
     }
 
+    suspend fun checkUserId(userId: String) {
+        userApi.checkUserId(userId)
+    }
+
     suspend fun postStudentRegister(studentInfoRequest: StudentInfoRequestV2) {
         userApi.postStudentRegister(studentInfoRequest)
     }

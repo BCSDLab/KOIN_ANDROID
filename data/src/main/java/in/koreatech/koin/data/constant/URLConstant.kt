@@ -66,6 +66,7 @@ object URLConstant {
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
         const val CHECKPHONE: String = "$USER/check/phone"
         const val CHECKNICKNAME_V2: String = "$USER/check/nickname"
+        const val CHECKUSERID: String = "$USER/check/id"
         const val SMSSEND: String = "$USER/verification/sms/send"
         const val SMSVERIFY: String = "$USER/verification/sms/verify"
         const val AUTH: String = "$USER/auth"
