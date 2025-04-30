@@ -335,7 +335,8 @@ fun SignUpVerificationCodeVerificationStep(
                     imeAction = ImeAction.Done
                 ),
                 onValueChange = { onVerificationCodeChange(it) },
-                hint = stringResource(R.string.sign_up_verification_code_field_hint)
+                hint = stringResource(R.string.sign_up_verification_code_field_hint),
+                enabled = verificationCodeState !is SignupContinuationState.SmsCodeIsValidated
             )
 
             if (verificationCodeState == null || verificationCodeState != SignupContinuationState.SmsCodeIsValidated) {
