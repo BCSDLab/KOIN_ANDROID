@@ -5,7 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SignUpStudentState(
-    val step: SignUpStudentStep = SignUpStudentStep.INITIAL,
     val phoneNumber: String = "",
     val name: String = "",
     val gender: String = "",
@@ -26,6 +25,13 @@ data class SignUpStudentState(
     val email: String = "",
     val isSignUpSuccess: Boolean = false
 ) : Parcelable
+
+val SignUpStudentState.currentStep: SignUpStudentStep
+    get() = if (isPasswordValid && isPasswordEqual) {
+        SignUpStudentStep.NICKNAME_AND_EMAIL
+    } else {
+        SignUpStudentStep.INITIAL
+    }
 
 val SignUpStudentState.isEnabled
     get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && department.isNotEmpty() && studentNumber.isNotEmpty() && isUserIdAvailable == true

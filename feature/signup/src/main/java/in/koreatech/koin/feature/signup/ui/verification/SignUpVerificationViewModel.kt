@@ -33,7 +33,6 @@ class SignUpVerificationViewModel @Inject constructor(
                     name = name
                 )
             }
-            checkNextStep()
         }
     }
 
@@ -55,7 +54,6 @@ class SignUpVerificationViewModel @Inject constructor(
                 }
             }
         }
-        checkNextStep()
     }
 
     fun setPhoneNumber(phoneNumber: String) {
@@ -68,7 +66,6 @@ class SignUpVerificationViewModel @Inject constructor(
                 )
             }
         }
-        checkNextStep()
         AccountTimer.cancel()
     }
 
@@ -96,7 +93,6 @@ class SignUpVerificationViewModel @Inject constructor(
                         phoneNumberState = it
                     )
                 }
-                checkNextStep()
             }
         }
     }
@@ -117,30 +113,6 @@ class SignUpVerificationViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         verificationCodeState = it
-                    )
-                }
-            }
-        }
-    }
-
-    private fun checkNextStep() {
-        intent {
-            if (state.phoneNumber.isNotEmpty() && state.phoneNumberState is SignupContinuationState.RequestedSmsValidationWithRemainingCount) {
-                reduce {
-                    state.copy(
-                        step = SignUpVerificationStep.VERIFICATION_CODE
-                    )
-                }
-            } else if (state.name.isNotEmpty() && state.gender != Gender.Unknown) {
-                reduce {
-                    state.copy(
-                        step = SignUpVerificationStep.PHONE_NUMBER
-                    )
-                }
-            } else {
-                reduce {
-                    state.copy(
-                        step = SignUpVerificationStep.INITIAL
                     )
                 }
             }

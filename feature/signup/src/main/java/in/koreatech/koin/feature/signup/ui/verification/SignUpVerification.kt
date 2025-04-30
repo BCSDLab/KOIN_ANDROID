@@ -80,7 +80,7 @@ fun SignUpVerification(
     }
 
     SignUpVerificationImpl(
-        step = uiState.step,
+        step = uiState.currentStep,
         name = uiState.name,
         gender = uiState.gender,
         phoneNumber = uiState.phoneNumber,
