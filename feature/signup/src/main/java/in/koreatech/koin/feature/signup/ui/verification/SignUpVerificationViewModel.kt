@@ -62,6 +62,8 @@ class SignUpVerificationViewModel @Inject constructor(
                 state.copy(
                     phoneNumber = phoneNumber,
                     phoneNumberState = null,
+                    verificationCode = "",
+                    verificationCodeState = null,
                     verificationTimeLeft = 180
                 )
             }
