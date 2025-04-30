@@ -46,6 +46,8 @@ fun KoinSignUpBasicTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     hint: String = "",
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = false,
@@ -64,6 +66,8 @@ fun KoinSignUpBasicTextField(
                 onValueChange(it.take(maxLength))
             }
         },
+        enabled = enabled,
+        readOnly = readOnly,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         textStyle = KoinTheme.typography.regular14.copy(
@@ -98,7 +102,7 @@ fun KoinSignUpBasicTextField(
                         innerTextField()
                     }
 
-                    if (showTrailingClearButton) {
+                    if (showTrailingClearButton && enabled && !readOnly) {
                         Image(
                             modifier = Modifier
                                 .size(20.dp)
