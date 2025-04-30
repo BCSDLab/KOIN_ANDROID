@@ -263,8 +263,6 @@ private fun SignUpStudentUserInfoInitialStep(
         }
     }
 
-    Spacer(modifier = Modifier.height(8.dp))
-
     if (userId.isNotEmpty() && !isUserIdValid) {
         KoinSignUpTextFieldAlert(
             text = stringResource(R.string.sign_up_user_info_id_wrong_format),
@@ -315,8 +313,6 @@ private fun SignUpStudentUserInfoInitialStep(
             )
         )
     }
-
-    Spacer(modifier = Modifier.height(8.dp))
 
     if (password.isNotEmpty() && !isPasswordValid) {
         KoinSignUpTextFieldAlert(
@@ -436,8 +432,6 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
     }
 
     if (isNicknameAvailable != null) {
-        Spacer(modifier = Modifier.height(8.dp))
-
         KoinSignUpTextFieldAlert(
             text = if (isNicknameAvailable == true) stringResource(R.string.sign_up_user_info_nickname_available) else stringResource(R.string.sign_up_user_info_nickname_duplicate),
             state = if (isNicknameAvailable == true) KoinSignUpTextFieldAlertState.Success else KoinSignUpTextFieldAlertState.Warning

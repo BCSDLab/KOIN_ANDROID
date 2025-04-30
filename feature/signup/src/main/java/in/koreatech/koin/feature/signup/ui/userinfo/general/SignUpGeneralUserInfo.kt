@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
+import `in`.koreatech.koin.domain.util.ext.isNotValidGeneralEmail
 import `in`.koreatech.koin.feature.signup.R
 import `in`.koreatech.koin.feature.signup.SIGN_UP_NICKNAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpBasicTextField
@@ -238,8 +239,6 @@ private fun SignUpGeneralUserInfoInitialStep(
         }
     }
 
-    Spacer(modifier = Modifier.height(8.dp))
-
     if (userId.isNotEmpty() && !isUserIdValid) {
         KoinSignUpTextFieldAlert(
             text = stringResource(R.string.sign_up_user_info_id_wrong_format),
@@ -290,8 +289,6 @@ private fun SignUpGeneralUserInfoInitialStep(
             )
         )
     }
-
-    Spacer(modifier = Modifier.height(8.dp))
 
     if (password.isNotEmpty() && !isPasswordValid) {
         KoinSignUpTextFieldAlert(
@@ -352,8 +349,6 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
         }
     }
 
-    Spacer(modifier = Modifier.height(8.dp))
-
     if (nickname.isNotEmpty() && !nickname.isNicknameFormat()) {
         KoinSignUpTextFieldAlert(
             text = stringResource(R.string.sign_up_user_info_nickname_wrong_format),
@@ -381,6 +376,13 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
             imeAction = ImeAction.Done
         )
     )
+
+    if (email.isNotEmpty() && email.isNotValidGeneralEmail()) {
+        KoinSignUpTextFieldAlert(
+            text = stringResource(R.string.sign_up_user_info_email_wrong_format),
+            state = KoinSignUpTextFieldAlertState.Warning
+        )
+    }
 }
 
 private fun handleSideEffect(
