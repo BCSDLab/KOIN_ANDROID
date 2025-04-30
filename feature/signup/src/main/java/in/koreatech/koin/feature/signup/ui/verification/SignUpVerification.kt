@@ -21,11 +21,16 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -199,7 +204,10 @@ private fun SignUpVerificationInitialStep(
             modifier = Modifier.fillMaxWidth(),
             value = name,
             onValueChange = { onNameChange(it) },
-            hint = stringResource(R.string.sign_up_name_field_hint)
+            hint = stringResource(R.string.sign_up_name_field_hint),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -246,7 +254,8 @@ fun SignUpVerificationPhoneNumberStep(
             value = phoneNumber,
             maxLength = SIGN_UP_PHONE_NUMBER_MAX_LENGTH,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
             ),
             onValueChange = { onPhoneNumberChange(it) },
             hint = stringResource(R.string.sign_up_phone_number_field_hint)
@@ -297,6 +306,12 @@ fun SignUpVerificationCodeVerificationStep(
     onVerificationCodeChange: (String) -> Unit = {},
     checkVerificationCode: () -> Unit = {}
 ) {
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     Spacer(modifier = Modifier.height(24.dp))
 
     Row(
@@ -310,11 +325,14 @@ fun SignUpVerificationCodeVerificationStep(
             contentAlignment = Alignment.CenterEnd
         ) {
             KoinSignUpBasicTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
                 value = verificationCode,
                 maxLength = SIGN_UP_VERIFICATION_CODE_MAX_LENGTH,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
                 ),
                 onValueChange = { onVerificationCodeChange(it) },
                 hint = stringResource(R.string.sign_up_verification_code_field_hint)
