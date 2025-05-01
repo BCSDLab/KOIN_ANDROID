@@ -8,9 +8,9 @@ data class SignUpStudentState(
     val phoneNumber: String = "",
     val name: String = "",
     val gender: String = "",
-    val userId: String = "",
-    val isUserIdAvailable: Boolean? = null,
-    val isUserIdValid: Boolean = false,
+    val loginId: String = "",
+    val isLoginIdAvailable: Boolean? = null,
+    val isLoginIdValid: Boolean = false,
     val password: String = "",
     val passwordConfirm: String = "",
     val isPasswordValid: Boolean = false,
@@ -34,7 +34,7 @@ val SignUpStudentState.currentStep: SignUpStudentStep
     }
 
 val SignUpStudentState.isEnabled
-    get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && department.isNotEmpty() && studentNumber.isNotEmpty() && isUserIdAvailable == true
+    get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && department.isNotEmpty() && studentNumber.isNotEmpty() && isLoginIdAvailable == true
 
 enum class SignUpStudentStep {
     INITIAL,

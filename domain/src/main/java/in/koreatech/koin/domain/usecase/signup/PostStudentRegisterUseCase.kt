@@ -9,7 +9,7 @@ class PostStudentRegisterUseCase @Inject constructor(
     suspend operator fun invoke(
         name: String,
         phoneNumber: String,
-        userId: String,
+        loginId: String,
         password: String,
         department: String,
         studentNumber: String,
@@ -20,7 +20,7 @@ class PostStudentRegisterUseCase @Inject constructor(
         return signupRepository.postStudentRegister(
             name = name,
             phoneNumber = phoneNumber,
-            userId = userId,
+            loginId = loginId,
             password = password,
             department = department,
             studentNumber = studentNumber,

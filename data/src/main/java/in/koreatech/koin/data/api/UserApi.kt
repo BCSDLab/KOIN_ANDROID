@@ -67,7 +67,7 @@ interface UserApi {
     )
 
     @GET(URLConstant.USER.CHECKUSERID)
-    suspend fun checkUserId(
+    suspend fun checkLoginId(
         @Query("loginId") id: String
     )
 

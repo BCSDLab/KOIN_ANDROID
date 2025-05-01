@@ -7,8 +7,8 @@ data class StudentInfoRequestV2(
     val name: String,
     @SerializedName("phone_number")
     val phoneNumber: String,
-    @SerializedName("user_id")
-    val userId: String,
+    @SerializedName("login_id")
+    val loginId: String,
     @SerializedName("password")
     val password: String,
     @SerializedName("department")
