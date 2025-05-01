@@ -64,25 +64,34 @@ object URLConstant {
         const val CHECKEMAIL: String = "$USER/check/email"
         const val CHECKPASSWORD: String = "$USER/check/password"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
-        const val CHECKPHONE: String = "$USER/check/phone"
-        const val CHECKNICKNAME_V2: String = "$USER/check/nickname"
-        const val CHECKUSERID: String = "$USER/check/id"
-        const val SMSSEND: String = "$USER/verification/sms/send"
-        const val SMSVERIFY: String = "$USER/verification/sms/verify"
         const val AUTH: String = "$USER/auth"
         const val ID = "portal_account"
         const val EMAIL = "email"
         const val PW = "password"
 
-        const val VERSION: String = "v2"
         object STUDENT {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
-            const val REGISTER_V2: String = "$VERSION/$USER/$STUDENT/register"
+        }
+    }
+
+    object USERS {
+        const val USERS = "users"
+        const val CHECKLOGINID: String = "$USERS/check/id"
+
+        const val CHECKNICKNAME_V2: String = "$USERS/check/nickname"
+        const val CHECKPHONE: String = "$USERS/check/phone"
+        const val CHECKUSERID: String = "$USERS/check/id"
+        const val SMSSEND: String = "$USERS/verification/sms/send"
+        const val SMSVERIFY: String = "$USERS/verification/sms/verify"
+
+        const val VERSION: String = "v2"
+        object STUDENTS {
+            const val STUDENTS = "students"
+            const val REGISTER_V2: String = "$VERSION/$USERS/$STUDENTS/register"
         }
         object GENERAL {
-            const val GENERAL = "general"
-            const val REGISTER: String = "$VERSION/$USER/$GENERAL/register"
+            const val REGISTER: String = "$VERSION/$USERS/register"
         }
     }
 

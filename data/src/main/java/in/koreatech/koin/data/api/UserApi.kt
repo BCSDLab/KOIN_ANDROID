@@ -56,37 +56,37 @@ interface UserApi {
         @Body refreshRequest: RefreshRequest
     ): Response<RefreshResponse>
 
-    @GET(URLConstant.USER.CHECKPHONE)
+    @GET(URLConstant.USERS.CHECKPHONE)
     suspend fun checkPhoneNumberDuplicate(
         @Query("phone") phone: String
     )
 
-    @GET(URLConstant.USER.CHECKNICKNAME_V2)
+    @GET(URLConstant.USERS.CHECKNICKNAME_V2)
     suspend fun checkNicknameV2(
         @Query("nickname") nickname: String
     )
 
-    @GET(URLConstant.USER.CHECKUSERID)
+    @GET(URLConstant.USERS.CHECKUSERID)
     suspend fun checkLoginId(
         @Query("loginId") id: String
     )
 
-    @POST(URLConstant.USER.SMSSEND)
+    @POST(URLConstant.USERS.SMSSEND)
     suspend fun smsSend(
         @Body smsSendRequest: SmsSendRequest
     ): CodeRequestCountResponse
 
-    @POST(URLConstant.USER.STUDENT.REGISTER_V2)
+    @POST(URLConstant.USERS.STUDENTS.REGISTER_V2)
     suspend fun postStudentRegister(
         @Body studentInfoRequest: StudentInfoRequestV2
     )
 
-    @POST(URLConstant.USER.GENERAL.REGISTER)
+    @POST(URLConstant.USERS.GENERAL.REGISTER)
     suspend fun postGeneralRegister(
         @Body generalInfoRequest: GeneralInfoRequest
     )
 
-    @POST(URLConstant.USER.SMSVERIFY)
+    @POST(URLConstant.USERS.SMSVERIFY)
     suspend fun codeVerify(
         @Body smsVerifyRequest: SmsVerifyRequest
     )
