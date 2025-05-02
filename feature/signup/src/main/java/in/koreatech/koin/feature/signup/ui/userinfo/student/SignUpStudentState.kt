@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.signup.ui.userinfo.student
 
 import android.os.Parcelable
+import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -33,8 +35,17 @@ val SignUpStudentState.currentStep: SignUpStudentStep
         SignUpStudentStep.INITIAL
     }
 
+private val SignUpStudentState.isEmailValid
+    get() = (email.isNotEmpty() && isNicknameAvailable == true) || email.isEmpty()
+
+private val SignUpStudentState.isNicknameValid
+    get() = (nickname.isNotEmpty() && nickname.isNicknameFormat() && isNicknameAvailable == true) || nickname.isEmpty()
+
+private val SignUpStudentState.isStudentNumberValid
+    get() = studentNumber.isNotEmpty() && studentNumber.isValidStudentId
+
 val SignUpStudentState.isEnabled
-    get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && department.isNotEmpty() && studentNumber.isNotEmpty() && isUserIdAvailable == true
+    get() = isNicknameValid && isEmailValid && isPasswordValid && isPasswordEqual && department.isNotEmpty() && isStudentNumberValid && isUserIdAvailable == true
 
 enum class SignUpStudentStep {
     INITIAL,
