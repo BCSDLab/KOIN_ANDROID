@@ -42,7 +42,7 @@ private val SignUpStudentState.isStudentNumberValid
     get() = studentNumber.isNotEmpty() && studentNumber.isValidStudentId
 
 val SignUpStudentState.isEnabled
-    get() = isNicknameValid  && isPasswordValid && isPasswordEqual && department.isNotEmpty() && isStudentNumberValid && isUserIdAvailable == true
+    get() = isNicknameValid && isPasswordValid && isPasswordEqual && department.isNotEmpty() && isStudentNumberValid && isUserIdAvailable == true
 
 enum class SignUpStudentStep {
     INITIAL,
