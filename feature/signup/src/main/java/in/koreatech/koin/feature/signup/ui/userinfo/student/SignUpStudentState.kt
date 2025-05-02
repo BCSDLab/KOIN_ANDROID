@@ -35,9 +35,6 @@ val SignUpStudentState.currentStep: SignUpStudentStep
         SignUpStudentStep.INITIAL
     }
 
-private val SignUpStudentState.isEmailValid
-    get() = (email.isNotEmpty() && isNicknameAvailable == true) || email.isEmpty()
-
 private val SignUpStudentState.isNicknameValid
     get() = (nickname.isNotEmpty() && nickname.isNicknameFormat() && isNicknameAvailable == true) || nickname.isEmpty()
 
@@ -45,7 +42,7 @@ private val SignUpStudentState.isStudentNumberValid
     get() = studentNumber.isNotEmpty() && studentNumber.isValidStudentId
 
 val SignUpStudentState.isEnabled
-    get() = isNicknameValid && isEmailValid && isPasswordValid && isPasswordEqual && department.isNotEmpty() && isStudentNumberValid && isUserIdAvailable == true
+    get() = isNicknameValid  && isPasswordValid && isPasswordEqual && department.isNotEmpty() && isStudentNumberValid && isUserIdAvailable == true
 
 enum class SignUpStudentStep {
     INITIAL,
