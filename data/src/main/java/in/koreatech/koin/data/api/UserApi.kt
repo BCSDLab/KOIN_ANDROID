@@ -56,17 +56,17 @@ interface UserApi {
         @Body refreshRequest: RefreshRequest
     ): Response<RefreshResponse>
 
-    @GET(URLConstant.USERS.CHECKPHONE)
+    @GET(URLConstant.USER.CHECKPHONE)
     suspend fun checkPhoneNumberDuplicate(
         @Query("phone") phone: String
     )
 
-    @GET(URLConstant.USERS.CHECKNICKNAME_V2)
+    @GET(URLConstant.USER.CHECKNICKNAME_V2)
     suspend fun checkNicknameV2(
         @Query("nickname") nickname: String
     )
 
-    @GET(URLConstant.USERS.CHECKUSERID)
+    @GET(URLConstant.USER.CHECKUSERID)
     suspend fun checkLoginId(
         @Query("loginId") id: String
     )

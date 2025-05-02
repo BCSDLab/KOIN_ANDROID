@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.constant
 
+import `in`.koreatech.koin.data.constant.URLConstant.USERS.USERS
+
 /**
  * KOIN API URL
  */
@@ -64,6 +66,9 @@ object URLConstant {
         const val CHECKEMAIL: String = "$USER/check/email"
         const val CHECKPASSWORD: String = "$USER/check/password"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
+        const val CHECKNICKNAME_V2: String = "$USER/check/nickname"
+        const val CHECKPHONE: String = "$USER/check/phone"
+        const val CHECKUSERID: String = "$USER/check/id"
         const val AUTH: String = "$USER/auth"
         const val ID = "portal_account"
         const val EMAIL = "email"
@@ -79,9 +84,6 @@ object URLConstant {
         const val USERS = "users"
         const val CHECKLOGINID: String = "$USERS/check/id"
 
-        const val CHECKNICKNAME_V2: String = "$USERS/check/nickname"
-        const val CHECKPHONE: String = "$USERS/check/phone"
-        const val CHECKUSERID: String = "$USERS/check/id"
         const val SMSSEND: String = "$USERS/verification/sms/send"
         const val SMSVERIFY: String = "$USERS/verification/sms/verify"
 
