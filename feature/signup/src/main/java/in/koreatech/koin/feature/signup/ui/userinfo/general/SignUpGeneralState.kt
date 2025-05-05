@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.signup.ui.userinfo.general
 
 import android.os.Parcelable
+import `in`.koreatech.koin.domain.util.ext.isValidGeneralEmail
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -29,8 +30,14 @@ val SignUpGeneralState.currentStep: SignUpGeneralStep
         SignUpGeneralStep.INITIAL
     }
 
+private val SignUpGeneralState.isEmailValid
+    get() = (email.isNotEmpty() && email.isValidGeneralEmail()) || email.isEmpty()
+
+private val SignUpGeneralState.isNicknameValid
+    get() = (nickname.isNotEmpty() && isNicknameAvailable == true) || nickname.isEmpty()
+
 val SignUpGeneralState.isEnabled
-    get() = (nickname.isNotEmpty() && isNicknameAvailable == true || nickname.isEmpty()) && isPasswordValid && isPasswordEqual && isLoginIdAvailable == true
+    get() = isNicknameValid && isEmailValid && isPasswordValid && isPasswordEqual && isLoginIdAvailable == true
 
 enum class SignUpGeneralStep {
     INITIAL,
