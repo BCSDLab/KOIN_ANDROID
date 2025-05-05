@@ -14,7 +14,7 @@ data class GeneralInfoRequest(
     @SerializedName("gender")
     val gender: String,
     @SerializedName("email")
-    val email: String,
+    val email: String?,
     @SerializedName("nickname")
-    val nickname: String
+    val nickname: String?
 )

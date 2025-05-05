@@ -139,8 +139,8 @@ class SignupRepositoryImpl @Inject constructor(
                     department = department,
                     studentNumber = studentNumber,
                     gender = gender,
-                    email = email,
-                    nickname = nickname
+                    email = email.ifBlank { null },
+                    nickname = nickname.ifBlank { null }
                 )
             )
             Result.success(Unit)
@@ -182,8 +182,8 @@ class SignupRepositoryImpl @Inject constructor(
                     loginId = loginId,
                     password = password,
                     gender = gender,
-                    email = email,
-                    nickname = nickname
+                    email = email.ifBlank { null },
+                    nickname = nickname.ifBlank { null }
                 )
             )
             Result.success(Unit)
