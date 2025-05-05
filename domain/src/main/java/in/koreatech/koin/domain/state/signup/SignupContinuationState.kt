@@ -7,7 +7,7 @@ sealed class SignupContinuationState {
 
     object NicknameDuplicated : SignupContinuationState() // 닉네임 중복
 
-    object UserIdDuplicated : SignupContinuationState() // 아이디 중복
+    object LoginIdDuplicated : SignupContinuationState() // 아이디 중복
 
     object BusinessNumberDuplicated : SignupContinuationState() // 사업자 번호 중복
 
@@ -17,7 +17,7 @@ sealed class SignupContinuationState {
 
     object AvailableNickname : SignupContinuationState() // 이메일 중복 확인으로 사용 가능
 
-    object AvailableUserId : SignupContinuationState() // 아이디 중복 확인으로 사용 가능
+    object AvailableLoginId : SignupContinuationState() // 아이디 중복 확인으로 사용 가능
 
     object RequestedEmailValidation : SignupContinuationState()
 
@@ -33,7 +33,7 @@ sealed class SignupContinuationState {
 
     object CheckPhoneNumberFormat : SignupContinuationState() // 전화번호를 올바른 형식으로 작성했는지 확인
 
-    object CheckUserIdFormat : SignupContinuationState() // 아이디를 올바른 형식으로 작성했는지 확인
+    object CheckLoginIdFormat : SignupContinuationState() // 아이디를 올바른 형식으로 작성했는지 확인
 
     object CompanyNumberIsNotValidate : SignupContinuationState()
 

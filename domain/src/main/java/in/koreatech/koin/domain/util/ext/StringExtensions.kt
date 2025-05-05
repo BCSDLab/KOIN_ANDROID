@@ -28,7 +28,7 @@ fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)
 
 fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 
-fun String.isUserIdFormat(): Boolean = this.matches(Regex("""^[a-z0-9_.-]+${'$'}""")) && this.length in 5..13
+fun String.isLoginIdFormat(): Boolean = this.matches(Regex("""^[a-z0-9_.-]+${'$'}""")) && this.length in 5..13
 
 fun String.isNicknameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+${'$'}"""))
 

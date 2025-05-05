@@ -62,9 +62,9 @@ fun SignUpStudentUserInfo(
 
     SignUpStudentUserInfoImpl(
         step = uiState.currentStep,
-        userId = uiState.userId,
-        isUserIdAvailable = uiState.isUserIdAvailable,
-        isUserIdValid = uiState.isUserIdValid,
+        loginId = uiState.loginId,
+        isLoginIdAvailable = uiState.isLoginIdAvailable,
+        isLoginIdValid = uiState.isLoginIdValid,
         nickname = uiState.nickname,
         isNicknameAvailable = uiState.isNicknameAvailable,
         password = uiState.password,
@@ -81,8 +81,8 @@ fun SignUpStudentUserInfo(
         modifier = modifier,
         onNicknameChange = { viewModel.setNickname(it) },
         checkNicknameDuplicate = { viewModel.checkNicknameDuplicate() },
-        onUserIdChange = { viewModel.setUserId(it) },
-        checkUserIdDuplicate = { viewModel.checkUserIdDuplicate() },
+        onLoginIdChange = { viewModel.setLoginId(it) },
+        checkLoginIdDuplicate = { viewModel.checkLoginIdDuplicate() },
         onPasswordChange = { viewModel.setPassword(it) },
         onPasswordConfirmChange = { viewModel.setPasswordConfirm(it) },
         onShowPasswordChange = { viewModel.setPasswordVisibility(it) },
@@ -97,9 +97,9 @@ fun SignUpStudentUserInfo(
 @Composable
 fun SignUpStudentUserInfoImpl(
     step: SignUpStudentStep,
-    userId: String,
-    isUserIdAvailable: Boolean?,
-    isUserIdValid: Boolean,
+    loginId: String,
+    isLoginIdAvailable: Boolean?,
+    isLoginIdValid: Boolean,
     nickname: String,
     isNicknameAvailable: Boolean?,
     password: String,
@@ -116,8 +116,8 @@ fun SignUpStudentUserInfoImpl(
     modifier: Modifier = Modifier,
     onNicknameChange: (String) -> Unit = {},
     checkNicknameDuplicate: () -> Unit = {},
-    onUserIdChange: (String) -> Unit = {},
-    checkUserIdDuplicate: () -> Unit = {},
+    onLoginIdChange: (String) -> Unit = {},
+    checkLoginIdDuplicate: () -> Unit = {},
     onPasswordChange: (String) -> Unit = {},
     onPasswordConfirmChange: (String) -> Unit = {},
     onShowPasswordChange: (Boolean) -> Unit = {},
@@ -153,16 +153,16 @@ fun SignUpStudentUserInfoImpl(
 
         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
             SignUpStudentUserInfoInitialStep(
-                userId = userId,
-                isUserIdAvailable = isUserIdAvailable,
-                isUserIdValid = isUserIdValid,
+                loginId = loginId,
+                isLoginIdAvailable = isLoginIdAvailable,
+                isLoginIdValid = isLoginIdValid,
                 password = password,
                 passwordConfirm = passwordConfirm,
                 showPassword = showPassword,
                 isPasswordValid = isPasswordValid,
                 isPasswordEqual = isPasswordEqual,
-                onUserIdChange = { onUserIdChange(it) },
-                checkUserIdAvailable = { checkUserIdDuplicate() },
+                onLoginIdChange = { onLoginIdChange(it) },
+                checkLoginIdAvailable = { checkLoginIdDuplicate() },
                 onPasswordChange = { onPasswordChange(it) },
                 onPasswordConfirmChange = { onPasswordConfirmChange(it) },
                 onShowPasswordChange = { onShowPasswordChange(it) }
@@ -207,16 +207,16 @@ fun SignUpStudentUserInfoImpl(
 
 @Composable
 private fun SignUpStudentUserInfoInitialStep(
-    userId: String,
-    isUserIdAvailable: Boolean?,
-    isUserIdValid: Boolean,
+    loginId: String,
+    isLoginIdAvailable: Boolean?,
+    isLoginIdValid: Boolean,
     password: String,
     passwordConfirm: String,
     showPassword: Boolean,
     isPasswordValid: Boolean,
     isPasswordEqual: Boolean,
-    onUserIdChange: (String) -> Unit = {},
-    checkUserIdAvailable: () -> Unit = {},
+    onLoginIdChange: (String) -> Unit = {},
+    checkLoginIdAvailable: () -> Unit = {},
     onPasswordChange: (String) -> Unit = {},
     onPasswordConfirmChange: (String) -> Unit = {},
     onShowPasswordChange: (Boolean) -> Unit = {}
@@ -237,9 +237,9 @@ private fun SignUpStudentUserInfoInitialStep(
         KoinSignUpBasicTextField(
             modifier = Modifier.weight(1f),
             hint = stringResource(R.string.sign_up_user_info_id_hint),
-            value = userId,
+            value = loginId,
             onValueChange = {
-                onUserIdChange(it)
+                onLoginIdChange(it)
             },
             showTrailingClearButton = false,
             keyboardOptions = KeyboardOptions(
@@ -254,26 +254,26 @@ private fun SignUpStudentUserInfoInitialStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.sign_up_user_info_id_check_duplicate),
                 textStyle = KoinTheme.typography.regular10,
-                enabled = userId.isNotEmpty() && isUserIdAvailable != true,
+                enabled = loginId.isNotEmpty() && isLoginIdAvailable != true,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
-                    checkUserIdAvailable()
+                    checkLoginIdAvailable()
                 }
             )
         }
     }
 
-    if (userId.isNotEmpty() && !isUserIdValid) {
+    if (loginId.isNotEmpty() && !isLoginIdValid) {
         KoinSignUpTextFieldAlert(
             text = stringResource(R.string.sign_up_user_info_id_wrong_format),
             state = KoinSignUpTextFieldAlertState.Warning
         )
     }
 
-    if (isUserIdAvailable != null) {
+    if (isLoginIdAvailable != null) {
         KoinSignUpTextFieldAlert(
-            text = if (isUserIdAvailable == true) stringResource(R.string.sign_up_user_info_id_available) else stringResource(R.string.sign_up_user_info_id_duplicate),
-            state = if (isUserIdAvailable == true) KoinSignUpTextFieldAlertState.Success else KoinSignUpTextFieldAlertState.Warning
+            text = if (isLoginIdAvailable == true) stringResource(R.string.sign_up_user_info_id_available) else stringResource(R.string.sign_up_user_info_id_duplicate),
+            state = if (isLoginIdAvailable == true) KoinSignUpTextFieldAlertState.Success else KoinSignUpTextFieldAlertState.Warning
         )
     }
 
@@ -487,9 +487,9 @@ fun SignUpStudentUserInfoPreview() {
     KoinTheme {
         SignUpStudentUserInfoImpl(
             step = SignUpStudentStep.NICKNAME_AND_EMAIL,
-            userId = "userId",
-            isUserIdAvailable = true,
-            isUserIdValid = true,
+            loginId = "loginId",
+            isLoginIdAvailable = true,
+            isLoginIdValid = true,
             email = "email",
             nickname = "nickname",
             isNicknameAvailable = true,

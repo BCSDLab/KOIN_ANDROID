@@ -9,9 +9,9 @@ data class SignUpGeneralState(
     val phoneNumber: String = "",
     val name: String = "",
     val gender: String = "",
-    val userId: String = "",
-    val isUserIdAvailable: Boolean? = null,
-    val isUserIdValid: Boolean = false,
+    val loginId: String = "",
+    val isLoginIdAvailable: Boolean? = null,
+    val isLoginIdValid: Boolean = false,
     val password: String = "",
     val passwordConfirm: String = "",
     val isPasswordValid: Boolean = false,
@@ -37,7 +37,7 @@ private val SignUpGeneralState.isNicknameValid
     get() = (nickname.isNotEmpty() && isNicknameAvailable == true) || nickname.isEmpty()
 
 val SignUpGeneralState.isEnabled
-    get() = isNicknameValid && isEmailValid && isPasswordValid && isPasswordEqual && isUserIdAvailable == true
+    get() = isNicknameValid && isEmailValid && isPasswordValid && isPasswordEqual && isLoginIdAvailable == true
 
 enum class SignUpGeneralStep {
     INITIAL,

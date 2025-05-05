@@ -121,7 +121,7 @@ class SignupRepositoryImpl @Inject constructor(
     override suspend fun postStudentRegister(
         name: String,
         phoneNumber: String,
-        userId: String,
+        loginId: String,
         password: String,
         department: String,
         studentNumber: String,
@@ -134,13 +134,13 @@ class SignupRepositoryImpl @Inject constructor(
                 StudentInfoRequestV2(
                     name = name,
                     phoneNumber = phoneNumber,
-                    userId = userId,
+                    loginId = loginId,
                     password = password,
                     department = department,
                     studentNumber = studentNumber,
                     gender = gender,
-                    email = email,
-                    nickname = nickname
+                    email = email.ifBlank { null },
+                    nickname = nickname.ifBlank { null }
                 )
             )
             Result.success(Unit)
@@ -149,14 +149,14 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isUserIdDuplicated(userId: String): SignupContinuationState {
+    override suspend fun isLoginIdDuplicated(loginId: String): SignupContinuationState {
         return try {
-            userRemoteDataSource.checkUserId(userId)
-            SignupContinuationState.AvailableUserId
+            userRemoteDataSource.checkLoginId(loginId)
+            SignupContinuationState.AvailableLoginId
         } catch (e: HttpException) {
             when (e.code()) {
-                409 -> SignupContinuationState.UserIdDuplicated
-                400 -> SignupContinuationState.CheckUserIdFormat
+                409 -> SignupContinuationState.LoginIdDuplicated
+                400 -> SignupContinuationState.CheckLoginIdFormat
                 else -> SignupContinuationState.Failed(
                     message = e.getErrorResponse().message ?: "",
                     throwable = e
@@ -168,7 +168,7 @@ class SignupRepositoryImpl @Inject constructor(
     override suspend fun postGeneralRegister(
         name: String,
         phoneNumber: String,
-        userId: String,
+        loginId: String,
         password: String,
         gender: String,
         email: String,
@@ -179,11 +179,11 @@ class SignupRepositoryImpl @Inject constructor(
                 GeneralInfoRequest(
                     name = name,
                     phoneNumber = phoneNumber,
-                    userId = userId,
+                    loginId = loginId,
                     password = password,
                     gender = gender,
-                    email = email,
-                    nickname = nickname
+                    email = email.ifBlank { null },
+                    nickname = nickname.ifBlank { null }
                 )
             )
             Result.success(Unit)

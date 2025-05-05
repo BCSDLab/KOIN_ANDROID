@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.usecase.signup.CheckLoginIdDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
-import `in`.koreatech.koin.domain.usecase.signup.CheckUserIdDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostGeneralRegisterUseCase
-import `in`.koreatech.koin.domain.util.ext.isUserIdFormat
+import `in`.koreatech.koin.domain.util.ext.isLoginIdFormat
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.signup.navigation.NAME
@@ -28,7 +28,7 @@ class SignUpGeneralViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
     private val postGeneralRegisterUseCase: PostGeneralRegisterUseCase,
-    private val checkUserIdDuplicateUseCase: CheckUserIdDuplicateUseCase
+    private val checkLoginIdDuplicateUseCase: CheckLoginIdDuplicateUseCase
 ) : ViewModel(), ContainerHost<SignUpGeneralState, SignUpGeneralSideEffect> {
     override val container = container<SignUpGeneralState, SignUpGeneralSideEffect>(SignUpGeneralState(), savedStateHandle) {
         val phoneNumber = savedStateHandle.get<String>(PHONE_NUMBER)
@@ -97,33 +97,33 @@ class SignUpGeneralViewModel @Inject constructor(
         }
     }
 
-    fun setUserId(userId: String) {
+    fun setLoginId(loginId: String) {
         blockingIntent {
             reduce {
-                state.copy(userId = userId, isUserIdValid = userId.isUserIdFormat(), isUserIdAvailable = null)
+                state.copy(loginId = loginId, isLoginIdValid = loginId.isLoginIdFormat(), isLoginIdAvailable = null)
             }
         }
     }
 
-    fun checkUserIdDuplicate() = viewModelScope.launch {
+    fun checkLoginIdDuplicate() = viewModelScope.launch {
         intent {
-            checkUserIdDuplicateUseCase(state.userId).let {
+            checkLoginIdDuplicateUseCase(state.loginId).let {
                 when (it) {
-                    is SignupContinuationState.AvailableUserId -> {
+                    is SignupContinuationState.AvailableLoginId -> {
                         reduce {
-                            state.copy(isUserIdAvailable = true, isUserIdValid = true)
+                            state.copy(isLoginIdAvailable = true, isLoginIdValid = true)
                         }
                     }
 
-                    is SignupContinuationState.UserIdDuplicated -> {
+                    is SignupContinuationState.LoginIdDuplicated -> {
                         reduce {
-                            state.copy(isUserIdAvailable = false, isUserIdValid = true)
+                            state.copy(isLoginIdAvailable = false, isLoginIdValid = true)
                         }
                     }
 
-                    is SignupContinuationState.CheckUserIdFormat -> {
+                    is SignupContinuationState.CheckLoginIdFormat -> {
                         reduce {
-                            state.copy(isUserIdAvailable = null, isUserIdValid = false)
+                            state.copy(isLoginIdAvailable = null, isLoginIdValid = false)
                         }
                     }
 
@@ -148,7 +148,7 @@ class SignUpGeneralViewModel @Inject constructor(
             postGeneralRegisterUseCase(
                 name = state.name,
                 phoneNumber = state.phoneNumber,
-                userId = state.userId,
+                loginId = state.loginId,
                 password = state.password,
                 gender = state.gender,
                 email = state.email,
