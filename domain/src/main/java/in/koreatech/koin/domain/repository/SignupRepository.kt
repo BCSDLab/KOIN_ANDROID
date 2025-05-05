@@ -34,12 +34,12 @@ interface SignupRepository {
 
     suspend fun isPhoneDuplicated(phone: String): SignupContinuationState
 
-    suspend fun isUserIdDuplicated(userId: String): SignupContinuationState
+    suspend fun isLoginIdDuplicated(loginId: String): SignupContinuationState
 
     suspend fun postStudentRegister(
         name: String,
         phoneNumber: String,
-        userId: String,
+        loginId: String,
         password: String,
         department: String,
         studentNumber: String,
@@ -51,7 +51,7 @@ interface SignupRepository {
     suspend fun postGeneralRegister(
         name: String,
         phoneNumber: String,
-        userId: String,
+        loginId: String,
         password: String,
         gender: String,
         email: String,
