@@ -1,7 +1,7 @@
 name: "Pick Reviewer"
 on:
   pull_request:
-    types: opened
+    types: [opened, ready_for_review]
 
 jobs:
   pick-reviewer:
