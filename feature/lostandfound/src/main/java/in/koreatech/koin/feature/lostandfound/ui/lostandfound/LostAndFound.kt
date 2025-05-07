@@ -160,6 +160,7 @@ fun LostAndFoundList(
                             navigateToKeywordFragment = navigateToKeywordFragment
                         ) {
                             viewModel.selectKeyword(it)
+                            viewModel.changePage(1)
                         }
                         LostAndFoundDropdownGroup(
                             selectedType = uiState.selectedType,
