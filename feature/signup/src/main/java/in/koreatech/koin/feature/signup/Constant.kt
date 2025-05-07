@@ -6,6 +6,8 @@ const val SIGN_UP_PHONE_NUMBER_MAX_LENGTH = 11
 const val SIGN_UP_VERIFICATION_CODE_MAX_LENGTH = 6
 const val SIGN_UP_NICKNAME_MAX_LENGTH = 10
 
+const val KOREATECH_EMAIL_DOMAIN = "koreatech.ac.kr"
+
 val departmentStringList = persistentListOf(
     "건축공학부",
     "고용서비스정책학과",

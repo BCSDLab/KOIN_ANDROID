@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostStudentRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.isLoginIdFormat
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
+import `in`.koreatech.koin.feature.signup.KOREATECH_EMAIL_DOMAIN
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.signup.navigation.NAME
 import `in`.koreatech.koin.feature.signup.navigation.PHONE_NUMBER
@@ -172,7 +173,7 @@ class SignUpStudentViewModel @Inject constructor(
     private fun checkEmailDuplicate() = viewModelScope.launch {
         intent {
             if (state.email == "") return@intent
-            checkEmailDuplicateUseCase("${state.email}@koreatech.ac.kr").let {
+            checkEmailDuplicateUseCase("${state.email}@$KOREATECH_EMAIL_DOMAIN").let {
                 reduce {
                     when (it) {
                         is SignupContinuationState.AvailableEmail -> {
@@ -204,7 +205,7 @@ class SignUpStudentViewModel @Inject constructor(
                 loginId = state.loginId,
                 password = state.password,
                 gender = state.gender,
-                email = "${state.email}@koreatech.ac.kr",
+                email = "${state.email}@$KOREATECH_EMAIL_DOMAIN",
                 nickname = state.nickname,
                 studentNumber = state.studentNumber,
                 department = state.department
