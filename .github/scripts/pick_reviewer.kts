@@ -74,7 +74,7 @@ fun pickPairedReviewer(developer: Developer) {
  * Pick a random reviewer from the other team members.
  * The developer and reviewer should not be in the same team.
  */
-fun pickRandomReviewer(prOwnerTeam: KoinTeam, developer: Developer) {
+fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
     val otherTeamDevelopers = Developer.entries
         .filter { it != developer }
         .filter { !it.isMentor }
@@ -109,10 +109,6 @@ fun main(args: Array<String>) {
             "business" -> KoinTeam.BUSINESS
             else -> null
         }
-    }
-
-    if (team == null) {
-        return
     }
 
     pickRandomReviewer(team, developer)
