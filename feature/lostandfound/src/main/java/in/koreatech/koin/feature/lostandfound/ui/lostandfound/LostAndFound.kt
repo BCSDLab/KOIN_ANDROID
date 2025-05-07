@@ -147,7 +147,7 @@ fun LostAndFoundList(
                     .consumeWindowInsets(contentPadding)
             ) {
                 LazyColumn(
-                    modifier = modifier,
+                    modifier = Modifier,
                     state = lazyListState
                 ) {
                     item {
