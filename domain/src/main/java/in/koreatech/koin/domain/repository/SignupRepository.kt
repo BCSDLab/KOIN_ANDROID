@@ -36,6 +36,8 @@ interface SignupRepository {
 
     suspend fun isLoginIdDuplicated(loginId: String): SignupContinuationState
 
+    suspend fun isEmailDuplicated(email: String): SignupContinuationState
+
     suspend fun postStudentRegister(
         name: String,
         phoneNumber: String,
