@@ -172,7 +172,7 @@ class SignUpStudentViewModel @Inject constructor(
     private fun checkEmailDuplicate() = viewModelScope.launch {
         intent {
             if (state.email == "") return@intent
-            checkEmailDuplicateUseCase(state.email).let {
+            checkEmailDuplicateUseCase("${state.email}@koreatech.ac.kr").let {
                 reduce {
                     when (it) {
                         is SignupContinuationState.AvailableEmail -> {
@@ -204,7 +204,7 @@ class SignUpStudentViewModel @Inject constructor(
                 loginId = state.loginId,
                 password = state.password,
                 gender = state.gender,
-                email = state.email,
+                email = "${state.email}@koreatech.ac.kr",
                 nickname = state.nickname,
                 studentNumber = state.studentNumber,
                 department = state.department
