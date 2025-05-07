@@ -87,7 +87,7 @@ fun pickRandomReviewer(prOwnerTeam: KoinTeam, developer: Developer) {
  * Pick a mentor.
  */
 fun pickMentor() {
-    val shouldAddMentor = Random.nextInt() % 4 == 0 // 25%
+    val shouldAddMentor = Random.nextInt() % 10 == 0 // 10%
     if (shouldAddMentor) {
         val mentor = Developer.entries.filter { it.isMentor }.random()
         exportMentor(mentor.githubName)
