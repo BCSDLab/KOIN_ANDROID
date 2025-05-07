@@ -25,6 +25,7 @@ data class SignUpStudentState(
     val nickname: String = "",
     val isNicknameAvailable: Boolean? = null,
     val email: String = "",
+    val isEmailAvailable: Boolean? = null,
     val isSignUpSuccess: Boolean = false
 ) : Parcelable
 

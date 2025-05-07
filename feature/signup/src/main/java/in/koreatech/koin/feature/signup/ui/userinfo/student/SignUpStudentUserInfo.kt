@@ -77,6 +77,7 @@ fun SignUpStudentUserInfo(
         isDropdownExpanded = uiState.isDropdownExpanded,
         isDepartmentSelected = uiState.isDepartmentSelected,
         email = uiState.email,
+        isEmailAvailable = uiState.isEmailAvailable,
         enabled = uiState.isEnabled,
         modifier = modifier,
         onNicknameChange = { viewModel.setNickname(it) },
@@ -112,6 +113,7 @@ fun SignUpStudentUserInfoImpl(
     isDropdownExpanded: Boolean,
     isDepartmentSelected: Boolean,
     email: String,
+    isEmailAvailable: Boolean?,
     enabled: Boolean,
     modifier: Modifier = Modifier,
     onNicknameChange: (String) -> Unit = {},
@@ -175,6 +177,7 @@ fun SignUpStudentUserInfoImpl(
                     nickname = nickname,
                     isNicknameAvailable = isNicknameAvailable,
                     email = email,
+                    isEmailAvailable = isEmailAvailable,
                     department = department,
                     isDepartmentSelected = isDepartmentSelected,
                     isDropdownExpanded = isDropdownExpanded,
@@ -334,6 +337,7 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
     nickname: String,
     isNicknameAvailable: Boolean?,
     email: String,
+    isEmailAvailable: Boolean?,
     department: String,
     isDepartmentSelected: Boolean,
     isDropdownExpanded: Boolean,
@@ -464,6 +468,13 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
             text = stringResource(R.string.sign_up_user_info_email_koreatech_suffix)
         )
     }
+
+    if (email.isNotEmpty() && isEmailAvailable == false) {
+        KoinSignUpTextFieldAlert(
+            text = stringResource(R.string.sign_up_user_info_email_duplicate),
+            state = KoinSignUpTextFieldAlertState.Warning
+        )
+    }
 }
 
 private fun handleSideEffect(
@@ -491,6 +502,7 @@ fun SignUpStudentUserInfoPreview() {
             isLoginIdAvailable = true,
             isLoginIdValid = true,
             email = "email",
+            isEmailAvailable = true,
             nickname = "nickname",
             isNicknameAvailable = true,
             password = "password",
