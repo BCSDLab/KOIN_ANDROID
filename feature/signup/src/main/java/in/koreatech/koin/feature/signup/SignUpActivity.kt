@@ -54,7 +54,7 @@ class SignUpActivity : ComponentActivity() {
                         },
                         startDestination = SignUpNavType.Term.route
                     ) {
-                        koinSignUpGraph(navController = navController)
+                        koinSignUpGraph(navController = navController, finish = { finish() })
                     }
                 }
             }
