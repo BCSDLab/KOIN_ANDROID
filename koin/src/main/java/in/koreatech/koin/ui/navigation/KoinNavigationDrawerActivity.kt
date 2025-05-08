@@ -373,6 +373,7 @@ abstract class KoinNavigationDrawerActivity :
                                 helloMessageTextView.text =
                                     getString(R.string.navigation_hello_message_anonymous)
                                 loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
+                                chatMenuIcon.visibility = View.GONE
                             }
 
                             is User.Student -> {
