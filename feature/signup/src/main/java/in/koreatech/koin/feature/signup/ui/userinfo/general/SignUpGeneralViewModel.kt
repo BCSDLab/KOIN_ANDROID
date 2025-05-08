@@ -140,7 +140,7 @@ class SignUpGeneralViewModel @Inject constructor(
     fun setEmail(email: String) {
         blockingIntent {
             reduce {
-                state.copy(email = email)
+                state.copy(email = email, isEmailAvailable = null)
             }
         }
     }
