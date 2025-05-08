@@ -20,6 +20,9 @@ val SignUpVerificationState.currentStep: SignUpVerificationStep
         else -> SignUpVerificationStep.INITIAL
     }
 
+val SignUpVerificationState.enabled: Boolean
+    get() = verificationCodeState is SignupContinuationState.SmsCodeIsValidated && name.isNotBlank() && gender != Gender.Unknown && phoneNumber.isNotBlank()
+
 enum class SignUpVerificationStep {
     INITIAL,
     PHONE_NUMBER,

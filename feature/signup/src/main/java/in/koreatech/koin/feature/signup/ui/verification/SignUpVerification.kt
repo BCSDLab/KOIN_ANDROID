@@ -88,6 +88,7 @@ fun SignUpVerification(
         verificationCode = uiState.verificationCode,
         verificationCodeState = uiState.verificationCodeState,
         verificationTimeLeft = uiState.verificationTimeLeft,
+        enabled = uiState.enabled,
         onNameChange = { viewModel.setName(it) },
         onGenderChange = { viewModel.setGender(it) },
         onPhoneNumberChange = { viewModel.setPhoneNumber(it) },
@@ -111,6 +112,7 @@ fun SignUpVerificationImpl(
     verificationCode: String,
     verificationCodeState: SignupContinuationState?,
     verificationTimeLeft: Int,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
     onNameChange: (String) -> Unit = {},
     onGenderChange: (Int) -> Unit = {},
@@ -178,7 +180,7 @@ fun SignUpVerificationImpl(
         FilledButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.sign_up_next),
-            enabled = verificationCodeState is SignupContinuationState.SmsCodeIsValidated,
+            enabled = enabled,
             contentPadding = PaddingValues(12.dp),
             onClick = { navigateToNextScreen(name, phoneNumber, gender) }
         )
@@ -511,6 +513,7 @@ fun SignUpVerificationPreview() {
         verificationCode = "123456",
         verificationCodeState = null,
         verificationTimeLeft = 180,
-        step = SignUpVerificationStep.INITIAL
+        step = SignUpVerificationStep.INITIAL,
+        enabled = true
     )
 }
