@@ -15,6 +15,7 @@ import `in`.koreatech.koin.feature.signup.KOREATECH_EMAIL_DOMAIN
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.signup.navigation.NAME
 import `in`.koreatech.koin.feature.signup.navigation.PHONE_NUMBER
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -23,7 +24,6 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class SignUpStudentViewModel @Inject constructor(

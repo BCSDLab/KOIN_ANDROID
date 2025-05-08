@@ -43,10 +43,10 @@ class SignUpActivity : ComponentActivity() {
                     containerColor = KoinTheme.colors.neutral0
                 ) { contentPadding ->
                     /*
-                    * On Compose material 3, Scaffold content padding adds unnecessary padding when ime up
-                    * So, let's consume window insets and add extra system bar padding
-                    * see: https://issuetracker.google.com/issues/249727298
-                    */
+                     * On Compose material 3, Scaffold content padding adds unnecessary padding when ime up
+                     * So, let's consume window insets and add extra system bar padding
+                     * see: https://issuetracker.google.com/issues/249727298
+                     */
                     NavHost(
                         modifier = Modifier
                             .padding(contentPadding)
