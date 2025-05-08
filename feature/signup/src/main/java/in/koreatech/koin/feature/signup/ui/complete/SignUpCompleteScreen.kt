@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.feature.signup.ui.complete
 
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,10 @@ fun SignUpCompleteScreen(
     finish: () -> Unit = { }
 ) {
     val context = LocalContext.current
+
+    BackHandler {
+        finish()
+    }
 
     Column(
         modifier = Modifier

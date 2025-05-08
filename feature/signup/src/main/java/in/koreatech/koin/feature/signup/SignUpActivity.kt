@@ -36,7 +36,7 @@ class SignUpActivity : ComponentActivity() {
                         KoinTopAppBar(
                             title = stringResource(R.string.sign_up_title),
                             onNavigationIconClick = {
-                                navController.popBackStack()
+                                onBackPressedDispatcher.onBackPressed()
                             }
                         )
                     },
