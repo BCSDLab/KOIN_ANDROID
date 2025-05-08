@@ -257,7 +257,7 @@ private fun SignUpStudentUserInfoInitialStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.sign_up_user_info_id_check_duplicate),
                 textStyle = KoinTheme.typography.regular10,
-                enabled = loginId.isNotEmpty() && isLoginIdAvailable != true,
+                enabled = loginId.isNotEmpty() && isLoginIdAvailable != true && isLoginIdValid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     checkLoginIdAvailable()
