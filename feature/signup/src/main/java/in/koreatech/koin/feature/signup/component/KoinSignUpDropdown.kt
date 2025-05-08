@@ -88,7 +88,7 @@ fun KoinSignUpDropdown(
         Row(
             modifier = Modifier
                 .shadow(
-                    elevation = 9.dp,
+                    elevation = 4.dp,
                     shape = dropdownShape
                 )
                 .background(
