@@ -121,6 +121,7 @@ fun SignUpGeneralUserInfoImpl(
             .imePadding()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
+            .padding(bottom = 40.dp)
     ) {
         KoinSignUpProgressHeader(
             text = stringResource(R.string.sign_up_user_info),

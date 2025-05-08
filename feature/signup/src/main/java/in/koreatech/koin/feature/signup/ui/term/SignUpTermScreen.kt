@@ -76,7 +76,7 @@ private fun SignUpTermScreenImpl(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
-            .imePadding()
+            .padding(bottom = 40.dp)
     ) {
         KoinSignUpProgressHeader(
             text = stringResource(R.string.sign_up_agree_terms),
