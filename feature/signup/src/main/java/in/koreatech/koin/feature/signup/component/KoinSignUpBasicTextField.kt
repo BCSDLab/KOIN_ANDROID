@@ -61,9 +61,9 @@ fun KoinSignUpBasicTextField(
         value = value,
         onValueChange = {
             if (it.length < maxLength) {
-                onValueChange(it)
+                onValueChange(it.trim())
             } else {
-                onValueChange(it.take(maxLength))
+                onValueChange(it.take(maxLength).trim())
             }
         },
         enabled = enabled,

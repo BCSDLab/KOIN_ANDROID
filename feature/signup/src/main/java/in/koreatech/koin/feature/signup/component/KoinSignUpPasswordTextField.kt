@@ -59,9 +59,9 @@ fun KoinSignUpPasswordTextField(
         value = value,
         onValueChange = {
             if (it.length < maxLength) {
-                onValueChange(it)
+                onValueChange(it.trim())
             } else {
-                onValueChange(it.take(maxLength))
+                onValueChange(it.take(maxLength).trim())
             }
         },
         keyboardOptions = keyboardOptions.copy(
