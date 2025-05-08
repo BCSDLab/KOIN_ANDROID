@@ -7,13 +7,14 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.bus.BusSearchActivity
@@ -28,6 +29,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.SchemeType
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
@@ -35,21 +37,15 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
-import `in`.koreatech.koin.core.onboarding.ArrowDirection
-import `in`.koreatech.koin.core.onboarding.OnboardingManager
-import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.enableAutoScroll
-import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.article.ArticleNotiType
-import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
-import `in`.koreatech.koin.ui.dining.DiningActivity
+import `in`.koreatech.koin.ui.main.DiningWidget
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
-import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
@@ -72,9 +68,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
 
     @Inject
     lateinit var navigator: Navigator
-
-    @Inject
-    lateinit var onboardingManager: OnboardingManager
 
     private val articleMainAdapter =
         ArticleMainAdapter(
@@ -108,8 +101,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 startActivity(intent)
             }
         )
-
-    private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
     private val storeCategoriesRecyclerAdapter =
         StoreCategoriesRecyclerAdapter().apply {
@@ -149,7 +140,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         setContentView(binding.root)
 
         initView()
-        initDiningTooltip()
         initViewModel()
         initBanner()
         handleIntent()
@@ -164,7 +154,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initView() = with(binding) {
         viewModel.checkKeywordNotiContent()
         initArticleBannerABTest()
-        initDiningABTest()
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
             val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
@@ -268,33 +257,23 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             viewModel.updateDining()
         }
 
-//        diningContainer.setOnClickListener {
-//            callDrawerItem(R.id.navi_item_dining)
-//        }
+        diningComposeView.apply {
+            setContent {
+                KoinTheme {
+                    val diningData by viewModel.diningData.collectAsState()
+                    val selectedPosition by viewModel.selectedPosition.collectAsState()
+                    val selectedType by viewModel.selectedType.collectAsState()
+                    val diningABTestExperimentGroup by viewModel.diningABTestExperimentGroup.collectAsState()
 
-        pagerDiningContainer.adapter = diningContainerAdapter
-        pagerDiningContainer.offscreenPageLimit = 3
-
-        TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
-            tab.text = DiningPlace.entries[position].place
-        }.attach()
-
-        tabDining.addOnTabSelectedListener(
-            object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    viewModel.setSelectedPosition(tab.position)
-                    EventLogger.logClickEvent(
-                        EventAction.CAMPUS,
-                        AnalyticsConstant.Label.MAIN_MENU_CORNER,
-                        tab.text.toString()
+                    DiningWidget(
+                        diningData = diningData,
+                        selectedPosition = selectedPosition,
+                        selectedType = selectedType,
+                        diningABTestExperimentGroup = diningABTestExperimentGroup
                     )
                 }
-
-                override fun onTabUnselected(tab: TabLayout.Tab) {}
-
-                override fun onTabReselected(tab: TabLayout.Tab) {}
             }
-        )
+        }
     }
 
     private fun initViewModel() = with(viewModel) {
@@ -322,14 +301,9 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
 
-        observeLiveData(selectedType) {
-            binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
-        }
-
         observeLiveData(storeCategories) {
             storeCategoriesRecyclerAdapter.submitList(it)
         }
-
         binding.recyclerViewStoreCategory.visibility = View.GONE
         binding.storeButtonLayout.visibility = View.VISIBLE
     }
@@ -344,16 +318,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun initDiningTooltip() {
-        with(onboardingManager) {
-            showOnboardingTooltipIfNeeded(
-                type = OnboardingType.DINING_IMAGE,
-                view = binding.textViewDiningTitle,
-                arrowDirection = ArrowDirection.LEFT
-            )
         }
     }
 
@@ -424,29 +388,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.articleMain.collectLatest {
                     articleMainAdapter.submitList(it)
-                }
-            }
-        }
-    }
-
-    private fun initDiningABTest() {
-        binding.textSeeMoreDining.setOnClickListener {
-            Intent(this, DiningActivity::class.java).run {
-                startActivity(this)
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.diningABTestExperimentGroup.collect {
-                    when (it) {
-                        ExperimentGroup.MAIN_DINING_NEW -> {
-                            binding.textSeeMoreDining.visibility = View.VISIBLE
-                        }
-
-                        ExperimentGroup.MAIN_DINING_ORIGINAL -> {
-                            binding.textSeeMoreDining.visibility = View.GONE
-                        }
-                    }
                 }
             }
         }

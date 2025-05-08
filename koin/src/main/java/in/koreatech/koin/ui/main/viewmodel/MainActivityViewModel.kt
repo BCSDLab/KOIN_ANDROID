@@ -18,6 +18,8 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.user.ABTestUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.domain.util.ext.arrange
+import `in`.koreatech.koin.domain.util.ext.typeFilter
 import `in`.koreatech.koin.ui.main.state.ArticleMainState
 import `in`.koreatech.koin.ui.main.state.toContent
 import `in`.koreatech.koin.ui.main.state.toNoti
@@ -106,12 +108,12 @@ class MainActivityViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    private val _selectedPosition = MutableLiveData(0)
-    val selectedPosition: LiveData<Int> get() = _selectedPosition
-    private val _diningData = MutableLiveData<List<Dining>>(listOf())
-    val diningData: LiveData<List<Dining>> get() = _diningData
-    private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
-    val selectedType: LiveData<DiningType> get() = _selectedType
+    private val _selectedPosition = MutableStateFlow(0)
+    val selectedPosition: StateFlow<Int> get() = _selectedPosition
+    private val _diningData = MutableStateFlow<List<Dining>>(listOf())
+    val diningData: StateFlow<List<Dining>> get() = _diningData
+    private val _selectedType = MutableStateFlow(DiningUtil.getCurrentType())
+    val selectedType: StateFlow<DiningType> get() = _selectedType
 
     private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
@@ -151,7 +153,7 @@ class MainActivityViewModel @Inject constructor(
                     if (it.isNotEmpty()) {
                         _selectedType.value = DiningUtil.getCurrentType()
                     }
-                    _diningData.value = it
+                    _diningData.value = it.typeFilter(DiningUtil.getCurrentType()).arrange()
                     _selectedPosition.value = 0
                     _isLoading.value = false
                 }
