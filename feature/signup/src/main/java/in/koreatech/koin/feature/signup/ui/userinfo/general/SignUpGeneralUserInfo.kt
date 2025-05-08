@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -222,6 +223,7 @@ private fun SignUpGeneralUserInfoInitialStep(
             },
             showTrailingClearButton = false,
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Ascii,
                 imeAction = ImeAction.Next
             )
         )
@@ -273,6 +275,7 @@ private fun SignUpGeneralUserInfoInitialStep(
         showPassword = showPassword,
         onShowPasswordChange = { onShowPasswordChange(it) },
         keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
         )
     )
@@ -288,6 +291,7 @@ private fun SignUpGeneralUserInfoInitialStep(
             showPassword = showPassword,
             onShowPasswordChange = { onShowPasswordChange(it) },
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             )
         )
@@ -377,6 +381,7 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
             onEmailChange(it)
         },
         keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Done
         )
     )

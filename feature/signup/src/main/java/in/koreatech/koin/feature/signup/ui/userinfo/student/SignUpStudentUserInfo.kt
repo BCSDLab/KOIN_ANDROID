@@ -247,6 +247,7 @@ private fun SignUpStudentUserInfoInitialStep(
             },
             showTrailingClearButton = false,
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Ascii,
                 imeAction = ImeAction.Next
             )
         )
@@ -298,6 +299,7 @@ private fun SignUpStudentUserInfoInitialStep(
         showPassword = showPassword,
         onShowPasswordChange = { onShowPasswordChange(it) },
         keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
         )
     )
@@ -313,6 +315,7 @@ private fun SignUpStudentUserInfoInitialStep(
             showPassword = showPassword,
             onShowPasswordChange = { onShowPasswordChange(it) },
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             )
         )
@@ -458,6 +461,7 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
                 onEmailChange(it)
             },
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Ascii,
                 imeAction = ImeAction.Done
             )
         )
