@@ -153,6 +153,7 @@ fun SignUpVerificationImpl(
             SignUpVerificationPhoneNumberStep(
                 phoneNumber = phoneNumber,
                 phoneNumberState = phoneNumberState,
+                verificationCodeState = verificationCodeState,
                 onPhoneNumberChange = onPhoneNumberChange,
                 onVerificationCodeSent = onVerificationCodeSent
             )
@@ -230,6 +231,7 @@ private fun SignUpVerificationInitialStep(
 fun SignUpVerificationPhoneNumberStep(
     phoneNumber: String,
     phoneNumberState: SignupContinuationState?,
+    verificationCodeState: SignupContinuationState?,
     modifier: Modifier = Modifier,
     onPhoneNumberChange: (String) -> Unit = {},
     onVerificationCodeSent: () -> Unit = {}
@@ -258,7 +260,8 @@ fun SignUpVerificationPhoneNumberStep(
                 imeAction = ImeAction.Done
             ),
             onValueChange = { onPhoneNumberChange(it) },
-            hint = stringResource(R.string.sign_up_phone_number_field_hint)
+            hint = stringResource(R.string.sign_up_phone_number_field_hint),
+            showTrailingClearButton = verificationCodeState !is SignupContinuationState.SmsCodeIsValidated
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -272,7 +275,7 @@ fun SignUpVerificationPhoneNumberStep(
                     stringResource(R.string.sign_up_phone_number_send_verification)
                 },
                 textStyle = KoinTheme.typography.regular10,
-                enabled = phoneNumber.isNotBlank() || phoneNumberState != SignupContinuationState.SmsCodeRequestCountIsExceeded,
+                enabled = (phoneNumber.isNotBlank() || phoneNumberState != SignupContinuationState.SmsCodeRequestCountIsExceeded) && verificationCodeState !is SignupContinuationState.SmsCodeIsValidated,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     onVerificationCodeSent()
