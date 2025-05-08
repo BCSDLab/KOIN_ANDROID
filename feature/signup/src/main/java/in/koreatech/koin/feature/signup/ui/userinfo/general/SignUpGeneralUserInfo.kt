@@ -72,6 +72,7 @@ fun SignUpGeneralUserInfo(
         isPasswordValid = uiState.isPasswordValid,
         isPasswordEqual = uiState.isPasswordEqual,
         email = uiState.email,
+        isEmailAvailable = uiState.isEmailAvailable,
         enabled = uiState.isEnabled,
         modifier = modifier,
         onNicknameChange = { viewModel.setNickname(it) },
@@ -100,6 +101,7 @@ fun SignUpGeneralUserInfoImpl(
     isPasswordValid: Boolean,
     isPasswordEqual: Boolean,
     email: String,
+    isEmailAvailable: Boolean?,
     enabled: Boolean,
     modifier: Modifier = Modifier,
     onNicknameChange: (String) -> Unit = {},
@@ -158,6 +160,7 @@ fun SignUpGeneralUserInfoImpl(
                     nickname = nickname,
                     isNicknameAvailable = isNicknameAvailable,
                     email = email,
+                    isEmailAvailable = isEmailAvailable,
                     checkNicknameDuplicate = { checkNicknameDuplicate() },
                     onNicknameChange = { onNicknameChange(it) },
                     onEmailChange = { onEmailChange(it) }
@@ -310,6 +313,7 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
     nickname: String,
     isNicknameAvailable: Boolean?,
     email: String,
+    isEmailAvailable: Boolean?,
     checkNicknameDuplicate: () -> Unit = {},
     onNicknameChange: (String) -> Unit = {},
     onEmailChange: (String) -> Unit = {}
@@ -383,6 +387,13 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
             state = KoinSignUpTextFieldAlertState.Warning
         )
     }
+
+    if (email.isNotEmpty() && isEmailAvailable == false) {
+        KoinSignUpTextFieldAlert(
+            text = stringResource(R.string.sign_up_user_info_email_duplicate),
+            state = KoinSignUpTextFieldAlertState.Warning
+        )
+    }
 }
 
 private fun handleSideEffect(
@@ -417,6 +428,7 @@ fun SignUpGeneralUserInfoPreview() {
             isPasswordValid = true,
             isPasswordEqual = true,
             email = "test@test.com",
+            isEmailAvailable = false,
             enabled = true
         )
     }

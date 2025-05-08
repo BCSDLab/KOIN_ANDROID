@@ -165,6 +165,22 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun isEmailDuplicated(email: String): SignupContinuationState {
+        return try {
+            userRemoteDataSource.checkEmail(email)
+            SignupContinuationState.AvailableEmail
+        } catch (e: HttpException) {
+            when (e.code()) {
+                409 -> SignupContinuationState.EmailDuplicated
+                400 -> SignupContinuationState.EmailIsNotValidate
+                else -> SignupContinuationState.Failed(
+                    message = e.getErrorResponse().message ?: "",
+                    throwable = e
+                )
+            }
+        }
+    }
+
     override suspend fun postGeneralRegister(
         name: String,
         phoneNumber: String,

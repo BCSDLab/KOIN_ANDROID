@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.usecase.signup.CheckEmailDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckLoginIdDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostStudentRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.isLoginIdFormat
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
+import `in`.koreatech.koin.feature.signup.KOREATECH_EMAIL_DOMAIN
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.signup.navigation.NAME
 import `in`.koreatech.koin.feature.signup.navigation.PHONE_NUMBER
@@ -28,7 +30,8 @@ class SignUpStudentViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
     private val postStudentRegisterUseCase: PostStudentRegisterUseCase,
-    private val checkLoginIdDuplicateUseCase: CheckLoginIdDuplicateUseCase
+    private val checkLoginIdDuplicateUseCase: CheckLoginIdDuplicateUseCase,
+    private val checkEmailDuplicateUseCase: CheckEmailDuplicateUseCase
 ) : ViewModel(), ContainerHost<SignUpStudentState, SignUpStudentSideEffect> {
     override val container = container<SignUpStudentState, SignUpStudentSideEffect>(SignUpStudentState(), savedStateHandle) {
         val phoneNumber = savedStateHandle.get<String>(PHONE_NUMBER)
@@ -167,15 +170,42 @@ class SignUpStudentViewModel @Inject constructor(
         }
     }
 
-    fun signUp() = viewModelScope.launch {
+    private fun checkEmailDuplicate() = viewModelScope.launch {
         intent {
+            if (state.email == "") return@intent
+            checkEmailDuplicateUseCase("${state.email}@$KOREATECH_EMAIL_DOMAIN").let {
+                reduce {
+                    when (it) {
+                        is SignupContinuationState.AvailableEmail -> {
+                            state.copy(isEmailAvailable = true)
+                        }
+
+                        is SignupContinuationState.EmailDuplicated -> {
+                            state.copy(isEmailAvailable = false)
+                        }
+
+                        else -> {
+                            // We check email validation with regex.
+                            // So, Don't check email validation from API response.
+                            state.copy(isEmailAvailable = null)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun signUp() = viewModelScope.launch {
+        checkEmailDuplicate()
+        intent {
+            if (state.isEmailAvailable == false) return@intent
             postStudentRegisterUseCase(
                 name = state.name,
                 phoneNumber = state.phoneNumber,
                 loginId = state.loginId,
                 password = state.password,
                 gender = state.gender,
-                email = state.email,
+                email = "${state.email}@$KOREATECH_EMAIL_DOMAIN",
                 nickname = state.nickname,
                 studentNumber = state.studentNumber,
                 department = state.department
