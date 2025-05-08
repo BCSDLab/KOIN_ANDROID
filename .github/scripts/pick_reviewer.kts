@@ -39,6 +39,11 @@ val reviewerPair = listOf(
 )
 
 /**
+ * Regex to extract the team from the pull request title.
+ */
+val titleRegex = Regex("(?<=\\[)(user|campus|business)(?=\\])")
+
+/**
  * Export the reviewer name to GitHub Actions output.
  * @param name The name of the reviewer.
  */
@@ -69,11 +74,11 @@ fun pickPairedReviewer(developer: Developer) {
  * Pick a random reviewer from the other team members.
  * The developer and reviewer should not be in the same team.
  */
-fun pickRandomReviewer(developer: Developer) {
+fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
     val otherTeamDevelopers = Developer.entries
         .filter { it != developer }
         .filter { !it.isMentor }
-        .filter { it.team.intersect(developer.team).isEmpty() }
+        .filter { !it.team.contains(prOwnerTeam) }
     val randomReviewer = otherTeamDevelopers.random()
     exportReviewer(randomReviewer.githubName)
 }
@@ -82,14 +87,14 @@ fun pickRandomReviewer(developer: Developer) {
  * Pick a mentor.
  */
 fun pickMentor() {
-    val shouldAddMentor = Random.nextInt() % 4 == 0 // 25%
+    val shouldAddMentor = Random.nextInt() % 10 == 0 // 10%
     if (shouldAddMentor) {
         val mentor = Developer.entries.filter { it.isMentor }.random()
         exportMentor(mentor.githubName)
     }
 }
 
-fun main() {
+fun main(args: Array<String>) {
     val githubActor = System.getenv("GITHUB_ACTOR")
     val developer = Developer.entries.firstOrNull { it.githubName == githubActor }
 
@@ -97,8 +102,17 @@ fun main() {
         return
     }
 
-    pickPairedReviewer(developer)
+    val team = titleRegex.find(args[0].lowercase())?.value.let {
+        when (it) {
+            "user" -> KoinTeam.USER
+            "campus" -> KoinTeam.CAMPUS
+            "business" -> KoinTeam.BUSINESS
+            else -> null
+        }
+    }
+
+    pickRandomReviewer(team, developer)
     pickMentor()
 }
 
-main()
+main(args)
