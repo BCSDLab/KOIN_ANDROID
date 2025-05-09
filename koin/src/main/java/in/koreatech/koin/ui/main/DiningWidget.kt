@@ -40,6 +40,9 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.onboarding.ArrowDirection
+import `in`.koreatech.koin.core.onboarding.OnboardingType
+import `in`.koreatech.koin.core.onboarding.rememberOnboardingManager
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
@@ -70,6 +73,7 @@ fun DiningWidget(
     val coroutineScope = rememberCoroutineScope()
     val tabIndex = pagerState.currentPage
     val type = DiningUtil.getCurrentType()
+    val onboardingManager = rememberOnboardingManager()
 
     EventLogger.logClickEvent(
         EventAction.CAMPUS,
@@ -85,28 +89,35 @@ fun DiningWidget(
         modifier = modifier
     ) {
         Row {
-            Text(
-                modifier = Modifier.padding(start = 20.dp),
-                text = "${
-                    context.getString(
-                        if (type == DiningType.NextBreakfast) R.string.dining_tomorrow else R.string.dining_today
+            with(onboardingManager) {
+                ShowOnboardingTooltipIfNeeded(
+                    type = OnboardingType.DINING_IMAGE,
+                    arrowDirection = ArrowDirection.LEFT
+                ) {
+                    Text(
+                        modifier = Modifier.padding(start = 20.dp),
+                        text = "${
+                            context.getString(
+                                if (type == DiningType.NextBreakfast) R.string.dining_tomorrow else R.string.dining_today
+                            )
+                        } ${context.getString(R.string.navigation_item_dining)}",
+                        style = KoinTheme.typography.bold15,
+                        color = KoinTheme.colors.primary500
                     )
-                } ${context.getString(R.string.navigation_item_dining)}",
-                style = KoinTheme.typography.bold15,
-                color = KoinTheme.colors.primary500
-            )
+                }
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
             if (diningABTestExperimentGroup == ExperimentGroup.MAIN_DINING_NEW) {
                 Row(
                     modifier = Modifier
-                            .padding(end = 20.dp)
-                            .noRippleClickable {
-                                Intent(context, DiningActivity::class.java).let {
-                                    context.startActivity(it)
-                                }
-                            },
+                        .padding(end = 20.dp)
+                        .noRippleClickable {
+                            Intent(context, DiningActivity::class.java).let {
+                                context.startActivity(it)
+                            }
+                        },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
