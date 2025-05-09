@@ -179,9 +179,9 @@ fun DiningWidget(
                             }
                         },
                     colors =
-                        CardDefaults.cardColors(
-                            containerColor = KoinTheme.colors.neutral0
-                        ),
+                    CardDefaults.cardColors(
+                        containerColor = KoinTheme.colors.neutral0
+                    ),
                     shape = KoinTheme.shapes.small,
                     border = BorderStroke(1.dp, KoinTheme.colors.neutral300)
                 ) {
