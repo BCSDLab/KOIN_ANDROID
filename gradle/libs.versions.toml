@@ -60,6 +60,7 @@ guavaVersion = "33.0.0-android"
 kakaoShare = "2.11.2"
 lottie = "6.4.0"
 balloon = "1.5.0"
+balloonCompose = "1.6.4"
 dataStore = "1.0.0"
 ossLicensesPluginVersion = "0.10.4"
 ossLicensesVersion = "17.1.0"
@@ -179,6 +180,7 @@ kakao-share = { module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
+balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloonCompose" }
 
 dataStore = { module = "androidx.datastore:datastore", version.ref = "dataStore" }
 dataStore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
