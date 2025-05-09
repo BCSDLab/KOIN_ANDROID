@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.main
+package `in`.koreatech.koin.ui.main.widget
 
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
