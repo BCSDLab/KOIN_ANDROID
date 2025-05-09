@@ -3,6 +3,7 @@ package `in`.koreatech.koin.core.onboarding
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
@@ -20,4 +21,10 @@ object OnboardingModule {
     ): OnboardingManager {
         return OnboardingManager(onboardingRepository, context)
     }
+}
+
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface OnboardingModuleEntryPoint {
+    fun onboardingManager(): OnboardingManager
 }

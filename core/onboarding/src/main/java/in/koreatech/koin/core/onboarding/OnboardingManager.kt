@@ -4,6 +4,26 @@ import android.content.Context
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -16,10 +36,12 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.IconForm
 import com.skydoves.balloon.IconGravity
+import com.skydoves.balloon.compose.Balloon
+import com.skydoves.balloon.compose.BalloonWindow
 import `in`.koreatech.koin.domain.repository.OnboardingRepository
-import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class OnboardingManager @Inject internal constructor(
     private val onboardingRepository: OnboardingRepository,
@@ -119,11 +141,11 @@ class OnboardingManager @Inject internal constructor(
         }
     }
 
-    private fun createTooltip(
+    private fun createBuilder(
         type: OnboardingType,
         arrowDirection: ArrowDirection,
         arrowPosition: Float
-    ): Balloon {
+    ): Balloon.Builder {
         val iconForm =
             IconForm.Builder(context)
                 .setDrawable(AppCompatResources.getDrawable(context, R.drawable.round_close_24))
@@ -155,7 +177,18 @@ class OnboardingManager @Inject internal constructor(
                     setText(context.getString(type.descriptionResId))
                 }
             }
-            .build()
+    }
+
+    private fun createTooltip(
+        type: OnboardingType,
+        arrowDirection: ArrowDirection,
+        arrowPosition: Float
+    ): Balloon {
+        return createBuilder(
+            type = type,
+            arrowDirection = arrowDirection,
+            arrowPosition = arrowPosition
+        ).build()
     }
 
     private fun Balloon.showAlign(
@@ -167,6 +200,62 @@ class OnboardingManager @Inject internal constructor(
             ArrowDirection.TOP -> showAlignBottom(view)
             ArrowDirection.LEFT -> showAlignRight(view)
             ArrowDirection.RIGHT -> showAlignLeft(view)
+        }
+    }
+
+    /**
+     * 앱 실행 최초 1회에만 툴팁 표시
+     * showOnboardingTooltipIfNeeded의 Compose 버전
+     * @param type 툴팁 타입
+     * @param arrowPosition 화살표 위치 (0.0 ~ 1.0)
+     * @param arrowDirection 툴팁 화살표 방향 (ex. ArrowDirection.LEFT -> 화살표는 왼쪽방향, 툴팁은 오른쪽에 위치)
+     * @param content 툴팁이 표시될 content
+     *
+     * ```
+     * val onboardingManager = rememberOnboardingManager()
+     *
+     * with(onboardingManager) {
+     *     ShowOnboardingTooltipIfNeeded(
+     *         type = OnboardingType.DINING_IMAGE,
+     *         arrowDirection = ArrowDirection.LEFT
+     *     ) {
+     *         // put content here
+     *       }
+     *  }
+     *  ```
+     */
+    @Composable
+    fun ShowOnboardingTooltipIfNeeded(
+        type: OnboardingType,
+        @FloatRange(from = 0.0, to = 1.0) arrowPosition: Float = 0.5f,
+        arrowDirection: ArrowDirection,
+        content: @Composable () -> Unit
+    ) {
+        var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+        val builder = remember { createBuilder(type = type, arrowDirection = arrowDirection, arrowPosition = arrowPosition) }
+
+        Balloon(
+            builder = builder,
+            onBalloonWindowInitialized = { balloonWindow = it }
+        ) {
+            content()
+        }
+
+        LaunchedEffect(Unit) {
+            val shouldShow = onboardingRepository.getShouldOnboarding(type.name)
+            delay(200)
+            if (shouldShow) {
+                balloonWindow?.apply {
+                    when (arrowDirection) {
+                        ArrowDirection.BOTTOM -> showAlignTop()
+                        ArrowDirection.TOP -> showAlignBottom()
+                        ArrowDirection.LEFT -> showAlignEnd()
+                        ArrowDirection.RIGHT -> showAlignStart()
+                    }
+                }
+                onboardingRepository.updateShouldOnboarding(type.name, false)
+            }
         }
     }
 }
