@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
                                 startActivity(intent)
                             }
                             LoginEvent.TOUR -> {
-                                val uri = Uri.parse("koin://main/activity")
+                                val uri = Uri.parse("koin://home/home")
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 startActivity(intent)
                             }
@@ -103,7 +103,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } catch (e: Exception) {
-                val uri = Uri.parse("koin://main/activity")
+                val uri = Uri.parse("koin://home/home")
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
                 finish()
@@ -124,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
                 finish()
                 return
             }
-            val uri = Uri.parse("koin://main/activity")
+            val uri = Uri.parse("koin://home/home")
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
             finish()

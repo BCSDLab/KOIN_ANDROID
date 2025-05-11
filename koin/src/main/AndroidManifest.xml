@@ -144,8 +144,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="main"
-                    android:pathPrefix="/activity"
+                    android:host="home"
+                    android:pathPrefix="/home"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
