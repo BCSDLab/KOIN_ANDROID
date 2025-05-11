@@ -18,7 +18,7 @@ import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_E
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAV_ARTICLE
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
 import `in`.koreatech.koin.ui.article.ArticleBoardType
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.login.ui.LoginActivity
 
 @AndroidEntryPoint
 class ArticleListLostAndFoundFragment : Fragment() {

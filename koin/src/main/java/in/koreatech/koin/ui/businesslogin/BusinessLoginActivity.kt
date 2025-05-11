@@ -11,7 +11,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityBusinessLoginBinding
 import `in`.koreatech.koin.ui.businesslogin.viewmodel.BusinessLoginViewModel
 import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCheckActivity
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.login.ui.LoginActivity
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading

@@ -54,7 +54,9 @@ object URLConstant {
 
     object USER {
         const val USER = "user"
+        const val USERS = "users"
         const val LOGIN: String = "$USER/login"
+        const val LOGIN_V2: String = "v2/$USERS/login"
         const val LOGOUT: String = "$USER/logout"
         const val REGISTER: String = "$USER/register"
         const val FINDPASSWORD: String = "$USER/find/password"
@@ -79,10 +81,12 @@ object URLConstant {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
             const val REGISTER_V2: String = "$VERSION/$USER/$STUDENT/register"
+            const val ME: String = "$VERSION/$USER/$STUDENT/me"
         }
         object GENERAL {
             const val GENERAL = "general"
             const val REGISTER: String = "$VERSION/$USER/$GENERAL/register"
+            const val ME: String = "$USER/$GENERAL/me"
         }
     }
 

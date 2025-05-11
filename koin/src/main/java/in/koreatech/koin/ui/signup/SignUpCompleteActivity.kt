@@ -6,7 +6,7 @@ import android.os.Bundle
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.databinding.ActivitySignupCompleteBinding
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.login.ui.LoginActivity
 
 class SignUpCompleteActivity : ActivityBase() {
     private lateinit var binding: ActivitySignupCompleteBinding

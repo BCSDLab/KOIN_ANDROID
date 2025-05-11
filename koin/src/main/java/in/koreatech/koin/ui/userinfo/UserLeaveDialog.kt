@@ -14,7 +14,7 @@ import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.DialogUserLeaveBinding
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.login.ui.LoginActivity
 import `in`.koreatech.koin.util.ext.setWidthPercent
 import kotlinx.coroutines.launch
 

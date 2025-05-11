@@ -3,10 +3,12 @@ package `in`.koreatech.koin.data.mapper
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.UserResponse2
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.User2
 
 fun UserResponse.toUser(userType: String) =
     User.Student(
@@ -26,6 +28,46 @@ fun UserResponse.toUser(userType: String) =
         major = major,
         userType = userType
     )
+
+fun UserResponse2.toUser(userType: String) =
+    if (userType == "GENERAL") {
+        User2.General(
+            id = id,
+            anonymousNickname = anonymousNickname,
+            userId = userId,
+            email = email,
+            name = name,
+            studentNumber = studentNumber,
+            gender =
+            when (gender) {
+                0 -> Gender.Man
+                1 -> Gender.Woman
+                else -> Gender.Unknown
+            },
+            nickname = nickname,
+            phoneNumber = phoneNumber,
+            userType = userType
+        )
+    } else {
+        User2.Student(
+            id = id,
+            anonymousNickname = anonymousNickname,
+            userId = userId,
+            email = email,
+            name = name,
+            studentNumber = studentNumber,
+            gender =
+            when (gender) {
+                0 -> Gender.Man
+                1 -> Gender.Woman
+                else -> Gender.Unknown
+            },
+            nickname = nickname,
+            phoneNumber = phoneNumber,
+            major = major,
+            userType = userType
+        )
+    }
 
 fun User.Student.toUserRequest() =
     UserRequest(

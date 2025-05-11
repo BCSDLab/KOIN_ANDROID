@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.UserResponse2
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -27,10 +28,26 @@ interface UserAuthApi {
     @GET(URLConstant.USER.ME)
     suspend fun getUser(): UserResponse
 
+    @GET(URLConstant.USER.STUDENT.ME)
+    suspend fun getStudentUser(): UserResponse2
+
+    @GET(URLConstant.USER.GENERAL.ME)
+    suspend fun getGeneralUser(): UserResponse2
+
     @PUT(URLConstant.USER.ME)
     suspend fun putUser(
         @Body userRequest: UserRequest
     ): UserResponse
+
+    @PUT(URLConstant.USER.STUDENT.ME)
+    suspend fun putStudentUser(
+        @Body userRequest: UserRequest
+    ): UserResponse2
+
+    @PUT(URLConstant.USER.GENERAL.ME)
+    suspend fun putGeneralUser(
+        @Body userRequest: UserRequest
+    ): UserResponse2
 
     @DELETE(URLConstant.USER.USER)
     suspend fun deleteUser(): Response<Unit?>

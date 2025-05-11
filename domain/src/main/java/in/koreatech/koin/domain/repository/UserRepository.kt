@@ -2,6 +2,7 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.AuthToken2
 import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
@@ -14,6 +15,12 @@ interface UserRepository {
         hashedPassword: String
     ): AuthToken
 
+
+    suspend fun getToken2(
+        userId: String,
+        hashedPassword: String
+    ): AuthToken2
+
     suspend fun getOwnerToken(
         phoneNumber: String,
         hashedPassword: String
@@ -22,6 +29,10 @@ interface UserRepository {
     fun ownerTokenIsValid(): Boolean
 
     suspend fun fetchUserInfo(userType: String)
+
+    suspend fun fetchStudentUserInfo(userType: String)
+
+    suspend fun fetchGeneralUserInfo(userType: String)
 
     suspend fun getUserInfo(): User
 

@@ -35,9 +35,21 @@
 
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.category.BROWSABLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="timetable"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.timetablev2.TimetableSemesterActivity"
@@ -104,14 +116,39 @@
             android:exported="false" />
         <activity
             android:name=".ui.businesslogin.BusinessLoginActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="keyword" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="businesslogin"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.businesssignup.BusinessSignupBaseActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.activity.MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="keyword" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="main"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name=".ui.dining.appwidget.DiningAppWidget"
@@ -203,12 +240,36 @@
         </activity>
         <activity
             android:name=".ui.signup.SignupActivity"
-            android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:exported="true"
+            android:theme="@style/KAPTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.category.BROWSABLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="signup"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.forgotpassword.ForgotPasswordActivity"
-            android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:exported="true"
+            android:theme="@style/KAPTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.category.BROWSABLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="forgotpassword"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.store.activity.StoreActivity"
             android:exported="false"

@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.LoginRequest2
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
@@ -18,8 +19,10 @@ import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.AuthResponse2
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.UserResponse2
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
 class UserRemoteDataSource(
@@ -27,6 +30,10 @@ class UserRemoteDataSource(
     private val userAuthApi: UserAuthApi
 ) {
     suspend fun getToken(loginRequest: LoginRequest): AuthResponse {
+        return userApi.getToken(loginRequest)
+    }
+
+    suspend fun getToken(loginRequest: LoginRequest2): AuthResponse2 {
         return userApi.getToken(loginRequest)
     }
 
@@ -40,6 +47,14 @@ class UserRemoteDataSource(
 
     suspend fun getUserInfo(): UserResponse {
         return userAuthApi.getUser()
+    }
+
+    suspend fun getStudentUserInfo(): UserResponse2 {
+        return userAuthApi.getStudentUser()
+    }
+
+    suspend fun getGeneralUserInfo(): UserResponse2 {
+        return userAuthApi.getGeneralUser()
     }
 
     suspend fun sendRegisterEmail(studentInfoRequest: StudentInfoRequest) {

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Login</string>
+    <string name="id_field_hint">아이디(Koreatech ID/전화번호)</string>
+    <string name="pw_field_hint">비밀번호</string>
+    <string name="login_button_text">로그인</string>
+    <string name="signup_button_text">회원가입</string>
+    <string name="find_pw_button_text">비밀번호 찾기</string>
+    <string name="tour_button_text">둘러보기</string>
+    <string name="separator">|</string>
+    <string name="guide">사장님이신가요?</string>
+    <string name="copyright">Copyright @ BCSD Lab All rights reserved.</string>
+    <string name="userAlert">존재하지 않는 사용자입니다.</string>
+    <string name="idPwAlert">아이디 또는 비밀번호가 올바르지 않습니다.</string>
+    <string name="find_id_button_text">아이디 찾기</string>
+</resources>

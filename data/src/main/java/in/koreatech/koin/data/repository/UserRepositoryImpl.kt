@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.LoginRequest2
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
@@ -17,6 +18,7 @@ import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.AuthToken2
 import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
@@ -43,6 +45,18 @@ class UserRepositoryImpl @Inject constructor(
             )
 
         return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
+    }
+
+    override suspend fun getToken2(
+        userId: String,
+        hashedPassword: String
+    ): AuthToken2 {
+        try {
+            var authResponse = userRemoteDataSource.getToken(LoginRequest2(userId, hashedPassword))
+            return AuthToken2(accessToken = authResponse.accessToken, refreshToken = authResponse.refreshToken, userType = authResponse.userType)
+        } catch (e: HttpException) {
+            throw e
+        }
     }
 
     override suspend fun getOwnerToken(
@@ -75,6 +89,18 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun fetchUserInfo(userType: String) {
         userRemoteDataSource.getUserInfo().toUser(userType).also {
             userLocalDataSource.updateUserInfo(it)
+        }
+    }
+
+    override suspend fun fetchStudentUserInfo(userType: String) {
+        userRemoteDataSource.getStudentUserInfo().toUser(userType).also {
+            userLocalDataSource.updateUserInfo2(it)
+        }
+    }
+
+    override suspend fun fetchGeneralUserInfo(userType: String) {
+        userRemoteDataSource.getGeneralUserInfo().toUser(userType).also {
+            userLocalDataSource.updateUserInfo2(it)
         }
     }
 

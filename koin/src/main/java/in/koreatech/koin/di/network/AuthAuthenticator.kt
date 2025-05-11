@@ -11,7 +11,7 @@ import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateUserRefreshTokenUseCase
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.login.ui.LoginActivity
 import `in`.koreatech.koin.util.ext.showToast
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking

@@ -12,7 +12,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.UserResponse2
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.User2
 import `in`.koreatech.koin.domain.model.user.UserType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -72,6 +74,37 @@ class UserLocalDataSource @Inject constructor(
 
             pref[PREF_KEY_USER_TYPE] =
                 if (user is User.Student) {
+                    user.userType
+                } else {
+                    ""
+                }
+        }
+    }
+
+    suspend fun updateUserInfo2(user: User2) {
+        userDataStore.edit { pref ->
+            pref[PREF_KEY_USER_INFO] =
+                if (user is User2.Student) {
+                    Gson().toJson(
+                        UserResponse2(
+                            id = user.id,
+                            anonymousNickname = user.anonymousNickname,
+                            userId = user.userId,
+                            email = user.email,
+                            gender = user.gender.toInt(),
+                            major = user.major ?: "",
+                            name = user.name ?: "",
+                            nickname = user.nickname,
+                            phoneNumber = user.phoneNumber,
+                            studentNumber = user.studentNumber
+                        )
+                    )
+                } else {
+                    ""
+                }
+
+            pref[PREF_KEY_USER_TYPE] =
+                if (user is User2.Student) {
                     user.userType
                 } else {
                     ""
