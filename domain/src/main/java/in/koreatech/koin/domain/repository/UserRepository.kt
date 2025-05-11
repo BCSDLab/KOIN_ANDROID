@@ -91,5 +91,7 @@ interface UserRepository {
 
     suspend fun verifyCertificationCode(target: String, code: String): Verification
 
+    suspend fun verifyCertificationCode(target: String, code: String): Verification
+  
     suspend fun countSMS(target: String): Result<CodeCount>
 }

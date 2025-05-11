@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +24,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -42,6 +45,8 @@ fun BannerB(
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp - 48.dp) } // minus horizontal padding
     val maxImageHeight by remember { mutableStateOf(screenWidth / 4 * 3) }
 
+    var bannerIndex: Int by remember { mutableIntStateOf(0) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -58,7 +63,10 @@ fun BannerB(
                 modifier = Modifier.height(maxImageHeight),
                 bannerList = bannerList,
                 dismiss = dismiss,
-                currentKoinVersion = currentKoinVersion
+                currentKoinVersion = currentKoinVersion,
+                onBannerIndexChange = {
+                    bannerIndex = it
+                }
             )
 
             Row(
@@ -75,6 +83,10 @@ fun BannerB(
                     textStyle = KoinTheme.typography.medium15.copy(color = KoinTheme.colors.primary500),
                     shape = KoinTheme.shapes.small,
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            label = "main_modal_hide_7d",
+                            value = bannerList[bannerIndex].title
+                        )
                         dismissWithRefusal()
                     }
                 )
@@ -89,6 +101,10 @@ fun BannerB(
                     textStyle = KoinTheme.typography.medium15.copy(color = KoinTheme.colors.neutral0),
                     shape = KoinTheme.shapes.small,
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            label = "main_modal_close",
+                            value = bannerList[bannerIndex].title
+                        )
                         dismiss()
                     }
                 )

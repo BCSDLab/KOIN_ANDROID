@@ -47,6 +47,21 @@ object EventLogger {
         logEvent(action, EventCategory.CLICK, label, value, *extras)
     }
 
+    /** 화면 진입 이벤트 로깅
+     * @param action 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param label 이벤트 소분류
+     * @param value 이벤트 값
+     * @param extras 추가 이벤트 값
+     */
+    fun logEntryEvent(
+        action: EventAction,
+        label: String,
+        value: String,
+        vararg extras: EventExtra
+    ) {
+        logEvent(action, EventCategory.ENTRY, label, value, *extras)
+    }
+
     /**
      * CAPMUS 클릭 이벤트 로깅
      * @param label 이벤트 소분류
@@ -227,7 +242,8 @@ enum class EventCategory(val value: String) {
     CLICK("click"),
     SCROLL("scroll"),
     SWIPE("swipe"), // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
-    NOTIFICATION("notification")
+    NOTIFICATION("notification"),
+    ENTRY("entry")
 }
 
 data class EventExtra(val key: String, val value: String)

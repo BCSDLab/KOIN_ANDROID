@@ -13,12 +13,12 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -37,29 +39,30 @@ import `in`.koreatech.koin.feature.banner.model.LocalBanner
 import `in`.koreatech.koin.feature.banner.util.ImageUtil
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 
 @Composable
 fun BannerImage(
     bannerList: ImmutableList<LocalBanner>,
     currentKoinVersion: Int,
     modifier: Modifier = Modifier,
-    dismiss: () -> Unit = {}
+    dismiss: () -> Unit = {},
+    onBannerIndexChange: (Int) -> Unit = {}
 ) {
     val pagerState = rememberPagerState(
         initialPage = (Int.MAX_VALUE / 2) - (Int.MAX_VALUE / 2) % bannerList.size
     ) { Int.MAX_VALUE }
+    val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { pagerState.isScrollInProgress }
-            .filter { it == false }
-            .collectLatest {
-                if (bannerList.size > 1) {
-                    delay(BANNER_AUTO_SCROLL_MILLISECONDS)
+    LaunchedEffect(key1 = pagerState.currentPage, key2 = pagerState.isScrollInProgress) {
+        launch {
+            delay(BANNER_AUTO_SCROLL_MILLISECONDS)
+            coroutineScope.launch {
+                if (!pagerState.isScrollInProgress) {
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
             }
+        }
     }
 
     Box(
@@ -70,6 +73,7 @@ fun BannerImage(
             state = pagerState
         ) { page ->
             val realPage = page % bannerList.size
+            onBannerIndexChange(realPage)
             BannerContent(
                 banner = bannerList[realPage],
                 dismiss = dismiss,
@@ -110,20 +114,28 @@ private fun BannerContent(
 ) {
     val context = LocalContext.current
     SubcomposeAsyncImage(
-        modifier = modifier.fillMaxSize().noRippleClickable {
-            if (banner.redirectLink == null) return@noRippleClickable
-            if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
-                ToastUtil.getInstance().makeShort(R.string.banner_require_new_version)
-                val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
-                context.startActivity(intent)
-            } else {
-                if (banner.redirectLink.isNotEmpty()) {
-                    val intent = Intent(Intent.ACTION_VIEW, banner.redirectLink.toUri())
+        modifier = modifier
+            .fillMaxSize()
+            .noRippleClickable {
+                EventLogger.logClickEvent(
+                    action = EventAction.CAMPUS,
+                    label = "main_modal",
+                    value = banner.title
+                )
+                if (banner.redirectLink == null) return@noRippleClickable
+                if (banner.version > currentKoinVersion) { // If the banner link requires a higher version of the app
+                    ToastUtil.getInstance().makeShort(R.string.banner_require_new_version)
+                    val intent = Intent(Intent.ACTION_VIEW, KOIN_PLAYSTORE_URL.toUri())
                     context.startActivity(intent)
+                } else {
+                    if (banner.redirectLink.isNotEmpty()) {
+                        val intent = Intent(Intent.ACTION_VIEW, banner.redirectLink.toUri())
+                        context.startActivity(intent)
+                    }
                 }
-            }
-            dismiss()
-        },
+                dismiss()
+            },
+        contentScale = ContentScale.Crop,
         model = ImageRequest.Builder(LocalContext.current)
             .data(ImageUtil.getResizedImageUrl(banner.imageUrl, width = 400))
             .crossfade(true)
