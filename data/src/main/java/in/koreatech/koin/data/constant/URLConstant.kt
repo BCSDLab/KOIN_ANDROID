@@ -83,6 +83,7 @@ object URLConstant {
     }
 
     object USERS {
+        const val USER = "user"
         const val USERS = "users"
         const val CHECKLOGINID: String = "$USERS/check/id"
 
@@ -96,7 +97,8 @@ object URLConstant {
         }
         object GENERAL {
             const val GENERAL = "general"
-            const val REGISTER: String = "$VERSION/$USER/$GENERAL/register"
+            const val REGISTER: String = "$VERSION/$USERS/register"
+            const val REGISTER2: String = "$VERSION/$USER/$GENERAL/register"
             const val ME: String = "$USER/$GENERAL/me"
         }
     }
