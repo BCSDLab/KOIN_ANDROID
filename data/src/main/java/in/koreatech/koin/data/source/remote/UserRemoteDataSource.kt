@@ -113,6 +113,10 @@ class UserRemoteDataSource(
         userApi.checkNicknameV2(nickname)
     }
 
+    suspend fun checkLoginId(loginId: String) {
+        userApi.checkLoginId(loginId)
+    }
+
     suspend fun postStudentRegister(studentInfoRequest: StudentInfoRequestV2) {
         userApi.postStudentRegister(studentInfoRequest)
     }
@@ -121,15 +125,11 @@ class UserRemoteDataSource(
         userApi.postGeneralRegister(generalInfoRequest)
     }
 
-    suspend fun sendSMS(smsSendRequest: SmsSendRequest) {
-        userApi.smsSend(smsSendRequest)
+    suspend fun sendSMS(smsSendRequest: SmsSendRequest): CodeRequestCountResponse {
+        return userApi.smsSend(smsSendRequest)
     }
 
     suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) {
         userApi.codeVerify(smsVerifyRequest)
-    }
-
-    suspend fun countSMS(target: String): CodeRequestCountResponse {
-        return userApi.smsCount(target)
     }
 }

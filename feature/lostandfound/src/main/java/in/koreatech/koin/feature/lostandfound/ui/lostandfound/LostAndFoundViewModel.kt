@@ -6,11 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.article.FetchMyKeywordUseCase
-import `in`.koreatech.koin.domain.usecase.article.FetchSearchedArticlesUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationUseCase
-import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticleUseCase
+import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchSearchedLostAndFoundArticlesUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
-import `in`.koreatech.koin.feature.lostandfound.enums.ArticleBoardType
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -26,8 +24,7 @@ import timber.log.Timber
 @HiltViewModel
 class LostAndFoundViewModel @Inject constructor(
     private val fetchLostAndFoundArticlePaginationUseCase: FetchLostAndFoundArticlePaginationUseCase,
-    private val fetchSearchedArticlesUseCase: FetchSearchedArticlesUseCase,
-    private val fetchLostAndFoundArticleUseCase: FetchLostAndFoundArticleUseCase,
+    private val fetchSearchedLostAndFoundArticlesUseCase: FetchSearchedLostAndFoundArticlesUseCase,
     private val fetchMyKeywordUseCase: FetchMyKeywordUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     savedStateHandle: SavedStateHandle
@@ -71,40 +68,19 @@ class LostAndFoundViewModel @Inject constructor(
                         }
                     }
                 } else {
-                    fetchSearchedArticlesUseCase(
+                    fetchSearchedLostAndFoundArticlesUseCase(
                         state.selectedKeyword,
-                        ArticleBoardType.LOSTANDFOUND.id,
                         state.currentPage,
                         ARTICLES_PER_PAGE
                     ).collectLatest {
                         reduce {
                             state.copy(
-                                lostAndFoundList = it.articleHeaders.map { it.toLostAndFoundItemState() },
+                                lostAndFoundList = it.articleLostAndFoundHeader.map { it.toLostAndFoundItemState() },
                                 currentCount = it.currentCount,
                                 totalCount = it.totalCount,
                                 currentPage = it.currentPage,
                                 totalPage = it.totalPage
                             )
-                        }
-
-                        // Fetch content by id because our search API doesn't return content value
-                        state.lostAndFoundList.forEachIndexed { index, lostAndFoundItemState ->
-                            fetchLostAndFoundArticleUseCase(lostAndFoundItemState.id).collect {
-                                reduce {
-                                    state.copy(
-                                        lostAndFoundList =
-                                        state.lostAndFoundList.mapIndexed { i, item ->
-                                            if (i == index) {
-                                                return@mapIndexed item.copy(
-                                                    content = it.content ?: ""
-                                                )
-                                            } else {
-                                                item
-                                            }
-                                        }
-                                    )
-                                }
-                            }
                         }
                     }
 

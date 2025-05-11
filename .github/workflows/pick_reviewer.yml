@@ -1,7 +1,7 @@
 name: "Pick Reviewer"
 on:
   pull_request:
-    types: opened
+    types: [opened, ready_for_review]
 
 jobs:
   pick-reviewer:
@@ -12,7 +12,7 @@ jobs:
 
       - name: Pick reviewer
         id: pick_reviewer
-        run: kotlinc -script ./.github/scripts/pick_reviewer.kts
+        run: kotlinc -script ./.github/scripts/pick_reviewer.kts "${{ github.event.pull_request.title }}"
 
       - name: Add Reviewer
         uses: madrapps/add-reviewers@v1

@@ -15,8 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +27,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.banner.R
 import `in`.koreatech.koin.feature.banner.model.LocalBanner
@@ -42,6 +45,8 @@ fun BannerA(
     val configuration = LocalConfiguration.current
     val screenWidth by remember { mutableStateOf(configuration.screenWidthDp.dp) }
     val maxImageHeight by remember { mutableStateOf(screenWidth / 4 * 3) }
+
+    var bannerIndex: Int by remember { mutableIntStateOf(0) }
 
     Box(
         modifier = modifier
@@ -67,6 +72,10 @@ fun BannerA(
             ) {
                 TextButton(
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            label = "main_modal_hide_7d",
+                            value = bannerList[bannerIndex].title
+                        )
                         dismissWithRefusal()
                     }
                 ) {
@@ -79,6 +88,10 @@ fun BannerA(
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            label = "main_modal_close",
+                            value = bannerList[bannerIndex].title
+                        )
                         dismiss()
                     }
                 ) {
@@ -93,7 +106,10 @@ fun BannerA(
                 modifier = Modifier.height(maxImageHeight),
                 bannerList = bannerList,
                 dismiss = dismiss,
-                currentKoinVersion = currentKoinVersion
+                currentKoinVersion = currentKoinVersion,
+                onBannerIndexChange = {
+                    bannerIndex = it
+                }
             )
         }
     }
