@@ -7,6 +7,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
@@ -35,16 +36,22 @@ class SignUpActivity : ComponentActivity() {
                         KoinTopAppBar(
                             title = stringResource(R.string.sign_up_title),
                             onNavigationIconClick = {
-                                navController.popBackStack()
+                                onBackPressedDispatcher.onBackPressed()
                             }
                         )
                     },
                     containerColor = KoinTheme.colors.neutral0
                 ) { contentPadding ->
+                    /*
+                     * On Compose material 3, Scaffold content padding adds unnecessary padding when ime up
+                     * So, let's consume window insets and add extra system bar padding
+                     * see: https://issuetracker.google.com/issues/249727298
+                     */
                     NavHost(
                         modifier = Modifier
                             .padding(contentPadding)
-                            .consumeWindowInsets(contentPadding),
+                            .consumeWindowInsets(contentPadding)
+                            .systemBarsPadding(),
                         navController = navController,
                         enterTransition = {
                             EnterTransition.None
@@ -54,7 +61,7 @@ class SignUpActivity : ComponentActivity() {
                         },
                         startDestination = SignUpNavType.Term.route
                     ) {
-                        koinSignUpGraph(navController = navController)
+                        koinSignUpGraph(navController = navController, finish = { finish() })
                     }
                 }
             }

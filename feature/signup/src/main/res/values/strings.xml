@@ -14,7 +14,7 @@
     <string name="sign_up_failed_to_fetch_terms">약관을 가져오는데 실패했습니다.</string>
 
     <string name="sign_up_name_gender_title">성함과 성별을 알려주세요.</string>
-    <string name="sign_up_name_field_hint">실명을 입력해 주세요.</string>
+    <string name="sign_up_name_field_hint">2~5 자리로 입력해 주세요.</string>
     <string name="sign_up_phone_number_title">휴대전화 번호를 입력해 주세요.</string>
     <string name="sign_up_phone_number_field_hint">-  없이 번호를 입력해 주세요.</string>
     <string name="sign_up_phone_number_send_verification">인증번호 발송</string>

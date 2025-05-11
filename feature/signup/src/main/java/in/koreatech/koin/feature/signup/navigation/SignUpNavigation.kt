@@ -13,7 +13,8 @@ import `in`.koreatech.koin.feature.signup.ui.usertype.SignUpUserType
 import `in`.koreatech.koin.feature.signup.ui.verification.SignUpVerification
 
 fun NavGraphBuilder.koinSignUpGraph(
-    navController: NavController
+    navController: NavController,
+    finish: () -> Unit = {}
 ) {
     composable(
         route = SignUpNavType.Term.route
@@ -78,7 +79,9 @@ fun NavGraphBuilder.koinSignUpGraph(
     composable(
         route = SignUpNavType.SignUpComplete.route
     ) {
-        SignUpCompleteScreen()
+        SignUpCompleteScreen {
+            finish()
+        }
     }
 }
 

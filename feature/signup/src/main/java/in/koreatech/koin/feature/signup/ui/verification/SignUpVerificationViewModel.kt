@@ -58,6 +58,7 @@ class SignUpVerificationViewModel @Inject constructor(
 
     fun setPhoneNumber(phoneNumber: String) {
         blockingIntent {
+            if (phoneNumber == state.phoneNumber) return@blockingIntent
             reduce {
                 state.copy(
                     phoneNumber = phoneNumber,

@@ -59,9 +59,9 @@ fun KoinSignUpPasswordTextField(
         value = value,
         onValueChange = {
             if (it.length < maxLength) {
-                onValueChange(it)
+                onValueChange(it.trim())
             } else {
-                onValueChange(it.take(maxLength))
+                onValueChange(it.take(maxLength).trim())
             }
         },
         keyboardOptions = keyboardOptions.copy(
@@ -112,7 +112,7 @@ fun KoinSignUpPasswordTextField(
                             .noRippleClickable {
                                 onShowPasswordChange(!showPassword)
                             },
-                        painter = painterResource(id = R.drawable.ic_sign_up_show_password),
+                        painter = painterResource(id = if (showPassword) R.drawable.ic_sign_up_hide_password else R.drawable.ic_sign_up_show_password),
                         contentDescription = null
                     )
                 }
@@ -130,6 +130,7 @@ private fun KoinSignUpPasswordTextFieldPreview() {
     KoinSignUpPasswordTextField(
         value = "",
         onValueChange = {},
+        showPassword = true,
         hint = "비밀번호"
     )
 }

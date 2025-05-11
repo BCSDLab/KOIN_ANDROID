@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -137,6 +138,7 @@ fun SignUpStudentUserInfoImpl(
             .imePadding()
             .verticalScroll(scrollState)
             .padding(horizontal = 24.dp)
+            .padding(bottom = 40.dp)
     ) {
         KoinSignUpProgressHeader(
             text = stringResource(R.string.sign_up_user_info),
@@ -246,6 +248,7 @@ private fun SignUpStudentUserInfoInitialStep(
             },
             showTrailingClearButton = false,
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Ascii,
                 imeAction = ImeAction.Next
             )
         )
@@ -257,7 +260,7 @@ private fun SignUpStudentUserInfoInitialStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.sign_up_user_info_id_check_duplicate),
                 textStyle = KoinTheme.typography.regular10,
-                enabled = loginId.isNotEmpty() && isLoginIdAvailable != true,
+                enabled = loginId.isNotEmpty() && isLoginIdAvailable != true && isLoginIdValid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     checkLoginIdAvailable()
@@ -297,6 +300,7 @@ private fun SignUpStudentUserInfoInitialStep(
         showPassword = showPassword,
         onShowPasswordChange = { onShowPasswordChange(it) },
         keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
         )
     )
@@ -312,6 +316,7 @@ private fun SignUpStudentUserInfoInitialStep(
             showPassword = showPassword,
             onShowPasswordChange = { onShowPasswordChange(it) },
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             )
         )
@@ -376,6 +381,7 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
         value = studentNumber,
         onValueChange = { onStudentNumberChange(it) },
         keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next
         )
     )
@@ -456,6 +462,7 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
                 onEmailChange(it)
             },
             keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Ascii,
                 imeAction = ImeAction.Done
             )
         )

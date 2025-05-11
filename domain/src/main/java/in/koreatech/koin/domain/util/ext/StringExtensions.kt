@@ -16,7 +16,12 @@ val String.isValidStudentId: Boolean
         // First 4 digits are year.
         // Check if the year is between 1992 and current year
         val year: Int = this.trim().substring(0..3).toInt()
-        return year in 1992..Calendar.getInstance().get(Calendar.YEAR)
+
+        if (year !in 1992..Calendar.getInstance().get(Calendar.YEAR)) {
+            return false
+        }
+
+        return this.matches(Regex("""^\d+${'$'}""")) // TODO: Create Regex file
     }
 
 val String.isValidPhoneNumber: Boolean get() =

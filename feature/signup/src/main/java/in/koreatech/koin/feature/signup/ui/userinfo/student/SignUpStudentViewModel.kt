@@ -93,7 +93,7 @@ class SignUpStudentViewModel @Inject constructor(
     fun setEmail(email: String) {
         blockingIntent {
             reduce {
-                state.copy(email = email)
+                state.copy(email = email, isEmailAvailable = null)
             }
         }
     }
@@ -205,7 +205,7 @@ class SignUpStudentViewModel @Inject constructor(
                 loginId = state.loginId,
                 password = state.password,
                 gender = state.gender,
-                email = "${state.email}@$KOREATECH_EMAIL_DOMAIN",
+                email = if (state.email.isBlank()) "" else "${state.email}@$KOREATECH_EMAIL_DOMAIN",
                 nickname = state.nickname,
                 studentNumber = state.studentNumber,
                 department = state.department
