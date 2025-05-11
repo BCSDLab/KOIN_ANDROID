@@ -7,6 +7,8 @@ sealed class SignupContinuationState {
 
     object NicknameDuplicated : SignupContinuationState() // 닉네임 중복
 
+    object LoginIdDuplicated : SignupContinuationState() // 아이디 중복
+
     object BusinessNumberDuplicated : SignupContinuationState() // 사업자 번호 중복
 
     object AvailablePhoneNumber : SignupContinuationState() // 전화번호 중복 확인으로 사용 가능
@@ -15,9 +17,13 @@ sealed class SignupContinuationState {
 
     object AvailableNickname : SignupContinuationState() // 이메일 중복 확인으로 사용 가능
 
+    object AvailableLoginId : SignupContinuationState() // 아이디 중복 확인으로 사용 가능
+
     object RequestedEmailValidation : SignupContinuationState()
 
     object RequestedSmsValidation : SignupContinuationState()
+
+    data class RequestedSmsValidationWithRemainingCount(val totalCount: Int, val remainingCount: Int, val currentCount: Int) : SignupContinuationState()
 
     object RequestedOwnerRegister : SignupContinuationState() // 사장님 회원가입 요청
 
@@ -27,9 +33,17 @@ sealed class SignupContinuationState {
 
     object CheckPhoneNumberFormat : SignupContinuationState() // 전화번호를 올바른 형식으로 작성했는지 확인
 
+    object CheckLoginIdFormat : SignupContinuationState() // 아이디를 올바른 형식으로 작성했는지 확인
+
     object CompanyNumberIsNotValidate : SignupContinuationState()
 
+    object SmsCodeIsValidated : SignupContinuationState()
+
     object SmsCodeIsNotValidate : SignupContinuationState()
+
+    object SmsCodeIsExpired : SignupContinuationState()
+
+    object SmsCodeRequestCountIsExceeded : SignupContinuationState()
 
     object PhoneNumberIsNotValidate : SignupContinuationState()
 

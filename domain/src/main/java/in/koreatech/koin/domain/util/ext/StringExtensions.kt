@@ -7,12 +7,21 @@ fun String.toSHA256() = PasswordUtil().generateSHA256(this)
 
 val String.isValidStudentId: Boolean
     get() {
-        if (this.trim().length != 10) {
+        // Korean student number is 10 digit
+        // Foreign student number is 8 or 9 digit
+        if (this.trim().length !in 8..10) {
             return false
         }
 
+        // First 4 digits are year.
+        // Check if the year is between 1992 and current year
         val year: Int = this.trim().substring(0..3).toInt()
-        return year in 1992..Calendar.getInstance().get(Calendar.YEAR)
+
+        if (year !in 1992..Calendar.getInstance().get(Calendar.YEAR)) {
+            return false
+        }
+
+        return this.matches(Regex("""^\d+${'$'}""")) // TODO: Create Regex file
     }
 
 val String.isValidPhoneNumber: Boolean get() =
@@ -23,6 +32,8 @@ fun String.toUnderlineForHtml() = "<u>$this</u>"
 fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)}'>$this</font>" // color = #ff000000 형태
 
 fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
+
+fun String.isLoginIdFormat(): Boolean = this.matches(Regex("""^[a-z0-9_.-]+${'$'}""")) && this.length in 5..13
 
 fun String.isNicknameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+${'$'}"""))
 

@@ -6,7 +6,6 @@ import `in`.koreatech.koin.domain.model.user.AuthToken2
 import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Duplicated
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.model.user.Verification
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
@@ -44,7 +43,7 @@ interface UserRepository {
 
     suspend fun isUsernameDuplicated(nickname: String): Boolean
 
-    suspend fun isUserEmailDuplicated(email: String): Boolean
+    suspend fun isUserEmailDuplicated(email: String): Boolean // TODO: Remove after new sign up release
 
     suspend fun updateUser(user: User)
 
