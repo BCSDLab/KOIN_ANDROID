@@ -67,6 +67,7 @@ class SplashActivity : ActivityBase() {
 
     private fun initView() {
         splashViewModel.checkUpdate()
+        splashViewModel.fetchUserInfo()
         firebasePerformanceUtil.start()
         SystemBarsUtils(this).apply {
             setImmersiveMode(window)
