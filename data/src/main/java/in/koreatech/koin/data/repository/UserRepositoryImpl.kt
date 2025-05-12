@@ -79,10 +79,24 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserInfo(): User {
-        val userType = userRemoteDataSource.getUserType()
+        val userType = try {
+            userRemoteDataSource.getUserType()
+        } catch (e: HttpException) {
+            // If user withdraw on other platform, saved token is not valid
+            // and API returns error code
+            null
+        }
 
-        return userRemoteDataSource.getUserInfo().toUser(userType.userType).also {
-            userLocalDataSource.updateUserInfo(it)
+        return if (userType != null) {
+            userRemoteDataSource.getUserInfo().toUser(userType.userType).also {
+                userLocalDataSource.updateUserInfo(it)
+            }
+        } else {
+            userLocalDataSource.updateIsLogin(false)
+            tokenLocalDataSource.removeAccessToken()
+            tokenLocalDataSource.removeRefreshToken()
+            userLocalDataSource.updateUserInfo(User.Anonymous)
+            User.Anonymous
         }
     }
 
