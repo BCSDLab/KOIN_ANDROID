@@ -43,7 +43,12 @@ class AuthAuthenticator @Inject constructor(
                 return@withLock null
             }
 
-            val currentRefreshToken = tokenLocalDataSource.getRefreshToken() ?: ""
+            val currentRefreshToken = tokenLocalDataSource.getRefreshToken()
+
+            if (currentRefreshToken == null) {
+                goToLoginActivity()
+                return@withLock null
+            }
 
             val newResponse =
                 runCatching {
