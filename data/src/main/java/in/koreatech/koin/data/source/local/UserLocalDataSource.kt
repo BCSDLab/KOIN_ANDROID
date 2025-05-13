@@ -11,8 +11,9 @@ import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toUser
+import `in`.koreatech.koin.data.response.user.GeneralResponse
+import `in`.koreatech.koin.data.response.user.StudentResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
-import `in`.koreatech.koin.data.response.user.UserResponse2
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.User2
 import `in`.koreatech.koin.domain.model.user.UserType
@@ -81,22 +82,52 @@ class UserLocalDataSource @Inject constructor(
         }
     }
 
-    suspend fun updateUserInfo2(user: User2) {
+    suspend fun updateStudentInfo(user: User2) {
         userDataStore.edit { pref ->
             pref[PREF_KEY_USER_INFO] =
                 if (user is User2.Student) {
                     Gson().toJson(
-                        UserResponse2(
+                        StudentResponse(
                             id = user.id,
+                            loginId = user.loginId,
                             anonymousNickname = user.anonymousNickname,
-                            userId = user.userId,
                             email = user.email,
-                            gender = user.gender.toInt(),
+                            gender = user.gender?.toInt(),
                             major = user.major ?: "",
                             name = user.name ?: "",
                             nickname = user.nickname,
                             phoneNumber = user.phoneNumber,
-                            studentNumber = user.studentNumber
+                            studentNumber = user.studentNumber,
+                            userType = user.userType,
+                        )
+                    )
+                } else {
+                    ""
+                }
+
+            pref[PREF_KEY_USER_TYPE] =
+                if (user is User2.Student) {
+                    user.userType
+                } else {
+                    ""
+                }
+        }
+    }
+
+    suspend fun updateGeneralInfo(user: User2) {
+        userDataStore.edit { pref ->
+            pref[PREF_KEY_USER_INFO] =
+                if (user is User2.General) {
+                    Gson().toJson(
+                        GeneralResponse(
+                            id = user.id,
+                            userId = user.userId,
+                            email = user.email,
+                            gender = user.gender?.toInt(),
+                            name = user.name ?: "",
+                            nickname = user.nickname,
+                            phoneNumber = user.phoneNumber,
+                            userType = user.userType
                         )
                     )
                 } else {

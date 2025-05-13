@@ -35,6 +35,7 @@ dependencies {
     implementation(project(":core:analytics"))
     implementation(project(":core:analytics"))
     implementation(project(":core:analytics"))
+    implementation(libs.androidx.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

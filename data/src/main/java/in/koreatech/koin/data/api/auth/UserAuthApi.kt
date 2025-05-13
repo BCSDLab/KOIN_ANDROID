@@ -4,21 +4,25 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.GeneralRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
+import `in`.koreatech.koin.data.request.user.StudentRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
+import `in`.koreatech.koin.data.response.user.GeneralResponse
+import `in`.koreatech.koin.data.response.user.StudentResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
-import `in`.koreatech.koin.data.response.user.UserResponse2
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -28,26 +32,28 @@ interface UserAuthApi {
     @GET(URLConstant.USER.ME)
     suspend fun getUser(): UserResponse
 
-    @GET(URLConstant.USER.STUDENT.ME)
-    suspend fun getStudentUser(): UserResponse2
+    @GET(URLConstant.USER.ME)
+    suspend fun getStudentUser(): StudentResponse
 
-    @GET(URLConstant.USER.GENERAL.ME)
-    suspend fun getGeneralUser(): UserResponse2
+    @PUT(URLConstant.USERS.STUDENTS.ME)
+    suspend fun putStudentUser(
+        @Header("Authorization") authHeader: String,
+        @Body userRequest: StudentRequest
+    ): StudentResponse
+
+    @GET(URLConstant.USERS.ME)
+    suspend fun getGeneralUser(): GeneralResponse
+
+    @PUT(URLConstant.USERS.ME)
+    suspend fun putGeneralUser(
+        @Header("Authorization") authHeader: String,
+        @Body userRequest: GeneralRequest
+    ): GeneralResponse
 
     @PUT(URLConstant.USER.ME)
     suspend fun putUser(
         @Body userRequest: UserRequest
     ): UserResponse
-
-    @PUT(URLConstant.USER.STUDENT.ME)
-    suspend fun putStudentUser(
-        @Body userRequest: UserRequest
-    ): UserResponse2
-
-    @PUT(URLConstant.USER.GENERAL.ME)
-    suspend fun putGeneralUser(
-        @Body userRequest: UserRequest
-    ): UserResponse2
 
     @DELETE(URLConstant.USER.USER)
     suspend fun deleteUser(): Response<Unit?>

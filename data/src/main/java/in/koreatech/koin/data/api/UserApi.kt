@@ -5,7 +5,6 @@ import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
-import `in`.koreatech.koin.data.request.user.LoginRequest2
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
@@ -13,7 +12,6 @@ import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
-import `in`.koreatech.koin.data.response.user.AuthResponse2
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import retrofit2.Response
@@ -23,15 +21,10 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface UserApi {
-    @POST(URLConstant.USER.LOGIN)
+    @POST(URLConstant.USERS.LOGIN_V2)
     suspend fun getToken(
         @Body loginRequest: LoginRequest
     ): AuthResponse
-
-    @POST(URLConstant.USER.LOGIN_V2)
-    suspend fun getToken(
-        @Body loginRequest: LoginRequest2
-    ): AuthResponse2
 
     @POST(URLConstant.OWNER.SIGNIN)
     suspend fun getOwnerToken(

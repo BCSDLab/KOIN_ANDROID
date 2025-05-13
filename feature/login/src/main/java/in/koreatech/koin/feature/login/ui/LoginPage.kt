@@ -56,13 +56,17 @@ fun LoginPage(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_color_horizontal_300x168),
-            contentDescription = "Koin Icon",
+        Box(
             modifier = Modifier
-                .offset(x = 40.dp, y = 204.dp)
-                .size(width = 107.dp, height = 60.dp)
-        )
+                .padding(start = 40.dp, top = 204.dp) // offset 대신 padding 사용
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_color_horizontal_300x168),
+                contentDescription = "Koin Icon",
+                modifier = Modifier
+                    .size(width = 107.dp, height = 60.dp)
+            )
+        }
 
         Column( // #1
             modifier = Modifier
@@ -120,8 +124,7 @@ fun LoginPage(
                 LoginTextImageButton(
                     icon = R.drawable.ic_zoom,
                     text = stringResource(R.string.find_id_button_text),
-                    width = 84,
-                    imgSize = 16,
+                    imgSize = 16.dp,
                     onClick = viewModel::findId
                 )
                 LoginTextView(
@@ -132,7 +135,6 @@ fun LoginPage(
                 LoginTextImageButton(
                     icon = R.drawable.ic_password,
                     text = stringResource(R.string.find_pw_button_text),
-                    width = 96,
                     onClick = viewModel::findPw
                 )
                 LoginTextView(
@@ -143,7 +145,6 @@ fun LoginPage(
                 LoginTextImageButton(
                     icon = R.drawable.ic_face,
                     text = stringResource(R.string.tour_button_text),
-                    width = 72,
                     onClick = viewModel::tour
                 )
             }

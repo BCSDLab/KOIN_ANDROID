@@ -2,7 +2,6 @@ package `in`.koreatech.koin.domain.usecase.user
 
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
-import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.util.ext.toSHA256
@@ -18,23 +17,23 @@ class UserLoginUseCase2 @Inject constructor(
         password: String
     ): Pair<Unit?, ErrorHandler?> {
         return try {
-            val authToken = userRepository.getToken2(userId, password.toSHA256())
-            if (authToken.userType == "STUDENT") {
-                tokenRepository.saveAccessToken(authToken.accessToken)
+            val authToken = userRepository.getToken(userId, password.toSHA256())
+            if (authToken.userType == "STUDENT" || authToken.userType == "COUNCIL") {
+                tokenRepository.saveAccessToken(authToken.token)
                 tokenRepository.saveRefreshToken(authToken.refreshToken)
-                userRepository.fetchStudentUserInfo(UserType.STUDENT.name)
+                userRepository.fetchStudentUserInfo(authToken.userType)
                 Unit to null
             }
             else if(authToken.userType == "GENERAL") {
-                tokenRepository.saveAccessToken(authToken.accessToken)
+                tokenRepository.saveAccessToken(authToken.token)
                 tokenRepository.saveRefreshToken(authToken.refreshToken)
-                userRepository.fetchGeneralUserInfo(UserType.GENERAL.name)
+                userRepository.fetchGeneralUserInfo(authToken.userType)
                 Unit to null
             } else {
                 Unit to null
             }
         }catch (throwable: Throwable) {
-            null to userErrorHandler.handleGetTokenError(throwable)
+            null to userErrorHandler.handleGetTokenError2(throwable)
         }
     }
 }

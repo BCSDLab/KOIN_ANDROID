@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.login.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase2
@@ -64,16 +63,11 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onLoginFalse(message: String) {
-        if (message == "존재하지 않는 사용자입니다.") {
-            setIdPwAlertVisible(visible = false)
-            setUserAlertVisible(visible = true)
-        }
-        else if (message == "아이디 또는 비밀번호가 올바르지 않습니다.") {
+        if (message == "400") {
             setUserAlertVisible(visible = false)
             setIdPwAlertVisible(visible = true)
         }
         else {
-            // 알 수 없는 에러
             setUserAlertVisible(visible = false)
             setIdPwAlertVisible(visible = false)
         }
@@ -82,12 +76,10 @@ class LoginViewModel @Inject constructor(
     suspend fun login() {
         userLoginUseCase(id.value, password.value)
             .onSuccess {
-                Log.d("LoginViewModel", "로그인 성공")
                 _loginState.update {
                     it.copy(status = UiStatus.Success)
                 }
             }.onFailure { errorHandler ->
-                Log.d("LoginViewModel", errorHandler.message)
                 _loginState.update {
                     it.copy(status = UiStatus.Failed(errorHandler.message))
                 }
@@ -112,6 +104,10 @@ class LoginViewModel @Inject constructor(
 
     fun business() {
         _loginEvent.value = LoginEvent.BUSINESS
+    }
+
+    fun resetLoginEvent() {
+        _loginEvent.value = LoginEvent.NONE
     }
 }
 

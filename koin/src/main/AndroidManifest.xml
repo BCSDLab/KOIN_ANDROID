@@ -223,22 +223,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="true"
-            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="login"
-                    android:pathPrefix="/login"
-                    android:scheme="koin" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.signup.SignupActivity"
             android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar">

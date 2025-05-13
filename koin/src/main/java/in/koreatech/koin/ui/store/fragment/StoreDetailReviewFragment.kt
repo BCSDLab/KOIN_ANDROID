@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.contract.LoginContract
+import `in`.koreatech.koin.feature.login.contract.LoginContract
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -22,11 +22,11 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
+import `in`.koreatech.koin.feature.login.dialog.LoginDialogFragment
 import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.store.activity.StoreReviewReportActivity
 import `in`.koreatech.koin.ui.store.activity.WriteReviewActivity
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
-import `in`.koreatech.koin.ui.store.dialog.LoginRequestDialog
 import `in`.koreatech.koin.ui.store.dialog.ReviewDeleteCheckDialog
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -86,8 +86,10 @@ class StoreDetailReviewFragment : Fragment() {
                     }
                 } else {
                     val loginRequestDialog =
-                        LoginRequestDialog(
-                            goToLogin = {
+                        LoginDialogFragment(
+                            title = getString(R.string.login_request_to_write_review),
+                            description = getString(R.string.login_request_to_write_review_description),
+                            onPositive = {
                                 loginActivityLauncher.launch(Unit)
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
@@ -95,7 +97,7 @@ class StoreDetailReviewFragment : Fragment() {
                                     viewModel.store.value?.name ?: "Unknown"
                                 )
                             },
-                            onCancel = {
+                            onNegative = {
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
                                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
@@ -150,19 +152,21 @@ class StoreDetailReviewFragment : Fragment() {
                     startActivity(goToReviewScreen)
                 } else {
                     val loginRequestDialog =
-                        LoginRequestDialog(
-                            goToLogin = {
+                        LoginDialogFragment(
+                            title = getString(R.string.login_request_to_write_review),
+                            description = getString(R.string.login_request_to_write_review_description),
+                            onPositive = {
                                 loginActivityLauncher.launch(Unit)
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
-                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN,
                                     viewModel.store.value?.name ?: "Unknown"
                                 )
                             },
-                            onCancel = {
+                            onNegative = {
                                 EventLogger.logClickEvent(
                                     EventAction.BUSINESS,
-                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL,
+                                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
                                     viewModel.store.value?.name ?: "Unknown"
                                 )
                             }

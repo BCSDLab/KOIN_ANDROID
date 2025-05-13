@@ -2,30 +2,28 @@ package `in`.koreatech.koin.domain.model.user
 
 sealed class User2 {
     data class Student(
-        val id: Int,
+        val id: Int?,
+        val loginId: String?,
         val anonymousNickname: String?,
-        val userId: String?,
         val email: String?,
+        val gender: Gender?,
+        val major: String?,
         val name: String?,
-        val studentNumber: String?,
-        val gender: Gender,
         val nickname: String?,
         val phoneNumber: String?,
-        val major: String?,
+        val studentNumber: String?,
         val userType: String
     ) : User2()
 
     data class General(
         val id: Int,
-        val anonymousNickname: String?,
         val userId: String?,
+        val gender: Gender,
         val email: String?,
         val name: String?,
-        val studentNumber: String?,
-        val gender: Gender,
         val nickname: String?,
         val phoneNumber: String?,
-        val userType: String
+        val userType: String?
     ) : User2()
 
     data object Anonymous : User2()

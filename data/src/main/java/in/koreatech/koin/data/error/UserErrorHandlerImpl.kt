@@ -41,6 +41,18 @@ class UserErrorHandlerImpl @Inject constructor(
         }
     }
 
+    override fun handleGetTokenError2(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            when (it) {
+                is HttpException -> {
+                    ErrorHandler(it.code().toString())
+                }
+
+                else -> ErrorHandler(context.getString(R.string.error_network_unknown))
+            }.withUnknown(context)
+        }
+    }
+
     override fun handleRequestPasswordResetEmailError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when (it) {

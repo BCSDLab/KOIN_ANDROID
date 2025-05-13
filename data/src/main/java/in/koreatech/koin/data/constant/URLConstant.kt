@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.constant
 
+import `in`.koreatech.koin.data.constant.URLConstant.USER.STUDENT.STUDENT
+
 /**
  * KOIN API URL
  */
@@ -54,9 +56,7 @@ object URLConstant {
 
     object USER {
         const val USER = "user"
-        const val USERS = "users"
         const val LOGIN: String = "$USER/login"
-        const val LOGIN_V2: String = "v2/$USERS/login"
         const val LOGOUT: String = "$USER/logout"
         const val REGISTER: String = "$USER/register"
         const val FINDPASSWORD: String = "$USER/find/password"
@@ -78,29 +78,32 @@ object URLConstant {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
             const val REGISTER_V2: String = "$VERSION/$USER/$STUDENT/register"
-            const val ME: String = "$VERSION/$USER/$STUDENT/me"
+        }
+        object GENERAL {
+            const val GENERAL = "general"
+            const val ME: String = "${USER}/${GENERAL}/me"
         }
     }
 
     object USERS {
-        const val USER = "user"
         const val USERS = "users"
         const val CHECKLOGINID: String = "$USERS/check/id"
 
         const val SMSSEND: String = "$USERS/verification/sms/send"
         const val SMSVERIFY: String = "$USERS/verification/sms/verify"
 
-        const val VERSION: String = "v2"
+        const val ME: String = "v2/${USERS}/me"
+
         object STUDENTS {
             const val STUDENTS = "students"
-            const val REGISTER_V2: String = "$VERSION/$USERS/$STUDENTS/register"
+            const val ME: String = "v2/${USERS}/$STUDENT/me"
+            const val REGISTER_V2: String = "v2/$USERS/$STUDENTS/register"
         }
         object GENERAL {
             const val GENERAL = "general"
-            const val REGISTER: String = "$VERSION/$USERS/register"
-            const val REGISTER2: String = "$VERSION/$USER/$GENERAL/register"
-            const val ME: String = "$USER/$GENERAL/me"
+            const val REGISTER: String = "v2/$USERS/register"
         }
+        const val LOGIN_V2: String = "v2/$USERS/login"
     }
 
     object OWNER {

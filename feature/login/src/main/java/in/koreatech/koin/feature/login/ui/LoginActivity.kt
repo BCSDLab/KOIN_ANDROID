@@ -4,10 +4,10 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -23,7 +23,7 @@ import kotlin.getValue
 import `in`.koreatech.koin.feature.login.R
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : ComponentActivity() {
     private val loginViewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,12 +61,14 @@ class LoginActivity : AppCompatActivity() {
                                 )
                             }
                             LoginEvent.FIND_ID -> {
+                                loginViewModel.resetLoginEvent()
                                 // Todo id 찾기 aitivity가 아직 없음
                                 // val uri = Uri.parse("koin://forgotid/activity")
                                 // val intent = Intent(Intent.ACTION_VIEW, uri)
                                 // startActivity(intent)
                             }
                             LoginEvent.FIND_PW -> {
+                                loginViewModel.resetLoginEvent()
                                 val uri = Uri.parse("koin://forgotpassword/activity")
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 startActivity(intent)
@@ -77,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
                                 startActivity(intent)
                             }
                             LoginEvent.BUSINESS -> {
+                                loginViewModel.resetLoginEvent()
                                 val uri = Uri.parse("koin://businesslogin/activity")
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 startActivity(intent)
@@ -116,7 +119,6 @@ class LoginActivity : AppCompatActivity() {
                 finish()
                 return
             } else if (handleArticleIntent()) {
-                // 딥링크 사용
                 val fragment = 4
                 val uri = Uri.parse("koin://article/activity?fragment=$fragment")
                 val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -140,13 +142,19 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     private fun handleTimetableIntent(): Boolean {
-        // Todo 여기 하나도 모르겠음 하..
-        //val bundle = intent.getBundleExtra(TimetableActivity.BUNDLE_LOGIN_EXTRA_KEY)
-        return true //bundle?.getBoolean(TimetableActivity.NAV_TIMETABLE, false) == true
+        val bundle = intent.getBundleExtra(BUNDLE_LOGIN_EXTRA_KEY)
+        return bundle?.getBoolean(NAV_TIMETABLE, false) == true
     }
 
     private fun handleArticleIntent(): Boolean {
-        //val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
-        return true //bundle?.getBoolean(ArticleActivity.NAV_ARTICLE, false) == true
+        val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
+        return bundle?.getBoolean(NAV_ARTICLE, false) == true
+    }
+
+    companion object {
+        const val BUNDLE_LOGIN_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
+        const val NAV_TIMETABLE = "timetable"
+        const val NAV_ARTICLE = "article"
+        const val BUNDLE_ARTICLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
     }
 }

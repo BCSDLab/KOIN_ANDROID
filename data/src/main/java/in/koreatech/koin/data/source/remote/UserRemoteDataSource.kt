@@ -6,23 +6,24 @@ import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
+import `in`.koreatech.koin.data.request.user.GeneralRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
-import `in`.koreatech.koin.data.request.user.LoginRequest2
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
+import `in`.koreatech.koin.data.request.user.StudentRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
-import `in`.koreatech.koin.data.response.user.AuthResponse2
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
+import `in`.koreatech.koin.data.response.user.GeneralResponse
+import `in`.koreatech.koin.data.response.user.StudentResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
-import `in`.koreatech.koin.data.response.user.UserResponse2
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
 class UserRemoteDataSource(
@@ -30,10 +31,6 @@ class UserRemoteDataSource(
     private val userAuthApi: UserAuthApi
 ) {
     suspend fun getToken(loginRequest: LoginRequest): AuthResponse {
-        return userApi.getToken(loginRequest)
-    }
-
-    suspend fun getToken(loginRequest: LoginRequest2): AuthResponse2 {
         return userApi.getToken(loginRequest)
     }
 
@@ -49,11 +46,11 @@ class UserRemoteDataSource(
         return userAuthApi.getUser()
     }
 
-    suspend fun getStudentUserInfo(): UserResponse2 {
+    suspend fun getStudentUserInfo(): StudentResponse {
         return userAuthApi.getStudentUser()
     }
 
-    suspend fun getGeneralUserInfo(): UserResponse2 {
+    suspend fun getGeneralUserInfo(): GeneralResponse {
         return userAuthApi.getGeneralUser()
     }
 
@@ -79,6 +76,14 @@ class UserRemoteDataSource(
 
     suspend fun updateUser(userRequest: UserRequest): UserResponse {
         return userAuthApi.putUser(userRequest)
+    }
+
+    suspend fun updateStudentUser(header: String, studentRequest: StudentRequest): StudentResponse {
+        return userAuthApi.putStudentUser("Bearer $header" ,studentRequest)
+    }
+
+    suspend fun updateGeneralUser(header: String, generalRequest: GeneralRequest): GeneralResponse {
+        return userAuthApi.putGeneralUser("Bearer $header", generalRequest)
     }
 
     suspend fun updateDeviceToken(token: String) {

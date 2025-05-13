@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -23,21 +25,20 @@ import androidx.compose.ui.unit.sp
 fun LoginTextImageButton(
     icon: Int, // Drawable 리소스 ID
     text: String,
-    imgSize: Int = 18,
-    width: Int,
+    imgSize: Dp = 18.dp,
     onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .clickable { onClick() }
             .wrapContentHeight()
-            .width(width.dp),
+            .wrapContentWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(id = icon),
             contentDescription = null,
-            modifier = Modifier.size(imgSize.dp)
+            modifier = Modifier.size(imgSize)
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
