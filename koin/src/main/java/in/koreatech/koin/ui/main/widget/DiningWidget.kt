@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -97,10 +96,10 @@ fun DiningWidget(
                     Text(
                         modifier = Modifier.padding(start = 20.dp),
                         text = "${
-                            context.getString(
+                            stringResource(
                                 if (type == DiningType.NextBreakfast) R.string.dining_tomorrow else R.string.dining_today
                             )
-                        } ${context.getString(R.string.navigation_item_dining)}",
+                        } ${stringResource(R.string.navigation_item_dining)}",
                         style = KoinTheme.typography.bold15,
                         color = KoinTheme.colors.primary500
                     )
@@ -172,12 +171,12 @@ fun DiningWidget(
                     modifier = Modifier
                         .padding(horizontal = 24.dp, vertical = 16.dp)
                         .fillMaxWidth()
-                        .clip(KoinTheme.shapes.small)
-                        .clickable {
-                            Intent(context, DiningActivity::class.java).let {
-                                context.startActivity(it)
-                            }
-                        },
+                        .clip(KoinTheme.shapes.small),
+                    onClick = {
+                        Intent(context, DiningActivity::class.java).let {
+                            context.startActivity(it)
+                        }
+                    },
                     colors =
                     CardDefaults.cardColors(
                         containerColor = KoinTheme.colors.neutral0
@@ -205,7 +204,9 @@ fun DiningContent(
     selectedType: DiningType,
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically

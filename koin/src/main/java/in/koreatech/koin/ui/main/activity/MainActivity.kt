@@ -7,11 +7,11 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
@@ -260,10 +260,10 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         diningComposeView.apply {
             setContent {
                 KoinTheme {
-                    val diningData by viewModel.diningData.collectAsState()
-                    val selectedPosition by viewModel.selectedPosition.collectAsState()
-                    val selectedType by viewModel.selectedType.collectAsState()
-                    val diningABTestExperimentGroup by viewModel.diningABTestExperimentGroup.collectAsState()
+                    val diningData by viewModel.diningData.collectAsStateWithLifecycle()
+                    val selectedPosition by viewModel.selectedPosition.collectAsStateWithLifecycle()
+                    val selectedType by viewModel.selectedType.collectAsStateWithLifecycle()
+                    val diningABTestExperimentGroup by viewModel.diningABTestExperimentGroup.collectAsStateWithLifecycle()
 
                     DiningWidget(
                         diningData = diningData,
