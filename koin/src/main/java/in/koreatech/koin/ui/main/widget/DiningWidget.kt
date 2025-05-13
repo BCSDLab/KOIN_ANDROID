@@ -74,15 +74,17 @@ fun DiningWidget(
     val type = DiningUtil.getCurrentType()
     val onboardingManager = rememberOnboardingManager()
 
-    EventLogger.logClickEvent(
-        EventAction.CAMPUS,
-        AnalyticsConstant.Label.MAIN_MENU_MOVEDETAILVIEW,
-        "${
-            context.getString(
-                if (type == DiningType.NextBreakfast) R.string.dining_tomorrow else R.string.dining_today
-            )
-        } ${context.getString(R.string.navigation_item_dining)}"
-    )
+    LaunchedEffect(Unit) {
+        EventLogger.logClickEvent(
+            EventAction.CAMPUS,
+            AnalyticsConstant.Label.MAIN_MENU_MOVEDETAILVIEW,
+            "${
+                context.getString(
+                    if (type == DiningType.NextBreakfast) R.string.dining_tomorrow else R.string.dining_today
+                )
+            } ${context.getString(R.string.navigation_item_dining)}"
+        )
+    }
 
     Column(
         modifier = modifier
