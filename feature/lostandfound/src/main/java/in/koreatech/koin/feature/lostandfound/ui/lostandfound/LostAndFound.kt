@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -80,6 +82,10 @@ fun LostAndFoundList(
                 }
             }
         )
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        viewModel.fetchLostAndFoundList()
     }
 
     val context = LocalContext.current
