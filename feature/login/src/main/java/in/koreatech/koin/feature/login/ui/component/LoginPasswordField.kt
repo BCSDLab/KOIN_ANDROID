@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.login.R
 
 @Composable
@@ -31,13 +32,14 @@ fun LoginPasswordField(
     label: String,
     text: String,
     isVisible: Boolean,
-    onTextChanged: (String) -> Unit,
-    onToggleVisibility: () -> Unit
+    onTextChanged: (String) -> Unit = {},
+    onToggleVisibility: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
-                .height(40.dp)
+                .wrapContentHeight()
                 .fillMaxWidth()
                 .padding(horizontal = 4.dp, vertical = 8.dp)
         ) {
@@ -59,8 +61,8 @@ fun LoginPasswordField(
                         if (text.isEmpty()) {
                             Text(
                                 text = label,
-                                color = Color(0xFFCACACA),
-                                fontSize = 16.sp
+                                style = KoinTheme.typography.regular16,
+                                color = Color(0xFFCACACA)
                             )
                         }
                         innerTextField()
@@ -75,7 +77,7 @@ fun LoginPasswordField(
                     Icon(
                         painter = painterResource(id = if (isVisible) R.drawable.ic_login_show_password else R.drawable.ic_login_hide_password),
                         contentDescription = "Toggle Password Visibility",
-                        tint = Color.Gray,
+                        tint = KoinTheme.colors.neutral500,
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -83,7 +85,7 @@ fun LoginPasswordField(
         }
 
         HorizontalDivider(
-            color = Color(0xFFE1E1E1),
+            color = KoinTheme.colors.neutral300,
             thickness = 1.dp
         )
     }

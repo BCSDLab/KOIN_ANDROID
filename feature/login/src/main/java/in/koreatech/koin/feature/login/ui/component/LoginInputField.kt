@@ -25,16 +25,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.login.R
 
 @Composable
 fun LoginInputField(
     label: String,
     text: String,
-    onTextChanged: (String) -> Unit,
-    onClear: () -> Unit
+    onTextChanged: (String) -> Unit = {},
+    onClear: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
                 .height(40.dp)
@@ -62,8 +64,8 @@ fun LoginInputField(
                         if (text.isEmpty()) {
                             Text(
                                 text = label,
-                                color = Color(0xFFCACACA),
-                                fontSize = 16.sp
+                                style = KoinTheme.typography.regular16,
+                                color = KoinTheme.colors.neutral400
                             )
                         }
                         innerTextField()
@@ -79,7 +81,7 @@ fun LoginInputField(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_login_text_field_clean),
                             contentDescription = "Clear text",
-                            tint = Color.Gray,
+                            tint = KoinTheme.colors.neutral500,
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -88,7 +90,7 @@ fun LoginInputField(
         }
 
         HorizontalDivider(
-            color = Color(0xFFE1E1E1),
+            color = KoinTheme.colors.neutral300,
             thickness = 1.dp
         )
     }

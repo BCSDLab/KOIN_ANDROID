@@ -14,19 +14,30 @@ class UserLoginUseCase @Inject constructor(
     private val userErrorHandler: UserErrorHandler
 ) {
     suspend operator fun invoke(
-        email: String,
+        userId: String,
         password: String
     ): Pair<Unit?, ErrorHandler?> {
         return try {
-            val authToken = userRepository.getToken(email, password.toSHA256())
-            tokenRepository.saveAccessToken(authToken.token)
-            tokenRepository.saveRefreshToken(authToken.refreshToken)
-            userRepository.fetchUserInfo(
-                authToken.userType ?: UserType.STUDENT.name
-            ) // Set default userType to STUDENT if login success
-            Unit to null
+            val authToken = userRepository.getToken(userId, password.toSHA256())
+            when (authToken.userType) {
+                UserType.STUDENT.name, UserType.COUNCIL.name -> {
+                    tokenRepository.saveAccessToken(authToken.token)
+                    tokenRepository.saveRefreshToken(authToken.refreshToken)
+                    userRepository.fetchStudentUserInfo(authToken.userType)
+                    Unit to null
+                }
+                UserType.GENERAL.name -> {
+                    tokenRepository.saveAccessToken(authToken.token)
+                    tokenRepository.saveRefreshToken(authToken.refreshToken)
+                    userRepository.fetchGeneralUserInfo(authToken.userType)
+                    Unit to null
+                }
+                else -> {
+                    Unit to null
+                }
+            }
         } catch (throwable: Throwable) {
-            null to userErrorHandler.handleGetTokenError(throwable)
+            null to userErrorHandler.handleGetTokenErrorV2(throwable)
         }
     }
 }

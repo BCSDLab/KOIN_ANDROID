@@ -18,8 +18,6 @@ interface UserRepository {
 
     fun ownerTokenIsValid(): Boolean
 
-    suspend fun fetchUserInfo(userType: String)
-
     suspend fun fetchStudentUserInfo(userType: String)
 
     suspend fun fetchGeneralUserInfo(userType: String)
@@ -50,5 +48,4 @@ interface UserRepository {
     suspend fun updateABTestToken()
 
     suspend fun postABTestAssign(title: String): ABTest
-
 }

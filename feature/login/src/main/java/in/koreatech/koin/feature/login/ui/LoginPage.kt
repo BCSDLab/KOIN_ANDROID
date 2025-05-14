@@ -21,10 +21,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.login.R
 import `in`.koreatech.koin.feature.login.ui.component.*
 import kotlinx.coroutines.launch
@@ -91,7 +91,7 @@ fun LoginPage(
             Spacer(modifier = Modifier.height(36.dp))
             LoginTextButton(
                 text = stringResource(R.string.login_button_text),
-                color = Color(0xFFF7941E),
+                color = KoinTheme.colors.sub500,
                 onClick = {
                     coroutineScope.launch { viewModel.login() }
                 }
@@ -99,7 +99,7 @@ fun LoginPage(
             Spacer(modifier = Modifier.height(24.dp))
             LoginTextButton(
                 text = stringResource(R.string.signup_button_text),
-                color = Color(0xFF175C8E),
+                color = KoinTheme.colors.primary500,
                 onClick = viewModel::signup
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -117,7 +117,7 @@ fun LoginPage(
                     onClick = viewModel::findId
                 )
                 LoginTextView(
-                    color = Color(0xFFA1A1A1),
+                    color = KoinTheme.colors.neutral500,
                     text = stringResource(R.string.separator),
                     fontSize = 15
                 )
@@ -127,7 +127,7 @@ fun LoginPage(
                     onClick = viewModel::findPw
                 )
                 LoginTextView(
-                    color = Color(0xFFA1A1A1),
+                    color = KoinTheme.colors.neutral500,
                     text = stringResource(R.string.separator),
                     fontSize = 15
                 )
@@ -139,14 +139,14 @@ fun LoginPage(
             }
             Spacer(modifier = Modifier.weight(1f))
             LoginTextView(
-                color = Color(0xFFF7941E),
+                color = KoinTheme.colors.sub500,
                 text = stringResource(R.string.guide),
                 fontSize = 18,
                 onClick = viewModel::business
             )
             Spacer(modifier = Modifier.height(24.dp))
             LoginTextView(
-                color = Color(0xFF252525),
+                color = KoinTheme.colors.neutral800,
                 text = stringResource(R.string.copyright),
                 fontSize = 12
             )

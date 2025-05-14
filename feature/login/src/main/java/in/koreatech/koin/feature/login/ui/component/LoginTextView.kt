@@ -16,9 +16,10 @@ fun LoginTextView(
     color: Color = Color.Black,
     text: String,
     fontSize: Int,
-    onClick: (() -> Unit) ?= null
+    onClick: (() -> Unit) ?= null,
+    modifier: Modifier = Modifier
 ) {
-    val modifier = if (onClick != null) Modifier.clickable { onClick() } else Modifier
+    val modifier = if (onClick != null) modifier.clickable { onClick() } else modifier
 
     Text(
         text = text,

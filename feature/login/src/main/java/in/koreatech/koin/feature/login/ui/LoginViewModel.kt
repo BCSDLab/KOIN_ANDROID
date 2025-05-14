@@ -2,7 +2,7 @@ package `in`.koreatech.koin.feature.login.ui
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCaseV2
+import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.login.ui.component.UiStatus
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-        private val userLoginUseCaseV2: UserLoginUseCaseV2
+        private val userLoginUseCase: UserLoginUseCase
     ): ViewModel() {
 
     private val _loginError = MutableStateFlow("")
@@ -70,7 +70,7 @@ class LoginViewModel @Inject constructor(
     }
 
     suspend fun login() {
-        userLoginUseCaseV2(id.value, password.value)
+        userLoginUseCase(id.value, password.value)
             .onSuccess {
                 _loginState.update {
                     it.copy(status = UiStatus.Success)
