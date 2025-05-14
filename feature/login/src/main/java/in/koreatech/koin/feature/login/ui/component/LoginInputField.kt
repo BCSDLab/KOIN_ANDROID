@@ -77,7 +77,7 @@ fun LoginInputField(
                         modifier = Modifier.size(24.dp)
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_del),
+                            painter = painterResource(id = R.drawable.ic_login_text_field_clean),
                             contentDescription = "Clear text",
                             tint = Color.Gray,
                             modifier = Modifier.size(20.dp)

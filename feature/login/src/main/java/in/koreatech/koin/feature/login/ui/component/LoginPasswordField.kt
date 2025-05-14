@@ -73,7 +73,7 @@ fun LoginPasswordField(
                     modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = if (isVisible) R.drawable.ic_visible else R.drawable.ic_invisible),
+                        painter = painterResource(id = if (isVisible) R.drawable.ic_login_show_password else R.drawable.ic_login_hide_password),
                         contentDescription = "Toggle Password Visibility",
                         tint = Color.Gray,
                         modifier = Modifier.size(20.dp)

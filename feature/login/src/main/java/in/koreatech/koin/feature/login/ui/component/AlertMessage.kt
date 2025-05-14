@@ -28,7 +28,7 @@ fun AlertMessage(
             .alpha(if (isVisible) 1f else 0f)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_alert),
+            painter = painterResource(id = R.drawable.ic_login_alert_warning),
             contentDescription = null,
             modifier = Modifier
                 .size(16.dp)

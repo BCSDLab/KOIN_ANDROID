@@ -50,7 +50,7 @@ fun LoginPage(
                 .padding(start = 40.dp, top = 204.dp) // offset 대신 padding 사용
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_color_horizontal_300x168),
+                painter = painterResource(id = R.drawable.ic_logo_coin_color),
                 contentDescription = "Koin Icon",
                 modifier = Modifier
                     .size(width = 107.dp, height = 60.dp)
@@ -111,7 +111,7 @@ fun LoginPage(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 LoginTextImageButton(
-                    icon = R.drawable.ic_zoom,
+                    icon = R.drawable.ic_login_find_login_id,
                     text = stringResource(R.string.find_id_button_text),
                     imgSize = 16.dp,
                     onClick = viewModel::findId
@@ -122,7 +122,7 @@ fun LoginPage(
                     fontSize = 15
                 )
                 LoginTextImageButton(
-                    icon = R.drawable.ic_password,
+                    icon = R.drawable.ic_login_find_password,
                     text = stringResource(R.string.find_pw_button_text),
                     onClick = viewModel::findPw
                 )
@@ -132,7 +132,7 @@ fun LoginPage(
                     fontSize = 15
                 )
                 LoginTextImageButton(
-                    icon = R.drawable.ic_face,
+                    icon = R.drawable.ic_login_tour,
                     text = stringResource(R.string.tour_button_text),
                     onClick = viewModel::tour
                 )
