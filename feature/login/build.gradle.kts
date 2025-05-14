@@ -21,9 +21,9 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":domain"))
+    implementation(project(":core:analytics"))
     implementation(project(":core:designsystem"))
 
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.m3)
 
@@ -32,9 +32,6 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(project(":core:analytics"))
-    implementation(project(":core:analytics"))
-    implementation(project(":core:analytics"))
     implementation(libs.androidx.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
