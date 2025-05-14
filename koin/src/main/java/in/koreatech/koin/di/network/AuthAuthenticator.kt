@@ -88,7 +88,7 @@ class AuthAuthenticator @Inject constructor(
         Intent(context.applicationContext, LoginActivity::class.java).run {
             handler.post {
                 context.applicationContext.showToast(
-                    context.getString(R.string.token_out_dated + "#1")
+                    context.getString(R.string.token_out_dated)
                 )
             }
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
