@@ -48,6 +48,18 @@ class LoginActivity : ComponentActivity() {
                     }
                 }
                 launch {
+                    loginError.collect { event ->
+                        when (event) {
+                            "400" -> {
+                                setIdPwAlertVisible(visible = true)
+                            }
+                            else -> {
+                                setIdPwAlertVisible(visible = false)
+                            }
+                        }
+                    }
+                }
+                launch {
                     loginEvent.collect { event ->
                         when (event) {
                             LoginEvent.SIGNUP -> {

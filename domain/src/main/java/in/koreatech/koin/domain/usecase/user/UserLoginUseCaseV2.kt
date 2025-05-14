@@ -37,7 +37,7 @@ class UserLoginUseCaseV2 @Inject constructor(
                 }
             }
         }catch (throwable: Throwable) {
-            null to userErrorHandler.handleGetTokenError2(throwable)
+            null to userErrorHandler.handleGetTokenErrorV2(throwable)
         }
     }
 }

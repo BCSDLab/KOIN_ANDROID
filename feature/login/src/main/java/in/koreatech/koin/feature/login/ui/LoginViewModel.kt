@@ -17,6 +17,9 @@ class LoginViewModel @Inject constructor(
         private val userLoginUseCaseV2: UserLoginUseCaseV2
     ): ViewModel() {
 
+    private val _loginError = MutableStateFlow("")
+    val loginError: StateFlow<String> = _loginError
+
     private val _loginEvent = MutableStateFlow(LoginEvent.NONE)
     val loginEvent: StateFlow<LoginEvent> = _loginEvent
 
@@ -63,14 +66,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onLoginFalse(message: String) {
-        if (message == "400") {
-            setUserAlertVisible(visible = false)
-            setIdPwAlertVisible(visible = true)
-        }
-        else {
-            setUserAlertVisible(visible = false)
-            setIdPwAlertVisible(visible = false)
-        }
+        loginError(message)
     }
 
     suspend fun login() {
@@ -84,6 +80,10 @@ class LoginViewModel @Inject constructor(
                     it.copy(status = UiStatus.Failed(errorHandler.message))
                 }
             }
+    }
+
+    fun loginError(message: String) {
+        _loginError.value = message
     }
 
     fun signup() {
