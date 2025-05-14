@@ -15,6 +15,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.feature.login.ui.component.UiStatus
 import kotlinx.coroutines.launch
 import kotlin.getValue
@@ -145,6 +146,7 @@ class LoginActivity : ComponentActivity() {
     }
 
     private fun initView() {
+        enableEdgeToEdgeWithLightStatusBar()
         setContent {
             KoinTheme {
                 LoginPage(viewModel = loginViewModel)
