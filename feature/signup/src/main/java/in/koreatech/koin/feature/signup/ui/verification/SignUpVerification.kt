@@ -63,7 +63,7 @@ val genderList = persistentListOf("남성", "여성")
 fun SignUpVerification(
     modifier: Modifier = Modifier,
     viewModel: SignUpVerificationViewModel = hiltViewModel(),
-    navigateToNextScreen: (phoneNumber: String, gender: String) -> Unit = { _, _ -> }
+    navigateToNextScreen: (name: String, phoneNumber: String, gender: String) -> Unit = { _, _, _ -> }
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -81,6 +81,7 @@ fun SignUpVerification(
 
     SignUpVerificationImpl(
         step = uiState.currentStep,
+        name = uiState.name,
         gender = uiState.gender,
         phoneNumber = uiState.phoneNumber,
         phoneNumberState = uiState.phoneNumberState,
@@ -88,14 +89,15 @@ fun SignUpVerification(
         verificationCodeState = uiState.verificationCodeState,
         verificationTimeLeft = uiState.verificationTimeLeft,
         enabled = uiState.enabled,
+        onNameChange = { viewModel.setName(it) },
         onGenderChange = { viewModel.setGender(it) },
         onPhoneNumberChange = { viewModel.setPhoneNumber(it) },
         onVerificationCodeSent = { viewModel.checkPhoneNumber() },
         onVerificationCodeChange = { viewModel.setVerificationCode(it) },
         checkVerificationCode = { viewModel.checkVerificationCode() },
         modifier = modifier,
-        navigateToNextScreen = { phoneNumber, gender ->
-            navigateToNextScreen(phoneNumber, if (gender is Gender.Man) "0" else "1")
+        navigateToNextScreen = { name, phoneNumber, gender ->
+            navigateToNextScreen(name, phoneNumber, if (gender is Gender.Man) "0" else "1")
         }
     )
 }
@@ -103,6 +105,7 @@ fun SignUpVerification(
 @Composable
 fun SignUpVerificationImpl(
     step: SignUpVerificationStep,
+    name: String,
     gender: Gender,
     phoneNumber: String,
     phoneNumberState: SignupContinuationState?,
@@ -111,12 +114,13 @@ fun SignUpVerificationImpl(
     verificationTimeLeft: Int,
     enabled: Boolean,
     modifier: Modifier = Modifier,
+    onNameChange: (String) -> Unit = {},
     onGenderChange: (Int) -> Unit = {},
     onPhoneNumberChange: (String) -> Unit = {},
     onVerificationCodeSent: () -> Unit = {},
     onVerificationCodeChange: (String) -> Unit = {},
     checkVerificationCode: () -> Unit = {},
-    navigateToNextScreen: (phoneNumber: String, gender: Gender) -> Unit = { _, _ -> }
+    navigateToNextScreen: (name: String, phoneNumber: String, gender: Gender) -> Unit = { _, _, _ -> }
 ) {
     Column(
         modifier = modifier
@@ -142,7 +146,9 @@ fun SignUpVerificationImpl(
         Spacer(modifier = Modifier.height(64.dp))
 
         SignUpVerificationInitialStep(
+            name = name,
             gender = gender,
+            onNameChange = onNameChange,
             onGenderChange = onGenderChange
         )
 
@@ -177,21 +183,35 @@ fun SignUpVerificationImpl(
             text = stringResource(R.string.sign_up_next),
             enabled = enabled,
             contentPadding = PaddingValues(12.dp),
-            onClick = { navigateToNextScreen(phoneNumber, gender) }
+            onClick = { navigateToNextScreen(name, phoneNumber, gender) }
         )
     }
 }
 
 @Composable
 private fun SignUpVerificationInitialStep(
+    name: String,
     gender: Gender,
     modifier: Modifier = Modifier,
+    onNameChange: (String) -> Unit = {},
     onGenderChange: (Int) -> Unit = {}
 ) {
     Column(modifier = modifier.padding(horizontal = 8.dp)) {
         Text(
             text = stringResource(R.string.sign_up_name_gender_title),
             style = KoinTheme.typography.medium16
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        KoinSignUpBasicTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = name,
+            onValueChange = { onNameChange(it) },
+            hint = stringResource(R.string.sign_up_name_field_hint),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -487,6 +507,7 @@ private fun handleSideEffect(
 @Composable
 fun SignUpVerificationPreview() {
     SignUpVerificationImpl(
+        name = "홍길동",
         gender = Gender.Man,
         phoneNumber = "01012345678",
         phoneNumberState = null,

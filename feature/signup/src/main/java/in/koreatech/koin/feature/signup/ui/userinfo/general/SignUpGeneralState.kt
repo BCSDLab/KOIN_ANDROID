@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SignUpGeneralState(
     val phoneNumber: String = "",
+    val name: String = "",
     val gender: String = "",
     val loginId: String = "",
     val isLoginIdAvailable: Boolean? = null,

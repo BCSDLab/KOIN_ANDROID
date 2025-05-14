@@ -26,31 +26,34 @@ fun NavGraphBuilder.koinSignUpGraph(
     composable(
         route = SignUpNavType.Verification.route
     ) {
-        SignUpVerification { phoneNumber, gender ->
-            navController.navigate("${SignUpNavType.UserType.route}/$phoneNumber/$gender")
+        SignUpVerification { name, phoneNumber, gender ->
+            navController.navigate("${SignUpNavType.UserType.route}/$name/$phoneNumber/$gender")
         }
     }
     composable(
-        route = "${SignUpNavType.UserType.route}/{$PHONE_NUMBER}/{$GENDER}",
+        route = "${SignUpNavType.UserType.route}/{$NAME}/{$PHONE_NUMBER}/{$GENDER}",
         arguments = listOf(
+            navArgument(NAME) { type = NavType.StringType },
             navArgument(PHONE_NUMBER) { type = NavType.StringType },
             navArgument(GENDER) { type = NavType.StringType }
         )
     ) {
+        val name = it.arguments?.getString(NAME) ?: ""
         val phoneNumber = it.arguments?.getString(PHONE_NUMBER) ?: ""
         val gender = it.arguments?.getString(GENDER) ?: ""
         SignUpUserType(
             navigateToStudentScreen = {
-                navController.navigate("${SignUpNavType.StudentUserInfo.route}/$phoneNumber/$gender")
+                navController.navigate("${SignUpNavType.StudentUserInfo.route}/$name/$phoneNumber/$gender")
             },
             navigateToGeneralScreen = {
-                navController.navigate("${SignUpNavType.GeneralUserInfo.route}/$phoneNumber/$gender")
+                navController.navigate("${SignUpNavType.GeneralUserInfo.route}/$name/$phoneNumber/$gender")
             }
         )
     }
     composable(
-        route = "${SignUpNavType.GeneralUserInfo.route}/{$PHONE_NUMBER}/{$GENDER}",
+        route = "${SignUpNavType.GeneralUserInfo.route}/{$NAME}/{$PHONE_NUMBER}/{$GENDER}",
         arguments = listOf(
+            navArgument(NAME) { type = NavType.StringType },
             navArgument(PHONE_NUMBER) { type = NavType.StringType },
             navArgument(GENDER) { type = NavType.StringType }
         )
@@ -61,8 +64,9 @@ fun NavGraphBuilder.koinSignUpGraph(
     }
 
     composable(
-        route = "${SignUpNavType.StudentUserInfo.route}/{$PHONE_NUMBER}/{$GENDER}",
+        route = "${SignUpNavType.StudentUserInfo.route}/{$NAME}/{$PHONE_NUMBER}/{$GENDER}",
         arguments = listOf(
+            navArgument(NAME) { type = NavType.StringType },
             navArgument(PHONE_NUMBER) { type = NavType.StringType },
             navArgument(GENDER) { type = NavType.StringType }
         )
@@ -82,4 +86,5 @@ fun NavGraphBuilder.koinSignUpGraph(
 }
 
 const val PHONE_NUMBER = "phoneNumber"
+const val NAME = "name"
 const val GENDER = "gender"

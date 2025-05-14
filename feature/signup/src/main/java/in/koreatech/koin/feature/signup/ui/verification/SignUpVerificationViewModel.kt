@@ -26,6 +26,16 @@ class SignUpVerificationViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<SignUpVerificationState, SignUpVerificationSideEffect> {
     override val container = container<SignUpVerificationState, SignUpVerificationSideEffect>(SignUpVerificationState())
 
+    fun setName(name: String) {
+        blockingIntent {
+            reduce {
+                state.copy(
+                    name = name
+                )
+            }
+        }
+    }
+
     fun setGender(gender: Int) {
         when (gender) {
             0 -> { // Man
