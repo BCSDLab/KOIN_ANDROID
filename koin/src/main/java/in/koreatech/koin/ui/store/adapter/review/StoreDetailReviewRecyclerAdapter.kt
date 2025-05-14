@@ -3,7 +3,6 @@ package `in`.koreatech.koin.ui.store.adapter.review
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible

@@ -96,7 +96,6 @@ object URLConstant {
 
         object STUDENTS {
             const val STUDENTS = "students"
-            const val ME: String = "v2/${USERS}/$STUDENT/me"
             const val REGISTER_V2: String = "v2/$USERS/$STUDENTS/register"
         }
         object GENERAL {

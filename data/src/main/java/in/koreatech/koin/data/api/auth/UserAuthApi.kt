@@ -4,10 +4,8 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
-import `in`.koreatech.koin.data.request.user.GeneralRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
-import `in`.koreatech.koin.data.request.user.StudentRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
@@ -22,7 +20,6 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -35,20 +32,8 @@ interface UserAuthApi {
     @GET(URLConstant.USER.ME)
     suspend fun getStudentUser(): StudentResponse
 
-    @PUT(URLConstant.USERS.STUDENTS.ME)
-    suspend fun putStudentUser(
-        @Header("Authorization") authHeader: String,
-        @Body userRequest: StudentRequest
-    ): StudentResponse
-
     @GET(URLConstant.USERS.ME)
     suspend fun getGeneralUser(): GeneralResponse
-
-    @PUT(URLConstant.USERS.ME)
-    suspend fun putGeneralUser(
-        @Header("Authorization") authHeader: String,
-        @Body userRequest: GeneralRequest
-    ): GeneralResponse
 
     @PUT(URLConstant.USER.ME)
     suspend fun putUser(

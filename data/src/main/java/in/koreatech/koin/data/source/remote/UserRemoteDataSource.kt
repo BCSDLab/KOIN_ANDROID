@@ -78,18 +78,6 @@ class UserRemoteDataSource(
         return userAuthApi.putUser(userRequest)
     }
 
-    suspend fun updateStudentUser(header: String, studentRequest: StudentRequest): StudentResponse {
-        return userAuthApi.putStudentUser("Bearer $header" ,studentRequest)
-    }
-
-    suspend fun updateGeneralUser(header: String, generalRequest: GeneralRequest): GeneralResponse {
-        return userAuthApi.putGeneralUser("Bearer $header", generalRequest)
-    }
-
-    suspend fun updateDeviceToken(token: String) {
-        userAuthApi.updateDeviceToken(DeviceTokenRequest(token))
-    }
-
     suspend fun deleteDeviceToken() {
         userAuthApi.deleteDeviceToken()
     }
