@@ -12,7 +12,6 @@ import `in`.koreatech.koin.domain.usecase.signup.PostGeneralRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.isLoginIdFormat
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
-import `in`.koreatech.koin.feature.signup.navigation.NAME
 import `in`.koreatech.koin.feature.signup.navigation.PHONE_NUMBER
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -34,19 +33,17 @@ class SignUpGeneralViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<SignUpGeneralState, SignUpGeneralSideEffect> {
     override val container = container<SignUpGeneralState, SignUpGeneralSideEffect>(SignUpGeneralState(), savedStateHandle) {
         val phoneNumber = savedStateHandle.get<String>(PHONE_NUMBER)
-        val name = savedStateHandle.get<String>(NAME)
         val gender = savedStateHandle.get<String>(GENDER)
         checkNotNull(phoneNumber)
-        checkNotNull(name)
         checkNotNull(gender)
 
-        setInitData(phoneNumber, name, gender)
+        setInitData(phoneNumber, gender)
     }
 
-    private fun setInitData(phoneNumber: String, name: String, gender: String) {
+    private fun setInitData(phoneNumber: String, gender: String) {
         intent {
             reduce {
-                state.copy(phoneNumber = phoneNumber, name = name, gender = gender)
+                state.copy(phoneNumber = phoneNumber, gender = gender)
             }
         }
     }
@@ -175,7 +172,6 @@ class SignUpGeneralViewModel @Inject constructor(
         intent {
             if (state.isEmailAvailable == false) return@intent
             postGeneralRegisterUseCase(
-                name = state.name,
                 phoneNumber = state.phoneNumber,
                 loginId = state.loginId,
                 password = state.password,

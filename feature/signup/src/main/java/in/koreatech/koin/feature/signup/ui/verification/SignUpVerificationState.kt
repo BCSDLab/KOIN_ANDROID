@@ -4,7 +4,6 @@ import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 
 data class SignUpVerificationState(
-    val name: String = "",
     val gender: Gender = Gender.Unknown,
     val phoneNumber: String = "",
     val phoneNumberState: SignupContinuationState? = null,
@@ -16,12 +15,12 @@ data class SignUpVerificationState(
 val SignUpVerificationState.currentStep: SignUpVerificationStep
     get() = when {
         phoneNumber.isNotEmpty() && phoneNumberState is SignupContinuationState.RequestedSmsValidationWithRemainingCount -> SignUpVerificationStep.VERIFICATION_CODE
-        name.isNotEmpty() && name.length in 2..5 && gender != Gender.Unknown -> SignUpVerificationStep.PHONE_NUMBER
+        gender != Gender.Unknown -> SignUpVerificationStep.PHONE_NUMBER
         else -> SignUpVerificationStep.INITIAL
     }
 
 val SignUpVerificationState.enabled: Boolean
-    get() = verificationCodeState is SignupContinuationState.SmsCodeIsValidated && name.isNotBlank() && name.length in 2..5 && gender != Gender.Unknown && phoneNumber.isNotBlank()
+    get() = verificationCodeState is SignupContinuationState.SmsCodeIsValidated && gender != Gender.Unknown && phoneNumber.isNotBlank()
 
 enum class SignUpVerificationStep {
     INITIAL,
