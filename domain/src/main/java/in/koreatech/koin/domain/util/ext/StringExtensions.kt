@@ -41,6 +41,8 @@ fun String.formatPhoneNumber(): String = this.replace(Regex("(\\d{3})-?(\\d{4})-
 
 fun String.formatBusinessNumber(): String = this.replace(Regex("(\\d{3})(\\d{2})(\\d{5})"), "$1-$2-$3")
 
+fun String.containsKorean(): Boolean = Regex("""[ㄱ-ㅎㅏ-ㅣ가-힣]""").containsMatchIn(this)
+
 fun Int.formatTime(): String {
     val time = this
     val minute = time / 60

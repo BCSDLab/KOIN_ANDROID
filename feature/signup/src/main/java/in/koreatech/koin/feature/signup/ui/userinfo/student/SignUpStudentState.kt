@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.feature.signup.ui.userinfo.student
 
 import android.os.Parcelable
+import `in`.koreatech.koin.domain.util.ext.containsKorean
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import kotlinx.parcelize.Parcelize
 
@@ -15,7 +17,6 @@ data class SignUpStudentState(
     val isLoginIdValid: Boolean = false,
     val password: String = "",
     val passwordConfirm: String = "",
-    val isPasswordValid: Boolean = false,
     val isPasswordEqual: Boolean = false,
     val showPassword: Boolean = false,
     val department: String = "",
@@ -28,6 +29,9 @@ data class SignUpStudentState(
     val isEmailAvailable: Boolean? = null,
     val isSignUpSuccess: Boolean = false
 ) : Parcelable
+
+val SignUpStudentState.isPasswordValid
+    get() = password.isValidPassword() && !password.containsKorean()
 
 val SignUpStudentState.currentStep: SignUpStudentStep
     get() = if (isPasswordValid && isPasswordEqual) {
