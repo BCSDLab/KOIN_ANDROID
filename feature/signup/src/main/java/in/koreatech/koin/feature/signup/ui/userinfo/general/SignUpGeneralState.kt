@@ -16,7 +16,6 @@ data class SignUpGeneralState(
     val isLoginIdValid: Boolean = false,
     val password: String = "",
     val passwordConfirm: String = "",
-    val isPasswordEqual: Boolean = false,
     val showPassword: Boolean = false,
     val nickname: String = "",
     val isNicknameAvailable: Boolean? = null,
@@ -27,6 +26,9 @@ data class SignUpGeneralState(
 
 val SignUpGeneralState.isPasswordValid
     get() = password.isValidPassword() && !password.containsKorean()
+
+val SignUpGeneralState.isPasswordEqual
+    get() = password == passwordConfirm
 
 val SignUpGeneralState.currentStep: SignUpGeneralStep
     get() = if (isPasswordValid && isPasswordEqual) {

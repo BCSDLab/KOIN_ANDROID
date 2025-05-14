@@ -54,7 +54,7 @@ class SignUpGeneralViewModel @Inject constructor(
     fun setPassword(password: String) {
         blockingIntent {
             reduce {
-                state.copy(password = password, isPasswordEqual = password == state.passwordConfirm)
+                state.copy(password = password)
             }
         }
     }
@@ -62,7 +62,7 @@ class SignUpGeneralViewModel @Inject constructor(
     fun setPasswordConfirm(passwordConfirm: String) {
         blockingIntent {
             reduce {
-                state.copy(passwordConfirm = passwordConfirm, isPasswordEqual = state.password == passwordConfirm)
+                state.copy(passwordConfirm = passwordConfirm)
             }
         }
     }

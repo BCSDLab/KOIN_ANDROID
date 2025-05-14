@@ -17,7 +17,6 @@ data class SignUpStudentState(
     val isLoginIdValid: Boolean = false,
     val password: String = "",
     val passwordConfirm: String = "",
-    val isPasswordEqual: Boolean = false,
     val showPassword: Boolean = false,
     val department: String = "",
     val studentNumber: String = "",
@@ -32,6 +31,9 @@ data class SignUpStudentState(
 
 val SignUpStudentState.isPasswordValid
     get() = password.isValidPassword() && !password.containsKorean()
+
+val SignUpStudentState.isPasswordEqual
+    get() = password == passwordConfirm
 
 val SignUpStudentState.currentStep: SignUpStudentStep
     get() = if (isPasswordValid && isPasswordEqual) {
