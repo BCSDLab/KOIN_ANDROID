@@ -37,7 +37,6 @@ interface UserAuthApi {
 
     @PUT(URLConstant.USERS.STUDENTS.ME)
     suspend fun putStudentUser(
-        @Header("Authorization") authHeader: String,
         @Body userRequest: StudentRequest
     ): StudentResponse
 
@@ -46,7 +45,6 @@ interface UserAuthApi {
 
     @PUT(URLConstant.USERS.ME)
     suspend fun putGeneralUser(
-        @Header("Authorization") authHeader: String,
         @Body userRequest: GeneralRequest
     ): GeneralResponse
 

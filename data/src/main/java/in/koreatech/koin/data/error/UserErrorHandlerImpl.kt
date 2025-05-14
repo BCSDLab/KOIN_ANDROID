@@ -41,7 +41,7 @@ class UserErrorHandlerImpl @Inject constructor(
         }
     }
 
-    override fun handleGetTokenError2(throwable: Throwable): ErrorHandler {
+    override fun handleGetTokenErrorV2(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when (it) {
                 is HttpException -> {

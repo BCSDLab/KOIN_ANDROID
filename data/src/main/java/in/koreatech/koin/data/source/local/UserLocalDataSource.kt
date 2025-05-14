@@ -123,7 +123,7 @@ class UserLocalDataSource @Inject constructor(
                             id = user.id,
                             userId = user.userId,
                             email = user.email,
-                            gender = user.gender?.toInt(),
+                            gender = user.gender.toInt(),
                             name = user.name ?: "",
                             nickname = user.nickname,
                             phoneNumber = user.phoneNumber,
