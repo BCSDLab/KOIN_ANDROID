@@ -51,6 +51,7 @@ class LoginActivity : ComponentActivity() {
                     loginEvent.collect { event ->
                         when (event) {
                             LoginEvent.SIGNUP -> {
+                                loginViewModel.resetLoginEvent()
                                 val uri = Uri.parse("koin://signup/activity")
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 startActivity(intent)
