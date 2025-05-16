@@ -66,7 +66,7 @@ fun MenuItem(
                 Spacer(modifier = Modifier.width(16.dp))
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(menuList[it].imageUrls?.get(0))
+                        .data(menuList[it].imageUrls?.firstOrNull())
                         .crossfade(true)
                         .build(),
                     contentDescription = null,
