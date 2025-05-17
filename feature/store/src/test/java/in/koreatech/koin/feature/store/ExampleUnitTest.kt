@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.feature.store
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
