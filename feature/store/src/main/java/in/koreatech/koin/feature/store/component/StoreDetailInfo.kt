@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,7 +44,7 @@ fun StoreDetailInfo(
                     modifier = Modifier.size(25.dp),
                     painter = painterResource(R.drawable.ic_star),
                     contentDescription = null,
-                    tint = Color(0xFFFFC107)
+                    tint = colorResource(id = R.color.star),
                 )
                 Text(modifier = Modifier.padding(start = 5.dp), text = storeReview.statistics.averageRating.toString(), fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                 Text(text = stringResource(R.string.review_count, storeReview.totalCount), fontSize = 12.sp, fontWeight = FontWeight.Bold)

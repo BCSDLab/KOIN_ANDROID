@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -96,7 +97,7 @@ fun AvailableChip(
         ) {
             Text(
                 text = text,
-                color = Color(0xFFBC7DFF),
+                color = colorResource(id = R.color.store_detail_chip_text),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold
             )

@@ -43,6 +43,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
@@ -108,7 +109,7 @@ fun CustomCollapsingToolbarScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color(0xFFF8F8FA))
+            .background(color = colorResource(id = R.color.store_detail_background))
             .nestedScroll(nestedScrollConnection)
     ) {
         LazyColumn(
@@ -212,4 +213,86 @@ fun CustomCollapsingToolbarScreen(
             pagerState = pagerState,
         )
     }
+}
+
+
+@Composable
+@Preview
+fun preview() {
+    val listState = rememberLazyListState()
+    val pagerState = rememberPagerState(
+        pageCount = { 3 },
+        initialPage = 1
+    )
+    CustomCollapsingToolbarScreen(
+        storeInfo = StoreWithMenu(
+            uid = 1,
+            name = "피자헛",
+            phone = "010-1234-5678",
+            isDeliveryOk = true,
+            isCardOk = true,
+            isBankOk = true,
+            isEvent = false,
+            address = "wnthwnth",
+            description = "피자헛은 피자 전문점으로, 다양한 종류의 피자를 제공합니다. 또한, 사이드 메뉴와 음료도 함께 판매하고 있습니다. 배달과 포장 서비스도 제공하며, 카드 결제가 가능합니다.",
+            updateAt = "2023-10-01T12:00:00Z",
+            deliveryPrice = 0,
+            open = null,
+            imageUrls = null,
+            shopCategories = listOf(
+                StoreWithMenu.Category(1, "피자"),
+                StoreWithMenu.Category(2, "치킨"),
+                StoreWithMenu.Category(3, "사이드")
+            ),
+            bank = "우리은행",
+            accountNumber = "123-456-7890123",
+            menuCategories = listOf(
+                StoreWithMenu.Category(1, "피자"),
+                StoreWithMenu.Category(2, "치킨"),
+                StoreWithMenu.Category(3, "사이드")
+
+            )
+        ),
+        categories = listOf(
+            MenuCategory(
+                categoryName = "족발123",
+                isChecked = false
+            ),
+            MenuCategory(
+                categoryName = "보쌈",
+                isChecked = false
+            ),
+        ),
+        menus = listOf(
+            StoreMenuCategories(
+                id = 1,
+                name = "족발",
+                menus = listOf(
+                    ShopMenus(
+                        id = 1,
+                        name = "족발",
+                        isHidden = false,
+                        isSingle = true,
+                        singlePrice = 10000,
+                        optionPrices = null,
+                        description = "족발 맛있어요",
+                        imageUrls = listOf("https://example.com/image1.jpg"),
+                    ),
+                    ShopMenus(
+                        id = 2,
+                        name = "보쌈",
+                        isHidden = false,
+                        isSingle = true,
+                        singlePrice = 10000,
+                        optionPrices = null,
+                        description = "보쌈 맛있어요",
+                        imageUrls = listOf("https://example.com/image2.jpg"),
+                    ),
+
+                    )
+            )
+
+        ),
+        pagerState = pagerState,
+    )
 }

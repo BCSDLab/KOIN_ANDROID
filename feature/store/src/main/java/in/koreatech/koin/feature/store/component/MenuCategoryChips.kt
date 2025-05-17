@@ -17,19 +17,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.owner.MenuCategory
+import `in`.koreatech.koin.feature.store.R
 
 
 @Composable
 fun MenuCategoryChips(menuCategories: List<MenuCategory>) {
     val scrollState = rememberScrollState()
     Row(
-        modifier = Modifier.fillMaxWidth().background(Color(0xFFF8F8FA))
+        modifier = Modifier.fillMaxWidth().background(color = colorResource(id = R.color.store_detail_background))
             .horizontalScroll(scrollState)
             .padding(horizontal = 24.dp, vertical = 12.dp)
     ) {
@@ -49,8 +51,8 @@ fun MenuCategoryChip(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false
 ) {
-    val borderColor = if (isSelected) Color(0xFFB611F5) else Color.Transparent
-    val textColor = if (isSelected) Color(0xFFB611F5) else KoinTheme.colors.neutral400
+    val borderColor = if (isSelected) colorResource(id = R.color.store_detail_chip) else Color.Transparent
+    val textColor = if (isSelected) colorResource(id = R.color.store_detail_chip) else KoinTheme.colors.neutral400
 
     Surface(
         elevation = 1.dp,

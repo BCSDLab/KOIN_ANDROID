@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -99,7 +100,7 @@ fun NoticeCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(ImageVector.vectorResource(id = R.drawable.ic_store_notice), contentDescription = null, modifier = Modifier.size(16.dp), tint = Color(0xFFB611F5))
+            Icon(ImageVector.vectorResource(id = R.drawable.ic_store_notice), contentDescription = null, modifier = Modifier.size(16.dp), tint = colorResource(id = R.color.store_detail_chip))
             Spacer(modifier = Modifier.width(7.dp))
             Text(modifier = Modifier.width(97.dp), overflow = TextOverflow.Ellipsis, text = description ?: "", fontSize = 12.sp, lineHeight = 18.sp, maxLines = 2)
             Spacer(modifier = Modifier.width(7.dp))
