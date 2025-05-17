@@ -32,6 +32,11 @@
         android:theme="@style/KAPTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="icon,label">
+        <activity
+            android:name=".storev2.StoreDetailActivity"
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
 
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
