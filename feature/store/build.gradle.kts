@@ -39,4 +39,10 @@ dependencies {
     debugImplementation(libs.bundles.compose.debug.test)
     androidTestImplementation(libs.compose.ui.test.manifest)
     androidTestImplementation(libs.coroutines.test)
+
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+    implementation(libs.coil.compose)
+    implementation(libs.toolbar.compose)
+
 }
