@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.feature.store.component
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,9 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material3.Icon
@@ -35,27 +31,21 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.owner.MenuCategory
-import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
@@ -72,7 +62,7 @@ fun CustomCollapsingToolbarScreen(
     storeInfo: StoreWithMenu,
     categories: List<MenuCategory>,
     menus: List<StoreMenuCategories>,
-    pagerState: PagerState,
+    pagerState: PagerState
 ) {
     val density = LocalDensity.current
     val toolbarMinHeight = 70.dp
@@ -116,7 +106,7 @@ fun CustomCollapsingToolbarScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = currentToolbarHeightDp),
-            state = listState,
+            state = listState
         ) {
             item {
                 Column {
@@ -137,7 +127,7 @@ fun CustomCollapsingToolbarScreen(
                     Divider(
                         modifier = Modifier.padding(vertical = 8.dp),
                         color = KoinTheme.colors.neutral100,
-                        thickness = 8.dp,
+                        thickness = 8.dp
                     )
                 }
             }
@@ -190,7 +180,7 @@ fun CustomCollapsingToolbarScreen(
                     modifier = Modifier
                         .offset(x = (-5).dp, y = 5.dp)
                         .size(16.dp)
-                        .background(Color.Magenta, CircleShape),
+                        .background(Color.Magenta, CircleShape)
                 ) {
                     Text(
                         text = "3",
@@ -210,7 +200,7 @@ fun CustomCollapsingToolbarScreen(
                 .fillMaxWidth(),
             imageUrls = storeInfo.imageUrls ?: emptyList(),
             alpha = overlayAlpha,
-            pagerState = pagerState,
+            pagerState = pagerState
         )
     }
 }

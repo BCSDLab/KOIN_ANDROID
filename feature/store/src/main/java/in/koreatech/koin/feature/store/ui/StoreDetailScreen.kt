@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.ui
 
-
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,7 +19,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
@@ -55,7 +53,7 @@ fun StoreDetailImage(
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
                 )
             }
         }
@@ -70,4 +68,3 @@ fun StoreDetailImage(
         )
     }
 }
-

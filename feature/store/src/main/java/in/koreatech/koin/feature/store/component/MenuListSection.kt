@@ -42,7 +42,7 @@ fun MenuListSection(category: String, menus: List<ShopMenus>) {
 
 @Composable
 fun MenuItem(
-    menuList: List<ShopMenus>,
+    menuList: List<ShopMenus>
 ) {
     Card(
         modifier = Modifier
@@ -77,18 +77,19 @@ fun MenuItem(
                         .clip(RoundedCornerShape(4.dp))
                 )
             }
-              if (it != menuList.size - 1)
-                  Divider(
-                      color = KoinTheme.colors.neutral300,
-                      thickness = 2.dp,
-                  )
+            if (it != menuList.size - 1) {
+                Divider(
+                    color = KoinTheme.colors.neutral300,
+                    thickness = 2.dp
+                )
+            }
         }
     }
 }
 
 @Composable
 fun OptionPriceText(
-    shopMenus: ShopMenus,
+    shopMenus: ShopMenus
 ) {
     if (shopMenus.isSingle) {
         Text(text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""), fontSize = 14.sp, fontWeight = FontWeight.Bold)
@@ -99,7 +100,6 @@ fun OptionPriceText(
         Text(text = options ?: "", fontSize = 14.sp, fontWeight = FontWeight.Bold)
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -116,14 +116,14 @@ fun MenuListSectionPreview() {
                 listOf(
                     ShopMenus.ShopMenuOptions("소", 10000),
                     ShopMenus.ShopMenuOptions("중", 20000),
-                    ShopMenus.ShopMenuOptions("대", 30000),
+                    ShopMenus.ShopMenuOptions("대", 30000)
                 ),
                 isHidden = false,
                 imageUrls = listOf(
-                    "https://example.com/image1.jpg",
+                    "https://example.com/image1.jpg"
                 ),
                 id = 1
-            ),
+            )
         )
     )
 }

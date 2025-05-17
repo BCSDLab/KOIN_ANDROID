@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,24 +26,24 @@ import `in`.koreatech.koin.feature.store.R
 @Composable
 fun StoreDetailInfo(
     storeInfo: StoreWithMenu,
-    storeReview: StoreReview,
+    storeReview: StoreReview
 ) {
     Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)) {
         Text(modifier = Modifier.padding(vertical = 4.dp), text = storeInfo.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     modifier = Modifier.size(25.dp),
                     painter = painterResource(R.drawable.ic_star),
                     contentDescription = null,
-                    tint = colorResource(id = R.color.star),
+                    tint = colorResource(id = R.color.star)
                 )
                 Text(modifier = Modifier.padding(start = 5.dp), text = storeReview.statistics.averageRating.toString(), fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                 Text(text = stringResource(R.string.review_count, storeReview.totalCount), fontSize = 12.sp, fontWeight = FontWeight.Bold)

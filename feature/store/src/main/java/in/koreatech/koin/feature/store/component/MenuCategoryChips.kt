@@ -26,7 +26,6 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.owner.MenuCategory
 import `in`.koreatech.koin.feature.store.R
 
-
 @Composable
 fun MenuCategoryChips(menuCategories: List<MenuCategory>) {
     val scrollState = rememberScrollState()
@@ -79,7 +78,6 @@ fun MenuCategoryChip(
         }
     }
 }
-
 
 @Preview
 @Composable

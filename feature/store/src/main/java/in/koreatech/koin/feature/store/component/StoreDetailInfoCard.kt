@@ -17,14 +17,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -32,16 +30,16 @@ import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
-fun StoreDetailInfoCard(storeInfo: StoreWithMenu){
+fun StoreDetailInfoCard(storeInfo: StoreWithMenu) {
     Row(modifier = Modifier.fillMaxWidth()) {
         DeliveryInfoCard(
             modifier = Modifier.weight(1f),
-            storeInfo,
+            storeInfo
         )
         Spacer(modifier = Modifier.width(8.dp))
         NoticeCard(
             modifier = Modifier.weight(1f),
-            description =  storeInfo.description,
+            description = storeInfo.description
         )
     }
 }
@@ -49,7 +47,7 @@ fun StoreDetailInfoCard(storeInfo: StoreWithMenu){
 @Composable
 fun DeliveryInfoCard(
     modifier: Modifier = Modifier,
-    storeInfo: StoreWithMenu,
+    storeInfo: StoreWithMenu
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
@@ -57,7 +55,7 @@ fun DeliveryInfoCard(
             .widthIn(175.dp)
             .heightIn(56.dp),
         shadowElevation = 1.dp,
-        color = KoinTheme.colors.neutral0,
+        color = KoinTheme.colors.neutral0
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -66,12 +64,12 @@ fun DeliveryInfoCard(
         ) {
             Column {
                 Row {
-                    Text(text= stringResource(R.string.minimum_order), fontSize = 12.sp, lineHeight = 18.sp)
+                    Text(text = stringResource(R.string.minimum_order), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text="15,000원", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(text = "15,000원", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
                 Row {
-                    Text(text= stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
+                    Text(text = stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("0 - 3,000원", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
@@ -81,11 +79,10 @@ fun DeliveryInfoCard(
     }
 }
 
-
 @Composable
 fun NoticeCard(
     modifier: Modifier,
-    description: String?,
+    description: String?
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
@@ -93,7 +90,7 @@ fun NoticeCard(
             .widthIn(175.dp)
             .heightIn(56.dp),
         shadowElevation = 1.dp,
-        color = KoinTheme.colors.neutral0,
+        color = KoinTheme.colors.neutral0
     ) {
         Row(
             modifier = Modifier.padding(12.dp),

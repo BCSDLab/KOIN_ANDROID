@@ -22,7 +22,6 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:analytics"))
 
-
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -34,12 +33,10 @@ dependencies {
     implementation(libs.kotlinxCollectionsImmutable)
 
     implementation(libs.timber)
-    implementation(libs.androidx.foundation.layout)
 
     testImplementation(libs.coroutines.test)
     testImplementation(libs.turbine)
     debugImplementation(libs.bundles.compose.debug.test)
     androidTestImplementation(libs.compose.ui.test.manifest)
     androidTestImplementation(libs.coroutines.test)
-
 }

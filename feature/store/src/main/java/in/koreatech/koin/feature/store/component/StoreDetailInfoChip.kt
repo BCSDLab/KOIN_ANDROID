@@ -27,9 +27,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 
-
 @Composable
-fun OriginInfoChips(){
+fun OriginInfoChips() {
     Surface(
         shape = RoundedCornerShape(50),
         border = BorderStroke(0.5.dp, Color(0xFFE0E0E0)),
@@ -52,37 +51,36 @@ fun OriginInfoChips(){
             Icon(
                 painter = painterResource(id = R.drawable.ic_store_info_origin_arrow),
                 contentDescription = null,
-                modifier = Modifier.size(10.dp),
+                modifier = Modifier.size(10.dp)
             )
         }
     }
 }
 
 @Composable
-fun AvailableChips(storeInfo: StoreWithMenu){
+fun AvailableChips(storeInfo: StoreWithMenu) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         if (storeInfo.isCardOk) {
             AvailableChip(
-                text = stringResource(R.string.card_available),
+                text = stringResource(R.string.card_available)
             )
         }
         if (storeInfo.isDeliveryOk) {
             AvailableChip(
-                text = stringResource(R.string.delivery_available),
+                text = stringResource(R.string.delivery_available)
             )
         }
         if (storeInfo.isBankOk) {
             AvailableChip(
-                text = stringResource(R.string.account_transfer_avilable),
+                text = stringResource(R.string.account_transfer_avilable)
             )
         }
     }
 }
 
-
 @Composable
 fun AvailableChip(
-    text: String,
+    text: String
 ) {
     Surface(
         shadowElevation = 1.dp,
