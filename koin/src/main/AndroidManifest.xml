@@ -215,10 +215,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.signup.SignupActivity"
-            android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.forgotpassword.ForgotPasswordActivity"
             android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
@@ -294,16 +290,6 @@
             android:name=".ui.error.ErrorActivity"
             android:exported="false"
             android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.signup.SignupWithDetailInfoActivity"
-            android:exported="false"
-            android:label="회원가입 디테일 정보"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.signup.SignUpCompleteActivity"
-            android:exported="false"
-            android:label="회원가입 완료"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.setting.SettingActivity"
