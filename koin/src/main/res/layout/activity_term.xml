@@ -27,6 +27,24 @@
                 app:titleText="@string/setting_item_koin_terms"
                 app:titleTextColor="@color/neutral_0" />
 
+            <in.koreatech.koin.core.view.notificaiton.NotificationHeader
+                android:id="@+id/notification_header_term_marketing_term_switch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:description="@string/term_marketing_term_switch_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar_term_koin"
+                app:text="@string/term_marketing_term_switch_title" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray2"
+                app:layout_constraintTop_toBottomOf="@id/notification_header_term_marketing_term_switch" />
+
             <TextView
                 android:id="@+id/tv_term_koin_title"
                 android:layout_width="0dp"
@@ -38,7 +56,7 @@
                 android:textColor="@color/neutral_800"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appbar_term_koin" />
+                app:layout_constraintTop_toBottomOf="@id/notification_header_term_marketing_term_switch" />
 
             <View
                 android:layout_width="0dp"

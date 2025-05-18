@@ -245,6 +245,7 @@
     <string name="setting_title_service">서비스</string>
     <string name="setting_item_privacy_policy">개인정보 처리방침</string>
     <string name="setting_item_koin_terms">코인 이용약관</string>
+    <string name="setting_item_marketing_terms">마케팅 수신 동의 약관</string>
     <string name="setting_item_open_source_license">오픈소스 라이선스</string>
     <string name="setting_item_app_version">앱 버전</string>
     <string name="setting_item_contact">문의하기</string>
@@ -666,6 +667,10 @@
     <string name="store_review_is_modify">%1$s (수정됨)</string>
     <string name="login_request_to_write_review">리뷰 작성 시 로그인을 해주세요.</string>
     <string name="request_notification_permission">설정에서 알림 권한을 허용해주세요</string>
+
+    <!-- Terms -->
+    <string name="term_marketing_term_switch_title">마케팅 정보 수신 동의</string>
+    <string name="term_marketing_term_switch_description">마케팅 정보 수신 동의/해제</string>
 
     <!-- etc -->
     <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>

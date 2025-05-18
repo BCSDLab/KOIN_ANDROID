@@ -3,18 +3,23 @@ package `in`.koreatech.koin.ui.term
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.notification.UpdateNotificationSubscriptionUseCase
 import `in`.koreatech.koin.domain.usecase.signup.GetKoinTermUseCase
+import `in`.koreatech.koin.domain.usecase.signup.GetMarketingTermUseCase
 import `in`.koreatech.koin.domain.usecase.signup.GetPrivacyTermUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @HiltViewModel
 class TermViewModel @Inject constructor(
     private val getKoinTermUseCase: GetKoinTermUseCase,
     private val getPrivacyTermUseCase: GetPrivacyTermUseCase,
+    private val getMarketingTermUseCase: GetMarketingTermUseCase,
+    private val updateNotificationSubscriptionUseCase: UpdateNotificationSubscriptionUseCase
 ) : ViewModel() {
     private val _term: MutableStateFlow<TermState> = MutableStateFlow(TermState.Init)
     val term: StateFlow<TermState> get() = _term.asStateFlow()
@@ -24,6 +29,7 @@ class TermViewModel @Inject constructor(
 
     fun setTermType(type: String) {
         _termType.value = type
+        Timber.d("term type: ${_termType.value}")
     }
 
     fun loadKoinTerm() {
@@ -50,11 +56,23 @@ class TermViewModel @Inject constructor(
         }
     }
 
+    fun loadMarketingTerm() {
+        viewModelScope.launch {
+            getMarketingTermUseCase()
+                .onSuccess {
+                    _term.value = TermState.Success(it)
+                }
+                .onFailure {
+                    _term.value = TermState.Failure(it.message ?: "")
+                }
+        }
+    }
 
     companion object {
         const val KEY_TERM = "key_term"
         const val TERM_KOIN = "term_koin"
         const val TERM_PRIVACY_POLICY = "term_privacy_policy"
+        const val TERM_MARKETING = "term_marketing"
         const val TERM_UNKNOWN = "term_unknown"
     }
 }
