@@ -44,6 +44,7 @@ dependencies {
     api(libs.androidx.activity.ktx)
     api(libs.androidx.fragment.ktx)
     api(libs.androidx.constraintlayout)
+    implementation(libs.androidx.foundation.layout.android)
 
     // Dependency - kotlin
     api(libs.kotlin.stdlib)

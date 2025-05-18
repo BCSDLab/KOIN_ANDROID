@@ -8,14 +8,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.PagerState
@@ -45,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.CustomClosingToolbarScreenDefaults
 import `in`.koreatech.koin.domain.model.owner.MenuCategory
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreReview
@@ -65,7 +69,7 @@ fun CustomCollapsingToolbarScreen(
     pagerState: PagerState
 ) {
     val density = LocalDensity.current
-    val toolbarMinHeight = 70.dp
+    val toolbarMinHeight = 40.dp
     val toolbarMaxHeight = 300.dp
     val toolbarHeightPx = with(density) { toolbarMaxHeight.toPx() }
     val minHeightPx = with(density) { toolbarMinHeight.toPx() }
@@ -105,8 +109,10 @@ fun CustomCollapsingToolbarScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = currentToolbarHeightDp),
-            state = listState
+                .padding( top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
+                    .asPaddingValues()
+                    .calculateTopPadding()),
+            state = listState,
         ) {
             item {
                 Column {
