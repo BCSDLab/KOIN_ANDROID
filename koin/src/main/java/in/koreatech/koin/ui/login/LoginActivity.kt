@@ -19,13 +19,13 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
+import `in`.koreatech.koin.feature.signup.SignUpActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_EXTRA_KEY
 import `in`.koreatech.koin.ui.businesslogin.BusinessLoginActivity
 import `in`.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
-import `in`.koreatech.koin.ui.signup.SignupActivity
 import `in`.koreatech.koin.ui.timetablev2.TimetableActivity
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.hideKeyboard
@@ -152,7 +152,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         }
 
         loginButtonSignup.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
+            startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
             EventLogger.logClickEvent(
                 EventAction.USER,
                 AnalyticsConstant.Label.LOGIN,
