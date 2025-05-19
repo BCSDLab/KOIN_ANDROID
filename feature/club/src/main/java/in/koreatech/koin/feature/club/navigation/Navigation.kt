@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
 fun NavGraphBuilder.koinClubGraph(
-    navController: NavController,
+    navController: NavController
 ) {
     composable(
         route = ClubNavType.ClubList.route
