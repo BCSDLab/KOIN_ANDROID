@@ -87,7 +87,7 @@ fun MenuItem(
 }
 
 @Composable
-fun OptionPriceText(
+private fun OptionPriceText(
     shopMenus: ShopMenus
 ) {
     if (shopMenus.isSingle) {
@@ -102,7 +102,7 @@ fun OptionPriceText(
 
 @Preview(showBackground = true)
 @Composable
-fun MenuListSectionPreview() {
+private fun MenuListSectionPreview() {
     MenuListSection(
         category = "추천메뉴",
         menus = listOf(

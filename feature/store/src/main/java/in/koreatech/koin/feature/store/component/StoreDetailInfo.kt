@@ -45,7 +45,9 @@ fun StoreDetailInfo(
                     contentDescription = null,
                     tint = colorResource(id = R.color.star)
                 )
-                Text(modifier = Modifier.padding(start = 5.dp), text = storeReview.statistics.averageRating.toString(), fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(modifier = Modifier.padding(start = 5.dp),
+                    text = storeReview.statistics.averageRating.toString(),
+                    fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                 Text(text = stringResource(R.string.review_count, storeReview.totalCount), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 Icon(painter = painterResource(R.drawable.ic_right_arrow), contentDescription = null, modifier = Modifier.size(9.dp))
             }

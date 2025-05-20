@@ -79,7 +79,7 @@ fun AvailableChips(storeInfo: StoreWithMenu) {
 }
 
 @Composable
-fun AvailableChip(
+private fun AvailableChip(
     text: String
 ) {
     Surface(
