@@ -36,8 +36,7 @@ fun MenuCategoryChips(menuCategories: List<MenuCategory>) {
     ) {
         menuCategories.forEachIndexed { i, tag ->
             MenuCategoryChip(
-                text = tag.categoryName,
-                isSelected = i == 0,
+                menuCategory = menuCategories[i],
                 modifier = Modifier.padding(end = 8.dp)
             )
         }
@@ -46,12 +45,11 @@ fun MenuCategoryChips(menuCategories: List<MenuCategory>) {
 
 @Composable
 fun MenuCategoryChip(
-    text: String,
-    modifier: Modifier = Modifier,
-    isSelected: Boolean = false
+    menuCategory: MenuCategory,
+    modifier: Modifier = Modifier
 ) {
-    val borderColor = if (isSelected) colorResource(id = R.color.store_detail_chip) else Color.Transparent
-    val textColor = if (isSelected) colorResource(id = R.color.store_detail_chip) else KoinTheme.colors.neutral400
+    val borderColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else Color.Transparent
+    val textColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else KoinTheme.colors.neutral400
 
     Surface(
         elevation = 1.dp,
@@ -70,7 +68,7 @@ fun MenuCategoryChip(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
         ) {
             Text(
-                text = text,
+                text = menuCategory.categoryName,
                 color = textColor,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold
@@ -84,7 +82,7 @@ fun MenuCategoryChip(
 fun MenuCategoryChipPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         MenuCategoryChip(
-            text = "족발",
+            menuCategory = MenuCategory("음료", true),
             modifier = Modifier.padding(8.dp)
         )
     }
