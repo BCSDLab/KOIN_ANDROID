@@ -9,8 +9,7 @@
     <string name="separator">|</string>
     <string name="guide">사장님이신가요?</string>
     <string name="copyright">Copyright @ BCSD Lab All rights reserved.</string>
-    <string name="userAlert">존재하지 않는 사용자입니다.</string>
-    <string name="idPwAlert">아이디 또는 비밀번호가 올바르지 않습니다.</string>
+    <string name="alert">에러</string>
     <string name="find_id_button_text">아이디 찾기</string>
     <string name="go_login">로그인하기</string>
 </resources>

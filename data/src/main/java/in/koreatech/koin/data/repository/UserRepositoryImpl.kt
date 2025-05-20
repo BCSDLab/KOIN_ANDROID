@@ -29,11 +29,11 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun getToken(
-        userId: String,
+        loginId: String,
         hashedPassword: String
     ): AuthToken {
         try {
-            var authResponse = userRemoteDataSource.getToken(LoginRequest(userId, hashedPassword))
+            var authResponse = userRemoteDataSource.getToken(LoginRequest(loginId, hashedPassword))
             return AuthToken(token = authResponse.token, refreshToken = authResponse.refreshToken, userType = authResponse.userType)
         } catch (e: HttpException) {
             throw e
@@ -67,15 +67,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchStudentUserInfo(userType: String) {
-        userRemoteDataSource.getStudentUserInfo().toUser(userType).also {
-            userLocalDataSource.updateStudentInfo(it)
-        }
-    }
-
-    override suspend fun fetchGeneralUserInfo(userType: String) {
-        userRemoteDataSource.getGeneralUserInfo().toUser(userType).also {
-            userLocalDataSource.updateGeneralInfo(it)
+    override suspend fun fetchUserInfo(userType: String) {
+        userRemoteDataSource.getUserInfo().toUser(userType).also {
+            userLocalDataSource.updateUserInfo(it)
         }
     }
 
@@ -140,6 +134,8 @@ class UserRepositoryImpl @Inject constructor(
                 userRemoteDataSource.updateUser(user.toUserRequest())
                 userLocalDataSource.updateUserInfo(user)
             }
+
+            is User.General -> TODO()
         }
     }
 
@@ -173,6 +169,7 @@ class UserRepositoryImpl @Inject constructor(
             is User.Student -> {
                 userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
             }
+            is User.General -> TODO()
         }
     }
 }

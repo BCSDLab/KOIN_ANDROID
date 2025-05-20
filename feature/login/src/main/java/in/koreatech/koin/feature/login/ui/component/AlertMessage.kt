@@ -17,9 +17,9 @@ import `in`.koreatech.koin.feature.login.R
 
 @Composable
 fun AlertMessage(
+    modifier: Modifier = Modifier,
     text: String,
-    isVisible: Boolean,
-    modifier: Modifier = Modifier
+    isVisible: Boolean
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

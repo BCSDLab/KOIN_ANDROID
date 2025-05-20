@@ -11,8 +11,6 @@ import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
-import `in`.koreatech.koin.data.response.user.GeneralResponse
-import `in`.koreatech.koin.data.response.user.StudentResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
@@ -28,12 +26,6 @@ import retrofit2.http.Query
 interface UserAuthApi {
     @GET(URLConstant.USER.ME)
     suspend fun getUser(): UserResponse
-
-    @GET(URLConstant.USER.ME)
-    suspend fun getStudentUser(): StudentResponse
-
-    @GET(URLConstant.USERS.ME)
-    suspend fun getGeneralUser(): GeneralResponse
 
     @PUT(URLConstant.USER.ME)
     suspend fun putUser(

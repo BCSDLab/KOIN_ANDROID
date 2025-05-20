@@ -1,71 +1,53 @@
 package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.user.UserRequest
-import `in`.koreatech.koin.data.response.user.GeneralResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
-import `in`.koreatech.koin.data.response.user.StudentResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.model.user.User2
+import `in`.koreatech.koin.domain.model.user.UserType
 
 fun UserResponse.toUser(userType: String) =
-    User.Student(
-        id = id,
-        anonymousNickname = anonymousNickname,
-        email = email,
-        name = name,
-        studentNumber = studentNumber,
-        gender =
-        when (gender) {
-            0 -> Gender.Man
-            1 -> Gender.Woman
-            else -> Gender.Unknown
-        },
-        nickname = nickname,
-        phoneNumber = phoneNumber,
-        major = major,
-        userType = userType
-    )
-
-fun GeneralResponse.toUser(userType: String) =
-    User2.General(
-        id = id,
-        userId = userId,
-        gender =
-        when (gender) {
-            0 -> Gender.Man
-            1 -> Gender.Woman
-            else -> Gender.Unknown
-        },
-        email = email,
-        name = name,
-        nickname = nickname,
-        phoneNumber = phoneNumber,
-        userType = userType
-    )
-
-fun StudentResponse.toUser(userType: String) =
-    User2.Student(
-        id = id,
-        loginId = loginId,
-        anonymousNickname = anonymousNickname,
-        email = email,
-        gender =
-        when (gender) {
-            0 -> Gender.Man
-            1 -> Gender.Woman
-            else -> Gender.Unknown
-        },
-        major = major,
-        name = name,
-        nickname = nickname,
-        phoneNumber = phoneNumber,
-        studentNumber = studentNumber,
-        userType = userType
-    )
+    if (userType == UserType.STUDENT.name || userType == UserType.COUNCIL.name) {
+        User.Student(
+            id = id,
+            loginId = loginId,
+            anonymousNickname = anonymousNickname,
+            email = email,
+            name = name,
+            studentNumber = studentNumber,
+            gender =
+            when (gender) {
+                0 -> Gender.Man
+                1 -> Gender.Woman
+                else -> Gender.Unknown
+            },
+            nickname = nickname,
+            phoneNumber = phoneNumber,
+            major = major,
+            userType = userType
+        )
+    } else if (userType == UserType.GENERAL.name) {
+        User.General(
+            id = id,
+            loginId = loginId,
+            name = name,
+            nickname = nickname,
+            gender =
+            when (gender) {
+                0 -> Gender.Man
+                1 -> Gender.Woman
+                else -> Gender.Unknown
+            },
+            email = email,
+            phoneNumber = phoneNumber,
+            userType = userType
+        )
+    } else {
+        User.Anonymous
+    }
 
 fun User.Student.toUserRequest() =
     UserRequest(

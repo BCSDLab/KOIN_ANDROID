@@ -90,8 +90,6 @@ object URLConstant {
         const val SMSSEND: String = "$USERS/verification/sms/send"
         const val SMSVERIFY: String = "$USERS/verification/sms/verify"
 
-        const val ME: String = "v2/${USERS}/me"
-
         object STUDENTS {
             const val STUDENTS = "students"
             const val REGISTER_V2: String = "v2/$USERS/$STUDENTS/register"

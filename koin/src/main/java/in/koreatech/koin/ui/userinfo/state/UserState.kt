@@ -32,10 +32,13 @@ fun User.toUserState(context: Context): UserState {
                         Gender.Woman -> getString(R.string.user_info_gender_female)
                         Gender.Man -> getString(R.string.user_info_gender_male)
                         Gender.Unknown -> ""
+                        else -> ""
                     },
                     studentNumber = studentNumber ?: "",
                     major = major ?: ""
                 )
             }
+
+        is User.General -> TODO()
     }
 }

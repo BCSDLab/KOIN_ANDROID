@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     suspend fun getToken(
-        userId: String,
+        loginId: String,
         hashedPassword: String
     ): AuthToken
 
@@ -18,9 +18,7 @@ interface UserRepository {
 
     fun ownerTokenIsValid(): Boolean
 
-    suspend fun fetchStudentUserInfo(userType: String)
-
-    suspend fun fetchGeneralUserInfo(userType: String)
+    suspend fun fetchUserInfo(userType: String)
 
     suspend fun getUserInfo(): User
 

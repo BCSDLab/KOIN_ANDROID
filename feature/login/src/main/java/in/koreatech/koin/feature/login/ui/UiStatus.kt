@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.login.ui.component
+package `in`.koreatech.koin.feature.login.ui
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

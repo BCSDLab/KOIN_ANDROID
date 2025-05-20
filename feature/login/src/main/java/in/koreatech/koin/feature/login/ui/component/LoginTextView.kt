@@ -6,30 +6,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 
 
 @Composable
 fun LoginTextView(
+    modifier: Modifier = Modifier,
     color: Color = Color.Black,
     text: String,
-    fontSize: Int,
-    onClick: (() -> Unit) ?= null,
-    modifier: Modifier = Modifier
+    style: TextStyle,
+    onClick: () -> Unit = { }
 ) {
-    val modifier = if (onClick != null) modifier.clickable { onClick() } else modifier
-
     Text(
         text = text,
         color = color,
-        modifier = modifier,
-        style = TextStyle(
-            fontWeight = FontWeight.W400,
-            fontSize = fontSize.sp,
-            lineHeight = 1f.em,
-            letterSpacing = 0.sp
-        )
+        modifier = modifier.clickable { onClick() },
+        style = style
     )
 }

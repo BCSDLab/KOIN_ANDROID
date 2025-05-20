@@ -40,8 +40,11 @@ private fun User.toLoggerUserData(): LoggerUserData? =
                     is Gender.Man -> "0"
                     is Gender.Woman -> "1"
                     is Gender.Unknown -> ""
+                    null -> TODO()
                 },
                 major = major ?: ""
             )
         }
+
+        is User.General -> TODO()
     }

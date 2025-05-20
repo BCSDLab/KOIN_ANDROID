@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.login.ui.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -19,11 +20,11 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 fun LoginTextImageButton(
-    icon: Int, // Drawable 리소스 ID
+    modifier: Modifier = Modifier,
+    @DrawableRes icon: Int, // Drawable 리소스 ID
     text: String,
     imgSize: Dp = 18.dp,
-    onClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier

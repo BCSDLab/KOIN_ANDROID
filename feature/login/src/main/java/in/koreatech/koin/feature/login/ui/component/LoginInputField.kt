@@ -30,11 +30,11 @@ import `in`.koreatech.koin.feature.login.R
 
 @Composable
 fun LoginInputField(
+    modifier: Modifier = Modifier,
     label: String,
     text: String,
     onTextChanged: (String) -> Unit = {},
-    onClear: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onClear: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Box(
@@ -54,12 +54,7 @@ fun LoginInputField(
                     value = text,
                     onValueChange = onTextChanged,
                     singleLine = true,
-                    textStyle = TextStyle(
-                        color = Color.Black,
-                        fontWeight = FontWeight.W400,
-                        lineHeight = 1.6f.em,
-                        fontSize = 16.sp
-                    ),
+                    textStyle = KoinTheme.typography.regular16,
                     decorationBox = { innerTextField ->
                         if (text.isEmpty()) {
                             Text(

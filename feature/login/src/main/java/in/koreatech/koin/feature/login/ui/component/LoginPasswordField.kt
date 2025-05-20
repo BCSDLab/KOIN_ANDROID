@@ -29,12 +29,12 @@ import `in`.koreatech.koin.feature.login.R
 
 @Composable
 fun LoginPasswordField(
+    modifier: Modifier = Modifier,
     label: String,
     text: String,
     isVisible: Boolean,
     onTextChanged: (String) -> Unit = {},
-    onToggleVisibility: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onToggleVisibility: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Box(
@@ -62,7 +62,7 @@ fun LoginPasswordField(
                             Text(
                                 text = label,
                                 style = KoinTheme.typography.regular16,
-                                color = Color(0xFFCACACA)
+                                color = KoinTheme.colors.neutral400
                             )
                         }
                         innerTextField()

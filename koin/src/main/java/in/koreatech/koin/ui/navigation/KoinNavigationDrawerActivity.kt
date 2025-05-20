@@ -405,6 +405,8 @@ abstract class KoinNavigationDrawerActivity :
                                     else -> Unit
                                 }
                             }
+
+                            is User.General -> TODO()
                         }
                     }
                 }

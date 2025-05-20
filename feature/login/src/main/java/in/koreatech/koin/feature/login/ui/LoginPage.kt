@@ -23,15 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.login.R
 import `in`.koreatech.koin.feature.login.ui.component.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -41,6 +36,7 @@ fun LoginPage(
     val coroutineScope = rememberCoroutineScope()
 
     val id by viewModel.id.collectAsState()
+    val loginError by viewModel.loginError.collectAsState()
     val password by viewModel.password.collectAsState()
     val isPasswordVisible by viewModel.isPasswordVisible.collectAsState()
     val isUserAlertVisible by viewModel.isUserAlertVisible.collectAsState()
@@ -76,7 +72,7 @@ fun LoginPage(
                 onClear = viewModel::clearId
             )
             AlertMessage(
-                text = stringResource(R.string.userAlert),
+                text = stringResource(R.string.alert),
                 isVisible = isUserAlertVisible,
                 modifier = Modifier.align(Alignment.Start)
             )
@@ -89,7 +85,7 @@ fun LoginPage(
                 onToggleVisibility = viewModel::togglePasswordVisibility
             )
             AlertMessage(
-                text = stringResource(R.string.idPwAlert),
+                text = loginError,
                 isVisible = isIdPwAlertVisible,
                 modifier = Modifier.align(Alignment.Start)
             )
@@ -124,7 +120,7 @@ fun LoginPage(
                 LoginTextView(
                     color = KoinTheme.colors.neutral500,
                     text = stringResource(R.string.separator),
-                    fontSize = 15
+                    style = KoinTheme.typography.regular15
                 )
                 LoginTextImageButton(
                     icon = R.drawable.ic_login_find_password,
@@ -134,7 +130,7 @@ fun LoginPage(
                 LoginTextView(
                     color = KoinTheme.colors.neutral500,
                     text = stringResource(R.string.separator),
-                    fontSize = 15
+                    style = KoinTheme.typography.regular15
                 )
                 LoginTextImageButton(
                     icon = R.drawable.ic_login_tour,
@@ -146,14 +142,14 @@ fun LoginPage(
             LoginTextView(
                 color = KoinTheme.colors.sub500,
                 text = stringResource(R.string.guide),
-                fontSize = 18,
+                style = KoinTheme.typography.regular18,
                 onClick = viewModel::business
             )
             Spacer(modifier = Modifier.height(24.dp))
             LoginTextView(
                 color = KoinTheme.colors.neutral800,
                 text = stringResource(R.string.copyright),
-                fontSize = 12
+                style = KoinTheme.typography.regular12
             )
         }
     }

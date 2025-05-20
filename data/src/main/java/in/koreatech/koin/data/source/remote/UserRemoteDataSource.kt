@@ -4,9 +4,7 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
-import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
-import `in`.koreatech.koin.data.request.user.GeneralRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
@@ -14,15 +12,12 @@ import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
-import `in`.koreatech.koin.data.request.user.StudentRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
-import `in`.koreatech.koin.data.response.user.GeneralResponse
-import `in`.koreatech.koin.data.response.user.StudentResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
@@ -44,14 +39,6 @@ class UserRemoteDataSource(
 
     suspend fun getUserInfo(): UserResponse {
         return userAuthApi.getUser()
-    }
-
-    suspend fun getStudentUserInfo(): StudentResponse {
-        return userAuthApi.getStudentUser()
-    }
-
-    suspend fun getGeneralUserInfo(): GeneralResponse {
-        return userAuthApi.getGeneralUser()
     }
 
     suspend fun sendRegisterEmail(studentInfoRequest: StudentInfoRequest) {

@@ -14,17 +14,17 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
 fun LoginTextButton(
+    modifier: Modifier = Modifier,
     text: String,
     color:Color,
-    onClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onClick: () -> Unit = {}
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        shape = RoundedCornerShape(8.dp),
+        shape = KoinTheme.shapes.small,
         colors = ButtonDefaults.buttonColors(
             containerColor = color
         ),

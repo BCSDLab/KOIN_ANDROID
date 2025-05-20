@@ -16,7 +16,6 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
-import `in`.koreatech.koin.feature.login.ui.component.UiStatus
 import kotlinx.coroutines.launch
 import kotlin.getValue
 import `in`.koreatech.koin.feature.login.R
@@ -49,11 +48,11 @@ class LoginActivity : ComponentActivity() {
                 launch {
                     loginError.collect { event ->
                         when (event) {
-                            "400" -> {
-                                setIdPwAlertVisible(visible = true)
+                            "" -> {
+                                setIdPwAlertVisible(visible = false)
                             }
                             else -> {
-                                setIdPwAlertVisible(visible = false)
+                                setIdPwAlertVisible(visible = true)
                             }
                         }
                     }
@@ -63,7 +62,7 @@ class LoginActivity : ComponentActivity() {
                         when (event) {
                             LoginEvent.SIGNUP -> {
                                 loginViewModel.resetLoginEvent()
-                                val uri = Uri.parse("koin://signup/activity")
+                                val uri = Uri.parse(SIGNUP)
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 startActivity(intent)
                                 EventLogger.logClickEvent(
@@ -81,18 +80,18 @@ class LoginActivity : ComponentActivity() {
                             }
                             LoginEvent.FIND_PW -> {
                                 loginViewModel.resetLoginEvent()
-                                val uri = Uri.parse("koin://forgotpassword/activity")
+                                val uri = Uri.parse(FORGOT_PASSWORD)
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 startActivity(intent)
                             }
                             LoginEvent.TOUR -> {
-                                val uri = Uri.parse("koin://home/home")
+                                val uri = Uri.parse(HOME)
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 startActivity(intent)
                             }
                             LoginEvent.BUSINESS -> {
                                 loginViewModel.resetLoginEvent()
-                                val uri = Uri.parse("koin://businesslogin/activity")
+                                val uri = Uri.parse(BUSINESS_LOGIN)
                                 val intent = Intent(Intent.ACTION_VIEW, uri)
                                 startActivity(intent)
                             }
@@ -118,27 +117,28 @@ class LoginActivity : ComponentActivity() {
                 startActivity(intent)
                 finish()
             } catch (e: Exception) {
-                val uri = Uri.parse("koin://home/home")
+                val uri = Uri.parse(HOME)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
                 finish()
             }
         } else {
             if (handleTimetableIntent()) {
-                val uri = Uri.parse("koin://timetable/activity")
+                val uri = Uri.parse(TIME_TABLE)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
                 finish()
                 return
             } else if (handleArticleIntent()) {
-                val fragment = 4
-                val uri = Uri.parse("koin://article/activity?fragment=$fragment")
+                val bundle = intent.getBundleExtra(BUNDLE_ARTICLE_EXTRA_KEY)
+                val fragment = bundle?.getInt(START_BOARD, 4)
+                val uri = Uri.parse("$ARTICLE?fragment=$fragment")
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
                 finish()
                 return
             }
-            val uri = Uri.parse("koin://home/home")
+            val uri = Uri.parse(HOME)
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
             finish()
@@ -167,6 +167,7 @@ class LoginActivity : ComponentActivity() {
         const val BUNDLE_LOGIN_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
         const val NAV_TIMETABLE = "timetable"
         const val NAV_ARTICLE = "article"
+        const val START_BOARD = "start_board"
         const val BUNDLE_ARTICLE_EXTRA_KEY = "BUNDLE_EXTRA_KEY"
     }
 }

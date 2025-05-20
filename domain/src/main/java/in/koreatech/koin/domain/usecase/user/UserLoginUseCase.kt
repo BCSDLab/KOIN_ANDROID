@@ -14,22 +14,22 @@ class UserLoginUseCase @Inject constructor(
     private val userErrorHandler: UserErrorHandler
 ) {
     suspend operator fun invoke(
-        userId: String,
+        loginId: String,
         password: String
     ): Pair<Unit?, ErrorHandler?> {
         return try {
-            val authToken = userRepository.getToken(userId, password.toSHA256())
+            val authToken = userRepository.getToken(loginId, password.toSHA256())
             when (authToken.userType) {
                 UserType.STUDENT.name, UserType.COUNCIL.name -> {
                     tokenRepository.saveAccessToken(authToken.token)
                     tokenRepository.saveRefreshToken(authToken.refreshToken)
-                    userRepository.fetchStudentUserInfo(authToken.userType)
+                    userRepository.fetchUserInfo(authToken.userType)
                     Unit to null
                 }
                 UserType.GENERAL.name -> {
                     tokenRepository.saveAccessToken(authToken.token)
                     tokenRepository.saveRefreshToken(authToken.refreshToken)
-                    userRepository.fetchGeneralUserInfo(authToken.userType)
+                    userRepository.fetchUserInfo(authToken.userType)
                     Unit to null
                 }
                 else -> {

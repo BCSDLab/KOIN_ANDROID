@@ -119,8 +119,12 @@ class UserInfoEditActivity : ActivityBase() {
                                     binding.rbGenderMan.isChecked = false
                                     binding.rbGenderWoman.isChecked = false
                                 }
+
+                                null -> TODO()
                             }
                         }
+
+                    is User.General -> TODO()
                 }
             }
 
