@@ -33,56 +33,55 @@ import `in`.koreatech.koin.feature.store.R
 fun MenuListSection(category: String, menus: List<ShopMenus>) {
     Column(modifier = Modifier.padding(horizontal = 24.dp)) {
         Text(text = category, fontWeight = FontWeight.Bold, fontSize = 20.sp, modifier = Modifier.padding(vertical = 8.dp, horizontal = 10.dp))
-        MenuItem(
-            menuList = menus
-        )
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 40.dp),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(0.5.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = KoinTheme.colors.neutral0
+            )
+        ) {
+            repeat(menus.size) {
+                MenuItem(
+                    menu = menus[it]
+                )
+                if (it != menus.size-1)
+                    Divider(
+                        color = KoinTheme.colors.neutral300,
+                        thickness = 2.dp,
+                    )
+            }
+        }
     }
 }
 
 @Composable
 fun MenuItem(
-    menuList: List<ShopMenus>
+    menu: ShopMenus
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 40.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(0.5.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = KoinTheme.colors.neutral0
-        )
-    ) {
-        repeat(menuList.size) {
-            Row(modifier = Modifier.padding(16.dp)) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(text = menuList[it].name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-                    Text(modifier = Modifier.padding(vertical = 4.dp), text = menuList[it].description ?: "", fontSize = 12.sp, color = KoinTheme.colors.neutral500)
-                    OptionPriceText(
-                        shopMenus = menuList[it]
-                    )
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(menuList[it].imageUrls?.firstOrNull())
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .align(Alignment.Bottom)
-                        .size(88.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                )
-            }
-            if (it != menuList.size - 1) {
-                Divider(
-                    color = KoinTheme.colors.neutral300,
-                    thickness = 2.dp
-                )
-            }
+    Row(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
+            Text(modifier = Modifier.padding(vertical = 4.dp), text = menu.description ?: "", fontSize = 12.sp, color = KoinTheme.colors.neutral500)
+            OptionPriceText(
+                shopMenus = menu
+            )
         }
+        Spacer(modifier = Modifier.width(16.dp))
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(menu.imageUrls?.firstOrNull())
+                .crossfade(true)
+                .build(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .align(Alignment.Bottom)
+                .size(88.dp)
+                .clip(RoundedCornerShape(4.dp))
+        )
     }
 }
 
