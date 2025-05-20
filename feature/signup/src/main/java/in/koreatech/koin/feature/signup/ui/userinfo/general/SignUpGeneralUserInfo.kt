@@ -305,7 +305,7 @@ private fun SignUpGeneralUserInfoInitialStep(
         )
     }
 
-    if (passwordConfirm.isNotEmpty()) {
+    if (isPasswordValid && passwordConfirm.isNotEmpty()) {
         KoinSignUpTextFieldAlert(
             text = if (isPasswordEqual) stringResource(R.string.sign_up_user_info_password_confirm_correct) else stringResource(R.string.sign_up_user_info_password_confirm_incorrect),
             state = if (isPasswordEqual) KoinSignUpTextFieldAlertState.Success else KoinSignUpTextFieldAlertState.Warning
