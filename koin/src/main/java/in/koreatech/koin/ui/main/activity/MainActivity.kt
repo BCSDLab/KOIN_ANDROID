@@ -151,7 +151,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         initView()
         initDiningTooltip()
         initViewModel()
-        initBanner()
         handleIntent()
     }
 
@@ -414,7 +413,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             }
 
             else -> {
-                // Do nothing
+                // Banner shouldn't popup on other page
+                initBanner()
             }
         }
     }

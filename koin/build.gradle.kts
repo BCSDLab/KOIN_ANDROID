@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -52,7 +53,7 @@ android {
                 "KAKAO_NATIVE_APP_KEY",
                 "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
             )
-            firebaseCrashlytics {
+            configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = false
             }
         }
@@ -141,6 +142,8 @@ dependencies {
     implementation(libs.feature.delivery.ktx)
 
     implementation(libs.timber)
+
+    implementation(libs.firebase.crashlytics)
 
     implementation(libs.compose.lifecycle)
     implementation(libs.kotlinxCollectionsImmutable)
