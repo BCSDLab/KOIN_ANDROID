@@ -5,6 +5,7 @@ on:
 
 jobs:
   auto_pr_label_adder:
+    if: github.base_ref != 'production'
     runs-on: ubuntu-latest
     steps:
       - name: Check Team and Job From PR
