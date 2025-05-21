@@ -81,7 +81,7 @@ fun LectureBox(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier
+            modifier = Modifier.weight(1f)
         ) {
             Text(
                 text = lecture.name,
