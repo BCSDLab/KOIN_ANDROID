@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.koin.library)
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.library.orbit)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
