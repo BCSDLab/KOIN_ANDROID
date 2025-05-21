@@ -16,6 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -35,6 +39,7 @@ fun DetailQnaBox(
     onAnswerDeleteClick: () -> Unit,
     answerText: String? = null,
 ) {
+    var text by remember { mutableStateOf("") }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -54,12 +59,12 @@ fun DetailQnaBox(
                 .padding(
                     horizontal = 8.dp,
                     vertical = 8.dp
-                )
+                ),
         ) {
             Row (
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
             ){
                 Text(
                     text = "Q. $questionText",
@@ -68,10 +73,9 @@ fun DetailQnaBox(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .weight(1f)
-                        .padding(end = 8.dp)
                 )
                 Image(
-                    painter = painterResource(id = R.drawable.finish_6),
+                    painter = painterResource(id = R.drawable.fi_x),
                     contentDescription = "QuestionDelete",
                     modifier = Modifier
                         .size(20.dp)
@@ -79,6 +83,8 @@ fun DetailQnaBox(
                         .clickable { onQuestionDeleteClick() }
                 )
             }
+            Spacer(Modifier.height(4.dp))
+
             Text(
                 text = createdDate,
                 style = KoinTheme.typography.regular14,
@@ -89,20 +95,19 @@ fun DetailQnaBox(
             Row (
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
             ){
                 Image(
-                    painter = painterResource(id = R.drawable.finish_6),
+                    painter = painterResource(id = R.drawable.u_corner_down_right),
                     contentDescription = "QuestionDelete",
                     modifier = Modifier
                         .size(24.dp)
-                        .padding(end = 8.dp)
                         .align(Alignment.CenterVertically),
                 )
                 if(answerText.isNullOrEmpty()) {
                     DetailQnaTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = text,
+                        onValueChange = { text = it },
                         onButtonClick = {}
                     )
                 }
@@ -114,10 +119,9 @@ fun DetailQnaBox(
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = 8.dp)
                     )
                     Image(
-                        painter = painterResource(id = R.drawable.finish_6),
+                        painter = painterResource(id = R.drawable.fi_x),
                         contentDescription = "QuestionDelete",
                         modifier = Modifier
                             .size(20.dp)

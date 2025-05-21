@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.detail
 
+import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -7,22 +8,27 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,65 +58,87 @@ fun ClubDetail(
     val tabs = DetailTabType.entries.map { it.title }
     val pagerState = rememberPagerState(initialPage = initialPage) { tabs.size }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Scaffold (
-        modifier = Modifier.fillMaxSize(),
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
-                title = "BCSD"
+                title = "BCSD",
+                onNavigationIconClick = {
+                    (context as Activity).finish()
+                }
             )
         }
     ) { contentPadding ->
         LazyColumn (
             modifier = Modifier
-                .fillMaxHeight()
-                .padding(contentPadding),
+                .padding(contentPadding)
+                .consumeWindowInsets(contentPadding)
+                .systemBarsPadding()
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 Image(
-                    painter = painterResource(id = R.drawable.finish_6),
+                    painter = painterResource(id = R.drawable.fi_heart),
                     contentDescription = "picture",
                     modifier = Modifier
                         .size(200.dp)
                         .padding(top = 3.dp)
                 )
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                         .padding(
                             horizontal = 24.dp,
-                            vertical = 8.dp
+                            vertical = 16.dp
                         )
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "BCSD",
-                            style = KoinTheme.typography.bold20,
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.finish_6),
-                            contentDescription = "picture",
-                            modifier = Modifier
-                                .size(24.dp)
-                                .padding(end = 4.dp)
-                        )
-                        Text(
-                            text = "000",
-                            style = KoinTheme.typography.medium14
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Text(
+                                text = "BCSD",
+                                style = KoinTheme.typography.bold20,
+                                modifier = Modifier
+                                    .padding(end = 8.dp)
+                            )
+                            Image(
+                                painter = painterResource(id = R.drawable.fi_heart),
+                                contentDescription = "picture",
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .padding(end = 4.dp)
+                            )
+                            Text(
+                                text = "000",
+                                style = KoinTheme.typography.medium14
+                            )
+                        }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            DetailButton(
+                                text = "수정하기",
+                                onClick = {}
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            DetailButton(
+                                text = "권한 위임",
+                                onClick = {}
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Column(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         labels.forEach { label ->
                             Text(
@@ -122,11 +150,12 @@ fun ClubDetail(
                     }
                     Spacer(modifier = Modifier.height(12.dp))
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth()
+                        ,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.finish_6),
+                            painter = painterResource(id = R.drawable.fi_info),
                             contentDescription = "picture",
                             modifier = Modifier
                                 .size(17.dp)
@@ -153,11 +182,17 @@ fun ClubDetail(
             }
             item {
                 HorizontalPager(
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
+                    ,
                     state = pagerState,
                     verticalAlignment = Alignment.Top
                 ) { page ->
+                    val scrollState = rememberScrollState()
+
+                    // 페이지가 바뀔 때마다 스크롤 상태 초기화
+                    LaunchedEffect(pagerState.currentPage) {
+                        scrollState.scrollTo(0)
+                    }
                     when(tabs[page]){
                         DetailTabType.DETAIL_INTRO.title -> {
                             // 아직 요소 없음
@@ -192,15 +227,13 @@ fun ClubDetail(
                                     questionText = "추가 모집 공고는 언제 올라오나요",
                                     createdDate = "2025.00.00. 00:00",
                                     onQuestionDeleteClick = {},
-                                    onAnswerDeleteClick = {},
-                                    answerText = "올렸습니다!"
+                                    onAnswerDeleteClick = {}
                                 )
                                 DetailQnaBox(
                                     questionText = "추가 모집 공고는 언제 올라오나요",
                                     createdDate = "2025.00.00. 00:00",
                                     onQuestionDeleteClick = {},
-                                    onAnswerDeleteClick = {},
-                                    answerText = "올렸습니다!"
+                                    onAnswerDeleteClick = {}
                                 )
                                 DetailQnaBox(
                                     questionText = "추가 모집 공고는 언제 올라오나요",

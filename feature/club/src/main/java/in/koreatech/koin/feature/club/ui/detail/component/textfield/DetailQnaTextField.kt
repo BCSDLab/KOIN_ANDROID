@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,51 +29,56 @@ import `in`.koreatech.koin.feature.club.R
 
 @Composable
 fun DetailQnaTextField(
+    modifier: Modifier = Modifier,
     value: String,
     hint: String = "답변을 입력해주세요.",
-    onValueChange: () -> Unit,
-    onButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .border(
-            width = 1.dp,
-            color = Color(0xFFCE86FD),
-            shape = RoundedCornerShape(size = 4.dp)
-        )
-        .background(KoinTheme.colors.neutral100)
-        .padding(
-            horizontal = 10.dp,
-            vertical = 10.dp
-        )
+    onValueChange: (String) -> Unit,
+    onButtonClick: () -> Unit
 ) {
-    var text by remember { mutableStateOf("$value") }
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-    ) {
-        if (text.isEmpty()) {
-            Text(
-                text = hint,
-                color = KoinTheme.colors.neutral600,
-                style = KoinTheme.typography.regular14
-            )
+    BasicTextField(
+        modifier = Modifier,
+        value = value,
+        textStyle = KoinTheme.typography.regular14,
+        onValueChange = { onValueChange(it) },
+        decorationBox = { innerTextField ->
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = Color(0xFFCE86FD),
+                        shape = RoundedCornerShape(size = 4.dp)
+                    )
+                    .background(KoinTheme.colors.neutral100)
+                    .padding(
+                        horizontal = 10.dp,
+                        vertical = 10.dp
+                    )
+            ) {
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = hint,
+                            color = KoinTheme.colors.neutral600,
+                            style = KoinTheme.typography.regular14
+                        )
+                    }
+                    innerTextField()
+                }
+                Image(
+                    painter = painterResource(id = R.drawable.fi_send),
+                    contentDescription = "QuestionDelete",
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { onButtonClick() }
+                )
+            }
         }
-        BasicTextField(
-            value = text,
-            onValueChange = { onValueChange() },
-            textStyle = KoinTheme.typography.regular14,
-            modifier = Modifier
-                .weight(1f)
-        )
-        Image(
-            painter = painterResource(id = R.drawable.finish_6),
-            contentDescription = "QuestionDelete",
-            modifier = Modifier
-                .size(20.dp)
-                .clickable { onButtonClick() }
-        )
-    }
+    )
 }
 
 
