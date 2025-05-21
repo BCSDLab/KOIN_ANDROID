@@ -103,12 +103,6 @@ jobs:
           TEAM_LABEL="${{ steps.check_need_label.outputs.team }}"
           if [[ "$TEAM_LABEL" == "$NO_VALUE" ]]; then
             echo "No Team code like \"[Campus]\""
-          fi
-          # JOB_LABEL="${{ steps.check_need_label.outputs.job }}"
-          # if [[ "$JOB_LABEL" == "$NO_VALUE" ]]; then
-          #   echo "No JOB code like \"[fix]\""
-          # fi
-          if [[ "$TEAM_LABEL" == "$NO_VALUE" || "$JOB_LABEL" == "$NO_VALUE" ]]; then
             exit 1
           fi
 
