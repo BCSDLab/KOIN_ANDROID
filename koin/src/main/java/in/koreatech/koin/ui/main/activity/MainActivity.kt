@@ -46,6 +46,7 @@ import `in`.koreatech.koin.domain.model.article.ArticleNotiType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
+import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
@@ -240,7 +241,8 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                             "main_bus_timetable",
                             "버스 시간표 바로가기"
                         )
-                        val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
+                        val intent = Intent(this@MainActivity, ClubActivity::class.java)
+                        //val intent = Intent(this@MainActivity, BusTimetableActivity::class.java)
                         startActivity(intent)
                     },
                     onSearchCardClicked = {

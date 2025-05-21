@@ -22,7 +22,7 @@ class ClubActivity : ComponentActivity() {
                 NavHost(
                     modifier = Modifier,
                     navController = navController,
-                    startDestination = ClubNavType.ClubList.route
+                    startDestination = ClubNavType.ClubDetail.route
                 ) {
                     koinClubGraph(
                         navController = navController
