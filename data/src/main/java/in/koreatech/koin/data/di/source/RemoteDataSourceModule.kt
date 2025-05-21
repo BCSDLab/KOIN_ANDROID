@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.api.ArticleApi
 import `in`.koreatech.koin.data.api.BannerApi
 import `in`.koreatech.koin.data.api.ChatApi
+import `in`.koreatech.koin.data.api.ClubApi
 import `in`.koreatech.koin.data.api.CoopShopApi
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
@@ -20,12 +21,14 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
+import `in`.koreatech.koin.data.api.auth.ClubAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.BannerRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.ChatRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.CoopShopRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
@@ -40,6 +43,7 @@ import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import javax.inject.Singleton
+import koreatech.koin.data.source.remote.ClubRemoteDataSource
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -153,5 +157,14 @@ object RemoteDataSourceModule {
         bannerApi: BannerApi
     ): BannerRemoteDataSource {
         return BannerRemoteDataSource(bannerApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideClubRemoteDataSource(
+        clubApi: ClubApi,
+        clubAuthApi: ClubAuthApi
+    ): ClubRemoteDataSource {
+        return ClubRemoteDataSource(clubApi, clubAuthApi)
     }
 }
