@@ -3,13 +3,14 @@ package `in`.koreatech.koin.feature.timetable.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -29,8 +30,10 @@ import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.model.dummyLecture
+import `in`.koreatech.koin.feature.timetable.utils.toLectureTime
 import `in`.koreatech.koin.feature.timetable.utils.toTimetableEvents
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LectureBox(
     position: Int,
@@ -81,7 +84,7 @@ fun LectureBox(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier
+            modifier = Modifier.weight(1f)
         ) {
             Text(
                 text = lecture.name,
@@ -94,19 +97,13 @@ fun LectureBox(
                 color = KoinTheme.colors.neutral800
             )
 
-            Row {
-                events.forEachIndexed { index, event ->
+            FlowRow {
+                events.forEach {
                     Text(
-                        text = event.dayOfWeekToKorean(),
+                        text = it.toLectureTime(),
                         style = KoinTheme.typography.regular12,
                         color = KoinTheme.colors.neutral800
                     )
-                    Text(
-                        text = "${event.formatClassTimeCode().first} ~ ${event.formatClassTimeCode().second}",
-                        style = KoinTheme.typography.regular12,
-                        color = KoinTheme.colors.neutral800
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
                 }
             }
             Text(
