@@ -45,15 +45,14 @@ jobs:
 
           # 작업별 TAG
           FEATURE_TAG="feature"
-          BUG_TAG="bug"
-
+          FIX_TAG="fix"
           REFECTOR_TAG="refactor"
           CHORE_TAG="chore"
 
           # 작업별 REGEX, TAG 연관 배열
           JOB_MAP["$FEATURE_REGEX"]="$FEATURE_TAG"
-          JOB_MAP["$BUG_REGEX"]="$BUG_TAG"
-          JOB_MAP["$FIX_REGEX"]="$BUG_TAG"
+          JOB_MAP["$BUG_REGEX"]="$FIX_TAG"
+          JOB_MAP["$FIX_REGEX"]="$FIX_TAG"
           JOB_MAP["$REFECTOR_REGEX"]="$REFECTOR_TAG"
           JOB_MAP["$CHORE_REGEX"]="$CHORE_TAG"
 
@@ -94,9 +93,9 @@ jobs:
           TEAM_RESULT=$(team_check "$PR_TITLE")
           echo "team=$TEAM_RESULT" >> $GITHUB_OUTPUT
 
-          # 작업 검사, 결과 저장
-          JOB_RESULT=$(job_check "$PR_TITLE")
-          echo "job=$JOB_RESULT" >> $GITHUB_OUTPUT
+          # 작업 검사, 결과 저장 (미사용)
+          # JOB_RESULT=$(job_check "$PR_TITLE")
+          # echo "job=$JOB_RESULT" >> $GITHUB_OUTPUT
 
       - name: Check Error
         run: |
@@ -105,10 +104,10 @@ jobs:
           if [[ "$TEAM_LABEL" == "$NO_VALUE" ]]; then
             echo "No Team code like \"[Campus]\""
           fi
-          JOB_LABEL="${{ steps.check_need_label.outputs.job }}"
-          if [[ "$JOB_LABEL" == "$NO_VALUE" ]]; then
-            echo "No JOB code like \"[fix]\""
-          fi
+          # JOB_LABEL="${{ steps.check_need_label.outputs.job }}"
+          # if [[ "$JOB_LABEL" == "$NO_VALUE" ]]; then
+          #   echo "No JOB code like \"[fix]\""
+          # fi
           if [[ "$TEAM_LABEL" == "$NO_VALUE" || "$JOB_LABEL" == "$NO_VALUE" ]]; then
             exit 1
           fi
@@ -118,10 +117,9 @@ jobs:
         with:
           script: |
             const team_label = '${{ steps.check_need_label.outputs.team }}';
-            const job_label = '${{ steps.check_need_label.outputs.job }}';
             github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              labels: [team_label, job_label]
+              labels: [team_label]
             });
