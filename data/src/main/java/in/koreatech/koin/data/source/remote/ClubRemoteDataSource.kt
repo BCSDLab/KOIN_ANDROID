@@ -7,4 +7,6 @@ import javax.inject.Inject
 class ClubRemoteDataSource @Inject constructor(
     private val clubApi: ClubApi,
     private val clubAuthApi: ClubAuthApi
-)
+) {
+    suspend fun getClubsCategories() = clubApi.getClubsCategories()
+}
