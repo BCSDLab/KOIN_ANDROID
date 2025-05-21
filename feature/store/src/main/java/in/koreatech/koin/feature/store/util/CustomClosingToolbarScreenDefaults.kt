@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.core.util
+package `in`.koreatech.feature.store.util
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
