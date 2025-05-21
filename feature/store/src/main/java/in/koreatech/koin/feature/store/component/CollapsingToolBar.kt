@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.TabRowDefaults.Divider
@@ -24,9 +24,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
@@ -52,6 +48,7 @@ import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
+import `in`.koreatech.koin.feature.store.state.CustomCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.ui.StoreDetailImage
 import kotlin.math.roundToInt
 
@@ -64,37 +61,21 @@ fun CustomCollapsingToolbarScreen(
     menus: List<StoreMenuCategories>,
     pagerState: PagerState
 ) {
-    val density = LocalDensity.current
-    val toolbarMinHeight = 40.dp
-    val toolbarMaxHeight = 300.dp
-    val toolbarHeightPx = with(density) { toolbarMaxHeight.toPx() }
-    val minHeightPx = with(density) { toolbarMinHeight.toPx() }
-    val listState = remember { LazyListState() }
-    val toolbarOffsetPx = remember { mutableFloatStateOf(0f) }
-
-    val progress by remember {
-        derivedStateOf {
-            val offset = toolbarOffsetPx.floatValue
-            val range = toolbarHeightPx - minHeightPx
-            val normalized = ((-offset) / range).coerceIn(0f, 1f)
-            normalized
-        }
-    }
+    val toolbarState = remember { CustomCollapsingToolbarState() }
+    val rememberState= toolbarState.rememberCollapsingToolbarState(
+        toolbarMinHeight = 40.dp,
+        toolbarMaxHeight = 300.dp
+    )
+    val progress = toolbarState.progress(rememberState)
     val overlayAlpha = (progress).coerceIn(0f, 1f)
     val nestedScrollConnection = storeCollapsingToolbarConnection(
-        listState = listState,
-        toolbarOffsetPx = toolbarOffsetPx,
-        toolbarHeightPx = toolbarHeightPx,
-        minHeightPx = minHeightPx
+        listState = rememberState.listState,
+        toolbarOffsetPx = rememberState.toolbarOffsetPx,
+        toolbarHeightPx = toolbarState.toolbarHeightPx,
+        minHeightPx = toolbarState.minHeightPx
     )
+    val currentToolbarHeightDp = toolbarState.currentToolbarHeightDp(rememberState)
 
-    val currentToolbarHeightDp by remember {
-        derivedStateOf {
-            with(density) {
-                (toolbarHeightPx + toolbarOffsetPx.floatValue).toDp()
-            }
-        }
-    }
 
     Box(
         modifier = Modifier
@@ -105,12 +86,10 @@ fun CustomCollapsingToolbarScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
-                        .asPaddingValues()
-                        .calculateTopPadding()
-                ),
-            state = listState
+                .padding( top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
+                    .asPaddingValues()
+                    .calculateTopPadding()),
+            state = rememberState.listState,
         ) {
             item {
                 Column {
@@ -198,8 +177,8 @@ fun CustomCollapsingToolbarScreen(
 
         StoreDetailImage(
             modifier = Modifier
-                .height(toolbarMaxHeight)
-                .offset { IntOffset(0, toolbarOffsetPx.floatValue.roundToInt()) }
+                .height( toolbarState.toolbarMaxHeight)
+                .offset { IntOffset(0, rememberState.toolbarOffsetPx.floatValue.roundToInt()) }
                 .fillMaxWidth(),
             imageUrls = storeInfo.imageUrls ?: emptyList(),
             alpha = overlayAlpha,
