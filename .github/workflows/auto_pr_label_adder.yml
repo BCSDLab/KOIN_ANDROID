@@ -16,7 +16,6 @@ jobs:
           NO_VALUE="no value"
           
           declare -A TEAM_MAP
-          declare -A JOB_MAP
 
           # Team 별 REGEX
           CAMPUS_REGEX="\[[cC][aA][mM][pP][uU][sS]\]"
@@ -35,26 +34,6 @@ jobs:
           TEAM_MAP["$BUSINESS_REGEX"]="$BUSINESS_TAG"
           TEAM_MAP["$USER_REGEX"]="$USER_TAG"
           TEAM_MAP["$KOIN_PROJECT_REGEX"]="$KOIN_PROJECT_TAG"
-
-          # 작업별 REGEX (fix 와 bug 는 동일합니다)
-          FEATURE_REGEX="\[[fF][eE][aA][tT][uU][rR][eE]\]"
-          BUG_REGEX="\[[bB][uU][gG]\]"
-          FIX_REGEX="\[[fF][iI][xX]\]"
-          REFECTOR_REGEX="\[[rR][eE][fF][eE][cC][tT][oO][rR]\]"
-          CHORE_REGEX="\[[cC][hH][oO][rR][eE]\]"
-
-          # 작업별 TAG
-          FEATURE_TAG="feature"
-          FIX_TAG="fix"
-          REFECTOR_TAG="refactor"
-          CHORE_TAG="chore"
-
-          # 작업별 REGEX, TAG 연관 배열
-          JOB_MAP["$FEATURE_REGEX"]="$FEATURE_TAG"
-          JOB_MAP["$BUG_REGEX"]="$FIX_TAG"
-          JOB_MAP["$FIX_REGEX"]="$FIX_TAG"
-          JOB_MAP["$REFECTOR_REGEX"]="$REFECTOR_TAG"
-          JOB_MAP["$CHORE_REGEX"]="$CHORE_TAG"
 
           # 정규식 검사
           check_by_regex() {
@@ -76,26 +55,10 @@ jobs:
             echo "$NO_VALUE"
             return 0
           }
-          # 작업 순차 검색
-          job_check() {
-            local title=$1
-            for regex in "${!JOB_MAP[@]}"; do
-              if check_by_regex "$title" "$regex"; then
-                echo "${JOB_MAP[$regex]}"
-                return 0
-              fi
-            done
-            echo "$NO_VALUE"
-            return 0
-          }
 
           # Team 검사, 결과 저장
           TEAM_RESULT=$(team_check "$PR_TITLE")
           echo "team=$TEAM_RESULT" >> $GITHUB_OUTPUT
-
-          # 작업 검사, 결과 저장 (미사용)
-          # JOB_RESULT=$(job_check "$PR_TITLE")
-          # echo "job=$JOB_RESULT" >> $GITHUB_OUTPUT
 
       - name: Check Error
         run: |
