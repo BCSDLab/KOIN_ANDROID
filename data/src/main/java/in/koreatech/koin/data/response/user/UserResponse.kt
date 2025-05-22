@@ -15,4 +15,3 @@ data class UserResponse(
     @SerializedName("student_number") val studentNumber: String?,
     @SerializedName("user_type") val userType: String
 )
-

@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.data.mapper
 
-import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import retrofit2.HttpException
 import `in`.koreatech.koin.domain.error.LoginError.LoginError
 
 fun Throwable.throwableMapper(): Result<Unit> {
