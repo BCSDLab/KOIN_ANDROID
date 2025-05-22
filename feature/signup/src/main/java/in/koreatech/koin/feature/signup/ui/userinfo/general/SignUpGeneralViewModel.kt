@@ -10,7 +10,6 @@ import `in`.koreatech.koin.domain.usecase.signup.CheckLoginIdDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostGeneralRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.isLoginIdFormat
-import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import `in`.koreatech.koin.feature.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.signup.navigation.NAME
 import `in`.koreatech.koin.feature.signup.navigation.PHONE_NUMBER
@@ -54,7 +53,7 @@ class SignUpGeneralViewModel @Inject constructor(
     fun setPassword(password: String) {
         blockingIntent {
             reduce {
-                state.copy(password = password, isPasswordValid = password.isValidPassword(), isPasswordEqual = password == state.passwordConfirm)
+                state.copy(password = password)
             }
         }
     }
@@ -62,7 +61,7 @@ class SignUpGeneralViewModel @Inject constructor(
     fun setPasswordConfirm(passwordConfirm: String) {
         blockingIntent {
             reduce {
-                state.copy(passwordConfirm = passwordConfirm, isPasswordEqual = state.password == passwordConfirm)
+                state.copy(passwordConfirm = passwordConfirm)
             }
         }
     }

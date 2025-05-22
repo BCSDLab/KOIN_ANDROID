@@ -16,7 +16,7 @@ class UserLoginUseCase @Inject constructor(
     suspend operator fun invoke(
         loginId: String,
         password: String
-    ): Pair<Unit?, ErrorHandler?> {
+    ): Result<Unit> {
         return try {
             val authToken = userRepository.getToken(loginId, password.toSHA256())
             when (authToken.userType) {
@@ -24,20 +24,20 @@ class UserLoginUseCase @Inject constructor(
                     tokenRepository.saveAccessToken(authToken.token)
                     tokenRepository.saveRefreshToken(authToken.refreshToken)
                     userRepository.fetchUserInfo(authToken.userType)
-                    Unit to null
+                    Result.success(Unit)
                 }
                 UserType.GENERAL.name -> {
                     tokenRepository.saveAccessToken(authToken.token)
                     tokenRepository.saveRefreshToken(authToken.refreshToken)
                     userRepository.fetchUserInfo(authToken.userType)
-                    Unit to null
+                    Result.success(Unit)
                 }
                 else -> {
-                    Unit to null
+                    Result.success(Unit)
                 }
             }
         } catch (throwable: Throwable) {
-            null to userErrorHandler.handleGetTokenErrorV2(throwable)
+            userErrorHandler.handleGetTokenErrorV2(throwable)
         }
     }
 }

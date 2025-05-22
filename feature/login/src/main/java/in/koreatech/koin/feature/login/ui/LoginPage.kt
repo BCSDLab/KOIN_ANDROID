@@ -36,7 +36,6 @@ fun LoginPage(
     val coroutineScope = rememberCoroutineScope()
 
     val id by viewModel.id.collectAsState()
-    val loginError by viewModel.loginError.collectAsState()
     val password by viewModel.password.collectAsState()
     val isPasswordVisible by viewModel.isPasswordVisible.collectAsState()
     val isUserAlertVisible by viewModel.isUserAlertVisible.collectAsState()
@@ -85,7 +84,7 @@ fun LoginPage(
                 onToggleVisibility = viewModel::togglePasswordVisibility
             )
             AlertMessage(
-                text = loginError,
+                text = stringResource(R.string.pw_id_alert),
                 isVisible = isIdPwAlertVisible,
                 modifier = Modifier.align(Alignment.Start)
             )

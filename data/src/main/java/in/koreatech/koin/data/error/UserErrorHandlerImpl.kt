@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.error
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.data.R
+import `in`.koreatech.koin.data.mapper.ThrowableMapper
 import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.handleCommonError
 import `in`.koreatech.koin.data.util.unknownErrorHandler
@@ -41,16 +42,8 @@ class UserErrorHandlerImpl @Inject constructor(
         }
     }
 
-    override fun handleGetTokenErrorV2(throwable: Throwable): ErrorHandler {
-        return throwable.handleCommonError(context) {
-            when (it) {
-                is HttpException -> {
-                    ErrorHandler(it.code().toString())
-                }
-
-                else -> ErrorHandler(context.getString(R.string.error_network_unknown))
-            }.withUnknown(context)
-        }
+    override fun handleGetTokenErrorV2(throwable: Throwable): Result<Unit> {
+        return throwable.ThrowableMapper()
     }
 
     override fun handleRequestPasswordResetEmailError(throwable: Throwable): ErrorHandler {

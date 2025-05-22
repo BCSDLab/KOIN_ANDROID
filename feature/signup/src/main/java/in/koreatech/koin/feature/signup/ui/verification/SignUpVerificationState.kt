@@ -2,6 +2,8 @@ package `in`.koreatech.koin.feature.signup.ui.verification
 
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.util.ext.isEnglish
+import `in`.koreatech.koin.domain.util.ext.isKorean
 
 data class SignUpVerificationState(
     val name: String = "",
@@ -13,15 +15,24 @@ data class SignUpVerificationState(
     val verificationTimeLeft: Int = 180
 )
 
+val SignUpVerificationState.isNameValid: Boolean
+    get() = if (name.isKorean()) {
+        name.length in 2..5
+    } else if (name.isEnglish()) {
+        name.length in 2..30
+    } else {
+        false
+    }
+
 val SignUpVerificationState.currentStep: SignUpVerificationStep
     get() = when {
         phoneNumber.isNotEmpty() && phoneNumberState is SignupContinuationState.RequestedSmsValidationWithRemainingCount -> SignUpVerificationStep.VERIFICATION_CODE
-        name.isNotEmpty() && name.length in 2..5 && gender != Gender.Unknown -> SignUpVerificationStep.PHONE_NUMBER
+        name.isNotEmpty() && isNameValid && gender != Gender.Unknown -> SignUpVerificationStep.PHONE_NUMBER
         else -> SignUpVerificationStep.INITIAL
     }
 
 val SignUpVerificationState.enabled: Boolean
-    get() = verificationCodeState is SignupContinuationState.SmsCodeIsValidated && name.isNotBlank() && name.length in 2..5 && gender != Gender.Unknown && phoneNumber.isNotBlank()
+    get() = verificationCodeState is SignupContinuationState.SmsCodeIsValidated && name.isNotBlank() && isNameValid && gender != Gender.Unknown && phoneNumber.isNotBlank()
 
 enum class SignUpVerificationStep {
     INITIAL,

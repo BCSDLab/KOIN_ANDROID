@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.login.ui
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.LoginError.LoginError
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
@@ -74,9 +75,17 @@ class LoginViewModel @Inject constructor(
                 _loginState.update {
                     it.copy(status = UiStatus.Success)
                 }
-            }.onFailure { errorHandler ->
-                _loginState.update {
-                    it.copy(status = UiStatus.Failed(errorHandler.message))
+            }.onFailure {
+                when (it) {
+                    is LoginError.IncorrectIdPwError -> {
+                        _loginState.update {it.copy(status = UiStatus.Failed(message = "false"))}
+                    }
+                    is LoginError.NetworkError -> {
+                        // todo 네트워크 오류
+                    }
+                    else -> {
+                        // todo 정의되지 않은 오류
+                    }
                 }
             }
     }

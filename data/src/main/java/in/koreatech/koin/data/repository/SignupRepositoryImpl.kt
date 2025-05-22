@@ -135,7 +135,7 @@ class SignupRepositoryImpl @Inject constructor(
                     name = name,
                     phoneNumber = phoneNumber,
                     loginId = loginId,
-                    password = password,
+                    password = password.toSHA256(),
                     department = department,
                     studentNumber = studentNumber,
                     gender = gender,
@@ -196,7 +196,7 @@ class SignupRepositoryImpl @Inject constructor(
                     name = name,
                     phoneNumber = phoneNumber,
                     loginId = loginId,
-                    password = password,
+                    password = password.toSHA256(),
                     gender = gender,
                     email = email.ifBlank { null },
                     nickname = nickname.ifBlank { null }

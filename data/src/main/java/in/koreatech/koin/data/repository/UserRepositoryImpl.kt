@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword

@@ -82,6 +82,7 @@ fun SignUpVerification(
     SignUpVerificationImpl(
         step = uiState.currentStep,
         name = uiState.name,
+        isNameValid = uiState.isNameValid,
         gender = uiState.gender,
         phoneNumber = uiState.phoneNumber,
         phoneNumberState = uiState.phoneNumberState,
@@ -106,6 +107,7 @@ fun SignUpVerification(
 fun SignUpVerificationImpl(
     step: SignUpVerificationStep,
     name: String,
+    isNameValid: Boolean,
     gender: Gender,
     phoneNumber: String,
     phoneNumberState: SignupContinuationState?,
@@ -147,6 +149,7 @@ fun SignUpVerificationImpl(
 
         SignUpVerificationInitialStep(
             name = name,
+            isNameValid = isNameValid,
             gender = gender,
             onNameChange = onNameChange,
             onGenderChange = onGenderChange
@@ -191,6 +194,7 @@ fun SignUpVerificationImpl(
 @Composable
 private fun SignUpVerificationInitialStep(
     name: String,
+    isNameValid: Boolean,
     gender: Gender,
     modifier: Modifier = Modifier,
     onNameChange: (String) -> Unit = {},
@@ -213,6 +217,13 @@ private fun SignUpVerificationInitialStep(
                 imeAction = ImeAction.Next
             )
         )
+
+        if (!isNameValid && name.isNotBlank()) {
+            KoinSignUpTextFieldAlert(
+                text = stringResource(R.string.sign_up_name_invalid),
+                state = KoinSignUpTextFieldAlertState.Warning
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -508,6 +519,7 @@ private fun handleSideEffect(
 fun SignUpVerificationPreview() {
     SignUpVerificationImpl(
         name = "홍길동",
+        isNameValid = true,
         gender = Gender.Man,
         phoneNumber = "01012345678",
         phoneNumberState = null,

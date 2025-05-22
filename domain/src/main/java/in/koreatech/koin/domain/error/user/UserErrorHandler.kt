@@ -7,7 +7,7 @@ interface UserErrorHandler {
 
     fun handleGetTokenError(throwable: Throwable): ErrorHandler
 
-    fun handleGetTokenErrorV2(throwable: Throwable): ErrorHandler
+    fun handleGetTokenErrorV2(throwable: Throwable): Result<Unit>
 
     fun handleRequestPasswordResetEmailError(throwable: Throwable): ErrorHandler
 
