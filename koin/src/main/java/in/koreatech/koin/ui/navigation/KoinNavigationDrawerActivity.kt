@@ -406,7 +406,34 @@ abstract class KoinNavigationDrawerActivity :
                                 }
                             }
 
-                            is User.General -> TODO()
+                            is User.General -> {
+                                nameTextView.text =
+                                    if (user.nickname?.isNotEmpty() == true) {
+                                        user.nickname!!
+                                    } else if (user.name?.isNotEmpty() == true) {
+                                        user.name!!
+                                    } else {
+                                        "회원"
+                                    }
+                                nameTextView.visibility = View.VISIBLE
+                                helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+                                chatMenuIcon.visibility = View.VISIBLE
+                                koinNavigationDrawerViewModel.getUnreadMessageCount()
+
+                                when (menuState) {
+                                    MenuState.Main -> {
+                                        if (!checkMainPermission()) {
+                                            requestMainPermissionLauncher.launch(
+                                                MAIN_REQUIRED_PERMISSION
+                                            )
+                                        }
+                                        koinNavigationDrawerViewModel.updateDeviceToken()
+                                    }
+
+                                    else -> Unit
+                                }
+                            }
                         }
                     }
                 }

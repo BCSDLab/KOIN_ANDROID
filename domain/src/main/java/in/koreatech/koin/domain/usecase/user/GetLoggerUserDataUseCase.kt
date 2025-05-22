@@ -40,11 +40,26 @@ private fun User.toLoggerUserData(): LoggerUserData? =
                     is Gender.Man -> "0"
                     is Gender.Woman -> "1"
                     is Gender.Unknown -> ""
-                    null -> TODO()
+                    null -> ""
                 },
                 major = major ?: ""
             )
         }
 
-        is User.General -> TODO()
+        is User.General -> {
+            val id_prefix = "general"
+            val id_postfix = id
+
+            LoggerUserData(
+                userId = "${id_prefix}_${id_postfix}",
+                gender =
+                when (gender) {
+                    is Gender.Man -> "0"
+                    is Gender.Woman -> "1"
+                    is Gender.Unknown -> ""
+                    null -> ""
+                },
+                major = ""
+            )
+        }
     }

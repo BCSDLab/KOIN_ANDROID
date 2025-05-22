@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.login.ui
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -146,6 +147,10 @@ class LoginActivity : ComponentActivity() {
     }
 
     private fun initView() {
+        try {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } catch (ignore: IllegalStateException) {
+        }
         enableEdgeToEdgeWithLightStatusBar()
         setContent {
             KoinTheme {

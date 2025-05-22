@@ -134,7 +134,10 @@ class UserRepositoryImpl @Inject constructor(
                 userLocalDataSource.updateUserInfo(user)
             }
 
-            is User.General -> TODO()
+            is User.General -> {
+                userRemoteDataSource.updateUser(user.toUserRequest())
+                userLocalDataSource.updateUserInfo(user)
+            }
         }
     }
 
@@ -168,7 +171,9 @@ class UserRepositoryImpl @Inject constructor(
             is User.Student -> {
                 userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
             }
-            is User.General -> TODO()
+            is User.General -> {
+                userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
+            }
         }
     }
 }

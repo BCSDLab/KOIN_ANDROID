@@ -56,7 +56,14 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
                         )
                     }
 
-                    is User.General -> TODO()
+                    is User.General -> {
+                        beforeUser.copy(
+                            name = name?.trim()?.ifBlank { null },
+                            nickname = nickname?.trim()?.ifBlank { null },
+                            phoneNumber = phoneNumber?.ifBlank { null },
+                            gender = gender
+                        )
+                    }
                 }
 
             userRepository.updateUser(newUser)

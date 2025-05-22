@@ -115,16 +115,35 @@ class UserInfoEditActivity : ActivityBase() {
                                     binding.rbGenderWoman.isChecked = true
                                 }
 
-                                is Gender.Unknown -> {
+                                else -> {
                                     binding.rbGenderMan.isChecked = false
                                     binding.rbGenderWoman.isChecked = false
                                 }
-
-                                null -> TODO()
                             }
                         }
 
-                    is User.General -> TODO()
+                    is User.General ->
+                        with(binding) {
+                            tvId.text = user.email
+                            etName.setText(user.name)
+                            etNickname.setText(user.nickname)
+                            etPhoneNumber.setText(user.phoneNumber)
+                            etStudentId.setText(getString(R.string.student_id_null))
+                            when (user.gender) {
+                                is Gender.Man -> {
+                                    binding.rbGenderMan.isChecked = true
+                                }
+
+                                is Gender.Woman -> {
+                                    binding.rbGenderWoman.isChecked = true
+                                }
+
+                                else -> {
+                                    binding.rbGenderMan.isChecked = false
+                                    binding.rbGenderWoman.isChecked = false
+                                }
+                            }
+                        }
                 }
             }
 

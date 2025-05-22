@@ -31,7 +31,6 @@ fun User.toUserState(context: Context): UserState {
                     when (gender) {
                         Gender.Woman -> getString(R.string.user_info_gender_female)
                         Gender.Man -> getString(R.string.user_info_gender_male)
-                        Gender.Unknown -> ""
                         else -> ""
                     },
                     studentNumber = studentNumber ?: "",
@@ -39,6 +38,23 @@ fun User.toUserState(context: Context): UserState {
                 )
             }
 
-        is User.General -> TODO()
+        is User.General ->
+            with(context) {
+                UserState(
+                    email = email ?: "",
+                    username = name ?: "",
+                    userNickname = nickname ?: "",
+                    userAnonymousNickname = "",
+                    phoneNumber = phoneNumber ?: "",
+                    gender =
+                    when (gender) {
+                        Gender.Woman -> getString(R.string.user_info_gender_female)
+                        Gender.Man -> getString(R.string.user_info_gender_male)
+                        else -> ""
+                    },
+                    studentNumber = "",
+                    major = ""
+                )
+            }
     }
 }
