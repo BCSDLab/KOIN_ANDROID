@@ -39,8 +39,7 @@ private fun User.toLoggerUserData(): LoggerUserData? =
                 when (gender) {
                     is Gender.Man -> "0"
                     is Gender.Woman -> "1"
-                    is Gender.Unknown -> ""
-                    null -> ""
+                    else -> ""
                 },
                 major = major ?: ""
             )
@@ -56,8 +55,7 @@ private fun User.toLoggerUserData(): LoggerUserData? =
                 when (gender) {
                     is Gender.Man -> "0"
                     is Gender.Woman -> "1"
-                    is Gender.Unknown -> ""
-                    null -> ""
+                    else -> ""
                 },
                 major = ""
             )
