@@ -67,7 +67,7 @@ class UserLocalDataSource @Inject constructor(
                             nickname = user.nickname,
                             phoneNumber = user.phoneNumber ?: "",
                             studentNumber = user.studentNumber ?: "",
-                            userType = user.userType,
+                            userType = user.userType
                         )
                     )
                 }
@@ -82,7 +82,7 @@ class UserLocalDataSource @Inject constructor(
                             name = user.name ?: "",
                             nickname = user.nickname,
                             phoneNumber = user.phoneNumber ?: "",
-                            userType = user.userType,
+                            userType = user.userType
                         )
                     )
                 }
