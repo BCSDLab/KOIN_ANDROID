@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.TabRowDefaults.Divider
@@ -62,7 +61,7 @@ fun CustomCollapsingToolbarScreen(
     pagerState: PagerState
 ) {
     val toolbarState = remember { CustomCollapsingToolbarState() }
-    val rememberState= toolbarState.rememberCollapsingToolbarState(
+    val rememberState = toolbarState.rememberCollapsingToolbarState(
         toolbarMinHeight = 40.dp,
         toolbarMaxHeight = 300.dp
     )
@@ -76,7 +75,6 @@ fun CustomCollapsingToolbarScreen(
     )
     val currentToolbarHeightDp = toolbarState.currentToolbarHeightDp(rememberState)
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -86,10 +84,12 @@ fun CustomCollapsingToolbarScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding( top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
-                    .asPaddingValues()
-                    .calculateTopPadding()),
-            state = rememberState.listState,
+                .padding(
+                    top = currentToolbarHeightDp + CustomClosingToolbarScreenDefaults.windowInsets
+                        .asPaddingValues()
+                        .calculateTopPadding()
+                ),
+            state = rememberState.listState
         ) {
             item {
                 Column {
@@ -177,7 +177,7 @@ fun CustomCollapsingToolbarScreen(
 
         StoreDetailImage(
             modifier = Modifier
-                .height( toolbarState.toolbarMaxHeight)
+                .height(toolbarState.toolbarMaxHeight)
                 .offset { IntOffset(0, rememberState.toolbarOffsetPx.floatValue.roundToInt()) }
                 .fillMaxWidth(),
             imageUrls = storeInfo.imageUrls ?: emptyList(),

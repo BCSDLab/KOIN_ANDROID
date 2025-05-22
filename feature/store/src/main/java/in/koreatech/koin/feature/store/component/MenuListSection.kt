@@ -47,11 +47,12 @@ fun MenuListSection(category: String, menus: List<ShopMenus>) {
                 MenuItem(
                     menu = menus[it]
                 )
-                if (it != menus.size-1)
+                if (it != menus.size - 1) {
                     Divider(
                         color = KoinTheme.colors.neutral300,
-                        thickness = 2.dp,
+                        thickness = 2.dp
                     )
+                }
             }
         }
     }

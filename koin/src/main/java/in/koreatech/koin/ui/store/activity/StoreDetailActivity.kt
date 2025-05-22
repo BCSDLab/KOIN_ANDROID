@@ -363,7 +363,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
                 // 운영시간
                 storeDetailTimeTextview.text =
-                    generateOpenCloseTimeString(it.open?.openTime ?:"", it.open?.closeTime?:"")
+                    generateOpenCloseTimeString(it.open?.openTime ?: "", it.open?.closeTime ?: "")
 
                 // 주소
                 if (it.address == null) {

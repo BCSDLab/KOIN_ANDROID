@@ -5,12 +5,11 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalDensity
-
 
 class CustomCollapsingToolbarState(
     val toolbarMinHeight: Dp = 40.dp,
@@ -18,9 +17,9 @@ class CustomCollapsingToolbarState(
     val toolbarOffsetPx: MutableFloatState = mutableFloatStateOf(0f),
     val listState: LazyListState = LazyListState()
 ) {
-    var toolbarHeightPx :Float = 0f
+    var toolbarHeightPx: Float = 0f
         private set
-    var minHeightPx :Float = 0f
+    var minHeightPx: Float = 0f
         private set
 
     @SuppressLint("UnrememberedMutableState")
