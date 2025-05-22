@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.domain.usecase.user
 
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
-import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
