@@ -52,11 +52,11 @@ private fun User.toLoggerUserData(): LoggerUserData? =
             LoggerUserData(
                 userId = "${id_prefix}_${id_postfix}",
                 gender =
-                    when (gender) {
-                        is Gender.Man -> "0"
-                        is Gender.Woman -> "1"
-                        is Gender.Unknown -> ""
-                    },
+                when (gender) {
+                    is Gender.Man -> "0"
+                    is Gender.Woman -> "1"
+                    is Gender.Unknown -> ""
+                },
                 major = ""
             )
         }
