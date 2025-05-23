@@ -34,8 +34,8 @@
     <string name="delivery_fee">배달금액</string>
     <string name="operating_time">운영시간</string>
     <string name="other_info">기타정보</string>
-    <string name="delivery_available">배달가능</string>
-    <string name="card_available">카드가능</string>
+    <string name="delivery_available">배달 가능</string>
+    <string name="card_available">카드 가능</string>
     <string name="account_transfer_avilable">계좌이체가능</string>
     <string name="revise">수정</string>
     <string name="day_of_week">요일</string>
