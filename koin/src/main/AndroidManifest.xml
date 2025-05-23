@@ -212,8 +212,20 @@
         </activity>
         <activity
             android:name=".ui.forgotpassword.ForgotPasswordActivity"
-            android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:exported="true"
+            android:theme="@style/KAPTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="findpassword"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.store.activity.StoreActivity"
             android:exported="false"
