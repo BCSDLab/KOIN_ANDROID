@@ -14,7 +14,7 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityUserInfoBinding
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.ui.userinfo.contract.UserInfoEditContract
 import `in`.koreatech.koin.ui.userinfo.state.toUserState
 import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoViewModel
@@ -93,7 +93,7 @@ class UserInfoActivity : ActivityBase() {
 
     private fun goToLoginActivity() {
         finishAffinity()
-        startActivity(Intent(this@UserInfoActivity, LoginActivity::class.java))
+        startActivity(Intent(this@UserInfoActivity, SignInActivity::class.java))
     }
 
     override fun onDestroy() {

@@ -14,11 +14,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
+import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_EXTRA_KEY
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAV_ARTICLE
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD
 import `in`.koreatech.koin.ui.article.ArticleBoardType
-import `in`.koreatech.koin.ui.login.LoginActivity
 
 @AndroidEntryPoint
 class ArticleListLostAndFoundFragment : Fragment() {
@@ -59,7 +59,7 @@ class ArticleListLostAndFoundFragment : Fragment() {
                         )
                     },
                     navigateToLoginActivity = {
-                        Intent(requireContext(), LoginActivity::class.java).apply {
+                        Intent(requireContext(), SignInActivity::class.java).apply {
                             putExtra(
                                 BUNDLE_ARTICLE_EXTRA_KEY,
                                 bundleOf(

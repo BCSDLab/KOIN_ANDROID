@@ -15,8 +15,8 @@ import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
+import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.ui.changepassword.ChangePasswordContract
-import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.term.TermActivity
 import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
@@ -37,7 +37,7 @@ class SettingActivity : ActivityBase() {
             setActionTextColor(getColor(R.color.sub_sub500))
             setBackgroundTint(getColor(R.color.primary_900))
             setAction(R.string.snack_bar_login_action_text) {
-                startActivity(Intent(this@SettingActivity, LoginActivity::class.java))
+                startActivity(Intent(this@SettingActivity, SignInActivity::class.java))
                 dismiss()
             }
         }

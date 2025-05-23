@@ -14,7 +14,7 @@ import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.DialogUserLeaveBinding
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.util.ext.setWidthPercent
 import kotlinx.coroutines.launch
 
@@ -50,7 +50,7 @@ class UserLeaveDialog : DialogFragment(R.layout.dialog_user_leave) {
                         is UiStatus.Success -> {
                             dismiss()
                             requireActivity().finishAffinity()
-                            startActivity(Intent(requireContext(), LoginActivity::class.java))
+                            startActivity(Intent(requireContext(), SignInActivity::class.java))
                         }
 
                         is UiStatus.Failed -> {

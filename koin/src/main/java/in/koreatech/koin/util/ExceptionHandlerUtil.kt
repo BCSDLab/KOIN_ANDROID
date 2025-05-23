@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Looper
 import androidx.core.os.HandlerCompat
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.ui.error.ErrorActivity
-import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.util.ext.showToast
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -49,7 +49,7 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
 
     private fun goToLoginActivity() {
         val handler = HandlerCompat.createAsync(Looper.getMainLooper())
-        Intent(context.applicationContext, LoginActivity::class.java).run {
+        Intent(context.applicationContext, SignInActivity::class.java).run {
             handler.post {
                 context.applicationContext.showToast(
                     context.getString(R.string.token_out_dated)
