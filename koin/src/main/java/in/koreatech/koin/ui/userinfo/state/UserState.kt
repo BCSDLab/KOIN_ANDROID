@@ -37,5 +37,7 @@ fun User.toUserState(context: Context): UserState {
                     major = major ?: ""
                 )
             }
+
+        is User.General -> TODO("Will be implement with user info edit")
     }
 }
