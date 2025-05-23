@@ -132,8 +132,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
             <data
-                android:host="home"
-                android:pathPrefix="/home"
+                android:host="main"
+                android:pathPrefix="/activity"
                 android:scheme="koin" />
             </intent-filter>
         </activity>
