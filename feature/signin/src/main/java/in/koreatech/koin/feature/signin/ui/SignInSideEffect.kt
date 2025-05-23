@@ -1,3 +1,5 @@
 package `in`.koreatech.koin.feature.signin.ui
 
-class SignInSideEffect
+sealed class SignInSideEffect {
+    data object SignInSuccess : SignInSideEffect()
+}

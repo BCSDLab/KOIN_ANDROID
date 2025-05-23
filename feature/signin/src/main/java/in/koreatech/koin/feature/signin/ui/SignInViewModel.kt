@@ -6,13 +6,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
@@ -23,7 +24,7 @@ class SignInViewModel @Inject constructor(
     fun setLoginId(loginId: String) {
         blockingIntent {
             reduce {
-                state.copy(loginId = loginId)
+                state.copy(loginId = loginId, loginError = state.loginError.copy(isError = false))
             }
         }
     }
@@ -31,7 +32,7 @@ class SignInViewModel @Inject constructor(
     fun setPassword(password: String) {
         blockingIntent {
             reduce {
-                state.copy(password = password)
+                state.copy(password = password, loginError = state.loginError.copy(isError = false))
             }
         }
     }
@@ -47,12 +48,10 @@ class SignInViewModel @Inject constructor(
     fun signIn() = viewModelScope.launch {
         intent {
             userLoginUseCase(state.loginId, state.password).onSuccess {
-                reduce {
-                    state.copy(isSuccess = true)
-                }
+                postSideEffect(SignInSideEffect.SignInSuccess)
             }.onFailure {
                 reduce {
-                    state.copy(isSuccess = false, loginError = SignInState.LoginError(true, it.message))
+                    state.copy(loginError = SignInState.LoginError(true, it.message))
                 }
             }
         }

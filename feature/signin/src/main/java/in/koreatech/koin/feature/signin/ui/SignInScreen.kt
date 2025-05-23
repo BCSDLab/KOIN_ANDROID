@@ -41,6 +41,7 @@ import `in`.koreatech.koin.feature.signin.component.KoinSignInTextButton
 import `in`.koreatech.koin.feature.signin.component.KoinSignInTextFieldAlert
 import `in`.koreatech.koin.feature.signin.component.KoinSignInTextFieldAlertState
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun SignInScreen(
@@ -50,10 +51,11 @@ fun SignInScreen(
 ) {
     val uiState by viewModel.collectAsState()
 
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
-            nextRoute()
-        }
+    viewModel.collectSideEffect {
+        handleSideEffect(
+            sideEffect = it,
+            nextRoute = nextRoute
+        )
     }
 
     SignInScreenImpl(
@@ -252,4 +254,15 @@ private fun SignInScreenPreview() {
         showPassword = false,
         isError = true
     )
+}
+
+fun handleSideEffect(
+    sideEffect: SignInSideEffect,
+    nextRoute: () -> Unit
+) {
+    when (sideEffect) {
+        is SignInSideEffect.SignInSuccess -> {
+            nextRoute()
+        }
+    }
 }
