@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 
 @Composable
-fun DetailButton (
+fun DetailButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -46,7 +46,7 @@ fun DetailButton (
             style = textStyle,
             color = if (enabled) colors.contentColor else colors.disabledContentColor,
             modifier = Modifier.padding(contentPadding)
-            )
+        )
     }
 }
 

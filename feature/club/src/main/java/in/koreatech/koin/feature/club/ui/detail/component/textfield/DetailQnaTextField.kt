@@ -14,10 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +29,7 @@ fun DetailQnaTextField(
     value: String,
     hint: String = "답변을 입력해주세요.",
     onValueChange: (String) -> Unit,
-    onButtonClick: () -> Unit
+    onSendClick: () -> Unit
 ) {
     BasicTextField(
         modifier = Modifier,
@@ -70,17 +66,16 @@ fun DetailQnaTextField(
                     innerTextField()
                 }
                 Image(
-                    painter = painterResource(id = R.drawable.fi_send),
+                    painter = painterResource(id = R.drawable.icon_qna_send),
                     contentDescription = "QuestionDelete",
                     modifier = Modifier
                         .size(20.dp)
-                        .clickable { onButtonClick() }
+                        .clickable { onSendClick() }
                 )
             }
         }
     )
 }
-
 
 @Preview
 @Composable
@@ -88,15 +83,16 @@ fun DetailQnaTextFieldTextPreview() {
     DetailQnaTextField(
         value = "답변",
         onValueChange = {},
-        onButtonClick = {}
+        onSendClick = {}
     )
 }
+
 @Preview
 @Composable
 fun DetailQnaTextFieldHintPreview() {
     DetailQnaTextField(
         value = "",
         onValueChange = {},
-        onButtonClick = {}
+        onSendClick = {}
     )
 }
