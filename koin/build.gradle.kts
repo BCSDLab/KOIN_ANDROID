@@ -108,6 +108,7 @@ dependencies {
     implementation(project(":feature:chat"))
     implementation(project(":feature:banner"))
     implementation(project(":feature:signup"))
+    implementation(project(":feature:signin"))
 
     implementation(libs.guava)
 
