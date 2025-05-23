@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.tab.KoinTabRow
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun DetailTabRow(
@@ -19,8 +20,8 @@ fun DetailTabRow(
         selectedTabIndex = selectedTabIndex,
         onTabSelected = onTabSelected,
         titles = titles,
-        indicatorColor = Color(0xFFB611F5), // Non theme data
-        selectedTextColor = Color(0xFFB611F5), // Non theme data
+        indicatorColor = RebrandKoinTheme.colors.primary500,
+        selectedTextColor = RebrandKoinTheme.colors.primary500,
         indicator = @Composable { tabPositions ->
             if (selectedTabIndex < tabPositions.size) {
                 TabRowDefaults.SecondaryIndicator(

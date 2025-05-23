@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun DetailButton(
@@ -26,9 +27,9 @@ fun DetailButton(
     shape: Shape = RoundedCornerShape(4.dp),
     enabled: Boolean = true,
     colors: ButtonColors = ButtonColors(
-        containerColor = Color(0xFFB611F5), // Non theme data
+        containerColor = RebrandKoinTheme.colors.primary500,
         contentColor = KoinTheme.colors.neutral0,
-        disabledContainerColor = KoinTheme.colors.neutral300, // Non theme data
+        disabledContainerColor = KoinTheme.colors.neutral300,
         disabledContentColor = KoinTheme.colors.neutral600
     ),
     contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
