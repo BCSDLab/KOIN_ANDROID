@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.signin.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
@@ -44,7 +43,7 @@ fun KoinSignInTextButton(
             color = KoinTheme.colors.neutral500,
             style = KoinTheme.typography.regular12.copy(
                 lineHeightStyle = null // Remove line height
-            ),
+            )
         )
     }
 }
