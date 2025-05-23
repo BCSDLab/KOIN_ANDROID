@@ -100,6 +100,8 @@ fun List<TimetableEvent>.formatTimeRange(): Int {
     }
 }
 
+fun TimetableEvent.toLectureTime(): String = "${dayOfWeekToKorean()}${formatClassTimeCode().first} ~ ${formatClassTimeCode().second} "
+
 // TODO::UseCase 에서 변환하는게 좋아보이네
 fun String.toSemesterModel(): SemesterModel =
     SemesterModel(
