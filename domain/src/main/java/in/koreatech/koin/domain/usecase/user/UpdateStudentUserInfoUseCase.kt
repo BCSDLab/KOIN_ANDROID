@@ -55,6 +55,8 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
                             major = major?.ifBlank { null }
                         )
                     }
+
+                    is User.General -> TODO("Will be implement with user info edit")
                 }
 
             userRepository.updateUser(newUser)

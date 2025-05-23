@@ -19,7 +19,8 @@ import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
-import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.GeneralUserResponse
+import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
 class UserRemoteDataSource(
@@ -38,8 +39,12 @@ class UserRemoteDataSource(
         userAuthApi.getOwnerTokenIsValid()
     }
 
-    suspend fun getUserInfo(): UserResponse {
-        return userAuthApi.getUser()
+    suspend fun getStudentUserInfo(): StudentUserResponse {
+        return userAuthApi.getStudentUser()
+    }
+
+    suspend fun getGeneralUserInfo(): GeneralUserResponse {
+        return userAuthApi.getGeneralUser()
     }
 
     suspend fun sendRegisterEmail(studentInfoRequest: StudentInfoRequest) {
@@ -62,7 +67,7 @@ class UserRemoteDataSource(
         userApi.checkEmail(email)
     }
 
-    suspend fun updateUser(userRequest: UserRequest): UserResponse {
+    suspend fun updateUser(userRequest: UserRequest): StudentUserResponse {
         return userAuthApi.putUser(userRequest)
     }
 

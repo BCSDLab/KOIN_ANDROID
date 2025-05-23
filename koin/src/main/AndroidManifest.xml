@@ -35,9 +35,21 @@
 
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="keyword" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="timetable"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.timetablev2.TimetableSemesterActivity"

@@ -71,6 +71,8 @@ object URLConstant {
         const val ID = "portal_account"
         const val EMAIL = "email"
         const val PW = "password"
+        const val LOGIN_ID = "login_id"
+        const val LOGIN_PW = "login_pw"
 
         object STUDENT {
             const val STUDENT = "student"
@@ -86,12 +88,16 @@ object URLConstant {
         const val SMSVERIFY: String = "$USERS/verification/sms/verify"
 
         const val VERSION: String = "v2"
+
+        const val SIGNIN_V2: String = "$VERSION/$USERS/login"
+
         object STUDENTS {
             const val STUDENTS = "students"
             const val REGISTER_V2: String = "$VERSION/$USERS/$STUDENTS/register"
         }
         object GENERAL {
             const val REGISTER: String = "$VERSION/$USERS/register"
+            const val ME: String = "$VERSION/$USERS/me"
         }
     }
 

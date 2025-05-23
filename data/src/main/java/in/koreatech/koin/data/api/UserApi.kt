@@ -21,7 +21,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface UserApi {
-    @POST(URLConstant.USER.LOGIN)
+    @POST(URLConstant.USERS.SIGNIN_V2)
     suspend fun getToken(
         @Body loginRequest: LoginRequest
     ): AuthResponse
