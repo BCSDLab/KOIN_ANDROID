@@ -1,16 +1,23 @@
 package `in`.koreatech.koin.feature.signin.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
+import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
-class SignInViewModel @Inject constructor() : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
+class SignInViewModel @Inject constructor(
+    private val userLoginUseCase: UserLoginUseCase
+) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
     override val container = container<SignInState, SignInSideEffect>(SignInState())
 
     fun setLoginId(loginId: String) {
@@ -33,6 +40,20 @@ class SignInViewModel @Inject constructor() : ViewModel(), ContainerHost<SignInS
         blockingIntent {
             reduce {
                 state.copy(showPassword = showPassword)
+            }
+        }
+    }
+
+    fun signIn() = viewModelScope.launch {
+        intent {
+            userLoginUseCase(state.loginId, state.password).onSuccess {
+                reduce {
+                    state.copy(isSuccess = true)
+                }
+            }.onFailure {
+                reduce {
+                    state.copy(isSuccess = false, loginError = SignInState.LoginError(true, it.message))
+                }
             }
         }
     }

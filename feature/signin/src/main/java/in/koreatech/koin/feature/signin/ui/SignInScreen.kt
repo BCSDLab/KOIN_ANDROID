@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.signin.ui
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,19 +16,24 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.signin.DEEPLINK_FIND_PASSWORD
+import `in`.koreatech.koin.feature.signin.DEEPLINK_SIGN_UP
 import `in`.koreatech.koin.feature.signin.R
 import `in`.koreatech.koin.feature.signin.component.KoinSignInBasicTextField
 import `in`.koreatech.koin.feature.signin.component.KoinSignInPasswordTextField
@@ -39,14 +45,22 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
+    nextRoute: () -> Unit = { },
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
+
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            nextRoute()
+        }
+    }
+
     SignInScreenImpl(
         loginId = uiState.loginId,
         password = uiState.password,
         showPassword = uiState.showPassword,
-        isError = uiState.isError,
+        isError = uiState.loginError.isError,
         modifier = modifier,
         setLoginId = {
             viewModel.setLoginId(it)
@@ -56,7 +70,11 @@ fun SignInScreen(
         },
         setShowPassword = {
             viewModel.setShowPassword(it)
-        }
+        },
+        signIn = {
+            viewModel.signIn()
+        },
+        nextRoute = nextRoute
     )
 }
 
@@ -69,9 +87,13 @@ fun SignInScreenImpl(
     modifier: Modifier = Modifier,
     setLoginId: (String) -> Unit = { },
     setPassword: (String) -> Unit = { },
-    setShowPassword: (Boolean) -> Unit = { }
+    setShowPassword: (Boolean) -> Unit = { },
+    signIn: () -> Unit = { },
+    nextRoute: () -> Unit = { }
 ) {
     val scrollState = rememberScrollState()
+
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -129,7 +151,7 @@ fun SignInScreenImpl(
             colors = FilledButtonColors.Warning,
             shape = KoinTheme.shapes.small,
             text = stringResource(R.string.sign_in_sign_in),
-            onClick = {}
+            onClick = signIn
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -138,7 +160,13 @@ fun SignInScreenImpl(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.sign_in_sign_up),
             shape = KoinTheme.shapes.small,
-            onClick = {}
+            onClick = {
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = DEEPLINK_SIGN_UP.toUri()
+                }.let {
+                    context.startActivity(it)
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -153,7 +181,7 @@ fun SignInScreenImpl(
                 text = stringResource(R.string.sign_in_find_login_id),
                 icon = painterResource(R.drawable.ic_sign_in_find_login_id)
             ) {
-
+                // TODO("Implement after find id feature is implemented")
             }
 
             Text(
@@ -166,7 +194,11 @@ fun SignInScreenImpl(
                 text = stringResource(R.string.sign_in_find_password),
                 icon = painterResource(R.drawable.ic_sign_in_find_password)
             ) {
-
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = DEEPLINK_FIND_PASSWORD.toUri()
+                }.let {
+                    context.startActivity(it)
+                }
             }
 
             Text(
@@ -179,14 +211,14 @@ fun SignInScreenImpl(
                 text = stringResource(R.string.sign_in_tour),
                 icon = painterResource(R.drawable.ic_sign_in_tour)
             ) {
-
+                nextRoute()
             }
         }
 
         Spacer(modifier = modifier.weight(1f))
 
         Column(
-            verticalArrangement = Arrangement.Bottom,
+            verticalArrangement = Arrangement.Bottom
         ) {
             Text(
                 text = stringResource(R.string.sign_in_business),
@@ -196,7 +228,6 @@ fun SignInScreenImpl(
                 modifier = Modifier
                     .fillMaxWidth()
                     .noRippleClickable {
-
                     }
             )
 
