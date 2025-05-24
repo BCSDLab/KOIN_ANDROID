@@ -43,7 +43,6 @@ import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import javax.inject.Singleton
-import koreatech.koin.data.source.remote.ClubRemoteDataSource
 
 @Module
 @InstallIn(SingletonComponent::class)
