@@ -9,6 +9,9 @@ import javax.inject.Inject
 class ClubRepositoryImpl @Inject constructor(
     private val clubRemoteDataSource: ClubRemoteDataSource
 ) : ClubRepository {
-    override suspend fun getClubsCategories(): ClubCategories =
-        clubRemoteDataSource.getClubsCategories().toClubCategories()
+    override suspend fun getClubsCategories(): Result<ClubCategories> {
+        return runCatching {
+            clubRemoteDataSource.getClubsCategories().toClubCategories()
+        }
+    }
 }
