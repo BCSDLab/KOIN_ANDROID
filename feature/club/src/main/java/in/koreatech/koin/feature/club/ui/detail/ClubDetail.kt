@@ -60,13 +60,13 @@ fun ClubDetail(
     }
 
     val introList = listOf(
-        listOf(stringResource(DetailIntroType.DETAIL_CATEGORY.strResId),state.clubDetails?.category),
-        listOf(stringResource(DetailIntroType.DETAIL_LOCATION.strResId),state.clubDetails?.location),
-        listOf(stringResource(DetailIntroType.DETAIL_INTRODUCTION.strResId),state.clubDetails?.introduction),
-        listOf(stringResource(DetailIntroType.DETAIL_INSTAGRAM.strResId),state.clubDetails?.instagram),
-        listOf(stringResource(DetailIntroType.DETAIL_GOOGLE_FORM.strResId),state.clubDetails?.googleForm),
-        listOf(stringResource(DetailIntroType.DETAIL_OPEN_CHAT.strResId),state.clubDetails?.openChat),
-        listOf(stringResource(DetailIntroType.DETAIL_PHONE_NUMBER.strResId),state.clubDetails?.phoneNumber)
+        Pair(stringResource(DetailIntroType.DETAIL_CATEGORY.strResId),state.clubDetails?.category),
+        Pair(stringResource(DetailIntroType.DETAIL_LOCATION.strResId),state.clubDetails?.location),
+        Pair(stringResource(DetailIntroType.DETAIL_INTRODUCTION.strResId),state.clubDetails?.introduction),
+        Pair(stringResource(DetailIntroType.DETAIL_INSTAGRAM.strResId),state.clubDetails?.instagram),
+        Pair(stringResource(DetailIntroType.DETAIL_GOOGLE_FORM.strResId),state.clubDetails?.googleForm),
+        Pair(stringResource(DetailIntroType.DETAIL_OPEN_CHAT.strResId),state.clubDetails?.openChat),
+        Pair(stringResource(DetailIntroType.DETAIL_PHONE_NUMBER.strResId),state.clubDetails?.phoneNumber)
     )
     val qnaList = state.clubQnasInfo?.qnas
     val tabList = DetailTabType.entries.map { it.strResId }
@@ -157,12 +157,12 @@ fun ClubDetail(
                         introList.forEach { intro ->
                             Row {
                                 Text(
-                                    text = intro[0] ?: "",
+                                    text = intro.first,
                                     style = KoinTheme.typography.medium18,
                                     color = KoinTheme.colors.neutral800
                                 )
                                 Text(
-                                    text = intro[1] ?: "",
+                                    text = intro.second ?: "",
                                     style = KoinTheme.typography.medium18,
                                     color = KoinTheme.colors.neutral800
                                 )
