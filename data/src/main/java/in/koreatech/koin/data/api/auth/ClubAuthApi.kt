@@ -1,3 +1,46 @@
 package `in`.koreatech.koin.data.api.auth
 
-interface ClubAuthApi
+import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
+import `in`.koreatech.koin.data.request.club.ClubQnaRequest
+import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+
+interface ClubAuthApi {
+    @GET("clubs/{clubId}")
+    suspend fun getClubDetails(
+        @Path("clubId") clubId: Int
+    ): ClubDetailsResponse
+
+    @PUT("clubs/empowerment")
+    suspend fun setClubEmpowerment(
+        @Body request: ClubEmpowermentRequest
+    ): Response<Unit>
+
+    @PUT("clubs/{clubId}/like")
+    suspend fun setClubLike(
+        @Path("clubId") clubId: Int
+    ): Response<Unit>
+
+    @POST("clubs/{clubId}/qna")
+    suspend fun postClubQna(
+        @Path("clubId") clubId: Int,
+        @Body request: ClubQnaRequest
+    ): Response<Unit>
+
+    @DELETE("clubs/{clubId}/qna/{qnaId}")
+    suspend fun deleteClubQna(
+        @Path("clubId") clubId: Int,
+        @Path("qnaId") qnaId: Int
+    ): Response<Unit>
+
+    @DELETE("clubs/{clubId}/like/cancel")
+    suspend fun cancelClubLike(
+        @Path("clubId") clubId: Int
+    ): Response<Unit>
+}
