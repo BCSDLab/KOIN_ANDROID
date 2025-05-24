@@ -16,5 +16,6 @@ data class ClubDetailsResponse(
     @SerializedName("open_chat") val openChat: String?,
     @SerializedName("phone_number") val phoneNumber: String?,
     @SerializedName("manager") val manager: Boolean,
-    @SerializedName("is_liked") val isLiked: Boolean
+    @SerializedName("is_liked") val isLiked: Boolean,
+    @SerializedName("updated_at") val updatedAt: String
 )
