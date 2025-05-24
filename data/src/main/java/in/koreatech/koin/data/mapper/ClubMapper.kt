@@ -21,7 +21,8 @@ fun ClubDetailsResponse.toClubDetails() = ClubDetails(
     openChat,
     phoneNumber,
     manager,
-    isLiked
+    isLiked,
+    updatedAt
 )
 
 fun ClubQnasResponse.toClubQnasInfo() = ClubQnasInfo(
