@@ -47,7 +47,7 @@ class ClubDetailViewModel @Inject constructor(
     fun loadClubDetails() {
         viewModelScope.launch {
             _state.update {
-                it.copy(isLogin = true)
+                it.copy(isLoading = true)
             }
             getClubDetailsUseCase(1).onSuccess {
                 val clubDetails = it
@@ -56,41 +56,6 @@ class ClubDetailViewModel @Inject constructor(
                 }
             }.onFailure {
                 Log.e("MYLOG", "GetDetails ERROR")
-            }
-
-            postClubQnaUseCase(1, null, "testQNA").onSuccess {
-                Log.d("MYLOG", "PostQna")
-            }.onFailure {
-                Log.e("MYLOG", "PostQna ERROR")
-            }
-
-            var qnaId = -1
-            getClubQnasUseCase(1).onSuccess {
-                if (it.qnas.size > 0) {
-                    qnaId = it.qnas[0].id
-                }
-                Log.d("MYLOG", "GetQna $it")
-            }.onFailure {
-                Log.e("MYLOG", "GetQna ERROR")
-            }
-            if (qnaId != -1) {
-                deleteClubQnaUseCase(1, qnaId).onSuccess {
-                    Log.d("MYLOG", "DeleteQna")
-                }.onFailure {
-                    Log.e("MYLOG", "DeleteQna ERROR")
-                }
-            }
-
-            setClubLikeUseCase(1).onSuccess {
-                Log.d("MYLOG", "SetLike")
-            }.onFailure {
-                Log.e("MYLOG", "SetLike ERROR")
-            }
-
-            cancelClubLikeUseCase(1).onSuccess {
-                Log.d("MYLOG", "CancelLike")
-            }.onFailure {
-                Log.e("MYLOG", "CancelLike ERROR")
             }
         }
     }

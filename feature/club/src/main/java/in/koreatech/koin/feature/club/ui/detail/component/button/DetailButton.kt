@@ -20,9 +20,9 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun DetailButton(
+    modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
     textStyle: TextStyle = KoinTheme.typography.medium14,
     shape: Shape = RoundedCornerShape(4.dp),
     enabled: Boolean = true,

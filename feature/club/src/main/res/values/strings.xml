@@ -1,1 +1,15 @@
-<resources></resources>
+<resources>
+    <string name="club_detail_tab_detail">상세 소개</string>
+    <string name="club_detail_tab_qna">Q&amp;A</string>
+    <string name="club_detail_intro_category">분과 : </string>
+    <string name="club_detail_intro_location">동아리방 위치: </string>
+    <string name="club_detail_intro_introduction">동아리 소개: </string>
+    <string name="club_detail_intro_instagram">인스타 : </string>
+    <string name="club_detail_intro_google_form">구글폼 : </string>
+    <string name="club_detail_intro_open_chat">오픈채팅 : </string>
+    <string name="club_detail_intro_phone_number">전화번호 : </string>
+    <string name="club_detail_qna_text_field_hint">답변을 입력해주세요.</string>
+    <string name="club_detail_fix_button">수정하기</string>
+    <string name="club_detail_empowerment_button">권한 위임</string>
+    <string name="club_detail_date_text"> 업데이트</string>
+</resources>

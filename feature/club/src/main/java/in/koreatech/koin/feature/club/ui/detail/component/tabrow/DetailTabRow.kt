@@ -12,6 +12,7 @@ import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun DetailTabRow(
+    modifier: Modifier = Modifier,
     selectedTabIndex: Int,
     onTabSelected: (index: Int) -> Unit,
     titles: List<String>
@@ -25,10 +26,10 @@ fun DetailTabRow(
         indicator = @Composable { tabPositions ->
             if (selectedTabIndex < tabPositions.size) {
                 TabRowDefaults.SecondaryIndicator(
-                    modifier = Modifier
+                    modifier = modifier
                         .tabIndicatorOffset(tabPositions[selectedTabIndex])
                         .height(1.dp),
-                    color = Color(0xFFB611F5)
+                    color = RebrandKoinTheme.colors.primary500
                 )
             }
         },

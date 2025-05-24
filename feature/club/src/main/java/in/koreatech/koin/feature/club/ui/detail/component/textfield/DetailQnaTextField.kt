@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -27,7 +28,7 @@ import `in`.koreatech.koin.feature.club.R
 fun DetailQnaTextField(
     modifier: Modifier = Modifier,
     value: String,
-    hint: String = "답변을 입력해주세요.",
+    hint: String = stringResource(R.string.club_detail_qna_text_field_hint),
     onValueChange: (String) -> Unit,
     onSendClick: () -> Unit
 ) {
