@@ -2,7 +2,6 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.ClubApi
 import `in`.koreatech.koin.data.api.auth.ClubAuthApi
-import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
@@ -17,24 +16,12 @@ class ClubRemoteDataSource @Inject constructor(
     suspend fun getClubDetails(clubId: Int): Result<ClubDetailsResponse> {
         return runCatching {
             clubAuthApi.getClubDetails(clubId)
-        }.onFailure { e ->
-            if (e is HttpException) {
-                e.httpExceptionMapper()
-            } else {
-                throw e
-            }
         }
     }
 
     suspend fun getClubQnas(clubId: Int): Result<ClubQnasResponse> {
         return runCatching {
             clubApi.getClubQnas(clubId)
-        }.onFailure { e ->
-            if (e is HttpException) {
-                e.httpExceptionMapper()
-            } else {
-                throw e
-            }
         }
     }
 
@@ -46,12 +33,6 @@ class ClubRemoteDataSource @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { e ->
-            if (e is HttpException) {
-                e.httpExceptionMapper()
-            } else {
-                throw e
-            }
         }
     }
 
@@ -62,12 +43,6 @@ class ClubRemoteDataSource @Inject constructor(
                 Unit
             } else {
                 throw HttpException(response)
-            }
-        }.onFailure { e ->
-            if (e is HttpException) {
-                e.httpExceptionMapper()
-            } else {
-                throw e
             }
         }
     }
@@ -83,12 +58,6 @@ class ClubRemoteDataSource @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { e ->
-            if (e is HttpException) {
-                e.httpExceptionMapper()
-            } else {
-                throw e
-            }
         }
     }
 
@@ -103,12 +72,6 @@ class ClubRemoteDataSource @Inject constructor(
             } else {
                 throw HttpException(response)
             }
-        }.onFailure { e ->
-            if (e is HttpException) {
-                e.httpExceptionMapper()
-            } else {
-                throw e
-            }
         }
     }
 
@@ -119,12 +82,6 @@ class ClubRemoteDataSource @Inject constructor(
                 Unit
             } else {
                 throw HttpException(response)
-            }
-        }.onFailure { e ->
-            if (e is HttpException) {
-                e.httpExceptionMapper()
-            } else {
-                throw e
             }
         }
     }
