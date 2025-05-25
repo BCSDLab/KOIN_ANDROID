@@ -1,1 +1,11 @@
-<resources></resources>
+<resources>
+    <string name="club_main_activity_widget_title">동아리 조회</string>
+    <string name="club_main_widget_category_performance">공연</string>
+    <string name="club_main_widget_category_sports">운동</string>
+    <string name="club_main_widget_category_religious">종교</string>
+    <string name="club_main_widget_category_hobby">취미</string>
+    <string name="club_main_widget_category_academic">학술</string>
+    <string name="club_main_widget_popular_club">인기 동아리</string>
+    <string name="club_main_widget_club_list">동아리 목록</string>
+    <string name="club_main_widget_go">바로가기</string>
+</resources>
