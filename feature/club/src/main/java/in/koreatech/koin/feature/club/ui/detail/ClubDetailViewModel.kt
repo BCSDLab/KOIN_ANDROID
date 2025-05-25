@@ -45,12 +45,12 @@ class ClubDetailViewModel @Inject constructor(
 
     init {
         getUserIdCollect()
-        handleIntent(ClubDetailIntent.loadClubDetailsAndQnas)
+        handleIntent(ClubDetailIntent.LoadClubDetailsAndQnas)
     }
 
     fun handleIntent(intent: ClubDetailIntent) {
         when (intent) {
-            is ClubDetailIntent.loadClubDetailsAndQnas -> {
+            is ClubDetailIntent.LoadClubDetailsAndQnas -> {
                 startJob {
                     loadClubDetails()
                     loadClubQnas()
@@ -66,7 +66,7 @@ class ClubDetailViewModel @Inject constructor(
                     loadClubQnas()
                 }
             }
-            is ClubDetailIntent.addClubQna -> {
+            is ClubDetailIntent.AddClubQna -> {
                 startJob {
                     _state.value.clubDetails?.let {
                         addClubQna(selectedClubId, intent.parentId, intent.content)
@@ -74,7 +74,7 @@ class ClubDetailViewModel @Inject constructor(
                     }
                 }
             }
-            is ClubDetailIntent.deleteClubQna -> {
+            is ClubDetailIntent.DeleteClubQna -> {
                 startJob {
                     _state.value.clubDetails?.let {
                         deleteClubQna(selectedClubId, intent.qnaId)
@@ -82,7 +82,7 @@ class ClubDetailViewModel @Inject constructor(
                     }
                 }
             }
-            is ClubDetailIntent.changeClubLike -> {
+            is ClubDetailIntent.ChangeClubLike -> {
                 startJob {
                     _state.value.clubDetails?.let {
                         if (it.isLiked) {

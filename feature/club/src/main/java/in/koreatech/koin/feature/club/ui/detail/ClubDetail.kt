@@ -219,7 +219,7 @@ fun ClubDetail(
                                         if (state.userId == null) {
                                             showLoginDialog = true
                                         } else {
-                                            viewModel.handleIntent(ClubDetailIntent.changeClubLike)
+                                            viewModel.handleIntent(ClubDetailIntent.ChangeClubLike)
                                         }
                                     }
                             )
@@ -330,16 +330,16 @@ fun ClubDetail(
                                 isManager = state.clubDetails?.manager ?: false,
                                 userId = state.userId,
                                 onAddQuestionClick = { content ->
-                                    viewModel.handleIntent(ClubDetailIntent.addClubQna(null, content))
+                                    viewModel.handleIntent(ClubDetailIntent.AddClubQna(null, content))
                                 },
                                 onDeleteQuestionClick = { qnaId ->
-                                    viewModel.handleIntent(ClubDetailIntent.deleteClubQna(qnaId))
+                                    viewModel.handleIntent(ClubDetailIntent.DeleteClubQna(qnaId))
                                 },
                                 onDeleteAnswerClick = { qnaId ->
-                                    viewModel.handleIntent(ClubDetailIntent.deleteClubQna(qnaId))
+                                    viewModel.handleIntent(ClubDetailIntent.DeleteClubQna(qnaId))
                                 },
                                 onAddAnswerClick = { qnaId, content ->
-                                    viewModel.handleIntent(ClubDetailIntent.addClubQna(qnaId, content))
+                                    viewModel.handleIntent(ClubDetailIntent.AddClubQna(qnaId, content))
                                 }
                             )
                         }
