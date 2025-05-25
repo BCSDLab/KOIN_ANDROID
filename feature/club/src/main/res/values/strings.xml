@@ -23,4 +23,6 @@
     <string name="detail_dialog_login_positive">로그인하기</string>
     <string name="detail_dialog_login_title">로그인이 필요한 기능입니다.</string>
     <string name="detail_dialog_login_description">로그인 하시겠어요?</string>
+    <string name="detail_snackbar_detail_intro_text">앱에서는 수정 기능이 준비 중입니다.\n브라우저에서 계속 진행해 주세요.</string>
+    <string name="detail_snackbar_detail_intro_button">브라우저로 연결</string>
 </resources>
