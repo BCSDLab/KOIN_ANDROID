@@ -35,7 +35,7 @@ fun DetailDialog(
     onPositive: () -> Unit,
     onNegative: () -> Unit,
     content: @Composable () -> Unit = {},
-    titleStyle: TextStyle = KoinTheme.typography.medium18,
+    titleStyle: TextStyle = KoinTheme.typography.bold20,
     positiveButtonText: String = stringResource(id = R.string.common_confirmation),
     positiveButtonColors: ButtonColors = ButtonColors(
         containerColor = KoinTheme.colors.primary500,
