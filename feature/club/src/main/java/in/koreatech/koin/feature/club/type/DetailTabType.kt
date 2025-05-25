@@ -5,6 +5,6 @@ import `in`.koreatech.koin.feature.club.R
 enum class DetailTabType(
     val strResId: Int
 ) {
-    DETAIL_INTRO(R.string.club_detail_tab_detail),
-    QNA(R.string.club_detail_tab_qna)
+    DETAIL_INTRO(R.string.detail_tab_detail),
+    QNA(R.string.detail_tab_qna)
 }

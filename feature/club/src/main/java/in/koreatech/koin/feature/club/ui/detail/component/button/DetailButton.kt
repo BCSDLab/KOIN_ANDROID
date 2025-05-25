@@ -9,14 +9,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
 @Composable
 fun DetailButton(
@@ -27,7 +26,7 @@ fun DetailButton(
     shape: Shape = RoundedCornerShape(4.dp),
     enabled: Boolean = true,
     colors: ButtonColors = ButtonColors(
-        containerColor = RebrandKoinTheme.colors.primary500,
+        containerColor = KoinTheme.colors.primary500,
         contentColor = KoinTheme.colors.neutral0,
         disabledContainerColor = KoinTheme.colors.neutral300,
         disabledContentColor = KoinTheme.colors.neutral600
@@ -40,7 +39,8 @@ fun DetailButton(
                 color = if (enabled) colors.containerColor else colors.disabledContainerColor,
                 shape = shape
             )
-            .clickable(enabled = enabled) { onClick() }
+            .clickable(enabled = enabled) { onClick() },
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,

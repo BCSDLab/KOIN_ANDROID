@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -27,15 +29,19 @@ import `in`.koreatech.koin.feature.club.R
 @Composable
 fun DetailQnaTextField(
     modifier: Modifier = Modifier,
-    value: String,
-    hint: String = stringResource(R.string.club_detail_qna_text_field_hint),
+    value: String = "",
+    textStyle: TextStyle = KoinTheme.typography.regular14,
+    textFieldColor: Color = KoinTheme.colors.primary500,
+    hint: String = stringResource(R.string.detail_qna_text_field_hint),
     onValueChange: (String) -> Unit,
-    onSendClick: () -> Unit
+    isSendIconVisible: Boolean = true,
+    onSendClick: () -> Unit,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 7.dp)
 ) {
     BasicTextField(
         modifier = Modifier,
         value = value,
-        textStyle = KoinTheme.typography.regular14,
+        textStyle = textStyle,
         onValueChange = { onValueChange(it) },
         decorationBox = { innerTextField ->
             Row(
@@ -45,14 +51,11 @@ fun DetailQnaTextField(
                     .fillMaxWidth()
                     .border(
                         width = 1.dp,
-                        color = Color(0xFFCE86FD),
+                        color = textFieldColor,
                         shape = RoundedCornerShape(size = 4.dp)
                     )
                     .background(KoinTheme.colors.neutral100)
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 10.dp
-                    )
+                    .padding(contentPadding)
             ) {
                 Box(
                     modifier = Modifier.weight(1f)
@@ -61,18 +64,20 @@ fun DetailQnaTextField(
                         Text(
                             text = hint,
                             color = KoinTheme.colors.neutral600,
-                            style = KoinTheme.typography.regular14
+                            style = textStyle
                         )
                     }
                     innerTextField()
                 }
-                Image(
-                    painter = painterResource(id = R.drawable.icon_qna_send),
-                    contentDescription = "QuestionDelete",
-                    modifier = Modifier
-                        .size(20.dp)
-                        .clickable { onSendClick() }
-                )
+                if (isSendIconVisible) {
+                    Image(
+                        painter = painterResource(id = R.drawable.icon_qna_send),
+                        contentDescription = "QuestionDelete",
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { onSendClick() }
+                    )
+                }
             }
         }
     )
@@ -94,6 +99,17 @@ fun DetailQnaTextFieldHintPreview() {
     DetailQnaTextField(
         value = "",
         onValueChange = {},
+        onSendClick = {}
+    )
+}
+
+@Preview
+@Composable
+fun DetailQnaTextFieldNoIconPreview() {
+    DetailQnaTextField(
+        value = "",
+        onValueChange = {},
+        isSendIconVisible = false,
         onSendClick = {}
     )
 }
