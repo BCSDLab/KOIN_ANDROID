@@ -332,10 +332,7 @@ fun ClubDetail(
                                 onAddQuestionClick = { content ->
                                     viewModel.handleIntent(ClubDetailIntent.AddClubQna(null, content))
                                 },
-                                onDeleteQuestionClick = { qnaId ->
-                                    viewModel.handleIntent(ClubDetailIntent.DeleteClubQna(qnaId))
-                                },
-                                onDeleteAnswerClick = { qnaId ->
+                                onDeleteQnaClick = { qnaId ->
                                     viewModel.handleIntent(ClubDetailIntent.DeleteClubQna(qnaId))
                                 },
                                 onAddAnswerClick = { qnaId, content ->

@@ -31,8 +31,7 @@ fun ClubDetailQna(
     isManager: Boolean,
     userId: Int?,
     onAddQuestionClick: (String) -> Unit,
-    onDeleteQuestionClick: (Int) -> Unit,
-    onDeleteAnswerClick: (Int) -> Unit,
+    onDeleteQnaClick: (Int) -> Unit,
     onAddAnswerClick: (Int, String) -> Unit
 ) {
     var showAddQnaDialog by remember { mutableStateOf(false) }
@@ -55,7 +54,7 @@ fun ClubDetailQna(
                 modifier = Modifier,
                 title = stringResource(R.string.detail_add_qna_button),
                 onPositive = {
-                    if (!addQnaText.isEmpty()) {
+                    if (addQnaText.isNotEmpty()) {
                         onAddQuestionClick(addQnaText)
                         showAddQnaDialog = false
                     }
@@ -92,8 +91,7 @@ fun ClubDetailQna(
                 createdDate = it.createdAt,
                 answerQnaId = it.children.firstOrNull()?.id,
                 answerText = it.children.firstOrNull()?.content,
-                onDeleteQuestionClick = onDeleteQuestionClick,
-                onDeleteAnswerClick = onDeleteAnswerClick,
+                onDeleteQnaClick = onDeleteQnaClick,
                 onAddAnswerClick = onAddAnswerClick,
                 isQnaEditable = isManager || (userId == it.authorId),
                 isAnswerEditable = isManager
