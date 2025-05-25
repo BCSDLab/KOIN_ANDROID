@@ -26,8 +26,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -371,15 +369,15 @@ fun ClubDetail(
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
-                                            message =  snackbarMessage,
+                                            message = snackbarMessage,
                                             actionLabel = snackbarActionLabel,
                                             duration = SnackbarDuration.Short
                                         )
                                         if (result == SnackbarResult.ActionPerformed) {
                                             var intent: Intent
-                                            if (BuildConfig.DEBUG){
+                                            if (BuildConfig.DEBUG) {
                                                 intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stage.koreatech.in/"))
-                                            }else {
+                                            } else {
                                                 intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://koreatech.in/"))
                                             }
                                             context.startActivity(intent)
