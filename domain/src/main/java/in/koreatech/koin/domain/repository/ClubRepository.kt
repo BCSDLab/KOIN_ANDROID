@@ -4,11 +4,17 @@ import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
+import `in`.koreatech.koin.domain.model.club.Clubs
 
 interface ClubRepository {
     suspend fun getClubsCategories(): Result<ClubCategories>
 
     suspend fun getClubHot(): Result<ClubHot>
+
+    suspend fun getClubs(
+        categoryId: Int? = null,
+        sortType: String? = null
+    ): Result<Clubs>
 
     suspend fun getClubDetails(
         clubId: Int
