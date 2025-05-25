@@ -70,21 +70,19 @@ fun ClubDetailQna(
             )
         }
         userId?.let {
-            if (isManager) {
-                Row {
-                    Spacer(Modifier.weight(1f))
-                    DetailButton(
-                        modifier = Modifier
-                            .padding(
-                                bottom = 4.dp
-                            ),
-                        text = stringResource(R.string.detail_add_qna_button),
-                        onClick = {
-                            showAddQnaDialog = true
-                        },
-                        contentPadding = PaddingValues(horizontal = 22.dp, vertical = 5.dp)
-                    )
-                }
+            Row {
+                Spacer(Modifier.weight(1f))
+                DetailButton(
+                    modifier = Modifier
+                        .padding(
+                            bottom = 4.dp
+                        ),
+                    text = stringResource(R.string.detail_add_qna_button),
+                    onClick = {
+                        showAddQnaDialog = true
+                    },
+                    contentPadding = PaddingValues(horizontal = 22.dp, vertical = 5.dp)
+                )
             }
         }
         qnaList?.forEach {
