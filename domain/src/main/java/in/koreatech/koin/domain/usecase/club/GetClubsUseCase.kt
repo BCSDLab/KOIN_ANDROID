@@ -8,6 +8,6 @@ class GetClubsUseCase @Inject constructor(
     private val clubRepository: ClubRepository
 ) {
     suspend operator fun invoke(clubId: Int): Result<Clubs> {
-        return clubRepository.getClubList(clubId)
+        return clubRepository.getClubs(clubId)
     }
 }
