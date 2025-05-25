@@ -13,6 +13,17 @@ internal val blue30 = Color(0xFF6DBBDD)
 internal val blue20 = Color(0xFFA2DFF3)
 internal val blue10 = Color(0xFFCFF1F9)
 
+// new primary
+internal val purple90 = Color(0xFF44025E)
+internal val purple80 = Color(0xFF600481)
+internal val purple70 = Color(0xFF7D08A4)
+internal val purple60 = Color(0xFF980AC9)
+internal val purple50 = Color(0xFFB611F5)
+internal val purple40 = Color(0xFFC358FC)
+internal val purple30 = Color(0xFFCE86FD)
+internal val purple20 = Color(0xFFDDB1FE)
+internal val purple10 = Color(0xFFEBD4FE)
+
 // sub
 internal val orange90 = Color(0xFF762E05)
 internal val orange80 = Color(0xFF8F3F09)
