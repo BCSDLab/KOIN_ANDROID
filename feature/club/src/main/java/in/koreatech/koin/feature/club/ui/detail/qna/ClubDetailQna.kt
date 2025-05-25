@@ -55,7 +55,7 @@ fun ClubDetailQna(
                 modifier = Modifier,
                 title = stringResource(R.string.detail_add_qna_button),
                 onPositive = {
-                    if (!addQnaText.isEmpty()) {
+                    if (addQnaText.isNotEmpty()) {
                         onAddQuestionClick(addQnaText)
                         showAddQnaDialog = false
                     }

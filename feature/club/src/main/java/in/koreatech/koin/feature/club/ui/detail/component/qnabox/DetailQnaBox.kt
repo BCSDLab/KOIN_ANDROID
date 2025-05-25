@@ -115,7 +115,7 @@ fun DetailQnaBox(
                             textFieldColor = KoinTheme.colors.primary300,
                             onValueChange = { text = it },
                             onSendClick = {
-                                if (!text.isEmpty()) {
+                                if (text.isNotEmpty()) {
                                     onAddAnswerClick(qnaId, text)
                                 }
                             }
@@ -137,9 +137,7 @@ fun DetailQnaBox(
                                     .size(20.dp)
                                     .padding(end = 4.dp)
                                     .clickable {
-                                        answerQnaId?.let {
-                                            onDeleteAnswerClick(it)
-                                        }
+                                        onDeleteAnswerClick(answerQnaId)
                                     }
                             )
                         }
