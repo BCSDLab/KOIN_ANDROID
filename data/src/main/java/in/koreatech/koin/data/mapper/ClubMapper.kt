@@ -37,5 +37,14 @@ fun QnaResponse.toQna() = Qna(
     nickname,
     content,
     createdAt,
-    children
+    children.map { it.toFinalQna() }
+)
+
+fun QnaResponse.toFinalQna() = Qna(
+    id,
+    authorId,
+    nickname,
+    content,
+    createdAt,
+    listOf<Qna>()
 )
