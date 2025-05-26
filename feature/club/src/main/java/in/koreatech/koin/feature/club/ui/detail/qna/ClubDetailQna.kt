@@ -22,6 +22,7 @@ import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.ui.detail.component.qnabox.DetailQnaBox
 
+//TODO QNA 로딩중 progrssbar 추가
 @Composable
 fun ClubDetailQna(
     qnaList: List<ClubQnasInfo.Qna>?,

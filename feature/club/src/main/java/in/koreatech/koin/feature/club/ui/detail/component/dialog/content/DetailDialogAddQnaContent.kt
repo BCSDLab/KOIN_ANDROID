@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +19,9 @@ import `in`.koreatech.koin.feature.club.ui.detail.component.textfield.DetailQnaT
 fun DetailDialogAddQnaContent(
     modifier: Modifier = Modifier,
     text: String = "",
-    onValueChange: (String) -> Unit
+    isError: Boolean = false,
+    errorMessage: String = "",
+    onValueChange: (String) -> Unit = {}
 ) {
     Column(
         modifier = modifier,
@@ -31,7 +34,10 @@ fun DetailDialogAddQnaContent(
             textStyle = KoinTheme.typography.regular12,
             onValueChange = onValueChange,
             isSendIconVisible = false,
-            onSendClick = {},
+            isError = isError,
+            errorMessage = errorMessage,
+            errorIconModifier = Modifier.size(14.dp),
+            errorTextStyle = KoinTheme.typography.regular12,
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
         )
         Text(
@@ -49,7 +55,19 @@ fun DetailDialogAddQnaContentPreView() {
         modifier = Modifier
             .background(
                 color = KoinTheme.colors.neutral0
+            )
+    )
+}
+
+@Preview
+@Composable
+fun DetailDialogAddQnaContentErrorPreView() {
+    DetailDialogAddQnaContent(
+        modifier = Modifier
+            .background(
+                color = KoinTheme.colors.neutral0
             ),
-        onValueChange = {}
+        isError = true,
+        errorMessage = "필수 입력란입니다."
     )
 }

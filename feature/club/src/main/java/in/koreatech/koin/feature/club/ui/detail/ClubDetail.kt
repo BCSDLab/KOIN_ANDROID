@@ -71,12 +71,14 @@ import `in`.koreatech.koin.feature.club.type.DetailTabType
 import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailDialog
 import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogAddQnaContent
+import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogEmpowermentContent
 import `in`.koreatech.koin.feature.club.ui.detail.component.snackbar.DetailSnackBar
 import `in`.koreatech.koin.feature.club.ui.detail.component.tabrow.DetailTabRow
 import `in`.koreatech.koin.feature.club.ui.detail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.detail.qna.ClubDetailQna
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -175,22 +177,56 @@ fun ClubDetail(
                 modifier = Modifier,
                 title = stringResource(R.string.detail_add_qna_button),
                 onPositive = {
-                    if (addQnaText.isNotEmpty()) {
-                        viewModel.dismissAddQnaDialog()
-                        viewModel.addClubQna(
-                            parentId = null,
-                            content = addQnaText
-                        )
-                    }
+                    viewModel.addClubQna(
+                        parentId = null,
+                        content = addQnaText
+                    )
                 },
                 onNegative = { viewModel.dismissAddQnaDialog() },
                 content = {
                     DetailDialogAddQnaContent(
                         text = addQnaText,
-                        onValueChange = { addQnaText = it }
+                        onValueChange = { addQnaText = it },
+                        isError = state.textFieldErrorResId != null,
+                        errorMessage = state.textFieldErrorResId?.let { stringResource(it) } ?: ""
                     )
                 }
             )
+        }
+
+        if (state.showEmpowermentDialog) {
+            var newManagerText by remember { mutableStateOf("") }
+            DetailDialog(
+                modifier = Modifier,
+                title = stringResource(R.string.detail_dialog_empowerment_title),
+                onPositive = {
+                    viewModel.setManagerEmpowerment(
+                        newUserId = newManagerText
+                    )
+                },
+                onNegative = { viewModel.dismissEmpowermentDialog() },
+                content = {
+                    DetailDialogEmpowermentContent(
+                        clubName = state.clubDetails?.name ?: "",
+                        managerId = state.userId ?: -1,
+                        text = newManagerText,
+                        onValueChange = { newManagerText = it },
+                        isError = state.textFieldErrorResId != null,
+                        errorMessage = state.textFieldErrorResId?.let { stringResource(it) } ?: ""
+                    )
+                }
+            )
+        }
+        //TODO 불편한 변수 선언 뺄 방법 생각하기 : constFile > SideEffect > 출력 ?
+        val empowermentSucessMessage = stringResource(R.string.detail_snackbar_empowerment_success)
+        viewModel.collectSideEffect { sideEffect ->
+            when (sideEffect) {
+                is ClubDetailSideEffect.ShowEmpowermentSnackBar -> {
+                    snackbarHostState.showSnackbar(
+                        message = empowermentSucessMessage,
+                        duration = SnackbarDuration.Short)
+                }
+            }
         }
 
         LazyColumn(
@@ -251,7 +287,7 @@ fun ClubDetail(
                                     .padding(end = 8.dp)
                             )
                             Image(
-                                painter = if (state.clubDetails?.isLiked ?: false) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
+                                painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
                                 contentDescription = "",
                                 modifier = Modifier
                                     .size(24.dp)
@@ -276,13 +312,13 @@ fun ClubDetail(
                                 ) {
                                     FilledButton(
                                         text = stringResource(R.string.detail_fix_button),
-                                        onClick = {},
+                                        onClick = {}, // 동아리 정보 수정 버튼 클릭
                                         contentPadding = PaddingValues(horizontal = 11.dp, vertical = 5.dp)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     FilledButton(
                                         text = stringResource(R.string.detail_empowerment_button),
-                                        onClick = {},
+                                        onClick = { viewModel.showEmpowermentDialog() },
                                         contentPadding = PaddingValues(horizontal = 9.dp, vertical = 5.dp)
                                     )
                                 }
@@ -295,6 +331,8 @@ fun ClubDetail(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
+                        //TODO 인스타, googleForm, 오픈채팅은 양식 검증 후 Uri 반환 필요
+                        //TODO 전화번호 반환값에 양식 변환 필요
                         detailList.forEach { intro ->
                             Row {
                                 Text(
@@ -396,7 +434,7 @@ fun ClubDetail(
                                     viewModel.deleteClubQna(qnaId)
                                 },
                                 onAddAnswerClick = { qnaId, content ->
-                                    viewModel.addClubQna(qnaId, content)
+                                    viewModel.addClubQnaAnswer(qnaId, content)
                                 }
                             )
                         }

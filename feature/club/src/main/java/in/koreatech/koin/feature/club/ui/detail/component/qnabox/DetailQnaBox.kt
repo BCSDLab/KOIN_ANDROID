@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonColors
@@ -26,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
@@ -48,6 +50,7 @@ fun DetailQnaBox(
     answerQnaId: Int? = null,
     answerText: String? = null
 ) {
+    var isError by remember { mutableStateOf(false) }
     var showDeleteQnaDialog by remember { mutableStateOf(Pair(false, -1)) }
     if (showDeleteQnaDialog.first) {
         DetailDialog(
@@ -126,6 +129,7 @@ fun DetailQnaBox(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
                 ) {
                     Image(
@@ -133,7 +137,7 @@ fun DetailQnaBox(
                         contentDescription = "QuestionDelete",
                         modifier = Modifier
                             .size(24.dp)
-                            .align(Alignment.CenterVertically)
+                            .offset { IntOffset(x = 0, y = if(isError) -(13.dp.roundToPx()) else 0) }
                     )
                     if (answerText.isNullOrEmpty() || answerQnaId == null) {
                         DetailQnaTextField(
@@ -144,8 +148,14 @@ fun DetailQnaBox(
                             onSendClick = {
                                 if (addAnswerText.isNotEmpty()) {
                                     onAddAnswerClick(qnaId, addAnswerText)
+                                    isError = false
                                 }
-                            }
+                                else {
+                                    isError = true
+                                }
+                            },
+                            isError = isError,
+                            errorMessage = stringResource(R.string.detail_textfield_error_empty)
                         )
                     } else {
                         Text(
