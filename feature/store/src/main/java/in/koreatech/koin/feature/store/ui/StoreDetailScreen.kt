@@ -14,11 +14,13 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.store.R
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
@@ -28,13 +30,14 @@ fun StoreDetailImage(
     pagerState: PagerState,
     alpha: Float
 ) {
+    val overlayColor = colorResource(id = R.color.store_detail_background)
     Box(
         modifier = modifier
             .background(KoinTheme.colors.neutral500)
             .drawWithContent {
                 drawContent()
                 drawRect(
-                    color = Color(0xFFF8F8FA),
+                    color = overlayColor,
                     alpha = alpha
                 )
             },
