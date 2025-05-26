@@ -137,7 +137,7 @@ fun DetailQnaBox(
                         contentDescription = "QuestionDelete",
                         modifier = Modifier
                             .size(24.dp)
-                            .offset { IntOffset(x = 0, y = if(isError) -(13.dp.roundToPx()) else 0) }
+                            .offset { IntOffset(x = 0, y = if (isError) -(13.dp.roundToPx()) else 0) }
                     )
                     if (answerText.isNullOrEmpty() || answerQnaId == null) {
                         DetailQnaTextField(
@@ -149,8 +149,7 @@ fun DetailQnaBox(
                                 if (addAnswerText.isNotEmpty()) {
                                     onAddAnswerClick(qnaId, addAnswerText)
                                     isError = false
-                                }
-                                else {
+                                } else {
                                     isError = true
                                 }
                             },

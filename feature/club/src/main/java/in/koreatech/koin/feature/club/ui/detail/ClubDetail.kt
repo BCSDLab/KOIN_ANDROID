@@ -217,14 +217,15 @@ fun ClubDetail(
                 }
             )
         }
-        //TODO 불편한 변수 선언 뺄 방법 생각하기 : constFile > SideEffect > 출력 ?
+        // TODO 불편한 변수 선언 뺄 방법 생각하기 : constFile > SideEffect > 출력 ?
         val empowermentSucessMessage = stringResource(R.string.detail_snackbar_empowerment_success)
         viewModel.collectSideEffect { sideEffect ->
             when (sideEffect) {
                 is ClubDetailSideEffect.ShowEmpowermentSnackBar -> {
                     snackbarHostState.showSnackbar(
                         message = empowermentSucessMessage,
-                        duration = SnackbarDuration.Short)
+                        duration = SnackbarDuration.Short
+                    )
                 }
             }
         }
@@ -331,8 +332,8 @@ fun ClubDetail(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        //TODO 인스타, googleForm, 오픈채팅은 양식 검증 후 Uri 반환 필요
-                        //TODO 전화번호 반환값에 양식 변환 필요
+                        // TODO 인스타, googleForm, 오픈채팅은 양식 검증 후 Uri 반환 필요
+                        // TODO 전화번호 반환값에 양식 변환 필요
                         detailList.forEach { intro ->
                             Row {
                                 Text(

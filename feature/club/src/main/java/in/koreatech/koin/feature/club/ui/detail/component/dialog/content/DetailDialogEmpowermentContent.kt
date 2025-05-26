@@ -62,7 +62,7 @@ fun DetailDialogEmpowermentContent(
             )
         }
         Row(
-            verticalAlignment = if(isError) Alignment.Top else Alignment.CenterVertically
+            verticalAlignment = if (isError) Alignment.Top else Alignment.CenterVertically
         ) {
             Text(
                 text = stringResource(R.string.detail_dialog_empowerment_new_id),

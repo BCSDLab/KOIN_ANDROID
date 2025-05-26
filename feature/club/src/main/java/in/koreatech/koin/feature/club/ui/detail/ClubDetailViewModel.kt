@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.club.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,8 +14,8 @@ import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
-import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.NON_USERID_ERROR
 import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.EMPTY_ERROR
+import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.NON_USERID_ERROR
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -101,7 +100,7 @@ class ClubDetailViewModel @Inject constructor(
     ) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
-        if(content.isEmpty()) {
+        if (content.isEmpty()) {
             reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
             return@intent
         }
@@ -113,7 +112,7 @@ class ClubDetailViewModel @Inject constructor(
             )
         }
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo,showAddQnaDialog = false, textFieldErrorResId = null) }
+        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo, showAddQnaDialog = false, textFieldErrorResId = null) }
     }
 
     fun addClubQnaAnswer(
@@ -176,11 +175,11 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
     }
 
-    //TODO result 오류처리 로직에 맞게 개선 필요
+    // TODO result 오류처리 로직에 맞게 개선 필요
     fun setManagerEmpowerment(newUserId: String) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
-        if(newUserId.isEmpty()) {
+        if (newUserId.isEmpty()) {
             reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
             return@intent
         }
@@ -188,7 +187,7 @@ class ClubDetailViewModel @Inject constructor(
             clubId = selectedClubId,
             changedManagerId = newUserId
         ).onFailure { e ->
-            if(e is retrofit2.HttpException) {
+            if (e is retrofit2.HttpException) {
                 if (e.code() == 404) {
                     reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
                 }
