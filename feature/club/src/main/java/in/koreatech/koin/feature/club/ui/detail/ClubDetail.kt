@@ -25,12 +25,18 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -42,6 +48,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -53,6 +60,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.intent.detail.ClubDetailIntent
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
@@ -95,6 +103,7 @@ fun ClubDetail(
 
     val context = LocalContext.current
 
+    val snackbarHostState = remember { SnackbarHostState() }
     val scrollStates = remember { mutableStateMapOf<Int, Int>() }
     val listState = rememberLazyListState()
 
@@ -134,6 +143,42 @@ fun ClubDetail(
                     contentDescription = "up"
                 )
             }
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { data ->
+                    Snackbar(
+                        modifier = Modifier
+                            .padding(horizontal = 24.dp),
+                        content = {
+                            Text(
+                                text = data.visuals.message,
+                                style = KoinTheme.typography.regular12,
+                                color = KoinTheme.colors.neutral0
+                            )
+                        },
+                        action = {
+                            data.visuals.actionLabel?.let { label ->
+                                Box(
+                                    modifier = Modifier
+                                        .padding(end = 12.dp)
+                                        .clickable { data.performAction() }
+                                ) {
+                                    Text(
+                                        text = label,
+                                        style = KoinTheme.typography.regular12,
+                                        color = KoinTheme.colors.info700
+                                    )
+                                }
+                            }
+                        },
+                        containerColor = Color(0xCC041A44),
+                        contentColor = KoinTheme.colors.neutral0,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                }
+            )
         }
     ) { contentPadding ->
 
@@ -318,8 +363,27 @@ fun ClubDetail(
                 ) { page ->
                     when (tabList[page]) {
                         DetailTabType.DETAIL_INTRO.strResId -> {
+                            val snackbarMessage = stringResource(R.string.detail_snackbar_detail_intro_text)
+                            val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
-                                onFixIntroClick = { },
+                                onFixIntroClick = {
+                                    scope.launch {
+                                        val result = snackbarHostState.showSnackbar(
+                                            message = snackbarMessage,
+                                            actionLabel = snackbarActionLabel,
+                                            duration = SnackbarDuration.Short
+                                        )
+                                        if (result == SnackbarResult.ActionPerformed) {
+                                            var intent: Intent
+                                            if (BuildConfig.DEBUG) {
+                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stage.koreatech.in/"))
+                                            } else {
+                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://koreatech.in/"))
+                                            }
+                                            context.startActivity(intent)
+                                        }
+                                    }
+                                },
                                 isManager = state.clubDetails?.manager ?: false,
                                 userId = state.userId
                             )
@@ -332,10 +396,7 @@ fun ClubDetail(
                                 onAddQuestionClick = { content ->
                                     viewModel.handleIntent(ClubDetailIntent.AddClubQna(null, content))
                                 },
-                                onDeleteQuestionClick = { qnaId ->
-                                    viewModel.handleIntent(ClubDetailIntent.DeleteClubQna(qnaId))
-                                },
-                                onDeleteAnswerClick = { qnaId ->
+                                onDeleteQnaClick = { qnaId ->
                                     viewModel.handleIntent(ClubDetailIntent.DeleteClubQna(qnaId))
                                 },
                                 onAddAnswerClick = { qnaId, content ->

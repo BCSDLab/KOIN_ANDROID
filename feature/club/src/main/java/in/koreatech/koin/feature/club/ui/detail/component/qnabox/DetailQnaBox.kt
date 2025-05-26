@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,11 +24,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailDialog
+import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogDeleteQnaContent
 import `in`.koreatech.koin.feature.club.ui.detail.component.textfield.DetailQnaTextField
 
 @Composable
@@ -38,13 +42,34 @@ fun DetailQnaBox(
     answerQnaId: Int? = null,
     answerText: String? = null,
     createdDate: String,
-    onDeleteQuestionClick: (Int) -> Unit,
-    onDeleteAnswerClick: (Int) -> Unit,
+    onDeleteQnaClick: (Int) -> Unit,
     onAddAnswerClick: (Int, String) -> Unit,
     isQnaEditable: Boolean = false,
     isAnswerEditable: Boolean = false
 ) {
     var text by remember { mutableStateOf("") }
+    var showDeleteQnaDialog by remember { mutableStateOf(Pair(false, -1)) }
+    if (showDeleteQnaDialog.first) {
+        DetailDialog(
+            modifier = Modifier,
+            title = stringResource(R.string.detail_dialog_qna_delete_title),
+            onPositive = {
+                onDeleteQnaClick(showDeleteQnaDialog.second)
+                showDeleteQnaDialog = Pair(false, -1)
+            },
+            onNegative = { showDeleteQnaDialog = Pair(false, -1) },
+            content = {
+                DetailDialogDeleteQnaContent()
+            },
+            positiveButtonText = stringResource(R.string.detail_dialog_qna_delete_positive),
+            positiveButtonColors = ButtonColors(
+                containerColor = KoinTheme.colors.danger500,
+                contentColor = KoinTheme.colors.neutral0,
+                disabledContainerColor = KoinTheme.colors.neutral300,
+                disabledContentColor = KoinTheme.colors.neutral600
+            )
+        )
+    }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -83,7 +108,9 @@ fun DetailQnaBox(
                         modifier = Modifier
                             .size(20.dp)
                             .padding(end = 4.dp)
-                            .clickable { onDeleteQuestionClick(qnaId) }
+                            .clickable {
+                                showDeleteQnaDialog = Pair(true, qnaId)
+                            }
                     )
                 }
             }
@@ -137,7 +164,7 @@ fun DetailQnaBox(
                                     .size(20.dp)
                                     .padding(end = 4.dp)
                                     .clickable {
-                                        onDeleteAnswerClick(answerQnaId)
+                                        showDeleteQnaDialog = Pair(true, qnaId)
                                     }
                             )
                         }
@@ -157,8 +184,7 @@ fun DetailQnaBoxNoAnswer() {
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQuestionClick = {},
-        onDeleteAnswerClick = {},
+        onDeleteQnaClick = {},
         onAddAnswerClick = { id, content -> }
     )
 }
@@ -172,8 +198,7 @@ fun DetailQnaBoxNoAnswerQnaEditable() {
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQuestionClick = {},
-        onDeleteAnswerClick = {},
+        onDeleteQnaClick = {},
         onAddAnswerClick = { id, content -> },
         isQnaEditable = true
     )
@@ -188,8 +213,7 @@ fun DetailQnaBoxNoAnswerAllEditable() {
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQuestionClick = {},
-        onDeleteAnswerClick = {},
+        onDeleteQnaClick = {},
         onAddAnswerClick = { id, content -> },
         isQnaEditable = true,
         isAnswerEditable = true
@@ -205,8 +229,7 @@ fun DetailQnaBoxAnswer() {
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQuestionClick = {},
-        onDeleteAnswerClick = {},
+        onDeleteQnaClick = {},
         onAddAnswerClick = { id, content -> },
         answerText = "올렸습니다!",
         answerQnaId = 2
@@ -223,8 +246,7 @@ fun DetailQnaBoxAnswerQnaEditable() {
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQuestionClick = {},
-        onDeleteAnswerClick = {},
+        onDeleteQnaClick = {},
         onAddAnswerClick = { id, content -> },
         answerText = "올렸습니다!",
         answerQnaId = 2,
@@ -241,8 +263,7 @@ fun DetailQnaBoxAnswerAllEditable() {
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQuestionClick = {},
-        onDeleteAnswerClick = {},
+        onDeleteQnaClick = {},
         onAddAnswerClick = { id, content -> },
         answerText = "올렸습니다!",
         answerQnaId = 2,

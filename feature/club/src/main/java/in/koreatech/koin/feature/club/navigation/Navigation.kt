@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import `in`.koreatech.koin.feature.club.ui.detail.ClubDetail
 
 fun NavGraphBuilder.koinClubGraph(
     navController: NavController
@@ -15,6 +16,7 @@ fun NavGraphBuilder.koinClubGraph(
     composable(
         route = ClubNavType.ClubDetail.route
     ) {
+        ClubDetail()
     }
 
     composable(
