@@ -9,11 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.club.R
 
 @Composable
 fun DetailSnackBar(
@@ -25,7 +23,7 @@ fun DetailSnackBar(
     labelStyle: TextStyle = KoinTheme.typography.regular14,
     messageColor: Color = KoinTheme.colors.neutral0,
     labelColor: Color = KoinTheme.colors.info700,
-    containerColor: Color = colorResource(R.color.detail_snackbar_background),
+    containerColor: Color = KoinTheme.colors.primary900.copy(alpha = 0.8f),
     shape: Shape = KoinTheme.shapes.medium
 ) {
     Snackbar(
