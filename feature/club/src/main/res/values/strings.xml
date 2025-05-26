@@ -1,6 +1,7 @@
 <resources>
     <string name="detail_tab_detail">상세 소개</string>
     <string name="detail_tab_qna">Q&amp;A</string>
+    <string name="detail_club_image_error">이미지를 불러올 수 없습니다.</string>
     <string name="detail_intro_category">분과 :&#160;</string>
     <string name="detail_intro_location">동아리방 위치 :&#160;</string>
     <string name="detail_intro_introduction">동아리 소개 :&#160;</string>
