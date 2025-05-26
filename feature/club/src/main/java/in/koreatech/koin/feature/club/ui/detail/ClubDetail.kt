@@ -50,17 +50,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
+import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
+import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
-import `in`.koreatech.koin.feature.club.constant.KOIN_WEB_STAGE_URL
-import `in`.koreatech.koin.feature.club.constant.KOIN_WEB_URL
-import `in`.koreatech.koin.feature.club.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_INSTAGRAM
@@ -77,6 +76,7 @@ import `in`.koreatech.koin.feature.club.ui.detail.component.tabrow.DetailTabRow
 import `in`.koreatech.koin.feature.club.ui.detail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.detail.qna.ClubDetailQna
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -85,7 +85,7 @@ fun ClubDetail(
     onTopbarBackClick: () -> Unit = {},
     viewModel: ClubDetailViewModel = hiltViewModel()
 ) {
-    val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val state by viewModel.collectAsState()
 
     val detailList = listOf(
         Pair(DETAIL_CATEGORY, state.clubDetails?.category),
