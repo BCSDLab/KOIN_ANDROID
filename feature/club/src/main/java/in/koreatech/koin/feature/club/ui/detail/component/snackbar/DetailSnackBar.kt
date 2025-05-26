@@ -15,9 +15,8 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 
-
 @Composable
-fun DetailSnackBar (
+fun DetailSnackBar(
     message: String,
     label: String?,
     modifier: Modifier = Modifier,

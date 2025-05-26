@@ -29,8 +29,8 @@ fun ClubDetailQna(
     userId: Int? = null,
     isManager: Boolean = false,
     onDeleteQnaClick: (Int) -> Unit = {},
-    onAddQnaClick: () -> Unit ={},
-    onAddAnswerClick: (Int, String) -> Unit = {_,_ ->}
+    onAddQnaClick: () -> Unit = {},
+    onAddAnswerClick: (Int, String) -> Unit = { _, _ -> }
 ) {
     val scrollState = rememberScrollState()
     Column(

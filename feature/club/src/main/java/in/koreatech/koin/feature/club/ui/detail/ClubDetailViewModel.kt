@@ -136,8 +136,7 @@ class ClubDetailViewModel @Inject constructor(
         state.clubDetails?.let {
             if (it.isLiked) {
                 cancelClubLikeUseCase(clubId = selectedClubId)
-            }
-            else {
+            } else {
                 setClubLikeUseCase(clubId = selectedClubId)
             }
         }

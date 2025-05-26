@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +41,7 @@ fun DetailQnaBox(
     addAnswerText: String,
     modifier: Modifier = Modifier,
     onDeleteQnaClick: (Int) -> Unit = {},
-    onAddAnswerClick: (Int, String) -> Unit = {_,_ ->},
+    onAddAnswerClick: (Int, String) -> Unit = { _, _ -> },
     onAddAnswerTextChange: (String) -> Unit = {},
     isQnaEditable: Boolean = false,
     isAnswerEditable: Boolean = false,
@@ -78,7 +77,7 @@ fun DetailQnaBox(
             .border(
                 width = 1.dp,
                 color = KoinTheme.colors.neutral300,
-                shape = KoinTheme.shapes.extraSmall,
+                shape = KoinTheme.shapes.extraSmall
             )
     ) {
         Column(
@@ -183,7 +182,7 @@ fun DetailQnaBoxNoAnswer() {
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        addAnswerText = "",
+        addAnswerText = ""
     )
 }
 

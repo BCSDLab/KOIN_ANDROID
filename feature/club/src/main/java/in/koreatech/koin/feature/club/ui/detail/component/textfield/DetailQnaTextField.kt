@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -87,7 +86,7 @@ fun DetailQnaTextField(
 @Composable
 fun DetailQnaTextFieldTextPreview() {
     DetailQnaTextField(
-        value = "답변",
+        value = "답변"
     )
 }
 
@@ -95,7 +94,7 @@ fun DetailQnaTextFieldTextPreview() {
 @Composable
 fun DetailQnaTextFieldHintPreview() {
     DetailQnaTextField(
-        value = "",
+        value = ""
     )
 }
 
@@ -104,6 +103,6 @@ fun DetailQnaTextFieldHintPreview() {
 fun DetailQnaTextFieldNoIconPreview() {
     DetailQnaTextField(
         value = "",
-        isSendIconVisible = false,
+        isSendIconVisible = false
     )
 }
