@@ -3,6 +3,8 @@ package `in`.koreatech.koin.feature.club.ui.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
@@ -12,16 +14,14 @@ import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
-import `in`.koreatech.koin.feature.club.intent.detail.ClubDetailIntent
-import `in`.koreatech.koin.feature.club.state.ClubDetailState
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class ClubDetailViewModel @Inject constructor(
@@ -33,10 +33,11 @@ class ClubDetailViewModel @Inject constructor(
     private val postClubQnaUseCase: PostClubQnaUseCase,
     private val setClubEmpowermentUseCase: SetClubEmpowermentUseCase,
     private val setClubLikeUseCase: SetClubLikeUseCase
-) : ViewModel() {
+) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
+    override val container = container<ClubDetailState, ClubDetailSideEffect>(
+        initialState = ClubDetailState()
+    )
 
-    private val _state = MutableStateFlow(ClubDetailState())
-    val state: StateFlow<ClubDetailState> = _state.asStateFlow()
     private var selectedClubId = 1 // 연결 이전 hard Coding
 
     private val userInfoFlow: StateFlow<User> =
@@ -45,148 +46,102 @@ class ClubDetailViewModel @Inject constructor(
 
     init {
         getUserIdCollect()
-        handleIntent(ClubDetailIntent.LoadClubDetailsAndQnas)
+        fetchAllData()
     }
 
-    fun handleIntent(intent: ClubDetailIntent) {
-        when (intent) {
-            is ClubDetailIntent.LoadClubDetailsAndQnas -> {
-                startJob {
-                    loadClubDetails()
-                    loadClubQnas()
-                }
-            }
-            is ClubDetailIntent.LoadClubDetails -> {
-                startJob {
-                    loadClubDetails()
-                }
-            }
-            is ClubDetailIntent.LoadClubQnas -> {
-                startJob {
-                    loadClubQnas()
-                }
-            }
-            is ClubDetailIntent.AddClubQna -> {
-                startJob {
-                    _state.value.clubDetails?.let {
-                        addClubQna(selectedClubId, intent.parentId, intent.content)
-                        loadClubQnas()
-                    }
-                }
-            }
-            is ClubDetailIntent.DeleteClubQna -> {
-                startJob {
-                    _state.value.clubDetails?.let {
-                        deleteClubQna(selectedClubId, intent.qnaId)
-                        loadClubQnas()
-                    }
-                }
-            }
-            is ClubDetailIntent.ChangeClubLike -> {
-                startJob {
-                    _state.value.clubDetails?.let {
-                        if (it.isLiked) {
-                            cancelClubLike(selectedClubId)
-                        } else {
-                            setClubLike(selectedClubId)
-                        }
-                        loadClubDetails()
-                    }
-                }
-            }
-            else -> {}
-        }
+    private fun fetchAllData() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        val clubDetails = loadClubDetails()
+        val clubQnasInfo = loadClubQnas()
+        reduce { state.copy(isLoading = false, clubDetails = clubDetails, clubQnasInfo = clubQnasInfo) }
     }
 
-    fun startJob(job: suspend () -> Unit) {
-        if (_state.value.isLoading) return
-        viewModelScope.launch {
-            _state.update {
-                it.copy(isLoading = true)
-            }
-            job()
-            _state.update {
-                it.copy(isLoading = false)
-            }
-        }
-    }
-
-    fun getUserIdCollect() {
-        viewModelScope.launch {
-            userInfoFlow.collect { user ->
-                when (user) {
-                    is User.Anonymous -> {
-                        _state.update {
-                            it.copy(userId = null)
-                        }
-                    }
-                    is User.Student -> {
-                        _state.update {
-                            it.copy(userId = user.id)
-                        }
-                    }
+    private fun getUserIdCollect() = intent {
+        userInfoFlow.collect { user ->
+            when (user) {
+                is User.Anonymous -> {
+                    reduce { state.copy(userId = null) }
+                }
+                is User.Student -> {
+                    reduce { state.copy(userId = user.id) }
                 }
             }
         }
     }
 
-    suspend fun loadClubDetails() {
+    private suspend fun loadClubDetails(): ClubDetails? {
         getClubDetailsUseCase(selectedClubId).onSuccess {
-            val clubDetails = it
-            _state.update {
-                it.copy(clubDetails = clubDetails)
-            }
+            return it
         }
+        return null
     }
 
-    suspend fun loadClubQnas() {
+    private suspend fun loadClubQnas(): ClubQnasInfo? {
         getClubQnasUseCase(selectedClubId).onSuccess {
-            val clubQnasInfo = it
-            _state.update {
-                it.copy(clubQnasInfo = clubQnasInfo)
-            }
+            return it
         }
+        return null
     }
 
-    suspend fun addClubQna(
-        clubId: Int,
+    fun showAddQnaDialog() = intent {
+        reduce { state.copy(showAddQnaDialog = true) }
+    }
+    fun dismissAddQnaDialog() = intent {
+        reduce { state.copy(showAddQnaDialog = false) }
+    }
+
+    fun addClubQna(
         parentId: Int?,
         content: String
-    ) {
-        postClubQnaUseCase(
-            clubId = clubId,
-            parentId = parentId,
-            content = content
-        ).onSuccess {
+    ) = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            postClubQnaUseCase(
+                clubId = selectedClubId,
+                parentId = parentId,
+                content = content
+            )
         }
+        val clubQnasInfo = loadClubQnas()
+        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo) }
     }
 
-    suspend fun deleteClubQna(
-        clubId: Int,
+    fun deleteClubQna(
         qnaId: Int
-    ) {
-        deleteClubQnaUseCase(
-            clubId = clubId,
-            qnaId = qnaId
-        ).onSuccess {
+    ) = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            deleteClubQnaUseCase(
+                clubId = selectedClubId,
+                qnaId = qnaId
+            )
         }
+        val clubQnasInfo = loadClubQnas()
+        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo) }
     }
 
-    suspend fun setClubLike(
-        clubId: Int
-    ) {
-        setClubLikeUseCase(
-            clubId = clubId
-        ).onSuccess {
-        }
+    fun showLoginDialog() = intent {
+        reduce { state.copy(showLoginDialog = true) }
+    }
+    fun dismissLoginDialog() = intent {
+        reduce { state.copy(showLoginDialog = false) }
     }
 
-    suspend fun cancelClubLike(
-        clubId: Int
-    ) {
-        cancelClubLikeUseCase(
-            clubId = clubId
-        ).onSuccess {
+    fun changeClubLike() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        state.clubDetails?.let {
+            if (it.isLiked) {
+                cancelClubLikeUseCase(clubId = selectedClubId)
+            }
+            else {
+                setClubLikeUseCase(clubId = selectedClubId)
+            }
         }
+        val clubDetails = loadClubDetails()
+        reduce { state.copy(isLoading = false, clubDetails = clubDetails) }
     }
 }

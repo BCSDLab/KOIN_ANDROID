@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.club.ui.detail
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -25,30 +24,25 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -56,13 +50,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
-import `in`.koreatech.koin.feature.club.intent.detail.ClubDetailIntent
+import `in`.koreatech.koin.feature.club.constant.KOIN_WEB_STAGE_URL
+import `in`.koreatech.koin.feature.club.constant.KOIN_WEB_URL
+import `in`.koreatech.koin.feature.club.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_INSTAGRAM
@@ -71,8 +69,10 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
-import `in`.koreatech.koin.feature.club.ui.detail.component.button.DetailButton
+import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailDialog
 import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailLoginDialog
+import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogAddQnaContent
+import `in`.koreatech.koin.feature.club.ui.detail.component.snackbar.DetailSnackBar
 import `in`.koreatech.koin.feature.club.ui.detail.component.tabrow.DetailTabRow
 import `in`.koreatech.koin.feature.club.ui.detail.intro.ClubDetailIntro
 import `in`.koreatech.koin.feature.club.ui.detail.qna.ClubDetailQna
@@ -82,9 +82,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun ClubDetail(
     initialPage: Int = 0,
+    onTopbarBackClick: () -> Unit = {},
     viewModel: ClubDetailViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
     val detailList = listOf(
         Pair(DETAIL_CATEGORY, state.clubDetails?.category),
@@ -104,7 +105,6 @@ fun ClubDetail(
     val context = LocalContext.current
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val scrollStates = remember { mutableStateMapOf<Int, Int>() }
     val listState = rememberLazyListState()
 
     Scaffold(
@@ -112,9 +112,7 @@ fun ClubDetail(
         topBar = {
             KoinTopAppBar(
                 title = state.clubDetails?.name ?: "",
-                onNavigationIconClick = {
-                    (context as Activity).finish()
-                }
+                onNavigationIconClick = onTopbarBackClick
             )
         },
         floatingActionButton = {
@@ -148,52 +146,50 @@ fun ClubDetail(
             SnackbarHost(
                 hostState = snackbarHostState,
                 snackbar = { data ->
-                    Snackbar(
-                        modifier = Modifier
-                            .padding(horizontal = 24.dp),
-                        content = {
-                            Text(
-                                text = data.visuals.message,
-                                style = KoinTheme.typography.regular12,
-                                color = KoinTheme.colors.neutral0
-                            )
-                        },
-                        action = {
-                            data.visuals.actionLabel?.let { label ->
-                                Box(
-                                    modifier = Modifier
-                                        .padding(end = 12.dp)
-                                        .clickable { data.performAction() }
-                                ) {
-                                    Text(
-                                        text = label,
-                                        style = KoinTheme.typography.regular12,
-                                        color = KoinTheme.colors.info700
-                                    )
-                                }
-                            }
-                        },
-                        containerColor = Color(0xCC041A44),
-                        contentColor = KoinTheme.colors.neutral0,
-                        shape = RoundedCornerShape(8.dp)
+                    DetailSnackBar(
+                        message = data.visuals.message,
+                        label = data.visuals.actionLabel,
+                        onLabelClick = { data.performAction() }
                     )
                 }
             )
         }
     ) { contentPadding ->
 
-        var showLoginDialog by remember { mutableStateOf(false) }
-
-        if (showLoginDialog) {
+        if (state.showLoginDialog) {
             DetailLoginDialog(
                 title = stringResource(R.string.detail_dialog_login_title),
                 description = stringResource(R.string.detail_dialog_login_description),
                 onPositive = {
-                    showLoginDialog = false
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("koin://login/login"))
+                    viewModel.dismissLoginDialog()
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(LOGIN_ACTIVITY_URL))
                     context.startActivity(intent)
                 },
-                onNegative = { showLoginDialog = false }
+                onNegative = { viewModel.dismissLoginDialog() }
+            )
+        }
+
+        if (state.showAddQnaDialog) {
+            var addQnaText by remember { mutableStateOf("") }
+            DetailDialog(
+                modifier = Modifier,
+                title = stringResource(R.string.detail_add_qna_button),
+                onPositive = {
+                    if (addQnaText.isNotEmpty()) {
+                        viewModel.dismissAddQnaDialog()
+                        viewModel.addClubQna(
+                            parentId = null,
+                            content = addQnaText
+                        )
+                    }
+                },
+                onNegative = { viewModel.dismissAddQnaDialog() },
+                content = {
+                    DetailDialogAddQnaContent(
+                        text = addQnaText,
+                        onValueChange = { addQnaText = it }
+                    )
+                }
             )
         }
 
@@ -228,7 +224,7 @@ fun ClubDetail(
                         Box(
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("이미지를 불러올 수 없습니다.")
+                            Text(stringResource(R.string.detail_club_image_error))
                         }
                     }
                 )
@@ -262,9 +258,9 @@ fun ClubDetail(
                                     .padding(end = 4.dp)
                                     .clickable {
                                         if (state.userId == null) {
-                                            showLoginDialog = true
+                                            viewModel.showLoginDialog()
                                         } else {
-                                            viewModel.handleIntent(ClubDetailIntent.ChangeClubLike)
+                                            viewModel.changeClubLike()
                                         }
                                     }
                             )
@@ -274,17 +270,17 @@ fun ClubDetail(
                             )
                         }
                         state.userId?.let {
-                            if (state.clubDetails?.manager ?: false) {
+                            if (state.clubDetails?.manager == true) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    DetailButton(
+                                    FilledButton(
                                         text = stringResource(R.string.detail_fix_button),
                                         onClick = {},
                                         contentPadding = PaddingValues(horizontal = 11.dp, vertical = 5.dp)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    DetailButton(
+                                    FilledButton(
                                         text = stringResource(R.string.detail_empowerment_button),
                                         onClick = {},
                                         contentPadding = PaddingValues(horizontal = 9.dp, vertical = 5.dp)
@@ -376,9 +372,9 @@ fun ClubDetail(
                                         if (result == SnackbarResult.ActionPerformed) {
                                             var intent: Intent
                                             if (BuildConfig.DEBUG) {
-                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stage.koreatech.in/"))
+                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse(KOIN_WEB_STAGE_URL))
                                             } else {
-                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://koreatech.in/"))
+                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse(KOIN_WEB_URL))
                                             }
                                             context.startActivity(intent)
                                         }
@@ -393,14 +389,14 @@ fun ClubDetail(
                                 qnaList = qnaList,
                                 isManager = state.clubDetails?.manager ?: false,
                                 userId = state.userId,
-                                onAddQuestionClick = { content ->
-                                    viewModel.handleIntent(ClubDetailIntent.AddClubQna(null, content))
+                                onAddQnaClick = {
+                                    viewModel.showAddQnaDialog()
                                 },
                                 onDeleteQnaClick = { qnaId ->
-                                    viewModel.handleIntent(ClubDetailIntent.DeleteClubQna(qnaId))
+                                    viewModel.deleteClubQna(qnaId)
                                 },
                                 onAddAnswerClick = { qnaId, content ->
-                                    viewModel.handleIntent(ClubDetailIntent.AddClubQna(qnaId, content))
+                                    viewModel.addClubQna(qnaId, content)
                                 }
                             )
                         }

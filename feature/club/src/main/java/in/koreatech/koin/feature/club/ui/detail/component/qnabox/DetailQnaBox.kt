@@ -36,18 +36,19 @@ import `in`.koreatech.koin.feature.club.ui.detail.component.textfield.DetailQnaT
 
 @Composable
 fun DetailQnaBox(
-    modifier: Modifier = Modifier,
     qnaId: Int,
     questionText: String,
-    answerQnaId: Int? = null,
-    answerText: String? = null,
     createdDate: String,
-    onDeleteQnaClick: (Int) -> Unit,
-    onAddAnswerClick: (Int, String) -> Unit,
+    addAnswerText: String,
+    modifier: Modifier = Modifier,
+    onDeleteQnaClick: (Int) -> Unit = {},
+    onAddAnswerClick: (Int, String) -> Unit = {_,_ ->},
+    onAddAnswerTextChange: (String) -> Unit = {},
     isQnaEditable: Boolean = false,
-    isAnswerEditable: Boolean = false
+    isAnswerEditable: Boolean = false,
+    answerQnaId: Int? = null,
+    answerText: String? = null
 ) {
-    var text by remember { mutableStateOf("") }
     var showDeleteQnaDialog by remember { mutableStateOf(Pair(false, -1)) }
     if (showDeleteQnaDialog.first) {
         DetailDialog(
@@ -77,7 +78,7 @@ fun DetailQnaBox(
             .border(
                 width = 1.dp,
                 color = KoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(size = 4.dp)
+                shape = KoinTheme.shapes.extraSmall,
             )
     ) {
         Column(
@@ -138,12 +139,12 @@ fun DetailQnaBox(
                     if (answerText.isNullOrEmpty() || answerQnaId == null) {
                         DetailQnaTextField(
                             modifier = Modifier.padding(end = 4.dp),
-                            value = text,
+                            value = addAnswerText,
                             textFieldColor = KoinTheme.colors.primary300,
-                            onValueChange = { text = it },
+                            onValueChange = onAddAnswerTextChange,
                             onSendClick = {
-                                if (text.isNotEmpty()) {
-                                    onAddAnswerClick(qnaId, text)
+                                if (addAnswerText.isNotEmpty()) {
+                                    onAddAnswerClick(qnaId, addAnswerText)
                                 }
                             }
                         )
@@ -178,28 +179,22 @@ fun DetailQnaBox(
 @Preview
 @Composable
 fun DetailQnaBoxNoAnswer() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> }
+        addAnswerText = "",
     )
 }
 
 @Preview
 @Composable
 fun DetailQnaBoxNoAnswerQnaEditable() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         isQnaEditable = true
     )
 }
@@ -207,14 +202,11 @@ fun DetailQnaBoxNoAnswerQnaEditable() {
 @Preview
 @Composable
 fun DetailQnaBoxNoAnswerAllEditable() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         isQnaEditable = true,
         isAnswerEditable = true
     )
@@ -223,14 +215,11 @@ fun DetailQnaBoxNoAnswerAllEditable() {
 @Preview
 @Composable
 fun DetailQnaBoxAnswer() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         answerText = "올렸습니다!",
         answerQnaId = 2
 
@@ -240,14 +229,11 @@ fun DetailQnaBoxAnswer() {
 @Preview
 @Composable
 fun DetailQnaBoxAnswerQnaEditable() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         answerText = "올렸습니다!",
         answerQnaId = 2,
         isQnaEditable = true
@@ -257,14 +243,11 @@ fun DetailQnaBoxAnswerQnaEditable() {
 @Preview
 @Composable
 fun DetailQnaBoxAnswerAllEditable() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         answerText = "올렸습니다!",
         answerQnaId = 2,
         isQnaEditable = true,

@@ -28,14 +28,14 @@ import `in`.koreatech.koin.feature.club.R
 
 @Composable
 fun DetailQnaTextField(
+    value: String,
     modifier: Modifier = Modifier,
-    value: String = "",
+    onSendClick: () -> Unit = {},
+    onValueChange: (String) -> Unit = {},
     textStyle: TextStyle = KoinTheme.typography.regular14,
     textFieldColor: Color = KoinTheme.colors.primary500,
     hint: String = stringResource(R.string.detail_qna_text_field_hint),
-    onValueChange: (String) -> Unit,
     isSendIconVisible: Boolean = true,
-    onSendClick: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 7.dp)
 ) {
     BasicTextField(
@@ -52,7 +52,7 @@ fun DetailQnaTextField(
                     .border(
                         width = 1.dp,
                         color = textFieldColor,
-                        shape = RoundedCornerShape(size = 4.dp)
+                        shape = KoinTheme.shapes.extraSmall
                     )
                     .background(KoinTheme.colors.neutral100)
                     .padding(contentPadding)
@@ -88,8 +88,6 @@ fun DetailQnaTextField(
 fun DetailQnaTextFieldTextPreview() {
     DetailQnaTextField(
         value = "답변",
-        onValueChange = {},
-        onSendClick = {}
     )
 }
 
@@ -98,8 +96,6 @@ fun DetailQnaTextFieldTextPreview() {
 fun DetailQnaTextFieldHintPreview() {
     DetailQnaTextField(
         value = "",
-        onValueChange = {},
-        onSendClick = {}
     )
 }
 
@@ -108,8 +104,6 @@ fun DetailQnaTextFieldHintPreview() {
 fun DetailQnaTextFieldNoIconPreview() {
     DetailQnaTextField(
         value = "",
-        onValueChange = {},
         isSendIconVisible = false,
-        onSendClick = {}
     )
 }
