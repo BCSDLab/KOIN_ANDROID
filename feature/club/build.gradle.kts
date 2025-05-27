@@ -30,6 +30,7 @@ dependencies {
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.m3)
+    implementation(libs.kotlinxCollectionsImmutable)
 
     implementation(libs.coil.compose)
 
