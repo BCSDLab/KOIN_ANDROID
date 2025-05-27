@@ -13,6 +13,7 @@
     <string name="add_menu">메뉴 추가</string>
     <string name="pickup">포장</string>
     <string name="delivery">배달</string>
+    <string name="delete_all">전체삭제</string>
 
     <!--상점 상세-->
     <string name="store_info_and_origin">가게정보·원산지</string>
