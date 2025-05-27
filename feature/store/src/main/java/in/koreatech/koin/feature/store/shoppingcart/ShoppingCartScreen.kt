@@ -23,7 +23,7 @@ import `in`.koreatech.koin.feature.store.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen(
+fun ShoppingCartScreen(
     onBackClick: () -> Unit,
     onDeleteAllClick: () -> Unit,
     storeInfo: StoreDetailInfo,
@@ -73,7 +73,7 @@ fun CartScreen(
 private fun ShoppingCartItem() {
     KoinTheme {
         Column {
-            CartScreen(
+            ShoppingCartScreen(
                 onBackClick = {},
                 onDeleteAllClick = {},
                 storeInfo = StoreDetailInfo(
