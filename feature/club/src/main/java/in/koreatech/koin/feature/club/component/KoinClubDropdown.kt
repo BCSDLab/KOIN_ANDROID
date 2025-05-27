@@ -69,7 +69,7 @@ fun KoinClubDropdown(
         )
 
         val dropdownCorner: Dp by animateDpAsState(
-            targetValue = if (isDropdownExpanded) 0.dp else 14.dp
+            targetValue = if (isDropdownExpanded) 0.dp else 8.dp
         )
 
         val dropdownShape = KoinTheme.shapes.small.copy(
