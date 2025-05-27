@@ -24,7 +24,6 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 
-
 @Composable
 fun CartMenuItem(
     menu: ShopMenus
@@ -36,7 +35,8 @@ fun CartMenuItem(
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp),
                     text = menu.description ?: "",
-                    fontSize = 15.sp, color = KoinTheme.colors.neutral500
+                    fontSize = 15.sp,
+                    color = KoinTheme.colors.neutral500
                 )
                 Text(
                     text = "27,000원",
@@ -69,7 +69,6 @@ fun CartMenuItem(
     }
 }
 
-
 @Composable
 @Preview
 private fun ShoppingCartItem() {
@@ -86,7 +85,7 @@ private fun ShoppingCartItem() {
                     ShopMenus.ShopMenuOptions(option = "123123", price = 123213),
                     ShopMenus.ShopMenuOptions(option = "3232", price = 321312213)
                 ),
-                singlePrice = 10000,
+                singlePrice = 10000
             )
         )
     }

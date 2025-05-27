@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.store.R
 
-
 @Composable
 fun QuantityOptionButton(
     quantity: Int,
@@ -48,7 +47,7 @@ fun QuantityOptionButton(
         ) {
             Text(
                 text = stringResource(R.string.change_option),
-                color = KoinTheme.colors.neutral600,
+                color = KoinTheme.colors.neutral600
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -57,7 +56,7 @@ fun QuantityOptionButton(
             shape = RoundedCornerShape(50),
             border = BorderStroke(1.dp, Color.LightGray),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-            enabled = false,
+            enabled = false
         ) {
             Icon(
                 imageVector = Icons.Default.Delete,
@@ -67,7 +66,7 @@ fun QuantityOptionButton(
                     .size(20.dp)
                     .clickable(onClick = onMinusClick)
             )
-            Text(modifier= Modifier.padding(horizontal = 14.dp), text = "$quantity", color =  KoinTheme.colors.neutral600,)
+            Text(modifier = Modifier.padding(horizontal = 14.dp), text = "$quantity", color = KoinTheme.colors.neutral600)
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "",

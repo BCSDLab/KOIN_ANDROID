@@ -56,11 +56,10 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.shoppingcart.component.CartMenuItem
 import `in`.koreatech.koin.feature.store.shoppingcart.component.PaymentSummaryCard
 
-
 @Composable
 fun ShoppingCartContent(
     modifier: Modifier,
-    storeInfo: StoreDetailInfo,
+    storeInfo: StoreDetailInfo
 ) {
     val tabs = listOf(R.string.delivery, R.string.pickup)
     var selectedTab by remember { mutableStateOf(R.string.delivery) }
@@ -70,7 +69,7 @@ fun ShoppingCartContent(
         modifier = modifier
             .fillMaxSize()
             .background(
-                color = colorResource(id = R.color.store_detail_background),
+                color = colorResource(id = R.color.store_detail_background)
             )
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -85,12 +84,11 @@ fun ShoppingCartContent(
                         drawRoundRect(
                             color = Color.Black.copy(alpha = 0.05f),
                             topLeft = Offset(0f, 4.dp.toPx()),
-                            cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx()),
+                            cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                         )
                     }
                     .padding(2.dp)
-
-                    .background(KoinTheme.colors.neutral0, shape = RoundedCornerShape(10.dp)),
+                    .background(KoinTheme.colors.neutral0, shape = RoundedCornerShape(10.dp))
             ) {
                 tabs.forEach { tab ->
                     val isSelected = tab == selectedTab
@@ -103,12 +101,12 @@ fun ShoppingCartContent(
                         shape = RoundedCornerShape(13.dp),
                         colors = buttonColors(
                             containerColor = if (isSelected) colorResource(R.color.shopping_cart_button_background) else KoinTheme.colors.neutral0,
-                            contentColor = if (isSelected)  KoinTheme.colors.neutral0 else KoinTheme.colors.neutral500
-                        ),
+                            contentColor = if (isSelected) KoinTheme.colors.neutral0 else KoinTheme.colors.neutral500
+                        )
                     ) {
                         Text(
                             style = KoinTheme.typography.medium16,
-                            text = stringResource(id = tab),
+                            text = stringResource(id = tab)
                         )
                     }
                 }
@@ -140,7 +138,6 @@ fun ShoppingCartContent(
                     tint = Color.Gray
                 )
             }
-
         }
         item {
             Card(
@@ -193,7 +190,7 @@ fun ShoppingCartContent(
                 shape = RoundedCornerShape(8.dp),
                 colors = buttonColors(
                     containerColor = Color.White,
-                    contentColor = colorResource(R.color.shopping_cart_button_text),
+                    contentColor = colorResource(R.color.shopping_cart_button_text)
                 )
             ) {
                 Row(
@@ -207,10 +204,8 @@ fun ShoppingCartContent(
             }
         }
         item { PaymentSummaryCard() }
-
     }
 }
-
 
 @Composable
 fun ShoppingCartEmptyContent(
@@ -230,7 +225,7 @@ fun ShoppingCartEmptyContent(
             contentDescription = null
         )
         Text(
-            text = stringResource(R.string.shopping_cart_is_empty),
+            text = stringResource(R.string.shopping_cart_is_empty)
         )
         Button(
             onClick = {},
@@ -238,7 +233,7 @@ fun ShoppingCartEmptyContent(
                 .padding(top = 20.dp),
             colors = buttonColors(
                 containerColor = KoinTheme.colors.neutral0,
-                contentColor = KoinTheme.colors.neutral500,
+                contentColor = KoinTheme.colors.neutral500
             ),
             shape = KoinTheme.shapes.extraSmall,
             elevation = buttonElevation(
@@ -255,10 +250,9 @@ fun ShoppingCartEmptyContent(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = stringResource(R.string.add_menu),
-                style = KoinTheme.typography.medium16,
+                style = KoinTheme.typography.medium16
             )
         }
-
     }
 }
 

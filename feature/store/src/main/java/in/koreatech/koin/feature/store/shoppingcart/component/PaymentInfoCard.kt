@@ -99,7 +99,6 @@ fun PaymentSummaryCard() {
     }
 }
 
-
 @Preview
 @Composable
 private fun PaymentSummaryCardPreview() {

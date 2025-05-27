@@ -26,14 +26,14 @@ import `in`.koreatech.koin.feature.store.R
 fun ShoppingCartScreen(
     onBackClick: () -> Unit,
     onDeleteAllClick: () -> Unit,
-    storeInfo: StoreDetailInfo,
+    storeInfo: StoreDetailInfo
 ) {
     val isEmpty = false // 임시
     Scaffold(
         topBar = {
             KoinTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = colorResource(id = R.color.store_detail_background),
+                    containerColor = colorResource(id = R.color.store_detail_background)
                 ),
                 title = stringResource(R.string.shopping_cart),
                 onNavigationIconClick = onBackClick,
@@ -54,7 +54,7 @@ fun ShoppingCartScreen(
             ShoppingCartEmptyContent(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .fillMaxSize(),
+                    .fillMaxSize()
             )
             return@Scaffold
         }
@@ -62,11 +62,10 @@ fun ShoppingCartScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            storeInfo = storeInfo,
+            storeInfo = storeInfo
         )
     }
 }
-
 
 @Composable
 @Preview
@@ -90,10 +89,9 @@ private fun ShoppingCartItem() {
                     accountNumber = "123-456-7890",
                     deliveryPrice = 3000,
                     operatingTime = null,
-                    bank = "우리은행",
+                    bank = "우리은행"
                 )
             )
         }
     }
 }
-
