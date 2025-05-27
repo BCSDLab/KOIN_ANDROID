@@ -15,6 +15,8 @@ data class ClubsResponse(
         val category: String,
         @SerializedName("likes")
         val likes: Int,
+        @SerializedName("imageUrl")
+        val imageUrl: String,
         @SerializedName("isLiked")
         val isLiked: Boolean
     )

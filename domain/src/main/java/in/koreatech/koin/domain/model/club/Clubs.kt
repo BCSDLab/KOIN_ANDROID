@@ -8,6 +8,7 @@ data class Clubs(
         val name: String,
         val category: String,
         val likes: Int,
+        val imageUrl: String,
         val isLiked: Boolean
     )
 }
