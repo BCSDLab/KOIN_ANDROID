@@ -71,6 +71,8 @@ fun MainClubWidgetB(
     hotClubImageUrl: String,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -98,7 +100,12 @@ fun MainClubWidgetB(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.club_main_widget_club_list),
                 description = stringResource(R.string.club_main_widget_go),
-                icon = painterResource(R.drawable.ic_club_list)
+                icon = painterResource(R.drawable.ic_club_list),
+                onClick = {
+                    Intent(context, ClubActivity::class.java).apply {
+                        context.startActivity(this)
+                    }
+                }
             )
         }
     }
