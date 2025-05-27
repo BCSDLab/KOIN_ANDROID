@@ -8,4 +8,10 @@
     <string name="club_main_widget_popular_club">인기 동아리</string>
     <string name="club_main_widget_club_list">동아리 목록</string>
     <string name="club_main_widget_go">바로가기</string>
+    <string name="club_list_title">동아리</string>
+    <string name="club_list_list">동아리 목록</string>
+    <string name="club_list_create_club">동아리 생성하기</string>
+    <string name="club_list_search_hint">동아리 명을 입력하세요.</string>
+    <string name="club_list_dropdown_sort_none">생성순</string>
+    <string name="club_list_dropdown_sort_hits">조회순</string>
 </resources>
