@@ -58,7 +58,7 @@ import `in`.koreatech.koin.feature.store.shoppingcart.component.PaymentSummaryCa
 
 
 @Composable
-fun ShoppingCartNotEmptyContent(
+fun ShoppingCartContent(
     modifier: Modifier,
     storeInfo: StoreDetailInfo,
 ) {
@@ -213,7 +213,7 @@ fun ShoppingCartNotEmptyContent(
 
 
 @Composable
-fun ShoppingCartContent(
+fun ShoppingCartEmptyContent(
     modifier: Modifier
 ) {
     Column(
@@ -266,7 +266,7 @@ fun ShoppingCartContent(
 @Preview
 private fun ShoppingCartContentPreview() {
     KoinTheme {
-        ShoppingCartContent(
+        ShoppingCartEmptyContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
