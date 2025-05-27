@@ -19,9 +19,7 @@ class ClubActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val clubCategory = intent.getIntExtra(CATEGORY_ID, -1).takeIf {
-            it != -1
-        }
+        val clubCategory = intent.getIntExtra(CATEGORY_ID, -1)
 
         setContent {
             KoinTheme {
