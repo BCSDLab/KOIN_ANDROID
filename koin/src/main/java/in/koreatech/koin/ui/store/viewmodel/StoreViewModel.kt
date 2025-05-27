@@ -65,7 +65,7 @@ class StoreViewModel @Inject constructor(
     private val _storeCategoryList = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategoryList: LiveData<List<StoreCategories>> get() = _storeCategoryList
 
-    private val _storeSorter = MutableLiveData<StoreSorter>()
+    private val _storeSorter = MutableLiveData<StoreSorter>(StoreSorter.NONE)
     val storeSorter: LiveData<StoreSorter> get() = _storeSorter
 
     private val _isOperating = MutableLiveData<Boolean>(false)

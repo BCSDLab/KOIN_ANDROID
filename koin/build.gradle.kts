@@ -114,6 +114,7 @@ dependencies {
     // Dependency - glide & coil
     implementation(libs.glide)
     implementation(libs.coil)
+    implementation(libs.coil.compose)
     ksp(libs.glide.ksp)
 
     // Dependency - naver api
@@ -146,6 +147,7 @@ dependencies {
     implementation(libs.firebase.crashlytics)
 
     implementation(libs.compose.lifecycle)
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.10")
     implementation(libs.kotlinxCollectionsImmutable)
 
     implementation(platform(libs.compose.bom))

@@ -1,0 +1,65 @@
+package `in`.koreatech.koin.ui.screens.store
+
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import `in`.koreatech.koin.domain.model.store.BottomNavItem
+import `in`.koreatech.koin.ui.screens.store.components.BottomNavigationBar
+import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
+
+@Composable
+fun StoreMainScreen(
+    categoryId: Int
+) {
+    val navController = rememberNavController()
+    val storeViewModel: StoreViewModel = hiltViewModel()
+    val context = LocalContext.current
+
+    val items = listOf(
+        BottomNavItem("홈", "home", "home"),
+        BottomNavItem("주변 상점", "nearby", "nearby"),
+        BottomNavItem("주문 내역", "orderHistory", "orderHistory")
+    )
+
+    BackHandler {
+        val popped = navController.popBackStack()
+        if (!popped) {
+            (context as? ComponentActivity)?.finish()
+        }
+    }
+
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController, items) },
+        content = { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = "home",
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                composable("home") {
+                    HomeScreen(
+                        categoryId = categoryId,
+                        viewModel = storeViewModel,
+                        onNavigationClick = {
+                            val popped = navController.popBackStack()
+                            if (!popped) {
+                                (context as? ComponentActivity)?.finish()
+                            }
+                        },
+                        onCartClick = { }
+                    )
+                }
+                composable("nearby") { NearbyStoreScreen() }
+//                composable("orders") { OrdersScreen() }
+            }
+        }
+    )
+}
