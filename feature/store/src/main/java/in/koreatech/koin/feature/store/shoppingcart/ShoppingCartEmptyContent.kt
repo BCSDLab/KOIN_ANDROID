@@ -215,7 +215,7 @@ fun ShoppingCartEmptyContent(
         modifier = modifier
             .fillMaxSize()
             .background(
-                color = KoinTheme.colors.neutral0
+                color = colorResource(R.color.store_detail_background),
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
