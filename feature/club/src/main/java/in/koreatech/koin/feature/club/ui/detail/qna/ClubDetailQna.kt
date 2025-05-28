@@ -22,7 +22,7 @@ import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.ui.detail.component.qnabox.DetailQnaBox
 
-// TODO QNA 로딩중 progrssbar 추가
+//TODO QNA 로딩중 progrssbar 추가 + 이중 스크롤 처리 추가
 @Composable
 fun ClubDetailQna(
     qnaList: List<ClubQnasInfo.Qna>?,
@@ -33,11 +33,8 @@ fun ClubDetailQna(
     onAddQnaClick: () -> Unit = {},
     onAddAnswerClick: (Int, String) -> Unit = { _, _ -> }
 ) {
-    val scrollState = rememberScrollState()
     Column(
         modifier = modifier
-            .height(800.dp)
-            .verticalScroll(scrollState)
             .padding(
                 top = 16.dp,
                 start = 24.dp,

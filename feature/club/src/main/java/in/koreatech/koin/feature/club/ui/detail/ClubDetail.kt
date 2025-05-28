@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +44,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -422,9 +427,23 @@ fun ClubDetail(
                 ) { page ->
                     when (tabList[page]) {
                         DetailTabType.DETAIL_INTRO.strResId -> {
+                            val nestedScrollConnection = remember {
+                                object : NestedScrollConnection {
+                                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                                        return if (available.y < 0 && listState.canScrollForward) {
+                                            if (listState.canScrollForward) Offset.Zero else available
+                                        } else {
+                                            Offset.Zero
+                                        }
+                                    }
+                                }
+                            }
                             val snackbarMessage = stringResource(R.string.detail_snackbar_detail_intro_text)
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
+                                modifier = Modifier
+                                    .height(800.dp)
+                                    .nestedScroll(nestedScrollConnection),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
@@ -441,16 +460,28 @@ fun ClubDetail(
                                         }
                                     }
                                 },
-                                isManager = state.clubDetails?.manager ?: false,
+                                isManager = true,// state.clubDetails?.manager ?: false,
                                 userId = state.userId
                             )
                         }
                         DetailTabType.QNA.strResId -> {
+                            val nestedScrollConnection = remember {
+                                object : NestedScrollConnection {
+                                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                                        return if (available.y < 0) {
+                                            if (listState.canScrollForward) Offset.Zero else available
+                                        } else {
+                                            Offset.Zero
+                                        }
+                                    }
+                                }
+                            }
                             if(state.showQnasProgressBar) {
                                 Box (
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(700.dp)
+                                        .nestedScroll(nestedScrollConnection),
                                 ) {
                                     CircularProgressIndicator(
                                         modifier = Modifier
@@ -461,6 +492,9 @@ fun ClubDetail(
                             }
                             else {
                                 ClubDetailQna(
+                                    modifier = Modifier
+                                        .height(800.dp)
+                                        .nestedScroll(nestedScrollConnection),
                                     qnaList = qnaList,
                                     isManager = state.clubDetails?.manager ?: false,
                                     userId = state.userId,

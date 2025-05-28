@@ -25,11 +25,8 @@ fun ClubDetailIntro(
     isManager: Boolean = false,
     userId: Int? = null
 ) {
-    val scrollState = rememberScrollState()
     Column(
         modifier = modifier
-            .height(800.dp)
-            .verticalScroll(scrollState)
             .padding(
                 horizontal = 24.dp,
                 vertical = 16.dp
