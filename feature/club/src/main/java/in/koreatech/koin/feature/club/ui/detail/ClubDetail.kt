@@ -450,11 +450,11 @@ fun ClubDetail(
                                 Box (
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(600.dp)
+                                        .height(700.dp)
                                 ) {
                                     CircularProgressIndicator(
                                         modifier = Modifier
-                                            .size(40.dp)
+                                            .size(50.dp)
                                             .align(Alignment.Center)
                                     )
                                 }
