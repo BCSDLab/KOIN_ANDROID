@@ -2,12 +2,14 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toClubCategories
 import `in`.koreatech.koin.data.mapper.toClubDetails
+import `in`.koreatech.koin.data.mapper.toClubHot
 import `in`.koreatech.koin.data.mapper.toClubQnasInfo
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.repository.ClubRepository
 import javax.inject.Inject
@@ -20,6 +22,13 @@ class ClubRepositoryImpl @Inject constructor(
             clubRemoteDataSource.getClubsCategories().toClubCategories()
         }
     }
+
+    override suspend fun getClubHot(): Result<ClubHot> {
+        return runCatching {
+            clubRemoteDataSource.getClubHot().toClubHot()
+        }
+    }
+
     override suspend fun cancelClubLike(clubId: Int): Result<Unit> {
         return clubRemoteDataSource.cancelClubLike(clubId)
     }

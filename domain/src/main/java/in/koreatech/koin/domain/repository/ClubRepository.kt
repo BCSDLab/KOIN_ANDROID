@@ -2,10 +2,13 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 
 interface ClubRepository {
     suspend fun getClubsCategories(): Result<ClubCategories>
+
+    suspend fun getClubHot(): Result<ClubHot>
 
     suspend fun getClubDetails(
         clubId: Int

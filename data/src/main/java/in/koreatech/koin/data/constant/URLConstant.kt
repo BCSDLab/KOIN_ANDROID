@@ -173,5 +173,6 @@ object URLConstant {
     object CLUBS {
         const val CLUBS = "clubs"
         const val CATEGORIES = "$CLUBS/categories"
+        const val HOT = "$CLUBS/hot"
     }
 }

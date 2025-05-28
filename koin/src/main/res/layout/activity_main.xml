@@ -136,6 +136,12 @@
                                 android:layout_marginTop="16dp"
                                 android:layout_height="wrap_content" />
 
+                            <androidx.compose.ui.platform.ComposeView
+                                android:id="@+id/club_compose_view"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="24dp"
+                                android:layout_height="wrap_content" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
