@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -30,6 +31,7 @@ fun KoinClubCategoryItem(
     categoryName: String,
     icon: Painter,
     modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
     onClick: () -> Unit = { }
 ) {
     Column(
@@ -44,7 +46,8 @@ fun KoinClubCategoryItem(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .clip(RoundedCornerShape(100))
-                .background(KoinTheme.colors.neutral100)
+                .alpha(if (isSelected) 0.6f else 1f)
+                .background(if (isSelected) KoinTheme.colors.primary300 else KoinTheme.colors.neutral100)
         ) {
             Image(
                 modifier = Modifier
@@ -59,7 +62,8 @@ fun KoinClubCategoryItem(
 
         Text(
             style = KoinTheme.typography.regular14,
-            text = categoryName
+            text = categoryName,
+            color = if (isSelected) KoinTheme.colors.primary300 else KoinTheme.colors.neutral700
         )
     }
 }
