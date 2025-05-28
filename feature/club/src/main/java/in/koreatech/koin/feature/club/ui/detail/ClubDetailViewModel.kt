@@ -101,7 +101,10 @@ class ClubDetailViewModel @Inject constructor(
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         if (content.isEmpty()) {
-            reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
+            reduce { state.copy(
+                isLoading = false,
+                textFieldErrorResId = EMPTY_ERROR.strResId
+            ) }
             return@intent
         }
         state.clubDetails?.let {
@@ -111,8 +114,15 @@ class ClubDetailViewModel @Inject constructor(
                 content = content
             )
         }
+        reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo, showAddQnaDialog = false, textFieldErrorResId = null) }
+        reduce { state.copy(
+            isLoading = false,
+            clubQnasInfo = clubQnasInfo,
+            showAddQnaDialog = false,
+            textFieldErrorResId = null,
+            showQnasProgressBar = false
+        ) }
     }
 
     fun addClubQnaAnswer(
@@ -128,8 +138,13 @@ class ClubDetailViewModel @Inject constructor(
                 content = content
             )
         }
+        reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo) }
+        reduce {
+            state.copy(isLoading = false,
+                clubQnasInfo = clubQnasInfo,
+                showQnasProgressBar = false
+            ) }
     }
 
     fun deleteClubQna(
@@ -143,8 +158,13 @@ class ClubDetailViewModel @Inject constructor(
                 qnaId = qnaId
             )
         }
+        reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo) }
+        reduce { state.copy(
+            isLoading = false,
+            clubQnasInfo = clubQnasInfo,
+            showQnasProgressBar = false
+        ) }
     }
 
     fun showLoginDialog() = intent {
@@ -173,6 +193,7 @@ class ClubDetailViewModel @Inject constructor(
     }
     fun dismissEmpowermentDialog() = intent {
         reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
+        postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
     }
 
     // TODO result 오류처리 로직에 맞게 개선 필요
@@ -195,9 +216,21 @@ class ClubDetailViewModel @Inject constructor(
             reduce { state.copy(isLoading = false) }
             return@intent
         }
+        reduce { state.copy(showQnasProgressBar = false) }
         val clubDetails = loadClubDetails()
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubDetails = clubDetails, clubQnasInfo = clubQnasInfo, showEmpowermentDialog = false, textFieldErrorResId = null) }
+        reduce { state.copy(
+            isLoading = false,
+            clubDetails = clubDetails,
+            clubQnasInfo = clubQnasInfo,
+            showEmpowermentDialog = false,
+            textFieldErrorResId = null,
+            showQnasProgressBar = false
+        ) }
         postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
+    }
+
+    fun openUrl(url: String) = intent {
+        postSideEffect(ClubDetailSideEffect.OpenUrl(url))
     }
 }

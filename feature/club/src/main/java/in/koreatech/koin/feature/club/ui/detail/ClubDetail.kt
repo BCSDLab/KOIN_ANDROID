@@ -55,9 +55,14 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
+import `in`.koreatech.koin.domain.util.ext.isGoogleFormUrl
+import `in`.koreatech.koin.domain.util.ext.isInstagramUrl
+import `in`.koreatech.koin.domain.util.ext.isOpenChatUrl
+import `in`.koreatech.koin.domain.util.ext.toInstagramLinkForm
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
@@ -108,6 +113,23 @@ fun ClubDetail(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
+
+    // TODO 불편한 변수 선언 뺄 방법 생각하기 : constFile > SideEffect > 출력 ?
+    val empowermentSucessMessage = stringResource(R.string.detail_snackbar_empowerment_success)
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is ClubDetailSideEffect.ShowEmpowermentSnackBar -> {
+                snackbarHostState.showSnackbar(
+                    message = empowermentSucessMessage,
+                    duration = SnackbarDuration.Short
+                )
+            }
+            is ClubDetailSideEffect.OpenUrl -> {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
+                context.startActivity(intent)
+            }
+        }
+    }
 
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
@@ -164,8 +186,7 @@ fun ClubDetail(
                 description = stringResource(R.string.detail_dialog_login_description),
                 onPositive = {
                     viewModel.dismissLoginDialog()
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(LOGIN_ACTIVITY_URL))
-                    context.startActivity(intent)
+                    viewModel.openUrl(LOGIN_ACTIVITY_URL)
                 },
                 onNegative = { viewModel.dismissLoginDialog() }
             )
@@ -216,18 +237,6 @@ fun ClubDetail(
                     )
                 }
             )
-        }
-        // TODO 불편한 변수 선언 뺄 방법 생각하기 : constFile > SideEffect > 출력 ?
-        val empowermentSucessMessage = stringResource(R.string.detail_snackbar_empowerment_success)
-        viewModel.collectSideEffect { sideEffect ->
-            when (sideEffect) {
-                is ClubDetailSideEffect.ShowEmpowermentSnackBar -> {
-                    snackbarHostState.showSnackbar(
-                        message = empowermentSucessMessage,
-                        duration = SnackbarDuration.Short
-                    )
-                }
-            }
         }
 
         LazyColumn(
@@ -294,11 +303,9 @@ fun ClubDetail(
                                     .size(24.dp)
                                     .padding(end = 4.dp)
                                     .clickable {
-                                        if (state.userId == null) {
-                                            viewModel.showLoginDialog()
-                                        } else {
+                                        state.userId?. let {
                                             viewModel.changeClubLike()
-                                        }
+                                        } ?: viewModel.showLoginDialog()
                                     }
                             )
                             Text(
@@ -332,8 +339,6 @@ fun ClubDetail(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        // TODO 인스타, googleForm, 오픈채팅은 양식 검증 후 Uri 반환 필요
-                        // TODO 전화번호 반환값에 양식 변환 필요
                         detailList.forEach { intro ->
                             Row {
                                 Text(
@@ -342,14 +347,33 @@ fun ClubDetail(
                                     color = KoinTheme.colors.neutral800
                                 )
                                 Text(
-                                    text = intro.second ?: "",
+                                    text = intro.second?.let {
+                                        when (intro.first) {
+                                            DETAIL_INSTAGRAM -> it.toInstagramLinkForm()
+                                            DETAIL_GOOGLE_FORM -> it.removePrefix(HTTPS_URL)
+                                            DETAIL_OPEN_CHAT -> it.removePrefix(HTTPS_URL)
+                                            else -> intro.second
+                                        }
+                                    } ?: "",
                                     maxLines = when (intro.first) {
                                         DETAIL_INTRODUCTION -> 2
                                         else -> 1
                                     },
                                     style = KoinTheme.typography.medium18,
                                     color = KoinTheme.colors.neutral800,
-                                    overflow = TextOverflow.Ellipsis
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier
+                                        .clickable {
+                                            intro.second?.let {
+                                                if(
+                                                    it.isInstagramUrl() ||
+                                                    it.isGoogleFormUrl() ||
+                                                    it.isOpenChatUrl()
+                                                    ) {
+                                                        viewModel.openUrl(it)
+                                                }
+                                            }
+                                        }
                                 )
                             }
                         }
@@ -409,13 +433,11 @@ fun ClubDetail(
                                             duration = SnackbarDuration.Short
                                         )
                                         if (result == SnackbarResult.ActionPerformed) {
-                                            var intent: Intent
                                             if (BuildConfig.DEBUG) {
-                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse(KOIN_WEB_STAGE_URL))
+                                                viewModel.openUrl(KOIN_WEB_STAGE_URL)
                                             } else {
-                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse(KOIN_WEB_URL))
+                                                viewModel.openUrl(KOIN_WEB_URL)
                                             }
-                                            context.startActivity(intent)
                                         }
                                     }
                                 },
@@ -424,20 +446,35 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.QNA.strResId -> {
-                            ClubDetailQna(
-                                qnaList = qnaList,
-                                isManager = state.clubDetails?.manager ?: false,
-                                userId = state.userId,
-                                onAddQnaClick = {
-                                    viewModel.showAddQnaDialog()
-                                },
-                                onDeleteQnaClick = { qnaId ->
-                                    viewModel.deleteClubQna(qnaId)
-                                },
-                                onAddAnswerClick = { qnaId, content ->
-                                    viewModel.addClubQnaAnswer(qnaId, content)
+                            if(state.showQnasProgressBar) {
+                                Box (
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(600.dp)
+                                ) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .align(Alignment.Center)
+                                    )
                                 }
-                            )
+                            }
+                            else {
+                                ClubDetailQna(
+                                    qnaList = qnaList,
+                                    isManager = state.clubDetails?.manager ?: false,
+                                    userId = state.userId,
+                                    onAddQnaClick = {
+                                        viewModel.showAddQnaDialog()
+                                    },
+                                    onDeleteQnaClick = { qnaId ->
+                                        viewModel.deleteClubQna(qnaId)
+                                    },
+                                    onAddAnswerClick = { qnaId, content ->
+                                        viewModel.addClubQnaAnswer(qnaId, content)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
