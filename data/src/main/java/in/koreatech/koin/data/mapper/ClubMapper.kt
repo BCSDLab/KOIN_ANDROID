@@ -1,11 +1,22 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.response.club.ClubCategoriesResponse
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse.QnaResponse
+import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo.Qna
+
+fun ClubCategoriesResponse.toClubCategories() = ClubCategories(
+    clubCategories = clubCategories.map {
+        ClubCategories.Categories(
+            id = it.id,
+            name = it.name
+        )
+    }
+)
 
 fun ClubDetailsResponse.toClubDetails() = ClubDetails(
     id,

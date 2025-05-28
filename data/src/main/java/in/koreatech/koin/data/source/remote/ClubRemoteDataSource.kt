@@ -13,6 +13,8 @@ class ClubRemoteDataSource @Inject constructor(
     private val clubApi: ClubApi,
     private val clubAuthApi: ClubAuthApi
 ) {
+    suspend fun getClubsCategories() = clubApi.getClubsCategories()
+
     suspend fun getClubDetails(clubId: Int): Result<ClubDetailsResponse> {
         return runCatching {
             clubAuthApi.getClubDetails(clubId)
