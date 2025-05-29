@@ -20,7 +20,6 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.R
-import io.reactivex.internal.operators.maybe.MaybeIsEmpty
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +27,7 @@ fun ShoppingCartScreen(
     onBackClick: () -> Unit,
     onDeleteAllClick: () -> Unit,
     storeInfo: StoreDetailInfo,
-    isEmpty: Boolean,
+    isEmpty: Boolean
 ) {
     Scaffold(
         topBar = {
@@ -90,7 +89,7 @@ private fun ShoppingCartItem() {
                     accountNumber = "123-456-7890",
                     deliveryPrice = 3000,
                     operatingTime = null,
-                    bank = "우리은행",
+                    bank = "우리은행"
                 ),
                 isEmpty = false
             )
