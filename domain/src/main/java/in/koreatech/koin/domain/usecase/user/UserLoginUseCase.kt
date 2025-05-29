@@ -30,7 +30,9 @@ class UserLoginUseCase @Inject constructor(
                     userRepository.fetchGeneralUserInfo()
                 }
 
-                else -> {}
+                UserType.ANONYMOUS -> {
+                    // Do nothing
+                }
             }
             Unit to null
         } catch (throwable: Throwable) {
