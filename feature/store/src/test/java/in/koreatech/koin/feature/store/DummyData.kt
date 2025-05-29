@@ -5,7 +5,6 @@ import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 
-
 val dummyShopMenus = listOf(
     ShopMenus(
         id = 1,
@@ -16,9 +15,8 @@ val dummyShopMenus = listOf(
         imageUrls = listOf("https://example.com/korean_food1.jpg"),
         isHidden = false,
         optionPrices = null
-    ),
+    )
 )
-
 
 val dummyStoreMenuCategories = StoreMenuCategories(
     id = 1,
@@ -32,7 +30,6 @@ private val dummyOpenData = Store.OpenData(
     dayOfWeek = "월요일",
     closed = false
 )
-
 
 val dummyStoreWithMenu = StoreWithMenu(
     uid = 1,
@@ -59,4 +56,3 @@ val dummyStoreWithMenu = StoreWithMenu(
     bank = "국민은행",
     accountNumber = "123-456-7890"
 )
-

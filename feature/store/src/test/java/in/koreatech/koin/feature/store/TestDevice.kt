@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store
 
-
 import app.cash.paparazzi.DeviceConfig
 
 object TestDevice {
@@ -10,7 +9,7 @@ object TestDevice {
         xdpi = 426,
         ydpi = 426,
         fontScale = 1.0f,
-        softButtons = false,
+        softButtons = false
     )
 
     val FOLDABLE_DEVICE = DeviceConfig(
@@ -19,6 +18,6 @@ object TestDevice {
         xdpi = 480,
         ydpi = 480,
         fontScale = 1.0f,
-        softButtons = false,
+        softButtons = false
     )
 }

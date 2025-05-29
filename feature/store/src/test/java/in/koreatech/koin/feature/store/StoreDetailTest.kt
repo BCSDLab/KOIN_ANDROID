@@ -12,11 +12,10 @@ import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
 import org.junit.Rule
 import org.junit.Test
 
-
 class StoreDetailSnapshotTestPixel6Pro {
     @get:Rule
     val paparazzi = Paparazzi(
-        deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false),
+        deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false)
     )
 
     @Test
@@ -32,7 +31,7 @@ class StoreDetailSnapshotTestPixel6Pro {
 class StoreDetailSnapshotTestPixel4 {
     @get:Rule
     val paparazzi = Paparazzi(
-        deviceConfig = DeviceConfig.PIXEL_4.copy(softButtons = false),
+        deviceConfig = DeviceConfig.PIXEL_4.copy(softButtons = false)
     )
 
     @Test
@@ -45,11 +44,10 @@ class StoreDetailSnapshotTestPixel4 {
     }
 }
 
-
 class StoreDetailSnapshotTestPixel2XL {
     @get:Rule
     val paparazzi = Paparazzi(
-        deviceConfig = DeviceConfig.PIXEL_2_XL.copy(softButtons = false),
+        deviceConfig = DeviceConfig.PIXEL_2_XL.copy(softButtons = false)
     )
 
     @Test
@@ -65,7 +63,7 @@ class StoreDetailSnapshotTestPixel2XL {
 class StoreDetailSnapshotTestFLIP {
     @get:Rule
     val paparazzi = Paparazzi(
-        deviceConfig = FLIP_DEVICE.copy(softButtons = false),
+        deviceConfig = FLIP_DEVICE.copy(softButtons = false)
     )
 
     @Test
@@ -81,7 +79,7 @@ class StoreDetailSnapshotTestFLIP {
 class StoreDetailSnapshotTestFOLDABLE {
     @get:Rule
     val paparazzi = Paparazzi(
-        deviceConfig = FOLDABLE_DEVICE.copy(softButtons = false),
+        deviceConfig = FOLDABLE_DEVICE.copy(softButtons = false)
     )
 
     @Test
@@ -101,7 +99,6 @@ private fun SnapshotContent() {
         storeInfo = dummyStoreWithMenu,
         categories = listOf(MenuCategory("카테고리1", false), MenuCategory("카테고리2", false)),
         menus = listOf(dummyStoreMenuCategories),
-        pagerState = pagerState,
+        pagerState = pagerState
     )
 }
-
