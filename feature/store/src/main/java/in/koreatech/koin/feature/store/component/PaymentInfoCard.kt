@@ -28,7 +28,7 @@ fun PaymentSummaryCard() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp)
+            .padding(vertical = 20.dp)
     ) {
         Text(
             text = stringResource(R.string.check_payment_amount),
