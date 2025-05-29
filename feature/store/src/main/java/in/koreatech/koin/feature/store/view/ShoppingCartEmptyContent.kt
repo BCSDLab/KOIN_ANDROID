@@ -180,12 +180,13 @@ fun ShoppingCartContent(
                 onClick = { },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .shadow(
-                        elevation = 4.dp,
-                        shape = RoundedCornerShape(8.dp),
-                        clip = false
-                    ),
+                    .drawBehind {
+                        drawRoundRect(
+                            color = Color.Black.copy(alpha = 0.05f),
+                            topLeft = Offset(0f, 4.dp.toPx()),
+                            cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
+                        )
+                    },
                 shape = RoundedCornerShape(8.dp),
                 colors = buttonColors(
                     containerColor = Color.White,
