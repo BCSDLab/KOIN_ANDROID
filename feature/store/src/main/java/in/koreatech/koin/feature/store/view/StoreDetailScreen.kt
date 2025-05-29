@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.component
+package `in`.koreatech.koin.feature.store.view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -46,15 +46,16 @@ import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
+import `in`.koreatech.koin.feature.store.component.MenuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.CustomCollapsingToolbarState
-import `in`.koreatech.koin.feature.store.ui.StoreDetailImage
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun CustomCollapsingToolbarScreen(
+fun StoreDetailScreen(
     storeInfo: StoreWithMenu,
     categories: List<MenuCategory>,
     menus: List<StoreMenuCategories>,

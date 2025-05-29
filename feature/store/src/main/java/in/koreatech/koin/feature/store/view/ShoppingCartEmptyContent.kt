@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.shoppingcart
+package `in`.koreatech.koin.feature.store.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -53,8 +53,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.feature.store.R
-import `in`.koreatech.koin.feature.store.shoppingcart.component.CartMenuItem
-import `in`.koreatech.koin.feature.store.shoppingcart.component.PaymentSummaryCard
+import `in`.koreatech.koin.feature.store.component.CartMenuItem
+import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
 
 @Composable
 fun ShoppingCartContent(

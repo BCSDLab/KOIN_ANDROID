@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.shoppingcart
+package `in`.koreatech.koin.feature.store.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.component
+package `in`.koreatech.koin.feature.store.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +22,9 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.component.AvailableChips
+import `in`.koreatech.koin.feature.store.component.OriginInfoChips
+import `in`.koreatech.koin.feature.store.component.StoreDetailInfoCard
 
 @Composable
 fun StoreDetailInfo(

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.ui
+package `in`.koreatech.koin.feature.store.view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

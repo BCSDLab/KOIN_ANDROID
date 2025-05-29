@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.shoppingcart.component
+package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable

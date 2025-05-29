@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.store.shoppingcart.component
+package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
