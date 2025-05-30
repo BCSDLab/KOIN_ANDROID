@@ -63,12 +63,12 @@ import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
+import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isGoogleFormUrl
 import `in`.koreatech.koin.domain.util.ext.isInstagramUrl
 import `in`.koreatech.koin.domain.util.ext.isOpenChatUrl
 import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
-import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
@@ -354,7 +354,7 @@ fun ClubDetail(
                                     DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
-                                    DETAIL_PHONE_NUMBER -> outputText = if(it.isValidPhoneNumber) it.formatPhoneNumber() else it
+                                    DETAIL_PHONE_NUMBER -> outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
                                     else -> outputText = it
                                 }
                                 if (
