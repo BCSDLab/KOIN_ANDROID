@@ -42,23 +42,33 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun cancelClubLike(clubId: Int): Result<Unit> {
-        return clubRemoteDataSource.cancelClubLike(clubId)
+        return runCatching {
+            clubRemoteDataSource.cancelClubLike(clubId)
+        }
     }
 
     override suspend fun getClubDetails(clubId: Int): Result<ClubDetails> {
-        return clubRemoteDataSource.getClubDetails(clubId).map { it.toClubDetails() }
+        return runCatching {
+            clubRemoteDataSource.getClubDetails(clubId).toClubDetails()
+        }
     }
 
     override suspend fun getClubQnas(clubId: Int): Result<ClubQnasInfo> {
-        return clubRemoteDataSource.getClubQnas(clubId).map { it.toClubQnasInfo() }
+        return runCatching {
+            clubRemoteDataSource.getClubQnas(clubId).toClubQnasInfo()
+        }
     }
 
     override suspend fun setClubLike(clubId: Int): Result<Unit> {
-        return clubRemoteDataSource.setClubLike(clubId)
+        return runCatching {
+            clubRemoteDataSource.setClubLike(clubId)
+        }
     }
 
     override suspend fun deleteClubQna(clubId: Int, qnaId: Int): Result<Unit> {
-        return clubRemoteDataSource.deleteClubQna(clubId, qnaId)
+        return runCatching {
+            clubRemoteDataSource.deleteClubQna(clubId, qnaId)
+        }
     }
 
     override suspend fun setClubEmpowerment(clubId: Int, changedManagerId: String): Result<Unit> {
@@ -79,9 +89,11 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postClubQna(clubId: Int, parentId: Int?, content: String): Result<Unit> {
-        return clubRemoteDataSource.postClubQna(
-            clubId,
-            ClubQnaRequest(parentId, content)
-        )
+        return runCatching {
+            clubRemoteDataSource.postClubQna(
+                clubId,
+                ClubQnaRequest(parentId, content)
+            )
+        }
     }
 }

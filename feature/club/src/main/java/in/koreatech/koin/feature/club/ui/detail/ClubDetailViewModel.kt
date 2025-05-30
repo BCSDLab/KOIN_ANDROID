@@ -27,6 +27,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
 
 @HiltViewModel
 class ClubDetailViewModel @Inject constructor(
@@ -114,7 +115,9 @@ class ClubDetailViewModel @Inject constructor(
                 clubId = selectedClubId,
                 parentId = parentId,
                 content = content
-            )
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
         }
         reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
@@ -138,7 +141,9 @@ class ClubDetailViewModel @Inject constructor(
                 clubId = selectedClubId,
                 parentId = parentId,
                 content = content
-            )
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
         }
         reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
@@ -158,7 +163,9 @@ class ClubDetailViewModel @Inject constructor(
             deleteClubQnaUseCase(
                 clubId = selectedClubId,
                 qnaId = qnaId
-            )
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
         }
         reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
@@ -210,10 +217,11 @@ class ClubDetailViewModel @Inject constructor(
             clubId = selectedClubId,
             changedManagerId = newUserId
         ).onFailure { e ->
+            reduce { state.copy(isLoading = false) }
             if (e is ClubError.NotFoundUserId) {
                 reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
             }
-            reduce { state.copy(isLoading = false) }
+            else throw e
             return@intent
         }
         reduce { state.copy(showQnasProgressBar = false) }
