@@ -372,7 +372,7 @@ fun ClubDetail(
                                     text = outputText,
                                     maxLines = maxLines,
                                     style = KoinTheme.typography.medium18,
-                                    color = if(linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
+                                    color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier
                                         .clickable {
