@@ -354,7 +354,7 @@ fun ClubDetail(
                                     DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
-                                    DETAIL_PHONE_NUMBER -> outputText = if(it.isValidPhoneNumber) it else it.formatPhoneNumber()
+                                    DETAIL_PHONE_NUMBER -> outputText = if(it.isValidPhoneNumber) it.formatPhoneNumber() else it
                                     else -> outputText = it
                                 }
                                 if (
