@@ -43,7 +43,7 @@ class ClubDetailViewModel @Inject constructor(
         initialState = ClubDetailState()
     )
 
-    private var selectedClubId = 1 // 선택한 Clud 의 id 값
+    private var selectedClubId = 15 // 선택한 Clud 의 id 값
 
     private val userInfoFlow: StateFlow<User> =
         getUserStatusUseCase()
