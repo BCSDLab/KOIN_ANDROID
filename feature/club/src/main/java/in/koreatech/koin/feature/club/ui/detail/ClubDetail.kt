@@ -306,7 +306,7 @@ fun ClubDetail(
                                     .size(24.dp)
                                     .padding(end = 4.dp)
                                     .clickable {
-                                        state.userId?. let {
+                                        state.userId?.let {
                                             viewModel.changeClubLike()
                                         } ?: viewModel.showLoginDialog()
                                     }
@@ -343,6 +343,25 @@ fun ClubDetail(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         detailList.forEach { intro ->
+                            var outputText = ""
+                            var maxLines = 1
+                            var linkUrl = ""
+                            intro.second?.let {
+                                when (intro.first) {
+                                    DETAIL_INTRODUCTION -> maxLines = 2
+                                    DETAIL_INSTAGRAM -> outputText = it.toInstagramLinkForm()
+                                    DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
+                                    DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
+                                    else -> outputText = it
+                                }
+                                if (
+                                    it.isInstagramUrl() ||
+                                    it.isGoogleFormUrl() ||
+                                    it.isOpenChatUrl()
+                                ) {
+                                    linkUrl = it
+                                }
+                            }
                             Row {
                                 Text(
                                     text = stringResource(intro.first.strResId),
@@ -350,32 +369,14 @@ fun ClubDetail(
                                     color = KoinTheme.colors.neutral800
                                 )
                                 Text(
-                                    text = intro.second?.let {
-                                        when (intro.first) {
-                                            DETAIL_INSTAGRAM -> it.toInstagramLinkForm()
-                                            DETAIL_GOOGLE_FORM -> it.removePrefix(HTTPS_URL)
-                                            DETAIL_OPEN_CHAT -> it.removePrefix(HTTPS_URL)
-                                            else -> intro.second
-                                        }
-                                    } ?: "",
-                                    maxLines = when (intro.first) {
-                                        DETAIL_INTRODUCTION -> 2
-                                        else -> 1
-                                    },
+                                    text = outputText,
+                                    maxLines = maxLines,
                                     style = KoinTheme.typography.medium18,
-                                    color = KoinTheme.colors.neutral800,
+                                    color = if(linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier
                                         .clickable {
-                                            intro.second?.let {
-                                                if (
-                                                    it.isInstagramUrl() ||
-                                                    it.isGoogleFormUrl() ||
-                                                    it.isOpenChatUrl()
-                                                ) {
-                                                    viewModel.openUrl(it)
-                                                }
-                                            }
+                                            if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl)
                                         }
                                 )
                             }
