@@ -41,7 +41,7 @@ class ModifyInfoViewModel @Inject constructor(
             reduce {
                 val newList = state.storeInfo.operatingTime?.toMutableList()
                 state.copy(
-                    operatingTimeList = newList ?: mutableListOf()
+                    operatingTimeList = newList ?: listOf()
                 )
             }
         }
