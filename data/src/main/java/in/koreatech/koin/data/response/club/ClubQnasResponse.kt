@@ -13,6 +13,6 @@ data class ClubQnasResponse(
         @SerializedName("nickname") val nickname: String,
         @SerializedName("content") val content: String,
         @SerializedName("created_at") val createdAt: String,
-        @SerializedName("children") val children: List<String>
+        @SerializedName("children") val children: List<QnaResponse>
     )
 }
