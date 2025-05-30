@@ -16,7 +16,9 @@ fun NavGraphBuilder.koinClubGraph(
     composable(
         route = ClubNavType.ClubDetail.route
     ) {
-        ClubDetail()
+        ClubDetail(
+            onTopbarBackClick = { navController.popBackStack() }
+        )
     }
 
     composable(

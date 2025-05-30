@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
@@ -36,18 +37,20 @@ import `in`.koreatech.koin.feature.club.ui.detail.component.textfield.DetailQnaT
 
 @Composable
 fun DetailQnaBox(
-    modifier: Modifier = Modifier,
     qnaId: Int,
     questionText: String,
-    answerQnaId: Int? = null,
-    answerText: String? = null,
     createdDate: String,
-    onDeleteQnaClick: (Int) -> Unit,
-    onAddAnswerClick: (Int, String) -> Unit,
+    addAnswerText: String,
+    modifier: Modifier = Modifier,
+    onDeleteQnaClick: (Int) -> Unit = {},
+    onAddAnswerClick: (Int, String) -> Unit = { _, _ -> },
+    onAddAnswerTextChange: (String) -> Unit = {},
     isQnaEditable: Boolean = false,
-    isAnswerEditable: Boolean = false
+    isAnswerEditable: Boolean = false,
+    answerQnaId: Int? = null,
+    answerText: String? = null
 ) {
-    var text by remember { mutableStateOf("") }
+    var isError by remember { mutableStateOf(false) }
     var showDeleteQnaDialog by remember { mutableStateOf(Pair(false, -1)) }
     if (showDeleteQnaDialog.first) {
         DetailDialog(
@@ -77,7 +80,7 @@ fun DetailQnaBox(
             .border(
                 width = 1.dp,
                 color = KoinTheme.colors.neutral300,
-                shape = RoundedCornerShape(size = 4.dp)
+                shape = KoinTheme.shapes.extraSmall
             )
     ) {
         Column(
@@ -126,6 +129,7 @@ fun DetailQnaBox(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
                 ) {
                     Image(
@@ -133,19 +137,24 @@ fun DetailQnaBox(
                         contentDescription = "QuestionDelete",
                         modifier = Modifier
                             .size(24.dp)
-                            .align(Alignment.CenterVertically)
+                            .offset { IntOffset(x = 0, y = if (isError) -(13.dp.roundToPx()) else 0) }
                     )
                     if (answerText.isNullOrEmpty() || answerQnaId == null) {
                         DetailQnaTextField(
                             modifier = Modifier.padding(end = 4.dp),
-                            value = text,
+                            value = addAnswerText,
                             textFieldColor = KoinTheme.colors.primary300,
-                            onValueChange = { text = it },
+                            onValueChange = onAddAnswerTextChange,
                             onSendClick = {
-                                if (text.isNotEmpty()) {
-                                    onAddAnswerClick(qnaId, text)
+                                if (addAnswerText.isNotEmpty()) {
+                                    onAddAnswerClick(qnaId, addAnswerText)
+                                    isError = false
+                                } else {
+                                    isError = true
                                 }
-                            }
+                            },
+                            isError = isError,
+                            errorMessage = stringResource(R.string.detail_textfield_error_empty)
                         )
                     } else {
                         Text(
@@ -178,28 +187,22 @@ fun DetailQnaBox(
 @Preview
 @Composable
 fun DetailQnaBoxNoAnswer() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> }
+        addAnswerText = ""
     )
 }
 
 @Preview
 @Composable
 fun DetailQnaBoxNoAnswerQnaEditable() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         isQnaEditable = true
     )
 }
@@ -207,14 +210,11 @@ fun DetailQnaBoxNoAnswerQnaEditable() {
 @Preview
 @Composable
 fun DetailQnaBoxNoAnswerAllEditable() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         isQnaEditable = true,
         isAnswerEditable = true
     )
@@ -223,14 +223,11 @@ fun DetailQnaBoxNoAnswerAllEditable() {
 @Preview
 @Composable
 fun DetailQnaBoxAnswer() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         answerText = "올렸습니다!",
         answerQnaId = 2
 
@@ -240,14 +237,11 @@ fun DetailQnaBoxAnswer() {
 @Preview
 @Composable
 fun DetailQnaBoxAnswerQnaEditable() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         answerText = "올렸습니다!",
         answerQnaId = 2,
         isQnaEditable = true
@@ -257,14 +251,11 @@ fun DetailQnaBoxAnswerQnaEditable() {
 @Preview
 @Composable
 fun DetailQnaBoxAnswerAllEditable() {
-    val id = 0
-    val content = ""
     DetailQnaBox(
         qnaId = 1,
         questionText = "추가 모집 공고는 언제 올라오나요",
         createdDate = "2025.00.00. 00:00",
-        onDeleteQnaClick = {},
-        onAddAnswerClick = { id, content -> },
+        addAnswerText = "",
         answerText = "올렸습니다!",
         answerQnaId = 2,
         isQnaEditable = true,

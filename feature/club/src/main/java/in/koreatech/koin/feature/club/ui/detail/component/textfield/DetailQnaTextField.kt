@@ -6,18 +6,21 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -28,68 +31,99 @@ import `in`.koreatech.koin.feature.club.R
 
 @Composable
 fun DetailQnaTextField(
+    value: String,
     modifier: Modifier = Modifier,
-    value: String = "",
+    onSendClick: () -> Unit = {},
+    onValueChange: (String) -> Unit = {},
     textStyle: TextStyle = KoinTheme.typography.regular14,
     textFieldColor: Color = KoinTheme.colors.primary500,
     hint: String = stringResource(R.string.detail_qna_text_field_hint),
-    onValueChange: (String) -> Unit,
+    hintColor: Color = KoinTheme.colors.neutral600,
     isSendIconVisible: Boolean = true,
-    onSendClick: () -> Unit,
+    sendIcon: Painter = painterResource(id = R.drawable.icon_qna_send),
+    sendIconModifier: Modifier = Modifier,
+    isError: Boolean = false,
+    errorColor: Color = KoinTheme.colors.sub500,
+    errorMessage: String = "",
+    errorTextStyle: TextStyle = KoinTheme.typography.regular14,
+    errorIcon: Painter = painterResource(id = R.drawable.icon_exclamation),
+    errorIconModifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 7.dp)
 ) {
-    BasicTextField(
-        modifier = Modifier,
-        value = value,
-        textStyle = textStyle,
-        onValueChange = { onValueChange(it) },
-        decorationBox = { innerTextField ->
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier
-                    .fillMaxWidth()
-                    .border(
-                        width = 1.dp,
-                        color = textFieldColor,
-                        shape = RoundedCornerShape(size = 4.dp)
-                    )
-                    .background(KoinTheme.colors.neutral100)
-                    .padding(contentPadding)
-            ) {
-                Box(
-                    modifier = Modifier.weight(1f)
+    Column(
+        verticalArrangement = Arrangement
+            .spacedBy(4.dp)
+    ) {
+        BasicTextField(
+            modifier = Modifier,
+            value = value,
+            textStyle = textStyle,
+            onValueChange = { onValueChange(it) },
+            decorationBox = { innerTextField ->
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .border(
+                            width = 1.dp,
+                            color = if (isError) errorColor else textFieldColor,
+                            shape = KoinTheme.shapes.extraSmall
+                        )
+                        .background(KoinTheme.colors.neutral100)
+                        .padding(contentPadding)
                 ) {
-                    if (value.isEmpty()) {
-                        Text(
-                            text = hint,
-                            color = KoinTheme.colors.neutral600,
-                            style = textStyle
+                    Box(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        if (value.isEmpty()) {
+                            Text(
+                                text = hint,
+                                color = hintColor,
+                                style = textStyle
+                            )
+                        }
+                        innerTextField()
+                    }
+                    if (isSendIconVisible) {
+                        Image(
+                            painter = sendIcon,
+                            contentDescription = "TextSend",
+                            modifier = sendIconModifier
+                                .size(20.dp)
+                                .clickable { onSendClick() }
                         )
                     }
-                    innerTextField()
-                }
-                if (isSendIconVisible) {
-                    Image(
-                        painter = painterResource(id = R.drawable.icon_qna_send),
-                        contentDescription = "QuestionDelete",
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable { onSendClick() }
-                    )
                 }
             }
+        )
+        if (isError) {
+            Row(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = errorIcon,
+                    contentDescription = "TextField Error",
+                    modifier = errorIconModifier
+                        .size(16.dp)
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    text = errorMessage,
+                    style = errorTextStyle,
+                    color = errorColor
+                )
+            }
         }
-    )
+    }
 }
 
 @Preview
 @Composable
 fun DetailQnaTextFieldTextPreview() {
     DetailQnaTextField(
-        value = "답변",
-        onValueChange = {},
-        onSendClick = {}
+        value = "답변"
     )
 }
 
@@ -97,9 +131,7 @@ fun DetailQnaTextFieldTextPreview() {
 @Composable
 fun DetailQnaTextFieldHintPreview() {
     DetailQnaTextField(
-        value = "",
-        onValueChange = {},
-        onSendClick = {}
+        value = ""
     )
 }
 
@@ -108,8 +140,17 @@ fun DetailQnaTextFieldHintPreview() {
 fun DetailQnaTextFieldNoIconPreview() {
     DetailQnaTextField(
         value = "",
-        onValueChange = {},
+        isSendIconVisible = false
+    )
+}
+
+@Preview
+@Composable
+fun DetailQnaTextFieldErrorPreview() {
+    DetailQnaTextField(
+        value = "",
         isSendIconVisible = false,
-        onSendClick = {}
+        isError = true,
+        errorMessage = "필수 입력란입니다."
     )
 }

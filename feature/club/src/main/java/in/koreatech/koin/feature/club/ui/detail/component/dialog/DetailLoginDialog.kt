@@ -32,9 +32,9 @@ import `in`.koreatech.koin.feature.club.R
 fun DetailLoginDialog(
     title: String,
     description: String,
-    onPositive: () -> Unit,
-    onNegative: () -> Unit,
     modifier: Modifier = Modifier,
+    onPositive: () -> Unit = {},
+    onNegative: () -> Unit = {},
     titleStyle: TextStyle = KoinTheme.typography.medium18,
     descriptionStyle: TextStyle = KoinTheme.typography.regular14,
     positiveButtonText: String = stringResource(id = R.string.detail_dialog_login_positive),
@@ -93,8 +93,6 @@ fun DetailLoginDialog(
 fun DetailLoginDialogPreview() {
     DetailLoginDialog(
         title = "로그인이 필요한 기능입니다.",
-        onPositive = {},
-        onNegative = {},
         description = "로그인 하시겠어요?"
     )
 }

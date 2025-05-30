@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
-import `in`.koreatech.koin.feature.club.ui.detail.component.button.DetailButton
 
 @Composable
 fun ClubDetailIntro(
     modifier: Modifier = Modifier,
-    onFixIntroClick: () -> Unit,
+    onFixIntroClick: () -> Unit = {},
     isManager: Boolean = false,
     userId: Int? = null
 ) {
@@ -38,7 +38,7 @@ fun ClubDetailIntro(
     ) {
         userId?.let {
             if (isManager) {
-                DetailButton(
+                FilledButton(
                     text = stringResource(R.string.detail_edit_detail_intro_button),
                     onClick = onFixIntroClick,
                     contentPadding = PaddingValues(horizontal = 10.dp, vertical = 5.dp)
