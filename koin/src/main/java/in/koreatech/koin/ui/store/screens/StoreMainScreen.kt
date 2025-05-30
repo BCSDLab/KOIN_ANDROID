@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.screens.store
+package `in`.koreatech.koin.ui.store.screens
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import `in`.koreatech.koin.domain.model.store.BottomNavItem
-import `in`.koreatech.koin.ui.screens.store.components.BottomNavigationBar
+import `in`.koreatech.koin.ui.store.components.BottomNavigationBar
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 
 @Composable
@@ -59,6 +59,7 @@ fun StoreMainScreen(
                 }
                 composable("nearby") { NearbyStoreScreen() }
 //                composable("orders") { OrdersScreen() }
+                composable("orderHistory") { MenuOptionScreen() }
             }
         }
     )

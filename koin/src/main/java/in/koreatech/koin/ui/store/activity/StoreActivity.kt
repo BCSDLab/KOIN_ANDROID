@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.ui.screens.store.StoreMainScreen
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
+import `in`.koreatech.koin.ui.store.screens.StoreMainScreen
 
 @AndroidEntryPoint
 class StoreActivity : ComponentActivity() {

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.screens.store
+package `in`.koreatech.koin.ui.store.screens
 
 import StoreCard
 import android.content.Intent
@@ -43,13 +43,13 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.component.topbar.StoreTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.ui.screens.store.components.AutoScrollingBanner
-import `in`.koreatech.koin.ui.screens.store.components.CategoryChips
-import `in`.koreatech.koin.ui.screens.store.components.SearchBar
-import `in`.koreatech.koin.ui.screens.store.components.SearchBarFake
-import `in`.koreatech.koin.ui.screens.store.components.SearchResultItem
-import `in`.koreatech.koin.ui.screens.store.components.StoreFilterBar
 import `in`.koreatech.koin.ui.store.activity.StoreDetailActivity
+import `in`.koreatech.koin.ui.store.components.AutoScrollingBanner
+import `in`.koreatech.koin.ui.store.components.CategoryChips
+import `in`.koreatech.koin.ui.store.components.SearchBar
+import `in`.koreatech.koin.ui.store.components.SearchBarFake
+import `in`.koreatech.koin.ui.store.components.SearchResultItem
+import `in`.koreatech.koin.ui.store.components.StoreFilterBar
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.screens.store
+package `in`.koreatech.koin.ui.store.screens
 
 import androidx.compose.runtime.Composable
 

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.screens.store.components
+package `in`.koreatech.koin.ui.store.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
