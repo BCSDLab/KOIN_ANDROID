@@ -23,7 +23,7 @@ fun String.toUnderlineForHtml() = "<u>$this</u>"
 
 fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)}'>$this</font>" // color = #ff000000 형태
 
-fun String.toInstagramLinkForm() = "@${this.removePrefix("${INSTAGRAM_URL}/").removeSuffix("/")}"
+fun String.formatInstagramLinkForm() = "@${this.removePrefix("${INSTAGRAM_URL}/").removeSuffix("/")}"
 
 fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 
