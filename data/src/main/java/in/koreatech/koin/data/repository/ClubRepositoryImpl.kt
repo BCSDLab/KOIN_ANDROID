@@ -8,17 +8,17 @@ import `in`.koreatech.koin.data.mapper.toClubs
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
-import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.club.ClubError
+import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.Clubs
 import `in`.koreatech.koin.domain.repository.ClubRepository
-import retrofit2.HttpException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class ClubRepositoryImpl @Inject constructor(
     private val clubRemoteDataSource: ClubRemoteDataSource
@@ -74,8 +74,11 @@ class ClubRepositoryImpl @Inject constructor(
     override suspend fun setClubEmpowerment(clubId: Int, changedManagerId: String): Result<Unit> {
         return runCatching {
             val response = clubRemoteDataSource.setClubEmpowerment(ClubEmpowermentRequest(clubId, changedManagerId))
-            if (response.isSuccessful) Unit
-            else throw HttpException(response)
+            if (response.isSuccessful) {
+                Unit
+            } else {
+                throw HttpException(response)
+            }
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {

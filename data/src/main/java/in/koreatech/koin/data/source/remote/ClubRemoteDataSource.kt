@@ -25,7 +25,7 @@ class ClubRemoteDataSource @Inject constructor(
 
     suspend fun setClubEmpowerment(request: ClubEmpowermentRequest) = clubAuthApi.setClubEmpowerment(request)
 
-    suspend fun setClubLike(clubId: Int)= clubAuthApi.setClubLike(clubId)
+    suspend fun setClubLike(clubId: Int) = clubAuthApi.setClubLike(clubId)
 
     suspend fun postClubQna(
         clubId: Int,

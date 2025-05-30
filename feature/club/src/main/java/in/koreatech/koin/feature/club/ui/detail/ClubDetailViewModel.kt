@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.club.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -104,10 +103,12 @@ class ClubDetailViewModel @Inject constructor(
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         if (content.isEmpty()) {
-            reduce { state.copy(
-                isLoading = false,
-                textFieldErrorResId = EMPTY_ERROR.strResId
-            ) }
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    textFieldErrorResId = EMPTY_ERROR.strResId
+                )
+            }
             return@intent
         }
         state.clubDetails?.let {
@@ -121,13 +122,15 @@ class ClubDetailViewModel @Inject constructor(
         }
         reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(
-            isLoading = false,
-            clubQnasInfo = clubQnasInfo,
-            showAddQnaDialog = false,
-            textFieldErrorResId = null,
-            showQnasProgressBar = false
-        ) }
+        reduce {
+            state.copy(
+                isLoading = false,
+                clubQnasInfo = clubQnasInfo,
+                showAddQnaDialog = false,
+                textFieldErrorResId = null,
+                showQnasProgressBar = false
+            )
+        }
     }
 
     fun addClubQnaAnswer(
@@ -148,10 +151,12 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
         reduce {
-            state.copy(isLoading = false,
+            state.copy(
+                isLoading = false,
                 clubQnasInfo = clubQnasInfo,
                 showQnasProgressBar = false
-            ) }
+            )
+        }
     }
 
     fun deleteClubQna(
@@ -169,11 +174,13 @@ class ClubDetailViewModel @Inject constructor(
         }
         reduce { state.copy(showQnasProgressBar = true) }
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(
-            isLoading = false,
-            clubQnasInfo = clubQnasInfo,
-            showQnasProgressBar = false
-        ) }
+        reduce {
+            state.copy(
+                isLoading = false,
+                clubQnasInfo = clubQnasInfo,
+                showQnasProgressBar = false
+            )
+        }
     }
 
     fun showLoginDialog() = intent {
@@ -205,7 +212,6 @@ class ClubDetailViewModel @Inject constructor(
         postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
     }
 
-    // TODO result 오류처리 로직에 맞게 개선 필요
     fun setManagerEmpowerment(newUserId: String) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
@@ -220,21 +226,24 @@ class ClubDetailViewModel @Inject constructor(
             reduce { state.copy(isLoading = false) }
             if (e is ClubError.NotFoundUserId) {
                 reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
+            } else {
+                throw e
             }
-            else throw e
             return@intent
         }
         reduce { state.copy(showQnasProgressBar = false) }
         val clubDetails = loadClubDetails()
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(
-            isLoading = false,
-            clubDetails = clubDetails,
-            clubQnasInfo = clubQnasInfo,
-            showEmpowermentDialog = false,
-            textFieldErrorResId = null,
-            showQnasProgressBar = false
-        ) }
+        reduce {
+            state.copy(
+                isLoading = false,
+                clubDetails = clubDetails,
+                clubQnasInfo = clubQnasInfo,
+                showEmpowermentDialog = false,
+                textFieldErrorResId = null,
+                showQnasProgressBar = false
+            )
+        }
         postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
     }
 

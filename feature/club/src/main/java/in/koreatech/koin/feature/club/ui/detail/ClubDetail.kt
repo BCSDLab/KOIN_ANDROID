@@ -118,7 +118,6 @@ fun ClubDetail(
     val snackbarHostState = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
 
-    // TODO 불편한 변수 선언 뺄 방법 생각하기 : constFile > SideEffect > 출력 ?
     val empowermentSucessMessage = stringResource(R.string.detail_snackbar_empowerment_success)
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -369,12 +368,12 @@ fun ClubDetail(
                                     modifier = Modifier
                                         .clickable {
                                             intro.second?.let {
-                                                if(
+                                                if (
                                                     it.isInstagramUrl() ||
                                                     it.isGoogleFormUrl() ||
                                                     it.isOpenChatUrl()
-                                                    ) {
-                                                        viewModel.openUrl(it)
+                                                ) {
+                                                    viewModel.openUrl(it)
                                                 }
                                             }
                                         }
@@ -475,12 +474,12 @@ fun ClubDetail(
                                     }
                                 }
                             }
-                            if(state.showQnasProgressBar) {
-                                Box (
+                            if (state.showQnasProgressBar) {
+                                Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(700.dp)
-                                        .nestedScroll(nestedScrollConnection),
+                                        .nestedScroll(nestedScrollConnection)
                                 ) {
                                     CircularProgressIndicator(
                                         modifier = Modifier
@@ -488,8 +487,7 @@ fun ClubDetail(
                                             .align(Alignment.Center)
                                     )
                                 }
-                            }
-                            else {
+                            } else {
                                 ClubDetailQna(
                                     modifier = Modifier
                                         .height(800.dp)
