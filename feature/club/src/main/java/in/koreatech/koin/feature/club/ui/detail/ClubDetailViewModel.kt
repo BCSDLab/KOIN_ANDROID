@@ -14,12 +14,15 @@ import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.EMPTY_ERROR
+import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.NON_USERID_ERROR
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -38,7 +41,7 @@ class ClubDetailViewModel @Inject constructor(
         initialState = ClubDetailState()
     )
 
-    private var selectedClubId = 1 // 연결 이전 hard Coding
+    private var selectedClubId = 1 // 선택한 Clud 의 id 값
 
     private val userInfoFlow: StateFlow<User> =
         getUserStatusUseCase()
@@ -88,11 +91,32 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showAddQnaDialog = true) }
     }
     fun dismissAddQnaDialog() = intent {
-        reduce { state.copy(showAddQnaDialog = false) }
+        reduce { state.copy(showAddQnaDialog = false, textFieldErrorResId = null) }
     }
 
     fun addClubQna(
         parentId: Int?,
+        content: String
+    ) = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        if (content.isEmpty()) {
+            reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
+            return@intent
+        }
+        state.clubDetails?.let {
+            postClubQnaUseCase(
+                clubId = selectedClubId,
+                parentId = parentId,
+                content = content
+            )
+        }
+        val clubQnasInfo = loadClubQnas()
+        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo, showAddQnaDialog = false, textFieldErrorResId = null) }
+    }
+
+    fun addClubQnaAnswer(
+        parentId: Int,
         content: String
     ) = intent {
         if (state.isLoading) return@intent
@@ -142,5 +166,38 @@ class ClubDetailViewModel @Inject constructor(
         }
         val clubDetails = loadClubDetails()
         reduce { state.copy(isLoading = false, clubDetails = clubDetails) }
+    }
+
+    fun showEmpowermentDialog() = intent {
+        reduce { state.copy(showEmpowermentDialog = true) }
+    }
+    fun dismissEmpowermentDialog() = intent {
+        reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
+    }
+
+    // TODO result 오류처리 로직에 맞게 개선 필요
+    fun setManagerEmpowerment(newUserId: String) = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true) }
+        if (newUserId.isEmpty()) {
+            reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
+            return@intent
+        }
+        setClubEmpowermentUseCase(
+            clubId = selectedClubId,
+            changedManagerId = newUserId
+        ).onFailure { e ->
+            if (e is retrofit2.HttpException) {
+                if (e.code() == 404) {
+                    reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
+                }
+            }
+            reduce { state.copy(isLoading = false) }
+            return@intent
+        }
+        val clubDetails = loadClubDetails()
+        val clubQnasInfo = loadClubQnas()
+        reduce { state.copy(isLoading = false, clubDetails = clubDetails, clubQnasInfo = clubQnasInfo, showEmpowermentDialog = false, textFieldErrorResId = null) }
+        postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
     }
 }

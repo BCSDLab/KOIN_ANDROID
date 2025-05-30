@@ -9,5 +9,7 @@ data class ClubDetailState(
     val clubDetails: ClubDetails? = null,
     val clubQnasInfo: ClubQnasInfo? = null,
     val showLoginDialog: Boolean = false,
-    val showAddQnaDialog: Boolean = false
+    val showAddQnaDialog: Boolean = false,
+    val showEmpowermentDialog: Boolean = false,
+    val textFieldErrorResId: Int? = null
 )
