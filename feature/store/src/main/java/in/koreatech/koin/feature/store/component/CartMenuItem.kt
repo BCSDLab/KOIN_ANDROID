@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +37,7 @@ fun CartMenuItem(
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp),
                     text = menu.description ?: "",
-                    fontSize = 15.sp,
+                    style = KoinTheme.typography.medium15,
                     color = KoinTheme.colors.neutral500
                 )
                 Text(
@@ -45,7 +47,6 @@ fun CartMenuItem(
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
-
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(menu.imageUrls?.firstOrNull())
@@ -56,7 +57,7 @@ fun CartMenuItem(
                 modifier = Modifier
                     .align(Alignment.Bottom)
                     .size(88.dp)
-                    .clip(RoundedCornerShape(4.dp))
+                    .clip(KoinTheme.shapes.small)
             )
         }
         Spacer(modifier = Modifier.height(16.dp))

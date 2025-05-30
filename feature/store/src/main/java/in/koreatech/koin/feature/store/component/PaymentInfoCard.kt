@@ -32,8 +32,7 @@ fun PaymentSummaryCard() {
     ) {
         Text(
             text = stringResource(R.string.check_payment_amount),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            style = KoinTheme.typography.bold16,
         )
         Spacer(modifier = Modifier.height(12.dp))
         Card(

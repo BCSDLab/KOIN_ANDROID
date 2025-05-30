@@ -186,9 +186,9 @@ fun ShoppingCartContent(
                             cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                         )
                     },
-                shape = RoundedCornerShape(8.dp),
+                shape = KoinTheme.shapes.extraSmall,
                 colors = buttonColors(
-                    containerColor = Color.White,
+                    containerColor = KoinTheme.colors.neutral0,
                     contentColor = colorResource(R.color.shopping_cart_button_text)
                 )
             ) {
@@ -198,7 +198,7 @@ fun ShoppingCartContent(
                 ) {
                     Text(text = stringResource(R.string.plus), fontSize = 20.sp)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = stringResource(R.string.add_more), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.add_more), style= KoinTheme.typography.bold18)
                 }
             }
         }
