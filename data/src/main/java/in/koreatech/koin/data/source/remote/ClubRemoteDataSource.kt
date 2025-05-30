@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
 import `in`.koreatech.koin.data.response.club.ClubQnasResponse
 import javax.inject.Inject
 import retrofit2.HttpException
+import retrofit2.Response
 
 class ClubRemoteDataSource @Inject constructor(
     private val clubApi: ClubApi,
@@ -25,15 +26,8 @@ class ClubRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun setClubEmpowerment(request: ClubEmpowermentRequest): Result<Unit> {
-        return runCatching {
-            val response = clubAuthApi.setClubEmpowerment(request)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }
+    suspend fun setClubEmpowerment(request: ClubEmpowermentRequest): Response<Unit> {
+        return clubAuthApi.setClubEmpowerment(request)
     }
 
     suspend fun setClubLike(clubId: Int): Result<Unit> {

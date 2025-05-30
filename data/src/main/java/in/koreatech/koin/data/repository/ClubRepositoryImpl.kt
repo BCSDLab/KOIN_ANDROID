@@ -5,9 +5,15 @@ import `in`.koreatech.koin.data.mapper.toClubQnasInfo
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
+import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.KoinErrorException
+import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.club.ClubError
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.repository.ClubRepository
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class ClubRepositoryImpl @Inject constructor(
@@ -34,7 +40,20 @@ class ClubRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setClubEmpowerment(clubId: Int, changedManagerId: String): Result<Unit> {
-        return clubRemoteDataSource.setClubEmpowerment(ClubEmpowermentRequest(clubId, changedManagerId))
+        return runCatching {
+            val response = clubRemoteDataSource.setClubEmpowerment(ClubEmpowermentRequest(clubId, changedManagerId))
+            if (response.isSuccessful) Unit
+            else throw HttpException(response)
+        }.recoverCatching { e ->
+            if (e is HttpException) {
+                when (e.code()) {
+                    401 -> throw ClubError.Unauthorized
+                    403 -> throw ClubError.Forbidden
+                    404 -> throw ClubError.NotFoundUserId
+                    else -> throw e.getErrorResponse().toKoinUnknownErrorException()
+                }
+            }
+        }
     }
 
     override suspend fun postClubQna(clubId: Int, parentId: Int?, content: String): Result<Unit> {

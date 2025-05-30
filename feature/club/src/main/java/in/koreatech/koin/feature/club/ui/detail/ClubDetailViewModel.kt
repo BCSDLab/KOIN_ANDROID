@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.feature.club.ui.detail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.club.ClubError
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.user.User
@@ -208,10 +210,8 @@ class ClubDetailViewModel @Inject constructor(
             clubId = selectedClubId,
             changedManagerId = newUserId
         ).onFailure { e ->
-            if (e is retrofit2.HttpException) {
-                if (e.code() == 404) {
-                    reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
-                }
+            if (e is ClubError.NotFoundUserId) {
+                reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
             }
             reduce { state.copy(isLoading = false) }
             return@intent

@@ -23,7 +23,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -460,7 +459,7 @@ fun ClubDetail(
                                         }
                                     }
                                 },
-                                isManager = true,// state.clubDetails?.manager ?: false,
+                                isManager = state.clubDetails?.manager ?: false,
                                 userId = state.userId
                             )
                         }
