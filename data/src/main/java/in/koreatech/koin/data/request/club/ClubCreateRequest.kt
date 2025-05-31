@@ -16,6 +16,6 @@ data class ClubCreateRequest(
     @SerializedName("role") val role: String
 ) {
     data class ClubManagersRequest(
-        @SerializedName("user_id") val userId: String,
+        @SerializedName("user_id") val userId: String
     )
 }

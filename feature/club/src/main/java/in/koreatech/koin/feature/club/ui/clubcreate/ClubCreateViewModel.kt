@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.usecase.club.CreateClubUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.model.ClubCategories
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -17,7 +18,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class ClubCreateViewModel @Inject constructor(
@@ -44,7 +44,7 @@ class ClubCreateViewModel @Inject constructor(
                         reduce {
                             // TODO: User ID will be changed after the user team's sprint.
                             state.copy(
-                                userId = it.email?.replace("@koreatech.ac.kr", "") ?: "",
+                                userId = it.email?.replace("@koreatech.ac.kr", "") ?: ""
                             )
                         }
                     }
@@ -212,7 +212,6 @@ class ClubCreateViewModel @Inject constructor(
                     imageUri = imageUri
                 )
             }.onFailure {
-
             }
         }
     }

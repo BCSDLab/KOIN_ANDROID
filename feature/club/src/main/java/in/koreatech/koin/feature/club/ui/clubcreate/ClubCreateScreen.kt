@@ -161,7 +161,7 @@ fun ClubCreateScreenImpl(
     onShouldShowCreateDialogChange: (Boolean) -> Unit = {},
     onShouldShowPermissionDialogChange: (Boolean) -> Unit = {},
     onUserRoleChange: (String) -> Unit = {},
-    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ ->  }
+    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> }
 ) {
     val context = LocalContext.current
     val pickMedia = pickMedia(

@@ -4,9 +4,9 @@ import `in`.koreatech.koin.data.request.upload.UploadUrlRequest
 import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrl
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
+import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
-import javax.inject.Inject
 
 class UploadUrlRepositoryImpl @Inject constructor(
     private val uploadUrlRemoteDataSource: UploadUrlRemoteDataSource

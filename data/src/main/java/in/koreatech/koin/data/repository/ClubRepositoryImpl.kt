@@ -15,8 +15,6 @@ import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.Clubs
 import `in`.koreatech.koin.domain.repository.ClubRepository
-import retrofit2.HttpException
-import timber.log.Timber
 import javax.inject.Inject
 
 class ClubRepositoryImpl @Inject constructor(
