@@ -33,7 +33,7 @@ fun NavGraphBuilder.koinClubGraph(
         route = ClubNavType.ClubCreate.route
     ) {
         ClubCreateScreen(
-            onBackPressed = { navController.navigateUp() }
+            onNavigateUp = { navController.navigateUp() }
         )
     }
 
