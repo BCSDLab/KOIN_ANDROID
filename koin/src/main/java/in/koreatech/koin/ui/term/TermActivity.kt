@@ -13,11 +13,6 @@ import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivityTermBinding
 import `in`.koreatech.koin.domain.model.term.Term
-import `in`.koreatech.koin.ui.term.TermViewModel.Companion.KEY_TERM
-import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_KOIN
-import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_MARKETING
-import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_PRIVACY_POLICY
-import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_UNKNOWN
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -56,7 +51,6 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
     }
 
     private fun loadTerm() {
-        viewModel.setTermType(intent.getStringExtra(KEY_TERM) ?: TERM_UNKNOWN)
         when (intent.getStringExtra(KEY_TERM)) {
             TERM_KOIN -> {
                 viewModel.loadKoinTerm()
@@ -131,5 +125,12 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
             articleAdapter.submitList(term.articles.map { it.article })
             contentAdapter.submitList(term.articles)
         }
+    }
+    companion object {
+        const val KEY_TERM = "key_term"
+        const val TERM_KOIN = "term_koin"
+        const val TERM_PRIVACY_POLICY = "term_privacy_policy"
+        const val TERM_MARKETING = "term_marketing"
+        private const val TERM_UNKNOWN = "term_unknown"
     }
 }

@@ -21,12 +21,6 @@ class TermViewModel @Inject constructor(
     private val _term: MutableStateFlow<TermState> = MutableStateFlow(TermState.Init)
     val term: StateFlow<TermState> get() = _term.asStateFlow()
 
-    private val _termType: MutableStateFlow<String> = MutableStateFlow(TERM_UNKNOWN)
-
-    fun setTermType(type: String) {
-        _termType.value = type
-    }
-
     fun loadKoinTerm() {
         viewModelScope.launch {
             getKoinTermUseCase()
@@ -61,13 +55,5 @@ class TermViewModel @Inject constructor(
                     _term.value = TermState.Failure(it.message ?: "")
                 }
         }
-    }
-
-    companion object {
-        const val KEY_TERM = "key_term"
-        const val TERM_KOIN = "term_koin"
-        const val TERM_PRIVACY_POLICY = "term_privacy_policy"
-        const val TERM_MARKETING = "term_marketing"
-        const val TERM_UNKNOWN = "term_unknown"
     }
 }
