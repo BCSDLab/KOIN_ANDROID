@@ -19,6 +19,7 @@ import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.EMPTY_ERROR
 import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.NON_USERID_ERROR
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -29,7 +30,6 @@ import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
-import javax.inject.Inject
 
 @HiltViewModel
 class ClubDetailViewModel @Inject constructor(
@@ -52,7 +52,7 @@ class ClubDetailViewModel @Inject constructor(
         intent {
             reduce {
                 state.copy(
-                    clubId = clubId,
+                    clubId = clubId
                 )
             }
         }
