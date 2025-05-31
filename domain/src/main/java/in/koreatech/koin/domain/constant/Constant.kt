@@ -12,3 +12,9 @@ const val LUNCH = "LUNCH"
 const val DINNER = "DINNER"
 
 const val KOIN_PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=in.koreatech.koin"
+
+const val KOIN_WEB_URL = "https://koreatech.in/"
+
+const val KOIN_WEB_STAGE_URL = "https://stage.koreatech.in/"
+
+const val LOGIN_ACTIVITY_URL = "koin://login/login"

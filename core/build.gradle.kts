@@ -58,9 +58,6 @@ dependencies {
     api(libs.okhttp)
     api(libs.okhttp.logging.interceptor)
 
-    // Dependency - leakcanary
-    debugImplementation(libs.leakcanary.android)
-
     // Dependency - glide
     implementation(libs.glide)
     ksp(libs.glide.ksp)

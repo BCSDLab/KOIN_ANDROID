@@ -11,6 +11,6 @@ data class ClubQnasInfo(
         val nickname: String,
         val content: String,
         val createdAt: String,
-        val children: List<String>
+        val children: List<Qna>
     )
 }
