@@ -121,6 +121,8 @@ class UserInfoEditActivity : ActivityBase() {
                                 }
                             }
                         }
+
+                    is User.General -> TODO("Will be implement with user info edit")
                 }
             }
 

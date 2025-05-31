@@ -35,9 +35,21 @@
 
         <activity
             android:name=".ui.timetablev2.TimetableActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="keyword" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="timetable"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.timetablev2.TimetableSemesterActivity"
@@ -120,8 +132,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
             <data
-                android:host="home"
-                android:pathPrefix="/home"
+                android:host="main"
+                android:pathPrefix="/activity"
                 android:scheme="koin" />
             </intent-filter>
         </activity>
@@ -199,9 +211,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name=".ui.forgotpassword.ForgotPasswordActivity"
             android:exported="true"
-            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
+            android:theme="@style/KAPTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -209,15 +221,11 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="login"
-                    android:pathPrefix="/login"
+                    android:host="findpassword"
+                    android:pathPrefix="/activity"
                     android:scheme="koin" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.forgotpassword.ForgotPasswordActivity"
-            android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.store.activity.StoreActivity"
             android:exported="false"

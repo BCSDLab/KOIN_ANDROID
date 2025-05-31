@@ -17,6 +17,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
@@ -27,12 +28,12 @@ class UserRepositoryImpl @Inject constructor(
     private val userLocalDataSource: UserLocalDataSource
 ) : UserRepository {
     override suspend fun getToken(
-        email: String,
+        loginId: String,
         hashedPassword: String
     ): AuthToken {
         val authResponse =
             userRemoteDataSource.getToken(
-                LoginRequest(email, hashedPassword)
+                LoginRequest(loginId, hashedPassword)
             )
 
         return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
@@ -65,17 +66,27 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchUserInfo(userType: String) {
-        userRemoteDataSource.getUserInfo().toUser(userType).also {
+    override suspend fun fetchStudentUserInfo() {
+        userRemoteDataSource.getStudentUserInfo().toUser().also {
+            userLocalDataSource.updateUserInfo(it)
+        }
+    }
+
+    override suspend fun fetchGeneralUserInfo() {
+        userRemoteDataSource.getGeneralUserInfo().toUser().also {
             userLocalDataSource.updateUserInfo(it)
         }
     }
 
     override suspend fun getUserInfo(): User {
-        val userType = userRemoteDataSource.getUserType()
-
-        return userRemoteDataSource.getUserInfo().toUser(userType.userType).also {
-            userLocalDataSource.updateUserInfo(it)
+        return when (userLocalDataSource.user.first()) {
+            is User.Student -> userRemoteDataSource.getStudentUserInfo().toUser().also {
+                userLocalDataSource.updateUserInfo(it)
+            }
+            is User.General -> userRemoteDataSource.getGeneralUserInfo().toUser().also {
+                userLocalDataSource.updateUserInfo(it)
+            }
+            else -> throw IllegalAccessException("Get anonymous user info is not supported")
         }
     }
 
@@ -132,6 +143,8 @@ class UserRepositoryImpl @Inject constructor(
                 userRemoteDataSource.updateUser(user.toUserRequest())
                 userLocalDataSource.updateUserInfo(user)
             }
+
+            is User.General -> TODO("Will be implement with user info edit")
         }
     }
 
@@ -165,6 +178,8 @@ class UserRepositoryImpl @Inject constructor(
             is User.Student -> {
                 userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
             }
+
+            is User.General -> TODO("Will be implement with user info edit")
         }
     }
 }

@@ -82,7 +82,7 @@ fun SignUpCompleteScreen(
             colors = FilledButtonColors.Primary,
             onClick = {
                 Intent(Intent.ACTION_VIEW).apply {
-                    data = "koin://home/home".toUri()
+                    data = "koin://main/activity".toUri()
                 }.let {
                     context.startActivity(it)
                 }

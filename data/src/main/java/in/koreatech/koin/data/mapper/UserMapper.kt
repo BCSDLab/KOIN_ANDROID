@@ -1,22 +1,23 @@
 package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.user.UserRequest
+import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
-import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
 
-fun UserResponse.toUser(userType: String) =
+fun StudentUserResponse.toUser() =
     User.Student(
         id = id,
+        loginId = loginId,
         anonymousNickname = anonymousNickname,
         email = email,
         name = name,
         studentNumber = studentNumber,
-        gender =
-        when (gender) {
+        gender = when (gender) {
             0 -> Gender.Man
             1 -> Gender.Woman
             else -> Gender.Unknown
@@ -27,6 +28,23 @@ fun UserResponse.toUser(userType: String) =
         userType = userType
     )
 
+fun GeneralUserResponse.toUser() =
+    User.General(
+        id = id,
+        loginId = loginId,
+        anonymousNickname = anonymousNickname,
+        email = email,
+        name = name,
+        nickname = nickname,
+        phoneNumber = phoneNumber,
+        gender = when (gender) {
+            0 -> Gender.Man
+            1 -> Gender.Woman
+            else -> throw IllegalStateException()
+        },
+        userType = userType
+    )
+
 fun User.Student.toUserRequest() =
     UserRequest(
         nickname = nickname,
@@ -34,8 +52,7 @@ fun User.Student.toUserRequest() =
         studentNumber = studentNumber,
         major = major,
         phoneNumber = phoneNumber,
-        gender =
-        when (gender) {
+        gender = when (gender) {
             Gender.Man -> 0
             Gender.Woman -> 1
             else -> null
@@ -52,8 +69,7 @@ fun User.Student.toUserRequestWithPassword(hashedPassword: String) =
         studentNumber = studentNumber,
         major = major,
         phoneNumber = phoneNumber,
-        gender =
-        when (gender) {
+        gender = when (gender) {
             Gender.Man -> 0
             Gender.Woman -> 1
             else -> null

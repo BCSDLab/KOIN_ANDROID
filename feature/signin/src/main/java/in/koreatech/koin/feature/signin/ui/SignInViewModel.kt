@@ -1,0 +1,59 @@
+package `in`.koreatech.koin.feature.signin.ui
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
+import javax.inject.Inject
+import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
+
+@HiltViewModel
+class SignInViewModel @Inject constructor(
+    private val userLoginUseCase: UserLoginUseCase
+) : ViewModel(), ContainerHost<SignInState, SignInSideEffect> {
+    override val container = container<SignInState, SignInSideEffect>(SignInState())
+
+    fun setLoginId(loginId: String) {
+        blockingIntent {
+            reduce {
+                state.copy(loginId = loginId, loginError = state.loginError.copy(isError = false))
+            }
+        }
+    }
+
+    fun setPassword(password: String) {
+        blockingIntent {
+            reduce {
+                state.copy(password = password, loginError = state.loginError.copy(isError = false))
+            }
+        }
+    }
+
+    fun setShowPassword(showPassword: Boolean) {
+        blockingIntent {
+            reduce {
+                state.copy(showPassword = showPassword)
+            }
+        }
+    }
+
+    fun signIn() = viewModelScope.launch {
+        intent {
+            userLoginUseCase(state.loginId, state.password).onSuccess {
+                postSideEffect(SignInSideEffect.SignInSuccess)
+            }.onFailure {
+                reduce {
+                    state.copy(loginError = SignInState.LoginError(true, it.message))
+                }
+            }
+        }
+    }
+}

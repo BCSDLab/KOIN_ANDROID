@@ -35,10 +35,10 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
+import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
-import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
@@ -405,6 +405,35 @@ abstract class KoinNavigationDrawerActivity :
                                     else -> Unit
                                 }
                             }
+
+                            is User.General -> {
+                                nameTextView.text =
+                                    if (user.nickname?.isNotEmpty() == true) {
+                                        user.nickname!!
+                                    } else if (user.name.isNotEmpty()) {
+                                        user.name
+                                    } else {
+                                        "회원"
+                                    }
+                                nameTextView.visibility = View.VISIBLE
+                                helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+                                chatMenuIcon.visibility = View.VISIBLE
+                                koinNavigationDrawerViewModel.getUnreadMessageCount()
+
+                                when (menuState) {
+                                    MenuState.Main -> {
+                                        if (!checkMainPermission()) {
+                                            requestMainPermissionLauncher.launch(
+                                                MAIN_REQUIRED_PERMISSION
+                                            )
+                                        }
+                                        koinNavigationDrawerViewModel.updateDeviceToken()
+                                    }
+
+                                    else -> Unit
+                                }
+                            }
                         }
                     }
                 }
@@ -594,7 +623,7 @@ abstract class KoinNavigationDrawerActivity :
                 val intent =
                     Intent(
                         this,
-                        LoginActivity::class.java
+                        SignInActivity::class.java
                     )
                 intent.putExtra("FIRST_LOGIN", false)
                 startActivity(intent)
@@ -620,7 +649,7 @@ abstract class KoinNavigationDrawerActivity :
     private fun goToLoginActivity() {
         Intent(
             this,
-            LoginActivity::class.java
+            SignInActivity::class.java
         ).apply {
             startActivity(this)
         }

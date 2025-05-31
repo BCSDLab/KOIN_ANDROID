@@ -11,7 +11,7 @@ import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateUserRefreshTokenUseCase
-import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.util.ext.showToast
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
@@ -85,7 +85,7 @@ class AuthAuthenticator @Inject constructor(
 
     private fun goToLoginActivity() {
         val handler = HandlerCompat.createAsync(Looper.getMainLooper())
-        Intent(context.applicationContext, LoginActivity::class.java).run {
+        Intent(context.applicationContext, SignInActivity::class.java).run {
             handler.post {
                 context.applicationContext.showToast(
                     context.getString(R.string.token_out_dated)
