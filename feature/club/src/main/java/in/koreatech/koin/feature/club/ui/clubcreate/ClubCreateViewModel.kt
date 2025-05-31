@@ -4,8 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -18,10 +20,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ClubCreateViewModel @Inject constructor(
+    private val getUserStatusUseCase: GetUserStatusUseCase,
     private val getClubPreSignedUrlUseCase: GetClubPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
 ) : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
     override val container = container<ClubCreateState, ClubCreateSideEffect>(ClubCreateState())
+
+    init {
+        getUserInfo()
+    }
+
+    private fun getUserInfo() = viewModelScope.launch {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Anonymous -> {
+                    throw IllegalStateException()
+                }
+
+                is User.Student -> {
+                    intent {
+                        reduce {
+                            // TODO: User ID will be changed after the user team's sprint.
+                            state.copy(
+                                userId = it.email?.replace("@koreatech.ac.kr", "") ?: "",
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     fun updateClubName(name: String) = blockingIntent {
         reduce {

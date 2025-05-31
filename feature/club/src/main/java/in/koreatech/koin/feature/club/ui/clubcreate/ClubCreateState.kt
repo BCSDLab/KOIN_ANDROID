@@ -17,7 +17,8 @@ data class ClubCreateState(
     val shouldCheckRequiredField: Boolean = false,
     val shouldShowCreateDialog: Boolean = false,
     val shouldShowPermissionDialog: Boolean = false,
-    val userRole: String = ""
+    val userRole: String = "",
+    val userId: String = "",
 ) {
     val clubNameRequired: Boolean
         get() = clubName.isBlank() && shouldCheckRequiredField
