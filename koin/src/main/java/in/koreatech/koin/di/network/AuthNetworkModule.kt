@@ -8,9 +8,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.Auth
 import `in`.koreatech.koin.core.qualifier.OwnerAuth
+import `in`.koreatech.koin.core.qualifier.OwnerUserAgent
 import `in`.koreatech.koin.core.qualifier.PreSignedUrl
+import `in`.koreatech.koin.core.qualifier.PreSignedUserAgent
 import `in`.koreatech.koin.core.qualifier.Refresh
 import `in`.koreatech.koin.core.qualifier.ServerUrl
+import `in`.koreatech.koin.core.qualifier.UserAgent
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
@@ -20,6 +23,8 @@ import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.di.userAgent.UserAgentInterceptor
+import `in`.koreatech.koin.di.userAgent.UserAgentProvider
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateUserRefreshTokenUseCase
 import `in`.koreatech.koin.util.OwnerTokenAuthenticator
@@ -37,6 +42,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthNetworkModule {
+    @UserAgent
+    @Provides
+    @Singleton
+    fun provideUserAgentInterceptor(
+        userAgentProvider: UserAgentProvider
+    ): Interceptor = UserAgentInterceptor(userAgentProvider)
+
     @Auth
     @Provides
     @Singleton
@@ -77,13 +89,15 @@ object AuthNetworkModule {
     @Singleton
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        @UserAgent userAgentInterceptor: Interceptor,
         @Auth authInterceptor: Interceptor,
-        @Refresh refreshInterceptor: Authenticator
+        @Refresh refreshInterceptor: Authenticator,
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
+            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(authInterceptor)
             authenticator(refreshInterceptor)
@@ -139,6 +153,13 @@ object AuthNetworkModule {
 @Module
 @InstallIn(SingletonComponent::class)
 object OwnerAuthNetworkModule {
+    @OwnerUserAgent
+    @Provides
+    @Singleton
+    fun provideOwnerUserAgentInterceptor(
+        userAgentProvider: UserAgentProvider
+    ): Interceptor = UserAgentInterceptor(userAgentProvider)
+
     @OwnerAuth
     @Provides
     @Singleton
@@ -168,6 +189,7 @@ object OwnerAuthNetworkModule {
     @Singleton
     fun provideOwnerAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        @OwnerUserAgent userAgentInterceptor: Interceptor,
         @OwnerAuth ownerAuthInterceptor: Interceptor,
         @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator
     ): OkHttpClient {
@@ -175,6 +197,7 @@ object OwnerAuthNetworkModule {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
+            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(ownerAuthInterceptor)
             authenticator(tokenAuthenticator)
@@ -205,14 +228,25 @@ object OwnerAuthNetworkModule {
 @Module
 @InstallIn(SingletonComponent::class)
 object PreSignedUrlNetworkModule {
+    @PreSignedUserAgent
+    @Provides
+    @Singleton
+    fun providePreSignedUserAgentInterceptor(
+        userAgentProvider: UserAgentProvider
+    ): Interceptor = UserAgentInterceptor(userAgentProvider)
+
     @PreSignedUrl
     @Provides
     @Singleton
-    fun provideOwnerAuthOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOwnerAuthOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        @PreSignedUserAgent userAgentInterceptor: Interceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
+            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
         }.build()
     }

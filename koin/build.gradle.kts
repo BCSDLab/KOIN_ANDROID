@@ -53,6 +53,7 @@ android {
                 "KAKAO_NATIVE_APP_KEY",
                 "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
             )
+            buildConfigField("String", "OKHTTP_VERSION", "\"${libs.versions.okhttpVersion.get()}\"")
             configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = false
             }
@@ -74,6 +75,7 @@ android {
                 "KAKAO_NATIVE_APP_KEY",
                 "String.valueOf(\"${localProperties["kakao_native_app_key"]}\")"
             )
+            buildConfigField("String", "OKHTTP_VERSION", "\"${libs.versions.okhttpVersion.get()}\"")
             firebaseAppDistribution {
                 artifactType = "AAB"
                 releaseNotes = "${rootProject.extra["versionName"]} release"

@@ -15,6 +15,7 @@ android {
         applicationId = "in.koreatech.business"
         versionCode = rootProject.extra["versionBusinessCode"] as Int
         versionName = rootProject.extra["versionBusinessName"].toString()
+        buildConfigField("String", "OKHTTP_VERSION", "\"${libs.versions.okhttpVersion.get()}\"")
     }
 
     androidComponents {
