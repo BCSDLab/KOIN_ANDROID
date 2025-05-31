@@ -106,7 +106,7 @@ fun ClubCreateScreen(
             onCancelCreateClub = onNavigateUp,
             onShouldShowCreateDialogChange = viewModel::updateShowCreateDialog,
             onShouldShowPermissionDialogChange = viewModel::updateShowPermissionDialog,
-            onUserRoleChange = viewModel::updateUserRole,
+            onUserRoleChange = viewModel::updateUserRole
         )
     }
 }
@@ -142,7 +142,7 @@ fun ClubCreateScreenImpl(
     onCancelCreateClub: () -> Unit = {},
     onShouldShowCreateDialogChange: (Boolean) -> Unit = {},
     onShouldShowPermissionDialogChange: (Boolean) -> Unit = {},
-    onUserRoleChange: (String) -> Unit = {},
+    onUserRoleChange: (String) -> Unit = {}
 ) {
     if (shouldShowCreateDialog) {
         DetailDialog(
@@ -207,7 +207,7 @@ fun ClubCreateScreenImpl(
     Column(
         modifier = modifier
             .padding(horizontal = 24.dp)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
     ) {
         Box(
             modifier = Modifier
@@ -403,7 +403,7 @@ fun ClubCreateScreenImpl(
             Column(
                 modifier = Modifier
                     .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceAround,
+                verticalArrangement = Arrangement.SpaceAround
             ) {
                 Text(
                     modifier = Modifier.padding(vertical = 6.dp),
@@ -506,6 +506,6 @@ fun ClubCreateScreenPreview() {
         phoneNumber = "010-1234-5678",
         shouldShowCreateDialog = false,
         shouldShowPermissionDialog = false,
-        userRole = "Member",
+        userRole = "Member"
     )
 }

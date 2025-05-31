@@ -3,23 +3,22 @@ package `in`.koreatech.koin.feature.club.ui.clubcreate
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.feature.club.model.ClubCategories
+import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
-class ClubCreateViewModel @Inject constructor(
-) : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
+class ClubCreateViewModel @Inject constructor() : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
     override val container = container<ClubCreateState, ClubCreateSideEffect>(ClubCreateState())
 
     fun updateClubName(name: String) = blockingIntent {
         reduce {
             state.copy(
-                clubName = name,
+                clubName = name
             )
         }
     }
@@ -27,7 +26,7 @@ class ClubCreateViewModel @Inject constructor(
     fun updateClubDescription(description: String) = blockingIntent {
         reduce {
             state.copy(
-                clubDescription = description,
+                clubDescription = description
             )
         }
     }
@@ -35,7 +34,7 @@ class ClubCreateViewModel @Inject constructor(
     fun updateClubCategory(category: ClubCategories) = blockingIntent {
         reduce {
             state.copy(
-                clubCategory = category,
+                clubCategory = category
             )
         }
     }
@@ -43,7 +42,7 @@ class ClubCreateViewModel @Inject constructor(
     fun updateIsClubCategoryDropdownExpanded(isExpanded: Boolean) = blockingIntent {
         reduce {
             state.copy(
-                isClubCategoryDropdownExpanded = isExpanded,
+                isClubCategoryDropdownExpanded = isExpanded
             )
         }
     }
