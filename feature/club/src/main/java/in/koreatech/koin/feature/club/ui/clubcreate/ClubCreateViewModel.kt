@@ -6,6 +6,7 @@ import `in`.koreatech.koin.feature.club.model.ClubCategories
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
@@ -93,5 +94,6 @@ class ClubCreateViewModel @Inject constructor(
                 shouldCheckRequiredField = true
             )
         }
+        postSideEffect(ClubCreateSideEffect.ClubCreateSuccess)
     }
 }

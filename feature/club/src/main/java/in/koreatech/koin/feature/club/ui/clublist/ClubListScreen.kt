@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -13,9 +14,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
+import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
@@ -35,6 +42,7 @@ import `in`.koreatech.koin.feature.club.model.ClubSort
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubItem
 import `in`.koreatech.koin.feature.club.model.clubCategories
 import `in`.koreatech.koin.feature.club.model.clubSortType
+import `in`.koreatech.koin.feature.club.ui.detail.component.snackbar.DetailSnackBar
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -42,6 +50,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubListScreen(
+    isClubCreated: Boolean = false,
     viewModel: ClubListViewModel = hiltViewModel(),
     navigateToCreateClub: () -> Unit = { }
 ) {
@@ -52,6 +61,17 @@ fun ClubListScreen(
         handleSideEffect(it, viewModel)
     }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(isClubCreated) {
+        if (isClubCreated) {
+            snackbarHostState.showSnackbar(
+                message = context.getString(R.string.club_create_success_snackbar),
+                duration = SnackbarDuration.Short
+            )
+        }
+    }
+
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
@@ -60,6 +80,19 @@ fun ClubListScreen(
                 onNavigationIconClick = {
                     // This is top navigation
                     (context as Activity).finish()
+                }
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { data ->
+                    DetailSnackBar(
+                        modifier = Modifier.padding(WindowInsets.navigationBars.asPaddingValues()),
+                        message = data.visuals.message,
+                        label = data.visuals.actionLabel,
+                        onLabelClick = { data.performAction() }
+                    )
                 }
             )
         },

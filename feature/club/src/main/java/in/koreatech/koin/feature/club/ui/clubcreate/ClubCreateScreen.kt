@@ -45,15 +45,21 @@ import `in`.koreatech.koin.feature.club.model.ClubCategories
 import `in`.koreatech.koin.feature.club.model.clubCategories
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubCreateScreen(
     modifier: Modifier = Modifier,
     viewModel: ClubCreateViewModel = hiltViewModel(),
-    onNavigateUp: () -> Unit = { }
+    onNavigateUp: () -> Unit = { },
+    onClubCreated: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
+
+    viewModel.collectSideEffect {
+        handleSideEffect(it, onClubCreated)
+    }
 
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
@@ -394,6 +400,17 @@ fun ClubCreateScreenImpl(
         }
 
         Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+    }
+}
+
+fun handleSideEffect(
+    sideEffect: ClubCreateSideEffect,
+    onClubCreated: () -> Unit = { }
+) {
+    when (sideEffect) {
+        ClubCreateSideEffect.ClubCreateSuccess -> {
+            onClubCreated()
+        }
     }
 }
 
