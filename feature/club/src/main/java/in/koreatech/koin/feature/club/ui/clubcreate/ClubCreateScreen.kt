@@ -1,7 +1,11 @@
 package `in`.koreatech.koin.feature.club.ui.clubcreate
 
+import android.net.Uri
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
@@ -20,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -29,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +52,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import `in`.koreatech.koin.feature.club.model.clubCategories
+import `in`.koreatech.koin.feature.club.utils.pickMedia
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -77,6 +85,7 @@ fun ClubCreateScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { innerPadding ->
         ClubCreateScreenImpl(
+            isLoading = uiState.isLoading,
             clubName = uiState.clubName,
             clubNameRequired = uiState.clubNameRequired,
             clubDescription = uiState.clubDescription,
@@ -106,13 +115,22 @@ fun ClubCreateScreen(
             onCancelCreateClub = onNavigateUp,
             onShouldShowCreateDialogChange = viewModel::updateShowCreateDialog,
             onShouldShowPermissionDialogChange = viewModel::updateShowPermissionDialog,
-            onUserRoleChange = viewModel::updateUserRole
+            onUserRoleChange = viewModel::updateUserRole,
+            uploadImage = { fileSize, fileType, fileName, fileUri ->
+                viewModel.getPreSignedUrl(
+                    fileSize = fileSize,
+                    fileType = fileType,
+                    fileName = fileName,
+                    imageUri = fileUri
+                )
+            }
         )
     }
 }
 
 @Composable
 fun ClubCreateScreenImpl(
+    isLoading: Boolean,
     clubName: String,
     clubNameRequired: Boolean,
     clubDescription: String,
@@ -142,8 +160,15 @@ fun ClubCreateScreenImpl(
     onCancelCreateClub: () -> Unit = {},
     onShouldShowCreateDialogChange: (Boolean) -> Unit = {},
     onShouldShowPermissionDialogChange: (Boolean) -> Unit = {},
-    onUserRoleChange: (String) -> Unit = {}
+    onUserRoleChange: (String) -> Unit = {},
+    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ ->  }
 ) {
+    val context = LocalContext.current
+    val pickMedia = pickMedia(
+        context = context,
+        onResult = uploadImage
+    )
+
     if (shouldShowCreateDialog) {
         DetailDialog(
             title = stringResource(R.string.club_create_dialog_create_title),
@@ -204,6 +229,15 @@ fun ClubCreateScreenImpl(
         )
     }
 
+    if (isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+
     Column(
         modifier = modifier
             .padding(horizontal = 24.dp)
@@ -218,7 +252,10 @@ fun ClubCreateScreenImpl(
                 modifier = Modifier
                     .size(200.dp)
                     .clip(KoinTheme.shapes.extraLarge)
-                    .background(KoinTheme.colors.neutral200),
+                    .background(KoinTheme.colors.neutral200)
+                    .clickable {
+                        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -492,6 +529,7 @@ fun handleSideEffect(
 @Composable
 fun ClubCreateScreenPreview() {
     ClubCreateScreenImpl(
+        isLoading = false,
         clubName = "Club Name",
         clubNameRequired = false,
         clubDescription = "This is a club description.",
