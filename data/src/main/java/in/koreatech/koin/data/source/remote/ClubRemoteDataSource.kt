@@ -4,10 +4,7 @@ import `in`.koreatech.koin.data.api.ClubApi
 import `in`.koreatech.koin.data.api.auth.ClubAuthApi
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
-import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
-import `in`.koreatech.koin.data.response.club.ClubQnasResponse
 import javax.inject.Inject
-import retrofit2.HttpException
 
 class ClubRemoteDataSource @Inject constructor(
     private val clubApi: ClubApi,
@@ -22,76 +19,23 @@ class ClubRemoteDataSource @Inject constructor(
         sortType: String? = null
     ) = clubAuthApi.getClubs(categoryId, sortType)
 
-    suspend fun getClubDetails(clubId: Int): Result<ClubDetailsResponse> {
-        return runCatching {
-            clubAuthApi.getClubDetails(clubId)
-        }
-    }
+    suspend fun getClubDetails(clubId: Int) = clubAuthApi.getClubDetails(clubId)
 
-    suspend fun getClubQnas(clubId: Int): Result<ClubQnasResponse> {
-        return runCatching {
-            clubApi.getClubQnas(clubId)
-        }
-    }
+    suspend fun getClubQnas(clubId: Int) = clubApi.getClubQnas(clubId)
 
-    suspend fun setClubEmpowerment(request: ClubEmpowermentRequest): Result<Unit> {
-        return runCatching {
-            val response = clubAuthApi.setClubEmpowerment(request)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }
-    }
+    suspend fun setClubEmpowerment(request: ClubEmpowermentRequest) = clubAuthApi.setClubEmpowerment(request)
 
-    suspend fun setClubLike(clubId: Int): Result<Unit> {
-        return runCatching {
-            val response = clubAuthApi.setClubLike(clubId)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }
-    }
+    suspend fun setClubLike(clubId: Int) = clubAuthApi.setClubLike(clubId)
 
     suspend fun postClubQna(
         clubId: Int,
         request: ClubQnaRequest
-    ): Result<Unit> {
-        return runCatching {
-            val response = clubAuthApi.postClubQna(clubId, request)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }
-    }
+    ) = clubAuthApi.postClubQna(clubId, request)
 
     suspend fun deleteClubQna(
         clubId: Int,
         qnaId: Int
-    ): Result<Unit> {
-        return runCatching {
-            val response = clubAuthApi.deleteClubQna(clubId, qnaId)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }
-    }
+    ) = clubAuthApi.deleteClubQna(clubId, qnaId)
 
-    suspend fun cancelClubLike(clubId: Int): Result<Unit> {
-        return runCatching {
-            val response = clubAuthApi.cancelClubLike(clubId)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }
-    }
+    suspend fun cancelClubLike(clubId: Int) = clubAuthApi.cancelClubLike(clubId)
 }

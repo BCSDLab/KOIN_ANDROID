@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.error.club.ClubError
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.user.User
@@ -25,6 +26,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
 
 @HiltViewModel
 class ClubDetailViewModel @Inject constructor(
@@ -41,7 +43,7 @@ class ClubDetailViewModel @Inject constructor(
         initialState = ClubDetailState()
     )
 
-    private var selectedClubId = 1 // 선택한 Clud 의 id 값
+    private var selectedClubId = 15 // 선택한 Clud 의 id 값
 
     private val userInfoFlow: StateFlow<User> =
         getUserStatusUseCase()
@@ -101,7 +103,12 @@ class ClubDetailViewModel @Inject constructor(
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         if (content.isEmpty()) {
-            reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    textFieldErrorResId = EMPTY_ERROR.strResId
+                )
+            }
             return@intent
         }
         state.clubDetails?.let {
@@ -109,10 +116,21 @@ class ClubDetailViewModel @Inject constructor(
                 clubId = selectedClubId,
                 parentId = parentId,
                 content = content
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
+        }
+        reduce { state.copy(showQnasProgressBar = true) }
+        val clubQnasInfo = loadClubQnas()
+        reduce {
+            state.copy(
+                isLoading = false,
+                clubQnasInfo = clubQnasInfo,
+                showAddQnaDialog = false,
+                textFieldErrorResId = null,
+                showQnasProgressBar = false
             )
         }
-        val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo, showAddQnaDialog = false, textFieldErrorResId = null) }
     }
 
     fun addClubQnaAnswer(
@@ -126,10 +144,19 @@ class ClubDetailViewModel @Inject constructor(
                 clubId = selectedClubId,
                 parentId = parentId,
                 content = content
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
+        }
+        reduce { state.copy(showQnasProgressBar = true) }
+        val clubQnasInfo = loadClubQnas()
+        reduce {
+            state.copy(
+                isLoading = false,
+                clubQnasInfo = clubQnasInfo,
+                showQnasProgressBar = false
             )
         }
-        val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo) }
     }
 
     fun deleteClubQna(
@@ -141,10 +168,19 @@ class ClubDetailViewModel @Inject constructor(
             deleteClubQnaUseCase(
                 clubId = selectedClubId,
                 qnaId = qnaId
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
+        }
+        reduce { state.copy(showQnasProgressBar = true) }
+        val clubQnasInfo = loadClubQnas()
+        reduce {
+            state.copy(
+                isLoading = false,
+                clubQnasInfo = clubQnasInfo,
+                showQnasProgressBar = false
             )
         }
-        val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo) }
     }
 
     fun showLoginDialog() = intent {
@@ -175,7 +211,6 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
     }
 
-    // TODO result 오류처리 로직에 맞게 개선 필요
     fun setManagerEmpowerment(newUserId: String) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
@@ -187,17 +222,31 @@ class ClubDetailViewModel @Inject constructor(
             clubId = selectedClubId,
             changedManagerId = newUserId
         ).onFailure { e ->
-            if (e is retrofit2.HttpException) {
-                if (e.code() == 404) {
-                    reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
-                }
-            }
             reduce { state.copy(isLoading = false) }
+            if (e is ClubError.UserIdNotFound) {
+                reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
+            } else {
+                throw e
+            }
             return@intent
         }
+        reduce { state.copy(showQnasProgressBar = false) }
         val clubDetails = loadClubDetails()
         val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubDetails = clubDetails, clubQnasInfo = clubQnasInfo, showEmpowermentDialog = false, textFieldErrorResId = null) }
+        reduce {
+            state.copy(
+                isLoading = false,
+                clubDetails = clubDetails,
+                clubQnasInfo = clubQnasInfo,
+                showEmpowermentDialog = false,
+                textFieldErrorResId = null,
+                showQnasProgressBar = false
+            )
+        }
         postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
+    }
+
+    fun openUrl(url: String) = intent {
+        postSideEffect(ClubDetailSideEffect.OpenUrl(url))
     }
 }

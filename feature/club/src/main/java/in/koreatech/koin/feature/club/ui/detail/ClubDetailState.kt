@@ -8,6 +8,7 @@ data class ClubDetailState(
     val userId: Int? = null,
     val clubDetails: ClubDetails? = null,
     val clubQnasInfo: ClubQnasInfo? = null,
+    val showQnasProgressBar: Boolean = false,
     val showLoginDialog: Boolean = false,
     val showAddQnaDialog: Boolean = false,
     val showEmpowermentDialog: Boolean = false,

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.detail
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -43,6 +44,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -55,9 +60,16 @@ import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
+import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
+import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
+import `in`.koreatech.koin.domain.util.ext.isGoogleFormUrl
+import `in`.koreatech.koin.domain.util.ext.isInstagramUrl
+import `in`.koreatech.koin.domain.util.ext.isOpenChatUrl
+import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
@@ -108,6 +120,10 @@ fun ClubDetail(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        handleSideEffect(sideEffect, context, snackbarHostState)
+    }
 
     Scaffold(
         containerColor = KoinTheme.colors.neutral0,
@@ -164,8 +180,7 @@ fun ClubDetail(
                 description = stringResource(R.string.detail_dialog_login_description),
                 onPositive = {
                     viewModel.dismissLoginDialog()
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(LOGIN_ACTIVITY_URL))
-                    context.startActivity(intent)
+                    viewModel.openUrl(LOGIN_ACTIVITY_URL)
                 },
                 onNegative = { viewModel.dismissLoginDialog() }
             )
@@ -216,18 +231,6 @@ fun ClubDetail(
                     )
                 }
             )
-        }
-        // TODO 불편한 변수 선언 뺄 방법 생각하기 : constFile > SideEffect > 출력 ?
-        val empowermentSucessMessage = stringResource(R.string.detail_snackbar_empowerment_success)
-        viewModel.collectSideEffect { sideEffect ->
-            when (sideEffect) {
-                is ClubDetailSideEffect.ShowEmpowermentSnackBar -> {
-                    snackbarHostState.showSnackbar(
-                        message = empowermentSucessMessage,
-                        duration = SnackbarDuration.Short
-                    )
-                }
-            }
         }
 
         LazyColumn(
@@ -294,11 +297,9 @@ fun ClubDetail(
                                     .size(24.dp)
                                     .padding(end = 4.dp)
                                     .clickable {
-                                        if (state.userId == null) {
-                                            viewModel.showLoginDialog()
-                                        } else {
+                                        state.userId?.let {
                                             viewModel.changeClubLike()
-                                        }
+                                        } ?: viewModel.showLoginDialog()
                                     }
                             )
                             Text(
@@ -332,9 +333,27 @@ fun ClubDetail(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        // TODO 인스타, googleForm, 오픈채팅은 양식 검증 후 Uri 반환 필요
-                        // TODO 전화번호 반환값에 양식 변환 필요
                         detailList.forEach { intro ->
+                            var outputText = ""
+                            var maxLines = 1
+                            var linkUrl = ""
+                            intro.second?.let {
+                                when (intro.first) {
+                                    DETAIL_INTRODUCTION -> maxLines = 2
+                                    DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
+                                    DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
+                                    DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
+                                    DETAIL_PHONE_NUMBER -> outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
+                                    else -> outputText = it
+                                }
+                                if (
+                                    it.isInstagramUrl() ||
+                                    it.isGoogleFormUrl() ||
+                                    it.isOpenChatUrl()
+                                ) {
+                                    linkUrl = it
+                                }
+                            }
                             Row {
                                 Text(
                                     text = stringResource(intro.first.strResId),
@@ -342,14 +361,15 @@ fun ClubDetail(
                                     color = KoinTheme.colors.neutral800
                                 )
                                 Text(
-                                    text = intro.second ?: "",
-                                    maxLines = when (intro.first) {
-                                        DETAIL_INTRODUCTION -> 2
-                                        else -> 1
-                                    },
+                                    text = outputText,
+                                    maxLines = maxLines,
                                     style = KoinTheme.typography.medium18,
-                                    color = KoinTheme.colors.neutral800,
-                                    overflow = TextOverflow.Ellipsis
+                                    color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier
+                                        .clickable {
+                                            if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl)
+                                        }
                                 )
                             }
                         }
@@ -398,9 +418,23 @@ fun ClubDetail(
                 ) { page ->
                     when (tabList[page]) {
                         DetailTabType.DETAIL_INTRO.strResId -> {
+                            val nestedScrollConnection = remember {
+                                object : NestedScrollConnection {
+                                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                                        return if (available.y < 0 && listState.canScrollForward) {
+                                            if (listState.canScrollForward) Offset.Zero else available
+                                        } else {
+                                            Offset.Zero
+                                        }
+                                    }
+                                }
+                            }
                             val snackbarMessage = stringResource(R.string.detail_snackbar_detail_intro_text)
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
+                                modifier = Modifier
+                                    .height(800.dp)
+                                    .nestedScroll(nestedScrollConnection),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
@@ -409,13 +443,11 @@ fun ClubDetail(
                                             duration = SnackbarDuration.Short
                                         )
                                         if (result == SnackbarResult.ActionPerformed) {
-                                            var intent: Intent
                                             if (BuildConfig.DEBUG) {
-                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse(KOIN_WEB_STAGE_URL))
+                                                viewModel.openUrl(KOIN_WEB_STAGE_URL)
                                             } else {
-                                                intent = Intent(Intent.ACTION_VIEW, Uri.parse(KOIN_WEB_URL))
+                                                viewModel.openUrl(KOIN_WEB_URL)
                                             }
-                                            context.startActivity(intent)
                                         }
                                     }
                                 },
@@ -424,24 +456,73 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.QNA.strResId -> {
-                            ClubDetailQna(
-                                qnaList = qnaList,
-                                isManager = state.clubDetails?.manager ?: false,
-                                userId = state.userId,
-                                onAddQnaClick = {
-                                    viewModel.showAddQnaDialog()
-                                },
-                                onDeleteQnaClick = { qnaId ->
-                                    viewModel.deleteClubQna(qnaId)
-                                },
-                                onAddAnswerClick = { qnaId, content ->
-                                    viewModel.addClubQnaAnswer(qnaId, content)
+                            val nestedScrollConnection = remember {
+                                object : NestedScrollConnection {
+                                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                                        return if (available.y < 0) {
+                                            if (listState.canScrollForward) Offset.Zero else available
+                                        } else {
+                                            Offset.Zero
+                                        }
+                                    }
                                 }
-                            )
+                            }
+                            if (state.showQnasProgressBar) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(700.dp)
+                                        .nestedScroll(nestedScrollConnection)
+                                ) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier
+                                            .size(50.dp)
+                                            .align(Alignment.Center)
+                                    )
+                                }
+                            } else {
+                                ClubDetailQna(
+                                    modifier = Modifier
+                                        .height(800.dp)
+                                        .nestedScroll(nestedScrollConnection),
+                                    qnaList = qnaList,
+                                    isManager = state.clubDetails?.manager ?: false,
+                                    userId = state.userId,
+                                    onAddQnaClick = {
+                                        viewModel.showAddQnaDialog()
+                                    },
+                                    onDeleteQnaClick = { qnaId ->
+                                        viewModel.deleteClubQna(qnaId)
+                                    },
+                                    onAddAnswerClick = { qnaId, content ->
+                                        viewModel.addClubQnaAnswer(qnaId, content)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+suspend fun handleSideEffect(
+    sideEffect: ClubDetailSideEffect,
+    context: Context,
+    snackbarHostState: SnackbarHostState
+) {
+    when (sideEffect) {
+        is ClubDetailSideEffect.ShowEmpowermentSnackBar -> {
+            val empowermentSuccessMessage = context.getString(R.string.detail_snackbar_empowerment_success)
+            snackbarHostState.showSnackbar(
+                message = empowermentSuccessMessage,
+                duration = SnackbarDuration.Short
+            )
+        }
+        is ClubDetailSideEffect.OpenUrl -> {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
+            context.startActivity(intent)
         }
     }
 }
