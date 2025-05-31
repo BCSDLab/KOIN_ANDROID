@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.detail
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -120,20 +121,8 @@ fun ClubDetail(
     val snackbarHostState = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
 
-    val empowermentSucessMessage = stringResource(R.string.detail_snackbar_empowerment_success)
     viewModel.collectSideEffect { sideEffect ->
-        when (sideEffect) {
-            is ClubDetailSideEffect.ShowEmpowermentSnackBar -> {
-                snackbarHostState.showSnackbar(
-                    message = empowermentSucessMessage,
-                    duration = SnackbarDuration.Short
-                )
-            }
-            is ClubDetailSideEffect.OpenUrl -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
-                context.startActivity(intent)
-            }
-        }
+        handleSideEffect(sideEffect, context, snackbarHostState)
     }
 
     Scaffold(
@@ -514,6 +503,26 @@ fun ClubDetail(
                     }
                 }
             }
+        }
+    }
+}
+
+suspend fun handleSideEffect(
+    sideEffect: ClubDetailSideEffect,
+    context: Context,
+    snackbarHostState: SnackbarHostState
+) {
+    when (sideEffect) {
+        is ClubDetailSideEffect.ShowEmpowermentSnackBar -> {
+            val empowermentSuccessMessage = context.getString(R.string.detail_snackbar_empowerment_success)
+            snackbarHostState.showSnackbar(
+                message = empowermentSuccessMessage,
+                duration = SnackbarDuration.Short
+            )
+        }
+        is ClubDetailSideEffect.OpenUrl -> {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
+            context.startActivity(intent)
         }
     }
 }

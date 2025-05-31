@@ -7,5 +7,5 @@ sealed class ClubError {
     data object Unauthorized : KoinErrorException()
     data object Forbidden : KoinErrorException()
     data object NotFound : KoinErrorException()
-    data object NotFoundUserId : KoinErrorException()
+    data object UserIdNotFound : KoinErrorException()
 }

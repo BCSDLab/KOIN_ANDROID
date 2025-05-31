@@ -84,7 +84,7 @@ class ClubRepositoryImpl @Inject constructor(
                 when (e.code()) {
                     401 -> throw ClubError.Unauthorized
                     403 -> throw ClubError.Forbidden
-                    404 -> throw ClubError.NotFoundUserId
+                    404 -> throw ClubError.UserIdNotFound
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }

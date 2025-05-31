@@ -224,7 +224,7 @@ class ClubDetailViewModel @Inject constructor(
             changedManagerId = newUserId
         ).onFailure { e ->
             reduce { state.copy(isLoading = false) }
-            if (e is ClubError.NotFoundUserId) {
+            if (e is ClubError.UserIdNotFound) {
                 reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
             } else {
                 throw e
