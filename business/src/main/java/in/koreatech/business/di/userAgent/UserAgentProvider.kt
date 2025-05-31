@@ -8,7 +8,7 @@ import javax.inject.Singleton
 @Singleton
 class UserAgentProvider @Inject constructor() {
     companion object {
-        private const val APP_NAME = "koin"
+        private const val APP_NAME = "koin-business"
         private const val LIBRARY_NAME = "OKHttp"
     }
 

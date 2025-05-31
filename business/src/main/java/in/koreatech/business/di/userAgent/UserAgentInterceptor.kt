@@ -10,12 +10,12 @@ class UserAgentInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
-        if (originalRequest.header("User-Agent").isNullOrEmpty()) {
-            val newRequest = originalRequest.newBuilder()
-                .header("User-Agent", userAgentProvider.getUserAgent())
-                .build()
-            return chain.proceed(newRequest)
-        }
+        val newRequest = originalRequest.newBuilder()
+            .removeHeader("User-Agent")
+            .header("User-Agent", userAgentProvider.getUserAgent())
+            .build()
+        return chain.proceed(newRequest)
+
         return chain.proceed(originalRequest)
     }
 }
