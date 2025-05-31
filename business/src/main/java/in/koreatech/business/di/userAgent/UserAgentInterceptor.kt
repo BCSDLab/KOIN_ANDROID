@@ -1,8 +1,8 @@
 package `in`.koreatech.business.di.userAgent
 
+import javax.inject.Inject
 import okhttp3.Interceptor
 import okhttp3.Response
-import javax.inject.Inject
 
 class UserAgentInterceptor @Inject constructor(
     private val userAgentProvider: UserAgentProvider

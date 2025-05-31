@@ -91,7 +91,7 @@ object AuthNetworkModule {
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @UserAgent userAgentInterceptor: Interceptor,
         @Auth authInterceptor: Interceptor,
-        @Refresh refreshInterceptor: Authenticator,
+        @Refresh refreshInterceptor: Authenticator
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)

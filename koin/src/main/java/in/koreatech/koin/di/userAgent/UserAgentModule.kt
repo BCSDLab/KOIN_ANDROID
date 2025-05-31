@@ -1,10 +1,9 @@
 package `in`.koreatech.koin.di.userAgent
 
-import dagger.Provides
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import `in`.koreatech.koin.di.userAgent.UserAgentProvider
 import javax.inject.Singleton
 
 @Module

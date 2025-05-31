@@ -214,7 +214,7 @@ object PreSignedUrlNetworkModule {
     fun provideOwnerAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @PreSignedUserAgent userAgentInterceptor: Interceptor
-        ): OkHttpClient {
+    ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
