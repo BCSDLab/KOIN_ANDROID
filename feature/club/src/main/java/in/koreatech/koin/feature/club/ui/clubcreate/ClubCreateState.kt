@@ -3,9 +3,11 @@ package `in`.koreatech.koin.feature.club.ui.clubcreate
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 
 data class ClubCreateState(
+    val isLoading: Boolean = false,
     val clubName: String = "",
     val clubDescription: String = "",
     val clubCategory: ClubCategories? = null,
+    val clubImageUrl: String = "",
     val isClubCategoryDropdownExpanded: Boolean = false,
     val location: String = "",
     val instagramUrl: String = "",
