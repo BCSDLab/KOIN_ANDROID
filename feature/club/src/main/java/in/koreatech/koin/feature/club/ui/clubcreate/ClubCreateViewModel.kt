@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
+import `in`.koreatech.koin.domain.usecase.club.CreateClubUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.model.ClubCategories
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ClubCreateViewModel @Inject constructor(
     private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val createClubUseCase: CreateClubUseCase,
     private val getClubPreSignedUrlUseCase: GetClubPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
 ) : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
@@ -215,12 +217,32 @@ class ClubCreateViewModel @Inject constructor(
         }
     }
 
-    fun requestCreateClub() = intent {
-        reduce {
-            state.copy(
-                shouldCheckRequiredField = true
-            )
+    fun requestCreateClub() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(
+                    shouldCheckRequiredField = true
+                )
+            }
+
+            if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@intent
+
+            createClubUseCase(
+                name = state.clubName,
+                imageUrl = state.clubImageUrl,
+                clubManagers = listOf(state.userId),
+                clubCategoryId = state.clubCategory!!.id,
+                location = state.location,
+                description = state.clubDescription,
+                instagram = state.instagramUrl,
+                googleForm = state.googleFormUrl,
+                openChat = state.openChatUrl,
+                phoneNumber = state.phoneNumber,
+                role = state.userRole
+            ).onSuccess {
+                postSideEffect(ClubCreateSideEffect.ClubCreateSuccess)
+            }.onFailure {
+            }
         }
-        postSideEffect(ClubCreateSideEffect.ClubCreateSuccess)
     }
 }
