@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.mapper.toClubDetails
 import `in`.koreatech.koin.data.mapper.toClubHot
 import `in`.koreatech.koin.data.mapper.toClubQnasInfo
 import `in`.koreatech.koin.data.mapper.toClubs
+import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
@@ -14,6 +15,8 @@ import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.Clubs
 import `in`.koreatech.koin.domain.repository.ClubRepository
+import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 class ClubRepositoryImpl @Inject constructor(
@@ -43,6 +46,41 @@ class ClubRepositoryImpl @Inject constructor(
 
     override suspend fun getClubDetails(clubId: Int): Result<ClubDetails> {
         return clubRemoteDataSource.getClubDetails(clubId).map { it.toClubDetails() }
+    }
+
+    override suspend fun createClub(
+        name: String,
+        imageUrl: String,
+        clubManagers: List<String>,
+        clubCategoryId: Int,
+        location: String,
+        description: String,
+        instagram: String,
+        googleForm: String,
+        openChat: String,
+        phoneNumber: String,
+        role: String
+    ): Result<Unit> {
+        return runCatching {
+            clubRemoteDataSource.createClub(
+                ClubCreateRequest(
+                    name = name,
+                    imageUrl = imageUrl,
+                    clubManagers = clubManagers.map { ClubCreateRequest.ClubManagersRequest(it) },
+                    clubCategoryId = clubCategoryId,
+                    location = location,
+                    description = description,
+                    instagram = instagram,
+                    googleForm = googleForm,
+                    openChat = openChat,
+                    phoneNumber = phoneNumber,
+                    role = role
+                )
+            )
+        }.onFailure {
+            // TODO: Handle specific exceptions after get API specification
+            return Result.failure(it)
+        }
     }
 
     override suspend fun getClubQnas(clubId: Int): Result<ClubQnasInfo> {

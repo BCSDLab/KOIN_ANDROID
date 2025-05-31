@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.ClubApi
 import `in`.koreatech.koin.data.api.auth.ClubAuthApi
+import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
@@ -25,6 +26,14 @@ class ClubRemoteDataSource @Inject constructor(
     suspend fun getClubDetails(clubId: Int): Result<ClubDetailsResponse> {
         return runCatching {
             clubAuthApi.getClubDetails(clubId)
+        }
+    }
+
+    suspend fun createClub(request: ClubCreateRequest) {
+        clubAuthApi.createClub(request).let {
+            if (!it.isSuccessful) {
+                throw HttpException(it)
+            }
         }
     }
 
