@@ -209,7 +209,6 @@ class ClubDetailViewModel @Inject constructor(
     }
     fun dismissEmpowermentDialog() = intent {
         reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
-        postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
     }
 
     fun setManagerEmpowerment(newUserId: String) = intent {
