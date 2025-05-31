@@ -226,6 +226,12 @@ class ClubCreateViewModel @Inject constructor(
 
             if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@intent
 
+            reduce {
+                state.copy(
+                    isLoading = true
+                )
+            }
+
             createClubUseCase(
                 name = state.clubName,
                 imageUrl = state.clubImageUrl,
@@ -239,8 +245,18 @@ class ClubCreateViewModel @Inject constructor(
                 phoneNumber = state.phoneNumber,
                 role = state.userRole
             ).onSuccess {
+                reduce {
+                    state.copy(
+                        isLoading = false
+                    )
+                }
                 postSideEffect(ClubCreateSideEffect.ClubCreateSuccess)
             }.onFailure {
+                reduce {
+                    state.copy(
+                        isLoading = false
+                    )
+                }
             }
         }
     }
