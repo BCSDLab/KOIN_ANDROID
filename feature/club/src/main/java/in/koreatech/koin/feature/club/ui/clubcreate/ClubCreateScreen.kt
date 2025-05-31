@@ -326,7 +326,7 @@ fun ClubCreateScreenImpl(
 
             KoinClubDropdown(
                 text = if (clubCategory != null) {
-                    stringResource(clubCategory.stringRes)
+                    stringResource(R.string.club_create_category_with_suffix, stringResource(clubCategory.stringRes))
                 } else {
                     stringResource(R.string.club_create_category_placeholder)
                 },
