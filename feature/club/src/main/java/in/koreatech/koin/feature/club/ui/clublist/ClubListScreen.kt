@@ -27,17 +27,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.core.designsystem.component.snackbar.CustomSnackBarHost
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
 import `in`.koreatech.koin.feature.club.component.KoinClubListItem
+import `in`.koreatech.koin.feature.club.component.KoinClubMessageDialog
 import `in`.koreatech.koin.feature.club.model.ClubSort
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubItem
 import `in`.koreatech.koin.feature.club.model.clubCategories
@@ -58,7 +59,7 @@ fun ClubListScreen(
     val context = LocalContext.current
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, viewModel)
+        handleSideEffect(it, viewModel, navigateToCreateClub)
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -104,6 +105,7 @@ fun ClubListScreen(
             sortType = uiState.sortType,
             selectedCategoryId = uiState.categoryId,
             isDropdownExpanded = uiState.isDropdownExpanded,
+            shouldShowClubCreateDialog = uiState.shouldShowClubCreateDialog,
             modifier = Modifier.padding(innerPadding),
             onCategoryChange = { categoryId ->
                 viewModel.updateCategoryId(categoryId)
@@ -114,7 +116,12 @@ fun ClubListScreen(
             onDropdownExpandChange = { isExpanded ->
                 viewModel.updateDropdownExpanded(isExpanded)
             },
-            navigateToCreateClub = navigateToCreateClub
+            navigateToCreateClub = {
+                viewModel.navigateToCreateClub()
+            },
+            onShowClubCreateDialogChange = { shouldShow ->
+                viewModel.updateShowClubCreateDialog(shouldShow)
+            }
         )
     }
 }
@@ -125,12 +132,33 @@ fun ClubListScreenImpl(
     selectedCategoryId: Int?,
     sortType: ClubSort,
     isDropdownExpanded: Boolean,
+    shouldShowClubCreateDialog: Boolean,
     modifier: Modifier = Modifier,
     onCategoryChange: (Int?) -> Unit = { },
     onSortTypeChange: (ClubSort) -> Unit = { },
     onDropdownExpandChange: (Boolean) -> Unit = { },
-    navigateToCreateClub: () -> Unit = { }
+    navigateToCreateClub: () -> Unit = { },
+    onShowClubCreateDialogChange: (Boolean) -> Unit = { }
 ) {
+    if (shouldShowClubCreateDialog) {
+        KoinClubMessageDialog(
+            modifier = Modifier,
+            title = stringResource(R.string.club_list_create_dialog_title),
+            onPositive = {
+                onShowClubCreateDialogChange(false)
+                navigateToCreateClub()
+            },
+            onDismissRequest = {
+                onShowClubCreateDialogChange(false)
+            },
+            content = {
+                Text(
+                    text = stringResource(R.string.club_list_create_dialog_content)
+                )
+            }
+        )
+    }
+
     LazyColumn(
         modifier = modifier.padding(horizontal = 24.dp)
     ) {
@@ -150,7 +178,9 @@ fun ClubListScreenImpl(
                 FilledButton(
                     text = stringResource(R.string.club_list_create_club),
                     textStyle = KoinTheme.typography.medium12,
-                    onClick = navigateToCreateClub,
+                    onClick = {
+                        onShowClubCreateDialogChange(true)
+                    },
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp)
                 )
             }
@@ -218,12 +248,15 @@ fun ClubListScreenImpl(
 
 fun handleSideEffect(
     sideEffect: ClubListSideEffect,
-    viewModel: ClubListViewModel
+    viewModel: ClubListViewModel,
+    navigateToCreateClub: () -> Unit = { }
 ) {
     when (sideEffect) {
         is ClubListSideEffect.RefreshClubs -> {
             viewModel.getClubs()
         }
+
+        ClubListSideEffect.NavigateToCreateClub -> navigateToCreateClub()
     }
 }
 
@@ -235,5 +268,6 @@ fun ClubListScreenPreview() {
         selectedCategoryId = 1,
         sortType = ClubSort.NONE,
         isDropdownExpanded = false,
+        shouldShowClubCreateDialog = false
     )
 }

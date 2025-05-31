@@ -11,6 +11,7 @@ import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -55,6 +56,14 @@ class ClubListViewModel @Inject constructor(
             state.copy(isDropdownExpanded = isExpanded)
         }
     }
+
+    fun updateShowClubCreateDialog(shouldShow: Boolean) = blockingIntent {
+        reduce {
+            state.copy(shouldShowClubCreateDialog = shouldShow)
+        }
+    }
+
+    fun navigateToCreateClub() = intent { postSideEffect(ClubListSideEffect.NavigateToCreateClub) }
 
     fun getClubs() = viewModelScope.launch {
         intent {
