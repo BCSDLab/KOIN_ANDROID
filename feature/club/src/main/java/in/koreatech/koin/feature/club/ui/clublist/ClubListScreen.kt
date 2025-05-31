@@ -42,7 +42,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubListScreen(
-    viewModel: ClubListViewModel = hiltViewModel()
+    viewModel: ClubListViewModel = hiltViewModel(),
+    navigateToClubDetail: (Int) -> Unit = { _ -> }
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -79,7 +80,8 @@ fun ClubListScreen(
             },
             onDropdownExpandChange = { isExpanded ->
                 viewModel.updateDropdownExpanded(isExpanded)
-            }
+            },
+            navigateToClubDetail = navigateToClubDetail
         )
     }
 }
@@ -93,7 +95,8 @@ fun ClubListScreenImpl(
     modifier: Modifier = Modifier,
     onCategoryChange: (Int?) -> Unit = { },
     onSortTypeChange: (ClubSort) -> Unit = { },
-    onDropdownExpandChange: (Boolean) -> Unit = { }
+    onDropdownExpandChange: (Boolean) -> Unit = { },
+    navigateToClubDetail: (Int) -> Unit = { _ -> }
 ) {
     LazyColumn(
         modifier = modifier.padding(horizontal = 24.dp)
@@ -168,8 +171,8 @@ fun ClubListScreenImpl(
                 likes = it.likes,
                 logoUrl = it.imageUrl,
                 modifier = Modifier.padding(vertical = 12.dp),
-                onClick = {
-                    // TODO
+                onClick = { id ->
+                    navigateToClubDetail(id)
                 }
             )
         }
