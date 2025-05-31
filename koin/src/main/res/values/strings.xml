@@ -390,6 +390,13 @@
     <string name="notification_article_keyword">공지사항 키워드 알림</string>
     <string name="notification_dining_photo_upload_description">식단 사진이 업로드 될 경우 알림을 받습니다.</string>
 
+    <string name="notification_marketing_term_switch">마케팅 정보 수신 동의</string>
+    <string name="notification_marketing_term_switch_description">마케팅 정보 수신 동의/해제</string>
+    <string name="notification_permission_dialog_title">알림 권한이 꺼져 있어요.</string>
+    <string name="notification_permission_dialog_message">알림을 받으시려면 기기의 알림 권한이 필요해요.\n설정 화면으로 이동할까요?</string>
+    <string name="notification_permission_dialog_positive">설정 이동</string>
+    <string name="notification_permission_dialog_negative">취소</string>
+
     <!-- force update -->
     <string name="force_update_do_update">업데이트하기</string>
     <string name="force_update_already_update">이미 업데이트를 하셨나요?</string>
@@ -667,10 +674,6 @@
     <string name="store_review_is_modify">%1$s (수정됨)</string>
     <string name="login_request_to_write_review">리뷰 작성 시 로그인을 해주세요.</string>
     <string name="request_notification_permission">설정에서 알림 권한을 허용해주세요</string>
-
-    <!-- Terms -->
-    <string name="term_marketing_term_switch_title">마케팅 정보 수신 동의</string>
-    <string name="term_marketing_term_switch_description">마케팅 정보 수신 동의/해제</string>
 
     <!-- etc -->
     <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>
