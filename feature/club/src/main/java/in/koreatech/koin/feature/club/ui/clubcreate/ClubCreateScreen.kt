@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,6 +39,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
@@ -87,6 +89,9 @@ fun ClubCreateScreen(
             googleFormUrl = uiState.googleFormUrl,
             openChatUrl = uiState.openChatUrl,
             phoneNumber = uiState.phoneNumber,
+            shouldShowCreateDialog = uiState.shouldShowCreateDialog,
+            shouldShowPermissionDialog = uiState.shouldShowPermissionDialog,
+            userRole = uiState.userRole,
             modifier = modifier.padding(innerPadding),
             onClubNameChange = viewModel::updateClubName,
             onClubDescriptionChange = viewModel::updateClubDescription,
@@ -98,7 +103,10 @@ fun ClubCreateScreen(
             onOpenChatUrlChange = viewModel::updateOpenChatUrl,
             onPhoneNumberChange = viewModel::updatePhoneNumber,
             onRequestCreateClub = viewModel::requestCreateClub,
-            onCancelCreateClub = onNavigateUp
+            onCancelCreateClub = onNavigateUp,
+            onShouldShowCreateDialogChange = viewModel::updateShowCreateDialog,
+            onShouldShowPermissionDialogChange = viewModel::updateShowPermissionDialog,
+            onUserRoleChange = viewModel::updateUserRole,
         )
     }
 }
@@ -117,6 +125,9 @@ fun ClubCreateScreenImpl(
     googleFormUrl: String,
     openChatUrl: String,
     phoneNumber: String,
+    shouldShowCreateDialog: Boolean,
+    shouldShowPermissionDialog: Boolean,
+    userRole: String,
     modifier: Modifier = Modifier,
     onClubNameChange: (String) -> Unit = {},
     onClubDescriptionChange: (String) -> Unit = {},
@@ -128,8 +139,71 @@ fun ClubCreateScreenImpl(
     onOpenChatUrlChange: (String) -> Unit = {},
     onPhoneNumberChange: (String) -> Unit = {},
     onRequestCreateClub: () -> Unit = {},
-    onCancelCreateClub: () -> Unit = {}
+    onCancelCreateClub: () -> Unit = {},
+    onShouldShowCreateDialogChange: (Boolean) -> Unit = {},
+    onShouldShowPermissionDialogChange: (Boolean) -> Unit = {},
+    onUserRoleChange: (String) -> Unit = {},
 ) {
+    if (shouldShowCreateDialog) {
+        DetailDialog(
+            title = stringResource(R.string.club_create_dialog_create_title),
+            titleStyle = KoinTheme.typography.bold18,
+            onDismiss = { onShouldShowCreateDialogChange(false) },
+            onPositive = {
+                onShouldShowCreateDialogChange(false)
+                onShouldShowPermissionDialogChange(true)
+            },
+            content = {
+                Column {
+                    Text(
+                        text = stringResource(
+                            R.string.club_create_dialog_create_content_club,
+                            clubName,
+                            stringResource(R.string.club_create_category_with_suffix, stringResource(clubCategory!!.stringRes)),
+                            location
+                        ),
+                        style = KoinTheme.typography.regular16
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = stringResource(R.string.club_create_dialog_create_content),
+                        style = KoinTheme.typography.regular16
+                    )
+                }
+            }
+        )
+    }
+
+    if (shouldShowPermissionDialog) {
+        DetailDialog(
+            title = stringResource(R.string.club_create_dialog_permission_title),
+            titleStyle = KoinTheme.typography.bold18,
+            onDismiss = { onShouldShowPermissionDialogChange(false) },
+            onPositive = {
+                onShouldShowPermissionDialogChange(false)
+                onRequestCreateClub()
+            },
+            content = {
+                KoinClubBasicTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = userRole,
+                    onValueChange = onUserRoleChange,
+                    hint = stringResource(R.string.club_create_dialog_permission_content_hint),
+                    textStyle = KoinTheme.typography.regular12
+                )
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.club_create_dialog_permission_content),
+                    textAlign = TextAlign.Center,
+                    style = KoinTheme.typography.regular14
+                )
+            }
+        )
+    }
+
     Column(
         modifier = modifier
             .padding(horizontal = 24.dp)
@@ -180,7 +254,7 @@ fun ClubCreateScreenImpl(
 
             FilledButton(
                 text = stringResource(R.string.club_create_create_request),
-                onClick = onRequestCreateClub,
+                onClick = { onShouldShowCreateDialogChange(true) },
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 textStyle = KoinTheme.typography.medium14
             )
@@ -429,6 +503,9 @@ fun ClubCreateScreenPreview() {
         instagramUrl = "https://instagram.com/club",
         googleFormUrl = "https://forms.gle/club",
         openChatUrl = "https://open.kakao.com/o/gjK8f3Yc",
-        phoneNumber = "010-1234-5678"
+        phoneNumber = "010-1234-5678",
+        shouldShowCreateDialog = false,
+        shouldShowPermissionDialog = false,
+        userRole = "Member",
     )
 }

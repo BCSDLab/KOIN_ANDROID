@@ -88,6 +88,38 @@ class ClubCreateViewModel @Inject constructor(
         }
     }
 
+    fun updateShowCreateDialog(shouldShow: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                shouldCheckRequiredField = true
+            )
+        }
+
+        if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@blockingIntent
+
+        reduce {
+            state.copy(
+                shouldShowCreateDialog = shouldShow
+            )
+        }
+    }
+
+    fun updateShowPermissionDialog(shouldShow: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                shouldShowPermissionDialog = shouldShow
+            )
+        }
+    }
+
+    fun updateUserRole(role: String) = blockingIntent {
+        reduce {
+            state.copy(
+                userRole = role
+            )
+        }
+    }
+
     fun requestCreateClub() = intent {
         reduce {
             state.copy(

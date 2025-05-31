@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ fun KoinClubBasicTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     hint: String = "",
+    textStyle: TextStyle = KoinTheme.typography.regular14,
     borderColor: Color = KoinTheme.colors.primary300,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -69,7 +71,7 @@ fun KoinClubBasicTextField(
         readOnly = readOnly,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        textStyle = KoinTheme.typography.regular14.copy(
+        textStyle = textStyle.copy(
             lineHeightStyle = null // Remove line height
         ),
         singleLine = singleLine,
@@ -92,7 +94,7 @@ fun KoinClubBasicTextField(
                         if (value.isEmpty()) {
                             Text(
                                 text = hint,
-                                style = KoinTheme.typography.regular14.copy(
+                                style = textStyle.copy(
                                     lineHeightStyle = null // Remove line height
                                 ),
                                 color = KoinTheme.colors.neutral700

@@ -12,7 +12,10 @@ data class ClubCreateState(
     val googleFormUrl: String = "",
     val openChatUrl: String = "",
     val phoneNumber: String = "",
-    val shouldCheckRequiredField: Boolean = false
+    val shouldCheckRequiredField: Boolean = false,
+    val shouldShowCreateDialog: Boolean = false,
+    val shouldShowPermissionDialog: Boolean = false,
+    val userRole: String = ""
 ) {
     val clubNameRequired: Boolean
         get() = clubName.isBlank() && shouldCheckRequiredField
