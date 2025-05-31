@@ -42,7 +42,13 @@ fun NavGraphBuilder.koinClubGraph(
         route = ClubNavType.ClubCreate.route
     ) {
         ClubCreateScreen(
-            onNavigateUp = { navController.navigateUp() },
+            onNavigateUp = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CLUB_CREATED,
+                    false
+                )
+                navController.navigateUp()
+            },
             onClubCreated = {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
                     IS_CLUB_CREATED,
