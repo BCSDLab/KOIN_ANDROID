@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import `in`.koreatech.koin.feature.club.ui.clubcreate.ClubCreateScreen
 import `in`.koreatech.koin.feature.club.ui.clublist.ClubListScreen
 
 fun NavGraphBuilder.koinClubGraph(
@@ -16,7 +17,11 @@ fun NavGraphBuilder.koinClubGraph(
             navArgument(CATEGORY_ID) { type = NavType.IntType }
         )
     ) {
-        ClubListScreen()
+        ClubListScreen(
+            navigateToCreateClub = {
+                navController.navigate(ClubNavType.ClubCreate.route)
+            }
+        )
     }
 
     composable(
@@ -27,6 +32,9 @@ fun NavGraphBuilder.koinClubGraph(
     composable(
         route = ClubNavType.ClubCreate.route
     ) {
+        ClubCreateScreen(
+            onBackPressed = { navController.navigateUp() }
+        )
     }
 
     composable(

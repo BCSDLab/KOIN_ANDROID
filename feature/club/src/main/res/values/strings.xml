@@ -14,4 +14,27 @@
     <string name="club_list_search_hint">동아리 명을 입력하세요.</string>
     <string name="club_list_dropdown_sort_none">생성순</string>
     <string name="club_list_dropdown_sort_hits">조회순</string>
+    <string name="club_create_logo_description">클릭하여 사진을\n업로드해주세요.</string>
+    <string name="club_create_create_cancel">생성 취소</string>
+    <string name="club_create_create_request">생성 요청</string>
+    <string name="club_create_name_header">동아리명</string>
+    <string name="club_create_like">좋아요 표시하기</string>
+    <string name="club_create_name_hint">동아리명을 입력해주세요.(필수)</string>
+    <string name="club_create_category_header">분과: </string>
+    <string name="club_create_category_extra">(필수)</string>
+    <string name="club_create_category_placeholder">분과 선택</string>
+    <string name="club_create_category_with_suffix">%1$s 분과</string>
+    <string name="club_create_location_header">동아리 방 위치:</string>
+    <string name="club_create_location_hint">동아리 방 위치를 입력해주세요.(필수)</string>
+    <string name="club_create_introduction_header">동아리 소개</string>
+    <string name="club_create_introduction_hint">동아리 소개를 입력해주세요.(선택)</string>
+    <string name="club_create_contact_instagram_header">인스타:</string>
+    <string name="club_create_contact_instagram_hint">인스타 계정 주소를 입력해주세요.(선택)</string>
+    <string name="club_create_contact_google_form_header">구글폼:</string>
+    <string name="club_create_contact_google_form_hint">구글폼 링크를 입력해주세요.(선택)</string>
+    <string name="club_create_contact_open_chat_header">오픈채팅:</string>
+    <string name="club_create_contact_open_chat_hint">오픈채팅 링크를 입력해주세요.(선택)</string>
+    <string name="club_create_contact_phone_header">전화번호:</string>
+    <string name="club_create_contact_phone_hint">대표자 전화번호를 입력해주세요.(선택)</string>
+    <string name="club_create_warning_required">필수 입력란입니다.</string>
 </resources>

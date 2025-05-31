@@ -42,7 +42,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubListScreen(
-    viewModel: ClubListViewModel = hiltViewModel()
+    viewModel: ClubListViewModel = hiltViewModel(),
+    navigateToCreateClub: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -79,7 +80,8 @@ fun ClubListScreen(
             },
             onDropdownExpandChange = { isExpanded ->
                 viewModel.updateDropdownExpanded(isExpanded)
-            }
+            },
+            navigateToCreateClub = navigateToCreateClub
         )
     }
 }
@@ -93,7 +95,8 @@ fun ClubListScreenImpl(
     modifier: Modifier = Modifier,
     onCategoryChange: (Int?) -> Unit = { },
     onSortTypeChange: (ClubSort) -> Unit = { },
-    onDropdownExpandChange: (Boolean) -> Unit = { }
+    onDropdownExpandChange: (Boolean) -> Unit = { },
+    navigateToCreateClub: () -> Unit = { }
 ) {
     LazyColumn(
         modifier = modifier.padding(horizontal = 24.dp)
@@ -114,7 +117,7 @@ fun ClubListScreenImpl(
                 FilledButton(
                     text = stringResource(R.string.club_list_create_club),
                     textStyle = KoinTheme.typography.medium12,
-                    onClick = {},
+                    onClick = navigateToCreateClub,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp)
                 )
             }
@@ -191,8 +194,13 @@ fun handleSideEffect(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ClubListScreenPreview() {
-    ClubListScreen()
+    ClubListScreenImpl(
+        clubList = emptyList(),
+        selectedCategoryId = 1,
+        sortType = ClubSort.NONE,
+        isDropdownExpanded = false,
+    )
 }
