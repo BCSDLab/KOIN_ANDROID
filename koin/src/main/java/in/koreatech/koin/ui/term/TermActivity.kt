@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.ui.term
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,21 +10,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.appbar.AppBarBase
-import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivityTermBinding
-import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.model.term.Term
-import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
-import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
 import `in`.koreatech.koin.ui.term.TermViewModel.Companion.KEY_TERM
 import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_KOIN
 import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_MARKETING
 import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_PRIVACY_POLICY
 import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_UNKNOWN
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TermActivity : ActivityBase(R.layout.activity_term) {
@@ -41,7 +34,6 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
     private var term = TERM_UNKNOWN
 
     private val viewModel by viewModels<TermViewModel>()
-    private val notificationViewModel: NotificationViewModel by viewModels()
 
     private val articleAdapter by lazy {
         TermArticleAdapter(
@@ -61,24 +53,6 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
         loadTerm()
         initView()
         initObservers()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (!checkNotificationPermission()) {
-            permissionDenied()
-        } else {
-            permissionGranted()
-        }
-    }
-
-    private fun permissionGranted() {
-        notificationViewModel.getPermissionInfo()
-        // TODO
-    }
-
-    private fun permissionDenied() {
-        // TODO
     }
 
     private fun loadTerm() {
@@ -121,14 +95,6 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
             rvContent.adapter = contentAdapter
             rvContent.layoutManager = LinearLayoutManager(this@TermActivity)
             rvContent.isNestedScrollingEnabled = false
-
-            notificationHeaderTermMarketingTermSwitch.setOnSwitchClickListener { isChecked ->
-                if (isChecked) {
-                    notificationViewModel.updateSubscription(SubscribesType.MARKETING)
-                } else {
-                    notificationViewModel.deleteSubscription(SubscribesType.MARKETING)
-                }
-            }
         }
     }
 
@@ -145,46 +111,6 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
                         is TermState.Failure -> {
                             ToastUtil.getInstance().makeShort("약관을 불러오는 데 실패했습니다. 다시 시도해주세요")
                         }
-                    }
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.termType.collectLatest {
-                    binding.notificationHeaderTermMarketingTermSwitch.visibility = if (it == TERM_MARKETING) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                notificationViewModel.notificationUiState.collect { uiState ->
-                    when (uiState) {
-                        is NotificationUiState.Success -> {
-                            uiState.notificationPermissionInfo.subscribes.forEach {
-                                when (it.type) {
-                                    SubscribesType.MARKETING -> {
-                                        Timber.d("marketing: ${it.isPermit}")
-                                        with(binding.notificationHeaderTermMarketingTermSwitch) {
-                                            if (isChecked != it.isPermit) {
-                                                fakeChecked = it.isPermit
-                                                isChecked = it.isPermit
-                                            }
-                                        }
-                                    }
-
-                                    SubscribesType.NOTHING -> Unit
-                                    else -> Unit
-                                }
-                            }
-                        }
-
-                        is NotificationUiState.Failed -> {}
-                        is NotificationUiState.Nothing -> {}
                     }
                 }
             }
