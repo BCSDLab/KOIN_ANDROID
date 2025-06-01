@@ -302,10 +302,12 @@ fun ClubDetail(
                                         } ?: viewModel.showLoginDialog()
                                     }
                             )
-                            Text(
-                                text = "${state.clubDetails?.likes}",
-                                style = KoinTheme.typography.medium14
-                            )
+                            if (state.clubDetails?.isLikedHidden == true) {
+                                Text(
+                                    text = "${state.clubDetails?.likes}",
+                                    style = KoinTheme.typography.medium14
+                                )
+                            }
                         }
                         state.userId?.let {
                             if (state.clubDetails?.manager == true) {
