@@ -37,7 +37,7 @@ class ArticleRepositoryImpl @Inject constructor(
     val user =
         userRepository.getUserInfoFlow().distinctUntilChanged()
             .onEach { user ->
-                if (user.isStudent) {
+                if (user.isStudent || user.isGeneral) {
                     _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
                 } else {
                     _myKeywords.emit(
