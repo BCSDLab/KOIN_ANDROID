@@ -343,7 +343,7 @@ fun ClubDetail(
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
                                         maxLines = 2
-                                        outputText = "${stringResource(intro.first.strResId)}${it}"
+                                        outputText = "${stringResource(intro.first.strResId)}$it"
                                     }
                                     DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
