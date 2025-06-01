@@ -26,12 +26,18 @@ fun NavGraphBuilder.koinClubGraph(
             isClubCreated = isClubCreated,
             navigateToCreateClub = {
                 navController.navigate(ClubNavType.ClubCreate.route)
+            },
+            navigateToClubDetail = { clubId ->
+                navController.navigate("${ClubNavType.ClubDetail.route}/$clubId")
             }
         )
     }
 
     composable(
-        route = ClubNavType.ClubDetail.route
+        route = "${ClubNavType.ClubDetail.route}/{$CLUB_ID}",
+        arguments = listOf(
+            navArgument(CLUB_ID) { type = NavType.IntType }
+        )
     ) {
         ClubDetail(
             onTopbarBackClick = { navController.popBackStack() }
@@ -65,5 +71,6 @@ fun NavGraphBuilder.koinClubGraph(
     }
 }
 
+const val CLUB_ID = "clubId"
 const val CATEGORY_ID = "categoryId"
 const val IS_CLUB_CREATED = "isClubCreated"
