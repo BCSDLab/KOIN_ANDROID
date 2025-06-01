@@ -20,6 +20,20 @@ interface ClubRepository {
         clubId: Int
     ): Result<ClubDetails>
 
+    suspend fun createClub(
+        name: String,
+        imageUrl: String,
+        clubManagers: List<String>,
+        clubCategoryId: Int,
+        location: String,
+        description: String,
+        instagram: String,
+        googleForm: String,
+        openChat: String,
+        phoneNumber: String,
+        role: String
+    ): Result<Unit>
+
     suspend fun getClubQnas(
         clubId: Int
     ): Result<ClubQnasInfo>

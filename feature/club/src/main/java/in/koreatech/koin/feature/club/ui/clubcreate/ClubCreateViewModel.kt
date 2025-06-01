@@ -1,9 +1,17 @@
 package `in`.koreatech.koin.feature.club.ui.clubcreate
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
+import `in`.koreatech.koin.domain.usecase.club.CreateClubUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -12,8 +20,38 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
-class ClubCreateViewModel @Inject constructor() : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
+class ClubCreateViewModel @Inject constructor(
+    private val getUserStatusUseCase: GetUserStatusUseCase,
+    private val createClubUseCase: CreateClubUseCase,
+    private val getClubPreSignedUrlUseCase: GetClubPreSignedUrlUseCase,
+    private val uploadFilesUseCase: UploadFileUseCase
+) : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
     override val container = container<ClubCreateState, ClubCreateSideEffect>(ClubCreateState())
+
+    init {
+        getUserInfo()
+    }
+
+    private fun getUserInfo() = viewModelScope.launch {
+        getUserStatusUseCase().collect {
+            when (it) {
+                is User.Anonymous -> {
+                    throw IllegalStateException()
+                }
+
+                is User.Student -> {
+                    intent {
+                        reduce {
+                            // TODO: User ID will be changed after the user team's sprint.
+                            state.copy(
+                                userId = it.email?.replace("@koreatech.ac.kr", "") ?: ""
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     fun updateClubName(name: String) = blockingIntent {
         reduce {
@@ -119,12 +157,107 @@ class ClubCreateViewModel @Inject constructor() : ViewModel(), ContainerHost<Clu
         }
     }
 
-    fun requestCreateClub() = intent {
-        reduce {
-            state.copy(
-                shouldCheckRequiredField = true
-            )
+    private fun uploadImage(
+        preSignedUrl: String,
+        fileUrl: String,
+        mediaType: String,
+        mediaSize: Long,
+        imageUri: Uri
+    ) = viewModelScope.launch {
+        uploadFilesUseCase(
+            preSignedUrl,
+            mediaType,
+            mediaSize,
+            imageUri.toString()
+        ).onSuccess {
+            intent {
+                reduce {
+                    state.copy(
+                        clubImageUrl = fileUrl,
+                        isLoading = false
+                    )
+                }
+            }
+        }.onFailure {
+            intent {
+                reduce {
+                    state.copy(isLoading = true)
+                }
+            }
         }
-        postSideEffect(ClubCreateSideEffect.ClubCreateSuccess)
+    }
+
+    fun getPreSignedUrl(
+        fileSize: Long,
+        fileType: String,
+        fileName: String,
+        imageUri: Uri
+    ) {
+        intent {
+            reduce {
+                state.copy(isLoading = true)
+            }
+        }
+        viewModelScope.launch {
+            getClubPreSignedUrlUseCase(
+                fileSize,
+                fileType,
+                fileName
+            ).onSuccess {
+                uploadImage(
+                    preSignedUrl = it.preSignedUrl,
+                    fileUrl = it.fileUrl,
+                    mediaType = fileType,
+                    mediaSize = fileSize,
+                    imageUri = imageUri
+                )
+            }.onFailure {
+            }
+        }
+    }
+
+    fun requestCreateClub() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(
+                    shouldCheckRequiredField = true
+                )
+            }
+
+            if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@intent
+
+            reduce {
+                state.copy(
+                    isLoading = true
+                )
+            }
+
+            createClubUseCase(
+                name = state.clubName,
+                imageUrl = state.clubImageUrl,
+                clubManagers = listOf(state.userId),
+                clubCategoryId = state.clubCategory!!.id,
+                location = state.location,
+                description = state.clubDescription,
+                instagram = state.instagramUrl,
+                googleForm = state.googleFormUrl,
+                openChat = state.openChatUrl,
+                phoneNumber = state.phoneNumber,
+                role = state.userRole
+            ).onSuccess {
+                reduce {
+                    state.copy(
+                        isLoading = false
+                    )
+                }
+                postSideEffect(ClubCreateSideEffect.ClubCreateSuccess)
+            }.onFailure {
+                reduce {
+                    state.copy(
+                        isLoading = false
+                    )
+                }
+            }
+        }
     }
 }
