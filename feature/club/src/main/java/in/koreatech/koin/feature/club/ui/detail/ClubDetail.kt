@@ -72,6 +72,7 @@ import `in`.koreatech.koin.domain.util.ext.isOpenChatUrl
 import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_INSTAGRAM
@@ -80,7 +81,6 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailDialog
 import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogAddQnaContent
 import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogEmpowermentContent

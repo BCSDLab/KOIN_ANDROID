@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail.component.dialog
+package `in`.koreatech.koin.feature.club.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailDialog
+import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogDeleteQnaContent
 import `in`.koreatech.koin.feature.club.ui.detail.component.textfield.DetailQnaTextField
 

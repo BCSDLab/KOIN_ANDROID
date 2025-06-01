@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -13,9 +14,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,10 +37,12 @@ import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
 import `in`.koreatech.koin.feature.club.component.KoinClubListItem
+import `in`.koreatech.koin.feature.club.component.KoinClubMessageDialog
 import `in`.koreatech.koin.feature.club.model.ClubSort
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubItem
 import `in`.koreatech.koin.feature.club.model.clubCategories
 import `in`.koreatech.koin.feature.club.model.clubSortType
+import `in`.koreatech.koin.feature.club.ui.detail.component.snackbar.DetailSnackBar
 import kotlinx.collections.immutable.toPersistentList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -42,14 +50,27 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubListScreen(
+    isClubCreated: Boolean = false,
     viewModel: ClubListViewModel = hiltViewModel(),
+    navigateToCreateClub: () -> Unit = { },
     navigateToClubDetail: (Int) -> Unit = { _ -> }
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, viewModel)
+        handleSideEffect(it, viewModel, navigateToCreateClub)
+    }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(isClubCreated) {
+        if (isClubCreated) {
+            snackbarHostState.showSnackbar(
+                message = context.getString(R.string.club_create_success_snackbar),
+                duration = SnackbarDuration.Short
+            )
+        }
     }
 
     Scaffold(
@@ -63,6 +84,19 @@ fun ClubListScreen(
                 }
             )
         },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { data ->
+                    DetailSnackBar(
+                        modifier = Modifier.padding(WindowInsets.navigationBars.asPaddingValues()),
+                        message = data.visuals.message,
+                        label = data.visuals.actionLabel,
+                        onLabelClick = { data.performAction() }
+                    )
+                }
+            )
+        },
         // Let's try to draw content behind the system bars
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { innerPadding ->
@@ -71,6 +105,7 @@ fun ClubListScreen(
             sortType = uiState.sortType,
             selectedCategoryId = uiState.categoryId,
             isDropdownExpanded = uiState.isDropdownExpanded,
+            shouldShowClubCreateDialog = uiState.shouldShowClubCreateDialog,
             modifier = Modifier.padding(innerPadding),
             onCategoryChange = { categoryId ->
                 viewModel.updateCategoryId(categoryId)
@@ -80,6 +115,12 @@ fun ClubListScreen(
             },
             onDropdownExpandChange = { isExpanded ->
                 viewModel.updateDropdownExpanded(isExpanded)
+            },
+            navigateToCreateClub = {
+                viewModel.navigateToCreateClub()
+            },
+            onShowClubCreateDialogChange = { shouldShow ->
+                viewModel.updateShowClubCreateDialog(shouldShow)
             },
             navigateToClubDetail = navigateToClubDetail
         )
@@ -92,12 +133,33 @@ fun ClubListScreenImpl(
     selectedCategoryId: Int?,
     sortType: ClubSort,
     isDropdownExpanded: Boolean,
+    shouldShowClubCreateDialog: Boolean,
     modifier: Modifier = Modifier,
     onCategoryChange: (Int?) -> Unit = { },
     onSortTypeChange: (ClubSort) -> Unit = { },
     onDropdownExpandChange: (Boolean) -> Unit = { },
+    navigateToCreateClub: () -> Unit = { },
+    onShowClubCreateDialogChange: (Boolean) -> Unit = { },
     navigateToClubDetail: (Int) -> Unit = { _ -> }
 ) {
+    if (shouldShowClubCreateDialog) {
+        KoinClubMessageDialog(
+            title = stringResource(R.string.club_list_create_dialog_title),
+            onPositive = {
+                onShowClubCreateDialogChange(false)
+                navigateToCreateClub()
+            },
+            onDismissRequest = {
+                onShowClubCreateDialogChange(false)
+            },
+            content = {
+                Text(
+                    text = stringResource(R.string.club_list_create_dialog_content)
+                )
+            }
+        )
+    }
+
     LazyColumn(
         modifier = modifier.padding(horizontal = 24.dp)
     ) {
@@ -117,7 +179,9 @@ fun ClubListScreenImpl(
                 FilledButton(
                     text = stringResource(R.string.club_list_create_club),
                     textStyle = KoinTheme.typography.medium12,
-                    onClick = {},
+                    onClick = {
+                        onShowClubCreateDialogChange(true)
+                    },
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp)
                 )
             }
@@ -185,17 +249,26 @@ fun ClubListScreenImpl(
 
 fun handleSideEffect(
     sideEffect: ClubListSideEffect,
-    viewModel: ClubListViewModel
+    viewModel: ClubListViewModel,
+    navigateToCreateClub: () -> Unit = { }
 ) {
     when (sideEffect) {
         is ClubListSideEffect.RefreshClubs -> {
             viewModel.getClubs()
         }
+
+        ClubListSideEffect.NavigateToCreateClub -> navigateToCreateClub()
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ClubListScreenPreview() {
-    ClubListScreen()
+    ClubListScreenImpl(
+        clubList = emptyList(),
+        selectedCategoryId = 1,
+        sortType = ClubSort.NONE,
+        isDropdownExpanded = false,
+        shouldShowClubCreateDialog = false
+    )
 }
