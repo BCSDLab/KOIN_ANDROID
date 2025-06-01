@@ -141,7 +141,6 @@ fun ClubListScreenImpl(
 ) {
     if (shouldShowClubCreateDialog) {
         KoinClubMessageDialog(
-            modifier = Modifier,
             title = stringResource(R.string.club_list_create_dialog_title),
             onPositive = {
                 onShowClubCreateDialogChange(false)
