@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.feature.club.ui.detail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.club.ClubDetails
-import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
+import `in`.koreatech.koin.domain.error.club.ClubError
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.DeleteClubQnaUseCase
@@ -14,20 +14,26 @@ import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
+import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
+import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.EMPTY_ERROR
 import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.NON_USERID_ERROR
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
 
 @HiltViewModel
 class ClubDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getUserStatusUseCase: GetUserStatusUseCase,
     private val getClubDetailsUseCase: GetClubDetailsUseCase,
     private val getClubQnasUseCase: GetClubQnasUseCase,
@@ -38,10 +44,19 @@ class ClubDetailViewModel @Inject constructor(
     private val setClubLikeUseCase: SetClubLikeUseCase
 ) : ViewModel(), ContainerHost<ClubDetailState, ClubDetailSideEffect> {
     override val container = container<ClubDetailState, ClubDetailSideEffect>(
-        initialState = ClubDetailState()
-    )
-
-    private var selectedClubId = 1 // 선택한 Clud 의 id 값
+        initialState = ClubDetailState(),
+        savedStateHandle = savedStateHandle
+    ) {
+        val clubId = savedStateHandle.get<Int>(CLUB_ID)
+        checkNotNull(clubId)
+        intent {
+            reduce {
+                state.copy(
+                    clubId = clubId
+                )
+            }
+        }
+    }
 
     private val userInfoFlow: StateFlow<User> =
         getUserStatusUseCase()
@@ -54,10 +69,8 @@ class ClubDetailViewModel @Inject constructor(
 
     private fun fetchAllData() = intent {
         if (state.isLoading) return@intent
-        reduce { state.copy(isLoading = true) }
-        val clubDetails = loadClubDetails()
-        val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubDetails = clubDetails, clubQnasInfo = clubQnasInfo) }
+        loadClubDetails()
+        loadClubQnas()
     }
 
     private fun getUserIdCollect() = intent {
@@ -66,6 +79,7 @@ class ClubDetailViewModel @Inject constructor(
                 is User.Anonymous -> {
                     reduce { state.copy(userId = null) }
                 }
+
                 is User.Student -> {
                     reduce { state.copy(userId = user.id) }
                 }
@@ -73,23 +87,43 @@ class ClubDetailViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadClubDetails(): ClubDetails? {
-        getClubDetailsUseCase(selectedClubId).onSuccess {
-            return it
+    private fun loadClubDetails() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(isLoading = true)
+            }
+            getClubDetailsUseCase(state.clubId).onSuccess {
+                reduce {
+                    state.copy(
+                        clubDetails = it.toParcelizeClubDetails(),
+                        isLoading = false
+                    )
+                }
+            }
         }
-        return null
     }
 
-    private suspend fun loadClubQnas(): ClubQnasInfo? {
-        getClubQnasUseCase(selectedClubId).onSuccess {
-            return it
+    private fun loadClubQnas() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(isLoading = true, showQnasProgressBar = true)
+            }
+            getClubQnasUseCase(state.clubId).onSuccess {
+                reduce {
+                    state.copy(
+                        clubQnasInfo = it.toParcelizeClubQnasInfo(),
+                        isLoading = false,
+                        showQnasProgressBar = false
+                    )
+                }
+            }
         }
-        return null
     }
 
     fun showAddQnaDialog() = intent {
         reduce { state.copy(showAddQnaDialog = true) }
     }
+
     fun dismissAddQnaDialog() = intent {
         reduce { state.copy(showAddQnaDialog = false, textFieldErrorResId = null) }
     }
@@ -101,18 +135,24 @@ class ClubDetailViewModel @Inject constructor(
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         if (content.isEmpty()) {
-            reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    textFieldErrorResId = EMPTY_ERROR.strResId
+                )
+            }
             return@intent
         }
         state.clubDetails?.let {
             postClubQnaUseCase(
-                clubId = selectedClubId,
+                clubId = state.clubId,
                 parentId = parentId,
                 content = content
-            )
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
         }
-        val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo, showAddQnaDialog = false, textFieldErrorResId = null) }
+        loadClubQnas()
     }
 
     fun addClubQnaAnswer(
@@ -123,13 +163,14 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         state.clubDetails?.let {
             postClubQnaUseCase(
-                clubId = selectedClubId,
+                clubId = state.clubId,
                 parentId = parentId,
                 content = content
-            )
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
         }
-        val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo) }
+        loadClubQnas()
     }
 
     fun deleteClubQna(
@@ -139,17 +180,19 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         state.clubDetails?.let {
             deleteClubQnaUseCase(
-                clubId = selectedClubId,
+                clubId = state.clubId,
                 qnaId = qnaId
-            )
+            ).onFailure { e ->
+                if (e !is HttpException) throw e
+            }
         }
-        val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubQnasInfo = clubQnasInfo) }
+        loadClubQnas()
     }
 
     fun showLoginDialog() = intent {
         reduce { state.copy(showLoginDialog = true) }
     }
+
     fun dismissLoginDialog() = intent {
         reduce { state.copy(showLoginDialog = false) }
     }
@@ -159,23 +202,22 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         state.clubDetails?.let {
             if (it.isLiked) {
-                cancelClubLikeUseCase(clubId = selectedClubId)
+                cancelClubLikeUseCase(clubId = state.clubId)
             } else {
-                setClubLikeUseCase(clubId = selectedClubId)
+                setClubLikeUseCase(clubId = state.clubId)
             }
         }
-        val clubDetails = loadClubDetails()
-        reduce { state.copy(isLoading = false, clubDetails = clubDetails) }
+        loadClubDetails()
     }
 
     fun showEmpowermentDialog() = intent {
         reduce { state.copy(showEmpowermentDialog = true) }
     }
+
     fun dismissEmpowermentDialog() = intent {
         reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
     }
 
-    // TODO result 오류처리 로직에 맞게 개선 필요
     fun setManagerEmpowerment(newUserId: String) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
@@ -184,20 +226,24 @@ class ClubDetailViewModel @Inject constructor(
             return@intent
         }
         setClubEmpowermentUseCase(
-            clubId = selectedClubId,
+            clubId = state.clubId,
             changedManagerId = newUserId
         ).onFailure { e ->
-            if (e is retrofit2.HttpException) {
-                if (e.code() == 404) {
-                    reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
-                }
-            }
             reduce { state.copy(isLoading = false) }
+            if (e is ClubError.UserIdNotFound) {
+                reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
+            } else {
+                throw e
+            }
             return@intent
         }
-        val clubDetails = loadClubDetails()
-        val clubQnasInfo = loadClubQnas()
-        reduce { state.copy(isLoading = false, clubDetails = clubDetails, clubQnasInfo = clubQnasInfo, showEmpowermentDialog = false, textFieldErrorResId = null) }
+        reduce { state.copy(showQnasProgressBar = false) }
+        loadClubDetails()
+        loadClubQnas()
         postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
+    }
+
+    fun openUrl(url: String) = intent {
+        postSideEffect(ClubDetailSideEffect.OpenUrl(url))
     }
 }

@@ -52,7 +52,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ClubListScreen(
     isClubCreated: Boolean = false,
     viewModel: ClubListViewModel = hiltViewModel(),
-    navigateToCreateClub: () -> Unit = { }
+    navigateToCreateClub: () -> Unit = { },
+    navigateToClubDetail: (Int) -> Unit = { _ -> }
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -120,7 +121,8 @@ fun ClubListScreen(
             },
             onShowClubCreateDialogChange = { shouldShow ->
                 viewModel.updateShowClubCreateDialog(shouldShow)
-            }
+            },
+            navigateToClubDetail = navigateToClubDetail
         )
     }
 }
@@ -137,7 +139,8 @@ fun ClubListScreenImpl(
     onSortTypeChange: (ClubSort) -> Unit = { },
     onDropdownExpandChange: (Boolean) -> Unit = { },
     navigateToCreateClub: () -> Unit = { },
-    onShowClubCreateDialogChange: (Boolean) -> Unit = { }
+    onShowClubCreateDialogChange: (Boolean) -> Unit = { },
+    navigateToClubDetail: (Int) -> Unit = { _ -> }
 ) {
     if (shouldShowClubCreateDialog) {
         KoinClubMessageDialog(
@@ -232,8 +235,8 @@ fun ClubListScreenImpl(
                 likes = it.likes,
                 logoUrl = it.imageUrl,
                 modifier = Modifier.padding(vertical = 12.dp),
-                onClick = {
-                    // TODO
+                onClick = { id ->
+                    navigateToClubDetail(id)
                 }
             )
         }

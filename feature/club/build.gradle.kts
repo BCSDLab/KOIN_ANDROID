@@ -33,7 +33,6 @@ dependencies {
     implementation(libs.kotlinxCollectionsImmutable)
 
     implementation(libs.coil.compose)
-    implementation(libs.compose.lifecycle)
 
     implementation(libs.timber)
 
