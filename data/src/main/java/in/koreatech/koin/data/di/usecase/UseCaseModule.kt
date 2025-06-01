@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.repository.PreSignedUrlRepository
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetLostAndFoundPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.store.SearchStoreUseCase
@@ -53,5 +54,14 @@ object UseCaseModule {
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher
     ): GetLostAndFoundPreSignedUrlUseCase {
         return GetLostAndFoundPreSignedUrlUseCase(uploadUrlRepository, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetClubPreSignedUrlUseCase(
+        uploadUrlRepository: UploadUrlRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher
+    ): GetClubPreSignedUrlUseCase {
+        return GetClubPreSignedUrlUseCase(uploadUrlRepository, coroutineDispatcher)
     }
 }
