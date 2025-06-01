@@ -341,7 +341,10 @@ fun ClubDetail(
                             var linkUrl = ""
                             intro.second?.let {
                                 when (intro.first) {
-                                    DETAIL_DESCRIPTION -> maxLines = 2
+                                    DETAIL_DESCRIPTION -> {
+                                        maxLines = 2
+                                        outputText = "${stringResource(intro.first.strResId)}${it}"
+                                    }
                                     DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
@@ -358,7 +361,7 @@ fun ClubDetail(
                             }
                             Row {
                                 Text(
-                                    text = stringResource(intro.first.strResId),
+                                    text = if (intro.first != DETAIL_DESCRIPTION) stringResource(intro.first.strResId) else "",
                                     style = KoinTheme.typography.medium18,
                                     color = KoinTheme.colors.neutral800
                                 )
