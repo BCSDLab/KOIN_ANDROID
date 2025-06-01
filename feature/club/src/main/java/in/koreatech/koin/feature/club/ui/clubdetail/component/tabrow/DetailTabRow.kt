@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail.component.tabrow
+package `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding

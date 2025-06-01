@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail
+package `in`.koreatech.koin.feature.club.ui.clubdetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

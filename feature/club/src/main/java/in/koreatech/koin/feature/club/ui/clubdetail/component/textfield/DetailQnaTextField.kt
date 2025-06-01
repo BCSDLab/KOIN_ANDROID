@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail.component.textfield
+package `in`.koreatech.koin.feature.club.ui.clubdetail.component.textfield
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail
+package `in`.koreatech.koin.feature.club.ui.clubdetail
 
 import android.content.Context
 import android.content.Intent
@@ -81,13 +81,13 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailLoginDialog
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogAddQnaContent
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogEmpowermentContent
-import `in`.koreatech.koin.feature.club.ui.detail.component.snackbar.DetailSnackBar
-import `in`.koreatech.koin.feature.club.ui.detail.component.tabrow.DetailTabRow
-import `in`.koreatech.koin.feature.club.ui.detail.intro.ClubDetailIntro
-import `in`.koreatech.koin.feature.club.ui.detail.qna.ClubDetailQna
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailLoginDialog
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow.DetailTabRow
+import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
+import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

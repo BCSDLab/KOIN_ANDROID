@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail.component.qnabox
+package `in`.koreatech.koin.feature.club.ui.clubdetail.component.qnabox
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogDeleteQnaContent
-import `in`.koreatech.koin.feature.club.ui.detail.component.textfield.DetailQnaTextField
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogDeleteQnaContent
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.textfield.DetailQnaTextField
 
 @Composable
 fun DetailQnaBox(

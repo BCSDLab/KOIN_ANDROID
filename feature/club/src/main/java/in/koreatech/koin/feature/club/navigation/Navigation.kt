@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.club.ui.clubcreate.ClubCreateScreen
 import `in`.koreatech.koin.feature.club.ui.clublist.ClubListScreen
-import `in`.koreatech.koin.feature.club.ui.detail.ClubDetail
+import `in`.koreatech.koin.feature.club.ui.clubdetail.ClubDetail
 
 fun NavGraphBuilder.koinClubGraph(
     navController: NavController
