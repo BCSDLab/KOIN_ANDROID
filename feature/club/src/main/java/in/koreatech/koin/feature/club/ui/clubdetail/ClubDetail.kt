@@ -74,9 +74,9 @@ import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
+import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_DESCRIPTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_INSTAGRAM
-import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_INTRODUCTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
@@ -104,7 +104,7 @@ fun ClubDetail(
     val detailList = listOf(
         Pair(DETAIL_CATEGORY, state.clubDetails?.category),
         Pair(DETAIL_LOCATION, state.clubDetails?.location),
-        Pair(DETAIL_INTRODUCTION, state.clubDetails?.introduction),
+        Pair(DETAIL_DESCRIPTION, state.clubDetails?.description),
         Pair(DETAIL_INSTAGRAM, state.clubDetails?.instagram),
         Pair(DETAIL_GOOGLE_FORM, state.clubDetails?.googleForm),
         Pair(DETAIL_OPEN_CHAT, state.clubDetails?.openChat),
@@ -341,7 +341,7 @@ fun ClubDetail(
                             var linkUrl = ""
                             intro.second?.let {
                                 when (intro.first) {
-                                    DETAIL_INTRODUCTION -> maxLines = 2
+                                    DETAIL_DESCRIPTION -> maxLines = 2
                                     DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
