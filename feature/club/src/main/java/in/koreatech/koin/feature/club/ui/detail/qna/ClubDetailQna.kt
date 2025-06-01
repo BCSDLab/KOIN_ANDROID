@@ -15,13 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
-import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.model.ParcelizeClubQnasInfo
 import `in`.koreatech.koin.feature.club.ui.detail.component.qnabox.DetailQnaBox
 
 @Composable
 fun ClubDetailQna(
-    qnaList: List<ClubQnasInfo.Qna>?,
+    qnaList: List<ParcelizeClubQnasInfo.ParcelizeQna>?,
     modifier: Modifier = Modifier,
     userId: Int? = null,
     isManager: Boolean = false,
