@@ -270,6 +270,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 } else if (abTestGroup == ExperimentGroup.HOT) {
                     val hotClub by viewModel.hotClub.collectAsStateWithLifecycle()
                     MainClubWidgetB(
+                        hotClubId = hotClub?.clubId ?: -1,
                         hotClubImageUrl = hotClub?.imageUrl ?: ""
                     )
                 }
