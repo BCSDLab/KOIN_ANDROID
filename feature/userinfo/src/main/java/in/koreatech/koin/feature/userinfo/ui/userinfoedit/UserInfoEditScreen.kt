@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -117,7 +115,7 @@ fun UserInfoEditScreen(
                     },
                     positiveButtonText = stringResource(R.string.user_info_withdraw_positive),
                     negativeButtonText = stringResource(R.string.user_info_withdraw_negative),
-                    positiveButtonColors = FilledButtonColors.Danger,
+                    positiveButtonColors = FilledButtonColors.Danger
                 )
             }
 
@@ -371,7 +369,6 @@ fun UserInfoPhoneNumber(
             imeAction = ImeAction.Done
         )
     )
-
 
     Box(modifier = Modifier.height(32.dp)) {
         when (phoneNumberState) {
