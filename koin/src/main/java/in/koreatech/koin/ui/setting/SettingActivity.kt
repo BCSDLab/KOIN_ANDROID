@@ -20,6 +20,10 @@ import `in`.koreatech.koin.feature.userinfo.UserInfoActivity
 import `in`.koreatech.koin.ui.changepassword.ChangePasswordContract
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.term.TermActivity
+import `in`.koreatech.koin.ui.term.TermViewModel.Companion.KEY_TERM
+import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_KOIN
+import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_MARKETING
+import `in`.koreatech.koin.ui.term.TermViewModel.Companion.TERM_PRIVACY_POLICY
 import `in`.koreatech.koin.util.SnackbarUtil
 import kotlinx.coroutines.launch
 
@@ -100,14 +104,21 @@ class SettingActivity : ActivityBase() {
             svPrivacyPolicy.setOnSettingClickListener {
                 startActivity(
                     Intent(this@SettingActivity, TermActivity::class.java).apply {
-                        putExtra(TermActivity.KEY_TERM, TermActivity.TERM_PRIVACY_POLICY)
+                        putExtra(KEY_TERM, TERM_PRIVACY_POLICY)
                     }
                 )
             }
             svKoinTerms.setOnSettingClickListener {
                 startActivity(
                     Intent(this@SettingActivity, TermActivity::class.java).apply {
-                        putExtra(TermActivity.KEY_TERM, TermActivity.TERM_KOIN)
+                        putExtra(KEY_TERM, TERM_KOIN)
+                    }
+                )
+            }
+            svMarketingTerms.setOnSettingClickListener {
+                startActivity(
+                    Intent(this@SettingActivity, TermActivity::class.java).apply {
+                        putExtra(KEY_TERM, TERM_MARKETING)
                     }
                 )
             }

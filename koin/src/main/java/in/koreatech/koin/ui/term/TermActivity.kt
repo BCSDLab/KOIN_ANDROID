@@ -60,6 +60,10 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
                 viewModel.loadPrivacyTerm()
             }
 
+            TERM_MARKETING -> {
+                viewModel.loadMarketingTerm()
+            }
+
             else -> {
                 ToastUtil.getInstance().makeShort("약관 타입을 명시해야 합니다.")
             }
@@ -122,11 +126,11 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
             contentAdapter.submitList(term.articles)
         }
     }
-
     companion object {
         const val KEY_TERM = "key_term"
         const val TERM_KOIN = "term_koin"
         const val TERM_PRIVACY_POLICY = "term_privacy_policy"
+        const val TERM_MARKETING = "term_marketing"
         private const val TERM_UNKNOWN = "term_unknown"
     }
 }

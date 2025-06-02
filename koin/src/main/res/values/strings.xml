@@ -245,6 +245,7 @@
     <string name="setting_title_service">서비스</string>
     <string name="setting_item_privacy_policy">개인정보 처리방침</string>
     <string name="setting_item_koin_terms">코인 이용약관</string>
+    <string name="setting_item_marketing_terms">마케팅 수신 동의 약관</string>
     <string name="setting_item_open_source_license">오픈소스 라이선스</string>
     <string name="setting_item_app_version">앱 버전</string>
     <string name="setting_item_contact">문의하기</string>
@@ -388,6 +389,13 @@
     <string name="notification_dining_photo_upload">식단 사진 업로드 알림</string>
     <string name="notification_article_keyword">공지사항 키워드 알림</string>
     <string name="notification_dining_photo_upload_description">식단 사진이 업로드 될 경우 알림을 받습니다.</string>
+
+    <string name="notification_marketing_term_switch">마케팅 정보 수신 동의</string>
+    <string name="notification_marketing_term_switch_description">마케팅 정보 수신 동의/해제</string>
+    <string name="notification_permission_dialog_title">알림 권한이 꺼져 있어요.</string>
+    <string name="notification_permission_dialog_message">알림을 받으시려면 기기의 알림 권한이 필요해요.\n설정 화면으로 이동할까요?</string>
+    <string name="notification_permission_dialog_positive">설정 이동</string>
+    <string name="notification_permission_dialog_negative">취소</string>
 
     <!-- force update -->
     <string name="force_update_do_update">업데이트하기</string>

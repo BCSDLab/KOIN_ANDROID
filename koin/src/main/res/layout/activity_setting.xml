@@ -117,6 +117,16 @@
                 app:layout_constraintTop_toBottomOf="@id/sv_privacy_policy" />
 
             <in.koreatech.koin.core.view.setting.SettingView
+                android:id="@+id/sv_marketing_terms"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:headText="@string/setting_item_marketing_terms"
+                app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sv_koin_terms" />
+
+            <in.koreatech.koin.core.view.setting.SettingView
                 android:id="@+id/sv_open_source_license"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -124,7 +134,7 @@
                 app:headTextAppearance="@style/TextAppearance.Koin.Regular.16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sv_koin_terms" />
+                app:layout_constraintTop_toBottomOf="@id/sv_marketing_terms" />
 
             <in.koreatech.koin.core.view.setting.SettingView
                 android:id="@+id/sv_app_version"
