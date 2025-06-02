@@ -278,18 +278,47 @@ fun ClubDetail(
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        state.userId?.let {
+                            if (state.clubDetails?.manager == true) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    FilledButton(
+                                        text = stringResource(R.string.detail_empowerment_button),
+                                        onClick = { viewModel.showEmpowermentDialog() },
+                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    FilledButton(
+                                        text = stringResource(R.string.detail_fix_button),
+                                        onClick = {}, // 동아리 정보 수정 버튼 클릭
+                                        contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Text(
+                            text = state.clubDetails?.name ?: "",
+                            style = KoinTheme.typography.bold20,
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .weight(1f, fill = false),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = state.clubDetails?.name ?: "",
-                                style = KoinTheme.typography.bold20,
-                                modifier = Modifier
-                                    .padding(end = 8.dp)
-                            )
                             Image(
                                 painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
                                 contentDescription = "",
@@ -302,34 +331,15 @@ fun ClubDetail(
                                         } ?: viewModel.showLoginDialog()
                                     }
                             )
-                            if (state.clubDetails?.isLikedHidden == true) {
+                            if (state.clubDetails?.isLikedHidden != true) {
                                 Text(
                                     text = "${state.clubDetails?.likes}",
                                     style = KoinTheme.typography.medium14
                                 )
                             }
                         }
-                        state.userId?.let {
-                            if (state.clubDetails?.manager == true) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    FilledButton(
-                                        text = stringResource(R.string.detail_fix_button),
-                                        onClick = {}, // 동아리 정보 수정 버튼 클릭
-                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    FilledButton(
-                                        text = stringResource(R.string.detail_empowerment_button),
-                                        onClick = { viewModel.showEmpowermentDialog() },
-                                        contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
-                                    )
-                                }
-                            }
-                        }
                     }
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Column(
                         modifier = Modifier.fillMaxWidth(),
