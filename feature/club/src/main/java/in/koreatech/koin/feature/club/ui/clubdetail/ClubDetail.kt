@@ -295,7 +295,7 @@ fun ClubDetail(
                                     FilledButton(
                                         text = stringResource(R.string.detail_fix_button),
                                         onClick = {}, // 동아리 정보 수정 버튼 클릭
-                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
+                                        contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
                                     )
                                 }
                             }
