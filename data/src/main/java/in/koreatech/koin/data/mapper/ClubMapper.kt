@@ -56,7 +56,8 @@ fun ClubDetailsResponse.toClubDetails() = ClubDetails(
     phoneNumber,
     manager,
     isLiked,
-    updatedAt
+    updatedAt,
+    isLikedHidden
 )
 
 fun ClubQnasResponse.toClubQnasInfo() = ClubQnasInfo(

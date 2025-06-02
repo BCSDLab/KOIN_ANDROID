@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail.qna
+package `in`.koreatech.koin.feature.club.ui.clubdetail.qna
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubQnasInfo
-import `in`.koreatech.koin.feature.club.ui.detail.component.qnabox.DetailQnaBox
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.qnabox.DetailQnaBox
 
 @Composable
 fun ClubDetailQna(

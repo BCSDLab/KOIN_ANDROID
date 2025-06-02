@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail
+package `in`.koreatech.koin.feature.club.ui.clubdetail
 
 import android.os.Parcelable
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubDetails

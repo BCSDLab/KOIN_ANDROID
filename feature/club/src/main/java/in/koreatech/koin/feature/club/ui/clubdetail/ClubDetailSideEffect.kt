@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail
+package `in`.koreatech.koin.feature.club.ui.clubdetail
 
 sealed class ClubDetailSideEffect {
     object ShowEmpowermentSnackBar : ClubDetailSideEffect()

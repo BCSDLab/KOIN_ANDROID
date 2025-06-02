@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail.component.snackbar
+package `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

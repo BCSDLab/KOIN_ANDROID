@@ -5,6 +5,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +44,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
@@ -106,6 +109,7 @@ fun ClubCreateScreen(
             userRole = uiState.userRole,
             imageUrl = uiState.clubImageUrl,
             isLikeHidden = uiState.isLikeHidden,
+            imageUrlRequired = uiState.clubImageUrlRequired,
             modifier = modifier.padding(innerPadding),
             onClubNameChange = viewModel::updateClubName,
             onClubDescriptionChange = viewModel::updateClubDescription,
@@ -153,6 +157,7 @@ fun ClubCreateScreenImpl(
     userRole: String,
     imageUrl: String,
     isLikeHidden: Boolean,
+    imageUrlRequired: Boolean,
     modifier: Modifier = Modifier,
     onClubNameChange: (String) -> Unit = {},
     onClubDescriptionChange: (String) -> Unit = {},
@@ -182,6 +187,7 @@ fun ClubCreateScreenImpl(
             title = stringResource(R.string.club_create_dialog_create_title),
             titleStyle = KoinTheme.typography.bold18,
             onDismiss = { onShouldShowCreateDialogChange(false) },
+            onNegative = { onShouldShowCreateDialogChange(false) },
             onPositive = {
                 onShouldShowCreateDialogChange(false)
                 onShouldShowPermissionDialogChange(true)
@@ -214,6 +220,7 @@ fun ClubCreateScreenImpl(
             title = stringResource(R.string.club_create_dialog_permission_title),
             titleStyle = KoinTheme.typography.bold18,
             onDismiss = { onShouldShowPermissionDialogChange(false) },
+            onNegative = { onShouldShowPermissionDialogChange(false) },
             onPositive = {
                 onShouldShowPermissionDialogChange(false)
                 onRequestCreateClub()
@@ -239,7 +246,9 @@ fun ClubCreateScreenImpl(
 
     if (isLoading) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(1f),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
@@ -260,6 +269,7 @@ fun ClubCreateScreenImpl(
                 modifier = Modifier
                     .size(200.dp)
                     .clip(KoinTheme.shapes.extraLarge)
+                    .border(1.dp, if (imageUrlRequired) KoinTheme.colors.sub500 else Color.Unspecified, KoinTheme.shapes.extraLarge)
                     .background(KoinTheme.colors.neutral200)
                     .clickable {
                         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -295,6 +305,18 @@ fun ClubCreateScreenImpl(
                     color = KoinTheme.colors.neutral600
                 )
             }
+        }
+
+        if (imageUrlRequired) {
+            Spacer(modifier = Modifier.height(4.dp))
+
+            KoinClubTextFieldAlert(
+                modifier = Modifier
+                    .width(200.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+                text = stringResource(R.string.club_create_warning_required)
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -364,7 +386,8 @@ fun ClubCreateScreenImpl(
             modifier = Modifier.fillMaxWidth(),
             value = clubName,
             onValueChange = onClubNameChange,
-            hint = stringResource(R.string.club_create_name_hint)
+            hint = stringResource(R.string.club_create_name_hint),
+            borderColor = if (clubNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300
         )
 
         if (clubNameRequired) {
@@ -399,7 +422,8 @@ fun ClubCreateScreenImpl(
                 items = clubCategories.map { stringResource(R.string.club_create_category_with_suffix, stringResource(it.stringRes)) }.toImmutableList(),
                 onItemSelected = { index ->
                     onClubCategoryChange(clubCategories[index])
-                }
+                },
+                borderColor = if (clubCategoryRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral300
             )
 
             Spacer(modifier = Modifier.width(10.dp))
@@ -432,7 +456,8 @@ fun ClubCreateScreenImpl(
             modifier = Modifier.fillMaxWidth(),
             value = location,
             onValueChange = onLocationChange,
-            hint = stringResource(R.string.club_create_location_hint)
+            hint = stringResource(R.string.club_create_location_hint),
+            borderColor = if (locationRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300
         )
 
         if (locationRequired) {
@@ -573,6 +598,7 @@ fun ClubCreateScreenPreview() {
         shouldShowPermissionDialog = false,
         userRole = "Member",
         imageUrl = "",
-        isLikeHidden = false
+        isLikeHidden = false,
+        imageUrlRequired = true
     )
 }
