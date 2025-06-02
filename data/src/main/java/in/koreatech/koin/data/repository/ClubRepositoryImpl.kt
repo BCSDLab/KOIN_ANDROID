@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.mapper.toClubQnasInfo
 import `in`.koreatech.koin.data.mapper.toClubs
 import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
+import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
@@ -18,8 +19,8 @@ import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.Clubs
 import `in`.koreatech.koin.domain.repository.ClubRepository
-import javax.inject.Inject
 import retrofit2.HttpException
+import javax.inject.Inject
 
 class ClubRepositoryImpl @Inject constructor(
     private val clubRemoteDataSource: ClubRemoteDataSource
@@ -82,6 +83,41 @@ class ClubRepositoryImpl @Inject constructor(
                     openChat = openChat,
                     phoneNumber = phoneNumber,
                     role = role,
+                    isLikeHidden = isLikeHidden
+                )
+            )
+        }.onFailure {
+            // TODO: Handle specific exceptions after get API specification
+            return Result.failure(it)
+        }
+    }
+
+    override suspend fun modifyClub(
+        clubId: Int,
+        name: String,
+        imageUrl: String,
+        clubCategoryId: Int,
+        location: String,
+        description: String,
+        instagram: String,
+        googleForm: String,
+        openChat: String,
+        phoneNumber: String,
+        isLikeHidden: Boolean
+    ): Result<Unit> {
+        return runCatching {
+            clubRemoteDataSource.modifyClub(
+                clubId = clubId,
+                request = ClubModifyRequest(
+                    name = name,
+                    imageUrl = imageUrl,
+                    clubCategoryId = clubCategoryId,
+                    location = location,
+                    description = description,
+                    instagram = instagram,
+                    googleForm = googleForm,
+                    openChat = openChat,
+                    phoneNumber = phoneNumber,
                     isLikeHidden = isLikeHidden
                 )
             )

@@ -35,6 +35,20 @@ interface ClubRepository {
         isLikeHidden: Boolean
     ): Result<Unit>
 
+    suspend fun modifyClub(
+        clubId: Int,
+        name: String,
+        imageUrl: String,
+        clubCategoryId: Int,
+        location: String,
+        description: String,
+        instagram: String,
+        googleForm: String,
+        openChat: String,
+        phoneNumber: String,
+        isLikeHidden: Boolean
+    ): Result<Unit>
+
     suspend fun getClubQnas(
         clubId: Int
     ): Result<ClubQnasInfo>
