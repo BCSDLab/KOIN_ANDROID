@@ -8,7 +8,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -55,7 +54,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -318,7 +316,7 @@ fun ClubDetail(
                         }
                         state.userId?.let {
                             if (state.clubDetails?.manager == true) {
-                                val dynamicPadding = if((state.clubDetails?.name ?: "").length >= 10) 5.dp else 24.dp
+                                val dynamicPadding = if ((state.clubDetails?.name ?: "").length >= 10) 5.dp else 24.dp
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
