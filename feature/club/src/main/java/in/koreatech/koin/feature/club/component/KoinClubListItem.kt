@@ -67,7 +67,7 @@ fun KoinClubListItem(
                 Text(
                     text = "$likes",
                     style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral0
+                    color = KoinTheme.colors.neutral800
                 )
             }
         }
