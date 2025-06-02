@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -54,6 +55,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -282,13 +284,17 @@ fun ClubDetail(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(
+                            modifier = Modifier.weight(1f),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = state.clubDetails?.name ?: "",
                                 style = KoinTheme.typography.bold20,
                                 modifier = Modifier
-                                    .padding(end = 8.dp)
+                                    .padding(end = 16.dp)
+                                    .weight(1f, fill = false),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Image(
                                 painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
@@ -302,28 +308,30 @@ fun ClubDetail(
                                         } ?: viewModel.showLoginDialog()
                                     }
                             )
-                            if (state.clubDetails?.isLikedHidden == true) {
+                            if (state.clubDetails?.isLikedHidden != true) {
                                 Text(
                                     text = "${state.clubDetails?.likes}",
-                                    style = KoinTheme.typography.medium14
+                                    style = KoinTheme.typography.medium14,
+                                    modifier = Modifier.padding(end = 8.dp)
                                 )
                             }
                         }
                         state.userId?.let {
                             if (state.clubDetails?.manager == true) {
+                                val dynamicPadding = if((state.clubDetails?.name ?: "").length >= 10) 5.dp else 24.dp
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     FilledButton(
                                         text = stringResource(R.string.detail_fix_button),
                                         onClick = {}, // 동아리 정보 수정 버튼 클릭
-                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
+                                        contentPadding = PaddingValues(horizontal = dynamicPadding, vertical = 5.dp)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     FilledButton(
                                         text = stringResource(R.string.detail_empowerment_button),
                                         onClick = { viewModel.showEmpowermentDialog() },
-                                        contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
+                                        contentPadding = PaddingValues(horizontal = dynamicPadding, vertical = 5.dp)
                                     )
                                 }
                             }
