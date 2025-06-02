@@ -183,6 +183,7 @@ fun ClubCreateScreenImpl(
             title = stringResource(R.string.club_create_dialog_create_title),
             titleStyle = KoinTheme.typography.bold18,
             onDismiss = { onShouldShowCreateDialogChange(false) },
+            onNegative = { onShouldShowCreateDialogChange(false) },
             onPositive = {
                 onShouldShowCreateDialogChange(false)
                 onShouldShowPermissionDialogChange(true)
@@ -215,6 +216,7 @@ fun ClubCreateScreenImpl(
             title = stringResource(R.string.club_create_dialog_permission_title),
             titleStyle = KoinTheme.typography.bold18,
             onDismiss = { onShouldShowPermissionDialogChange(false) },
+            onNegative = { onShouldShowPermissionDialogChange(false) },
             onPositive = {
                 onShouldShowPermissionDialogChange(false)
                 onRequestCreateClub()
