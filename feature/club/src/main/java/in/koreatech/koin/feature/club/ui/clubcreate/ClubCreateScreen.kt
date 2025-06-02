@@ -105,6 +105,7 @@ fun ClubCreateScreen(
             shouldShowPermissionDialog = uiState.shouldShowPermissionDialog,
             userRole = uiState.userRole,
             imageUrl = uiState.clubImageUrl,
+            imageUrlRequired = uiState.clubImageUrlRequired,
             modifier = modifier.padding(innerPadding),
             onClubNameChange = viewModel::updateClubName,
             onClubDescriptionChange = viewModel::updateClubDescription,
@@ -151,6 +152,7 @@ fun ClubCreateScreenImpl(
     shouldShowPermissionDialog: Boolean,
     userRole: String,
     imageUrl: String,
+    imageUrlRequired: Boolean,
     modifier: Modifier = Modifier,
     onClubNameChange: (String) -> Unit = {},
     onClubDescriptionChange: (String) -> Unit = {},
@@ -236,7 +238,9 @@ fun ClubCreateScreenImpl(
 
     if (isLoading) {
         Box(
-            modifier = Modifier.fillMaxSize().zIndex(1f),
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(1f),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
@@ -292,6 +296,18 @@ fun ClubCreateScreenImpl(
                     color = KoinTheme.colors.neutral600
                 )
             }
+        }
+
+        if (imageUrlRequired) {
+            Spacer(modifier = Modifier.height(4.dp))
+
+            KoinClubTextFieldAlert(
+                modifier = Modifier
+                    .width(200.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+                text = stringResource(R.string.club_create_warning_required)
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -567,5 +583,6 @@ fun ClubCreateScreenPreview() {
         shouldShowPermissionDialog = false,
         userRole = "Member",
         imageUrl = "",
+        imageUrlRequired = true
     )
 }
