@@ -126,7 +126,7 @@ fun ClubModifyScreen(
                     imageUri = fileUri
                 )
             },
-            onLikeHiddenChange = viewModel::updateIsLikeHidden,
+            onLikeHiddenChange = viewModel::updateIsLikeHidden
         )
     }
 }
