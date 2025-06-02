@@ -37,6 +37,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -95,6 +96,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ClubDetail(
+    isClubModified: Boolean = false,
     initialPage: Int = 0,
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
@@ -124,6 +126,15 @@ fun ClubDetail(
 
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
+    }
+
+    LaunchedEffect(isClubModified) {
+        if (isClubModified) {
+            snackbarHostState.showSnackbar(
+                message = context.getString(R.string.club_modify_success_snackbar),
+                duration = SnackbarDuration.Short
+            )
+        }
     }
 
     Scaffold(
