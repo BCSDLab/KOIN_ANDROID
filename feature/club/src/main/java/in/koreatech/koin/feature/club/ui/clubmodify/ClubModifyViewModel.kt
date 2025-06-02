@@ -149,6 +149,14 @@ class ClubModifyViewModel @Inject constructor(
         }
     }
 
+    fun updateIsLikeHidden(isLikeHidden: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                isLikeHidden = isLikeHidden
+            )
+        }
+    }
+
     private fun uploadImage(
         preSignedUrl: String,
         fileUrl: String,
