@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
@@ -50,6 +51,7 @@ fun KoinClubDropdown(
     isDropdownExpanded: Boolean,
     items: ImmutableList<String>,
     modifier: Modifier = Modifier,
+    borderColor: Color = KoinTheme.colors.neutral300,
     onDropdownExpandChange: (Boolean) -> Unit = {},
     onItemSelected: (Int) -> Unit = {}
 ) {
@@ -83,7 +85,7 @@ fun KoinClubDropdown(
                     color = KoinTheme.colors.neutral50,
                     shape = dropdownShape
                 )
-                .border(1.dp, KoinTheme.colors.neutral300, dropdownShape)
+                .border(1.dp, borderColor, dropdownShape)
                 .padding(vertical = 8.dp, horizontal = 12.dp)
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable),
             verticalAlignment = Alignment.CenterVertically
