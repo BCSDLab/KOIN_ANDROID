@@ -316,7 +316,7 @@ fun ClubDetail(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
-                        Row (
+                        Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Image(
