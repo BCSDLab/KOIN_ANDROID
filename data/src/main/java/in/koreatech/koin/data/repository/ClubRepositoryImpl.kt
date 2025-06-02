@@ -19,8 +19,8 @@ import `in`.koreatech.koin.domain.model.club.ClubHot
 import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
 import `in`.koreatech.koin.domain.model.club.Clubs
 import `in`.koreatech.koin.domain.repository.ClubRepository
-import retrofit2.HttpException
 import javax.inject.Inject
+import retrofit2.HttpException
 
 class ClubRepositoryImpl @Inject constructor(
     private val clubRemoteDataSource: ClubRemoteDataSource

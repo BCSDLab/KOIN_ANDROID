@@ -47,7 +47,7 @@ fun NavGraphBuilder.koinClubGraph(
             onTopbarBackClick = { navController.popBackStack() },
             onModifyClick = { clubId ->
                 navController.navigate("${ClubNavType.ClubModify.route}/$clubId")
-            },
+            }
         )
     }
 

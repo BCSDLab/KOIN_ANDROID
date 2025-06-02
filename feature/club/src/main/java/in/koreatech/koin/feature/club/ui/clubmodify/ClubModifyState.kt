@@ -22,7 +22,7 @@ data class ClubModifyState(
     val shouldShowModifyDialog: Boolean = false,
     val userRole: String = "",
     val isLikeHidden: Boolean = false,
-    val likes: Int = 0,
+    val likes: Int = 0
 ) : Parcelable {
     val clubNameRequired: Boolean
         get() = clubName.isBlank() && shouldCheckRequiredField
