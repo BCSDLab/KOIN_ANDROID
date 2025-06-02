@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail
+package `in`.koreatech.koin.feature.club.ui.clubdetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -124,8 +124,10 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showAddQnaDialog = true) }
     }
 
-    fun dismissAddQnaDialog() = intent {
-        reduce { state.copy(showAddQnaDialog = false, textFieldErrorResId = null) }
+    fun dismissAddQnaDialog() = viewModelScope.launch {
+        intent {
+            reduce { state.copy(showAddQnaDialog = false, textFieldErrorResId = null) }
+        }
     }
 
     fun addClubQna(
@@ -153,6 +155,7 @@ class ClubDetailViewModel @Inject constructor(
             }
         }
         loadClubQnas()
+        dismissAddQnaDialog()
     }
 
     fun addClubQnaAnswer(
@@ -193,8 +196,10 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showLoginDialog = true) }
     }
 
-    fun dismissLoginDialog() = intent {
-        reduce { state.copy(showLoginDialog = false) }
+    fun dismissLoginDialog() = viewModelScope.launch {
+        intent {
+            reduce { state.copy(showLoginDialog = false) }
+        }
     }
 
     fun changeClubLike() = intent {
@@ -208,14 +213,17 @@ class ClubDetailViewModel @Inject constructor(
             }
         }
         loadClubDetails()
+        dismissLoginDialog()
     }
 
     fun showEmpowermentDialog() = intent {
         reduce { state.copy(showEmpowermentDialog = true) }
     }
 
-    fun dismissEmpowermentDialog() = intent {
-        reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
+    fun dismissEmpowermentDialog() = viewModelScope.launch {
+        intent {
+            reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
+        }
     }
 
     fun setManagerEmpowerment(newUserId: String) = intent {
@@ -237,9 +245,9 @@ class ClubDetailViewModel @Inject constructor(
             }
             return@intent
         }
-        reduce { state.copy(showQnasProgressBar = false) }
         loadClubDetails()
         loadClubQnas()
+        dismissEmpowermentDialog()
         postSideEffect(ClubDetailSideEffect.ShowEmpowermentSnackBar)
     }
 

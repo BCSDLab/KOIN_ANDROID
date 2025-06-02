@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail
+package `in`.koreatech.koin.feature.club.ui.clubdetail
 
 import android.content.Context
 import android.content.Intent
@@ -74,20 +74,20 @@ import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
+import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_DESCRIPTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_INSTAGRAM
-import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_INTRODUCTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.DetailLoginDialog
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogAddQnaContent
-import `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content.DetailDialogEmpowermentContent
-import `in`.koreatech.koin.feature.club.ui.detail.component.snackbar.DetailSnackBar
-import `in`.koreatech.koin.feature.club.ui.detail.component.tabrow.DetailTabRow
-import `in`.koreatech.koin.feature.club.ui.detail.intro.ClubDetailIntro
-import `in`.koreatech.koin.feature.club.ui.detail.qna.ClubDetailQna
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailLoginDialog
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.tabrow.DetailTabRow
+import `in`.koreatech.koin.feature.club.ui.clubdetail.intro.ClubDetailIntro
+import `in`.koreatech.koin.feature.club.ui.clubdetail.qna.ClubDetailQna
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -104,7 +104,7 @@ fun ClubDetail(
     val detailList = listOf(
         Pair(DETAIL_CATEGORY, state.clubDetails?.category),
         Pair(DETAIL_LOCATION, state.clubDetails?.location),
-        Pair(DETAIL_INTRODUCTION, state.clubDetails?.introduction),
+        Pair(DETAIL_DESCRIPTION, state.clubDetails?.description),
         Pair(DETAIL_INSTAGRAM, state.clubDetails?.instagram),
         Pair(DETAIL_GOOGLE_FORM, state.clubDetails?.googleForm),
         Pair(DETAIL_OPEN_CHAT, state.clubDetails?.openChat),
@@ -302,10 +302,12 @@ fun ClubDetail(
                                         } ?: viewModel.showLoginDialog()
                                     }
                             )
-                            Text(
-                                text = "${state.clubDetails?.likes}",
-                                style = KoinTheme.typography.medium14
-                            )
+                            if (state.clubDetails?.isLikedHidden == true) {
+                                Text(
+                                    text = "${state.clubDetails?.likes}",
+                                    style = KoinTheme.typography.medium14
+                                )
+                            }
                         }
                         state.userId?.let {
                             if (state.clubDetails?.manager == true) {
@@ -315,13 +317,13 @@ fun ClubDetail(
                                     FilledButton(
                                         text = stringResource(R.string.detail_fix_button),
                                         onClick = {}, // 동아리 정보 수정 버튼 클릭
-                                        contentPadding = PaddingValues(horizontal = 11.dp, vertical = 5.dp)
+                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     FilledButton(
                                         text = stringResource(R.string.detail_empowerment_button),
                                         onClick = { viewModel.showEmpowermentDialog() },
-                                        contentPadding = PaddingValues(horizontal = 9.dp, vertical = 5.dp)
+                                        contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
                                     )
                                 }
                             }
@@ -339,7 +341,10 @@ fun ClubDetail(
                             var linkUrl = ""
                             intro.second?.let {
                                 when (intro.first) {
-                                    DETAIL_INTRODUCTION -> maxLines = 2
+                                    DETAIL_DESCRIPTION -> {
+                                        maxLines = 2
+                                        outputText = "${stringResource(intro.first.strResId)}$it"
+                                    }
                                     DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
@@ -356,7 +361,7 @@ fun ClubDetail(
                             }
                             Row {
                                 Text(
-                                    text = stringResource(intro.first.strResId),
+                                    text = if (intro.first != DETAIL_DESCRIPTION) stringResource(intro.first.strResId) else "",
                                     style = KoinTheme.typography.medium18,
                                     color = KoinTheme.colors.neutral800
                                 )

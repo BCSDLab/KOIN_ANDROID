@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content
+package `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

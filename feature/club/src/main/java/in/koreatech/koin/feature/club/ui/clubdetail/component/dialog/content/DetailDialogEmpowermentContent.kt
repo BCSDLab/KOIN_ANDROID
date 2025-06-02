@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.detail.component.dialog.content
+package `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
-import `in`.koreatech.koin.feature.club.ui.detail.component.textfield.DetailQnaTextField
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.textfield.DetailQnaTextField
 
 @Composable
 fun DetailDialogEmpowermentContent(
