@@ -39,7 +39,10 @@ fun KoinClubMainItem(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .clickable { onClick() }
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = ripple(bounded = false)
+            ) { onClick() }
             .background(color = KoinTheme.colors.neutral50)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
