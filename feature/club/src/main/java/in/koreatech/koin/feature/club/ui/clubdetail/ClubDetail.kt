@@ -97,6 +97,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ClubDetail(
     initialPage: Int = 0,
     onTopbarBackClick: () -> Unit = {},
+    onModifyClick: (Int) -> Unit = {},
     viewModel: ClubDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
@@ -294,7 +295,9 @@ fun ClubDetail(
                                     Spacer(modifier = Modifier.width(8.dp))
                                     FilledButton(
                                         text = stringResource(R.string.detail_fix_button),
-                                        onClick = {}, // 동아리 정보 수정 버튼 클릭
+                                        onClick = {
+                                            onModifyClick(state.clubId)
+                                        }, // 동아리 정보 수정 버튼 클릭
                                         contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
                                     )
                                 }
