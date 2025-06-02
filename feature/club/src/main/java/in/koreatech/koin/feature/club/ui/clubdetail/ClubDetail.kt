@@ -313,7 +313,7 @@ fun ClubDetail(
                             modifier = Modifier
                                 .padding(end = 16.dp)
                                 .weight(1f, fill = false),
-                            maxLines = 1,
+                            maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
                         Row (
