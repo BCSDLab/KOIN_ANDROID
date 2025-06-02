@@ -35,13 +35,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -101,6 +104,7 @@ fun ClubCreateScreen(
             shouldShowCreateDialog = uiState.shouldShowCreateDialog,
             shouldShowPermissionDialog = uiState.shouldShowPermissionDialog,
             userRole = uiState.userRole,
+            imageUrl = uiState.clubImageUrl,
             modifier = modifier.padding(innerPadding),
             onClubNameChange = viewModel::updateClubName,
             onClubDescriptionChange = viewModel::updateClubDescription,
@@ -146,6 +150,7 @@ fun ClubCreateScreenImpl(
     shouldShowCreateDialog: Boolean,
     shouldShowPermissionDialog: Boolean,
     userRole: String,
+    imageUrl: String,
     modifier: Modifier = Modifier,
     onClubNameChange: (String) -> Unit = {},
     onClubDescriptionChange: (String) -> Unit = {},
@@ -259,11 +264,27 @@ fun ClubCreateScreenImpl(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Image(
-                    modifier = Modifier,
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_club_create_upload_logo),
-                    contentDescription = null
-                )
+                if (imageUrl.isEmpty()) {
+                    Image(
+                        modifier = Modifier,
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_club_create_upload_logo),
+                        contentDescription = null
+                    )
+                } else {
+                    SubcomposeAsyncImage(
+                        model = imageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        loading = {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                    )
+                }
 
                 Text(
                     text = stringResource(R.string.club_create_logo_description),
@@ -544,6 +565,7 @@ fun ClubCreateScreenPreview() {
         phoneNumber = "010-1234-5678",
         shouldShowCreateDialog = false,
         shouldShowPermissionDialog = false,
-        userRole = "Member"
+        userRole = "Member",
+        imageUrl = "",
     )
 }
