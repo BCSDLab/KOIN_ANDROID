@@ -38,7 +38,7 @@ fun KoinClubMainItem(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(KoinTheme.shapes.small)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(bounded = false)
