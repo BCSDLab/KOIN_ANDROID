@@ -236,7 +236,7 @@ fun ClubCreateScreenImpl(
 
     if (isLoading) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().zIndex(1f),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
