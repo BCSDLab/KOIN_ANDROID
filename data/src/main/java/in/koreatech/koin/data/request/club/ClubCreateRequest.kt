@@ -13,7 +13,8 @@ data class ClubCreateRequest(
     @SerializedName("google_form_url") val googleForm: String,
     @SerializedName("open_chat") val openChat: String,
     @SerializedName("phone_number") val phoneNumber: String,
-    @SerializedName("role") val role: String
+    @SerializedName("role") val role: String,
+    @SerializedName("is_like_hidden") val isLikeHidden: Boolean
 ) {
     data class ClubManagersRequest(
         @SerializedName("user_id") val userId: String

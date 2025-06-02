@@ -157,6 +157,14 @@ class ClubCreateViewModel @Inject constructor(
         }
     }
 
+    fun updateIsLikeHidden(isLikeHidden: Boolean) = blockingIntent {
+        reduce {
+            state.copy(
+                isLikeHidden = isLikeHidden
+            )
+        }
+    }
+
     private fun uploadImage(
         preSignedUrl: String,
         fileUrl: String,
@@ -243,7 +251,8 @@ class ClubCreateViewModel @Inject constructor(
                 googleForm = state.googleFormUrl,
                 openChat = state.openChatUrl,
                 phoneNumber = state.phoneNumber,
-                role = state.userRole
+                role = state.userRole,
+                isLikeHidden = state.isLikeHidden
             ).onSuccess {
                 reduce {
                     state.copy(

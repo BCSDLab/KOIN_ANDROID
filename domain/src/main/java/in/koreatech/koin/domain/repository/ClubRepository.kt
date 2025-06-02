@@ -31,7 +31,8 @@ interface ClubRepository {
         googleForm: String,
         openChat: String,
         phoneNumber: String,
-        role: String
+        role: String,
+        isLikeHidden: Boolean
     ): Result<Unit>
 
     suspend fun getClubQnas(

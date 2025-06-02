@@ -65,7 +65,8 @@ class ClubRepositoryImpl @Inject constructor(
         googleForm: String,
         openChat: String,
         phoneNumber: String,
-        role: String
+        role: String,
+        isLikeHidden: Boolean
     ): Result<Unit> {
         return runCatching {
             clubRemoteDataSource.createClub(
@@ -80,7 +81,8 @@ class ClubRepositoryImpl @Inject constructor(
                     googleForm = googleForm,
                     openChat = openChat,
                     phoneNumber = phoneNumber,
-                    role = role
+                    role = role,
+                    isLikeHidden = isLikeHidden
                 )
             )
         }.onFailure {

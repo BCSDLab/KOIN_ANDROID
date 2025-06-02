@@ -17,7 +17,8 @@ class CreateClubUseCase @Inject constructor(
         googleForm: String,
         openChat: String,
         phoneNumber: String,
-        role: String
+        role: String,
+        isLikeHidden: Boolean
     ): Result<Unit> {
         return clubRepository.createClub(
             name = name,
@@ -30,7 +31,8 @@ class CreateClubUseCase @Inject constructor(
             googleForm = googleForm,
             openChat = openChat,
             phoneNumber = phoneNumber,
-            role = role
+            role = role,
+            isLikeHidden = isLikeHidden
         )
     }
 }

@@ -49,6 +49,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
@@ -107,6 +108,7 @@ fun ClubCreateScreen(
             shouldShowPermissionDialog = uiState.shouldShowPermissionDialog,
             userRole = uiState.userRole,
             imageUrl = uiState.clubImageUrl,
+            isLikeHidden = uiState.isLikeHidden,
             imageUrlRequired = uiState.clubImageUrlRequired,
             modifier = modifier.padding(innerPadding),
             onClubNameChange = viewModel::updateClubName,
@@ -154,6 +156,7 @@ fun ClubCreateScreenImpl(
     shouldShowPermissionDialog: Boolean,
     userRole: String,
     imageUrl: String,
+    isLikeHidden: Boolean,
     imageUrlRequired: Boolean,
     modifier: Modifier = Modifier,
     onClubNameChange: (String) -> Unit = {},
@@ -170,7 +173,8 @@ fun ClubCreateScreenImpl(
     onShouldShowCreateDialogChange: (Boolean) -> Unit = {},
     onShouldShowPermissionDialogChange: (Boolean) -> Unit = {},
     onUserRoleChange: (String) -> Unit = {},
-    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> }
+    uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
+    onLikeHiddenChange: (Boolean) -> Unit = {}
 ) {
     val context = LocalContext.current
     val pickMedia = pickMedia(
@@ -342,6 +346,9 @@ fun ClubCreateScreenImpl(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
+            modifier = Modifier.noRippleClickable {
+                onLikeHiddenChange(!isLikeHidden)
+            },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -368,7 +375,7 @@ fun ClubCreateScreenImpl(
 
             Image(
                 modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_club_visible),
+                imageVector = ImageVector.vectorResource(if (isLikeHidden) R.drawable.ic_club_invisible else R.drawable.ic_club_visible),
                 contentDescription = null
             )
         }
@@ -591,6 +598,7 @@ fun ClubCreateScreenPreview() {
         shouldShowPermissionDialog = false,
         userRole = "Member",
         imageUrl = "",
+        isLikeHidden = false,
         imageUrlRequired = true
     )
 }
