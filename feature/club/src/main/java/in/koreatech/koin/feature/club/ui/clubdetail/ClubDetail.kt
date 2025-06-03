@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -54,12 +55,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
@@ -202,8 +205,8 @@ fun ClubDetail(
                     DetailDialogAddQnaContent(
                         text = addQnaText,
                         onValueChange = { addQnaText = it },
-                        isError = state.textFieldErrorResId != null,
-                        errorMessage = state.textFieldErrorResId?.let { stringResource(it) } ?: ""
+                        isError = state.textFieldErrorMessage != null,
+                        errorMessage = state.textFieldErrorMessage?: ""
                     )
                 }
             )
@@ -226,8 +229,8 @@ fun ClubDetail(
                         managerId = state.userId ?: -1,
                         text = newManagerText,
                         onValueChange = { newManagerText = it },
-                        isError = state.textFieldErrorResId != null,
-                        errorMessage = state.textFieldErrorResId?.let { stringResource(it) } ?: ""
+                        isError = state.textFieldErrorMessage != null,
+                        errorMessage = state.textFieldErrorMessage ?: ""
                     )
                 }
             )
@@ -482,26 +485,29 @@ fun ClubDetail(
                                     }
                                 }
                             }
-                            if (state.showQnasProgressBar) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(700.dp)
-                                        .nestedScroll(nestedScrollConnection)
-                                ) {
-                                    CircularProgressIndicator(
+                            Box {
+                                if (state.showQnasProgressBar) {
+                                    Log.e("MYLOG","SHOW")
+                                    Box(
                                         modifier = Modifier
-                                            .size(50.dp)
-                                            .align(Alignment.Center)
-                                    )
+                                            .fillMaxWidth()
+                                            .height(800.dp)
+                                            .nestedScroll(nestedScrollConnection)
+                                            .zIndex(1f)
+                                    ) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier
+                                                .size(50.dp)
+                                                .align(Alignment.Center)
+                                        )
+                                    }
                                 }
-                            } else {
                                 ClubDetailQna(
                                     modifier = Modifier
                                         .height(800.dp)
                                         .nestedScroll(nestedScrollConnection),
                                     qnaList = qnaList,
-                                    isManager = state.clubDetails?.manager ?: false,
+                                    isManager = state.clubDetails?.manager ?: false || true,
                                     userId = state.userId,
                                     onAddQnaClick = {
                                         viewModel.showAddQnaDialog()
@@ -538,6 +544,9 @@ suspend fun handleSideEffect(
         is ClubDetailSideEffect.OpenUrl -> {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
             context.startActivity(intent)
+        }
+        is ClubDetailSideEffect.ShowToast -> {
+            ToastUtil.getInstance().makeShort(sideEffect.text)
         }
     }
 }

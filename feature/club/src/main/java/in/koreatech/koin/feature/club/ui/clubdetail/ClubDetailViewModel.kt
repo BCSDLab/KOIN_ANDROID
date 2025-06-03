@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.club.ui.clubdetail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,8 +18,6 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
-import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.EMPTY_ERROR
-import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.NON_USERID_ERROR
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -67,6 +66,15 @@ class ClubDetailViewModel @Inject constructor(
         fetchAllData()
     }
 
+    private fun showExceptionToast(e: Throwable) = viewModelScope.launch {
+        intent {
+            if (e is ClubError) {
+                postSideEffect(ClubDetailSideEffect.ShowToast(e.message ?: DEFAULT_ERROR_MESSAGE))
+            }
+            else throw e
+        }
+    }
+
     private fun fetchAllData() = intent {
         if (state.isLoading) return@intent
         loadClubDetails()
@@ -79,7 +87,6 @@ class ClubDetailViewModel @Inject constructor(
                 is User.Anonymous -> {
                     reduce { state.copy(userId = null) }
                 }
-
                 is User.Student -> {
                     reduce { state.copy(userId = user.id) }
                 }
@@ -99,6 +106,9 @@ class ClubDetailViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
+            }.onFailure { e ->
+                reduce { state.copy(isLoading = false) }
+                showExceptionToast(e)
             }
         }
     }
@@ -113,7 +123,7 @@ class ClubDetailViewModel @Inject constructor(
                     state.copy(
                         clubQnasInfo = it.toParcelizeClubQnasInfo(),
                         isLoading = false,
-                        showQnasProgressBar = false
+                        showQnasProgressBar = true
                     )
                 }
             }
@@ -126,7 +136,7 @@ class ClubDetailViewModel @Inject constructor(
 
     fun dismissAddQnaDialog() = viewModelScope.launch {
         intent {
-            reduce { state.copy(showAddQnaDialog = false, textFieldErrorResId = null) }
+            reduce { state.copy(showAddQnaDialog = false, textFieldErrorMessage = null) }
         }
     }
 
@@ -140,7 +150,7 @@ class ClubDetailViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isLoading = false,
-                    textFieldErrorResId = EMPTY_ERROR.strResId
+                    textFieldErrorMessage = EMPTY_ERROR_MESSAGE
                 )
             }
             return@intent
@@ -151,7 +161,7 @@ class ClubDetailViewModel @Inject constructor(
                 parentId = parentId,
                 content = content
             ).onFailure { e ->
-                if (e !is HttpException) throw e
+                showExceptionToast(e)
             }
         }
         loadClubQnas()
@@ -170,7 +180,7 @@ class ClubDetailViewModel @Inject constructor(
                 parentId = parentId,
                 content = content
             ).onFailure { e ->
-                if (e !is HttpException) throw e
+                showExceptionToast(e)
             }
         }
         loadClubQnas()
@@ -186,7 +196,7 @@ class ClubDetailViewModel @Inject constructor(
                 clubId = state.clubId,
                 qnaId = qnaId
             ).onFailure { e ->
-                if (e !is HttpException) throw e
+                showExceptionToast(e)
             }
         }
         loadClubQnas()
@@ -207,9 +217,13 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         state.clubDetails?.let {
             if (it.isLiked) {
-                cancelClubLikeUseCase(clubId = state.clubId)
+                cancelClubLikeUseCase(clubId = state.clubId).onFailure { e ->
+                    showExceptionToast(e)
+                }
             } else {
-                setClubLikeUseCase(clubId = state.clubId)
+                setClubLikeUseCase(clubId = state.clubId).onFailure { e ->
+                    showExceptionToast(e)
+                }
             }
         }
         loadClubDetails()
@@ -222,7 +236,7 @@ class ClubDetailViewModel @Inject constructor(
 
     fun dismissEmpowermentDialog() = viewModelScope.launch {
         intent {
-            reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
+            reduce { state.copy(showEmpowermentDialog = false, textFieldErrorMessage = null) }
         }
     }
 
@@ -230,7 +244,7 @@ class ClubDetailViewModel @Inject constructor(
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         if (newUserId.isEmpty()) {
-            reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
+            reduce { state.copy(isLoading = false, textFieldErrorMessage = EMPTY_ERROR_MESSAGE) }
             return@intent
         }
         setClubEmpowermentUseCase(
@@ -238,8 +252,8 @@ class ClubDetailViewModel @Inject constructor(
             changedManagerId = newUserId
         ).onFailure { e ->
             reduce { state.copy(isLoading = false) }
-            if (e is ClubError.UserIdNotFound) {
-                reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
+            if (e is ClubError.UserIdOrClubNotFound) {
+                reduce { state.copy(textFieldErrorMessage = e.message) }
             } else {
                 throw e
             }

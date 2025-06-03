@@ -2,10 +2,13 @@ package `in`.koreatech.koin.domain.error.club
 
 import `in`.koreatech.koin.domain.error.KoinErrorException
 
-sealed class ClubError {
-    data object BadRequest : KoinErrorException()
-    data object Unauthorized : KoinErrorException()
-    data object Forbidden : KoinErrorException()
-    data object NotFound : KoinErrorException()
-    data object UserIdNotFound : KoinErrorException()
+sealed class ClubError : KoinErrorException() {
+    data class Unauthorized (override val message : String?) : ClubError()
+    data class Forbidden (override val message : String?) : ClubError()
+    data class UserIdOrClubNotFound (override val message : String?) : ClubError()
+    data class ClubNotFound (override val message : String?) : ClubError()
+    data class NotClubManager (override val message : String?) : ClubError()
+    data class QnaNotFound (override val message : String?) : ClubError()
+    data class AlreadyLiked (override val message : String?) : ClubError()
+    data class AlreadyNotLiked (override val message : String?) : ClubError()
 }

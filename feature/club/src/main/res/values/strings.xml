@@ -32,8 +32,6 @@
     <string name="detail_dialog_empowerment_old_id">현 권한자 아이디:&#160;</string>
     <string name="detail_dialog_empowerment_new_id">향후 권한자 아이디:</string>
     <string name="detail_dialog_empowerment_hint">아이디를 입력해주세요.</string>
-    <string name="detail_textfield_error_empty">필수 입력란입니다.</string>
-    <string name="detail_textfield_error_non_user_id">존재하지 않는 id 입니다.</string>
 
     <string name="club_main_activity_widget_title">동아리 조회</string>
     <string name="club_main_widget_category_performance">공연</string>
