@@ -109,6 +109,7 @@ dependencies {
     implementation(project(":feature:banner"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:signin"))
+    implementation(project(":feature:userinfo"))
 
     implementation(libs.guava)
 
