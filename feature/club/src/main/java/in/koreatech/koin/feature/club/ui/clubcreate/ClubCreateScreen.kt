@@ -330,6 +330,7 @@ fun ClubCreateScreenImpl(
             Spacer(modifier = Modifier.weight(1f))
 
             FilledButton(
+                modifier = Modifier.width(100.dp),
                 text = stringResource(R.string.club_create_create_cancel),
                 onClick = onCancelCreateClub,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
@@ -339,6 +340,7 @@ fun ClubCreateScreenImpl(
             Spacer(modifier = Modifier.width(8.dp))
 
             FilledButton(
+                modifier = Modifier.width(100.dp),
                 text = stringResource(R.string.club_create_create_request),
                 onClick = { onShouldShowCreateDialogChange(true) },
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),

@@ -272,6 +272,7 @@ fun ClubModifyScreenImpl(
             Spacer(modifier = Modifier.weight(1f))
 
             FilledButton(
+                modifier = Modifier.width(100.dp),
                 text = stringResource(R.string.club_modify_cancel),
                 onClick = onCancelModifyClub,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
@@ -281,6 +282,7 @@ fun ClubModifyScreenImpl(
             Spacer(modifier = Modifier.width(8.dp))
 
             FilledButton(
+                modifier = Modifier.width(100.dp),
                 text = stringResource(R.string.club_modify_save),
                 onClick = { onShouldShowModifyDialogChange(true) },
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
