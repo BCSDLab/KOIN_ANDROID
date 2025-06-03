@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.club.ui.clubmodify
 
+import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -70,9 +72,10 @@ fun ClubModifyScreen(
     onClubModified: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, onClubModified)
+        handleSideEffect(it, onClubModified, context)
     }
 
     Scaffold(
@@ -492,11 +495,16 @@ fun ClubModifyScreenImpl(
 
 fun handleSideEffect(
     sideEffect: ClubModifySideEffect,
-    onClubModified: () -> Unit = { }
+    onClubModified: () -> Unit = { },
+    context: Context
 ) {
     when (sideEffect) {
         ClubModifySideEffect.ClubModifySuccess -> {
             onClubModified()
+        }
+
+        ClubModifySideEffect.ClubImageUploadFailure -> context.let {
+            Toast.makeText(it, it.getString(R.string.club_image_upload_failed), Toast.LENGTH_SHORT).show()
         }
     }
 }

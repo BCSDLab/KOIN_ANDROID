@@ -93,5 +93,6 @@
     <string name="club_modify_logo_description">수정하기위해\n클릭하여 사진을\n업로드해주세요.(선택)</string>
     <string name="club_modify_success_snackbar">동아리 정보가 수정되었습니다.</string>
 
+    <string name="club_image_upload_failed">이미지 업로드에 실패했습니다.</string>
     <string name="club_dialog_ok">확인</string>
 </resources>

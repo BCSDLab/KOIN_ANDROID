@@ -181,8 +181,9 @@ class ClubModifyViewModel @Inject constructor(
         }.onFailure {
             intent {
                 reduce {
-                    state.copy(isLoading = true)
+                    state.copy(isLoading = false)
                 }
+                postSideEffect(ClubModifySideEffect.ClubImageUploadFailure)
             }
         }
     }
@@ -212,6 +213,12 @@ class ClubModifyViewModel @Inject constructor(
                     imageUri = imageUri
                 )
             }.onFailure {
+                intent {
+                    reduce {
+                        state.copy(isLoading = false)
+                    }
+                    postSideEffect(ClubModifySideEffect.ClubImageUploadFailure)
+                }
             }
         }
     }
