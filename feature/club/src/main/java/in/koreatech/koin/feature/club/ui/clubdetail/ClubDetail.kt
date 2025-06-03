@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -17,6 +16,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -45,11 +45,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -122,6 +119,7 @@ fun ClubDetail(
     val context = LocalContext.current
 
     val snackbarHostState = remember { SnackbarHostState() }
+
     val listState = rememberLazyListState()
 
     viewModel.collectSideEffect { sideEffect ->
@@ -206,7 +204,7 @@ fun ClubDetail(
                         text = addQnaText,
                         onValueChange = { addQnaText = it },
                         isError = state.textFieldErrorMessage != null,
-                        errorMessage = state.textFieldErrorMessage?: ""
+                        errorMessage = state.textFieldErrorMessage ?: ""
                     )
                 }
             )
@@ -243,7 +241,8 @@ fun ClubDetail(
                 .systemBarsPadding()
                 .fillMaxSize(),
             state = listState,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            userScrollEnabled = true
         ) {
             item {
                 SubcomposeAsyncImage(
@@ -429,30 +428,21 @@ fun ClubDetail(
                 )
             }
             item {
+                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp
                 HorizontalPager(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                     state = pagerState,
                     verticalAlignment = Alignment.Top
                 ) { page ->
                     when (tabList[page]) {
                         DetailTabType.DETAIL_INTRO.strResId -> {
-                            val nestedScrollConnection = remember {
-                                object : NestedScrollConnection {
-                                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                                        return if (available.y < 0 && listState.canScrollForward) {
-                                            if (listState.canScrollForward) Offset.Zero else available
-                                        } else {
-                                            Offset.Zero
-                                        }
-                                    }
-                                }
-                            }
                             val snackbarMessage = stringResource(R.string.detail_snackbar_detail_intro_text)
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
                                 modifier = Modifier
-                                    .height(800.dp)
-                                    .nestedScroll(nestedScrollConnection),
+                                    .fillMaxSize()
+                                    .heightIn(min = deviceHeightDp),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
@@ -474,40 +464,27 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.QNA.strResId -> {
-                            val nestedScrollConnection = remember {
-                                object : NestedScrollConnection {
-                                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                                        return if (available.y < 0) {
-                                            if (listState.canScrollForward) Offset.Zero else available
-                                        } else {
-                                            Offset.Zero
-                                        }
-                                    }
-                                }
-                            }
                             Box {
                                 if (state.showQnasProgressBar) {
-                                    Log.e("MYLOG","SHOW")
                                     Box(
                                         modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(800.dp)
-                                            .nestedScroll(nestedScrollConnection)
+                                            .fillMaxSize()
+                                            .heightIn(min = deviceHeightDp)
                                             .zIndex(1f)
                                     ) {
                                         CircularProgressIndicator(
                                             modifier = Modifier
-                                                .size(50.dp)
+                                                .size(100.dp)
                                                 .align(Alignment.Center)
                                         )
                                     }
                                 }
                                 ClubDetailQna(
                                     modifier = Modifier
-                                        .height(800.dp)
-                                        .nestedScroll(nestedScrollConnection),
+                                        .fillMaxSize()
+                                        .heightIn(min = deviceHeightDp),
                                     qnaList = qnaList,
-                                    isManager = state.clubDetails?.manager ?: false || true,
+                                    isManager = state.clubDetails?.manager ?: false,
                                     userId = state.userId,
                                     onAddQnaClick = {
                                         viewModel.showAddQnaDialog()

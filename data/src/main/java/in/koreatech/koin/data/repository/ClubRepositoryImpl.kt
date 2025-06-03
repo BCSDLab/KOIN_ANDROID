@@ -72,8 +72,9 @@ class ClubRepositoryImpl @Inject constructor(
                     404 -> ClubError.ClubNotFound(message)
                     else -> e.getErrorResponse().toKoinUnknownErrorException()
                 }
+            } else {
+                throw e
             }
-            else throw e
         }
     }
 

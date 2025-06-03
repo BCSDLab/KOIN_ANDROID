@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.club.ui.clubdetail
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,7 +27,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import retrofit2.HttpException
 
 @HiltViewModel
 class ClubDetailViewModel @Inject constructor(
@@ -70,8 +68,9 @@ class ClubDetailViewModel @Inject constructor(
         intent {
             if (e is ClubError) {
                 postSideEffect(ClubDetailSideEffect.ShowToast(e.message ?: DEFAULT_ERROR_MESSAGE))
+            } else {
+                throw e
             }
-            else throw e
         }
     }
 
@@ -123,7 +122,7 @@ class ClubDetailViewModel @Inject constructor(
                     state.copy(
                         clubQnasInfo = it.toParcelizeClubQnasInfo(),
                         isLoading = false,
-                        showQnasProgressBar = true
+                        showQnasProgressBar = false
                     )
                 }
             }
