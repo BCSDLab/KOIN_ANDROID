@@ -25,6 +25,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
 import `in`.koreatech.koin.feature.club.component.KoinClubMainItem
 import `in`.koreatech.koin.feature.club.model.clubCategories
 import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
+import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 
 @Composable
 fun MainClubWidgetA(
@@ -68,6 +69,7 @@ fun MainClubWidgetA(
 
 @Composable
 fun MainClubWidgetB(
+    hotClubId: Int,
     hotClubImageUrl: String,
     modifier: Modifier = Modifier
 ) {
@@ -91,7 +93,13 @@ fun MainClubWidgetB(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.club_main_widget_popular_club),
                 description = stringResource(R.string.club_main_widget_go),
-                icon = rememberAsyncImagePainter(hotClubImageUrl)
+                icon = rememberAsyncImagePainter(hotClubImageUrl),
+                onClick = {
+                    Intent(context, ClubActivity::class.java).apply {
+                        putExtra(CLUB_ID, hotClubId)
+                        context.startActivity(this)
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -124,6 +132,7 @@ fun PreviewMainClubWidgetA() {
 fun PreviewMainClubWidgetB() {
     KoinTheme {
         MainClubWidgetB(
+            hotClubId = 0,
             hotClubImageUrl = ""
         )
     }

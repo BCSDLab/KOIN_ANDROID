@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.club.navigation
 
+import android.app.Activity
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -21,7 +23,8 @@ fun NavGraphBuilder.koinClubGraph(
             navArgument(CATEGORY_ID) { type = NavType.IntType }
         )
     ) {
-        val isClubCreated by it.savedStateHandle.getStateFlow(IS_CLUB_CREATED, initialValue = false).collectAsStateWithLifecycle()
+        val isClubCreated by it.savedStateHandle.getStateFlow(IS_CLUB_CREATED, initialValue = false)
+            .collectAsStateWithLifecycle()
 
         ClubListScreen(
             isClubCreated = isClubCreated,
@@ -41,10 +44,15 @@ fun NavGraphBuilder.koinClubGraph(
         )
     ) {
         val isClubModified by it.savedStateHandle.getStateFlow(IS_CLUB_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
+        val context = LocalContext.current
 
         ClubDetail(
             isClubModified = isClubModified,
-            onTopbarBackClick = { navController.popBackStack() },
+            onTopbarBackClick = {
+                if (!navController.popBackStack()) {
+                    (context as? Activity)?.finish()
+                }
+            },
             onModifyClick = { clubId ->
                 navController.navigate("${ClubNavType.ClubModify.route}/$clubId")
             }

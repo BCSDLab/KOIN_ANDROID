@@ -135,7 +135,8 @@ fun ClubCreateScreen(
                     fileName = fileName,
                     imageUri = fileUri
                 )
-            }
+            },
+            onLikeHiddenChange = viewModel::updateIsLikeHidden
         )
     }
 }
