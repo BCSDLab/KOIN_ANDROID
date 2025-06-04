@@ -153,7 +153,7 @@ class ClubRepositoryImpl @Inject constructor(
             if (e is HttpException) {
                 val message = e.getErrorResponse().message
                 when (e.code()) {
-                    403 -> throw ClubError.Unauthorized(message)
+                    403 -> throw ClubError.DeletePermissionDenied(message)
                     404 -> throw ClubError.QnaNotFound(message)
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
@@ -173,6 +173,7 @@ class ClubRepositoryImpl @Inject constructor(
             if (e is HttpException) {
                 val message = e.getErrorResponse().message
                 when (e.code()) {
+                    400 -> throw ClubError.AlreadyManager(message)
                     401 -> throw ClubError.Unauthorized(message)
                     403 -> throw ClubError.Forbidden(message)
                     404 -> throw ClubError.UserIdOrClubNotFound(message)
