@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
