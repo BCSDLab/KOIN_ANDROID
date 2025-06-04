@@ -16,5 +16,5 @@ data class ClubDetails(
     val manager: Boolean,
     val isLiked: Boolean,
     val updatedAt: String,
-    val isLikedHidden: Boolean
+    val isLikeHidden: Boolean
 )

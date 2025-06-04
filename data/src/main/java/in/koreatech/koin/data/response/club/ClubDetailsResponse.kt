@@ -18,5 +18,5 @@ data class ClubDetailsResponse(
     @SerializedName("manager") val manager: Boolean,
     @SerializedName("is_liked") val isLiked: Boolean,
     @SerializedName("updated_at") val updatedAt: String,
-    @SerializedName("is_liked_hidden") val isLikedHidden: Boolean
+    @SerializedName("is_like_hidden") val isLikeHidden: Boolean
 )
