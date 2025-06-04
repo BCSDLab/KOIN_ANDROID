@@ -364,6 +364,7 @@ fun ClubDetail(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         detailList.forEach { intro ->
+                            if (intro.second.isNullOrBlank()) return@forEach
                             var outputText = ""
                             var maxLines = 1
                             var linkUrl = ""
