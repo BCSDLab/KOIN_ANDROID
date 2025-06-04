@@ -92,5 +92,16 @@
     <string name="club_create_dialog_permission_content_hint">해당 동아리에서 수행하고 있는 역할을 입력해주세요.</string>
     <string name="club_create_dialog_permission_content">동아리 공식 연락망을 통해 확인 후 승인처리됩니다.</string>
 
+    <string name="club_modify_save">저장</string>
+    <string name="club_modify_cancel">취소</string>
+    <string name="club_modify_likes">좋아요 %1$d개</string>
+    <string name="club_modify_dialog_title">수정 확인</string>
+    <string name="club_modify_dialog_content">변경 내용을 저장하시겠습니까?\n수정한 내용은 저장되며 되돌릴 수 없습니다.\n계속 진행하시겠습니까?</string>
+    <string name="club_modify_dialog_positive">저장</string>
+    <string name="club_modify_dialog_negative">취소</string>
+    <string name="club_modify_logo_description">수정하기위해\n클릭하여 사진을\n업로드해주세요.(선택)</string>
+    <string name="club_modify_success_snackbar">동아리 정보가 수정되었습니다.</string>
+
+    <string name="club_image_upload_failed">이미지 업로드에 실패했습니다.</string>
     <string name="club_dialog_ok">확인</string>
 </resources>

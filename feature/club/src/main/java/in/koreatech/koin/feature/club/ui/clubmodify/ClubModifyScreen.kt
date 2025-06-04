@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.ui.clubcreate
+package `in`.koreatech.koin.feature.club.ui.clubmodify
 
 import android.content.Context
 import android.net.Uri
@@ -7,7 +7,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +36,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -67,17 +65,17 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClubCreateScreen(
+fun ClubModifyScreen(
     modifier: Modifier = Modifier,
-    viewModel: ClubCreateViewModel = hiltViewModel(),
+    viewModel: ClubModifyViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit = { },
-    onClubCreated: () -> Unit = { }
+    onClubModified: () -> Unit = { }
 ) {
-    val context = LocalContext.current
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, onClubCreated, context)
+        handleSideEffect(it, onClubModified, context)
     }
 
     Scaffold(
@@ -93,7 +91,7 @@ fun ClubCreateScreen(
         // Let's try to draw content behind the system bars
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { innerPadding ->
-        ClubCreateScreenImpl(
+        ClubModifyScreenImpl(
             isLoading = uiState.isLoading,
             clubName = uiState.clubName,
             clubNameRequired = uiState.clubNameRequired,
@@ -107,14 +105,11 @@ fun ClubCreateScreen(
             googleFormUrl = uiState.googleFormUrl,
             openChatUrl = uiState.openChatUrl,
             phoneNumber = uiState.phoneNumber,
-            shouldShowCreateDialog = uiState.shouldShowCreateDialog,
-            shouldShowPermissionDialog = uiState.shouldShowPermissionDialog,
-            userRole = uiState.userRole,
+            shouldShowModifyDialog = uiState.shouldShowModifyDialog,
             imageUrl = uiState.clubImageUrl,
             isLikeHidden = uiState.isLikeHidden,
-            imageUrlRequired = uiState.clubImageUrlRequired,
+            likes = uiState.likes,
             modifier = modifier.padding(innerPadding),
-            onClubNameChange = viewModel::updateClubName,
             onClubDescriptionChange = viewModel::updateClubDescription,
             onClubCategoryChange = viewModel::updateClubCategory,
             onClubCategoryDropdownExpandedChange = viewModel::updateIsClubCategoryDropdownExpanded,
@@ -123,11 +118,9 @@ fun ClubCreateScreen(
             onGoogleFormUrlChange = viewModel::updateGoogleFormUrl,
             onOpenChatUrlChange = viewModel::updateOpenChatUrl,
             onPhoneNumberChange = viewModel::updatePhoneNumber,
-            onRequestCreateClub = viewModel::requestCreateClub,
-            onCancelCreateClub = onNavigateUp,
-            onShouldShowCreateDialogChange = viewModel::updateShowCreateDialog,
-            onShouldShowPermissionDialogChange = viewModel::updateShowPermissionDialog,
-            onUserRoleChange = viewModel::updateUserRole,
+            onRequestModifyClub = viewModel::requestModifyClub,
+            onCancelModifyClub = onNavigateUp,
+            onShouldShowModifyDialogChange = viewModel::updateShowModifyDialog,
             uploadImage = { fileSize, fileType, fileName, fileUri ->
                 viewModel.getPreSignedUrl(
                     fileSize = fileSize,
@@ -142,7 +135,7 @@ fun ClubCreateScreen(
 }
 
 @Composable
-fun ClubCreateScreenImpl(
+fun ClubModifyScreenImpl(
     isLoading: Boolean,
     clubName: String,
     clubNameRequired: Boolean,
@@ -156,14 +149,11 @@ fun ClubCreateScreenImpl(
     googleFormUrl: String,
     openChatUrl: String,
     phoneNumber: String,
-    shouldShowCreateDialog: Boolean,
-    shouldShowPermissionDialog: Boolean,
-    userRole: String,
+    shouldShowModifyDialog: Boolean,
     imageUrl: String,
     isLikeHidden: Boolean,
-    imageUrlRequired: Boolean,
+    likes: Int,
     modifier: Modifier = Modifier,
-    onClubNameChange: (String) -> Unit = {},
     onClubDescriptionChange: (String) -> Unit = {},
     onClubCategoryChange: (ClubCategories) -> Unit = {},
     onClubCategoryDropdownExpandedChange: (Boolean) -> Unit = {},
@@ -172,11 +162,9 @@ fun ClubCreateScreenImpl(
     onGoogleFormUrlChange: (String) -> Unit = {},
     onOpenChatUrlChange: (String) -> Unit = {},
     onPhoneNumberChange: (String) -> Unit = {},
-    onRequestCreateClub: () -> Unit = {},
-    onCancelCreateClub: () -> Unit = {},
-    onShouldShowCreateDialogChange: (Boolean) -> Unit = {},
-    onShouldShowPermissionDialogChange: (Boolean) -> Unit = {},
-    onUserRoleChange: (String) -> Unit = {},
+    onRequestModifyClub: () -> Unit = {},
+    onCancelModifyClub: () -> Unit = {},
+    onShouldShowModifyDialogChange: (Boolean) -> Unit = {},
     uploadImage: (fileSize: Long, fileType: String, fileName: String, fileUri: Uri) -> Unit = { _, _, _, _ -> },
     onLikeHiddenChange: (Boolean) -> Unit = {}
 ) {
@@ -186,64 +174,29 @@ fun ClubCreateScreenImpl(
         onResult = uploadImage
     )
 
-    if (shouldShowCreateDialog) {
+    if (shouldShowModifyDialog) {
         DetailDialog(
-            title = stringResource(R.string.club_create_dialog_create_title),
+            title = stringResource(R.string.club_modify_dialog_title),
             titleStyle = KoinTheme.typography.bold18,
-            onDismiss = { onShouldShowCreateDialogChange(false) },
-            onNegative = { onShouldShowCreateDialogChange(false) },
+            positiveButtonText = stringResource(R.string.club_modify_dialog_positive),
+            onDismiss = { onShouldShowModifyDialogChange(false) },
+            onNegative = { onShouldShowModifyDialogChange(false) },
             onPositive = {
-                onShouldShowCreateDialogChange(false)
-                onShouldShowPermissionDialogChange(true)
+                onShouldShowModifyDialogChange(false)
+                onRequestModifyClub()
             },
             content = {
                 Column {
                     Text(
                         text = stringResource(
-                            R.string.club_create_dialog_create_content_club,
+                            R.string.club_modify_dialog_content,
                             clubName,
                             stringResource(R.string.club_create_category_with_suffix, stringResource(clubCategory!!.stringRes)),
                             location
                         ),
                         style = KoinTheme.typography.regular16
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = stringResource(R.string.club_create_dialog_create_content),
-                        style = KoinTheme.typography.regular16
-                    )
                 }
-            }
-        )
-    }
-
-    if (shouldShowPermissionDialog) {
-        DetailDialog(
-            title = stringResource(R.string.club_create_dialog_permission_title),
-            titleStyle = KoinTheme.typography.bold18,
-            onDismiss = { onShouldShowPermissionDialogChange(false) },
-            onNegative = { onShouldShowPermissionDialogChange(false) },
-            onPositive = {
-                onShouldShowPermissionDialogChange(false)
-                onRequestCreateClub()
-            },
-            content = {
-                KoinClubBasicTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = userRole,
-                    onValueChange = onUserRoleChange,
-                    hint = stringResource(R.string.club_create_dialog_permission_content_hint),
-                    textStyle = KoinTheme.typography.regular12
-                )
-
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.club_create_dialog_permission_content),
-                    textAlign = TextAlign.Center,
-                    style = KoinTheme.typography.regular14
-                )
             }
         )
     }
@@ -273,7 +226,6 @@ fun ClubCreateScreenImpl(
                 modifier = Modifier
                     .size(200.dp)
                     .clip(KoinTheme.shapes.extraLarge)
-                    .border(1.dp, if (imageUrlRequired) KoinTheme.colors.sub500 else Color.Unspecified, KoinTheme.shapes.extraLarge)
                     .background(KoinTheme.colors.neutral200)
                     .clickable {
                         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -304,23 +256,12 @@ fun ClubCreateScreenImpl(
                 }
 
                 Text(
-                    text = stringResource(R.string.club_create_logo_description),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(R.string.club_modify_logo_description),
                     style = KoinTheme.typography.medium18,
                     color = KoinTheme.colors.neutral600
                 )
             }
-        }
-
-        if (imageUrlRequired) {
-            Spacer(modifier = Modifier.height(4.dp))
-
-            KoinClubTextFieldAlert(
-                modifier = Modifier
-                    .width(200.dp)
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-                text = stringResource(R.string.club_create_warning_required)
-            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -332,8 +273,8 @@ fun ClubCreateScreenImpl(
 
             FilledButton(
                 modifier = Modifier.width(100.dp),
-                text = stringResource(R.string.club_create_create_cancel),
-                onClick = onCancelCreateClub,
+                text = stringResource(R.string.club_modify_cancel),
+                onClick = onCancelModifyClub,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 textStyle = KoinTheme.typography.medium14
             )
@@ -342,8 +283,8 @@ fun ClubCreateScreenImpl(
 
             FilledButton(
                 modifier = Modifier.width(100.dp),
-                text = stringResource(R.string.club_create_create_request),
-                onClick = { onShouldShowCreateDialogChange(true) },
+                text = stringResource(R.string.club_modify_save),
+                onClick = { onShouldShowModifyDialogChange(true) },
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 textStyle = KoinTheme.typography.medium14
             )
@@ -358,7 +299,7 @@ fun ClubCreateScreenImpl(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(R.string.club_create_name_header),
+                text = clubName,
                 style = KoinTheme.typography.medium16
             )
 
@@ -373,7 +314,7 @@ fun ClubCreateScreenImpl(
             Spacer(modifier = Modifier.width(4.dp))
 
             Text(
-                text = stringResource(R.string.club_create_like),
+                text = stringResource(R.string.club_modify_likes, likes),
                 style = KoinTheme.typography.medium14
             )
 
@@ -385,16 +326,6 @@ fun ClubCreateScreenImpl(
                 contentDescription = null
             )
         }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        KoinClubBasicTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = clubName,
-            onValueChange = onClubNameChange,
-            hint = stringResource(R.string.club_create_name_hint),
-            borderColor = if (clubNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300
-        )
 
         if (clubNameRequired) {
             Spacer(modifier = Modifier.height(4.dp))
@@ -430,14 +361,6 @@ fun ClubCreateScreenImpl(
                     onClubCategoryChange(clubCategories[index])
                 },
                 borderColor = if (clubCategoryRequired) KoinTheme.colors.sub500 else KoinTheme.colors.neutral300
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            Text(
-                text = stringResource(R.string.club_create_category_extra),
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral600
             )
         }
 
@@ -573,16 +496,16 @@ fun ClubCreateScreenImpl(
 }
 
 fun handleSideEffect(
-    sideEffect: ClubCreateSideEffect,
-    onClubCreated: () -> Unit = { },
+    sideEffect: ClubModifySideEffect,
+    onClubModified: () -> Unit = { },
     context: Context
 ) {
     when (sideEffect) {
-        ClubCreateSideEffect.ClubCreateSuccess -> {
-            onClubCreated()
+        ClubModifySideEffect.ClubModifySuccess -> {
+            onClubModified()
         }
 
-        ClubCreateSideEffect.ClubImageUploadFailure -> context.let {
+        ClubModifySideEffect.ClubImageUploadFailure -> context.let {
             Toast.makeText(it, it.getString(R.string.club_image_upload_failed), Toast.LENGTH_SHORT).show()
         }
     }
@@ -590,8 +513,8 @@ fun handleSideEffect(
 
 @Preview(showBackground = true)
 @Composable
-fun ClubCreateScreenPreview() {
-    ClubCreateScreenImpl(
+fun ClubModifyScreenPreview() {
+    ClubModifyScreenImpl(
         isLoading = false,
         clubName = "Club Name",
         clubNameRequired = false,
@@ -605,11 +528,9 @@ fun ClubCreateScreenPreview() {
         googleFormUrl = "https://forms.gle/club",
         openChatUrl = "https://open.kakao.com/o/gjK8f3Yc",
         phoneNumber = "010-1234-5678",
-        shouldShowCreateDialog = false,
-        shouldShowPermissionDialog = false,
-        userRole = "Member",
+        shouldShowModifyDialog = false,
         imageUrl = "",
         isLikeHidden = false,
-        imageUrlRequired = true
+        likes = 0
     )
 }

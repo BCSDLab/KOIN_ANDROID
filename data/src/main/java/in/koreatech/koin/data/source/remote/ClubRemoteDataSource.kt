@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.api.ClubApi
 import `in`.koreatech.koin.data.api.auth.ClubAuthApi
 import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
+import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import javax.inject.Inject
 import retrofit2.HttpException
@@ -25,6 +26,17 @@ class ClubRemoteDataSource @Inject constructor(
 
     suspend fun createClub(request: ClubCreateRequest) {
         clubAuthApi.createClub(request).let {
+            if (!it.isSuccessful) {
+                throw HttpException(it)
+            }
+        }
+    }
+
+    suspend fun modifyClub(
+        clubId: Int,
+        request: ClubModifyRequest
+    ) {
+        clubAuthApi.modifyClub(clubId, request).let {
             if (!it.isSuccessful) {
                 throw HttpException(it)
             }

@@ -13,6 +13,15 @@ enum class ClubCategories(val id: Int, @StringRes val stringRes: Int = 0, @Drawa
     PERFORMANCE(5, R.string.club_main_widget_category_performance, R.drawable.ic_club_category_performance)
 }
 
+fun String.toClubCategory() = when (this) {
+    "학술" -> ClubCategories.ACADEMIC
+    "운동" -> ClubCategories.SPORTS
+    "취미" -> ClubCategories.HOBBY
+    "종교" -> ClubCategories.RELIGIOUS
+    "공연" -> ClubCategories.PERFORMANCE
+    else -> ClubCategories.ALL
+}
+
 val clubCategories = listOf(
     ClubCategories.PERFORMANCE,
     ClubCategories.SPORTS,
