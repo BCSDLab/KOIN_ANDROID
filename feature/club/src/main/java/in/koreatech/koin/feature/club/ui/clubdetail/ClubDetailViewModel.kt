@@ -139,7 +139,7 @@ class ClubDetailViewModel @Inject constructor(
     ) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
-        if (content.isEmpty()) {
+        if (content.isBlank()) {
             reduce {
                 state.copy(
                     isLoading = false,

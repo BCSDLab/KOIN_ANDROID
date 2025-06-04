@@ -239,7 +239,7 @@ fun ClubDetail(
                         clubName = state.clubDetails?.name ?: "",
                         managerId = state.userId ?: -1,
                         text = newManagerText,
-                        onValueChange = { newManagerText = it },
+                        onValueChange = { newManagerText = it.trim() },
                         isError = state.textFieldErrorMessageResId != null,
                         errorMessage = state.textFieldErrorMessageResId?.let { stringResource(it) } ?: ""
                     )

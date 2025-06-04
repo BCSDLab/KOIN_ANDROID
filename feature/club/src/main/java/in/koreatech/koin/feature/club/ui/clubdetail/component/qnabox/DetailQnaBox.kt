@@ -99,8 +99,6 @@ fun DetailQnaBox(
                 Text(
                     text = "Q. $questionText",
                     style = KoinTheme.typography.regular18,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .weight(1f)
                 )
@@ -146,7 +144,7 @@ fun DetailQnaBox(
                             textFieldColor = KoinTheme.colors.primary300,
                             onValueChange = onAddAnswerTextChange,
                             onSendClick = {
-                                if (addAnswerText.isNotEmpty()) {
+                                if (addAnswerText.isNotBlank()) {
                                     onAddAnswerClick(qnaId, addAnswerText)
                                     isError = false
                                 } else {
