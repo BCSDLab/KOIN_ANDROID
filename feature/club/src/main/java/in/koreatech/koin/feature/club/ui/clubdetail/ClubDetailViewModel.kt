@@ -289,7 +289,7 @@ class ClubDetailViewModel @Inject constructor(
             reduce { state.copy(isLoading = false) }
             when (e) {
                 is ClubError.AlreadyManager -> {
-                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_already_manager) } 
+                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_already_manager) }
                 }
                 is ClubError.Unauthorized -> {
                     postSideEffect(ClubDetailSideEffect.UnauthorizedError)
@@ -298,7 +298,7 @@ class ClubDetailViewModel @Inject constructor(
                     postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                 }
                 is ClubError.UserIdNotFound -> {
-                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_user_id_not_found) } 
+                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_user_id_not_found) }
                 }
                 is ClubError.ClubNotFound -> {
                     postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
