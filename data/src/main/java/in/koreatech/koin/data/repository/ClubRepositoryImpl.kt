@@ -52,10 +52,9 @@ class ClubRepositoryImpl @Inject constructor(
             }
         }.recoverCatching { e ->
             if (e is HttpException) {
-                val message = e.getErrorResponse().message
                 when (e.code()) {
-                    401 -> throw ClubError.Unauthorized(message)
-                    404 -> throw ClubError.AlreadyNotLiked(message)
+                    401 -> throw ClubError.Unauthorized
+                    404 -> throw ClubError.AlreadyNotLiked
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -67,9 +66,8 @@ class ClubRepositoryImpl @Inject constructor(
             clubRemoteDataSource.getClubDetails(clubId).toClubDetails()
         }.recoverCatching { e ->
             if (e is HttpException) {
-                val message = e.getErrorResponse().message
                 throw when (e.code()) {
-                    404 -> ClubError.ClubNotFound(message)
+                    404 -> ClubError.ClubNotFound
                     else -> e.getErrorResponse().toKoinUnknownErrorException()
                 }
             } else {
@@ -131,10 +129,9 @@ class ClubRepositoryImpl @Inject constructor(
             }
         }.recoverCatching { e ->
             if (e is HttpException) {
-                val message = e.getErrorResponse().message
                 when (e.code()) {
-                    401 -> throw ClubError.Unauthorized(message)
-                    409 -> throw ClubError.AlreadyLiked(message)
+                    401 -> throw ClubError.Unauthorized
+                    409 -> throw ClubError.AlreadyLiked
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -151,10 +148,9 @@ class ClubRepositoryImpl @Inject constructor(
             }
         }.recoverCatching { e ->
             if (e is HttpException) {
-                val message = e.getErrorResponse().message
                 when (e.code()) {
-                    403 -> throw ClubError.DeletePermissionDenied(message)
-                    404 -> throw ClubError.QnaNotFound(message)
+                    403 -> throw ClubError.DeletePermissionDenied
+                    404 -> throw ClubError.QnaNotFound
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -171,12 +167,11 @@ class ClubRepositoryImpl @Inject constructor(
             }
         }.recoverCatching { e ->
             if (e is HttpException) {
-                val message = e.getErrorResponse().message
                 when (e.code()) {
-                    400 -> throw ClubError.AlreadyManager(message)
-                    401 -> throw ClubError.Unauthorized(message)
-                    403 -> throw ClubError.Forbidden(message)
-                    404 -> throw ClubError.UserIdOrClubNotFound(message)
+                    400 -> throw ClubError.AlreadyManager
+                    401 -> throw ClubError.Unauthorized
+                    403 -> throw ClubError.NotClubManager
+                    404 -> throw ClubError.UserIdNotFound // TODO recover throw ClubError.ClubNotFound
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -198,9 +193,9 @@ class ClubRepositoryImpl @Inject constructor(
             if (e is HttpException) {
                 val message = e.getErrorResponse().message
                 when (e.code()) {
-                    401 -> throw ClubError.Unauthorized(message)
-                    403 -> throw ClubError.NotClubManager(message)
-                    404 -> throw ClubError.ClubNotFound(message)
+                    401 -> throw ClubError.Unauthorized
+                    403 -> throw ClubError.NotClubManager
+                    404 -> throw ClubError.ClubNotFound
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }

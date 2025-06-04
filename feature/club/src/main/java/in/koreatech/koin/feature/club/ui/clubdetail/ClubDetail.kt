@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -203,8 +204,8 @@ fun ClubDetail(
                     DetailDialogAddQnaContent(
                         text = addQnaText,
                         onValueChange = { addQnaText = it },
-                        isError = state.textFieldErrorMessage != null,
-                        errorMessage = state.textFieldErrorMessage ?: ""
+                        isError = state.textFieldErrorMessageResId != null,
+                        errorMessage = state.textFieldErrorMessageResId?.let { stringResource(it) } ?: ""
                     )
                 }
             )
@@ -227,8 +228,8 @@ fun ClubDetail(
                         managerId = state.userId ?: -1,
                         text = newManagerText,
                         onValueChange = { newManagerText = it },
-                        isError = state.textFieldErrorMessage != null,
-                        errorMessage = state.textFieldErrorMessage ?: ""
+                        isError = state.textFieldErrorMessageResId != null,
+                        errorMessage = state.textFieldErrorMessageResId?.let { stringResource(it) } ?: ""
                     )
                 }
             )
@@ -522,8 +523,26 @@ suspend fun handleSideEffect(
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
             context.startActivity(intent)
         }
-        is ClubDetailSideEffect.ShowToast -> {
-            ToastUtil.getInstance().makeShort(sideEffect.text)
+        is ClubDetailSideEffect.UnauthorizedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeletePermissionDeniedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.ClubNotFoundError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.NotClubManagerError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.QnaNotFoundError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.AlreadyLikedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.AlreadyNotLikedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
     }
 }

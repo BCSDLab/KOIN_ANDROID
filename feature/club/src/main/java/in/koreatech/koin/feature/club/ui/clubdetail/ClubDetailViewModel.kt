@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
@@ -64,14 +65,6 @@ class ClubDetailViewModel @Inject constructor(
         fetchAllData()
     }
 
-    private fun showExceptionToast(e: Throwable) = intent {
-        if (e is ClubError) {
-            postSideEffect(ClubDetailSideEffect.ShowToast(e.message ?: DEFAULT_ERROR_MESSAGE))
-        } else {
-            throw e
-        }
-    }
-
     private fun fetchAllData() = intent {
         if (state.isLoading) return@intent
         loadClubDetails()
@@ -105,7 +98,12 @@ class ClubDetailViewModel @Inject constructor(
                 }
             }.onFailure { e ->
                 reduce { state.copy(isLoading = false) }
-                showExceptionToast(e)
+                when (e) {
+                    is ClubError.ClubNotFound -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    else -> throw e
+                }
             }
         }
     }
@@ -132,7 +130,7 @@ class ClubDetailViewModel @Inject constructor(
     }
 
     fun dismissAddQnaDialog() = intent {
-        reduce { state.copy(showAddQnaDialog = false, textFieldErrorMessage = null) }
+        reduce { state.copy(showAddQnaDialog = false, textFieldErrorMessageResId = null) }
     }
 
     fun addClubQna(
@@ -145,7 +143,7 @@ class ClubDetailViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isLoading = false,
-                    textFieldErrorMessage = EMPTY_ERROR_MESSAGE
+                    textFieldErrorMessageResId = R.string.detail_error_empty_text_field
                 )
             }
             return@intent
@@ -156,7 +154,18 @@ class ClubDetailViewModel @Inject constructor(
                 parentId = parentId,
                 content = content
             ).onFailure { e ->
-                showExceptionToast(e)
+                when (e) {
+                    is ClubError.Unauthorized -> {
+                        postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                    }
+                    is ClubError.ClubNotFound -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    is ClubError.NotClubManager -> {
+                        postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                    }
+                    else -> throw e
+                }
             }
         }
         loadClubQnas()
@@ -175,7 +184,18 @@ class ClubDetailViewModel @Inject constructor(
                 parentId = parentId,
                 content = content
             ).onFailure { e ->
-                showExceptionToast(e)
+                when (e) {
+                    is ClubError.Unauthorized -> {
+                        postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                    }
+                    is ClubError.ClubNotFound -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    is ClubError.NotClubManager -> {
+                        postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                    }
+                    else -> throw e
+                }
             }
         }
         loadClubQnas()
@@ -191,7 +211,15 @@ class ClubDetailViewModel @Inject constructor(
                 clubId = state.clubId,
                 qnaId = qnaId
             ).onFailure { e ->
-                showExceptionToast(e)
+                when (e) {
+                    is ClubError.QnaNotFound -> {
+                        postSideEffect(ClubDetailSideEffect.QnaNotFoundError)
+                    }
+                    is ClubError.DeletePermissionDenied -> {
+                        postSideEffect(ClubDetailSideEffect.DeletePermissionDeniedError)
+                    }
+                    else -> throw e
+                }
             }
         }
         loadClubQnas()
@@ -211,11 +239,27 @@ class ClubDetailViewModel @Inject constructor(
         state.clubDetails?.let {
             if (it.isLiked) {
                 cancelClubLikeUseCase(clubId = state.clubId).onFailure { e ->
-                    showExceptionToast(e)
+                    when (e) {
+                        is ClubError.Unauthorized -> {
+                            postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                        }
+                        is ClubError.AlreadyNotLiked -> {
+                            postSideEffect(ClubDetailSideEffect.AlreadyNotLikedError)
+                        }
+                        else -> throw e
+                    }
                 }
             } else {
                 setClubLikeUseCase(clubId = state.clubId).onFailure { e ->
-                    showExceptionToast(e)
+                    when (e) {
+                        is ClubError.Unauthorized -> {
+                            postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                        }
+                        is ClubError.AlreadyLiked -> {
+                            postSideEffect(ClubDetailSideEffect.AlreadyLikedError)
+                        }
+                        else -> throw e
+                    }
                 }
             }
         }
@@ -228,14 +272,14 @@ class ClubDetailViewModel @Inject constructor(
     }
 
     fun dismissEmpowermentDialog() = intent {
-        reduce { state.copy(showEmpowermentDialog = false, textFieldErrorMessage = null) }
+        reduce { state.copy(showEmpowermentDialog = false, textFieldErrorMessageResId = null) }
     }
 
     fun setManagerEmpowerment(newUserId: String) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         if (newUserId.isEmpty()) {
-            reduce { state.copy(isLoading = false, textFieldErrorMessage = EMPTY_ERROR_MESSAGE) }
+            reduce { state.copy(isLoading = false, textFieldErrorMessageResId = R.string.detail_error_empty_text_field) }
             return@intent
         }
         setClubEmpowermentUseCase(
@@ -244,16 +288,20 @@ class ClubDetailViewModel @Inject constructor(
         ).onFailure { e ->
             reduce { state.copy(isLoading = false) }
             when (e) {
-                is ClubError.UserIdOrClubNotFound,
                 is ClubError.AlreadyManager -> {
-                    reduce { state.copy(textFieldErrorMessage = e.message) }
+                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_already_manager) } 
                 }
-                else -> {
-                    if (e is ClubError) {
-                        showExceptionToast(e)
-                    } else {
-                        throw e
-                    }
+                is ClubError.Unauthorized -> {
+                    postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                }
+                is ClubError.NotClubManager -> {
+                    postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                }
+                is ClubError.UserIdNotFound -> {
+                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_user_id_not_found) } 
+                }
+                is ClubError.ClubNotFound -> {
+                    postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
                 }
             }
             return@intent

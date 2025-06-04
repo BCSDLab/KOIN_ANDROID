@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
-import `in`.koreatech.koin.feature.club.ui.clubdetail.EMPTY_ERROR_MESSAGE
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogDeleteQnaContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.textfield.DetailQnaTextField
 
@@ -155,7 +154,7 @@ fun DetailQnaBox(
                                 }
                             },
                             isError = isError,
-                            errorMessage = EMPTY_ERROR_MESSAGE
+                            errorMessage = stringResource(R.string.detail_error_empty_text_field)
                         )
                     } else {
                         Text(
