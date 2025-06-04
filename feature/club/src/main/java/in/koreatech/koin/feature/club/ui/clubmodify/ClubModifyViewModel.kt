@@ -1,15 +1,17 @@
-package `in`.koreatech.koin.feature.club.ui.clubcreate
+package `in`.koreatech.koin.feature.club.ui.clubmodify
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
-import `in`.koreatech.koin.domain.usecase.club.CreateClubUseCase
+import `in`.koreatech.koin.domain.usecase.club.GetClubDetailsUseCase
+import `in`.koreatech.koin.domain.usecase.club.ModifyClubUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetClubPreSignedUrlUseCase
-import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.club.model.ClubCategories
+import `in`.koreatech.koin.feature.club.model.toClubCategory
+import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -18,46 +20,52 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
-class ClubCreateViewModel @Inject constructor(
-    private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val createClubUseCase: CreateClubUseCase,
+class ClubModifyViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getClubDetailsUseCase: GetClubDetailsUseCase,
+    private val modifyClubUseCase: ModifyClubUseCase,
     private val getClubPreSignedUrlUseCase: GetClubPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
-) : ViewModel(), ContainerHost<ClubCreateState, ClubCreateSideEffect> {
-    override val container = container<ClubCreateState, ClubCreateSideEffect>(ClubCreateState())
-
-    init {
-        getUserInfo()
-    }
-
-    private fun getUserInfo() = viewModelScope.launch {
-        getUserStatusUseCase().collect {
-            when (it) {
-                is User.Anonymous -> {
-                    throw IllegalStateException()
-                }
-
-                is User.Student -> {
-                    intent {
-                        reduce {
-                            // TODO: User ID will be changed after the user team's sprint.
-                            state.copy(
-                                userId = it.email?.replace("@koreatech.ac.kr", "") ?: ""
-                            )
-                        }
-                    }
-                }
+) : ViewModel(), ContainerHost<ClubModifyState, ClubModifySideEffect> {
+    override val container = container<ClubModifyState, ClubModifySideEffect>(ClubModifyState(), savedStateHandle) {
+        val clubId = savedStateHandle.get<Int>(CLUB_ID)
+        checkNotNull(clubId)
+        intent {
+            reduce {
+                state.copy(
+                    clubId = clubId
+                )
             }
         }
+        loadClubDetails(clubId)
     }
 
-    fun updateClubName(name: String) = blockingIntent {
-        reduce {
-            state.copy(
-                clubName = name
-            )
+    private fun loadClubDetails(clubId: Int) = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(isLoading = true)
+            }
+            getClubDetailsUseCase(clubId).onSuccess {
+                Timber.d("Club details loaded: $it")
+                reduce {
+                    state.copy(
+                        isLoading = false,
+                        clubName = it.name,
+                        clubDescription = it.description,
+                        clubCategory = it.category.toClubCategory(),
+                        location = it.location,
+                        instagramUrl = it.instagram ?: "",
+                        googleFormUrl = it.googleForm ?: "",
+                        openChatUrl = it.openChat ?: "",
+                        phoneNumber = it.phoneNumber ?: "",
+                        isLikeHidden = it.isLikedHidden,
+                        likes = it.likes
+                    )
+                }
+            }
         }
     }
 
@@ -125,34 +133,18 @@ class ClubCreateViewModel @Inject constructor(
         }
     }
 
-    fun updateShowCreateDialog(shouldShow: Boolean) = blockingIntent {
+    fun updateShowModifyDialog(shouldShow: Boolean) = blockingIntent {
         reduce {
             state.copy(
                 shouldCheckRequiredField = true
             )
         }
 
-        if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired || state.clubImageUrlRequired) return@blockingIntent
+        if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@blockingIntent
 
         reduce {
             state.copy(
-                shouldShowCreateDialog = shouldShow
-            )
-        }
-    }
-
-    fun updateShowPermissionDialog(shouldShow: Boolean) = blockingIntent {
-        reduce {
-            state.copy(
-                shouldShowPermissionDialog = shouldShow
-            )
-        }
-    }
-
-    fun updateUserRole(role: String) = blockingIntent {
-        reduce {
-            state.copy(
-                userRole = role
+                shouldShowModifyDialog = shouldShow
             )
         }
     }
@@ -191,7 +183,7 @@ class ClubCreateViewModel @Inject constructor(
                 reduce {
                     state.copy(isLoading = false)
                 }
-                postSideEffect(ClubCreateSideEffect.ClubImageUploadFailure)
+                postSideEffect(ClubModifySideEffect.ClubImageUploadFailure)
             }
         }
     }
@@ -225,13 +217,13 @@ class ClubCreateViewModel @Inject constructor(
                     reduce {
                         state.copy(isLoading = false)
                     }
-                    postSideEffect(ClubCreateSideEffect.ClubImageUploadFailure)
+                    postSideEffect(ClubModifySideEffect.ClubImageUploadFailure)
                 }
             }
         }
     }
 
-    fun requestCreateClub() = viewModelScope.launch {
+    fun requestModifyClub() = viewModelScope.launch {
         intent {
             reduce {
                 state.copy(
@@ -239,7 +231,7 @@ class ClubCreateViewModel @Inject constructor(
                 )
             }
 
-            if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired || state.clubImageUrlRequired) return@intent
+            if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@intent
 
             reduce {
                 state.copy(
@@ -247,10 +239,10 @@ class ClubCreateViewModel @Inject constructor(
                 )
             }
 
-            createClubUseCase(
+            modifyClubUseCase(
+                clubId = state.clubId,
                 name = state.clubName,
                 imageUrl = state.clubImageUrl,
-                clubManagers = listOf(state.userId),
                 clubCategoryId = state.clubCategory!!.id,
                 location = state.location,
                 description = state.clubDescription,
@@ -258,7 +250,6 @@ class ClubCreateViewModel @Inject constructor(
                 googleForm = state.googleFormUrl,
                 openChat = state.openChatUrl,
                 phoneNumber = state.phoneNumber,
-                role = state.userRole,
                 isLikeHidden = state.isLikeHidden
             ).onSuccess {
                 reduce {
@@ -266,7 +257,7 @@ class ClubCreateViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
-                postSideEffect(ClubCreateSideEffect.ClubCreateSuccess)
+                postSideEffect(ClubModifySideEffect.ClubModifySuccess)
             }.onFailure {
                 reduce {
                     state.copy(

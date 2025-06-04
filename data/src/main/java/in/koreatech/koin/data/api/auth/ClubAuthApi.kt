@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.club.ClubCreateRequest
 import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
+import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.response.club.ClubDetailsResponse
 import `in`.koreatech.koin.data.response.club.ClubsResponse
@@ -30,6 +31,12 @@ interface ClubAuthApi {
     @POST(URLConstant.CLUBS.CLUBS)
     suspend fun createClub(
         @Body request: ClubCreateRequest
+    ): Response<Unit>
+
+    @PUT("${URLConstant.CLUBS.CLUBS}/{clubId}")
+    suspend fun modifyClub(
+        @Path("clubId") clubId: Int,
+        @Body request: ClubModifyRequest
     ): Response<Unit>
 
     @PUT("clubs/empowerment")

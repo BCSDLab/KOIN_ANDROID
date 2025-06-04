@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import `in`.koreatech.koin.feature.club.ui.clubcreate.ClubCreateScreen
 import `in`.koreatech.koin.feature.club.ui.clubdetail.ClubDetail
 import `in`.koreatech.koin.feature.club.ui.clublist.ClubListScreen
+import `in`.koreatech.koin.feature.club.ui.clubmodify.ClubModifyScreen
 
 fun NavGraphBuilder.koinClubGraph(
     navController: NavController
@@ -42,12 +43,18 @@ fun NavGraphBuilder.koinClubGraph(
             navArgument(CLUB_ID) { type = NavType.IntType }
         )
     ) {
+        val isClubModified by it.savedStateHandle.getStateFlow(IS_CLUB_MODIFIED, initialValue = false).collectAsStateWithLifecycle()
         val context = LocalContext.current
+
         ClubDetail(
+            isClubModified = isClubModified,
             onTopbarBackClick = {
                 if (!navController.popBackStack()) {
                     (context as? Activity)?.finish()
                 }
+            },
+            onModifyClick = { clubId ->
+                navController.navigate("${ClubNavType.ClubModify.route}/$clubId")
             }
         )
     }
@@ -74,11 +81,31 @@ fun NavGraphBuilder.koinClubGraph(
     }
 
     composable(
-        route = ClubNavType.ClubModify.route
+        route = "${ClubNavType.ClubModify.route}/{$CLUB_ID}",
+        arguments = listOf(
+            navArgument(CLUB_ID) { type = NavType.IntType }
+        )
     ) {
+        ClubModifyScreen(
+            onNavigateUp = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CLUB_MODIFIED,
+                    false
+                )
+                navController.navigateUp()
+            },
+            onClubModified = {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    IS_CLUB_MODIFIED,
+                    true
+                )
+                navController.navigateUp()
+            }
+        )
     }
 }
 
 const val CLUB_ID = "clubId"
 const val CATEGORY_ID = "categoryId"
 const val IS_CLUB_CREATED = "isClubCreated"
+const val IS_CLUB_MODIFIED = "isClubModified"
