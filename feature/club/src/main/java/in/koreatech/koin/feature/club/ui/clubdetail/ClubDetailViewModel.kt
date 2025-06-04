@@ -64,13 +64,11 @@ class ClubDetailViewModel @Inject constructor(
         fetchAllData()
     }
 
-    private fun showExceptionToast(e: Throwable) = viewModelScope.launch {
-        intent {
-            if (e is ClubError) {
-                postSideEffect(ClubDetailSideEffect.ShowToast(e.message ?: DEFAULT_ERROR_MESSAGE))
-            } else {
-                throw e
-            }
+    private fun showExceptionToast(e: Throwable) = intent {
+        if (e is ClubError) {
+            postSideEffect(ClubDetailSideEffect.ShowToast(e.message ?: DEFAULT_ERROR_MESSAGE))
+        } else {
+            throw e
         }
     }
 
@@ -133,10 +131,8 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showAddQnaDialog = true) }
     }
 
-    fun dismissAddQnaDialog() = viewModelScope.launch {
-        intent {
-            reduce { state.copy(showAddQnaDialog = false, textFieldErrorMessage = null) }
-        }
+    fun dismissAddQnaDialog() = intent {
+        reduce { state.copy(showAddQnaDialog = false, textFieldErrorMessage = null) }
     }
 
     fun addClubQna(
@@ -205,10 +201,8 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showLoginDialog = true) }
     }
 
-    fun dismissLoginDialog() = viewModelScope.launch {
-        intent {
-            reduce { state.copy(showLoginDialog = false) }
-        }
+    fun dismissLoginDialog() = intent {
+        reduce { state.copy(showLoginDialog = false) }
     }
 
     fun changeClubLike() = intent {
@@ -233,10 +227,8 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showEmpowermentDialog = true) }
     }
 
-    fun dismissEmpowermentDialog() = viewModelScope.launch {
-        intent {
-            reduce { state.copy(showEmpowermentDialog = false, textFieldErrorMessage = null) }
-        }
+    fun dismissEmpowermentDialog() = intent {
+        reduce { state.copy(showEmpowermentDialog = false, textFieldErrorMessage = null) }
     }
 
     fun setManagerEmpowerment(newUserId: String) = intent {
@@ -251,10 +243,18 @@ class ClubDetailViewModel @Inject constructor(
             changedManagerId = newUserId
         ).onFailure { e ->
             reduce { state.copy(isLoading = false) }
-            if (e is ClubError.UserIdOrClubNotFound) {
-                reduce { state.copy(textFieldErrorMessage = e.message) }
-            } else {
-                throw e
+            when (e) {
+                is ClubError.UserIdOrClubNotFound,
+                is ClubError.AlreadyManager -> {
+                    reduce { state.copy(textFieldErrorMessage = e.message) }
+                }
+                else -> {
+                    if (e is ClubError) {
+                        showExceptionToast(e)
+                    } else {
+                        throw e
+                    }
+                }
             }
             return@intent
         }
