@@ -39,17 +39,19 @@ fun ClubDetailQna(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         userId?.let {
-            Row {
-                Spacer(Modifier.weight(1f))
-                FilledButton(
-                    modifier = Modifier
-                        .padding(
-                            bottom = 4.dp
-                        ),
-                    text = stringResource(R.string.detail_add_qna_button),
-                    onClick = onAddQnaClick,
-                    contentPadding = PaddingValues(horizontal = 22.dp, vertical = 5.dp)
-                )
+            if (!isManager) {
+                Row {
+                    Spacer(Modifier.weight(1f))
+                    FilledButton(
+                        modifier = Modifier
+                            .padding(
+                                bottom = 4.dp
+                            ),
+                        text = stringResource(R.string.detail_add_qna_button),
+                        onClick = onAddQnaClick,
+                        contentPadding = PaddingValues(horizontal = 22.dp, vertical = 5.dp)
+                    )
+                }
             }
         }
         qnaList?.forEach {
