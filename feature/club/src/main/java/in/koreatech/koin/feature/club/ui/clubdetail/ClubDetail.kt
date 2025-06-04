@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -41,6 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -349,7 +349,6 @@ fun ClubDetail(
                                     }
                             )
                             if (state.clubDetails?.isLikeHidden != true) {
-                                Log.e("MYLOG","${state.clubDetails?.isLikeHidden ?: "hi"}")
                                 Text(
                                     text = "${state.clubDetails?.likes}",
                                     style = KoinTheme.typography.medium14
@@ -366,13 +365,14 @@ fun ClubDetail(
                         detailList.forEach { intro ->
                             if (intro.second.isNullOrBlank()) return@forEach
                             var outputText = ""
-                            var maxLines = 1
                             var linkUrl = ""
+                            val mutableMaxLine = remember { mutableIntStateOf(2) }
+                            var onClick = {}
                             intro.second?.let {
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
-                                        maxLines = 2
                                         outputText = "${stringResource(intro.first.strResId)}$it"
+                                        onClick = { mutableMaxLine.value = if(mutableMaxLine.value == 2) 10 else 2 }
                                     }
                                     DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
@@ -386,6 +386,7 @@ fun ClubDetail(
                                     it.isOpenChatUrl()
                                 ) {
                                     linkUrl = it
+                                    onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
                                 }
                             }
                             Row {
@@ -396,13 +397,14 @@ fun ClubDetail(
                                 )
                                 Text(
                                     text = outputText,
-                                    maxLines = maxLines,
+                                    maxLines = if(intro.first == DETAIL_DESCRIPTION) mutableMaxLine.value else 1,
+                                    softWrap = false,
                                     style = KoinTheme.typography.medium18,
                                     color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier
                                         .clickable {
-                                            if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl)
+                                            onClick()
                                         }
                                 )
                             }
