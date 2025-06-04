@@ -154,7 +154,7 @@ fun DetailQnaBox(
                                 }
                             },
                             isError = isError,
-                            errorMessage = stringResource(R.string.detail_textfield_error_empty)
+                            errorMessage = stringResource(R.string.detail_error_empty_text_field)
                         )
                     } else {
                         Text(

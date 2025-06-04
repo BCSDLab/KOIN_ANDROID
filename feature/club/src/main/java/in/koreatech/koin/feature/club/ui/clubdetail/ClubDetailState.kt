@@ -16,5 +16,5 @@ data class ClubDetailState(
     val showLoginDialog: Boolean = false,
     val showAddQnaDialog: Boolean = false,
     val showEmpowermentDialog: Boolean = false,
-    val textFieldErrorResId: Int? = null
+    val textFieldErrorMessageResId: Int? = null
 ) : Parcelable

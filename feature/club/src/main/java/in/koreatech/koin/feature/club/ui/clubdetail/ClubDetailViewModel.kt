@@ -14,11 +14,10 @@ import `in`.koreatech.koin.domain.usecase.club.PostClubQnaUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubEmpowermentUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubDetails
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubQnasInfo
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
-import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.EMPTY_ERROR
-import `in`.koreatech.koin.feature.club.type.DetailTextFieldErrorCode.NON_USERID_ERROR
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +28,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import retrofit2.HttpException
 
 @HiltViewModel
 class ClubDetailViewModel @Inject constructor(
@@ -79,7 +77,6 @@ class ClubDetailViewModel @Inject constructor(
                 is User.Anonymous -> {
                     reduce { state.copy(userId = null) }
                 }
-
                 is User.Student -> {
                     reduce { state.copy(userId = user.id) }
                 }
@@ -98,6 +95,14 @@ class ClubDetailViewModel @Inject constructor(
                         clubDetails = it.toParcelizeClubDetails(),
                         isLoading = false
                     )
+                }
+            }.onFailure { e ->
+                reduce { state.copy(isLoading = false) }
+                when (e) {
+                    is ClubError.ClubNotFound -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    else -> throw e
                 }
             }
         }
@@ -124,10 +129,8 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showAddQnaDialog = true) }
     }
 
-    fun dismissAddQnaDialog() = viewModelScope.launch {
-        intent {
-            reduce { state.copy(showAddQnaDialog = false, textFieldErrorResId = null) }
-        }
+    fun dismissAddQnaDialog() = intent {
+        reduce { state.copy(showAddQnaDialog = false, textFieldErrorMessageResId = null) }
     }
 
     fun addClubQna(
@@ -140,7 +143,7 @@ class ClubDetailViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isLoading = false,
-                    textFieldErrorResId = EMPTY_ERROR.strResId
+                    textFieldErrorMessageResId = R.string.detail_error_empty_text_field
                 )
             }
             return@intent
@@ -151,7 +154,18 @@ class ClubDetailViewModel @Inject constructor(
                 parentId = parentId,
                 content = content
             ).onFailure { e ->
-                if (e !is HttpException) throw e
+                when (e) {
+                    is ClubError.Unauthorized -> {
+                        postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                    }
+                    is ClubError.ClubNotFound -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    is ClubError.NotClubManager -> {
+                        postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                    }
+                    else -> throw e
+                }
             }
         }
         loadClubQnas()
@@ -170,7 +184,18 @@ class ClubDetailViewModel @Inject constructor(
                 parentId = parentId,
                 content = content
             ).onFailure { e ->
-                if (e !is HttpException) throw e
+                when (e) {
+                    is ClubError.Unauthorized -> {
+                        postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                    }
+                    is ClubError.ClubNotFound -> {
+                        postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                    }
+                    is ClubError.NotClubManager -> {
+                        postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                    }
+                    else -> throw e
+                }
             }
         }
         loadClubQnas()
@@ -186,7 +211,15 @@ class ClubDetailViewModel @Inject constructor(
                 clubId = state.clubId,
                 qnaId = qnaId
             ).onFailure { e ->
-                if (e !is HttpException) throw e
+                when (e) {
+                    is ClubError.QnaNotFound -> {
+                        postSideEffect(ClubDetailSideEffect.QnaNotFoundError)
+                    }
+                    is ClubError.DeletePermissionDenied -> {
+                        postSideEffect(ClubDetailSideEffect.DeletePermissionDeniedError)
+                    }
+                    else -> throw e
+                }
             }
         }
         loadClubQnas()
@@ -196,10 +229,8 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showLoginDialog = true) }
     }
 
-    fun dismissLoginDialog() = viewModelScope.launch {
-        intent {
-            reduce { state.copy(showLoginDialog = false) }
-        }
+    fun dismissLoginDialog() = intent {
+        reduce { state.copy(showLoginDialog = false) }
     }
 
     fun changeClubLike() = intent {
@@ -207,9 +238,29 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         state.clubDetails?.let {
             if (it.isLiked) {
-                cancelClubLikeUseCase(clubId = state.clubId)
+                cancelClubLikeUseCase(clubId = state.clubId).onFailure { e ->
+                    when (e) {
+                        is ClubError.Unauthorized -> {
+                            postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                        }
+                        is ClubError.AlreadyNotLiked -> {
+                            postSideEffect(ClubDetailSideEffect.AlreadyNotLikedError)
+                        }
+                        else -> throw e
+                    }
+                }
             } else {
-                setClubLikeUseCase(clubId = state.clubId)
+                setClubLikeUseCase(clubId = state.clubId).onFailure { e ->
+                    when (e) {
+                        is ClubError.Unauthorized -> {
+                            postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                        }
+                        is ClubError.AlreadyLiked -> {
+                            postSideEffect(ClubDetailSideEffect.AlreadyLikedError)
+                        }
+                        else -> throw e
+                    }
+                }
             }
         }
         loadClubDetails()
@@ -220,17 +271,15 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(showEmpowermentDialog = true) }
     }
 
-    fun dismissEmpowermentDialog() = viewModelScope.launch {
-        intent {
-            reduce { state.copy(showEmpowermentDialog = false, textFieldErrorResId = null) }
-        }
+    fun dismissEmpowermentDialog() = intent {
+        reduce { state.copy(showEmpowermentDialog = false, textFieldErrorMessageResId = null) }
     }
 
     fun setManagerEmpowerment(newUserId: String) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
         if (newUserId.isEmpty()) {
-            reduce { state.copy(isLoading = false, textFieldErrorResId = EMPTY_ERROR.strResId) }
+            reduce { state.copy(isLoading = false, textFieldErrorMessageResId = R.string.detail_error_empty_text_field) }
             return@intent
         }
         setClubEmpowermentUseCase(
@@ -238,10 +287,22 @@ class ClubDetailViewModel @Inject constructor(
             changedManagerId = newUserId
         ).onFailure { e ->
             reduce { state.copy(isLoading = false) }
-            if (e is ClubError.UserIdNotFound) {
-                reduce { state.copy(textFieldErrorResId = NON_USERID_ERROR.strResId) }
-            } else {
-                throw e
+            when (e) {
+                is ClubError.AlreadyManager -> {
+                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_already_manager) }
+                }
+                is ClubError.Unauthorized -> {
+                    postSideEffect(ClubDetailSideEffect.UnauthorizedError)
+                }
+                is ClubError.NotClubManager -> {
+                    postSideEffect(ClubDetailSideEffect.NotClubManagerError)
+                }
+                is ClubError.UserIdNotFound -> {
+                    reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_user_id_not_found) }
+                }
+                is ClubError.ClubNotFound -> {
+                    postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
+                }
             }
             return@intent
         }

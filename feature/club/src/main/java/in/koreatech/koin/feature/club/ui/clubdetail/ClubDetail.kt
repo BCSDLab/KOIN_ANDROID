@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -45,22 +46,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
@@ -122,6 +122,7 @@ fun ClubDetail(
     val context = LocalContext.current
 
     val snackbarHostState = remember { SnackbarHostState() }
+
     val listState = rememberLazyListState()
 
     viewModel.collectSideEffect { sideEffect ->
@@ -214,8 +215,8 @@ fun ClubDetail(
                     DetailDialogAddQnaContent(
                         text = addQnaText,
                         onValueChange = { addQnaText = it },
-                        isError = state.textFieldErrorResId != null,
-                        errorMessage = state.textFieldErrorResId?.let { stringResource(it) } ?: ""
+                        isError = state.textFieldErrorMessageResId != null,
+                        errorMessage = state.textFieldErrorMessageResId?.let { stringResource(it) } ?: ""
                     )
                 }
             )
@@ -238,8 +239,8 @@ fun ClubDetail(
                         managerId = state.userId ?: -1,
                         text = newManagerText,
                         onValueChange = { newManagerText = it },
-                        isError = state.textFieldErrorResId != null,
-                        errorMessage = state.textFieldErrorResId?.let { stringResource(it) } ?: ""
+                        isError = state.textFieldErrorMessageResId != null,
+                        errorMessage = state.textFieldErrorMessageResId?.let { stringResource(it) } ?: ""
                     )
                 }
             )
@@ -252,7 +253,8 @@ fun ClubDetail(
                 .systemBarsPadding()
                 .fillMaxSize(),
             state = listState,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            userScrollEnabled = true
         ) {
             item {
                 SubcomposeAsyncImage(
@@ -440,30 +442,21 @@ fun ClubDetail(
                 )
             }
             item {
+                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp
                 HorizontalPager(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                     state = pagerState,
                     verticalAlignment = Alignment.Top
                 ) { page ->
                     when (tabList[page]) {
                         DetailTabType.DETAIL_INTRO.strResId -> {
-                            val nestedScrollConnection = remember {
-                                object : NestedScrollConnection {
-                                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                                        return if (available.y < 0 && listState.canScrollForward) {
-                                            if (listState.canScrollForward) Offset.Zero else available
-                                        } else {
-                                            Offset.Zero
-                                        }
-                                    }
-                                }
-                            }
                             val snackbarMessage = stringResource(R.string.detail_snackbar_detail_intro_text)
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
                                 modifier = Modifier
-                                    .height(800.dp)
-                                    .nestedScroll(nestedScrollConnection),
+                                    .fillMaxSize()
+                                    .heightIn(min = deviceHeightDp),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
@@ -485,35 +478,25 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.QNA.strResId -> {
-                            val nestedScrollConnection = remember {
-                                object : NestedScrollConnection {
-                                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                                        return if (available.y < 0) {
-                                            if (listState.canScrollForward) Offset.Zero else available
-                                        } else {
-                                            Offset.Zero
-                                        }
+                            Box {
+                                if (state.showQnasProgressBar) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .heightIn(min = deviceHeightDp)
+                                            .zIndex(1f)
+                                    ) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier
+                                                .size(100.dp)
+                                                .align(Alignment.Center)
+                                        )
                                     }
                                 }
-                            }
-                            if (state.showQnasProgressBar) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(700.dp)
-                                        .nestedScroll(nestedScrollConnection)
-                                ) {
-                                    CircularProgressIndicator(
-                                        modifier = Modifier
-                                            .size(50.dp)
-                                            .align(Alignment.Center)
-                                    )
-                                }
-                            } else {
                                 ClubDetailQna(
                                     modifier = Modifier
-                                        .height(800.dp)
-                                        .nestedScroll(nestedScrollConnection),
+                                        .fillMaxSize()
+                                        .heightIn(min = deviceHeightDp),
                                     qnaList = qnaList,
                                     isManager = state.clubDetails?.manager ?: false,
                                     userId = state.userId,
@@ -552,6 +535,27 @@ suspend fun handleSideEffect(
         is ClubDetailSideEffect.OpenUrl -> {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
             context.startActivity(intent)
+        }
+        is ClubDetailSideEffect.UnauthorizedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.DeletePermissionDeniedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.ClubNotFoundError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.NotClubManagerError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.QnaNotFoundError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.AlreadyLikedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
+        }
+        is ClubDetailSideEffect.AlreadyNotLikedError -> {
+            ToastUtil.getInstance().makeShort(sideEffect.messageResId)
         }
     }
 }
