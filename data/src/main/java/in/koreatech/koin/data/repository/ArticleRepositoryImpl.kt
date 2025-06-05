@@ -239,6 +239,15 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun fetchSearchedLostAndFoundArticles(query: String, page: Int, limit: Int): Flow<ArticleLostAndFoundPagination> {
+        return flow {
+            emit(
+                articleRemoteDataSource.fetchSearchedLostAndFoundArticles(query, page, limit)
+                    .toArticleLostAndFoundPagination()
+            )
+        }
+    }
+
     override fun fetchArticleLostAndFound(articleId: Int): Flow<ArticleLostAndFound> {
         return flow {
             emit(

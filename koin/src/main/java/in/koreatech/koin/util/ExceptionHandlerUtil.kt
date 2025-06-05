@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Looper
 import androidx.core.os.HandlerCompat
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.ui.error.ErrorActivity
@@ -21,6 +22,8 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      * @param throwable
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(throwable)
+
         val stringWriter = StringWriter()
         createErrorMessage(throwable, stringWriter)
     }
