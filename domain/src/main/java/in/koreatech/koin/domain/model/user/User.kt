@@ -4,7 +4,7 @@ sealed class User {
     data class Student(
         val id: Int,
         val loginId: String,
-        val email: String,
+        val email: String?,
         val anonymousNickname: String?,
         val gender: Gender,
         val major: String?,
@@ -18,7 +18,7 @@ sealed class User {
     data class General(
         val id: Int,
         val loginId: String,
-        val email: String,
+        val email: String?,
         val anonymousNickname: String?,
         val gender: Gender,
         val name: String,

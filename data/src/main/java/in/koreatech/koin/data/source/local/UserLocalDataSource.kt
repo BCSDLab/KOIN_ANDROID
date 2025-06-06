@@ -14,6 +14,7 @@ import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.UserType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -32,7 +33,13 @@ class UserLocalDataSource @Inject constructor(
         userDataStore.data.map { pref ->
             try {
                 if (pref[PREF_KEY_IS_LOGIN] == true) {
-                    return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], StudentUserResponse::class.java).toUser() // Set default userType to STUDENT if logged in
+                    if (pref[PREF_KEY_USER_TYPE] == UserType.STUDENT.name || pref[PREF_KEY_USER_TYPE] == UserType.COUNCIL.name) {
+                        return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], StudentUserResponse::class.java).toUser()
+                    } else if (pref[PREF_KEY_USER_TYPE] == UserType.GENERAL.name) {
+                        return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], GeneralUserResponse::class.java).toUser()
+                    } else {
+                        return@map User.Anonymous
+                    }
                 } else {
                     return@map User.Anonymous
                 }

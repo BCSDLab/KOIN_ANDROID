@@ -37,7 +37,7 @@ class ArticleRepositoryImpl @Inject constructor(
     val user =
         userRepository.getUserInfoFlow().distinctUntilChanged()
             .onEach { user ->
-                if (user.isStudent) {
+                if (user.isStudent || user.isGeneral) {
                     _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
                 } else {
                     _myKeywords.emit(
@@ -234,6 +234,15 @@ class ArticleRepositoryImpl @Inject constructor(
         return flow {
             emit(
                 articleRemoteDataSource.fetchArticleLostAndFoundPagination(page, limit, type)
+                    .toArticleLostAndFoundPagination()
+            )
+        }
+    }
+
+    override fun fetchSearchedLostAndFoundArticles(query: String, page: Int, limit: Int): Flow<ArticleLostAndFoundPagination> {
+        return flow {
+            emit(
+                articleRemoteDataSource.fetchSearchedLostAndFoundArticles(query, page, limit)
                     .toArticleLostAndFoundPagination()
             )
         }
