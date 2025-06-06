@@ -366,7 +366,7 @@ fun ClubCreateScreenImpl(
 
             Image(
                 modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_club_like),
+                imageVector = ImageVector.vectorResource(R.drawable.icon_like_true),
                 contentDescription = null
             )
 
