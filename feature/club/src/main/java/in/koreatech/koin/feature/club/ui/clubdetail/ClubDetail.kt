@@ -3,7 +3,6 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -159,7 +158,7 @@ fun ClubDetail(
                         Offset.Zero
                     }
                 } else {
-                    if(qnaScrollState.value == 0) {
+                    if (qnaScrollState.value == 0) {
                         isChildScrollable.value = false
                         isParentScrollable.value = true
                     }
@@ -233,11 +232,11 @@ fun ClubDetail(
     ) { contentPadding ->
 
         if (state.clubDetails == null) {
-            Column (
+            Column(
                 Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
-            ){
+            ) {
                 CircularProgressIndicator()
             }
             return@Scaffold
@@ -302,7 +301,7 @@ fun ClubDetail(
         }
 
         if (state.showImageDialog) {
-            DetailImageDialog (
+            DetailImageDialog(
                 imageModel = ImageRequest.Builder(context)
                     .data(state.clubDetails?.imageUrl)
                     .size(400, 400)
@@ -440,10 +439,10 @@ fun ClubDetail(
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
                                         outputText = "${stringResource(intro.first.strResId)}$it"
-                                        onClick = { mutableMaxLine.value = if(mutableMaxLine.value == 2) 10 else 2 }
+                                        onClick = { mutableMaxLine.value = if (mutableMaxLine.value == 2) 10 else 2 }
                                     }
                                     DETAIL_INSTAGRAM -> {
-                                        linkUrl = if(it.isInstagramUrl()) it else it.formatInstagramUrlForm()
+                                        linkUrl = if (it.isInstagramUrl()) it else it.formatInstagramUrlForm()
                                         onClick = { viewModel.openUrl(linkUrl) }
                                         outputText = it.formatInstagramLinkForm()
                                     }
@@ -468,7 +467,7 @@ fun ClubDetail(
                                 )
                                 Text(
                                     text = outputText,
-                                    maxLines = if(intro.first == DETAIL_DESCRIPTION) mutableMaxLine.value else 1,
+                                    maxLines = if (intro.first == DETAIL_DESCRIPTION) mutableMaxLine.value else 1,
                                     softWrap = false,
                                     style = KoinTheme.typography.medium18,
                                     color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
@@ -510,7 +509,7 @@ fun ClubDetail(
                 DetailTabRow(
                     modifier = Modifier
                         .onGloballyPositioned { layoutCoordinates ->
-                            stickyHeaderHeightDp.value = with(localDensity) {layoutCoordinates.size.height.toDp()}
+                            stickyHeaderHeightDp.value = with(localDensity) { layoutCoordinates.size.height.toDp() }
                         },
                     selectedTabIndex = pagerState.currentPage,
                     onTabSelected = {

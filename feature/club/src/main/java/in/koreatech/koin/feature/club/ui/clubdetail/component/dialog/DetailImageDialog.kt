@@ -22,7 +22,7 @@ import `in`.koreatech.koin.feature.club.R
 fun DetailImageDialog(
     imageModel: ImageRequest,
     modifier: Modifier = Modifier,
-    onDismiss: () -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
     BasicAlertDialog(
         modifier =

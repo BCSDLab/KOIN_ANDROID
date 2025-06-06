@@ -58,7 +58,7 @@ fun DetailQnaTextField(
             modifier = Modifier,
             value = value,
             textStyle = textStyle,
-            onValueChange = { if(it.length <= 255) onValueChange(it) },
+            onValueChange = { if (it.length <= 255) onValueChange(it) },
             decorationBox = { innerTextField ->
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
