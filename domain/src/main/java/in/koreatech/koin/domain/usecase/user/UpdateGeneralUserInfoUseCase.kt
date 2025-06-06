@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 
-class UpdateStudentUserInfoUseCase @Inject constructor(
+class UpdateGeneralUserInfoUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(
@@ -14,19 +14,15 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
         name: String,
         nickname: String,
         gender: Gender,
-        phoneNumber: String,
-        studentNumber: String,
-        major: String
+        phoneNumber: String
     ): Result<Unit> {
         return runCatching {
-            val user = (beforeUser as User.Student).copy(
+            val user = (beforeUser as User.General).copy(
                 email = email,
                 name = name,
                 nickname = nickname,
                 gender = gender,
-                phoneNumber = phoneNumber,
-                studentNumber = studentNumber,
-                major = major
+                phoneNumber = phoneNumber
             )
 
             userRepository.updateUser(user)

@@ -4,9 +4,10 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.GeneralUserRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.ReviewRequest
-import `in`.koreatech.koin.data.request.user.UserRequest
+import `in`.koreatech.koin.data.request.user.StudentUserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
@@ -31,10 +32,15 @@ interface UserAuthApi {
     @GET(URLConstant.USERS.GENERAL.ME)
     suspend fun getGeneralUser(): GeneralUserResponse
 
-    @PUT(URLConstant.USER.ME)
-    suspend fun putUser(
-        @Body userRequest: UserRequest
+    @PUT(URLConstant.USERS.STUDENTS.ME)
+    suspend fun putStudentUser(
+        @Body studentUserRequest: StudentUserRequest
     ): StudentUserResponse
+
+    @PUT(URLConstant.USERS.GENERAL.ME)
+    suspend fun putGeneralUser(
+        @Body generalUserRequest: GeneralUserRequest
+    ): GeneralUserResponse
 
     @DELETE(URLConstant.USER.USER)
     suspend fun deleteUser(): Response<Unit?>

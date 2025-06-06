@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.mapper
 
-import `in`.koreatech.koin.data.request.user.UserRequest
+import `in`.koreatech.koin.data.request.user.GeneralUserRequest
+import `in`.koreatech.koin.data.request.user.StudentUserRequest
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
@@ -46,7 +47,7 @@ fun GeneralUserResponse.toUser() =
     )
 
 fun User.Student.toUserRequest() =
-    UserRequest(
+    StudentUserRequest(
         nickname = nickname,
         name = name,
         studentNumber = studentNumber,
@@ -57,13 +58,12 @@ fun User.Student.toUserRequest() =
             Gender.Woman -> 1
             else -> null
         },
-        identity = 0,
-        isGraduated = isStudent,
+        email = email,
         hashedPassword = null
     )
 
 fun User.Student.toUserRequestWithPassword(hashedPassword: String) =
-    UserRequest(
+    StudentUserRequest(
         nickname = nickname,
         name = name,
         studentNumber = studentNumber,
@@ -74,8 +74,34 @@ fun User.Student.toUserRequestWithPassword(hashedPassword: String) =
             Gender.Woman -> 1
             else -> null
         },
-        identity = 0,
-        isGraduated = isStudent,
+        email = email,
+        hashedPassword = hashedPassword
+    )
+
+fun User.General.toUserRequest() = GeneralUserRequest(
+    nickname = nickname,
+    name = name,
+    phoneNumber = phoneNumber,
+    gender = when (gender) {
+        Gender.Man -> 0
+        Gender.Woman -> 1
+        else -> null
+    },
+    email = email,
+    hashedPassword = null
+)
+
+fun User.General.toUserRequestWithPassword(hashedPassword: String) =
+    GeneralUserRequest(
+        nickname = nickname,
+        name = name,
+        phoneNumber = phoneNumber,
+        gender = when (gender) {
+            Gender.Man -> 0
+            Gender.Woman -> 1
+            else -> null
+        },
+        email = email,
         hashedPassword = hashedPassword
     )
 

@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
+import `in`.koreatech.koin.data.request.user.GeneralUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
@@ -13,7 +14,7 @@ import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
-import `in`.koreatech.koin.data.request.user.UserRequest
+import `in`.koreatech.koin.data.request.user.StudentUserRequest
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
@@ -67,8 +68,12 @@ class UserRemoteDataSource(
         userApi.checkEmail(email)
     }
 
-    suspend fun updateUser(userRequest: UserRequest): StudentUserResponse {
-        return userAuthApi.putUser(userRequest)
+    suspend fun updateStudentUser(studentUserRequest: StudentUserRequest): StudentUserResponse {
+        return userAuthApi.putStudentUser(studentUserRequest)
+    }
+
+    suspend fun updateGeneralUser(generalUserRequest: GeneralUserRequest): GeneralUserResponse {
+        return userAuthApi.putGeneralUser(generalUserRequest)
     }
 
     suspend fun updateDeviceToken(token: String) {
