@@ -171,17 +171,19 @@ fun UserInfoEditScreen(
                 onNicknameDuplicateCheck = { viewModel.checkNicknameDuplicate() }
             )
 
-            UserInfoHeader(stringResource(R.string.user_info_student_info_header))
+            if (uiState.userType == UserType.STUDENT || uiState.userType == UserType.COUNCIL) {
+                UserInfoHeader(stringResource(R.string.user_info_student_info_header))
 
-            StudentUserInfo(
-                studentNumber = uiState.studentNumber,
-                isStudentNumberValid = uiState.isStudentNumberValid,
-                major = uiState.major,
-                isMajorDropdownExpanded = uiState.isMajorDropdownExpanded,
-                onStudentNumberChange = { viewModel.updateStudentNumber(it) },
-                onMajorChange = { viewModel.updateMajor(it) },
-                onMajorDropdownExpandedChange = { viewModel.updateMajorDropdownExpanded(it) }
-            )
+                StudentUserInfo(
+                    studentNumber = uiState.studentNumber,
+                    isStudentNumberValid = uiState.isStudentNumberValid,
+                    major = uiState.major,
+                    isMajorDropdownExpanded = uiState.isMajorDropdownExpanded,
+                    onStudentNumberChange = { viewModel.updateStudentNumber(it) },
+                    onMajorChange = { viewModel.updateMajor(it) },
+                    onMajorDropdownExpandedChange = { viewModel.updateMajorDropdownExpanded(it) }
+                )
+            }
 
             Spacer(modifier = Modifier.height(32.dp))
 
