@@ -22,7 +22,9 @@ class UpdateUserPasswordUseCase @Inject constructor(
                     userRepository.updateUserPassword(user, password.toSHA256())
                 }
 
-                is User.General -> TODO("Will be implement with user info edit")
+                is User.General -> {
+                    userRepository.updateUserPassword(user, password.toSHA256())
+                }
             }
         }
     }
