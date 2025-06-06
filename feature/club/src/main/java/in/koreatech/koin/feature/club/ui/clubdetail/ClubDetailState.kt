@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 data class ClubDetailState(
     val isLoading: Boolean = false,
     val userId: Int? = null,
-    val userEmail: String? = null,
+    val userLoginId: String? = null,
     val clubId: Int = -1,
     val clubDetails: ParcelizeClubDetails? = null,
     val clubQnasInfo: ParcelizeClubQnasInfo? = null,
