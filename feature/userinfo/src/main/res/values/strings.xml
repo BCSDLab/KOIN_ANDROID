@@ -27,6 +27,8 @@
 
     <string name="user_info_save">저장</string>
 
+    <string name="user_info_name_invalid">올바른 양식이 아닙니다. 다시 입력해 주세요.</string>
+
     <string name="user_info_phone_number_sent">인증번호가 발송되었습니다.</string>
     <string name="user_info_phone_number_sent_remain_count">남은 횟수 (%1$s/%2$s)</string>
     <string name="user_info_phone_number_already_signed_up">이미 가입된 전화 번호입니다.</string>
@@ -37,4 +39,10 @@
     <string name="user_info_code_timeout">유효시간이 지났습니다. 인증번호를 재발송 해주세요.</string>
     <string name="user_info_code_field_hint">인증번호를 입력해주세요.</string>
     <string name="user_info_code_check">인증번호 확인</string>
+
+    <string name="user_info_nickname_available">사용 가능한 닉네임 입니다.</string>
+    <string name="user_info_nickname_duplicated">중복된 닉네임입니다. 다시 입력해 주세요.</string>
+    <string name="user_info_nickname_wrong_format">한글, 영문 및 숫자 포함하여 10자 내로 입력해 주세요.</string>
+
+    <string name="user_info_student_number_wrong_format">올바른 학번 양식이 아닙니다. 다시 입력해 주세요.</string>
 </resources>

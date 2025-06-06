@@ -1,5 +1,8 @@
 package `in`.koreatech.koin.feature.userinfo.ui.userinfoedit
 
+import android.app.Activity
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -33,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,8 +49,9 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.domain.util.ext.isValidEmail
+import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.feature.userinfo.R
 import `in`.koreatech.koin.feature.userinfo.component.KoinUserInfoBasicItem
 import `in`.koreatech.koin.feature.userinfo.component.KoinUserInfoBasicTextField
@@ -58,10 +63,11 @@ import `in`.koreatech.koin.feature.userinfo.component.KoinUserInfoWithButtonItem
 import `in`.koreatech.koin.feature.userinfo.component.UserInfoHeader
 import `in`.koreatech.koin.feature.userinfo.genderList
 import `in`.koreatech.koin.feature.userinfo.majorStringList
+import `in`.koreatech.koin.feature.userinfo.model.NicknameState
 import `in`.koreatech.koin.feature.userinfo.model.PhoneNumberState
 import `in`.koreatech.koin.feature.userinfo.model.VerificationCodeState
-import `in`.koreatech.koin.feature.userinfo.util.secondToMinute
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,12 +76,23 @@ fun UserInfoEditScreen(
     viewModel: UserInfoEditViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect {
+        handleSideEffect(
+            sideEffect = it,
+            context = context,
+            startTimer = viewModel::startTimer,
+            stopTimer = viewModel::stopTimer
+        )
+    }
 
     Scaffold(
         topBar = {
             KoinTopAppBar(
                 title = stringResource(R.string.user_info_title),
                 onNavigationIconClick = {
+                    (context as Activity).finish()
                 },
                 actions = {
                     TextButton(
@@ -124,7 +141,9 @@ fun UserInfoEditScreen(
             GeneralUserInfo(
                 loginId = uiState.loginId,
                 name = uiState.name,
+                isNameValid = uiState.isNameValid,
                 nickName = uiState.nickname,
+                isNicknameValid = uiState.isNicknameValid,
                 phoneNumber = uiState.phoneNumber,
                 email = uiState.email,
                 gender = when (uiState.gender) {
@@ -132,28 +151,31 @@ fun UserInfoEditScreen(
                     Gender.Woman -> 1
                     else -> null
                 },
+                nicknameState = uiState.nicknameState,
                 phoneNumberState = uiState.phoneNumberState,
                 verificationCodeState = uiState.verificationCodeState,
                 verificationCode = uiState.verificationCode,
                 verificationTimeLeft = uiState.verificationTimeLeft,
                 isPhoneNumberChanged = uiState.isPhoneNumberChanged,
                 isNicknameChanged = uiState.isNicknameChanged,
+                userType = uiState.userType,
                 onLoginIdChange = { viewModel.updateLoginId(it) },
                 onNameChange = { viewModel.updateName(it) },
                 onNicknameChange = { viewModel.updateNickname(it) },
                 onPhoneNumberChange = { viewModel.updatePhoneNumber(it) },
                 onEmailChange = { viewModel.updateEmail(it) },
                 onGenderChange = { viewModel.updateGender(it) },
-                onRequestVerificationCode = { },
+                onRequestVerificationCode = { viewModel.checkPhoneNumber() },
                 onVerificationCodeChange = { viewModel.updateVerificationCode(it) },
-                checkVerificationCode = { viewModel.requestVerificationCode() },
-                onNicknameDuplicateCheck = { }
+                checkVerificationCode = { viewModel.checkVerificationCode() },
+                onNicknameDuplicateCheck = { viewModel.checkNicknameDuplicate() }
             )
 
             UserInfoHeader(stringResource(R.string.user_info_student_info_header))
 
             StudentUserInfo(
                 studentNumber = uiState.studentNumber,
+                isStudentNumberValid = uiState.isStudentNumberValid,
                 major = uiState.major,
                 isMajorDropdownExpanded = uiState.isMajorDropdownExpanded,
                 onStudentNumberChange = { viewModel.updateStudentNumber(it) },
@@ -171,8 +193,8 @@ fun UserInfoEditScreen(
                     .padding(horizontal = 32.dp),
                 text = stringResource(R.string.user_info_save),
                 textStyle = KoinTheme.typography.medium15,
-                enabled = uiState.isModified,
-                onClick = {}
+                enabled = uiState.canSave,
+                onClick = viewModel::requestUserInfoEdit
             )
 
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
@@ -184,16 +206,20 @@ fun UserInfoEditScreen(
 fun GeneralUserInfo(
     loginId: String,
     name: String,
+    isNameValid: Boolean,
     nickName: String,
+    isNicknameValid: Boolean,
     phoneNumber: String,
     email: String,
     gender: Int?,
+    nicknameState: NicknameState,
     phoneNumberState: PhoneNumberState,
     verificationCodeState: VerificationCodeState,
     verificationCode: String,
     verificationTimeLeft: Int,
     isPhoneNumberChanged: Boolean,
     isNicknameChanged: Boolean,
+    userType: UserType,
     modifier: Modifier = Modifier,
     onLoginIdChange: (String) -> Unit = {},
     onNameChange: (String) -> Unit = {},
@@ -212,7 +238,8 @@ fun GeneralUserInfo(
         KoinUserInfoBasicItem(
             title = stringResource(R.string.user_info_general_user_info_login_id),
             value = loginId,
-            onValueChange = onLoginIdChange
+            onValueChange = onLoginIdChange,
+            readOnly = true
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -223,18 +250,25 @@ fun GeneralUserInfo(
             onValueChange = onNameChange
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Box(
+            modifier = Modifier.height(32.dp)
+        ) {
+            if (!isNameValid && name.isNotBlank()) {
+                KoinUserInfoTextFieldAlert(
+                    text = stringResource(R.string.user_info_name_invalid),
+                    state = KoinUserInfoTextFieldAlertState.Warning
+                )
+            }
+        }
 
-        KoinUserInfoWithButtonItem(
-            title = stringResource(R.string.user_info_general_user_info_nickname),
-            value = nickName,
-            buttonText = stringResource(R.string.user_info_general_user_info_nickname_button),
-            onValueChange = onNicknameChange,
-            onButtonAction = onNicknameDuplicateCheck,
-            buttonEnabled = isNicknameChanged
+        UserInfoNickname(
+            nickName = nickName,
+            isNicknameChanged = isNicknameChanged,
+            isNicknameValid = isNicknameValid,
+            nicknameState = nicknameState,
+            onNicknameChange = onNicknameChange,
+            onNicknameDuplicateCheck = onNicknameDuplicateCheck
         )
-
-        Spacer(modifier = Modifier.height(32.dp))
 
         UserInfoPhoneNumber(
             phoneNumber = phoneNumber,
@@ -244,7 +278,7 @@ fun GeneralUserInfo(
             onRequestVerificationCode = onRequestVerificationCode
         )
 
-        if (phoneNumberState is PhoneNumberState.Sent) {
+        if (phoneNumberState is PhoneNumberState.Sent || verificationCodeState is VerificationCodeState.Valid) {
             UserInfoVerificationCodeVerification(
                 verificationCode = verificationCode,
                 verificationCodeState = verificationCodeState,
@@ -254,7 +288,7 @@ fun GeneralUserInfo(
             )
         }
 
-        if (email.isValidEmail()) { // If koreatech email
+        if (userType == UserType.STUDENT || userType == UserType.COUNCIL) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -262,7 +296,7 @@ fun GeneralUserInfo(
                 KoinUserInfoBasicItem(
                     modifier = Modifier.weight(1f),
                     title = stringResource(R.string.user_info_general_user_info_email),
-                    value = email.replace("@koreatech.ac.kr", ""),
+                    value = email.removeSuffix("@koreatech.ac.kr"),
                     onValueChange = {
                         onEmailChange(
                             if (it.isBlank()) "" else "${it.trim()}@koreatech.ac.kr"
@@ -315,6 +349,7 @@ fun GeneralUserInfo(
 @Composable
 fun StudentUserInfo(
     studentNumber: String,
+    isStudentNumberValid: Boolean,
     major: String,
     isMajorDropdownExpanded: Boolean,
     modifier: Modifier = Modifier,
@@ -331,7 +366,18 @@ fun StudentUserInfo(
             onValueChange = onStudentNumberChange
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Box(
+            modifier = Modifier.height(32.dp)
+        ) {
+            if (!isStudentNumberValid) {
+                Spacer(modifier = Modifier.height(8.dp))
+
+                KoinUserInfoTextFieldAlert(
+                    text = stringResource(R.string.user_info_student_number_wrong_format),
+                    state = KoinUserInfoTextFieldAlertState.Warning
+                )
+            }
+        }
 
         KoinUserInfoDropdown(
             text = major,
@@ -346,6 +392,54 @@ fun StudentUserInfo(
                 onMajorDropdownExpandedChange(it)
             }
         )
+    }
+}
+
+@Composable
+fun UserInfoNickname(
+    nickName: String,
+    isNicknameChanged: Boolean,
+    isNicknameValid: Boolean,
+    nicknameState: NicknameState,
+    onNicknameChange: (String) -> Unit = {},
+    onNicknameDuplicateCheck: () -> Unit = {}
+) {
+    KoinUserInfoWithButtonItem(
+        title = stringResource(R.string.user_info_general_user_info_nickname),
+        value = nickName,
+        buttonText = stringResource(R.string.user_info_general_user_info_nickname_button),
+        maxLength = 10,
+        onValueChange = onNicknameChange,
+        onButtonAction = onNicknameDuplicateCheck,
+        buttonEnabled = isNicknameChanged && nicknameState !is NicknameState.NicknameAvailable
+    )
+
+    Box(modifier = Modifier.height(32.dp)) {
+        if (!isNicknameValid) {
+            KoinUserInfoTextFieldAlert(
+                text = stringResource(R.string.user_info_nickname_wrong_format),
+                state = KoinUserInfoTextFieldAlertState.Warning
+            )
+        }
+
+        when (nicknameState) {
+            is NicknameState.NicknameAvailable -> {
+                KoinUserInfoTextFieldAlert(
+                    text = stringResource(R.string.user_info_nickname_available),
+                    state = KoinUserInfoTextFieldAlertState.Success
+                )
+            }
+
+            is NicknameState.NicknameDuplicated -> {
+                KoinUserInfoTextFieldAlert(
+                    text = stringResource(R.string.user_info_nickname_duplicated),
+                    state = KoinUserInfoTextFieldAlertState.Warning
+                )
+            }
+
+            NicknameState.Failed -> {}
+            NicknameState.None -> {}
+        }
     }
 }
 
@@ -382,15 +476,15 @@ fun UserInfoPhoneNumber(
             is PhoneNumberState.Sent -> {
                 Row {
                     KoinUserInfoTextFieldAlert(
-                        text = stringResource(R.string.user_info_code_correct),
+                        text = stringResource(R.string.user_info_phone_number_sent),
                         state = KoinUserInfoTextFieldAlertState.Success
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(
                             R.string.user_info_phone_number_sent_remain_count,
-                            phoneNumberState.leftCount,
-                            phoneNumberState.maxCount
+                            phoneNumberState.remainingCount,
+                            phoneNumberState.totalCount
                         ),
                         style = KoinTheme.typography.regular12,
                         color = KoinTheme.colors.neutral500
@@ -412,7 +506,11 @@ fun UserInfoPhoneNumber(
                 )
             }
 
-            PhoneNumberState.None -> { }
+            PhoneNumberState.None,
+            PhoneNumberState.Modified -> {
+            }
+
+            is PhoneNumberState.Failed -> {}
         }
     }
 }
@@ -485,7 +583,7 @@ fun UserInfoVerificationCodeVerification(
     }
 
     when (verificationCodeState) {
-        VerificationCodeState.None -> { }
+        VerificationCodeState.None -> {}
 
         VerificationCodeState.Valid -> {
             KoinUserInfoTextFieldAlert(
@@ -500,12 +598,33 @@ fun UserInfoVerificationCodeVerification(
                 state = KoinUserInfoTextFieldAlertState.Warning
             )
         }
+
         VerificationCodeState.Expired -> {
             KoinUserInfoTextFieldAlert(
                 text = stringResource(R.string.user_info_code_timeout),
                 state = KoinUserInfoTextFieldAlertState.Warning
             )
         }
+    }
+}
+
+fun handleSideEffect(
+    sideEffect: UserInfoEditSideEffect,
+    context: Context,
+    startTimer: () -> Unit = {},
+    stopTimer: () -> Unit = {}
+) {
+    when (sideEffect) {
+        UserInfoEditSideEffect.UpdateUserInfoSuccess -> {
+            (context as Activity).finish()
+        }
+
+        UserInfoEditSideEffect.UpdateUserInfoFailed -> {
+            Toast.makeText(context, "!", Toast.LENGTH_SHORT).show()
+        }
+
+        UserInfoEditSideEffect.StartTimer -> startTimer()
+        UserInfoEditSideEffect.StopTimer -> stopTimer()
     }
 }
 
@@ -519,15 +638,19 @@ fun UserInfoEditScreenImplPreview() {
                 loginId = "20221234",
                 name = "홍길동",
                 nickName = "홍길동",
+                isNicknameValid = true,
                 phoneNumber = "010-1234-5678",
                 email = "",
                 gender = 0,
+                nicknameState = NicknameState.None,
                 phoneNumberState = PhoneNumberState.None,
                 verificationCodeState = VerificationCodeState.NotValid,
                 verificationCode = "",
                 verificationTimeLeft = 180,
                 isPhoneNumberChanged = true,
-                isNicknameChanged = true
+                isNicknameChanged = true,
+                userType = UserType.STUDENT,
+                isNameValid = true
             )
         }
     }
