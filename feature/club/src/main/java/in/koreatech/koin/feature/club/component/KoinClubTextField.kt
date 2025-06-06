@@ -62,9 +62,9 @@ fun KoinClubBasicTextField(
         value = value,
         onValueChange = {
             if (it.length < maxLength) {
-                onValueChange(it.trim())
+                onValueChange(it)
             } else {
-                onValueChange(it.take(maxLength).trim())
+                onValueChange(it.take(maxLength))
             }
         },
         enabled = enabled,
