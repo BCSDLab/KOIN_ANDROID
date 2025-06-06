@@ -36,7 +36,8 @@ fun ClubsResponse.toClubs() = Clubs(
             category = it.category,
             likes = it.likes,
             imageUrl = it.imageUrl,
-            isLiked = it.isLiked
+            isLiked = it.isLiked,
+            isLikeHidden = it.isLikeHidden
         )
     }
 )
