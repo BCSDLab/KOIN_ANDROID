@@ -20,6 +20,7 @@ import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.userinfo.model.NicknameState
 import `in`.koreatech.koin.feature.userinfo.model.PhoneNumberState
 import `in`.koreatech.koin.feature.userinfo.model.VerificationCodeState
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -27,7 +28,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class UserInfoEditViewModel @Inject constructor(
@@ -115,11 +115,14 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun updatePhoneNumber(phoneNumber: String) = blockingIntent {
         reduce {
-            state.copy(phoneNumber = phoneNumber, phoneNumberState = when (state.beforeUser) {
-                User.Anonymous -> PhoneNumberState.None
-                is User.Student -> if ((state.beforeUser as User.Student).phoneNumber != phoneNumber) PhoneNumberState.Modified else PhoneNumberState.None
-                is User.General -> if ((state.beforeUser as User.General).phoneNumber != phoneNumber) PhoneNumberState.Modified else PhoneNumberState.None
-            })
+            state.copy(
+                phoneNumber = phoneNumber,
+                phoneNumberState = when (state.beforeUser) {
+                    User.Anonymous -> PhoneNumberState.None
+                    is User.Student -> if ((state.beforeUser as User.Student).phoneNumber != phoneNumber) PhoneNumberState.Modified else PhoneNumberState.None
+                    is User.General -> if ((state.beforeUser as User.General).phoneNumber != phoneNumber) PhoneNumberState.Modified else PhoneNumberState.None
+                }
+            )
         }
     }
 
@@ -289,7 +292,7 @@ class UserInfoEditViewModel @Inject constructor(
                 gender = state.gender,
                 phoneNumber = state.phoneNumber,
                 studentNumber = state.studentNumber,
-                major = state.major,
+                major = state.major
             ).onSuccess {
                 reduce {
                     state.copy(

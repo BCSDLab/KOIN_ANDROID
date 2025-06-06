@@ -21,13 +21,12 @@ import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
-import timber.log.Timber
-import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,

@@ -71,15 +71,15 @@ val UserInfoEditState.isModified: Boolean
         User.Anonymous -> false
         is User.Student -> {
             beforeUser.loginId != loginId || beforeUser.name != name.ifEmpty { null } ||
-                    beforeUser.nickname != nickname.ifEmpty { null } || beforeUser.phoneNumber != phoneNumber.ifEmpty { null } ||
-                    beforeUser.email != email || beforeUser.gender != gender ||
-                    beforeUser.studentNumber != studentNumber.ifEmpty { null } || beforeUser.major != major.ifEmpty { null }
+                beforeUser.nickname != nickname.ifEmpty { null } || beforeUser.phoneNumber != phoneNumber.ifEmpty { null } ||
+                beforeUser.email != email || beforeUser.gender != gender ||
+                beforeUser.studentNumber != studentNumber.ifEmpty { null } || beforeUser.major != major.ifEmpty { null }
         }
 
         is User.General -> {
             beforeUser.loginId != loginId || beforeUser.name != name ||
-                    beforeUser.nickname != nickname.ifEmpty { null } || beforeUser.phoneNumber != phoneNumber ||
-                    beforeUser.email != email || beforeUser.gender != gender
+                beforeUser.nickname != nickname.ifEmpty { null } || beforeUser.phoneNumber != phoneNumber ||
+                beforeUser.email != email || beforeUser.gender != gender
         }
     }
 
