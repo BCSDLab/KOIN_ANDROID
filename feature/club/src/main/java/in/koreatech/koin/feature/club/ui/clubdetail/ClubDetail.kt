@@ -198,6 +198,7 @@ fun ClubDetail(
                 onClick = {
                     scope.launch {
                         listState.animateScrollToItem(0)
+                        qnaScrollState.scrollTo(0)
                     }
                 },
                 elevation = FloatingActionButtonDefaults.elevation(
