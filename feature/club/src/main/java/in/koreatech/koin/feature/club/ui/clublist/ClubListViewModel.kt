@@ -96,12 +96,15 @@ class ClubListViewModel @Inject constructor(
 
     fun getClubs() = viewModelScope.launch {
         intent {
+            reduce {
+                state.copy(isLoading = true)
+            }
             getClubsUseCase(
                 categoryId = state.categoryId,
                 sortType = state.sortType.name
             ).onSuccess { clubs ->
                 reduce {
-                    state.copy(clubs = clubs.toParcelizeClubItems())
+                    state.copy(clubs = clubs.toParcelizeClubItems(), isLoading = false)
                 }
             }
         }
@@ -109,6 +112,9 @@ class ClubListViewModel @Inject constructor(
 
     fun changeClubLike(clubId: Int) = viewModelScope.launch {
         intent {
+            reduce {
+                state.copy(isLoading = true)
+            }
             state.clubs.forEach { club ->
                 if (club.id == clubId) {
                     if (club.isLiked) {
@@ -118,11 +124,12 @@ class ClubListViewModel @Inject constructor(
                     }
                     reduce {
                         state.copy(
+                            isLoading = false,
                             clubs = state.clubs.map {
                                 if (it.id == clubId) {
                                     it.copy(
                                         isLiked = !it.isLiked,
-                                        likes = if (it.isLiked) it.likes - 1 else it.likes + 1
+                                        likes = if (it.isLiked) it.likes - 1 else it.likes + 1,
                                     )
                                 } else {
                                     it

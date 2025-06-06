@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clublist
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,12 +11,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -114,6 +117,7 @@ fun ClubListScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { innerPadding ->
         ClubListScreenImpl(
+            isLoading = uiState.isLoading,
             clubList = uiState.clubs,
             sortType = uiState.sortType,
             selectedCategoryId = uiState.categoryId,
@@ -156,6 +160,7 @@ fun ClubListScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ClubListScreenImpl(
+    isLoading: Boolean,
     clubList: List<ParcelizeClubItem>,
     selectedCategoryId: Int?,
     sortType: ClubSort,
@@ -174,6 +179,15 @@ fun ClubListScreenImpl(
     navigateToClubDetail: (Int) -> Unit = { _ -> },
     navigateToLogin: () -> Unit = { }
 ) {
+    if (isLoading) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+
     if (shouldShowClubCreateDialog) {
         KoinClubMessageDialog(
             title = stringResource(R.string.club_list_create_dialog_title),
@@ -321,6 +335,7 @@ fun handleSideEffect(
 @Composable
 fun ClubListScreenPreview() {
     ClubListScreenImpl(
+        isLoading = false,
         clubList = emptyList(),
         selectedCategoryId = 1,
         sortType = ClubSort.NONE,
