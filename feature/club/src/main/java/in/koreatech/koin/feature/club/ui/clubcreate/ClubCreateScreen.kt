@@ -493,7 +493,7 @@ fun ClubCreateScreenImpl(
             value = clubDescription,
             onValueChange = onClubDescriptionChange,
             hint = stringResource(R.string.club_create_introduction_hint),
-            maxLength = CLUB_DESCRIPTION_MAX_LENGTH,
+            maxLength = CLUB_DESCRIPTION_MAX_LENGTH
         )
 
         Row(
