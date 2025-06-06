@@ -52,7 +52,7 @@ import `in`.koreatech.koin.feature.signup.component.KoinSignUpProgressIndicator
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpSingleChoiceRadioGroup
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpTextFieldAlert
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpTextFieldAlertState
-import `in`.koreatech.koin.feature.signup.util.secondToMinute
+import `in`.koreatech.koin.core.util.secondToMinute
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

@@ -8,7 +8,7 @@ import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.signup.CheckPhoneNumberDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
-import `in`.koreatech.koin.feature.signup.util.AccountTimer
+import `in`.koreatech.koin.core.util.AccountTimer
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
