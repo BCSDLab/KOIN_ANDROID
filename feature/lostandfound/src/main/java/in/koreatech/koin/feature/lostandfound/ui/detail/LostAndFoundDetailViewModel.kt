@@ -47,19 +47,20 @@ class LostAndFoundDetailViewModel @Inject constructor(
         viewModelScope.launch {
             getUserStatusUseCase().collectLatest {
                 intent {
-                    if (it is User.Student) {
-                        reduce {
+                    when (it) {
+                        is User.Student -> reduce {
                             state.copy(
                                 isLoggedIn = true,
                                 currentLoggedInUser = it.nickname ?: ""
                             )
                         }
-                    } else {
-                        reduce {
+                        is User.General -> reduce {
                             state.copy(
-                                isLoggedIn = false
+                                isLoggedIn = true,
+                                currentLoggedInUser = it.nickname ?: ""
                             )
                         }
+                        is User.Anonymous -> throw IllegalAccessException()
                     }
                 }
             }
