@@ -53,6 +53,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.club.CLUB_DESCRIPTION_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
@@ -419,7 +420,8 @@ fun ClubModifyScreenImpl(
             modifier = Modifier.fillMaxWidth(),
             value = clubDescription,
             onValueChange = onClubDescriptionChange,
-            hint = stringResource(R.string.club_create_introduction_hint)
+            hint = stringResource(R.string.club_create_introduction_hint),
+            maxLines = CLUB_DESCRIPTION_MAX_LENGTH
         )
 
         Row(
