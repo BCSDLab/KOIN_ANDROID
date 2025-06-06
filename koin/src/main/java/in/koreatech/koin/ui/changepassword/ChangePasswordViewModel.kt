@@ -82,7 +82,7 @@ class ChangePasswordViewModel @Inject constructor(
 
     val userEmail: StateFlow<String> =
         _userInfo
-            .filter { it.isStudent }
+            .filter { it.isStudent || it.isGeneral }
             .map { (it as User.Student).email ?: "Unknown Email" }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 

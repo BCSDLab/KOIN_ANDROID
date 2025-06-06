@@ -252,7 +252,7 @@ abstract class KoinNavigationDrawerActivity :
                             }
 
                             MenuState.LoginOrLogout -> {
-                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isStudent) {
+                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isStudent || koinNavigationDrawerViewModel.userInfoFlow.value.isGeneral) {
                                     EventLogger.logClickEvent(
                                         EventAction.USER,
                                         AnalyticsConstant.Label.HAMBURGER,
@@ -335,7 +335,7 @@ abstract class KoinNavigationDrawerActivity :
                 }
 
                 MenuState.LoginOrLogout -> {
-                    if (userInfoFlow.value.isStudent) {
+                    if (userInfoFlow.value.isStudent || userInfoFlow.value.isGeneral) {
                         logout()
                     }
                     goToLoginActivity()
@@ -346,7 +346,7 @@ abstract class KoinNavigationDrawerActivity :
                 }
 
                 MenuState.LoginOrLogout -> {
-                    if (userInfoFlow.value.isStudent) {
+                    if (userInfoFlow.value.isStudent || userInfoFlow.value.isGeneral) {
                         logout()
                     }
                     goToLoginActivity()
