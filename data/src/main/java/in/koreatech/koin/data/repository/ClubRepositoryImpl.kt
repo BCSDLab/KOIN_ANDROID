@@ -207,7 +207,7 @@ class ClubRepositoryImpl @Inject constructor(
                     400 -> throw ClubError.AlreadyManager
                     401 -> throw ClubError.Unauthorized
                     403 -> throw ClubError.NotClubManager
-                    404 -> throw ClubError.UserIdNotFound // TODO recover throw ClubError.ClubNotFound
+                    404 -> throw ClubError.UserIdNotFound
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }

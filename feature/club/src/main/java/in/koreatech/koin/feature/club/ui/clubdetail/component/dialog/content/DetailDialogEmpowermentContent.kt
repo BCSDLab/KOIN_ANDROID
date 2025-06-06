@@ -21,7 +21,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.component.textfield.Detail
 @Composable
 fun DetailDialogEmpowermentContent(
     clubName: String,
-    managerId: Int,
+    managerId: String?,
     modifier: Modifier = Modifier,
     text: String = "",
     isError: Boolean = false,
@@ -56,7 +56,7 @@ fun DetailDialogEmpowermentContent(
                 color = KoinTheme.colors.neutral800
             )
             Text(
-                text = managerId.toString(),
+                text = managerId?.removeSuffix("@koreatech.ac.kr") ?: "",
                 style = KoinTheme.typography.medium16,
                 color = KoinTheme.colors.neutral800
             )
@@ -69,19 +69,18 @@ fun DetailDialogEmpowermentContent(
                 style = KoinTheme.typography.medium16,
                 color = KoinTheme.colors.neutral800
             )
-            Spacer(modifier = Modifier.width(4.dp))
-            DetailQnaTextField(
-                value = text,
-                hint = stringResource(R.string.detail_dialog_empowerment_hint),
-                textStyle = KoinTheme.typography.regular14,
-                hintColor = KoinTheme.colors.neutral700,
-                onValueChange = onValueChange,
-                isSendIconVisible = false,
-                isError = isError,
-                errorMessage = errorMessage,
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 7.dp)
-            )
         }
+        DetailQnaTextField(
+            value = text,
+            hint = stringResource(R.string.detail_dialog_empowerment_hint),
+            textStyle = KoinTheme.typography.regular14,
+            hintColor = KoinTheme.colors.neutral700,
+            onValueChange = onValueChange,
+            isSendIconVisible = false,
+            isError = isError,
+            errorMessage = errorMessage,
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 7.dp)
+        )
     }
 }
 
@@ -90,7 +89,7 @@ fun DetailDialogEmpowermentContent(
 fun DetailDialogEmpowermentContentPreView() {
     DetailDialogEmpowermentContent(
         clubName = "bcsd",
-        managerId = 6488,
+        managerId = "6488",
         modifier = Modifier
             .background(
                 color = KoinTheme.colors.neutral0
@@ -103,7 +102,7 @@ fun DetailDialogEmpowermentContentPreView() {
 fun DetailDialogEmpowermentContentErrorPreView() {
     DetailDialogEmpowermentContent(
         clubName = "bcsd",
-        managerId = 6488,
+        managerId = "6488",
         modifier = Modifier
             .background(
                 color = KoinTheme.colors.neutral0

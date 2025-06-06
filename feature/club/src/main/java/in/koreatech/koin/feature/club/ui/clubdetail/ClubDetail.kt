@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.club.ui.clubdetail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -25,7 +25,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -39,6 +41,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -47,9 +50,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -67,6 +76,7 @@ import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
+import `in`.koreatech.koin.domain.util.ext.formatInstagramUrlForm
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isGoogleFormUrl
 import `in`.koreatech.koin.domain.util.ext.isInstagramUrl
@@ -83,6 +93,7 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailImageDialog
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
@@ -117,6 +128,9 @@ fun ClubDetail(
     val qnaList = state.clubQnasInfo?.qnas
     val tabList = DetailTabType.entries.map { it.strResId }
 
+    val localDensity = LocalDensity.current
+    val stickyHeaderHeightDp = remember { mutableStateOf(0.dp) }
+
     val pagerState = rememberPagerState(initialPage = initialPage) { tabList.size }
     val scope = rememberCoroutineScope()
 
@@ -125,6 +139,35 @@ fun ClubDetail(
     val snackbarHostState = remember { SnackbarHostState() }
 
     val listState = rememberLazyListState()
+
+    val parentAllScrolled = remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
+
+    val qnaScrollState = rememberScrollState()
+    val isParentScrollable = remember { mutableStateOf(false) }
+    val isChildScrollable = remember { mutableStateOf(false) }
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                return if (available.y < 0) {
+                    if (parentAllScrolled.value) {
+                        isChildScrollable.value = true
+                        isParentScrollable.value = false
+                        Offset.Zero
+                    } else {
+                        isChildScrollable.value = false
+                        isParentScrollable.value = true
+                        Offset.Zero
+                    }
+                } else {
+                    if(qnaScrollState.value == 0) {
+                        isChildScrollable.value = false
+                        isParentScrollable.value = true
+                    }
+                    Offset.Zero
+                }
+            }
+        }
+    }
 
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
@@ -143,6 +186,7 @@ fun ClubDetail(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
+                modifier = Modifier,
                 title = state.clubDetails?.name ?: "",
                 onNavigationIconClick = onTopbarBackClick
             )
@@ -188,6 +232,17 @@ fun ClubDetail(
         }
     ) { contentPadding ->
 
+        if (state.clubDetails == null) {
+            Column (
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ){
+                CircularProgressIndicator()
+            }
+            return@Scaffold
+        }
+
         if (state.showLoginDialog) {
             DetailLoginDialog(
                 title = stringResource(R.string.detail_dialog_login_title),
@@ -203,7 +258,6 @@ fun ClubDetail(
         if (state.showAddQnaDialog) {
             var addQnaText by remember { mutableStateOf("") }
             DetailDialog(
-                modifier = Modifier,
                 title = stringResource(R.string.detail_add_qna_button),
                 onPositive = {
                     viewModel.addClubQna(
@@ -237,7 +291,7 @@ fun ClubDetail(
                 content = {
                     DetailDialogEmpowermentContent(
                         clubName = state.clubDetails?.name ?: "",
-                        managerId = state.userId ?: -1,
+                        managerId = state.userEmail ?: "",
                         text = newManagerText,
                         onValueChange = { newManagerText = it.trim() },
                         isError = state.textFieldErrorMessageResId != null,
@@ -247,20 +301,34 @@ fun ClubDetail(
             )
         }
 
+        if (state.showImageDialog) {
+            DetailImageDialog (
+                imageModel = ImageRequest.Builder(context)
+                    .data(state.clubDetails?.imageUrl)
+                    .size(400, 400)
+                    .build(),
+                onDismiss = { viewModel.dismissImageDialog() }
+            )
+        }
+
         LazyColumn(
             modifier = Modifier
                 .padding(contentPadding)
                 .consumeWindowInsets(contentPadding)
                 .systemBarsPadding()
-                .fillMaxSize(),
+                .fillMaxSize()
+                .nestedScroll(nestedScrollConnection),
             state = listState,
             horizontalAlignment = Alignment.CenterHorizontally,
-            userScrollEnabled = true
+            userScrollEnabled = isParentScrollable.value
         ) {
             item {
                 SubcomposeAsyncImage(
                     modifier = Modifier
-                        .size(200.dp),
+                        .size(200.dp)
+                        .clickable {
+                            viewModel.showImageDialog()
+                        },
                     model = ImageRequest.Builder(context)
                         .data(state.clubDetails?.imageUrl)
                         .size(400, 400)
@@ -374,14 +442,17 @@ fun ClubDetail(
                                         outputText = "${stringResource(intro.first.strResId)}$it"
                                         onClick = { mutableMaxLine.value = if(mutableMaxLine.value == 2) 10 else 2 }
                                     }
-                                    DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
+                                    DETAIL_INSTAGRAM -> {
+                                        linkUrl = if(it.isInstagramUrl()) it else it.formatInstagramUrlForm()
+                                        onClick = { viewModel.openUrl(linkUrl) }
+                                        outputText = it.formatInstagramLinkForm()
+                                    }
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_PHONE_NUMBER -> outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
                                     else -> outputText = it
                                 }
                                 if (
-                                    it.isInstagramUrl() ||
                                     it.isGoogleFormUrl() ||
                                     it.isOpenChatUrl()
                                 ) {
@@ -437,6 +508,10 @@ fun ClubDetail(
             }
             stickyHeader {
                 DetailTabRow(
+                    modifier = Modifier
+                        .onGloballyPositioned { layoutCoordinates ->
+                            stickyHeaderHeightDp.value = with(localDensity) {layoutCoordinates.size.height.toDp()}
+                        },
                     selectedTabIndex = pagerState.currentPage,
                     onTabSelected = {
                         scope.launch {
@@ -447,10 +522,12 @@ fun ClubDetail(
                 )
             }
             item {
-                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp
+                val deleteHeightDP = contentPadding.calculateTopPadding().value.dp + 20.dp
+                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - deleteHeightDP
                 HorizontalPager(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .height(deviceHeightDp),
                     state = pagerState,
                     verticalAlignment = Alignment.Top
                 ) { page ->
@@ -460,8 +537,7 @@ fun ClubDetail(
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .heightIn(min = deviceHeightDp),
+                                    .fillMaxSize(),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
@@ -488,7 +564,6 @@ fun ClubDetail(
                                     Box(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .heightIn(min = deviceHeightDp)
                                             .zIndex(1f)
                                     ) {
                                         CircularProgressIndicator(
@@ -501,7 +576,7 @@ fun ClubDetail(
                                 ClubDetailQna(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .heightIn(min = deviceHeightDp),
+                                        .verticalScroll(qnaScrollState, enabled = isChildScrollable.value),
                                     qnaList = qnaList,
                                     isManager = state.clubDetails?.manager ?: false,
                                     userId = state.userId,

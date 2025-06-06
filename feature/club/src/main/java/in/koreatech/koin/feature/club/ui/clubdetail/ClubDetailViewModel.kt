@@ -75,10 +75,10 @@ class ClubDetailViewModel @Inject constructor(
         userInfoFlow.collect { user ->
             when (user) {
                 is User.Anonymous -> {
-                    reduce { state.copy(userId = null) }
+                    reduce { state.copy(userId = null, userEmail = null) }
                 }
                 is User.Student -> {
-                    reduce { state.copy(userId = user.id) }
+                    reduce { state.copy(userId = user.id, userEmail = user.email) }
                 }
             }
         }
@@ -314,5 +314,13 @@ class ClubDetailViewModel @Inject constructor(
 
     fun openUrl(url: String) = intent {
         postSideEffect(ClubDetailSideEffect.OpenUrl(url))
+    }
+
+    fun showImageDialog() = intent {
+        reduce { state.copy(showImageDialog = true) }
+    }
+
+    fun dismissImageDialog() = intent {
+        reduce { state.copy(showImageDialog = false) }
     }
 }

@@ -29,7 +29,7 @@ fun DetailTabRow(
     indicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
         if (selectedTabIndex < tabPositions.size) {
             TabRowDefaults.SecondaryIndicator(
-                modifier = modifier
+                modifier = Modifier
                     .tabIndicatorOffset(tabPositions[selectedTabIndex])
                     .height(1.dp),
                 color = indicatorColor
