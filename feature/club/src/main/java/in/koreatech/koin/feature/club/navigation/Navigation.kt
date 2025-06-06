@@ -33,6 +33,9 @@ fun NavGraphBuilder.koinClubGraph(
             },
             navigateToClubDetail = { clubId ->
                 navController.navigate("${ClubNavType.ClubDetail.route}/$clubId")
+            },
+            resetClubCreatedState = {
+                it.savedStateHandle[IS_CLUB_CREATED] = false
             }
         )
     }
@@ -55,6 +58,9 @@ fun NavGraphBuilder.koinClubGraph(
             },
             onModifyClick = { clubId ->
                 navController.navigate("${ClubNavType.ClubModify.route}/$clubId")
+            },
+            resetClubModifiedState = {
+                it.savedStateHandle[IS_CLUB_MODIFIED] = false
             }
         )
     }
@@ -64,10 +70,6 @@ fun NavGraphBuilder.koinClubGraph(
     ) {
         ClubCreateScreen(
             onNavigateUp = {
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_CLUB_CREATED,
-                    false
-                )
                 navController.navigateUp()
             },
             onClubCreated = {
@@ -88,10 +90,6 @@ fun NavGraphBuilder.koinClubGraph(
     ) {
         ClubModifyScreen(
             onNavigateUp = {
-                navController.previousBackStackEntry?.savedStateHandle?.set(
-                    IS_CLUB_MODIFIED,
-                    false
-                )
                 navController.navigateUp()
             },
             onClubModified = {

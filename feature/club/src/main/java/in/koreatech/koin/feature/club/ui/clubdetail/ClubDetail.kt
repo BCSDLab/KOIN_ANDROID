@@ -100,6 +100,7 @@ fun ClubDetail(
     initialPage: Int = 0,
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
+    resetClubModifiedState: () -> Unit = {},
     viewModel: ClubDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
@@ -135,6 +136,7 @@ fun ClubDetail(
                 message = context.getString(R.string.club_modify_success_snackbar),
                 duration = SnackbarDuration.Short
             )
+            resetClubModifiedState()
         }
     }
 

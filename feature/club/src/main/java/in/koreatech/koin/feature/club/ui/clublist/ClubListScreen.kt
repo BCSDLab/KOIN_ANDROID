@@ -60,7 +60,8 @@ fun ClubListScreen(
     isClubCreated: Boolean = false,
     viewModel: ClubListViewModel = hiltViewModel(),
     navigateToCreateClub: () -> Unit = { },
-    navigateToClubDetail: (Int) -> Unit = { _ -> }
+    navigateToClubDetail: (Int) -> Unit = { _ -> },
+    resetClubCreatedState: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -77,6 +78,7 @@ fun ClubListScreen(
                 message = context.getString(R.string.club_create_success_snackbar),
                 duration = SnackbarDuration.Short
             )
+            resetClubCreatedState()
         }
     }
 
