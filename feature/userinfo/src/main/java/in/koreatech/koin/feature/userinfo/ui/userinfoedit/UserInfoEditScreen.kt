@@ -146,6 +146,7 @@ fun UserInfoEditScreen(
                 isNicknameValid = uiState.isNicknameValid,
                 phoneNumber = uiState.phoneNumber,
                 email = uiState.email,
+                isEmailValid = uiState.isEmailValid,
                 gender = when (uiState.gender) {
                     Gender.Man -> 0
                     Gender.Woman -> 1
@@ -213,6 +214,7 @@ fun GeneralUserInfo(
     isNicknameValid: Boolean,
     phoneNumber: String,
     email: String,
+    isEmailValid: Boolean,
     gender: Int?,
     nicknameState: NicknameState,
     phoneNumberState: PhoneNumberState,
@@ -331,7 +333,16 @@ fun GeneralUserInfo(
             )
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Box(
+            modifier = Modifier.height(32.dp)
+        ) {
+            if (!isEmailValid) {
+                KoinUserInfoTextFieldAlert(
+                    text = stringResource(R.string.user_info_email_wrong_format),
+                    state = KoinUserInfoTextFieldAlertState.Warning
+                )
+            }
+        }
 
         Text(
             text = stringResource(R.string.user_info_general_user_info_gender),
@@ -652,7 +663,8 @@ fun UserInfoEditScreenImplPreview() {
                 isPhoneNumberChanged = true,
                 isNicknameChanged = true,
                 userType = UserType.STUDENT,
-                isNameValid = true
+                isNameValid = true,
+                isEmailValid = true
             )
         }
     }

@@ -45,4 +45,6 @@
     <string name="user_info_nickname_wrong_format">한글, 영문 및 숫자 포함하여 10자 내로 입력해 주세요.</string>
 
     <string name="user_info_student_number_wrong_format">올바른 학번 양식이 아닙니다. 다시 입력해 주세요.</string>
+
+    <string name="user_info_email_wrong_format">올바른 이메일 형식이 아닙니다..</string>
 </resources>

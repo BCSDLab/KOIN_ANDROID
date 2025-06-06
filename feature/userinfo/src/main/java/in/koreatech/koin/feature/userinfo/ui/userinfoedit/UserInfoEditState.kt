@@ -6,6 +6,8 @@ import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.util.ext.isEnglish
 import `in`.koreatech.koin.domain.util.ext.isKorean
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidEmail
+import `in`.koreatech.koin.domain.util.ext.isValidGeneralEmail
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import `in`.koreatech.koin.feature.userinfo.model.NicknameState
 import `in`.koreatech.koin.feature.userinfo.model.PhoneNumberState
@@ -55,6 +57,9 @@ val UserInfoEditState.isNameValid: Boolean
         false
     }
 
+val UserInfoEditState.isEmailValid: Boolean
+    get() = (email.isNotEmpty() && (email.isValidEmail() || email.isValidGeneralEmail())) || email.isEmpty()
+
 val UserInfoEditState.isNicknameValid
     get() = ((nickname.isNotEmpty() && nickname.isNicknameFormat()) || nickname.isEmpty())
 
@@ -84,4 +89,4 @@ val UserInfoEditState.isModified: Boolean
     }
 
 val UserInfoEditState.canSave: Boolean
-    get() = isModified && isNameValid && isStudentNumberValid && phoneNumberState is PhoneNumberState.None
+    get() = isModified && isNameValid && isStudentNumberValid && isEmailValid && phoneNumberState is PhoneNumberState.None
