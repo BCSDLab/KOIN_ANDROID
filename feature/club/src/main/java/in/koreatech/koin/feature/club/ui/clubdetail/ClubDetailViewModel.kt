@@ -75,10 +75,10 @@ class ClubDetailViewModel @Inject constructor(
         userInfoFlow.collect { user ->
             when (user) {
                 is User.Anonymous -> {
-                    reduce { state.copy(userId = null, userEmail = null) }
+                    reduce { state.copy(userId = null, userLoginId = null) }
                 }
                 is User.Student -> {
-                    reduce { state.copy(userId = user.id, userEmail = user.email) }
+                    reduce { state.copy(userId = user.id, userLoginId = user.email?.removeSuffix("@koreatech.ac.kr")) }
                 }
             }
         }

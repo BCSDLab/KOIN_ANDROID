@@ -19,7 +19,7 @@ import `in`.koreatech.koin.feature.club.ui.clubdetail.component.textfield.Detail
 @Composable
 fun DetailDialogEmpowermentContent(
     clubName: String,
-    managerId: String?,
+    managerId: String,
     modifier: Modifier = Modifier,
     text: String = "",
     isError: Boolean = false,
@@ -54,7 +54,7 @@ fun DetailDialogEmpowermentContent(
                 color = KoinTheme.colors.neutral800
             )
             Text(
-                text = managerId?.removeSuffix("@koreatech.ac.kr") ?: "",
+                text = managerId,
                 style = KoinTheme.typography.medium16,
                 color = KoinTheme.colors.neutral800
             )
