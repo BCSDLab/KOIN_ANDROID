@@ -528,7 +528,7 @@ fun ClubCreateScreenImpl(
             Spacer(modifier = Modifier.weight(1f))
 
             Column(
-                modifier = Modifier.width(IntrinsicSize.Max)
+                modifier = Modifier.width(270.dp)
             ) {
                 KoinClubBasicTextField(
                     modifier = Modifier
