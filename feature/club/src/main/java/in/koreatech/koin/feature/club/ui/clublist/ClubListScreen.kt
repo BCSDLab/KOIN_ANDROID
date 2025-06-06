@@ -252,7 +252,7 @@ fun ClubListScreenImpl(
         item {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally)
             ) {
                 clubCategories.forEach {
                     KoinClubCategoryItem(
@@ -342,6 +342,6 @@ fun ClubListScreenPreview() {
         isDropdownExpanded = false,
         shouldShowClubCreateDialog = false,
         shouldShowLoginDialog = false,
-        isAnonymous = true,
+        isAnonymous = true
     )
 }

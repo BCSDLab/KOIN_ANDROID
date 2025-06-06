@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.club.model.ClubSort
 import `in`.koreatech.koin.feature.club.model.toParcelizeClubItems
 import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -18,7 +19,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class ClubListViewModel @Inject constructor(
@@ -129,7 +129,7 @@ class ClubListViewModel @Inject constructor(
                                 if (it.id == clubId) {
                                     it.copy(
                                         isLiked = !it.isLiked,
-                                        likes = if (it.isLiked) it.likes - 1 else it.likes + 1,
+                                        likes = if (it.isLiked) it.likes - 1 else it.likes + 1
                                     )
                                 } else {
                                     it

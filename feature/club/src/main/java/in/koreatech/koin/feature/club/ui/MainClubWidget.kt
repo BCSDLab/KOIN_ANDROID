@@ -73,7 +73,7 @@ fun MainClubWidgetA(
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally)
         ) {
             clubCategories.forEach {
                 KoinClubCategoryItem(

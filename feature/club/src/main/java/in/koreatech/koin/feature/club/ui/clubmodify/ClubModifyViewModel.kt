@@ -63,7 +63,7 @@ class ClubModifyViewModel @Inject constructor(
                         phoneNumber = it.phoneNumber ?: "",
                         isLikeHidden = it.isLikedHidden,
                         likes = it.likes,
-                        clubImageUrl = it.imageUrl,
+                        clubImageUrl = it.imageUrl
                     )
                 }
             }
