@@ -44,6 +44,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
@@ -657,6 +658,12 @@ fun handleSideEffect(
         }
         UserInfoEditSideEffect.WithdrawalSuccess -> {
             Toast.makeText(context, R.string.user_info_withdraw_success, Toast.LENGTH_SHORT).show()
+            Intent(Intent.ACTION_VIEW).apply {
+                data = "koin://main/activity".toUri()
+            }.let {
+                context.startActivity(it)
+            }
+            (context as Activity).finish()
         }
     }
 }
