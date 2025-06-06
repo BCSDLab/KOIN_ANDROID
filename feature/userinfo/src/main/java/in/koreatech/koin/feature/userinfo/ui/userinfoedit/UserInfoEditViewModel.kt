@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
+import `in`.koreatech.koin.domain.error.user.PutUserNicknameOrEmailConflict
+import `in`.koreatech.koin.domain.error.user.PutUserNotFound
+import `in`.koreatech.koin.domain.error.user.PutUserPhoneNumberNotAuthorized
+import `in`.koreatech.koin.domain.error.user.PutUserRequestDataError
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
@@ -277,7 +281,13 @@ class UserInfoEditViewModel @Inject constructor(
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
-                postSideEffect(UserInfoEditSideEffect.UpdateUserInfoFailed)
+                when (it) {
+                    is PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
+                    is PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
+                    is PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
+                    is PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
+                }
             }
         }
     }
@@ -302,7 +312,13 @@ class UserInfoEditViewModel @Inject constructor(
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
-                postSideEffect(UserInfoEditSideEffect.UpdateUserInfoFailed)
+                when (it) {
+                    is PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
+                    is PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
+                    is PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
+                    is PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
+                }
             }
         }
     }

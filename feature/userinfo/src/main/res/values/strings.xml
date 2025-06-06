@@ -47,4 +47,10 @@
     <string name="user_info_student_number_wrong_format">올바른 학번 양식이 아닙니다. 다시 입력해 주세요.</string>
 
     <string name="user_info_email_wrong_format">올바른 이메일 형식이 아닙니다..</string>
+
+    <string name="user_info_invalid_data_error">입력한 정보가 잘못되었습니다.</string>
+    <string name="user_info_phone_number_validate_required_error">전화번호 인증이 필요합니다.</string>
+    <string name="user_info_user_not_found_error">사용자가 없습니다.</string>
+    <string name="user_info_nickname_or_email_conflict_error">닉네임 및 이메일 중복 확인이 필요합니다.</string>
+    <string name="user_info_unknown_error">알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</string>
 </resources>

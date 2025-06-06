@@ -632,12 +632,23 @@ fun handleSideEffect(
             (context as Activity).finish()
         }
 
-        UserInfoEditSideEffect.UpdateUserInfoFailed -> {
-            Toast.makeText(context, "!", Toast.LENGTH_SHORT).show()
-        }
-
         UserInfoEditSideEffect.StartTimer -> startTimer()
         UserInfoEditSideEffect.StopTimer -> stopTimer()
+        UserInfoEditSideEffect.InvalidDataError -> {
+            Toast.makeText(context, R.string.user_info_invalid_data_error, Toast.LENGTH_SHORT).show()
+        }
+        UserInfoEditSideEffect.NicknameOrEmailConflictError -> {
+            Toast.makeText(context, R.string.user_info_nickname_or_email_conflict_error, Toast.LENGTH_SHORT).show()
+        }
+        UserInfoEditSideEffect.PhoneNumberValidateRequiredError -> {
+            Toast.makeText(context, R.string.user_info_phone_number_validate_required_error, Toast.LENGTH_SHORT).show()
+        }
+        UserInfoEditSideEffect.UnknownError -> {
+            Toast.makeText(context, R.string.user_info_unknown_error, Toast.LENGTH_SHORT).show()
+        }
+        UserInfoEditSideEffect.UnknownUserError -> {
+            Toast.makeText(context, R.string.user_info_user_not_found_error, Toast.LENGTH_SHORT).show()
+        }
     }
 }
 
