@@ -34,7 +34,7 @@ interface UserRepository {
 
     suspend fun isUserEmailDuplicated(email: String): Boolean // TODO: Remove after new sign up release
 
-    suspend fun updateUser(user: User): Result<Unit>
+    suspend fun updateUser(user: User)
 
     suspend fun deleteDeviceToken()
 

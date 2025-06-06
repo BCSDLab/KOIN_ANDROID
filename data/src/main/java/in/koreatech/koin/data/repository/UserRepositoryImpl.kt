@@ -144,8 +144,8 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUser(user: User): Result<Unit> {
-        return runCatching {
+    override suspend fun updateUser(user: User) {
+        runCatching {
             when (user) {
                 User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
                 is User.Student -> {
@@ -161,8 +161,7 @@ class UserRepositoryImpl @Inject constructor(
         }.onSuccess {
             userLocalDataSource.updateUserInfo(user)
         }.onFailure {
-            return Result.failure(
-                if (it is HttpException) {
+                throw if (it is HttpException) {
                     when (it.code()) {
                         400 -> PutUserRequestDataError()
                         401 -> PutUserPhoneNumberNotAuthorized()
@@ -175,7 +174,6 @@ class UserRepositoryImpl @Inject constructor(
                 } else {
                     it
                 }
-            )
         }
     }
 
