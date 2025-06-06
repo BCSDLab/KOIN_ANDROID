@@ -161,19 +161,19 @@ class UserRepositoryImpl @Inject constructor(
         }.onSuccess {
             userLocalDataSource.updateUserInfo(user)
         }.onFailure {
-                throw if (it is HttpException) {
-                    when (it.code()) {
-                        400 -> PutUserRequestDataError()
-                        401 -> PutUserPhoneNumberNotAuthorized()
-                        404 -> PutUserNotFound()
-                        409 -> PutUserNicknameOrEmailConflict()
-                        else -> it.getErrorResponse().let { errorResponse ->
-                            KoinUnknownErrorException(errorResponse.code, errorResponse.message, errorResponse.errorTraceId)
-                        }
+            throw if (it is HttpException) {
+                when (it.code()) {
+                    400 -> PutUserRequestDataError()
+                    401 -> PutUserPhoneNumberNotAuthorized()
+                    404 -> PutUserNotFound()
+                    409 -> PutUserNicknameOrEmailConflict()
+                    else -> it.getErrorResponse().let { errorResponse ->
+                        KoinUnknownErrorException(errorResponse.code, errorResponse.message, errorResponse.errorTraceId)
                     }
-                } else {
-                    it
                 }
+            } else {
+                it
+            }
         }
     }
 
