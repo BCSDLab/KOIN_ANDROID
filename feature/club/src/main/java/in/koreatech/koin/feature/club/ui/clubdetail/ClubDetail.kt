@@ -130,6 +130,12 @@ fun ClubDetail(
         handleSideEffect(sideEffect, context, snackbarHostState)
     }
 
+    LaunchedEffect(Unit, state.clubId) {
+        if (state.clubId != -1) {
+            viewModel.fetchAllData()
+        }
+    }
+
     LaunchedEffect(isClubModified) {
         if (isClubModified) {
             snackbarHostState.showSnackbar(

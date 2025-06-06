@@ -62,10 +62,9 @@ class ClubDetailViewModel @Inject constructor(
 
     init {
         getUserIdCollect()
-        fetchAllData()
     }
 
-    private fun fetchAllData() = intent {
+    fun fetchAllData() = intent {
         if (state.isLoading) return@intent
         loadClubDetails()
         loadClubQnas()

@@ -40,9 +40,6 @@ class ClubListViewModel @Inject constructor(
 
     init {
         getUserType()
-        intent {
-            postSideEffect(ClubListSideEffect.RefreshClubs)
-        }
     }
 
     private fun getUserType() = viewModelScope.launch {
