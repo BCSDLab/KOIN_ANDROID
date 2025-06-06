@@ -34,6 +34,7 @@ fun KoinClubListItem(
     likes: Int,
     logoUrl: String,
     isLiked: Boolean,
+    isLikeHidden: Boolean,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit = {},
     onLikeClick: (Int) -> Unit = {}
@@ -69,13 +70,15 @@ fun KoinClubListItem(
                     contentDescription = null
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                if (!isLikeHidden) {
+                    Spacer(modifier = Modifier.width(8.dp))
 
-                Text(
-                    text = "$likes",
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral800
-                )
+                    Text(
+                        text = "$likes",
+                        style = KoinTheme.typography.regular14,
+                        color = KoinTheme.colors.neutral800
+                    )
+                }
             }
         }
 
@@ -104,6 +107,7 @@ fun KoinClubListItemPreview() {
                 likes = 100,
                 logoUrl = "https://example.com/logo.png",
                 isLiked = false,
+                isLikeHidden = false
             )
         }
     }

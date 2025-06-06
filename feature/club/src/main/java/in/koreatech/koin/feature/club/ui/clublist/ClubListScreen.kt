@@ -278,6 +278,7 @@ fun ClubListScreenImpl(
                 likes = it.likes,
                 logoUrl = it.imageUrl,
                 isLiked = it.isLiked,
+                isLikeHidden = it.isLikeHidden,
                 modifier = Modifier.padding(vertical = 12.dp),
                 onClick = { id ->
                     navigateToClubDetail(id)
