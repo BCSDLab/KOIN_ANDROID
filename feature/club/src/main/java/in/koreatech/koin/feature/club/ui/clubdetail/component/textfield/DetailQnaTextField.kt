@@ -50,6 +50,7 @@ fun DetailQnaTextField(
     errorIconModifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 7.dp)
 ) {
+    val inputMaxLenght = 255
     Column(
         verticalArrangement = Arrangement
             .spacedBy(4.dp)
@@ -58,7 +59,13 @@ fun DetailQnaTextField(
             modifier = Modifier,
             value = value,
             textStyle = textStyle,
-            onValueChange = { if (it.length <= 255) onValueChange(it) },
+            onValueChange = {
+                if (it.length < inputMaxLenght) {
+                    onValueChange(it)
+                } else {
+                    onValueChange(it.take(inputMaxLenght))
+                }
+            },
             decorationBox = { innerTextField ->
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
