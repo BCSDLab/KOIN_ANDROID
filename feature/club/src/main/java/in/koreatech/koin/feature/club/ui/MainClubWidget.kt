@@ -1,7 +1,10 @@
 package `in`.koreatech.koin.feature.club.ui
 
 import android.content.Intent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +30,7 @@ import `in`.koreatech.koin.feature.club.model.clubCategories
 import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MainClubWidgetA(
     modifier: Modifier = Modifier
@@ -45,14 +49,13 @@ fun MainClubWidgetA(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Row(
+        FlowRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally),
         ) {
             clubCategories.forEach {
                 KoinClubCategoryItem(
-                    modifier = Modifier.weight(1f),
                     categoryName = stringResource(it.stringRes),
                     icon = painterResource(it.drawableRes),
                     onClick = {
