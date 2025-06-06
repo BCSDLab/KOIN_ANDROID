@@ -62,7 +62,8 @@ class ClubModifyViewModel @Inject constructor(
                         openChatUrl = it.openChat ?: "",
                         phoneNumber = it.phoneNumber ?: "",
                         isLikeHidden = it.isLikedHidden,
-                        likes = it.likes
+                        likes = it.likes,
+                        clubImageUrl = it.imageUrl,
                     )
                 }
             }
@@ -174,6 +175,7 @@ class ClubModifyViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         clubImageUrl = fileUrl,
+                        isClubImageChanged = true,
                         isLoading = false
                     )
                 }

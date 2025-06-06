@@ -12,6 +12,7 @@ data class ClubModifyState(
     val clubDescription: String = "",
     val clubCategory: ClubCategories? = null,
     val clubImageUrl: String = "",
+    val isClubImageChanged: Boolean = false,
     val isClubCategoryDropdownExpanded: Boolean = false,
     val location: String = "",
     val instagramUrl: String = "",
