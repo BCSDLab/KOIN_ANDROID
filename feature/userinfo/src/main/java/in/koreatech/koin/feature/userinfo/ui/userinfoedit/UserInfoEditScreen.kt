@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.userinfo.ui.userinfoedit
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -126,6 +127,7 @@ fun UserInfoEditScreen(
                     description = stringResource(R.string.user_info_withdraw_message),
                     onPositive = {
                         viewModel.updateWithdrawalDialog(false)
+                        viewModel.withdraw()
                     },
                     onNegative = {
                         viewModel.updateWithdrawalDialog(false)
@@ -648,6 +650,13 @@ fun handleSideEffect(
         }
         UserInfoEditSideEffect.UnknownUserError -> {
             Toast.makeText(context, R.string.user_info_user_not_found_error, Toast.LENGTH_SHORT).show()
+        }
+
+        UserInfoEditSideEffect.WithdrawalError -> {
+            Toast.makeText(context, R.string.user_info_withdraw_error, Toast.LENGTH_SHORT).show()
+        }
+        UserInfoEditSideEffect.WithdrawalSuccess -> {
+            Toast.makeText(context, R.string.user_info_withdraw_success, Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -19,6 +19,7 @@ import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateGeneralUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateStudentUserInfoUseCase
+import `in`.koreatech.koin.domain.usecase.user.UserWithdrawUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.userinfo.model.NicknameState
@@ -41,7 +42,8 @@ class UserInfoEditViewModel @Inject constructor(
     private val verifySmsCodeUseCase: VerifySmsCodeUseCase,
     private val updateStudentUserInfoUseCase: UpdateStudentUserInfoUseCase,
     private val updateGeneralUserInfoUseCase: UpdateGeneralUserInfoUseCase,
-    private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase
+    private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
+    private val userWithdrawUseCase: UserWithdrawUseCase
 ) : ViewModel(), ContainerHost<UserInfoEditState, UserInfoEditSideEffect> {
     override val container = container<UserInfoEditState, UserInfoEditSideEffect>(UserInfoEditState())
 
@@ -329,6 +331,18 @@ class UserInfoEditViewModel @Inject constructor(
                 UserType.STUDENT, UserType.COUNCIL -> requestStudentUserInfoEdit()
                 UserType.GENERAL -> requestGeneralUserInfoEdit()
                 UserType.ANONYMOUS -> throw IllegalStateException()
+            }
+        }
+    }
+
+    fun withdraw() = viewModelScope.launch {
+        userWithdrawUseCase().onSuccess {
+            intent {
+                postSideEffect(UserInfoEditSideEffect.WithdrawalSuccess)
+            }
+        }.onFailure {
+            intent {
+                postSideEffect(UserInfoEditSideEffect.WithdrawalError)
             }
         }
     }
