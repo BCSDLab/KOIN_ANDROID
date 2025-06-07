@@ -10,9 +10,9 @@ data class SignUpVerificationState(
     val name: String = "",
     val gender: Gender = Gender.Unknown,
     val phoneNumber: String = "",
-    val phoneNumberState: PhoneNumber? = null,
+    val phoneNumberState: PhoneNumber = PhoneNumber.None,
     val verificationCode: String = "",
-    val verificationCodeState: VerificationCode? = null,
+    val verificationCodeState: VerificationCode = VerificationCode.None,
     val verificationTimeLeft: Int = 180
 )
 

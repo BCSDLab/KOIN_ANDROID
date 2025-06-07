@@ -112,9 +112,9 @@ fun SignUpVerificationImpl(
     isNameValid: Boolean,
     gender: Gender,
     phoneNumber: String,
-    phoneNumberState: PhoneNumber?,
+    phoneNumberState: PhoneNumber,
     verificationCode: String,
-    verificationCodeState: VerificationCode?,
+    verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
     enabled: Boolean,
     modifier: Modifier = Modifier,
@@ -246,8 +246,8 @@ private fun SignUpVerificationInitialStep(
 @Composable
 fun SignUpVerificationPhoneNumberStep(
     phoneNumber: String,
-    phoneNumberState: PhoneNumber?,
-    verificationCodeState: VerificationCode?,
+    phoneNumberState: PhoneNumber,
+    verificationCodeState: VerificationCode,
     modifier: Modifier = Modifier,
     onPhoneNumberChange: (String) -> Unit = {},
     onVerificationCodeSent: () -> Unit = {}
@@ -320,7 +320,7 @@ fun SignUpVerificationPhoneNumberStep(
 @Composable
 fun SignUpVerificationCodeVerificationStep(
     verificationCode: String,
-    verificationCodeState: VerificationCode?,
+    verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
     onVerificationCodeChange: (String) -> Unit = {},
     checkVerificationCode: () -> Unit = {}
@@ -358,7 +358,7 @@ fun SignUpVerificationCodeVerificationStep(
                 enabled = verificationCodeState !is VerificationCode.Valid
             )
 
-            if (verificationCodeState == null || verificationCodeState != VerificationCode.Valid) {
+            if (verificationCodeState is VerificationCode.None || verificationCodeState != VerificationCode.Valid) {
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                     Text(
                         modifier = Modifier.padding(end = if (verificationCode.isBlank()) 8.dp else 28.dp),
@@ -386,7 +386,7 @@ fun SignUpVerificationCodeVerificationStep(
         }
     }
 
-    if (verificationCodeState != null) {
+    if (verificationCodeState != VerificationCode.None) {
         KoinSignUpTextFieldAlert(
             text = when (verificationCodeState) {
                 VerificationCode.Valid -> stringResource(R.string.sign_up_verification_code_correct)
@@ -524,9 +524,9 @@ fun SignUpVerificationPreview() {
         isNameValid = true,
         gender = Gender.Man,
         phoneNumber = "01012345678",
-        phoneNumberState = null,
+        phoneNumberState = PhoneNumber.None,
         verificationCode = "123456",
-        verificationCodeState = null,
+        verificationCodeState = VerificationCode.None,
         verificationTimeLeft = 180,
         step = SignUpVerificationStep.INITIAL,
         enabled = true
