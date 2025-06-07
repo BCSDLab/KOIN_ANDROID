@@ -21,7 +21,7 @@ data class ParcelizeClubDetails(
     val manager: Boolean,
     val isLiked: Boolean,
     val updatedAt: String,
-    val isLikedHidden: Boolean
+    val isLikeHidden: Boolean
 ) : Parcelable
 
 fun ClubDetails?.toParcelizeClubDetails(): ParcelizeClubDetails? {
@@ -42,6 +42,6 @@ fun ClubDetails?.toParcelizeClubDetails(): ParcelizeClubDetails? {
         manager = manager,
         isLiked = isLiked,
         updatedAt = updatedAt,
-        isLikedHidden = isLikedHidden
+        isLikeHidden = isLikeHidden
     )
 }
