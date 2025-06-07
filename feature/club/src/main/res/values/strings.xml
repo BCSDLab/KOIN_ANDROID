@@ -100,7 +100,7 @@
     <string name="club_modify_dialog_content">변경 내용을 저장하시겠습니까?\n수정한 내용은 저장되며 되돌릴 수 없습니다.\n계속 진행하시겠습니까?</string>
     <string name="club_modify_dialog_positive">저장</string>
     <string name="club_modify_dialog_negative">취소</string>
-    <string name="club_modify_logo_description">수정하기위해\n클릭하여 사진을\n업로드해주세요.(선택)</string>
+    <string name="club_modify_logo_description">클릭하여 이미지를\n변경해주세요.(선택)</string>
     <string name="club_modify_success_snackbar">동아리 정보가 수정되었습니다.</string>
 
     <string name="club_image_upload_failed">이미지 업로드에 실패했습니다.</string>

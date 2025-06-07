@@ -1,17 +1,24 @@
 package `in`.koreatech.koin.feature.club.ui.clublist
 
 import android.app.Activity
+import android.content.Intent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -29,11 +36,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.feature.club.R
+import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
 import `in`.koreatech.koin.feature.club.component.KoinClubListItem
@@ -53,7 +63,8 @@ fun ClubListScreen(
     isClubCreated: Boolean = false,
     viewModel: ClubListViewModel = hiltViewModel(),
     navigateToCreateClub: () -> Unit = { },
-    navigateToClubDetail: (Int) -> Unit = { _ -> }
+    navigateToClubDetail: (Int) -> Unit = { _ -> },
+    resetClubCreatedState: () -> Unit = { }
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -64,12 +75,17 @@ fun ClubListScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
+    LaunchedEffect(Unit) {
+        viewModel.getClubs()
+    }
+
     LaunchedEffect(isClubCreated) {
         if (isClubCreated) {
             snackbarHostState.showSnackbar(
                 message = context.getString(R.string.club_create_success_snackbar),
                 duration = SnackbarDuration.Short
             )
+            resetClubCreatedState()
         }
     }
 
@@ -101,11 +117,14 @@ fun ClubListScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { innerPadding ->
         ClubListScreenImpl(
+            isLoading = uiState.isLoading,
             clubList = uiState.clubs,
             sortType = uiState.sortType,
             selectedCategoryId = uiState.categoryId,
             isDropdownExpanded = uiState.isDropdownExpanded,
             shouldShowClubCreateDialog = uiState.shouldShowClubCreateDialog,
+            shouldShowLoginDialog = uiState.shouldShowLoginDialog,
+            isAnonymous = uiState.isAnonymous,
             modifier = Modifier.padding(innerPadding),
             onCategoryChange = { categoryId ->
                 viewModel.updateCategoryId(categoryId)
@@ -122,26 +141,53 @@ fun ClubListScreen(
             onShowClubCreateDialogChange = { shouldShow ->
                 viewModel.updateShowClubCreateDialog(shouldShow)
             },
-            navigateToClubDetail = navigateToClubDetail
+            navigateToClubDetail = navigateToClubDetail,
+            onShowLoginDialogChange = { shouldShow ->
+                viewModel.updateShowLoginDialog(shouldShow)
+            },
+            onLikeClick = { clubId ->
+                viewModel.changeClubLike(clubId)
+            },
+            navigateToLogin = {
+                Intent(Intent.ACTION_VIEW, LOGIN_ACTIVITY_URL.toUri()).let {
+                    context.startActivity(it)
+                }
+            }
         )
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ClubListScreenImpl(
+    isLoading: Boolean,
     clubList: List<ParcelizeClubItem>,
     selectedCategoryId: Int?,
     sortType: ClubSort,
     isDropdownExpanded: Boolean,
     shouldShowClubCreateDialog: Boolean,
+    shouldShowLoginDialog: Boolean,
+    isAnonymous: Boolean,
     modifier: Modifier = Modifier,
     onCategoryChange: (Int?) -> Unit = { },
     onSortTypeChange: (ClubSort) -> Unit = { },
     onDropdownExpandChange: (Boolean) -> Unit = { },
     navigateToCreateClub: () -> Unit = { },
     onShowClubCreateDialogChange: (Boolean) -> Unit = { },
-    navigateToClubDetail: (Int) -> Unit = { _ -> }
+    onShowLoginDialogChange: (Boolean) -> Unit = { _ -> },
+    onLikeClick: (Int) -> Unit = { _ -> },
+    navigateToClubDetail: (Int) -> Unit = { _ -> },
+    navigateToLogin: () -> Unit = { }
 ) {
+    if (isLoading) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+
     if (shouldShowClubCreateDialog) {
         KoinClubMessageDialog(
             title = stringResource(R.string.club_list_create_dialog_title),
@@ -157,6 +203,18 @@ fun ClubListScreenImpl(
                     text = stringResource(R.string.club_list_create_dialog_content)
                 )
             }
+        )
+    }
+
+    if (shouldShowLoginDialog) {
+        DetailLoginDialog(
+            title = stringResource(R.string.detail_dialog_login_title),
+            description = stringResource(R.string.detail_dialog_login_description),
+            onPositive = {
+                navigateToLogin()
+                onShowLoginDialogChange(false)
+            },
+            onNegative = { onShowLoginDialogChange(false) }
         )
     }
 
@@ -180,6 +238,10 @@ fun ClubListScreenImpl(
                     text = stringResource(R.string.club_list_create_club),
                     textStyle = KoinTheme.typography.medium12,
                     onClick = {
+                        if (isAnonymous) {
+                            onShowLoginDialogChange(true)
+                            return@FilledButton
+                        }
                         onShowClubCreateDialogChange(true)
                     },
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp)
@@ -188,13 +250,12 @@ fun ClubListScreenImpl(
         }
 
         item {
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally)
             ) {
                 clubCategories.forEach {
                     KoinClubCategoryItem(
-                        modifier = Modifier.weight(1f),
                         categoryName = stringResource(it.stringRes),
                         icon = painterResource(it.drawableRes),
                         isSelected = it.id == selectedCategoryId,
@@ -234,9 +295,18 @@ fun ClubListScreenImpl(
                 category = it.category,
                 likes = it.likes,
                 logoUrl = it.imageUrl,
+                isLiked = it.isLiked,
+                isLikeHidden = it.isLikeHidden,
                 modifier = Modifier.padding(vertical = 12.dp),
                 onClick = { id ->
                     navigateToClubDetail(id)
+                },
+                onLikeClick = { id ->
+                    if (isAnonymous) {
+                        onShowLoginDialogChange(true)
+                        return@KoinClubListItem
+                    }
+                    onLikeClick(id)
                 }
             )
         }
@@ -265,10 +335,13 @@ fun handleSideEffect(
 @Composable
 fun ClubListScreenPreview() {
     ClubListScreenImpl(
+        isLoading = false,
         clubList = emptyList(),
         selectedCategoryId = 1,
         sortType = ClubSort.NONE,
         isDropdownExpanded = false,
-        shouldShowClubCreateDialog = false
+        shouldShowClubCreateDialog = false,
+        shouldShowLoginDialog = false,
+        isAnonymous = true
     )
 }

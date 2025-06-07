@@ -17,7 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
@@ -31,8 +32,11 @@ fun KoinClubListItem(
     category: String,
     likes: Int,
     logoUrl: String,
+    isLiked: Boolean,
+    isLikeHidden: Boolean,
     modifier: Modifier = Modifier,
-    onClick: (Int) -> Unit = {}
+    onClick: (Int) -> Unit = {},
+    onLikeClick: (Int) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -56,19 +60,24 @@ fun KoinClubListItem(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable { onLikeClick(id) }
+            ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_club_like),
+                    imageVector = ImageVector.vectorResource(if (isLiked) R.drawable.icon_like_true else R.drawable.icon_like_false),
                     contentDescription = null
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                if (!isLikeHidden) {
+                    Spacer(modifier = Modifier.width(8.dp))
 
-                Text(
-                    text = "$likes",
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral800
-                )
+                    Text(
+                        text = "$likes",
+                        style = KoinTheme.typography.regular14,
+                        color = KoinTheme.colors.neutral800
+                    )
+                }
             }
         }
 
@@ -95,7 +104,9 @@ fun KoinClubListItemPreview() {
                 name = "BCSD",
                 category = "학술",
                 likes = 100,
-                logoUrl = "https://example.com/logo.png"
+                logoUrl = "https://example.com/logo.png",
+                isLiked = false,
+                isLikeHidden = false
             )
         }
     }

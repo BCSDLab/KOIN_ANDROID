@@ -1,13 +1,19 @@
 package `in`.koreatech.koin.feature.club.ui
 
 import android.content.Intent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.KoinClubCategoryItem
@@ -27,6 +34,7 @@ import `in`.koreatech.koin.feature.club.model.clubCategories
 import `in`.koreatech.koin.feature.club.navigation.CATEGORY_ID
 import `in`.koreatech.koin.feature.club.navigation.CLUB_ID
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MainClubWidgetA(
     modifier: Modifier = Modifier
@@ -37,22 +45,38 @@ fun MainClubWidgetA(
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
-        Text(
-            text = stringResource(R.string.club_main_activity_widget_title),
-            style = KoinTheme.typography.bold18.copy(fontSize = 15.sp),
-            color = KoinTheme.colors.primary500
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.club_main_activity_widget_title),
+                style = KoinTheme.typography.bold18.copy(fontSize = 15.sp),
+                color = KoinTheme.colors.primary500
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                modifier = Modifier.noRippleClickable {
+                    Intent(context, ClubActivity::class.java).apply {
+                        context.startActivity(this)
+                    }
+                },
+                imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                tint = KoinTheme.colors.primary500,
+                contentDescription = stringResource(R.string.club_main_activity_widget_title)
+            )
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Row(
+        FlowRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally)
         ) {
             clubCategories.forEach {
                 KoinClubCategoryItem(
-                    modifier = Modifier.weight(1f),
                     categoryName = stringResource(it.stringRes),
                     icon = painterResource(it.drawableRes),
                     onClick = {

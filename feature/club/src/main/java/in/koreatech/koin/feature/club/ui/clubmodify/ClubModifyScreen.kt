@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -47,10 +48,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.club.CLUB_DESCRIPTION_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
@@ -97,6 +100,7 @@ fun ClubModifyScreen(
             clubNameRequired = uiState.clubNameRequired,
             clubDescription = uiState.clubDescription,
             clubCategory = uiState.clubCategory,
+            isClubImageChanged = uiState.isClubImageChanged,
             isClubCategoryDropdownExpanded = uiState.isClubCategoryDropdownExpanded,
             clubCategoryRequired = uiState.clubCategoryRequired,
             location = uiState.location,
@@ -141,6 +145,7 @@ fun ClubModifyScreenImpl(
     clubNameRequired: Boolean,
     clubDescription: String,
     clubCategory: ClubCategories?,
+    isClubImageChanged: Boolean,
     isClubCategoryDropdownExpanded: Boolean,
     clubCategoryRequired: Boolean,
     location: String,
@@ -233,17 +238,29 @@ fun ClubModifyScreenImpl(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                if (imageUrl.isEmpty()) {
-                    Image(
-                        modifier = Modifier,
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_club_create_upload_logo),
-                        contentDescription = null
-                    )
-                } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     SubcomposeAsyncImage(
                         model = imageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
+                        success = {
+                            SubcomposeAsyncImageContent()
+                            if (!isClubImageChanged) {
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(color = KoinTheme.colors.neutral0.copy(alpha = 0.5f))
+                                        .wrapContentHeight(Alignment.CenterVertically),
+                                    textAlign = TextAlign.Center,
+                                    text = stringResource(R.string.club_modify_logo_description),
+                                    style = KoinTheme.typography.medium18,
+                                    color = KoinTheme.colors.neutral600
+                                )
+                            }
+                        },
                         loading = {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
@@ -254,13 +271,6 @@ fun ClubModifyScreenImpl(
                         }
                     )
                 }
-
-                Text(
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.club_modify_logo_description),
-                    style = KoinTheme.typography.medium18,
-                    color = KoinTheme.colors.neutral600
-                )
             }
         }
 
@@ -307,7 +317,7 @@ fun ClubModifyScreenImpl(
 
             Image(
                 modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_club_like),
+                imageVector = ImageVector.vectorResource(R.drawable.icon_like_true),
                 contentDescription = null
             )
 
@@ -410,7 +420,8 @@ fun ClubModifyScreenImpl(
             modifier = Modifier.fillMaxWidth(),
             value = clubDescription,
             onValueChange = onClubDescriptionChange,
-            hint = stringResource(R.string.club_create_introduction_hint)
+            hint = stringResource(R.string.club_create_introduction_hint),
+            maxLines = CLUB_DESCRIPTION_MAX_LENGTH
         )
 
         Row(
@@ -451,7 +462,7 @@ fun ClubModifyScreenImpl(
             Spacer(modifier = Modifier.weight(1f))
 
             Column(
-                modifier = Modifier.width(IntrinsicSize.Max)
+                modifier = Modifier.width(270.dp)
             ) {
                 KoinClubBasicTextField(
                     modifier = Modifier
@@ -521,6 +532,7 @@ fun ClubModifyScreenPreview() {
         clubDescription = "This is a club description.",
         clubCategory = ClubCategories.ACADEMIC,
         clubCategoryRequired = false,
+        isClubImageChanged = false,
         isClubCategoryDropdownExpanded = false,
         location = "Location",
         locationRequired = false,

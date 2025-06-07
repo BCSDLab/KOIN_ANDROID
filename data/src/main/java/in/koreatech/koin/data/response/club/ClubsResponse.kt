@@ -18,6 +18,8 @@ data class ClubsResponse(
         @SerializedName("image_url")
         val imageUrl: String,
         @SerializedName("is_liked")
-        val isLiked: Boolean
+        val isLiked: Boolean,
+        @SerializedName("is_like_hidden")
+        val isLikeHidden: Boolean
     )
 }

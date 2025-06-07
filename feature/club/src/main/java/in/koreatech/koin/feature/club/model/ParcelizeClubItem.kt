@@ -11,7 +11,8 @@ data class ParcelizeClubItem(
     val category: String,
     val likes: Int,
     val imageUrl: String,
-    val isLiked: Boolean
+    val isLiked: Boolean,
+    val isLikeHidden: Boolean
 ) : Parcelable
 
 fun Clubs.toParcelizeClubItems(): List<ParcelizeClubItem> {
@@ -22,7 +23,8 @@ fun Clubs.toParcelizeClubItems(): List<ParcelizeClubItem> {
             category = club.category,
             likes = club.likes,
             imageUrl = club.imageUrl,
-            isLiked = club.isLiked
+            isLiked = club.isLiked,
+            isLikeHidden = club.isLikeHidden
         )
     }
 }

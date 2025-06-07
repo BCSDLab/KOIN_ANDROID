@@ -180,6 +180,15 @@
                     android:textAppearance="@style/TextAppearance.Koin.Regular.16" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/navi_item_club"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="24dp"
+                    android:text="@string/navigation_item_club"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.16" />
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/navi_item_operating_information"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"

@@ -77,6 +77,7 @@ import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
+import `in`.koreatech.koin.feature.club.component.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_CATEGORY
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_DESCRIPTION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_GOOGLE_FORM
@@ -86,7 +87,6 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailImageDialog
-import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailLoginDialog
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
@@ -104,6 +104,7 @@ fun ClubDetail(
     initialPage: Int = 0,
     onTopbarBackClick: () -> Unit = {},
     onModifyClick: (Int) -> Unit = {},
+    resetClubModifiedState: () -> Unit = {},
     viewModel: ClubDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
@@ -136,12 +137,19 @@ fun ClubDetail(
         handleSideEffect(sideEffect, context, snackbarHostState)
     }
 
+    LaunchedEffect(Unit, state.clubId) {
+        if (state.clubId != -1) {
+            viewModel.fetchAllData()
+        }
+    }
+
     LaunchedEffect(isClubModified) {
         if (isClubModified) {
             snackbarHostState.showSnackbar(
                 message = context.getString(R.string.club_modify_success_snackbar),
                 duration = SnackbarDuration.Short
             )
+            resetClubModifiedState()
         }
     }
 

@@ -53,6 +53,9 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.club.CLUB_DESCRIPTION_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.CLUB_NAME_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.CLUB_ROLE_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
@@ -235,7 +238,8 @@ fun ClubCreateScreenImpl(
                     value = userRole,
                     onValueChange = onUserRoleChange,
                     hint = stringResource(R.string.club_create_dialog_permission_content_hint),
-                    textStyle = KoinTheme.typography.regular12
+                    textStyle = KoinTheme.typography.regular12,
+                    maxLength = CLUB_ROLE_MAX_LENGTH
                 )
 
                 Text(
@@ -366,7 +370,7 @@ fun ClubCreateScreenImpl(
 
             Image(
                 modifier = Modifier.size(24.dp),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_club_like),
+                imageVector = ImageVector.vectorResource(R.drawable.icon_like_true),
                 contentDescription = null
             )
 
@@ -393,7 +397,8 @@ fun ClubCreateScreenImpl(
             value = clubName,
             onValueChange = onClubNameChange,
             hint = stringResource(R.string.club_create_name_hint),
-            borderColor = if (clubNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300
+            borderColor = if (clubNameRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300,
+            maxLength = CLUB_NAME_MAX_LENGTH
         )
 
         if (clubNameRequired) {
@@ -487,7 +492,8 @@ fun ClubCreateScreenImpl(
             modifier = Modifier.fillMaxWidth(),
             value = clubDescription,
             onValueChange = onClubDescriptionChange,
-            hint = stringResource(R.string.club_create_introduction_hint)
+            hint = stringResource(R.string.club_create_introduction_hint),
+            maxLength = CLUB_DESCRIPTION_MAX_LENGTH
         )
 
         Row(
@@ -528,7 +534,7 @@ fun ClubCreateScreenImpl(
             Spacer(modifier = Modifier.weight(1f))
 
             Column(
-                modifier = Modifier.width(IntrinsicSize.Max)
+                modifier = Modifier.width(270.dp)
             ) {
                 KoinClubBasicTextField(
                     modifier = Modifier
