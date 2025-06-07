@@ -481,7 +481,6 @@ fun ClubDetail(
                 )
             }
             item {
-                Modifier.windowInsetsTopHeight(WindowInsets.systemBars)
                 val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - (contentPadding.calculateTopPadding().value.dp + 24.dp)
                 HorizontalPager(
                     modifier = Modifier
