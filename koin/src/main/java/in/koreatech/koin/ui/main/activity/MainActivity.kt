@@ -26,6 +26,10 @@ import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_1
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_CATEGORY
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_A
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_B
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -265,6 +269,12 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         clubComposeView.apply {
             setContent {
                 val abTestGroup by viewModel.clubABTestExperimentGroup.collectAsStateWithLifecycle()
+                EventLogger.logABTestEvent(
+                    CLUB_AB_TEST_CATEGORY,
+                    CLUB_1,
+                    if (abTestGroup == ExperimentGroup.CATEGORY) CLUB_AB_TEST_DESIGN_A else CLUB_AB_TEST_DESIGN_B
+                )
+
                 if (abTestGroup == ExperimentGroup.CATEGORY) {
                     MainClubWidgetA()
                 } else if (abTestGroup == ExperimentGroup.HOT) {

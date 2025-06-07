@@ -49,6 +49,8 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -284,7 +286,13 @@ fun ClubModifyScreenImpl(
             FilledButton(
                 modifier = Modifier.width(100.dp),
                 text = stringResource(R.string.club_modify_cancel),
-                onClick = onCancelModifyClub,
+                onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_CORRECTION_CANCEL,
+                        "취소"
+                    )
+                    onCancelModifyClub()
+                },
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 textStyle = KoinTheme.typography.medium14
             )
@@ -294,7 +302,13 @@ fun ClubModifyScreenImpl(
             FilledButton(
                 modifier = Modifier.width(100.dp),
                 text = stringResource(R.string.club_modify_save),
-                onClick = { onShouldShowModifyDialogChange(true) },
+                onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_CORRECTION_SAVE,
+                        "저장"
+                    )
+                    onShouldShowModifyDialogChange(true)
+                },
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 textStyle = KoinTheme.typography.medium14
             )

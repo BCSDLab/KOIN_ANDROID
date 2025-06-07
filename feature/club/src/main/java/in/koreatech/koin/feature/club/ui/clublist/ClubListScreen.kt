@@ -38,6 +38,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -179,6 +181,8 @@ fun ClubListScreenImpl(
     navigateToClubDetail: (Int) -> Unit = { _ -> },
     navigateToLogin: () -> Unit = { }
 ) {
+    val context = LocalContext.current
+
     if (isLoading) {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -242,6 +246,10 @@ fun ClubListScreenImpl(
                             onShowLoginDialogChange(true)
                             return@FilledButton
                         }
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.Club.MAIN_CLUB_CREATE,
+                            "생성하기"
+                        )
                         onShowClubCreateDialogChange(true)
                     },
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp)
@@ -260,6 +268,10 @@ fun ClubListScreenImpl(
                         icon = painterResource(it.drawableRes),
                         isSelected = it.id == selectedCategoryId,
                         onClick = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Club.MAIN_CLUB_CATEGORY,
+                                context.getString(it.stringRes)
+                            )
                             onCategoryChange(if (it.id == selectedCategoryId) null else it.id)
                         }
                     )
@@ -299,6 +311,10 @@ fun ClubListScreenImpl(
                 isLikeHidden = it.isLikeHidden,
                 modifier = Modifier.padding(vertical = 12.dp),
                 onClick = { id ->
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.MAIN_SELECT_CLUB,
+                        it.name
+                    )
                     navigateToClubDetail(id)
                 },
                 onLikeClick = { id ->

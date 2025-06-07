@@ -59,6 +59,8 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -232,6 +234,10 @@ fun ClubDetail(
             DetailDialog(
                 title = stringResource(R.string.detail_add_qna_button),
                 onPositive = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_QNA_ADD,
+                        "Q&A"
+                    )
                     viewModel.addClubQna(
                         parentId = null,
                         content = addQnaText
@@ -342,13 +348,23 @@ fun ClubDetail(
                                 ) {
                                     FilledButton(
                                         text = stringResource(R.string.detail_empowerment_button),
-                                        onClick = { viewModel.showEmpowermentDialog() },
+                                        onClick = {
+                                            viewModel.showEmpowermentDialog()
+                                            EventLogger.logCampusClickEvent(
+                                                AnalyticsConstant.Label.Club.CLUB_DELEGATION_AUTHORITY,
+                                                "권한위임"
+                                            )
+                                        },
                                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 5.dp)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     FilledButton(
                                         text = stringResource(R.string.detail_fix_button),
                                         onClick = {
+                                            EventLogger.logCampusClickEvent(
+                                                AnalyticsConstant.Label.Club.CLUB_CORRECTION,
+                                                "수정하기"
+                                            )
                                             onModifyClick(state.clubId)
                                         }, // 동아리 정보 수정 버튼 클릭
                                         contentPadding = PaddingValues(horizontal = 25.dp, vertical = 5.dp)
@@ -478,6 +494,10 @@ fun ClubDetail(
                 DetailTabRow(
                     selectedTabIndex = pagerState.currentPage,
                     onTabSelected = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.Club.CLUB_TAB_SELECT,
+                            context.getString(tabList[it])
+                        )
                         scope.launch {
                             pagerState.animateScrollToPage(it)
                         }
