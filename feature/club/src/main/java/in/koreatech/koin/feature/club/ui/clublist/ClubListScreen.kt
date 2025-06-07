@@ -1,7 +1,9 @@
 package `in`.koreatech.koin.feature.club.ui.clublist
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -70,7 +72,7 @@ fun ClubListScreen(
     val context = LocalContext.current
 
     viewModel.collectSideEffect {
-        handleSideEffect(it, viewModel, navigateToCreateClub)
+        handleSideEffect(it, viewModel, context, navigateToCreateClub)
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -320,6 +322,7 @@ fun ClubListScreenImpl(
 fun handleSideEffect(
     sideEffect: ClubListSideEffect,
     viewModel: ClubListViewModel,
+    context: Context,
     navigateToCreateClub: () -> Unit = { }
 ) {
     when (sideEffect) {
@@ -328,6 +331,9 @@ fun handleSideEffect(
         }
 
         ClubListSideEffect.NavigateToCreateClub -> navigateToCreateClub()
+        ClubListSideEffect.ClubDislikeFailed -> Toast.makeText(context, R.string.club_list_dislike_failed, Toast.LENGTH_SHORT).show()
+        ClubListSideEffect.ClubLikeFailed -> Toast.makeText(context, R.string.club_list_like_failed, Toast.LENGTH_SHORT).show()
+        ClubListSideEffect.ClubsFetchFailed -> Toast.makeText(context, R.string.club_list_fetch_failed, Toast.LENGTH_SHORT).show()
     }
 }
 

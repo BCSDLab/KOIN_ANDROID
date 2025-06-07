@@ -273,6 +273,7 @@ class ClubCreateViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
+                postSideEffect(ClubCreateSideEffect.ClubCreateFailure)
             }
         }
     }
