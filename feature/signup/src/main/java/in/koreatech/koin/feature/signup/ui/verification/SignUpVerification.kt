@@ -44,7 +44,6 @@ import `in`.koreatech.koin.domain.constant.CONTACT_URL
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.feature.signup.R
 import `in`.koreatech.koin.feature.signup.SIGN_UP_PHONE_NUMBER_MAX_LENGTH
 import `in`.koreatech.koin.feature.signup.SIGN_UP_VERIFICATION_CODE_MAX_LENGTH
