@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.feature.userinfo.ui.userinfoedit
 
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
-import `in`.koreatech.koin.feature.userinfo.model.PhoneNumberState
-import `in`.koreatech.koin.feature.userinfo.model.VerificationCodeState
+import `in`.koreatech.koin.domain.model.user.VerificationCode
 
 data class UserInfoEditState(
     val beforeUser: User = User.Anonymous,
@@ -20,8 +20,8 @@ data class UserInfoEditState(
     val isMajorDropdownExpanded: Boolean = false,
     val userType: UserType = UserType.ANONYMOUS,
     val verificationCode: String = "",
-    val verificationCodeState: VerificationCodeState = VerificationCodeState.None,
-    val phoneNumberState: PhoneNumberState = PhoneNumberState.None,
+    val verificationCodeState: VerificationCode = VerificationCode.None,
+    val phoneNumberState: PhoneNumber = PhoneNumber.None,
     val verificationTimeLeft: Int = 180,
     val showWithdrawalDialog: Boolean = false
 ) {

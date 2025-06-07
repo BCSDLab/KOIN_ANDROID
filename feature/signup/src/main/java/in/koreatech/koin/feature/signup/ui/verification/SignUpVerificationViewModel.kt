@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
+import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.CheckPhoneNumberDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
@@ -62,9 +63,9 @@ class SignUpVerificationViewModel @Inject constructor(
             reduce {
                 state.copy(
                     phoneNumber = phoneNumber,
-                    phoneNumberState = null,
+                    phoneNumberState = PhoneNumber.None,
                     verificationCode = "",
-                    verificationCodeState = null,
+                    verificationCodeState = VerificationCode.None,
                     verificationTimeLeft = 180
                 )
             }
@@ -80,7 +81,7 @@ class SignUpVerificationViewModel @Inject constructor(
                         phoneNumberState = it
                     )
                 }
-                if (it == SignupContinuationState.AvailablePhoneNumber) {
+                if (it == PhoneNumber.Available) {
                     sendVerificationCode()
                 }
             }
