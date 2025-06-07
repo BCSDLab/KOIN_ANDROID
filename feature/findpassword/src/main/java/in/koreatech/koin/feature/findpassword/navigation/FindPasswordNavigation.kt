@@ -3,6 +3,7 @@ package `in`.koreatech.koin.feature.findpassword.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import `in`.koreatech.koin.feature.findpassword.ui.changepassword.ChangePasswordScreen
 import `in`.koreatech.koin.feature.findpassword.ui.email.FindPasswordByEmail
 import `in`.koreatech.koin.feature.findpassword.ui.sms.FindPasswordBySms
 
@@ -28,7 +29,7 @@ fun NavGraphBuilder.koinFindPasswordGraph(
     composable(
         route = FindPasswordNavType.ChangePassword.route
     ) {
-
+        ChangePasswordScreen()
     }
 
     composable(

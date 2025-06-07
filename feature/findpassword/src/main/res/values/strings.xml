@@ -1,6 +1,7 @@
 <resources>
     <string name="find_password_title">비밀번호 찾기</string>
     <string name="find_password_step_1">계정 인증</string>
+    <string name="find_password_step_2">비밀번호 변경</string>
     <string name="find_password_id">아이디</string>
     <string name="find_password_id_hint">아이디를 입력해 주세요.</string>
     <string name="find_password_phone_number">휴대전화 번호</string>
@@ -22,6 +23,13 @@
     <string name="find_password_verification_code_timeout">유효시간이 지났습니다. 인증번호를 재발송 해주세요.</string>
     <string name="find_password_phone_number_not_registered">휴대전화 등록을 안 하셨나요?</string>
     <string name="find_password_with_email">이메일로 찾기</string>
+    
+    <string name="find_password_change_password_new_password">새 비밀번호</string>
+    <string name="find_password_change_password_new_password_hint">특수문자 포함 영어와 숫자 6~18 자리</string>
+    <string name="find_password_change_password_password_confirm">비밀번호 확인</string>
+    <string name="find_password_change_password_password_confirm_hint">비밀번호를 다시 입력해 주세요.</string>
+    <string name="find_password_change_password_invalid">특수문자 포함 영어와 숫자 6~18 자리로 입력해 주세요.</string>
+    <string name="find_password_change_password_not_match">비밀번호가 일치하지 않습니다.</string>
 
     <string name="find_password_next">다음</string>
 </resources>
