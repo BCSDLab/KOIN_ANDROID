@@ -19,6 +19,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
 class ClubListViewModel @Inject constructor(
@@ -31,6 +32,7 @@ class ClubListViewModel @Inject constructor(
     override val container =
         container<ClubListState, ClubListSideEffect>(ClubListState(), savedStateHandle) {
             val categoryId = savedStateHandle.get<Int?>(CATEGORY_ID)
+            Timber.d("ClubListViewModel: categoryId = $categoryId")
             intent {
                 reduce {
                     state.copy(categoryId = categoryId.takeIf { it != -1 })
@@ -106,6 +108,11 @@ class ClubListViewModel @Inject constructor(
                 reduce {
                     state.copy(clubs = clubs.toParcelizeClubItems(), isLoading = false)
                 }
+            }.onFailure {
+                reduce {
+                    state.copy(isLoading = false)
+                }
+                postSideEffect(ClubListSideEffect.ClubsFetchFailed)
             }
         }
     }
@@ -118,25 +125,53 @@ class ClubListViewModel @Inject constructor(
             state.clubs.forEach { club ->
                 if (club.id == clubId) {
                     if (club.isLiked) {
-                        cancelClubLikeUseCase(clubId)
-                    } else {
-                        setClubLikeUseCase(clubId)
-                    }
-                    reduce {
-                        state.copy(
-                            isLoading = false,
-                            clubs = state.clubs.map {
-                                if (it.id == clubId) {
-                                    it.copy(
-                                        isLiked = !it.isLiked,
-                                        likes = if (it.isLiked) it.likes - 1 else it.likes + 1
-                                    )
-                                } else {
-                                    it
-                                }
+                        cancelClubLikeUseCase(clubId).onSuccess {
+                            reduce {
+                                state.copy(
+                                    isLoading = false,
+                                    clubs = state.clubs.map {
+                                        if (it.id == clubId) {
+                                            it.copy(
+                                                isLiked = !it.isLiked,
+                                                likes = it.likes - 1
+                                            )
+                                        } else {
+                                            it
+                                        }
+                                    }
+                                )
                             }
-                        )
+                        }.onFailure {
+                            reduce {
+                                state.copy(isLoading = false)
+                            }
+                            postSideEffect(ClubListSideEffect.ClubDislikeFailed)
+                        }
+                    } else {
+                        setClubLikeUseCase(clubId).onSuccess {
+                            reduce {
+                                state.copy(
+                                    isLoading = false,
+                                    clubs = state.clubs.map {
+                                        if (it.id == clubId) {
+                                            it.copy(
+                                                isLiked = !it.isLiked,
+                                                likes = it.likes + 1
+                                            )
+                                        } else {
+                                            it
+                                        }
+                                    }
+                                )
+                            }
+                        }.onFailure {
+                            reduce {
+                                state.copy(isLoading = false)
+                            }
+                            postSideEffect(ClubListSideEffect.ClubLikeFailed)
+                        }
                     }
+
                     return@intent
                 }
             }
