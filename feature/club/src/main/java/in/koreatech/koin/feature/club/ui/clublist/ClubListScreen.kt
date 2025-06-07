@@ -268,10 +268,12 @@ fun ClubListScreenImpl(
                         icon = painterResource(it.drawableRes),
                         isSelected = it.id == selectedCategoryId,
                         onClick = {
-                            EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.Club.MAIN_CLUB_CATEGORY,
-                                context.getString(it.stringRes)
-                            )
+                            if (it.id != selectedCategoryId) {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.Club.MAIN_CLUB_CATEGORY,
+                                    context.getString(it.stringRes)
+                                )
+                            }
                             onCategoryChange(if (it.id == selectedCategoryId) null else it.id)
                         }
                     )
