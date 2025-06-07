@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -25,7 +24,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -39,6 +40,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,6 +68,7 @@ import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
+import `in`.koreatech.koin.domain.util.ext.formatInstagramUrlForm
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isGoogleFormUrl
 import `in`.koreatech.koin.domain.util.ext.isInstagramUrl
@@ -83,6 +86,7 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
 import `in`.koreatech.koin.feature.club.type.DetailTabType
+import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailImageDialog
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogEmpowermentContent
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.snackbar.DetailSnackBar
@@ -126,6 +130,9 @@ fun ClubDetail(
 
     val listState = rememberLazyListState()
 
+    val qnaScrollState = rememberScrollState()
+    val isQnaScrollable = remember { derivedStateOf { !listState.canScrollForward || qnaScrollState.value != 0 } }
+
     viewModel.collectSideEffect { sideEffect ->
         handleSideEffect(sideEffect, context, snackbarHostState)
     }
@@ -150,6 +157,7 @@ fun ClubDetail(
         containerColor = KoinTheme.colors.neutral0,
         topBar = {
             KoinTopAppBar(
+                modifier = Modifier,
                 title = state.clubDetails?.name ?: "",
                 onNavigationIconClick = onTopbarBackClick
             )
@@ -162,6 +170,7 @@ fun ClubDetail(
                 onClick = {
                     scope.launch {
                         listState.animateScrollToItem(0)
+                        qnaScrollState.scrollTo(0)
                     }
                 },
                 elevation = FloatingActionButtonDefaults.elevation(
@@ -195,6 +204,17 @@ fun ClubDetail(
         }
     ) { contentPadding ->
 
+        if (state.clubDetails == null) {
+            Column(
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CircularProgressIndicator()
+            }
+            return@Scaffold
+        }
+
         if (state.showLoginDialog) {
             DetailLoginDialog(
                 title = stringResource(R.string.detail_dialog_login_title),
@@ -210,7 +230,6 @@ fun ClubDetail(
         if (state.showAddQnaDialog) {
             var addQnaText by remember { mutableStateOf("") }
             DetailDialog(
-                modifier = Modifier,
                 title = stringResource(R.string.detail_add_qna_button),
                 onPositive = {
                     viewModel.addClubQna(
@@ -244,13 +263,23 @@ fun ClubDetail(
                 content = {
                     DetailDialogEmpowermentContent(
                         clubName = state.clubDetails?.name ?: "",
-                        managerId = state.userId ?: -1,
+                        managerId = state.userLoginId ?: "",
                         text = newManagerText,
-                        onValueChange = { newManagerText = it },
+                        onValueChange = { newManagerText = it.trim() },
                         isError = state.textFieldErrorMessageResId != null,
                         errorMessage = state.textFieldErrorMessageResId?.let { stringResource(it) } ?: ""
                     )
                 }
+            )
+        }
+
+        if (state.showImageDialog) {
+            DetailImageDialog(
+                imageModel = ImageRequest.Builder(context)
+                    .data(state.clubDetails?.imageUrl)
+                    .size(400)
+                    .build(),
+                onDismiss = { viewModel.dismissImageDialog() }
             )
         }
 
@@ -262,15 +291,18 @@ fun ClubDetail(
                 .fillMaxSize(),
             state = listState,
             horizontalAlignment = Alignment.CenterHorizontally,
-            userScrollEnabled = true
+            userScrollEnabled = qnaScrollState.value == 0
         ) {
             item {
                 SubcomposeAsyncImage(
                     modifier = Modifier
-                        .size(200.dp),
+                        .size(200.dp)
+                        .clickable {
+                            viewModel.showImageDialog()
+                        },
                     model = ImageRequest.Builder(context)
                         .data(state.clubDetails?.imageUrl)
-                        .size(400, 400)
+                        .size(400)
                         .build(),
                     contentDescription = "Club Image",
                     contentScale = ContentScale.Crop,
@@ -355,7 +387,7 @@ fun ClubDetail(
                                         } ?: viewModel.showLoginDialog()
                                     }
                             )
-                            if (state.clubDetails?.isLikedHidden != true) {
+                            if (state.clubDetails?.isLikeHidden != true) {
                                 Text(
                                     text = "${state.clubDetails?.likes}",
                                     style = KoinTheme.typography.medium14
@@ -370,27 +402,33 @@ fun ClubDetail(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         detailList.forEach { intro ->
+                            if (intro.second.isNullOrBlank()) return@forEach
                             var outputText = ""
-                            var maxLines = 1
                             var linkUrl = ""
+                            val showMore = remember { mutableStateOf(false) }
+                            var onClick = {}
                             intro.second?.let {
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
-                                        maxLines = 2
                                         outputText = "${stringResource(intro.first.strResId)}$it"
+                                        onClick = { showMore.value = !showMore.value }
                                     }
-                                    DETAIL_INSTAGRAM -> outputText = it.formatInstagramLinkForm()
+                                    DETAIL_INSTAGRAM -> {
+                                        linkUrl = if (it.isInstagramUrl()) it else it.formatInstagramUrlForm()
+                                        onClick = { viewModel.openUrl(linkUrl) }
+                                        outputText = it.formatInstagramLinkForm()
+                                    }
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_PHONE_NUMBER -> outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
                                     else -> outputText = it
                                 }
                                 if (
-                                    it.isInstagramUrl() ||
                                     it.isGoogleFormUrl() ||
                                     it.isOpenChatUrl()
                                 ) {
                                     linkUrl = it
+                                    onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
                                 }
                             }
                             Row {
@@ -401,14 +439,12 @@ fun ClubDetail(
                                 )
                                 Text(
                                     text = outputText,
-                                    maxLines = maxLines,
+                                    maxLines = if (intro.first == DETAIL_DESCRIPTION) if (showMore.value) 10 else 2 else 1,
+                                    softWrap = false,
                                     style = KoinTheme.typography.medium18,
                                     color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                     overflow = TextOverflow.Ellipsis,
-                                    modifier = Modifier
-                                        .clickable {
-                                            if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl)
-                                        }
+                                    modifier = Modifier.clickable { onClick() }
                                 )
                             }
                         }
@@ -450,10 +486,11 @@ fun ClubDetail(
                 )
             }
             item {
-                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp
+                val deviceHeightDp = LocalConfiguration.current.screenHeightDp.dp - (contentPadding.calculateTopPadding().value.dp + 24.dp)
                 HorizontalPager(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .height(deviceHeightDp),
                     state = pagerState,
                     verticalAlignment = Alignment.Top
                 ) { page ->
@@ -463,8 +500,7 @@ fun ClubDetail(
                             val snackbarActionLabel = stringResource(R.string.detail_snackbar_detail_intro_button)
                             ClubDetailIntro(
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .heightIn(min = deviceHeightDp),
+                                    .fillMaxSize(),
                                 onFixIntroClick = {
                                     scope.launch {
                                         val result = snackbarHostState.showSnackbar(
@@ -491,7 +527,6 @@ fun ClubDetail(
                                     Box(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .heightIn(min = deviceHeightDp)
                                             .zIndex(1f)
                                     ) {
                                         CircularProgressIndicator(
@@ -504,7 +539,7 @@ fun ClubDetail(
                                 ClubDetailQna(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .heightIn(min = deviceHeightDp),
+                                        .verticalScroll(qnaScrollState, enabled = isQnaScrollable.value),
                                     qnaList = qnaList,
                                     isManager = state.clubDetails?.manager ?: false,
                                     userId = state.userId,

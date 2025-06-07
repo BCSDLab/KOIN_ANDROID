@@ -74,10 +74,10 @@ class ClubDetailViewModel @Inject constructor(
         userInfoFlow.collect { user ->
             when (user) {
                 is User.Anonymous -> {
-                    reduce { state.copy(userId = null) }
+                    reduce { state.copy(userId = null, userLoginId = null) }
                 }
                 is User.Student -> {
-                    reduce { state.copy(userId = user.id) }
+                    reduce { state.copy(userId = user.id, userLoginId = user.email?.removeSuffix("@koreatech.ac.kr")) }
                 }
             }
         }
@@ -138,7 +138,7 @@ class ClubDetailViewModel @Inject constructor(
     ) = intent {
         if (state.isLoading) return@intent
         reduce { state.copy(isLoading = true) }
-        if (content.isEmpty()) {
+        if (content.isBlank()) {
             reduce {
                 state.copy(
                     isLoading = false,
@@ -313,5 +313,13 @@ class ClubDetailViewModel @Inject constructor(
 
     fun openUrl(url: String) = intent {
         postSideEffect(ClubDetailSideEffect.OpenUrl(url))
+    }
+
+    fun showImageDialog() = intent {
+        reduce { state.copy(showImageDialog = true) }
+    }
+
+    fun dismissImageDialog() = intent {
+        reduce { state.copy(showImageDialog = false) }
     }
 }

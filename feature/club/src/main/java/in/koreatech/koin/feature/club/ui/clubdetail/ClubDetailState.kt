@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 data class ClubDetailState(
     val isLoading: Boolean = false,
     val userId: Int? = null,
+    val userLoginId: String? = null,
     val clubId: Int = -1,
     val clubDetails: ParcelizeClubDetails? = null,
     val clubQnasInfo: ParcelizeClubQnasInfo? = null,
@@ -16,5 +17,6 @@ data class ClubDetailState(
     val showLoginDialog: Boolean = false,
     val showAddQnaDialog: Boolean = false,
     val showEmpowermentDialog: Boolean = false,
+    val showImageDialog: Boolean = false,
     val textFieldErrorMessageResId: Int? = null
 ) : Parcelable

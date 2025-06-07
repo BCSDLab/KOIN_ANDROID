@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -99,8 +98,6 @@ fun DetailQnaBox(
                 Text(
                     text = "Q. $questionText",
                     style = KoinTheme.typography.regular18,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .weight(1f)
                 )
@@ -146,7 +143,7 @@ fun DetailQnaBox(
                             textFieldColor = KoinTheme.colors.primary300,
                             onValueChange = onAddAnswerTextChange,
                             onSendClick = {
-                                if (addAnswerText.isNotEmpty()) {
+                                if (addAnswerText.isNotBlank()) {
                                     onAddAnswerClick(qnaId, addAnswerText)
                                     isError = false
                                 } else {
@@ -160,8 +157,6 @@ fun DetailQnaBox(
                         Text(
                             text = "$answerText",
                             style = KoinTheme.typography.regular18,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .weight(1f)
                         )
@@ -173,7 +168,7 @@ fun DetailQnaBox(
                                     .size(20.dp)
                                     .padding(end = 4.dp)
                                     .clickable {
-                                        showDeleteQnaDialog = Pair(true, qnaId)
+                                        showDeleteQnaDialog = Pair(true, answerQnaId)
                                     }
                             )
                         }

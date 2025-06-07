@@ -61,7 +61,7 @@ class ClubModifyViewModel @Inject constructor(
                         googleFormUrl = it.googleForm ?: "",
                         openChatUrl = it.openChat ?: "",
                         phoneNumber = it.phoneNumber ?: "",
-                        isLikeHidden = it.isLikedHidden,
+                        isLikeHidden = it.isLikeHidden,
                         likes = it.likes,
                         clubImageUrl = it.imageUrl
                     )
