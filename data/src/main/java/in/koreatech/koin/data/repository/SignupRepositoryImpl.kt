@@ -17,6 +17,7 @@ import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
+import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.toSHA256
@@ -230,7 +231,7 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): SignupContinuationState {
+    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): VerificationCode {
         return try {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
@@ -238,11 +239,11 @@ class SignupRepositoryImpl @Inject constructor(
                     verificationCode = verificationCode
                 )
             )
-            SignupContinuationState.SmsCodeIsValidated
+            VerificationCode.Valid
         } catch (e: HttpException) {
             when (e.code()) {
-                404 -> SignupContinuationState.SmsCodeIsExpired
-                else -> SignupContinuationState.SmsCodeIsNotValidate
+                404 -> VerificationCode.Expired
+                else -> VerificationCode.NotValid
             }
         }
     }

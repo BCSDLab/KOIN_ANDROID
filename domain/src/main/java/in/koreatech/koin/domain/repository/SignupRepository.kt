@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
+import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 
 interface SignupRepository {
@@ -63,5 +64,5 @@ interface SignupRepository {
 
     suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber
 
-    suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): SignupContinuationState
+    suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): VerificationCode
 }
