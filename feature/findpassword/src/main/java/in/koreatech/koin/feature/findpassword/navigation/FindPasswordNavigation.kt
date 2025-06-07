@@ -35,6 +35,5 @@ fun NavGraphBuilder.koinFindPasswordGraph(
     composable(
         route = FindPasswordNavType.Complete.route
     ) {
-
     }
 }

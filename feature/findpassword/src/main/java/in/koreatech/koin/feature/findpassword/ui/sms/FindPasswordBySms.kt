@@ -79,7 +79,7 @@ fun FindPasswordBySms(
         onVerificationCodeRequest = { viewModel.sendVerificationCode() },
         onVerificationCodeVerify = { viewModel.checkVerificationCode() },
         navigateToEmailScreen = navigateToEmailScreen,
-        navigateToPasswordScreen = navigateToPasswordScreen,
+        navigateToPasswordScreen = navigateToPasswordScreen
     )
 }
 
@@ -166,7 +166,7 @@ fun FindPasswordBySmsImpl(
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
-                    enabled = phoneNumber.isNotBlank() && verificationCodeState !is VerificationCode.Valid,
+                    enabled = phoneNumber.isNotBlank() && verificationCodeState !is VerificationCode.Valid
                 )
             }
         }
@@ -311,7 +311,7 @@ fun SignUpVerificationCodeVerificationStep(
 
 @Composable
 private fun EmailMessage(
-    navigateToEmailScreen: () -> Unit = {},
+    navigateToEmailScreen: () -> Unit = {}
 ) {
     Row {
         Text(
@@ -408,6 +408,6 @@ fun FindPasswordBySmsPreview() {
         phoneNumberState = PhoneNumber.Available,
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
-        verificationTimeLeft = 180,
+        verificationTimeLeft = 180
     )
 }

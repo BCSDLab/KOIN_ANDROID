@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.constant.CONTACT_URL
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
@@ -53,7 +54,6 @@ import `in`.koreatech.koin.feature.signup.component.KoinSignUpProgressIndicator
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpSingleChoiceRadioGroup
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpTextFieldAlert
 import `in`.koreatech.koin.feature.signup.component.KoinSignUpTextFieldAlertState
-import `in`.koreatech.koin.core.util.secondToMinute
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

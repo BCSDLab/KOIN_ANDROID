@@ -75,7 +75,7 @@ fun FindPasswordByEmail(
         onVerificationCodeChange = { viewModel.updateVerificationCode(it) },
         onVerificationCodeRequest = { },
         onVerificationCodeVerify = { },
-        navigateToPasswordScreen = navigateToPasswordScreen,
+        navigateToPasswordScreen = navigateToPasswordScreen
     )
 }
 
@@ -145,7 +145,7 @@ fun FindPasswordByEmailImpl(
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
-                    enabled = email.isNotBlank() && verificationCodeState !is VerificationCode.Valid,
+                    enabled = email.isNotBlank() && verificationCodeState !is VerificationCode.Valid
                 )
             }
         }
@@ -354,6 +354,6 @@ fun FindPasswordByEmailPreview() {
         emailState = PhoneNumber.None,
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
-        verificationTimeLeft = 300,
+        verificationTimeLeft = 300
     )
 }

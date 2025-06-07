@@ -57,7 +57,7 @@ fun ChangePasswordScreenImpl(
     onPasswordChange: (String) -> Unit = {},
     onPasswordConfirmChange: (String) -> Unit = {},
     onPasswordVisibleChange: (Boolean) -> Unit = {},
-    onNextClick: () -> Unit = {},
+    onNextClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.padding(horizontal = 24.dp)
@@ -156,6 +156,6 @@ fun ChangePasswordScreenPreview() {
         password = "password123",
         isPasswordValid = true,
         passwordConfirm = "password123",
-        showPassword = false,
+        showPassword = false
     )
 }
