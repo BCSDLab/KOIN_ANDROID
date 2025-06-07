@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubsUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
@@ -118,9 +120,19 @@ class ClubListViewModel @Inject constructor(
             state.clubs.forEach { club ->
                 if (club.id == clubId) {
                     if (club.isLiked) {
-                        cancelClubLikeUseCase(clubId)
+                        cancelClubLikeUseCase(clubId).onSuccess {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE_CANCEL,
+                                club.name
+                            )
+                        }
                     } else {
-                        setClubLikeUseCase(clubId)
+                        setClubLikeUseCase(clubId).onSuccess {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE,
+                                club.name
+                            )
+                        }
                     }
                     reduce {
                         state.copy(

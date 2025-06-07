@@ -134,6 +134,8 @@ object AnalyticsConstant {
             const val MAIN_SELECT_CLUB = "club_main_select"
             const val MAIN_CLUB_CREATE = "club_main_create"
             const val MAIN_CLUB_CATEGORY = "club_main_category"
+            const val MAIN_CLUB_LIKE = "club_main_like"
+            const val MAIN_CLUB_LIKE_CANCEL = "club_main_like_cancel"
             const val CLUB_CREATE_CANCEL = "club_create_cancel"
             const val CLUB_CREATE_REQUEST = "club_create_request"
             const val CLUB_CREATE_REQUEST_CHECK = "club_create_request_check"
@@ -147,6 +149,8 @@ object AnalyticsConstant {
             const val CLUB_DELEGATION_AUTHORITY = "club_delegation_authority"
             const val CLUB_DELEGATION_AUTHORITY_CONFIRM = "club_delegation_authority_confirm"
             const val CLUB_TAB_SELECT = "club_tab_select"
+            const val CLUB_INTRODUCTION_LIKE = "club_introduction_like"
+            const val CLUB_INTRODUCTION_LIKE_CANCEL = "club_introduction_like_cancel"
         }
     }
 

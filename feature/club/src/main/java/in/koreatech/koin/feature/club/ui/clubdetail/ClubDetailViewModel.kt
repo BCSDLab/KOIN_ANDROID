@@ -239,7 +239,12 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         state.clubDetails?.let {
             if (it.isLiked) {
-                cancelClubLikeUseCase(clubId = state.clubId).onFailure { e ->
+                cancelClubLikeUseCase(clubId = state.clubId).onSuccess { _ ->
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_INTRODUCTION_LIKE_CANCEL,
+                        it.name
+                    )
+                }.onFailure { e ->
                     when (e) {
                         is ClubError.Unauthorized -> {
                             postSideEffect(ClubDetailSideEffect.UnauthorizedError)
@@ -251,7 +256,12 @@ class ClubDetailViewModel @Inject constructor(
                     }
                 }
             } else {
-                setClubLikeUseCase(clubId = state.clubId).onFailure { e ->
+                setClubLikeUseCase(clubId = state.clubId).onSuccess { _ ->
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_INTRODUCTION_LIKE,
+                        it.name
+                    )
+                }.onFailure { e ->
                     when (e) {
                         is ClubError.Unauthorized -> {
                             postSideEffect(ClubDetailSideEffect.UnauthorizedError)
