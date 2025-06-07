@@ -46,6 +46,8 @@ import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
+import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.util.ext.isValidEmail
 import `in`.koreatech.koin.feature.userinfo.R
 import `in`.koreatech.koin.feature.userinfo.component.KoinUserInfoBasicItem
@@ -58,8 +60,6 @@ import `in`.koreatech.koin.feature.userinfo.component.KoinUserInfoWithButtonItem
 import `in`.koreatech.koin.feature.userinfo.component.UserInfoHeader
 import `in`.koreatech.koin.feature.userinfo.genderList
 import `in`.koreatech.koin.feature.userinfo.majorStringList
-import `in`.koreatech.koin.feature.userinfo.model.PhoneNumberState
-import `in`.koreatech.koin.feature.userinfo.model.VerificationCodeState
 import `in`.koreatech.koin.feature.userinfo.util.secondToMinute
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -188,8 +188,8 @@ fun GeneralUserInfo(
     phoneNumber: String,
     email: String,
     gender: Int?,
-    phoneNumberState: PhoneNumberState,
-    verificationCodeState: VerificationCodeState,
+    phoneNumberState: PhoneNumber,
+    verificationCodeState: VerificationCode,
     verificationCode: String,
     verificationTimeLeft: Int,
     isPhoneNumberChanged: Boolean,
@@ -244,7 +244,7 @@ fun GeneralUserInfo(
             onRequestVerificationCode = onRequestVerificationCode
         )
 
-        if (phoneNumberState is PhoneNumberState.Sent) {
+        if (phoneNumberState is PhoneNumber.Sent) {
             UserInfoVerificationCodeVerification(
                 verificationCode = verificationCode,
                 verificationCodeState = verificationCodeState,
@@ -352,7 +352,7 @@ fun StudentUserInfo(
 @Composable
 fun UserInfoPhoneNumber(
     phoneNumber: String,
-    phoneNumberState: PhoneNumberState,
+    phoneNumberState: PhoneNumber,
     isPhoneNumberChanged: Boolean,
     onPhoneNumberChange: (String) -> Unit = {},
     onRequestVerificationCode: () -> Unit = {}
@@ -372,14 +372,14 @@ fun UserInfoPhoneNumber(
 
     Box(modifier = Modifier.height(32.dp)) {
         when (phoneNumberState) {
-            is PhoneNumberState.CountExceeded -> {
+            is PhoneNumber.CountExceeded -> {
                 KoinUserInfoTextFieldAlert(
                     text = stringResource(R.string.user_info_phone_number_limit_exceeded),
                     state = KoinUserInfoTextFieldAlertState.Error
                 )
             }
 
-            is PhoneNumberState.Sent -> {
+            is PhoneNumber.Sent -> {
                 Row {
                     KoinUserInfoTextFieldAlert(
                         text = stringResource(R.string.user_info_code_correct),
@@ -389,8 +389,8 @@ fun UserInfoPhoneNumber(
                     Text(
                         text = stringResource(
                             R.string.user_info_phone_number_sent_remain_count,
-                            phoneNumberState.leftCount,
-                            phoneNumberState.maxCount
+                            phoneNumberState.remainingCount,
+                            phoneNumberState.totalCount
                         ),
                         style = KoinTheme.typography.regular12,
                         color = KoinTheme.colors.neutral500
@@ -398,21 +398,23 @@ fun UserInfoPhoneNumber(
                 }
             }
 
-            is PhoneNumberState.AlreadySignedUp -> {
+            is PhoneNumber.AlreadySignedUp -> {
                 KoinUserInfoTextFieldAlert(
                     text = stringResource(R.string.user_info_phone_number_already_signed_up),
                     state = KoinUserInfoTextFieldAlertState.Error
                 )
             }
 
-            is PhoneNumberState.WrongFormat -> {
+            is PhoneNumber.WrongFormat -> {
                 KoinUserInfoTextFieldAlert(
                     text = stringResource(R.string.user_info_phone_number_wrong_format),
                     state = KoinUserInfoTextFieldAlertState.Warning
                 )
             }
 
-            PhoneNumberState.None -> { }
+            PhoneNumber.None,
+            PhoneNumber.Available,
+            is PhoneNumber.Failed -> {}
         }
     }
 }
@@ -420,7 +422,7 @@ fun UserInfoPhoneNumber(
 @Composable
 fun UserInfoVerificationCodeVerification(
     verificationCode: String,
-    verificationCodeState: VerificationCodeState,
+    verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
     onVerificationCodeChange: (String) -> Unit = {},
     checkVerificationCode: () -> Unit = {}
@@ -452,10 +454,10 @@ fun UserInfoVerificationCodeVerification(
                 ),
                 onValueChange = { onVerificationCodeChange(it) },
                 hint = stringResource(R.string.user_info_code_field_hint),
-                enabled = verificationCodeState !is VerificationCodeState.Valid
+                enabled = verificationCodeState !is VerificationCode.Valid
             )
 
-            if (verificationCodeState != VerificationCodeState.Valid) {
+            if (verificationCodeState != VerificationCode.Valid) {
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                     Text(
                         modifier = Modifier.padding(end = if (verificationCode.isBlank()) 8.dp else 28.dp),
@@ -475,7 +477,7 @@ fun UserInfoVerificationCodeVerification(
                     .defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
                 text = stringResource(R.string.user_info_code_check),
                 textStyle = KoinTheme.typography.regular10,
-                enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCodeState.Valid,
+                enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCode.Valid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     checkVerificationCode()
@@ -485,22 +487,22 @@ fun UserInfoVerificationCodeVerification(
     }
 
     when (verificationCodeState) {
-        VerificationCodeState.None -> { }
+        VerificationCode.None -> { }
 
-        VerificationCodeState.Valid -> {
+        VerificationCode.Valid -> {
             KoinUserInfoTextFieldAlert(
                 text = stringResource(R.string.user_info_code_correct),
                 state = KoinUserInfoTextFieldAlertState.Success
             )
         }
 
-        VerificationCodeState.NotValid -> {
+        VerificationCode.NotValid -> {
             KoinUserInfoTextFieldAlert(
                 text = stringResource(R.string.user_info_code_incorrect),
                 state = KoinUserInfoTextFieldAlertState.Warning
             )
         }
-        VerificationCodeState.Expired -> {
+        VerificationCode.Expired -> {
             KoinUserInfoTextFieldAlert(
                 text = stringResource(R.string.user_info_code_timeout),
                 state = KoinUserInfoTextFieldAlertState.Warning
@@ -522,8 +524,8 @@ fun UserInfoEditScreenImplPreview() {
                 phoneNumber = "010-1234-5678",
                 email = "",
                 gender = 0,
-                phoneNumberState = PhoneNumberState.None,
-                verificationCodeState = VerificationCodeState.NotValid,
+                phoneNumberState = PhoneNumber.None,
+                verificationCodeState = VerificationCode.NotValid,
                 verificationCode = "",
                 verificationTimeLeft = 180,
                 isPhoneNumberChanged = true,
