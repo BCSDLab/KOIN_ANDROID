@@ -16,6 +16,7 @@ import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.toSHA256
@@ -102,15 +103,15 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isPhoneDuplicated(phone: String): SignupContinuationState {
+    override suspend fun isPhoneDuplicated(phone: String): PhoneNumber {
         return try {
             userRemoteDataSource.checkPhoneNumberDuplicate(phone)
-            SignupContinuationState.AvailablePhoneNumber
+            PhoneNumber.Available
         } catch (e: HttpException) {
             when (e.code()) {
-                409 -> SignupContinuationState.PhoneNumberDuplicated
-                400 -> SignupContinuationState.CheckPhoneNumberFormat
-                else -> SignupContinuationState.Failed(
+                409 -> PhoneNumber.AlreadySignedUp
+                400 -> PhoneNumber.WrongFormat
+                else -> PhoneNumber.Failed(
                     message = e.getErrorResponse().message ?: "",
                     throwable = e
                 )
@@ -208,10 +209,10 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestSmsVerification(phoneNumber: String): SignupContinuationState {
+    override suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber {
         return try {
             userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber = phoneNumber)).let {
-                SignupContinuationState.RequestedSmsValidationWithRemainingCount(
+                PhoneNumber.Sent(
                     totalCount = it.totalCount,
                     remainingCount = it.remainingCount,
                     currentCount = it.currentCount
@@ -219,9 +220,9 @@ class SignupRepositoryImpl @Inject constructor(
             }
         } catch (e: HttpException) {
             when (e.code()) {
-                429 -> SignupContinuationState.SmsCodeRequestCountIsExceeded
-                400 -> SignupContinuationState.CheckPhoneNumberFormat
-                else -> SignupContinuationState.Failed(
+                429 -> PhoneNumber.CountExceeded
+                400 -> PhoneNumber.WrongFormat
+                else -> PhoneNumber.Failed(
                     message = e.getErrorResponse().message ?: "",
                     throwable = e
                 )

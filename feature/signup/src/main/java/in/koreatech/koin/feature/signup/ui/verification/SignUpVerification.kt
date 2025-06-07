@@ -42,6 +42,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.constant.CONTACT_URL
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.feature.signup.R
 import `in`.koreatech.koin.feature.signup.SIGN_UP_PHONE_NUMBER_MAX_LENGTH
@@ -110,7 +111,7 @@ fun SignUpVerificationImpl(
     isNameValid: Boolean,
     gender: Gender,
     phoneNumber: String,
-    phoneNumberState: SignupContinuationState?,
+    phoneNumberState: PhoneNumber?,
     verificationCode: String,
     verificationCodeState: SignupContinuationState?,
     verificationTimeLeft: Int,
@@ -244,7 +245,7 @@ private fun SignUpVerificationInitialStep(
 @Composable
 fun SignUpVerificationPhoneNumberStep(
     phoneNumber: String,
-    phoneNumberState: SignupContinuationState?,
+    phoneNumberState: PhoneNumber?,
     verificationCodeState: SignupContinuationState?,
     modifier: Modifier = Modifier,
     onPhoneNumberChange: (String) -> Unit = {},
@@ -283,13 +284,13 @@ fun SignUpVerificationPhoneNumberStep(
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
             FilledButton(
                 modifier = Modifier.widthIn(min = 86.dp),
-                text = if (phoneNumberState is SignupContinuationState.RequestedSmsValidationWithRemainingCount) {
+                text = if (phoneNumberState is PhoneNumber.Sent) {
                     stringResource(R.string.sign_up_phone_number_resend_verification)
                 } else {
                     stringResource(R.string.sign_up_phone_number_send_verification)
                 },
                 textStyle = KoinTheme.typography.regular10,
-                enabled = (phoneNumber.isNotBlank() || phoneNumberState != SignupContinuationState.SmsCodeRequestCountIsExceeded) && verificationCodeState !is SignupContinuationState.SmsCodeIsValidated,
+                enabled = (phoneNumber.isNotBlank() || phoneNumberState != PhoneNumber.CountExceeded) && verificationCodeState !is SignupContinuationState.SmsCodeIsValidated,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     onVerificationCodeSent()
@@ -299,10 +300,10 @@ fun SignUpVerificationPhoneNumberStep(
     }
 
     when (phoneNumberState) {
-        SignupContinuationState.PhoneNumberDuplicated -> PhoneNumberDuplicateMessage()
-        SignupContinuationState.CheckPhoneNumberFormat -> PhoneNumberInvalidMessage()
-        SignupContinuationState.SmsCodeRequestCountIsExceeded -> PhoneNumberRequestCountExceeded()
-        is SignupContinuationState.RequestedSmsValidationWithRemainingCount -> {
+        PhoneNumber.AlreadySignedUp -> PhoneNumberDuplicateMessage()
+        PhoneNumber.WrongFormat -> PhoneNumberInvalidMessage()
+        PhoneNumber.CountExceeded -> PhoneNumberRequestCountExceeded()
+        is PhoneNumber.Sent -> {
             VerificationCodeSentSuccessMessage(
                 remainingCount = phoneNumberState.remainingCount,
                 totalCount = phoneNumberState.totalCount

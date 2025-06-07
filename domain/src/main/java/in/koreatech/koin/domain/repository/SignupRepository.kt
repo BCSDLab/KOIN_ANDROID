@@ -3,6 +3,7 @@ package `in`.koreatech.koin.domain.repository
 import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 
 interface SignupRepository {
@@ -32,7 +33,7 @@ interface SignupRepository {
 
     suspend fun isUsernameDuplicatedV2(nickname: String): SignupContinuationState
 
-    suspend fun isPhoneDuplicated(phone: String): SignupContinuationState
+    suspend fun isPhoneDuplicated(phone: String): PhoneNumber
 
     suspend fun isLoginIdDuplicated(loginId: String): SignupContinuationState
 
@@ -60,7 +61,7 @@ interface SignupRepository {
         nickname: String
     ): Result<Unit>
 
-    suspend fun requestSmsVerification(phoneNumber: String): SignupContinuationState
+    suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber
 
     suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): SignupContinuationState
 }
