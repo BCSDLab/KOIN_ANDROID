@@ -49,6 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -196,6 +198,10 @@ fun ClubCreateScreenImpl(
             onDismiss = { onShouldShowCreateDialogChange(false) },
             onNegative = { onShouldShowCreateDialogChange(false) },
             onPositive = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.Club.CLUB_CREATE_REQUEST_CHECK,
+                    "확인"
+                )
                 onShouldShowCreateDialogChange(false)
                 onShouldShowPermissionDialogChange(true)
             },
@@ -229,6 +235,10 @@ fun ClubCreateScreenImpl(
             onDismiss = { onShouldShowPermissionDialogChange(false) },
             onNegative = { onShouldShowPermissionDialogChange(false) },
             onPositive = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.Club.CLUB_CREATE_REQUEST_AUTHORITY,
+                    userRole
+                )
                 onShouldShowPermissionDialogChange(false)
                 onRequestCreateClub()
             },
@@ -337,7 +347,13 @@ fun ClubCreateScreenImpl(
             FilledButton(
                 modifier = Modifier.width(100.dp),
                 text = stringResource(R.string.club_create_create_cancel),
-                onClick = onCancelCreateClub,
+                onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_CREATE_CANCEL,
+                        "생성취소"
+                    )
+                    onCancelCreateClub()
+                },
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 textStyle = KoinTheme.typography.medium14
             )
@@ -347,7 +363,13 @@ fun ClubCreateScreenImpl(
             FilledButton(
                 modifier = Modifier.width(100.dp),
                 text = stringResource(R.string.club_create_create_request),
-                onClick = { onShouldShowCreateDialogChange(true) },
+                onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_CREATE_REQUEST,
+                        "생성요청"
+                    )
+                    onShouldShowCreateDialogChange(true)
+                },
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 textStyle = KoinTheme.typography.medium14
             )

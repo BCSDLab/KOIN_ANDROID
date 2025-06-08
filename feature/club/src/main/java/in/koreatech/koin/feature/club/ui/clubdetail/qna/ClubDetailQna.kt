@@ -14,6 +14,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.model.ParcelizeClubQnasInfo
@@ -48,7 +50,13 @@ fun ClubDetailQna(
                                 bottom = 4.dp
                             ),
                         text = stringResource(R.string.detail_add_qna_button),
-                        onClick = onAddQnaClick,
+                        onClick = {
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Club.CLUB_QNA_ADD_CONFIRM,
+                                "Q&A"
+                            )
+                            onAddQnaClick()
+                        },
                         contentPadding = PaddingValues(horizontal = 22.dp, vertical = 5.dp)
                     )
                 }

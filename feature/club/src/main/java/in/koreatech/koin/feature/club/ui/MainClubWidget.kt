@@ -25,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
@@ -76,6 +78,10 @@ fun MainClubWidgetA(
             horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally)
         ) {
             clubCategories.forEach {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.Club.MAIN_CLUB,
+                    stringResource(it.stringRes)
+                )
                 KoinClubCategoryItem(
                     categoryName = stringResource(it.stringRes),
                     icon = painterResource(it.drawableRes),
@@ -119,6 +125,10 @@ fun MainClubWidgetB(
                 description = stringResource(R.string.club_main_widget_go),
                 icon = rememberAsyncImagePainter(hotClubImageUrl),
                 onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.MAIN_POPULAR_CLUB,
+                        "인기 동아리"
+                    )
                     Intent(context, ClubActivity::class.java).apply {
                         putExtra(CLUB_ID, hotClubId)
                         context.startActivity(this)
@@ -134,6 +144,10 @@ fun MainClubWidgetB(
                 description = stringResource(R.string.club_main_widget_go),
                 icon = painterResource(R.drawable.ic_club_list),
                 onClick = {
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.MAIN_CLUB,
+                        ""
+                    )
                     Intent(context, ClubActivity::class.java).apply {
                         context.startActivity(this)
                     }

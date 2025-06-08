@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.error.club.ClubError
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
@@ -237,7 +239,12 @@ class ClubDetailViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         state.clubDetails?.let {
             if (it.isLiked) {
-                cancelClubLikeUseCase(clubId = state.clubId).onFailure { e ->
+                cancelClubLikeUseCase(clubId = state.clubId).onSuccess { _ ->
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_INTRODUCTION_LIKE_CANCEL,
+                        it.name
+                    )
+                }.onFailure { e ->
                     when (e) {
                         is ClubError.Unauthorized -> {
                             postSideEffect(ClubDetailSideEffect.UnauthorizedError)
@@ -249,7 +256,12 @@ class ClubDetailViewModel @Inject constructor(
                     }
                 }
             } else {
-                setClubLikeUseCase(clubId = state.clubId).onFailure { e ->
+                setClubLikeUseCase(clubId = state.clubId).onSuccess { _ ->
+                    EventLogger.logCampusClickEvent(
+                        AnalyticsConstant.Label.Club.CLUB_INTRODUCTION_LIKE,
+                        it.name
+                    )
+                }.onFailure { e ->
                     when (e) {
                         is ClubError.Unauthorized -> {
                             postSideEffect(ClubDetailSideEffect.UnauthorizedError)
@@ -284,7 +296,12 @@ class ClubDetailViewModel @Inject constructor(
         setClubEmpowermentUseCase(
             clubId = state.clubId,
             changedManagerId = newUserId
-        ).onFailure { e ->
+        ).onSuccess {
+            EventLogger.logCampusClickEvent(
+                AnalyticsConstant.Label.Club.CLUB_DELEGATION_AUTHORITY_CONFIRM,
+                "권한위임"
+            )
+        }.onFailure { e ->
             reduce { state.copy(isLoading = false) }
             when (e) {
                 is ClubError.AlreadyManager -> {

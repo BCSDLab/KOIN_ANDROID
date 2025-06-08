@@ -28,6 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
@@ -56,6 +58,10 @@ fun DetailQnaBox(
             modifier = Modifier,
             title = stringResource(R.string.detail_dialog_qna_delete_title),
             onPositive = {
+                EventLogger.logCampusClickEvent(
+                    AnalyticsConstant.Label.Club.CLUB_QNA_DELETE_CONFIRM,
+                    "삭제하기"
+                )
                 onDeleteQnaClick(showDeleteQnaDialog.second)
                 showDeleteQnaDialog = Pair(false, -1)
             },

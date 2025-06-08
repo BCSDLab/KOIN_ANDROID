@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.club.CancelClubLikeUseCase
 import `in`.koreatech.koin.domain.usecase.club.GetClubsUseCase
 import `in`.koreatech.koin.domain.usecase.club.SetClubLikeUseCase
@@ -19,7 +21,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 
 @HiltViewModel
 class ClubListViewModel @Inject constructor(
@@ -32,7 +33,6 @@ class ClubListViewModel @Inject constructor(
     override val container =
         container<ClubListState, ClubListSideEffect>(ClubListState(), savedStateHandle) {
             val categoryId = savedStateHandle.get<Int?>(CATEGORY_ID)
-            Timber.d("ClubListViewModel: categoryId = $categoryId")
             intent {
                 reduce {
                     state.copy(categoryId = categoryId.takeIf { it != -1 })
@@ -141,6 +141,10 @@ class ClubListViewModel @Inject constructor(
                                     }
                                 )
                             }
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE_CANCEL,
+                                club.name
+                            )
                         }.onFailure {
                             reduce {
                                 state.copy(isLoading = false)
@@ -164,6 +168,10 @@ class ClubListViewModel @Inject constructor(
                                     }
                                 )
                             }
+                            EventLogger.logCampusClickEvent(
+                                AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE,
+                                club.name
+                            )
                         }.onFailure {
                             reduce {
                                 state.copy(isLoading = false)
@@ -171,7 +179,6 @@ class ClubListViewModel @Inject constructor(
                             postSideEffect(ClubListSideEffect.ClubLikeFailed)
                         }
                     }
-
                     return@intent
                 }
             }
