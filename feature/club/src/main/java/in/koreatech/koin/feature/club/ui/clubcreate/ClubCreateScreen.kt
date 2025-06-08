@@ -610,9 +610,9 @@ fun handleSideEffect(
             onClubCreated()
         }
 
-        ClubCreateSideEffect.ClubImageUploadFailure -> context.let {
-            Toast.makeText(it, it.getString(R.string.club_image_upload_failed), Toast.LENGTH_SHORT).show()
-        }
+        ClubCreateSideEffect.ClubImageUploadFailure -> Toast.makeText(context, R.string.club_image_upload_failed, Toast.LENGTH_SHORT).show()
+
+        ClubCreateSideEffect.ClubCreateFailure -> Toast.makeText(context, R.string.club_create_failed, Toast.LENGTH_SHORT).show()
     }
 }
 

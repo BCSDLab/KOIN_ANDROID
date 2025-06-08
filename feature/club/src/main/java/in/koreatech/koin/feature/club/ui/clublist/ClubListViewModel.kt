@@ -108,6 +108,11 @@ class ClubListViewModel @Inject constructor(
                 reduce {
                     state.copy(clubs = clubs.toParcelizeClubItems(), isLoading = false)
                 }
+            }.onFailure {
+                reduce {
+                    state.copy(isLoading = false)
+                }
+                postSideEffect(ClubListSideEffect.ClubsFetchFailed)
             }
         }
     }
@@ -121,33 +126,58 @@ class ClubListViewModel @Inject constructor(
                 if (club.id == clubId) {
                     if (club.isLiked) {
                         cancelClubLikeUseCase(clubId).onSuccess {
+                            reduce {
+                                state.copy(
+                                    isLoading = false,
+                                    clubs = state.clubs.map {
+                                        if (it.id == clubId) {
+                                            it.copy(
+                                                isLiked = !it.isLiked,
+                                                likes = it.likes - 1
+                                            )
+                                        } else {
+                                            it
+                                        }
+                                    }
+                                )
+                            }
                             EventLogger.logCampusClickEvent(
                                 AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE_CANCEL,
                                 club.name
                             )
+                        }.onFailure {
+                            reduce {
+                                state.copy(isLoading = false)
+                            }
+                            postSideEffect(ClubListSideEffect.ClubDislikeFailed)
                         }
                     } else {
                         setClubLikeUseCase(clubId).onSuccess {
+                            reduce {
+                                state.copy(
+                                    isLoading = false,
+                                    clubs = state.clubs.map {
+                                        if (it.id == clubId) {
+                                            it.copy(
+                                                isLiked = !it.isLiked,
+                                                likes = it.likes + 1
+                                            )
+                                        } else {
+                                            it
+                                        }
+                                    }
+                                )
+                            }
                             EventLogger.logCampusClickEvent(
                                 AnalyticsConstant.Label.Club.MAIN_CLUB_LIKE,
                                 club.name
                             )
-                        }
-                    }
-                    reduce {
-                        state.copy(
-                            isLoading = false,
-                            clubs = state.clubs.map {
-                                if (it.id == clubId) {
-                                    it.copy(
-                                        isLiked = !it.isLiked,
-                                        likes = if (it.isLiked) it.likes - 1 else it.likes + 1
-                                    )
-                                } else {
-                                    it
-                                }
+                        }.onFailure {
+                            reduce {
+                                state.copy(isLoading = false)
                             }
-                        )
+                            postSideEffect(ClubListSideEffect.ClubLikeFailed)
+                        }
                     }
                     return@intent
                 }
