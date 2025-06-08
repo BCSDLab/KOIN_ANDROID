@@ -78,14 +78,14 @@ fun MainClubWidgetA(
             horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally)
         ) {
             clubCategories.forEach {
-                EventLogger.logCampusClickEvent(
-                    AnalyticsConstant.Label.Club.MAIN_CLUB,
-                    stringResource(it.stringRes)
-                )
                 KoinClubCategoryItem(
                     categoryName = stringResource(it.stringRes),
                     icon = painterResource(it.drawableRes),
                     onClick = {
+                        EventLogger.logCampusClickEvent(
+                            AnalyticsConstant.Label.Club.MAIN_CLUB,
+                            context.getString(it.stringRes)
+                        )
                         Intent(context, ClubActivity::class.java).apply {
                             putExtra(CATEGORY_ID, it.id)
                             context.startActivity(this)

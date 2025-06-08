@@ -235,7 +235,7 @@ fun ClubDetail(
                 title = stringResource(R.string.detail_add_qna_button),
                 onPositive = {
                     EventLogger.logCampusClickEvent(
-                        AnalyticsConstant.Label.Club.CLUB_QNA_ADD,
+                        AnalyticsConstant.Label.Club.CLUB_QNA_ADD_CONFIRM,
                         "Q&A"
                     )
                     viewModel.addClubQna(
