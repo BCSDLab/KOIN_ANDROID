@@ -80,7 +80,6 @@ fun ClubListScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit, uiState.categoryId) {
-        if (uiState.categoryId == null) return@LaunchedEffect
         viewModel.getClubs()
     }
 
