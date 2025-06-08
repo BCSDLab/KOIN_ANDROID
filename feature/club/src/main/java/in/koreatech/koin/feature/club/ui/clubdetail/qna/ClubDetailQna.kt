@@ -52,7 +52,7 @@ fun ClubDetailQna(
                         text = stringResource(R.string.detail_add_qna_button),
                         onClick = {
                             EventLogger.logCampusClickEvent(
-                                AnalyticsConstant.Label.Club.CLUB_QNA_ADD_CONFIRM,
+                                AnalyticsConstant.Label.Club.CLUB_QNA_ADD,
                                 "Q&A"
                             )
                             onAddQnaClick()

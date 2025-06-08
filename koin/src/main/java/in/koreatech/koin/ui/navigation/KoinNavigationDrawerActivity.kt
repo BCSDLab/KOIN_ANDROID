@@ -294,8 +294,8 @@ abstract class KoinNavigationDrawerActivity :
 
                             MenuState.Club -> {
                                 EventLogger.logCampusClickEvent(
-                                    AnalyticsConstant.Label.Club.MAIN_POPULAR_CLUB,
-                                    "인기 동아리"
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "동아리"
                                 )
                             }
 
