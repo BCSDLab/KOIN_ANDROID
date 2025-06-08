@@ -80,7 +80,6 @@ fun ClubListScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit, uiState.categoryId) {
-        if (uiState.categoryId == null) return@LaunchedEffect
         viewModel.getClubs()
     }
 
@@ -291,6 +290,12 @@ fun ClubListScreenImpl(
                     .padding(top = 16.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(
+                    text = stringResource(R.string.club_list_count, clubList.size),
+                    style = KoinTheme.typography.regular14,
+                    color = KoinTheme.colors.neutral600
+                )
+
                 Spacer(modifier = Modifier.weight(1f))
 
                 KoinClubDropdown(
