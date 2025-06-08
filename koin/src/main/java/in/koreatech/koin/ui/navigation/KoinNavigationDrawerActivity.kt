@@ -35,6 +35,7 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
+import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
@@ -86,6 +87,7 @@ abstract class KoinNavigationDrawerActivity :
             R.id.navi_item_dining,
             R.id.navi_item_operating_information,
             R.id.navi_item_timetable,
+            R.id.navi_item_club,
             R.id.navi_item_land,
             R.id.navi_item_owner,
             R.id.navi_item_article,
@@ -103,6 +105,7 @@ abstract class KoinNavigationDrawerActivity :
                 MenuState.Dining,
                 MenuState.OperatingInfo,
                 MenuState.Timetable,
+                MenuState.Club,
                 MenuState.Land,
                 MenuState.Owner,
                 MenuState.Article,
@@ -289,6 +292,13 @@ abstract class KoinNavigationDrawerActivity :
                                 )
                             }
 
+                            MenuState.Club -> {
+                                EventLogger.logCampusClickEvent(
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "동아리"
+                                )
+                            }
+
                             else -> Unit
                         }
                     }
@@ -343,6 +353,10 @@ abstract class KoinNavigationDrawerActivity :
 
                 MenuState.Timetable -> {
                     goToTimetableActivity()
+                }
+
+                MenuState.Club -> {
+                    goToClubActivity()
                 }
 
                 MenuState.LoginOrLogout -> {
@@ -545,6 +559,14 @@ abstract class KoinNavigationDrawerActivity :
                 value = "시간표"
             )
             startActivity(intent)
+        }
+    }
+
+    private fun goToClubActivity() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, ClubActivity::class.java))
+        } else {
+            startActivity(Intent(this, ClubActivity::class.java))
         }
     }
 
