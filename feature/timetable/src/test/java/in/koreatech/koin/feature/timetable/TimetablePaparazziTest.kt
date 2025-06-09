@@ -16,7 +16,7 @@ val FOLDABLE_DEVICE = DeviceConfig(
     softButtons = false
 )
 
-class StoreDetailSnapshotTestPIXEL_6_PRO {
+class StoreDetailSnapshotTestPIXEL6PRO {
     @get:Rule
     val paparazzi = Paparazzi(
         deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false)
@@ -45,7 +45,7 @@ class StoreDetailSnapshotTestPIXEL_6_PRO {
     }
 }
 
-class StoreDetailSnapshotTestPIXEL_4 {
+class StoreDetailSnapshotTestPIXEL4 {
     @get:Rule
     val paparazzi = Paparazzi(
         deviceConfig = DeviceConfig.PIXEL_4.copy(softButtons = false)
