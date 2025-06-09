@@ -16,14 +16,14 @@ val FOLDABLE_DEVICE = DeviceConfig(
     softButtons = false
 )
 
-class StoreDetailSnapshotTestPIXEL6PRO {
+class TimetableTestPIXEL6PRO {
     @get:Rule
     val paparazzi = Paparazzi(
         deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false)
     )
 
     @Test
-    fun snapshot_store_detail_FOLDABLE() {
+    fun snapshot_timetable_FOLDABLE() {
         paparazzi.snapshot(name = "store_detail_FOLDABLE") {
             KoinTheme {
                 TimetableLecture(
@@ -45,14 +45,14 @@ class StoreDetailSnapshotTestPIXEL6PRO {
     }
 }
 
-class StoreDetailSnapshotTestPIXEL4 {
+class  TimetableTestPIXEL4 {
     @get:Rule
     val paparazzi = Paparazzi(
         deviceConfig = DeviceConfig.PIXEL_4.copy(softButtons = false)
     )
 
     @Test
-    fun snapshot_store_detail_FOLDABLE() {
+    fun snapshot_timetable_FOLDABLE() {
         paparazzi.snapshot(name = "store_detail_FOLDABLE") {
             KoinTheme {
                 TimetableLecture(
@@ -74,14 +74,14 @@ class StoreDetailSnapshotTestPIXEL4 {
     }
 }
 
-class StoreDetailSnapshotTestFoldable {
+class TimetableTestFoldable {
     @get:Rule
     val paparazzi = Paparazzi(
         deviceConfig = FOLDABLE_DEVICE.copy(softButtons = false)
     )
 
     @Test
-    fun snapshot_store_detail_FOLDABLE() {
+    fun snapshot_timetable_FOLDABLE() {
         paparazzi.snapshot(name = "store_detail_FOLDABLE") {
             KoinTheme {
                 TimetableLecture(
