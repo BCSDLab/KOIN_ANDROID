@@ -1,0 +1,79 @@
+package `in`.koreatech.koin.domain.repository
+
+import `in`.koreatech.koin.domain.model.club.ClubCategories
+import `in`.koreatech.koin.domain.model.club.ClubDetails
+import `in`.koreatech.koin.domain.model.club.ClubHot
+import `in`.koreatech.koin.domain.model.club.ClubQnasInfo
+import `in`.koreatech.koin.domain.model.club.Clubs
+
+interface ClubRepository {
+    suspend fun getClubsCategories(): Result<ClubCategories>
+
+    suspend fun getClubHot(): Result<ClubHot>
+
+    suspend fun getClubs(
+        categoryId: Int? = null,
+        sortType: String? = null
+    ): Result<Clubs>
+
+    suspend fun getClubDetails(
+        clubId: Int
+    ): Result<ClubDetails>
+
+    suspend fun createClub(
+        name: String,
+        imageUrl: String,
+        clubManagers: List<String>,
+        clubCategoryId: Int,
+        location: String,
+        description: String,
+        instagram: String,
+        googleForm: String,
+        openChat: String,
+        phoneNumber: String,
+        role: String,
+        isLikeHidden: Boolean
+    ): Result<Unit>
+
+    suspend fun modifyClub(
+        clubId: Int,
+        name: String,
+        imageUrl: String,
+        clubCategoryId: Int,
+        location: String,
+        description: String,
+        instagram: String,
+        googleForm: String,
+        openChat: String,
+        phoneNumber: String,
+        isLikeHidden: Boolean
+    ): Result<Unit>
+
+    suspend fun getClubQnas(
+        clubId: Int
+    ): Result<ClubQnasInfo>
+
+    suspend fun setClubEmpowerment(
+        clubId: Int,
+        changedManagerId: String
+    ): Result<Unit>
+
+    suspend fun setClubLike(
+        clubId: Int
+    ): Result<Unit>
+
+    suspend fun postClubQna(
+        clubId: Int,
+        parentId: Int?,
+        content: String
+    ): Result<Unit>
+
+    suspend fun deleteClubQna(
+        clubId: Int,
+        qnaId: Int
+    ): Result<Unit>
+
+    suspend fun cancelClubLike(
+        clubId: Int
+    ): Result<Unit>
+}

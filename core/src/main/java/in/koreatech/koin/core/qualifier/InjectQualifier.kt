@@ -12,6 +12,10 @@ annotation class NoAuth
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class UserAgent
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class ServerUrl
 
 @Qualifier
@@ -20,7 +24,15 @@ annotation class OwnerAuth
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class OwnerUserAgent
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class PreSignedUrl
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class PreSignedUserAgent
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)

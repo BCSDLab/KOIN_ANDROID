@@ -7,9 +7,11 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,6 +26,10 @@ import `in`.koreatech.koin.core.abtest.Experiment
 import `in`.koreatech.koin.core.abtest.ExperimentGroup
 import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_1
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_CATEGORY
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_A
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant.Label.Club.CLUB_AB_TEST_DESIGN_B
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -46,6 +52,8 @@ import `in`.koreatech.koin.domain.model.article.ArticleNotiType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
+import `in`.koreatech.koin.feature.club.ui.MainClubWidgetA
+import `in`.koreatech.koin.feature.club.ui.MainClubWidgetB
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.adapter.ArticleMainAdapter
@@ -255,6 +263,35 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
                 )
+            }
+        }
+
+        clubComposeView.apply {
+            setContent {
+                val abTestGroup by viewModel.clubABTestExperimentGroup.collectAsStateWithLifecycle()
+                if (abTestGroup == ExperimentGroup.CATEGORY) {
+                    EventLogger.logABTestEvent(
+                        CLUB_AB_TEST_CATEGORY,
+                        CLUB_1,
+                        CLUB_AB_TEST_DESIGN_A
+                    )
+                } else if (abTestGroup == ExperimentGroup.HOT) {
+                    EventLogger.logABTestEvent(
+                        CLUB_AB_TEST_CATEGORY,
+                        CLUB_1,
+                        CLUB_AB_TEST_DESIGN_B
+                    )
+                }
+
+                if (abTestGroup == ExperimentGroup.CATEGORY) {
+                    MainClubWidgetA()
+                } else if (abTestGroup == ExperimentGroup.HOT) {
+                    val hotClub by viewModel.hotClub.collectAsStateWithLifecycle()
+                    MainClubWidgetB(
+                        hotClubId = hotClub?.clubId ?: -1,
+                        hotClubImageUrl = hotClub?.imageUrl ?: ""
+                    )
+                }
             }
         }
 
