@@ -13,7 +13,7 @@ val FOLDABLE_DEVICE = DeviceConfig(
     xdpi = 480,
     ydpi = 480,
     fontScale = 1.0f,
-    softButtons = false,
+    softButtons = false
 )
 
 class StoreDetailSnapshotTestPIXEL_6_PRO {
@@ -73,7 +73,6 @@ class StoreDetailSnapshotTestPIXEL_4 {
         }
     }
 }
-
 
 class StoreDetailSnapshotTestFoldable {
     @get:Rule
