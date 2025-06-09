@@ -45,7 +45,7 @@ class TimetableTestPIXEL6PRO {
     }
 }
 
-class  TimetableTestPIXEL4 {
+class TimetableTestPIXEL4 {
     @get:Rule
     val paparazzi = Paparazzi(
         deviceConfig = DeviceConfig.PIXEL_4.copy(softButtons = false)
