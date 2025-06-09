@@ -34,6 +34,10 @@ gradlePlugin {
             id = "in.koreatech.plugin.library.orbit"
             implementationClass = "AndroidLibraryOrbitConventionPlugin"
         }
+        register("AndroidLibraryPaparazziPlugin") {
+            id = "in.koreatech.plugin.library.paparazzi"
+            implementationClass = "AndroidLibraryPaparazziConventionPlugin"
+        }
         register("AndroidLibraryPlugin") {
             id = "in.koreatech.plugin.library"
             implementationClass = "AndroidLibraryConventionPlugin"
