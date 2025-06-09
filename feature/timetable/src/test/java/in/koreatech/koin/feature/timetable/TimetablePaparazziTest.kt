@@ -10,7 +10,7 @@ import org.junit.Test
 class StoreDetailSnapshotTestPIXEL_6_PRO {
     @get:Rule
     val paparazzi = Paparazzi(
-        deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false),
+        deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false)
     )
 
     @Test
@@ -31,17 +31,15 @@ class StoreDetailSnapshotTestPIXEL_6_PRO {
                     classInfos = emptyList(),
                     designScore = "0"
                 )
-
             }
         }
     }
 }
 
-
 class StoreDetailSnapshotTestPIXEL_4 {
     @get:Rule
     val paparazzi = Paparazzi(
-        deviceConfig = DeviceConfig.PIXEL_4.copy(softButtons = false),
+        deviceConfig = DeviceConfig.PIXEL_4.copy(softButtons = false)
     )
 
     @Test
@@ -62,7 +60,6 @@ class StoreDetailSnapshotTestPIXEL_4 {
                     classInfos = emptyList(),
                     designScore = "0"
                 )
-
             }
         }
     }

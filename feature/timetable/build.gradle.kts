@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.koin.library.orbit)
     alias(libs.plugins.koin.library.paparazzi)
     alias(libs.plugins.paparazzi)
-
 }
 
 android {
