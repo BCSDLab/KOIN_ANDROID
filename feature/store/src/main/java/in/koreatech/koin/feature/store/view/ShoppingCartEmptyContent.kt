@@ -198,7 +198,7 @@ fun ShoppingCartContent(
                 ) {
                     Text(text = stringResource(R.string.plus), fontSize = 20.sp)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = stringResource(R.string.add_more), style= KoinTheme.typography.bold18)
+                    Text(text = stringResource(R.string.add_more), style = KoinTheme.typography.bold18)
                 }
             }
         }

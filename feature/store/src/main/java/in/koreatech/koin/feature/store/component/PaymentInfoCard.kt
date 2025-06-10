@@ -19,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.store.R
 
@@ -32,7 +31,7 @@ fun PaymentSummaryCard() {
     ) {
         Text(
             text = stringResource(R.string.check_payment_amount),
-            style = KoinTheme.typography.bold16,
+            style = KoinTheme.typography.bold16
         )
         Spacer(modifier = Modifier.height(12.dp))
         Card(

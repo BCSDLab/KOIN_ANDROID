@@ -47,5 +47,4 @@ dependencies {
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.coil.compose)
     implementation(libs.toolbar.compose)
-
 }
