@@ -82,6 +82,8 @@ paparazzi = "1.3.0"
 [libraries]
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
+paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "paparazzi" }
+
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardviewVersion" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
@@ -214,7 +216,6 @@ krossbow-stomp-kxserialization = { group = "org.hildan.krossbow", name = "krossb
 krossbow-stomp-kxserialization-json = { group = "org.hildan.krossbow", name = "krossbow-stomp-kxserialization-json", version.ref = "krossbow" }
 
 paparazzi-gradle-plugin = { module = "app.cash.paparazzi:paparazzi-gradle-plugin", version.ref  = "paparazzi" }
-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "paparazzi" }
 
 [plugins]
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
@@ -232,6 +233,8 @@ koin-application = { id = "in.koreatech.plugin.application", version = "unspecif
 koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
 koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
 koin-library-orbit = { id = "in.koreatech.plugin.library.orbit", version = "unspecified" }
+koin-library-paparazzi= { id = "in.koreatech.plugin.library.paparazzi", version = "unspecified" }
+
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 koin-library = { id = "in.koreatech.plugin.library", version = "unspecified" }
 koin-firebase = { id = "in.koreatech.plugin.firebase", version = "unspecified" }

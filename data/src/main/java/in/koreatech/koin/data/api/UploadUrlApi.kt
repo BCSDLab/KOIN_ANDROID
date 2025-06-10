@@ -21,4 +21,9 @@ interface UploadUrlApi {
     suspend fun postUploadLostAndFoundUrl(
         @Body uploadUrlRequest: UploadUrlRequest
     ): UploadUrlResponse
+
+    @POST(URLConstant.UPLOAD.CLUB)
+    suspend fun postUploadClubUrl(
+        @Body uploadUrlRequest: UploadUrlRequest
+    ): UploadUrlResponse
 }
