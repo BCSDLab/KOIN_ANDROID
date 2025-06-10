@@ -123,6 +123,35 @@ object AnalyticsConstant {
             const val HAMBURGER = "hamburger"
             const val MESSAGE_LIST_SELECT = "message_list_select"
         }
+
+        object Club {
+            const val CLUB_AB_TEST_CATEGORY = "a/b test 로깅(메인화면 동아리 진입)"
+            const val CLUB_AB_TEST_DESIGN_A = "design_A"
+            const val CLUB_AB_TEST_DESIGN_B = "design_B"
+            const val CLUB_1 = "CAMPUS_club_1"
+            const val MAIN_POPULAR_CLUB = "main_popular_club"
+            const val MAIN_CLUB = "main_club"
+            const val MAIN_SELECT_CLUB = "club_main_select"
+            const val MAIN_CLUB_CREATE = "club_main_create"
+            const val MAIN_CLUB_CATEGORY = "club_main_category"
+            const val MAIN_CLUB_LIKE = "club_main_like"
+            const val MAIN_CLUB_LIKE_CANCEL = "club_main_like_cancel"
+            const val CLUB_CREATE_CANCEL = "club_create_cancel"
+            const val CLUB_CREATE_REQUEST = "club_create_request"
+            const val CLUB_CREATE_REQUEST_CHECK = "club_create_request_check"
+            const val CLUB_CREATE_REQUEST_AUTHORITY = "club_create_request_authority"
+            const val CLUB_QNA_ADD = "club_Q&A_add"
+            const val CLUB_QNA_ADD_CONFIRM = "club_Q&A_add_confirm"
+            const val CLUB_QNA_DELETE_CONFIRM = "club_Q&A_delete_confirm"
+            const val CLUB_CORRECTION = "club_correction"
+            const val CLUB_CORRECTION_SAVE = "club_correction_save"
+            const val CLUB_CORRECTION_CANCEL = "club_correction_cancel"
+            const val CLUB_DELEGATION_AUTHORITY = "club_delegation_authority"
+            const val CLUB_DELEGATION_AUTHORITY_CONFIRM = "club_delegation_authority_confirm"
+            const val CLUB_TAB_SELECT = "club_tab_select"
+            const val CLUB_INTRODUCTION_LIKE = "club_introduction_like"
+            const val CLUB_INTRODUCTION_LIKE_CANCEL = "club_introduction_like_cancel"
+        }
     }
 
     const val PREVIOUS_PAGE = "previous_page"

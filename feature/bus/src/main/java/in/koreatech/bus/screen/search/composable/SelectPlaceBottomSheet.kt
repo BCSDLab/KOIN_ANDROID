@@ -13,6 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,6 +69,9 @@ internal fun SelectPlaceBottomSheet(
         }
 
     ModalBottomSheet(
+        sheetState = rememberModalBottomSheetState(
+            skipPartiallyExpanded = true
+        ),
         onDismissRequest = onDismissRequest,
         modifier = modifier,
         containerColor = Color.White,
@@ -77,8 +81,7 @@ internal fun SelectPlaceBottomSheet(
             text = sheetTitle,
             style = KoinTheme.typography.medium18,
             fontWeight = FontWeight.SemiBold,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(horizontal = 32.dp)
                 .padding(bottom = 12.dp)
         )
@@ -95,8 +98,7 @@ internal fun SelectPlaceBottomSheet(
                     showClickRipple = false,
                     title = stringResource(it.titleRes),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
-                    chipColors =
-                    if (disabledPlace == it) {
+                    chipColors = if (disabledPlace == it) {
                         TextChipDefaults.chipColors(
                             unselectedContainerColor = KoinTheme.colors.neutral50,
                             unselectedContentColor = KoinTheme.colors.neutral300
@@ -121,8 +123,7 @@ internal fun SelectPlaceBottomSheet(
 
         Spacer(modifier = Modifier.height(140.dp))
         FilledButton(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
                 .padding(bottom = 36.dp),

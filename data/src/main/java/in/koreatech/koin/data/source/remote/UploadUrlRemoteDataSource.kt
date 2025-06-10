@@ -19,4 +19,6 @@ class UploadUrlRemoteDataSource @Inject constructor(
         uploadUrl.postUploadLostAndFoundUrl(
             uploadUrlRequest
         )
+
+    suspend fun postUploadClubUrl(uploadUrlRequest: UploadUrlRequest): UploadUrlResponse = uploadUrl.postUploadClubUrl(uploadUrlRequest)
 }

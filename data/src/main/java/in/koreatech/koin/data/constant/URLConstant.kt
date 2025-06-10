@@ -168,5 +168,12 @@ object URLConstant {
         const val OWNERURL = "/owners/upload/url"
         const val MARKETURL = "/market/upload/url"
         const val LOSTANDFOUNDURL = "/lost_items/upload/url"
+        const val CLUB = "/club/upload/url"
+    }
+
+    object CLUBS {
+        const val CLUBS = "clubs"
+        const val CATEGORIES = "$CLUBS/categories"
+        const val HOT = "$CLUBS/hot"
     }
 }
