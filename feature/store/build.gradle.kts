@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.koin.hilt)
     alias(libs.plugins.koin.library.orbit)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.koin.library.paparazzi)
+    alias(libs.plugins.paparazzi)
 }
 
 android {

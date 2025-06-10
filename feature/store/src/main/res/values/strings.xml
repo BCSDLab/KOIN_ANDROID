@@ -1,4 +1,21 @@
 <resources>
+    <!--장바구니-->
+    <string name="check_payment_amount">결제금액을 확인해주세요</string>
+    <string name="menu_amount">메뉴 금액</string>
+    <string name="delivery_amount">배달 금액</string>
+    <string name="expected_payment_amount">결제예정금액</string>
+    <string name="total_amount">총 금액</string>
+    <string name="change_option">옵션 변경</string>
+    <string name="shopping_cart">장바구니</string>
+    <string name="add_more">더 담으러 가기</string>
+    <string name="plus">+</string>
+    <string name="shopping_cart_is_empty">장바구니가 비었어요.</string>
+    <string name="add_menu">메뉴 추가</string>
+    <string name="pickup">포장</string>
+    <string name="delivery">배달</string>
+    <string name="delete_all">전체삭제</string>
+
+    <!--상점 상세-->
     <string name="store_info_and_origin">가게정보·원산지</string>
     <string name="minimum_order">최소주문</string>
     <string name="delivery_fee">배달금액</string>
