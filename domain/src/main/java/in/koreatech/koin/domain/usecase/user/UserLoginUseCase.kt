@@ -21,7 +21,6 @@ class UserLoginUseCase @Inject constructor(
             val authToken = userRepository.getToken(email, password.toSHA256())
             tokenRepository.saveAccessToken(authToken.token)
             tokenRepository.saveRefreshToken(authToken.refreshToken)
-            println("UserLoginUseCase: Access Token: $authToken")
             when (UserType.valueOf(authToken.userType!!)) {
                 UserType.COUNCIL, UserType.STUDENT -> {
                     userRepository.fetchStudentUserInfo()
