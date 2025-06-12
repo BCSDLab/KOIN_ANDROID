@@ -11,6 +11,12 @@ import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
+import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.user.PutUserNicknameOrEmailConflict
+import `in`.koreatech.koin.domain.error.user.PutUserNotFound
+import `in`.koreatech.koin.domain.error.user.PutUserPhoneNumberNotAuthorized
+import `in`.koreatech.koin.domain.error.user.PutUserRequestDataError
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
@@ -83,10 +89,12 @@ class UserRepositoryImpl @Inject constructor(
             is User.Student -> userRemoteDataSource.getStudentUserInfo().toUser().also {
                 userLocalDataSource.updateUserInfo(it)
             }
+
             is User.General -> userRemoteDataSource.getGeneralUserInfo().toUser().also {
                 userLocalDataSource.updateUserInfo(it)
             }
-            else -> throw IllegalAccessException("Get anonymous user info is not supported")
+
+            else -> User.Anonymous
         }
     }
 
@@ -137,14 +145,35 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUser(user: User) {
-        when (user) {
-            User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
-            is User.Student -> {
-                userRemoteDataSource.updateUser(user.toUserRequest())
-                userLocalDataSource.updateUserInfo(user)
-            }
+        runCatching {
+            when (user) {
+                User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
+                is User.Student -> {
+                    userRemoteDataSource.updateStudentUser(user.toUserRequest())
+                    userLocalDataSource.updateUserInfo(user)
+                }
 
-            is User.General -> TODO("Will be implement with user info edit")
+                is User.General -> {
+                    userRemoteDataSource.updateGeneralUser(user.toUserRequest())
+                    userLocalDataSource.updateUserInfo(user)
+                }
+            }
+        }.onSuccess {
+            userLocalDataSource.updateUserInfo(user)
+        }.onFailure {
+            throw if (it is HttpException) {
+                when (it.code()) {
+                    400 -> PutUserRequestDataError()
+                    401 -> PutUserPhoneNumberNotAuthorized()
+                    404 -> PutUserNotFound()
+                    409 -> PutUserNicknameOrEmailConflict()
+                    else -> it.getErrorResponse().let { errorResponse ->
+                        KoinUnknownErrorException(errorResponse.code, errorResponse.message, errorResponse.errorTraceId)
+                    }
+                }
+            } else {
+                it
+            }
         }
     }
 
@@ -176,10 +205,12 @@ class UserRepositoryImpl @Inject constructor(
         when (user) {
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
             is User.Student -> {
-                userRemoteDataSource.updateUser(user.toUserRequestWithPassword(hashedPassword))
+                userRemoteDataSource.updateStudentUser(user.toUserRequestWithPassword(hashedPassword))
             }
 
-            is User.General -> TODO("Will be implement with user info edit")
+            is User.General -> {
+                userRemoteDataSource.updateGeneralUser(user.toUserRequestWithPassword(hashedPassword))
+            }
         }
     }
 }

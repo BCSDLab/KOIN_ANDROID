@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.constant
 
+import `in`.koreatech.koin.data.constant.URLConstant.USER.USER
+
 /**
  * KOIN API URL
  */
@@ -93,6 +95,7 @@ object URLConstant {
 
         object STUDENTS {
             const val STUDENTS = "students"
+            const val ME: String = "$VERSION/$USERS/$STUDENTS/me"
             const val REGISTER_V2: String = "$VERSION/$USERS/$STUDENTS/register"
         }
         object GENERAL {

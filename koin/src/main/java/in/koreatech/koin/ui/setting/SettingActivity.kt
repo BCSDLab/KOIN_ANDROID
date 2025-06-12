@@ -81,21 +81,21 @@ class SettingActivity : ActivityBase() {
             }
 
             svProfile.setOnSettingClickListener {
-                if (viewModel.isStudent) {
+                if (viewModel.isLoggedIn) {
                     startActivity(Intent(this@SettingActivity, UserInfoActivity::class.java))
                 } else {
                     loginSnackBar.show()
                 }
             }
             svChangePassword.setOnSettingClickListener {
-                if (viewModel.isStudent) {
+                if (viewModel.isLoggedIn) {
                     changePasswordResult.launch(Unit)
                 } else {
                     loginSnackBar.show()
                 }
             }
             svNotification.setOnSettingClickListener {
-                if (viewModel.isStudent) {
+                if (viewModel.isLoggedIn) {
                     startActivity(Intent(this@SettingActivity, NotificationActivity::class.java))
                 } else {
                     loginSnackBar.show()

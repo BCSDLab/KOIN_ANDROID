@@ -82,8 +82,8 @@ class ChangePasswordViewModel @Inject constructor(
 
     val userEmail: StateFlow<String> =
         _userInfo
-            .filter { it.isStudent }
-            .map { (it as User.Student).email ?: "Unknown Email" }
+            .filter { it.isStudent || it.isGeneral }
+            .map { (it as? User.Student)?.loginId ?: (it as? User.General)?.loginId ?: "" }
             .stateIn(viewModelScope, SharingStarted.Lazily, "")
 
     fun setCurrentPage(newPage: ChangePasswordPage) {
