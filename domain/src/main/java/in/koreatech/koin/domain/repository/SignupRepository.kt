@@ -61,8 +61,4 @@ interface SignupRepository {
         email: String,
         nickname: String
     ): Result<Unit>
-
-    suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber
-
-    suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): VerificationCode
 }

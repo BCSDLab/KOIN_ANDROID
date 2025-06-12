@@ -209,42 +209,4 @@ class SignupRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-
-    override suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber {
-        return try {
-            userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber = phoneNumber)).let {
-                PhoneNumber.Sent(
-                    totalCount = it.totalCount,
-                    remainingCount = it.remainingCount,
-                    currentCount = it.currentCount
-                )
-            }
-        } catch (e: HttpException) {
-            when (e.code()) {
-                429 -> PhoneNumber.CountExceeded
-                400 -> PhoneNumber.WrongFormat
-                else -> PhoneNumber.Failed(
-                    message = e.getErrorResponse().message ?: "",
-                    throwable = e
-                )
-            }
-        }
-    }
-
-    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): VerificationCode {
-        return try {
-            userRemoteDataSource.verifyCode(
-                SmsVerifyRequest(
-                    phoneNumber = phoneNumber,
-                    verificationCode = verificationCode
-                )
-            )
-            VerificationCode.Valid
-        } catch (e: HttpException) {
-            when (e.code()) {
-                404 -> VerificationCode.Expired
-                else -> VerificationCode.NotValid
-            }
-        }
-    }
 }

@@ -2,12 +2,13 @@ package `in`.koreatech.koin.domain.usecase.signup
 
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.repository.SignupRepository
+import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 
 class RequestSmsVerificationUseCase @Inject constructor(
-    private val signupRepository: SignupRepository
+    private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(phoneNumber: String): PhoneNumber {
-        return signupRepository.requestSmsVerification(phoneNumber)
+        return userRepository.requestSmsVerification(phoneNumber)
     }
 }
