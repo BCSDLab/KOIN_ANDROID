@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.util.ext
 
+import `in`.koreatech.koin.domain.constant.INSTAGRAM_URL
 import `in`.koreatech.koin.domain.util.regex.PasswordUtil
 import java.util.Calendar
 
@@ -30,6 +31,10 @@ val String.isValidPhoneNumber: Boolean get() =
 fun String.toUnderlineForHtml() = "<u>$this</u>"
 
 fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)}'>$this</font>" // color = #ff000000 형태
+
+fun String.formatInstagramUrlForm() = "${INSTAGRAM_URL}/$this"
+
+fun String.formatInstagramLinkForm() = "@${this.removePrefix("${INSTAGRAM_URL}/").removeSuffix("/")}"
 
 fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 

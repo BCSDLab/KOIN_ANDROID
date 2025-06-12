@@ -21,6 +21,8 @@ sealed class MenuState {
 
     data object Timetable : MenuState()
 
+    data object Club : MenuState()
+
     data object Land : MenuState()
 
     data object Owner : MenuState()
