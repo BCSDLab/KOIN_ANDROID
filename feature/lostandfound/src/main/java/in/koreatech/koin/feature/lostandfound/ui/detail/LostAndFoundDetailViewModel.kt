@@ -60,7 +60,9 @@ class LostAndFoundDetailViewModel @Inject constructor(
                                 currentLoggedInUser = it.nickname ?: ""
                             )
                         }
-                        is User.Anonymous -> throw IllegalAccessException()
+                        is User.Anonymous -> reduce {
+                            state.copy(isLoggedIn = false)
+                        }
                     }
                 }
             }
