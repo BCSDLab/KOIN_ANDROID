@@ -96,7 +96,7 @@ fun ChangePasswordScreenImpl(
         Box(
             modifier = Modifier.height(64.dp)
         ) {
-            if (!isPasswordValid) {
+            if (password.isNotEmpty() && !isPasswordValid) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 KoinFindPasswordTextFieldAlert(
@@ -124,7 +124,7 @@ fun ChangePasswordScreenImpl(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (password != passwordConfirm) {
+        if (passwordConfirm.isNotEmpty() && password != passwordConfirm) {
             KoinFindPasswordTextFieldAlert(
                 text = stringResource(R.string.find_password_change_password_not_match),
                 state = KoinFindPasswordTextFieldAlertState.Warning

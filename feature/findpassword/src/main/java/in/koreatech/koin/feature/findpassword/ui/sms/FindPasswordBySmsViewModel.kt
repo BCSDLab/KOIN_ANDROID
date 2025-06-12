@@ -4,11 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
+import `in`.koreatech.koin.domain.error.user.KoinUserError
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
 import javax.inject.Inject
+import `in`.koreatech.koin.domain.usecase.user.CheckIdExistsUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchPhoneUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -20,7 +23,9 @@ import org.orbitmvi.orbit.viewmodel.container
 @HiltViewModel
 class FindPasswordBySmsViewModel @Inject constructor(
     private val requestSmsVerificationUseCase: RequestSmsVerificationUseCase,
-    private val verifySmsCodeUseCase: VerifySmsCodeUseCase
+    private val verifySmsCodeUseCase: VerifySmsCodeUseCase,
+    private val checkIdExistsUseCase: CheckIdExistsUseCase,
+    private val checkIdMatchPhoneUseCase: CheckIdMatchPhoneUseCase
 ) : ViewModel(), ContainerHost<FindPasswordBySmsState, FindPasswordBySmsSideEffect> {
     override val container =
         container<FindPasswordBySmsState, FindPasswordBySmsSideEffect>(FindPasswordBySmsState())
@@ -37,10 +42,13 @@ class FindPasswordBySmsViewModel @Inject constructor(
 
     fun updatePhoneNumber(phoneNumber: String) = viewModelScope.launch {
         intent {
+            if (phoneNumber == state.phoneNumber) return@intent
             reduce {
                 state.copy(
                     phoneNumber = phoneNumber,
-                    phoneNumberState = PhoneNumber.None
+                    phoneNumberState = PhoneNumber.None,
+                    verificationCode = "",
+                    verificationCodeState = VerificationCode.None
                 )
             }
         }
@@ -81,6 +89,61 @@ class FindPasswordBySmsViewModel @Inject constructor(
             }
         }
     }
+
+    private fun checkIdMatchPhone() = viewModelScope.launch {
+        intent {
+            checkIdMatchPhoneUseCase(state.loginId, state.phoneNumber).onSuccess {
+                postSideEffect(FindPasswordBySmsSideEffect.NavigateToChangePassword)
+            }.onFailure {
+                when (it) {
+                    KoinUserError.LoginIdNotExists -> reduce {
+                        state.copy(
+                            loginIdValid = true
+                        )
+                    }
+
+                    KoinUserError.LoginIdNotMatchPhone -> reduce {
+                        state.copy(
+                            phoneNumberState = PhoneNumber.Failed(
+                                it.message ?: ""
+                            )
+                        )
+                    }
+
+                    else -> {
+                        postSideEffect(FindPasswordBySmsSideEffect.UnknownError)
+                    }
+                }
+            }
+        }
+    }
+
+    fun checkIdExists() = viewModelScope.launch {
+        intent {
+            checkIdExistsUseCase(state.loginId).onSuccess {
+                reduce {
+                    state.copy(
+                        loginIdValid = true
+                    )
+                }
+                checkIdMatchPhone()
+            }.onFailure {
+                when (it) {
+                    KoinUserError.LoginIdNotExists,
+                    KoinUserError.LoginIdWrongFormat -> reduce {
+                        state.copy(
+                            loginIdValid = false
+                        )
+                    }
+
+                    else -> {
+                        postSideEffect(FindPasswordBySmsSideEffect.UnknownError)
+                    }
+                }
+            }
+        }
+    }
+
 
     fun startTimer() {
         AccountTimer.start { secondsRemaining ->

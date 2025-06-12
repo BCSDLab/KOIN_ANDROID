@@ -6,6 +6,7 @@ import `in`.koreatech.koin.domain.model.user.VerificationCode
 data class FindPasswordBySmsState(
     val isLoading: Boolean = false,
     val loginId: String = "",
+    val loginIdValid: Boolean = true,
     val phoneNumber: String = "",
     val phoneNumberState: PhoneNumber = PhoneNumber.None,
     val verificationCode: String = "",

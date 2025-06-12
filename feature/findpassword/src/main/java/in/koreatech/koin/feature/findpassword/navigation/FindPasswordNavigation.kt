@@ -16,7 +16,10 @@ fun NavGraphBuilder.koinFindPasswordGraph(
         FindPasswordBySms(
             navigateToEmailScreen = {
                 navController.navigate(FindPasswordNavType.EmailVerification.route)
-            }
+            },
+            navigateToPasswordScreen = {
+                navController.navigate(FindPasswordNavType.ChangePassword.route)
+            },
         )
     }
 
