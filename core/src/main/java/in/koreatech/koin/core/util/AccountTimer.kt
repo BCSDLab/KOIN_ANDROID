@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.signup.util
+package `in`.koreatech.koin.core.util
 
 import android.os.CountDownTimer
 
