@@ -9,8 +9,10 @@ import `in`.koreatech.koin.domain.error.user.PutUserNotFound
 import `in`.koreatech.koin.domain.error.user.PutUserPhoneNumberNotAuthorized
 import `in`.koreatech.koin.domain.error.user.PutUserRequestDataError
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
+import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckPhoneNumberDuplicateUseCase
@@ -23,8 +25,6 @@ import `in`.koreatech.koin.domain.usecase.user.UserWithdrawUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.feature.userinfo.model.NicknameState
-import `in`.koreatech.koin.feature.userinfo.model.PhoneNumberState
-import `in`.koreatech.koin.feature.userinfo.model.VerificationCodeState
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -123,11 +123,7 @@ class UserInfoEditViewModel @Inject constructor(
         reduce {
             state.copy(
                 phoneNumber = phoneNumber,
-                phoneNumberState = when (state.beforeUser) {
-                    User.Anonymous -> PhoneNumberState.None
-                    is User.Student -> if ((state.beforeUser as User.Student).phoneNumber != phoneNumber) PhoneNumberState.Modified else PhoneNumberState.None
-                    is User.General -> if ((state.beforeUser as User.General).phoneNumber != phoneNumber) PhoneNumberState.Modified else PhoneNumberState.None
-                }
+                phoneNumberState = PhoneNumber.None
             )
         }
     }
@@ -211,12 +207,7 @@ class UserInfoEditViewModel @Inject constructor(
             requestSmsVerificationUseCase(state.phoneNumber).let {
                 reduce {
                     state.copy(
-                        phoneNumberState = when (it) {
-                            is SignupContinuationState.RequestedSmsValidationWithRemainingCount -> PhoneNumberState.Sent(it.currentCount, it.remainingCount, it.totalCount)
-                            is SignupContinuationState.CheckPhoneNumberFormat -> PhoneNumberState.WrongFormat
-                            is SignupContinuationState.SmsCodeRequestCountIsExceeded -> PhoneNumberState.CountExceeded
-                            else -> PhoneNumberState.Failed((it as SignupContinuationState.Failed).message)
-                        }
+                        phoneNumberState = it
                     )
                 }
             }
@@ -229,18 +220,11 @@ class UserInfoEditViewModel @Inject constructor(
             verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).let {
                 reduce {
                     state.copy(
-                        verificationCodeState = when (it) {
-                            is SignupContinuationState.SmsCodeIsValidated -> {
-                                VerificationCodeState.Valid
-                            }
-                            is SignupContinuationState.SmsCodeIsExpired -> VerificationCodeState.Expired
-                            is SignupContinuationState.SmsCodeIsNotValidate -> VerificationCodeState.NotValid
-                            else -> VerificationCodeState.None
-                        },
-                        phoneNumberState = PhoneNumberState.None
+                        verificationCodeState = it,
+                        phoneNumberState = PhoneNumber.None
                     )
                 }
-                if (it == SignupContinuationState.SmsCodeIsValidated) {
+                if (it == VerificationCode.Valid) {
                     postSideEffect(UserInfoEditSideEffect.StopTimer)
                 }
             }
@@ -250,15 +234,15 @@ class UserInfoEditViewModel @Inject constructor(
     fun checkPhoneNumber() = viewModelScope.launch {
         intent {
             checkPhoneNumberDuplicateUseCase(state.phoneNumber).let {
-                if (it == SignupContinuationState.AvailablePhoneNumber) {
+                if (it == PhoneNumber.Available) {
                     requestVerificationCode()
-                } else if (it == SignupContinuationState.PhoneNumberDuplicated) {
+                } else if (it == PhoneNumber.AlreadySignedUp) {
                     reduce {
-                        state.copy(phoneNumberState = PhoneNumberState.AlreadySignedUp)
+                        state.copy(phoneNumberState = PhoneNumber.AlreadySignedUp)
                     }
-                } else if (it == SignupContinuationState.CheckPhoneNumberFormat) {
+                } else if (it == PhoneNumber.WrongFormat) {
                     reduce {
-                        state.copy(phoneNumberState = PhoneNumberState.WrongFormat)
+                        state.copy(phoneNumberState = PhoneNumber.WrongFormat)
                     }
                 }
             }
@@ -277,8 +261,8 @@ class UserInfoEditViewModel @Inject constructor(
             ).onSuccess {
                 reduce {
                     state.copy(
-                        verificationCodeState = VerificationCodeState.None,
-                        phoneNumberState = PhoneNumberState.None
+                        verificationCodeState = VerificationCode.None,
+                        phoneNumberState = PhoneNumber.None
                     )
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
@@ -308,8 +292,8 @@ class UserInfoEditViewModel @Inject constructor(
             ).onSuccess {
                 reduce {
                     state.copy(
-                        verificationCodeState = VerificationCodeState.None,
-                        phoneNumberState = PhoneNumberState.None
+                        verificationCodeState = VerificationCode.None,
+                        phoneNumberState = PhoneNumber.None
                     )
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)

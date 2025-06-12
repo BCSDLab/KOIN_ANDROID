@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.usecase.article.FetchMyKeywordUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchLostAndFoundArticlePaginationUseCase
 import `in`.koreatech.koin.domain.usecase.article.lostandfound.FetchSearchedLostAndFoundArticlesUseCase

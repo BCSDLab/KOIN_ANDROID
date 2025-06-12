@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.feature.userinfo.ui.userinfoedit
 
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
+import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.util.ext.isEnglish
 import `in`.koreatech.koin.domain.util.ext.isKorean
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
@@ -10,8 +12,6 @@ import `in`.koreatech.koin.domain.util.ext.isValidEmail
 import `in`.koreatech.koin.domain.util.ext.isValidGeneralEmail
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import `in`.koreatech.koin.feature.userinfo.model.NicknameState
-import `in`.koreatech.koin.feature.userinfo.model.PhoneNumberState
-import `in`.koreatech.koin.feature.userinfo.model.VerificationCodeState
 
 data class UserInfoEditState(
     val beforeUser: User = User.Anonymous,
@@ -27,9 +27,9 @@ data class UserInfoEditState(
     val isMajorDropdownExpanded: Boolean = false,
     val userType: UserType = UserType.ANONYMOUS,
     val verificationCode: String = "",
-    val verificationCodeState: VerificationCodeState = VerificationCodeState.None,
-    val phoneNumberState: PhoneNumberState = PhoneNumberState.None,
     val nicknameState: NicknameState = NicknameState.None,
+    val verificationCodeState: VerificationCode = VerificationCode.None,
+    val phoneNumberState: PhoneNumber = PhoneNumber.None,
     val verificationTimeLeft: Int = 180,
     val showWithdrawalDialog: Boolean = false
 )
@@ -89,4 +89,4 @@ val UserInfoEditState.isModified: Boolean
     }
 
 val UserInfoEditState.canSave: Boolean
-    get() = isModified && isNameValid && isStudentNumberValid && isEmailValid && phoneNumberState is PhoneNumberState.None
+    get() = isModified && isNameValid && isStudentNumberValid && isEmailValid && phoneNumberState is PhoneNumber.None

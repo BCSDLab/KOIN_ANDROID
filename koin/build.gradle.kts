@@ -113,6 +113,7 @@ dependencies {
     implementation(project(":feature:signup"))
     implementation(project(":feature:signin"))
     implementation(project(":feature:userinfo"))
+    implementation(project(":feature:findpassword"))
 
     implementation(libs.guava)
 
