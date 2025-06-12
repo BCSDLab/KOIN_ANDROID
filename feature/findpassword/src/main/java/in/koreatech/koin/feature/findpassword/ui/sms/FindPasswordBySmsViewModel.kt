@@ -1,13 +1,11 @@
-package `in`.koreatech.koin.feature.signup.ui.verification
+package `in`.koreatech.koin.feature.findpassword.ui.sms
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
-import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
-import `in`.koreatech.koin.domain.usecase.signup.CheckPhoneNumberDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
 import javax.inject.Inject
@@ -20,93 +18,54 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
-class SignUpVerificationViewModel @Inject constructor(
-    private val checkPhoneNumberDuplicateUseCase: CheckPhoneNumberDuplicateUseCase,
+class FindPasswordBySmsViewModel @Inject constructor(
     private val requestSmsVerificationUseCase: RequestSmsVerificationUseCase,
     private val verifySmsCodeUseCase: VerifySmsCodeUseCase
-) : ViewModel(), ContainerHost<SignUpVerificationState, SignUpVerificationSideEffect> {
-    override val container = container<SignUpVerificationState, SignUpVerificationSideEffect>(SignUpVerificationState())
+) : ViewModel(), ContainerHost<FindPasswordBySmsState, FindPasswordBySmsSideEffect> {
+    override val container =
+        container<FindPasswordBySmsState, FindPasswordBySmsSideEffect>(FindPasswordBySmsState())
 
-    fun setName(name: String) {
-        blockingIntent {
+    fun updateLoginId(loginId: String) = viewModelScope.launch {
+        intent {
             reduce {
                 state.copy(
-                    name = name
+                    loginId = loginId
                 )
             }
         }
     }
 
-    fun setGender(gender: Int) {
-        when (gender) {
-            0 -> { // Man
-                intent {
-                    reduce {
-                        state.copy(gender = Gender.Man)
-                    }
-                }
-            }
-
-            1 -> { // Woman
-                intent {
-                    reduce {
-                        state.copy(gender = Gender.Woman)
-                    }
-                }
-            }
-        }
-    }
-
-    fun setPhoneNumber(phoneNumber: String) {
-        blockingIntent {
-            if (phoneNumber == state.phoneNumber) return@blockingIntent
+    fun updatePhoneNumber(phoneNumber: String) = viewModelScope.launch {
+        intent {
             reduce {
                 state.copy(
                     phoneNumber = phoneNumber,
-                    phoneNumberState = PhoneNumber.None,
-                    verificationCode = "",
-                    verificationCodeState = VerificationCode.None,
-                    verificationTimeLeft = 180
+                    phoneNumberState = PhoneNumber.None
                 )
             }
         }
-        AccountTimer.cancel()
     }
 
-    fun checkPhoneNumber() = viewModelScope.launch {
+    fun updateVerificationCode(verificationCode: String) = viewModelScope.launch {
         intent {
-            checkPhoneNumberDuplicateUseCase(state.phoneNumber).let {
-                reduce {
-                    state.copy(
-                        phoneNumberState = it
-                    )
-                }
-                if (it == PhoneNumber.Available) {
-                    sendVerificationCode()
-                }
+            reduce {
+                state.copy(
+                    verificationCode = verificationCode,
+                    verificationCodeState = VerificationCode.None
+                )
             }
         }
     }
 
-    private fun sendVerificationCode() = viewModelScope.launch {
+    fun sendVerificationCode() = viewModelScope.launch {
         intent {
-            postSideEffect(SignUpVerificationSideEffect.StartTimer)
+            postSideEffect(FindPasswordBySmsSideEffect.StartTimer)
             requestSmsVerificationUseCase(state.phoneNumber).let {
                 reduce {
                     state.copy(
                         phoneNumberState = it
                     )
                 }
-            }
-        }
-    }
-
-    fun setVerificationCode(verificationCode: String) {
-        blockingIntent {
-            reduce {
-                state.copy(
-                    verificationCode = verificationCode
-                )
             }
         }
     }
