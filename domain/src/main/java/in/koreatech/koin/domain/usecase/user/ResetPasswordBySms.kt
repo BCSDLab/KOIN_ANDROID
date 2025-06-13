@@ -9,7 +9,7 @@ class ResetPasswordBySms @Inject constructor(
 ) {
     suspend operator fun invoke(loginId: String, phone: String, newPassword: String): Result<Unit> {
         return runCatching {
-            userRepository.passwordResetBySms(
+            userRepository.resetPasswordBySms(
                 loginId = loginId,
                 phone = phone,
                 newPassword = newPassword.toSHA256()

@@ -65,13 +65,13 @@ interface UserRepository {
 
     suspend fun checkIdMatchPhone(loginId: String, phone: String): Result<Unit>
 
-    suspend fun passwordResetByEmail(
+    suspend fun resetPasswordByEmail(
         loginId: String,
         email: String,
         newPassword: String
     ): Result<Unit>
 
-    suspend fun passwordResetBySms(
+    suspend fun resetPasswordBySms(
         loginId: String,
         phone: String,
         newPassword: String

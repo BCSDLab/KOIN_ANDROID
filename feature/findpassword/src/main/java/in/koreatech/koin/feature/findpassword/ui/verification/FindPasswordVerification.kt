@@ -56,8 +56,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun FindPasswordBySms(
     viewModel: FindPasswordBySmsViewModel = hiltViewModel(),
-    navigateToEmailScreen: () -> Unit = {},
-    navigateToPasswordScreen: () -> Unit = { }
+    navigateToPasswordScreen: (loginId: String, phoneNumber: String) -> Unit = { _, _ -> }
 ) {
     val uiState by viewModel.collectAsState()
     val context = LocalContext.current
@@ -69,7 +68,7 @@ fun FindPasswordBySms(
             onStartTimer = { viewModel.startTimer() },
             onStopTimer = { viewModel.stopTimer() },
             onNavigateToChangePassword = {
-                navigateToPasswordScreen()
+                navigateToPasswordScreen(uiState.loginId, uiState.phoneNumber)
             }
         )
     }
@@ -82,12 +81,13 @@ fun FindPasswordBySms(
         verificationCode = uiState.verificationCode,
         verificationCodeState = uiState.verificationCodeState,
         verificationTimeLeft = uiState.verificationTimeLeft,
+        isSms = uiState.isSms,
         onLoginIdChange = { viewModel.updateLoginId(it) },
         onPhoneNumberChange = { viewModel.updatePhoneNumber(it) },
         onVerificationCodeChange = { viewModel.updateVerificationCode(it) },
         onVerificationCodeRequest = { viewModel.sendVerificationCode() },
         onVerificationCodeVerify = { viewModel.checkVerificationCode() },
-        navigateToEmailScreen = navigateToEmailScreen,
+        navigateToEmailScreen = { viewModel.updateIsSms(false) },
         navigateToPasswordScreen = {
             viewModel.checkIdExists()
         }
@@ -103,6 +103,7 @@ fun FindPasswordBySmsImpl(
     verificationCode: String,
     verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
+    isSms: Boolean,
     modifier: Modifier = Modifier,
     onLoginIdChange: (String) -> Unit = {},
     onPhoneNumberChange: (String) -> Unit = {},
@@ -156,7 +157,7 @@ fun FindPasswordBySmsImpl(
         Spacer(modifier = Modifier.height(64.dp))
 
         Text(
-            text = stringResource(R.string.find_password_phone_number),
+            text = stringResource(if (isSms) R.string.find_password_phone_number else R.string.find_password_email),
             style = KoinTheme.typography.medium18
         )
 
@@ -173,9 +174,9 @@ fun FindPasswordBySmsImpl(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
-                hint = stringResource(R.string.find_password_phone_number_hint),
+                hint = stringResource(if (isSms) R.string.find_password_phone_number_hint else R.string.find_password_email_hint),
                 onValueChange = onPhoneNumberChange,
-                maxLength = PHONE_NUMBER_LENGTH
+                maxLength = if (isSms) PHONE_NUMBER_LENGTH else Int.MAX_VALUE,
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -219,7 +220,7 @@ fun FindPasswordBySmsImpl(
             )
         }
 
-        if (phoneNumber.isBlank()) {
+        if (phoneNumber.isBlank() && isSms) {
             EmailMessage(
                 navigateToEmailScreen = navigateToEmailScreen
             )
@@ -434,6 +435,7 @@ fun FindPasswordBySmsPreview() {
         phoneNumberState = PhoneNumber.Available,
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
-        verificationTimeLeft = 180
+        verificationTimeLeft = 180,
+        isSms = true,
     )
 }

@@ -7,10 +7,12 @@ import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserError
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
+import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
+import `in`.koreatech.koin.domain.usecase.signup.VerifyEmailCodeUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
-import javax.inject.Inject
 import `in`.koreatech.koin.domain.usecase.user.CheckIdExistsUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchEmailUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchPhoneUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -19,13 +21,17 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Inject
 
 @HiltViewModel
 class FindPasswordBySmsViewModel @Inject constructor(
     private val requestSmsVerificationUseCase: RequestSmsVerificationUseCase,
+    private val requestEmailVerificationUseCase: RequestEmailVerificationUseCase,
     private val verifySmsCodeUseCase: VerifySmsCodeUseCase,
+    private val verifyEmailCodeUseCase: VerifyEmailCodeUseCase,
     private val checkIdExistsUseCase: CheckIdExistsUseCase,
-    private val checkIdMatchPhoneUseCase: CheckIdMatchPhoneUseCase
+    private val checkIdMatchPhoneUseCase: CheckIdMatchPhoneUseCase,
+    private val checkIdMatchEmailUseCase: CheckIdMatchEmailUseCase
 ) : ViewModel(), ContainerHost<FindPasswordBySmsState, FindPasswordBySmsSideEffect> {
     override val container =
         container<FindPasswordBySmsState, FindPasswordBySmsSideEffect>(FindPasswordBySmsState())
@@ -65,10 +71,27 @@ class FindPasswordBySmsViewModel @Inject constructor(
         }
     }
 
+    fun updateIsSms(isSms: Boolean) = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(
+                    isSms = isSms,
+                    phoneNumberState = PhoneNumber.None,
+                    verificationCode = "",
+                    verificationCodeState = VerificationCode.None
+                )
+            }
+        }
+    }
+
     fun sendVerificationCode() = viewModelScope.launch {
         intent {
             postSideEffect(FindPasswordBySmsSideEffect.StartTimer)
-            requestSmsVerificationUseCase(state.phoneNumber).let {
+            if (state.isSms) {
+                requestSmsVerificationUseCase(state.phoneNumber)
+            } else {
+                requestEmailVerificationUseCase(state.phoneNumber)
+            }.let {
                 reduce {
                     state.copy(
                         phoneNumberState = it
@@ -80,7 +103,11 @@ class FindPasswordBySmsViewModel @Inject constructor(
 
     fun checkVerificationCode() {
         blockingIntent {
-            verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).let {
+            if (state.isSms) {
+                verifySmsCodeUseCase(state.phoneNumber, state.verificationCode)
+            } else {
+                verifyEmailCodeUseCase(state.phoneNumber, state.verificationCode)
+            }.let {
                 reduce {
                     state.copy(
                         verificationCodeState = it
@@ -90,9 +117,13 @@ class FindPasswordBySmsViewModel @Inject constructor(
         }
     }
 
-    private fun checkIdMatchPhone() = viewModelScope.launch {
+    private fun checkIdMatch() = viewModelScope.launch {
         intent {
-            checkIdMatchPhoneUseCase(state.loginId, state.phoneNumber).onSuccess {
+            if (state.isSms) {
+                checkIdMatchPhoneUseCase(state.loginId, state.phoneNumber)
+            } else {
+                checkIdMatchEmailUseCase(state.loginId, state.phoneNumber)
+            }.onSuccess {
                 postSideEffect(FindPasswordBySmsSideEffect.NavigateToChangePassword)
             }.onFailure {
                 when (it) {
@@ -126,7 +157,7 @@ class FindPasswordBySmsViewModel @Inject constructor(
                         loginIdValid = true
                     )
                 }
-                checkIdMatchPhone()
+                checkIdMatch()
             }.onFailure {
                 when (it) {
                     KoinUserError.LoginIdNotExists,

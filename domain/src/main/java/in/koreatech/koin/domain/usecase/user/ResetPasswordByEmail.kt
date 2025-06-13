@@ -9,7 +9,7 @@ class ResetPasswordByEmail @Inject constructor(
 ) {
     suspend operator fun invoke(loginId: String, email: String, newPassword: String): Result<Unit> {
         return runCatching {
-            userRepository.passwordResetByEmail(
+            userRepository.resetPasswordByEmail(
                 loginId = loginId,
                 email = email,
                 newPassword = newPassword.toSHA256()
