@@ -155,11 +155,11 @@ class UserRemoteDataSource(
         userApi.idMatchPhone(IdMatchPhone(loginId, phone))
     }
 
-    suspend fun passwordResetByEmail(loginId: String, email: String, newPassword: String) {
+    suspend fun resetPasswordByEmail(loginId: String, email: String, newPassword: String) {
         userApi.passwordResetByEmail(PasswordResetByEmail(loginId, email, newPassword))
     }
 
-    suspend fun passwordResetBySms(loginId: String, phone: String, newPassword: String) {
+    suspend fun resetPasswordBySms(loginId: String, phone: String, newPassword: String) {
         userApi.passwordResetBySms(PasswordResetBySms(loginId, phone, newPassword))
     }
 }

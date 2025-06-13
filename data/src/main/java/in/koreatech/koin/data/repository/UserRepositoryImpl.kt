@@ -371,9 +371,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun passwordResetByEmail(loginId: String, email: String, newPassword: String): Result<Unit> {
+    override suspend fun resetPasswordByEmail(loginId: String, email: String, newPassword: String): Result<Unit> {
         return try {
-            userRemoteDataSource.passwordResetByEmail(
+            userRemoteDataSource.resetPasswordByEmail(
                 loginId, email, newPassword
             )
             Result.success(Unit)
@@ -397,9 +397,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun passwordResetBySms(loginId: String, phone: String, newPassword: String): Result<Unit> {
+    override suspend fun resetPasswordBySms(loginId: String, phone: String, newPassword: String): Result<Unit> {
         return try {
-            userRemoteDataSource.passwordResetBySms(
+            userRemoteDataSource.resetPasswordBySms(
                 loginId, phone, newPassword
             )
             Result.success(Unit)
