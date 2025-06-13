@@ -176,7 +176,7 @@ fun FindPasswordVerificationImpl(
                 ),
                 hint = stringResource(if (isSms) R.string.find_password_phone_number_hint else R.string.find_password_email_hint),
                 onValueChange = onPhoneNumberChange,
-                maxLength = if (isSms) PHONE_NUMBER_LENGTH else Int.MAX_VALUE,
+                maxLength = if (isSms) PHONE_NUMBER_LENGTH else Int.MAX_VALUE
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -415,7 +415,7 @@ fun handleSideEffect(
     context: Context,
     onStartTimer: () -> Unit = { },
     onStopTimer: () -> Unit = { },
-    onNavigateToChangePassword: () -> Unit = { },
+    onNavigateToChangePassword: () -> Unit = { }
 ) {
     when (sideEffect) {
         FindPasswordVerificationSideEffect.StartTimer -> onStartTimer()
@@ -436,6 +436,6 @@ fun FindPasswordBySmsPreview() {
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
         verificationTimeLeft = 180,
-        isSms = true,
+        isSms = true
     )
 }

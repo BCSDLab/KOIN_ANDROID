@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdExistsUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchEmailUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchPhoneUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -21,7 +22,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class FindPasswordVerificationViewModel @Inject constructor(
@@ -174,7 +174,6 @@ class FindPasswordVerificationViewModel @Inject constructor(
             }
         }
     }
-
 
     fun startTimer() {
         AccountTimer.start { secondsRemaining ->

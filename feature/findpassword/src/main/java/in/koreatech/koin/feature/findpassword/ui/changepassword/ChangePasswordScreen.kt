@@ -163,7 +163,6 @@ fun handleSideEffect(
     when (sideEffect) {
         ChangePasswordSideEffect.PasswordChanged -> onNextClick()
         ChangePasswordSideEffect.PasswordChangeFailed -> {
-
         }
     }
 }

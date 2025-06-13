@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.domain.usecase.signup
 
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
-import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 

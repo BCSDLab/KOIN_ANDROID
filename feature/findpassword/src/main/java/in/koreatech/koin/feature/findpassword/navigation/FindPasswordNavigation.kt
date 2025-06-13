@@ -18,7 +18,7 @@ fun NavGraphBuilder.koinFindPasswordGraph(
         FindPasswordVerification(
             navigateToPasswordScreen = { loginId, verificationMethod ->
                 navController.navigate("${FindPasswordNavType.ChangePassword.route}/$loginId/$verificationMethod")
-            },
+            }
         )
     }
 

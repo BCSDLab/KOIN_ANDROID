@@ -17,23 +17,23 @@ import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.user.KoinUserError
 import `in`.koreatech.koin.domain.error.user.PutUserNicknameOrEmailConflict
 import `in`.koreatech.koin.domain.error.user.PutUserNotFound
 import `in`.koreatech.koin.domain.error.user.PutUserPhoneNumberNotAuthorized
 import `in`.koreatech.koin.domain.error.user.PutUserRequestDataError
-import `in`.koreatech.koin.domain.error.user.KoinUserError
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.repository.UserRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
-import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
@@ -221,7 +221,6 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber {
         return try {
             userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber = phoneNumber)).let {
@@ -324,7 +323,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun checkIdMatchEmail(loginId: String, email: String): Result<Unit> {
         return try {
             userRemoteDataSource.idMatchEmail(
-                loginId, email
+                loginId,
+                email
             )
             Result.success(Unit)
         } catch (e: Exception) {
@@ -349,7 +349,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun checkIdMatchPhone(loginId: String, phone: String): Result<Unit> {
         return try {
             userRemoteDataSource.idMatchPhone(
-                loginId, phone
+                loginId,
+                phone
             )
             Result.success(Unit)
         } catch (e: Exception) {
@@ -374,7 +375,9 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun resetPasswordByEmail(loginId: String, email: String, newPassword: String): Result<Unit> {
         return try {
             userRemoteDataSource.resetPasswordByEmail(
-                loginId, email, newPassword
+                loginId,
+                email,
+                newPassword
             )
             Result.success(Unit)
         } catch (e: Exception) {
@@ -400,7 +403,9 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun resetPasswordBySms(loginId: String, phone: String, newPassword: String): Result<Unit> {
         return try {
             userRemoteDataSource.resetPasswordBySms(
-                loginId, phone, newPassword
+                loginId,
+                phone,
+                newPassword
             )
             Result.success(Unit)
         } catch (e: Exception) {
