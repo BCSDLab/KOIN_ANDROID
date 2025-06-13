@@ -106,7 +106,7 @@ interface UserApi {
     @POST(URLConstant.USERS.EMAILVERIFY)
     suspend fun emailVerify(
         @Body emailVerifyRequest: EmailVerifyRequest
-    ): CodeRequestCountResponse
+    )
 
     @POST(URLConstant.USER.ID_EXISTS)
     suspend fun idExists(
