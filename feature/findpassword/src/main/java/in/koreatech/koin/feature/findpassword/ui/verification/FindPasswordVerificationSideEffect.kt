@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.feature.findpassword.ui.verification
 
-sealed class FindPasswordByVerificationSideEffect {
-    data object StartTimer : FindPasswordByVerificationSideEffect()
-    data object StopTimer : FindPasswordByVerificationSideEffect()
-    data object NavigateToChangePassword : FindPasswordByVerificationSideEffect()
-    data object UnknownError : FindPasswordByVerificationSideEffect()
+sealed class FindPasswordVerificationSideEffect {
+    data object StartTimer : FindPasswordVerificationSideEffect()
+    data object StopTimer : FindPasswordVerificationSideEffect()
+    data object NavigateToChangePassword : FindPasswordVerificationSideEffect()
+    data object UnknownError : FindPasswordVerificationSideEffect()
 }

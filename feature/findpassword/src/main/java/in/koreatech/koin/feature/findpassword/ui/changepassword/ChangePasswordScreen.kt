@@ -27,6 +27,7 @@ import `in`.koreatech.koin.feature.findpassword.component.KoinFindPasswordProgre
 import `in`.koreatech.koin.feature.findpassword.component.KoinFindPasswordTextFieldAlert
 import `in`.koreatech.koin.feature.findpassword.component.KoinFindPasswordTextFieldAlertState
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun ChangePasswordScreen(
@@ -34,6 +35,10 @@ fun ChangePasswordScreen(
     onNextClick: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
+
+    viewModel.collectSideEffect {
+        handleSideEffect(it, onNextClick)
+    }
 
     ChangePasswordScreenImpl(
         password = uiState.password,
@@ -43,7 +48,9 @@ fun ChangePasswordScreen(
         onPasswordChange = viewModel::updatePassword,
         onPasswordConfirmChange = viewModel::updatePasswordConfirm,
         onPasswordVisibleChange = viewModel::updateShowPassword,
-        onNextClick = onNextClick
+        onNextClick = {
+            viewModel.setPassword()
+        }
     )
 }
 
@@ -146,6 +153,18 @@ fun ChangePasswordScreenImpl(
         Spacer(modifier = Modifier.height(40.dp))
 
         Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+    }
+}
+
+fun handleSideEffect(
+    sideEffect: ChangePasswordSideEffect,
+    onNextClick: () -> Unit
+) {
+    when (sideEffect) {
+        ChangePasswordSideEffect.PasswordChanged -> onNextClick()
+        ChangePasswordSideEffect.PasswordChangeFailed -> {
+
+        }
     }
 }
 

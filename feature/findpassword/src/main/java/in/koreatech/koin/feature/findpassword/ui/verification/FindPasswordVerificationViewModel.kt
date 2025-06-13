@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.findpassword.ui.sms
+package `in`.koreatech.koin.feature.findpassword.ui.verification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +24,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class FindPasswordBySmsViewModel @Inject constructor(
+class FindPasswordVerificationViewModel @Inject constructor(
     private val requestSmsVerificationUseCase: RequestSmsVerificationUseCase,
     private val requestEmailVerificationUseCase: RequestEmailVerificationUseCase,
     private val verifySmsCodeUseCase: VerifySmsCodeUseCase,
@@ -32,9 +32,9 @@ class FindPasswordBySmsViewModel @Inject constructor(
     private val checkIdExistsUseCase: CheckIdExistsUseCase,
     private val checkIdMatchPhoneUseCase: CheckIdMatchPhoneUseCase,
     private val checkIdMatchEmailUseCase: CheckIdMatchEmailUseCase
-) : ViewModel(), ContainerHost<FindPasswordBySmsState, FindPasswordBySmsSideEffect> {
+) : ViewModel(), ContainerHost<FindPasswordVerificationState, FindPasswordVerificationSideEffect> {
     override val container =
-        container<FindPasswordBySmsState, FindPasswordBySmsSideEffect>(FindPasswordBySmsState())
+        container<FindPasswordVerificationState, FindPasswordVerificationSideEffect>(FindPasswordVerificationState())
 
     fun updateLoginId(loginId: String) = viewModelScope.launch {
         intent {
@@ -48,11 +48,11 @@ class FindPasswordBySmsViewModel @Inject constructor(
 
     fun updatePhoneNumber(phoneNumber: String) = viewModelScope.launch {
         intent {
-            if (phoneNumber == state.phoneNumber) return@intent
+            if (phoneNumber == state.verificationMethod) return@intent
             reduce {
                 state.copy(
-                    phoneNumber = phoneNumber,
-                    phoneNumberState = PhoneNumber.None,
+                    verificationMethod = phoneNumber,
+                    verificationMethodState = PhoneNumber.None,
                     verificationCode = "",
                     verificationCodeState = VerificationCode.None
                 )
@@ -76,7 +76,7 @@ class FindPasswordBySmsViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isSms = isSms,
-                    phoneNumberState = PhoneNumber.None,
+                    verificationMethodState = PhoneNumber.None,
                     verificationCode = "",
                     verificationCodeState = VerificationCode.None
                 )
@@ -86,15 +86,15 @@ class FindPasswordBySmsViewModel @Inject constructor(
 
     fun sendVerificationCode() = viewModelScope.launch {
         intent {
-            postSideEffect(FindPasswordBySmsSideEffect.StartTimer)
+            postSideEffect(FindPasswordVerificationSideEffect.StartTimer)
             if (state.isSms) {
-                requestSmsVerificationUseCase(state.phoneNumber)
+                requestSmsVerificationUseCase(state.verificationMethod)
             } else {
-                requestEmailVerificationUseCase(state.phoneNumber)
+                requestEmailVerificationUseCase(state.verificationMethod)
             }.let {
                 reduce {
                     state.copy(
-                        phoneNumberState = it
+                        verificationMethodState = it
                     )
                 }
             }
@@ -104,9 +104,9 @@ class FindPasswordBySmsViewModel @Inject constructor(
     fun checkVerificationCode() {
         blockingIntent {
             if (state.isSms) {
-                verifySmsCodeUseCase(state.phoneNumber, state.verificationCode)
+                verifySmsCodeUseCase(state.verificationMethod, state.verificationCode)
             } else {
-                verifyEmailCodeUseCase(state.phoneNumber, state.verificationCode)
+                verifyEmailCodeUseCase(state.verificationMethod, state.verificationCode)
             }.let {
                 reduce {
                     state.copy(
@@ -120,11 +120,11 @@ class FindPasswordBySmsViewModel @Inject constructor(
     private fun checkIdMatch() = viewModelScope.launch {
         intent {
             if (state.isSms) {
-                checkIdMatchPhoneUseCase(state.loginId, state.phoneNumber)
+                checkIdMatchPhoneUseCase(state.loginId, state.verificationMethod)
             } else {
-                checkIdMatchEmailUseCase(state.loginId, state.phoneNumber)
+                checkIdMatchEmailUseCase(state.loginId, state.verificationMethod)
             }.onSuccess {
-                postSideEffect(FindPasswordBySmsSideEffect.NavigateToChangePassword)
+                postSideEffect(FindPasswordVerificationSideEffect.NavigateToChangePassword)
             }.onFailure {
                 when (it) {
                     KoinUserError.LoginIdNotExists -> reduce {
@@ -135,14 +135,14 @@ class FindPasswordBySmsViewModel @Inject constructor(
 
                     KoinUserError.LoginIdNotMatchPhone -> reduce {
                         state.copy(
-                            phoneNumberState = PhoneNumber.Failed(
+                            verificationMethodState = PhoneNumber.Failed(
                                 it.message ?: ""
                             )
                         )
                     }
 
                     else -> {
-                        postSideEffect(FindPasswordBySmsSideEffect.UnknownError)
+                        postSideEffect(FindPasswordVerificationSideEffect.UnknownError)
                     }
                 }
             }
@@ -168,7 +168,7 @@ class FindPasswordBySmsViewModel @Inject constructor(
                     }
 
                     else -> {
-                        postSideEffect(FindPasswordBySmsSideEffect.UnknownError)
+                        postSideEffect(FindPasswordVerificationSideEffect.UnknownError)
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.findpassword.ui.sms
+package `in`.koreatech.koin.feature.findpassword.ui.verification
 
 import android.content.Context
 import android.widget.Toast
@@ -54,8 +54,8 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun FindPasswordBySms(
-    viewModel: FindPasswordBySmsViewModel = hiltViewModel(),
+fun FindPasswordVerification(
+    viewModel: FindPasswordVerificationViewModel = hiltViewModel(),
     navigateToPasswordScreen: (loginId: String, phoneNumber: String) -> Unit = { _, _ -> }
 ) {
     val uiState by viewModel.collectAsState()
@@ -68,16 +68,16 @@ fun FindPasswordBySms(
             onStartTimer = { viewModel.startTimer() },
             onStopTimer = { viewModel.stopTimer() },
             onNavigateToChangePassword = {
-                navigateToPasswordScreen(uiState.loginId, uiState.phoneNumber)
+                navigateToPasswordScreen(uiState.loginId, uiState.verificationMethod)
             }
         )
     }
 
-    FindPasswordBySmsImpl(
+    FindPasswordVerificationImpl(
         loginId = uiState.loginId,
         loginIdValid = uiState.loginIdValid,
-        phoneNumber = uiState.phoneNumber,
-        phoneNumberState = uiState.phoneNumberState,
+        phoneNumber = uiState.verificationMethod,
+        phoneNumberState = uiState.verificationMethodState,
         verificationCode = uiState.verificationCode,
         verificationCodeState = uiState.verificationCodeState,
         verificationTimeLeft = uiState.verificationTimeLeft,
@@ -95,7 +95,7 @@ fun FindPasswordBySms(
 }
 
 @Composable
-fun FindPasswordBySmsImpl(
+fun FindPasswordVerificationImpl(
     loginId: String,
     loginIdValid: Boolean,
     phoneNumber: String,
@@ -411,24 +411,24 @@ private fun VerificationCodeSentSuccessMessage(
 }
 
 fun handleSideEffect(
-    sideEffect: FindPasswordBySmsSideEffect,
+    sideEffect: FindPasswordVerificationSideEffect,
     context: Context,
     onStartTimer: () -> Unit = { },
     onStopTimer: () -> Unit = { },
     onNavigateToChangePassword: () -> Unit = { },
 ) {
     when (sideEffect) {
-        FindPasswordBySmsSideEffect.StartTimer -> onStartTimer()
-        FindPasswordBySmsSideEffect.StopTimer -> onStopTimer()
-        FindPasswordBySmsSideEffect.NavigateToChangePassword -> onNavigateToChangePassword()
-        FindPasswordBySmsSideEffect.UnknownError -> Toast.makeText(context, R.string.find_password_unknown_error, Toast.LENGTH_SHORT).show()
+        FindPasswordVerificationSideEffect.StartTimer -> onStartTimer()
+        FindPasswordVerificationSideEffect.StopTimer -> onStopTimer()
+        FindPasswordVerificationSideEffect.NavigateToChangePassword -> onNavigateToChangePassword()
+        FindPasswordVerificationSideEffect.UnknownError -> Toast.makeText(context, R.string.find_password_unknown_error, Toast.LENGTH_SHORT).show()
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun FindPasswordBySmsPreview() {
-    FindPasswordBySmsImpl(
+    FindPasswordVerificationImpl(
         loginId = "testUser",
         loginIdValid = true,
         phoneNumber = "01012345678",
