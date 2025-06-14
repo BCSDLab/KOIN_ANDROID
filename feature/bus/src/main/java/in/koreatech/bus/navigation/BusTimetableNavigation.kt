@@ -28,7 +28,7 @@ fun BusTimetableNavigation(
     val context = LocalContext.current
 
     NavHost(
-        modifier = modifier.safeDrawingPadding().background(defaultOutsideColor),
+        modifier = modifier.background(defaultOutsideColor),
         navController = navController,
         startDestination = Routes.BusTimetable,
         enterTransition = {

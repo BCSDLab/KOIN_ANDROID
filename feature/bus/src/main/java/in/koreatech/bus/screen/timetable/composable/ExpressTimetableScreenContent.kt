@@ -77,8 +77,6 @@ internal fun ExpressTimetableScreenContent(
             updatedAt = expressTimetable.updatedAt.formatUpdatedTime(),
             modifier = Modifier.fillMaxSize()
         )
-
-        Box(modifier = Modifier.background(Color.White).fillMaxWidth().height(115.dp))
     }
 
     LaunchedEffect(selectedDirectionType) {
