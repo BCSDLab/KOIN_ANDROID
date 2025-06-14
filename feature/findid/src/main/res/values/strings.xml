@@ -1,3 +1,32 @@
 <resources>
-    <string name="title_activity_find_id">FindIdActivity</string>
+    <string name="find_id_title">아이디 찾기</string>
+    <string name="find_id_phone_number">휴대전화 번호</string>
+    <string name="find_id_phone_number_hint">- 없이 번호를 입력해 주세요.</string>
+    <string name="find_id_email">이메일</string>
+    <string name="find_id_email_hint">등록된 이메일을 입력해 주세요.</string>
+    <string name="find_id_send">인증번호 발송</string>
+
+    <string name="find_id_phone_number_invalid">올바른 전화번호 양식이 아닙니다. 다시 입력해 주세요.</string>
+    <string name="find_id_phone_number_not_correct">유효하지 않은 전화번호 입니다.</string>
+    <string name="find_id_email_invalid">올바른 이메일 양식이 아닙니다. 다시 입력해 주세요.</string>
+    <string name="find_id_verification_code">인증 번호</string>
+    <string name="find_id_verification_code_request_exceeded">1일 발송 한도를 초과했습니다. 24시간 이후 재시도 바랍니다.</string>
+    <string name="find_id_verification_code_sent">인증번호가 발송되었습니다.</string>
+    <string name="find_id_verification_code_remaining_count">(%1$d/%2$d)</string>
+    <string name="find_id_verification_code_field_hint">인증번호를 입력해주세요.</string>
+    <string name="find_id_verification_code_check">인증번호 확인</string>
+    <string name="find_id_verification_code_if_not_sent_alert">인증번호 발송이 안 되시나요?</string>
+    <string name="find_id_verification_code_correct">인증번호가 일치합니다.</string>
+    <string name="find_id_verification_code_incorrect">인증번호가 일치하지 않습니다. 다시 입력해 주세요.</string>
+    <string name="find_id_verification_code_timeout">유효시간이 지났습니다. 인증번호를 재발송 해주세요.</string>
+
+    <string name="find_id_phone_number_not_registered">휴대전화 등록을 안 하셨나요?</string>
+    <string name="find_id_with_email">이메일로 찾기</string>
+
+    <string name="find_id_complete_title">아이디 조회 결과</string>
+    <string name="find_id_complete_message">아이디는 %s입니다.</string>
+    <string name="find_id_go_to_login">로그인 바로가기</string>
+    <string name="find_id_go_to_find_password">비밀번호 찾기</string>
+
+    <string name="find_id_next">다음</string>
 </resources>
