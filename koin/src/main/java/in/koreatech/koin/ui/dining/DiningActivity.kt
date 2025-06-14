@@ -3,7 +3,11 @@ package `in`.koreatech.koin.ui.dining
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
@@ -15,6 +19,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
 import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.util.dataBinding
@@ -80,6 +85,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     lateinit var onboardingManager: OnboardingManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdgeWithDarkStatusBar()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
