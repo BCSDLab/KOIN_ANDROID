@@ -4,6 +4,8 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
+import `in`.koreatech.koin.data.request.user.CheckEmailExistsRequest
+import `in`.koreatech.koin.data.request.user.CheckPhoneExistsRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.GeneralUserRequest
@@ -126,5 +128,13 @@ class UserRemoteDataSource(
 
     suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) {
         userApi.codeVerify(smsVerifyRequest)
+    }
+
+    suspend fun checkEmailExists(email: String) {
+        userApi.checkEmailExists(CheckEmailExistsRequest(email))
+    }
+
+    suspend fun checkPhoneExists(phone: String) {
+        userApi.checkPhoneExists(CheckPhoneExistsRequest(phone))
     }
 }

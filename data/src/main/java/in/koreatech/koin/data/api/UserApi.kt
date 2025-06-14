@@ -2,6 +2,8 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.request.user.CheckEmailExistsRequest
+import `in`.koreatech.koin.data.request.user.CheckPhoneExistsRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
@@ -89,5 +91,15 @@ interface UserApi {
     @POST(URLConstant.USERS.SMSVERIFY)
     suspend fun codeVerify(
         @Body smsVerifyRequest: SmsVerifyRequest
+    )
+
+    @POST(URLConstant.USER.EXISTS.EMAIL)
+    suspend fun checkEmailExists(
+        @Body checkEmailExistsRequest: CheckEmailExistsRequest
+    )
+
+    @POST(URLConstant.USER.EXISTS.PHONE)
+    suspend fun checkPhoneExists(
+        @Body checkPhoneExistsRequest: CheckPhoneExistsRequest
     )
 }

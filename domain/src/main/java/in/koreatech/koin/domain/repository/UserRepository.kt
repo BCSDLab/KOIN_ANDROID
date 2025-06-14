@@ -48,4 +48,8 @@ interface UserRepository {
     suspend fun updateABTestToken()
 
     suspend fun postABTestAssign(title: String): ABTest
+
+    suspend fun checkEmailExists(email: String): Result<Unit>
+
+    suspend fun checkPhoneExists(phone: String): Result<Unit>
 }

@@ -12,7 +12,12 @@ import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.user.EmailNotFoundException
+import `in`.koreatech.koin.domain.error.user.InvalidEmailException
+import `in`.koreatech.koin.domain.error.user.InvalidPhoneNumberException
+import `in`.koreatech.koin.domain.error.user.PhoneNumberNotFoundException
 import `in`.koreatech.koin.domain.error.user.PutUserNicknameOrEmailConflict
 import `in`.koreatech.koin.domain.error.user.PutUserNotFound
 import `in`.koreatech.koin.domain.error.user.PutUserPhoneNumberNotAuthorized
@@ -210,6 +215,37 @@ class UserRepositoryImpl @Inject constructor(
 
             is User.General -> {
                 userRemoteDataSource.updateGeneralUser(user.toUserRequestWithPassword(hashedPassword))
+            }
+        }
+    }
+
+
+    override suspend fun checkEmailExists(email: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.checkEmailExists(email)
+        }.onFailure { exception ->
+            return when (exception) {
+                is HttpException -> when (exception.code()) {
+                    400 -> Result.failure(InvalidEmailException())
+                    404 -> Result.failure(EmailNotFoundException())
+                    else -> Result.failure(exception.getErrorResponse().toKoinUnknownErrorException())
+                }
+                else -> Result.failure(exception)
+            }
+        }
+    }
+
+    override suspend fun checkPhoneExists(phone: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.checkPhoneExists(phone)
+        }.onFailure { exception ->
+            return when (exception) {
+                is HttpException -> when (exception.code()) {
+                    400 -> Result.failure(InvalidPhoneNumberException())
+                    404 -> Result.failure(PhoneNumberNotFoundException())
+                    else -> Result.failure(exception.getErrorResponse().toKoinUnknownErrorException())
+                }
+                else -> Result.failure(exception)
             }
         }
     }

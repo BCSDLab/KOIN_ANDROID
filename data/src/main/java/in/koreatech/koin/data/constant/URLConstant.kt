@@ -80,6 +80,12 @@ object URLConstant {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
         }
+
+        object EXISTS {
+            const val EXISTS = "exists"
+            const val EMAIL = "email/$EXISTS"
+            const val PHONE = "phone/$EXISTS"
+        }
     }
 
     object USERS {
