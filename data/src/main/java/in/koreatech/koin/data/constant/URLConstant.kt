@@ -75,7 +75,6 @@ object URLConstant {
         const val PW = "password"
         const val LOGIN_ID = "login_id"
         const val LOGIN_PW = "login_pw"
-        const val ID_EXISTS = "$USER/id/exists"
 
         object STUDENT {
             const val STUDENT = "student"
@@ -84,8 +83,9 @@ object URLConstant {
 
         object EXISTS {
             const val EXISTS = "exists"
-            const val EMAIL = "email/$EXISTS"
-            const val PHONE = "phone/$EXISTS"
+            const val ID_EXISTS = "$USER/id/$EXISTS"
+            const val EMAIL = "$USER/email/$EXISTS"
+            const val PHONE = "$USER/phone/$EXISTS"
         }
     }
 
