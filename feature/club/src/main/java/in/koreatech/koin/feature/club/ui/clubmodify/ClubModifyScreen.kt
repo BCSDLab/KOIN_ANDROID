@@ -61,6 +61,7 @@ import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
+import `in`.koreatech.koin.feature.club.component.KoinClubInputGrid
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import `in`.koreatech.koin.feature.club.model.clubCategories
@@ -440,16 +441,12 @@ fun ClubModifyScreenImpl(
             maxLines = CLUB_DESCRIPTION_MAX_LENGTH
         )
 
-        Row(
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .padding(vertical = 6.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceAround
-            ) {
+        Spacer(modifier = Modifier.height(6.dp))
+
+        KoinClubInputGrid(
+            modifier = Modifier.wrapContentHeight(),
+            verticalAlignment = Alignment.CenterVertically,
+            leftContent = {
                 Text(
                     modifier = Modifier.padding(vertical = 6.dp),
                     text = stringResource(R.string.club_create_contact_instagram_header),
@@ -473,17 +470,11 @@ fun ClubModifyScreenImpl(
                     text = stringResource(R.string.club_create_contact_phone_header),
                     style = KoinTheme.typography.medium14
                 )
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Column(
-                modifier = Modifier.width(270.dp)
-            ) {
+            },
+            rightContent = {
                 KoinClubBasicTextField(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .fillMaxWidth(),
+                        .padding(vertical = 6.dp),
                     value = instagramUrl,
                     onValueChange = onInstagramUrlChange,
                     hint = stringResource(R.string.club_create_contact_instagram_hint)
@@ -491,8 +482,7 @@ fun ClubModifyScreenImpl(
 
                 KoinClubBasicTextField(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .fillMaxWidth(),
+                        .padding(vertical = 6.dp),
                     value = googleFormUrl,
                     onValueChange = onGoogleFormUrlChange,
                     hint = stringResource(R.string.club_create_contact_google_form_hint)
@@ -500,8 +490,7 @@ fun ClubModifyScreenImpl(
 
                 KoinClubBasicTextField(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .fillMaxWidth(),
+                        .padding(vertical = 6.dp),
                     value = openChatUrl,
                     onValueChange = onOpenChatUrlChange,
                     hint = stringResource(R.string.club_create_contact_open_chat_hint)
@@ -509,14 +498,13 @@ fun ClubModifyScreenImpl(
 
                 KoinClubBasicTextField(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .fillMaxWidth(),
+                        .padding(vertical = 6.dp),
                     value = phoneNumber,
                     onValueChange = onPhoneNumberChange,
                     hint = stringResource(R.string.club_create_contact_phone_hint)
                 )
             }
-        }
+        )
 
         Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
     }

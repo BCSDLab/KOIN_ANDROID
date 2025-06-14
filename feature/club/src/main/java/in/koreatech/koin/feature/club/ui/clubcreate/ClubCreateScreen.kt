@@ -532,7 +532,7 @@ fun ClubCreateScreenImpl(
             maxLength = CLUB_DESCRIPTION_MAX_LENGTH
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         KoinClubInputGrid(
             modifier = Modifier.wrapContentHeight(),
