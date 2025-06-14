@@ -141,7 +141,7 @@ class ClubModifyViewModel @Inject constructor(
             )
         }
 
-        if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired) return@blockingIntent
+        if (state.clubNameRequired || state.clubCategoryRequired || state.locationRequired || state.phoneNumberRequired) return@blockingIntent
 
         reduce {
             state.copy(
