@@ -4,12 +4,19 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -64,6 +71,7 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.activity.CallBenefitStoreActivity
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
+import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.observeLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
@@ -153,8 +161,11 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        window.blueStatusBar()
 
         initView()
         initDiningTooltip()
@@ -172,6 +183,17 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         viewModel.checkKeywordNotiContent()
         initArticleBannerABTest()
         initDiningABTest()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarLayout) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<MarginLayoutParams> {
+                leftMargin = systemBars.left
+                topMargin = systemBars.top
+                rightMargin = systemBars.right
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+
         binding.nestedScrollViewMain.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             val offset = binding.nestedScrollViewMain.computeVerticalScrollOffset()
             val extent = binding.nestedScrollViewMain.computeVerticalScrollExtent()
