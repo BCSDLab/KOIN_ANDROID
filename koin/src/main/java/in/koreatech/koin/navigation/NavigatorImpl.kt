@@ -85,20 +85,6 @@ class NavigatorImpl @Inject constructor() : Navigator {
         return intent
     }
 
-    override fun navigateToArticleLostAndFound(
-        context: Context,
-        targetId: Pair<String, Any?>,
-        type: Pair<String, Any?>
-    ): Intent {
-        val intent = context.buildIntent<ArticleActivity>(
-            targetId,
-            Pair(EXTRA_BOARD_ID, 14),
-            type
-        )
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        return intent
-    }
-
     override fun navigateToChat(
         context: Context,
         targetArticleId: Pair<String, Any?>,
