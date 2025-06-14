@@ -88,11 +88,11 @@ fun LostAndFoundFABButton(
     onClick: () -> Unit = {}
 ) = Box(
     modifier =
-        modifier
-            .border(width = 1.dp, color = KoinTheme.colors.neutral300, shape = RoundedCornerShape(50))
-            .background(color = KoinTheme.colors.neutral0, shape = RoundedCornerShape(50))
-            .padding(vertical = 8.dp, horizontal = 12.dp)
-            .noRippleClickable { onClick() }
+    modifier
+        .border(width = 1.dp, color = KoinTheme.colors.neutral300, shape = RoundedCornerShape(50))
+        .background(color = KoinTheme.colors.neutral0, shape = RoundedCornerShape(50))
+        .padding(vertical = 8.dp, horizontal = 12.dp)
+        .noRippleClickable { onClick() }
 ) {
     Row {
         Image(

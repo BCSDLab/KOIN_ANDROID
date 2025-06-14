@@ -43,7 +43,7 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         ViewCompat.setOnApplyWindowInsetsListener(binding.constraintLayoutDiningContainer) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(
-                bottom = v.paddingBottom + systemBars.bottom,
+                bottom = v.paddingBottom + systemBars.bottom
             )
             WindowInsetsCompat.CONSUMED
         }
