@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
+import `in`.koreatech.koin.core.qualifier.UserAgent
 import `in`.koreatech.koin.data.api.ArticleApi
 import `in`.koreatech.koin.data.api.BannerApi
 import `in`.koreatech.koin.data.api.BusApi
@@ -22,6 +23,7 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -33,12 +35,16 @@ object NoAuthNetworkModule {
     @NoAuth
     @Provides
     @Singleton
-    fun provideNoAuthOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideNoAuthOkHttpClient(
+        @UserAgent userAgentInterceptor: Interceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
             addInterceptor(httpLoggingInterceptor)
+            addInterceptor(userAgentInterceptor)
         }.build()
     }
 

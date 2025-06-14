@@ -98,10 +98,10 @@ object AuthNetworkModule {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
-            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(authInterceptor)
             authenticator(refreshInterceptor)
+            addInterceptor(userAgentInterceptor)
         }.build()
     }
 
@@ -204,10 +204,10 @@ object OwnerAuthNetworkModule {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
-            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(ownerAuthInterceptor)
             authenticator(tokenAuthenticator)
+            addInterceptor(userAgentInterceptor)
         }.build()
     }
 
@@ -253,8 +253,8 @@ object PreSignedUrlNetworkModule {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
-            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
+            addInterceptor(userAgentInterceptor)
         }.build()
     }
 
