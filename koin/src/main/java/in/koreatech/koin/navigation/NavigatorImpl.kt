@@ -3,7 +3,6 @@ package `in`.koreatech.koin.navigation
 import android.content.Context
 import android.content.Intent
 import `in`.koreatech.koin.core.navigation.Navigator
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
