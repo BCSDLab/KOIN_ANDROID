@@ -4,13 +4,13 @@ import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 
-class VerifySmsCodeUseCase @Inject constructor(
+class VerifyEmailCodeUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(
-        phoneNumber: String,
+        email: String,
         verificationCode: String
     ): VerificationCode {
-        return userRepository.verifyCertificationCode(phoneNumber, verificationCode)
+        return userRepository.verifyEmailCode(email, verificationCode)
     }
 }

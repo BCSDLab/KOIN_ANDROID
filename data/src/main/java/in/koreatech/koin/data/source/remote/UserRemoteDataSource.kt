@@ -7,6 +7,8 @@ import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.CheckEmailExistsRequest
 import `in`.koreatech.koin.data.request.user.CheckPhoneExistsRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.EmailSendRequest
+import `in`.koreatech.koin.data.request.user.EmailVerifyRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.GeneralUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
@@ -17,6 +19,11 @@ import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.request.user.StudentUserRequest
+import `in`.koreatech.koin.data.request.user.findpassword.IDExistsRequest
+import `in`.koreatech.koin.data.request.user.findpassword.IdMatchEmail
+import `in`.koreatech.koin.data.request.user.findpassword.IdMatchPhone
+import `in`.koreatech.koin.data.request.user.findpassword.PasswordResetByEmail
+import `in`.koreatech.koin.data.request.user.findpassword.PasswordResetBySms
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.ABTestResponse
 import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
@@ -126,8 +133,36 @@ class UserRemoteDataSource(
         return userApi.smsSend(smsSendRequest)
     }
 
+    suspend fun sendEmail(emailSendRequest: EmailSendRequest): CodeRequestCountResponse {
+        return userApi.emailSend(emailSendRequest)
+    }
+
     suspend fun verifyCode(smsVerifyRequest: SmsVerifyRequest) {
         userApi.codeVerify(smsVerifyRequest)
+    }
+
+    suspend fun verifyEmailCode(emailVerifyRequest: EmailVerifyRequest) {
+        userApi.emailVerify(emailVerifyRequest)
+    }
+
+    suspend fun idExists(loginId: String) {
+        userApi.idExists(IDExistsRequest(loginId))
+    }
+
+    suspend fun idMatchEmail(loginId: String, email: String) {
+        userApi.idMatchEmail(IdMatchEmail(loginId, email))
+    }
+
+    suspend fun idMatchPhone(loginId: String, phone: String) {
+        userApi.idMatchPhone(IdMatchPhone(loginId, phone))
+    }
+
+    suspend fun resetPasswordByEmail(loginId: String, email: String, newPassword: String) {
+        userApi.passwordResetByEmail(PasswordResetByEmail(loginId, email, newPassword))
+    }
+
+    suspend fun resetPasswordBySms(loginId: String, phone: String, newPassword: String) {
+        userApi.passwordResetBySms(PasswordResetBySms(loginId, phone, newPassword))
     }
 
     suspend fun checkEmailExists(email: String) {

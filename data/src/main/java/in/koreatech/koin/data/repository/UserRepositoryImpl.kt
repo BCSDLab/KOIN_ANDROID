@@ -5,9 +5,13 @@ import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
+import `in`.koreatech.koin.data.request.user.EmailSendRequest
+import `in`.koreatech.koin.data.request.user.EmailVerifyRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
+import `in`.koreatech.koin.data.request.user.SmsSendRequest
+import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
@@ -17,6 +21,7 @@ import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.user.EmailNotFoundException
 import `in`.koreatech.koin.domain.error.user.InvalidEmailException
 import `in`.koreatech.koin.domain.error.user.InvalidPhoneNumberException
+import `in`.koreatech.koin.domain.error.user.KoinUserError
 import `in`.koreatech.koin.domain.error.user.PhoneNumberNotFoundException
 import `in`.koreatech.koin.domain.error.user.PutUserNicknameOrEmailConflict
 import `in`.koreatech.koin.domain.error.user.PutUserNotFound
@@ -24,7 +29,9 @@ import `in`.koreatech.koin.domain.error.user.PutUserPhoneNumberNotAuthorized
 import `in`.koreatech.koin.domain.error.user.PutUserRequestDataError
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -219,6 +226,212 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber {
+        return try {
+            userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber = phoneNumber)).let {
+                PhoneNumber.Sent(
+                    totalCount = it.totalCount,
+                    remainingCount = it.remainingCount,
+                    currentCount = it.currentCount
+                )
+            }
+        } catch (e: HttpException) {
+            when (e.code()) {
+                429 -> PhoneNumber.CountExceeded
+                400 -> PhoneNumber.WrongFormat
+                else -> PhoneNumber.Failed(
+                    message = e.getErrorResponse().message ?: "",
+                    throwable = e
+                )
+            }
+        }
+    }
+
+    override suspend fun requestEmailVerification(email: String): PhoneNumber {
+        return try {
+            userRemoteDataSource.sendEmail(EmailSendRequest(email)).let {
+                PhoneNumber.Sent(
+                    totalCount = it.totalCount,
+                    remainingCount = it.remainingCount,
+                    currentCount = it.currentCount
+                )
+            }
+        } catch (e: HttpException) {
+            when (e.code()) {
+                429 -> PhoneNumber.CountExceeded
+                400 -> PhoneNumber.WrongFormat
+                else -> PhoneNumber.Failed(
+                    message = e.getErrorResponse().message ?: "",
+                    throwable = e
+                )
+            }
+        }
+    }
+
+    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): VerificationCode {
+        return try {
+            userRemoteDataSource.verifyCode(
+                SmsVerifyRequest(
+                    phoneNumber = phoneNumber,
+                    verificationCode = verificationCode
+                )
+            )
+            VerificationCode.Valid
+        } catch (e: HttpException) {
+            when (e.code()) {
+                404 -> VerificationCode.Expired
+                else -> VerificationCode.NotValid
+            }
+        }
+    }
+
+    override suspend fun verifyEmailCode(email: String, verificationCode: String): VerificationCode {
+        return try {
+            userRemoteDataSource.verifyEmailCode(
+                EmailVerifyRequest(
+                    email = email,
+                    verificationCode = verificationCode
+                )
+            )
+            VerificationCode.Valid
+        } catch (e: HttpException) {
+            when (e.code()) {
+                404 -> VerificationCode.Expired
+                else -> VerificationCode.NotValid
+            }
+        }
+    }
+
+    override suspend fun checkIdExists(loginId: String): Result<Unit> {
+        return try {
+            userRemoteDataSource.idExists(loginId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException -> {
+                    when (e.code()) {
+                        404 -> throw KoinUserError.LoginIdNotExists
+                        400 -> throw KoinUserError.LoginIdWrongFormat
+                        else -> throw KoinUnknownErrorException(
+                            code = e.code().toString(),
+                            errorMessage = e.getErrorResponse().message,
+                            errorTraceId = e.getErrorResponse().errorTraceId
+                        )
+                    }
+                }
+
+                else -> throw e
+            }
+        }
+    }
+
+    override suspend fun checkIdMatchEmail(loginId: String, email: String): Result<Unit> {
+        return try {
+            userRemoteDataSource.idMatchEmail(
+                loginId,
+                email
+            )
+            Result.success(Unit)
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException -> {
+                    when (e.code()) {
+                        404 -> throw KoinUserError.LoginIdNotExists
+                        400 -> throw KoinUserError.LoginIdNotMatchEmail
+                        else -> throw KoinUnknownErrorException(
+                            code = e.code().toString(),
+                            errorMessage = e.getErrorResponse().message,
+                            errorTraceId = e.getErrorResponse().errorTraceId
+                        )
+                    }
+                }
+
+                else -> throw e
+            }
+        }
+    }
+
+    override suspend fun checkIdMatchPhone(loginId: String, phone: String): Result<Unit> {
+        return try {
+            userRemoteDataSource.idMatchPhone(
+                loginId,
+                phone
+            )
+            Result.success(Unit)
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException -> {
+                    when (e.code()) {
+                        404 -> throw KoinUserError.LoginIdNotExists
+                        400 -> throw KoinUserError.LoginIdNotMatchPhone
+                        else -> throw KoinUnknownErrorException(
+                            code = e.code().toString(),
+                            errorMessage = e.getErrorResponse().message,
+                            errorTraceId = e.getErrorResponse().errorTraceId
+                        )
+                    }
+                }
+
+                else -> throw e
+            }
+        }
+    }
+
+    override suspend fun resetPasswordByEmail(loginId: String, email: String, newPassword: String): Result<Unit> {
+        return try {
+            userRemoteDataSource.resetPasswordByEmail(
+                loginId,
+                email,
+                newPassword
+            )
+            Result.success(Unit)
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException -> {
+                    when (e.code()) {
+                        404 -> throw KoinUserError.LoginIdNotExists
+                        400 -> throw KoinUserError.LoginIdNotMatchEmail
+                        401 -> throw KoinUserError.Unauthorized
+                        else -> throw KoinUnknownErrorException(
+                            code = e.code().toString(),
+                            errorMessage = e.getErrorResponse().message,
+                            errorTraceId = e.getErrorResponse().errorTraceId
+                        )
+                    }
+                }
+
+                else -> throw e
+            }
+        }
+    }
+
+    override suspend fun resetPasswordBySms(loginId: String, phone: String, newPassword: String): Result<Unit> {
+        return try {
+            userRemoteDataSource.resetPasswordBySms(
+                loginId,
+                phone,
+                newPassword
+            )
+            Result.success(Unit)
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException -> {
+                    when (e.code()) {
+                        404 -> throw KoinUserError.LoginIdNotExists
+                        400 -> throw KoinUserError.LoginIdNotMatchPhone
+                        401 -> throw KoinUserError.Unauthorized
+                        else -> throw KoinUnknownErrorException(
+                            code = e.code().toString(),
+                            errorMessage = e.getErrorResponse().message,
+                            errorTraceId = e.getErrorResponse().errorTraceId
+                        )
+                    }
+                }
+
+                else -> throw e
+            }
+        }
+    }
 
     override suspend fun checkEmailExists(email: String): Result<Unit> {
         return runCatching {
@@ -230,6 +443,7 @@ class UserRepositoryImpl @Inject constructor(
                     404 -> Result.failure(EmailNotFoundException())
                     else -> Result.failure(exception.getErrorResponse().toKoinUnknownErrorException())
                 }
+
                 else -> Result.failure(exception)
             }
         }
@@ -245,6 +459,7 @@ class UserRepositoryImpl @Inject constructor(
                     404 -> Result.failure(PhoneNumberNotFoundException())
                     else -> Result.failure(exception.getErrorResponse().toKoinUnknownErrorException())
                 }
+
                 else -> Result.failure(exception)
             }
         }
