@@ -9,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -25,9 +28,7 @@ import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
-import `in`.koreatech.koin.core.onboarding.ArrowDirection
 import `in`.koreatech.koin.core.onboarding.OnboardingManager
-import `in`.koreatech.koin.core.onboarding.OnboardingType
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListNoticeBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
@@ -105,6 +106,19 @@ class ArticleListNoticeFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.nestedScrollViewArticleList) { v, insets ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            v.updatePadding(
+                bottom = imeInsets.bottom or systemBars.bottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     private fun initArgument() {
@@ -241,10 +255,10 @@ class ArticleListNoticeFragment : Fragment() {
         keywords.forEach { keyword ->
             if (binding.chipGroupMyKeywords.children.any {
                     (it as? Chip)?.text ==
-                        TextUtils.concat(
-                            "#",
-                            keyword
-                        )
+                            TextUtils.concat(
+                                "#",
+                                keyword
+                            )
                 }.not()
             ) {
                 binding.chipGroupMyKeywords.addView(
