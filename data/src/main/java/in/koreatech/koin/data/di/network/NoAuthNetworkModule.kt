@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.di.network
 
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +21,7 @@ import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.TimetableApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
+import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
@@ -49,10 +51,12 @@ object NoAuthNetworkModule {
         @ServerUrl baseUrl: String,
         @NoAuth okHttpClient: OkHttpClient
     ): Retrofit {
+        val gson = GsonBuilder().registerTypeAdapter(String::class.java, EmptyStringToNullAdapter()).create()
+
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
