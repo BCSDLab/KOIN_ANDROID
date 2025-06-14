@@ -327,6 +327,18 @@ fun ClubCreateScreenImpl(
             }
         }
 
+        if (imageUrl.isEmpty()) {
+            Text(
+                modifier = Modifier
+                    .width(200.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+                text = stringResource(R.string.club_create_image_guideline),
+                style = KoinTheme.typography.regular12,
+                color = KoinTheme.colors.neutral500
+            )
+        }
+
         if (imageUrlRequired) {
             Spacer(modifier = Modifier.height(4.dp))
 
