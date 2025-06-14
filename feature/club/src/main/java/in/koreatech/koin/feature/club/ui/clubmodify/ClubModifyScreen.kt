@@ -114,6 +114,7 @@ fun ClubModifyScreen(
             googleFormUrl = uiState.googleFormUrl,
             openChatUrl = uiState.openChatUrl,
             phoneNumber = uiState.phoneNumber,
+            phoneNumberRequired = uiState.phoneNumberRequired,
             shouldShowModifyDialog = uiState.shouldShowModifyDialog,
             imageUrl = uiState.clubImageUrl,
             isLikeHidden = uiState.isLikeHidden,
@@ -159,6 +160,7 @@ fun ClubModifyScreenImpl(
     googleFormUrl: String,
     openChatUrl: String,
     phoneNumber: String,
+    phoneNumberRequired: Boolean,
     shouldShowModifyDialog: Boolean,
     imageUrl: String,
     isLikeHidden: Boolean,
@@ -496,13 +498,22 @@ fun ClubModifyScreenImpl(
                     hint = stringResource(R.string.club_create_contact_open_chat_hint)
                 )
 
-                KoinClubBasicTextField(
-                    modifier = Modifier
-                        .padding(vertical = 6.dp),
-                    value = phoneNumber,
-                    onValueChange = onPhoneNumberChange,
-                    hint = stringResource(R.string.club_create_contact_phone_hint)
-                )
+                Column {
+                    KoinClubBasicTextField(
+                        modifier = Modifier
+                            .padding(vertical = 6.dp),
+                        value = phoneNumber,
+                        onValueChange = onPhoneNumberChange,
+                        borderColor = if (phoneNumberRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300,
+                        hint = stringResource(R.string.club_create_contact_phone_hint)
+                    )
+
+                    if (phoneNumberRequired) {
+                        KoinClubTextFieldAlert(
+                            text = stringResource(R.string.club_create_warning_required)
+                        )
+                    }
+                }
             }
         )
 
@@ -544,6 +555,7 @@ fun ClubModifyScreenPreview() {
         googleFormUrl = "https://forms.gle/club",
         openChatUrl = "https://open.kakao.com/o/gjK8f3Yc",
         phoneNumber = "010-1234-5678",
+        phoneNumberRequired = false,
         shouldShowModifyDialog = false,
         imageUrl = "",
         isLikeHidden = false,

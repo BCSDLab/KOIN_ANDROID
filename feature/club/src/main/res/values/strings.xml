@@ -88,7 +88,7 @@
     <string name="club_create_contact_open_chat_header">오픈채팅:</string>
     <string name="club_create_contact_open_chat_hint">오픈채팅 링크를 입력해주세요.(선택)</string>
     <string name="club_create_contact_phone_header">전화번호:</string>
-    <string name="club_create_contact_phone_hint">대표자 전화번호를 입력해주세요.(선택)</string>
+    <string name="club_create_contact_phone_hint">대표자 전화번호를 입력해주세요.(필수)</string>
     <string name="club_create_warning_required">필수 입력란입니다.</string>
     <string name="club_create_success_snackbar">관리자 승인 절차가 진행후, 최종 생성됩니다.</string>
     <string name="club_create_dialog_create_title">생산 요청</string>

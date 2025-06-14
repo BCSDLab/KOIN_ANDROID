@@ -114,6 +114,7 @@ fun ClubCreateScreen(
             googleFormUrl = uiState.googleFormUrl,
             openChatUrl = uiState.openChatUrl,
             phoneNumber = uiState.phoneNumber,
+            phoneNumberRequired = uiState.phoneNumberRequired,
             shouldShowCreateDialog = uiState.shouldShowCreateDialog,
             shouldShowPermissionDialog = uiState.shouldShowPermissionDialog,
             userRole = uiState.userRole,
@@ -163,6 +164,7 @@ fun ClubCreateScreenImpl(
     googleFormUrl: String,
     openChatUrl: String,
     phoneNumber: String,
+    phoneNumberRequired: Boolean,
     shouldShowCreateDialog: Boolean,
     shouldShowPermissionDialog: Boolean,
     userRole: String,
@@ -587,13 +589,22 @@ fun ClubCreateScreenImpl(
                     hint = stringResource(R.string.club_create_contact_open_chat_hint)
                 )
 
-                KoinClubBasicTextField(
-                    modifier = Modifier
-                        .padding(vertical = 6.dp),
-                    value = phoneNumber,
-                    onValueChange = onPhoneNumberChange,
-                    hint = stringResource(R.string.club_create_contact_phone_hint)
-                )
+                Column {
+                    KoinClubBasicTextField(
+                        modifier = Modifier
+                            .padding(vertical = 6.dp),
+                        value = phoneNumber,
+                        onValueChange = onPhoneNumberChange,
+                        borderColor = if (phoneNumberRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300,
+                        hint = stringResource(R.string.club_create_contact_phone_hint)
+                    )
+
+                    if (phoneNumberRequired) {
+                        KoinClubTextFieldAlert(
+                            text = stringResource(R.string.club_create_warning_required)
+                        )
+                    }
+                }
             }
         )
 
@@ -634,6 +645,7 @@ fun ClubCreateScreenPreview() {
         googleFormUrl = "https://forms.gle/club",
         openChatUrl = "https://open.kakao.com/o/gjK8f3Yc",
         phoneNumber = "010-1234-5678",
+        phoneNumberRequired = false,
         shouldShowCreateDialog = false,
         shouldShowPermissionDialog = false,
         userRole = "Member",
