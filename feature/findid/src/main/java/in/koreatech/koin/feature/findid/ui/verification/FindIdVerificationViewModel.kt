@@ -6,36 +6,51 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
+import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
+import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
+import `in`.koreatech.koin.domain.usecase.signup.VerifyEmailCodeUseCase
+import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckEmailExistsUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckPhoneExistsUseCase
+import `in`.koreatech.koin.domain.usecase.user.FindLoginIdByEmail
+import `in`.koreatech.koin.domain.usecase.user.FindLoginIdBySms
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
-class FindIdVerificationViewModel @Inject constructor() : ViewModel(), ContainerHost<FindIdVerificationState, FindIdVerificationSideEffect> {
+class FindIdVerificationViewModel @Inject constructor(
+    private val checkEmailExistsUseCase: CheckEmailExistsUseCase,
+    private val checkPhoneExistsUseCase: CheckPhoneExistsUseCase,
+    private val requestEmailVerificationUseCase: RequestEmailVerificationUseCase,
+    private val requestSmsVerificationUseCase: RequestSmsVerificationUseCase,
+    private val verifyEmailCodeUseCase: VerifyEmailCodeUseCase,
+    private val verifySmsCodeUseCase: VerifySmsCodeUseCase,
+    private val findLoginIdByEmail: FindLoginIdByEmail,
+    private val findLoginIdBySms: FindLoginIdBySms
+) : ViewModel(), ContainerHost<FindIdVerificationState, FindIdVerificationSideEffect> {
     override val container = container<FindIdVerificationState, FindIdVerificationSideEffect>(FindIdVerificationState())
 
-    fun updateVerificationMethod(verificationMethod: String) = viewModelScope.launch {
-        intent {
-            reduce {
-                state.copy(
-                    verificationMethod = verificationMethod,
-                    verificationMethodState = PhoneNumber.None
-                )
-            }
+    fun updateVerificationMethod(verificationMethod: String) = blockingIntent {
+        reduce {
+            state.copy(
+                verificationMethod = verificationMethod,
+                verificationMethodState = PhoneNumber.None
+            )
         }
     }
 
-    fun updateVerificationCode(verificationCode: String) = viewModelScope.launch {
-        intent {
-            reduce {
-                state.copy(
-                    verificationCode = verificationCode,
-                    verificationCodeState = VerificationCode.None
-                )
-            }
+    fun updateVerificationCode(verificationCode: String) = blockingIntent {
+        reduce {
+            state.copy(
+                verificationCode = verificationCode,
+                verificationCodeState = VerificationCode.None
+            )
         }
     }
 
@@ -44,6 +59,69 @@ class FindIdVerificationViewModel @Inject constructor() : ViewModel(), Container
             state.copy(
                 isSms = isSms
             )
+        }
+    }
+
+    fun checkVerificationMethodExists() = viewModelScope.launch {
+        intent {
+            if (state.isSms) {
+                checkPhoneExistsUseCase(state.verificationMethod)
+            } else {
+                checkEmailExistsUseCase(state.verificationMethod)
+            }.onSuccess {
+                requestVerificationCode()
+            }.onFailure {
+            }
+        }
+    }
+
+    private fun requestVerificationCode() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(
+                    isLoading = true
+                )
+            }
+            if (state.isSms) {
+                requestSmsVerificationUseCase(state.verificationMethod)
+            } else {
+                requestEmailVerificationUseCase(state.verificationMethod)
+            }.let {
+                reduce {
+                    state.copy(
+                        verificationMethodState = it
+                    )
+                }
+                postSideEffect(FindIdVerificationSideEffect.StartTimer)
+            }
+        }
+    }
+
+    fun checkVerificationCode() = viewModelScope.launch {
+        intent {
+            if (state.isSms) {
+                verifySmsCodeUseCase(state.verificationMethod, state.verificationCode)
+            } else {
+                verifyEmailCodeUseCase(state.verificationMethod, state.verificationCode)
+            }.let {
+                reduce {
+                    state.copy(
+                        verificationCodeState = it
+                    )
+                }
+            }
+        }
+    }
+
+    fun getLoginId() = viewModelScope.launch {
+        intent {
+            if (state.isSms) {
+                findLoginIdBySms(state.verificationMethod, state.verificationCode)
+            } else {
+                findLoginIdByEmail(state.verificationMethod, state.verificationCode)
+            }.onSuccess {
+                postSideEffect(FindIdVerificationSideEffect.NavigateToCompleteScreen(it))
+            }
         }
     }
 

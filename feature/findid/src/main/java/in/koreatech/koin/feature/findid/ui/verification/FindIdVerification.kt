@@ -58,7 +58,10 @@ fun FindIdVerification(
         handleSideEffect(
             sideEffect = it,
             onStartTimer = { viewModel.startTimer() },
-            onStopTimer = { viewModel.stopTimer() }
+            onStopTimer = { viewModel.stopTimer() },
+            navigateToCompleteScreen = { loginId ->
+                navigateToCompleteScreen(loginId)
+            }
         )
     }
 
@@ -71,9 +74,9 @@ fun FindIdVerification(
         verificationTimeLeft = uiState.verificationTimeLeft,
         onVerificationMethodChange = { viewModel.updateVerificationMethod(it) },
         onVerificationCodeChange = { viewModel.updateVerificationCode(it) },
-        onVerificationCodeRequest = { },
-        onVerificationCodeVerify = { },
-        navigateToCompleteScreen = { },
+        onVerificationCodeRequest = { viewModel.checkVerificationMethodExists() },
+        onVerificationCodeVerify = { viewModel.checkVerificationCode() },
+        navigateToCompleteScreen = { viewModel.getLoginId() },
         navigateToEmailScreen = { viewModel.updateIsSms(false) }
     )
 }
@@ -121,7 +124,7 @@ fun FindIdVerificationImpl(
                 ),
                 hint = stringResource(if (isSms) R.string.find_id_phone_number_hint else R.string.find_id_email_hint),
                 onValueChange = onVerificationMethodChange,
-                maxLength = 11
+                maxLength = if (isSms) 11 else Int.MAX_VALUE
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -357,12 +360,13 @@ private fun VerificationCodeSentSuccessMessage(
 fun handleSideEffect(
     sideEffect: FindIdVerificationSideEffect,
     onStartTimer: () -> Unit = {},
-    onStopTimer: () -> Unit = { }
+    onStopTimer: () -> Unit = { },
+    navigateToCompleteScreen: (String) -> Unit = { }
 ) {
     when (sideEffect) {
         FindIdVerificationSideEffect.StartTimer -> onStartTimer()
         FindIdVerificationSideEffect.StopTimer -> onStopTimer()
-        FindIdVerificationSideEffect.NavigateToCompleteScreen -> {}
+        is FindIdVerificationSideEffect.NavigateToCompleteScreen -> navigateToCompleteScreen(sideEffect.loginId)
     }
 }
 
