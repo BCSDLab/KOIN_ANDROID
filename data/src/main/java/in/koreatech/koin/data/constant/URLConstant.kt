@@ -13,22 +13,12 @@ object URLConstant {
     const val OWNER_URL_STAGE = "https://owner.stage.koreatech.in/"
     const val OWNER_URL_PRODUCTION = "https://owner.koreatech.in/"
 
-    const val ADMIN = "admin/"
     const val VERSION = "version"
-    const val FAQ = "faqs"
-    const val LECTURE = "lectures"
-    const val TIMETABLE = "timetable"
-    const val TIMETABLES = "timetables"
-    const val SEMESTERS = "semesters"
     const val LAND = "lands"
-    const val TERM = "term"
     const val COOPSHOP = "coopshop"
 
     object DINING {
-        const val DINING = "dining"
         const val DININGS = "dinings"
-        const val LIKE = "$DINING/like"
-        const val UNLIKE = "$LIKE/cancel"
     }
 
     // external url
@@ -42,16 +32,6 @@ object URLConstant {
         const val CATERGORIES = "$SHOPS/categories"
     }
 
-    object BUS {
-        const val BUS = "bus"
-        const val COURSES = "$BUS/courses"
-        const val TIMETABLE = "$BUS/timetable"
-        const val TIMETABLE_V2 = "$BUS/timetable/v2"
-        const val CITY = "$BUS/timetable/city"
-        const val SEARCH = "$BUS/search"
-        const val BUSES = "/buses"
-    }
-
     object USER {
         const val USER = "user"
         const val LOGIN: String = "$USER/login"
@@ -63,7 +43,6 @@ object URLConstant {
         const val CHECKNICKNAME: String = "$USER/check/nickname"
         const val CHECKEMAIL: String = "$USER/check/email"
         const val CHECKPASSWORD: String = "$USER/check/password"
-        const val PROFILEUPLOAD: String = "$USER/profile/upload"
         const val CHECKPHONE: String = "$USER/check/phone"
         const val CHECKNICKNAME_V2: String = "$USER/check/nickname"
         const val SMSSEND: String = "$USER/verification/send"
@@ -108,54 +87,6 @@ object URLConstant {
         const val PW = "password"
         const val SHOPS = "$OWNER/shops"
         const val EXISTS_ACCOUNT = "$OWNERS/exists/account"
-    }
-
-    object CALLVANS {
-        const val CALLVAN = "callvan"
-        const val ROOMS: String = "$CALLVAN/rooms"
-        const val COMPANIES: String = "$CALLVAN/companies"
-        const val PARTICIPANT: String = "$ROOMS/participant"
-    }
-
-    object HOUSE {
-        const val HOUSES = "houses"
-    }
-
-    object COMMUNITY {
-        const val BOARDS = "boards"
-        const val ARTICLES = "articles"
-        const val TEMPBOARD = "temp"
-        const val COMMENTS = "comments"
-        const val GRANTCHECK: String = "$ARTICLES/grant/check"
-        const val ID_FREE = 1
-        const val ID_RECRUIT = 2
-        const val ID_ANONYMOUS = 3
-    }
-
-    object MARKET {
-        const val MARKET = "market"
-        const val ITEMS: String = "$MARKET/items"
-        const val GRANTCHECK: String = "$ITEMS/grant/check"
-    }
-
-    object CIRCLE {
-        const val CIRCLE = "circles"
-    }
-
-    object LOSTANDFOUND {
-        const val LOST = "lost"
-        const val LOSTITEMS: String = "$LOST/lostItems"
-        const val GRANTCHECK: String = "$LOSTITEMS/grant/check"
-    }
-
-    object SEARCH {
-        const val SEARCH = "search"
-        const val ARTICLESEARCH = "articles/$SEARCH"
-    }
-
-    object TEMP {
-        const val TEMP = "/temp"
-        const val TEMP_IMAGE_UPLOAD: String = "$TEMP/items/image/upload"
     }
 
     object DEPT {
