@@ -59,7 +59,7 @@ fun KoinClubBasicTextField(
     BasicTextField(
         modifier = modifier
             .border(width = 1.dp, color = borderColor, shape = KoinTheme.shapes.small)
-            .background(backgroundColor),
+            .background(color = backgroundColor, shape = KoinTheme.shapes.small),
         value = value,
         onValueChange = {
             if (it.length < maxLength) {
