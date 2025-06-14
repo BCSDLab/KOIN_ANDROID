@@ -108,6 +108,12 @@ object URLConstant {
         const val ID_MATCH_EMAIL: String = "$USERS/id/match/email"
         const val ID_MATCH_PHONE: String = "$USERS/id/match/phone"
 
+        object FINDID {
+            const val FINDID = "id/find"
+            const val EMAIL = "$USERS/$FINDID/email"
+            const val SMS = "$USERS/$FINDID/sms"
+        }
+
         object STUDENTS {
             const val STUDENTS = "students"
             const val ME: String = "$VERSION/$USERS/$STUDENTS/me"

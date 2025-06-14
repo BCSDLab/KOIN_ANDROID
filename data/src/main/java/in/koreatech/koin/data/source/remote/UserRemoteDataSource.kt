@@ -30,6 +30,7 @@ import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
+import `in`.koreatech.koin.data.response.user.LoginIdResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
@@ -171,5 +172,13 @@ class UserRemoteDataSource(
 
     suspend fun checkPhoneExists(phone: String) {
         userApi.checkPhoneExists(CheckPhoneExistsRequest(phone))
+    }
+
+    suspend fun findLoginIdByEmail(emailVerifyRequest: EmailVerifyRequest): LoginIdResponse {
+        return userApi.findIdByEmail(emailVerifyRequest)
+    }
+
+    suspend fun findLoginIdBySms(smsVerifyRequest: SmsVerifyRequest): LoginIdResponse {
+        return userApi.findIdBySms(smsVerifyRequest)
     }
 }

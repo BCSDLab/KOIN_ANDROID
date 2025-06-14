@@ -80,4 +80,8 @@ interface UserRepository {
     suspend fun checkEmailExists(email: String): Result<Unit>
 
     suspend fun checkPhoneExists(phone: String): Result<Unit>
+
+    suspend fun findLoginIdByEmail(email: String, verificationCode: String): Result<String>
+
+    suspend fun findLoginIdBySms(phone: String, verificationCode: String): Result<String>
 }

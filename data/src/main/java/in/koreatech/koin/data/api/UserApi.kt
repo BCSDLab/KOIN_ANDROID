@@ -22,6 +22,7 @@ import `in`.koreatech.koin.data.request.user.findpassword.PasswordResetBySms
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
+import `in`.koreatech.koin.data.response.user.LoginIdResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -144,4 +145,14 @@ interface UserApi {
     suspend fun checkPhoneExists(
         @Body checkPhoneExistsRequest: CheckPhoneExistsRequest
     )
+
+    @POST(URLConstant.USERS.FINDID.EMAIL)
+    suspend fun findIdByEmail(
+        @Body emailVerifyRequest: EmailVerifyRequest // Find id use same DTO with email verification
+    ): LoginIdResponse
+
+    @POST(URLConstant.USERS.FINDID.SMS)
+    suspend fun findIdBySms(
+        @Body smsVerifyRequest: SmsVerifyRequest // Find id use same DTO with sms verification
+    ): LoginIdResponse
 }
