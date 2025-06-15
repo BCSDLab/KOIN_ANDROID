@@ -56,6 +56,16 @@ class FindIdVerificationViewModel @Inject constructor() : ViewModel(), Container
                     )
                 }
             }
+            if (secondsRemaining <= 0) {
+                stopTimer()
+                intent {
+                    reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.Expired
+                        )
+                    }
+                }
+            }
         }
     }
 
