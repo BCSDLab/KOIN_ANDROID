@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -503,7 +505,10 @@ fun ClubModifyScreenImpl(
                         value = phoneNumber,
                         onValueChange = onPhoneNumberChange,
                         borderColor = if (phoneNumberRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300,
-                        hint = stringResource(R.string.club_create_contact_phone_hint)
+                        hint = stringResource(R.string.club_create_contact_phone_hint),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Phone
+                        )
                     )
 
                     if (phoneNumberRequired) {
