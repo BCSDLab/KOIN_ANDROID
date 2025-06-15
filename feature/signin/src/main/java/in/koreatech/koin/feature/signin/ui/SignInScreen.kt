@@ -31,6 +31,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.feature.signin.DEEPLINK_FIND_ID
 import `in`.koreatech.koin.feature.signin.DEEPLINK_FIND_PASSWORD
 import `in`.koreatech.koin.feature.signin.DEEPLINK_SIGN_UP
 import `in`.koreatech.koin.feature.signin.R
@@ -182,7 +183,11 @@ fun SignInScreenImpl(
                 text = stringResource(R.string.sign_in_find_login_id),
                 icon = painterResource(R.drawable.ic_sign_in_find_login_id)
             ) {
-                // TODO("Implement after find id feature is implemented")
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = DEEPLINK_FIND_ID.toUri()
+                }.let {
+                    context.startActivity(it)
+                }
             }
 
             Text(
