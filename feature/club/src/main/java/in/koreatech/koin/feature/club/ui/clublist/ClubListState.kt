@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ClubListState(
+    val isInitialized: Boolean = false,
     val isLoading: Boolean = false,
     val categoryId: Int? = null,
     val sortType: ClubSort = ClubSort.NONE,

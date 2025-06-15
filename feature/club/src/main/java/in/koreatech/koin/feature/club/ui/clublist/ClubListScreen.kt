@@ -79,7 +79,8 @@ fun ClubListScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit, uiState.categoryId) {
+    LaunchedEffect(uiState.isInitialized) {
+        if (!uiState.isInitialized) return@LaunchedEffect
         viewModel.getClubs()
     }
 
