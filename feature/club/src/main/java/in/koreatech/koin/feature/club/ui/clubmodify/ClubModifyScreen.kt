@@ -11,12 +11,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +26,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,13 +57,17 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.CLUB_DESCRIPTION_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.NUMERIC_REGEX
+import `in`.koreatech.koin.feature.club.PHONE_NUMBER_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
 import `in`.koreatech.koin.feature.club.component.KoinClubDropdown
+import `in`.koreatech.koin.feature.club.component.KoinClubInputGrid
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import `in`.koreatech.koin.feature.club.model.clubCategories
+import `in`.koreatech.koin.feature.club.utils.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.feature.club.utils.pickMedia
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -113,6 +117,7 @@ fun ClubModifyScreen(
             googleFormUrl = uiState.googleFormUrl,
             openChatUrl = uiState.openChatUrl,
             phoneNumber = uiState.phoneNumber,
+            phoneNumberRequired = uiState.phoneNumberRequired,
             shouldShowModifyDialog = uiState.shouldShowModifyDialog,
             imageUrl = uiState.clubImageUrl,
             isLikeHidden = uiState.isLikeHidden,
@@ -158,6 +163,7 @@ fun ClubModifyScreenImpl(
     googleFormUrl: String,
     openChatUrl: String,
     phoneNumber: String,
+    phoneNumberRequired: Boolean,
     shouldShowModifyDialog: Boolean,
     imageUrl: String,
     isLikeHidden: Boolean,
@@ -440,16 +446,12 @@ fun ClubModifyScreenImpl(
             maxLines = CLUB_DESCRIPTION_MAX_LENGTH
         )
 
-        Row(
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .padding(vertical = 6.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceAround
-            ) {
+        Spacer(modifier = Modifier.height(6.dp))
+
+        KoinClubInputGrid(
+            modifier = Modifier.wrapContentHeight(),
+            verticalAlignment = Alignment.CenterVertically,
+            leftContent = {
                 Text(
                     modifier = Modifier.padding(vertical = 6.dp),
                     text = stringResource(R.string.club_create_contact_instagram_header),
@@ -473,17 +475,11 @@ fun ClubModifyScreenImpl(
                     text = stringResource(R.string.club_create_contact_phone_header),
                     style = KoinTheme.typography.medium14
                 )
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Column(
-                modifier = Modifier.width(270.dp)
-            ) {
+            },
+            rightContent = {
                 KoinClubBasicTextField(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .fillMaxWidth(),
+                        .padding(vertical = 6.dp),
                     value = instagramUrl,
                     onValueChange = onInstagramUrlChange,
                     hint = stringResource(R.string.club_create_contact_instagram_hint)
@@ -491,8 +487,7 @@ fun ClubModifyScreenImpl(
 
                 KoinClubBasicTextField(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .fillMaxWidth(),
+                        .padding(vertical = 6.dp),
                     value = googleFormUrl,
                     onValueChange = onGoogleFormUrlChange,
                     hint = stringResource(R.string.club_create_contact_google_form_hint)
@@ -500,23 +495,39 @@ fun ClubModifyScreenImpl(
 
                 KoinClubBasicTextField(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .fillMaxWidth(),
+                        .padding(vertical = 6.dp),
                     value = openChatUrl,
                     onValueChange = onOpenChatUrlChange,
                     hint = stringResource(R.string.club_create_contact_open_chat_hint)
                 )
 
-                KoinClubBasicTextField(
-                    modifier = Modifier
-                        .padding(vertical = 6.dp)
-                        .fillMaxWidth(),
-                    value = phoneNumber,
-                    onValueChange = onPhoneNumberChange,
-                    hint = stringResource(R.string.club_create_contact_phone_hint)
-                )
+                val numericRegex = Regex(NUMERIC_REGEX)
+
+                Column {
+                    KoinClubBasicTextField(
+                        modifier = Modifier
+                            .padding(vertical = 6.dp),
+                        value = phoneNumber,
+                        onValueChange = {
+                            onPhoneNumberChange(numericRegex.replace(it, ""))
+                        },
+                        borderColor = if (phoneNumberRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300,
+                        hint = stringResource(R.string.club_create_contact_phone_hint),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Phone
+                        ),
+                        visualTransformation = KRPhoneNumberVisualTransformation(),
+                        maxLength = PHONE_NUMBER_MAX_LENGTH
+                    )
+
+                    if (phoneNumberRequired) {
+                        KoinClubTextFieldAlert(
+                            text = stringResource(R.string.club_create_warning_required)
+                        )
+                    }
+                }
             }
-        }
+        )
 
         Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
     }
@@ -556,6 +567,7 @@ fun ClubModifyScreenPreview() {
         googleFormUrl = "https://forms.gle/club",
         openChatUrl = "https://open.kakao.com/o/gjK8f3Yc",
         phoneNumber = "010-1234-5678",
+        phoneNumberRequired = false,
         shouldShowModifyDialog = false,
         imageUrl = "",
         isLikeHidden = false,
