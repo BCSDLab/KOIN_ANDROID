@@ -60,6 +60,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.club.CLUB_DESCRIPTION_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.CLUB_NAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.CLUB_ROLE_MAX_LENGTH
+import `in`.koreatech.koin.feature.club.NUMERIC_REGEX
+import `in`.koreatech.koin.feature.club.PHONE_NUMBER_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubBasicTextField
@@ -68,6 +70,7 @@ import `in`.koreatech.koin.feature.club.component.KoinClubInputGrid
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.model.ClubCategories
 import `in`.koreatech.koin.feature.club.model.clubCategories
+import `in`.koreatech.koin.feature.club.utils.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.feature.club.utils.pickMedia
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -591,17 +594,23 @@ fun ClubCreateScreenImpl(
                     hint = stringResource(R.string.club_create_contact_open_chat_hint)
                 )
 
+                val numericRegex = Regex(NUMERIC_REGEX)
+
                 Column {
                     KoinClubBasicTextField(
                         modifier = Modifier
                             .padding(vertical = 6.dp),
                         value = phoneNumber,
-                        onValueChange = onPhoneNumberChange,
+                        onValueChange = {
+                            onPhoneNumberChange(numericRegex.replace(it, ""))
+                        },
                         borderColor = if (phoneNumberRequired) KoinTheme.colors.sub500 else KoinTheme.colors.primary300,
                         hint = stringResource(R.string.club_create_contact_phone_hint),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Phone
-                        )
+                        ),
+                        visualTransformation = KRPhoneNumberVisualTransformation(),
+                        maxLength = PHONE_NUMBER_MAX_LENGTH
                     )
 
                     if (phoneNumberRequired) {
