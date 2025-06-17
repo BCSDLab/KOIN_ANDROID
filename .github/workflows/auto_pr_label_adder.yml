@@ -5,7 +5,7 @@ on:
 
 jobs:
   auto_pr_label_adder:
-    if: github.base_ref != 'production'
+    if: github.base_ref != 'production' || !startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
     steps:
       - name: Check Team and Job From PR
