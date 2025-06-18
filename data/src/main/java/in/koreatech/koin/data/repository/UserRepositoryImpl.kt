@@ -168,7 +168,7 @@ class UserRepositoryImpl @Inject constructor(
             throw if (it is HttpException) {
                 when (it.code()) {
                     400 -> KoinUserException.PutUserRequestDataErrorException()
-                    401 -> KoinUserException.PutUserPhoneNumberNotAuthorizedException()
+                    401 -> KoinUserException.UnauthorizedException()
                     404 -> KoinUserException.PutUserNotFoundException()
                     409 -> KoinUserException.PutUserNicknameOrEmailConflictException()
                     else -> it.getErrorResponse().let { errorResponse ->
@@ -435,7 +435,7 @@ class UserRepositoryImpl @Inject constructor(
                 is HttpException -> {
                     when (exception.code()) {
                         400 -> throw KoinUserException.InvalidEmailException()
-                        401 -> throw KoinUserException.UserUnauthorizedException()
+                        401 -> throw KoinUserException.UnauthorizedException()
                         404 -> throw KoinUserException.EmailNotFoundException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
@@ -454,7 +454,7 @@ class UserRepositoryImpl @Inject constructor(
                 is HttpException -> {
                     when (exception.code()) {
                         400 -> throw KoinUserException.InvalidPhoneNumberException()
-                        401 -> throw KoinUserException.UserUnauthorizedException()
+                        401 -> throw KoinUserException.UnauthorizedException()
                         404 -> throw KoinUserException.PhoneNumberNotFoundException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }

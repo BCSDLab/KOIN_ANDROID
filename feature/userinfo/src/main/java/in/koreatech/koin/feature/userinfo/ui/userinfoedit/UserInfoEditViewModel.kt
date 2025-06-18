@@ -266,7 +266,7 @@ class UserInfoEditViewModel @Inject constructor(
             }.onFailure {
                 when (it) {
                     is KoinUserException.PutUserRequestDataErrorException -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
-                    is KoinUserException.PutUserPhoneNumberNotAuthorizedException -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
+                    is KoinUserException.UnauthorizedException -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
                     is KoinUserException.PutUserNotFoundException -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
                     is KoinUserException.PutUserNicknameOrEmailConflictException -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
@@ -297,7 +297,7 @@ class UserInfoEditViewModel @Inject constructor(
             }.onFailure {
                 when (it) {
                     is KoinUserException.PutUserRequestDataErrorException -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
-                    is KoinUserException.PutUserPhoneNumberNotAuthorizedException -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
+                    is KoinUserException.UnauthorizedException -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
                     is KoinUserException.PutUserNotFoundException -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
                     is KoinUserException.PutUserNicknameOrEmailConflictException -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
