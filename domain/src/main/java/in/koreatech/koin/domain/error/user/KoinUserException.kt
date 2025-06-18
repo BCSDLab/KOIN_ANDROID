@@ -3,16 +3,20 @@ package `in`.koreatech.koin.domain.error.user
 import `in`.koreatech.koin.domain.error.KoinErrorException
 
 sealed class KoinUserException {
-    class LoginIdNotExistsException : KoinErrorException()
+    // 400
     class LoginIdWrongFormatException : KoinErrorException()
-    class LoginIdNotMatchEmailException : KoinErrorException()
-    class LoginIdNotMatchPhoneException : KoinErrorException()
     class PutUserRequestDataErrorException : KoinErrorException()
-    class PutUserNotFoundException : KoinErrorException()
-    class PutUserNicknameOrEmailConflictException : KoinErrorException()
     class InvalidEmailException : KoinErrorException()
-    class EmailNotFoundException : KoinErrorException()
     class InvalidPhoneNumberException : KoinErrorException()
-    class PhoneNumberNotFoundException : KoinErrorException()
+    class LoginIdNotMatchPhoneException : KoinErrorException()
+    class LoginIdNotMatchEmailException : KoinErrorException()
+    // 401
     class UnauthorizedException : KoinErrorException()
+    // 404
+    class LoginIdNotExistsException : KoinErrorException()
+    class PutUserNotFoundException : KoinErrorException()
+    class EmailNotFoundException : KoinErrorException()
+    class PhoneNumberNotFoundException : KoinErrorException()
+    // 409
+    class PutUserNicknameOrEmailConflictException : KoinErrorException()
 }
