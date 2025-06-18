@@ -230,17 +230,20 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     )
                 }
             }
+            if (secondsRemaining <= 0) {
+                stopTimer()
+                intent {
+                    reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.Expired
+                        )
+                    }
+                }
+            }
         }
     }
 
     fun stopTimer() {
         AccountTimer.cancel()
-        intent {
-            reduce {
-                state.copy(
-                    verificationTimeLeft = 180
-                )
-            }
-        }
     }
 }

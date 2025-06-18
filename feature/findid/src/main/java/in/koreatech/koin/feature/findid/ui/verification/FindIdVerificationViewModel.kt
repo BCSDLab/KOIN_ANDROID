@@ -178,12 +178,5 @@ class FindIdVerificationViewModel @Inject constructor(
 
     fun stopTimer() {
         AccountTimer.cancel()
-        intent {
-            reduce {
-                state.copy(
-                    verificationTimeLeft = 180
-                )
-            }
-        }
     }
 }
