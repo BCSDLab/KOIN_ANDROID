@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
-import `in`.koreatech.koin.domain.error.user.KoinUserError
+import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
@@ -98,8 +98,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 sendVerificationCode()
             }.onFailure {
                 when (it) {
-                    is KoinUserError.InvalidPhoneNumberException,
-                    is KoinUserError.InvalidEmailException -> {
+                    is KoinUserException.InvalidPhoneNumberException,
+                    is KoinUserException.InvalidEmailException -> {
                         reduce {
                             state.copy(
                                 verificationMethodState = PhoneNumber.WrongFormat
@@ -107,7 +107,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                         }
                     }
 
-                    is KoinUserError.PhoneNumberNotFoundException -> {
+                    is KoinUserException.PhoneNumberNotFoundException -> {
                         reduce {
                             state.copy(
                                 verificationMethodState = PhoneNumber.NotFound
@@ -170,13 +170,13 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 postSideEffect(FindPasswordVerificationSideEffect.NavigateToChangePassword)
             }.onFailure {
                 when (it) {
-                    is KoinUserError.LoginIdNotExists -> reduce {
+                    is KoinUserException.LoginIdNotExists -> reduce {
                         state.copy(
                             loginIdValid = false
                         )
                     }
 
-                    is KoinUserError.LoginIdNotMatchPhone -> reduce {
+                    is KoinUserException.LoginIdNotMatchPhone -> reduce {
                         state.copy(
                             verificationMethodState = PhoneNumber.Failed(
                                 it.message ?: ""
@@ -203,8 +203,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 checkIdMatch()
             }.onFailure {
                 when (it) {
-                    is KoinUserError.LoginIdNotExists,
-                    is KoinUserError.LoginIdWrongFormat -> reduce {
+                    is KoinUserException.LoginIdNotExists,
+                    is KoinUserException.LoginIdWrongFormat -> reduce {
                         state.copy(
                             loginIdValid = false
                         )

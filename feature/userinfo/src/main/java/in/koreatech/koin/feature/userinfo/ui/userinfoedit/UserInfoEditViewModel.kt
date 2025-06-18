@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
-import `in`.koreatech.koin.domain.error.user.KoinUserError
+import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
@@ -265,10 +265,10 @@ class UserInfoEditViewModel @Inject constructor(
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
                 when (it) {
-                    is KoinUserError.PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
-                    is KoinUserError.PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
-                    is KoinUserError.PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
-                    is KoinUserError.PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    is KoinUserException.PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
+                    is KoinUserException.PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
+                    is KoinUserException.PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
+                    is KoinUserException.PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
                 }
             }
@@ -296,10 +296,10 @@ class UserInfoEditViewModel @Inject constructor(
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
                 when (it) {
-                    is KoinUserError.PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
-                    is KoinUserError.PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
-                    is KoinUserError.PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
-                    is KoinUserError.PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    is KoinUserException.PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
+                    is KoinUserException.PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
+                    is KoinUserException.PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
+                    is KoinUserException.PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
                 }
             }

@@ -2,7 +2,7 @@ package `in`.koreatech.koin.domain.error.user
 
 import `in`.koreatech.koin.domain.error.KoinErrorException
 
-sealed class KoinUserError {
+sealed class KoinUserException {
     class LoginIdErrorExists : KoinErrorException()
     class LoginIdNotExists : KoinErrorException()
     class LoginIdWrongFormat : KoinErrorException()
