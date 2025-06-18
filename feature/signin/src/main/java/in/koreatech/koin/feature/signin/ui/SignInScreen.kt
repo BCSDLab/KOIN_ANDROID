@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -103,129 +106,145 @@ fun SignInScreenImpl(
             .padding(horizontal = 40.dp)
             .verticalScroll(scrollState)
             .imePadding(),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Spacer(modifier = modifier.weight(1f))
+        Column {
+            Text(
+                text = "",
+                style = KoinTheme.typography.regular18
+            )
 
-        Image(
-            modifier = Modifier.height(60.dp),
-            painter = painterResource(id = R.drawable.ic_logo_coin_color),
-            contentDescription = "Koin logo"
-        )
+            Spacer(modifier = Modifier.height(24.dp))
 
-        KoinSignInBasicTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp),
-            value = loginId,
-            onValueChange = setLoginId,
-            hint = stringResource(R.string.sign_in_login_id_hint),
-            singleLine = true
-        )
+            Text(
+                text = "",
+                style = KoinTheme.typography.regular12
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        KoinSignInPasswordTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            value = password,
-            onValueChange = setPassword,
-            hint = stringResource(R.string.sign_in_password_hint),
-            singleLine = true,
-            showPassword = showPassword,
-            onShowPasswordChange = setShowPassword
-        )
+        Column {
+            Image(
+                modifier = Modifier.height(60.dp),
+                painter = painterResource(id = R.drawable.ic_logo_coin_color),
+                contentDescription = "Koin logo"
+            )
 
-        Box(
-            modifier = Modifier.height(48.dp)
-        ) {
-            if (isError) {
-                KoinSignInTextFieldAlert(
-                    text = stringResource(R.string.sign_in_error),
-                    state = KoinSignInTextFieldAlertState.Warning
+            KoinSignInBasicTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 32.dp),
+                value = loginId,
+                onValueChange = setLoginId,
+                hint = stringResource(R.string.sign_in_login_id_hint),
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            KoinSignInPasswordTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = password,
+                onValueChange = setPassword,
+                hint = stringResource(R.string.sign_in_password_hint),
+                singleLine = true,
+                showPassword = showPassword,
+                onShowPasswordChange = setShowPassword
+            )
+
+            Box(
+                modifier = Modifier.height(48.dp)
+            ) {
+                if (isError) {
+                    KoinSignInTextFieldAlert(
+                        text = stringResource(R.string.sign_in_error),
+                        state = KoinSignInTextFieldAlertState.Warning
+                    )
+                }
+            }
+
+            CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+                FilledButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = FilledButtonColors.Warning,
+                    shape = KoinTheme.shapes.small,
+                    text = stringResource(R.string.sign_in_sign_in),
+                    onClick = signIn
                 )
             }
-        }
 
-        FilledButton(
-            modifier = Modifier.fillMaxWidth(),
-            colors = FilledButtonColors.Warning,
-            shape = KoinTheme.shapes.small,
-            text = stringResource(R.string.sign_in_sign_in),
-            onClick = signIn
-        )
+            Spacer(modifier = Modifier.height(24.dp))
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        FilledButton(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(R.string.sign_in_sign_up),
-            shape = KoinTheme.shapes.small,
-            onClick = {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = DEEPLINK_SIGN_UP.toUri()
-                }.let {
-                    context.startActivity(it)
-                }
-            }
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            KoinSignInTextButton(
-                modifier = Modifier,
-                text = stringResource(R.string.sign_in_find_login_id),
-                icon = painterResource(R.drawable.ic_sign_in_find_login_id)
-            ) {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = DEEPLINK_FIND_ID.toUri()
-                }.let {
-                    context.startActivity(it)
-                }
+            CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+                FilledButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.sign_in_sign_up),
+                    shape = KoinTheme.shapes.small,
+                    onClick = {
+                        Intent(Intent.ACTION_VIEW).apply {
+                            data = DEEPLINK_SIGN_UP.toUri()
+                        }.let {
+                            context.startActivity(it)
+                        }
+                    }
+                )
             }
 
-            Text(
-                text = "|",
-                modifier = Modifier.padding(horizontal = 4.dp)
-            )
+            Spacer(modifier = Modifier.height(32.dp))
 
-            KoinSignInTextButton(
-                modifier = Modifier,
-                text = stringResource(R.string.sign_in_find_password),
-                icon = painterResource(R.drawable.ic_sign_in_find_password)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = DEEPLINK_FIND_PASSWORD.toUri()
-                }.let {
-                    context.startActivity(it)
+                KoinSignInTextButton(
+                    modifier = Modifier,
+                    text = stringResource(R.string.sign_in_find_login_id),
+                    icon = painterResource(R.drawable.ic_sign_in_find_login_id)
+                ) {
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = DEEPLINK_FIND_ID.toUri()
+                    }.let {
+                        context.startActivity(it)
+                    }
                 }
-            }
 
-            Text(
-                text = "|",
-                modifier = Modifier.padding(horizontal = 4.dp)
-            )
+                Text(
+                    text = "|",
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
 
-            KoinSignInTextButton(
-                modifier = Modifier,
-                text = stringResource(R.string.sign_in_tour),
-                icon = painterResource(R.drawable.ic_sign_in_tour)
-            ) {
-                nextRoute()
+                KoinSignInTextButton(
+                    modifier = Modifier,
+                    text = stringResource(R.string.sign_in_find_password),
+                    icon = painterResource(R.drawable.ic_sign_in_find_password)
+                ) {
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = DEEPLINK_FIND_PASSWORD.toUri()
+                    }.let {
+                        context.startActivity(it)
+                    }
+                }
+
+                Text(
+                    text = "|",
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
+
+                KoinSignInTextButton(
+                    modifier = Modifier,
+                    text = stringResource(R.string.sign_in_tour),
+                    icon = painterResource(R.drawable.ic_sign_in_tour)
+                ) {
+                    nextRoute()
+                }
             }
         }
 
-        Spacer(modifier = modifier.weight(1f))
-
-        Column(
-            verticalArrangement = Arrangement.Bottom
-        ) {
+        Column {
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(R.string.sign_in_business),
                 color = KoinTheme.colors.sub500,
@@ -234,6 +253,7 @@ fun SignInScreenImpl(
                 modifier = Modifier
                     .fillMaxWidth()
                     .noRippleClickable {
+
                     }
             )
 
