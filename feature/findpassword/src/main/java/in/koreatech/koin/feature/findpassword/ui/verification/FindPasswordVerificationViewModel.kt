@@ -129,7 +129,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 when (it) {
                     KoinUserError.LoginIdNotExists -> reduce {
                         state.copy(
-                            loginIdValid = true
+                            loginIdValid = false
                         )
                     }
 
