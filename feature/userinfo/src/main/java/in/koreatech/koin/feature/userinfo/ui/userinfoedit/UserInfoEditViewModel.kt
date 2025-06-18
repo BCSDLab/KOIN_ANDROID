@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
-import `in`.koreatech.koin.domain.error.user.PutUserNicknameOrEmailConflict
-import `in`.koreatech.koin.domain.error.user.PutUserNotFound
-import `in`.koreatech.koin.domain.error.user.PutUserPhoneNumberNotAuthorized
-import `in`.koreatech.koin.domain.error.user.PutUserRequestDataError
+import `in`.koreatech.koin.domain.error.user.KoinUserError
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
@@ -268,10 +265,10 @@ class UserInfoEditViewModel @Inject constructor(
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
                 when (it) {
-                    is PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
-                    is PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
-                    is PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
-                    is PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    is KoinUserError.PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
+                    is KoinUserError.PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
+                    is KoinUserError.PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
+                    is KoinUserError.PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
                 }
             }
@@ -299,10 +296,10 @@ class UserInfoEditViewModel @Inject constructor(
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
                 when (it) {
-                    is PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
-                    is PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
-                    is PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
-                    is PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    is KoinUserError.PutUserRequestDataError -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
+                    is KoinUserError.PutUserPhoneNumberNotAuthorized -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
+                    is KoinUserError.PutUserNotFound -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
+                    is KoinUserError.PutUserNicknameOrEmailConflict -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
                 }
             }
