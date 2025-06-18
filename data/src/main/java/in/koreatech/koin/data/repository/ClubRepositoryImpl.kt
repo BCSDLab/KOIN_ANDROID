@@ -54,8 +54,8 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {
-                    401 -> throw KoinClubException.Unauthorized()
-                    404 -> throw KoinClubException.AlreadyNotLiked()
+                    401 -> throw KoinClubException.UnauthorizedException()
+                    404 -> throw KoinClubException.AlreadyNotLikedException()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -68,7 +68,7 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 throw when (e.code()) {
-                    404 -> KoinClubException.KoinClubNotFound()
+                    404 -> KoinClubException.ClubNotFoundException()
                     else -> e.getErrorResponse().toKoinUnknownErrorException()
                 }
             } else {
@@ -166,8 +166,8 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {
-                    401 -> throw KoinClubException.Unauthorized()
-                    409 -> throw KoinClubException.AlreadyLiked()
+                    401 -> throw KoinClubException.UnauthorizedException()
+                    409 -> throw KoinClubException.AlreadyLikedException()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -185,8 +185,8 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {
-                    403 -> throw KoinClubException.DeletePermissionDenied()
-                    404 -> throw KoinClubException.QnaNotFound()
+                    403 -> throw KoinClubException.DeletePermissionDeniedException()
+                    404 -> throw KoinClubException.QnaNotFoundException()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -204,10 +204,10 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {
-                    400 -> throw KoinClubException.AlreadyManager()
-                    401 -> throw KoinClubException.Unauthorized()
-                    403 -> throw KoinClubException.NotKoinClubManager()
-                    404 -> throw KoinClubException.UserIdNotFound()
+                    400 -> throw KoinClubException.AlreadyManagerException()
+                    401 -> throw KoinClubException.UnauthorizedException()
+                    403 -> throw KoinClubException.NotClubManagerException()
+                    404 -> throw KoinClubException.LoginIdNotFoundException()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -229,9 +229,9 @@ class ClubRepositoryImpl @Inject constructor(
             if (e is HttpException) {
                 val message = e.getErrorResponse().message
                 when (e.code()) {
-                    401 -> throw KoinClubException.Unauthorized()
-                    403 -> throw KoinClubException.NotKoinClubManager()
-                    404 -> throw KoinClubException.KoinClubNotFound()
+                    401 -> throw KoinClubException.UnauthorizedException()
+                    403 -> throw KoinClubException.NotClubManagerException()
+                    404 -> throw KoinClubException.ClubNotFoundException()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }

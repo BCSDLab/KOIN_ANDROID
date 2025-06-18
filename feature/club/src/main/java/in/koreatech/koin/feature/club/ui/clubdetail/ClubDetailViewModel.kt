@@ -100,7 +100,7 @@ class ClubDetailViewModel @Inject constructor(
             }.onFailure { e ->
                 reduce { state.copy(isLoading = false) }
                 when (e) {
-                    is KoinClubException.KoinClubNotFound -> {
+                    is KoinClubException.ClubNotFoundException -> {
                         postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
                     }
                     else -> throw e
@@ -156,13 +156,13 @@ class ClubDetailViewModel @Inject constructor(
                 content = content
             ).onFailure { e ->
                 when (e) {
-                    is KoinClubException.Unauthorized -> {
+                    is KoinClubException.UnauthorizedException -> {
                         postSideEffect(ClubDetailSideEffect.UnauthorizedError)
                     }
-                    is KoinClubException.KoinClubNotFound -> {
+                    is KoinClubException.ClubNotFoundException -> {
                         postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
                     }
-                    is KoinClubException.NotKoinClubManager -> {
+                    is KoinClubException.NotClubManagerException -> {
                         postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                     }
                     else -> throw e
@@ -186,13 +186,13 @@ class ClubDetailViewModel @Inject constructor(
                 content = content
             ).onFailure { e ->
                 when (e) {
-                    is KoinClubException.Unauthorized -> {
+                    is KoinClubException.UnauthorizedException -> {
                         postSideEffect(ClubDetailSideEffect.UnauthorizedError)
                     }
-                    is KoinClubException.KoinClubNotFound -> {
+                    is KoinClubException.ClubNotFoundException -> {
                         postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
                     }
-                    is KoinClubException.NotKoinClubManager -> {
+                    is KoinClubException.NotClubManagerException -> {
                         postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                     }
                     else -> throw e
@@ -213,10 +213,10 @@ class ClubDetailViewModel @Inject constructor(
                 qnaId = qnaId
             ).onFailure { e ->
                 when (e) {
-                    is KoinClubException.QnaNotFound -> {
+                    is KoinClubException.QnaNotFoundException -> {
                         postSideEffect(ClubDetailSideEffect.QnaNotFoundError)
                     }
-                    is KoinClubException.DeletePermissionDenied -> {
+                    is KoinClubException.DeletePermissionDeniedException -> {
                         postSideEffect(ClubDetailSideEffect.DeletePermissionDeniedError)
                     }
                     else -> throw e
@@ -246,10 +246,10 @@ class ClubDetailViewModel @Inject constructor(
                     )
                 }.onFailure { e ->
                     when (e) {
-                        is KoinClubException.Unauthorized -> {
+                        is KoinClubException.UnauthorizedException -> {
                             postSideEffect(ClubDetailSideEffect.UnauthorizedError)
                         }
-                        is KoinClubException.AlreadyNotLiked -> {
+                        is KoinClubException.AlreadyNotLikedException -> {
                             postSideEffect(ClubDetailSideEffect.AlreadyNotLikedError)
                         }
                         else -> throw e
@@ -263,10 +263,10 @@ class ClubDetailViewModel @Inject constructor(
                     )
                 }.onFailure { e ->
                     when (e) {
-                        is KoinClubException.Unauthorized -> {
+                        is KoinClubException.UnauthorizedException -> {
                             postSideEffect(ClubDetailSideEffect.UnauthorizedError)
                         }
-                        is KoinClubException.AlreadyLiked -> {
+                        is KoinClubException.AlreadyLikedException -> {
                             postSideEffect(ClubDetailSideEffect.AlreadyLikedError)
                         }
                         else -> throw e
@@ -304,19 +304,19 @@ class ClubDetailViewModel @Inject constructor(
         }.onFailure { e ->
             reduce { state.copy(isLoading = false) }
             when (e) {
-                is KoinClubException.AlreadyManager -> {
+                is KoinClubException.AlreadyManagerException -> {
                     reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_already_manager) }
                 }
-                is KoinClubException.Unauthorized -> {
+                is KoinClubException.UnauthorizedException -> {
                     postSideEffect(ClubDetailSideEffect.UnauthorizedError)
                 }
-                is KoinClubException.NotKoinClubManager -> {
+                is KoinClubException.NotClubManagerException -> {
                     postSideEffect(ClubDetailSideEffect.NotClubManagerError)
                 }
-                is KoinClubException.UserIdNotFound -> {
+                is KoinClubException.LoginIdNotFoundException -> {
                     reduce { state.copy(textFieldErrorMessageResId = R.string.detail_error_user_id_not_found) }
                 }
-                is KoinClubException.KoinClubNotFound -> {
+                is KoinClubException.ClubNotFoundException -> {
                     postSideEffect(ClubDetailSideEffect.ClubNotFoundError)
                 }
             }

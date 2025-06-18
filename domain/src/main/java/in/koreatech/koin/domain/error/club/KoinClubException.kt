@@ -2,14 +2,38 @@ package `in`.koreatech.koin.domain.error.club
 
 import `in`.koreatech.koin.domain.error.KoinErrorException
 
+/**
+ * Exceptions related to club APIs.
+ * Don't add Club prefix because we using sealed class to group exceptions.
+ * Every exceptions should ends with Exception.
+ */
 sealed class KoinClubException : KoinErrorException() {
-    class Unauthorized : KoinClubException()
-    class AlreadyManager : KoinClubException()
-    class DeletePermissionDenied : KoinClubException()
-    class UserIdNotFound : KoinClubException()
-    class KoinClubNotFound : KoinClubException()
-    class NotKoinClubManager : KoinClubException()
-    class QnaNotFound : KoinClubException()
-    class AlreadyLiked : KoinClubException()
-    class AlreadyNotLiked : KoinClubException()
+    /*
+     * Exceptions for 400 Bad Request
+     */
+    class AlreadyManagerException : KoinClubException()
+
+    /*
+     * Exceptions for 401 Unauthorized
+     */
+    class UnauthorizedException : KoinClubException()
+
+    /*
+     * Exceptions for 403 Forbidden
+     */
+    class NotClubManagerException : KoinClubException()
+    class DeletePermissionDeniedException : KoinClubException()
+
+    /*
+     * Exceptions for 404 Not Found
+     */
+    class LoginIdNotFoundException : KoinClubException()
+    class ClubNotFoundException : KoinClubException()
+    class QnaNotFoundException : KoinClubException()
+    class AlreadyNotLikedException : KoinClubException()
+
+    /*
+     * Exceptions for 409 Conflict
+     */
+    class AlreadyLikedException : KoinClubException()
 }
