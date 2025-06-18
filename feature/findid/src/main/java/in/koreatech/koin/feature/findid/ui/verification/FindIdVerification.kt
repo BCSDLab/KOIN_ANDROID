@@ -124,7 +124,7 @@ fun FindIdVerificationImpl(
                 modifier = Modifier.weight(1f),
                 value = verificationMethod,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
+                    keyboardType = if (isSms) KeyboardType.Number else KeyboardType.Email,
                     imeAction = ImeAction.Done
                 ),
                 hint = stringResource(if (isSms) R.string.find_id_phone_number_hint else R.string.find_id_email_hint),

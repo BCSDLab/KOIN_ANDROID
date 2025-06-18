@@ -179,7 +179,7 @@ fun FindPasswordVerificationImpl(
                 modifier = Modifier.weight(1f),
                 value = phoneNumber,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
+                    keyboardType = if (isSms) KeyboardType.Number else KeyboardType.Email,
                     imeAction = ImeAction.Done
                 ),
                 hint = stringResource(if (isSms) R.string.find_password_phone_number_hint else R.string.find_password_email_hint),
