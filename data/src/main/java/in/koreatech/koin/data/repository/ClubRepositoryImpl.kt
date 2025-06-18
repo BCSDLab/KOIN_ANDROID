@@ -200,7 +200,7 @@ class ClubRepositoryImpl @Inject constructor(
             clubRemoteDataSource.setClubLike(clubId)
         }.onFailure { exception ->
             return Result.failure(
-                when(exception) {
+                when (exception) {
                     is HttpException -> {
                         when (exception.code()) {
                             401 -> KoinClubException.UnauthorizedException()

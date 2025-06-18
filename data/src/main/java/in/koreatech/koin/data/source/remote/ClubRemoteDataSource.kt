@@ -7,7 +7,6 @@ import `in`.koreatech.koin.data.request.club.ClubEmpowermentRequest
 import `in`.koreatech.koin.data.request.club.ClubModifyRequest
 import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import javax.inject.Inject
-import retrofit2.HttpException
 
 class ClubRemoteDataSource @Inject constructor(
     private val clubApi: ClubApi,
