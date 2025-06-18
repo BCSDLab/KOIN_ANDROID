@@ -7,6 +7,8 @@ class CheckEmailExistsUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(email: String): Result<Unit> {
-        return userRepository.checkEmailExists(email)
+        return runCatching {
+            userRepository.checkEmailExists(email)
+        }
     }
 }
