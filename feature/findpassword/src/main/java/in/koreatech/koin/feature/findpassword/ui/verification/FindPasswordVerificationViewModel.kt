@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
+import `in`.koreatech.koin.domain.error.user.InvalidEmailException
 import `in`.koreatech.koin.domain.error.user.InvalidPhoneNumberException
 import `in`.koreatech.koin.domain.error.user.KoinUserError
 import `in`.koreatech.koin.domain.error.user.PhoneNumberNotFoundException
@@ -100,7 +101,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 sendVerificationCode()
             }.onFailure {
                 when (it) {
-                    is InvalidPhoneNumberException -> {
+                    is InvalidPhoneNumberException,
+                    is InvalidEmailException -> {
                         reduce {
                             state.copy(
                                 verificationMethodState = PhoneNumber.WrongFormat
