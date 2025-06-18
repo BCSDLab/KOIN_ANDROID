@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
+import `in`.koreatech.koin.domain.error.user.InvalidPhoneNumberException
+import `in`.koreatech.koin.domain.error.user.PhoneNumberNotFoundException
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
@@ -71,6 +73,31 @@ class FindIdVerificationViewModel @Inject constructor(
             }.onSuccess {
                 requestVerificationCode()
             }.onFailure {
+                when (it) {
+                    is InvalidPhoneNumberException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+
+                    is PhoneNumberNotFoundException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.NotFound
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.Failed(it.message ?: "")
+                            )
+                        }
+                    }
+                }
             }
         }
     }

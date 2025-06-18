@@ -239,6 +239,7 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: HttpException) {
             when (e.code()) {
                 429 -> PhoneNumber.CountExceeded
+                404 -> PhoneNumber.NotFound
                 400 -> PhoneNumber.WrongFormat
                 else -> PhoneNumber.Failed(
                     message = e.getErrorResponse().message ?: "",
@@ -260,6 +261,7 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: HttpException) {
             when (e.code()) {
                 429 -> PhoneNumber.CountExceeded
+                404 -> PhoneNumber.NotFound
                 400 -> PhoneNumber.WrongFormat
                 else -> PhoneNumber.Failed(
                     message = e.getErrorResponse().message ?: "",

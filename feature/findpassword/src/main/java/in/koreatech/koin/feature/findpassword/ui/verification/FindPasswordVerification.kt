@@ -89,7 +89,7 @@ fun FindPasswordVerification(
         onLoginIdChange = { viewModel.updateLoginId(it) },
         onPhoneNumberChange = { viewModel.updatePhoneNumber(it) },
         onVerificationCodeChange = { viewModel.updateVerificationCode(it) },
-        onVerificationCodeRequest = { viewModel.sendVerificationCode() },
+        onVerificationCodeRequest = { viewModel.checkVerificationMethodExists() },
         onVerificationCodeVerify = { viewModel.checkVerificationCode() },
         navigateToEmailScreen = { viewModel.updateIsSms(false) },
         navigateToPasswordScreen = {
@@ -209,7 +209,8 @@ fun FindPasswordVerificationImpl(
             )
 
             PhoneNumber.WrongFormat -> PhoneNumberInvalidMessage()
-            is PhoneNumber.Failed -> PhoneNumberNotMatch()
+            PhoneNumber.NotFound -> VerificationMethodInvalidMessage()
+            is PhoneNumber.Failed,
             PhoneNumber.None,
             PhoneNumber.AlreadySignedUp,
             PhoneNumber.Available -> {
@@ -368,17 +369,19 @@ private fun PhoneNumberInvalidMessage() {
     Spacer(modifier = Modifier.height(8.dp))
 
     KoinFindPasswordTextFieldAlert(
-        text = stringResource(R.string.find_password_phone_number_invalid),
+        text = stringResource(R.string.find_password_phone_number_wrong_format),
         state = KoinFindPasswordTextFieldAlertState.Warning
     )
 }
 
 @Composable
-private fun PhoneNumberNotMatch() {
+private fun VerificationMethodInvalidMessage(
+    isSms: Boolean = true
+) {
     Spacer(modifier = Modifier.height(8.dp))
 
     KoinFindPasswordTextFieldAlert(
-        text = stringResource(R.string.find_password_phone_number_not_correct),
+        text = stringResource(if (isSms) R.string.find_password_phone_number_invalid else R.string.find_password_email_invalid),
         state = KoinFindPasswordTextFieldAlertState.Warning
     )
 }

@@ -153,7 +153,8 @@ fun FindIdVerificationImpl(
                 verificationMethodState.totalCount
             )
 
-            PhoneNumber.WrongFormat -> VerificationMethodInvalidMessage(isSms)
+            PhoneNumber.WrongFormat -> VerificationMethodWrongFormatMessage(isSms)
+            PhoneNumber.NotFound -> VerificationMethodInvalidMessage(isSms)
             is PhoneNumber.Failed,
             PhoneNumber.None,
             PhoneNumber.AlreadySignedUp,
@@ -313,6 +314,18 @@ private fun EmailMessage(
             style = KoinTheme.typography.regular12
         )
     }
+}
+
+@Composable
+private fun VerificationMethodWrongFormatMessage(
+    isSms: Boolean = true
+) {
+    Spacer(modifier = Modifier.height(8.dp))
+
+    KoinFindIdTextFieldAlert(
+        text = stringResource(if (isSms) R.string.find_id_phone_number_wrong_format else R.string.find_id_email_wrong_format),
+        state = KoinFindIdTextFieldAlertState.Warning
+    )
 }
 
 @Composable

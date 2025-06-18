@@ -4,16 +4,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
+import `in`.koreatech.koin.domain.error.user.InvalidPhoneNumberException
 import `in`.koreatech.koin.domain.error.user.KoinUserError
+import `in`.koreatech.koin.domain.error.user.PhoneNumberNotFoundException
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifyEmailCodeUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckEmailExistsUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdExistsUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchEmailUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchPhoneUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckPhoneExistsUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -25,6 +29,8 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class FindPasswordVerificationViewModel @Inject constructor(
+    private val checkEmailExistsUseCase: CheckEmailExistsUseCase,
+    private val checkPhoneExistsUseCase: CheckPhoneExistsUseCase,
     private val requestSmsVerificationUseCase: RequestSmsVerificationUseCase,
     private val requestEmailVerificationUseCase: RequestEmailVerificationUseCase,
     private val verifySmsCodeUseCase: VerifySmsCodeUseCase,
@@ -84,7 +90,45 @@ class FindPasswordVerificationViewModel @Inject constructor(
         }
     }
 
-    fun sendVerificationCode() = viewModelScope.launch {
+    fun checkVerificationMethodExists() = viewModelScope.launch {
+        intent {
+            if (state.isSms) {
+                checkPhoneExistsUseCase(state.verificationMethod)
+            } else {
+                checkEmailExistsUseCase(state.verificationMethod)
+            }.onSuccess {
+                sendVerificationCode()
+            }.onFailure {
+                when (it) {
+                    is InvalidPhoneNumberException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+
+                    is PhoneNumberNotFoundException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.NotFound
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.Failed(it.message ?: "")
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun sendVerificationCode() = viewModelScope.launch {
         intent {
             postSideEffect(FindPasswordVerificationSideEffect.StartTimer)
             if (state.isSms) {
