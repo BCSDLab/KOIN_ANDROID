@@ -12,7 +12,7 @@ import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
-import `in`.koreatech.koin.domain.error.club.ClubError
+import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubHot
@@ -54,8 +54,8 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {
-                    401 -> throw ClubError.Unauthorized
-                    404 -> throw ClubError.AlreadyNotLiked
+                    401 -> throw KoinClubException.Unauthorized()
+                    404 -> throw KoinClubException.AlreadyNotLiked()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -68,7 +68,7 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 throw when (e.code()) {
-                    404 -> ClubError.ClubNotFound
+                    404 -> KoinClubException.KoinClubNotFound()
                     else -> e.getErrorResponse().toKoinUnknownErrorException()
                 }
             } else {
@@ -166,8 +166,8 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {
-                    401 -> throw ClubError.Unauthorized
-                    409 -> throw ClubError.AlreadyLiked
+                    401 -> throw KoinClubException.Unauthorized()
+                    409 -> throw KoinClubException.AlreadyLiked()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -185,8 +185,8 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {
-                    403 -> throw ClubError.DeletePermissionDenied
-                    404 -> throw ClubError.QnaNotFound
+                    403 -> throw KoinClubException.DeletePermissionDenied()
+                    404 -> throw KoinClubException.QnaNotFound()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -204,10 +204,10 @@ class ClubRepositoryImpl @Inject constructor(
         }.recoverCatching { e ->
             if (e is HttpException) {
                 when (e.code()) {
-                    400 -> throw ClubError.AlreadyManager
-                    401 -> throw ClubError.Unauthorized
-                    403 -> throw ClubError.NotClubManager
-                    404 -> throw ClubError.UserIdNotFound
+                    400 -> throw KoinClubException.AlreadyManager()
+                    401 -> throw KoinClubException.Unauthorized()
+                    403 -> throw KoinClubException.NotKoinClubManager()
+                    404 -> throw KoinClubException.UserIdNotFound()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
@@ -229,9 +229,9 @@ class ClubRepositoryImpl @Inject constructor(
             if (e is HttpException) {
                 val message = e.getErrorResponse().message
                 when (e.code()) {
-                    401 -> throw ClubError.Unauthorized
-                    403 -> throw ClubError.NotClubManager
-                    404 -> throw ClubError.ClubNotFound
+                    401 -> throw KoinClubException.Unauthorized()
+                    403 -> throw KoinClubException.NotKoinClubManager()
+                    404 -> throw KoinClubException.KoinClubNotFound()
                     else -> throw e.getErrorResponse().toKoinUnknownErrorException()
                 }
             }
