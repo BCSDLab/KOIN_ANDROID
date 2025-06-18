@@ -10,7 +10,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 
 @AndroidEntryPoint

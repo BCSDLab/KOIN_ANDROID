@@ -28,7 +28,6 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_NAV_TYPE
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.core.util.SystemBarsUtils
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.forceupdate.ForceUpdateActivity
