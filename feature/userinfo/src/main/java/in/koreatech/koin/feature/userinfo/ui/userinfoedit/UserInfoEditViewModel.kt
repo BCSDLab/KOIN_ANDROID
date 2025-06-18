@@ -265,10 +265,10 @@ class UserInfoEditViewModel @Inject constructor(
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
                 when (it) {
-                    is KoinUserException.PutUserRequestDataErrorException -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
+                    is KoinUserException.DataInvalidException -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
                     is KoinUserException.UnauthorizedException -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
-                    is KoinUserException.PutUserNotFoundException -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
-                    is KoinUserException.PutUserNicknameOrEmailConflictException -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    is KoinUserException.UserNotFoundException -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
+                    is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
                 }
             }
@@ -296,10 +296,10 @@ class UserInfoEditViewModel @Inject constructor(
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
                 when (it) {
-                    is KoinUserException.PutUserRequestDataErrorException -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
+                    is KoinUserException.DataInvalidException -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
                     is KoinUserException.UnauthorizedException -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
-                    is KoinUserException.PutUserNotFoundException -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
-                    is KoinUserException.PutUserNicknameOrEmailConflictException -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    is KoinUserException.UserNotFoundException -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
+                    is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
                 }
             }

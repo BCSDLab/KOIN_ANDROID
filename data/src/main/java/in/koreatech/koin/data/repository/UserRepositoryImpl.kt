@@ -167,10 +167,10 @@ class UserRepositoryImpl @Inject constructor(
         }.onFailure {
             throw if (it is HttpException) {
                 when (it.code()) {
-                    400 -> KoinUserException.PutUserRequestDataErrorException()
+                    400 -> KoinUserException.DataInvalidException()
                     401 -> KoinUserException.UnauthorizedException()
-                    404 -> KoinUserException.PutUserNotFoundException()
-                    409 -> KoinUserException.PutUserNicknameOrEmailConflictException()
+                    404 -> KoinUserException.UserNotFoundException()
+                    409 -> KoinUserException.NicknameOrEmailConflictException()
                     else -> it.getErrorResponse().let { errorResponse ->
                         KoinUnknownErrorException(errorResponse.code, errorResponse.message, errorResponse.errorTraceId)
                     }
@@ -303,8 +303,8 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExistsException()
-                        400 -> throw KoinUserException.LoginIdWrongFormatException()
+                        404 -> throw KoinUserException.LoginIdNotFoundException()
+                        400 -> throw KoinUserException.LoginIdInvalidException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
                 }
@@ -321,7 +321,7 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        404 -> throw KoinUserException.LoginIdNotFoundException()
                         400 -> throw KoinUserException.LoginIdNotMatchEmailException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
@@ -342,7 +342,7 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        404 -> throw KoinUserException.LoginIdNotFoundException()
                         400 -> throw KoinUserException.LoginIdNotMatchPhoneException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
@@ -364,7 +364,7 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        404 -> throw KoinUserException.LoginIdNotFoundException()
                         400 -> throw KoinUserException.LoginIdNotMatchEmailException()
                         401 -> throw KoinUserException.UnauthorizedException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
@@ -383,7 +383,7 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        404 -> throw KoinUserException.LoginIdNotFoundException()
                         400 -> throw KoinUserException.LoginIdNotMatchPhoneException()
                         401 -> throw KoinUserException.UnauthorizedException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
@@ -401,7 +401,7 @@ class UserRepositoryImpl @Inject constructor(
         }.onFailure { exception ->
             when (exception) {
                 is HttpException -> when (exception.code()) {
-                    400 -> throw KoinUserException.InvalidEmailException()
+                    400 -> throw KoinUserException.EmailInvalidException()
                     404 -> throw KoinUserException.EmailNotFoundException()
                     else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                 }
@@ -417,7 +417,7 @@ class UserRepositoryImpl @Inject constructor(
         }.onFailure { exception ->
             when (exception) {
                 is HttpException -> when (exception.code()) {
-                    400 -> throw KoinUserException.InvalidPhoneNumberException()
+                    400 -> throw KoinUserException.PhoneNumberInvalidException()
                     404 -> throw KoinUserException.PhoneNumberNotFoundException()
                     else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                 }
@@ -434,7 +434,7 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        400 -> throw KoinUserException.InvalidEmailException()
+                        400 -> throw KoinUserException.EmailInvalidException()
                         401 -> throw KoinUserException.UnauthorizedException()
                         404 -> throw KoinUserException.EmailNotFoundException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
@@ -453,7 +453,7 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        400 -> throw KoinUserException.InvalidPhoneNumberException()
+                        400 -> throw KoinUserException.PhoneNumberInvalidException()
                         401 -> throw KoinUserException.UnauthorizedException()
                         404 -> throw KoinUserException.PhoneNumberNotFoundException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()

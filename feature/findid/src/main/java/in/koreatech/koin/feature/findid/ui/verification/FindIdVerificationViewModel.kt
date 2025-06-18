@@ -73,8 +73,8 @@ class FindIdVerificationViewModel @Inject constructor(
                 requestVerificationCode()
             }.onFailure {
                 when (it) {
-                    is KoinUserException.InvalidPhoneNumberException,
-                    is KoinUserException.InvalidEmailException -> {
+                    is KoinUserException.PhoneNumberInvalidException,
+                    is KoinUserException.EmailInvalidException -> {
                         reduce {
                             state.copy(
                                 verificationMethodState = PhoneNumber.WrongFormat
