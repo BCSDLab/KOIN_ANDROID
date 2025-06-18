@@ -154,7 +154,7 @@ class ArticleActivity : ActivityBase() {
 
     private fun setToolbar(state: ArticleToolbarState) {
         binding.toolbarArticleList.apply {
-            setOnNavigationIconClickListener { finish() }
+            setOnNavigationIconClickListener { onBackPressedCallback.handleOnBackPressed() }
             setTitle(getString(state.title))
             setMenus(
                 ToolbarMenu(
