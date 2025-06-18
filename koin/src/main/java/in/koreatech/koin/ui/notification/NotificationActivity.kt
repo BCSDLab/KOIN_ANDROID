@@ -4,8 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -15,6 +20,7 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithDarkStatusBar
 import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
@@ -33,8 +39,18 @@ class NotificationActivity : ActivityBase() {
     private val viewModel: NotificationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdgeWithDarkStatusBar()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.constraintLayoutNotificationItemRoot) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                bottom = systemBars.bottom
+            )
+
+            insets
+        }
 
         withLoading(this, viewModel)
         binding.koinBaseAppBar.setAppBarButtonClickedListener(
