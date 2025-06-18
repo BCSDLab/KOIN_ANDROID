@@ -25,22 +25,14 @@ class ClubRemoteDataSource @Inject constructor(
     suspend fun getClubDetails(clubId: Int) = clubAuthApi.getClubDetails(clubId)
 
     suspend fun createClub(request: ClubCreateRequest) {
-        clubAuthApi.createClub(request).let {
-            if (!it.isSuccessful) {
-                throw HttpException(it)
-            }
-        }
+        clubAuthApi.createClub(request)
     }
 
     suspend fun modifyClub(
         clubId: Int,
         request: ClubModifyRequest
     ) {
-        clubAuthApi.modifyClub(clubId, request).let {
-            if (!it.isSuccessful) {
-                throw HttpException(it)
-            }
-        }
+        clubAuthApi.modifyClub(clubId, request)
     }
 
     suspend fun getClubQnas(clubId: Int) = clubApi.getClubQnas(clubId)

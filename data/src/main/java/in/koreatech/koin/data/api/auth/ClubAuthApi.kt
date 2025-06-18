@@ -31,38 +31,38 @@ interface ClubAuthApi {
     @POST(URLConstant.CLUBS.CLUBS)
     suspend fun createClub(
         @Body request: ClubCreateRequest
-    ): Response<Unit>
+    )
 
     @PUT("${URLConstant.CLUBS.CLUBS}/{clubId}")
     suspend fun modifyClub(
         @Path("clubId") clubId: Int,
         @Body request: ClubModifyRequest
-    ): Response<Unit>
+    )
 
     @PUT("clubs/empowerment")
     suspend fun setClubEmpowerment(
         @Body request: ClubEmpowermentRequest
-    ): Response<Unit>
+    )
 
     @PUT("clubs/{clubId}/like")
     suspend fun setClubLike(
         @Path("clubId") clubId: Int
-    ): Response<Unit>
+    )
 
     @POST("clubs/{clubId}/qna")
     suspend fun postClubQna(
         @Path("clubId") clubId: Int,
         @Body request: ClubQnaRequest
-    ): Response<Unit>
+    )
 
     @DELETE("clubs/{clubId}/qna/{qnaId}")
     suspend fun deleteClubQna(
         @Path("clubId") clubId: Int,
         @Path("qnaId") qnaId: Int
-    ): Response<Unit>
+    )
 
     @DELETE("clubs/{clubId}/like/cancel")
     suspend fun cancelClubLike(
         @Path("clubId") clubId: Int
-    ): Response<Unit>
+    )
 }

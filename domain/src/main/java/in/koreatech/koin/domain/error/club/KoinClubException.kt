@@ -29,6 +29,7 @@ sealed class KoinClubException : KoinErrorException() {
      */
     class LoginIdNotFoundException : KoinClubException()
     class ClubNotFoundException : KoinClubException()
+    class ClubCategoryNotFoundException : KoinClubException()
     class QnaNotFoundException : KoinClubException()
     class AlreadyNotLikedException : KoinClubException()
 
