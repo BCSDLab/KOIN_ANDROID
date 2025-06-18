@@ -167,10 +167,10 @@ class UserRepositoryImpl @Inject constructor(
         }.onFailure {
             throw if (it is HttpException) {
                 when (it.code()) {
-                    400 -> KoinUserException.PutUserRequestDataError()
-                    401 -> KoinUserException.PutUserPhoneNumberNotAuthorized()
-                    404 -> KoinUserException.PutUserNotFound()
-                    409 -> KoinUserException.PutUserNicknameOrEmailConflict()
+                    400 -> KoinUserException.PutUserRequestDataErrorException()
+                    401 -> KoinUserException.PutUserPhoneNumberNotAuthorizedException()
+                    404 -> KoinUserException.PutUserNotFoundException()
+                    409 -> KoinUserException.PutUserNicknameOrEmailConflictException()
                     else -> it.getErrorResponse().let { errorResponse ->
                         KoinUnknownErrorException(errorResponse.code, errorResponse.message, errorResponse.errorTraceId)
                     }
@@ -303,8 +303,8 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExists()
-                        400 -> throw KoinUserException.LoginIdWrongFormat()
+                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        400 -> throw KoinUserException.LoginIdWrongFormatException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
                 }
@@ -321,8 +321,8 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExists()
-                        400 -> throw KoinUserException.LoginIdNotMatchEmail()
+                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        400 -> throw KoinUserException.LoginIdNotMatchEmailException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
                 }
@@ -342,8 +342,8 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExists()
-                        400 -> throw KoinUserException.LoginIdNotMatchPhone()
+                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        400 -> throw KoinUserException.LoginIdNotMatchPhoneException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
                 }
@@ -364,9 +364,9 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExists()
-                        400 -> throw KoinUserException.LoginIdNotMatchEmail()
-                        401 -> throw KoinUserException.Unauthorized()
+                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        400 -> throw KoinUserException.LoginIdNotMatchEmailException()
+                        401 -> throw KoinUserException.UnauthorizedException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
                 }
@@ -383,9 +383,9 @@ class UserRepositoryImpl @Inject constructor(
             when (exception) {
                 is HttpException -> {
                     when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotExists()
-                        400 -> throw KoinUserException.LoginIdNotMatchPhone()
-                        401 -> throw KoinUserException.Unauthorized()
+                        404 -> throw KoinUserException.LoginIdNotExistsException()
+                        400 -> throw KoinUserException.LoginIdNotMatchPhoneException()
+                        401 -> throw KoinUserException.UnauthorizedException()
                         else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
                     }
                 }
