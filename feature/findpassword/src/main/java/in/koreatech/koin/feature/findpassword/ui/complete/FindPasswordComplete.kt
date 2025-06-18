@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.feature.findpassword.ui.complete
 
+import android.app.Activity
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +34,10 @@ import `in`.koreatech.koin.feature.findpassword.R
 @Composable
 fun FindPasswordCompleteScreen() {
     val context = LocalContext.current
+
+    BackHandler {
+        (context as Activity).finish()
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
