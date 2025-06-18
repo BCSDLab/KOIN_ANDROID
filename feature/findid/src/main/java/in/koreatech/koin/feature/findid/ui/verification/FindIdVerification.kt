@@ -133,7 +133,7 @@ fun FindIdVerificationImpl(
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
-                    enabled = verificationMethod.isNotBlank() && verificationCodeState !is VerificationCode.Valid
+                    enabled = (verificationMethod.isNotBlank() && verificationCodeState !is VerificationCode.Valid) && verificationMethodState !is PhoneNumber.CountExceeded
                 )
             }
         }
@@ -235,7 +235,7 @@ fun SignUpVerificationCodeVerificationStep(
                 enabled = verificationCodeState !is VerificationCode.Valid
             )
 
-            if (verificationCodeState !is VerificationCode.None && verificationCodeState !is VerificationCode.Valid) {
+            if (verificationCodeState !is VerificationCode.Valid) {
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                     Text(
                         modifier = Modifier.padding(end = if (verificationCode.isBlank()) 8.dp else 28.dp),
@@ -254,7 +254,7 @@ fun SignUpVerificationCodeVerificationStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.find_id_verification_code_check),
                 textStyle = KoinTheme.typography.regular10,
-                enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCode.Valid,
+                enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCode.Valid && verificationCodeState !is VerificationCode.Expired,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     checkVerificationCode()
@@ -372,7 +372,11 @@ fun FindPasswordByVerificationMethodPreview() {
     FindIdVerificationImpl(
         isSms = true,
         verificationMethod = "test@test.com",
-        verificationMethodState = PhoneNumber.None,
+        verificationMethodState = PhoneNumber.Sent(
+            remainingCount = 1,
+            totalCount = 5,
+            currentCount = 4
+        ),
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
         verificationTimeLeft = 300
