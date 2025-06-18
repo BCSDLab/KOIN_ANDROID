@@ -7,8 +7,6 @@ class CheckIdMatchPhoneUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(loginId: String, phone: String): Result<Unit> {
-        return runCatching {
-            userRepository.checkIdMatchPhone(loginId, phone)
-        }
+        return userRepository.checkIdMatchPhone(loginId, phone)
     }
 }
