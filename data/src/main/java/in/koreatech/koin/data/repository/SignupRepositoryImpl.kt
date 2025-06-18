@@ -5,8 +5,6 @@ import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.data.mapper.toTerm
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
-import `in`.koreatech.koin.data.request.user.SmsSendRequest
-import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
@@ -17,7 +15,6 @@ import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
-import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.toSHA256
@@ -207,44 +204,6 @@ class SignupRepositoryImpl @Inject constructor(
             Result.success(Unit)
         } catch (e: HttpException) {
             Result.failure(e)
-        }
-    }
-
-    override suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber {
-        return try {
-            userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber = phoneNumber)).let {
-                PhoneNumber.Sent(
-                    totalCount = it.totalCount,
-                    remainingCount = it.remainingCount,
-                    currentCount = it.currentCount
-                )
-            }
-        } catch (e: HttpException) {
-            when (e.code()) {
-                429 -> PhoneNumber.CountExceeded
-                400 -> PhoneNumber.WrongFormat
-                else -> PhoneNumber.Failed(
-                    message = e.getErrorResponse().message ?: "",
-                    throwable = e
-                )
-            }
-        }
-    }
-
-    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): VerificationCode {
-        return try {
-            userRemoteDataSource.verifyCode(
-                SmsVerifyRequest(
-                    phoneNumber = phoneNumber,
-                    verificationCode = verificationCode
-                )
-            )
-            VerificationCode.Valid
-        } catch (e: HttpException) {
-            when (e.code()) {
-                404 -> VerificationCode.Expired
-                else -> VerificationCode.NotValid
-            }
         }
     }
 }

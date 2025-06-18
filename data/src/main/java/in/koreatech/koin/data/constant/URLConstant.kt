@@ -75,6 +75,7 @@ object URLConstant {
         const val PW = "password"
         const val LOGIN_ID = "login_id"
         const val LOGIN_PW = "login_pw"
+        const val ID_EXISTS = "$USER/id/exists"
 
         object STUDENT {
             const val STUDENT = "student"
@@ -88,10 +89,18 @@ object URLConstant {
 
         const val SMSSEND: String = "$USERS/verification/sms/send"
         const val SMSVERIFY: String = "$USERS/verification/sms/verify"
+        const val EMAILSEND: String = "$USERS/verification/email/send"
+        const val EMAILVERIFY: String = "$USERS/verification/email/verify"
 
         const val VERSION: String = "v2"
 
         const val SIGNIN_V2: String = "$VERSION/$USERS/login"
+
+        const val PASSWORD_RESET_BY_EMAIL: String = "$USERS/password/reset/email"
+        const val PASSWORD_RESET_BY_SMS: String = "$USERS/password/reset/sms"
+
+        const val ID_MATCH_EMAIL: String = "$USERS/id/match/email"
+        const val ID_MATCH_PHONE: String = "$USERS/id/match/phone"
 
         object STUDENTS {
             const val STUDENTS = "students"

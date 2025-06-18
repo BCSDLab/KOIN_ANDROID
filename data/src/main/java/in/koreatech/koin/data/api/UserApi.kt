@@ -2,6 +2,8 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.request.user.EmailSendRequest
+import `in`.koreatech.koin.data.request.user.EmailVerifyRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
@@ -10,6 +12,11 @@ import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
+import `in`.koreatech.koin.data.request.user.findpassword.IDExistsRequest
+import `in`.koreatech.koin.data.request.user.findpassword.IdMatchEmail
+import `in`.koreatech.koin.data.request.user.findpassword.IdMatchPhone
+import `in`.koreatech.koin.data.request.user.findpassword.PasswordResetByEmail
+import `in`.koreatech.koin.data.request.user.findpassword.PasswordResetBySms
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
@@ -76,6 +83,11 @@ interface UserApi {
         @Body smsSendRequest: SmsSendRequest
     ): CodeRequestCountResponse
 
+    @POST(URLConstant.USERS.EMAILSEND)
+    suspend fun emailSend(
+        @Body emailSendRequest: EmailSendRequest
+    ): CodeRequestCountResponse
+
     @POST(URLConstant.USERS.STUDENTS.REGISTER_V2)
     suspend fun postStudentRegister(
         @Body studentInfoRequest: StudentInfoRequestV2
@@ -89,5 +101,35 @@ interface UserApi {
     @POST(URLConstant.USERS.SMSVERIFY)
     suspend fun codeVerify(
         @Body smsVerifyRequest: SmsVerifyRequest
+    )
+
+    @POST(URLConstant.USERS.EMAILVERIFY)
+    suspend fun emailVerify(
+        @Body emailVerifyRequest: EmailVerifyRequest
+    )
+
+    @POST(URLConstant.USER.ID_EXISTS)
+    suspend fun idExists(
+        @Body idExistsRequest: IDExistsRequest
+    )
+
+    @POST(URLConstant.USERS.ID_MATCH_EMAIL)
+    suspend fun idMatchEmail(
+        @Body idMatchEmail: IdMatchEmail
+    )
+
+    @POST(URLConstant.USERS.ID_MATCH_PHONE)
+    suspend fun idMatchPhone(
+        @Body idMatchPhone: IdMatchPhone
+    )
+
+    @POST(URLConstant.USERS.PASSWORD_RESET_BY_EMAIL)
+    suspend fun passwordResetByEmail(
+        @Body passwordResetByEmail: PasswordResetByEmail
+    )
+
+    @POST(URLConstant.USERS.PASSWORD_RESET_BY_SMS)
+    suspend fun passwordResetBySms(
+        @Body passwordResetBySms: PasswordResetBySms
     )
 }

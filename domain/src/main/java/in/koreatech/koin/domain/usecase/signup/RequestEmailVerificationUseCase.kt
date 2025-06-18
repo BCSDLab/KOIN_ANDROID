@@ -4,10 +4,10 @@ import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 
-class RequestSmsVerificationUseCase @Inject constructor(
+class RequestEmailVerificationUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke(phoneNumber: String): PhoneNumber {
-        return userRepository.requestSmsVerification(phoneNumber)
+    suspend operator fun invoke(email: String): PhoneNumber {
+        return userRepository.requestEmailVerification(email)
     }
 }

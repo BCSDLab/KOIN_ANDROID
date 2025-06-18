@@ -1,5 +1,7 @@
-package `in`.koreatech.koin.feature.findpassword.ui.sms
+package `in`.koreatech.koin.feature.findpassword.ui.verification
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -26,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -51,46 +54,56 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun FindPasswordBySms(
-    viewModel: FindPasswordBySmsViewModel = hiltViewModel(),
-    navigateToEmailScreen: () -> Unit = {},
-    navigateToPasswordScreen: () -> Unit = { }
+fun FindPasswordVerification(
+    viewModel: FindPasswordVerificationViewModel = hiltViewModel(),
+    navigateToPasswordScreen: (loginId: String, phoneNumber: String) -> Unit = { _, _ -> }
 ) {
     val uiState by viewModel.collectAsState()
+    val context = LocalContext.current
 
     viewModel.collectSideEffect {
         handleSideEffect(
             sideEffect = it,
+            context = context,
             onStartTimer = { viewModel.startTimer() },
-            onStopTimer = { viewModel.stopTimer() }
+            onStopTimer = { viewModel.stopTimer() },
+            onNavigateToChangePassword = {
+                navigateToPasswordScreen(uiState.loginId, uiState.verificationMethod)
+            }
         )
     }
 
-    FindPasswordBySmsImpl(
+    FindPasswordVerificationImpl(
         loginId = uiState.loginId,
-        phoneNumber = uiState.phoneNumber,
-        phoneNumberState = uiState.phoneNumberState,
+        loginIdValid = uiState.loginIdValid,
+        phoneNumber = uiState.verificationMethod,
+        phoneNumberState = uiState.verificationMethodState,
         verificationCode = uiState.verificationCode,
         verificationCodeState = uiState.verificationCodeState,
         verificationTimeLeft = uiState.verificationTimeLeft,
+        isSms = uiState.isSms,
         onLoginIdChange = { viewModel.updateLoginId(it) },
         onPhoneNumberChange = { viewModel.updatePhoneNumber(it) },
         onVerificationCodeChange = { viewModel.updateVerificationCode(it) },
         onVerificationCodeRequest = { viewModel.sendVerificationCode() },
         onVerificationCodeVerify = { viewModel.checkVerificationCode() },
-        navigateToEmailScreen = navigateToEmailScreen,
-        navigateToPasswordScreen = navigateToPasswordScreen
+        navigateToEmailScreen = { viewModel.updateIsSms(false) },
+        navigateToPasswordScreen = {
+            viewModel.checkIdExists()
+        }
     )
 }
 
 @Composable
-fun FindPasswordBySmsImpl(
+fun FindPasswordVerificationImpl(
     loginId: String,
+    loginIdValid: Boolean,
     phoneNumber: String,
     phoneNumberState: PhoneNumber,
     verificationCode: String,
     verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
+    isSms: Boolean,
     modifier: Modifier = Modifier,
     onLoginIdChange: (String) -> Unit = {},
     onPhoneNumberChange: (String) -> Unit = {},
@@ -132,10 +145,19 @@ fun FindPasswordBySmsImpl(
             hint = stringResource(R.string.find_password_id_hint)
         )
 
+        if (!loginIdValid) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            KoinFindPasswordTextFieldAlert(
+                text = stringResource(R.string.find_password_id_invalid),
+                state = KoinFindPasswordTextFieldAlertState.Warning
+            )
+        }
+
         Spacer(modifier = Modifier.height(64.dp))
 
         Text(
-            text = stringResource(R.string.find_password_phone_number),
+            text = stringResource(if (isSms) R.string.find_password_phone_number else R.string.find_password_email),
             style = KoinTheme.typography.medium18
         )
 
@@ -152,9 +174,9 @@ fun FindPasswordBySmsImpl(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
-                hint = stringResource(R.string.find_password_phone_number_hint),
+                hint = stringResource(if (isSms) R.string.find_password_phone_number_hint else R.string.find_password_email_hint),
                 onValueChange = onPhoneNumberChange,
-                maxLength = PHONE_NUMBER_LENGTH
+                maxLength = if (isSms) PHONE_NUMBER_LENGTH else Int.MAX_VALUE
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -179,7 +201,7 @@ fun FindPasswordBySmsImpl(
             )
 
             PhoneNumber.WrongFormat -> PhoneNumberInvalidMessage()
-            is PhoneNumber.Failed,
+            is PhoneNumber.Failed -> PhoneNumberNotMatch()
             PhoneNumber.None,
             PhoneNumber.AlreadySignedUp,
             PhoneNumber.Available -> {
@@ -198,7 +220,7 @@ fun FindPasswordBySmsImpl(
             )
         }
 
-        if (phoneNumber.isBlank()) {
+        if (phoneNumber.isBlank() && isSms) {
             EmailMessage(
                 navigateToEmailScreen = navigateToEmailScreen
             )
@@ -348,7 +370,7 @@ private fun PhoneNumberNotMatch() {
     Spacer(modifier = Modifier.height(8.dp))
 
     KoinFindPasswordTextFieldAlert(
-        text = stringResource(R.string.find_password_phone_number_invalid),
+        text = stringResource(R.string.find_password_phone_number_not_correct),
         state = KoinFindPasswordTextFieldAlertState.Warning
     )
 }
@@ -389,25 +411,31 @@ private fun VerificationCodeSentSuccessMessage(
 }
 
 fun handleSideEffect(
-    sideEffect: FindPasswordBySmsSideEffect,
-    onStartTimer: () -> Unit = {},
-    onStopTimer: () -> Unit = { }
+    sideEffect: FindPasswordVerificationSideEffect,
+    context: Context,
+    onStartTimer: () -> Unit = { },
+    onStopTimer: () -> Unit = { },
+    onNavigateToChangePassword: () -> Unit = { }
 ) {
     when (sideEffect) {
-        FindPasswordBySmsSideEffect.StartTimer -> onStartTimer()
-        FindPasswordBySmsSideEffect.StopTimer -> onStopTimer()
+        FindPasswordVerificationSideEffect.StartTimer -> onStartTimer()
+        FindPasswordVerificationSideEffect.StopTimer -> onStopTimer()
+        FindPasswordVerificationSideEffect.NavigateToChangePassword -> onNavigateToChangePassword()
+        FindPasswordVerificationSideEffect.UnknownError -> Toast.makeText(context, R.string.find_password_unknown_error, Toast.LENGTH_SHORT).show()
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun FindPasswordBySmsPreview() {
-    FindPasswordBySmsImpl(
+    FindPasswordVerificationImpl(
         loginId = "testUser",
+        loginIdValid = true,
         phoneNumber = "01012345678",
         phoneNumberState = PhoneNumber.Available,
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
-        verificationTimeLeft = 180
+        verificationTimeLeft = 180,
+        isSms = true
     )
 }
