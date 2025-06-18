@@ -203,7 +203,6 @@ fun SignInScreenImpl(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 KoinSignInTextButton(
-                    modifier = Modifier,
                     text = stringResource(R.string.sign_in_find_login_id),
                     icon = painterResource(R.drawable.ic_sign_in_find_login_id)
                 ) {
@@ -216,11 +215,13 @@ fun SignInScreenImpl(
 
                 Text(
                     text = "|",
-                    modifier = Modifier.padding(horizontal = 4.dp)
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    style = KoinTheme.typography.regular12.copy(
+                        lineHeightStyle = null // Remove line height
+                    )
                 )
 
                 KoinSignInTextButton(
-                    modifier = Modifier,
                     text = stringResource(R.string.sign_in_find_password),
                     icon = painterResource(R.drawable.ic_sign_in_find_password)
                 ) {
@@ -233,7 +234,10 @@ fun SignInScreenImpl(
 
                 Text(
                     text = "|",
-                    modifier = Modifier.padding(horizontal = 4.dp)
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    style = KoinTheme.typography.regular12.copy(
+                        lineHeightStyle = null // Remove line height
+                    )
                 )
 
                 KoinSignInTextButton(
