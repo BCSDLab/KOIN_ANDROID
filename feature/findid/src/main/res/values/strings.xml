@@ -5,6 +5,7 @@
     <string name="find_id_email">이메일</string>
     <string name="find_id_email_hint">등록된 이메일을 입력해 주세요.</string>
     <string name="find_id_send">인증번호 발송</string>
+    <string name="find_id_resend">인증번호 재발송</string>
 
     <string name="find_id_phone_number_wrong_format">올바른 전화번호 양식이 아닙니다. 다시 입력해 주세요.</string>
     <string name="find_id_phone_number_invalid">유효하지 않은 전화번호 입니다.</string>

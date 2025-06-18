@@ -192,7 +192,7 @@ fun FindPasswordVerificationImpl(
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                 FilledButton(
                     modifier = Modifier.widthIn(min = 86.dp),
-                    text = stringResource(R.string.find_password_send),
+                    text = if (phoneNumberState is PhoneNumber.Sent) stringResource(R.string.find_password_resend) else stringResource(R.string.find_password_send),
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
