@@ -95,6 +95,7 @@ class ArticleActivity : ActivityBase() {
         when (link) {
             "article_keyword" -> {
                 setNavigationGraph()
+                navController.popBackStack()
                 navController.navigate(
                     R.id.articleKeywordFragment
                 ) // See ArticleKeywordFragment, LoginActivity
@@ -103,6 +104,7 @@ class ArticleActivity : ActivityBase() {
                 setNavigationGraph()
                 val articleId = uri.getQueryParameter("article_id")?.toIntOrNull() ?: 0
                 val boardId = uri.getQueryParameter("board_id")?.toIntOrNull() ?: 0
+                navController.popBackStack()
                 navController.navigate(
                     R.id.articleDetailFragment,
                     bundleOf(
