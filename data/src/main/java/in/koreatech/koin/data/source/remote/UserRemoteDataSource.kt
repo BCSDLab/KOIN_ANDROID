@@ -4,6 +4,8 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
+import `in`.koreatech.koin.data.request.user.CheckEmailExistsRequest
+import `in`.koreatech.koin.data.request.user.CheckPhoneExistsRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.EmailSendRequest
 import `in`.koreatech.koin.data.request.user.EmailVerifyRequest
@@ -28,6 +30,7 @@ import `in`.koreatech.koin.data.response.user.ABTestTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
+import `in`.koreatech.koin.data.response.user.LoginIdResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
@@ -161,5 +164,21 @@ class UserRemoteDataSource(
 
     suspend fun resetPasswordBySms(loginId: String, phone: String, newPassword: String) {
         userApi.passwordResetBySms(PasswordResetBySms(loginId, phone, newPassword))
+    }
+
+    suspend fun checkEmailExists(email: String) {
+        userApi.checkEmailExists(CheckEmailExistsRequest(email))
+    }
+
+    suspend fun checkPhoneExists(phone: String) {
+        userApi.checkPhoneExists(CheckPhoneExistsRequest(phone))
+    }
+
+    suspend fun findLoginIdByEmail(emailVerifyRequest: EmailVerifyRequest): LoginIdResponse {
+        return userApi.findIdByEmail(emailVerifyRequest)
+    }
+
+    suspend fun findLoginIdBySms(smsVerifyRequest: SmsVerifyRequest): LoginIdResponse {
+        return userApi.findIdBySms(smsVerifyRequest)
     }
 }

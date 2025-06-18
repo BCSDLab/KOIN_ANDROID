@@ -2,6 +2,8 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.request.user.CheckEmailExistsRequest
+import `in`.koreatech.koin.data.request.user.CheckPhoneExistsRequest
 import `in`.koreatech.koin.data.request.user.EmailSendRequest
 import `in`.koreatech.koin.data.request.user.EmailVerifyRequest
 import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
@@ -20,6 +22,7 @@ import `in`.koreatech.koin.data.request.user.findpassword.PasswordResetBySms
 import `in`.koreatech.koin.data.response.owner.OwnerAuthResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
+import `in`.koreatech.koin.data.response.user.LoginIdResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -108,7 +111,7 @@ interface UserApi {
         @Body emailVerifyRequest: EmailVerifyRequest
     )
 
-    @POST(URLConstant.USER.ID_EXISTS)
+    @POST(URLConstant.USER.EXISTS.ID_EXISTS)
     suspend fun idExists(
         @Body idExistsRequest: IDExistsRequest
     )
@@ -132,4 +135,24 @@ interface UserApi {
     suspend fun passwordResetBySms(
         @Body passwordResetBySms: PasswordResetBySms
     )
+
+    @POST(URLConstant.USER.EXISTS.EMAIL)
+    suspend fun checkEmailExists(
+        @Body checkEmailExistsRequest: CheckEmailExistsRequest
+    )
+
+    @POST(URLConstant.USER.EXISTS.PHONE)
+    suspend fun checkPhoneExists(
+        @Body checkPhoneExistsRequest: CheckPhoneExistsRequest
+    )
+
+    @POST(URLConstant.USERS.FINDID.EMAIL)
+    suspend fun findIdByEmail(
+        @Body emailVerifyRequest: EmailVerifyRequest // Find id use same DTO with email verification
+    ): LoginIdResponse
+
+    @POST(URLConstant.USERS.FINDID.SMS)
+    suspend fun findIdBySms(
+        @Body smsVerifyRequest: SmsVerifyRequest // Find id use same DTO with sms verification
+    ): LoginIdResponse
 }

@@ -14,7 +14,9 @@ fun NavGraphBuilder.koinFindIdNavigation(
     composable(
         route = FindIdNavType.Verification.route
     ) {
-        FindIdVerification()
+        FindIdVerification {
+            navController.navigate("${FindIdNavType.Complete.route}/$it")
+        }
     }
 
     composable(
@@ -25,9 +27,7 @@ fun NavGraphBuilder.koinFindIdNavigation(
     ) {
         val loginId = it.arguments?.getString(LOGIN_ID) ?: ""
 
-        FindIdComplete(
-            loginId
-        )
+        FindIdComplete(loginId)
     }
 }
 

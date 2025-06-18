@@ -16,12 +16,18 @@ import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
+import `in`.koreatech.koin.domain.error.user.EmailNotFoundException
+import `in`.koreatech.koin.domain.error.user.InvalidEmailException
+import `in`.koreatech.koin.domain.error.user.InvalidPhoneNumberException
 import `in`.koreatech.koin.domain.error.user.KoinUserError
+import `in`.koreatech.koin.domain.error.user.PhoneNumberNotFoundException
 import `in`.koreatech.koin.domain.error.user.PutUserNicknameOrEmailConflict
 import `in`.koreatech.koin.domain.error.user.PutUserNotFound
 import `in`.koreatech.koin.domain.error.user.PutUserPhoneNumberNotAuthorized
 import `in`.koreatech.koin.domain.error.user.PutUserRequestDataError
+import `in`.koreatech.koin.domain.error.user.UserUnauthorizedException
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
@@ -424,6 +430,76 @@ class UserRepositoryImpl @Inject constructor(
                 }
 
                 else -> throw e
+            }
+        }
+    }
+
+    override suspend fun checkEmailExists(email: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.checkEmailExists(email)
+        }.onFailure { exception ->
+            return when (exception) {
+                is HttpException -> when (exception.code()) {
+                    400 -> Result.failure(InvalidEmailException())
+                    404 -> Result.failure(EmailNotFoundException())
+                    else -> Result.failure(exception.getErrorResponse().toKoinUnknownErrorException())
+                }
+
+                else -> Result.failure(exception)
+            }
+        }
+    }
+
+    override suspend fun checkPhoneExists(phone: String): Result<Unit> {
+        return runCatching {
+            userRemoteDataSource.checkPhoneExists(phone)
+        }.onFailure { exception ->
+            return when (exception) {
+                is HttpException -> when (exception.code()) {
+                    400 -> Result.failure(InvalidPhoneNumberException())
+                    404 -> Result.failure(PhoneNumberNotFoundException())
+                    else -> Result.failure(exception.getErrorResponse().toKoinUnknownErrorException())
+                }
+
+                else -> Result.failure(exception)
+            }
+        }
+    }
+
+    override suspend fun findLoginIdByEmail(email: String, verificationCode: String): Result<String> {
+        return runCatching {
+            userRemoteDataSource.findLoginIdByEmail(EmailVerifyRequest(email, verificationCode)).loginId
+        }.onFailure { exception ->
+            return when (exception) {
+                is HttpException -> {
+                    when (exception.code()) {
+                        400 -> Result.failure(InvalidEmailException())
+                        401 -> Result.failure(UserUnauthorizedException())
+                        404 -> Result.failure(EmailNotFoundException())
+                        else -> Result.failure(exception.getErrorResponse().toKoinUnknownErrorException())
+                    }
+                }
+
+                else -> Result.failure(exception)
+            }
+        }
+    }
+
+    override suspend fun findLoginIdBySms(phone: String, verificationCode: String): Result<String> {
+        return runCatching {
+            userRemoteDataSource.findLoginIdBySms(SmsVerifyRequest(phone, verificationCode)).loginId
+        }.onFailure { exception ->
+            return when (exception) {
+                is HttpException -> {
+                    when (exception.code()) {
+                        400 -> Result.failure(InvalidPhoneNumberException())
+                        401 -> Result.failure(UserUnauthorizedException())
+                        404 -> Result.failure(PhoneNumberNotFoundException())
+                        else -> Result.failure(exception.getErrorResponse().toKoinUnknownErrorException())
+                    }
+                }
+
+                else -> Result.failure(exception)
             }
         }
     }

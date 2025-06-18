@@ -75,11 +75,17 @@ object URLConstant {
         const val PW = "password"
         const val LOGIN_ID = "login_id"
         const val LOGIN_PW = "login_pw"
-        const val ID_EXISTS = "$USER/id/exists"
 
         object STUDENT {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
+        }
+
+        object EXISTS {
+            const val EXISTS = "exists"
+            const val ID_EXISTS = "$USER/id/$EXISTS"
+            const val EMAIL = "$USER/email/$EXISTS"
+            const val PHONE = "$USER/phone/$EXISTS"
         }
     }
 
@@ -101,6 +107,12 @@ object URLConstant {
 
         const val ID_MATCH_EMAIL: String = "$USERS/id/match/email"
         const val ID_MATCH_PHONE: String = "$USERS/id/match/phone"
+
+        object FINDID {
+            const val FINDID = "id/find"
+            const val EMAIL = "$USERS/$FINDID/email"
+            const val SMS = "$USERS/$FINDID/sms"
+        }
 
         object STUDENTS {
             const val STUDENTS = "students"
