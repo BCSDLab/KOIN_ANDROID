@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -37,6 +38,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.signin.DEEPLINK_FIND_ID
 import `in`.koreatech.koin.feature.signin.DEEPLINK_FIND_PASSWORD
 import `in`.koreatech.koin.feature.signin.DEEPLINK_SIGN_UP
+import `in`.koreatech.koin.feature.signin.OWNER_URL_PRODUCTION
+import `in`.koreatech.koin.feature.signin.OWNER_URL_STAGE
 import `in`.koreatech.koin.feature.signin.R
 import `in`.koreatech.koin.feature.signin.component.KoinSignInBasicTextField
 import `in`.koreatech.koin.feature.signin.component.KoinSignInPasswordTextField
@@ -253,7 +256,15 @@ fun SignInScreenImpl(
                 modifier = Modifier
                     .fillMaxWidth()
                     .noRippleClickable {
-
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            if (BuildConfig.IS_DEBUG) {
+                                OWNER_URL_STAGE.toUri()
+                            } else {
+                                OWNER_URL_PRODUCTION.toUri()
+                            }
+                        )
+                        context.startActivity(intent)
                     }
             )
 
