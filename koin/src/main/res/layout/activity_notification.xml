@@ -30,13 +30,14 @@
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/koin_base_app_bar">
+                    app:layout_constraintTop_toBottomOf="@+id/koin_base_app_bar"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/text_view_notification_setting"
