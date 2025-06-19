@@ -35,7 +35,7 @@ dependencies {
     implementation(project(":core"))
 
     // Dependency - androidx
-    implementation(libs.core.ktx)
+    implementation(libs.androidx.core.ktx)
 
     // Dependency - kotlin
     implementation(libs.kotlinx.coroutines.android)
@@ -52,7 +52,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation(libs.androidx.security.crypto)
-    implementation(libs.dataStore)
+    implementation(libs.androidx.datastore)
 
     // Dependency - firebase
     implementation(platform(libs.firebase.bom))

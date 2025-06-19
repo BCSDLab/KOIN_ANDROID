@@ -25,16 +25,16 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:analytics"))
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.kotlinxCollectionsImmutable)
+    implementation(libs.kotlinx.collections.immutable)
 
-    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose.m3)
 
     debugImplementation(libs.bundles.compose.debug.test)
-    androidTestImplementation(libs.compose.ui.test.manifest)
+    androidTestImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation("androidx.navigation:navigation-compose:2.8.3")
     implementation(libs.kotlinx.serialization.json)
