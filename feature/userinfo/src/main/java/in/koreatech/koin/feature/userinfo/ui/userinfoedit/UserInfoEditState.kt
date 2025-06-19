@@ -89,4 +89,4 @@ val UserInfoEditState.isModified: Boolean
     }
 
 val UserInfoEditState.canSave: Boolean
-    get() = isModified && isNameValid && isStudentNumberValid && isEmailValid && phoneNumberState is PhoneNumber.None
+    get() = isModified && isNameValid && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCode.Valid || verificationCodeState is VerificationCode.None)
