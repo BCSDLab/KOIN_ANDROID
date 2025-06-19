@@ -116,7 +116,8 @@ class FindIdVerificationViewModel @Inject constructor(
             }.let {
                 reduce {
                     state.copy(
-                        verificationMethodState = it
+                        verificationMethodState = it,
+                        verificationCodeState = VerificationCode.None
                     )
                 }
                 postSideEffect(FindIdVerificationSideEffect.StartTimer)

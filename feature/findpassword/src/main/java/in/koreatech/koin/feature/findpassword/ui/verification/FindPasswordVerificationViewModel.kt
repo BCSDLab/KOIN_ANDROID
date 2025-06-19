@@ -138,7 +138,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
             }.let {
                 reduce {
                     state.copy(
-                        verificationMethodState = it
+                        verificationMethodState = it,
+                        verificationCodeState = VerificationCode.None
                     )
                 }
             }
