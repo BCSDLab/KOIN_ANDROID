@@ -138,7 +138,7 @@
         </receiver>
 
         <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
+            android:name="com.naver.maps.map.NCP_KEY_ID"
             android:value="${naverMapKey}" />
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
