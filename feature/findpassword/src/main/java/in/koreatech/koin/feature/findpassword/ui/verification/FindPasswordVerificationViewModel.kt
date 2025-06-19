@@ -107,7 +107,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
                         }
                     }
 
-                    is KoinUserException.PhoneNumberNotFoundException -> {
+                    is KoinUserException.PhoneNumberNotFoundException,
+                    is KoinUserException.EmailNotFoundException -> {
                         reduce {
                             state.copy(
                                 verificationMethodState = PhoneNumber.NotFound
