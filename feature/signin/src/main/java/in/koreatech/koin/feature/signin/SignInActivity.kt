@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.signin
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,6 +22,10 @@ import `in`.koreatech.koin.feature.signin.ui.SignInScreen
 class SignInActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        try {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } catch (ignore: IllegalStateException) {
+        }
         enableEdgeToEdgeWithLightStatusBar()
         setContent {
             KoinTheme {
