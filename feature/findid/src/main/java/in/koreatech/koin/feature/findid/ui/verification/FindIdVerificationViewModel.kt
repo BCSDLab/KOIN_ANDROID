@@ -154,7 +154,7 @@ class FindIdVerificationViewModel @Inject constructor(
     }
 
     fun startTimer() {
-        AccountTimer.start(300) { secondsRemaining ->
+        AccountTimer.start { secondsRemaining ->
             intent {
                 reduce {
                     state.copy(
