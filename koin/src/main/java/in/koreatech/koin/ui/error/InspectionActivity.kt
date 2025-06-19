@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ActivityInspectionBinding
-import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 
 class InspectionActivity : AppCompatActivity() {
@@ -25,7 +24,7 @@ class InspectionActivity : AppCompatActivity() {
             insets
         }
         binding.btnGotoMain.setOnClickListener {
-            val intent= Intent(this@InspectionActivity, MainActivity::class.java)
+            val intent = Intent(this@InspectionActivity, MainActivity::class.java)
             startActivity(intent)
         }
     }

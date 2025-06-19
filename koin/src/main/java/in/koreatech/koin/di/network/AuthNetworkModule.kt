@@ -42,7 +42,6 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -214,8 +213,7 @@ object OwnerAuthNetworkModule {
         @OwnerUserAgent userAgentInterceptor: Interceptor,
         @OwnerAuth ownerAuthInterceptor: Interceptor,
         @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator,
-        @Inspection inspectionInterceptor: Interceptor,
-
+        @Inspection inspectionInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
