@@ -67,6 +67,11 @@ fun SignUpCompleteScreen(
             text = stringResource(R.string.sign_up_complete_login),
             colors = FilledButtonColors.Warning,
             onClick = {
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = "koin://login/login".toUri()
+                }.let {
+                    context.startActivity(it)
+                }
                 finish()
             }
         )
