@@ -137,6 +137,9 @@ class FindIdVerificationViewModel @Inject constructor(
                         verificationCodeState = it
                     )
                 }
+                if (it is VerificationCode.Valid) {
+                    postSideEffect(FindIdVerificationSideEffect.StopTimer)
+                }
             }
         }
     }

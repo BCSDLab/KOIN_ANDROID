@@ -158,6 +158,10 @@ class FindPasswordVerificationViewModel @Inject constructor(
                         verificationCodeState = it
                     )
                 }
+
+                if (it is VerificationCode.Valid) {
+                    postSideEffect(FindPasswordVerificationSideEffect.StopTimer)
+                }
             }
         }
     }
