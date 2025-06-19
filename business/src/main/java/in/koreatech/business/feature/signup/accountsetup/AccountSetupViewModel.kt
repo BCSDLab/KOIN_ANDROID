@@ -66,7 +66,7 @@ class AccountSetupViewModel @Inject constructor(
             authCodeFlow,
             authFlow
         ) { password, passwordConfirm, phoneNumber, authCode, auth ->
-            password.isNotEmpty() && passwordConfirm.isNotEmpty() && phoneNumber.isNotEmpty() && authCode.isNotEmpty() && auth == SignupContinuationState.CheckComplete &&
+            password.isNotEmpty() && passwordConfirm.isNotEmpty() && phoneNumber.isNotEmpty() && authCode.isNotEmpty() && auth == SignupContinuationState.SignupCheckComplete &&
                 password.isValidPassword() && password == passwordConfirm
         }.distinctUntilChanged()
             .onEach {
@@ -77,7 +77,7 @@ class AccountSetupViewModel @Inject constructor(
     private fun updateButton(enabled: Boolean) =
         intent {
             reduce {
-                state.copy(isButtonEnabled = enabled && state.verifyState == SignupContinuationState.CheckComplete)
+                state.copy(isButtonEnabled = enabled && state.verifyState == SignupContinuationState.SignupCheckComplete)
             }
         }
 
@@ -113,7 +113,7 @@ class AccountSetupViewModel @Inject constructor(
             reduce {
                 state.copy(
                     phoneNumber = if (phoneNumber.length <= 11) phoneNumber else state.phoneNumber,
-                    phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
+                    phoneNumberState = SignupContinuationState.PhoneNumberAvailable,
                     sendCodeError = null
                 )
             }
@@ -124,7 +124,7 @@ class AccountSetupViewModel @Inject constructor(
             reduce {
                 state.copy(
                     authCode = authCode,
-                    verifyState = SignupContinuationState.AvailablePhoneNumber,
+                    verifyState = SignupContinuationState.PhoneNumberAvailable,
                     verifyError = null
                 )
             }
@@ -157,7 +157,7 @@ class AccountSetupViewModel @Inject constructor(
                 intent {
                     reduce {
                         state.copy(
-                            verifyState = SignupContinuationState.CheckComplete
+                            verifyState = SignupContinuationState.SignupCheckComplete
                         )
                     }
                 }
@@ -182,9 +182,9 @@ class AccountSetupViewModel @Inject constructor(
                 sendSignupSmsCodeUseCase(state.phoneNumber).onSuccess {
                     reduce {
                         state.copy(
-                            phoneNumberState = SignupContinuationState.RequestedSmsValidation,
+                            phoneNumberState = SignupContinuationState.SmsValidationRequested,
                             sendCodeError = null,
-                            verifyState = SignupContinuationState.AvailablePhoneNumber,
+                            verifyState = SignupContinuationState.PhoneNumberAvailable,
                             sendCodeIsClicked = true
                         )
                     }
@@ -205,7 +205,7 @@ class AccountSetupViewModel @Inject constructor(
                 getOwnerExistsAccountUseCase(state.phoneNumber).onSuccess {
                     reduce {
                         state.copy(
-                            phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
+                            phoneNumberState = SignupContinuationState.PhoneNumberAvailable,
                             sendCodeError = null
                         )
                     }

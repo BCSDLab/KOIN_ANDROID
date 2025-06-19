@@ -23,7 +23,7 @@ class OwnerVerificationCodeUseCase @Inject constructor(
                     verificationCode
                 )
             tokenRepository.saveOwnerAccessToken(authToken.token)
-            Result.success(SignupContinuationState.CheckComplete)
+            Result.success(SignupContinuationState.SignupCheckComplete)
             Unit to null
         } catch (t: Throwable) {
             null to ownerErrorHandler.handleVerifySmsCodeError(t)

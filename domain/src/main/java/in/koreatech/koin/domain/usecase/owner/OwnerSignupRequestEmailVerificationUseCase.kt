@@ -17,15 +17,15 @@ class OwnerSignupRequestEmailVerificationUseCase @Inject constructor(
         isAgreedKoinTerms: Boolean
     ): Result<SignupContinuationState> {
         return when {
-            email.isNotValidEmail() -> Result.success(SignupContinuationState.EmailIsNotValidate)
-            password.isNotValidPassword() -> Result.success(SignupContinuationState.PasswordIsNotValidate)
+            email.isNotValidEmail() -> Result.success(SignupContinuationState.EmailInvalid)
+            password.isNotValidPassword() -> Result.success(SignupContinuationState.PasswordInvalid)
             password != passwordConfirm -> Result.success(SignupContinuationState.PasswordNotMatching)
-            !isAgreedPrivacyTerms -> Result.success(SignupContinuationState.NotAgreedPrivacyTerms)
-            !isAgreedKoinTerms -> Result.success(SignupContinuationState.NotAgreedKoinTerms)
+            !isAgreedPrivacyTerms -> Result.success(SignupContinuationState.PrivacyTermsNotAgreed)
+            !isAgreedKoinTerms -> Result.success(SignupContinuationState.KoinTermsNotAgreed)
             else ->
                 ownerSignupRepository.requestEmailVerification(
                     email = email
-                ).map { SignupContinuationState.RequestedEmailValidation }
+                ).map { SignupContinuationState.EmailValidationRequested }
         }
     }
 }
