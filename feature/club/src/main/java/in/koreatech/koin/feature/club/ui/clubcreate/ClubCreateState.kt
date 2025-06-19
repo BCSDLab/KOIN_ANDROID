@@ -32,4 +32,7 @@ data class ClubCreateState(
 
     val clubImageUrlRequired: Boolean
         get() = clubImageUrl.isBlank() && shouldCheckRequiredField
+
+    val phoneNumberRequired: Boolean
+        get() = phoneNumber.isBlank() && shouldCheckRequiredField
 }

@@ -81,7 +81,7 @@ class UploadUrlRepositoryImpl @Inject constructor(
 
     override suspend fun getUploadClubUrlResult(contentLength: Long, contentType: String, fileName: String): Result<PreSignedUrl> {
         return try {
-            val dataSource = uploadUrlRemoteDataSource.postUploadLostAndFoundUrl(
+            val dataSource = uploadUrlRemoteDataSource.postUploadClubUrl(
                 UploadUrlRequest(contentLength, contentType, fileName)
             )
 

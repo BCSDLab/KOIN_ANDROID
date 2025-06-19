@@ -46,6 +46,7 @@ fun KoinClubBasicTextField(
     hint: String = "",
     textStyle: TextStyle = KoinTheme.typography.regular14,
     borderColor: Color = KoinTheme.colors.primary300,
+    backgroundColor: Color = KoinTheme.colors.neutral100,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -58,7 +59,7 @@ fun KoinClubBasicTextField(
     BasicTextField(
         modifier = modifier
             .border(width = 1.dp, color = borderColor, shape = KoinTheme.shapes.small)
-            .background(KoinTheme.colors.neutral100),
+            .background(color = backgroundColor, shape = KoinTheme.shapes.small),
         value = value,
         onValueChange = {
             if (it.length < maxLength) {
@@ -91,15 +92,14 @@ fun KoinClubBasicTextField(
                     Box(
                         modifier = Modifier.weight(1f)
                     ) {
-                        if (value.isEmpty()) {
-                            Text(
-                                text = hint,
-                                style = textStyle.copy(
-                                    lineHeightStyle = null // Remove line height
-                                ),
-                                color = KoinTheme.colors.neutral700
-                            )
-                        }
+                        // Hint shouldn't removed because it might cause resize when using IntrinsicSize
+                        Text(
+                            text = hint,
+                            style = textStyle.copy(
+                                lineHeightStyle = null // Remove line height
+                            ),
+                            color = if (value.isEmpty()) KoinTheme.colors.neutral700 else backgroundColor
+                        )
                         innerTextField()
                     }
                 }

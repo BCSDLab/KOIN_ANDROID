@@ -35,7 +35,7 @@ class ClubListViewModel @Inject constructor(
             val categoryId = savedStateHandle.get<Int?>(CATEGORY_ID)
             intent {
                 reduce {
-                    state.copy(categoryId = categoryId.takeIf { it != -1 })
+                    state.copy(categoryId = categoryId.takeIf { it != -1 }, isInitialized = true)
                 }
             }
         }
