@@ -2,7 +2,7 @@
 activityComposeVersion = "1.9.3"
 activityKtxVersion = "1.9.3"
 cardviewVersion = "1.0.0"
-constraintlayoutComposeVersion = "1.1.0"
+constraintlayoutComposeVersion = "1.1.1"
 inAppUpdateVersion = "2.1.0"
 featureDeliveryKtxVersion = "2.1.0"
 firebaseBomVersion = "32.5.0"
