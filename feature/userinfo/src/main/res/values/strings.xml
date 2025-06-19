@@ -23,7 +23,7 @@
     <string name="user_info_student_info_header">학생정보</string>
     <string name="user_info_student_info_student_number">학번</string>
     <string name="user_info_student_info_major">전공</string>
-    <string name="user_info_student_email_suffix">\@koeratech.ac.kr</string>
+    <string name="user_info_student_email_suffix">\@koreatech.ac.kr</string>
 
     <string name="user_info_save">저장</string>
 
