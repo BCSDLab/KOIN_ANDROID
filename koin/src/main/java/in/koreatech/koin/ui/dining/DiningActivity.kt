@@ -247,7 +247,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         intent.apply {
             this?.action = Intent.ACTION_VIEW
             setIntent(this)

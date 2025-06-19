@@ -76,7 +76,7 @@ class ArticleActivity : ActivityBase() {
         navigateToDetailFragment()
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         navigateToArticleDetail(intent)
         super.onNewIntent(intent)
     }
