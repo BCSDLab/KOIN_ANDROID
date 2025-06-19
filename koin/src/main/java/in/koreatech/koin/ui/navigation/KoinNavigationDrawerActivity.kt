@@ -36,8 +36,8 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
-import `in`.koreatech.koin.feature.signin.SignInActivity
-import `in`.koreatech.koin.feature.signup.SignUpActivity
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
+import `in`.koreatech.koin.feature.user.ui.signup.SignUpActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity

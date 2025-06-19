@@ -3,7 +3,7 @@ package `in`.koreatech.koin.contract
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
-import `in`.koreatech.koin.feature.signin.SignInActivity
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 
 class LoginContract : ActivityResultContract<Unit, Unit>() {
     override fun createIntent(context: Context, input: Unit): Intent {

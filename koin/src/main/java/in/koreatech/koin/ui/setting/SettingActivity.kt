@@ -15,8 +15,8 @@ import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
-import `in`.koreatech.koin.feature.signin.SignInActivity
-import `in`.koreatech.koin.feature.userinfo.UserInfoActivity
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
+import `in`.koreatech.koin.feature.user.ui.userinfo.UserInfoActivity
 import `in`.koreatech.koin.ui.changepassword.ChangePasswordContract
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.term.TermActivity
