@@ -18,6 +18,7 @@ androidxSecurityCrypto = "1.1.0-alpha03"
 androidxTestEspresso = "3.5.1"
 androidxTestJunit = "1.2.1"
 androidxTestRunner = "1.5.2"
+androidxViewpager2 = "1.1.0"
 balloon = "1.5.0"
 coil = "2.6.0"
 colorpicker = "1.1.1"
@@ -106,7 +107,7 @@ androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espres
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestJunit" }
 androidx-test-ext-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestJunit" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
-androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version = "1.0.0" }
+androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "androidxViewpager2" }
 balloon = { module = "com.github.skydoves:balloon", version.ref = "balloon" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
