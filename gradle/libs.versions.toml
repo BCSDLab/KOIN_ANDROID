@@ -1,5 +1,5 @@
 [versions]
-activityComposeVersion = "1.8.2"
+activityComposeVersion = "1.9.3"
 activityKtxVersion = "1.9.3"
 cardviewVersion = "1.0.0"
 constraintlayoutComposeVersion = "1.1.0"
