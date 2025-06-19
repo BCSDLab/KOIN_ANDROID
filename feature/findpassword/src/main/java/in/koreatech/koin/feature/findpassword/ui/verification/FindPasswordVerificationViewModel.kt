@@ -178,7 +178,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
                         )
                     }
 
-                    is KoinUserException.LoginIdNotMatchPhoneException -> reduce {
+                    is KoinUserException.LoginIdNotMatchPhoneException,
+                    is KoinUserException.LoginIdNotMatchEmailException -> reduce {
                         state.copy(
                             verificationMethodState = PhoneNumber.Failed(
                                 it.message ?: ""
