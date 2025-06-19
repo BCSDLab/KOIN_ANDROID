@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
+import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
@@ -71,6 +72,32 @@ class FindIdVerificationViewModel @Inject constructor(
             }.onSuccess {
                 requestVerificationCode()
             }.onFailure {
+                when (it) {
+                    is KoinUserException.PhoneNumberInvalidException,
+                    is KoinUserException.EmailInvalidException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+
+                    is KoinUserException.PhoneNumberNotFoundException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.NotFound
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.Failed(it.message ?: "")
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -126,7 +153,7 @@ class FindIdVerificationViewModel @Inject constructor(
     }
 
     fun startTimer() {
-        AccountTimer.start { secondsRemaining ->
+        AccountTimer.start(300) { secondsRemaining ->
             intent {
                 reduce {
                     state.copy(
@@ -149,12 +176,5 @@ class FindIdVerificationViewModel @Inject constructor(
 
     fun stopTimer() {
         AccountTimer.cancel()
-        intent {
-            reduce {
-                state.copy(
-                    verificationTimeLeft = 180
-                )
-            }
-        }
     }
 }

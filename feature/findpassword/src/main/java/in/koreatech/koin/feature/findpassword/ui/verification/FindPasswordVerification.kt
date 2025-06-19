@@ -9,14 +9,18 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -85,7 +89,7 @@ fun FindPasswordVerification(
         onLoginIdChange = { viewModel.updateLoginId(it) },
         onPhoneNumberChange = { viewModel.updatePhoneNumber(it) },
         onVerificationCodeChange = { viewModel.updateVerificationCode(it) },
-        onVerificationCodeRequest = { viewModel.sendVerificationCode() },
+        onVerificationCodeRequest = { viewModel.checkVerificationMethodExists() },
         onVerificationCodeVerify = { viewModel.checkVerificationCode() },
         navigateToEmailScreen = { viewModel.updateIsSms(false) },
         navigateToPasswordScreen = {
@@ -114,7 +118,11 @@ fun FindPasswordVerificationImpl(
     navigateToPasswordScreen: () -> Unit = { }
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 24.dp)
+        modifier = modifier
+            .padding(horizontal = 24.dp)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .imePadding()
     ) {
         KoinFindPasswordProgressHeader(
             currentStep = 1,
@@ -171,7 +179,7 @@ fun FindPasswordVerificationImpl(
                 modifier = Modifier.weight(1f),
                 value = phoneNumber,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
+                    keyboardType = if (isSms) KeyboardType.Number else KeyboardType.Email,
                     imeAction = ImeAction.Done
                 ),
                 hint = stringResource(if (isSms) R.string.find_password_phone_number_hint else R.string.find_password_email_hint),
@@ -184,7 +192,7 @@ fun FindPasswordVerificationImpl(
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                 FilledButton(
                     modifier = Modifier.widthIn(min = 86.dp),
-                    text = stringResource(R.string.find_password_send),
+                    text = if (phoneNumberState is PhoneNumber.Sent) stringResource(R.string.find_password_resend) else stringResource(R.string.find_password_send),
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
@@ -201,7 +209,8 @@ fun FindPasswordVerificationImpl(
             )
 
             PhoneNumber.WrongFormat -> PhoneNumberInvalidMessage()
-            is PhoneNumber.Failed -> PhoneNumberNotMatch()
+            PhoneNumber.NotFound -> VerificationMethodInvalidMessage()
+            is PhoneNumber.Failed,
             PhoneNumber.None,
             PhoneNumber.AlreadySignedUp,
             PhoneNumber.Available -> {
@@ -225,6 +234,8 @@ fun FindPasswordVerificationImpl(
                 navigateToEmailScreen = navigateToEmailScreen
             )
         }
+
+        Spacer(modifier = Modifier.height(32.dp))
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -360,17 +371,19 @@ private fun PhoneNumberInvalidMessage() {
     Spacer(modifier = Modifier.height(8.dp))
 
     KoinFindPasswordTextFieldAlert(
-        text = stringResource(R.string.find_password_phone_number_invalid),
+        text = stringResource(R.string.find_password_phone_number_wrong_format),
         state = KoinFindPasswordTextFieldAlertState.Warning
     )
 }
 
 @Composable
-private fun PhoneNumberNotMatch() {
+private fun VerificationMethodInvalidMessage(
+    isSms: Boolean = true
+) {
     Spacer(modifier = Modifier.height(8.dp))
 
     KoinFindPasswordTextFieldAlert(
-        text = stringResource(R.string.find_password_phone_number_not_correct),
+        text = stringResource(if (isSms) R.string.find_password_phone_number_invalid else R.string.find_password_email_invalid),
         state = KoinFindPasswordTextFieldAlertState.Warning
     )
 }
