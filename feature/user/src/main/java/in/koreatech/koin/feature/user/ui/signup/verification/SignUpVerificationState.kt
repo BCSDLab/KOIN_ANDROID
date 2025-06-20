@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.feature.user.ui.signup.verification
 
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.domain.model.user.PhoneNumber
-import `in`.koreatech.koin.domain.model.user.VerificationCode
+import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.domain.util.ext.isEnglish
 import `in`.koreatech.koin.domain.util.ext.isKorean
 

@@ -43,8 +43,8 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.constant.CONTACT_URL
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.domain.model.user.PhoneNumber
-import `in`.koreatech.koin.domain.model.user.VerificationCode
+import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.SIGN_UP_PHONE_NUMBER_MAX_LENGTH
 import `in`.koreatech.koin.feature.user.SIGN_UP_VERIFICATION_CODE_MAX_LENGTH

@@ -53,9 +53,9 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.domain.model.user.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.UserType
-import `in`.koreatech.koin.domain.model.user.VerificationCode
+import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicItem
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField

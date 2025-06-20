@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.domain.model.user
+package `in`.koreatech.koin.feature.user.model
 
 sealed class PhoneNumber {
     data object None : PhoneNumber()
