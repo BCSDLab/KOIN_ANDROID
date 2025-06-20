@@ -1,8 +1,6 @@
 package `in`.koreatech.business.di.userAgent
 
 import android.content.Context
-import android.content.Intent
-import `in`.koreatech.business.main.BusinessMainActivity
 import okhttp3.Interceptor
 import okhttp3.Response
 
