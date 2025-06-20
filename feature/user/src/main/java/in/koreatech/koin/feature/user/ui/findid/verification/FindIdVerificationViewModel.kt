@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
@@ -41,7 +41,7 @@ class FindIdVerificationViewModel @Inject constructor(
         reduce {
             state.copy(
                 verificationMethod = verificationMethod,
-                verificationMethodState = PhoneNumber.None
+                verificationMethodState = VerificationMethod.None
             )
         }
     }
@@ -77,7 +77,7 @@ class FindIdVerificationViewModel @Inject constructor(
                     is KoinUserException.EmailInvalidException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = PhoneNumber.WrongFormat
+                                verificationMethodState = VerificationMethod.WrongFormat
                             )
                         }
                     }
@@ -85,7 +85,7 @@ class FindIdVerificationViewModel @Inject constructor(
                     is KoinUserException.PhoneNumberNotFoundException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = PhoneNumber.NotFound
+                                verificationMethodState = VerificationMethod.NotFound
                             )
                         }
                     }
@@ -93,7 +93,7 @@ class FindIdVerificationViewModel @Inject constructor(
                     else -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = PhoneNumber.Failed(it.message ?: "")
+                                verificationMethodState = VerificationMethod.Failed(it.message ?: "")
                             )
                         }
                     }
@@ -116,7 +116,7 @@ class FindIdVerificationViewModel @Inject constructor(
             }.onSuccess {
                 reduce {
                     state.copy(
-                        verificationMethodState = PhoneNumber.Sent(
+                        verificationMethodState = VerificationMethod.Sent(
                             remainingCount = it.remainingCount,
                             totalCount = it.totalCount,
                             currentCount = it.currentCount
@@ -131,7 +131,7 @@ class FindIdVerificationViewModel @Inject constructor(
                     is KoinUserException.EmailInvalidException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = PhoneNumber.WrongFormat
+                                verificationMethodState = VerificationMethod.WrongFormat
                             )
                         }
                     }
@@ -140,7 +140,7 @@ class FindIdVerificationViewModel @Inject constructor(
                     is KoinUserException.EmailNotFoundException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = PhoneNumber.NotFound
+                                verificationMethodState = VerificationMethod.NotFound
                             )
                         }
                     }
@@ -148,7 +148,7 @@ class FindIdVerificationViewModel @Inject constructor(
                     is KoinUserException.VerificationCodeRequestCountExceededException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = PhoneNumber.CountExceeded
+                                verificationMethodState = VerificationMethod.CountExceeded
                             )
                         }
                     }
@@ -156,7 +156,7 @@ class FindIdVerificationViewModel @Inject constructor(
                     else -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = PhoneNumber.Failed(it.message ?: "")
+                                verificationMethodState = VerificationMethod.Failed(it.message ?: "")
                             )
                         }
                     }

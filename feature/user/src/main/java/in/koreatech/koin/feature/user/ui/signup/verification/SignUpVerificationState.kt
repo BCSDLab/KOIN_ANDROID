@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.user.ui.signup.verification
 
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.domain.util.ext.isEnglish
 import `in`.koreatech.koin.domain.util.ext.isKorean
@@ -10,7 +10,7 @@ data class SignUpVerificationState(
     val name: String = "",
     val gender: Gender = Gender.Unknown,
     val phoneNumber: String = "",
-    val phoneNumberState: PhoneNumber = PhoneNumber.None,
+    val phoneNumberState: VerificationMethod = VerificationMethod.None,
     val verificationCode: String = "",
     val verificationCodeState: VerificationCode = VerificationCode.None,
     val verificationTimeLeft: Int = 180
@@ -27,7 +27,7 @@ val SignUpVerificationState.isNameValid: Boolean
 
 val SignUpVerificationState.currentStep: SignUpVerificationStep
     get() = when {
-        phoneNumber.isNotEmpty() && phoneNumberState is PhoneNumber.Sent -> SignUpVerificationStep.VERIFICATION_CODE
+        phoneNumber.isNotEmpty() && phoneNumberState is VerificationMethod.Sent -> SignUpVerificationStep.VERIFICATION_CODE
         name.isNotEmpty() && isNameValid && gender != Gender.Unknown -> SignUpVerificationStep.PHONE_NUMBER
         else -> SignUpVerificationStep.INITIAL
     }

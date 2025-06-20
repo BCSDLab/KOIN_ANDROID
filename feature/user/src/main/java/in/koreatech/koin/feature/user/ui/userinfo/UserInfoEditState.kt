@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.feature.user.model.VerificationCode
@@ -29,7 +29,7 @@ data class UserInfoEditState(
     val verificationCode: String = "",
     val nicknameState: NicknameState = NicknameState.None,
     val verificationCodeState: VerificationCode = VerificationCode.None,
-    val phoneNumberState: PhoneNumber = PhoneNumber.None,
+    val phoneNumberState: VerificationMethod = VerificationMethod.None,
     val verificationTimeLeft: Int = 180,
     val showWithdrawalDialog: Boolean = false
 )

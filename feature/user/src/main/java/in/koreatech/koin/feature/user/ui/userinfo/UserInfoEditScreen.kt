@@ -53,7 +53,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.feature.user.R
@@ -221,7 +221,7 @@ fun GeneralUserInfo(
     isEmailValid: Boolean,
     gender: Int?,
     nicknameState: NicknameState,
-    phoneNumberState: PhoneNumber,
+    phoneNumberState: VerificationMethod,
     verificationCodeState: VerificationCode,
     verificationCode: String,
     verificationTimeLeft: Int,
@@ -286,7 +286,7 @@ fun GeneralUserInfo(
             onRequestVerificationCode = onRequestVerificationCode
         )
 
-        if (phoneNumberState is PhoneNumber.Sent) {
+        if (phoneNumberState is VerificationMethod.Sent) {
             UserInfoVerificationCodeVerification(
                 verificationCode = verificationCode,
                 verificationCodeState = verificationCodeState,
@@ -464,7 +464,7 @@ fun UserInfoNickname(
 @Composable
 fun UserInfoPhoneNumber(
     phoneNumber: String,
-    phoneNumberState: PhoneNumber,
+    phoneNumberState: VerificationMethod,
     isPhoneNumberChanged: Boolean,
     onPhoneNumberChange: (String) -> Unit = {},
     onRequestVerificationCode: () -> Unit = {}
@@ -484,14 +484,14 @@ fun UserInfoPhoneNumber(
 
     Box(modifier = Modifier.height(32.dp)) {
         when (phoneNumberState) {
-            is PhoneNumber.CountExceeded -> {
+            is VerificationMethod.CountExceeded -> {
                 KoinUserTextFieldAlert(
                     text = stringResource(R.string.user_info_phone_number_limit_exceeded),
                     state = KoinUserTextFieldAlertState.Error
                 )
             }
 
-            is PhoneNumber.Sent -> {
+            is VerificationMethod.Sent -> {
                 Row {
                     KoinUserTextFieldAlert(
                         text = stringResource(R.string.user_info_phone_number_sent),
@@ -510,24 +510,24 @@ fun UserInfoPhoneNumber(
                 }
             }
 
-            is PhoneNumber.AlreadySignedUp -> {
+            is VerificationMethod.AlreadySignedUp -> {
                 KoinUserTextFieldAlert(
                     text = stringResource(R.string.user_info_phone_number_already_signed_up),
                     state = KoinUserTextFieldAlertState.Error
                 )
             }
 
-            is PhoneNumber.WrongFormat -> {
+            is VerificationMethod.WrongFormat -> {
                 KoinUserTextFieldAlert(
                     text = stringResource(R.string.user_info_phone_number_wrong_format),
                     state = KoinUserTextFieldAlertState.Warning
                 )
             }
 
-            PhoneNumber.NotFound,
-            PhoneNumber.None,
-            PhoneNumber.Available,
-            is PhoneNumber.Failed -> {}
+            VerificationMethod.NotFound,
+            VerificationMethod.None,
+            VerificationMethod.Available,
+            is VerificationMethod.Failed -> {}
         }
     }
 }
@@ -682,7 +682,7 @@ fun UserInfoEditScreenImplPreview() {
                 email = "",
                 gender = 0,
                 nicknameState = NicknameState.None,
-                phoneNumberState = PhoneNumber.None,
+                phoneNumberState = VerificationMethod.None,
                 verificationCodeState = VerificationCode.NotValid,
                 verificationCode = "",
                 verificationTimeLeft = 180,

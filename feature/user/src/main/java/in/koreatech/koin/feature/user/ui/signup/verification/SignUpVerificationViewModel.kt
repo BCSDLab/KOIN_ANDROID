@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.CheckPhoneNumberDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
@@ -65,7 +65,7 @@ class SignUpVerificationViewModel @Inject constructor(
             reduce {
                 state.copy(
                     phoneNumber = phoneNumber,
-                    phoneNumberState = PhoneNumber.None,
+                    phoneNumberState = VerificationMethod.None,
                     verificationCode = "",
                     verificationCodeState = VerificationCode.None,
                     verificationTimeLeft = 180
@@ -80,7 +80,7 @@ class SignUpVerificationViewModel @Inject constructor(
             checkPhoneNumberDuplicateUseCase(state.phoneNumber).onSuccess {
                 reduce {
                     state.copy(
-                        phoneNumberState = PhoneNumber.Available
+                        phoneNumberState = VerificationMethod.Available
                     )
                 }
                 sendVerificationCode()
@@ -89,14 +89,14 @@ class SignUpVerificationViewModel @Inject constructor(
                     is KoinUserException.PhoneNumberInvalidException -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.WrongFormat
+                                phoneNumberState = VerificationMethod.WrongFormat
                             )
                         }
                     }
                     is KoinUserException.PhoneNumberConflictException -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.AlreadySignedUp
+                                phoneNumberState = VerificationMethod.AlreadySignedUp
                             )
                         }
                     }
@@ -111,7 +111,7 @@ class SignUpVerificationViewModel @Inject constructor(
             requestSmsVerificationUseCase(state.phoneNumber).onSuccess {
                 reduce {
                     state.copy(
-                        phoneNumberState = PhoneNumber.Sent(
+                        phoneNumberState = VerificationMethod.Sent(
                             remainingCount = it.remainingCount,
                             totalCount = it.totalCount,
                             currentCount = it.currentCount
@@ -124,7 +124,7 @@ class SignUpVerificationViewModel @Inject constructor(
                     is KoinUserException.PhoneNumberInvalidException -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.WrongFormat
+                                phoneNumberState = VerificationMethod.WrongFormat
                             )
                         }
                     }
@@ -132,7 +132,7 @@ class SignUpVerificationViewModel @Inject constructor(
                     is KoinUserException.PhoneNumberNotFoundException -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.NotFound
+                                phoneNumberState = VerificationMethod.NotFound
                             )
                         }
                     }
@@ -140,7 +140,7 @@ class SignUpVerificationViewModel @Inject constructor(
                     is KoinUserException.VerificationCodeRequestCountExceededException -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.CountExceeded
+                                phoneNumberState = VerificationMethod.CountExceeded
                             )
                         }
                     }
@@ -148,7 +148,7 @@ class SignUpVerificationViewModel @Inject constructor(
                     else -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.Failed(it.message ?: "")
+                                phoneNumberState = VerificationMethod.Failed(it.message ?: "")
                             )
                         }
                     }

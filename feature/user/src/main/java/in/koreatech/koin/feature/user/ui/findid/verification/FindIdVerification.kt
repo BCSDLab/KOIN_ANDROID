@@ -41,7 +41,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
@@ -88,7 +88,7 @@ fun FindIdVerification(
 fun FindIdVerificationImpl(
     isSms: Boolean,
     verificationMethod: String,
-    verificationMethodState: PhoneNumber,
+    verificationMethodState: VerificationMethod,
     verificationCode: String,
     verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
@@ -137,28 +137,28 @@ fun FindIdVerificationImpl(
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                 FilledButton(
                     modifier = Modifier.widthIn(min = 86.dp),
-                    text = if (verificationMethodState is PhoneNumber.Sent) stringResource(R.string.find_id_resend) else stringResource(R.string.find_id_send),
+                    text = if (verificationMethodState is VerificationMethod.Sent) stringResource(R.string.find_id_resend) else stringResource(R.string.find_id_send),
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
-                    enabled = (verificationMethod.isNotBlank() && verificationCodeState !is VerificationCode.Valid) && verificationMethodState !is PhoneNumber.CountExceeded
+                    enabled = (verificationMethod.isNotBlank() && verificationCodeState !is VerificationCode.Valid) && verificationMethodState !is VerificationMethod.CountExceeded
                 )
             }
         }
 
         when (verificationMethodState) {
-            PhoneNumber.CountExceeded -> VerificationMethodRequestCountExceeded()
-            is PhoneNumber.Sent -> VerificationCodeSentSuccessMessage(
+            VerificationMethod.CountExceeded -> VerificationMethodRequestCountExceeded()
+            is VerificationMethod.Sent -> VerificationCodeSentSuccessMessage(
                 verificationMethodState.remainingCount,
                 verificationMethodState.totalCount
             )
 
-            PhoneNumber.WrongFormat -> VerificationMethodWrongFormatMessage(isSms)
-            PhoneNumber.NotFound -> VerificationMethodInvalidMessage(isSms)
-            is PhoneNumber.Failed,
-            PhoneNumber.None,
-            PhoneNumber.AlreadySignedUp,
-            PhoneNumber.Available -> {
+            VerificationMethod.WrongFormat -> VerificationMethodWrongFormatMessage(isSms)
+            VerificationMethod.NotFound -> VerificationMethodInvalidMessage(isSms)
+            is VerificationMethod.Failed,
+            VerificationMethod.None,
+            VerificationMethod.AlreadySignedUp,
+            VerificationMethod.Available -> {
             }
         }
 
@@ -170,7 +170,7 @@ fun FindIdVerificationImpl(
 
         Spacer(modifier = Modifier.height(64.dp))
 
-        if (verificationMethodState is PhoneNumber.Sent) {
+        if (verificationMethodState is VerificationMethod.Sent) {
             Text(
                 text = stringResource(R.string.find_id_verification_code),
                 style = KoinTheme.typography.medium18
@@ -396,7 +396,7 @@ fun FindPasswordByVerificationMethodPreview() {
     FindIdVerificationImpl(
         isSms = true,
         verificationMethod = "test@test.com",
-        verificationMethodState = PhoneNumber.Sent(
+        verificationMethodState = VerificationMethod.Sent(
             remainingCount = 1,
             totalCount = 5,
             currentCount = 4

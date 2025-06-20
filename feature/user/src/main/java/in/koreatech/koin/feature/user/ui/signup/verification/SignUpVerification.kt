@@ -43,7 +43,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.constant.CONTACT_URL
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.SIGN_UP_PHONE_NUMBER_MAX_LENGTH
@@ -112,7 +112,7 @@ fun SignUpVerificationImpl(
     isNameValid: Boolean,
     gender: Gender,
     phoneNumber: String,
-    phoneNumberState: PhoneNumber,
+    phoneNumberState: VerificationMethod,
     verificationCode: String,
     verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
@@ -246,7 +246,7 @@ private fun SignUpVerificationInitialStep(
 @Composable
 fun SignUpVerificationPhoneNumberStep(
     phoneNumber: String,
-    phoneNumberState: PhoneNumber,
+    phoneNumberState: VerificationMethod,
     verificationCodeState: VerificationCode,
     modifier: Modifier = Modifier,
     onPhoneNumberChange: (String) -> Unit = {},
@@ -285,13 +285,13 @@ fun SignUpVerificationPhoneNumberStep(
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
             FilledButton(
                 modifier = Modifier.widthIn(min = 86.dp),
-                text = if (phoneNumberState is PhoneNumber.Sent) {
+                text = if (phoneNumberState is VerificationMethod.Sent) {
                     stringResource(R.string.sign_up_phone_number_resend_verification)
                 } else {
                     stringResource(R.string.sign_up_phone_number_send_verification)
                 },
                 textStyle = KoinTheme.typography.regular10,
-                enabled = (phoneNumber.isNotBlank() || phoneNumberState != PhoneNumber.CountExceeded) && verificationCodeState !is VerificationCode.Valid,
+                enabled = (phoneNumber.isNotBlank() || phoneNumberState != VerificationMethod.CountExceeded) && verificationCodeState !is VerificationCode.Valid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     onVerificationCodeSent()
@@ -301,10 +301,10 @@ fun SignUpVerificationPhoneNumberStep(
     }
 
     when (phoneNumberState) {
-        PhoneNumber.AlreadySignedUp -> PhoneNumberDuplicateMessage()
-        PhoneNumber.WrongFormat -> PhoneNumberInvalidMessage()
-        PhoneNumber.CountExceeded -> PhoneNumberRequestCountExceeded()
-        is PhoneNumber.Sent -> {
+        VerificationMethod.AlreadySignedUp -> PhoneNumberDuplicateMessage()
+        VerificationMethod.WrongFormat -> PhoneNumberInvalidMessage()
+        VerificationMethod.CountExceeded -> PhoneNumberRequestCountExceeded()
+        is VerificationMethod.Sent -> {
             VerificationCodeSentSuccessMessage(
                 remainingCount = phoneNumberState.remainingCount,
                 totalCount = phoneNumberState.totalCount
@@ -521,7 +521,7 @@ fun SignUpVerificationPreview() {
         isNameValid = true,
         gender = Gender.Man,
         phoneNumber = "01012345678",
-        phoneNumberState = PhoneNumber.None,
+        phoneNumberState = VerificationMethod.None,
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
         verificationTimeLeft = 180,

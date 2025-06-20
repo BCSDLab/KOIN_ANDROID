@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.feature.user.model.VerificationCode
@@ -120,7 +120,7 @@ class UserInfoEditViewModel @Inject constructor(
         reduce {
             state.copy(
                 phoneNumber = phoneNumber,
-                phoneNumberState = PhoneNumber.None
+                phoneNumberState = VerificationMethod.None
             )
         }
     }
@@ -204,7 +204,7 @@ class UserInfoEditViewModel @Inject constructor(
             requestSmsVerificationUseCase(state.phoneNumber).onSuccess {
                 reduce {
                     state.copy(
-                        phoneNumberState = PhoneNumber.Sent(
+                        phoneNumberState = VerificationMethod.Sent(
                             remainingCount = it.remainingCount,
                             totalCount = it.totalCount,
                             currentCount = it.currentCount
@@ -218,7 +218,7 @@ class UserInfoEditViewModel @Inject constructor(
                     is KoinUserException.PhoneNumberInvalidException -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.WrongFormat
+                                phoneNumberState = VerificationMethod.WrongFormat
                             )
                         }
                     }
@@ -226,7 +226,7 @@ class UserInfoEditViewModel @Inject constructor(
                     is KoinUserException.PhoneNumberNotFoundException -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.NotFound
+                                phoneNumberState = VerificationMethod.NotFound
                             )
                         }
                     }
@@ -234,7 +234,7 @@ class UserInfoEditViewModel @Inject constructor(
                     is KoinUserException.VerificationCodeRequestCountExceededException -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.CountExceeded
+                                phoneNumberState = VerificationMethod.CountExceeded
                             )
                         }
                     }
@@ -242,7 +242,7 @@ class UserInfoEditViewModel @Inject constructor(
                     else -> {
                         reduce {
                             state.copy(
-                                phoneNumberState = PhoneNumber.Failed(it.message ?: "")
+                                phoneNumberState = VerificationMethod.Failed(it.message ?: "")
                             )
                         }
                     }
@@ -294,15 +294,15 @@ class UserInfoEditViewModel @Inject constructor(
             }.onFailure {
                 when (it) {
                     is KoinUserException.PhoneNumberInvalidException -> reduce {
-                        state.copy(phoneNumberState = PhoneNumber.WrongFormat)
+                        state.copy(phoneNumberState = VerificationMethod.WrongFormat)
                     }
 
                     is KoinUserException.PhoneNumberConflictException -> reduce {
-                        state.copy(phoneNumberState = PhoneNumber.AlreadySignedUp)
+                        state.copy(phoneNumberState = VerificationMethod.AlreadySignedUp)
                     }
 
                     else -> reduce {
-                        state.copy(phoneNumberState = PhoneNumber.Failed(it.message ?: ""))
+                        state.copy(phoneNumberState = VerificationMethod.Failed(it.message ?: ""))
                     }
                 }
             }
@@ -322,7 +322,7 @@ class UserInfoEditViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         verificationCodeState = VerificationCode.None,
-                        phoneNumberState = PhoneNumber.None
+                        phoneNumberState = VerificationMethod.None
                     )
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
@@ -365,7 +365,7 @@ class UserInfoEditViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         verificationCodeState = VerificationCode.None,
-                        phoneNumberState = PhoneNumber.None
+                        phoneNumberState = VerificationMethod.None
                     )
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)

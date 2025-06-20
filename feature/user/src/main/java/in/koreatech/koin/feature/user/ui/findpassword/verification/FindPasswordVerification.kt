@@ -44,7 +44,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
-import `in`.koreatech.koin.feature.user.model.PhoneNumber
+import `in`.koreatech.koin.feature.user.model.VerificationMethod
 import `in`.koreatech.koin.feature.user.model.VerificationCode
 import `in`.koreatech.koin.feature.user.PHONE_NUMBER_LENGTH
 import `in`.koreatech.koin.feature.user.R
@@ -103,7 +103,7 @@ fun FindPasswordVerificationImpl(
     loginId: String,
     loginIdValid: Boolean,
     verificationMethod: String,
-    verificationMethodState: PhoneNumber,
+    verificationMethodState: VerificationMethod,
     verificationCode: String,
     verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
@@ -192,7 +192,7 @@ fun FindPasswordVerificationImpl(
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                 FilledButton(
                     modifier = Modifier.widthIn(min = 86.dp),
-                    text = if (verificationMethodState is PhoneNumber.Sent) stringResource(R.string.find_password_resend) else stringResource(R.string.find_password_send),
+                    text = if (verificationMethodState is VerificationMethod.Sent) stringResource(R.string.find_password_resend) else stringResource(R.string.find_password_send),
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
@@ -202,24 +202,24 @@ fun FindPasswordVerificationImpl(
         }
 
         when (verificationMethodState) {
-            PhoneNumber.CountExceeded -> VerificationMethodRequestCountExceeded()
-            is PhoneNumber.Sent -> VerificationCodeSentSuccessMessage(
+            VerificationMethod.CountExceeded -> VerificationMethodRequestCountExceeded()
+            is VerificationMethod.Sent -> VerificationCodeSentSuccessMessage(
                 verificationMethodState.remainingCount,
                 verificationMethodState.totalCount
             )
 
-            PhoneNumber.WrongFormat -> VerificationMethodWrongFormat(isSms)
-            PhoneNumber.NotFound -> VerificationMethodInvalidMessage(isSms)
-            is PhoneNumber.Failed,
-            PhoneNumber.None,
-            PhoneNumber.AlreadySignedUp,
-            PhoneNumber.Available -> {
+            VerificationMethod.WrongFormat -> VerificationMethodWrongFormat(isSms)
+            VerificationMethod.NotFound -> VerificationMethodInvalidMessage(isSms)
+            is VerificationMethod.Failed,
+            VerificationMethod.None,
+            VerificationMethod.AlreadySignedUp,
+            VerificationMethod.Available -> {
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (verificationMethodState is PhoneNumber.Sent) {
+        if (verificationMethodState is VerificationMethod.Sent) {
             SignUpVerificationCodeVerificationStep(
                 verificationCode = verificationCode,
                 verificationCodeState = verificationCodeState,
@@ -447,7 +447,7 @@ fun FindPasswordBySmsPreview() {
         loginId = "testUser",
         loginIdValid = true,
         verificationMethod = "01012345678",
-        verificationMethodState = PhoneNumber.Available,
+        verificationMethodState = VerificationMethod.Available,
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
         verificationTimeLeft = 180,
