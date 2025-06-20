@@ -54,6 +54,7 @@ import `in`.koreatech.koin.feature.user.component.KoinUserProgressIndicator
 import `in`.koreatech.koin.feature.user.component.KoinUserSingleChoiceRadioGroup
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -447,10 +448,7 @@ private fun PhoneNumberDuplicateMessage() {
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .noRippleClickable {
-                        val intent =
-                            Intent(Intent.ACTION_VIEW).apply {
-                                data = "koin://login/login".toUri()
-                            }
+                        val intent = Intent(context, SignInActivity::class.java)
                         context.startActivity(intent)
                     },
                 text = stringResource(R.string.sign_up_phone_number_already_sign_up),

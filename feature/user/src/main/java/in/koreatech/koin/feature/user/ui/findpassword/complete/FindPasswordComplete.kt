@@ -30,6 +30,7 @@ import androidx.core.net.toUri
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.user.R
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 
 @Composable
 fun FindPasswordCompleteScreen() {
@@ -78,9 +79,7 @@ fun FindPasswordCompleteScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.find_password_change_password_login),
                 onClick = {
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = "koin://login/login".toUri()
-                    }.let {
+                    Intent(context, SignInActivity::class.java).let {
                         context.startActivity(it)
                     }
                 },

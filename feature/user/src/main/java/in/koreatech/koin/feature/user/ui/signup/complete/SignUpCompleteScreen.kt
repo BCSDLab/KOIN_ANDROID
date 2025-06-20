@@ -26,6 +26,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.user.R
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 
 @Composable
 fun SignUpCompleteScreen(
@@ -67,9 +68,7 @@ fun SignUpCompleteScreen(
             text = stringResource(R.string.sign_up_complete_login),
             colors = FilledButtonColors.Warning,
             onClick = {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = "koin://login/login".toUri()
-                }.let {
+                Intent(context, SignInActivity::class.java).let {
                     context.startActivity(it)
                 }
                 finish()
