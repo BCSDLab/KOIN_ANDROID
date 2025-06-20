@@ -26,6 +26,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.user.R
+import `in`.koreatech.koin.feature.user.ui.findpassword.FindPasswordActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.feature.user.util.stringResourceWithStyle
 
@@ -95,9 +96,7 @@ fun FindIdCompleteImpl(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.find_id_go_to_find_password),
             onClick = {
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = "koin://findpassword/activity".toUri()
-                }.let {
+                Intent(context, FindPasswordActivity::class.java).let {
                     context.startActivity(it)
                 }
                 (context as Activity).finish()
