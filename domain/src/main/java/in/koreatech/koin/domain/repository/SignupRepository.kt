@@ -3,8 +3,6 @@ package `in`.koreatech.koin.domain.repository
 import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
-import `in`.koreatech.koin.domain.model.user.PhoneNumber
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 
 interface SignupRepository {
     suspend fun getPrivacyTermText(): String
@@ -31,13 +29,13 @@ interface SignupRepository {
 
     suspend fun getMarketingTerm(): Term
 
-    suspend fun isUsernameDuplicatedV2(nickname: String): SignupContinuationState
+    suspend fun isUsernameDuplicatedV2(nickname: String): Result<Unit>
 
-    suspend fun isPhoneDuplicated(phone: String): PhoneNumber
+    suspend fun isPhoneDuplicated(phone: String): Result<Unit>
 
-    suspend fun isLoginIdDuplicated(loginId: String): SignupContinuationState
+    suspend fun isLoginIdDuplicated(loginId: String): Result<Unit>
 
-    suspend fun isEmailDuplicated(email: String): SignupContinuationState
+    suspend fun isEmailDuplicated(email: String): Result<Unit>
 
     suspend fun postStudentRegister(
         name: String,

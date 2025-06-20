@@ -26,7 +26,8 @@ class SignUpVerificationViewModel @Inject constructor(
     private val requestSmsVerificationUseCase: RequestSmsVerificationUseCase,
     private val verifySmsCodeUseCase: VerifySmsCodeUseCase
 ) : ViewModel(), ContainerHost<SignUpVerificationState, SignUpVerificationSideEffect> {
-    override val container = container<SignUpVerificationState, SignUpVerificationSideEffect>(SignUpVerificationState())
+    override val container =
+        container<SignUpVerificationState, SignUpVerificationSideEffect>(SignUpVerificationState())
 
     fun setName(name: String) {
         blockingIntent {
@@ -76,14 +77,29 @@ class SignUpVerificationViewModel @Inject constructor(
 
     fun checkPhoneNumber() = viewModelScope.launch {
         intent {
-            checkPhoneNumberDuplicateUseCase(state.phoneNumber).let {
+            checkPhoneNumberDuplicateUseCase(state.phoneNumber).onSuccess {
                 reduce {
                     state.copy(
-                        phoneNumberState = it
+                        phoneNumberState = PhoneNumber.Available
                     )
                 }
-                if (it == PhoneNumber.Available) {
-                    sendVerificationCode()
+                sendVerificationCode()
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.PhoneNumberInvalidException -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+                    is KoinUserException.PhoneNumberConflictException -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.AlreadySignedUp
+                            )
+                        }
+                    }
                 }
             }
         }

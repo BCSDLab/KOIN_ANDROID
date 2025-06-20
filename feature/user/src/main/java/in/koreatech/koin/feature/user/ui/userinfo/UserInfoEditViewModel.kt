@@ -10,7 +10,6 @@ import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.model.user.VerificationCode
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckPhoneNumberDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
@@ -42,7 +41,8 @@ class UserInfoEditViewModel @Inject constructor(
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
     private val userWithdrawUseCase: UserWithdrawUseCase
 ) : ViewModel(), ContainerHost<UserInfoEditState, UserInfoEditSideEffect> {
-    override val container = container<UserInfoEditState, UserInfoEditSideEffect>(UserInfoEditState())
+    override val container =
+        container<UserInfoEditState, UserInfoEditSideEffect>(UserInfoEditState())
 
     init {
         getUserInfo()
@@ -177,18 +177,18 @@ class UserInfoEditViewModel @Inject constructor(
                 }
                 return@intent
             }
-            checkNicknameDuplicateUseCase(state.nickname).let {
+            checkNicknameDuplicateUseCase(state.nickname).onSuccess {
+                reduce {
+                    state.copy(nicknameState = NicknameState.NicknameAvailable)
+                }
+            }.onFailure {
                 when (it) {
-                    SignupContinuationState.AvailableNickname -> {
-                        reduce {
-                            state.copy(nicknameState = NicknameState.NicknameAvailable)
-                        }
-                    }
-                    SignupContinuationState.NicknameDuplicated -> {
+                    is KoinUserException.NicknameConflictException -> {
                         reduce {
                             state.copy(nicknameState = NicknameState.NicknameDuplicated)
                         }
                     }
+
                     else -> {
                         reduce {
                             state.copy(nicknameState = NicknameState.Failed)
@@ -289,16 +289,20 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun checkPhoneNumber() = viewModelScope.launch {
         intent {
-            checkPhoneNumberDuplicateUseCase(state.phoneNumber).let {
-                if (it == PhoneNumber.Available) {
-                    requestVerificationCode()
-                } else if (it == PhoneNumber.AlreadySignedUp) {
-                    reduce {
+            checkPhoneNumberDuplicateUseCase(state.phoneNumber).onSuccess {
+                requestVerificationCode()
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.PhoneNumberInvalidException -> reduce {
+                        state.copy(phoneNumberState = PhoneNumber.WrongFormat)
+                    }
+
+                    is KoinUserException.PhoneNumberConflictException -> reduce {
                         state.copy(phoneNumberState = PhoneNumber.AlreadySignedUp)
                     }
-                } else if (it == PhoneNumber.WrongFormat) {
-                    reduce {
-                        state.copy(phoneNumberState = PhoneNumber.WrongFormat)
+
+                    else -> reduce {
+                        state.copy(phoneNumberState = PhoneNumber.Failed(it.message ?: ""))
                     }
                 }
             }
@@ -324,10 +328,22 @@ class UserInfoEditViewModel @Inject constructor(
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
                 when (it) {
-                    is KoinUserException.DataInvalidException -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
-                    is KoinUserException.UnauthorizedException -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
-                    is KoinUserException.UserNotFoundException -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
-                    is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    is KoinUserException.DataInvalidException -> postSideEffect(
+                        UserInfoEditSideEffect.InvalidDataError
+                    )
+
+                    is KoinUserException.UnauthorizedException -> postSideEffect(
+                        UserInfoEditSideEffect.PhoneNumberValidateRequiredError
+                    )
+
+                    is KoinUserException.UserNotFoundException -> postSideEffect(
+                        UserInfoEditSideEffect.UnknownUserError
+                    )
+
+                    is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(
+                        UserInfoEditSideEffect.NicknameOrEmailConflictError
+                    )
+
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
                 }
             }
@@ -355,10 +371,22 @@ class UserInfoEditViewModel @Inject constructor(
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
                 when (it) {
-                    is KoinUserException.DataInvalidException -> postSideEffect(UserInfoEditSideEffect.InvalidDataError)
-                    is KoinUserException.UnauthorizedException -> postSideEffect(UserInfoEditSideEffect.PhoneNumberValidateRequiredError)
-                    is KoinUserException.UserNotFoundException -> postSideEffect(UserInfoEditSideEffect.UnknownUserError)
-                    is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(UserInfoEditSideEffect.NicknameOrEmailConflictError)
+                    is KoinUserException.DataInvalidException -> postSideEffect(
+                        UserInfoEditSideEffect.InvalidDataError
+                    )
+
+                    is KoinUserException.UnauthorizedException -> postSideEffect(
+                        UserInfoEditSideEffect.PhoneNumberValidateRequiredError
+                    )
+
+                    is KoinUserException.UserNotFoundException -> postSideEffect(
+                        UserInfoEditSideEffect.UnknownUserError
+                    )
+
+                    is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(
+                        UserInfoEditSideEffect.NicknameOrEmailConflictError
+                    )
+
                     else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
                 }
             }

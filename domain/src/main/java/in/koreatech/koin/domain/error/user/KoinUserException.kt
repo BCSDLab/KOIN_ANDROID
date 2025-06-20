@@ -17,6 +17,7 @@ sealed class KoinUserException {
     class LoginIdInvalidException : KoinErrorException()
     class EmailInvalidException : KoinErrorException()
     class PhoneNumberInvalidException : KoinErrorException()
+    class NicknameInvalidException : KoinErrorException()
     class VerificationCodeInvalidException : KoinErrorException()
     class LoginIdNotMatchPhoneException : KoinErrorException()
     class LoginIdNotMatchEmailException : KoinErrorException()
@@ -38,6 +39,10 @@ sealed class KoinUserException {
     /*
      * Exceptions for 409 Conflict
      */
+    class PhoneNumberConflictException : KoinErrorException()
+    class EmailConflictException : KoinErrorException()
+    class LoginIdConflictException : KoinErrorException()
+    class NicknameConflictException : KoinErrorException()
     class NicknameOrEmailConflictException : KoinErrorException()
 
     /*

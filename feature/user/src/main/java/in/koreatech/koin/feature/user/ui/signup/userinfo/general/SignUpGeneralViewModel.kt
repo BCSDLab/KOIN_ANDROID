@@ -4,12 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.usecase.signup.CheckEmailDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckLoginIdDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.PostGeneralRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.isLoginIdFormat
+import `in`.koreatech.koin.feature.user.KOREATECH_EMAIL_DOMAIN
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.GENDER
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.NAME
 import `in`.koreatech.koin.feature.user.ui.signup.navigation.PHONE_NUMBER
@@ -84,15 +85,13 @@ class SignUpGeneralViewModel @Inject constructor(
 
     fun checkNicknameDuplicate() = viewModelScope.launch {
         intent {
-            checkNicknameDuplicateUseCase(state.nickname).let {
-                if (it is SignupContinuationState.AvailableNickname) {
-                    reduce {
-                        state.copy(isNicknameAvailable = true)
-                    }
-                } else {
-                    reduce {
-                        state.copy(isNicknameAvailable = false)
-                    }
+            checkNicknameDuplicateUseCase(state.nickname).onSuccess {
+                reduce {
+                    state.copy(isNicknameAvailable = true)
+                }
+            }.onFailure {
+                reduce {
+                    state.copy(isNicknameAvailable = false)
                 }
             }
         }
@@ -108,28 +107,28 @@ class SignUpGeneralViewModel @Inject constructor(
 
     fun checkLoginIdDuplicate() = viewModelScope.launch {
         intent {
-            checkLoginIdDuplicateUseCase(state.loginId).let {
+            checkLoginIdDuplicateUseCase(state.loginId).onSuccess {
+                reduce {
+                    state.copy(isLoginIdAvailable = true, isLoginIdValid = true)
+                }
+            }.onFailure {
                 when (it) {
-                    is SignupContinuationState.AvailableLoginId -> {
+                    is KoinUserException.LoginIdInvalidException -> {
                         reduce {
-                            state.copy(isLoginIdAvailable = true, isLoginIdValid = true)
+                            state.copy(isLoginIdAvailable = null, isLoginIdValid = false)
                         }
                     }
-
-                    is SignupContinuationState.LoginIdDuplicated -> {
+                    is KoinUserException.LoginIdConflictException -> {
                         reduce {
                             state.copy(isLoginIdAvailable = false, isLoginIdValid = true)
                         }
                     }
 
-                    is SignupContinuationState.CheckLoginIdFormat -> {
+                    else -> {
+                        Timber.d(it.toString())
                         reduce {
                             state.copy(isLoginIdAvailable = null, isLoginIdValid = false)
                         }
-                    }
-
-                    else -> {
-                        Timber.d(it.toString())
                     }
                 }
             }
@@ -147,20 +146,22 @@ class SignUpGeneralViewModel @Inject constructor(
     private fun checkEmailDuplicate() = viewModelScope.launch {
         intent {
             if (state.email == "") return@intent
-            checkEmailDuplicateUseCase(state.email).let {
+            checkEmailDuplicateUseCase("${state.email}@$KOREATECH_EMAIL_DOMAIN").onSuccess {
                 reduce {
-                    when (it) {
-                        is SignupContinuationState.AvailableEmail -> {
-                            state.copy(isEmailAvailable = true)
-                        }
-
-                        is SignupContinuationState.EmailDuplicated -> {
+                    state.copy(isEmailAvailable = true)
+                }
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.EmailConflictException -> {
+                        reduce {
                             state.copy(isEmailAvailable = false)
                         }
+                    }
 
-                        else -> {
-                            // We check email validation with regex.
-                            // So, Don't check email validation from API response.
+                    else -> {
+                        // We check email validation with regex.
+                        // So, Don't check email validation from API response.
+                        reduce {
                             state.copy(isEmailAvailable = null)
                         }
                     }
