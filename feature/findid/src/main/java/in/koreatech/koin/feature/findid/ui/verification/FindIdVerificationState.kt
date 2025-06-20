@@ -10,5 +10,5 @@ data class FindIdVerificationState(
     val verificationMethodState: PhoneNumber = PhoneNumber.None,
     val verificationCode: String = "",
     val verificationCodeState: VerificationCode = VerificationCode.None,
-    val verificationTimeLeft: Int = 300
+    val verificationTimeLeft: Int = 180
 )

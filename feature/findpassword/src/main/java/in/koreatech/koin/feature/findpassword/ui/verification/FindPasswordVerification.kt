@@ -80,14 +80,14 @@ fun FindPasswordVerification(
     FindPasswordVerificationImpl(
         loginId = uiState.loginId,
         loginIdValid = uiState.loginIdValid,
-        phoneNumber = uiState.verificationMethod,
-        phoneNumberState = uiState.verificationMethodState,
+        verificationMethod = uiState.verificationMethod,
+        verificationMethodState = uiState.verificationMethodState,
         verificationCode = uiState.verificationCode,
         verificationCodeState = uiState.verificationCodeState,
         verificationTimeLeft = uiState.verificationTimeLeft,
         isSms = uiState.isSms,
         onLoginIdChange = { viewModel.updateLoginId(it) },
-        onPhoneNumberChange = { viewModel.updatePhoneNumber(it) },
+        onVerificationMethodChange = { viewModel.updatePhoneNumber(it) },
         onVerificationCodeChange = { viewModel.updateVerificationCode(it) },
         onVerificationCodeRequest = { viewModel.checkVerificationMethodExists() },
         onVerificationCodeVerify = { viewModel.checkVerificationCode() },
@@ -102,15 +102,15 @@ fun FindPasswordVerification(
 fun FindPasswordVerificationImpl(
     loginId: String,
     loginIdValid: Boolean,
-    phoneNumber: String,
-    phoneNumberState: PhoneNumber,
+    verificationMethod: String,
+    verificationMethodState: PhoneNumber,
     verificationCode: String,
     verificationCodeState: VerificationCode,
     verificationTimeLeft: Int,
     isSms: Boolean,
     modifier: Modifier = Modifier,
     onLoginIdChange: (String) -> Unit = {},
-    onPhoneNumberChange: (String) -> Unit = {},
+    onVerificationMethodChange: (String) -> Unit = {},
     onVerificationCodeChange: (String) -> Unit = {},
     onVerificationCodeRequest: () -> Unit = {},
     onVerificationCodeVerify: () -> Unit = {},
@@ -177,13 +177,13 @@ fun FindPasswordVerificationImpl(
         ) {
             KoinFindPasswordBasicTextField(
                 modifier = Modifier.weight(1f),
-                value = phoneNumber,
+                value = verificationMethod,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = if (isSms) KeyboardType.Number else KeyboardType.Email,
                     imeAction = ImeAction.Done
                 ),
                 hint = stringResource(if (isSms) R.string.find_password_phone_number_hint else R.string.find_password_email_hint),
-                onValueChange = onPhoneNumberChange,
+                onValueChange = onVerificationMethodChange,
                 maxLength = if (isSms) PHONE_NUMBER_LENGTH else Int.MAX_VALUE
             )
 
@@ -192,24 +192,24 @@ fun FindPasswordVerificationImpl(
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                 FilledButton(
                     modifier = Modifier.widthIn(min = 86.dp),
-                    text = if (phoneNumberState is PhoneNumber.Sent) stringResource(R.string.find_password_resend) else stringResource(R.string.find_password_send),
+                    text = if (verificationMethodState is PhoneNumber.Sent) stringResource(R.string.find_password_resend) else stringResource(R.string.find_password_send),
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
-                    enabled = phoneNumber.isNotBlank() && verificationCodeState !is VerificationCode.Valid
+                    enabled = verificationMethod.isNotBlank() && verificationCodeState !is VerificationCode.Valid
                 )
             }
         }
 
-        when (phoneNumberState) {
-            PhoneNumber.CountExceeded -> PhoneNumberRequestCountExceeded()
+        when (verificationMethodState) {
+            PhoneNumber.CountExceeded -> VerificationMethodRequestCountExceeded()
             is PhoneNumber.Sent -> VerificationCodeSentSuccessMessage(
-                phoneNumberState.remainingCount,
-                phoneNumberState.totalCount
+                verificationMethodState.remainingCount,
+                verificationMethodState.totalCount
             )
 
-            PhoneNumber.WrongFormat -> PhoneNumberInvalidMessage()
-            PhoneNumber.NotFound -> VerificationMethodInvalidMessage()
+            PhoneNumber.WrongFormat -> VerificationMethodWrongFormat(isSms)
+            PhoneNumber.NotFound -> VerificationMethodInvalidMessage(isSms)
             is PhoneNumber.Failed,
             PhoneNumber.None,
             PhoneNumber.AlreadySignedUp,
@@ -219,7 +219,7 @@ fun FindPasswordVerificationImpl(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (phoneNumberState is PhoneNumber.Sent) {
+        if (verificationMethodState is PhoneNumber.Sent) {
             SignUpVerificationCodeVerificationStep(
                 verificationCode = verificationCode,
                 verificationCodeState = verificationCodeState,
@@ -229,7 +229,7 @@ fun FindPasswordVerificationImpl(
             )
         }
 
-        if (phoneNumber.isBlank() && isSms) {
+        if (verificationMethod.isBlank() && isSms) {
             EmailMessage(
                 navigateToEmailScreen = navigateToEmailScreen
             )
@@ -367,18 +367,20 @@ private fun EmailMessage(
 }
 
 @Composable
-private fun PhoneNumberInvalidMessage() {
+private fun VerificationMethodWrongFormat(
+    isSms: Boolean
+) {
     Spacer(modifier = Modifier.height(8.dp))
 
     KoinFindPasswordTextFieldAlert(
-        text = stringResource(R.string.find_password_phone_number_wrong_format),
+        text = stringResource(if (isSms) R.string.find_password_phone_number_wrong_format else R.string.find_password_email_wrong_format),
         state = KoinFindPasswordTextFieldAlertState.Warning
     )
 }
 
 @Composable
 private fun VerificationMethodInvalidMessage(
-    isSms: Boolean = true
+    isSms: Boolean
 ) {
     Spacer(modifier = Modifier.height(8.dp))
 
@@ -389,7 +391,7 @@ private fun VerificationMethodInvalidMessage(
 }
 
 @Composable
-private fun PhoneNumberRequestCountExceeded() {
+private fun VerificationMethodRequestCountExceeded() {
     Spacer(modifier = Modifier.height(8.dp))
 
     KoinFindPasswordTextFieldAlert(
@@ -444,8 +446,8 @@ fun FindPasswordBySmsPreview() {
     FindPasswordVerificationImpl(
         loginId = "testUser",
         loginIdValid = true,
-        phoneNumber = "01012345678",
-        phoneNumberState = PhoneNumber.Available,
+        verificationMethod = "01012345678",
+        verificationMethodState = PhoneNumber.Available,
         verificationCode = "123456",
         verificationCodeState = VerificationCode.None,
         verificationTimeLeft = 180,

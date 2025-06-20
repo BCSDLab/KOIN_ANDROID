@@ -204,7 +204,8 @@ class UserInfoEditViewModel @Inject constructor(
             requestSmsVerificationUseCase(state.phoneNumber).let {
                 reduce {
                     state.copy(
-                        phoneNumberState = it
+                        phoneNumberState = it,
+                        verificationCodeState = VerificationCode.None
                     )
                 }
             }
@@ -217,8 +218,7 @@ class UserInfoEditViewModel @Inject constructor(
             verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).let {
                 reduce {
                     state.copy(
-                        verificationCodeState = it,
-                        phoneNumberState = PhoneNumber.None
+                        verificationCodeState = it
                     )
                 }
                 if (it == VerificationCode.Valid) {

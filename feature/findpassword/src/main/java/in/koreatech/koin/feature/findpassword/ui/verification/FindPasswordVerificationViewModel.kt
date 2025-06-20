@@ -107,7 +107,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
                         }
                     }
 
-                    is KoinUserException.PhoneNumberNotFoundException -> {
+                    is KoinUserException.PhoneNumberNotFoundException,
+                    is KoinUserException.EmailNotFoundException -> {
                         reduce {
                             state.copy(
                                 verificationMethodState = PhoneNumber.NotFound
@@ -137,7 +138,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
             }.let {
                 reduce {
                     state.copy(
-                        verificationMethodState = it
+                        verificationMethodState = it,
+                        verificationCodeState = VerificationCode.None
                     )
                 }
             }
@@ -155,6 +157,10 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     state.copy(
                         verificationCodeState = it
                     )
+                }
+
+                if (it is VerificationCode.Valid) {
+                    postSideEffect(FindPasswordVerificationSideEffect.StopTimer)
                 }
             }
         }
@@ -176,7 +182,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
                         )
                     }
 
-                    is KoinUserException.LoginIdNotMatchPhoneException -> reduce {
+                    is KoinUserException.LoginIdNotMatchPhoneException,
+                    is KoinUserException.LoginIdNotMatchEmailException -> reduce {
                         state.copy(
                             verificationMethodState = PhoneNumber.Failed(
                                 it.message ?: ""

@@ -116,7 +116,8 @@ class FindIdVerificationViewModel @Inject constructor(
             }.let {
                 reduce {
                     state.copy(
-                        verificationMethodState = it
+                        verificationMethodState = it,
+                        verificationCodeState = VerificationCode.None
                     )
                 }
                 postSideEffect(FindIdVerificationSideEffect.StartTimer)
@@ -136,6 +137,9 @@ class FindIdVerificationViewModel @Inject constructor(
                         verificationCodeState = it
                     )
                 }
+                if (it is VerificationCode.Valid) {
+                    postSideEffect(FindIdVerificationSideEffect.StopTimer)
+                }
             }
         }
     }
@@ -153,7 +157,7 @@ class FindIdVerificationViewModel @Inject constructor(
     }
 
     fun startTimer() {
-        AccountTimer.start(300) { secondsRemaining ->
+        AccountTimer.start { secondsRemaining ->
             intent {
                 reduce {
                     state.copy(

@@ -94,7 +94,8 @@ class SignUpVerificationViewModel @Inject constructor(
             requestSmsVerificationUseCase(state.phoneNumber).let {
                 reduce {
                     state.copy(
-                        phoneNumberState = it
+                        phoneNumberState = it,
+                        verificationCodeState = VerificationCode.None
                     )
                 }
             }
@@ -119,6 +120,9 @@ class SignUpVerificationViewModel @Inject constructor(
                         verificationCodeState = it
                     )
                 }
+                if (it is VerificationCode.Valid) {
+                    postSideEffect(SignUpVerificationSideEffect.StopTimer)
+                }
             }
         }
     }
@@ -132,17 +136,20 @@ class SignUpVerificationViewModel @Inject constructor(
                     )
                 }
             }
+            if (secondsRemaining <= 0) {
+                stopTimer()
+                intent {
+                    reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.Expired
+                        )
+                    }
+                }
+            }
         }
     }
 
     fun stopTimer() {
         AccountTimer.cancel()
-        intent {
-            reduce {
-                state.copy(
-                    verificationTimeLeft = 180
-                )
-            }
-        }
     }
 }

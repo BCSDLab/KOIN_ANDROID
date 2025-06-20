@@ -14,7 +14,7 @@
     <string name="user_info_general_user_info_nickname_button">중복 확인</string>
     <string name="user_info_general_user_info_phone_number">휴대번호</string>
     <string name="user_info_general_user_info_phone_number_button">인증번호 발송</string>
-    <string name="user_info_general_user_info_email">이메일</string>
+    <string name="user_info_general_user_info_email">이메일(선택)</string>
     <string name="user_info_general_user_info_gender">성별</string>
     <string name="user_info_general_user_info_gender_man">남성</string>
     <string name="user_info_general_user_info_gender_woman">여성</string>
@@ -23,7 +23,7 @@
     <string name="user_info_student_info_header">학생정보</string>
     <string name="user_info_student_info_student_number">학번</string>
     <string name="user_info_student_info_major">전공</string>
-    <string name="user_info_student_email_suffix">\@koeratech.ac.kr</string>
+    <string name="user_info_student_email_suffix">\@koreatech.ac.kr</string>
 
     <string name="user_info_save">저장</string>
 
