@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.changepassword
+package `in`.koreatech.koin.feature.user.ui.changepassword
 
 import android.os.Bundle
 import android.view.View
@@ -8,11 +8,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.databinding.FragmentChangePasswordVerifyPwdBinding
-import `in`.koreatech.koin.util.DebounceTextWatcher
+import `in`.koreatech.koin.feature.user.R
+import `in`.koreatech.koin.feature.user.databinding.FragmentChangePasswordVerifyPwdBinding
+import `in`.koreatech.koin.feature.user.util.DebounceTextWatcher
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

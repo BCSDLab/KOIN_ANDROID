@@ -1,17 +1,16 @@
-package `in`.koreatech.koin.ui.changepassword
+package `in`.koreatech.koin.feature.user.ui.changepassword
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateUserPasswordUseCase
 import `in`.koreatech.koin.domain.usecase.user.VerifyPasswordFormatUseCase
 import `in`.koreatech.koin.domain.usecase.user.VerifyUserPasswordUseCase
-import `in`.koreatech.koin.util.EventFlow
-import `in`.koreatech.koin.util.MutableEventFlow
+import `in`.koreatech.koin.feature.user.util.EventFlow
+import `in`.koreatech.koin.feature.user.util.MutableEventFlow
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

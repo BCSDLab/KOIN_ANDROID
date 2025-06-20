@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.changepassword
+package `in`.koreatech.koin.feature.user.ui.changepassword
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

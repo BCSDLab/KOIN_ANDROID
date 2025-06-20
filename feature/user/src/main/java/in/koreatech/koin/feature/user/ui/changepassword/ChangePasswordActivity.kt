@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.changepassword
+package `in`.koreatech.koin.feature.user.ui.changepassword
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
@@ -10,11 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.databinding.ActivityChangePasswordBinding
+import `in`.koreatech.koin.feature.user.R
+import `in`.koreatech.koin.feature.user.databinding.ActivityChangePasswordBinding
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

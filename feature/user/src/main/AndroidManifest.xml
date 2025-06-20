@@ -71,6 +71,11 @@
                     android:scheme="koin" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.changepassword.ChangePasswordActivity"
+            android:exported="false"
+            android:label="비밀번호 변경"
+            android:theme="@style/KAPTheme.NoActionBar" />
     </application>
 
 </manifest>
