@@ -16,6 +16,10 @@ annotation class UserAgent
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class Inspection
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class ServerUrl
 
 @Qualifier
