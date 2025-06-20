@@ -247,16 +247,6 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.userinfo.UserInfoActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.userinfo.UserInfoEditActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.store.activity.StoreDetailActivity"
             android:exported="false"
             android:label="@string/app_name"
