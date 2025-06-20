@@ -41,8 +41,8 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
-import `in`.koreatech.koin.feature.user.model.VerificationMethod
-import `in`.koreatech.koin.feature.user.model.VerificationCode
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
@@ -88,9 +88,9 @@ fun FindIdVerification(
 fun FindIdVerificationImpl(
     isSms: Boolean,
     verificationMethod: String,
-    verificationMethodState: VerificationMethod,
+    verificationMethodState: VerificationMethodState,
     verificationCode: String,
-    verificationCodeState: VerificationCode,
+    verificationCodeState: VerificationCodeState,
     verificationTimeLeft: Int,
     modifier: Modifier = Modifier,
     onVerificationMethodChange: (String) -> Unit = {},
@@ -137,28 +137,28 @@ fun FindIdVerificationImpl(
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                 FilledButton(
                     modifier = Modifier.widthIn(min = 86.dp),
-                    text = if (verificationMethodState is VerificationMethod.Sent) stringResource(R.string.find_id_resend) else stringResource(R.string.find_id_send),
+                    text = if (verificationMethodState is VerificationMethodState.Sent) stringResource(R.string.find_id_resend) else stringResource(R.string.find_id_send),
                     textStyle = KoinTheme.typography.regular10,
                     contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                     onClick = onVerificationCodeRequest,
-                    enabled = (verificationMethod.isNotBlank() && verificationCodeState !is VerificationCode.Valid) && verificationMethodState !is VerificationMethod.CountExceeded
+                    enabled = (verificationMethod.isNotBlank() && verificationCodeState !is VerificationCodeState.Valid) && verificationMethodState !is VerificationMethodState.CountExceeded
                 )
             }
         }
 
         when (verificationMethodState) {
-            VerificationMethod.CountExceeded -> VerificationMethodRequestCountExceeded()
-            is VerificationMethod.Sent -> VerificationCodeSentSuccessMessage(
+            VerificationMethodState.CountExceeded -> VerificationMethodRequestCountExceeded()
+            is VerificationMethodState.Sent -> VerificationCodeSentSuccessMessage(
                 verificationMethodState.remainingCount,
                 verificationMethodState.totalCount
             )
 
-            VerificationMethod.WrongFormat -> VerificationMethodWrongFormatMessage(isSms)
-            VerificationMethod.NotFound -> VerificationMethodInvalidMessage(isSms)
-            is VerificationMethod.Failed,
-            VerificationMethod.None,
-            VerificationMethod.AlreadySignedUp,
-            VerificationMethod.Available -> {
+            VerificationMethodState.WrongFormat -> VerificationMethodWrongFormatMessage(isSms)
+            VerificationMethodState.NotFound -> VerificationMethodInvalidMessage(isSms)
+            is VerificationMethodState.Failed,
+            VerificationMethodState.None,
+            VerificationMethodState.AlreadySignedUp,
+            VerificationMethodState.Available -> {
             }
         }
 
@@ -170,7 +170,7 @@ fun FindIdVerificationImpl(
 
         Spacer(modifier = Modifier.height(64.dp))
 
-        if (verificationMethodState is VerificationMethod.Sent) {
+        if (verificationMethodState is VerificationMethodState.Sent) {
             Text(
                 text = stringResource(R.string.find_id_verification_code),
                 style = KoinTheme.typography.medium18
@@ -198,7 +198,7 @@ fun FindIdVerificationImpl(
             text = stringResource(R.string.find_id_next),
             contentPadding = PaddingValues(12.dp),
             onClick = navigateToCompleteScreen,
-            enabled = verificationCodeState is VerificationCode.Valid
+            enabled = verificationCodeState is VerificationCodeState.Valid
         )
 
         Spacer(modifier = Modifier.height(40.dp))
@@ -210,7 +210,7 @@ fun FindIdVerificationImpl(
 @Composable
 fun SignUpVerificationCodeVerificationStep(
     verificationCode: String,
-    verificationCodeState: VerificationCode,
+    verificationCodeState: VerificationCodeState,
     verificationTimeLeft: Int,
     onVerificationCodeChange: (String) -> Unit = {},
     checkVerificationCode: () -> Unit = {}
@@ -243,10 +243,10 @@ fun SignUpVerificationCodeVerificationStep(
                 ),
                 onValueChange = { onVerificationCodeChange(it) },
                 hint = stringResource(R.string.find_id_verification_code_field_hint),
-                enabled = verificationCodeState !is VerificationCode.Valid
+                enabled = verificationCodeState !is VerificationCodeState.Valid
             )
 
-            if (verificationCodeState !is VerificationCode.Valid) {
+            if (verificationCodeState !is VerificationCodeState.Valid) {
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                     Text(
                         modifier = Modifier.padding(end = if (verificationCode.isBlank()) 8.dp else 28.dp),
@@ -265,7 +265,7 @@ fun SignUpVerificationCodeVerificationStep(
                 modifier = Modifier.widthIn(min = 86.dp),
                 text = stringResource(R.string.find_id_verification_code_check),
                 textStyle = KoinTheme.typography.regular10,
-                enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCode.Valid && verificationCodeState !is VerificationCode.Expired,
+                enabled = verificationCode.isNotBlank() && verificationCodeState != VerificationCodeState.Valid && verificationCodeState !is VerificationCodeState.Expired,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
                     checkVerificationCode()
@@ -274,18 +274,18 @@ fun SignUpVerificationCodeVerificationStep(
         }
     }
 
-    if (verificationCodeState != VerificationCode.None) {
+    if (verificationCodeState != VerificationCodeState.None) {
         KoinUserTextFieldAlert(
             text = when (verificationCodeState) {
-                VerificationCode.Valid -> stringResource(R.string.find_id_verification_code_correct)
-                VerificationCode.NotValid -> stringResource(R.string.find_id_verification_code_incorrect)
-                VerificationCode.Expired -> stringResource(R.string.find_id_verification_code_timeout)
+                VerificationCodeState.Valid -> stringResource(R.string.find_id_verification_code_correct)
+                VerificationCodeState.NotValid -> stringResource(R.string.find_id_verification_code_incorrect)
+                VerificationCodeState.Expired -> stringResource(R.string.find_id_verification_code_timeout)
                 else -> "" // Not used
             },
             state = when (verificationCodeState) {
-                VerificationCode.Valid -> KoinUserTextFieldAlertState.Success
-                VerificationCode.NotValid -> KoinUserTextFieldAlertState.Warning
-                VerificationCode.Expired -> KoinUserTextFieldAlertState.Warning
+                VerificationCodeState.Valid -> KoinUserTextFieldAlertState.Success
+                VerificationCodeState.NotValid -> KoinUserTextFieldAlertState.Warning
+                VerificationCodeState.Expired -> KoinUserTextFieldAlertState.Warning
                 else -> KoinUserTextFieldAlertState.Warning // Not used
             }
         )
@@ -396,13 +396,13 @@ fun FindPasswordByVerificationMethodPreview() {
     FindIdVerificationImpl(
         isSms = true,
         verificationMethod = "test@test.com",
-        verificationMethodState = VerificationMethod.Sent(
+        verificationMethodState = VerificationMethodState.Sent(
             remainingCount = 1,
             totalCount = 5,
             currentCount = 4
         ),
         verificationCode = "123456",
-        verificationCodeState = VerificationCode.None,
+        verificationCodeState = VerificationCodeState.None,
         verificationTimeLeft = 300
     )
 }

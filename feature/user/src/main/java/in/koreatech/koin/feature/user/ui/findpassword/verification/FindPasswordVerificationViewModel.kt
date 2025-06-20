@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
-import `in`.koreatech.koin.feature.user.model.VerificationMethod
-import `in`.koreatech.koin.feature.user.model.VerificationCode
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifyEmailCodeUseCase
@@ -56,9 +56,9 @@ class FindPasswordVerificationViewModel @Inject constructor(
             reduce {
                 state.copy(
                     verificationMethod = phoneNumber,
-                    verificationMethodState = VerificationMethod.None,
+                    verificationMethodState = VerificationMethodState.None,
                     verificationCode = "",
-                    verificationCodeState = VerificationCode.None
+                    verificationCodeState = VerificationCodeState.None
                 )
             }
         }
@@ -69,7 +69,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
             reduce {
                 state.copy(
                     verificationCode = verificationCode,
-                    verificationCodeState = VerificationCode.None
+                    verificationCodeState = VerificationCodeState.None
                 )
             }
         }
@@ -80,9 +80,9 @@ class FindPasswordVerificationViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isSms = isSms,
-                    verificationMethodState = VerificationMethod.None,
+                    verificationMethodState = VerificationMethodState.None,
                     verificationCode = "",
-                    verificationCodeState = VerificationCode.None
+                    verificationCodeState = VerificationCodeState.None
                 )
             }
         }
@@ -102,7 +102,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     is KoinUserException.EmailInvalidException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = VerificationMethod.WrongFormat
+                                verificationMethodState = VerificationMethodState.WrongFormat
                             )
                         }
                     }
@@ -111,7 +111,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     is KoinUserException.EmailNotFoundException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = VerificationMethod.NotFound
+                                verificationMethodState = VerificationMethodState.NotFound
                             )
                         }
                     }
@@ -119,7 +119,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     else -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = VerificationMethod.Failed(it.message ?: "")
+                                verificationMethodState = VerificationMethodState.Failed(it.message ?: "")
                             )
                         }
                     }
@@ -138,12 +138,12 @@ class FindPasswordVerificationViewModel @Inject constructor(
             }.onSuccess {
                 reduce {
                     state.copy(
-                        verificationMethodState = VerificationMethod.Sent(
+                        verificationMethodState = VerificationMethodState.Sent(
                             remainingCount = it.remainingCount,
                             totalCount = it.totalCount,
                             currentCount = it.currentCount
                         ),
-                        verificationCodeState = VerificationCode.None
+                        verificationCodeState = VerificationCodeState.None
                     )
                 }
             }.onFailure {
@@ -152,7 +152,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     is KoinUserException.EmailInvalidException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = VerificationMethod.WrongFormat
+                                verificationMethodState = VerificationMethodState.WrongFormat
                             )
                         }
                     }
@@ -161,7 +161,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     is KoinUserException.EmailNotFoundException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = VerificationMethod.NotFound
+                                verificationMethodState = VerificationMethodState.NotFound
                             )
                         }
                     }
@@ -169,7 +169,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     is KoinUserException.VerificationCodeRequestCountExceededException -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = VerificationMethod.CountExceeded
+                                verificationMethodState = VerificationMethodState.CountExceeded
                             )
                         }
                     }
@@ -177,7 +177,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     else -> {
                         reduce {
                             state.copy(
-                                verificationMethodState = VerificationMethod.Failed(it.message ?: "")
+                                verificationMethodState = VerificationMethodState.Failed(it.message ?: "")
                             )
                         }
                     }
@@ -195,7 +195,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
             }.onSuccess {
                 reduce {
                     state.copy(
-                        verificationCodeState = VerificationCode.Valid
+                        verificationCodeState = VerificationCodeState.Valid
                     )
                 }
 
@@ -204,20 +204,20 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 when (it) {
                     is KoinUserException.VerificationCodeInvalidException -> reduce {
                         state.copy(
-                            verificationCodeState = VerificationCode.NotValid
+                            verificationCodeState = VerificationCodeState.NotValid
                         )
                     }
 
                     is KoinUserException.VerificationCodeExpiredException -> reduce {
                         state.copy(
-                            verificationCodeState = VerificationCode.Expired
+                            verificationCodeState = VerificationCodeState.Expired
                         )
                     }
 
                     else -> {
                         reduce {
                             state.copy(
-                                verificationCodeState = VerificationCode.None
+                                verificationCodeState = VerificationCodeState.None
                             )
                         }
                     }
@@ -245,7 +245,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     is KoinUserException.LoginIdNotMatchPhoneException,
                     is KoinUserException.LoginIdNotMatchEmailException -> reduce {
                         state.copy(
-                            verificationMethodState = VerificationMethod.Failed(
+                            verificationMethodState = VerificationMethodState.Failed(
                                 it.message ?: ""
                             )
                         )
@@ -299,7 +299,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 intent {
                     reduce {
                         state.copy(
-                            verificationCodeState = VerificationCode.Expired
+                            verificationCodeState = VerificationCodeState.Expired
                         )
                     }
                 }

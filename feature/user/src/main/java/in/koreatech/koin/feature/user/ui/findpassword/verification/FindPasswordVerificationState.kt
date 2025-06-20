@@ -1,16 +1,16 @@
 package `in`.koreatech.koin.feature.user.ui.findpassword.verification
 
-import `in`.koreatech.koin.feature.user.model.VerificationMethod
-import `in`.koreatech.koin.feature.user.model.VerificationCode
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 
 data class FindPasswordVerificationState(
     val isLoading: Boolean = false,
     val loginId: String = "",
     val loginIdValid: Boolean = true,
     val verificationMethod: String = "",
-    val verificationMethodState: VerificationMethod = VerificationMethod.None,
+    val verificationMethodState: VerificationMethodState = VerificationMethodState.None,
     val isSms: Boolean = true,
     val verificationCode: String = "",
-    val verificationCodeState: VerificationCode = VerificationCode.None,
+    val verificationCodeState: VerificationCodeState = VerificationCodeState.None,
     val verificationTimeLeft: Int = 180
 )

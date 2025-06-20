@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.VerificationMethod
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
-import `in`.koreatech.koin.feature.user.model.VerificationCode
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.domain.util.ext.isEnglish
 import `in`.koreatech.koin.domain.util.ext.isKorean
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
@@ -28,8 +28,8 @@ data class UserInfoEditState(
     val userType: UserType = UserType.ANONYMOUS,
     val verificationCode: String = "",
     val nicknameState: NicknameState = NicknameState.None,
-    val verificationCodeState: VerificationCode = VerificationCode.None,
-    val phoneNumberState: VerificationMethod = VerificationMethod.None,
+    val verificationCodeState: VerificationCodeState = VerificationCodeState.None,
+    val phoneNumberState: VerificationMethodState = VerificationMethodState.None,
     val verificationTimeLeft: Int = 180,
     val showWithdrawalDialog: Boolean = false
 )
@@ -89,4 +89,4 @@ val UserInfoEditState.isModified: Boolean
     }
 
 val UserInfoEditState.canSave: Boolean
-    get() = isModified && isNameValid && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCode.Valid || verificationCodeState is VerificationCode.None)
+    get() = isModified && isNameValid && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || verificationCodeState is VerificationCodeState.None)
