@@ -12,12 +12,6 @@ class InspectionInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
 
-        if (response.code == 503) {
-            val intent = Intent(context, BusinessMainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            }
-            context.startActivity(intent)
-        }
         return response
     }
 }
