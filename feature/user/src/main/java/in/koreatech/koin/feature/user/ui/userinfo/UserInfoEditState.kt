@@ -1,10 +1,8 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
-import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.domain.util.ext.isEnglish
 import `in`.koreatech.koin.domain.util.ext.isKorean
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
@@ -12,6 +10,8 @@ import `in`.koreatech.koin.domain.util.ext.isValidEmail
 import `in`.koreatech.koin.domain.util.ext.isValidGeneralEmail
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import `in`.koreatech.koin.feature.user.model.NicknameState
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 
 data class UserInfoEditState(
     val beforeUser: User = User.Anonymous,

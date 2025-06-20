@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.feature.user.ui.signup.verification
 
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.VerificationMethodState
-import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.domain.util.ext.isEnglish
 import `in`.koreatech.koin.domain.util.ext.isKorean
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 
 data class SignUpVerificationState(
     val name: String = "",

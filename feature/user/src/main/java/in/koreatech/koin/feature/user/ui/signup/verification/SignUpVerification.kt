@@ -43,8 +43,6 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.constant.CONTACT_URL
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.VerificationMethodState
-import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.SIGN_UP_PHONE_NUMBER_MAX_LENGTH
 import `in`.koreatech.koin.feature.user.SIGN_UP_VERIFICATION_CODE_MAX_LENGTH
@@ -54,6 +52,8 @@ import `in`.koreatech.koin.feature.user.component.KoinUserProgressIndicator
 import `in`.koreatech.koin.feature.user.component.KoinUserSingleChoiceRadioGroup
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState

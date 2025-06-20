@@ -53,9 +53,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import `in`.koreatech.koin.domain.model.user.UserType
-import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicItem
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
@@ -69,6 +67,8 @@ import `in`.koreatech.koin.feature.user.component.UserInfoHeader
 import `in`.koreatech.koin.feature.user.genderList
 import `in`.koreatech.koin.feature.user.majorStringList
 import `in`.koreatech.koin.feature.user.model.NicknameState
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 

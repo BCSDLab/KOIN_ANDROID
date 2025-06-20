@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.user.ui.findid.verification
 
-import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 
 data class FindIdVerificationState(
     val isLoading: Boolean = false,

@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
-import `in`.koreatech.koin.feature.user.model.VerificationMethodState
-import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifyEmailCodeUseCase
@@ -16,6 +14,8 @@ import `in`.koreatech.koin.domain.usecase.user.CheckIdExistsUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchEmailUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchPhoneUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckPhoneExistsUseCase
+import `in`.koreatech.koin.feature.user.model.VerificationCodeState
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost

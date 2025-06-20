@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.feature.user.ui.findpassword.verification
 
-import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
+import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 
 data class FindPasswordVerificationState(
     val isLoading: Boolean = false,
