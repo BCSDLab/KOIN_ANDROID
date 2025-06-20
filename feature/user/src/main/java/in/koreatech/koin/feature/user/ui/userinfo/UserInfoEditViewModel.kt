@@ -201,12 +201,51 @@ class UserInfoEditViewModel @Inject constructor(
 
     private fun requestVerificationCode() = viewModelScope.launch {
         intent {
-            requestSmsVerificationUseCase(state.phoneNumber).let {
+            requestSmsVerificationUseCase(state.phoneNumber).onSuccess {
                 reduce {
                     state.copy(
-                        phoneNumberState = it,
+                        phoneNumberState = PhoneNumber.Sent(
+                            remainingCount = it.remainingCount,
+                            totalCount = it.totalCount,
+                            currentCount = it.currentCount
+                        ),
                         verificationCodeState = VerificationCode.None
                     )
+                }
+                postSideEffect(UserInfoEditSideEffect.StartTimer)
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.PhoneNumberInvalidException -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+
+                    is KoinUserException.PhoneNumberNotFoundException -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.NotFound
+                            )
+                        }
+                    }
+
+                    is KoinUserException.VerificationCodeRequestCountExceededException -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.CountExceeded
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.Failed(it.message ?: "")
+                            )
+                        }
+                    }
                 }
             }
             postSideEffect(UserInfoEditSideEffect.StartTimer)
@@ -215,14 +254,34 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun checkVerificationCode() = viewModelScope.launch {
         blockingIntent {
-            verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).let {
+            verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).onSuccess {
                 reduce {
                     state.copy(
-                        verificationCodeState = it
+                        verificationCodeState = VerificationCode.Valid
                     )
                 }
-                if (it == VerificationCode.Valid) {
-                    postSideEffect(UserInfoEditSideEffect.StopTimer)
+                postSideEffect(UserInfoEditSideEffect.StopTimer)
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.VerificationCodeInvalidException -> reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.NotValid
+                        )
+                    }
+
+                    is KoinUserException.VerificationCodeExpiredException -> reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.Expired
+                        )
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationCodeState = VerificationCode.None
+                            )
+                        }
+                    }
                 }
             }
         }

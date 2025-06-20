@@ -113,14 +113,60 @@ class FindIdVerificationViewModel @Inject constructor(
                 requestSmsVerificationUseCase(state.verificationMethod)
             } else {
                 requestEmailVerificationUseCase(state.verificationMethod)
-            }.let {
+            }.onSuccess {
                 reduce {
                     state.copy(
-                        verificationMethodState = it,
+                        verificationMethodState = PhoneNumber.Sent(
+                            remainingCount = it.remainingCount,
+                            totalCount = it.totalCount,
+                            currentCount = it.currentCount
+                        ),
                         verificationCodeState = VerificationCode.None
                     )
                 }
                 postSideEffect(FindIdVerificationSideEffect.StartTimer)
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.PhoneNumberInvalidException,
+                    is KoinUserException.EmailInvalidException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+
+                    is KoinUserException.PhoneNumberNotFoundException,
+                    is KoinUserException.EmailNotFoundException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.NotFound
+                            )
+                        }
+                    }
+
+                    is KoinUserException.VerificationCodeRequestCountExceededException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.CountExceeded
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.Failed(it.message ?: "")
+                            )
+                        }
+                    }
+                }
+            }.also {
+                reduce {
+                    state.copy(
+                        isLoading = false
+                    )
+                }
             }
         }
     }
@@ -131,14 +177,38 @@ class FindIdVerificationViewModel @Inject constructor(
                 verifySmsCodeUseCase(state.verificationMethod, state.verificationCode)
             } else {
                 verifyEmailCodeUseCase(state.verificationMethod, state.verificationCode)
-            }.let {
+            }.onSuccess {
                 reduce {
                     state.copy(
-                        verificationCodeState = it
+                        verificationCodeState = VerificationCode.Valid
                     )
                 }
-                if (it is VerificationCode.Valid) {
-                    postSideEffect(FindIdVerificationSideEffect.StopTimer)
+                postSideEffect(FindIdVerificationSideEffect.StopTimer)
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.VerificationCodeInvalidException -> {
+                        reduce {
+                            state.copy(
+                                verificationCodeState = VerificationCode.NotValid
+                            )
+                        }
+                    }
+
+                    is KoinUserException.VerificationCodeExpiredException -> {
+                        reduce {
+                            state.copy(
+                                verificationCodeState = VerificationCode.Expired
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationCodeState = VerificationCode.None
+                            )
+                        }
+                    }
                 }
             }
         }

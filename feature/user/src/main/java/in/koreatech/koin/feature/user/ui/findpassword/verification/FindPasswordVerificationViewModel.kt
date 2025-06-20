@@ -135,12 +135,52 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 requestSmsVerificationUseCase(state.verificationMethod)
             } else {
                 requestEmailVerificationUseCase(state.verificationMethod)
-            }.let {
+            }.onSuccess {
                 reduce {
                     state.copy(
-                        verificationMethodState = it,
+                        verificationMethodState = PhoneNumber.Sent(
+                            remainingCount = it.remainingCount,
+                            totalCount = it.totalCount,
+                            currentCount = it.currentCount
+                        ),
                         verificationCodeState = VerificationCode.None
                     )
+                }
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.PhoneNumberInvalidException,
+                    is KoinUserException.EmailInvalidException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+
+                    is KoinUserException.PhoneNumberNotFoundException,
+                    is KoinUserException.EmailNotFoundException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.NotFound
+                            )
+                        }
+                    }
+
+                    is KoinUserException.VerificationCodeRequestCountExceededException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.CountExceeded
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.Failed(it.message ?: "")
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -152,15 +192,35 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 verifySmsCodeUseCase(state.verificationMethod, state.verificationCode)
             } else {
                 verifyEmailCodeUseCase(state.verificationMethod, state.verificationCode)
-            }.let {
+            }.onSuccess {
                 reduce {
                     state.copy(
-                        verificationCodeState = it
+                        verificationCodeState = VerificationCode.Valid
                     )
                 }
 
-                if (it is VerificationCode.Valid) {
-                    postSideEffect(FindPasswordVerificationSideEffect.StopTimer)
+                postSideEffect(FindPasswordVerificationSideEffect.StopTimer)
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.VerificationCodeInvalidException -> reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.NotValid
+                        )
+                    }
+
+                    is KoinUserException.VerificationCodeExpiredException -> reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.Expired
+                        )
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationCodeState = VerificationCode.None
+                            )
+                        }
+                    }
                 }
             }
         }

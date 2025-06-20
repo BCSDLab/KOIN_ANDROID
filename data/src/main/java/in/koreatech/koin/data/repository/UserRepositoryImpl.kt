@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toCodeCount
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword
@@ -21,9 +22,8 @@ import `in`.koreatech.koin.domain.error.KoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
-import `in`.koreatech.koin.domain.model.user.PhoneNumber
+import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -218,81 +218,95 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber {
-        return try {
-            userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber = phoneNumber)).let {
-                PhoneNumber.Sent(
-                    totalCount = it.totalCount,
-                    remainingCount = it.remainingCount,
-                    currentCount = it.currentCount
-                )
-            }
-        } catch (e: HttpException) {
-            when (e.code()) {
-                429 -> PhoneNumber.CountExceeded
-                404 -> PhoneNumber.NotFound
-                400 -> PhoneNumber.WrongFormat
-                else -> PhoneNumber.Failed(
-                    message = e.getErrorResponse().message ?: "",
-                    throwable = e
-                )
-            }
+    override suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount> {
+        return runCatching {
+            userRemoteDataSource.sendSMS(SmsSendRequest(phoneNumber)).toCodeCount()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            429 -> KoinUserException.VerificationCodeRequestCountExceededException()
+                            404 -> KoinUserException.PhoneNumberNotFoundException()
+                            400 -> KoinUserException.PhoneNumberInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 
-    override suspend fun requestEmailVerification(email: String): PhoneNumber {
-        return try {
-            userRemoteDataSource.sendEmail(EmailSendRequest(email)).let {
-                PhoneNumber.Sent(
-                    totalCount = it.totalCount,
-                    remainingCount = it.remainingCount,
-                    currentCount = it.currentCount
-                )
-            }
-        } catch (e: HttpException) {
-            when (e.code()) {
-                429 -> PhoneNumber.CountExceeded
-                404 -> PhoneNumber.NotFound
-                400 -> PhoneNumber.WrongFormat
-                else -> PhoneNumber.Failed(
-                    message = e.getErrorResponse().message ?: "",
-                    throwable = e
-                )
-            }
+    override suspend fun requestEmailVerification(email: String): Result<CodeCount> {
+        return runCatching {
+            userRemoteDataSource.sendEmail(EmailSendRequest(email)).toCodeCount()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            429 -> KoinUserException.VerificationCodeRequestCountExceededException()
+                            404 -> KoinUserException.EmailNotFoundException()
+                            400 -> KoinUserException.EmailInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> throw exception
+                }
+            )
         }
     }
 
-    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): VerificationCode {
-        return try {
+    override suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): Result<Unit> {
+        return runCatching {
             userRemoteDataSource.verifyCode(
                 SmsVerifyRequest(
                     phoneNumber = phoneNumber,
                     verificationCode = verificationCode
                 )
             )
-            VerificationCode.Valid
-        } catch (e: HttpException) {
-            when (e.code()) {
-                404 -> VerificationCode.Expired
-                else -> VerificationCode.NotValid
-            }
+        }.onFailure {
+            return Result.failure(
+                when (it) {
+                    is HttpException -> {
+                        when (it.code()) {
+                            404 -> KoinUserException.VerificationCodeExpiredException()
+                            400 -> KoinUserException.VerificationCodeInvalidException()
+                            else -> it.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> it
+                }
+            )
         }
     }
 
-    override suspend fun verifyEmailCode(email: String, verificationCode: String): VerificationCode {
-        return try {
+    override suspend fun verifyEmailCode(email: String, verificationCode: String): Result<Unit> {
+        return runCatching {
             userRemoteDataSource.verifyEmailCode(
                 EmailVerifyRequest(
                     email = email,
                     verificationCode = verificationCode
                 )
             )
-            VerificationCode.Valid
-        } catch (e: HttpException) {
-            when (e.code()) {
-                404 -> VerificationCode.Expired
-                else -> VerificationCode.NotValid
-            }
+        }.onFailure {
+            return Result.failure(
+                when (it) {
+                    is HttpException -> {
+                        when (it.code()) {
+                            404 -> KoinUserException.VerificationCodeExpiredException()
+                            400 -> KoinUserException.VerificationCodeInvalidException()
+                            else -> it.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> it
+                }
+            )
         }
     }
 

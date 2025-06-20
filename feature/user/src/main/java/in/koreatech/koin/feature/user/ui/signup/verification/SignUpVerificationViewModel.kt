@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
+import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
@@ -91,12 +92,50 @@ class SignUpVerificationViewModel @Inject constructor(
     private fun sendVerificationCode() = viewModelScope.launch {
         intent {
             postSideEffect(SignUpVerificationSideEffect.StartTimer)
-            requestSmsVerificationUseCase(state.phoneNumber).let {
+            requestSmsVerificationUseCase(state.phoneNumber).onSuccess {
                 reduce {
                     state.copy(
-                        phoneNumberState = it,
+                        phoneNumberState = PhoneNumber.Sent(
+                            remainingCount = it.remainingCount,
+                            totalCount = it.totalCount,
+                            currentCount = it.currentCount
+                        ),
                         verificationCodeState = VerificationCode.None
                     )
+                }
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.PhoneNumberInvalidException -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+
+                    is KoinUserException.PhoneNumberNotFoundException -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.NotFound
+                            )
+                        }
+                    }
+
+                    is KoinUserException.VerificationCodeRequestCountExceededException -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.CountExceeded
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                phoneNumberState = PhoneNumber.Failed(it.message ?: "")
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -114,14 +153,34 @@ class SignUpVerificationViewModel @Inject constructor(
 
     fun checkVerificationCode() {
         blockingIntent {
-            verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).let {
+            verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).onSuccess {
                 reduce {
                     state.copy(
-                        verificationCodeState = it
+                        verificationCodeState = VerificationCode.Valid
                     )
                 }
-                if (it is VerificationCode.Valid) {
-                    postSideEffect(SignUpVerificationSideEffect.StopTimer)
+                postSideEffect(SignUpVerificationSideEffect.StopTimer)
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.VerificationCodeInvalidException -> reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.NotValid
+                        )
+                    }
+
+                    is KoinUserException.VerificationCodeExpiredException -> reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.Expired
+                        )
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationCodeState = VerificationCode.None
+                            )
+                        }
+                    }
                 }
             }
         }

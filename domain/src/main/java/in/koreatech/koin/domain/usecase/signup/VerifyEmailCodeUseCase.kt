@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.domain.usecase.signup
 
-import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -10,7 +9,7 @@ class VerifyEmailCodeUseCase @Inject constructor(
     suspend operator fun invoke(
         email: String,
         verificationCode: String
-    ): VerificationCode {
+    ): Result<Unit> {
         return userRepository.verifyEmailCode(email, verificationCode)
     }
 }
