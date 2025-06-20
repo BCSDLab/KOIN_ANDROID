@@ -10,10 +10,12 @@
     <string name="find_password_email">이메일</string>
     <string name="find_password_email_hint">등록된 이메일을 입력해 주세요.</string>
     <string name="find_password_send">인증번호 발송</string>
-    <string name="find_password_phone_number_invalid">올바른 전화번호 양식이 아닙니다. 다시 입력해 주세요.</string>
-    <string name="find_password_phone_number_not_correct">유효하지 않은 전화번호 입니다.</string>
+    <string name="find_password_resend">인증번호 재발송</string>
+    <string name="find_password_phone_number_wrong_format">올바른 전화번호 양식이 아닙니다. 다시 입력해 주세요.</string>
+    <string name="find_password_phone_number_invalid">유효하지 않은 전화번호 입니다.</string>
     <string name="find_password_phone_number_code_request_exceeded">1일 발송 한도를 초과했습니다. 24시간 이후 재시도 바랍니다.</string>
-    <string name="find_password_email_invalid">올바른 이메일 양식이 아닙니다. 다시 입력해 주세요.</string>
+    <string name="find_password_email_wrong_format">올바른 이메일 양식이 아닙니다. 다시 입력해 주세요.</string>
+    <string name="find_password_email_invalid">유효하지 않은 이메일 입니다.</string>
     <string name="find_password_email_code_request_exceeded">1일 발송 한도를 초과했습니다. 24시간 이후 재시도 바랍니다.</string>
     <string name="find_password_verification_code_sent">인증번호가 발송되었습니다.</string>
     <string name="find_password_verification_code_remaining_count">(%1$d/%2$d)</string>

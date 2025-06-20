@@ -7,6 +7,7 @@ sealed class PhoneNumber {
     data object Available : PhoneNumber()
     data object AlreadySignedUp : PhoneNumber()
     data object CountExceeded : PhoneNumber()
+    data object NotFound : PhoneNumber()
     data class Failed(
         val message: String = "",
         val throwable: Throwable? = null

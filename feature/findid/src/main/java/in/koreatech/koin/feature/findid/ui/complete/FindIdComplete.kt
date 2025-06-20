@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.findid.ui.complete
 
 import android.app.Activity
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,6 +32,12 @@ import `in`.koreatech.koin.feature.findid.util.stringResourceWithStyle
 fun FindIdComplete(
     loginId: String
 ) {
+    val context = LocalContext.current
+
+    BackHandler {
+        (context as Activity).finish()
+    }
+
     FindIdCompleteImpl(
         loginId = loginId
     )

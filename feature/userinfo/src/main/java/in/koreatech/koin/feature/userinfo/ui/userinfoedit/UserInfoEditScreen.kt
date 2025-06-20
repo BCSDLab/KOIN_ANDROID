@@ -522,6 +522,7 @@ fun UserInfoPhoneNumber(
                 )
             }
 
+            PhoneNumber.NotFound,
             PhoneNumber.None,
             PhoneNumber.Available,
             is PhoneNumber.Failed -> {}

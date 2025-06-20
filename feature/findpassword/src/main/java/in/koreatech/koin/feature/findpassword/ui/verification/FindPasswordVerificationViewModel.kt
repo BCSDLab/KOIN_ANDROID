@@ -4,16 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
-import `in`.koreatech.koin.domain.error.user.KoinUserError
+import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.usecase.signup.RequestEmailVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifyEmailCodeUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckEmailExistsUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdExistsUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchEmailUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckIdMatchPhoneUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckPhoneExistsUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -25,6 +27,8 @@ import org.orbitmvi.orbit.viewmodel.container
 
 @HiltViewModel
 class FindPasswordVerificationViewModel @Inject constructor(
+    private val checkEmailExistsUseCase: CheckEmailExistsUseCase,
+    private val checkPhoneExistsUseCase: CheckPhoneExistsUseCase,
     private val requestSmsVerificationUseCase: RequestSmsVerificationUseCase,
     private val requestEmailVerificationUseCase: RequestEmailVerificationUseCase,
     private val verifySmsCodeUseCase: VerifySmsCodeUseCase,
@@ -84,7 +88,46 @@ class FindPasswordVerificationViewModel @Inject constructor(
         }
     }
 
-    fun sendVerificationCode() = viewModelScope.launch {
+    fun checkVerificationMethodExists() = viewModelScope.launch {
+        intent {
+            if (state.isSms) {
+                checkPhoneExistsUseCase(state.verificationMethod)
+            } else {
+                checkEmailExistsUseCase(state.verificationMethod)
+            }.onSuccess {
+                sendVerificationCode()
+            }.onFailure {
+                when (it) {
+                    is KoinUserException.PhoneNumberInvalidException,
+                    is KoinUserException.EmailInvalidException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.WrongFormat
+                            )
+                        }
+                    }
+
+                    is KoinUserException.PhoneNumberNotFoundException -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.NotFound
+                            )
+                        }
+                    }
+
+                    else -> {
+                        reduce {
+                            state.copy(
+                                verificationMethodState = PhoneNumber.Failed(it.message ?: "")
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun sendVerificationCode() = viewModelScope.launch {
         intent {
             postSideEffect(FindPasswordVerificationSideEffect.StartTimer)
             if (state.isSms) {
@@ -127,13 +170,13 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 postSideEffect(FindPasswordVerificationSideEffect.NavigateToChangePassword)
             }.onFailure {
                 when (it) {
-                    KoinUserError.LoginIdNotExists -> reduce {
+                    is KoinUserException.LoginIdNotFoundException -> reduce {
                         state.copy(
                             loginIdValid = false
                         )
                     }
 
-                    KoinUserError.LoginIdNotMatchPhone -> reduce {
+                    is KoinUserException.LoginIdNotMatchPhoneException -> reduce {
                         state.copy(
                             verificationMethodState = PhoneNumber.Failed(
                                 it.message ?: ""
@@ -160,8 +203,8 @@ class FindPasswordVerificationViewModel @Inject constructor(
                 checkIdMatch()
             }.onFailure {
                 when (it) {
-                    KoinUserError.LoginIdNotExists,
-                    KoinUserError.LoginIdWrongFormat -> reduce {
+                    is KoinUserException.LoginIdNotFoundException,
+                    is KoinUserException.LoginIdInvalidException -> reduce {
                         state.copy(
                             loginIdValid = false
                         )
@@ -184,17 +227,20 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     )
                 }
             }
+            if (secondsRemaining <= 0) {
+                stopTimer()
+                intent {
+                    reduce {
+                        state.copy(
+                            verificationCodeState = VerificationCode.Expired
+                        )
+                    }
+                }
+            }
         }
     }
 
     fun stopTimer() {
         AccountTimer.cancel()
-        intent {
-            reduce {
-                state.copy(
-                    verificationTimeLeft = 180
-                )
-            }
-        }
     }
 }
