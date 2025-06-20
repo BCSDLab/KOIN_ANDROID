@@ -16,6 +16,7 @@ import androidx.core.os.bundleOf
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
+import `in`.koreatech.koin.feature.signin.ui.SignInScreen
 import `in`.koreatech.koin.feature.user.DEEPLINK_ARTICLE
 import `in`.koreatech.koin.feature.user.DEEPLINK_MAIN
 import `in`.koreatech.koin.feature.user.DEEPLINK_TIMETABLE
