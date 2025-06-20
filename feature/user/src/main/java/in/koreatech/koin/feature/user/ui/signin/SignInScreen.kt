@@ -35,9 +35,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.feature.user.DEEPLINK_FIND_ID
-import `in`.koreatech.koin.feature.user.DEEPLINK_FIND_PASSWORD
-import `in`.koreatech.koin.feature.user.DEEPLINK_SIGN_UP
 import `in`.koreatech.koin.feature.user.OWNER_URL_PRODUCTION
 import `in`.koreatech.koin.feature.user.OWNER_URL_STAGE
 import `in`.koreatech.koin.feature.user.R
@@ -46,8 +43,11 @@ import `in`.koreatech.koin.feature.user.component.KoinUserPasswordTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserTextButton
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
+import `in`.koreatech.koin.feature.user.ui.findid.FindIdActivity
+import `in`.koreatech.koin.feature.user.ui.findpassword.FindPasswordActivity
 import `in`.koreatech.koin.feature.user.ui.signin.SignInSideEffect
 import `in`.koreatech.koin.feature.user.ui.signin.SignInViewModel
+import `in`.koreatech.koin.feature.user.ui.signup.SignUpActivity
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -188,9 +188,7 @@ fun SignInScreenImpl(
                     text = stringResource(R.string.sign_in_sign_up),
                     shape = KoinTheme.shapes.small,
                     onClick = {
-                        Intent(Intent.ACTION_VIEW).apply {
-                            data = DEEPLINK_SIGN_UP.toUri()
-                        }.let {
+                        Intent(context, SignUpActivity::class.java).let {
                             context.startActivity(it)
                         }
                     }
@@ -208,9 +206,7 @@ fun SignInScreenImpl(
                     text = stringResource(R.string.sign_in_find_login_id),
                     icon = painterResource(R.drawable.ic_sign_in_find_login_id)
                 ) {
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = DEEPLINK_FIND_ID.toUri()
-                    }.let {
+                    Intent(context, FindIdActivity::class.java).let {
                         context.startActivity(it)
                     }
                 }
@@ -227,9 +223,7 @@ fun SignInScreenImpl(
                     text = stringResource(R.string.sign_in_find_password),
                     icon = painterResource(R.drawable.ic_sign_in_find_password)
                 ) {
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = DEEPLINK_FIND_PASSWORD.toUri()
-                    }.let {
+                    Intent(context, FindPasswordActivity::class.java).let {
                         context.startActivity(it)
                     }
                 }
