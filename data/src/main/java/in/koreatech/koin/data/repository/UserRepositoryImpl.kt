@@ -314,17 +314,19 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userRemoteDataSource.idExists(loginId)
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> {
-                    when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotFoundException()
-                        400 -> throw KoinUserException.LoginIdInvalidException()
-                        else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
                     }
-                }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -332,17 +334,19 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userRemoteDataSource.idMatchEmail(loginId, email)
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> {
-                    when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotFoundException()
-                        400 -> throw KoinUserException.LoginIdNotMatchEmailException()
-                        else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdNotMatchEmailException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
                     }
-                }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -353,17 +357,19 @@ class UserRepositoryImpl @Inject constructor(
                 phone
             )
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> {
-                    when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotFoundException()
-                        400 -> throw KoinUserException.LoginIdNotMatchPhoneException()
-                        else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdNotMatchPhoneException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
                     }
-                }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -375,18 +381,20 @@ class UserRepositoryImpl @Inject constructor(
                 newPassword
             )
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> {
-                    when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotFoundException()
-                        400 -> throw KoinUserException.LoginIdNotMatchEmailException()
-                        401 -> throw KoinUserException.UnauthorizedException()
-                        else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdNotMatchEmailException()
+                            401 -> KoinUserException.UnauthorizedException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
                     }
-                }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -394,18 +402,20 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userRemoteDataSource.resetPasswordBySms(loginId, phone, newPassword)
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> {
-                    when (exception.code()) {
-                        404 -> throw KoinUserException.LoginIdNotFoundException()
-                        400 -> throw KoinUserException.LoginIdNotMatchPhoneException()
-                        401 -> throw KoinUserException.UnauthorizedException()
-                        else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinUserException.LoginIdNotFoundException()
+                            400 -> KoinUserException.LoginIdNotMatchPhoneException()
+                            401 -> KoinUserException.UnauthorizedException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
                     }
-                }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -413,15 +423,17 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userRemoteDataSource.checkEmailExists(email)
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> when (exception.code()) {
-                    400 -> throw KoinUserException.EmailInvalidException()
-                    404 -> throw KoinUserException.EmailNotFoundException()
-                    else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
-                }
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> when (exception.code()) {
+                        400 -> KoinUserException.EmailInvalidException()
+                        404 -> KoinUserException.EmailNotFoundException()
+                        else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                    }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -429,15 +441,17 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userRemoteDataSource.checkPhoneExists(phone)
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> when (exception.code()) {
-                    400 -> throw KoinUserException.PhoneNumberInvalidException()
-                    404 -> throw KoinUserException.PhoneNumberNotFoundException()
-                    else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
-                }
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> when (exception.code()) {
+                        400 -> KoinUserException.PhoneNumberInvalidException()
+                        404 -> KoinUserException.PhoneNumberNotFoundException()
+                        else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                    }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -445,18 +459,20 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userRemoteDataSource.findLoginIdByEmail(EmailVerifyRequest(email, verificationCode)).loginId
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> {
-                    when (exception.code()) {
-                        400 -> throw KoinUserException.EmailInvalidException()
-                        401 -> throw KoinUserException.UnauthorizedException()
-                        404 -> throw KoinUserException.EmailNotFoundException()
-                        else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinUserException.EmailInvalidException()
+                            401 -> KoinUserException.UnauthorizedException()
+                            404 -> KoinUserException.EmailNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
                     }
-                }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -464,18 +480,20 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userRemoteDataSource.findLoginIdBySms(SmsVerifyRequest(phone, verificationCode)).loginId
         }.onFailure { exception ->
-            when (exception) {
-                is HttpException -> {
-                    when (exception.code()) {
-                        400 -> throw KoinUserException.PhoneNumberInvalidException()
-                        401 -> throw KoinUserException.UnauthorizedException()
-                        404 -> throw KoinUserException.PhoneNumberNotFoundException()
-                        else -> throw exception.getErrorResponse().toKoinUnknownErrorException()
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinUserException.PhoneNumberInvalidException()
+                            401 -> KoinUserException.UnauthorizedException()
+                            404 -> KoinUserException.PhoneNumberNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
                     }
-                }
 
-                else -> throw exception
-            }
+                    else -> exception
+                }
+            )
         }
     }
 }
