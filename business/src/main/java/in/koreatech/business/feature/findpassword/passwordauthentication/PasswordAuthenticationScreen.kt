@@ -198,7 +198,7 @@ fun PasswordAuthenticationScreen(
                             R.string.error_network_unknown
                         )
                 },
-                isSuccess = accountState == ChangePasswordContinuationState.SendAuthCode,
+                isSuccess = accountState == ChangePasswordContinuationState.AuthCodeSent,
                 successText = stringResource(R.string.success_send_sms_code),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
@@ -316,8 +316,8 @@ fun PreviewPasswordAuthenticationScreen() {
             insertAuthCode = {},
             sendAuthCode = {},
             authenticateCode = { },
-            accountState = ChangePasswordContinuationState.SendAuthCode,
-            authState = ChangePasswordContinuationState.SendAuthCode,
+            accountState = ChangePasswordContinuationState.AuthCodeSent,
+            authState = ChangePasswordContinuationState.AuthCodeSent,
             sendSmsError = null
         )
     }

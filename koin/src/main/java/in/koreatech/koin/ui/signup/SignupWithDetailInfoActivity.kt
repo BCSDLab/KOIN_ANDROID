@@ -114,19 +114,19 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                 Lifecycle.State.STARTED
             ).collect { state ->
                 when (state) {
-                    SignupContinuationState.CheckNameFormat ->
+                    SignupContinuationState.NameFormatChecked ->
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_init_name)
                         )
 
-                    SignupContinuationState.CheckPhoneNumberFormat ->
+                    SignupContinuationState.PhoneNumberFormatChecked ->
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_init_phone_number)
                         )
 
-                    SignupContinuationState.CheckNickNameDuplication ->
+                    SignupContinuationState.NicknameDuplicationCheck ->
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_check_nickname_duplication)
@@ -138,13 +138,13 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                             getString(R.string.error_nickname_duplicated)
                         )
 
-                    SignupContinuationState.AvailableNickname ->
+                    SignupContinuationState.NicknameAvailable ->
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_nickname_available)
                         )
 
-                    SignupContinuationState.RequestedEmailValidation -> {
+                    SignupContinuationState.EmailValidationRequested -> {
                         EventLogger.logCustomEvent(
                             action = EventAction.USER.value,
                             category = "signup",

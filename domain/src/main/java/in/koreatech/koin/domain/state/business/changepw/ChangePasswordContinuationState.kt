@@ -1,13 +1,13 @@
 package `in`.koreatech.koin.domain.state.business.changepw
 
 sealed class ChangePasswordContinuationState {
-    object RequestedSmsValidation : ChangePasswordContinuationState()
+    object SmsValidationRequested : ChangePasswordContinuationState()
 
-    object GotoChangePasswordScreen : ChangePasswordContinuationState()
+    object ChangePasswordScreenNavigated : ChangePasswordContinuationState()
 
-    object SendAuthCode : ChangePasswordContinuationState()
+    object AuthCodeSent : ChangePasswordContinuationState()
 
-    object FinishedChangePassword : ChangePasswordContinuationState()
+    object PasswordChangeFinished : ChangePasswordContinuationState()
 
     data class Failed(
         val message: String = "",
