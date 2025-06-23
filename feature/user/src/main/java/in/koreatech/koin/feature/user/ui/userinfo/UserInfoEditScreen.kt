@@ -54,7 +54,9 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.UserType
+import `in`.koreatech.koin.feature.user.PHONE_NUMBER_LENGTH
 import `in`.koreatech.koin.feature.user.R
+import `in`.koreatech.koin.feature.user.VERIFICATION_CODE_LENGTH
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicItem
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserDropdown
@@ -476,6 +478,7 @@ fun UserInfoPhoneNumber(
         onValueChange = onPhoneNumberChange,
         onButtonAction = onRequestVerificationCode,
         buttonEnabled = isPhoneNumberChanged,
+        maxLength = PHONE_NUMBER_LENGTH,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
@@ -567,6 +570,7 @@ fun UserInfoVerificationCodeVerification(
                 ),
                 onValueChange = { onVerificationCodeChange(it) },
                 hint = stringResource(R.string.user_info_code_field_hint),
+                maxLength = VERIFICATION_CODE_LENGTH,
                 enabled = verificationCodeState !is VerificationCodeState.Valid
             )
 
