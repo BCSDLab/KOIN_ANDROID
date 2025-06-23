@@ -283,6 +283,7 @@ fun GeneralUserInfo(
         UserInfoPhoneNumber(
             phoneNumber = phoneNumber,
             phoneNumberState = phoneNumberState,
+            verificationCodeState = verificationCodeState,
             isPhoneNumberChanged = isPhoneNumberChanged,
             onPhoneNumberChange = onPhoneNumberChange,
             onRequestVerificationCode = onRequestVerificationCode
@@ -467,6 +468,7 @@ fun UserInfoNickname(
 fun UserInfoPhoneNumber(
     phoneNumber: String,
     phoneNumberState: VerificationMethodState,
+    verificationCodeState: VerificationCodeState,
     isPhoneNumberChanged: Boolean,
     onPhoneNumberChange: (String) -> Unit = {},
     onRequestVerificationCode: () -> Unit = {}
@@ -477,7 +479,7 @@ fun UserInfoPhoneNumber(
         buttonText = stringResource(R.string.user_info_general_user_info_phone_number_button),
         onValueChange = onPhoneNumberChange,
         onButtonAction = onRequestVerificationCode,
-        buttonEnabled = isPhoneNumberChanged,
+        buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid,
         maxLength = PHONE_NUMBER_LENGTH,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
