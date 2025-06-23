@@ -42,6 +42,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.feature.user.R
+import `in`.koreatech.koin.feature.user.VERIFICATION_CODE_LENGTH
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
@@ -236,7 +237,7 @@ fun SignUpVerificationCodeVerificationStep(
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
                 value = verificationCode,
-                maxLength = 6,
+                maxLength = VERIFICATION_CODE_LENGTH,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done

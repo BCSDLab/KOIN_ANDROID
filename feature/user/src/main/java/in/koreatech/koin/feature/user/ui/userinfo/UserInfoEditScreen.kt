@@ -54,6 +54,7 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.UserType
+import `in`.koreatech.koin.feature.user.NICKNAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.user.PHONE_NUMBER_LENGTH
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.VERIFICATION_CODE_LENGTH
@@ -429,7 +430,7 @@ fun UserInfoNickname(
         title = stringResource(R.string.user_info_general_user_info_nickname),
         value = nickName,
         buttonText = stringResource(R.string.user_info_general_user_info_nickname_button),
-        maxLength = 10,
+        maxLength = NICKNAME_MAX_LENGTH,
         onValueChange = onNicknameChange,
         onButtonAction = onNicknameDuplicateCheck,
         buttonEnabled = isNicknameChanged && nicknameState !is NicknameState.NicknameAvailable
