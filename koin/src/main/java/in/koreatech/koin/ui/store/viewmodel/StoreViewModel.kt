@@ -75,7 +75,7 @@ class StoreViewModel @Inject constructor(
     val isDelivery: LiveData<Boolean> get() = _isDelivery
 
     init {
-        _storeSorter.value = StoreSorter.COUNT
+        _storeSorter.value = StoreSorter.NONE
         getStoreCategories()
         getStoreEvents()
         // changeCategory()

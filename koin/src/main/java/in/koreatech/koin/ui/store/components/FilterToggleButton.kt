@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -15,8 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 
@@ -38,28 +43,53 @@ fun FilterToggleButton(
             .shadow(
                 elevation = 4.dp,
                 shape = shape,
-                ambientColor = KoinTheme.colors.neutral400,
-                spotColor = KoinTheme.colors.neutral500
+                ambientColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f),
+                spotColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f),
             )
-            .background(backgroundColor, shape = shape)
             .clickable { onCheckedChange(!checked) }
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Box(
             modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 6.dp)
+                .fillMaxSize()
+                .shadow(
+                    elevation = 1.dp,
+                    shape = shape,
+                    ambientColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.2f),
+                    spotColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.2f)
+                )
+                .background(backgroundColor, shape = shape)
         ) {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = null,
-                tint = contentColor
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(
-                text = text,
-                style = KoinTheme.typography.bold14,
-                color = contentColor
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 6.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = null,
+                    tint = contentColor
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = text,
+                    style = KoinTheme.typography.bold14,
+                    color = contentColor
+                )
+            }
         }
     }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFFCACACA
+)
+@Composable
+fun FilterToggleButtonPreview() {
+    FilterToggleButton(
+        false,
+        onCheckedChange = {},
+        iconRes = R.drawable.motorcycle,
+        text = "test"
+    )
 }

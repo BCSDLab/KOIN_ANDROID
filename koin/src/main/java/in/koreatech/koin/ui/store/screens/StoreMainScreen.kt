@@ -2,7 +2,10 @@ package `in`.koreatech.koin.ui.store.screens
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,7 +40,14 @@ fun StoreMainScreen(
     }
 
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController, items) },
+        modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
+        bottomBar = {
+            BottomNavigationBar(
+                navController = navController,
+                items = items,
+                modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars)
+            )
+        },
         content = { innerPadding ->
             NavHost(
                 navController = navController,

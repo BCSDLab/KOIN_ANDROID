@@ -50,8 +50,8 @@ import kotlinx.coroutines.launch
 fun AutoScrollingBanner(
     storeEvents: List<StoreEvent>,
     modifier: Modifier = Modifier,
-    autoScrollMillis: Long = 3000,
-    resumeDelayMillis: Long = 3000,
+    autoScrollMillis: Long = 4000,
+    resumeDelayMillis: Long = 2000,
     onItemClick: (StoreEvent) -> Unit = {}
 ) {
     val realItemCount = storeEvents.size

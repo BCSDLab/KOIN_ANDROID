@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.store.screens
 
-import StoreCard
 import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -39,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.common.math.LinearTransformation.vertical
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.component.topbar.StoreTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -49,6 +49,7 @@ import `in`.koreatech.koin.ui.store.components.CategoryChips
 import `in`.koreatech.koin.ui.store.components.SearchBar
 import `in`.koreatech.koin.ui.store.components.SearchBarFake
 import `in`.koreatech.koin.ui.store.components.SearchResultItem
+import `in`.koreatech.koin.ui.store.components.StoreCard
 import `in`.koreatech.koin.ui.store.components.StoreFilterBar
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
@@ -150,21 +151,26 @@ fun HomeScreen(
                 viewModel = viewModel,
                 modifier = Modifier.padding(vertical = 4.dp)
             )
-            AutoScrollingBanner(
-                storeEvents = storeEvents ?: emptyList(),
-                onItemClick = { }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize(),
+//                    .padding(horizontal = 24.dp),
                 contentPadding = PaddingValues(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                item {
+                    AutoScrollingBanner(
+                        storeEvents = storeEvents ?: emptyList(),
+                        onItemClick = { }
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
                 items(storeList) { store ->
                     StoreCard(
                         store = store,
-                        imageUrl = R.drawable.no_image.toString(),
-                        modifier = Modifier.padding(vertical = 4.dp),
+                        imageUrl = R.drawable.ic_porkfeet.toString(),
+                        modifier = Modifier.padding(horizontal = 24.dp),
                         onClick = {
                             val intent = Intent(context, StoreDetailActivity::class.java).apply {
                                 putExtra(StoreDetailActivityContract.STORE_ID, store.uid)

@@ -121,7 +121,9 @@ fun StoreFilterBar(
         ) {
             FilterToggleButton(
                 checked = isOperating,
-                onCheckedChange = { viewModel.filterStoreIsOpen(!isOperating) },
+                onCheckedChange = {
+                    viewModel.filterStoreIsOpen(!isOperating)
+                },
                 iconRes = R.drawable.mdi_food,
                 text = "영업중"
             )
