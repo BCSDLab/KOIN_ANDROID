@@ -625,6 +625,8 @@ fun UserInfoVerificationCodeVerification(
             )
         }
     }
+
+    Spacer(modifier = Modifier.height(16.dp))
 }
 
 fun handleSideEffect(
