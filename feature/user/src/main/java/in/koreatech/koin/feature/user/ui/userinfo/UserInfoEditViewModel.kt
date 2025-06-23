@@ -120,7 +120,8 @@ class UserInfoEditViewModel @Inject constructor(
         reduce {
             state.copy(
                 phoneNumber = phoneNumber,
-                phoneNumberState = VerificationMethodState.None
+                phoneNumberState = VerificationMethodState.None,
+                verificationCodeState = VerificationCodeState.None
             )
         }
     }
