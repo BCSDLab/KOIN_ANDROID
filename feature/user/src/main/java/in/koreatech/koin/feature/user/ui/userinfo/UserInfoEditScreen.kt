@@ -476,7 +476,13 @@ fun UserInfoPhoneNumber(
     KoinUserWithButtonItem(
         title = stringResource(R.string.user_info_general_user_info_phone_number),
         value = phoneNumber,
-        buttonText = stringResource(R.string.user_info_general_user_info_phone_number_button),
+        buttonText = stringResource(
+            if (phoneNumberState is VerificationMethodState.Sent) {
+                R.string.user_info_general_user_info_phone_number_resend
+            } else {
+                R.string.user_info_general_user_info_phone_number_send
+            }
+        ),
         onValueChange = onPhoneNumberChange,
         onButtonAction = onRequestVerificationCode,
         buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid,
