@@ -33,8 +33,8 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
-import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.NICKNAME_MAX_LENGTH
+import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserDropdown
 import `in`.koreatech.koin.feature.user.component.KoinUserPasswordTextField
