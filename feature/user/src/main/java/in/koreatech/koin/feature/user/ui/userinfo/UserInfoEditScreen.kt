@@ -640,7 +640,10 @@ fun handleSideEffect(
             Toast.makeText(context, R.string.user_info_invalid_data_error, Toast.LENGTH_SHORT).show()
         }
         UserInfoEditSideEffect.NicknameOrEmailConflictError -> {
-            Toast.makeText(context, R.string.user_info_nickname_or_email_conflict_error, Toast.LENGTH_SHORT).show()
+            // API sent 409 when either nickname or email is already in use.
+            // Since we allow the user to press the save button only after the nickname conflict check passes,
+            // we assume the conflict is due to the email.
+            Toast.makeText(context, R.string.user_info_email_conflict_error, Toast.LENGTH_SHORT).show()
         }
         UserInfoEditSideEffect.PhoneNumberValidateRequiredError -> {
             Toast.makeText(context, R.string.user_info_phone_number_validate_required_error, Toast.LENGTH_SHORT).show()

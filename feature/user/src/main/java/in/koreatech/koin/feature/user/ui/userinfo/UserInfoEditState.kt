@@ -76,17 +76,24 @@ val UserInfoEditState.isModified: Boolean
         User.Anonymous -> false
         is User.Student -> {
             beforeUser.loginId != loginId || beforeUser.name != name.ifEmpty { null } ||
-                beforeUser.nickname != nickname.ifEmpty { null } || beforeUser.phoneNumber != phoneNumber.ifEmpty { null } ||
+                isNicknameChanged || isPhoneNumberChanged ||
                 beforeUser.email != email.ifEmpty { null } || beforeUser.gender != gender ||
                 beforeUser.studentNumber != studentNumber.ifEmpty { null } || beforeUser.major != major.ifEmpty { null }
         }
 
         is User.General -> {
             beforeUser.loginId != loginId || beforeUser.name != name ||
-                beforeUser.nickname != nickname.ifEmpty { null } || beforeUser.phoneNumber != phoneNumber ||
+                isNicknameChanged || isPhoneNumberChanged ||
                 beforeUser.email != email.ifEmpty { null } || beforeUser.gender != gender
         }
     }
 
+private val UserInfoEditState.isNicknameCheckPassed: Boolean
+    get() = if (isNicknameChanged) {
+        nicknameState is NicknameState.NicknameAvailable
+    } else {
+        true
+    }
+
 val UserInfoEditState.canSave: Boolean
-    get() = isModified && isNameValid && isNicknameValid && nicknameState is NicknameState.NicknameAvailable && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || verificationCodeState is VerificationCodeState.None)
+    get() = isModified && isNameValid && isNicknameValid && isNicknameCheckPassed && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || verificationCodeState is VerificationCodeState.None)
