@@ -16,10 +16,7 @@ val majorStringList = persistentListOf(
     "에너지신소재공학부"
 )
 
-const val SIGN_UP_PHONE_NUMBER_MAX_LENGTH = 11
-const val SIGN_UP_VERIFICATION_CODE_MAX_LENGTH = 6
-const val SIGN_UP_NICKNAME_MAX_LENGTH = 10
-
+const val NICKNAME_MAX_LENGTH = 10
 const val PHONE_NUMBER_LENGTH = 11
 const val VERIFICATION_CODE_LENGTH = 6
 
