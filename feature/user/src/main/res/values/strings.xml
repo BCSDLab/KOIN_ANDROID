@@ -170,7 +170,7 @@
     <string name="user_info_general_user_info_name">이름</string>
     <string name="user_info_general_user_info_nickname">닉네임(선택)</string>
     <string name="user_info_general_user_info_nickname_button">중복 확인</string>
-    <string name="user_info_general_user_info_phone_number">휴대번호</string>
+    <string name="user_info_general_user_info_phone_number">전화번호</string>
     <string name="user_info_general_user_info_phone_number_button">인증번호 발송</string>
     <string name="user_info_general_user_info_email">이메일(선택)</string>
     <string name="user_info_general_user_info_gender">성별</string>
