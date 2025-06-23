@@ -61,7 +61,7 @@ val UserInfoEditState.isEmailValid: Boolean
     get() = (email.isNotEmpty() && (email.isValidEmail() || email.isValidGeneralEmail())) || email.isEmpty()
 
 val UserInfoEditState.isNicknameValid
-    get() = ((nickname.isNotEmpty() && nickname.isNicknameFormat() && nicknameState is NicknameState.NicknameAvailable) || nickname.isEmpty())
+    get() = ((nickname.isNotEmpty() && nickname.isNicknameFormat()) || nickname.isEmpty())
 
 val UserInfoEditState.isStudentNumberValid
     get() = when (userType) {
@@ -89,4 +89,4 @@ val UserInfoEditState.isModified: Boolean
     }
 
 val UserInfoEditState.canSave: Boolean
-    get() = isModified && isNameValid && isNicknameValid && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || verificationCodeState is VerificationCodeState.None)
+    get() = isModified && isNameValid && isNicknameValid && nicknameState is NicknameState.NicknameAvailable && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || verificationCodeState is VerificationCodeState.None)
