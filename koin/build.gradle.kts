@@ -111,7 +111,7 @@ dependencies {
     implementation(project(":feature:chat"))
     implementation(project(":feature:banner"))
     implementation(project(":feature:store"))
-
+    implementation(project(":feature:club"))
     implementation(libs.guava)
 
     // Dependency - glide & coil
