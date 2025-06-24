@@ -55,7 +55,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
                 state.copy(
                     phoneNumber = phoneNumber,
                     authenticationBtnIsClicked = false,
-                    accountContinuationState = ChangePasswordContinuationState.RequestedSmsValidation
+                    accountContinuationState = ChangePasswordContinuationState.SmsValidationRequested
                 )
             }
         }
@@ -65,7 +65,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
             reduce {
                 state.copy(
                     authenticationCode = authCode,
-                    smsAuthContinuationState = ChangePasswordContinuationState.RequestedSmsValidation
+                    smsAuthContinuationState = ChangePasswordContinuationState.SmsValidationRequested
                 )
             }
         }
@@ -96,7 +96,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
                 intent {
                     reduce {
                         state.copy(
-                            accountContinuationState = ChangePasswordContinuationState.SendAuthCode,
+                            accountContinuationState = ChangePasswordContinuationState.AuthCodeSent,
                             authenticationBtnIsClicked = true,
                             sendSmsError = null
                         )

@@ -456,7 +456,6 @@ fun ClubDetail(
                                 Text(
                                     text = outputText,
                                     maxLines = if (intro.first == DETAIL_DESCRIPTION) if (showMore.value) 10 else 2 else 1,
-                                    softWrap = false,
                                     style = KoinTheme.typography.medium18,
                                     color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                     overflow = TextOverflow.Ellipsis,

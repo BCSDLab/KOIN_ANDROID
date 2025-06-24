@@ -12,7 +12,7 @@ class SendAuthSmsCodeUseCase @Inject constructor(
             ownerChangePasswordRepository.requestSmsVerification(
                 phoneNumber = phoneNumber
             )
-            Result.success(ChangePasswordContinuationState.SendAuthCode)
+            Result.success(ChangePasswordContinuationState.AuthCodeSent)
         } catch (t: Throwable) {
             Result.failure(t)
         }

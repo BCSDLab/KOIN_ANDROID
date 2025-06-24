@@ -1,12 +1,14 @@
 package `in`.koreatech.koin.di.network
 
 import android.content.Context
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.Auth
+import `in`.koreatech.koin.core.qualifier.Inspection
 import `in`.koreatech.koin.core.qualifier.OwnerAuth
 import `in`.koreatech.koin.core.qualifier.OwnerUserAgent
 import `in`.koreatech.koin.core.qualifier.PreSignedUrl
@@ -24,6 +26,7 @@ import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.data.util.EmptyStringToNullAdapter
 import `in`.koreatech.koin.di.userAgent.UserAgentInterceptor
 import `in`.koreatech.koin.di.userAgent.UserAgentProvider
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
@@ -49,6 +52,13 @@ object AuthNetworkModule {
     fun provideUserAgentInterceptor(
         userAgentProvider: UserAgentProvider
     ): Interceptor = UserAgentInterceptor(userAgentProvider)
+
+    @Provides
+    @Singleton
+    @Inspection
+    fun provideInspectionInterceptor(
+        @ApplicationContext context: Context
+    ): Interceptor = InspectionInterceptor(context)
 
     @Auth
     @Provides
@@ -90,6 +100,7 @@ object AuthNetworkModule {
     @Singleton
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        @Inspection inspectionInterceptor: Interceptor,
         @UserAgent userAgentInterceptor: Interceptor,
         @Auth authInterceptor: Interceptor,
         @Refresh refreshInterceptor: Authenticator
@@ -98,10 +109,11 @@ object AuthNetworkModule {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
-            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(authInterceptor)
+            addInterceptor(inspectionInterceptor)
             authenticator(refreshInterceptor)
+            addInterceptor(userAgentInterceptor)
         }.build()
     }
 
@@ -112,10 +124,12 @@ object AuthNetworkModule {
         @ServerUrl baseUrl: String,
         @Auth okHttpClient: OkHttpClient
     ): Retrofit {
+        val gson = GsonBuilder().registerTypeAdapter(String::class.java, EmptyStringToNullAdapter()).create()
+
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
@@ -198,16 +212,18 @@ object OwnerAuthNetworkModule {
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @OwnerUserAgent userAgentInterceptor: Interceptor,
         @OwnerAuth ownerAuthInterceptor: Interceptor,
-        @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator
+        @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator,
+        @Inspection inspectionInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
-            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
+            addInterceptor(inspectionInterceptor)
             addInterceptor(ownerAuthInterceptor)
             authenticator(tokenAuthenticator)
+            addInterceptor(userAgentInterceptor)
         }.build()
     }
 
@@ -253,8 +269,8 @@ object PreSignedUrlNetworkModule {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
-            addInterceptor(userAgentInterceptor)
             addInterceptor(httpLoggingInterceptor)
+            addInterceptor(userAgentInterceptor)
         }.build()
     }
 

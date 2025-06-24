@@ -101,7 +101,7 @@ class SignupViewModel @Inject constructor(
                     )
                 } else {
                     isCheckedNickname = true
-                    _signupContinuationState.emit(SignupContinuationState.AvailableNickname)
+                    _signupContinuationState.emit(SignupContinuationState.NicknameAvailable)
                 }
             }
             error?.let {
@@ -116,7 +116,7 @@ class SignupViewModel @Inject constructor(
                 if (isSuccess) {
                     _signupContinuationState.emit(SignupContinuationState.EmailDuplicated)
                 } else {
-                    _signupContinuationState.emit(SignupContinuationState.AvailableEmail)
+                    _signupContinuationState.emit(SignupContinuationState.EmailAvailable)
                 }
             }
             error?.let {
