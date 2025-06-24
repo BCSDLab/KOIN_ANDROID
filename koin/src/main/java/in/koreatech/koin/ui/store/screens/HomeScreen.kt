@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TopAppBarDefaults
@@ -38,11 +39,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.common.math.LinearTransformation.vertical
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.ui.Alignment
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.designsystem.component.topbar.StoreTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.ui.store.activity.StoreDetailActivity
 import `in`.koreatech.koin.ui.store.components.AutoScrollingBanner
 import `in`.koreatech.koin.ui.store.components.CategoryChips
@@ -75,6 +79,7 @@ fun HomeScreen(
     val categories by viewModel.storeCategoryList.observeAsState(emptyList())
     val selectedCategoryIndex by viewModel.categoryPosition.observeAsState(categoryId)
     val storeList by viewModel.stores.collectAsState()
+    val isLoading by viewModel.isLoading.observeAsState(false)
 
     fun exitSearchMode() {
         isSearchMode = false
@@ -151,33 +156,41 @@ fun HomeScreen(
                 viewModel = viewModel,
                 modifier = Modifier.padding(vertical = 4.dp)
             )
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize(),
-//                    .padding(horizontal = 24.dp),
-                contentPadding = PaddingValues(vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                item {
-                    AutoScrollingBanner(
-                        storeEvents = storeEvents ?: emptyList(),
-                        onItemClick = { }
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
 
-                items(storeList) { store ->
-                    StoreCard(
-                        store = store,
-                        imageUrl = R.drawable.ic_porkfeet.toString(),
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        onClick = {
-                            val intent = Intent(context, StoreDetailActivity::class.java).apply {
-                                putExtra(StoreDetailActivityContract.STORE_ID, store.uid)
+            val pullRefreshState = rememberPullToRefreshState()
+            PullToRefreshBox(
+                isRefreshing = isLoading,
+                onRefresh = { viewModel.refreshStores() },
+                state = pullRefreshState
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize(),
+//                    .padding(horizontal = 24.dp),
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    item {
+                        AutoScrollingBanner(
+                            storeEvents = storeEvents ?: emptyList(),
+                            onItemClick = { }
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+
+                    items(storeList) { store ->
+                        StoreCard(
+                            store = store,
+                            imageUrl = R.drawable.ic_porkfeet.toString(),
+                            modifier = Modifier.padding(horizontal = 24.dp),
+                            onClick = {
+                                val intent = Intent(context, StoreDetailActivity::class.java).apply {
+                                    putExtra(StoreDetailActivityContract.STORE_ID, store.uid)
+                                }
+                                context.startActivity(intent)
                             }
-                            context.startActivity(intent)
-                        }
-                    )
+                        )
+                    }
                 }
             }
         } else {

@@ -33,7 +33,7 @@ import `in`.koreatech.koin.ui.store.components.SelectionType
 
 @Composable
 fun MenuOptionScreen() {
-    // 수정 예정
+    // API 완성 후 수정 예정
     val menuName = "족발 + 막국수 저녁 Set"
     val menuPrice = 18000
     val menuDetail = "메뉴 세부사항 구성 등등"

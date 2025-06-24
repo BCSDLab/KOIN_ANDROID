@@ -152,9 +152,14 @@ class StoreViewModel @Inject constructor(
     }
 
     fun refreshStores() = viewModelScope.launch {
-        delay(100)
-        invalidateStoresUseCase()
-        refreshEvent.emit(Unit)
+        _isLoading.value = true
+        try {
+            delay(100)
+            invalidateStoresUseCase()
+            refreshEvent.emit(Unit)
+        } finally {
+            _isLoading.value = false
+        }
     }
 
     fun clickStoreItem(item: Store) {

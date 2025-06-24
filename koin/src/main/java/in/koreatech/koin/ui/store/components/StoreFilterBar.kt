@@ -1,10 +1,8 @@
 package `in`.koreatech.koin.ui.store.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,14 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -52,8 +46,8 @@ fun StoreFilterBar(
     val (showSortSheet, setShowSortSheet) = remember { mutableStateOf(false) }
     val (showMinOrderSheet, setShowMinOrderSheet) = remember { mutableStateOf(false) }
 
-    val sortOptions = listOf("기본순", "리뷰순", "별점 높은순")
-    val sortValues = listOf(StoreSorter.NONE, StoreSorter.COUNT, StoreSorter.RATING)
+    val sortOptions = listOf("별점 높은순", "리뷰순", "기본순")
+    val sortValues = listOf(StoreSorter.RATING, StoreSorter.COUNT, StoreSorter.NONE)
     val currentSorter = viewModel.storeSorter.observeAsState(StoreSorter.NONE).value
     val currentSortIndex = sortValues.indexOf(currentSorter).takeIf { it >= 0 } ?: 0
 
@@ -174,53 +168,24 @@ fun StoreFilterBar(
     }
 
     if (showSortSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { setShowSortSheet(false) }
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                sortOptions.forEachIndexed { idx, label ->
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                viewModel.settingStoreSorter(sortValues[idx])
-                                setShowSortSheet(false)
-                            }
-                            .padding(vertical = 12.dp)
-                    ) {
-                        RadioButton(
-                            selected = currentSortIndex == idx,
-                            onClick = {
-                                viewModel.settingStoreSorter(sortValues[idx])
-                                setShowSortSheet(false)
-                            }
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        Text(label)
-                    }
-                }
-            }
-        }
+        SortBottomSheet(
+            currentIndex = currentSortIndex,
+            options = sortOptions,
+            onSelect = { idx ->
+                viewModel.settingStoreSorter(sortValues[idx])
+                setShowSortSheet(false)
+            },
+            onClose = { setShowSortSheet(false) }
+        )
     }
 
     if (showMinOrderSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { setShowMinOrderSheet(false) }
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(minOrderButtonText, style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.height(16.dp))
-                MinOrderSlider(
-                    minOrderOptions = minOrderOptions,
-                    minOrderValues = listOf(5000, 10000, 15000, 20000, 0),
-                    selectedIndex = minOrderIndex,
-                    onSelectedIndexChange = { idx -> setMinOrderIndex(idx) }
-                )
-                Spacer(Modifier.height(16.dp))
-                Button(
-                    onClick = { setShowMinOrderSheet(false) }
-                ) { Text("적용하기") }
-            }
-        }
+        MinOrderSliderBottomSheet(
+            selectedIndex = minOrderIndex,
+            options = minOrderOptions,
+            onSelected = { idx -> setMinOrderIndex(idx) },
+            onApply = { setShowMinOrderSheet(false) },
+            onClose = { setShowMinOrderSheet(false) }
+        )
     }
 }
