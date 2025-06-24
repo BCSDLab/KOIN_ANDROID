@@ -19,11 +19,11 @@ fun String.isNotBusinessValidEmail() = !isBusinessValidEmail()
 
 fun String.isNotValidPassword() = !isValidPassword()
 
-fun String.isInstagramUrl(): Boolean = this.startsWith(INSTAGRAM_URL)
+fun String.isValidInstagramUrl(): Boolean = this.startsWith(INSTAGRAM_URL)
 
-fun String.isGoogleFormUrl(): Boolean = this.startsWith(GOOGLE_FORM_URL)
+fun String.isValidGoogleFormUrl(): Boolean = this.startsWith(GOOGLE_FORM_URL)
 
-fun String.isOpenChatUrl(): Boolean = this.startsWith(OPEN_CHAT_URL)
+fun String.isValidOpenChatUrl(): Boolean = this.startsWith(OPEN_CHAT_URL)
 
 val String.isValidStudentId: Boolean
     get() {
@@ -38,10 +38,6 @@ val String.isValidStudentId: Boolean
 val String.isValidPhoneNumber: Boolean get() =
     this.trim().matches(Regex("""^(01[016789]{1})-?([0-9]{3,4})-?([0-9]{4})$"""))
 
-fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
+fun String.isValidName(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
 
-fun String.isNicknameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+${'$'}"""))
-
-fun String.formatPhoneNumber(): String = this.replace(Regex("(\\d{3})-?(\\d{4})-?(\\d{4})"), "$1-$2-$3")
-
-fun String.formatBusinessNumber(): String = this.replace(Regex("(\\d{3})(\\d{2})(\\d{5})"), "$1-$2-$3")
+fun String.isValidNickname(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+${'$'}"""))

@@ -4,7 +4,7 @@ import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
-import `in`.koreatech.koin.domain.util.ext.isNameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidName
 import javax.inject.Inject
 
 class SignupRequestEmailVerificationUseCase @Inject constructor(
@@ -22,7 +22,7 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
         studentNumber: String?,
         isCheckNickname: Boolean
     ): Result<SignupContinuationState> {
-        if (!name.isNullOrBlank() && !name.isNameFormat()) {
+        if (!name.isNullOrBlank() && !name.isValidName()) {
             return Result.success(SignupContinuationState.NameFormatChecked)
         } else if (!phoneNumber.isNullOrBlank() && (phoneNumber.length != 11)) {
             return Result.success(SignupContinuationState.PhoneNumberFormatChecked)
