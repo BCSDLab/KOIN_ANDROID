@@ -33,6 +33,11 @@
         android:usesCleartextTraffic="true"
         tools:replace="icon,label">
         <activity
+            android:name=".ui.error.InspectionActivity"
+            android:launchMode="singleTask"
+            android:exported="false" />
+
+        <activity
             android:name=".storev2.StoreDetailActivity"
             android:theme="@style/KAPTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize"
