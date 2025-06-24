@@ -109,7 +109,7 @@ fun StoreCard(
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(top = 4.dp),
+                        modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_star),
@@ -212,7 +212,7 @@ private fun getStoreStatus(openData: Store.OpenData): Pair<String, Boolean> {
             val ampm = if (openTime.hour < 12) "오전" else "오후"
             val hour = openTime.hour
             val minute = openTime.minute.toString().padStart(2, '0')
-            return "${ampm} ${hour}:${minute}시 오픈" to true
+            return "$ampm $hour:${minute}시 오픈" to true
         } else if (currentTime.isAfter(closeTime)) {
             return "영업이 종료된 가게에요!" to true
         }

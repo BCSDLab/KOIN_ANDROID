@@ -16,8 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,7 +42,7 @@ fun FilterToggleButton(
                 elevation = 4.dp,
                 shape = shape,
                 ambientColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f),
-                spotColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f),
+                spotColor = RebrandKoinTheme.colors.neutral800.copy(alpha = 0.4f)
             )
             .clickable { onCheckedChange(!checked) }
     ) {

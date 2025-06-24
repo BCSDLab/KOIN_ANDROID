@@ -70,14 +70,14 @@ fun CommonBottomSheet(
                         )
                 )
             }
-                Column(
-                    modifier = Modifier
-                        .border(width = 0.5.dp, color = RebrandKoinTheme.colors.neutral300)
-                        .fillMaxWidth()
-                        .padding(start = 32.dp, end = 32.dp, top = 4.dp)
-                ) {
-                    content()
-                }
+            Column(
+                modifier = Modifier
+                    .border(width = 0.5.dp, color = RebrandKoinTheme.colors.neutral300)
+                    .fillMaxWidth()
+                    .padding(start = 32.dp, end = 32.dp, top = 4.dp)
+            ) {
+                content()
+            }
         }
     }
 }
@@ -159,7 +159,7 @@ fun MinOrderSliderBottomSheet(
         }
 
         Spacer(Modifier.height(32.dp))
-        
+
         Button(
             onClick = {
                 onSelected(sliderValue.toInt())
