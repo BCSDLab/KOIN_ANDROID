@@ -227,7 +227,6 @@ class UserRepositoryImpl @Inject constructor(
                     is HttpException -> {
                         when (exception.code()) {
                             429 -> KoinUserException.VerificationCodeRequestCountExceededException()
-                            404 -> KoinUserException.PhoneNumberNotFoundException()
                             400 -> KoinUserException.PhoneNumberInvalidException()
                             else -> exception.getErrorResponse().toKoinUnknownErrorException()
                         }
@@ -248,7 +247,6 @@ class UserRepositoryImpl @Inject constructor(
                     is HttpException -> {
                         when (exception.code()) {
                             429 -> KoinUserException.VerificationCodeRequestCountExceededException()
-                            404 -> KoinUserException.EmailNotFoundException()
                             400 -> KoinUserException.EmailInvalidException()
                             else -> exception.getErrorResponse().toKoinUnknownErrorException()
                         }
