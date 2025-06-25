@@ -3,7 +3,7 @@ package `in`.koreatech.koin.domain.usecase.user
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.UserRepository
-import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
+import `in`.koreatech.koin.domain.util.ext.isValidNickname
 import javax.inject.Inject
 
 class CheckNicknameValidationUseCase @Inject constructor(
@@ -12,7 +12,7 @@ class CheckNicknameValidationUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(nickname: String): Pair<Boolean?, ErrorHandler?> {
         return try {
-            if (!nickname.isNicknameFormat()) {
+            if (!nickname.isValidNickname()) {
                 throw IllegalArgumentException()
             }
             userRepository.isUsernameDuplicated(nickname) to null
