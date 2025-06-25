@@ -14,7 +14,7 @@ interface ClubApi {
     @GET(URLConstant.CLUBS.HOT)
     suspend fun getClubHot(): ClubHotResponse
 
-    @GET("clubs/{clubId}/qna")
+    @GET("${URLConstant.CLUBS.CLUBS}/{clubId}/qna")
     suspend fun getClubQnas(
         @Path("clubId") clubId: Int
     ): ClubQnasResponse
