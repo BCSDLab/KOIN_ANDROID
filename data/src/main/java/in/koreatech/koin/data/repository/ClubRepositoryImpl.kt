@@ -12,7 +12,7 @@ import `in`.koreatech.koin.data.request.club.ClubQnaRequest
 import `in`.koreatech.koin.data.source.remote.ClubRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
-import `in`.koreatech.koin.domain.error.club.ClubError
+import `in`.koreatech.koin.domain.error.club.KoinClubException
 import `in`.koreatech.koin.domain.model.club.ClubCategories
 import `in`.koreatech.koin.domain.model.club.ClubDetails
 import `in`.koreatech.koin.domain.model.club.ClubHot
@@ -40,40 +40,58 @@ class ClubRepositoryImpl @Inject constructor(
     override suspend fun getClubs(categoryId: Int?, sortType: String?): Result<Clubs> {
         return runCatching {
             clubRemoteDataSource.getClubs(categoryId, sortType).toClubs()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinClubException.ClubCategoryNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 
     override suspend fun cancelClubLike(clubId: Int): Result<Unit> {
         return runCatching {
-            val response = clubRemoteDataSource.cancelClubLike(clubId)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }.recoverCatching { e ->
-            if (e is HttpException) {
-                when (e.code()) {
-                    401 -> throw ClubError.Unauthorized
-                    404 -> throw ClubError.AlreadyNotLiked
-                    else -> throw e.getErrorResponse().toKoinUnknownErrorException()
+            clubRemoteDataSource.cancelClubLike(clubId)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            401 -> KoinClubException.UnauthorizedException()
+                            404 -> KoinClubException.AlreadyNotLikedException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
                 }
-            }
+            )
         }
     }
 
     override suspend fun getClubDetails(clubId: Int): Result<ClubDetails> {
         return runCatching {
             clubRemoteDataSource.getClubDetails(clubId).toClubDetails()
-        }.recoverCatching { e ->
-            if (e is HttpException) {
-                throw when (e.code()) {
-                    404 -> ClubError.ClubNotFound
-                    else -> e.getErrorResponse().toKoinUnknownErrorException()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            404 -> KoinClubException.ClubNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
                 }
-            } else {
-                throw e
-            }
+            )
         }
     }
 
@@ -108,9 +126,19 @@ class ClubRepositoryImpl @Inject constructor(
                     isLikeHidden = isLikeHidden
                 )
             )
-        }.onFailure {
-            // TODO: Handle specific exceptions after get API specification
-            return Result.failure(it)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            401 -> KoinClubException.UnauthorizedException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -143,9 +171,21 @@ class ClubRepositoryImpl @Inject constructor(
                     isLikeHidden = isLikeHidden
                 )
             )
-        }.onFailure {
-            // TODO: Handle specific exceptions after get API specification
-            return Result.failure(it)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            401 -> KoinClubException.UnauthorizedException()
+                            403 -> KoinClubException.NotClubManagerException()
+                            404 -> KoinClubException.ClubNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -157,84 +197,87 @@ class ClubRepositoryImpl @Inject constructor(
 
     override suspend fun setClubLike(clubId: Int): Result<Unit> {
         return runCatching {
-            val response = clubRemoteDataSource.setClubLike(clubId)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }.recoverCatching { e ->
-            if (e is HttpException) {
-                when (e.code()) {
-                    401 -> throw ClubError.Unauthorized
-                    409 -> throw ClubError.AlreadyLiked
-                    else -> throw e.getErrorResponse().toKoinUnknownErrorException()
+            clubRemoteDataSource.setClubLike(clubId)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            401 -> KoinClubException.UnauthorizedException()
+                            409 -> KoinClubException.AlreadyLikedException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
                 }
-            }
+            )
         }
     }
 
     override suspend fun deleteClubQna(clubId: Int, qnaId: Int): Result<Unit> {
         return runCatching {
-            val response = clubRemoteDataSource.deleteClubQna(clubId, qnaId)
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }.recoverCatching { e ->
-            if (e is HttpException) {
-                when (e.code()) {
-                    403 -> throw ClubError.DeletePermissionDenied
-                    404 -> throw ClubError.QnaNotFound
-                    else -> throw e.getErrorResponse().toKoinUnknownErrorException()
+            clubRemoteDataSource.deleteClubQna(clubId, qnaId)
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            403 -> KoinClubException.DeletePermissionDeniedException()
+                            404 -> KoinClubException.QnaNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
                 }
-            }
+            )
         }
     }
 
     override suspend fun setClubEmpowerment(clubId: Int, changedManagerId: String): Result<Unit> {
         return runCatching {
-            val response = clubRemoteDataSource.setClubEmpowerment(ClubEmpowermentRequest(clubId, changedManagerId))
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }.recoverCatching { e ->
-            if (e is HttpException) {
-                when (e.code()) {
-                    400 -> throw ClubError.AlreadyManager
-                    401 -> throw ClubError.Unauthorized
-                    403 -> throw ClubError.NotClubManager
-                    404 -> throw ClubError.UserIdNotFound
-                    else -> throw e.getErrorResponse().toKoinUnknownErrorException()
+            clubRemoteDataSource.setClubEmpowerment(ClubEmpowermentRequest(clubId, changedManagerId))
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            400 -> KoinClubException.AlreadyManagerException()
+                            401 -> KoinClubException.UnauthorizedException()
+                            403 -> KoinClubException.NotClubManagerException()
+                            404 -> KoinClubException.LoginIdNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
                 }
-            }
+            )
         }
     }
 
     override suspend fun postClubQna(clubId: Int, parentId: Int?, content: String): Result<Unit> {
         return runCatching {
-            val response = clubRemoteDataSource.postClubQna(
+            clubRemoteDataSource.postClubQna(
                 clubId,
                 ClubQnaRequest(parentId, content)
             )
-            if (response.isSuccessful) {
-                Unit
-            } else {
-                throw HttpException(response)
-            }
-        }.recoverCatching { e ->
-            if (e is HttpException) {
-                val message = e.getErrorResponse().message
-                when (e.code()) {
-                    401 -> throw ClubError.Unauthorized
-                    403 -> throw ClubError.NotClubManager
-                    404 -> throw ClubError.ClubNotFound
-                    else -> throw e.getErrorResponse().toKoinUnknownErrorException()
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            401 -> KoinClubException.UnauthorizedException()
+                            403 -> KoinClubException.NotClubManagerException()
+                            404 -> KoinClubException.ClubNotFoundException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
                 }
-            }
+            )
         }
     }
 }
