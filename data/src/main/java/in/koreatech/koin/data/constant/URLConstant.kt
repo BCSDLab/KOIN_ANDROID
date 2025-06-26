@@ -116,6 +116,13 @@ object URLConstant {
         const val CLUBS = "clubs"
         const val CATEGORIES = "$CLUBS/categories"
         const val HOT = "$CLUBS/hot"
+        const val CLUBID = "{clubId}"
+        const val QNA = "$CLUBS/$CLUBID/qna"
+        const val DELETE_QNA = "$QNA/{qnaId}"
+        const val DETAILS = "$CLUBS/$CLUBID"
+        const val MODIFY = "$CLUBS/$CLUBID"
+        const val LIKE = "$CLUBS/$CLUBID/like"
+        const val CANCEL_LIKE = "$LIKE/cancel"
         const val EMPOWERMENT = "$CLUBS/empowerment"
     }
 }
