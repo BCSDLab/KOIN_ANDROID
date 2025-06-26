@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.api.auth
 
+import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundReportRequest
 import `in`.koreatech.koin.data.request.article.ArticleLostAndFoundRequest
@@ -14,33 +15,33 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ArticleAuthApi {
-    @GET("articles/keyword/me")
+    @GET(URLConstant.ARTICLES.FETCH_KEYWORD)
     suspend fun fetchMyKeyword(): ArticleKeywordWrapperResponse
 
-    @GET("articles/keyword/suggestions")
+    @GET(URLConstant.ARTICLES.SUGGESTIONS)
     suspend fun fetchKeywordSuggestions(): KeywordsResponse
 
-    @POST("articles/keyword")
+    @POST(URLConstant.ARTICLES.KEYWORD)
     suspend fun saveKeyword(
         @Body keywordRequest: ArticleKeywordRequest
     ): ArticleKeywordWrapperResponse.ArticleKeywordResponse
 
-    @DELETE("articles/keyword/{id}")
+    @DELETE(URLConstant.ARTICLES.DELETE_KEYWORD)
     suspend fun deleteKeyword(
         @Path("id") keywordId: Int
     ): Response<Unit>
 
-    @POST("articles/lost-item")
+    @POST(URLConstant.ARTICLES.LOSTANDFOUND)
     suspend fun uploadArticleLostAndFound(
         @Body request: ArticleLostAndFoundRequest
     ): Response<ArticleLostAndFoundResponse>
 
-    @DELETE("articles/lost-item/{id}")
+    @DELETE(URLConstant.ARTICLES.DELETE_LOSTANDFOUND)
     suspend fun deleteArticleLostAndFound(
         @Path("id") id: Int
     ): Response<Unit>
 
-    @POST("articles/lost-item/{id}/reports")
+    @POST(URLConstant.ARTICLES.REPORT_LOSTANDFOUND)
     suspend fun reportLostAndFound(
         @Path("id") id: Int,
         @Body reportReasons: ArticleLostAndFoundReportRequest
