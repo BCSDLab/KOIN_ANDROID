@@ -32,7 +32,6 @@ object URLConstant {
     }
 
     // external url
-    const val UNIBUS = "koreatech.unibus.kr"
 
     object SHOPS {
         const val OWNERSHOPS = "owner/shops"
@@ -40,16 +39,6 @@ object URLConstant {
         const val SHOPS_V2 = "/v2/shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
-    }
-
-    object BUS {
-        const val BUS = "bus"
-        const val COURSES = "$BUS/courses"
-        const val TIMETABLE = "$BUS/timetable"
-        const val TIMETABLE_V2 = "$BUS/timetable/v2"
-        const val CITY = "$BUS/timetable/city"
-        const val SEARCH = "$BUS/search"
-        const val BUSES = "/buses"
     }
 
     object USER {
@@ -110,54 +99,6 @@ object URLConstant {
         const val EXISTS_ACCOUNT = "$OWNERS/exists/account"
     }
 
-    object CALLVANS {
-        const val CALLVAN = "callvan"
-        const val ROOMS: String = "$CALLVAN/rooms"
-        const val COMPANIES: String = "$CALLVAN/companies"
-        const val PARTICIPANT: String = "$ROOMS/participant"
-    }
-
-    object HOUSE {
-        const val HOUSES = "houses"
-    }
-
-    object COMMUNITY {
-        const val BOARDS = "boards"
-        const val ARTICLES = "articles"
-        const val TEMPBOARD = "temp"
-        const val COMMENTS = "comments"
-        const val GRANTCHECK: String = "$ARTICLES/grant/check"
-        const val ID_FREE = 1
-        const val ID_RECRUIT = 2
-        const val ID_ANONYMOUS = 3
-    }
-
-    object MARKET {
-        const val MARKET = "market"
-        const val ITEMS: String = "$MARKET/items"
-        const val GRANTCHECK: String = "$ITEMS/grant/check"
-    }
-
-    object CIRCLE {
-        const val CIRCLE = "circles"
-    }
-
-    object LOSTANDFOUND {
-        const val LOST = "lost"
-        const val LOSTITEMS: String = "$LOST/lostItems"
-        const val GRANTCHECK: String = "$LOSTITEMS/grant/check"
-    }
-
-    object SEARCH {
-        const val SEARCH = "search"
-        const val ARTICLESEARCH = "articles/$SEARCH"
-    }
-
-    object TEMP {
-        const val TEMP = "/temp"
-        const val TEMP_IMAGE_UPLOAD: String = "$TEMP/items/image/upload"
-    }
-
     object DEPT {
         const val DEPT = "/dept"
         const val DEPTS = "/depts"
@@ -175,5 +116,13 @@ object URLConstant {
         const val CLUBS = "clubs"
         const val CATEGORIES = "$CLUBS/categories"
         const val HOT = "$CLUBS/hot"
+        const val CLUBID = "{clubId}"
+        const val QNA = "$CLUBS/$CLUBID/qna"
+        const val DELETE_QNA = "$QNA/{qnaId}"
+        const val DETAILS = "$CLUBS/$CLUBID"
+        const val MODIFY = "$CLUBS/$CLUBID"
+        const val LIKE = "$CLUBS/$CLUBID/like"
+        const val CANCEL_LIKE = "$LIKE/cancel"
+        const val EMPOWERMENT = "$CLUBS/empowerment"
     }
 }
