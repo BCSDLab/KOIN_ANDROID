@@ -32,7 +32,7 @@ interface ClubAuthApi {
         @Body request: ClubCreateRequest
     )
 
-    @PUT("URLConstant.CLUBS.MODIFY")
+    @PUT(URLConstant.CLUBS.MODIFY)
     suspend fun modifyClub(
         @Path("clubId") clubId: Int,
         @Body request: ClubModifyRequest
