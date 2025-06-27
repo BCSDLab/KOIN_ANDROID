@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayoutMediator
@@ -212,9 +213,17 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             repeat(3) {
                 dates.add(TimeUtil.getNextDayDate(dates.last()))
             }
-            diningDateAdapter.submitList(dates)
 
             val todayPos = dates.size / 2
+
+            diningDateAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                override fun onChanged() {
+                    scrollDateTodayToCenter(todayPos)
+                    diningDateAdapter.unregisterAdapterDataObserver(this)
+                }
+            })
+            diningDateAdapter.submitList(dates)
+            
             scrollDateTodayToCenter(todayPos)
             initialDateTab =
                 if (DiningUtil.getCurrentType() == DiningType.NextBreakfast) todayPos + 1 else todayPos
