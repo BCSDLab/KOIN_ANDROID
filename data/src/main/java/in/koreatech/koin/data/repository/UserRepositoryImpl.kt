@@ -23,6 +23,7 @@ import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.model.user.VerificationCode
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
@@ -98,7 +99,22 @@ class UserRepositoryImpl @Inject constructor(
                 userLocalDataSource.updateUserInfo(it)
             }
 
-            else -> User.Anonymous
+            is User.Anonymous -> User.Anonymous
+
+            null -> {
+                when (userLocalDataSource.userType.first()) {
+                    UserType.STUDENT,
+                    UserType.COUNCIL -> userRemoteDataSource.getStudentUserInfo().toUser().also {
+                        userLocalDataSource.updateUserInfo(it)
+                    }
+
+                    UserType.GENERAL -> userRemoteDataSource.getGeneralUserInfo().toUser().also {
+                        userLocalDataSource.updateUserInfo(it)
+                    }
+
+                    else -> User.Anonymous
+                }
+            }
         }
     }
 
