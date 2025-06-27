@@ -54,6 +54,16 @@ class UserLocalDataSource @Inject constructor(
             }
         }
 
+    val userType: Flow<UserType?> =
+        userDataStore.data.map { pref ->
+            when (pref[PREF_KEY_USER_TYPE]) {
+                UserType.STUDENT.name -> UserType.STUDENT
+                UserType.COUNCIL.name -> UserType.COUNCIL
+                UserType.GENERAL.name -> UserType.GENERAL
+                else -> null
+            }
+        }
+
     suspend fun updateIsLogin(isLogin: Boolean) {
         userDataStore.edit { pref ->
             pref[PREF_KEY_IS_LOGIN] = isLogin
