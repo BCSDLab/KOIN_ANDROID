@@ -182,18 +182,13 @@ class UserInfoEditViewModel @Inject constructor(
                     state.copy(nicknameState = NicknameState.NicknameAvailable)
                 }
             }.onFailure {
-                when (it) {
-                    is KoinUserException.NicknameConflictException -> {
-                        reduce {
-                            state.copy(nicknameState = NicknameState.NicknameDuplicated)
+                reduce {
+                    state.copy(
+                        nicknameState = when (it) {
+                            is KoinUserException.NicknameConflictException -> NicknameState.NicknameDuplicated
+                            else -> NicknameState.Failed
                         }
-                    }
-
-                    else -> {
-                        reduce {
-                            state.copy(nicknameState = NicknameState.Failed)
-                        }
-                    }
+                    )
                 }
             }
         }
@@ -214,38 +209,15 @@ class UserInfoEditViewModel @Inject constructor(
                 }
                 postSideEffect(UserInfoEditSideEffect.StartTimer)
             }.onFailure {
-                when (it) {
-                    is KoinUserException.PhoneNumberInvalidException -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.WrongFormat
-                            )
+                reduce {
+                    state.copy(
+                        phoneNumberState = when (it) {
+                            is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
+                            is KoinUserException.PhoneNumberNotFoundException -> VerificationMethodState.NotFound
+                            is KoinUserException.VerificationCodeRequestCountExceededException -> VerificationMethodState.CountExceeded
+                            else -> VerificationMethodState.Failed(it.message ?: "")
                         }
-                    }
-
-                    is KoinUserException.PhoneNumberNotFoundException -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.NotFound
-                            )
-                        }
-                    }
-
-                    is KoinUserException.VerificationCodeRequestCountExceededException -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.CountExceeded
-                            )
-                        }
-                    }
-
-                    else -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.Failed(it.message ?: "")
-                            )
-                        }
-                    }
+                    )
                 }
             }
             postSideEffect(UserInfoEditSideEffect.StartTimer)
@@ -262,26 +234,14 @@ class UserInfoEditViewModel @Inject constructor(
                 }
                 postSideEffect(UserInfoEditSideEffect.StopTimer)
             }.onFailure {
-                when (it) {
-                    is KoinUserException.VerificationCodeInvalidException -> reduce {
-                        state.copy(
-                            verificationCodeState = VerificationCodeState.NotValid
-                        )
-                    }
-
-                    is KoinUserException.VerificationCodeExpiredException -> reduce {
-                        state.copy(
-                            verificationCodeState = VerificationCodeState.Expired
-                        )
-                    }
-
-                    else -> {
-                        reduce {
-                            state.copy(
-                                verificationCodeState = VerificationCodeState.None
-                            )
+                reduce {
+                    state.copy(
+                        verificationCodeState = when (it) {
+                            is KoinUserException.VerificationCodeInvalidException -> VerificationCodeState.NotValid
+                            is KoinUserException.VerificationCodeExpiredException -> VerificationCodeState.Expired
+                            else -> VerificationCodeState.None
                         }
-                    }
+                    )
                 }
             }
         }
@@ -292,18 +252,14 @@ class UserInfoEditViewModel @Inject constructor(
             checkPhoneNumberDuplicateUseCase(state.phoneNumber).onSuccess {
                 requestVerificationCode()
             }.onFailure {
-                when (it) {
-                    is KoinUserException.PhoneNumberInvalidException -> reduce {
-                        state.copy(phoneNumberState = VerificationMethodState.WrongFormat)
-                    }
-
-                    is KoinUserException.PhoneNumberConflictException -> reduce {
-                        state.copy(phoneNumberState = VerificationMethodState.AlreadySignedUp)
-                    }
-
-                    else -> reduce {
-                        state.copy(phoneNumberState = VerificationMethodState.Failed(it.message ?: ""))
-                    }
+                reduce {
+                    state.copy(
+                        phoneNumberState = when (it) {
+                            is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
+                            is KoinUserException.PhoneNumberConflictException -> VerificationMethodState.AlreadySignedUp
+                            else -> VerificationMethodState.Failed(it.message ?: "")
+                        }
+                    )
                 }
             }
         }

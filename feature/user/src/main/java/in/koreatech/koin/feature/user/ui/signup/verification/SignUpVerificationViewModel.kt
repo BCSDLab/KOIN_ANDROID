@@ -85,21 +85,14 @@ class SignUpVerificationViewModel @Inject constructor(
                 }
                 sendVerificationCode()
             }.onFailure {
-                when (it) {
-                    is KoinUserException.PhoneNumberInvalidException -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.WrongFormat
-                            )
+                reduce {
+                    state.copy(
+                        phoneNumberState = when (it) {
+                            is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
+                            is KoinUserException.PhoneNumberConflictException -> VerificationMethodState.AlreadySignedUp
+                            else -> VerificationMethodState.Failed(it.message ?: "")
                         }
-                    }
-                    is KoinUserException.PhoneNumberConflictException -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.AlreadySignedUp
-                            )
-                        }
-                    }
+                    )
                 }
             }
         }
@@ -120,38 +113,15 @@ class SignUpVerificationViewModel @Inject constructor(
                     )
                 }
             }.onFailure {
-                when (it) {
-                    is KoinUserException.PhoneNumberInvalidException -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.WrongFormat
-                            )
+                reduce {
+                    state.copy(
+                        phoneNumberState = when (it) {
+                            is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
+                            is KoinUserException.PhoneNumberNotFoundException -> VerificationMethodState.NotFound
+                            is KoinUserException.VerificationCodeRequestCountExceededException -> VerificationMethodState.CountExceeded
+                            else -> VerificationMethodState.Failed(it.message ?: "")
                         }
-                    }
-
-                    is KoinUserException.PhoneNumberNotFoundException -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.NotFound
-                            )
-                        }
-                    }
-
-                    is KoinUserException.VerificationCodeRequestCountExceededException -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.CountExceeded
-                            )
-                        }
-                    }
-
-                    else -> {
-                        reduce {
-                            state.copy(
-                                phoneNumberState = VerificationMethodState.Failed(it.message ?: "")
-                            )
-                        }
-                    }
+                    )
                 }
             }
         }
@@ -177,26 +147,14 @@ class SignUpVerificationViewModel @Inject constructor(
                 }
                 postSideEffect(SignUpVerificationSideEffect.StopTimer)
             }.onFailure {
-                when (it) {
-                    is KoinUserException.VerificationCodeInvalidException -> reduce {
-                        state.copy(
-                            verificationCodeState = VerificationCodeState.NotValid
-                        )
-                    }
-
-                    is KoinUserException.VerificationCodeExpiredException -> reduce {
-                        state.copy(
-                            verificationCodeState = VerificationCodeState.Expired
-                        )
-                    }
-
-                    else -> {
-                        reduce {
-                            state.copy(
-                                verificationCodeState = VerificationCodeState.None
-                            )
+                reduce {
+                    state.copy(
+                        verificationCodeState = when (it) {
+                            is KoinUserException.VerificationCodeInvalidException -> VerificationCodeState.NotValid
+                            is KoinUserException.VerificationCodeExpiredException -> VerificationCodeState.Expired
+                            else -> VerificationCodeState.None
                         }
-                    }
+                    )
                 }
             }
         }

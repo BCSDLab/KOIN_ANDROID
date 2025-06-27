@@ -97,32 +97,18 @@ class FindPasswordVerificationViewModel @Inject constructor(
             }.onSuccess {
                 sendVerificationCode()
             }.onFailure {
-                when (it) {
-                    is KoinUserException.PhoneNumberInvalidException,
-                    is KoinUserException.EmailInvalidException -> {
-                        reduce {
-                            state.copy(
-                                verificationMethodState = VerificationMethodState.WrongFormat
-                            )
-                        }
-                    }
+                reduce {
+                    state.copy(
+                        verificationMethodState = when (it) {
+                            is KoinUserException.PhoneNumberInvalidException,
+                            is KoinUserException.EmailInvalidException -> VerificationMethodState.WrongFormat
 
-                    is KoinUserException.PhoneNumberNotFoundException,
-                    is KoinUserException.EmailNotFoundException -> {
-                        reduce {
-                            state.copy(
-                                verificationMethodState = VerificationMethodState.NotFound
-                            )
-                        }
-                    }
+                            is KoinUserException.PhoneNumberNotFoundException,
+                            is KoinUserException.EmailNotFoundException -> VerificationMethodState.NotFound
 
-                    else -> {
-                        reduce {
-                            state.copy(
-                                verificationMethodState = VerificationMethodState.Failed(it.message ?: "")
-                            )
+                            else -> VerificationMethodState.Failed(it.message ?: "")
                         }
-                    }
+                    )
                 }
             }
         }
@@ -147,40 +133,20 @@ class FindPasswordVerificationViewModel @Inject constructor(
                     )
                 }
             }.onFailure {
-                when (it) {
-                    is KoinUserException.PhoneNumberInvalidException,
-                    is KoinUserException.EmailInvalidException -> {
-                        reduce {
-                            state.copy(
-                                verificationMethodState = VerificationMethodState.WrongFormat
-                            )
-                        }
-                    }
+                reduce {
+                    state.copy(
+                        verificationMethodState = when (it) {
+                            is KoinUserException.PhoneNumberInvalidException,
+                            is KoinUserException.EmailInvalidException -> VerificationMethodState.WrongFormat
 
-                    is KoinUserException.PhoneNumberNotFoundException,
-                    is KoinUserException.EmailNotFoundException -> {
-                        reduce {
-                            state.copy(
-                                verificationMethodState = VerificationMethodState.NotFound
-                            )
-                        }
-                    }
+                            is KoinUserException.PhoneNumberNotFoundException,
+                            is KoinUserException.EmailNotFoundException -> VerificationMethodState.NotFound
 
-                    is KoinUserException.VerificationCodeRequestCountExceededException -> {
-                        reduce {
-                            state.copy(
-                                verificationMethodState = VerificationMethodState.CountExceeded
-                            )
-                        }
-                    }
+                            is KoinUserException.VerificationCodeRequestCountExceededException -> VerificationMethodState.CountExceeded
 
-                    else -> {
-                        reduce {
-                            state.copy(
-                                verificationMethodState = VerificationMethodState.Failed(it.message ?: "")
-                            )
+                            else -> VerificationMethodState.Failed(it.message ?: "")
                         }
-                    }
+                    )
                 }
             }
         }
@@ -201,26 +167,16 @@ class FindPasswordVerificationViewModel @Inject constructor(
 
                 postSideEffect(FindPasswordVerificationSideEffect.StopTimer)
             }.onFailure {
-                when (it) {
-                    is KoinUserException.VerificationCodeInvalidException -> reduce {
-                        state.copy(
-                            verificationCodeState = VerificationCodeState.NotValid
-                        )
-                    }
+                reduce {
+                    state.copy(
+                        verificationCodeState = when (it) {
+                            is KoinUserException.VerificationCodeInvalidException -> VerificationCodeState.NotValid
 
-                    is KoinUserException.VerificationCodeExpiredException -> reduce {
-                        state.copy(
-                            verificationCodeState = VerificationCodeState.Expired
-                        )
-                    }
+                            is KoinUserException.VerificationCodeExpiredException -> VerificationCodeState.Expired
 
-                    else -> {
-                        reduce {
-                            state.copy(
-                                verificationCodeState = VerificationCodeState.None
-                            )
+                            else -> VerificationCodeState.None
                         }
-                    }
+                    )
                 }
             }
         }
