@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -59,6 +61,7 @@ fun KoinUserDropdown(
     isDropdownExpanded: Boolean,
     items: ImmutableList<String>,
     modifier: Modifier = Modifier,
+    shape: CornerBasedShape = KoinTheme.shapes.large,
     arrowDirection: KoinUserDropdownArrowDirection = KoinUserDropdownArrowDirection.DOWN,
     onDropdownExpandChange: (Boolean) -> Unit = {},
     onItemSelected: (Int) -> Unit = {}
@@ -86,12 +89,12 @@ fun KoinUserDropdown(
         )
 
         val dropdownShape = when (arrowDirection) {
-            KoinUserDropdownArrowDirection.UP -> KoinTheme.shapes.large.copy(
+            KoinUserDropdownArrowDirection.UP -> shape.copy(
                 topStart = CornerSize(dropdownCorner),
                 topEnd = CornerSize(dropdownCorner)
             )
 
-            KoinUserDropdownArrowDirection.DOWN -> KoinTheme.shapes.large.copy(
+            KoinUserDropdownArrowDirection.DOWN -> shape.copy(
                 bottomStart = CornerSize(dropdownCorner),
                 bottomEnd = CornerSize(dropdownCorner)
             )
@@ -139,12 +142,12 @@ fun KoinUserDropdown(
             onDismissRequest = { onDropdownExpandChange(false) },
             containerColor = KoinTheme.colors.neutral0,
             shape = when (arrowDirection) {
-                KoinUserDropdownArrowDirection.UP -> KoinTheme.shapes.large.copy(
+                KoinUserDropdownArrowDirection.UP -> shape.copy(
                     bottomStart = CornerSize(0.dp),
                     bottomEnd = CornerSize(0.dp)
                 )
 
-                KoinUserDropdownArrowDirection.DOWN -> KoinTheme.shapes.large.copy(
+                KoinUserDropdownArrowDirection.DOWN -> shape.copy(
                     topEnd = CornerSize(0.dp),
                     topStart = CornerSize(0.dp)
                 )
@@ -153,7 +156,7 @@ fun KoinUserDropdown(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(KoinTheme.shapes.large)
+                    .clip(shape)
             ) {
                 Column {
                     items.forEachIndexed { index, it ->
