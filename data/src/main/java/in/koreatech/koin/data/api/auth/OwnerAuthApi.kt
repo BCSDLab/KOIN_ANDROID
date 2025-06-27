@@ -23,54 +23,54 @@ interface OwnerAuthApi {
         @Body storeRegisterResponse: StoreRegisterResponse
     )
 
-    @GET(URLConstant.SHOPS.OWNERSHOPS)
+    @GET(URLConstant.SHOPS.OWNERSHOPS.OWNERSHOPS)
     suspend fun getMyShopList(): OwnerStoreResponse
 
-    @GET(URLConstant.SHOPS.INFO)
+    @GET(URLConstant.SHOPS.OWNERSHOPS.SHOP_ID)
     suspend fun getOwnerShopInfo(
         @Path("id") uid: Int
     ): StoreRegisterResponse
 
-    @GET(URLConstant.SHOPS.MENUS)
+    @GET(URLConstant.SHOPS.OWNERSHOPS.MENUS)
     suspend fun getOwnerShopMenus(
         @Query("shopId") uid: Int
     ): StoreMenuResponse
 
-    @POST(URLConstant.SHOPS.POST_MENU)
+    @POST(URLConstant.SHOPS.OWNERSHOPS.ID_MENUS)
     suspend fun postShopMenu(
         @Path("id") storeId: Int,
         @Body storeRegisterResponse: StoreMenuRegisterResponse
     )
 
-    @PUT(URLConstant.SHOPS.MODIFY_MENU)
+    @PUT(URLConstant.SHOPS.OWNERSHOPS.MENU_MENUID)
     suspend fun putShopModifiedMenu(
         @Path("menuId") menuId: Int,
         @Body storeRegisterResponse: StoreMenuRegisterResponse
     )
 
-    @GET(URLConstant.SHOPS.MENU_INFO)
+    @GET(URLConstant.SHOPS.OWNERSHOPS.MENU_MENUID)
     suspend fun getMenuInfo(
         @Path("menuId") menuId: Int
     ): StoreMenuInfoResponse
 
-    @GET(URLConstant.SHOPS.GET_EVENTS)
+    @GET(URLConstant.SHOPS.OWNERSHOPS.EVENT)
     suspend fun getOwnerShopEvents(
         @Path("shopId") uid: Int
     ): StoreDetailEventResponse
 
-    @DELETE(URLConstant.SHOPS.DELETE_EVENTS)
+    @DELETE(URLConstant.SHOPS.OWNERSHOPS.EVENTS_EVENTID)
     suspend fun deleteOwnerShopEvent(
         @Path("shopId") uid: Int,
         @Path("eventId") eventId: Int
     ): Response<Unit>
 
-    @PUT(URLConstant.SHOPS.MODIFY_INFO)
+    @PUT(URLConstant.SHOPS.OWNERSHOPS.SHOPS_SHOPID)
     suspend fun modifyOwnerShopInfo(
         @Path("shopId") uid: Int,
         @Body storeInfo: StoreRegisterResponse
     )
 
-    @POST(URLConstant.SHOPS.POST_EVENT)
+    @POST(URLConstant.SHOPS.OWNERSHOPS.ID_EVENT)
     suspend fun postOwnerShopEvent(
         @Path("id") uid: Int,
         @Body storeRegisterResponse: OwnerEventResponse

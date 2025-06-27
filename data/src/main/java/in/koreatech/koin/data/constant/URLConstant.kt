@@ -27,30 +27,30 @@ object URLConstant {
     // external url
 
     object SHOPS {
-        const val OWNERSHOPS = "owner/shops"
         const val ID = "{id}"
         const val MENUID = "{menuId}"
         const val SHOPID = "{shopId}"
-        const val INFO = "$OWNERSHOPS/$ID"
-        const val MENUS = "$OWNERSHOPS/menus"
-        const val POST_MENU = "$OWNERSHOPS/$ID/menus"
-        const val MODIFY_MENU = "$OWNERSHOPS/menus/$MENUID"
-        const val MENU_INFO = "$OWNERSHOPS/menus/$MENUID"
-        const val MODIFY_INFO = "$OWNERSHOPS/$SHOPID"
-        const val GET_EVENTS = "$OWNERSHOPS/$SHOPID/event"
-        const val DELETE_EVENTS = "$OWNERSHOPS/$SHOPID/events/{eventId}"
-        const val POST_EVENT = "$OWNERSHOPS/$ID/event"
         const val SHOPS = "shops"
         const val REVIEWID = "{reviewId}"
         const val SHOPS_V2 = "/v2/shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
-        const val GET_REVIEWS = "$SHOPS/$ID/reviews"
-        const val WRITE_REVIEWS = "$SHOPS/$SHOPID/reviews"
-        const val DELETE_REVIEWS = "$SHOPS/$SHOPID/reviews/$REVIEWID"
-        const val MODIFY_REVIEWS = "$SHOPS/$SHOPID/reviews/$REVIEWID"
+        const val ID_REVIEWS = "$SHOPS/$ID/reviews"
+        const val REVIEWS = "$SHOPS/$SHOPID/reviews"
+        const val REVIEWS_REVIEWID = "$SHOPS/$SHOPID/reviews/$REVIEWID"
         const val REPORTS = "$SHOPS/$SHOPID/reviews/$REVIEWID/reports"
-        const val SHOP_NOTIFICATION = "$SHOPS/$SHOPID/call-notification"
+        const val NOTIFICATION = "$SHOPS/$SHOPID/call-notification"
+        object OWNERSHOPS {
+            const val OWNERSHOPS = "owner/shops"
+            const val SHOP_ID = "${OWNERSHOPS}/$ID"
+            const val MENUS = "${OWNERSHOPS}/menus"
+            const val ID_MENUS = "${OWNERSHOPS}/$ID/menus"
+            const val MENU_MENUID = "${OWNERSHOPS}/menus/$MENUID"
+            const val SHOPS_SHOPID = "${OWNERSHOPS}/$SHOPID"
+            const val EVENT = "${OWNERSHOPS}/$SHOPID/event"
+            const val EVENTS_EVENTID = "${OWNERSHOPS}/$SHOPID/events/{eventId}"
+            const val ID_EVENT = "${OWNERSHOPS}/$ID/event"
+        }
     }
 
     object USER {
@@ -142,12 +142,12 @@ object URLConstant {
         const val ARTICLES = "articles"
         const val ID = "{id}"
         const val KEYWORD = "$ARTICLES/keyword"
-        const val FETCH_KEYWORD = "$KEYWORD/me"
-        const val DELETE_KEYWORD = "$KEYWORD/$ID"
+        const val KEYWORD_ME = "$KEYWORD/me"
+        const val KEYWORD_ID = "$KEYWORD/$ID"
         const val SUGGESTIONS = "$KEYWORD/suggestions"
         const val LOSTANDFOUND = "$ARTICLES/lost-item"
-        const val DELETE_LOSTANDFOUND = "$LOSTANDFOUND/$ID"
-        const val REPORT_LOSTANDFOUND = "$LOSTANDFOUND/$ID/reports"
+        const val LOSTANDFOUND_ID = "$LOSTANDFOUND/$ID"
+        const val LOSTANDFOUND_REPORTS = "$LOSTANDFOUND/$ID/reports"
     }
 
     object CHAT {
@@ -161,30 +161,34 @@ object URLConstant {
     }
 
     object TIMETABLE {
-        const val V2 = "v2"
-        const val V3 = "v3"
         const val TIMETABLE = "timetables"
         const val ID = "{id}"
         const val FRAMEID = "{frameId}"
         const val LECTUREID = "{lectureId}"
-        const val SEMESTERS = "/$V3/semesters/check"
-        const val V2_LECTURE = "/$V2/$TIMETABLE/lecture"
-        const val V3_LECTURE = "/$V2/$TIMETABLE/lecture"
-        const val REGULER = "/$V3/$TIMETABLE/lecture/regular"
-        const val CUSTOM = "/$V3/$TIMETABLE/lecture/custom"
-        const val V2_FRAME = "/$V2/$TIMETABLE/frame/$ID"
-        const val V3_FRAME = "/$V3/$TIMETABLE/frame/$ID"
-        const val V2_DELETE_FRAME = "/$V2/$TIMETABLE/frame"
-        const val V2_DELETE_FRAMES = "/$V2/all/$TIMETABLE/frame"
-        const val V3_DELETE_FRAME = "/$V3/$TIMETABLE/frames"
-        const val V2_GET_FRAME = "/$V2/$TIMETABLE/frames"
-        const val V3_GET_FRAME = "/$V3/$TIMETABLE/frame"
-        const val V3_GET_FRAMES = "/$V3/$TIMETABLE/frames"
-        const val V2_ROLLBACK = "/$V2/$TIMETABLE/frame/rollback"
-        const val V3_ROLLBACK = "/$V3/$TIMETABLE/frame/rollback"
-        const val V2_DELETE_LECTURE = "/$V2/$TIMETABLE/lecture/$ID"
-        const val V2_DELETE_FRAME_LECTURE = "/$V2/$TIMETABLE/frame/$FRAMEID/lecture/$LECTUREID"
-        const val V2_DELETE_LECTURES = "/$V2/$TIMETABLE/lectures"
+
+        object V2 {
+            const val V2 = "v2"
+            const val LECTURE = "/${V2}/$TIMETABLE/lecture"
+            const val FRAME_ID = "/${V2}/$TIMETABLE/frame/$ID"
+            const val FRAME = "/${V2}/$TIMETABLE/frame"
+            const val ALL_FRAMES = "/${V2}/all/$TIMETABLE/frame"
+            const val FRAMES = "/${V2}/$TIMETABLE/frames"
+            const val ROLLBACK = "/${V2}/$TIMETABLE/frame/rollback"
+            const val LECTURE_ID = "/${V2}/$TIMETABLE/lecture/$ID"
+            const val FRAME_LECTURE = "/${V2}/$TIMETABLE/frame/$FRAMEID/lecture/$LECTUREID"
+            const val LECTURES = "/${V2}/$TIMETABLE/lectures"
+        }
+        object V3 {
+            const val V3 = "v3"
+            const val SEMESTERS = "/${V3}/semesters/check"
+            const val LECTURE = "/${V3}/$TIMETABLE/lecture"
+            const val REGULER = "/${V3}/$TIMETABLE/lecture/regular"
+            const val CUSTOM = "/${V3}/$TIMETABLE/lecture/custom"
+            const val FRAME_ID = "/${V3}/$TIMETABLE/frame/$ID"
+            const val FRAMES = "/${V3}/$TIMETABLE/frames"
+            const val FRAME = "/${V3}/$TIMETABLE/frame"
+            const val ROLLBACK = "/${V3}/$TIMETABLE/frame/rollback"
+        }
     }
 
     object ABTEST {

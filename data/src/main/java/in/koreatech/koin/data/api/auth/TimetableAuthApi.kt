@@ -24,65 +24,65 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TimetableAuthApi {
-    @GET(URLConstant.TIMETABLE.SEMESTERS)
+    @GET(URLConstant.TIMETABLE.V3.SEMESTERS)
     suspend fun getUserSemesters(): UserSemestersResponse
 
     @Deprecated("use getLecturesByTimetableFrameId instead")
-    @GET(URLConstant.TIMETABLE.V2_LECTURE)
+    @GET(URLConstant.TIMETABLE.V2.LECTURE)
     suspend fun getTimetableLectures(
         @Query("timetable_frame_id") timetableFrameId: Int
     ): TimetableLecturesResponse
 
-    @GET(URLConstant.TIMETABLE.V3_LECTURE)
+    @GET(URLConstant.TIMETABLE.V3.LECTURE)
     suspend fun getLecturesByFrameId(
         @Query("timetable_frame_id") timetableFrameId: Int
     ): TimetableLecturesResponseV3
 
     @Deprecated("use editTimetableRegularLecture and editTimetableCustomLecture instead")
-    @PUT(URLConstant.TIMETABLE.V2_LECTURE)
+    @PUT(URLConstant.TIMETABLE.V2.LECTURE)
     suspend fun putTimetableLectures(
         @Body lectures: TimetableLecturesQueryRequest
     ): TimetableLecturesResponse
 
     // 시간표에 담긴 정규 강의의 정보를 수정
-    @PUT(URLConstant.TIMETABLE.REGULER)
+    @PUT(URLConstant.TIMETABLE.V3.REGULER)
     suspend fun editTimetableRegularLecture(
         @Body regularLectureRequest: TimetableRegularLectureRequest
     ): TimetableLecturesResponseV3
 
     // 시간표에 담긴 커스텀 강의의 정보를 수정
-    @PUT(URLConstant.TIMETABLE.CUSTOM)
+    @PUT(URLConstant.TIMETABLE.V3.CUSTOM)
     suspend fun editTimetableCustomLecture(
         @Body customLectureRequest: TimetableCustomLectureRequest
     ): TimetableLecturesResponseV3
 
     @Deprecated("use addRegularLectureOnTimetable and addCustomLectureOnTimetable instead")
-    @POST(URLConstant.TIMETABLE.V2_LECTURE)
+    @POST(URLConstant.TIMETABLE.V2.LECTURE)
     suspend fun postTimetableLectures(
         @Body lectures: LecturesQueryRequest
     ): TimetableLecturesResponse
 
     // 시간표에 새로운 정규 강의 추가
-    @POST(URLConstant.TIMETABLE.REGULER)
+    @POST(URLConstant.TIMETABLE.V3.REGULER)
     suspend fun addRegularLectureOnTimetable(
         @Body regularLectureRequest: TimetableRegularLectureRequest
     ): TimetableLecturesResponseV3
 
     // 시간표에 새로운 커스텀 강의 추가
-    @POST(URLConstant.TIMETABLE.CUSTOM)
+    @POST(URLConstant.TIMETABLE.V3.CUSTOM)
     suspend fun addCustomLectureOnTimetable(
         @Body customLectureRequest: TimetableCustomLectureRequest
     ): TimetableLecturesResponseV3
 
     // 프레임 수정
     @Deprecated("use editFrame instead")
-    @PUT(URLConstant.TIMETABLE.V2_FRAME)
+    @PUT(URLConstant.TIMETABLE.V2.FRAME_ID)
     suspend fun putTimetableFrame(
         @Path("id") id: Int,
         @Body frame: TimetableFrameQueryRequest
     ): TimetableFrameResponse
 
-    @PUT(URLConstant.TIMETABLE.V3_FRAME)
+    @PUT(URLConstant.TIMETABLE.V3.FRAME_ID)
     suspend fun editFrame(
         @Path("id") frameId: Int,
         @Query("name") frameName: String,
@@ -91,37 +91,37 @@ interface TimetableAuthApi {
 
     // 프레임 생성
     @Deprecated("use createFrame instead")
-    @POST(URLConstant.TIMETABLE.V2_FRAME)
+    @POST(URLConstant.TIMETABLE.V2.FRAME_ID)
     suspend fun postTimetableFrame(
         @Body frame: TimetableFrameCreateQueryRequest
     ): TimetableFrameResponse
 
-    @POST(URLConstant.TIMETABLE.V3_FRAME)
+    @POST(URLConstant.TIMETABLE.V3.FRAME_ID)
     suspend fun createFrame(
         @Query("year") year: Int,
         @Query("term") term: String
     ): List<TimetableFrameResponseV3>
 
     @Deprecated("use restoreFrameByFrameId instead")
-    @POST(URLConstant.TIMETABLE.V2_ROLLBACK)
+    @POST(URLConstant.TIMETABLE.V2.ROLLBACK)
     suspend fun postRollbackFrame(
         @Query("timetable_frame_id") frameId: Int
     ): TimetableLecturesResponse
 
     // 삭제한 시간표 복구
-    @POST(URLConstant.TIMETABLE.V3_ROLLBACK)
+    @POST(URLConstant.TIMETABLE.V3.ROLLBACK)
     suspend fun restoreFrameByFrameId(
         @Query("timetable_frame_id") frameId: Int
     ): TimetableLecturesResponseV3
 
     // 학기의 모든 프레임 삭제
-    @DELETE(URLConstant.TIMETABLE.V3_DELETE_FRAME)
+    @DELETE(URLConstant.TIMETABLE.V3.FRAMES)
     suspend fun deleteFramesBySemester(
         @Query("year") year: Int,
         @Query("term") term: String
     ): Response<Unit>
 
-    @DELETE(URLConstant.TIMETABLE.V2_DELETE_FRAME)
+    @DELETE(URLConstant.TIMETABLE.V2.FRAME)
     suspend fun deleteTimetableFrame(
         @Query("id") frameId: Int
     ): Response<Unit>
@@ -131,13 +131,13 @@ interface TimetableAuthApi {
      * @return 학기의 프레임 리스트
      */
     @Deprecated("use getFramesBySemester instead")
-    @GET(URLConstant.TIMETABLE.V2_GET_FRAME)
+    @GET(URLConstant.TIMETABLE.V2.FRAMES)
     suspend fun getTimetableFrames(
         @Query("semester") semester: String
     ): List<TimetableFrameResponse>
 
     // 학기에 있는 프레임들 조회
-    @GET(URLConstant.TIMETABLE.V3_GET_FRAME)
+    @GET(URLConstant.TIMETABLE.V3.FRAME)
     suspend fun getFramesBySemester(
         @Query("year") year: Int,
         @Query("term") term: String
@@ -148,30 +148,30 @@ interface TimetableAuthApi {
      * @return 학생이 추가한 모든 시간표 프레임
      */
     @Deprecated("use getAllFramesV3 instead")
-    @GET(URLConstant.TIMETABLE.V2_GET_FRAME)
+    @GET(URLConstant.TIMETABLE.V2.FRAMES)
     suspend fun getAllFrames(): TimetableFramesResponse
 
-    @GET(URLConstant.TIMETABLE.V3_GET_FRAMES)
+    @GET(URLConstant.TIMETABLE.V3.FRAMES)
     suspend fun getAllFramesV3(): TimetableFramesResponseV3
 
-    @DELETE(URLConstant.TIMETABLE.V2_DELETE_LECTURE)
+    @DELETE(URLConstant.TIMETABLE.V2.LECTURE_ID)
     suspend fun deleteTimetableLecture(
         @Path("id") id: Int
     ): Response<Unit>
 
-    @DELETE(URLConstant.TIMETABLE.V2_DELETE_FRAME_LECTURE)
+    @DELETE(URLConstant.TIMETABLE.V2.FRAME_LECTURE)
     suspend fun deleteTimetableFrameLecture(
         @Path("frameId") frameId: Int,
         @Path("lectureId") lectureId: Int
     ): Response<Unit>
 
-    @DELETE(URLConstant.TIMETABLE.V2_DELETE_LECTURES)
+    @DELETE(URLConstant.TIMETABLE.V2.LECTURES)
     suspend fun deleteTimetableLectures(
         @Query("timetable_lecture_ids") lectureIds: List<Int>
     ): Response<Unit>
 
     @Deprecated("use deleteFramesBySemester instead")
-    @DELETE(URLConstant.TIMETABLE.V2_DELETE_FRAMES)
+    @DELETE(URLConstant.TIMETABLE.V2.ALL_FRAMES)
     suspend fun deleteAllTimetableFrame(
         @Query("semester") semester: String
     ): Response<Unit>
