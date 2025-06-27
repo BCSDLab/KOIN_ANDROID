@@ -13,6 +13,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +35,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.util.KoinCoilImageLoader
 import `in`.koreatech.koin.domain.constant.KOIN_PLAYSTORE_URL
 import `in`.koreatech.koin.feature.banner.BANNER_AUTO_SCROLL_MILLISECONDS
 import `in`.koreatech.koin.feature.banner.R
@@ -113,6 +117,9 @@ private fun BannerContent(
     dismiss: () -> Unit = {}
 ) {
     val context = LocalContext.current
+
+    val resizedImageUrl by remember(banner.imageUrl) { mutableStateOf(ImageUtil.getResizedImageUrl(banner.imageUrl, width = 400)) }
+
     SubcomposeAsyncImage(
         modifier = modifier
             .fillMaxSize()
@@ -136,8 +143,10 @@ private fun BannerContent(
                 dismiss()
             },
         contentScale = ContentScale.Crop,
+        imageLoader = KoinCoilImageLoader.getImageLoader(context),
         model = ImageRequest.Builder(LocalContext.current)
-            .data(ImageUtil.getResizedImageUrl(banner.imageUrl, width = 400))
+            .data(resizedImageUrl)
+            .diskCacheKey(resizedImageUrl)
             .crossfade(true)
             .build(),
         alignment = Alignment.BottomCenter,
