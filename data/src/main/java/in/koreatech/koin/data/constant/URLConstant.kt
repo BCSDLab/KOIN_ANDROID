@@ -46,17 +46,17 @@ object URLConstant {
         }
         object OWNERSHOPS {
             const val OWNERSHOPS = "owner/shops"
-            const val ID = "${OWNERSHOPS}/${PATH.ID}"
-            const val SHOPID = "${OWNERSHOPS}/${PATH.SHOPID}"
+            const val ID = "$OWNERSHOPS/${PATH.ID}"
+            const val SHOPID = "$OWNERSHOPS/${PATH.SHOPID}"
             object MENUS {
-                const val MENUS = "${OWNERSHOPS}/menus"
-                const val ID_MENUS = "${OWNERSHOPS}/${PATH.ID}/menus"
-                const val MENUID = "${MENUS}/${PATH.MENUID}"
+                const val MENUS = "$OWNERSHOPS/menus"
+                const val ID_MENUS = "$OWNERSHOPS/${PATH.ID}/menus"
+                const val MENUID = "$MENUS/${PATH.MENUID}"
             }
             object EVENT {
-                const val EVENT = "${OWNERSHOPS}/${PATH.SHOPID}/event"
-                const val EVENTID = "${OWNERSHOPS}/${PATH.SHOPID}/events/{eventId}"
-                const val ID_EVENT = "${OWNERSHOPS}/${PATH.ID}/event"
+                const val EVENT = "$OWNERSHOPS/${PATH.SHOPID}/event"
+                const val EVENTID = "$OWNERSHOPS/${PATH.SHOPID}/events/{eventId}"
+                const val ID_EVENT = "$OWNERSHOPS/${PATH.ID}/event"
             }
         }
     }
@@ -83,7 +83,7 @@ object URLConstant {
             const val PASSWORD: String = "$CHECK/password"
             const val PHONE: String = "$CHECK/phone"
             const val NICKNAME_V2: String = "$CHECK/nickname"
-            const val BYNICKNAME = "${NICKNAME}/${PATH.NICKNAME}"
+            const val BYNICKNAME = "$NICKNAME/${PATH.NICKNAME}"
         }
         object VERIFICATION {
             const val VERIFICATION = "$USER/verification"
@@ -163,14 +163,14 @@ object URLConstant {
         }
         object KEYWORD {
             const val KEYWORD = "$ARTICLES/keyword"
-            const val ME = "${KEYWORD}/me"
-            const val ID = "${KEYWORD}/${PATH.ID}"
-            const val SUGGESTIONS = "${KEYWORD}/suggestions"
+            const val ME = "$KEYWORD/me"
+            const val ID = "$KEYWORD/${PATH.ID}"
+            const val SUGGESTIONS = "$KEYWORD/suggestions"
         }
         object LOSTITEM {
             const val LOSTITEM = "$ARTICLES/lost-item"
-            const val ID = "${LOSTITEM}/${PATH.ID}"
-            const val REPORTS = "${LOSTITEM}/${PATH.ID}/reports"
+            const val ID = "$LOSTITEM/${PATH.ID}"
+            const val REPORTS = "$LOSTITEM/${PATH.ID}/reports"
         }
     }
 
@@ -197,30 +197,30 @@ object URLConstant {
         object V2 {
             const val V2 = "v2"
             object FRAME {
-                const val FRAME = "/${V2}/$TIMETABLE/frame"
+                const val FRAME = "/$V2/$TIMETABLE/frame"
                 const val ID = "$FRAME/${PATH.ID}"
-                const val ALL = "/${V2}/all/$TIMETABLE/frame"
-                const val FRAMES = "/${V2}/$TIMETABLE/frames"
+                const val ALL = "/$V2/all/$TIMETABLE/frame"
+                const val FRAMES = "/$V2/$TIMETABLE/frames"
                 const val ROLLBACK = "$FRAME/rollback"
                 const val LECTURE = "$FRAME/${PATH.FRAMEID}/lecture/${PATH.LECTUREID}"
             }
             object LECTURE {
-                const val LECTURE = "/${V2}/$TIMETABLE/lecture"
-                const val LECTURES = "/${V2}/$TIMETABLE/lectures"
+                const val LECTURE = "/$V2/$TIMETABLE/lecture"
+                const val LECTURES = "/$V2/$TIMETABLE/lectures"
                 const val ID = "$LECTURE/${PATH.ID}"
             }
         }
         object V3 {
             const val V3 = "v3"
-            const val CHECK = "/${V3}/semesters/check"
+            const val CHECK = "/$V3/semesters/check"
             object FRAME {
-                const val FRAME = "/${V3}/$TIMETABLE/frame"
-                const val FRAMES = "/${V3}/$TIMETABLE/frames"
+                const val FRAME = "/$V3/$TIMETABLE/frame"
+                const val FRAMES = "/$V3/$TIMETABLE/frames"
                 const val ID = "$FRAME/${PATH.ID}"
                 const val ROLLBACK = "$FRAME/rollback"
             }
             object LECTURE {
-                const val LECTURE = "/${V3}/$TIMETABLE/lecture"
+                const val LECTURE = "/$V3/$TIMETABLE/lecture"
                 const val REGULER = "$LECTURE/regular"
                 const val CUSTOM = "$LECTURE/custom"
             }
