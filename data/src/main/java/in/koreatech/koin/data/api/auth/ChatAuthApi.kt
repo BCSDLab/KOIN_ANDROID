@@ -13,12 +13,12 @@ interface ChatAuthApi {
     @GET(URLConstant.CHAT.CHATROOM)
     suspend fun getChatRoomList(): List<ChatListItemResponse>
 
-    @POST(URLConstant.CHAT.CHATROOM_ARTICLEID)
+    @POST(URLConstant.CHAT.ARTICLEID)
     suspend fun getChatRoomFromArticleId(
         @Path("articleId") articleId: Int
     ): ChatRoomResponse
 
-    @GET(URLConstant.CHAT.CHATROOM_ARTICLEID_ROOMID)
+    @GET(URLConstant.CHAT.ARTICLEID_ROOMID)
     suspend fun getChatRoom(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int

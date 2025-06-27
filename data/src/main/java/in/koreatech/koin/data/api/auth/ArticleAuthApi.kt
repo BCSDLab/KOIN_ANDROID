@@ -15,33 +15,33 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ArticleAuthApi {
-    @GET(URLConstant.ARTICLES.KEYWORD_ME)
+    @GET(URLConstant.ARTICLES.KEYWORD.ME)
     suspend fun fetchMyKeyword(): ArticleKeywordWrapperResponse
 
-    @GET(URLConstant.ARTICLES.SUGGESTIONS)
+    @GET(URLConstant.ARTICLES.KEYWORD.SUGGESTIONS)
     suspend fun fetchKeywordSuggestions(): KeywordsResponse
 
-    @POST(URLConstant.ARTICLES.KEYWORD)
+    @POST(URLConstant.ARTICLES.KEYWORD.KEYWORD)
     suspend fun saveKeyword(
         @Body keywordRequest: ArticleKeywordRequest
     ): ArticleKeywordWrapperResponse.ArticleKeywordResponse
 
-    @DELETE(URLConstant.ARTICLES.KEYWORD_ID)
+    @DELETE(URLConstant.ARTICLES.KEYWORD.ID)
     suspend fun deleteKeyword(
         @Path("id") keywordId: Int
     ): Response<Unit>
 
-    @POST(URLConstant.ARTICLES.LOSTANDFOUND)
+    @POST(URLConstant.ARTICLES.LOSTITEM.LOSTITEM)
     suspend fun uploadArticleLostAndFound(
         @Body request: ArticleLostAndFoundRequest
     ): Response<ArticleLostAndFoundResponse>
 
-    @DELETE(URLConstant.ARTICLES.LOSTANDFOUND_ID)
+    @DELETE(URLConstant.ARTICLES.LOSTITEM.ID)
     suspend fun deleteArticleLostAndFound(
         @Path("id") id: Int
     ): Response<Unit>
 
-    @POST(URLConstant.ARTICLES.LOSTANDFOUND_REPORTS)
+    @POST(URLConstant.ARTICLES.LOSTITEM.REPORTS)
     suspend fun reportLostAndFound(
         @Path("id") id: Int,
         @Body reportReasons: ArticleLostAndFoundReportRequest

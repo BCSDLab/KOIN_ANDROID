@@ -27,54 +27,70 @@ object URLConstant {
     // external url
 
     object SHOPS {
-        const val ID = "{id}"
-        const val MENUID = "{menuId}"
-        const val SHOPID = "{shopId}"
+        object PATH {
+            const val ID = "{id}"
+            const val MENUID = "{menuId}"
+            const val SHOPID = "{shopId}"
+            const val REVIEWID = "{reviewId}"
+        }
         const val SHOPS = "shops"
-        const val REVIEWID = "{reviewId}"
         const val SHOPS_V2 = "/v2/shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
-        const val ID_REVIEWS = "$SHOPS/$ID/reviews"
-        const val REVIEWS = "$SHOPS/$SHOPID/reviews"
-        const val REVIEWS_REVIEWID = "$SHOPS/$SHOPID/reviews/$REVIEWID"
-        const val REPORTS = "$SHOPS/$SHOPID/reviews/$REVIEWID/reports"
-        const val NOTIFICATION = "$SHOPS/$SHOPID/call-notification"
+        const val NOTIFICATION = "$SHOPS/${PATH.SHOPID}/call-notification"
+        object REVIEWS {
+            const val ID_REVIEWS = "$SHOPS/${PATH.ID}/reviews"
+            const val REVIEWS = "$SHOPS/${PATH.SHOPID}/reviews"
+            const val REVIEWID = "$REVIEWS/${PATH.REVIEWID}"
+            const val REPORTS = "$REVIEWS/${PATH.REVIEWID}/reports"
+        }
         object OWNERSHOPS {
             const val OWNERSHOPS = "owner/shops"
-            const val SHOP_ID = "${OWNERSHOPS}/$ID"
-            const val MENUS = "${OWNERSHOPS}/menus"
-            const val ID_MENUS = "${OWNERSHOPS}/$ID/menus"
-            const val MENU_MENUID = "${OWNERSHOPS}/menus/$MENUID"
-            const val SHOPS_SHOPID = "${OWNERSHOPS}/$SHOPID"
-            const val EVENT = "${OWNERSHOPS}/$SHOPID/event"
-            const val EVENTS_EVENTID = "${OWNERSHOPS}/$SHOPID/events/{eventId}"
-            const val ID_EVENT = "${OWNERSHOPS}/$ID/event"
+            const val ID = "${OWNERSHOPS}/${PATH.ID}"
+            const val SHOPID = "${OWNERSHOPS}/${PATH.SHOPID}"
+            object MENUS {
+                const val MENUS = "${OWNERSHOPS}/menus"
+                const val ID_MENUS = "${OWNERSHOPS}/${PATH.ID}/menus"
+                const val MENUID = "${MENUS}/${PATH.MENUID}"
+            }
+            object EVENT {
+                const val EVENT = "${OWNERSHOPS}/${PATH.SHOPID}/event"
+                const val EVENTID = "${OWNERSHOPS}/${PATH.SHOPID}/events/{eventId}"
+                const val ID_EVENT = "${OWNERSHOPS}/${PATH.ID}/event"
+            }
         }
     }
 
     object USER {
         const val USER = "user"
+        object PATH {
+            const val NICKNAME = "{nickname}"
+        }
         const val LOGIN: String = "$USER/login"
         const val FINDPASSWORD: String = "$USER/find/password"
         const val ME: String = "$USER/student/me"
         const val REFRESH: String = "$USER/refresh"
-        const val CHECKNICKNAME: String = "$USER/check/nickname"
-        const val CHECKEMAIL: String = "$USER/check/email"
-        const val CHECKPASSWORD: String = "$USER/check/password"
-        const val CHECKPHONE: String = "$USER/check/phone"
-        const val CHECKNICKNAME_V2: String = "$USER/check/nickname"
-        const val SMSSEND: String = "$USER/verification/send"
-        const val SMSVERIFY: String = "$USER/verification/verify"
-        const val SMSCOUNT: String = "$USER/verification/count"
         const val AUTH: String = "$USER/auth"
         const val EMAIL = "email"
         const val PW = "password"
-        const val NICKNAME = "{nickname}"
-        const val AUTH_CHECKNICKNAME = "$CHECKNICKNAME/$NICKNAME"
         const val NOTIFICATION = "/notification"
         const val SUBSCRIBE = "$NOTIFICATION/subscribe"
         const val DETAIL = "$NOTIFICATION/subscribe/detail"
+        object CHECK {
+            const val CHECK = "$USER/check"
+            const val NICKNAME: String = "$CHECK/nickname"
+            const val EMAIL: String = "$CHECK/email"
+            const val PASSWORD: String = "$CHECK/password"
+            const val PHONE: String = "$CHECK/phone"
+            const val NICKNAME_V2: String = "$CHECK/nickname"
+            const val BYNICKNAME = "${NICKNAME}/${PATH.NICKNAME}"
+        }
+        object VERIFICATION {
+            const val VERIFICATION = "$USER/verification"
+            const val SMSSEND: String = "$VERIFICATION/send"
+            const val SMSVERIFY: String = "$VERIFICATION/verify"
+            const val SMSCOUNT: String = "$VERIFICATION/count"
+        }
 
         const val VERSION: String = "v2"
         object STUDENT {
@@ -126,68 +142,88 @@ object URLConstant {
 
     object CLUBS {
         const val CLUBS = "clubs"
-        const val CLUBID = "{clubId}"
+        object PATH {
+            const val CLUBID = "{clubId}"
+        }
         const val CATEGORIES = "$CLUBS/categories"
         const val HOT = "$CLUBS/hot"
-        const val QNA = "$CLUBS/$CLUBID/qna"
+        const val QNA = "$CLUBS/${PATH.CLUBID}/qna"
         const val DELETE_QNA = "$QNA/{qnaId}"
-        const val DETAILS = "$CLUBS/$CLUBID"
-        const val MODIFY = "$CLUBS/$CLUBID"
-        const val LIKE = "$CLUBS/$CLUBID/like"
+        const val DETAILS = "$CLUBS/${PATH.CLUBID}"
+        const val MODIFY = "$CLUBS/${PATH.CLUBID}"
+        const val LIKE = "$CLUBS/${PATH.CLUBID}/like"
         const val CANCEL_LIKE = "$LIKE/cancel"
         const val EMPOWERMENT = "$CLUBS/empowerment"
     }
 
     object ARTICLES {
         const val ARTICLES = "articles"
-        const val ID = "{id}"
-        const val KEYWORD = "$ARTICLES/keyword"
-        const val KEYWORD_ME = "$KEYWORD/me"
-        const val KEYWORD_ID = "$KEYWORD/$ID"
-        const val SUGGESTIONS = "$KEYWORD/suggestions"
-        const val LOSTANDFOUND = "$ARTICLES/lost-item"
-        const val LOSTANDFOUND_ID = "$LOSTANDFOUND/$ID"
-        const val LOSTANDFOUND_REPORTS = "$LOSTANDFOUND/$ID/reports"
+        object PATH {
+            const val ID = "{id}"
+        }
+        object KEYWORD {
+            const val KEYWORD = "$ARTICLES/keyword"
+            const val ME = "${KEYWORD}/me"
+            const val ID = "${KEYWORD}/${PATH.ID}"
+            const val SUGGESTIONS = "${KEYWORD}/suggestions"
+        }
+        object LOSTITEM {
+            const val LOSTITEM = "$ARTICLES/lost-item"
+            const val ID = "${LOSTITEM}/${PATH.ID}"
+            const val REPORTS = "${LOSTITEM}/${PATH.ID}/reports"
+        }
     }
 
     object CHAT {
         const val CHATROOM = "chatroom/lost-item"
-        const val ARTICLEID = "{articleId}"
-        const val CHATROOMID = "{chat_room_id}"
-        const val CHATROOM_ARTICLEID = "$CHATROOM/$ARTICLEID"
-        const val CHATROOM_ARTICLEID_ROOMID = "$CHATROOM/$ARTICLEID/$CHATROOMID"
-        const val MESSAGES = "$CHATROOM/$ARTICLEID/$CHATROOMID/messages"
-        const val BLOCK = "$CHATROOM/$ARTICLEID/$CHATROOMID/block"
+        object PATH {
+            const val ARTICLEID = "{articleId}"
+            const val CHATROOMID = "{chat_room_id}"
+        }
+        const val ARTICLEID = "$CHATROOM/${PATH.ARTICLEID}"
+        const val ARTICLEID_ROOMID = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}"
+        const val MESSAGES = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/messages"
+        const val BLOCK = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/block"
     }
 
     object TIMETABLE {
         const val TIMETABLE = "timetables"
-        const val ID = "{id}"
-        const val FRAMEID = "{frameId}"
-        const val LECTUREID = "{lectureId}"
+        object PATH {
+            const val ID = "{id}"
+            const val FRAMEID = "{frameId}"
+            const val LECTUREID = "{lectureId}"
+        }
 
         object V2 {
             const val V2 = "v2"
-            const val LECTURE = "/${V2}/$TIMETABLE/lecture"
-            const val FRAME_ID = "/${V2}/$TIMETABLE/frame/$ID"
-            const val FRAME = "/${V2}/$TIMETABLE/frame"
-            const val ALL_FRAMES = "/${V2}/all/$TIMETABLE/frame"
-            const val FRAMES = "/${V2}/$TIMETABLE/frames"
-            const val ROLLBACK = "/${V2}/$TIMETABLE/frame/rollback"
-            const val LECTURE_ID = "/${V2}/$TIMETABLE/lecture/$ID"
-            const val FRAME_LECTURE = "/${V2}/$TIMETABLE/frame/$FRAMEID/lecture/$LECTUREID"
-            const val LECTURES = "/${V2}/$TIMETABLE/lectures"
+            object FRAME {
+                const val FRAME = "/${V2}/$TIMETABLE/frame"
+                const val ID = "$FRAME/${PATH.ID}"
+                const val ALL = "/${V2}/all/$TIMETABLE/frame"
+                const val FRAMES = "/${V2}/$TIMETABLE/frames"
+                const val ROLLBACK = "$FRAME/rollback"
+                const val LECTURE = "$FRAME/${PATH.FRAMEID}/lecture/${PATH.LECTUREID}"
+            }
+            object LECTURE {
+                const val LECTURE = "/${V2}/$TIMETABLE/lecture"
+                const val LECTURES = "/${V2}/$TIMETABLE/lectures"
+                const val ID = "$LECTURE/${PATH.ID}"
+            }
         }
         object V3 {
             const val V3 = "v3"
-            const val SEMESTERS = "/${V3}/semesters/check"
-            const val LECTURE = "/${V3}/$TIMETABLE/lecture"
-            const val REGULER = "/${V3}/$TIMETABLE/lecture/regular"
-            const val CUSTOM = "/${V3}/$TIMETABLE/lecture/custom"
-            const val FRAME_ID = "/${V3}/$TIMETABLE/frame/$ID"
-            const val FRAMES = "/${V3}/$TIMETABLE/frames"
-            const val FRAME = "/${V3}/$TIMETABLE/frame"
-            const val ROLLBACK = "/${V3}/$TIMETABLE/frame/rollback"
+            const val CHECK = "/${V3}/semesters/check"
+            object FRAME {
+                const val FRAME = "/${V3}/$TIMETABLE/frame"
+                const val FRAMES = "/${V3}/$TIMETABLE/frames"
+                const val ID = "$FRAME/${PATH.ID}"
+                const val ROLLBACK = "$FRAME/rollback"
+            }
+            object LECTURE {
+                const val LECTURE = "/${V3}/$TIMETABLE/lecture"
+                const val REGULER = "$LECTURE/regular"
+                const val CUSTOM = "$LECTURE/custom"
+            }
         }
     }
 
