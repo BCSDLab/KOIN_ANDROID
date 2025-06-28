@@ -60,16 +60,30 @@ class UserInfoEditViewModel @Inject constructor(
                         intent {
                             reduce {
                                 state.copy(
-                                    beforeUser = user,
-                                    loginId = user.loginId,
-                                    anonymousNickname = user.anonymousNickname ?: "",
-                                    email = user.email ?: "",
-                                    gender = user.gender,
-                                    name = user.name ?: "",
-                                    nickname = user.nickname ?: "",
-                                    phoneNumber = user.phoneNumber ?: "",
-                                    studentNumber = user.studentNumber ?: "",
-                                    major = user.major ?: "",
+                                    beforeUserState = UserState(
+                                        id = user.id,
+                                        loginId = user.loginId,
+                                        anonymousNickname = user.anonymousNickname ?: "",
+                                        email = user.email ?: "",
+                                        gender = user.gender,
+                                        name = user.name ?: "",
+                                        nickname = user.nickname ?: "",
+                                        phoneNumber = user.phoneNumber ?: "",
+                                        studentNumber = user.studentNumber ?: "",
+                                        major = user.major ?: ""
+                                    ),
+                                    userState = UserState(
+                                        id = user.id,
+                                        loginId = user.loginId,
+                                        anonymousNickname = user.anonymousNickname ?: "",
+                                        email = user.email ?: "",
+                                        gender = user.gender,
+                                        name = user.name ?: "",
+                                        nickname = user.nickname ?: "",
+                                        phoneNumber = user.phoneNumber ?: "",
+                                        studentNumber = user.studentNumber ?: "",
+                                        major = user.major ?: ""
+                                    ),
                                     userType = UserType.valueOf(user.userType)
                                 )
                             }
@@ -80,14 +94,24 @@ class UserInfoEditViewModel @Inject constructor(
                         intent {
                             reduce {
                                 state.copy(
-                                    beforeUser = user,
-                                    loginId = user.loginId,
-                                    anonymousNickname = user.anonymousNickname ?: "",
-                                    email = user.email ?: "",
-                                    gender = user.gender,
-                                    name = user.name,
-                                    nickname = user.nickname ?: "",
-                                    phoneNumber = user.phoneNumber,
+                                    beforeUserState = UserState(
+                                        loginId = user.loginId,
+                                        anonymousNickname = user.anonymousNickname ?: "",
+                                        email = user.email ?: "",
+                                        gender = user.gender,
+                                        name = user.name,
+                                        nickname = user.nickname ?: "",
+                                        phoneNumber = user.phoneNumber
+                                    ),
+                                    userState = UserState(
+                                        loginId = user.loginId,
+                                        anonymousNickname = user.anonymousNickname ?: "",
+                                        email = user.email ?: "",
+                                        gender = user.gender,
+                                        name = user.name,
+                                        nickname = user.nickname ?: "",
+                                        phoneNumber = user.phoneNumber
+                                    ),
                                     userType = UserType.valueOf(user.userType)
                                 )
                             }
@@ -100,26 +124,26 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun updateLoginId(loginId: String) = blockingIntent {
         reduce {
-            state.copy(loginId = loginId)
+            state.copy(userState = state.userState.copy(loginId = loginId))
         }
     }
 
     fun updateName(name: String) = blockingIntent {
         reduce {
-            state.copy(name = name)
+            state.copy(userState = state.userState.copy(name = name))
         }
     }
 
     fun updateNickname(nickname: String) = blockingIntent {
         reduce {
-            state.copy(nickname = nickname, nicknameState = NicknameState.None)
+            state.copy(userState = state.userState.copy(nickname = nickname), nicknameState = NicknameState.None)
         }
     }
 
     fun updatePhoneNumber(phoneNumber: String) = blockingIntent {
         reduce {
             state.copy(
-                phoneNumber = phoneNumber,
+                userState = state.userState.copy(phoneNumber = phoneNumber),
                 phoneNumberState = VerificationMethodState.None,
                 verificationCodeState = VerificationCodeState.None
             )
@@ -128,27 +152,33 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun updateEmail(email: String) = blockingIntent {
         reduce {
-            state.copy(email = email)
+            state.copy(userState = state.userState.copy(email = email))
         }
     }
 
     fun updateGender(gender: Int) = blockingIntent {
         reduce {
             state.copy(
-                gender = if (gender == 0) Gender.Man else Gender.Woman
+                userState = state.userState.copy(
+                    gender = if (gender == 0) Gender.Man else Gender.Woman
+                )
             )
         }
     }
 
     fun updateStudentNumber(studentNumber: String) = blockingIntent {
         reduce {
-            state.copy(studentNumber = studentNumber)
+            state.copy(
+                userState = state.userState.copy(studentNumber = studentNumber)
+            )
         }
     }
 
     fun updateMajor(major: String) = blockingIntent {
         reduce {
-            state.copy(major = major)
+            state.copy(
+                userState = state.userState.copy(major = major)
+            )
         }
     }
 
@@ -172,13 +202,13 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun checkNicknameDuplicate() = viewModelScope.launch {
         intent {
-            if (state.nickname.isBlank()) {
+            if (state.userState.nickname.isBlank()) {
                 reduce {
                     state.copy(nicknameState = NicknameState.NicknameAvailable)
                 }
                 return@intent
             }
-            checkNicknameDuplicateUseCase(state.nickname).onSuccess {
+            checkNicknameDuplicateUseCase(state.userState.nickname).onSuccess {
                 reduce {
                     state.copy(nicknameState = NicknameState.NicknameAvailable)
                 }
@@ -202,7 +232,7 @@ class UserInfoEditViewModel @Inject constructor(
 
     private fun requestVerificationCode() = viewModelScope.launch {
         intent {
-            requestSmsVerificationUseCase(state.phoneNumber).onSuccess {
+            requestSmsVerificationUseCase(state.userState.phoneNumber).onSuccess {
                 reduce {
                     state.copy(
                         phoneNumberState = VerificationMethodState.Sent(
@@ -255,7 +285,7 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun checkVerificationCode() = viewModelScope.launch {
         blockingIntent {
-            verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).onSuccess {
+            verifySmsCodeUseCase(state.userState.phoneNumber, state.verificationCode).onSuccess {
                 reduce {
                     state.copy(
                         verificationCodeState = VerificationCodeState.Valid
@@ -290,7 +320,7 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun checkPhoneNumber() = viewModelScope.launch {
         intent {
-            checkPhoneNumberDuplicateUseCase(state.phoneNumber).onSuccess {
+            checkPhoneNumberDuplicateUseCase(state.userState.phoneNumber).onSuccess {
                 requestVerificationCode()
             }.onFailure {
                 when (it) {
@@ -313,12 +343,12 @@ class UserInfoEditViewModel @Inject constructor(
     private fun requestGeneralUserInfoEdit() = viewModelScope.launch {
         intent {
             updateGeneralUserInfoUseCase(
-                beforeUser = state.beforeUser,
-                email = state.email,
-                name = state.name,
-                nickname = state.nickname,
-                gender = state.gender,
-                phoneNumber = state.phoneNumber
+                beforeUser = state.beforeUserState.toUser(state.userType),
+                email = state.userState.email,
+                name = state.userState.name,
+                nickname = state.userState.nickname,
+                gender = state.userState.gender,
+                phoneNumber = state.userState.phoneNumber
             ).onSuccess {
                 reduce {
                     state.copy(
@@ -354,14 +384,14 @@ class UserInfoEditViewModel @Inject constructor(
     private fun requestStudentUserInfoEdit() = viewModelScope.launch {
         intent {
             updateStudentUserInfoUseCase(
-                beforeUser = state.beforeUser,
-                email = state.email,
-                name = state.name,
-                nickname = state.nickname,
-                gender = state.gender,
-                phoneNumber = state.phoneNumber,
-                studentNumber = state.studentNumber,
-                major = state.major
+                beforeUser = state.beforeUserState.toUser(state.userType),
+                email = state.userState.email,
+                name = state.userState.name,
+                nickname = state.userState.nickname,
+                gender = state.userState.gender,
+                phoneNumber = state.userState.phoneNumber,
+                studentNumber = state.userState.studentNumber,
+                major = state.userState.major
             ).onSuccess {
                 reduce {
                     state.copy(

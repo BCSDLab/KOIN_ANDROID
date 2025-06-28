@@ -82,6 +82,7 @@ fun UserInfoEditScreen(
     viewModel: UserInfoEditViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
+    val userState = uiState.userState
     val context = LocalContext.current
 
     viewModel.collectSideEffect {
@@ -146,15 +147,15 @@ fun UserInfoEditScreen(
             UserInfoHeader(stringResource(R.string.user_info_general_user_info_header))
 
             GeneralUserInfo(
-                loginId = uiState.loginId,
-                name = uiState.name,
+                loginId = userState.loginId,
+                name = userState.name,
                 isNameValid = uiState.isNameValid,
-                nickName = uiState.nickname,
+                nickName = userState.nickname,
                 isNicknameValid = uiState.isNicknameValid,
-                phoneNumber = uiState.phoneNumber,
-                email = uiState.email,
+                phoneNumber = userState.phoneNumber,
+                email = userState.email,
                 isEmailValid = uiState.isEmailValid,
-                gender = when (uiState.gender) {
+                gender = when (userState.gender) {
                     Gender.Man -> 0
                     Gender.Woman -> 1
                     else -> null
@@ -183,9 +184,9 @@ fun UserInfoEditScreen(
                 UserInfoHeader(stringResource(R.string.user_info_student_info_header))
 
                 StudentUserInfo(
-                    studentNumber = uiState.studentNumber,
+                    studentNumber = userState.studentNumber,
                     isStudentNumberValid = uiState.isStudentNumberValid,
-                    major = uiState.major,
+                    major = userState.major,
                     isMajorDropdownExpanded = uiState.isMajorDropdownExpanded,
                     onStudentNumberChange = { viewModel.updateStudentNumber(it) },
                     onMajorChange = { viewModel.updateMajor(it) },
