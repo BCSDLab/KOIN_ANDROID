@@ -146,7 +146,6 @@ private fun BannerContent(
         imageLoader = KoinCoilImageLoader.getImageLoader(context),
         model = ImageRequest.Builder(LocalContext.current)
             .data(resizedImageUrl)
-            .diskCacheKey(resizedImageUrl)
             .crossfade(true)
             .build(),
         alignment = Alignment.BottomCenter,
