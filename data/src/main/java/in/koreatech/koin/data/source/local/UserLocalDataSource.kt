@@ -38,11 +38,8 @@ class UserLocalDataSource @Inject constructor(
                             Gson().fromJson(pref[PREF_KEY_USER_INFO], StudentUserResponse::class.java).toUser()
                         } catch (e: NullPointerException) {
                             // If user logged in on old version, loginId can be null
-                            // So if Gson throws NullPointerException, let's log out and return User.Anonymous
-                            updateIsLogin(false)
-                            User.Anonymous.also {
-                                updateUserInfo(it)
-                            }
+                            // So return null that make repository to fetch user info from server
+                            null
                         }
                     } else if (pref[PREF_KEY_USER_TYPE] == UserType.GENERAL.name) {
                         return@map Gson().fromJson(pref[PREF_KEY_USER_INFO], GeneralUserResponse::class.java).toUser()
@@ -54,6 +51,16 @@ class UserLocalDataSource @Inject constructor(
                 }
             } catch (e: Exception) {
                 return@map null
+            }
+        }
+
+    val userType: Flow<UserType?> =
+        userDataStore.data.map { pref ->
+            when (pref[PREF_KEY_USER_TYPE]) {
+                UserType.STUDENT.name -> UserType.STUDENT
+                UserType.COUNCIL.name -> UserType.COUNCIL
+                UserType.GENERAL.name -> UserType.GENERAL
+                else -> null
             }
         }
 
