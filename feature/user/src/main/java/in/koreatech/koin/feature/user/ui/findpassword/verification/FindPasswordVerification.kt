@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.feature.user.PHONE_NUMBER_LENGTH
 import `in`.koreatech.koin.feature.user.R
@@ -184,7 +185,8 @@ fun FindPasswordVerificationImpl(
                 ),
                 hint = stringResource(if (isSms) R.string.find_password_phone_number_hint else R.string.find_password_email_hint),
                 onValueChange = onVerificationMethodChange,
-                maxLength = if (isSms) PHONE_NUMBER_LENGTH else Int.MAX_VALUE
+                maxLength = if (isSms) PHONE_NUMBER_LENGTH else Int.MAX_VALUE,
+                visualTransformation = KRPhoneNumberVisualTransformation()
             )
 
             Spacer(modifier = Modifier.width(16.dp))
