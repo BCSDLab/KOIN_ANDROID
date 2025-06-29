@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.feature.lostandfound.ui.lostandfound.LostAndFoundList
 import `in`.koreatech.koin.feature.lostandfound.ui.write.LostAndFoundWriteArticleViewModel.Companion.LOST_OR_FOUND_TYPE
-import `in`.koreatech.koin.feature.signin.SignInActivity
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.BUNDLE_ARTICLE_EXTRA_KEY
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAV_ARTICLE
 import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.START_BOARD

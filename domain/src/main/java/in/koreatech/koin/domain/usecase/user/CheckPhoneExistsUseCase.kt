@@ -7,8 +7,6 @@ class CheckPhoneExistsUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(phone: String): Result<Unit> {
-        return runCatching {
-            userRepository.checkPhoneExists(phone)
-        }
+        return userRepository.checkPhoneExists(phone)
     }
 }

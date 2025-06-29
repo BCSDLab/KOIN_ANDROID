@@ -10,13 +10,13 @@ import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.util.getErrorResponse
+import `in`.koreatech.koin.data.util.toKoinUnknownErrorException
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
+import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.term.Term
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
-import `in`.koreatech.koin.domain.model.user.PhoneNumber
 import `in`.koreatech.koin.domain.repository.SignupRepository
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.toSHA256
 import javax.inject.Inject
 import retrofit2.HttpException
@@ -86,34 +86,43 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isUsernameDuplicatedV2(nickname: String): SignupContinuationState {
-        return try {
+    override suspend fun isUsernameDuplicatedV2(nickname: String): Result<Unit> {
+        return runCatching {
             userRemoteDataSource.checkNicknameV2(nickname)
-            SignupContinuationState.AvailableNickname
-        } catch (e: HttpException) {
-            when (e.code()) {
-                409 -> SignupContinuationState.NicknameDuplicated
-                else -> SignupContinuationState.Failed(
-                    message = e.getErrorResponse().message ?: "",
-                    throwable = e
-                )
-            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            409 -> KoinUserException.NicknameConflictException()
+                            400 -> KoinUserException.NicknameInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 
-    override suspend fun isPhoneDuplicated(phone: String): PhoneNumber {
-        return try {
+    override suspend fun isPhoneDuplicated(phone: String): Result<Unit> {
+        return runCatching {
             userRemoteDataSource.checkPhoneNumberDuplicate(phone)
-            PhoneNumber.Available
-        } catch (e: HttpException) {
-            when (e.code()) {
-                409 -> PhoneNumber.AlreadySignedUp
-                400 -> PhoneNumber.WrongFormat
-                else -> PhoneNumber.Failed(
-                    message = e.getErrorResponse().message ?: "",
-                    throwable = e
-                )
-            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            409 -> KoinUserException.PhoneNumberConflictException()
+                            400 -> KoinUserException.PhoneNumberInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 
@@ -148,35 +157,43 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isLoginIdDuplicated(loginId: String): SignupContinuationState {
-        return try {
+    override suspend fun isLoginIdDuplicated(loginId: String): Result<Unit> {
+        return runCatching {
             userRemoteDataSource.checkLoginId(loginId)
-            SignupContinuationState.AvailableLoginId
-        } catch (e: HttpException) {
-            when (e.code()) {
-                409 -> SignupContinuationState.LoginIdDuplicated
-                400 -> SignupContinuationState.CheckLoginIdFormat
-                else -> SignupContinuationState.Failed(
-                    message = e.getErrorResponse().message ?: "",
-                    throwable = e
-                )
-            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            409 -> KoinUserException.LoginIdConflictException()
+                            400 -> KoinUserException.LoginIdInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 
-    override suspend fun isEmailDuplicated(email: String): SignupContinuationState {
-        return try {
+    override suspend fun isEmailDuplicated(email: String): Result<Unit> {
+        return runCatching {
             userRemoteDataSource.checkEmail(email)
-            SignupContinuationState.AvailableEmail
-        } catch (e: HttpException) {
-            when (e.code()) {
-                409 -> SignupContinuationState.EmailDuplicated
-                400 -> SignupContinuationState.EmailIsNotValidate
-                else -> SignupContinuationState.Failed(
-                    message = e.getErrorResponse().message ?: "",
-                    throwable = e
-                )
-            }
+        }.onFailure { exception ->
+            return Result.failure(
+                when (exception) {
+                    is HttpException -> {
+                        when (exception.code()) {
+                            409 -> KoinUserException.EmailConflictException()
+                            400 -> KoinUserException.EmailInvalidException()
+                            else -> exception.getErrorResponse().toKoinUnknownErrorException()
+                        }
+                    }
+
+                    else -> exception
+                }
+            )
         }
     }
 
