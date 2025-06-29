@@ -49,6 +49,11 @@ class UserInfoEditViewModel @Inject constructor(
     }
 
     private fun getUserInfo() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(isLoading = true)
+            }
+        }
         getUserInfoUseCase()
             .onSuccess { user ->
                 when (user) {
@@ -84,7 +89,8 @@ class UserInfoEditViewModel @Inject constructor(
                                         studentNumber = user.studentNumber ?: "",
                                         major = user.major ?: ""
                                     ),
-                                    userType = UserType.valueOf(user.userType)
+                                    userType = UserType.valueOf(user.userType),
+                                    isLoading = false
                                 )
                             }
                         }
@@ -112,13 +118,19 @@ class UserInfoEditViewModel @Inject constructor(
                                         nickname = user.nickname ?: "",
                                         phoneNumber = user.phoneNumber
                                     ),
-                                    userType = UserType.valueOf(user.userType)
+                                    userType = UserType.valueOf(user.userType),
+                                    isLoading = false
                                 )
                             }
                         }
                     }
                 }
             }.onFailure {
+                intent {
+                    reduce {
+                        state.copy(isLoading = false)
+                    }
+                }
             }
     }
 
@@ -298,6 +310,11 @@ class UserInfoEditViewModel @Inject constructor(
 
     private fun requestGeneralUserInfoEdit() = viewModelScope.launch {
         intent {
+            reduce {
+                state.copy(
+                    isLoading = true
+                )
+            }
             updateGeneralUserInfoUseCase(
                 beforeUser = state.beforeUserState.toUser(state.userType),
                 email = state.userState.email,
@@ -309,11 +326,15 @@ class UserInfoEditViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         verificationCodeState = VerificationCodeState.None,
-                        phoneNumberState = VerificationMethodState.None
+                        phoneNumberState = VerificationMethodState.None,
+                        isLoading = false
                     )
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
+                reduce {
+                    state.copy(isLoading = false)
+                }
                 when (it) {
                     is KoinUserException.DataInvalidException -> postSideEffect(
                         UserInfoEditSideEffect.InvalidDataError
@@ -339,6 +360,11 @@ class UserInfoEditViewModel @Inject constructor(
 
     private fun requestStudentUserInfoEdit() = viewModelScope.launch {
         intent {
+            reduce {
+                state.copy(
+                    isLoading = true
+                )
+            }
             updateStudentUserInfoUseCase(
                 beforeUser = state.beforeUserState.toUser(state.userType),
                 email = state.userState.email,
@@ -352,11 +378,15 @@ class UserInfoEditViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         verificationCodeState = VerificationCodeState.None,
-                        phoneNumberState = VerificationMethodState.None
+                        phoneNumberState = VerificationMethodState.None,
+                        isLoading = false
                     )
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
+                reduce {
+                    state.copy(isLoading = false)
+                }
                 when (it) {
                     is KoinUserException.DataInvalidException -> postSideEffect(
                         UserInfoEditSideEffect.InvalidDataError
@@ -391,12 +421,23 @@ class UserInfoEditViewModel @Inject constructor(
     }
 
     fun withdraw() = viewModelScope.launch {
+        intent {
+            reduce {
+                state.copy(isLoading = true)
+            }
+        }
         userWithdrawUseCase().onSuccess {
             intent {
+                reduce {
+                    state.copy(isLoading = false)
+                }
                 postSideEffect(UserInfoEditSideEffect.WithdrawalSuccess)
             }
         }.onFailure {
             intent {
+                reduce {
+                    state.copy(isLoading = false)
+                }
                 postSideEffect(UserInfoEditSideEffect.WithdrawalError)
             }
         }
