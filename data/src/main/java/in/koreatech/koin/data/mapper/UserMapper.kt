@@ -2,10 +2,12 @@ package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.user.GeneralUserRequest
 import `in`.koreatech.koin.data.request.user.StudentUserRequest
+import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
+import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
@@ -160,4 +162,12 @@ fun RefreshResponse.toAuthToken() =
         token = this.token,
         refreshToken = this.refreshToken,
         userType = null
+    )
+
+fun CodeRequestCountResponse.toCodeCount() =
+    CodeCount(
+        target = this.target,
+        totalCount = this.totalCount,
+        remainingCount = this.remainingCount,
+        currentCount = this.currentCount
     )

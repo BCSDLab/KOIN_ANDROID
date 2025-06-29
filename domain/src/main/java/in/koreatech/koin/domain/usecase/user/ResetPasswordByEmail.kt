@@ -8,12 +8,10 @@ class ResetPasswordByEmail @Inject constructor(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(loginId: String, email: String, newPassword: String): Result<Unit> {
-        return runCatching {
-            userRepository.resetPasswordByEmail(
-                loginId = loginId,
-                email = email,
-                newPassword = newPassword.toSHA256()
-            )
-        }
+        return userRepository.resetPasswordByEmail(
+            loginId = loginId,
+            email = email,
+            newPassword = newPassword.toSHA256()
+        )
     }
 }

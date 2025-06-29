@@ -30,7 +30,6 @@ import `in`.koreatech.koin.core.designsystem.component.snackbar.showSnackBarWith
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.KeyboardUtils
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
-import `in`.koreatech.koin.feature.signin.SignInActivity
 import `in`.koreatech.koin.feature.timetable.component.CircleLoadingBar
 import `in`.koreatech.koin.feature.timetable.model.TimetableConstants.departments
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
@@ -46,6 +45,7 @@ import `in`.koreatech.koin.feature.timetable.view.dialog.ScheduleDuplicationDial
 import `in`.koreatech.koin.feature.timetable.view.dialog.SelectDepartmentDialog
 import `in`.koreatech.koin.feature.timetable.view.dialog.TimetableTimePickerDialog
 import `in`.koreatech.koin.feature.timetable.viewmodel.TimetableViewModel
+import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.launch

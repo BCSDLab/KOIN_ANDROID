@@ -2,9 +2,8 @@ package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
-import `in`.koreatech.koin.domain.model.user.PhoneNumber
+import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.model.user.VerificationCode
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
@@ -51,13 +50,13 @@ interface UserRepository {
 
     suspend fun postABTestAssign(title: String): ABTest
 
-    suspend fun requestSmsVerification(phoneNumber: String): PhoneNumber
+    suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount>
 
-    suspend fun requestEmailVerification(email: String): PhoneNumber
+    suspend fun requestEmailVerification(email: String): Result<CodeCount>
 
-    suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): VerificationCode
+    suspend fun verifyCertificationCode(phoneNumber: String, verificationCode: String): Result<Unit>
 
-    suspend fun verifyEmailCode(email: String, verificationCode: String): VerificationCode
+    suspend fun verifyEmailCode(email: String, verificationCode: String): Result<Unit>
 
     suspend fun checkIdExists(loginId: String): Result<Unit>
 

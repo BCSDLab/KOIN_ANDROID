@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name=".ui.userinfo.UserInfoActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.findid.FindIdActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="findid"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.findpassword.FindPasswordActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="findpassword"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.signin.SignInActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="login"
+                    android:pathPrefix="/login"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.signup.SignUpActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="signup"
+                    android:pathPrefix="/activity"
+                    android:scheme="koin" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.changepassword.ChangePasswordActivity"
+            android:exported="false"
+            android:label="비밀번호 변경"
+            android:theme="@style/KAPTheme.NoActionBar" />
+    </application>
+
+</manifest>
