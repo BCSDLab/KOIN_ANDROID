@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
-import `in`.koreatech.koin.domain.model.user.Gender
-import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
 import `in`.koreatech.koin.domain.util.ext.isEnglish
 import `in`.koreatech.koin.domain.util.ext.isKorean
@@ -14,79 +12,67 @@ import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 
 data class UserInfoEditState(
-    val beforeUser: User = User.Anonymous,
-    val loginId: String = "",
-    val anonymousNickname: String = "",
-    val email: String = "",
-    val gender: Gender = Gender.Unknown,
-    val name: String = "",
-    val nickname: String = "",
-    val phoneNumber: String = "",
-    val studentNumber: String = "",
-    val major: String = "",
     val isMajorDropdownExpanded: Boolean = false,
-    val userType: UserType = UserType.ANONYMOUS,
     val verificationCode: String = "",
     val nicknameState: NicknameState = NicknameState.None,
     val verificationCodeState: VerificationCodeState = VerificationCodeState.None,
     val phoneNumberState: VerificationMethodState = VerificationMethodState.None,
     val verificationTimeLeft: Int = 180,
-    val showWithdrawalDialog: Boolean = false
+    val showWithdrawalDialog: Boolean = false,
+    val beforeUserState: UserState = UserState(),
+    val userState: UserState = UserState(),
+    val userType: UserType = UserType.ANONYMOUS
 )
 
 val UserInfoEditState.isPhoneNumberChanged: Boolean
-    get() = when (beforeUser) {
-        User.Anonymous -> false
-        is User.Student -> beforeUser.phoneNumber != phoneNumber.ifEmpty { null }
-        is User.General -> beforeUser.phoneNumber != phoneNumber
+    get() = when (userType) {
+        UserType.ANONYMOUS -> false
+        UserType.STUDENT, UserType.COUNCIL, UserType.GENERAL -> beforeUserState.phoneNumber != userState.phoneNumber
     }
 
 val UserInfoEditState.isNicknameChanged: Boolean
-    get() = when (beforeUser) {
-        User.Anonymous -> false
-        is User.Student -> beforeUser.nickname != nickname.ifEmpty { null }
-        is User.General -> beforeUser.nickname != nickname.ifEmpty { null }
+    get() = when (userType) {
+        UserType.ANONYMOUS -> false
+        UserType.STUDENT, UserType.COUNCIL, UserType.GENERAL -> beforeUserState.nickname != userState.nickname
     }
 
 val UserInfoEditState.isNameValid: Boolean
-    get() = if (name.isKorean()) {
-        name.length in 2..5
-    } else if (name.isEnglish()) {
-        name.length in 2..30
+    get() = if (userState.name.isKorean()) {
+        userState.name.length in 2..5
+    } else if (userState.name.isEnglish()) {
+        userState.name.length in 2..30
     } else {
         false
     }
 
 val UserInfoEditState.isEmailValid: Boolean
-    get() = (email.isNotEmpty() && (email.isValidEmail() || email.isValidGeneralEmail())) || email.isEmpty()
+    get() = (userState.email.isNotEmpty() && (userState.email.isValidEmail() || userState.email.isValidGeneralEmail())) || userState.email.isEmpty()
 
 val UserInfoEditState.isNicknameValid
-    get() = ((nickname.isNotEmpty() && nickname.isNicknameFormat()) || nickname.isEmpty())
+    get() = ((userState.nickname.isNotEmpty() && userState.nickname.isNicknameFormat()) || userState.nickname.isEmpty())
 
 val UserInfoEditState.isStudentNumberValid
     get() = when (userType) {
         UserType.COUNCIL,
-        UserType.STUDENT -> studentNumber.isNotEmpty() && studentNumber.isValidStudentId
+        UserType.STUDENT -> userState.studentNumber.isNotEmpty() && userState.studentNumber.isValidStudentId
         UserType.GENERAL -> true
         UserType.ANONYMOUS -> true
     }
 
 val UserInfoEditState.isModified: Boolean
-    get() = when (beforeUser) {
-        User.Anonymous -> false
-        is User.Student -> {
-            beforeUser.loginId != loginId || beforeUser.name != name.ifEmpty { null } ||
-                beforeUser.nickname != nickname.ifEmpty { null } || beforeUser.phoneNumber != phoneNumber.ifEmpty { null } ||
-                beforeUser.email != email || beforeUser.gender != gender ||
-                beforeUser.studentNumber != studentNumber.ifEmpty { null } || beforeUser.major != major.ifEmpty { null }
-        }
-
-        is User.General -> {
-            beforeUser.loginId != loginId || beforeUser.name != name ||
-                beforeUser.nickname != nickname.ifEmpty { null } || beforeUser.phoneNumber != phoneNumber ||
-                beforeUser.email != email || beforeUser.gender != gender
+    get() = when (userType) {
+        UserType.ANONYMOUS -> false
+        UserType.STUDENT, UserType.COUNCIL, UserType.GENERAL -> {
+            beforeUserState != userState
         }
     }
 
+private val UserInfoEditState.isNicknameCheckPassed: Boolean
+    get() = if (isNicknameChanged) {
+        nicknameState is NicknameState.NicknameAvailable
+    } else {
+        true
+    }
+
 val UserInfoEditState.canSave: Boolean
-    get() = isModified && isNameValid && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || verificationCodeState is VerificationCodeState.None)
+    get() = isModified && isNameValid && isNicknameValid && isNicknameCheckPassed && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || verificationCodeState is VerificationCodeState.None)

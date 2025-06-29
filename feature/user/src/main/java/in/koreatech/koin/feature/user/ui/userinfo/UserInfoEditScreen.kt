@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
@@ -54,7 +54,10 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.UserType
+import `in`.koreatech.koin.feature.user.NICKNAME_MAX_LENGTH
+import `in`.koreatech.koin.feature.user.PHONE_NUMBER_LENGTH
 import `in`.koreatech.koin.feature.user.R
+import `in`.koreatech.koin.feature.user.VERIFICATION_CODE_LENGTH
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicItem
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserDropdown
@@ -79,6 +82,7 @@ fun UserInfoEditScreen(
     viewModel: UserInfoEditViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
+    val userState = uiState.userState
     val context = LocalContext.current
 
     viewModel.collectSideEffect {
@@ -143,15 +147,15 @@ fun UserInfoEditScreen(
             UserInfoHeader(stringResource(R.string.user_info_general_user_info_header))
 
             GeneralUserInfo(
-                loginId = uiState.loginId,
-                name = uiState.name,
+                loginId = userState.loginId,
+                name = userState.name,
                 isNameValid = uiState.isNameValid,
-                nickName = uiState.nickname,
+                nickName = userState.nickname,
                 isNicknameValid = uiState.isNicknameValid,
-                phoneNumber = uiState.phoneNumber,
-                email = uiState.email,
+                phoneNumber = userState.phoneNumber,
+                email = userState.email,
                 isEmailValid = uiState.isEmailValid,
-                gender = when (uiState.gender) {
+                gender = when (userState.gender) {
                     Gender.Man -> 0
                     Gender.Woman -> 1
                     else -> null
@@ -180,9 +184,9 @@ fun UserInfoEditScreen(
                 UserInfoHeader(stringResource(R.string.user_info_student_info_header))
 
                 StudentUserInfo(
-                    studentNumber = uiState.studentNumber,
+                    studentNumber = userState.studentNumber,
                     isStudentNumberValid = uiState.isStudentNumberValid,
-                    major = uiState.major,
+                    major = userState.major,
                     isMajorDropdownExpanded = uiState.isMajorDropdownExpanded,
                     onStudentNumberChange = { viewModel.updateStudentNumber(it) },
                     onMajorChange = { viewModel.updateMajor(it) },
@@ -204,7 +208,7 @@ fun UserInfoEditScreen(
                 onClick = viewModel::requestUserInfoEdit
             )
 
-            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
         }
     }
 }
@@ -281,6 +285,7 @@ fun GeneralUserInfo(
         UserInfoPhoneNumber(
             phoneNumber = phoneNumber,
             phoneNumberState = phoneNumberState,
+            verificationCodeState = verificationCodeState,
             isPhoneNumberChanged = isPhoneNumberChanged,
             onPhoneNumberChange = onPhoneNumberChange,
             onRequestVerificationCode = onRequestVerificationCode
@@ -426,7 +431,7 @@ fun UserInfoNickname(
         title = stringResource(R.string.user_info_general_user_info_nickname),
         value = nickName,
         buttonText = stringResource(R.string.user_info_general_user_info_nickname_button),
-        maxLength = 10,
+        maxLength = NICKNAME_MAX_LENGTH,
         onValueChange = onNicknameChange,
         onButtonAction = onNicknameDuplicateCheck,
         buttonEnabled = isNicknameChanged && nicknameState !is NicknameState.NicknameAvailable
@@ -465,6 +470,7 @@ fun UserInfoNickname(
 fun UserInfoPhoneNumber(
     phoneNumber: String,
     phoneNumberState: VerificationMethodState,
+    verificationCodeState: VerificationCodeState,
     isPhoneNumberChanged: Boolean,
     onPhoneNumberChange: (String) -> Unit = {},
     onRequestVerificationCode: () -> Unit = {}
@@ -472,10 +478,17 @@ fun UserInfoPhoneNumber(
     KoinUserWithButtonItem(
         title = stringResource(R.string.user_info_general_user_info_phone_number),
         value = phoneNumber,
-        buttonText = stringResource(R.string.user_info_general_user_info_phone_number_button),
+        buttonText = stringResource(
+            if (phoneNumberState is VerificationMethodState.Sent) {
+                R.string.user_info_general_user_info_phone_number_resend
+            } else {
+                R.string.user_info_general_user_info_phone_number_send
+            }
+        ),
         onValueChange = onPhoneNumberChange,
         onButtonAction = onRequestVerificationCode,
-        buttonEnabled = isPhoneNumberChanged,
+        buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid,
+        maxLength = PHONE_NUMBER_LENGTH,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
@@ -567,6 +580,7 @@ fun UserInfoVerificationCodeVerification(
                 ),
                 onValueChange = { onVerificationCodeChange(it) },
                 hint = stringResource(R.string.user_info_code_field_hint),
+                maxLength = VERIFICATION_CODE_LENGTH,
                 enabled = verificationCodeState !is VerificationCodeState.Valid
             )
 
@@ -621,6 +635,8 @@ fun UserInfoVerificationCodeVerification(
             )
         }
     }
+
+    Spacer(modifier = Modifier.height(16.dp))
 }
 
 fun handleSideEffect(
@@ -640,7 +656,10 @@ fun handleSideEffect(
             Toast.makeText(context, R.string.user_info_invalid_data_error, Toast.LENGTH_SHORT).show()
         }
         UserInfoEditSideEffect.NicknameOrEmailConflictError -> {
-            Toast.makeText(context, R.string.user_info_nickname_or_email_conflict_error, Toast.LENGTH_SHORT).show()
+            // API sent 409 when either nickname or email is already in use.
+            // Since we allow the user to press the save button only after the nickname conflict check passes,
+            // we assume the conflict is due to the email.
+            Toast.makeText(context, R.string.user_info_email_conflict_error, Toast.LENGTH_SHORT).show()
         }
         UserInfoEditSideEffect.PhoneNumberValidateRequiredError -> {
             Toast.makeText(context, R.string.user_info_phone_number_validate_required_error, Toast.LENGTH_SHORT).show()

@@ -33,8 +33,8 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
 import `in`.koreatech.koin.domain.util.ext.isNotValidGeneralEmail
+import `in`.koreatech.koin.feature.user.NICKNAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.user.R
-import `in`.koreatech.koin.feature.user.SIGN_UP_NICKNAME_MAX_LENGTH
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserPasswordTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserProgressHeader
@@ -332,7 +332,7 @@ private fun SignUpGeneralUserInfoNickNameEmailStep(
             modifier = Modifier.weight(1f),
             hint = stringResource(R.string.sign_up_user_info_nickname_hint),
             value = nickname,
-            maxLength = SIGN_UP_NICKNAME_MAX_LENGTH,
+            maxLength = NICKNAME_MAX_LENGTH,
             onValueChange = {
                 onNicknameChange(it)
             },

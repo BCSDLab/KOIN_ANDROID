@@ -43,9 +43,9 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.constant.CONTACT_URL
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.feature.user.PHONE_NUMBER_LENGTH
 import `in`.koreatech.koin.feature.user.R
-import `in`.koreatech.koin.feature.user.SIGN_UP_PHONE_NUMBER_MAX_LENGTH
-import `in`.koreatech.koin.feature.user.SIGN_UP_VERIFICATION_CODE_MAX_LENGTH
+import `in`.koreatech.koin.feature.user.VERIFICATION_CODE_LENGTH
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserProgressHeader
 import `in`.koreatech.koin.feature.user.component.KoinUserProgressIndicator
@@ -270,7 +270,7 @@ fun SignUpVerificationPhoneNumberStep(
         KoinUserBasicTextField(
             modifier = Modifier.weight(1f),
             value = phoneNumber,
-            maxLength = SIGN_UP_PHONE_NUMBER_MAX_LENGTH,
+            maxLength = PHONE_NUMBER_LENGTH,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done
@@ -348,7 +348,7 @@ fun SignUpVerificationCodeVerificationStep(
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
                 value = verificationCode,
-                maxLength = SIGN_UP_VERIFICATION_CODE_MAX_LENGTH,
+                maxLength = VERIFICATION_CODE_LENGTH,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
