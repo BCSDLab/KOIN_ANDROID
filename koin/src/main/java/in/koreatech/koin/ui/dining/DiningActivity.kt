@@ -213,17 +213,9 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             repeat(3) {
                 dates.add(TimeUtil.getNextDayDate(dates.last()))
             }
+            diningDateAdapter.submitList(dates)
 
             val todayPos = dates.size / 2
-
-            diningDateAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                override fun onChanged() {
-                    scrollDateTodayToCenter(todayPos)
-                    diningDateAdapter.unregisterAdapterDataObserver(this)
-                }
-            })
-            diningDateAdapter.submitList(dates)
-            
             scrollDateTodayToCenter(todayPos)
             initialDateTab =
                 if (DiningUtil.getCurrentType() == DiningType.NextBreakfast) todayPos + 1 else todayPos
@@ -234,9 +226,13 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         val layoutManager = binding.recyclerViewCalendar.layoutManager as? LinearLayoutManager
         val screenWidthPx = resources.displayMetrics.widthPixels
         binding.recyclerViewCalendar.post {
-            val itemWidthPx = binding.recyclerViewCalendar.getChildAt(0).width
-            val offset = (screenWidthPx / 2 - itemWidthPx / 2)
-            layoutManager?.scrollToPositionWithOffset(todayPosition, offset)
+            val firstItem = binding.recyclerViewCalendar.getChildAt(0)
+
+            if (firstItem != null) {
+                val itemWidthPx = firstItem.width
+                val offset = (screenWidthPx / 2 - itemWidthPx / 2)
+                layoutManager?.scrollToPositionWithOffset(todayPosition, offset)
+            }
         }
     }
 
