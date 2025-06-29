@@ -68,10 +68,11 @@ import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
 import `in`.koreatech.koin.feature.user.component.KoinUserWithButtonItem
 import `in`.koreatech.koin.feature.user.component.UserInfoHeader
 import `in`.koreatech.koin.feature.user.genderList
-import `in`.koreatech.koin.feature.user.majorStringList
 import `in`.koreatech.koin.feature.user.model.NicknameState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -187,6 +188,7 @@ fun UserInfoEditScreen(
                     studentNumber = userState.studentNumber,
                     isStudentNumberValid = uiState.isStudentNumberValid,
                     major = userState.major,
+                    majorList = uiState.majorList.toImmutableList(),
                     isMajorDropdownExpanded = uiState.isMajorDropdownExpanded,
                     onStudentNumberChange = { viewModel.updateStudentNumber(it) },
                     onMajorChange = { viewModel.updateMajor(it) },
@@ -373,6 +375,7 @@ fun StudentUserInfo(
     studentNumber: String,
     isStudentNumberValid: Boolean,
     major: String,
+    majorList: ImmutableList<String>,
     isMajorDropdownExpanded: Boolean,
     modifier: Modifier = Modifier,
     onStudentNumberChange: (String) -> Unit = {},
@@ -406,10 +409,10 @@ fun StudentUserInfo(
             hint = stringResource(R.string.user_info_student_info_major),
             isSelected = major.isNotBlank(),
             isDropdownExpanded = isMajorDropdownExpanded,
-            items = majorStringList,
+            items = majorList,
             arrowDirection = KoinUserDropdownArrowDirection.UP,
             onItemSelected = {
-                onMajorChange(majorStringList[it])
+                onMajorChange(majorList[it])
             },
             onDropdownExpandChange = {
                 onMajorDropdownExpandedChange(it)

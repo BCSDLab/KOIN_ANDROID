@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
+import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckPhoneNumberDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
@@ -39,13 +40,25 @@ class UserInfoEditViewModel @Inject constructor(
     private val updateStudentUserInfoUseCase: UpdateStudentUserInfoUseCase,
     private val updateGeneralUserInfoUseCase: UpdateGeneralUserInfoUseCase,
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
-    private val userWithdrawUseCase: UserWithdrawUseCase
+    private val userWithdrawUseCase: UserWithdrawUseCase,
+    private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : ViewModel(), ContainerHost<UserInfoEditState, UserInfoEditSideEffect> {
     override val container =
         container<UserInfoEditState, UserInfoEditSideEffect>(UserInfoEditState())
 
     init {
         getUserInfo()
+        getDeptNames()
+    }
+
+    private fun getDeptNames() = viewModelScope.launch {
+        getDeptNamesUseCase().let {
+            intent {
+                reduce {
+                    state.copy(majorList = it)
+                }
+            }
+        }
     }
 
     private fun getUserInfo() = viewModelScope.launch {

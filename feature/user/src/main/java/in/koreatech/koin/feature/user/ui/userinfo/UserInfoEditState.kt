@@ -21,7 +21,8 @@ data class UserInfoEditState(
     val showWithdrawalDialog: Boolean = false,
     val beforeUserState: UserState = UserState(),
     val userState: UserState = UserState(),
-    val userType: UserType = UserType.ANONYMOUS
+    val userType: UserType = UserType.ANONYMOUS,
+    val majorList: List<String> = emptyList()
 )
 
 val UserInfoEditState.isPhoneNumberChanged: Boolean

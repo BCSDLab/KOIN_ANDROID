@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.user.KoinUserException
+import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckEmailDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckLoginIdDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
@@ -30,7 +31,8 @@ class SignUpStudentViewModel @Inject constructor(
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
     private val postStudentRegisterUseCase: PostStudentRegisterUseCase,
     private val checkLoginIdDuplicateUseCase: CheckLoginIdDuplicateUseCase,
-    private val checkEmailDuplicateUseCase: CheckEmailDuplicateUseCase
+    private val checkEmailDuplicateUseCase: CheckEmailDuplicateUseCase,
+    private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : ViewModel(), ContainerHost<SignUpStudentState, SignUpStudentSideEffect> {
     override val container = container<SignUpStudentState, SignUpStudentSideEffect>(SignUpStudentState(), savedStateHandle) {
         val phoneNumber = savedStateHandle.get<String>(PHONE_NUMBER)
@@ -43,10 +45,24 @@ class SignUpStudentViewModel @Inject constructor(
         setInitData(phoneNumber, name, gender)
     }
 
+    init {
+        getDeptNames()
+    }
+
     private fun setInitData(phoneNumber: String, name: String, gender: String) {
         intent {
             reduce {
                 state.copy(phoneNumber = phoneNumber, name = name, gender = gender)
+            }
+        }
+    }
+
+    private fun getDeptNames() = viewModelScope.launch {
+        getDeptNamesUseCase().let {
+            intent {
+                reduce {
+                    state.copy(majorList = it)
+                }
             }
         }
     }
