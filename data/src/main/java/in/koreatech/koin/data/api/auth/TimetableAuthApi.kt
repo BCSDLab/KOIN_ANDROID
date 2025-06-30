@@ -24,7 +24,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TimetableAuthApi {
-    @GET(URLConstant.TIMETABLE.V3.CHECK)
+    @GET(URLConstant.TIMETABLE.V3.SEMESTERS.CHECK)
     suspend fun getUserSemesters(): UserSemestersResponse
 
     @Deprecated("use getLecturesByTimetableFrameId instead")
