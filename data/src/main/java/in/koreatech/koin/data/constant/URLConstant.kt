@@ -61,16 +61,19 @@ object URLConstant {
             const val REVIEWS = "$ID/reviews"
         }
         object SHOPID {
+            const val SHOPID = "$SHOPS/${PATH.SHOPID}"
+            const val NOTIFICATION = "$SHOPID}/call-notification"
             object MENUS {
-                const val CATEGORIES = "$SHOPS/${PATH.SHOPID}/menus/categories"
+                const val CATEGORIES = "$SHOPID/menus/categories"
             }
             object REVIEWS {
-                const val REVIEWS = "$SHOPS/${PATH.SHOPID}/reviews"
-                const val REVIEWID = "$REVIEWS/${PATH.REVIEWID}"
-                const val REPORTS = "$REVIEWS/${PATH.REVIEWID}/reports"
+                const val REVIEWS = "$SHOPID/reviews"
+                object REVIEWID {
+                    const val REVIEWID = "$REVIEWS/${PATH.REVIEWID}"
+                    const val REPORTS = "$REVIEWID/reports"
+                }
             }
         }
-        const val NOTIFICATION = "$SHOPS/${PATH.SHOPID}/call-notification"
         const val QUERY = "/$SHOPS/search/related/{query}"
         object OWNERSHOPS {
             const val OWNERSHOPS = "owner/shops"
@@ -110,9 +113,13 @@ object URLConstant {
         const val AUTH: String = "$USER/auth"
         const val EMAIL = "email"
         const val PW = "password"
-        const val NOTIFICATION = "/notification"
-        const val SUBSCRIBE = "$NOTIFICATION/subscribe"
-        const val DETAIL = "$NOTIFICATION/subscribe/detail"
+        object NOTIFICATION {
+            const val NOTIFICATION = "/notification"
+            object SUBSCRIBE {
+                const val SUBSCRIBE = "$NOTIFICATION/subscribe"
+                const val DETAIL = "$SUBSCRIBE/detail"
+            }
+        }
         object CHECK {
             const val CHECK = "$USER/check"
             const val NICKNAME: String = "$CHECK/nickname"
@@ -185,12 +192,17 @@ object URLConstant {
         }
         const val CATEGORIES = "$CLUBS/categories"
         const val HOT = "$CLUBS/hot"
-        const val QNA = "$CLUBS/${PATH.CLUBID}/qna"
-        const val DELETE_QNA = "$QNA/{qnaId}"
-        const val DETAILS = "$CLUBS/${PATH.CLUBID}"
-        const val MODIFY = "$CLUBS/${PATH.CLUBID}"
-        const val LIKE = "$CLUBS/${PATH.CLUBID}/like"
-        const val CANCEL_LIKE = "$LIKE/cancel"
+        object CLUBID {
+            const val CLUBID = "$CLUBS/${PATH.CLUBID}"
+            object QNA {
+                const val QNA = "$CLUBID/qna"
+                const val QNAID = "$QNA/{qnaId}"
+            }
+            object LIKE {
+                const val LIKE = "$CLUBID/like"
+                const val CANCEL = "$LIKE/cancel"
+            }
+        }
         const val EMPOWERMENT = "$CLUBS/empowerment"
     }
 
@@ -225,10 +237,14 @@ object URLConstant {
             const val ARTICLEID = "{articleId}"
             const val CHATROOMID = "{chat_room_id}"
         }
-        const val ARTICLEID = "$CHATROOM/${PATH.ARTICLEID}"
-        const val ARTICLEID_ROOMID = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}"
-        const val MESSAGES = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/messages"
-        const val BLOCK = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/block"
+        object ARTICLEID {
+            const val ARTICLEID = "$CHATROOM/${PATH.ARTICLEID}"
+            object ROOMID {
+                const val ROOMID = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}"
+                const val MESSAGES = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/messages"
+                const val BLOCK = "$CHATROOM/${PATH.ARTICLEID}/${PATH.CHATROOMID}/block"
+            }
+        }
     }
 
     object TIMETABLE {
@@ -259,7 +275,7 @@ object URLConstant {
             const val V3 = "v3"
             object SEMESTERS {
                 const val SEMESTERS = "/$V3/semesters"
-                const val CHECK = "/$V3/semesters/check"
+                const val CHECK = "$SEMESTERS/check"
             }
             object FRAME {
                 const val FRAME = "/$V3/$TIMETABLE/frame"
@@ -306,7 +322,9 @@ object URLConstant {
 
     object ABTEST {
         const val ABTEST = "abtest"
-        const val UPDATE = "$ABTEST/assign/token"
-        const val ASSIGN = "$ABTEST/assign"
+        object ASSIGN {
+            const val ASSIGN = "$ABTEST/assign"
+            const val TOKEN = "$ASSIGN/token"
+        }
     }
 }
