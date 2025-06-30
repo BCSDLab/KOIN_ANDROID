@@ -77,31 +77,31 @@ interface UserAuthApi {
         @Body passwordRequest: PasswordRequest
     )
 
-    @GET(URLConstant.SHOPS.REVIEWS.ID_REVIEWS)
+    @GET(URLConstant.SHOPS.ID.REVIEWS)
     suspend fun getShopReviewsWithAuth(
         @Path("id") uid: Int
     ): StoreReviewResponse
 
-    @POST(URLConstant.SHOPS.REVIEWS.REVIEWS)
+    @POST(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWS)
     suspend fun writeReview(
         @Path("shopId") shopId: Int,
         @Body reviewRequest: ReviewRequest
     )
 
-    @DELETE(URLConstant.SHOPS.REVIEWS.REVIEWID)
+    @DELETE(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID)
     suspend fun deleteReview(
         @Path("reviewId") reviewId: Int,
         @Path("shopId") shopId: Int
     ): Response<Unit?>
 
-    @PUT(URLConstant.SHOPS.REVIEWS.REVIEWID)
+    @PUT(URLConstant.SHOPS.SHOPID.REVIEWS.REVIEWID)
     suspend fun modifyReview(
         @Path("reviewId") reviewId: Int,
         @Path("shopId") shopId: Int,
         @Body reviewRequest: ReviewRequest
     ): Response<Unit?>
 
-    @POST(URLConstant.SHOPS.REVIEWS.REPORTS)
+    @POST(URLConstant.SHOPS.SHOPID.REVIEWS.REPORTS)
     suspend fun postStoreReviewReports(
         @Path("storeId") storeId: Int,
         @Path("reviewId") reviewId: Int,
