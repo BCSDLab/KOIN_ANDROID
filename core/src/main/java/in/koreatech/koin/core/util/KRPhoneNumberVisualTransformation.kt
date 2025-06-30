@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.feature.club.utils
+package `in`.koreatech.koin.core.util
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping

@@ -51,6 +51,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.UserType
@@ -500,7 +501,8 @@ fun UserInfoPhoneNumber(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
-        )
+        ),
+        visualTransformation = KRPhoneNumberVisualTransformation()
     )
 
     Box(modifier = Modifier.height(32.dp)) {

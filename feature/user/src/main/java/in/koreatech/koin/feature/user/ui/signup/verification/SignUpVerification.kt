@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.constant.CONTACT_URL
 import `in`.koreatech.koin.domain.model.user.Gender
@@ -277,7 +278,8 @@ fun SignUpVerificationPhoneNumberStep(
             ),
             onValueChange = { onPhoneNumberChange(it) },
             hint = stringResource(R.string.sign_up_phone_number_field_hint),
-            showTrailingClearButton = verificationCodeState !is VerificationCodeState.Valid
+            showTrailingClearButton = verificationCodeState !is VerificationCodeState.Valid,
+            visualTransformation = KRPhoneNumberVisualTransformation()
         )
 
         Spacer(modifier = Modifier.width(16.dp))
