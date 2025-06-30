@@ -309,7 +309,7 @@ object URLConstant {
         const val ROUTE = "$BUS/route"
         object TIMETABLE {
             const val TIMETABLE = "$BUS/timetable"
-            const val SHUTTLEBYID = "$TIMETABLE/shuttle/${PATH.ID}"
+            const val SHUTTLE_ID = "$TIMETABLE/shuttle/${PATH.ID}"
             const val EXPRESS = "$TIMETABLE/v2?bus_type=EXPRESS&region=null"
             const val CITY = "$TIMETABLE/city"
         }

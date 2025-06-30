@@ -15,7 +15,7 @@ interface BusApi {
     @GET(URLConstant.BUS.NOTICE)
     suspend fun fetchBusNotice(): BusNoticeResponse
 
-    @GET(URLConstant.BUS.TIMETABLE.SHUTTLEBYID)
+    @GET(URLConstant.BUS.TIMETABLE.SHUTTLE_ID)
     suspend fun fetchShuttleTimetable(
         @Path("id") id: String
     ): ShuttleTimetableResponse
