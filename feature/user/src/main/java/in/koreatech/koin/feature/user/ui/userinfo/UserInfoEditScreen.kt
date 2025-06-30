@@ -496,7 +496,7 @@ fun UserInfoPhoneNumber(
         ),
         onValueChange = onPhoneNumberChange,
         onButtonAction = onRequestVerificationCode,
-        buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid,
+        buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid && phoneNumber.isNotBlank(),
         maxLength = PHONE_NUMBER_LENGTH,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
