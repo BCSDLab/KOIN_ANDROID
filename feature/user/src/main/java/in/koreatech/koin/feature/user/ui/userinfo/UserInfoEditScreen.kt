@@ -254,7 +254,15 @@ fun GeneralUserInfo(
             readOnly = true
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Box(
+            modifier = Modifier.height(32.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.user_info_general_user_info_login_id_hint),
+                style = KoinTheme.typography.regular12,
+                color = KoinTheme.colors.neutral400
+            )
+        }
 
         KoinUserBasicItem(
             title = stringResource(R.string.user_info_general_user_info_name),
