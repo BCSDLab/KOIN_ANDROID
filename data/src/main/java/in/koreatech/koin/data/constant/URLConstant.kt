@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.data.constant
 
-import android.hardware.SensorEvent
-
 /**
  * KOIN API URL
  */
@@ -29,9 +27,9 @@ object URLConstant {
     object COOPSHOP {
         const val COOPSHOP = "coopshop"
         object PATH {
-            const val COOPSHOPID= "{coopShopId}"
+            const val COOPSHOPID = "{coopShopId}"
         }
-        const val COOPSHOPID= "$COOPSHOP/${PATH.COOPSHOPID}"
+        const val COOPSHOPID = "$COOPSHOP/${PATH.COOPSHOPID}"
     }
 
     object DINING {
@@ -313,7 +311,6 @@ object URLConstant {
             const val EXPRESS = "$TIMETABLE/v2?bus_type=EXPRESS&region=null"
             const val CITY = "$TIMETABLE/city"
         }
-
     }
     object LECTURES {
         const val LECTURES = "/lectures"
