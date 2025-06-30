@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.user.ui.signup.verification
 
+import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -452,6 +453,7 @@ private fun PhoneNumberDuplicateMessage() {
                     .noRippleClickable {
                         val intent = Intent(context, SignInActivity::class.java)
                         context.startActivity(intent)
+                        (context as Activity).finish()
                     },
                 text = stringResource(R.string.sign_up_phone_number_already_sign_up),
                 color = KoinTheme.colors.primary500,
