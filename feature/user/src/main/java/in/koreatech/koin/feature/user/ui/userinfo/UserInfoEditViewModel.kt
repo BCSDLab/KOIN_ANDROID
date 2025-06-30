@@ -137,7 +137,8 @@ class UserInfoEditViewModel @Inject constructor(
     fun updateNickname(nickname: String) = blockingIntent {
         reduce {
             state.copy(
-                userState = state.userState.copy(nickname = nickname), nicknameState = if (nickname.isEmpty()) {
+                userState = state.userState.copy(nickname = nickname),
+                nicknameState = if (nickname.isEmpty()) {
                     NicknameState.NicknameAvailable
                 } else {
                     NicknameState.None
