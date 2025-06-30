@@ -1,8 +1,7 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import `in`.koreatech.koin.domain.model.user.UserType
-import `in`.koreatech.koin.domain.util.ext.isEnglish
-import `in`.koreatech.koin.domain.util.ext.isKorean
+import `in`.koreatech.koin.domain.util.ext.isNameFormat
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
 import `in`.koreatech.koin.domain.util.ext.isValidEmail
 import `in`.koreatech.koin.domain.util.ext.isValidGeneralEmail
@@ -37,13 +36,7 @@ val UserInfoEditState.isNicknameChanged: Boolean
     }
 
 val UserInfoEditState.isNameValid: Boolean
-    get() = if (userState.name.isKorean()) {
-        userState.name.length in 2..5
-    } else if (userState.name.isEnglish()) {
-        userState.name.length in 2..30
-    } else {
-        false
-    }
+    get() = userState.name.isNameFormat()
 
 val UserInfoEditState.isEmailValid: Boolean
     get() = (userState.email.isNotEmpty() && (userState.email.isValidEmail() || userState.email.isValidGeneralEmail())) || userState.email.isEmpty()

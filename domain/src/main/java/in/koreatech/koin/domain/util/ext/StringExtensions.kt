@@ -36,7 +36,7 @@ fun String.formatInstagramUrlForm() = "${INSTAGRAM_URL}/$this"
 
 fun String.formatInstagramLinkForm() = "@${this.removePrefix("${INSTAGRAM_URL}/").removeSuffix("/")}"
 
-fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
+fun String.isNameFormat(): Boolean = this.matches(Regex("""^(?:[가-힣]{2,5}|[A-Za-z]{2,30})${'$'}"""))
 
 fun String.isLoginIdFormat(): Boolean = this.matches(Regex("""^[a-z0-9_.-]+${'$'}""")) && this.length in 5..13
 
