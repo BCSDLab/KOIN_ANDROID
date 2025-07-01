@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,17 +33,17 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun MenuListSection(category: String, menus: List<ShopMenus>) {
-    Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 24.dp).navigationBarsPadding()) {
         Text(text = category, fontWeight = FontWeight.Bold, fontSize = 20.sp, modifier = Modifier.padding(vertical = 8.dp, horizontal = 10.dp))
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 40.dp),
+                .padding(bottom = 10.dp),
             shape = RoundedCornerShape(12.dp),
             elevation = CardDefaults.cardElevation(0.5.dp),
             colors = CardDefaults.cardColors(
                 containerColor = KoinTheme.colors.neutral0
-            )
+            ),
         ) {
             repeat(menus.size) {
                 MenuItem(
@@ -65,24 +67,28 @@ fun MenuItem(
     Row(modifier = Modifier.padding(16.dp)) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-            Text(modifier = Modifier.padding(vertical = 4.dp), text = menu.description ?: "", fontSize = 12.sp, color = KoinTheme.colors.neutral500)
+            if (menu.description != null)
+                Text(modifier = Modifier.padding(top = 4.dp), text = menu.description ?: "", fontSize = 12.sp, color = KoinTheme.colors.neutral500)
             OptionPriceText(
                 shopMenus = menu
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(menu.imageUrls?.firstOrNull())
-                .crossfade(true)
-                .build(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .align(Alignment.Bottom)
-                .size(88.dp)
-                .clip(RoundedCornerShape(4.dp))
-        )
+        menu.imageUrls
+            ?.firstOrNull()?.let { url ->
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(url)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .align(Alignment.Bottom)
+                        .size(88.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                )
+            }
     }
 }
 
@@ -90,13 +96,17 @@ fun MenuItem(
 private fun OptionPriceText(
     shopMenus: ShopMenus
 ) {
-    if (shopMenus.isSingle) {
-        Text(text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""), fontSize = 14.sp, fontWeight = FontWeight.Bold)
-    } else if (shopMenus.optionPrices?.isNotEmpty() == true) {
-        val options = shopMenus.optionPrices?.fold("") { acc, menu ->
-            acc + stringResource(R.string.option_price, menu.option, menu.price ?: "")
-        }?.trim()
-        Text(text = options ?: "", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+    Column(
+        modifier= Modifier.padding(top = 4.dp)
+    ){
+        if (shopMenus.isSingle) {
+            Text(text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        } else if (shopMenus.optionPrices?.isNotEmpty() == true) {
+            val options = shopMenus.optionPrices?.fold("") { acc, menu ->
+                acc + stringResource(R.string.option_price, menu.option, menu.price ?: "")
+            }?.trim()
+            Text(text = options ?: "", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        }
     }
 }
 

@@ -66,12 +66,12 @@ fun DeliveryInfoCard(
                 Row {
                     Text(text = stringResource(R.string.minimum_order), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "15,000원", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(text = "TODO: 최소주문", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
                 Row {
                     Text(text = stringResource(R.string.delivery_fee), fontSize = 12.sp, lineHeight = 18.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("0 - 3,000원", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
+                    Text(storeInfo.deliveryPrice.toString() + "원", fontSize = 12.sp, lineHeight = 18.sp, color = KoinTheme.colors.neutral500)
                 }
             }
             Icon(painter = painterResource(id = R.drawable.ic_delivery_arrow_right), contentDescription = null, modifier = Modifier.size(10.dp))

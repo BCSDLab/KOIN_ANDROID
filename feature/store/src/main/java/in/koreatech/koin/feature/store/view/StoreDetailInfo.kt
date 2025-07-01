@@ -17,6 +17,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.domain.model.store.StoreReview
@@ -31,7 +32,7 @@ fun StoreDetailInfo(
     storeInfo: StoreWithMenu,
     storeReview: StoreReview
 ) {
-    Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 24.dp,)) {
         Text(modifier = Modifier.padding(vertical = 4.dp), text = storeInfo.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
         Row(
             modifier = Modifier.fillMaxWidth(),

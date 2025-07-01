@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.store.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,21 +24,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.owner.MenuCategory
+import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
-fun MenuCategoryChips(menuCategories: List<MenuCategory>) {
+fun MenuCategoryChips(
+    menuCategories: List<StoreMenuCategories>,
+    onCategoryClicked: (Int) -> Unit = {}
+) {
     val scrollState = rememberScrollState()
+
     Row(
-        modifier = Modifier.fillMaxWidth().background(color = colorResource(id = R.color.store_detail_background))
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 66.dp)
+            .background(color = colorResource(id = R.color.store_detail_background))
             .horizontalScroll(scrollState)
             .padding(horizontal = 24.dp, vertical = 12.dp)
     ) {
         menuCategories.forEachIndexed { i, tag ->
             MenuCategoryChip(
                 menuCategory = menuCategories[i],
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp),
+                onCategoryClicked = {
+                    onCategoryClicked(it)
+                }
             )
         }
     }
@@ -45,8 +56,9 @@ fun MenuCategoryChips(menuCategories: List<MenuCategory>) {
 
 @Composable
 fun MenuCategoryChip(
-    menuCategory: MenuCategory,
-    modifier: Modifier = Modifier
+    menuCategory: StoreMenuCategories,
+    modifier: Modifier = Modifier,
+    onCategoryClicked: ((Int) -> Unit) = {}
 ) {
     val borderColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else Color.Transparent
     val textColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else KoinTheme.colors.neutral400
@@ -62,13 +74,16 @@ fun MenuCategoryChip(
                 color = borderColor,
                 shape = RoundedCornerShape(50)
             )
+            .clickable {
+                onCategoryClicked(menuCategory.id)
+            }
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
         ) {
             Text(
-                text = menuCategory.categoryName,
+                text = menuCategory.name ?: "",
                 color = textColor,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold
@@ -82,7 +97,11 @@ fun MenuCategoryChip(
 fun MenuCategoryChipPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         MenuCategoryChip(
-            menuCategory = MenuCategory("음료", true),
+            menuCategory = StoreMenuCategories(
+                id = 1,
+                name = "음료",
+                menus = emptyList(),
+            ),
             modifier = Modifier.padding(8.dp)
         )
     }
