@@ -72,9 +72,9 @@ import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
 import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
 import `in`.koreatech.koin.domain.util.ext.formatInstagramUrlForm
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
-import `in`.koreatech.koin.domain.util.ext.isGoogleFormUrl
-import `in`.koreatech.koin.domain.util.ext.isInstagramUrl
-import `in`.koreatech.koin.domain.util.ext.isOpenChatUrl
+import `in`.koreatech.koin.domain.util.ext.isValidGoogleFormUrl
+import `in`.koreatech.koin.domain.util.ext.isValidInstagramUrl
+import `in`.koreatech.koin.domain.util.ext.isValidOpenChatUrl
 import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
@@ -430,7 +430,7 @@ fun ClubDetail(
                                         onClick = { showMore.value = !showMore.value }
                                     }
                                     DETAIL_INSTAGRAM -> {
-                                        linkUrl = if (it.isInstagramUrl()) it else it.formatInstagramUrlForm()
+                                        linkUrl = if (it.isValidInstagramUrl()) it else it.formatInstagramUrlForm()
                                         onClick = { viewModel.openUrl(linkUrl) }
                                         outputText = it.formatInstagramLinkForm()
                                     }
@@ -440,8 +440,8 @@ fun ClubDetail(
                                     else -> outputText = it
                                 }
                                 if (
-                                    it.isGoogleFormUrl() ||
-                                    it.isOpenChatUrl()
+                                    it.isValidGoogleFormUrl() ||
+                                    it.isValidOpenChatUrl()
                                 ) {
                                     linkUrl = it
                                     onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }

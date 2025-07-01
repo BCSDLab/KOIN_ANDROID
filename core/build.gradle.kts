@@ -62,9 +62,11 @@ dependencies {
     // Dependency - leakcanary
     debugImplementation(libs.leakcanary.android)
 
-    // Dependency - glide
+    // Dependency - glide & coil
     implementation(libs.glide)
     ksp(libs.glide.ksp)
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
 
     // Dependency - sticky scroll view
     api(libs.stickyScrollView)
