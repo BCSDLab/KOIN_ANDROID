@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,9 @@ import `in`.koreatech.koin.feature.store.component.StoreDetailInfoCard
 @Composable
 fun StoreDetailInfo(
     storeInfo: StoreWithMenu,
-    storeReview: StoreReview
+    storeReview: StoreReview,
+    navigateToReview: () -> Unit,
+    navigateToDetailInfo: () -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 24.dp,)) {
         Text(modifier = Modifier.padding(vertical = 4.dp), text = storeInfo.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
@@ -40,8 +43,9 @@ fun StoreDetailInfo(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
+                modifier= Modifier.clickable { navigateToReview() },
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     modifier = Modifier.size(25.dp),
@@ -63,6 +67,6 @@ fun StoreDetailInfo(
         Spacer(modifier = Modifier.height(12.dp))
         AvailableChips(storeInfo)
         Spacer(modifier = Modifier.height(16.dp))
-        StoreDetailInfoCard(storeInfo)
+        StoreDetailInfoCard(storeInfo, navigateToDetailInfo )
     }
 }

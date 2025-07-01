@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,16 +31,21 @@ import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
-fun StoreDetailInfoCard(storeInfo: StoreWithMenu) {
+fun StoreDetailInfoCard(
+    storeInfo: StoreWithMenu,
+    navigateToDetailInfo: () -> Unit
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         DeliveryInfoCard(
             modifier = Modifier.weight(1f),
-            storeInfo
+            storeInfo,
+            navigateToDetailInfo = navigateToDetailInfo
         )
         Spacer(modifier = Modifier.width(8.dp))
         NoticeCard(
             modifier = Modifier.weight(1f),
-            description = storeInfo.description
+            description = storeInfo.description,
+            navigateToDetailInfo = navigateToDetailInfo
         )
     }
 }
@@ -47,13 +53,15 @@ fun StoreDetailInfoCard(storeInfo: StoreWithMenu) {
 @Composable
 fun DeliveryInfoCard(
     modifier: Modifier = Modifier,
-    storeInfo: StoreWithMenu
+    storeInfo: StoreWithMenu,
+    navigateToDetailInfo: () -> Unit = {}
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
             .widthIn(175.dp)
-            .heightIn(56.dp),
+            .heightIn(60.dp)
+            .clickable { navigateToDetailInfo() },
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
@@ -82,13 +90,15 @@ fun DeliveryInfoCard(
 @Composable
 fun NoticeCard(
     modifier: Modifier,
-    description: String?
+    description: String?,
+    navigateToDetailInfo: () -> Unit = {}
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
             .widthIn(175.dp)
-            .heightIn(56.dp),
+            .heightIn(60.dp)
+            .clickable { navigateToDetailInfo() },
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {

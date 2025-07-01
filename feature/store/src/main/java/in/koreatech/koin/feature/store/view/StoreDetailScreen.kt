@@ -61,6 +61,10 @@ import kotlin.math.roundToInt
 fun StoreDetailScreen(
     viewModel: StoreDetailViewModel = hiltViewModel(),
     pagerState: PagerState,
+    navigateToCart: () -> Unit ={},
+    navigateToBack: () -> Unit = {},
+    navigateToDetailInfo: () -> Unit = {},
+    navigateToReview: () -> Unit = {}
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -100,6 +104,8 @@ fun StoreDetailScreen(
                     StoreDetailInfo(
                         storeInfo = uiState.store,
                         storeReview = uiState.storeReview,
+                        navigateToReview = { navigateToReview() },
+                        navigateToDetailInfo = { navigateToDetailInfo() }
                     )
                     Divider(
                         modifier = Modifier.padding(vertical = 8.dp),
@@ -148,7 +154,7 @@ fun StoreDetailScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = {
-                //TODO:뒤로가기
+                navigateToBack()
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_left),
@@ -163,7 +169,7 @@ fun StoreDetailScreen(
             )
             Box(contentAlignment = Alignment.TopEnd) {
                 IconButton(onClick = {
-                    //TODO:장바구니페이지
+                    navigateToCart()
                 }) {
                     Icon(
                         modifier = Modifier.size(25.dp),
