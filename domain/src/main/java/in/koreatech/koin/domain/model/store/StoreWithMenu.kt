@@ -23,4 +23,31 @@ data class StoreWithMenu(
         val id: Int,
         val name: String
     )
+
+    companion object {
+        fun empty() = StoreWithMenu(
+            uid = 0,
+            name = "",
+            address = "",
+            phone = "",
+            description = "",
+            isBankOk = false,
+            isDeliveryOk = false,
+            isCardOk = false,
+            deliveryPrice = 0,
+            open = Store.OpenData(
+                dayOfWeek = "",
+                closed = true,
+                openTime = "",
+                closeTime = ""
+            ),
+            imageUrls = emptyList(),
+            updateAt = "",
+            isEvent = false,
+            shopCategories = emptyList(),
+            menuCategories = emptyList(),
+            bank = null,
+            accountNumber = null
+        )
+    }
 }
