@@ -37,6 +37,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -296,6 +299,11 @@ fun SignUpVerificationPhoneNumberStep(
                 enabled = (phoneNumber.isNotBlank() || phoneNumberState != VerificationMethodState.CountExceeded) && verificationCodeState !is VerificationCodeState.Valid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
+                    EventLogger.logClickEvent(
+                        EventAction.USER,
+                        AnalyticsConstant.Label.IDENTITY_VERIFICATION,
+                        "인증번호 발송"
+                    )
                     onVerificationCodeSent()
                 }
             )

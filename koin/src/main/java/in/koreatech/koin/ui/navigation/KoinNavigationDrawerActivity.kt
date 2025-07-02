@@ -271,7 +271,7 @@ abstract class KoinNavigationDrawerActivity :
                                     EventLogger.logClickEvent(
                                         EventAction.USER,
                                         AnalyticsConstant.Label.HAMBURGER,
-                                        getString(R.string.navigation_item_login)
+                                        "로그인 시도"
                                     )
                                 }
                             }
@@ -302,6 +302,14 @@ abstract class KoinNavigationDrawerActivity :
                                 EventLogger.logCampusClickEvent(
                                     AnalyticsConstant.Label.HAMBURGER,
                                     "동아리"
+                                )
+                            }
+
+                            MenuState.SignUp -> {
+                                EventLogger.logClickEvent(
+                                    EventAction.USER,
+                                    AnalyticsConstant.Label.HAMBURGER,
+                                    "회원가입 시작"
                                 )
                             }
 

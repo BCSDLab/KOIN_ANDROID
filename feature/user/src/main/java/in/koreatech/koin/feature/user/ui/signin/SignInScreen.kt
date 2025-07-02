@@ -33,6 +33,9 @@ import androidx.core.net.toUri
 import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.BuildConfig
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
@@ -194,6 +197,11 @@ fun SignInScreenImpl(
                     text = stringResource(R.string.sign_in_sign_up),
                     shape = KoinTheme.shapes.small,
                     onClick = {
+                        EventLogger.logClickEvent(
+                            EventAction.USER,
+                            AnalyticsConstant.Label.START_SIGN_UP,
+                            "회원가입 시작"
+                        )
                         Intent(context, SignUpActivity::class.java).let {
                             context.startActivity(it)
                         }
@@ -212,6 +220,11 @@ fun SignInScreenImpl(
                     text = stringResource(R.string.sign_in_find_login_id),
                     icon = painterResource(R.drawable.ic_sign_in_find_login_id)
                 ) {
+                    EventLogger.logClickEvent(
+                        EventAction.USER,
+                        AnalyticsConstant.Label.LOGIN,
+                        "아이디 찾기"
+                    )
                     Intent(context, FindIdActivity::class.java).let {
                         context.startActivity(it)
                     }
@@ -229,6 +242,11 @@ fun SignInScreenImpl(
                     text = stringResource(R.string.sign_in_find_password),
                     icon = painterResource(R.drawable.ic_sign_in_find_password)
                 ) {
+                    EventLogger.logClickEvent(
+                        EventAction.USER,
+                        AnalyticsConstant.Label.LOGIN,
+                        "비밀번호 찾기"
+                    )
                     Intent(context, FindPasswordActivity::class.java).let {
                         context.startActivity(it)
                     }

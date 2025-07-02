@@ -18,6 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.feature.user.R
@@ -158,7 +161,14 @@ private fun SignUpTermScreenImpl(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.sign_up_next),
             contentPadding = PaddingValues(12.dp),
-            onClick = { navigateToNextScreen() },
+            onClick = {
+                navigateToNextScreen()
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.TERMS_AGREEMENT,
+                    "약관동의"
+                )
+            },
             enabled = privacyTermChecked && koinTermChecked
         )
     }

@@ -16,6 +16,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.feature.user.R
@@ -63,7 +66,14 @@ fun SignUpUserType(
                 .padding(horizontal = 24.dp),
             text = stringResource(R.string.sign_up_user_type_student),
             colors = FilledButtonColors.Warning,
-            onClick = { navigateToStudentScreen() }
+            onClick = {
+                navigateToStudentScreen()
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.CREATE_ACCOUNT,
+                    "학생"
+                )
+            }
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -75,7 +85,14 @@ fun SignUpUserType(
                 .padding(horizontal = 24.dp),
             text = stringResource(R.string.sign_up_user_type_general),
             colors = FilledButtonColors.Primary,
-            onClick = { navigateToGeneralScreen() }
+            onClick = {
+                navigateToGeneralScreen()
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.CREATE_ACCOUNT,
+                    "외부인"
+                )
+            }
         )
 
         Spacer(modifier = Modifier.weight(1f))

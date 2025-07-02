@@ -3,6 +3,9 @@ package `in`.koreatech.koin.feature.user.ui.signin
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
@@ -49,7 +52,17 @@ class SignInViewModel @Inject constructor(
         intent {
             userLoginUseCase(state.loginId, state.password).onSuccess {
                 postSideEffect(SignInSideEffect.SignInSuccess)
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.LOGIN,
+                    "로그인 완료"
+                )
             }.onFailure {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.LOGIN,
+                    "로그인 실패"
+                )
                 reduce {
                     state.copy(loginError = SignInState.LoginError(true, it.message))
                 }

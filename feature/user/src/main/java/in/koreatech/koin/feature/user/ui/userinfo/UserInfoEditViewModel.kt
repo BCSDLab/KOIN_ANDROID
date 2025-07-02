@@ -3,6 +3,9 @@ package `in`.koreatech.koin.feature.user.ui.userinfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.Gender
@@ -306,6 +309,11 @@ class UserInfoEditViewModel @Inject constructor(
                 gender = state.userState.gender,
                 phoneNumber = state.userState.phoneNumber
             ).onSuccess {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.USER_INFO,
+                    "정보수정 완료"
+                )
                 reduce {
                     state.copy(
                         verificationCodeState = VerificationCodeState.None,
@@ -314,6 +322,11 @@ class UserInfoEditViewModel @Inject constructor(
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.USER_INFO,
+                    "정보수정 실패"
+                )
                 when (it) {
                     is KoinUserException.DataInvalidException -> postSideEffect(
                         UserInfoEditSideEffect.InvalidDataError
@@ -349,6 +362,11 @@ class UserInfoEditViewModel @Inject constructor(
                 studentNumber = state.userState.studentNumber,
                 major = state.userState.major
             ).onSuccess {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.USER_INFO,
+                    "정보수정 완료"
+                )
                 reduce {
                     state.copy(
                         verificationCodeState = VerificationCodeState.None,
@@ -357,6 +375,11 @@ class UserInfoEditViewModel @Inject constructor(
                 }
                 postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
             }.onFailure {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.USER_INFO,
+                    "정보수정 실패"
+                )
                 when (it) {
                     is KoinUserException.DataInvalidException -> postSideEffect(
                         UserInfoEditSideEffect.InvalidDataError
