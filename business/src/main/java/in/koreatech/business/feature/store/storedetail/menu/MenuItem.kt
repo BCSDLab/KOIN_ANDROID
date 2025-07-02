@@ -47,7 +47,7 @@ fun MenuItem(
         ) {
             Column {
                 Text(text = item.name, fontWeight = FontWeight(500))
-                Text(text = item.singlePrice.toString() + "원", color = ColorPrimary)
+                Text(text = stringResource(R.string.price_won, item.singlePrice ?: 0), color = ColorPrimary)
             }
             Image(
                 modifier =
