@@ -96,9 +96,6 @@ class StoreDetailSnapshotTestFOLDABLE {
 private fun SnapshotContent() {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
     StoreDetailScreen(
-        storeInfo = dummyStoreWithMenu,
-        categories = listOf(MenuCategory("카테고리1", false), MenuCategory("카테고리2", false)),
-        menus = listOf(dummyStoreMenuCategories),
         pagerState = pagerState
     )
 }
