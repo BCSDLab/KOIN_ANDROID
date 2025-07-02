@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,7 +42,7 @@ fun MenuListSection(category: String, menus: List<ShopMenus>) {
             elevation = CardDefaults.cardElevation(0.5.dp),
             colors = CardDefaults.cardColors(
                 containerColor = KoinTheme.colors.neutral0
-            ),
+            )
         ) {
             repeat(menus.size) {
                 MenuItem(
@@ -67,8 +66,9 @@ fun MenuItem(
     Row(modifier = Modifier.padding(16.dp)) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-            if (menu.description != null)
+            if (menu.description != null) {
                 Text(modifier = Modifier.padding(top = 4.dp), text = menu.description ?: "", fontSize = 12.sp, color = KoinTheme.colors.neutral500)
+            }
             OptionPriceText(
                 shopMenus = menu
             )
@@ -97,8 +97,8 @@ private fun OptionPriceText(
     shopMenus: ShopMenus
 ) {
     Column(
-        modifier= Modifier.padding(top = 4.dp)
-    ){
+        modifier = Modifier.padding(top = 4.dp)
+    ) {
         if (shopMenus.isSingle) {
             Text(text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""), fontSize = 14.sp, fontWeight = FontWeight.Bold)
         } else if (shopMenus.optionPrices?.isNotEmpty() == true) {

@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.feature.store.state
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableFloatState
@@ -12,8 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 class CustomCollapsingToolbarState(
     val toolbarMinHeight: Dp = 40.dp,

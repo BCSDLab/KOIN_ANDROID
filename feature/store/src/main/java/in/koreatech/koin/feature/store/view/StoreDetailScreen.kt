@@ -28,11 +28,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -51,9 +49,9 @@ import `in`.koreatech.koin.feature.store.component.MenuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.CustomCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
+import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnrememberedMutableState")
@@ -61,7 +59,7 @@ import kotlin.math.roundToInt
 fun StoreDetailScreen(
     viewModel: StoreDetailViewModel = hiltViewModel(),
     pagerState: PagerState,
-    navigateToCart: () -> Unit ={},
+    navigateToCart: () -> Unit = {},
     navigateToBack: () -> Unit = {},
     navigateToDetailInfo: () -> Unit = {},
     navigateToReview: () -> Unit = {}
@@ -115,7 +113,8 @@ fun StoreDetailScreen(
                 }
             }
             stickyHeader {
-                MenuCategoryChips(uiState.categories.menuCategories ?: emptyList(),
+                MenuCategoryChips(
+                    uiState.categories.menuCategories ?: emptyList(),
                     onCategoryClicked = { categoryId ->
                         viewModel.clickMenuCategory(categoryId)
                         val targetIndex = uiState.categories.menuCategories

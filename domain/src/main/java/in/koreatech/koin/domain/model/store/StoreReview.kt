@@ -7,7 +7,7 @@ data class StoreReview(
     val currentPage: Int,
     val statistics: StoreReviewStatistics,
     val reviews: List<StoreReviewContent>
-){
+) {
     companion object {
         fun empty() = StoreReview(
             totalCount = 0,

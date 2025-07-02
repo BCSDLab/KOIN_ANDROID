@@ -6,7 +6,6 @@ import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 
-
 data class StoreDetailState(
     val store: StoreWithMenu = StoreWithMenu.empty(),
     val categories: StoreMenu = StoreMenu(menuCategories = emptyList()),
@@ -14,5 +13,5 @@ data class StoreDetailState(
     val storeReview: StoreReview = StoreReview.empty(),
     val scrollUp: StoreDetailScrollType = StoreDetailScrollType.NONE,
     val isLogin: Boolean = false,
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = true
 )

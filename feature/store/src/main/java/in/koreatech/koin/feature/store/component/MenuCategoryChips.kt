@@ -100,7 +100,7 @@ fun MenuCategoryChipPreview() {
             menuCategory = StoreMenuCategories(
                 id = 1,
                 name = "음료",
-                menus = emptyList(),
+                menus = emptyList()
             ),
             modifier = Modifier.padding(8.dp)
         )

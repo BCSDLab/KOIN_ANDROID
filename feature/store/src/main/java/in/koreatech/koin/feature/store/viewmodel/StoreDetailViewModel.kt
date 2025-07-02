@@ -10,12 +10,12 @@ import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
+import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
@@ -24,7 +24,7 @@ class StoreDetailViewModel @Inject constructor(
     private val getShopMenusUseCase: GetShopMenusUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
-    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
     override val container =
         container<StoreDetailState, StoreDetailSideEffect>(StoreDetailState()) {
@@ -41,7 +41,7 @@ class StoreDetailViewModel @Inject constructor(
             reduce {
                 state.copy(
                     store = result,
-                    isLoading = false,
+                    isLoading = false
                 )
             }
         }
@@ -51,18 +51,19 @@ class StoreDetailViewModel @Inject constructor(
         getShopMenusUseCase(id).also { shop ->
             reduce {
                 state.copy(
-                    categories = if(shop.menuCategories?.isNotEmpty() == true) {
+                    categories = if (shop.menuCategories?.isNotEmpty() == true) {
                         state.categories.copy(
                             menuCategories = shop.menuCategories?.map { category ->
-                                if(shop.menuCategories?.indexOf(category) == 0) {
+                                if (shop.menuCategories?.indexOf(category) == 0) {
                                     category.copy(isChecked = true)
-                                } else
-                                category.copy(isChecked = false)
+                                } else {
+                                    category.copy(isChecked = false)
+                                }
                             }
                         )
                     } else {
                         state.categories.copy(menuCategories = emptyList())
-                    },
+                    }
                 )
             }
         }
@@ -93,7 +94,7 @@ class StoreDetailViewModel @Inject constructor(
         getStoreReviewUseCase(storeId).also { reviews ->
             reduce {
                 state.copy(
-                    storeReview = reviews,
+                    storeReview = reviews
                 )
             }
         }
