@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:fitsSystemWindows="false"
         tools:ignore="MissingPrefix">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -77,7 +76,6 @@
 
                         <LinearLayout
                             android:id="@+id/linear_layout_main"
-                            android:fitsSystemWindows="false"
                             android:clipToPadding="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

@@ -6,7 +6,6 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view_dining_items"
         android:clipToPadding="false"
-        android:fitsSystemWindows="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
