@@ -58,7 +58,7 @@ fun MenuCategoryChips(
 fun MenuCategoryChip(
     menuCategory: StoreMenuCategories,
     modifier: Modifier = Modifier,
-    onCategoryClicked: ((Int) -> Unit) = {}
+    onCategoryClicked: (Int) -> Unit = {}
 ) {
     val borderColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else Color.Transparent
     val textColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else KoinTheme.colors.neutral400
