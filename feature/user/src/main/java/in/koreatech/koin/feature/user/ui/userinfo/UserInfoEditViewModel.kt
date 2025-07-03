@@ -124,6 +124,11 @@ class UserInfoEditViewModel @Inject constructor(
                     }
                 }
             }.onFailure {
+                intent {
+                    reduce {
+                        state.copy(isLoading = false)
+                    }
+                }
             }
     }
 

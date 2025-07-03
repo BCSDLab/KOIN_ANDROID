@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Scaffold
@@ -122,6 +123,14 @@ fun UserInfoEditScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier.padding(contentPadding).fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
         Column(
             modifier = modifier
                 .fillMaxSize()

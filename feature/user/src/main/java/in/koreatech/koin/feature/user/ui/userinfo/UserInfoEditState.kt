@@ -11,6 +11,7 @@ import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 
 data class UserInfoEditState(
+    val isLoading: Boolean = false,
     val isMajorDropdownExpanded: Boolean = false,
     val verificationCode: String = "",
     val nicknameState: NicknameState = NicknameState.None,
