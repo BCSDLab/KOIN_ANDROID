@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.user.ui.findpassword.changepassword
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.user.ResetPasswordByEmail
 import `in`.koreatech.koin.domain.usecase.user.ResetPasswordBySms
@@ -10,7 +9,6 @@ import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
 import `in`.koreatech.koin.feature.user.ui.findpassword.navigation.LOGIN_ID
 import `in`.koreatech.koin.feature.user.ui.findpassword.navigation.VERIFICATION_METHOD
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -67,25 +65,23 @@ class ChangePasswordViewModel @Inject constructor(
         }
     }
 
-    fun setPassword() = viewModelScope.launch {
-        intent {
-            if (state.verificationMethod.isValidPhoneNumber) {
-                resetPasswordBySms(
-                    loginId = state.loginId,
-                    phone = state.verificationMethod,
-                    newPassword = state.password
-                )
-            } else {
-                resetPasswordByEmail(
-                    loginId = state.loginId,
-                    email = state.verificationMethod,
-                    newPassword = state.password
-                )
-            }.onSuccess {
-                postSideEffect(ChangePasswordSideEffect.PasswordChanged)
-            }.onFailure {
-                postSideEffect(ChangePasswordSideEffect.PasswordChangeFailed)
-            }
+    fun setPassword() = intent {
+        if (state.verificationMethod.isValidPhoneNumber) {
+            resetPasswordBySms(
+                loginId = state.loginId,
+                phone = state.verificationMethod,
+                newPassword = state.password
+            )
+        } else {
+            resetPasswordByEmail(
+                loginId = state.loginId,
+                email = state.verificationMethod,
+                newPassword = state.password
+            )
+        }.onSuccess {
+            postSideEffect(ChangePasswordSideEffect.PasswordChanged)
+        }.onFailure {
+            postSideEffect(ChangePasswordSideEffect.PasswordChangeFailed)
         }
     }
 }
