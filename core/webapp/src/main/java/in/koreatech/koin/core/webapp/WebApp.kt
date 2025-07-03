@@ -2,10 +2,8 @@ package `in`.koreatech.koin.core.webapp
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -53,14 +51,14 @@ fun WebApp(
                 context = factoryContext,
                 exposedInterfaceName = exposedInterfaceName,
                 koinWebAppInterface = koinWebAppInterface,
-                onProgressChanged = onProgressChanged,
+                onProgressChanged = onProgressChanged
             ).apply {
                 webView = this
             }
         },
         update = {
             it.loadUrl(url)
-        },
+        }
     )
 
     BackHandler {
@@ -77,7 +75,7 @@ private fun createWebView(
     context: Context,
     exposedInterfaceName: String,
     koinWebAppInterface: KoinWebAppInterface,
-    onProgressChanged: (Int) -> Unit = {},
+    onProgressChanged: (Int) -> Unit = {}
 ) = WebView(context).apply {
     layoutParams = ViewGroup.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
