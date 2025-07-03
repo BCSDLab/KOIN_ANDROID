@@ -86,7 +86,7 @@ fun MenuItem(
                     modifier = Modifier
                         .align(Alignment.Bottom)
                         .size(88.dp)
-                        .clip(RoundedCornerShape(4.dp))
+                        .clip(KoinTheme.shapes.small)
                 )
             }
     }
