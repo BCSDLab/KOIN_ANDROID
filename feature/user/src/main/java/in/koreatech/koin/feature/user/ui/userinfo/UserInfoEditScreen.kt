@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Scaffold
@@ -69,10 +70,11 @@ import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
 import `in`.koreatech.koin.feature.user.component.KoinUserWithButtonItem
 import `in`.koreatech.koin.feature.user.component.UserInfoHeader
 import `in`.koreatech.koin.feature.user.genderList
-import `in`.koreatech.koin.feature.user.majorStringList
 import `in`.koreatech.koin.feature.user.model.NicknameState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -121,6 +123,14 @@ fun UserInfoEditScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         containerColor = KoinTheme.colors.neutral0
     ) { contentPadding ->
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier.padding(contentPadding).fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -188,6 +198,7 @@ fun UserInfoEditScreen(
                     studentNumber = userState.studentNumber,
                     isStudentNumberValid = uiState.isStudentNumberValid,
                     major = userState.major,
+                    majorList = uiState.majorList.toImmutableList(),
                     isMajorDropdownExpanded = uiState.isMajorDropdownExpanded,
                     onStudentNumberChange = { viewModel.updateStudentNumber(it) },
                     onMajorChange = { viewModel.updateMajor(it) },
@@ -382,6 +393,7 @@ fun StudentUserInfo(
     studentNumber: String,
     isStudentNumberValid: Boolean,
     major: String,
+    majorList: ImmutableList<String>,
     isMajorDropdownExpanded: Boolean,
     modifier: Modifier = Modifier,
     onStudentNumberChange: (String) -> Unit = {},
@@ -415,10 +427,10 @@ fun StudentUserInfo(
             hint = stringResource(R.string.user_info_student_info_major),
             isSelected = major.isNotBlank(),
             isDropdownExpanded = isMajorDropdownExpanded,
-            items = majorStringList,
+            items = majorList,
             arrowDirection = KoinUserDropdownArrowDirection.UP,
             onItemSelected = {
-                onMajorChange(majorStringList[it])
+                onMajorChange(majorList[it])
             },
             onDropdownExpandChange = {
                 onMajorDropdownExpandedChange(it)
@@ -496,7 +508,7 @@ fun UserInfoPhoneNumber(
         ),
         onValueChange = onPhoneNumberChange,
         onButtonAction = onRequestVerificationCode,
-        buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid,
+        buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid && phoneNumber.isNotBlank(),
         maxLength = PHONE_NUMBER_LENGTH,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,

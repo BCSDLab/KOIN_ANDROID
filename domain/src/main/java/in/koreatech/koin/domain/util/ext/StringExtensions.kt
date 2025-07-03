@@ -2,7 +2,6 @@ package `in`.koreatech.koin.domain.util.ext
 
 import `in`.koreatech.koin.domain.constant.INSTAGRAM_URL
 import `in`.koreatech.koin.domain.util.regex.PasswordUtil
-import java.util.Calendar
 
 fun String.toSHA256() = PasswordUtil().generateSHA256(this)
 
@@ -11,14 +10,6 @@ val String.isValidStudentId: Boolean
         // Korean student number is 10 digit
         // Foreign student number is 8 or 9 digit
         if (this.trim().length !in 8..10) {
-            return false
-        }
-
-        // First 4 digits are year.
-        // Check if the year is between 1992 and current year
-        val year: Int = this.trim().substring(0..3).toInt()
-
-        if (year !in 1992..Calendar.getInstance().get(Calendar.YEAR)) {
             return false
         }
 
@@ -36,7 +27,7 @@ fun String.formatInstagramUrlForm() = "${INSTAGRAM_URL}/$this"
 
 fun String.formatInstagramLinkForm() = "@${this.removePrefix("${INSTAGRAM_URL}/").removeSuffix("/")}"
 
-fun String.isNameFormat(): Boolean = this.matches(Regex("""^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$"""))
+fun String.isNameFormat(): Boolean = this.matches(Regex("""^(?:[가-힣]{2,5}|[A-Za-z]{2,30})${'$'}"""))
 
 fun String.isLoginIdFormat(): Boolean = this.matches(Regex("""^[a-z0-9_.-]+${'$'}""")) && this.length in 5..13
 

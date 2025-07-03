@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.user.ui.findid.verification
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
@@ -16,7 +15,6 @@ import `in`.koreatech.koin.domain.usecase.user.FindLoginIdBySms
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -63,115 +61,107 @@ class FindIdVerificationViewModel @Inject constructor(
         }
     }
 
-    fun checkVerificationMethodExists() = viewModelScope.launch {
-        intent {
-            if (state.isSms) {
-                checkPhoneExistsUseCase(state.verificationMethod)
-            } else {
-                checkEmailExistsUseCase(state.verificationMethod)
-            }.onSuccess {
-                requestVerificationCode()
-            }.onFailure {
-                reduce {
-                    state.copy(
-                        verificationMethodState = when (it) {
-                            is KoinUserException.PhoneNumberInvalidException,
-                            is KoinUserException.EmailInvalidException -> VerificationMethodState.WrongFormat
-
-                            is KoinUserException.PhoneNumberNotFoundException -> VerificationMethodState.NotFound
-                            else -> VerificationMethodState.Failed(it.message ?: "")
-                        }
-                    )
-                }
-            }
-        }
-    }
-
-    private fun requestVerificationCode() = viewModelScope.launch {
-        intent {
+    fun checkVerificationMethodExists() = intent {
+        if (state.isSms) {
+            checkPhoneExistsUseCase(state.verificationMethod)
+        } else {
+            checkEmailExistsUseCase(state.verificationMethod)
+        }.onSuccess {
+            requestVerificationCode()
+        }.onFailure {
             reduce {
                 state.copy(
-                    isLoading = true
+                    verificationMethodState = when (it) {
+                        is KoinUserException.PhoneNumberInvalidException,
+                        is KoinUserException.EmailInvalidException -> VerificationMethodState.WrongFormat
+
+                        is KoinUserException.PhoneNumberNotFoundException -> VerificationMethodState.NotFound
+                        else -> VerificationMethodState.Failed(it.message ?: "")
+                    }
                 )
             }
-            if (state.isSms) {
-                requestSmsVerificationUseCase(state.verificationMethod)
-            } else {
-                requestEmailVerificationUseCase(state.verificationMethod)
-            }.onSuccess {
-                reduce {
-                    state.copy(
-                        verificationMethodState = VerificationMethodState.Sent(
-                            remainingCount = it.remainingCount,
-                            totalCount = it.totalCount,
-                            currentCount = it.currentCount
-                        ),
-                        verificationCodeState = VerificationCodeState.None
-                    )
-                }
-                postSideEffect(FindIdVerificationSideEffect.StartTimer)
-            }.onFailure {
-                reduce {
-                    state.copy(
-                        verificationMethodState = when (it) {
-                            is KoinUserException.PhoneNumberInvalidException,
-                            is KoinUserException.EmailInvalidException -> VerificationMethodState.WrongFormat
+        }
+    }
 
-                            is KoinUserException.PhoneNumberNotFoundException,
-                            is KoinUserException.EmailNotFoundException -> VerificationMethodState.NotFound
+    private fun requestVerificationCode() = intent {
+        reduce {
+            state.copy(
+                isLoading = true
+            )
+        }
+        if (state.isSms) {
+            requestSmsVerificationUseCase(state.verificationMethod)
+        } else {
+            requestEmailVerificationUseCase(state.verificationMethod)
+        }.onSuccess {
+            reduce {
+                state.copy(
+                    verificationMethodState = VerificationMethodState.Sent(
+                        remainingCount = it.remainingCount,
+                        totalCount = it.totalCount,
+                        currentCount = it.currentCount
+                    ),
+                    verificationCodeState = VerificationCodeState.None
+                )
+            }
+            postSideEffect(FindIdVerificationSideEffect.StartTimer)
+        }.onFailure {
+            reduce {
+                state.copy(
+                    verificationMethodState = when (it) {
+                        is KoinUserException.PhoneNumberInvalidException,
+                        is KoinUserException.EmailInvalidException -> VerificationMethodState.WrongFormat
 
-                            is KoinUserException.VerificationCodeRequestCountExceededException -> VerificationMethodState.CountExceeded
+                        is KoinUserException.PhoneNumberNotFoundException,
+                        is KoinUserException.EmailNotFoundException -> VerificationMethodState.NotFound
 
-                            else -> VerificationMethodState.Failed(it.message ?: "")
-                        }
-                    )
-                }
-            }.also {
-                reduce {
-                    state.copy(
-                        isLoading = false
-                    )
-                }
+                        is KoinUserException.VerificationCodeRequestCountExceededException -> VerificationMethodState.CountExceeded
+
+                        else -> VerificationMethodState.Failed(it.message ?: "")
+                    }
+                )
+            }
+        }.also {
+            reduce {
+                state.copy(
+                    isLoading = false
+                )
             }
         }
     }
 
-    fun checkVerificationCode() = viewModelScope.launch {
-        intent {
-            if (state.isSms) {
-                verifySmsCodeUseCase(state.verificationMethod, state.verificationCode)
-            } else {
-                verifyEmailCodeUseCase(state.verificationMethod, state.verificationCode)
-            }.onSuccess {
-                reduce {
-                    state.copy(
-                        verificationCodeState = VerificationCodeState.Valid
-                    )
-                }
-                postSideEffect(FindIdVerificationSideEffect.StopTimer)
-            }.onFailure {
-                reduce {
-                    state.copy(
-                        verificationCodeState = when (it) {
-                            is KoinUserException.VerificationCodeInvalidException -> VerificationCodeState.NotValid
-                            is KoinUserException.VerificationCodeExpiredException -> VerificationCodeState.Expired
-                            else -> VerificationCodeState.None
-                        }
-                    )
-                }
+    fun checkVerificationCode() = intent {
+        if (state.isSms) {
+            verifySmsCodeUseCase(state.verificationMethod, state.verificationCode)
+        } else {
+            verifyEmailCodeUseCase(state.verificationMethod, state.verificationCode)
+        }.onSuccess {
+            reduce {
+                state.copy(
+                    verificationCodeState = VerificationCodeState.Valid
+                )
+            }
+            postSideEffect(FindIdVerificationSideEffect.StopTimer)
+        }.onFailure {
+            reduce {
+                state.copy(
+                    verificationCodeState = when (it) {
+                        is KoinUserException.VerificationCodeInvalidException -> VerificationCodeState.NotValid
+                        is KoinUserException.VerificationCodeExpiredException -> VerificationCodeState.Expired
+                        else -> VerificationCodeState.None
+                    }
+                )
             }
         }
     }
 
-    fun getLoginId() = viewModelScope.launch {
-        intent {
-            if (state.isSms) {
-                findLoginIdBySms(state.verificationMethod, state.verificationCode)
-            } else {
-                findLoginIdByEmail(state.verificationMethod, state.verificationCode)
-            }.onSuccess {
-                postSideEffect(FindIdVerificationSideEffect.NavigateToCompleteScreen(it))
-            }
+    fun getLoginId() = intent {
+        if (state.isSms) {
+            findLoginIdBySms(state.verificationMethod, state.verificationCode)
+        } else {
+            findLoginIdByEmail(state.verificationMethod, state.verificationCode)
+        }.onSuccess {
+            postSideEffect(FindIdVerificationSideEffect.NavigateToCompleteScreen(it))
         }
     }
 

@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.user.ui.signin
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
@@ -10,7 +9,6 @@ import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -48,24 +46,22 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun signIn() = viewModelScope.launch {
-        intent {
-            userLoginUseCase(state.loginId, state.password).onSuccess {
-                postSideEffect(SignInSideEffect.SignInSuccess)
-                EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.LOGIN,
-                    "로그인 완료"
-                )
-            }.onFailure {
-                EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.LOGIN,
-                    "로그인 실패"
-                )
-                reduce {
-                    state.copy(loginError = SignInState.LoginError(true, it.message))
-                }
+    fun signIn() = intent {
+        userLoginUseCase(state.loginId, state.password).onSuccess {
+            postSideEffect(SignInSideEffect.SignInSuccess)
+            EventLogger.logClickEvent(
+                EventAction.USER,
+                AnalyticsConstant.Label.LOGIN,
+                "로그인 완료"
+            )
+        }.onFailure {
+            EventLogger.logClickEvent(
+                EventAction.USER,
+                AnalyticsConstant.Label.LOGIN,
+                "로그인 실패"
+            )
+            reduce {
+                state.copy(loginError = SignInState.LoginError(true, it.message))
             }
         }
     }

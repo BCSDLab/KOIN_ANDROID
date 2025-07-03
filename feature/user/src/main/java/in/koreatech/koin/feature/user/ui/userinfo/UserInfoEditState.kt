@@ -1,8 +1,7 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import `in`.koreatech.koin.domain.model.user.UserType
-import `in`.koreatech.koin.domain.util.ext.isEnglish
-import `in`.koreatech.koin.domain.util.ext.isKorean
+import `in`.koreatech.koin.domain.util.ext.isNameFormat
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
 import `in`.koreatech.koin.domain.util.ext.isValidEmail
 import `in`.koreatech.koin.domain.util.ext.isValidGeneralEmail
@@ -12,6 +11,7 @@ import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 
 data class UserInfoEditState(
+    val isLoading: Boolean = false,
     val isMajorDropdownExpanded: Boolean = false,
     val verificationCode: String = "",
     val nicknameState: NicknameState = NicknameState.None,
@@ -21,7 +21,8 @@ data class UserInfoEditState(
     val showWithdrawalDialog: Boolean = false,
     val beforeUserState: UserState = UserState(),
     val userState: UserState = UserState(),
-    val userType: UserType = UserType.ANONYMOUS
+    val userType: UserType = UserType.ANONYMOUS,
+    val majorList: List<String> = emptyList()
 )
 
 val UserInfoEditState.isPhoneNumberChanged: Boolean
@@ -37,13 +38,7 @@ val UserInfoEditState.isNicknameChanged: Boolean
     }
 
 val UserInfoEditState.isNameValid: Boolean
-    get() = if (userState.name.isKorean()) {
-        userState.name.length in 2..5
-    } else if (userState.name.isEnglish()) {
-        userState.name.length in 2..30
-    } else {
-        false
-    }
+    get() = userState.name.isNameFormat()
 
 val UserInfoEditState.isEmailValid: Boolean
     get() = (userState.email.isNotEmpty() && (userState.email.isValidEmail() || userState.email.isValidGeneralEmail())) || userState.email.isEmpty()
@@ -75,4 +70,4 @@ private val UserInfoEditState.isNicknameCheckPassed: Boolean
     }
 
 val UserInfoEditState.canSave: Boolean
-    get() = isModified && isNameValid && isNicknameValid && isNicknameCheckPassed && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || verificationCodeState is VerificationCodeState.None)
+    get() = isModified && isNameValid && isNicknameValid && isNicknameCheckPassed && isStudentNumberValid && isEmailValid && (verificationCodeState is VerificationCodeState.Valid || (verificationCodeState is VerificationCodeState.None && !isPhoneNumberChanged))
