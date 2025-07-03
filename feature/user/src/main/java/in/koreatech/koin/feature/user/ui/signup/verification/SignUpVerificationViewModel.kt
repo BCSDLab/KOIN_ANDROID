@@ -2,6 +2,9 @@ package `in`.koreatech.koin.feature.user.ui.signup.verification
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.Gender
@@ -139,6 +142,11 @@ class SignUpVerificationViewModel @Inject constructor(
                         verificationCodeState = VerificationCodeState.Valid
                     )
                 }
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.IDENTITY_VERIFICATION,
+                    "인증완료"
+                )
                 postSideEffect(SignUpVerificationSideEffect.StopTimer)
             }.onFailure {
                 reduce {

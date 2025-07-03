@@ -13,6 +13,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
 import `in`.koreatech.koin.feature.user.ui.changepassword.ChangePasswordContract
@@ -81,6 +84,11 @@ class SettingActivity : ActivityBase() {
             }
 
             svProfile.setOnSettingClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.HAMBURGER,
+                    "정보수정 시도"
+                )
                 if (viewModel.isLoggedIn) {
                     startActivity(Intent(this@SettingActivity, UserInfoActivity::class.java))
                 } else {
@@ -88,6 +96,11 @@ class SettingActivity : ActivityBase() {
                 }
             }
             svChangePassword.setOnSettingClickListener {
+                EventLogger.logClickEvent(
+                    EventAction.USER,
+                    AnalyticsConstant.Label.HAMBURGER,
+                    "정보수정 시도"
+                )
                 if (viewModel.isLoggedIn) {
                     changePasswordResult.launch(Unit)
                 } else {

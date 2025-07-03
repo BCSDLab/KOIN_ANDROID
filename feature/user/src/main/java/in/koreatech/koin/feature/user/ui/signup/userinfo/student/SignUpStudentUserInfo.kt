@@ -29,6 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.AnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.util.ext.isNicknameFormat
@@ -268,6 +271,11 @@ private fun SignUpStudentUserInfoInitialStep(
                 enabled = loginId.isNotEmpty() && isLoginIdAvailable != true && isLoginIdValid,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
+                    EventLogger.logClickEvent(
+                        EventAction.USER,
+                        AnalyticsConstant.Label.CREATE_ACCOUNT,
+                        "아이디생성"
+                    )
                     checkLoginIdAvailable()
                 }
             )
@@ -432,6 +440,11 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
                 enabled = nickname.isNotEmpty() && nickname.isNicknameFormat() && isNicknameAvailable != true,
                 contentPadding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
                 onClick = {
+                    EventLogger.logClickEvent(
+                        EventAction.USER,
+                        AnalyticsConstant.Label.CREATE_ACCOUNT,
+                        "닉네임생성"
+                    )
                     checkNicknameDuplicate()
                 }
             )
@@ -496,6 +509,11 @@ private fun handleSideEffect(
 ) {
     when (sideEffect) {
         is SignUpStudentSideEffect.SignUpSuccess -> {
+            EventLogger.logClickEvent(
+                EventAction.USER,
+                AnalyticsConstant.Label.SIGN_UP_COMPLETED,
+                "회원가입완료"
+            )
             navigateToNextScreen()
         }
 
