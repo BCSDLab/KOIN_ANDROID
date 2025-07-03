@@ -256,7 +256,7 @@ class UserInfoEditViewModel @Inject constructor(
         postSideEffect(UserInfoEditSideEffect.StartTimer)
     }
 
-    fun checkVerificationCode() = blockingIntent {
+    fun checkVerificationCode() = intent {
         verifySmsCodeUseCase(state.userState.phoneNumber, state.verificationCode).onSuccess {
             reduce {
                 state.copy(

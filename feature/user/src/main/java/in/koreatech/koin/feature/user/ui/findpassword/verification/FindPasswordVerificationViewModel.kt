@@ -17,7 +17,6 @@ import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -139,7 +138,7 @@ class FindPasswordVerificationViewModel @Inject constructor(
     }
 
     fun checkVerificationCode() {
-        blockingIntent {
+        intent {
             if (state.isSms) {
                 verifySmsCodeUseCase(state.verificationMethod, state.verificationCode)
             } else {

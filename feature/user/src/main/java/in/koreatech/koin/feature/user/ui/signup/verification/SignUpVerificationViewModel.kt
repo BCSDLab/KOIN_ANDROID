@@ -132,7 +132,7 @@ class SignUpVerificationViewModel @Inject constructor(
     }
 
     fun checkVerificationCode() {
-        blockingIntent {
+        intent {
             verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).onSuccess {
                 reduce {
                     state.copy(
