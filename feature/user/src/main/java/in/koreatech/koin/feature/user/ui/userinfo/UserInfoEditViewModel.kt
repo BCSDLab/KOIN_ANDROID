@@ -1,13 +1,13 @@
 package `in`.koreatech.koin.feature.user.ui.userinfo
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.util.AccountTimer
 import `in`.koreatech.koin.domain.error.user.KoinUserException
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserType
+import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckNicknameDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckPhoneNumberDuplicateUseCase
 import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
@@ -22,7 +22,6 @@ import `in`.koreatech.koin.feature.user.model.NicknameState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -39,21 +38,26 @@ class UserInfoEditViewModel @Inject constructor(
     private val updateStudentUserInfoUseCase: UpdateStudentUserInfoUseCase,
     private val updateGeneralUserInfoUseCase: UpdateGeneralUserInfoUseCase,
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
-    private val userWithdrawUseCase: UserWithdrawUseCase
+    private val userWithdrawUseCase: UserWithdrawUseCase,
+    private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : ViewModel(), ContainerHost<UserInfoEditState, UserInfoEditSideEffect> {
     override val container =
         container<UserInfoEditState, UserInfoEditSideEffect>(UserInfoEditState())
 
     init {
         getUserInfo()
+        getDeptNames()
     }
 
-    private fun getUserInfo() = viewModelScope.launch {
-        intent {
+    private fun getDeptNames() = intent {
+        getDeptNamesUseCase().let {
             reduce {
-                state.copy(isLoading = true)
+                state.copy(majorList = it)
             }
         }
+    }
+
+    private fun getUserInfo() = intent {
         getUserInfoUseCase()
             .onSuccess { user ->
                 when (user) {
@@ -62,66 +66,60 @@ class UserInfoEditViewModel @Inject constructor(
                     }
 
                     is User.Student -> {
-                        intent {
-                            reduce {
-                                state.copy(
-                                    beforeUserState = UserState(
-                                        id = user.id,
-                                        loginId = user.loginId,
-                                        anonymousNickname = user.anonymousNickname ?: "",
-                                        email = user.email ?: "",
-                                        gender = user.gender,
-                                        name = user.name ?: "",
-                                        nickname = user.nickname ?: "",
-                                        phoneNumber = user.phoneNumber ?: "",
-                                        studentNumber = user.studentNumber ?: "",
-                                        major = user.major ?: ""
-                                    ),
-                                    userState = UserState(
-                                        id = user.id,
-                                        loginId = user.loginId,
-                                        anonymousNickname = user.anonymousNickname ?: "",
-                                        email = user.email ?: "",
-                                        gender = user.gender,
-                                        name = user.name ?: "",
-                                        nickname = user.nickname ?: "",
-                                        phoneNumber = user.phoneNumber ?: "",
-                                        studentNumber = user.studentNumber ?: "",
-                                        major = user.major ?: ""
-                                    ),
-                                    userType = UserType.valueOf(user.userType),
-                                    isLoading = false
-                                )
-                            }
+                        reduce {
+                            state.copy(
+                                beforeUserState = UserState(
+                                    id = user.id,
+                                    loginId = user.loginId,
+                                    anonymousNickname = user.anonymousNickname ?: "",
+                                    email = user.email ?: "",
+                                    gender = user.gender,
+                                    name = user.name ?: "",
+                                    nickname = user.nickname ?: "",
+                                    phoneNumber = user.phoneNumber ?: "",
+                                    studentNumber = user.studentNumber ?: "",
+                                    major = user.major ?: ""
+                                ),
+                                userState = UserState(
+                                    id = user.id,
+                                    loginId = user.loginId,
+                                    anonymousNickname = user.anonymousNickname ?: "",
+                                    email = user.email ?: "",
+                                    gender = user.gender,
+                                    name = user.name ?: "",
+                                    nickname = user.nickname ?: "",
+                                    phoneNumber = user.phoneNumber ?: "",
+                                    studentNumber = user.studentNumber ?: "",
+                                    major = user.major ?: ""
+                                ),
+                                userType = UserType.valueOf(user.userType)
+                            )
                         }
                     }
 
                     is User.General -> {
-                        intent {
-                            reduce {
-                                state.copy(
-                                    beforeUserState = UserState(
-                                        loginId = user.loginId,
-                                        anonymousNickname = user.anonymousNickname ?: "",
-                                        email = user.email ?: "",
-                                        gender = user.gender,
-                                        name = user.name,
-                                        nickname = user.nickname ?: "",
-                                        phoneNumber = user.phoneNumber
-                                    ),
-                                    userState = UserState(
-                                        loginId = user.loginId,
-                                        anonymousNickname = user.anonymousNickname ?: "",
-                                        email = user.email ?: "",
-                                        gender = user.gender,
-                                        name = user.name,
-                                        nickname = user.nickname ?: "",
-                                        phoneNumber = user.phoneNumber
-                                    ),
-                                    userType = UserType.valueOf(user.userType),
-                                    isLoading = false
-                                )
-                            }
+                        reduce {
+                            state.copy(
+                                beforeUserState = UserState(
+                                    loginId = user.loginId,
+                                    anonymousNickname = user.anonymousNickname ?: "",
+                                    email = user.email ?: "",
+                                    gender = user.gender,
+                                    name = user.name,
+                                    nickname = user.nickname ?: "",
+                                    phoneNumber = user.phoneNumber
+                                ),
+                                userState = UserState(
+                                    loginId = user.loginId,
+                                    anonymousNickname = user.anonymousNickname ?: "",
+                                    email = user.email ?: "",
+                                    gender = user.gender,
+                                    name = user.name,
+                                    nickname = user.nickname ?: "",
+                                    phoneNumber = user.phoneNumber
+                                ),
+                                userType = UserType.valueOf(user.userType)
+                            )
                         }
                     }
                 }
@@ -148,7 +146,14 @@ class UserInfoEditViewModel @Inject constructor(
 
     fun updateNickname(nickname: String) = blockingIntent {
         reduce {
-            state.copy(userState = state.userState.copy(nickname = nickname), nicknameState = NicknameState.None)
+            state.copy(
+                userState = state.userState.copy(nickname = nickname),
+                nicknameState = if (nickname.isEmpty()) {
+                    NicknameState.NicknameAvailable
+                } else {
+                    NicknameState.None
+                }
+            )
         }
     }
 
@@ -212,200 +217,170 @@ class UserInfoEditViewModel @Inject constructor(
         }
     }
 
-    fun checkNicknameDuplicate() = viewModelScope.launch {
-        intent {
-            if (state.userState.nickname.isBlank()) {
-                reduce {
-                    state.copy(nicknameState = NicknameState.NicknameAvailable)
-                }
-                return@intent
+    fun checkNicknameDuplicate() = intent {
+        if (state.userState.nickname.isBlank()) {
+            reduce {
+                state.copy(nicknameState = NicknameState.NicknameAvailable)
             }
-            checkNicknameDuplicateUseCase(state.userState.nickname).onSuccess {
-                reduce {
-                    state.copy(nicknameState = NicknameState.NicknameAvailable)
-                }
-            }.onFailure {
-                reduce {
-                    state.copy(
-                        nicknameState = when (it) {
-                            is KoinUserException.NicknameConflictException -> NicknameState.NicknameDuplicated
-                            else -> NicknameState.Failed
-                        }
-                    )
-                }
+            return@intent
+        }
+        checkNicknameDuplicateUseCase(state.userState.nickname).onSuccess {
+            reduce {
+                state.copy(nicknameState = NicknameState.NicknameAvailable)
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    nicknameState = when (it) {
+                        is KoinUserException.NicknameConflictException -> NicknameState.NicknameDuplicated
+                        else -> NicknameState.Failed
+                    }
+                )
             }
         }
     }
 
-    private fun requestVerificationCode() = viewModelScope.launch {
-        intent {
-            requestSmsVerificationUseCase(state.userState.phoneNumber).onSuccess {
-                reduce {
-                    state.copy(
-                        phoneNumberState = VerificationMethodState.Sent(
-                            remainingCount = it.remainingCount,
-                            totalCount = it.totalCount,
-                            currentCount = it.currentCount
-                        ),
-                        verificationCodeState = VerificationCodeState.None
-                    )
-                }
-                postSideEffect(UserInfoEditSideEffect.StartTimer)
-            }.onFailure {
-                reduce {
-                    state.copy(
-                        phoneNumberState = when (it) {
-                            is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
-                            is KoinUserException.PhoneNumberNotFoundException -> VerificationMethodState.NotFound
-                            is KoinUserException.VerificationCodeRequestCountExceededException -> VerificationMethodState.CountExceeded
-                            else -> VerificationMethodState.Failed(it.message ?: "")
-                        }
-                    )
-                }
+    private fun requestVerificationCode() = intent {
+        requestSmsVerificationUseCase(state.userState.phoneNumber).onSuccess {
+            reduce {
+                state.copy(
+                    phoneNumberState = VerificationMethodState.Sent(
+                        remainingCount = it.remainingCount,
+                        totalCount = it.totalCount,
+                        currentCount = it.currentCount
+                    ),
+                    verificationCodeState = VerificationCodeState.None
+                )
             }
             postSideEffect(UserInfoEditSideEffect.StartTimer)
-        }
-    }
-
-    fun checkVerificationCode() = viewModelScope.launch {
-        blockingIntent {
-            verifySmsCodeUseCase(state.userState.phoneNumber, state.verificationCode).onSuccess {
-                reduce {
-                    state.copy(
-                        verificationCodeState = VerificationCodeState.Valid
-                    )
-                }
-                postSideEffect(UserInfoEditSideEffect.StopTimer)
-            }.onFailure {
-                reduce {
-                    state.copy(
-                        verificationCodeState = when (it) {
-                            is KoinUserException.VerificationCodeInvalidException -> VerificationCodeState.NotValid
-                            is KoinUserException.VerificationCodeExpiredException -> VerificationCodeState.Expired
-                            else -> VerificationCodeState.None
-                        }
-                    )
-                }
-            }
-        }
-    }
-
-    fun checkPhoneNumber() = viewModelScope.launch {
-        intent {
-            checkPhoneNumberDuplicateUseCase(state.userState.phoneNumber).onSuccess {
-                requestVerificationCode()
-            }.onFailure {
-                reduce {
-                    state.copy(
-                        phoneNumberState = when (it) {
-                            is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
-                            is KoinUserException.PhoneNumberConflictException -> VerificationMethodState.AlreadySignedUp
-                            else -> VerificationMethodState.Failed(it.message ?: "")
-                        }
-                    )
-                }
-            }
-        }
-    }
-
-    private fun requestGeneralUserInfoEdit() = viewModelScope.launch {
-        intent {
+        }.onFailure {
             reduce {
                 state.copy(
-                    isLoading = true
+                    phoneNumberState = when (it) {
+                        is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
+                        is KoinUserException.PhoneNumberNotFoundException -> VerificationMethodState.NotFound
+                        is KoinUserException.VerificationCodeRequestCountExceededException -> VerificationMethodState.CountExceeded
+                        else -> VerificationMethodState.Failed(it.message ?: "")
+                    }
                 )
             }
-            updateGeneralUserInfoUseCase(
-                beforeUser = state.beforeUserState.toUser(state.userType),
-                email = state.userState.email,
-                name = state.userState.name,
-                nickname = state.userState.nickname,
-                gender = state.userState.gender,
-                phoneNumber = state.userState.phoneNumber
-            ).onSuccess {
-                reduce {
-                    state.copy(
-                        verificationCodeState = VerificationCodeState.None,
-                        phoneNumberState = VerificationMethodState.None,
-                        isLoading = false
-                    )
-                }
-                postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
-            }.onFailure {
-                reduce {
-                    state.copy(isLoading = false)
-                }
-                when (it) {
-                    is KoinUserException.DataInvalidException -> postSideEffect(
-                        UserInfoEditSideEffect.InvalidDataError
-                    )
+        }
+        postSideEffect(UserInfoEditSideEffect.StartTimer)
+    }
 
-                    is KoinUserException.UnauthorizedException -> postSideEffect(
-                        UserInfoEditSideEffect.PhoneNumberValidateRequiredError
-                    )
-
-                    is KoinUserException.UserNotFoundException -> postSideEffect(
-                        UserInfoEditSideEffect.UnknownUserError
-                    )
-
-                    is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(
-                        UserInfoEditSideEffect.NicknameOrEmailConflictError
-                    )
-
-                    else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
-                }
+    fun checkVerificationCode() = intent {
+        verifySmsCodeUseCase(state.userState.phoneNumber, state.verificationCode).onSuccess {
+            reduce {
+                state.copy(
+                    verificationCodeState = VerificationCodeState.Valid
+                )
+            }
+            postSideEffect(UserInfoEditSideEffect.StopTimer)
+        }.onFailure {
+            reduce {
+                state.copy(
+                    verificationCodeState = when (it) {
+                        is KoinUserException.VerificationCodeInvalidException -> VerificationCodeState.NotValid
+                        is KoinUserException.VerificationCodeExpiredException -> VerificationCodeState.Expired
+                        else -> VerificationCodeState.None
+                    }
+                )
             }
         }
     }
 
-    private fun requestStudentUserInfoEdit() = viewModelScope.launch {
-        intent {
+    fun checkPhoneNumber() = intent {
+        checkPhoneNumberDuplicateUseCase(state.userState.phoneNumber).onSuccess {
+            requestVerificationCode()
+        }.onFailure {
             reduce {
                 state.copy(
-                    isLoading = true
+                    phoneNumberState = when (it) {
+                        is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
+                        is KoinUserException.PhoneNumberConflictException -> VerificationMethodState.AlreadySignedUp
+                        else -> VerificationMethodState.Failed(it.message ?: "")
+                    }
                 )
             }
-            updateStudentUserInfoUseCase(
-                beforeUser = state.beforeUserState.toUser(state.userType),
-                email = state.userState.email,
-                name = state.userState.name,
-                nickname = state.userState.nickname,
-                gender = state.userState.gender,
-                phoneNumber = state.userState.phoneNumber,
-                studentNumber = state.userState.studentNumber,
-                major = state.userState.major
-            ).onSuccess {
-                reduce {
-                    state.copy(
-                        verificationCodeState = VerificationCodeState.None,
-                        phoneNumberState = VerificationMethodState.None,
-                        isLoading = false
-                    )
-                }
-                postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
-            }.onFailure {
-                reduce {
-                    state.copy(isLoading = false)
-                }
-                when (it) {
-                    is KoinUserException.DataInvalidException -> postSideEffect(
-                        UserInfoEditSideEffect.InvalidDataError
-                    )
+        }
+    }
 
-                    is KoinUserException.UnauthorizedException -> postSideEffect(
-                        UserInfoEditSideEffect.PhoneNumberValidateRequiredError
-                    )
+    private fun requestGeneralUserInfoEdit() = intent {
+        updateGeneralUserInfoUseCase(
+            beforeUser = state.beforeUserState.toUser(state.userType),
+            email = state.userState.email,
+            name = state.userState.name,
+            nickname = state.userState.nickname,
+            gender = state.userState.gender,
+            phoneNumber = state.userState.phoneNumber
+        ).onSuccess {
+            reduce {
+                state.copy(
+                    verificationCodeState = VerificationCodeState.None,
+                    phoneNumberState = VerificationMethodState.None
+                )
+            }
+            postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
+        }.onFailure {
+            when (it) {
+                is KoinUserException.DataInvalidException -> postSideEffect(
+                    UserInfoEditSideEffect.InvalidDataError
+                )
 
-                    is KoinUserException.UserNotFoundException -> postSideEffect(
-                        UserInfoEditSideEffect.UnknownUserError
-                    )
+                is KoinUserException.UnauthorizedException -> postSideEffect(
+                    UserInfoEditSideEffect.PhoneNumberValidateRequiredError
+                )
 
-                    is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(
-                        UserInfoEditSideEffect.NicknameOrEmailConflictError
-                    )
+                is KoinUserException.UserNotFoundException -> postSideEffect(
+                    UserInfoEditSideEffect.UnknownUserError
+                )
 
-                    else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
-                }
+                is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(
+                    UserInfoEditSideEffect.NicknameOrEmailConflictError
+                )
+
+                else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
+            }
+        }
+    }
+
+    private fun requestStudentUserInfoEdit() = intent {
+        updateStudentUserInfoUseCase(
+            beforeUser = state.beforeUserState.toUser(state.userType),
+            email = state.userState.email,
+            name = state.userState.name,
+            nickname = state.userState.nickname,
+            gender = state.userState.gender,
+            phoneNumber = state.userState.phoneNumber,
+            studentNumber = state.userState.studentNumber,
+            major = state.userState.major
+        ).onSuccess {
+            reduce {
+                state.copy(
+                    verificationCodeState = VerificationCodeState.None,
+                    phoneNumberState = VerificationMethodState.None
+                )
+            }
+            postSideEffect(UserInfoEditSideEffect.UpdateUserInfoSuccess)
+        }.onFailure {
+            when (it) {
+                is KoinUserException.DataInvalidException -> postSideEffect(
+                    UserInfoEditSideEffect.InvalidDataError
+                )
+
+                is KoinUserException.UnauthorizedException -> postSideEffect(
+                    UserInfoEditSideEffect.PhoneNumberValidateRequiredError
+                )
+
+                is KoinUserException.UserNotFoundException -> postSideEffect(
+                    UserInfoEditSideEffect.UnknownUserError
+                )
+
+                is KoinUserException.NicknameOrEmailConflictException -> postSideEffect(
+                    UserInfoEditSideEffect.NicknameOrEmailConflictError
+                )
+
+                else -> postSideEffect(UserInfoEditSideEffect.UnknownError)
             }
         }
     }
@@ -420,26 +395,11 @@ class UserInfoEditViewModel @Inject constructor(
         }
     }
 
-    fun withdraw() = viewModelScope.launch {
-        intent {
-            reduce {
-                state.copy(isLoading = true)
-            }
-        }
+    fun withdraw() = intent {
         userWithdrawUseCase().onSuccess {
-            intent {
-                reduce {
-                    state.copy(isLoading = false)
-                }
-                postSideEffect(UserInfoEditSideEffect.WithdrawalSuccess)
-            }
+            postSideEffect(UserInfoEditSideEffect.WithdrawalSuccess)
         }.onFailure {
-            intent {
-                reduce {
-                    state.copy(isLoading = false)
-                }
-                postSideEffect(UserInfoEditSideEffect.WithdrawalError)
-            }
+            postSideEffect(UserInfoEditSideEffect.WithdrawalError)
         }
     }
 

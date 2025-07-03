@@ -52,6 +52,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.component.dialog.ChoiceDialog
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.core.util.secondToMinute
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.UserType
@@ -69,10 +70,11 @@ import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
 import `in`.koreatech.koin.feature.user.component.KoinUserWithButtonItem
 import `in`.koreatech.koin.feature.user.component.UserInfoHeader
 import `in`.koreatech.koin.feature.user.genderList
-import `in`.koreatech.koin.feature.user.majorStringList
 import `in`.koreatech.koin.feature.user.model.NicknameState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -196,6 +198,7 @@ fun UserInfoEditScreen(
                     studentNumber = userState.studentNumber,
                     isStudentNumberValid = uiState.isStudentNumberValid,
                     major = userState.major,
+                    majorList = uiState.majorList.toImmutableList(),
                     isMajorDropdownExpanded = uiState.isMajorDropdownExpanded,
                     onStudentNumberChange = { viewModel.updateStudentNumber(it) },
                     onMajorChange = { viewModel.updateMajor(it) },
@@ -263,7 +266,15 @@ fun GeneralUserInfo(
             readOnly = true
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Box(
+            modifier = Modifier.height(32.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.user_info_general_user_info_login_id_hint),
+                style = KoinTheme.typography.regular12,
+                color = KoinTheme.colors.neutral400
+            )
+        }
 
         KoinUserBasicItem(
             title = stringResource(R.string.user_info_general_user_info_name),
@@ -382,6 +393,7 @@ fun StudentUserInfo(
     studentNumber: String,
     isStudentNumberValid: Boolean,
     major: String,
+    majorList: ImmutableList<String>,
     isMajorDropdownExpanded: Boolean,
     modifier: Modifier = Modifier,
     onStudentNumberChange: (String) -> Unit = {},
@@ -415,10 +427,10 @@ fun StudentUserInfo(
             hint = stringResource(R.string.user_info_student_info_major),
             isSelected = major.isNotBlank(),
             isDropdownExpanded = isMajorDropdownExpanded,
-            items = majorStringList,
+            items = majorList,
             arrowDirection = KoinUserDropdownArrowDirection.UP,
             onItemSelected = {
-                onMajorChange(majorStringList[it])
+                onMajorChange(majorList[it])
             },
             onDropdownExpandChange = {
                 onMajorDropdownExpandedChange(it)
@@ -496,12 +508,13 @@ fun UserInfoPhoneNumber(
         ),
         onValueChange = onPhoneNumberChange,
         onButtonAction = onRequestVerificationCode,
-        buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid,
+        buttonEnabled = isPhoneNumberChanged && verificationCodeState !is VerificationCodeState.Valid && phoneNumber.isNotBlank(),
         maxLength = PHONE_NUMBER_LENGTH,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
-        )
+        ),
+        visualTransformation = KRPhoneNumberVisualTransformation()
     )
 
     Box(modifier = Modifier.height(32.dp)) {

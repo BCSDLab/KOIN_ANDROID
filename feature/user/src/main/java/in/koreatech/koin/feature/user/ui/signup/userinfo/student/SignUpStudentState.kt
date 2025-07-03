@@ -26,7 +26,8 @@ data class SignUpStudentState(
     val isNicknameAvailable: Boolean? = null,
     val email: String = "",
     val isEmailAvailable: Boolean? = null,
-    val isSignUpSuccess: Boolean = false
+    val isSignUpSuccess: Boolean = false,
+    val majorList: List<String> = emptyList()
 ) : Parcelable
 
 val SignUpStudentState.isPasswordValid

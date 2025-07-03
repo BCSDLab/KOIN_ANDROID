@@ -24,19 +24,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButtonColors
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.KRPhoneNumberVisualTransformation
 import `in`.koreatech.koin.feature.user.OWNER_URL_PRODUCTION
 import `in`.koreatech.koin.feature.user.OWNER_URL_STAGE
+import `in`.koreatech.koin.feature.user.PHONE_NUMBER_LENGTH
 import `in`.koreatech.koin.feature.user.R
 import `in`.koreatech.koin.feature.user.component.KoinUserBasicTextField
 import `in`.koreatech.koin.feature.user.component.KoinUserPasswordTextField
@@ -143,7 +147,9 @@ fun SignInScreenImpl(
                 value = loginId,
                 onValueChange = setLoginId,
                 hint = stringResource(R.string.sign_in_login_id_hint),
-                singleLine = true
+                singleLine = true,
+                visualTransformation = if (loginId.isDigitsOnly()) KRPhoneNumberVisualTransformation() else VisualTransformation.None,
+                maxLength = if (loginId.isDigitsOnly()) PHONE_NUMBER_LENGTH else Int.MAX_VALUE
             )
 
             Spacer(modifier = Modifier.height(24.dp))

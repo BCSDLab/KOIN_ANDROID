@@ -42,7 +42,9 @@ import `in`.koreatech.koin.feature.user.component.KoinUserProgressHeader
 import `in`.koreatech.koin.feature.user.component.KoinUserProgressIndicator
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
-import `in`.koreatech.koin.feature.user.majorStringList
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -80,6 +82,7 @@ fun SignUpStudentUserInfo(
         email = uiState.email,
         isEmailAvailable = uiState.isEmailAvailable,
         enabled = uiState.isEnabled,
+        majorList = uiState.majorList.toImmutableList(),
         modifier = modifier,
         onNicknameChange = { viewModel.setNickname(it) },
         checkNicknameDuplicate = { viewModel.checkNicknameDuplicate() },
@@ -116,6 +119,7 @@ fun SignUpStudentUserInfoImpl(
     email: String,
     isEmailAvailable: Boolean?,
     enabled: Boolean,
+    majorList: ImmutableList<String>,
     modifier: Modifier = Modifier,
     onNicknameChange: (String) -> Unit = {},
     checkNicknameDuplicate: () -> Unit = {},
@@ -184,6 +188,7 @@ fun SignUpStudentUserInfoImpl(
                     isDepartmentSelected = isDepartmentSelected,
                     isDropdownExpanded = isDropdownExpanded,
                     studentNumber = studentNumber,
+                    majorList = majorList,
                     onDropdownExpandChange = { onDropdownExpandChange(it) },
                     onDepartmentSelected = { onDepartmentSelected(it) },
                     onStudentNumberChange = { onStudentNumberChange(it) },
@@ -347,6 +352,7 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
     isDepartmentSelected: Boolean,
     isDropdownExpanded: Boolean,
     studentNumber: String,
+    majorList: ImmutableList<String>,
     onDropdownExpandChange: (Boolean) -> Unit,
     onDepartmentSelected: (String) -> Unit = {},
     onStudentNumberChange: (String) -> Unit = {},
@@ -366,10 +372,10 @@ private fun SignUpStudentUserInfoNickNameEmailStep(
         hint = stringResource(R.string.sign_up_user_info_department_hint),
         isSelected = isDepartmentSelected,
         isDropdownExpanded = isDropdownExpanded,
-        items = majorStringList,
+        items = majorList,
         onDropdownExpandChange = onDropdownExpandChange,
         onItemSelected = {
-            onDepartmentSelected(majorStringList[it])
+            onDepartmentSelected(majorList[it])
         }
     )
 
@@ -521,7 +527,8 @@ fun SignUpStudentUserInfoPreview() {
             studentNumber = "2000000000",
             isDropdownExpanded = false,
             isDepartmentSelected = false,
-            enabled = true
+            enabled = true,
+            majorList = persistentListOf()
         )
     }
 }

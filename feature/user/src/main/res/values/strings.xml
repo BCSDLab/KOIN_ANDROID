@@ -167,6 +167,7 @@
 
     <string name="user_info_general_user_info_header">기본 정보</string>
     <string name="user_info_general_user_info_login_id">아이디</string>
+    <string name="user_info_general_user_info_login_id_hint">계정 아이디는 변경하실 수 없습니다.</string>
     <string name="user_info_general_user_info_name">이름</string>
     <string name="user_info_general_user_info_nickname">닉네임(선택)</string>
     <string name="user_info_general_user_info_nickname_button">중복 확인</string>
@@ -205,7 +206,7 @@
 
     <string name="user_info_student_number_wrong_format">올바른 학번 양식이 아닙니다. 다시 입력해 주세요.</string>
 
-    <string name="user_info_email_wrong_format">올바른 이메일 형식이 아닙니다..</string>
+    <string name="user_info_email_wrong_format">올바른 이메일 형식이 아닙니다.</string>
 
     <string name="user_info_invalid_data_error">입력한 정보가 잘못되었습니다.</string>
     <string name="user_info_phone_number_validate_required_error">전화번호 인증이 필요합니다.</string>
