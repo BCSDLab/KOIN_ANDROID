@@ -54,7 +54,6 @@ import org.orbitmvi.orbit.compose.collectAsState
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
-@SuppressLint("UnrememberedMutableState")
 @Composable
 fun StoreDetailScreen(
     viewModel: StoreDetailViewModel = hiltViewModel(),
