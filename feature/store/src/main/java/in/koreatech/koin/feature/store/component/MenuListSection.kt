@@ -100,7 +100,7 @@ private fun OptionPriceText(
         modifier = Modifier.padding(top = 4.dp)
     ) {
         if (shopMenus.isSingle) {
-            Text(text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            Text(text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""), style = KoinTheme.typography.bold14)
         } else if (shopMenus.optionPrices?.isNotEmpty() == true) {
             val options = shopMenus.optionPrices?.fold("") { acc, menu ->
                 acc + stringResource(R.string.option_price, menu.option, menu.price ?: "")
