@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.state
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableFloatState
