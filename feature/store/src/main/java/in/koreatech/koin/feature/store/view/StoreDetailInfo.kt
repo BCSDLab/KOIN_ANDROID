@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.store.component.StoreDetailInfoCard
 fun StoreDetailInfo(
     storeInfo: StoreWithMenu,
     storeReview: StoreReview,
+    availableDelivery: Boolean = false,
     navigateToReview: () -> Unit = {},
     navigateToDetailInfo: () -> Unit = {}
 ) {
@@ -66,6 +67,6 @@ fun StoreDetailInfo(
         Spacer(modifier = Modifier.height(12.dp))
         AvailableChips(storeInfo)
         Spacer(modifier = Modifier.height(16.dp))
-        StoreDetailInfoCard(storeInfo, navigateToDetailInfo)
+        StoreDetailInfoCard(storeInfo,availableDelivery, navigateToDetailInfo, )
     }
 }

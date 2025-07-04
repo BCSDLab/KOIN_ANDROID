@@ -23,22 +23,26 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun StoreDetailInfoCard(
     storeInfo: StoreWithMenu,
+    availableDelivery: Boolean = false,
     navigateToDetailInfo: () -> Unit = {}
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
         DeliveryInfoCard(
             modifier = Modifier.weight(1f),
-            storeInfo,
+            storeInfo = storeInfo,
+            availableDelivery = availableDelivery,
             navigateToDetailInfo = navigateToDetailInfo
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -54,6 +58,7 @@ fun StoreDetailInfoCard(
 fun DeliveryInfoCard(
     modifier: Modifier = Modifier,
     storeInfo: StoreWithMenu,
+    availableDelivery: Boolean = false,
     navigateToDetailInfo: () -> Unit = {}
 ) {
     Surface(
@@ -65,6 +70,17 @@ fun DeliveryInfoCard(
         shadowElevation = 1.dp,
         color = KoinTheme.colors.neutral0
     ) {
+        if( !availableDelivery ) {
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(12.dp),
+                lineHeight = 17.sp,
+                text = stringResource(R.string.delivery_not_available),
+                fontSize = 14.sp,
+                color = RebrandKoinTheme.colors.neutral400,
+                textAlign = TextAlign.Center
+            )
+            return@Surface
+        }
         Row(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,

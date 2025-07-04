@@ -67,10 +67,7 @@ fun StoreDetailScreen(
 ) {
     val uiState by viewModel.collectAsState()
 
-    val rememberState = rememberCollapsingToolbarState(
-        toolbarMinHeight = 40.dp,
-        toolbarMaxHeight = 300.dp
-    )
+    val rememberState = rememberCollapsingToolbarState()
     val progress = rememberState.progress()
     val overlayAlpha = (progress).coerceIn(0f, 1f)
     val nestedScrollConnection = storeCollapsingToolbarConnection(
@@ -102,6 +99,7 @@ fun StoreDetailScreen(
                     StoreDetailInfo(
                         storeInfo = uiState.store,
                         storeReview = uiState.storeReview,
+                        availableDelivery = uiState.availableDelivery,
                         navigateToReview = { navigateToReview() },
                         navigateToDetailInfo = { navigateToDetailInfo() }
                     )
