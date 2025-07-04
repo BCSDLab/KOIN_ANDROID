@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.view
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -49,9 +48,10 @@ import `in`.koreatech.koin.feature.store.component.menuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.CustomCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
-import kotlin.math.roundToInt
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnrememberedMutableState")
@@ -95,7 +95,7 @@ fun StoreDetailScreen(
                         .asPaddingValues()
                         .calculateTopPadding()
                 ),
-            state = rememberState.listState
+            state = rememberState.listState,
         ) {
             item {
                 Column {
@@ -115,18 +115,15 @@ fun StoreDetailScreen(
             stickyHeader {
                 MenuCategoryChips(
                     uiState.categories,
-                    onCategoryClicked = { categoryId ->
+                    onCategoryClicked = { categoryId, stickyHeaderHeight ->
                         viewModel.clickMenuCategory(categoryId)
-                        val targetIndex = uiState.categories
-                            .indexOfFirst { it.storeMenuCategories.id == categoryId }
-                        coroutineScope.launch {
-                            rememberState.listState.animateScrollToItem(targetIndex + 2, -170)
-                        }
-
                         toolbarState.collapseToolbar(
                             state = rememberState
                         )
-                    }
+                        CoroutineScope(coroutineScope.coroutineContext).launch {
+                            rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.storeMenuCategories.id == categoryId } + 2, -stickyHeaderHeight)
+                        }
+                    },
                 )
             }
             uiState.categories.forEach { category ->

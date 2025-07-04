@@ -15,12 +15,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
@@ -32,14 +36,18 @@ import `in`.koreatech.koin.feature.store.view.StoreDetailState.MenuCategory
 @Composable
 fun MenuCategoryChips(
     menuCategories: List<MenuCategory>,
-    onCategoryClicked: (Int) -> Unit = {}
+    onCategoryClicked: (Int, Int) -> Unit = {categoryId, height -> },
 ) {
     val scrollState = rememberScrollState()
+    val menuCategoryHeight = remember { mutableStateOf(0) }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 66.dp)
+            .onSizeChanged { size: IntSize ->
+                menuCategoryHeight.value = size.height
+            }
             .background(color = colorResource(id = R.color.store_detail_background))
             .horizontalScroll(scrollState)
             .padding(horizontal = 24.dp, vertical = 12.dp)
@@ -54,7 +62,7 @@ fun MenuCategoryChips(
                 },
                 modifier = Modifier.padding(end = 8.dp),
                 onCategoryClicked = {
-                    onCategoryClicked(it)
+                    onCategoryClicked(it,menuCategoryHeight.value)
                 }
             )
         }

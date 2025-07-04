@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Card
@@ -34,7 +33,9 @@ import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.feature.store.R
 
-fun LazyListScope.menuListSection(category: String, menus: List<ShopMenus>) {
+fun LazyListScope.menuListSection(
+    category: String,
+    menus: List<ShopMenus>) {
     if (menus.isEmpty()) return
 
     item {
@@ -84,7 +85,12 @@ fun MenuItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(text = menu.name, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
             if (menu.description != null) {
-                Text(modifier = Modifier.padding(top = 4.dp), text = menu.description ?: "", fontSize = 12.sp, color = KoinTheme.colors.neutral500)
+                Text(
+                    modifier = Modifier.padding(top = 4.dp),
+                    text = menu.description ?: "",
+                    fontSize = 12.sp,
+                    color = KoinTheme.colors.neutral500
+                )
             }
             OptionPriceText(
                 shopMenus = menu
@@ -117,7 +123,10 @@ private fun OptionPriceText(
         modifier = Modifier.padding(top = 4.dp)
     ) {
         if (shopMenus.isSingle) {
-            Text(text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""), style = KoinTheme.typography.bold14)
+            Text(
+                text = stringResource(R.string.price_with_won, shopMenus.singlePrice ?: ""),
+                style = KoinTheme.typography.bold14
+            )
         } else if (shopMenus.optionPrices?.isNotEmpty() == true) {
             val options = shopMenus.optionPrices?.fold("") { acc, menu ->
                 acc + stringResource(R.string.option_price, menu.option, menu.price ?: "")
