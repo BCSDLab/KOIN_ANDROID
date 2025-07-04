@@ -10,19 +10,18 @@ import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
-import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Inject
 
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
     private val getShopMenusUseCase: GetShopMenusUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : ViewModel(), ContainerHost<StoreDetailState, StoreDetailSideEffect> {
@@ -66,10 +65,9 @@ class StoreDetailViewModel @Inject constructor(
         reduce { state.copy(isLoading = true) }
         val hasToken = isTokenSavedInDeviceUseCase()
         if (hasToken) {
-            val (user, error) = getUserInfoUseCase()
             reduce {
                 state.copy(
-                    isLogin = user != null && error == null,
+                    isLogin = true,
                     isLoading = false
                 )
             }
