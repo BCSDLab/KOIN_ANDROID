@@ -18,55 +18,52 @@ class CustomCollapsingToolbarState(
     val listState: LazyListState = LazyListState()
 ) {
     var toolbarHeightPx: Float = 0f
-        private set
     var minHeightPx: Float = 0f
-        private set
+}
 
-    @SuppressLint("UnrememberedMutableState")
-    @Composable
-    fun currentToolbarHeightDp(toolbarState: CustomCollapsingToolbarState): Dp {
-        val density = LocalDensity.current
-        return remember {
-            derivedStateOf {
-                with(density) {
-                    (toolbarHeightPx + toolbarState.toolbarOffsetPx.floatValue).toDp()
-                }
+@Composable
+fun rememberCollapsingToolbarState(
+    toolbarMinHeight: Dp = 40.dp,
+    toolbarMaxHeight: Dp = 300.dp
+): CustomCollapsingToolbarState {
+    val listState = remember { LazyListState() }
+    val toolbarOffsetPx = remember { mutableFloatStateOf(0f) }
+    return CustomCollapsingToolbarState(
+        toolbarMinHeight = toolbarMinHeight,
+        toolbarMaxHeight = toolbarMaxHeight,
+        toolbarOffsetPx = toolbarOffsetPx,
+        listState = listState
+    )
+}
+
+@Composable
+fun CustomCollapsingToolbarState.currentToolbarHeightDp(): Dp {
+    val density = LocalDensity.current
+    return remember(toolbarOffsetPx.floatValue) {
+        derivedStateOf {
+            with(density) {
+                (toolbarMaxHeight.toPx() + toolbarOffsetPx.floatValue).toDp()
             }
-        }.value
-    }
+        }
+    }.value
+}
 
-    @Composable
-    fun progress(toolbarState: CustomCollapsingToolbarState): Float {
-        val density = LocalDensity.current
-        toolbarHeightPx = with(density) { toolbarMaxHeight.toPx() }
-        minHeightPx = with(density) { toolbarState.toolbarMinHeight.toPx() }
-        return remember {
-            derivedStateOf {
-                val offset = toolbarState.toolbarOffsetPx.floatValue
-                val range = toolbarHeightPx - minHeightPx
-                ((-offset) / range).coerceIn(0f, 1f)
-            }
-        }.value
-    }
+@Composable
+fun CustomCollapsingToolbarState.progress(): Float {
+    val density = LocalDensity.current
+    toolbarHeightPx = with(density) { toolbarMaxHeight.toPx() }
+    minHeightPx = with(density) { toolbarMinHeight.toPx() }
+    return remember {
+        derivedStateOf {
+            val offset = toolbarOffsetPx.floatValue
+            val range = toolbarHeightPx - minHeightPx
+            ((-offset) / range).coerceIn(0f, 1f)
+        }
+    }.value
+}
 
-    @Composable
-    fun rememberCollapsingToolbarState(
-        toolbarMinHeight: Dp = 40.dp,
-        toolbarMaxHeight: Dp = 300.dp
-    ): CustomCollapsingToolbarState {
-        val listState = remember { LazyListState() }
-        val toolbarOffsetPx = remember { mutableFloatStateOf(0f) }
-        return CustomCollapsingToolbarState(
-            toolbarMinHeight = toolbarMinHeight,
-            toolbarMaxHeight = toolbarMaxHeight,
-            toolbarOffsetPx = toolbarOffsetPx,
-            listState = listState
-        )
-    }
-
-    fun collapseToolbar(
-        state: CustomCollapsingToolbarState
-    ) {
-        state.toolbarOffsetPx.value = -toolbarHeightPx + minHeightPx
-    }
+fun CustomCollapsingToolbarState.collapseToolbar(
+    state: CustomCollapsingToolbarState
+) {
+    state.toolbarOffsetPx.value = -toolbarHeightPx + minHeightPx
 }
