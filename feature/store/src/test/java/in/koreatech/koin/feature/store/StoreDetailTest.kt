@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.owner.MenuCategory
 import `in`.koreatech.koin.feature.store.TestDevice.FLIP_DEVICE
 import `in`.koreatech.koin.feature.store.TestDevice.FOLDABLE_DEVICE
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
@@ -96,9 +95,6 @@ class StoreDetailSnapshotTestFOLDABLE {
 private fun SnapshotContent() {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
     StoreDetailScreen(
-        storeInfo = dummyStoreWithMenu,
-        categories = listOf(MenuCategory("카테고리1", false), MenuCategory("카테고리2", false)),
-        menus = listOf(dummyStoreMenuCategories),
         pagerState = pagerState
     )
 }

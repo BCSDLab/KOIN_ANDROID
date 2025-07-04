@@ -63,4 +63,10 @@ class CustomCollapsingToolbarState(
             listState = listState
         )
     }
+
+    fun collapseToolbar(
+        state: CustomCollapsingToolbarState
+    ) {
+        state.toolbarOffsetPx.value = -toolbarHeightPx + minHeightPx
+    }
 }

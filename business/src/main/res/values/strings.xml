@@ -154,6 +154,7 @@
     <string name="check">확인</string>
     <string name="price">가격</string>
     <string name="menu_default_image">메뉴 기본 이미지</string>
+    <string name="price_won">%1$d원</string>
     <string name="edit">편집하기</string>
     <string name="edit_menu">메뉴 편집하기</string>
     <string name="add">추가하기</string>

@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.view
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +22,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,29 +39,32 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.feature.store.util.CustomClosingToolbarScreenDefaults
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.owner.MenuCategory
-import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
-import `in`.koreatech.koin.domain.model.store.StoreReview
-import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
-import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
-import `in`.koreatech.koin.feature.store.component.MenuListSection
+import `in`.koreatech.koin.feature.store.component.menuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.CustomCollapsingToolbarState
+import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalFoundationApi::class)
-@SuppressLint("UnrememberedMutableState")
 @Composable
 fun StoreDetailScreen(
-    storeInfo: StoreWithMenu,
-    categories: List<MenuCategory>,
-    menus: List<StoreMenuCategories>,
-    pagerState: PagerState
+    viewModel: StoreDetailViewModel = hiltViewModel(),
+    pagerState: PagerState,
+    navigateToCart: () -> Unit = {},
+    navigateToBack: () -> Unit = {},
+    navigateToDetailInfo: () -> Unit = {},
+    navigateToReview: () -> Unit = {}
 ) {
+    val uiState by viewModel.collectAsState()
+
     val toolbarState = remember { CustomCollapsingToolbarState() }
     val rememberState = toolbarState.rememberCollapsingToolbarState(
         toolbarMinHeight = 40.dp,
@@ -75,7 +79,7 @@ fun StoreDetailScreen(
         minHeightPx = toolbarState.minHeightPx
     )
     val currentToolbarHeightDp = toolbarState.currentToolbarHeightDp(rememberState)
-
+    val coroutineScope = rememberCoroutineScope()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -95,18 +99,10 @@ fun StoreDetailScreen(
             item {
                 Column {
                     StoreDetailInfo(
-                        storeInfo = storeInfo,
-                        storeReview = StoreReview(
-                            totalCount = 0,
-                            currentCount = 0,
-                            totalPage = 0,
-                            currentPage = 0,
-                            statistics = StoreReviewStatistics(
-                                averageRating = 0.0,
-                                ratings = emptyMap()
-                            ),
-                            reviews = emptyList()
-                        )
+                        storeInfo = uiState.store,
+                        storeReview = uiState.storeReview,
+                        navigateToReview = { navigateToReview() },
+                        navigateToDetailInfo = { navigateToDetailInfo() }
                     )
                     Divider(
                         modifier = Modifier.padding(vertical = 8.dp),
@@ -116,29 +112,38 @@ fun StoreDetailScreen(
                 }
             }
             stickyHeader {
-                MenuCategoryChips(categories)
-            }
-            item {
-                repeat(categories.size) { index ->
-                    val menuList = menus.getOrNull(index)?.menus
-                    if (!menuList.isNullOrEmpty()) {
-                        MenuListSection(
-                            category = categories[index].categoryName,
-                            menus = menuList
+                MenuCategoryChips(
+                    uiState.categories,
+                    onCategoryClicked = { categoryId, stickyHeaderHeight ->
+                        viewModel.clickMenuCategory(categoryId)
+                        toolbarState.collapseToolbar(
+                            state = rememberState
                         )
+                        CoroutineScope(coroutineScope.coroutineContext).launch {
+                            rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.storeMenuCategories.id == categoryId } + 2, -stickyHeaderHeight)
+                        }
                     }
-                }
+                )
+            }
+            uiState.categories.forEach { category ->
+                menuListSection(
+                    category = category.storeMenuCategories.name ?: "",
+                    menus = category.storeMenuCategories.menus ?: emptyList()
+                )
             }
         }
 
         Row(
-            modifier = Modifier.statusBarsPadding()
+            modifier = Modifier
+                .statusBarsPadding()
                 .fillMaxWidth()
                 .zIndex(2f),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { }) {
+            IconButton(onClick = {
+                navigateToBack()
+            }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_left),
                     contentDescription = null,
@@ -146,12 +151,14 @@ fun StoreDetailScreen(
                 )
             }
             Text(
-                text = storeInfo.name,
+                text = uiState.store.name,
                 fontWeight = Bold,
                 color = KoinTheme.colors.neutral800.copy(alpha = overlayAlpha)
             )
             Box(contentAlignment = Alignment.TopEnd) {
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    navigateToCart()
+                }) {
                     Icon(
                         modifier = Modifier.size(25.dp),
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_shopping_cart),
@@ -166,7 +173,7 @@ fun StoreDetailScreen(
                         .background(Color.Magenta, CircleShape)
                 ) {
                     Text(
-                        text = "3",
+                        text = "3", // TODO: API 연동 후 장바구니 수량 표시
                         fontSize = 10.sp,
                         lineHeight = 11.sp,
                         color = KoinTheme.colors.neutral0,
@@ -181,7 +188,7 @@ fun StoreDetailScreen(
                 .height(toolbarState.toolbarMaxHeight)
                 .offset { IntOffset(0, rememberState.toolbarOffsetPx.floatValue.roundToInt()) }
                 .fillMaxWidth(),
-            imageUrls = storeInfo.imageUrls ?: emptyList(),
+            imageUrls = uiState.store.imageUrls ?: emptyList(),
             alpha = overlayAlpha,
             pagerState = pagerState
         )
