@@ -32,7 +32,7 @@ fun StoreDetailInfo(
     storeInfo: StoreWithMenu,
     storeReview: StoreReview,
     navigateToReview: () -> Unit = {},
-    navigateToDetailInfo: () -> Unit = {},
+    navigateToDetailInfo: () -> Unit = {}
 ) {
     Column(modifier = Modifier.padding(horizontal = 24.dp)) {
         Text(modifier = Modifier.padding(vertical = 4.dp), text = storeInfo.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)

@@ -36,7 +36,7 @@ import `in`.koreatech.koin.feature.store.view.StoreDetailState.MenuCategory
 @Composable
 fun MenuCategoryChips(
     menuCategories: List<MenuCategory>,
-    onCategoryClicked: (Int, Int) -> Unit = {categoryId, height -> },
+    onCategoryClicked: (Int, Int) -> Unit = { categoryId, height -> }
 ) {
     val scrollState = rememberScrollState()
     val menuCategoryHeight = remember { mutableStateOf(0) }
@@ -62,7 +62,7 @@ fun MenuCategoryChips(
                 },
                 modifier = Modifier.padding(end = 8.dp),
                 onCategoryClicked = {
-                    onCategoryClicked(it,menuCategoryHeight.value)
+                    onCategoryClicked(it, menuCategoryHeight.value)
                 }
             )
         }

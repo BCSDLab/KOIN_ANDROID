@@ -7,15 +7,14 @@ import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
-import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
 import `in`.koreatech.koin.feature.store.view.StoreDetailState
+import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class StoreDetailViewModel @Inject constructor(
@@ -55,7 +54,7 @@ class StoreDetailViewModel @Inject constructor(
                             storeMenuCategories = storeMenuCategories,
                             isChecked = shop.menuCategories?.indexOf(storeMenuCategories) == 0
                         )
-                    } ?: emptyList(),
+                    } ?: emptyList()
                 )
             }
         }
@@ -102,7 +101,6 @@ class StoreDetailViewModel @Inject constructor(
                     }
                 }
             )
-
         }
     }
 

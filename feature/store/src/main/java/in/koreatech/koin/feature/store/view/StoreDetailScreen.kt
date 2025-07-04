@@ -48,10 +48,10 @@ import `in`.koreatech.koin.feature.store.component.menuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.CustomCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
+import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -94,7 +94,7 @@ fun StoreDetailScreen(
                         .asPaddingValues()
                         .calculateTopPadding()
                 ),
-            state = rememberState.listState,
+            state = rememberState.listState
         ) {
             item {
                 Column {
@@ -122,7 +122,7 @@ fun StoreDetailScreen(
                         CoroutineScope(coroutineScope.coroutineContext).launch {
                             rememberState.listState.scrollToItem(uiState.categories.indexOfFirst { it.storeMenuCategories.id == categoryId } + 2, -stickyHeaderHeight)
                         }
-                    },
+                    }
                 )
             }
             uiState.categories.forEach { category ->

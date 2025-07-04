@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.owner.MenuCategory
 import `in`.koreatech.koin.feature.store.TestDevice.FLIP_DEVICE
 import `in`.koreatech.koin.feature.store.TestDevice.FOLDABLE_DEVICE
 import `in`.koreatech.koin.feature.store.view.StoreDetailScreen
