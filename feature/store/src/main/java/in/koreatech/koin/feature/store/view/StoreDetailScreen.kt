@@ -23,7 +23,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +45,10 @@ import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
 import `in`.koreatech.koin.feature.store.component.menuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
-import `in`.koreatech.koin.feature.store.state.CustomCollapsingToolbarState
+import `in`.koreatech.koin.feature.store.state.collapseToolbar
+import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
+import `in`.koreatech.koin.feature.store.state.progress
+import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
@@ -65,20 +67,19 @@ fun StoreDetailScreen(
 ) {
     val uiState by viewModel.collectAsState()
 
-    val toolbarState = remember { CustomCollapsingToolbarState() }
-    val rememberState = toolbarState.rememberCollapsingToolbarState(
+    val rememberState = rememberCollapsingToolbarState(
         toolbarMinHeight = 40.dp,
         toolbarMaxHeight = 300.dp
     )
-    val progress = toolbarState.progress(rememberState)
+    val progress = rememberState.progress()
     val overlayAlpha = (progress).coerceIn(0f, 1f)
     val nestedScrollConnection = storeCollapsingToolbarConnection(
         listState = rememberState.listState,
         toolbarOffsetPx = rememberState.toolbarOffsetPx,
-        toolbarHeightPx = toolbarState.toolbarHeightPx,
-        minHeightPx = toolbarState.minHeightPx
+        toolbarHeightPx = rememberState.toolbarHeightPx,
+        minHeightPx = rememberState.minHeightPx
     )
-    val currentToolbarHeightDp = toolbarState.currentToolbarHeightDp(rememberState)
+    val currentToolbarHeightDp = rememberState.currentToolbarHeightDp()
     val coroutineScope = rememberCoroutineScope()
     Box(
         modifier = Modifier
@@ -116,7 +117,7 @@ fun StoreDetailScreen(
                     uiState.categories,
                     onCategoryClicked = { categoryId, stickyHeaderHeight ->
                         viewModel.clickMenuCategory(categoryId)
-                        toolbarState.collapseToolbar(
+                        rememberState.collapseToolbar(
                             state = rememberState
                         )
                         CoroutineScope(coroutineScope.coroutineContext).launch {
@@ -185,7 +186,7 @@ fun StoreDetailScreen(
 
         StoreDetailImage(
             modifier = Modifier
-                .height(toolbarState.toolbarMaxHeight)
+                .height(rememberState.toolbarMaxHeight)
                 .offset { IntOffset(0, rememberState.toolbarOffsetPx.floatValue.roundToInt()) }
                 .fillMaxWidth(),
             imageUrls = uiState.store.imageUrls ?: emptyList(),
