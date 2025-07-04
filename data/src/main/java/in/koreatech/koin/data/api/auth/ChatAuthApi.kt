@@ -13,24 +13,24 @@ interface ChatAuthApi {
     @GET(URLConstant.CHAT.CHATROOM)
     suspend fun getChatRoomList(): List<ChatListItemResponse>
 
-    @POST(URLConstant.CHAT.ARTICLEID)
+    @POST(URLConstant.CHAT.ARTICLEID.ARTICLEID)
     suspend fun getChatRoomFromArticleId(
         @Path("articleId") articleId: Int
     ): ChatRoomResponse
 
-    @GET(URLConstant.CHAT.ARTICLEID_ROOMID)
+    @GET(URLConstant.CHAT.ARTICLEID.ROOMID.ROOMID)
     suspend fun getChatRoom(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
     ): ChatRoomResponse
 
-    @GET(URLConstant.CHAT.MESSAGES)
+    @GET(URLConstant.CHAT.ARTICLEID.ROOMID.MESSAGES)
     suspend fun getChatMessages(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
     ): List<ChatMessageResponse>
 
-    @POST(URLConstant.CHAT.BLOCK)
+    @POST(URLConstant.CHAT.ARTICLEID.ROOMID.BLOCK)
     suspend fun blockUser(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
