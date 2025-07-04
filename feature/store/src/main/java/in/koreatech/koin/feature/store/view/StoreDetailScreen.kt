@@ -114,11 +114,11 @@ fun StoreDetailScreen(
             }
             stickyHeader {
                 MenuCategoryChips(
-                    uiState.categories.menuCategories ?: emptyList(),
+                    uiState.categories,
                     onCategoryClicked = { categoryId ->
                         viewModel.clickMenuCategory(categoryId)
-                        val targetIndex = uiState.categories.menuCategories
-                            ?.indexOfFirst { it.id == categoryId } ?: 0
+                        val targetIndex = uiState.categories
+                            .indexOfFirst { it.storeMenuCategories.id == categoryId }
                         coroutineScope.launch {
                             rememberState.listState.animateScrollToItem(targetIndex + 2, -170)
                         }
@@ -129,13 +129,13 @@ fun StoreDetailScreen(
                     }
                 )
             }
-            repeat(uiState.categories.menuCategories?.size ?: 0) { index ->
+            repeat(uiState.categories.size ) { index ->
                 item {
-                    val menuList = uiState.categories.menuCategories?.getOrNull(index)?.menus
+                    val menuList = uiState.categories.getOrNull(index)?.storeMenuCategories?.menus
                     if (!menuList.isNullOrEmpty()) {
-                        uiState.categories.menuCategories?.getOrNull(index).let {
+                        uiState.categories.getOrNull(index).let {
                             MenuListSection(
-                                category = it?.name ?: "",
+                                category = it?.storeMenuCategories?.name ?: "",
                                 menus = menuList
                             )
                         }

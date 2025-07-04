@@ -26,10 +26,12 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.view.StoreDetailState
+import `in`.koreatech.koin.feature.store.view.StoreDetailState.MenuCategory
 
 @Composable
 fun MenuCategoryChips(
-    menuCategories: List<StoreMenuCategories>,
+    menuCategories: List<MenuCategory>,
     onCategoryClicked: (Int) -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
@@ -44,7 +46,12 @@ fun MenuCategoryChips(
     ) {
         menuCategories.forEachIndexed { i, tag ->
             MenuCategoryChip(
-                menuCategory = menuCategories[i],
+                menuCategory = menuCategories[i].let {
+                    MenuCategory(
+                        storeMenuCategories = it.storeMenuCategories,
+                        isChecked = it.isChecked
+                    )
+                },
                 modifier = Modifier.padding(end = 8.dp),
                 onCategoryClicked = {
                     onCategoryClicked(it)
@@ -56,7 +63,7 @@ fun MenuCategoryChips(
 
 @Composable
 fun MenuCategoryChip(
-    menuCategory: StoreMenuCategories,
+    menuCategory: MenuCategory,
     modifier: Modifier = Modifier,
     onCategoryClicked: (Int) -> Unit = {}
 ) {
@@ -75,7 +82,7 @@ fun MenuCategoryChip(
                 shape = RoundedCornerShape(50)
             )
             .clickable {
-                onCategoryClicked(menuCategory.id)
+                onCategoryClicked(menuCategory.storeMenuCategories.id)
             }
     ) {
         Box(
@@ -83,7 +90,7 @@ fun MenuCategoryChip(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
         ) {
             Text(
-                text = menuCategory.name ?: "",
+                text = menuCategory.storeMenuCategories.name ?: "",
                 color = textColor,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold
@@ -97,10 +104,13 @@ fun MenuCategoryChip(
 fun MenuCategoryChipPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         MenuCategoryChip(
-            menuCategory = StoreMenuCategories(
-                id = 1,
-                name = "음료",
-                menus = emptyList()
+            menuCategory = StoreDetailState.MenuCategory(
+                storeMenuCategories = StoreMenuCategories(
+                    id = 1,
+                    name = "음료",
+                    menus = emptyList()
+                ),
+                isChecked = true
             ),
             modifier = Modifier.padding(8.dp)
         )

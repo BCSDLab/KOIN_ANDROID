@@ -51,19 +51,12 @@ class StoreDetailViewModel @Inject constructor(
         getShopMenusUseCase(id).also { shop ->
             reduce {
                 state.copy(
-                    categories = if (shop.menuCategories?.isNotEmpty() == true) {
-                        state.categories.copy(
-                            menuCategories = shop.menuCategories?.map { category ->
-                                if (shop.menuCategories?.indexOf(category) == 0) {
-                                    category.copy(isChecked = true)
-                                } else {
-                                    category.copy(isChecked = false)
-                                }
-                            }
+                    categories = shop.menuCategories?.map { storeMenuCategories ->
+                        StoreDetailState.MenuCategory(
+                            storeMenuCategories = storeMenuCategories,
+                            isChecked = shop.menuCategories?.indexOf(storeMenuCategories) == 0
                         )
-                    } else {
-                        state.categories.copy(menuCategories = emptyList())
-                    }
+                    } ?: emptyList(),
                 )
             }
         }
@@ -101,18 +94,17 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun clickMenuCategory(categoryId: Int) = blockingIntent {
-        val newCategories = state.categories.menuCategories?.map { category ->
-            if (category.id == categoryId) {
-                category.copy(isChecked = true)
-            } else {
-                category.copy(isChecked = false)
-            }
-        } ?: emptyList()
-
         reduce {
             state.copy(
-                categories = state.categories.copy(menuCategories = newCategories)
+                categories = state.categories.map {
+                    if (it.storeMenuCategories.id == categoryId) {
+                        it.copy(isChecked = true)
+                    } else {
+                        it.copy(isChecked = false)
+                    }
+                }
             )
+
         }
     }
 

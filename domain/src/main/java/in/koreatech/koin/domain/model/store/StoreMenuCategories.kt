@@ -4,5 +4,4 @@ data class StoreMenuCategories(
     val id: Int,
     val name: String?,
     val menus: List<ShopMenus>?,
-    val isChecked: Boolean = false
 )
