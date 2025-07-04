@@ -45,7 +45,7 @@ import `in`.koreatech.feature.store.util.CustomClosingToolbarScreenDefaults
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.MenuCategoryChips
-import `in`.koreatech.koin.feature.store.component.MenuListSection
+import `in`.koreatech.koin.feature.store.component.menuListSection
 import `in`.koreatech.koin.feature.store.scroll.storeCollapsingToolbarConnection
 import `in`.koreatech.koin.feature.store.state.CustomCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
@@ -129,18 +129,11 @@ fun StoreDetailScreen(
                     }
                 )
             }
-            repeat(uiState.categories.size ) { index ->
-                item {
-                    val menuList = uiState.categories.getOrNull(index)?.storeMenuCategories?.menus
-                    if (!menuList.isNullOrEmpty()) {
-                        uiState.categories.getOrNull(index).let {
-                            MenuListSection(
-                                category = it?.storeMenuCategories?.name ?: "",
-                                menus = menuList
-                            )
-                        }
-                    }
-                }
+            uiState.categories.forEach { category ->
+                menuListSection(
+                    category = category.storeMenuCategories.name ?: "",
+                    menus = category.storeMenuCategories.menus ?: emptyList()
+                )
             }
         }
 
