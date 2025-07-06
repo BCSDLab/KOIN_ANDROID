@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
+import `in`.koreatech.koin.domain.model.cart.Cart
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.CartMenuItem
@@ -58,7 +58,8 @@ import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
 @Composable
 fun ShoppingCartContent(
     modifier: Modifier,
-    storeInfo: StoreDetailInfo
+    cart: Cart,
+    navigateToStoreDetail: () -> Unit = { }
 ) {
     val tabs = listOf(R.string.delivery, R.string.pickup)
     var selectedTab by remember { mutableStateOf(R.string.delivery) }
@@ -119,7 +120,7 @@ fun ShoppingCartContent(
                     .clickable { /* TODO: navigate */ }
             ) {
                 Image(
-                    painter = rememberAsyncImagePainter(storeInfo.imageUrls.firstOrNull()),
+                    painter = rememberAsyncImagePainter(cart.shopThumbnailImageUrl),
                     contentDescription = "",
                     modifier = Modifier
                         .size(48.dp)
@@ -127,7 +128,7 @@ fun ShoppingCartContent(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = storeInfo.name,
+                    text = cart.shopName ?: "",
                     fontWeight = FontWeight.Medium
                 )
                 Icon(
@@ -149,7 +150,7 @@ fun ShoppingCartContent(
                 )
             ) {
                 Column {
-                    repeat(3) { // 장바구니에 담긴 메뉴 수
+                    repeat(cart.items.size) { // 장바구니에 담긴 메뉴 수
                         CartMenuItem(
                             menu = ShopMenus(
                                 name = "족발 + 막국 저녁 set",
@@ -164,7 +165,7 @@ fun ShoppingCartContent(
                                 id = 1
                             )
                         )
-                        if (it != 2) {
+                        if (it != cart.items.size - 1) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
                                 thickness = 2.dp
@@ -176,7 +177,7 @@ fun ShoppingCartContent(
         }
         item {
             Button(
-                onClick = { },
+                onClick = { navigateToStoreDetail() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .drawBehind {
@@ -202,7 +203,14 @@ fun ShoppingCartContent(
                 }
             }
         }
-        item { PaymentSummaryCard() }
+        item {
+            PaymentSummaryCard(
+                itemAmount = cart.itemsAmount,
+                deliveryFee = cart.deliveryFee,
+                totalAmount = cart.totalAmount,
+                finalPaymentAmount = cart.finalPaymentAmount
+            )
+        }
     }
 }
 
@@ -227,7 +235,9 @@ fun ShoppingCartEmptyContent(
             text = stringResource(R.string.shopping_cart_is_empty)
         )
         Button(
-            onClick = {},
+            onClick = {
+                //TODO: navigate to storeDetailScreen
+            },
             modifier = Modifier
                 .padding(top = 20.dp),
             colors = buttonColors(
@@ -259,31 +269,16 @@ fun ShoppingCartEmptyContent(
 @Preview
 private fun ShoppingCartContentPreview() {
     KoinTheme {
-        ShoppingCartEmptyContent(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        )
+        /*  ShoppingCartEmptyContent(
+              modifier = Modifier
+                  .fillMaxSize()
+                  .padding(16.dp)
+          )*/
         ShoppingCartContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            storeInfo = StoreDetailInfo(
-                address = "서울시 강남구 역삼동 123-45",
-                name = "테스트 가게",
-                description = "테스트 가게 설명",
-                imageUrls = listOf("https://example.com/image.jpg"),
-                mainCategoryId = 1,
-                categoryIds = listOf(1, 2, 3),
-                isBankOk = true,
-                isCardOk = true,
-                isDeliveryOk = true,
-                phone = "010-1234-5678",
-                accountNumber = "123-456-7890",
-                deliveryPrice = 3000,
-                operatingTime = null,
-                bank = "우리은행"
-            ),
+            cart = Cart.Empty,
         )
     }
 }
