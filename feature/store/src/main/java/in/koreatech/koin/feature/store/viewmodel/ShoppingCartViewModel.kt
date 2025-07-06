@@ -3,11 +3,11 @@ package `in`.koreatech.koin.feature.store.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.cart.CartMenuQuantityUseCase
 import `in`.koreatech.koin.domain.usecase.cart.CartUseCase
+import `in`.koreatech.koin.domain.usecase.cart.CartValidateUseCase
 import `in`.koreatech.koin.feature.store.view.CartSideEffect
 import `in`.koreatech.koin.feature.store.view.CartState
-import `in`.koreatech.koin.feature.store.view.StoreDetailSideEffect
-import `in`.koreatech.koin.feature.store.view.StoreDetailState
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -18,6 +18,8 @@ import javax.inject.Inject
 class ShoppingCartViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val cartUseCase: CartUseCase,
+    private val cartValidateUseCase: CartValidateUseCase,
+    private val cartMenuQuantityUseCase: CartMenuQuantityUseCase
 ) : ViewModel(), ContainerHost<CartState, CartSideEffect> {
     override val container =
         container<CartState, CartSideEffect>(CartState()) {
@@ -39,6 +41,25 @@ class ShoppingCartViewModel @Inject constructor(
             reduce { state.copy(cartValidate = cartValidate) }
         }
     }
+
+    fun cartMenuQuantity(cartMenuItemId: Int, quantity: Int) = intent {
+        cartMenuQuantityUseCase(cartMenuItemId, quantity).collect {
+            reduce {
+                state.copy(
+                    cart = state.cart.copy(
+                        items = state.cart.items.map { menuItem ->
+                            if (menuItem.cartMenuItemId == cartMenuItemId) {
+                                menuItem.copy(quantity = quantity)
+                            } else {
+                                menuItem
+                            }
+                        }
+                    )
+                )
+            }
+        }
+    }
+
     companion object {
         const val STORE_ID = "storeId"
     }
