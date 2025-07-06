@@ -33,6 +33,12 @@ class ShoppingCartViewModel @Inject constructor(
             reduce { state.copy(cart = cart) }
         }
     }
+
+    fun getCartValidate() = intent {
+        cartValidateUseCase().collect { cartValidate ->
+            reduce { state.copy(cartValidate = cartValidate) }
+        }
+    }
     companion object {
         const val STORE_ID = "storeId"
     }

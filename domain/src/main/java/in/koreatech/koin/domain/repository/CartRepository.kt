@@ -1,8 +1,11 @@
 package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.cart.Cart
+import `in`.koreatech.koin.domain.model.cart.CartValidate
 import kotlinx.coroutines.flow.Flow
 
 interface CartRepository {
     suspend fun getCart(): Flow<Cart>
+    suspend fun getCartValidate(): Flow<CartValidate>
+
 }

@@ -15,4 +15,7 @@ class CartRepositoryImpl @Inject constructor(
             emit(cartRemoteDataSource.getCart().toCart())
         }
     }
+    override suspend fun getCartValidate() = flow {
+        emit(cartRemoteDataSource.getCartValidate().toCartValidate())
+    }
 }
