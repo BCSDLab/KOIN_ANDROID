@@ -264,5 +264,26 @@ private fun ShoppingCartContentPreview() {
                 .fillMaxSize()
                 .padding(16.dp)
         )
+        ShoppingCartContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            storeInfo = StoreDetailInfo(
+                address = "서울시 강남구 역삼동 123-45",
+                name = "테스트 가게",
+                description = "테스트 가게 설명",
+                imageUrls = listOf("https://example.com/image.jpg"),
+                mainCategoryId = 1,
+                categoryIds = listOf(1, 2, 3),
+                isBankOk = true,
+                isCardOk = true,
+                isDeliveryOk = true,
+                phone = "010-1234-5678",
+                accountNumber = "123-456-7890",
+                deliveryPrice = 3000,
+                operatingTime = null,
+                bank = "우리은행"
+            ),
+        )
     }
 }
