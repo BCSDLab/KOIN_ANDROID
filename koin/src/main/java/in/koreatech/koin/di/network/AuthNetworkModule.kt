@@ -169,6 +169,12 @@ object AuthNetworkModule {
     fun provideClubAuthApi(@Auth retrofit: Retrofit): ClubAuthApi {
         return retrofit.create(ClubAuthApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideCartAuthApi(@Auth retrofit: Retrofit): CartAuthApi {
+        return retrofit.create(CartAuthApi::class.java)
+    }
 }
 
 @Module

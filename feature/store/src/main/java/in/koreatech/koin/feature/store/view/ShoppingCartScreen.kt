@@ -15,20 +15,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.R
+import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingCartScreen(
+    viewModel: ShoppingCartViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onDeleteAllClick: () -> Unit,
     storeInfo: StoreDetailInfo,
     isEmpty: Boolean
 ) {
+    viewModel.getCart()
     Scaffold(
         topBar = {
             KoinTopAppBar(
@@ -39,7 +44,7 @@ fun ShoppingCartScreen(
                 onNavigationIconClick = onBackClick,
                 actions = {
                     Text(
-                        color = Color(0xFFB611F5),
+                        color = RebrandKoinTheme.colors.primary500,
                         fontWeight = SemiBold,
                         text = stringResource(R.string.delete_all),
                         modifier = Modifier
