@@ -7,7 +7,6 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:ignore="MissingPrefix">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -21,7 +20,7 @@
                 <in.koreatech.koin.core.appbar.AppBarBase
                     android:id="@+id/koin_base_app_bar"
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -36,6 +35,7 @@
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraint_layout_notification_item_root"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
