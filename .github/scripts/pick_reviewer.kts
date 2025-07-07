@@ -16,7 +16,7 @@ enum class KoinTeam {
 enum class Developer(val githubName: String, val team: Set<KoinTeam>, val isMentor: Boolean = false) {
     YUNJAENA("yunjaena", setOf(), true),
     JAEYOUNG290("JaeYoung290", setOf(KoinTeam.BUSINESS)),
-    KONGWOOJIN("kongwoojin", setOf(KoinTeam.CAMPUS, KoinTeam.USER)),
+    KONGWOOJIN("kongwoojin", setOf(KoinTeam.BUSINESS, KoinTeam.CAMPUS, KoinTeam.USER)),
     KYM_P("KYM-P", setOf(KoinTeam.CAMPUS)),
     JUSANG3057("jusang3057", setOf(KoinTeam.USER))
 }
