@@ -24,7 +24,7 @@ data class ClubDetailsResponse(
 ) {
     data class HotStatusResponse(
         @SerializedName("month") val month: Int,
-        @SerializedName("weekOfMonth") val weekOfMonth: Int,
-        @SerializedName("streakCount") val streakCount: Int
+        @SerializedName("week_of_month") val weekOfMonth: Int,
+        @SerializedName("streak_count") val streakCount: Int
     )
 }
