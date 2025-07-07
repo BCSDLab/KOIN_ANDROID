@@ -57,6 +57,7 @@ fun ClubDetailsResponse.toClubDetails() = ClubDetails(
     phoneNumber,
     manager,
     isLiked,
+    isRecruitSubscribed,
     updatedAt,
     isLikeHidden,
     hotStatus?.toHotStatus()

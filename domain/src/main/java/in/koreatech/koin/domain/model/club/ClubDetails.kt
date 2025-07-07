@@ -15,6 +15,7 @@ data class ClubDetails(
     val phoneNumber: String?,
     val manager: Boolean,
     val isLiked: Boolean,
+    val isRecruitSubscribed: Boolean,
     val updatedAt: String,
     val isLikeHidden: Boolean,
     val hotStatus: HotStatus?
