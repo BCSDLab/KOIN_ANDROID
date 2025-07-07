@@ -61,7 +61,9 @@ fun ShoppingCartContent(
     modifier: Modifier,
     cart: Cart,
     navigateToStoreDetail: () -> Unit = { },
-    onOrderModeChanged: (CartType) -> Unit = { }
+    onOrderModeChanged: (CartType) -> Unit = { },
+    onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
+    onDeleteMenu: (Int) -> Unit = { _ -> }
 ) {
     val tabs = listOf(R.string.delivery, R.string.pickup)
     var selectedTab by remember { mutableStateOf(R.string.delivery) }
@@ -161,7 +163,14 @@ fun ShoppingCartContent(
                 Column {
                     cart.items.forEachIndexed { index, cartItem ->
                         CartMenuItem(
-                            menu = cartItem
+                            menu = cartItem,
+                            navigateToMenu = {},
+                            onChangeQuantity = { menuId, quantity ->
+                                onChangeQuantity(menuId, quantity)
+                            },
+                            onDeleteMenu = { menuId ->
+                                onDeleteMenu(menuId)
+                            }
                         )
                         if (index != cart.items.size - 1) {
                             Divider(
@@ -170,7 +179,6 @@ fun ShoppingCartContent(
                             )
                         }
                     }
-
                 }
             }
         }

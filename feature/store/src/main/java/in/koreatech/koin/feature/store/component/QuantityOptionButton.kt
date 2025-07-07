@@ -72,10 +72,10 @@ fun QuantityOptionButton(
                 )
             } else {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_minus),
+                    modifier = Modifier.size(20.dp).clickable(onClick = onMinusClick),
+                    painter = painterResource(id = R.drawable.ic_quantity_minus),
                     contentDescription = "",
                     tint = KoinTheme.colors.neutral600,
-                    modifier = Modifier.size(20.dp)
                 )
             }
 

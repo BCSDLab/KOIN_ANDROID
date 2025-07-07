@@ -71,6 +71,12 @@ fun ShoppingCartScreen(
                 .fillMaxSize(),
             cart = uiState.cart,
             onOrderModeChanged = { viewModel.getCart(it) },
+            onChangeQuantity = { cartMenuItemId, quantity ->
+                viewModel.modifyCartMenuQuantity(cartMenuItemId, quantity)
+            },
+            onDeleteMenu = { cartMenuItemId ->
+                viewModel.deleteCartMenuItem(cartMenuItemId)
+            },
         )
     }
 }

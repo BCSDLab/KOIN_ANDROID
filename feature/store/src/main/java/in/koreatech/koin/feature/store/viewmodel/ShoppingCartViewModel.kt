@@ -37,7 +37,7 @@ class ShoppingCartViewModel @Inject constructor(
 
     fun getCart(type: CartType) = intent {
         cartUseCase(type).collect { cart ->
-            reduce { state.copy(cart = cart) }
+            reduce { state.copy(cart = cart, cartType= type) }
         }
     }
 
@@ -47,7 +47,7 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    fun cartMenuQuantity(cartMenuItemId: Int, quantity: Int) = intent {
+    fun modifyCartMenuQuantity(cartMenuItemId: Int, quantity: Int) = intent {
         cartMenuQuantityUseCase(cartMenuItemId, quantity).collect {
             reduce {
                 state.copy(
@@ -63,6 +63,7 @@ class ShoppingCartViewModel @Inject constructor(
                 )
             }
         }
+        getCart(state.cartType)
     }
 
     fun deleteCartMenuItem(cartMenuItemId: Int) = intent {
@@ -77,6 +78,7 @@ class ShoppingCartViewModel @Inject constructor(
                 )
             }
         }
+        getCart(state.cartType)
     }
 
     fun resetCart() = intent {

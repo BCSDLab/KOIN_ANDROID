@@ -33,7 +33,6 @@ fun CartMenuItem(
     navigateToMenu: (Int) -> Unit = { _ -> },
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
     onDeleteMenu: (Int) -> Unit = { _ -> }
-
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row {
