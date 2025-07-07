@@ -7,10 +7,13 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CartAuthApi {
     @GET("cart")
-    suspend fun getCart(): CartResponse
+    suspend fun getCart(
+        @Query("type") type: String,
+    ): CartResponse
     @GET("cart/validate")
     suspend fun getCartValidate(): CartValidateResponse
     @POST("cart/quantity/{cartMenuItemId}/{quantity}")

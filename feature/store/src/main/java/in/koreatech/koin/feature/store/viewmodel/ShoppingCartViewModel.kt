@@ -3,9 +3,12 @@ package `in`.koreatech.koin.feature.store.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.usecase.cart.CartMenuQuantityUseCase
 import `in`.koreatech.koin.domain.usecase.cart.CartUseCase
 import `in`.koreatech.koin.domain.usecase.cart.CartValidateUseCase
+import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
+import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
 import `in`.koreatech.koin.feature.store.view.CartSideEffect
 import `in`.koreatech.koin.feature.store.view.CartState
 import org.orbitmvi.orbit.ContainerHost
@@ -19,7 +22,9 @@ class ShoppingCartViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val cartUseCase: CartUseCase,
     private val cartValidateUseCase: CartValidateUseCase,
-    private val cartMenuQuantityUseCase: CartMenuQuantityUseCase
+    private val cartMenuQuantityUseCase: CartMenuQuantityUseCase,
+    private val deleteCartMenuItemUseCase: DeleteCartMenuItemUseCase,
+    private val resetCartUseCase: ResetCartUseCase,
 ) : ViewModel(), ContainerHost<CartState, CartSideEffect> {
     override val container =
         container<CartState, CartSideEffect>(CartState()) {
@@ -30,8 +35,8 @@ class ShoppingCartViewModel @Inject constructor(
         getCart()
     }
 
-    fun getCart() = intent {
-        cartUseCase().collect { cart ->
+    fun getCart(type: CartType) = intent {
+        cartUseCase(type).collect { cart ->
             reduce { state.copy(cart = cart) }
         }
     }
