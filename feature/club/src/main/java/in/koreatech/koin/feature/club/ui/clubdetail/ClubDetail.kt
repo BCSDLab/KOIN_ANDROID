@@ -610,6 +610,12 @@ fun ClubDetail(
                                 userId = state.userId
                             )
                         }
+                        DetailTabType.RECRUIT.strResId -> {
+
+                        }
+                        DetailTabType.EVENT.strResId -> {
+                            
+                        }
                         DetailTabType.QNA.strResId -> {
                             Box {
                                 if (state.showQnasProgressBar) {

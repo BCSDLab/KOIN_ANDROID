@@ -6,5 +6,7 @@ enum class DetailTabType(
     val strResId: Int
 ) {
     DETAIL_INTRO(R.string.detail_tab_detail),
+    RECRUIT(R.string.detail_tab_recruit),
+    EVENT(R.string.detail_tab_event),
     QNA(R.string.detail_tab_qna)
 }
