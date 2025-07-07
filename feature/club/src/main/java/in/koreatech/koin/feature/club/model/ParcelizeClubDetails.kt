@@ -21,8 +21,16 @@ data class ParcelizeClubDetails(
     val manager: Boolean,
     val isLiked: Boolean,
     val updatedAt: String,
-    val isLikeHidden: Boolean
-) : Parcelable
+    val isLikeHidden: Boolean,
+    val hotStatus: ParcelizeHotStatus?
+) : Parcelable {
+    @Parcelize
+    data class ParcelizeHotStatus (
+        val month: Int,
+        val weekOfMonth: Int,
+        val streakCount: Int
+    ) : Parcelable
+}
 
 fun ClubDetails?.toParcelizeClubDetails(): ParcelizeClubDetails? {
     if (this == null) return null
@@ -42,6 +50,16 @@ fun ClubDetails?.toParcelizeClubDetails(): ParcelizeClubDetails? {
         manager = manager,
         isLiked = isLiked,
         updatedAt = updatedAt,
-        isLikeHidden = isLikeHidden
+        isLikeHidden = isLikeHidden,
+        hotStatus = hotStatus.toParcelizeHotStatus()
+    )
+}
+
+fun ClubDetails.HotStatus?.toParcelizeHotStatus(): ParcelizeClubDetails.ParcelizeHotStatus? {
+    if (this == null) return null
+    return ParcelizeClubDetails.ParcelizeHotStatus(
+        month = month,
+        weekOfMonth = weekOfMonth,
+        streakCount = streakCount
     )
 }
