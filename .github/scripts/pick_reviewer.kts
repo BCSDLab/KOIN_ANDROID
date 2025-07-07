@@ -15,7 +15,6 @@ enum class KoinTeam {
 
 enum class Developer(val githubName: String, val team: Set<KoinTeam>, val isMentor: Boolean = false) {
     YUNJAENA("yunjaena", setOf(), true),
-    SKDUD0629("skdud0629", setOf(KoinTeam.BUSINESS)),
     JAEYOUNG290("JaeYoung290", setOf(KoinTeam.BUSINESS)),
     KONGWOOJIN("kongwoojin", setOf(KoinTeam.CAMPUS, KoinTeam.USER)),
     KYM_P("KYM-P", setOf(KoinTeam.CAMPUS)),
@@ -31,11 +30,10 @@ enum class Developer(val githubName: String, val team: Set<KoinTeam>, val isMent
  * don't add mentor here
  */
 val reviewerPair = listOf(
-    Developer.SKDUD0629 to Developer.KYM_P,
     Developer.JAEYOUNG290 to Developer.KONGWOOJIN,
     Developer.KONGWOOJIN to Developer.JAEYOUNG290,
     Developer.KYM_P to Developer.JUSANG3057,
-    Developer.JUSANG3057 to Developer.SKDUD0629,
+    Developer.JUSANG3057 to Developer.KYM_P,
 )
 
 /**
