@@ -10,7 +10,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
@@ -21,8 +20,6 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
-import `in`.koreatech.koin.domain.model.cart.Cart
-import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.viewmodel.ShoppingCartViewModel
 import org.orbitmvi.orbit.compose.collectAsState
@@ -31,7 +28,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
-    onBackClick: () -> Unit,
+    navigateToStoreDetailScreen: () -> Unit,
     onDeleteAllClick: () -> Unit,
 ) {
     val uiState by viewModel.collectAsState()
@@ -43,16 +40,16 @@ fun ShoppingCartScreen(
                     containerColor = colorResource(id = R.color.store_detail_background)
                 ),
                 title = stringResource(R.string.shopping_cart),
-                onNavigationIconClick = onBackClick,
+                onNavigationIconClick = navigateToStoreDetailScreen,
                 actions = {
                     Text(
-                        color = if(uiState.cart.items.isEmpty()) RebrandKoinTheme.colors.primary300 else  RebrandKoinTheme.colors.primary500,
+                        color = if (uiState.cart.items.isEmpty()) RebrandKoinTheme.colors.primary300 else RebrandKoinTheme.colors.primary500,
                         fontWeight = SemiBold,
                         text = stringResource(R.string.delete_all),
                         modifier = Modifier
                             .padding(end = 10.dp)
                             .noRippleClickable {
-                                if(uiState.cart.items.isEmpty())
+                                if (uiState.cart.items.isEmpty())
                                     return@noRippleClickable
                                 onDeleteAllClick()
                             }
@@ -84,7 +81,7 @@ private fun ShoppingCartItem() {
     KoinTheme {
         Column {
             ShoppingCartScreen(
-                onBackClick = {},
+                navigateToStoreDetailScreen = {},
                 onDeleteAllClick = {},
             )
         }
