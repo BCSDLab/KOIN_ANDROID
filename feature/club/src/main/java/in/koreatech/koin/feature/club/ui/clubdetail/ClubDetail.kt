@@ -91,7 +91,6 @@ import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_INSTAGRAM
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_LOCATION
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_OPEN_CHAT
 import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_PHONE_NUMBER
-import `in`.koreatech.koin.feature.club.type.DetailIntroType.DETAIL_NOTIFICATION
 import `in`.koreatech.koin.feature.club.type.DetailTabType
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.DetailImageDialog
 import `in`.koreatech.koin.feature.club.ui.clubdetail.component.dialog.content.DetailDialogAddQnaContent
@@ -123,7 +122,7 @@ fun ClubDetail(
         Pair(DETAIL_INSTAGRAM, state.clubDetails?.instagram),
         Pair(DETAIL_GOOGLE_FORM, state.clubDetails?.googleForm),
         Pair(DETAIL_OPEN_CHAT, state.clubDetails?.openChat),
-        Pair(DETAIL_PHONE_NUMBER, state.clubDetails?.phoneNumber)
+        Pair(DETAIL_PHONE_NUMBER, state.clubDetails?.phoneNumber),
     )
     val qnaList = state.clubQnasInfo?.qnas
     val tabList = DetailTabType.entries.map { it.strResId }
@@ -509,8 +508,30 @@ fun ClubDetail(
                                             }
                                     )
                                 }
-
                             }
+                        }
+                        Row (
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.detail_intro_notification),
+                                style = KoinTheme.typography.medium18,
+                                color = KoinTheme.colors.neutral800
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Image(
+                                painter = if (state.clubDetails?.isRecruitSubscribed == true) {
+                                    painterResource(R.drawable.icon_notification_true)
+                                }
+                                else {
+                                    painterResource(R.drawable.icon_notification_false)
+                                },
+                                contentDescription = "Notification Icon",
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .padding(end = 4.dp)
+                                    .clickable { } //TODO club notification
+                            )
                         }
                     }
                     Spacer(modifier = Modifier.height(12.dp))

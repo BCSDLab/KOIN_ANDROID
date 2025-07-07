@@ -9,6 +9,7 @@
     <string name="detail_intro_google_form">구글폼 :&#160;</string>
     <string name="detail_intro_open_chat">오픈채팅 :&#160;</string>
     <string name="detail_intro_phone_number">전화번호 :&#160;</string>
+    <string name="detail_intro_notification">모집알림</string>
     <string name="detail_qna_text_field_hint">답변을 입력해주세요.</string>
     <string name="detail_fix_button">수정하기</string>
     <string name="detail_empowerment_button">권한 위임</string>

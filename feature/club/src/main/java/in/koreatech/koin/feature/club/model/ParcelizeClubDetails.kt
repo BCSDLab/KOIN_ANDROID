@@ -20,6 +20,7 @@ data class ParcelizeClubDetails(
     val phoneNumber: String?,
     val manager: Boolean,
     val isLiked: Boolean,
+    val isRecruitSubscribed: Boolean,
     val updatedAt: String,
     val isLikeHidden: Boolean,
     val hotStatus: ParcelizeHotStatus?
@@ -49,6 +50,7 @@ fun ClubDetails?.toParcelizeClubDetails(): ParcelizeClubDetails? {
         phoneNumber = phoneNumber,
         manager = manager,
         isLiked = isLiked,
+        isRecruitSubscribed = isRecruitSubscribed,
         updatedAt = updatedAt,
         isLikeHidden = isLikeHidden,
         hotStatus = hotStatus.toParcelizeHotStatus()
