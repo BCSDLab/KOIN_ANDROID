@@ -57,8 +57,16 @@ fun ClubDetailsResponse.toClubDetails() = ClubDetails(
     phoneNumber,
     manager,
     isLiked,
+    isRecruitSubscribed,
     updatedAt,
-    isLikeHidden
+    isLikeHidden,
+    hotStatus?.toHotStatus()
+)
+
+fun ClubDetailsResponse.HotStatusResponse.toHotStatus() = ClubDetails.HotStatus(
+    month,
+    weekOfMonth,
+    streakCount
 )
 
 fun ClubQnasResponse.toClubQnasInfo() = ClubQnasInfo(

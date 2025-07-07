@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,12 +50,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
@@ -391,6 +395,29 @@ fun ClubDetail(
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            state.clubDetails?.hotStatus?.let {
+                                Row(
+                                    modifier = Modifier
+                                        .background(
+                                            color = KoinTheme.colors.primary100,
+                                            shape = KoinTheme.shapes.extraSmall
+                                        )
+                                        .padding(vertical = 7.dp, horizontal = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = stringResource(
+                                            R.string.detail_hotStatus_club_intro,
+                                            state.clubDetails?.hotStatus?.month ?: 0,
+                                            state.clubDetails?.hotStatus?.weekOfMonth ?: 0
+                                        ),
+                                        style = KoinTheme.typography.regular10.copy(fontSize = 11.sp),
+                                        color = KoinTheme.colors.neutral800
+                                    )
+                                }
+                            }
+                            Spacer(Modifier.width(8.dp))
                             Image(
                                 painter = if (state.clubDetails?.isLiked == true) painterResource(id = R.drawable.icon_like_true) else painterResource(id = R.drawable.icon_like_false),
                                 contentDescription = "",
@@ -422,7 +449,9 @@ fun ClubDetail(
                             var outputText = ""
                             var linkUrl = ""
                             val showMore = remember { mutableStateOf(false) }
+                            var icon = -1
                             var onClick = {}
+                            var onIconClick = {}
                             intro.second?.let {
                                 when (intro.first) {
                                     DETAIL_DESCRIPTION -> {
@@ -436,7 +465,12 @@ fun ClubDetail(
                                     }
                                     DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
                                     DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
-                                    DETAIL_PHONE_NUMBER -> outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
+                                    DETAIL_PHONE_NUMBER -> {
+                                        outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
+                                        icon = R.drawable.icon_phonenumber_copy
+                                        val clipboard = LocalClipboardManager.current
+                                        onIconClick = { clipboard.setText(AnnotatedString(outputText)) }
+                                    }
                                     else -> outputText = it
                                 }
                                 if (
@@ -447,7 +481,9 @@ fun ClubDetail(
                                     onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
                                 }
                             }
-                            Row {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
                                     text = if (intro.first != DETAIL_DESCRIPTION) stringResource(intro.first.strResId) else "",
                                     style = KoinTheme.typography.medium18,
@@ -460,6 +496,43 @@ fun ClubDetail(
                                     color = if (linkUrl.isEmpty()) KoinTheme.colors.neutral800 else KoinTheme.colors.info700,
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier.clickable { onClick() }
+                                )
+                                if (icon != -1) {
+                                    Spacer(Modifier.width(8.dp))
+                                    Image(
+                                        painter = painterResource(id = icon),
+                                        contentDescription = "Phone Number Copy Icon",
+                                        modifier = Modifier
+                                            .size(24.dp)
+                                            .padding(end = 4.dp)
+                                            .clickable {
+                                                onIconClick()
+                                            }
+                                    )
+                                }
+                            }
+                        }
+                        if (state.clubDetails?.manager == false) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.detail_intro_notification),
+                                    style = KoinTheme.typography.medium18,
+                                    color = KoinTheme.colors.neutral800
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Image(
+                                    painter = if (state.clubDetails?.isRecruitSubscribed == true) {
+                                        painterResource(R.drawable.icon_notification_true)
+                                    } else {
+                                        painterResource(R.drawable.icon_notification_false)
+                                    },
+                                    contentDescription = "Notification Icon",
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .padding(end = 4.dp)
+                                        .clickable { } // TODO club notification
                                 )
                             }
                         }
@@ -539,6 +612,10 @@ fun ClubDetail(
                                 isManager = state.clubDetails?.manager ?: false,
                                 userId = state.userId
                             )
+                        }
+                        DetailTabType.RECRUIT.strResId -> {
+                        }
+                        DetailTabType.EVENT.strResId -> {
                         }
                         DetailTabType.QNA.strResId -> {
                             Box {
