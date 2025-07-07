@@ -14,16 +14,20 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
-fun PaymentSummaryCard() {
+fun PaymentSummaryCard(
+    itemAmount: Int,
+    deliveryFee: Int,
+    totalAmount: Int,
+    finalPaymentAmount: Int,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,15 +42,15 @@ fun PaymentSummaryCard() {
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             elevation = CardDefaults.cardElevation(4.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+            colors = CardDefaults.cardColors(containerColor = RebrandKoinTheme.colors.neutral0)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = stringResource(R.string.total_amount), fontWeight = FontWeight.Bold)
-                    Text(text = "32,500원", fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.total_amount), style = RebrandKoinTheme.typography.bold16)
+                    Text(text = stringResource(R.string.menu_price_won, totalAmount.toString()), style = RebrandKoinTheme.typography.bold16)
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
@@ -55,11 +59,11 @@ fun PaymentSummaryCard() {
                 ) {
                     Text(
                         text = stringResource(R.string.menu_amount),
-                        color = Color.Gray
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                     Text(
-                        text = "29,500원",
-                        color = Color.Gray
+                        text =  stringResource(R.string.menu_price_won, itemAmount.toString()),
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                 }
                 Spacer(modifier = Modifier.height(4.dp))
@@ -69,11 +73,11 @@ fun PaymentSummaryCard() {
                 ) {
                     Text(
                         text = stringResource(R.string.delivery_amount),
-                        color = Color.Gray
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                     Text(
-                        text = "3,000원",
-                        color = Color.Gray
+                        text = stringResource(R.string.menu_price_won, deliveryFee.toString()),
+                        color = RebrandKoinTheme.colors.neutral500
                     )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
@@ -85,11 +89,11 @@ fun PaymentSummaryCard() {
                 ) {
                     Text(
                         text = stringResource(R.string.expected_payment_amount),
-                        fontWeight = FontWeight.Bold
+                        style = RebrandKoinTheme.typography.bold16
                     )
                     Text(
-                        text = "32,500원",
-                        fontWeight = FontWeight.Bold
+                        text = stringResource(R.string.menu_price_won, finalPaymentAmount.toString()),
+                        style = RebrandKoinTheme.typography.bold16
                     )
                 }
             }
@@ -101,6 +105,11 @@ fun PaymentSummaryCard() {
 @Composable
 private fun PaymentSummaryCardPreview() {
     KoinTheme {
-        PaymentSummaryCard()
+        PaymentSummaryCard(
+            itemAmount = 20000,
+            deliveryFee = 3000,
+            totalAmount = 23000,
+            finalPaymentAmount = 23000
+        )
     }
 }
