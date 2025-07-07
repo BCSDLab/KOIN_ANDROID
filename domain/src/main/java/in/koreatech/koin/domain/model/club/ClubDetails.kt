@@ -16,5 +16,12 @@ data class ClubDetails(
     val manager: Boolean,
     val isLiked: Boolean,
     val updatedAt: String,
-    val isLikeHidden: Boolean
-)
+    val isLikeHidden: Boolean,
+    val hotStatus: HotStatus
+) {
+    data class HotStatus(
+        val month: Int,
+        val weekOfMonth: Int,
+        val streakCount: Int
+    )
+}
