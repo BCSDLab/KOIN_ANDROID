@@ -17,7 +17,7 @@ data class ClubDetails(
     val isLiked: Boolean,
     val updatedAt: String,
     val isLikeHidden: Boolean,
-    val hotStatus: HotStatus
+    val hotStatus: HotStatus?
 ) {
     data class HotStatus(
         val month: Int,

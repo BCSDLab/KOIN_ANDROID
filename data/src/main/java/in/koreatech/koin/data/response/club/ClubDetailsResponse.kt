@@ -19,7 +19,7 @@ data class ClubDetailsResponse(
     @SerializedName("is_liked") val isLiked: Boolean,
     @SerializedName("updated_at") val updatedAt: String,
     @SerializedName("is_like_hidden") val isLikeHidden: Boolean,
-    @SerializedName("hot_status") val hotStatus: HotStatus
+    @SerializedName("hot_status") val hotStatus: HotStatus?
 ) {
     data class HotStatus(
         @SerializedName("month") val month: Int,
