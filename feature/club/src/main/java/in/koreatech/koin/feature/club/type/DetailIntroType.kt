@@ -1,9 +1,10 @@
 package `in`.koreatech.koin.feature.club.type
 
+import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.club.R
 
 enum class DetailIntroType(
-    val strResId: Int
+    @StringRes val strResId: Int
 ) {
     DETAIL_CATEGORY(R.string.detail_intro_category),
     DETAIL_LOCATION(R.string.detail_intro_location),

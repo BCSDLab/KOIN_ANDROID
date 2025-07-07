@@ -1,9 +1,10 @@
 package `in`.koreatech.koin.feature.club.type
 
+import androidx.annotation.StringRes
 import `in`.koreatech.koin.feature.club.R
 
 enum class DetailTabType(
-    val strResId: Int
+    @StringRes val strResId: Int
 ) {
     DETAIL_INTRO(R.string.detail_tab_detail),
     RECRUIT(R.string.detail_tab_recruit),
