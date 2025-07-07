@@ -58,7 +58,14 @@ fun ClubDetailsResponse.toClubDetails() = ClubDetails(
     manager,
     isLiked,
     updatedAt,
-    isLikeHidden
+    isLikeHidden,
+    hotStatus?.toHotStatus()
+)
+
+fun ClubDetailsResponse.HotStatusResponse.toHotStatus() = ClubDetails.HotStatus(
+    month,
+    weekOfMonth,
+    streakCount
 )
 
 fun ClubQnasResponse.toClubQnasInfo() = ClubQnasInfo(
