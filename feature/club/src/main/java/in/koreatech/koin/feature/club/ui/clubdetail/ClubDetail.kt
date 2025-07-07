@@ -510,28 +510,30 @@ fun ClubDetail(
                                 }
                             }
                         }
-                        Row (
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = stringResource(R.string.detail_intro_notification),
-                                style = KoinTheme.typography.medium18,
-                                color = KoinTheme.colors.neutral800
-                            )
-                            Spacer(Modifier.width(8.dp))
-                            Image(
-                                painter = if (state.clubDetails?.isRecruitSubscribed == true) {
-                                    painterResource(R.drawable.icon_notification_true)
-                                }
-                                else {
-                                    painterResource(R.drawable.icon_notification_false)
-                                },
-                                contentDescription = "Notification Icon",
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .padding(end = 4.dp)
-                                    .clickable { } //TODO club notification
-                            )
+                        if (state.clubDetails?.manager == false) {
+                            Row (
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.detail_intro_notification),
+                                    style = KoinTheme.typography.medium18,
+                                    color = KoinTheme.colors.neutral800
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Image(
+                                    painter = if (state.clubDetails?.isRecruitSubscribed == true) {
+                                        painterResource(R.drawable.icon_notification_true)
+                                    }
+                                    else {
+                                        painterResource(R.drawable.icon_notification_false)
+                                    },
+                                    contentDescription = "Notification Icon",
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .padding(end = 4.dp)
+                                        .clickable { } //TODO club notification
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
