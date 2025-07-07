@@ -32,7 +32,7 @@ class ShoppingCartViewModel @Inject constructor(
         }
 
     init {
-        getCart()
+        getCart(CartType.DELIVERY)
     }
 
     fun getCart(type: CartType) = intent {
