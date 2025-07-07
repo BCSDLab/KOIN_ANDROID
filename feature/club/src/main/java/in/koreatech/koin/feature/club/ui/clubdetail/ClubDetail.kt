@@ -122,7 +122,7 @@ fun ClubDetail(
         Pair(DETAIL_INSTAGRAM, state.clubDetails?.instagram),
         Pair(DETAIL_GOOGLE_FORM, state.clubDetails?.googleForm),
         Pair(DETAIL_OPEN_CHAT, state.clubDetails?.openChat),
-        Pair(DETAIL_PHONE_NUMBER, state.clubDetails?.phoneNumber),
+        Pair(DETAIL_PHONE_NUMBER, state.clubDetails?.phoneNumber)
     )
     val qnaList = state.clubQnasInfo?.qnas
     val tabList = DetailTabType.entries.map { it.strResId }
@@ -404,12 +404,14 @@ fun ClubDetail(
                                         )
                                         .padding(vertical = 7.dp, horizontal = 8.dp),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ){
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
                                     Text(
-                                        text = stringResource(R.string.detail_hotStatus_club_intro,
+                                        text = stringResource(
+                                            R.string.detail_hotStatus_club_intro,
                                             state.clubDetails?.hotStatus?.month ?: 0,
-                                            state.clubDetails?.hotStatus?.weekOfMonth ?: 0),
+                                            state.clubDetails?.hotStatus?.weekOfMonth ?: 0
+                                        ),
                                         style = KoinTheme.typography.regular10.copy(fontSize = 11.sp),
                                         color = KoinTheme.colors.neutral800
                                     )
@@ -479,7 +481,7 @@ fun ClubDetail(
                                     onClick = { if (linkUrl.isNotEmpty()) viewModel.openUrl(linkUrl) }
                                 }
                             }
-                            Row (
+                            Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
@@ -495,7 +497,7 @@ fun ClubDetail(
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier.clickable { onClick() }
                                 )
-                                if(icon != -1) {
+                                if (icon != -1) {
                                     Spacer(Modifier.width(8.dp))
                                     Image(
                                         painter = painterResource(id = icon),
@@ -511,7 +513,7 @@ fun ClubDetail(
                             }
                         }
                         if (state.clubDetails?.manager == false) {
-                            Row (
+                            Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
@@ -523,15 +525,14 @@ fun ClubDetail(
                                 Image(
                                     painter = if (state.clubDetails?.isRecruitSubscribed == true) {
                                         painterResource(R.drawable.icon_notification_true)
-                                    }
-                                    else {
+                                    } else {
                                         painterResource(R.drawable.icon_notification_false)
                                     },
                                     contentDescription = "Notification Icon",
                                     modifier = Modifier
                                         .size(24.dp)
                                         .padding(end = 4.dp)
-                                        .clickable { } //TODO club notification
+                                        .clickable { } // TODO club notification
                                 )
                             }
                         }
@@ -613,10 +614,8 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.RECRUIT.strResId -> {
-
                         }
                         DetailTabType.EVENT.strResId -> {
-                            
                         }
                         DetailTabType.QNA.strResId -> {
                             Box {

@@ -26,7 +26,7 @@ data class ParcelizeClubDetails(
     val hotStatus: ParcelizeHotStatus?
 ) : Parcelable {
     @Parcelize
-    data class ParcelizeHotStatus (
+    data class ParcelizeHotStatus(
         val month: Int,
         val weekOfMonth: Int,
         val streakCount: Int
