@@ -15,7 +15,7 @@ android {
         applicationId = "in.koreatech.business"
         versionCode = rootProject.extra["versionBusinessCode"] as Int
         versionName = rootProject.extra["versionBusinessName"].toString()
-        buildConfigField("String", "OKHTTP_VERSION", "\"${libs.versions.okhttpVersion.get()}\"")
+        buildConfigField("String", "OKHTTP_VERSION", "\"${libs.versions.okhttp.get()}\"")
     }
 
     androidComponents {
@@ -38,13 +38,13 @@ android {
 
 dependencies {
     implementation(libs.guava)
-    implementation(libs.kotlinxCollectionsImmutable)
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+    implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.bundles.compose)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.compose.navigation)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.security.crypto)
     implementation(libs.coil)
     implementation(libs.coil.compose)
