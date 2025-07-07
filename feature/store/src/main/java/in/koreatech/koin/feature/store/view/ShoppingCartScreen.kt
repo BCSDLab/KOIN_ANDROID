@@ -29,7 +29,6 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
     navigateToStoreDetailScreen: () -> Unit,
-    onDeleteAllClick: () -> Unit,
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -51,7 +50,7 @@ fun ShoppingCartScreen(
                             .noRippleClickable {
                                 if (uiState.cart.items.isEmpty())
                                     return@noRippleClickable
-                                onDeleteAllClick()
+                                viewModel.resetCart()
                             }
                     )
                 }
@@ -71,6 +70,7 @@ fun ShoppingCartScreen(
                 .padding(innerPadding)
                 .fillMaxSize(),
             cart = uiState.cart,
+            onOrderModeChanged = { viewModel.getCart(it) },
         )
     }
 }
@@ -82,7 +82,6 @@ private fun ShoppingCartItem() {
         Column {
             ShoppingCartScreen(
                 navigateToStoreDetailScreen = {},
-                onDeleteAllClick = {},
             )
         }
     }

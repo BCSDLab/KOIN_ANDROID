@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,24 +22,38 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.cart.CartItem
+import `in`.koreatech.koin.domain.model.cart.CartItemOption
+import `in`.koreatech.koin.domain.model.cart.CartItemPrice
+import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun CartMenuItem(
-    menu: ShopMenus
+    menu: CartItem,
+    navigateToMenu: (Int) -> Unit = { _ -> },
+    onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
+    onDeleteMenu: (Int) -> Unit = { _ -> }
+
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = menu.name, fontWeight = SemiBold, fontSize = 18.sp)
+                Text(modifier=Modifier.padding(vertical= 8.dp),text = menu.name, fontWeight = SemiBold, fontSize = 18.sp)
                 Text(
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    text = menu.description ?: "",
+                    text = stringResource(R.string.menu_price) + stringResource(R.string.menu_price_won, menu.totalAmount.toString()),
                     style = KoinTheme.typography.medium15,
                     color = KoinTheme.colors.neutral500
                 )
+                if (menu.options.isNotEmpty()) {
+                    Text(
+                        text = menu.options.joinToString("\n") { "${it.optionName} : ${it.optionPrice}원" },
+                        style = KoinTheme.typography.medium15,
+                        color = KoinTheme.colors.neutral500
+                    )
+                }
+
                 Text(
-                    text = "27,000원",
+                    text = stringResource(R.string.menu_price_won, menu.totalAmount.toString()),
                     style = KoinTheme.typography.bold16,
                     color = KoinTheme.colors.neutral800
                 )
@@ -46,7 +61,7 @@ fun CartMenuItem(
             Spacer(modifier = Modifier.width(16.dp))
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(menu.imageUrls?.firstOrNull())
+                    .data(menu.menuThumbnailImageUrl)
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
@@ -59,10 +74,19 @@ fun CartMenuItem(
         }
         Spacer(modifier = Modifier.height(16.dp))
         QuantityOptionButton(
-            quantity = 1,
-            onOptionClick = {},
-            onMinusClick = {},
-            onPlusClick = {}
+            quantity = menu.quantity,
+            onOptionClick = {
+                navigateToMenu(menu.cartMenuItemId)
+            },
+            onMinusClick = {
+                onChangeQuantity(menu.cartMenuItemId, menu.quantity - 1)
+            },
+            onDeleteClick = {
+                onDeleteMenu(menu.cartMenuItemId)
+            },
+            onPlusClick = {
+                onChangeQuantity(menu.cartMenuItemId, menu.quantity + 1)
+            }
         )
     }
 }
@@ -72,18 +96,21 @@ fun CartMenuItem(
 private fun ShoppingCartItem() {
     KoinTheme {
         CartMenuItem(
-            menu = ShopMenus(
-                id = 1,
-                name = "맛있는 메뉴",
-                description = "이 메뉴는 정말 맛있습니다.",
-                imageUrls = listOf("https://example.com/image.jpg"),
-                isHidden = false,
-                isSingle = false,
-                optionPrices = listOf(
-                    ShopMenus.ShopMenuOptions(option = "123123", price = 123213),
-                    ShopMenus.ShopMenuOptions(option = "3232", price = 321312213)
+            menu = CartItem(
+                cartMenuItemId = 1,
+                name = "아메리카노",
+                menuThumbnailImageUrl = "https://example.com/image.jpg",
+                quantity = 1,
+                totalAmount = 27000,
+                price = CartItemPrice(
+                    name = "아메리카노",
+                    price = 27000
                 ),
-                singlePrice = 10000
+                options = listOf(
+                    CartItemOption("으아아", optionName = "매운맛", optionPrice = 500),
+                    CartItemOption("으아아", optionName = "치즈추가", optionPrice = 1000)
+                ),
+                isModified = false
             )
         )
     }

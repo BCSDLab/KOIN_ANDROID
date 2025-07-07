@@ -18,8 +18,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.ButtonDefaults.buttonElevation
@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +51,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.domain.model.cart.Cart
-import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.CartMenuItem
 import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
@@ -59,7 +60,8 @@ import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
 fun ShoppingCartContent(
     modifier: Modifier,
     cart: Cart,
-    navigateToStoreDetail: () -> Unit = { }
+    navigateToStoreDetail: () -> Unit = { },
+    onOrderModeChanged: (CartType) -> Unit = { }
 ) {
     val tabs = listOf(R.string.delivery, R.string.pickup)
     var selectedTab by remember { mutableStateOf(R.string.delivery) }
@@ -92,7 +94,12 @@ fun ShoppingCartContent(
                 tabs.forEach { tab ->
                     val isSelected = tab == selectedTab
                     Button(
-                        onClick = { selectedTab = tab },
+                        onClick = {
+                            selectedTab = tab
+                            onOrderModeChanged(
+                                if (tab == R.string.delivery) CartType.DELIVERY else CartType.TAKE_OUT
+                            )
+                        },
                         modifier = Modifier
                             .heightIn(52.dp)
                             .weight(1f)
@@ -117,13 +124,15 @@ fun ShoppingCartContent(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { /* TODO: navigate */ }
+                    .padding(vertical = 12.dp, horizontal = 3.dp)
+                    .clickable { navigateToStoreDetail() }
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(cart.shopThumbnailImageUrl),
                     contentDescription = "",
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(30.dp)
                         .clip(RoundedCornerShape(8.dp))
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -132,7 +141,7 @@ fun ShoppingCartContent(
                     fontWeight = FontWeight.Medium
                 )
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "",
                     tint = Color.Gray
                 )
@@ -150,28 +159,18 @@ fun ShoppingCartContent(
                 )
             ) {
                 Column {
-                    repeat(cart.items.size) { // 장바구니에 담긴 메뉴 수
+                    cart.items.forEachIndexed { index, cartItem ->
                         CartMenuItem(
-                            menu = ShopMenus(
-                                name = "족발 + 막국 저녁 set",
-                                description = "가격 : 25000원\n사이즈 : 소\n음료:콜라 500ml",
-                                imageUrls = listOf("https://example.com/image.jpg"),
-                                optionPrices = listOf(
-                                    ShopMenus.ShopMenuOptions("옵션2", 2000)
-                                ),
-                                isSingle = true,
-                                singlePrice = 10000,
-                                isHidden = false,
-                                id = 1
-                            )
+                            menu = cartItem
                         )
-                        if (it != cart.items.size - 1) {
+                        if (index != cart.items.size - 1) {
                             Divider(
                                 color = KoinTheme.colors.neutral300,
                                 thickness = 2.dp
                             )
                         }
                     }
+
                 }
             }
         }

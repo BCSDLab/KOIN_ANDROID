@@ -21,7 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.feature.store.R
@@ -29,9 +31,10 @@ import `in`.koreatech.koin.feature.store.R
 @Composable
 fun QuantityOptionButton(
     quantity: Int,
-    onOptionClick: () -> Unit,
-    onMinusClick: () -> Unit,
-    onPlusClick: () -> Unit
+    onOptionClick: () -> Unit = {},
+    onMinusClick: () -> Unit = {},
+    onPlusClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -58,14 +61,24 @@ fun QuantityOptionButton(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             enabled = false
         ) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "",
-                tint = KoinTheme.colors.neutral600,
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable(onClick = onMinusClick)
-            )
+            if (quantity <= 1) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "",
+                    tint = KoinTheme.colors.neutral600,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable(onClick = onDeleteClick)
+                )
+            } else {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_minus),
+                    contentDescription = "",
+                    tint = KoinTheme.colors.neutral600,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+
             Text(modifier = Modifier.padding(horizontal = 14.dp), text = "$quantity", color = KoinTheme.colors.neutral600)
             Icon(
                 imageVector = Icons.Default.Add,
@@ -76,5 +89,19 @@ fun QuantityOptionButton(
                     .clickable(onClick = onPlusClick)
             )
         }
+    }
+}
+
+@Composable
+@Preview
+fun QuantityOptionButtonPreview() {
+    KoinTheme {
+        QuantityOptionButton(
+            quantity = 2,
+            onOptionClick = {},
+            onMinusClick = {},
+            onPlusClick = {},
+            onDeleteClick = {}
+        )
     }
 }
