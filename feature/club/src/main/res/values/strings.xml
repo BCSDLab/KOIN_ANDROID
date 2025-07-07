@@ -36,7 +36,7 @@
     <string name="detail_dialog_empowerment_new_id">향후 권한자 아이디</string>
     <string name="detail_dialog_empowerment_hint">아이디를 입력해주세요.</string>
     <string name="detail_detail_intro_in_development">아직 준비중입니다.</string>
-    <string name="detail_hotStatus_club_intro">🎉%d월 %d째주 인기 동아리 🎉</string>
+    <string name="detail_hotStatus_club_intro">🎉%1$d월 %2$d째주 인기 동아리 🎉</string>
 
     <string name="detail_error_empty_text_field">필수 입력란입니다.</string>
     <string name="detail_error_unauthorized">올바르지 않은 인증 정보입니다.</string>
