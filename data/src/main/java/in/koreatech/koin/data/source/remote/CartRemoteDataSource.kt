@@ -13,4 +13,7 @@ class CartRemoteDataSource @Inject constructor(
     suspend fun getCartValidate() = cartApi.getCartValidate()
     suspend fun getCartQuantityMenu(cartMenuItemId: Int, quantity: Int) =
         cartApi.getCartQuantityMenu(cartMenuItemId, quantity)
+    suspend fun resetCart() = cartApi.resetCart()
+    suspend fun deleteCartMenuItem(cartMenuItemId: Int) =
+        cartApi.deleteCartMenuItem(cartMenuItemId)
 }

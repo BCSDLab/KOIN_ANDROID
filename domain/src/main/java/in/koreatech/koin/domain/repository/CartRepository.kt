@@ -8,4 +8,6 @@ interface CartRepository {
     suspend fun getCart(): Flow<Cart>
     suspend fun getCartValidate(): Flow<CartValidate>
     suspend fun cartMenuQuantity(cartMenuItemId: Int, quantity:Int): Flow<Unit>
+    suspend fun resetCart(): Flow<Unit>
+    suspend fun deleteCartMenuItem(cartMenuItemId: Int): Flow<Unit>
 }

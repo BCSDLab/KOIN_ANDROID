@@ -31,4 +31,20 @@ class CartRepositoryImpl @Inject constructor(
             throw HttpException(response)
         }
     }
+    override suspend fun resetCart() = flow {
+        val response = cartRemoteDataSource.resetCart()
+        if (response.isSuccessful) {
+            emit(Unit)
+        } else {
+            throw HttpException(response)
+        }
+    }
+    override suspend fun deleteCartMenuItem(cartMenuItemId: Int) = flow {
+        val response = cartRemoteDataSource.deleteCartMenuItem(cartMenuItemId)
+        if (response.isSuccessful) {
+            emit(Unit)
+        } else {
+            throw HttpException(response)
+        }
+    }
 }

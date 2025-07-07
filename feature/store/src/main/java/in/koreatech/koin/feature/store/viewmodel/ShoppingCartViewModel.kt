@@ -60,6 +60,26 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
+    fun deleteCartMenuItem(cartMenuItemId: Int) = intent {
+        deleteCartMenuItemUseCase(cartMenuItemId).collect {
+            reduce {
+                state.copy(
+                    cart = state.cart.copy(
+                        items = state.cart.items.filter { menuItem ->
+                            menuItem.cartMenuItemId != cartMenuItemId
+                        }
+                    )
+                )
+            }
+        }
+    }
+
+    fun resetCart() = intent {
+        resetCartUseCase().collect {
+            reduce { state.copy(cart = state.cart.copy(items = emptyList())) }
+        }
+    }
+
     companion object {
         const val STORE_ID = "storeId"
     }
