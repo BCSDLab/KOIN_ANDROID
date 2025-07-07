@@ -28,7 +28,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
-    navigateToStoreDetailScreen: () -> Unit,
+    navigateToStoreDetail: () -> Unit,
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -39,7 +39,7 @@ fun ShoppingCartScreen(
                     containerColor = colorResource(id = R.color.store_detail_background)
                 ),
                 title = stringResource(R.string.shopping_cart),
-                onNavigationIconClick = navigateToStoreDetailScreen,
+                onNavigationIconClick = navigateToStoreDetail,
                 actions = {
                     Text(
                         color = if (uiState.cart.items.isEmpty()) RebrandKoinTheme.colors.primary300 else RebrandKoinTheme.colors.primary500,
@@ -87,7 +87,7 @@ private fun ShoppingCartItem() {
     KoinTheme {
         Column {
             ShoppingCartScreen(
-                navigateToStoreDetailScreen = {},
+                navigateToStoreDetail = {},
             )
         }
     }
