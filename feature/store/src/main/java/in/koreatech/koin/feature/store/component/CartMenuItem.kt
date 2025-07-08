@@ -32,7 +32,7 @@ fun CartMenuItem(
     menu: CartItem,
     navigateToMenu: (Int) -> Unit = { },
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
-    deleteMenuItem: (Int) -> Unit = { }
+    onDeleteMenuItem: (Int) -> Unit = { }
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row {
@@ -80,8 +80,8 @@ fun CartMenuItem(
             onMinusClick = {
                 onChangeQuantity(menu.cartMenuItemId, menu.quantity - 1)
             },
-            deleteMenuItem = {
-                deleteMenuItem(menu.cartMenuItemId)
+            onDeleteMenuClick = {
+                onDeleteMenuItem(menu.cartMenuItemId)
             },
             onPlusClick = {
                 onChangeQuantity(menu.cartMenuItemId, menu.quantity + 1)

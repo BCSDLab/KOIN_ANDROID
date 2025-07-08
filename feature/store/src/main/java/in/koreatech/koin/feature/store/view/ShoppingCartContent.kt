@@ -228,7 +228,7 @@ fun ShoppingCartContent(
                             onChangeQuantity = { menuId, quantity ->
                                 onChangeQuantity(menuId, quantity)
                             },
-                            deleteMenuItem = { menuId ->
+                            onDeleteMenuItem = { menuId ->
                                 deleteCartMenuItem(menuId)
                             }
                         )
