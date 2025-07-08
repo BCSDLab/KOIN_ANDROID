@@ -65,7 +65,6 @@ import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
@@ -77,6 +76,8 @@ import `in`.koreatech.koin.domain.util.ext.isValidGoogleFormUrl
 import `in`.koreatech.koin.domain.util.ext.isValidInstagramUrl
 import `in`.koreatech.koin.domain.util.ext.isValidOpenChatUrl
 import `in`.koreatech.koin.domain.util.ext.isValidPhoneNumber
+import `in`.koreatech.koin.domain.util.ext.isValidUrlScheme
+import `in`.koreatech.koin.domain.util.ext.removeUrlScheme
 import `in`.koreatech.koin.feature.club.BuildConfig
 import `in`.koreatech.koin.feature.club.R
 import `in`.koreatech.koin.feature.club.component.DetailDialog
@@ -431,21 +432,22 @@ fun ClubDetail(
                                         onClick = { showMore.value = !showMore.value }
                                     }
                                     DETAIL_INSTAGRAM -> {
-                                        linkUrl = if (it.isValidInstagramUrl()) it else it.formatInstagramUrlForm()
+                                        val url = if (it.isValidUrlScheme()) it else it.formatHttpsUrlForm()
+                                        linkUrl = if (url.isValidInstagramUrl()) url else url.formatInstagramUrlForm()
                                         onClick = { viewModel.openUrl(linkUrl) }
                                         outputText = it.formatInstagramLinkForm()
                                     }
                                     DETAIL_GOOGLE_FORM -> {
-                                        val url = it.formatHttpsUrlForm()
+                                        val url = if (it.isValidUrlScheme()) it else it.formatHttpsUrlForm()
                                         linkUrl = if (url.isValidGoogleFormUrl()) url else ""
                                         onClick = { viewModel.openUrl(linkUrl) }
-                                        outputText = it.removePrefix(HTTPS_URL)
+                                        outputText = it.removeUrlScheme()
                                     }
                                     DETAIL_OPEN_CHAT -> {
-                                        val url = it.formatHttpsUrlForm()
+                                        val url = if (it.isValidUrlScheme()) it else it.formatHttpsUrlForm()
                                         linkUrl = if (url.isValidOpenChatUrl()) url else ""
                                         onClick = { viewModel.openUrl(linkUrl) }
-                                        outputText = it.removePrefix(HTTPS_URL)
+                                        outputText = it.removeUrlScheme()
                                     }
                                     DETAIL_PHONE_NUMBER -> outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
                                     else -> outputText = it
