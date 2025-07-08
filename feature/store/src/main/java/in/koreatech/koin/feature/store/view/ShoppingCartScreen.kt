@@ -51,7 +51,7 @@ fun ShoppingCartScreen(
                             .noRippleClickable {
                                 if (uiState.cart.items.isEmpty())
                                     return@noRippleClickable
-                                viewModel.resetCart()
+                                viewModel.setShowDeleteDialog(true)
                             }
                     )
                 }
@@ -78,7 +78,11 @@ fun ShoppingCartScreen(
                 viewModel.modifyCartMenuQuantity(cartMenuItemId, quantity)
             },
             onDeleteMenu = { cartMenuItemId ->
-                viewModel.deleteCartMenuItem(cartMenuItemId)
+                if (cartMenuItemId != -1) {
+                    viewModel.deleteCartMenuItem(cartMenuItemId)
+                } else {
+                    viewModel.resetCart()
+                }
             },
             setDialogVisibility = {
                 viewModel.setShowDeleteDialog(it)
