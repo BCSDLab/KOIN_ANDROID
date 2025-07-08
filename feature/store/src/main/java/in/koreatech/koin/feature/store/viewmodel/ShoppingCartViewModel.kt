@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.cart.CartType
@@ -9,7 +8,6 @@ import `in`.koreatech.koin.domain.usecase.cart.CartUseCase
 import `in`.koreatech.koin.domain.usecase.cart.CartValidateUseCase
 import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
 import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
-import `in`.koreatech.koin.feature.store.view.CartSideEffect
 import `in`.koreatech.koin.feature.store.view.CartState
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
@@ -25,9 +23,9 @@ class ShoppingCartViewModel @Inject constructor(
     private val cartMenuQuantityUseCase: CartMenuQuantityUseCase,
     private val deleteCartMenuItemUseCase: DeleteCartMenuItemUseCase,
     private val resetCartUseCase: ResetCartUseCase,
-) : ViewModel(), ContainerHost<CartState, CartSideEffect> {
+) : ViewModel(), ContainerHost<CartState, Unit> {
     override val container =
-        container<CartState, CartSideEffect>(CartState())
+        container<CartState, Unit>(CartState())
 
     init {
         getCart(CartType.DELIVERY)
