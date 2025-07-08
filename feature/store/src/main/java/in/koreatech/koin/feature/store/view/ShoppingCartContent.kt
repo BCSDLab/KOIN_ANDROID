@@ -30,10 +30,6 @@ import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,21 +62,21 @@ fun ShoppingCartContent(
     modifier: Modifier,
     cart: Cart,
     cartType: CartType = CartType.DELIVERY,
-    isOperating: Boolean = false,
+    isOperating: Boolean = true,
     dialogVisibility: Boolean = false,
     navigateToStoreDetail: () -> Unit = { },
     onOrderModeChanged: (CartType) -> Unit = { },
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
-    onDeleteMenu: (Int) -> Unit = { _ -> },
+    onResetMenu: () -> Unit = { },
+    deleteCartMenuItem: (Int) -> Unit = { },
     setDialogVisibility: (Boolean) -> Unit = { }
 ) {
     val lazyColumnState = rememberLazyListState()
-    var menuIdToDelete by remember { mutableStateOf(-1) }
 
     if (dialogVisibility) {
         DeleteCartDialog(
             onConfirm = {
-                onDeleteMenu(menuIdToDelete)
+                onResetMenu()
             },
             onDismiss = {
                 setDialogVisibility(false)
@@ -231,11 +227,9 @@ fun ShoppingCartContent(
                             navigateToMenu = {},
                             onChangeQuantity = { menuId, quantity ->
                                 onChangeQuantity(menuId, quantity)
-                                menuIdToDelete = menuId
                             },
-                            showDeleteDialog = { menuId ->
-                                menuIdToDelete = menuId
-                                setDialogVisibility(true)
+                            deleteMenuItem = { menuId ->
+                                deleteCartMenuItem(menuId)
                             }
                         )
                         if (index != cart.items.size - 1) {

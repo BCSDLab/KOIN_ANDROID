@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.store.view
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,7 +28,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
-    isOperating: Boolean = false,
+    isOperating: Boolean = true,
     navigateToStoreDetail: () -> Unit,
 ) {
     val uiState by viewModel.collectAsState()
@@ -79,12 +78,11 @@ fun ShoppingCartScreen(
             onChangeQuantity = { cartMenuItemId, quantity ->
                 viewModel.modifyCartMenuQuantity(cartMenuItemId, quantity)
             },
-            onDeleteMenu = { cartMenuItemId ->
-                if (cartMenuItemId != -1) {
-                    viewModel.deleteCartMenuItem(cartMenuItemId)
-                } else {
-                    viewModel.resetCart()
-                }
+            onResetMenu = {
+                viewModel.resetCart()
+            },
+            deleteCartMenuItem = { cartMenuItemId ->
+                viewModel.deleteCartMenuItem(cartMenuItemId)
             },
             setDialogVisibility = {
                 viewModel.setShowDeleteDialog(it)
