@@ -30,9 +30,9 @@ import `in`.koreatech.koin.feature.store.R
 @Composable
 fun CartMenuItem(
     menu: CartItem,
-    navigateToMenu: (Int) -> Unit = { _ -> },
+    navigateToMenu: (Int) -> Unit = { },
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
-    onDeleteMenu: (Int) -> Unit = { _ -> }
+    showDeleteDialog: (Int) -> Unit = { }
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row {
@@ -80,8 +80,8 @@ fun CartMenuItem(
             onMinusClick = {
                 onChangeQuantity(menu.cartMenuItemId, menu.quantity - 1)
             },
-            onDeleteClick = {
-                onDeleteMenu(menu.cartMenuItemId)
+            showDeleteDialog = {
+                showDeleteDialog(menu.cartMenuItemId)
             },
             onPlusClick = {
                 onChangeQuantity(menu.cartMenuItemId, menu.quantity + 1)

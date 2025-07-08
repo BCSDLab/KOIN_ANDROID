@@ -6,6 +6,7 @@ import `in`.koreatech.koin.domain.model.cart.CartValidate
 
 data class CartState (
     val cart: Cart = Cart.Empty,
-    val cartValidate: CartValidate = CartValidate.Empty,
-    val cartType: CartType = CartType.DELIVERY
+    val isValidateCart: CartValidate = CartValidate.Empty,
+    val cartType: CartType = CartType.DELIVERY,
+    val showDeleteDialog: Boolean = false,
 )

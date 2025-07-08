@@ -54,20 +54,37 @@ import `in`.koreatech.koin.domain.model.cart.Cart
 import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.feature.store.R
 import `in`.koreatech.koin.feature.store.component.CartMenuItem
+import `in`.koreatech.koin.feature.store.component.DeleteCartDialog
 import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
 
 @Composable
 fun ShoppingCartContent(
     modifier: Modifier,
     cart: Cart,
+    isOperating: Boolean = false,
+    dialogVisibility: Boolean = false,
     navigateToStoreDetail: () -> Unit = { },
     onOrderModeChanged: (CartType) -> Unit = { },
     onChangeQuantity: (Int, Int) -> Unit = { _, _ -> },
-    onDeleteMenu: (Int) -> Unit = { _ -> }
+    onDeleteMenu: (Int) -> Unit = { _ -> },
+    setDialogVisibility: (Boolean) -> Unit = { }
 ) {
     val tabs = listOf(R.string.delivery, R.string.pickup)
     var selectedTab by remember { mutableStateOf(R.string.delivery) }
     val lazyColumnState = rememberLazyListState()
+    var menuIdToDelete by remember { mutableStateOf(-1) }
+
+    if (dialogVisibility) {
+        DeleteCartDialog(
+            onConfirm = {
+                onDeleteMenu(menuIdToDelete)
+            },
+            onDismiss = {
+                setDialogVisibility(false)
+            },
+            dialogMessage = if (!isOperating) stringResource(R.string.store_is_not_operating_dialog_message) else stringResource(R.string.delete_menu_dialog_message)
+        )
+    }
     LazyColumn(
         state = lazyColumnState,
         modifier = modifier
@@ -167,9 +184,11 @@ fun ShoppingCartContent(
                             navigateToMenu = {},
                             onChangeQuantity = { menuId, quantity ->
                                 onChangeQuantity(menuId, quantity)
+                                menuIdToDelete = menuId
                             },
-                            onDeleteMenu = { menuId ->
-                                onDeleteMenu(menuId)
+                            showDeleteDialog = { menuId ->
+                                menuIdToDelete = menuId
+                                setDialogVisibility(true)
                             }
                         )
                         if (index != cart.items.size - 1) {
@@ -223,7 +242,8 @@ fun ShoppingCartContent(
 
 @Composable
 fun ShoppingCartEmptyContent(
-    modifier: Modifier
+    modifier: Modifier,
+    navigateToStoreDetail: () -> Unit = { }
 ) {
     Column(
         modifier = modifier
@@ -243,7 +263,7 @@ fun ShoppingCartEmptyContent(
         )
         Button(
             onClick = {
-                //TODO: navigate to storeDetailScreen
+                navigateToStoreDetail()
             },
             modifier = Modifier
                 .padding(top = 20.dp),

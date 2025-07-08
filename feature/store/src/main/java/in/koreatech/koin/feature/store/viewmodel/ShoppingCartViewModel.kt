@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
 import `in`.koreatech.koin.feature.store.view.CartSideEffect
 import `in`.koreatech.koin.feature.store.view.CartState
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
@@ -33,6 +34,10 @@ class ShoppingCartViewModel @Inject constructor(
 
     init {
         getCart(CartType.DELIVERY)
+        // getCartValidate()
+        //    cartMenuQuantity(0, 0) // Initialize with dummy values
+        //  deleteCartMenuItem(0) // Initialize with dummy value
+        //    resetCart() // Initialize with reset
     }
 
     fun getCart(type: CartType) = intent {
@@ -43,7 +48,7 @@ class ShoppingCartViewModel @Inject constructor(
 
     fun getCartValidate() = intent {
         cartValidateUseCase().collect { cartValidate ->
-            reduce { state.copy(cartValidate = cartValidate) }
+            reduce { state.copy(isValidateCart = cartValidate) }
         }
     }
 
@@ -85,6 +90,10 @@ class ShoppingCartViewModel @Inject constructor(
         resetCartUseCase().collect {
             reduce { state.copy(cart = state.cart.copy(items = emptyList())) }
         }
+    }
+
+    fun setShowDeleteDialog(isVisible: Boolean) = blockingIntent {
+        reduce { state.copy(showDeleteDialog = isVisible) }
     }
 
     companion object {

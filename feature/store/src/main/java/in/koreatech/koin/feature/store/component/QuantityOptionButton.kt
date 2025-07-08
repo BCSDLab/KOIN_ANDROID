@@ -35,7 +35,7 @@ fun QuantityOptionButton(
     onOptionClick: () -> Unit = {},
     onMinusClick: () -> Unit = {},
     onPlusClick: () -> Unit = {},
-    onDeleteClick: () -> Unit = {}
+    showDeleteDialog: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -69,7 +69,7 @@ fun QuantityOptionButton(
                     tint = KoinTheme.colors.neutral600,
                     modifier = Modifier
                         .size(20.dp)
-                        .clickable(onClick = onDeleteClick)
+                        .clickable(onClick = showDeleteDialog)
                 )
             } else {
                 Icon(
@@ -102,7 +102,7 @@ fun QuantityOptionButtonPreview() {
             onOptionClick = {},
             onMinusClick = {},
             onPlusClick = {},
-            onDeleteClick = {}
+            showDeleteDialog = {}
         )
     }
 }

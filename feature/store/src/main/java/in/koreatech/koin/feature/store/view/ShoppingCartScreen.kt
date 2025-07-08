@@ -28,6 +28,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
+    isOperating: Boolean = false,
     navigateToStoreDetail: () -> Unit,
 ) {
     val uiState by viewModel.collectAsState()
@@ -70,12 +71,17 @@ fun ShoppingCartScreen(
                 .padding(innerPadding)
                 .fillMaxSize(),
             cart = uiState.cart,
+            isOperating = isOperating,
+            dialogVisibility = uiState.showDeleteDialog,
             onOrderModeChanged = { viewModel.getCart(it) },
             onChangeQuantity = { cartMenuItemId, quantity ->
                 viewModel.modifyCartMenuQuantity(cartMenuItemId, quantity)
             },
             onDeleteMenu = { cartMenuItemId ->
                 viewModel.deleteCartMenuItem(cartMenuItemId)
+            },
+            setDialogVisibility = {
+                viewModel.setShowDeleteDialog(it)
             },
         )
     }
