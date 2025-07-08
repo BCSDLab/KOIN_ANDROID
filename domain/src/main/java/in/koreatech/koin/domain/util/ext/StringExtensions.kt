@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.util.ext
 
+import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.INSTAGRAM_URL
 import `in`.koreatech.koin.domain.util.regex.PasswordUtil
 
@@ -12,6 +13,8 @@ fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)
 fun String.formatInstagramUrlForm() = "${INSTAGRAM_URL}/$this"
 
 fun String.formatInstagramLinkForm() = "@${this.removePrefix("${INSTAGRAM_URL}/").removeSuffix("/")}"
+
+fun String.formatHttpsUrlForm() = "${HTTPS_URL}${this.removePrefix(HTTPS_URL)}"
 
 fun Int.formatTime(): String {
     val time = this

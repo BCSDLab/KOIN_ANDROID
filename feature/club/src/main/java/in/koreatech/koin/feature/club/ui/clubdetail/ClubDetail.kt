@@ -69,6 +69,7 @@ import `in`.koreatech.koin.domain.constant.HTTPS_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_STAGE_URL
 import `in`.koreatech.koin.domain.constant.KOIN_WEB_URL
 import `in`.koreatech.koin.domain.constant.LOGIN_ACTIVITY_URL
+import `in`.koreatech.koin.domain.util.ext.formatHttpsUrlForm
 import `in`.koreatech.koin.domain.util.ext.formatInstagramLinkForm
 import `in`.koreatech.koin.domain.util.ext.formatInstagramUrlForm
 import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
@@ -434,8 +435,18 @@ fun ClubDetail(
                                         onClick = { viewModel.openUrl(linkUrl) }
                                         outputText = it.formatInstagramLinkForm()
                                     }
-                                    DETAIL_GOOGLE_FORM -> outputText = it.removePrefix(HTTPS_URL)
-                                    DETAIL_OPEN_CHAT -> outputText = it.removePrefix(HTTPS_URL)
+                                    DETAIL_GOOGLE_FORM -> {
+                                        val url = it.formatHttpsUrlForm()
+                                        linkUrl = if (url.isValidGoogleFormUrl()) url else ""
+                                        onClick = { viewModel.openUrl(linkUrl) }
+                                        outputText = it.removePrefix(HTTPS_URL)
+                                    }
+                                    DETAIL_OPEN_CHAT -> {
+                                        val url = it.formatHttpsUrlForm()
+                                        linkUrl = if (url.isValidOpenChatUrl()) url else ""
+                                        onClick = { viewModel.openUrl(linkUrl) }
+                                        outputText = it.removePrefix(HTTPS_URL)
+                                    }
                                     DETAIL_PHONE_NUMBER -> outputText = if (it.isValidPhoneNumber) it.formatPhoneNumber() else it
                                     else -> outputText = it
                                 }
@@ -595,8 +606,12 @@ suspend fun handleSideEffect(
             )
         }
         is ClubDetailSideEffect.OpenUrl -> {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
-            context.startActivity(intent)
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                ToastUtil.getInstance().makeShort(context.getString(R.string.detail_error_incorrect_link))
+            }
         }
         is ClubDetailSideEffect.UnauthorizedError -> {
             ToastUtil.getInstance().makeShort(sideEffect.messageResId)
