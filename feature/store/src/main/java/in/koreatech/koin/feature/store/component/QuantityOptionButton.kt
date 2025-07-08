@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.R
 
 @Composable
@@ -57,7 +58,7 @@ fun QuantityOptionButton(
         OutlinedButton(
             onClick = {},
             shape = RoundedCornerShape(50),
-            border = BorderStroke(1.dp, Color.LightGray),
+            border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral200 ),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             enabled = false
         ) {
