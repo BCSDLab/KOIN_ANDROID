@@ -32,10 +32,11 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun StoreDetailInfoCard(
+    modifier: Modifier = Modifier,
     storeInfo: StoreWithMenu,
     navigateToDetailInfo: () -> Unit = {}
 ) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = modifier) {
         DeliveryInfoCard(
             modifier = Modifier.weight(1f),
             storeInfo,

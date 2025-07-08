@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -50,10 +52,10 @@ import `in`.koreatech.koin.feature.store.state.currentToolbarHeightDp
 import `in`.koreatech.koin.feature.store.state.progress
 import `in`.koreatech.koin.feature.store.state.rememberCollapsingToolbarState
 import `in`.koreatech.koin.feature.store.viewmodel.StoreDetailViewModel
-import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -114,7 +116,10 @@ fun StoreDetailScreen(
             }
             stickyHeader {
                 MenuCategoryChips(
-                    uiState.categories,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 66.dp),
+                    menuCategories = uiState.categories,
                     onCategoryClicked = { categoryId, stickyHeaderHeight ->
                         viewModel.clickMenuCategory(categoryId)
                         rememberState.collapseToolbar(
@@ -128,6 +133,9 @@ fun StoreDetailScreen(
             }
             uiState.categories.forEach { category ->
                 menuListSection(
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .navigationBarsPadding(),
                     category = category.storeMenuCategories.name ?: "",
                     menus = category.storeMenuCategories.menus ?: emptyList()
                 )

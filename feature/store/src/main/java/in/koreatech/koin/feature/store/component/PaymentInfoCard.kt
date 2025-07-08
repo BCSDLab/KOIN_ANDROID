@@ -23,15 +23,14 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun PaymentSummaryCard(
+    modifier: Modifier= Modifier,
     itemAmount: Int,
     deliveryFee: Int,
     totalAmount: Int,
     finalPaymentAmount: Int,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 20.dp)
+        modifier = modifier
     ) {
         Text(
             text = stringResource(R.string.check_payment_amount),

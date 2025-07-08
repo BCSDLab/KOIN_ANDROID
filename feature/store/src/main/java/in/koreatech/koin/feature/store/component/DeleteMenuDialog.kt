@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun DeleteCartDialog(
+    modifier: Modifier = Modifier,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     dialogMessage: String? = null,
@@ -38,8 +39,7 @@ fun DeleteCartDialog(
     Dialog(onDismissRequest = onDismiss) {
         Card(
             shape = RebrandKoinTheme.shapes.large,
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = modifier,
             colors = CardDefaults.cardColors(
                 containerColor = RebrandKoinTheme.colors.neutral0,
             ),

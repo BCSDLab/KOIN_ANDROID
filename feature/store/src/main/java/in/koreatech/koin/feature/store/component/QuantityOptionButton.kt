@@ -31,6 +31,7 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun QuantityOptionButton(
+    modifier: Modifier = Modifier,
     quantity: Int,
     onOptionClick: () -> Unit = {},
     onMinusClick: () -> Unit = {},
@@ -38,8 +39,7 @@ fun QuantityOptionButton(
     onDeleteMenuClick: () -> Unit = {}
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {

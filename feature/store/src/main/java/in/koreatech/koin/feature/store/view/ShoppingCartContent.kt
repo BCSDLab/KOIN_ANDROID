@@ -272,6 +272,9 @@ fun ShoppingCartContent(
         }
         item {
             PaymentSummaryCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
                 itemAmount = cart.itemsAmount,
                 deliveryFee = cart.deliveryFee,
                 totalAmount = cart.totalAmount,

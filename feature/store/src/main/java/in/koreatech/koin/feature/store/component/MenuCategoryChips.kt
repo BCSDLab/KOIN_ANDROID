@@ -35,6 +35,7 @@ import `in`.koreatech.koin.feature.store.view.StoreDetailState.MenuCategory
 
 @Composable
 fun MenuCategoryChips(
+    modifier: Modifier = Modifier,
     menuCategories: List<MenuCategory>,
     onCategoryClicked: (Int, Int) -> Unit = { categoryId, height -> }
 ) {
@@ -42,9 +43,7 @@ fun MenuCategoryChips(
     val menuCategoryHeight = remember { mutableStateOf(0) }
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 66.dp)
+        modifier = modifier
             .onSizeChanged { size: IntSize ->
                 menuCategoryHeight.value = size.height
             }
@@ -71,8 +70,8 @@ fun MenuCategoryChips(
 
 @Composable
 fun MenuCategoryChip(
-    menuCategory: MenuCategory,
     modifier: Modifier = Modifier,
+    menuCategory: MenuCategory,
     onCategoryClicked: (Int) -> Unit = {}
 ) {
     val borderColor = if (menuCategory.isChecked) colorResource(id = R.color.store_detail_chip) else Color.Transparent

@@ -34,6 +34,7 @@ import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.feature.store.R
 
 fun LazyListScope.menuListSection(
+    modifier: Modifier =Modifier,
     category: String,
     menus: List<ShopMenus>
 ) {
@@ -41,9 +42,7 @@ fun LazyListScope.menuListSection(
 
     item {
         Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .navigationBarsPadding()
+            modifier = modifier
         ) {
             Text(
                 text = category,
@@ -94,6 +93,7 @@ fun MenuItem(
                 )
             }
             OptionPriceText(
+                modifier = Modifier.padding(top = 4.dp),
                 shopMenus = menu
             )
         }
@@ -118,10 +118,11 @@ fun MenuItem(
 
 @Composable
 private fun OptionPriceText(
+    modifier: Modifier=Modifier,
     shopMenus: ShopMenus
 ) {
     Column(
-        modifier = Modifier.padding(top = 4.dp)
+        modifier = modifier,
     ) {
         if (shopMenus.isSingle) {
             Text(
@@ -145,6 +146,7 @@ private fun MenuListSectionPreview() {
             contentPadding = PaddingValues(16.dp)
         ) {
             menuListSection(
+                modifier = Modifier.fillMaxWidth(),
                 category = "추천메뉴",
                 menus = listOf(
                     ShopMenus(
