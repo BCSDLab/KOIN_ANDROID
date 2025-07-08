@@ -11,18 +11,15 @@ import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
 import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
 import `in`.koreatech.koin.feature.store.view.CartSideEffect
 import `in`.koreatech.koin.feature.store.view.CartState
-import kotlinx.coroutines.flow.catch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val cartUseCase: CartUseCase,
     private val cartValidateUseCase: CartValidateUseCase,
     private val cartMenuQuantityUseCase: CartMenuQuantityUseCase,
@@ -30,20 +27,14 @@ class ShoppingCartViewModel @Inject constructor(
     private val resetCartUseCase: ResetCartUseCase,
 ) : ViewModel(), ContainerHost<CartState, CartSideEffect> {
     override val container =
-        container<CartState, CartSideEffect>(CartState()) {
-            val storeId = savedStateHandle.get<Int>(STORE_ID)
-        }
+        container<CartState, CartSideEffect>(CartState())
 
     init {
         getCart(CartType.DELIVERY)
     }
 
     fun getCart(type: CartType) = intent {
-        cartUseCase(type).catch { error ->
-            postSideEffect(
-                CartSideEffect.ShowServiceUnavailable
-            )
-        }.collect { cart ->
+        cartUseCase(type).collect { cart ->
             reduce { state.copy(cart = cart, cartType = type) }
         }
     }
@@ -98,7 +89,4 @@ class ShoppingCartViewModel @Inject constructor(
         reduce { state.copy(showDeleteDialog = isVisible) }
     }
 
-    companion object {
-        const val STORE_ID = "storeId"
-    }
 }
