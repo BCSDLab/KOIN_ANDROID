@@ -70,7 +70,7 @@ fun AccountSetupScreen(
     val scrollState = rememberScrollState()
     val state = viewModel.collectAsState().value
 
-    if (state.phoneNumberState == SignupContinuationState.RequestedSmsValidation || state.phoneNumberState == SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null) {
+    if (state.phoneNumberState == SignupContinuationState.SmsValidationRequested || state.phoneNumberState == SignupContinuationState.SmsValidationRequested && state.sendCodeError == null) {
         viewModel.onChangeSmsValidation(true)
     }
     var timerText by remember { mutableStateOf(180) }
@@ -196,7 +196,7 @@ fun AccountSetupScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(4.dp),
-                enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation && state.sendCodeError == null,
+                enabled = state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.SmsValidationRequested && state.sendCodeError == null,
                 colors =
                 ButtonDefaults.buttonColors(
                     disabledBackgroundColor = Gray11
@@ -212,7 +212,7 @@ fun AccountSetupScreen(
                 Text(
                     text = stringResource(id = R.string.send_authentication_code),
                     fontSize = 16.sp,
-                    color = if (state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.RequestedSmsValidation) Color.White else Gray1
+                    color = if (state.phoneNumber.length == 11 && state.phoneNumberState != SignupContinuationState.SmsValidationRequested) Color.White else Gray1
                 )
             }
 
@@ -256,13 +256,13 @@ fun AccountSetupScreen(
                         },
                         successText = stringResource(id = R.string.auth_code_equal),
                         isError = state.verifyState is SignupContinuationState.Failed || timerText == 0,
-                        isSuccess = state.verifyState == SignupContinuationState.CheckComplete,
+                        isSuccess = state.verifyState == SignupContinuationState.SignupCheckComplete,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
 
-                if (state.verifyState != SignupContinuationState.CheckComplete) {
+                if (state.verifyState != SignupContinuationState.SignupCheckComplete) {
                     Button(
                         modifier =
                         Modifier
@@ -305,7 +305,7 @@ fun AccountSetupScreen(
                     .padding(bottom = 24.dp)
                     .heightIn(50.dp),
                 shape = RectangleShape,
-                enabled = state.verifyState == SignupContinuationState.CheckComplete,
+                enabled = state.verifyState == SignupContinuationState.SignupCheckComplete,
                 colors =
                 ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
@@ -318,7 +318,7 @@ fun AccountSetupScreen(
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 16.sp,
-                    color = if (state.verifyState != SignupContinuationState.CheckComplete) Gray1 else White
+                    color = if (state.verifyState != SignupContinuationState.SignupCheckComplete) Gray1 else White
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))

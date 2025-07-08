@@ -119,7 +119,7 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                             getString(R.string.error_email_duplicated)
                         )
 
-                    SignupContinuationState.AvailableEmail -> {
+                    SignupContinuationState.EmailAvailable -> {
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_email_check)
@@ -128,25 +128,25 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                         binding.signupNextButton.visibility = View.VISIBLE
                     }
 
-                    SignupContinuationState.EmailIsNotValidate ->
+                    SignupContinuationState.EmailInvalid ->
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_error_check_email)
                         )
 
-                    SignupContinuationState.NotAgreedKoinTerms ->
+                    SignupContinuationState.KoinTermsNotAgreed ->
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_error_check_koin_terms)
                         )
 
-                    SignupContinuationState.NotAgreedPrivacyTerms ->
+                    SignupContinuationState.PrivacyTermsNotAgreed ->
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_error_check_privacy_terms)
                         )
 
-                    SignupContinuationState.PasswordIsNotValidate ->
+                    SignupContinuationState.PasswordInvalid ->
                         SnackbarUtil.makeShortSnackbar(
                             binding.root,
                             getString(R.string.signup_error_check_password)
@@ -158,7 +158,7 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                             getString(R.string.signup_error_check_password_match)
                         )
 
-                    SignupContinuationState.CheckComplete -> {
+                    SignupContinuationState.SignupCheckComplete -> {
                         startSignupWithDetailActivity()
                     }
 

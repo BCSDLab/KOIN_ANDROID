@@ -27,7 +27,7 @@ class OwnerChangePasswordUseCase @Inject constructor(
                     ownerChangePasswordRepository.changePassword(
                         email = email,
                         password = password.toSHA256()
-                    ).map { ChangePasswordContinuationState.FinishedChangePassword }
+                    ).map { ChangePasswordContinuationState.PasswordChangeFinished }
             }
         } catch (t: CancellationException) {
             throw t

@@ -17,9 +17,9 @@ data class BusinessAuthState(
     val imageUriList: List<String> = emptyList(),
     val fileInfo: MutableList<StoreUrl> = mutableListOf(),
     val bitmap: MutableList<Bitmap> = mutableListOf(),
-    val signupContinuationState: SignupContinuationState = SignupContinuationState.RequestedSmsValidation,
+    val signupContinuationState: SignupContinuationState = SignupContinuationState.SmsValidationRequested,
     val error: Throwable? = null
 ) {
     val isButtonEnabled: Boolean
-        get() = name.isNotEmpty() && shopName.isNotEmpty() && companyNumber.isNotEmpty() && selectedImages.isNotEmpty() && signupContinuationState == SignupContinuationState.SuccessUploadFiles
+        get() = name.isNotEmpty() && shopName.isNotEmpty() && companyNumber.isNotEmpty() && selectedImages.isNotEmpty() && signupContinuationState == SignupContinuationState.FilesUploadSuccess
 }

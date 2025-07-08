@@ -6,10 +6,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface CoopShopApi {
-    @GET(URLConstant.COOPSHOP)
+    @GET(URLConstant.COOPSHOP.COOPSHOP)
     suspend fun getCoopShopAll(): List<CoopShopResponse>
 
-    @GET("${URLConstant.COOPSHOP}/{coopShopId}")
+    @GET(URLConstant.COOPSHOP.COOPSHOPID)
     suspend fun getCoopShopById(
         @Path("coopShopId") id: Int
     ): CoopShopResponse

@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import androidx.annotation.MenuRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.WhiteToolbarBinding
 
@@ -36,6 +39,15 @@ class WhiteToolbar @JvmOverloads constructor(
 
     private fun initView() {
         binding = WhiteToolbarBinding.inflate(LayoutInflater.from(context), this, true)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarWhite) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<MarginLayoutParams> {
+                leftMargin = systemBars.left
+                topMargin = systemBars.top
+                rightMargin = systemBars.right
+            }
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     fun setTitle(title: String?) {

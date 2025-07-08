@@ -27,7 +27,7 @@ class ChangePasswordSmsUseCase @Inject constructor(
                     ownerChangePasswordRepository.changePasswordSms(
                         phoneNumber = phoneNumber,
                         password = password.toSHA256()
-                    ).map { ChangePasswordContinuationState.FinishedChangePassword }
+                    ).map { ChangePasswordContinuationState.PasswordChangeFinished }
             }
         } catch (t: CancellationException) {
             throw t

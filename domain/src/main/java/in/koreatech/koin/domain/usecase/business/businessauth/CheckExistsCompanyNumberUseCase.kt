@@ -12,7 +12,7 @@ class CheckExistsCompanyNumberUseCase @Inject constructor(
     suspend operator fun invoke(companyNumber: String): Result<SignupContinuationState> {
         try {
             signUpRepository.checkExistsCompanyNumber(companyNumber.formatBusinessNumber())
-            return Result.success(SignupContinuationState.CheckComplete)
+            return Result.success(SignupContinuationState.SignupCheckComplete)
         } catch (throwable: Throwable) {
             if (throwable is OwnerError.CompanyNumberIsDuplicatedException) {
                 return Result.failure(OwnerError.CompanyNumberIsDuplicatedException)
