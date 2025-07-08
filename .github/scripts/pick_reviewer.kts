@@ -43,11 +43,12 @@ val titleRegex = Regex("(?<=\\[)(user|campus|business)(?=\\])")
 
 /**
  * Export the reviewer name to GitHub Actions output.
- * @param name The name of the reviewer.
+ * @param firstReviewer The name of the reviewer.
+ * @param secondReviewer The name of the second reviewer (optional).
  */
-fun exportReviewer(name: String) {
+fun exportReviewer(firstReviewer: String, secondReviewer: String = "") {
     val githubOutput = System.getenv("GITHUB_OUTPUT")
-    File(githubOutput).appendText("reviewer=$name\n")
+    File(githubOutput).appendText("reviewer1=$firstReviewer\n, reviewer2=$secondReviewer\n")
 }
 
 /**
@@ -65,7 +66,7 @@ fun exportMentor(name: String) {
  */
 fun pickPairedReviewer(developer: Developer) {
     val reviewer = reviewerPair.first { it.first == developer }.second
-    exportReviewer(reviewer.githubName)
+    exportReviewer(reviewer.githubName, "")
 }
 
 /**
@@ -73,12 +74,19 @@ fun pickPairedReviewer(developer: Developer) {
  * The developer and reviewer should not be in the same team.
  */
 fun pickRandomReviewer(prOwnerTeam: KoinTeam?, developer: Developer) {
-    val otherTeamDevelopers = Developer.entries
+    val sameTeamDevelopers = Developer.entries
         .filter { it != developer }
         .filter { !it.isMentor }
+        .filter { it.team.contains(prOwnerTeam) }
+    val randomReviewerFromSameTeam = sameTeamDevelopers.random()
+
+    val otherTeamDevelopers = Developer.entries
+        .filter { it != developer }
+        .filter { it != randomReviewerFromSameTeam }
+        .filter { !it.isMentor }
         .filter { !it.team.contains(prOwnerTeam) }
-    val randomReviewer = otherTeamDevelopers.random()
-    exportReviewer(randomReviewer.githubName)
+    val randomReviewerFromOtherTeam = otherTeamDevelopers.random()
+    exportReviewer(randomReviewerFromOtherTeam.githubName, randomReviewerFromSameTeam.githubName)
 }
 
 /**
