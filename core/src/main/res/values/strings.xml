@@ -221,7 +221,7 @@
     <string name="menu_edit">메뉴 편집</string>
     <string name="menu_info">메뉴 정보</string>
     <string name="menu_name">메뉴명</string>
-    <string name="menu_price">가격</string>
+    <string name="menu_price">가격 : </string>
     <string name="menu_category">메뉴 카테고리</string>
     <string name="menu_detail">메뉴 세부</string>
     <string name="menu_composition">메뉴구성</string>
