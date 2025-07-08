@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -259,14 +260,17 @@ fun ShoppingCartEmptyContent(
             contentDescription = null
         )
         Text(
-            text = stringResource(R.string.shopping_cart_is_empty)
+            modifier = Modifier
+                .padding(top = 3나0.dp),
+            text = stringResource(R.string.shopping_cart_is_empty),
+            style = KoinTheme.typography.bold16,
         )
         Button(
             onClick = {
                 navigateToStoreDetail()
             },
             modifier = Modifier
-                .padding(top = 20.dp),
+                .padding(top = 10.dp),
             colors = buttonColors(
                 containerColor = KoinTheme.colors.neutral0,
                 contentColor = KoinTheme.colors.neutral500
@@ -296,16 +300,16 @@ fun ShoppingCartEmptyContent(
 @Preview
 private fun ShoppingCartContentPreview() {
     KoinTheme {
-        /*  ShoppingCartEmptyContent(
+          ShoppingCartEmptyContent(
               modifier = Modifier
                   .fillMaxSize()
                   .padding(16.dp)
-          )*/
-        ShoppingCartContent(
+          )
+     /*   ShoppingCartContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             cart = Cart.Empty,
-        )
+        )*/
     }
 }
