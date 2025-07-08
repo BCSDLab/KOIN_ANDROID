@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.domain.util.ext
 
 import `in`.koreatech.koin.domain.constant.GOOGLE_FORM_URL
+import `in`.koreatech.koin.domain.constant.HTTPS_URL
+import `in`.koreatech.koin.domain.constant.HTTP_URL
 import `in`.koreatech.koin.domain.constant.INSTAGRAM_URL
 import `in`.koreatech.koin.domain.constant.OPEN_CHAT_URL
 import `in`.koreatech.koin.domain.util.regex.EmailUtil
@@ -19,11 +21,13 @@ fun String.isNotBusinessValidEmail() = !isBusinessValidEmail()
 
 fun String.isNotValidPassword() = !isValidPassword()
 
-fun String.isValidInstagramUrl(): Boolean = this.startsWith(INSTAGRAM_URL)
+fun String.isValidUrlScheme(): Boolean = this.matches(Regex("^https?://.*"))
 
-fun String.isValidGoogleFormUrl(): Boolean = this.startsWith(GOOGLE_FORM_URL)
+fun String.isValidInstagramUrl(): Boolean = this.matches(Regex("^https?://$INSTAGRAM_URL.*"))
 
-fun String.isValidOpenChatUrl(): Boolean = this.startsWith(OPEN_CHAT_URL)
+fun String.isValidGoogleFormUrl(): Boolean = this.matches(Regex("^https?://$GOOGLE_FORM_URL.*"))
+
+fun String.isValidOpenChatUrl(): Boolean = this.matches(Regex("^https?://$OPEN_CHAT_URL.*"))
 
 val String.isValidStudentId: Boolean
     get() {
