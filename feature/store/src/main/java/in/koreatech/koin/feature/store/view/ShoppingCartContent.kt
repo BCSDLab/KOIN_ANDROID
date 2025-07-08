@@ -124,7 +124,7 @@ fun ShoppingCartContent(
                     colors = buttonColors(
                         containerColor = if (cartType == CartType.DELIVERY) colorResource(R.color.shopping_cart_button_background) else KoinTheme.colors.neutral0,
                         contentColor = if (cartType == CartType.DELIVERY) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral0,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral0
                     )
                 ) {
                     Text(
@@ -147,7 +147,7 @@ fun ShoppingCartContent(
                     colors = buttonColors(
                         containerColor = if (cartType == CartType.TAKE_OUT) colorResource(R.color.shopping_cart_button_background) else RebrandKoinTheme.colors.neutral0,
                         contentColor = if (cartType == CartType.TAKE_OUT) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500,
-                        disabledContainerColor = RebrandKoinTheme.colors.neutral0,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral0
                     )
                 ) {
                     Text(
@@ -175,7 +175,7 @@ fun ShoppingCartContent(
                             if (cart.isDeliveryAvailable) stringResource(R.string.delivery) else stringResource(R.string.pickup)
                         ),
                         style = RebrandKoinTheme.typography.regular13,
-                        color = RebrandKoinTheme.colors.primary500,
+                        color = RebrandKoinTheme.colors.primary500
                     )
                 }
             }
@@ -305,7 +305,7 @@ fun ShoppingCartEmptyContent(
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.shopping_cart_is_empty),
-            style = KoinTheme.typography.bold16,
+            style = KoinTheme.typography.bold16
         )
         Button(
             onClick = {

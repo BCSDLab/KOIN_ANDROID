@@ -3,7 +3,6 @@ package `in`.koreatech.koin.data.response.cart
 import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.cart.CartItemOption
 
-
 data class CartItemOptionResponse(
     @SerializedName("option_group_name")
     val optionGroupName: String,
@@ -11,7 +10,7 @@ data class CartItemOptionResponse(
     val optionName: String,
     @SerializedName("option_price")
     val optionPrice: Int
-){
+) {
     fun toCartItemOption() =
         CartItemOption(
             optionGroupName = optionGroupName,

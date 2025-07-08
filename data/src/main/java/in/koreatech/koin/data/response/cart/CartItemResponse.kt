@@ -20,7 +20,7 @@ data class CartItemResponse(
     val options: List<CartItemOptionResponse>,
     @SerializedName("is_modified")
     val isModified: Boolean
-){
+) {
     fun toCartItem() =
         CartItem(
             cartMenuItemId = cartMenuItemId,

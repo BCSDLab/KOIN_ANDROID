@@ -8,9 +8,9 @@ data class CartItemPriceResponse(
     val name: String?,
     @SerializedName("price")
     val price: Int
-){
+) {
     fun toCartItemPrice() =
-       CartItemPrice(
+        CartItemPrice(
             name = name ?: "",
             price = price
         )

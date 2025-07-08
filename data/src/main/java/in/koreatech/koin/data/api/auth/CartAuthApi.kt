@@ -12,20 +12,23 @@ import retrofit2.http.Query
 interface CartAuthApi {
     @GET("cart")
     suspend fun getCart(
-        @Query("type") type: String,
+        @Query("type") type: String
     ): CartResponse
+
     @GET("cart/validate")
     suspend fun getCartValidate(): CartValidateResponse
+
     @POST("cart/quantity/{cartMenuItemId}/{quantity}")
     suspend fun getCartQuantityMenu(
         @Path("cartMenuItemId") cartMenuItemId: Int,
         @Path("quantity") quantity: Int
     ): Response<Unit>
+
     @DELETE("cart/reset")
     suspend fun resetCart(): Response<Unit>
+
     @DELETE("cart/delete/{cartMenuItemId}")
     suspend fun deleteCartMenuItem(
         @Path("cartMenuItemId") cartMenuItemId: Int
     ): Response<Unit>
-
 }

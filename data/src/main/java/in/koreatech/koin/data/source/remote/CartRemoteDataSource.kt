@@ -6,7 +6,7 @@ import `in`.koreatech.koin.domain.model.cart.CartType
 import javax.inject.Inject
 
 class CartRemoteDataSource @Inject constructor(
-    private val cartApi: CartAuthApi,
+    private val cartApi: CartAuthApi
 ) {
     suspend fun getCart(type: CartType): CartResponse {
         return cartApi.getCart(type.name)

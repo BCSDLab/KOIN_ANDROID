@@ -12,7 +12,7 @@ data class Cart(
     val deliveryFee: Int,
     val totalAmount: Int,
     val finalPaymentAmount: Int
-){
+) {
     companion object {
         val Empty = Cart(
             shopName = null,

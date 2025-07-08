@@ -23,11 +23,11 @@ import `in`.koreatech.koin.feature.store.R
 
 @Composable
 fun PaymentSummaryCard(
-    modifier: Modifier= Modifier,
+    modifier: Modifier = Modifier,
     itemAmount: Int,
     deliveryFee: Int,
     totalAmount: Int,
-    finalPaymentAmount: Int,
+    finalPaymentAmount: Int
 ) {
     Column(
         modifier = modifier
@@ -61,7 +61,7 @@ fun PaymentSummaryCard(
                         color = RebrandKoinTheme.colors.neutral500
                     )
                     Text(
-                        text =  stringResource(R.string.menu_price_won, itemAmount.toString()),
+                        text = stringResource(R.string.menu_price_won, itemAmount.toString()),
                         color = RebrandKoinTheme.colors.neutral500
                     )
                 }

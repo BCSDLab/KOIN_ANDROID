@@ -258,10 +258,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideCartRepository(
-        cartRemoteDataSource: CartRemoteDataSource,
+        cartRemoteDataSource: CartRemoteDataSource
     ): CartRepository {
         return CartRepositoryImpl(
-            cartRemoteDataSource,
+            cartRemoteDataSource
         )
     }
 }

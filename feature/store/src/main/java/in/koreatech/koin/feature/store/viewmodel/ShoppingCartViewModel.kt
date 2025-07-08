@@ -9,12 +9,12 @@ import `in`.koreatech.koin.domain.usecase.cart.CartValidateUseCase
 import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
 import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
 import `in`.koreatech.koin.feature.store.view.CartState
+import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
@@ -22,7 +22,7 @@ class ShoppingCartViewModel @Inject constructor(
     private val cartValidateUseCase: CartValidateUseCase,
     private val cartMenuQuantityUseCase: CartMenuQuantityUseCase,
     private val deleteCartMenuItemUseCase: DeleteCartMenuItemUseCase,
-    private val resetCartUseCase: ResetCartUseCase,
+    private val resetCartUseCase: ResetCartUseCase
 ) : ViewModel(), ContainerHost<CartState, Unit> {
     override val container =
         container<CartState, Unit>(CartState())
@@ -86,5 +86,4 @@ class ShoppingCartViewModel @Inject constructor(
     fun setShowDeleteDialog(isVisible: Boolean) = blockingIntent {
         reduce { state.copy(showDeleteDialog = isVisible) }
     }
-
 }

@@ -29,7 +29,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun ShoppingCartScreen(
     viewModel: ShoppingCartViewModel = hiltViewModel(),
     isOperating: Boolean = true,
-    navigateToStoreDetail: () -> Unit,
+    navigateToStoreDetail: () -> Unit
 ) {
     val uiState by viewModel.collectAsState()
 
@@ -49,8 +49,9 @@ fun ShoppingCartScreen(
                         modifier = Modifier
                             .padding(end = 10.dp)
                             .noRippleClickable {
-                                if (uiState.cart.items.isEmpty())
+                                if (uiState.cart.items.isEmpty()) {
                                     return@noRippleClickable
+                                }
                                 viewModel.setShowDeleteDialog(true)
                             }
                     )
@@ -86,7 +87,7 @@ fun ShoppingCartScreen(
             },
             setDialogVisibility = {
                 viewModel.setShowDeleteDialog(it)
-            },
+            }
         )
     }
 }
@@ -97,7 +98,7 @@ private fun ShoppingCartItem() {
     KoinTheme {
         Column {
             ShoppingCartScreen(
-                navigateToStoreDetail = {},
+                navigateToStoreDetail = {}
             )
         }
     }

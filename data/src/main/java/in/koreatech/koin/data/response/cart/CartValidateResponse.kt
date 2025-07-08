@@ -9,7 +9,7 @@ data class CartValidateResponse(
     @SerializedName("message")
     val message: String,
     @SerializedName("errorTraceId")
-    val errorTraceId: String,
+    val errorTraceId: String
 ) {
     fun toCartValidate() =
         CartValidate(

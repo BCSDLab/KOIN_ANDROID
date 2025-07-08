@@ -26,7 +26,7 @@ data class CartResponse(
     val totalAmount: Int,
     @SerializedName("final_payment_amount")
     val finalPaymentAmount: Int
-){
+) {
     fun toCart() =
         Cart(
             shopName = shopName ?: "",

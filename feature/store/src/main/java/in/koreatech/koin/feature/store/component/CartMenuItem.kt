@@ -38,7 +38,7 @@ fun CartMenuItem(
     Column(modifier = Modifier.padding(16.dp)) {
         Row {
             Column(modifier = Modifier.weight(1f)) {
-                Text(modifier=Modifier.padding(vertical= 8.dp),text = menu.name, fontWeight = SemiBold, fontSize = 18.sp)
+                Text(modifier = Modifier.padding(vertical = 8.dp), text = menu.name, fontWeight = SemiBold, fontSize = 18.sp)
                 Text(
                     text = stringResource(R.string.menu_price) + stringResource(R.string.menu_price_won, menu.totalAmount.toString()),
                     style = KoinTheme.typography.medium15,

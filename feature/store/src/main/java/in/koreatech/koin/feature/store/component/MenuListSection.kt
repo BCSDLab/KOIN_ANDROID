@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -34,7 +33,7 @@ import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.feature.store.R
 
 fun LazyListScope.menuListSection(
-    modifier: Modifier =Modifier,
+    modifier: Modifier = Modifier,
     category: String,
     menus: List<ShopMenus>
 ) {
@@ -118,11 +117,11 @@ fun MenuItem(
 
 @Composable
 private fun OptionPriceText(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     shopMenus: ShopMenus
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         if (shopMenus.isSingle) {
             Text(

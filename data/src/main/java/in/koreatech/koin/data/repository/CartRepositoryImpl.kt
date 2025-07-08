@@ -4,15 +4,15 @@ import `in`.koreatech.koin.data.source.remote.CartRemoteDataSource
 import `in`.koreatech.koin.domain.model.cart.Cart
 import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.repository.CartRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
-import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(
     private val cartRemoteDataSource: CartRemoteDataSource
 ) : CartRepository {
-    override suspend fun getCart(type:CartType): Flow<Cart> {
+    override suspend fun getCart(type: CartType): Flow<Cart> {
         return flow {
             emit(cartRemoteDataSource.getCart(type).toCart())
         }

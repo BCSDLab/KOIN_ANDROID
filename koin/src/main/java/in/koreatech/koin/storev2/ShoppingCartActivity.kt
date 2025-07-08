@@ -24,7 +24,7 @@ class ShoppingCartActivity : AppCompatActivity() {
         binding.composeView.setContent {
             KoinTheme {
                 ShoppingCartScreen(
-                    navigateToStoreDetail = {},
+                    navigateToStoreDetail = {}
                 )
             }
         }

@@ -34,15 +34,15 @@ fun DeleteCartDialog(
     modifier: Modifier = Modifier,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
-    dialogMessage: String? = null,
+    dialogMessage: String? = null
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
             shape = RebrandKoinTheme.shapes.large,
             modifier = modifier,
             colors = CardDefaults.cardColors(
-                containerColor = RebrandKoinTheme.colors.neutral0,
-            ),
+                containerColor = RebrandKoinTheme.colors.neutral0
+            )
         ) {
             Column(
                 modifier = Modifier

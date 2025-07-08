@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -58,7 +57,7 @@ fun QuantityOptionButton(
         OutlinedButton(
             onClick = {},
             shape = RoundedCornerShape(50),
-            border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral200 ),
+            border = BorderStroke(1.dp, RebrandKoinTheme.colors.neutral200),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             enabled = false
         ) {
@@ -76,7 +75,7 @@ fun QuantityOptionButton(
                     modifier = Modifier.size(20.dp).clickable(onClick = onMinusClick),
                     painter = painterResource(id = R.drawable.ic_quantity_minus),
                     contentDescription = "",
-                    tint = KoinTheme.colors.neutral600,
+                    tint = KoinTheme.colors.neutral600
                 )
             }
 
