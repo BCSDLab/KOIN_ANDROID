@@ -261,7 +261,7 @@ fun ShoppingCartEmptyContent(
         )
         Text(
             modifier = Modifier
-                .padding(top = 3나0.dp),
+                .padding(top = 40.dp),
             text = stringResource(R.string.shopping_cart_is_empty),
             style = KoinTheme.typography.bold16,
         )
