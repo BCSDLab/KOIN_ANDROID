@@ -34,10 +34,6 @@ class ShoppingCartViewModel @Inject constructor(
 
     init {
         getCart(CartType.DELIVERY)
-        // getCartValidate()
-        //    cartMenuQuantity(0, 0) // Initialize with dummy values
-        //  deleteCartMenuItem(0) // Initialize with dummy value
-        //    resetCart() // Initialize with reset
     }
 
     fun getCart(type: CartType) = intent {
