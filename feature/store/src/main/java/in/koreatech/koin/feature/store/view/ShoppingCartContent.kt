@@ -41,16 +41,19 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.domain.model.cart.Cart
 import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.feature.store.R
@@ -62,6 +65,7 @@ import `in`.koreatech.koin.feature.store.component.PaymentSummaryCard
 fun ShoppingCartContent(
     modifier: Modifier,
     cart: Cart,
+    cartType: CartType = CartType.DELIVERY,
     isOperating: Boolean = false,
     dialogVisibility: Boolean = false,
     navigateToStoreDetail: () -> Unit = { },
@@ -70,8 +74,6 @@ fun ShoppingCartContent(
     onDeleteMenu: (Int) -> Unit = { _ -> },
     setDialogVisibility: (Boolean) -> Unit = { }
 ) {
-    val tabs = listOf(R.string.delivery, R.string.pickup)
-    var selectedTab by remember { mutableStateOf(R.string.delivery) }
     val lazyColumnState = rememberLazyListState()
     var menuIdToDelete by remember { mutableStateOf(-1) }
 
@@ -109,32 +111,76 @@ fun ShoppingCartContent(
                         )
                     }
                     .padding(2.dp)
-                    .background(KoinTheme.colors.neutral0, shape = RoundedCornerShape(10.dp))
+                    .background(RebrandKoinTheme.colors.neutral0, shape = RebrandKoinTheme.shapes.medium)
             ) {
-                tabs.forEach { tab ->
-                    val isSelected = tab == selectedTab
-                    Button(
-                        onClick = {
-                            selectedTab = tab
-                            onOrderModeChanged(
-                                if (tab == R.string.delivery) CartType.DELIVERY else CartType.TAKE_OUT
-                            )
-                        },
-                        modifier = Modifier
-                            .heightIn(52.dp)
-                            .weight(1f)
-                            .padding(4.dp),
-                        shape = RoundedCornerShape(13.dp),
-                        colors = buttonColors(
-                            containerColor = if (isSelected) colorResource(R.color.shopping_cart_button_background) else KoinTheme.colors.neutral0,
-                            contentColor = if (isSelected) KoinTheme.colors.neutral0 else KoinTheme.colors.neutral500
+                Button(
+                    modifier = Modifier
+                        .heightIn(52.dp)
+                        .weight(1f)
+                        .padding(4.dp),
+                    onClick = {
+                        onOrderModeChanged(
+                            CartType.DELIVERY
                         )
-                    ) {
-                        Text(
-                            style = KoinTheme.typography.medium16,
-                            text = stringResource(id = tab)
+                    },
+                    enabled = cart.isDeliveryAvailable,
+                    shape = RebrandKoinTheme.shapes.medium,
+                    colors = buttonColors(
+                        containerColor = if (cartType == CartType.DELIVERY) colorResource(R.color.shopping_cart_button_background) else KoinTheme.colors.neutral0,
+                        contentColor = if (cartType == CartType.DELIVERY) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral0,
+                    )
+                ) {
+                    Text(
+                        style = KoinTheme.typography.medium16,
+                        text = stringResource(id = R.string.delivery)
+                    )
+                }
+                Button(
+                    modifier = Modifier
+                        .heightIn(52.dp)
+                        .weight(1f)
+                        .padding(4.dp),
+                    onClick = {
+                        onOrderModeChanged(
+                            CartType.TAKE_OUT
                         )
-                    }
+                    },
+                    enabled = cart.isTakeoutAvailable,
+                    shape = RebrandKoinTheme.shapes.medium,
+                    colors = buttonColors(
+                        containerColor = if (cartType == CartType.TAKE_OUT) colorResource(R.color.shopping_cart_button_background) else RebrandKoinTheme.colors.neutral0,
+                        contentColor = if (cartType == CartType.TAKE_OUT) RebrandKoinTheme.colors.neutral0 else RebrandKoinTheme.colors.neutral500,
+                        disabledContainerColor = RebrandKoinTheme.colors.neutral0,
+                    )
+                ) {
+                    Text(
+                        style = RebrandKoinTheme.typography.medium16,
+                        text = stringResource(id = R.string.pickup)
+                    )
+                }
+            }
+            if (!(cart.isDeliveryAvailable && cart.isTakeoutAvailable)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_info),
+                        contentDescription = null,
+                        tint = RebrandKoinTheme.colors.primary500
+                    )
+                    Text(
+                        text = stringResource(
+                            R.string.order_only_notice,
+                            if (cart.isDeliveryAvailable) stringResource(R.string.delivery) else stringResource(R.string.pickup)
+                        ),
+                        style = RebrandKoinTheme.typography.regular13,
+                        color = RebrandKoinTheme.colors.primary500,
+                    )
                 }
             }
         }
@@ -144,7 +190,7 @@ fun ShoppingCartContent(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 12.dp, horizontal = 3.dp)
+                    .padding(vertical = 12.dp, horizontal = 4.dp)
                     .clickable { navigateToStoreDetail() }
             ) {
                 Image(
@@ -172,7 +218,7 @@ fun ShoppingCartContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 40.dp),
-                shape = RoundedCornerShape(12.dp),
+                shape = RebrandKoinTheme.shapes.medium,
                 elevation = cardElevation(0.5.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = KoinTheme.colors.neutral0
@@ -214,7 +260,7 @@ fun ShoppingCartContent(
                             cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                         )
                     },
-                shape = KoinTheme.shapes.extraSmall,
+                shape = KoinTheme.shapes.small,
                 colors = buttonColors(
                     containerColor = KoinTheme.colors.neutral0,
                     contentColor = colorResource(R.color.shopping_cart_button_text)
@@ -259,9 +305,8 @@ fun ShoppingCartEmptyContent(
             painter = painterResource(id = R.drawable.img_cart),
             contentDescription = null
         )
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
-            modifier = Modifier
-                .padding(top = 40.dp),
             text = stringResource(R.string.shopping_cart_is_empty),
             style = KoinTheme.typography.bold16,
         )
@@ -270,7 +315,7 @@ fun ShoppingCartEmptyContent(
                 navigateToStoreDetail()
             },
             modifier = Modifier
-                .padding(top = 10.dp),
+                .padding(top = 20.dp),
             colors = buttonColors(
                 containerColor = KoinTheme.colors.neutral0,
                 contentColor = KoinTheme.colors.neutral500
@@ -300,16 +345,16 @@ fun ShoppingCartEmptyContent(
 @Preview
 private fun ShoppingCartContentPreview() {
     KoinTheme {
-          ShoppingCartEmptyContent(
-              modifier = Modifier
-                  .fillMaxSize()
-                  .padding(16.dp)
-          )
-     /*   ShoppingCartContent(
+        ShoppingCartEmptyContent(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            cart = Cart.Empty,
-        )*/
+                .padding(16.dp)
+        )
+        /*   ShoppingCartContent(
+               modifier = Modifier
+                   .fillMaxSize()
+                   .padding(16.dp),
+               cart = Cart.Empty,
+           )*/
     }
 }

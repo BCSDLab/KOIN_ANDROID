@@ -11,9 +11,11 @@ import `in`.koreatech.koin.domain.usecase.cart.DeleteCartMenuItemUseCase
 import `in`.koreatech.koin.domain.usecase.cart.ResetCartUseCase
 import `in`.koreatech.koin.feature.store.view.CartSideEffect
 import `in`.koreatech.koin.feature.store.view.CartState
+import kotlinx.coroutines.flow.catch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
@@ -37,8 +39,12 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun getCart(type: CartType) = intent {
-        cartUseCase(type).collect { cart ->
-            reduce { state.copy(cart = cart, cartType= type) }
+        cartUseCase(type).catch { error ->
+            postSideEffect(
+                CartSideEffect.ShowServiceUnavailable
+            )
+        }.collect { cart ->
+            reduce { state.copy(cart = cart, cartType = type) }
         }
     }
 

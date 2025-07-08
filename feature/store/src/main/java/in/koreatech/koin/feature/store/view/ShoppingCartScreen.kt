@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.feature.store.view
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -71,6 +72,7 @@ fun ShoppingCartScreen(
                 .padding(innerPadding)
                 .fillMaxSize(),
             cart = uiState.cart,
+            cartType = uiState.cartType,
             isOperating = isOperating,
             dialogVisibility = uiState.showDeleteDialog,
             onOrderModeChanged = { viewModel.getCart(it) },
