@@ -21,11 +21,11 @@ fun String.isNotValidPassword() = !isValidPassword()
 
 fun String.isValidUrlScheme(): Boolean = this.matches(Regex("^https?://.*"))
 
-fun String.isValidInstagramUrl(): Boolean = this.matches(Regex("^https?://$INSTAGRAM_URL.*"))
+fun String.isValidInstagramUrl(): Boolean = this.matches(Regex("^https?://(www\\.|l\\.)?instagram\\.com/[a-zA-Z0-9]+.*"))
 
-fun String.isValidGoogleFormUrl(): Boolean = this.matches(Regex("^https?://$GOOGLE_FORM_URL.*"))
+fun String.isValidGoogleFormUrl(): Boolean = this.matches(Regex("^https?://(docs\\.google\\.com/forms|forms\\.gle)/[a-zA-Z0-9]+.*"))
 
-fun String.isValidOpenChatUrl(): Boolean = this.matches(Regex("^https?://$OPEN_CHAT_URL.*"))
+fun String.isValidOpenChatUrl(): Boolean = this.matches(Regex("^https?://open\\.kakao\\.com/[a-zA-Z0-9]+.*"))
 
 val String.isValidStudentId: Boolean
     get() {

@@ -23,7 +23,7 @@ const val HTTP_URL = "http://"
 
 const val HTTPS_URL = "https://"
 
-const val INSTAGRAM_URL = "www.instagram.com"
+const val INSTAGRAM_URL = "instagram.com"
 
 const val GOOGLE_FORM_URL = "forms.gle"
 

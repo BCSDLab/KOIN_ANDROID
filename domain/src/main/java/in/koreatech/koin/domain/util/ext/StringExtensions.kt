@@ -11,11 +11,11 @@ fun String.toUnderlineForHtml() = "<u>$this</u>"
 
 fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)}'>$this</font>" // color = #ff000000 형태
 
-fun String.formatInstagramUrlForm() = "${HTTPS_URL}${INSTAGRAM_URL}/$this"
+fun String.toInstagramUrl() = "${HTTPS_URL}${INSTAGRAM_URL}/$this"
 
-fun String.formatInstagramLinkForm() = "@${this.removeUrlScheme().removePrefix("${INSTAGRAM_URL}/").removeSuffix("/")}"
+fun String.toInstagramLink() = "@${this.removeUrlScheme().removePrefix("www.").removePrefix("l.").removePrefix("${INSTAGRAM_URL}/").removeSuffix("/")}"
 
-fun String.formatHttpsUrlForm() = "${HTTPS_URL}${this.removeUrlScheme()}"
+fun String.toHttpsUrl() = "${HTTPS_URL}${this.removeUrlScheme()}"
 
 fun String.removeUrlScheme() = this.removePrefix(HTTPS_URL).removePrefix(HTTP_URL)
 
