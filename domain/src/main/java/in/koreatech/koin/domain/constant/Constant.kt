@@ -24,7 +24,3 @@ const val HTTP_URL = "http://"
 const val HTTPS_URL = "https://"
 
 const val INSTAGRAM_URL = "instagram.com"
-
-const val GOOGLE_FORM_URL = "forms.gle"
-
-const val OPEN_CHAT_URL = "open.kakao.com"
