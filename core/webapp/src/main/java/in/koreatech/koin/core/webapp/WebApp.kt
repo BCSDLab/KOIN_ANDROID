@@ -62,7 +62,7 @@ fun WebApp(
     )
 
     BackHandler {
-        if (webView != null && webView!!.canGoBack()) {
+        if (webView?.canGoBack() == true) {
             webView!!.goBack()
         } else {
             onNavigateBack()
