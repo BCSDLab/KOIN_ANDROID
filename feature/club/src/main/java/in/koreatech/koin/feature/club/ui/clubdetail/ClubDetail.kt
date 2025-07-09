@@ -614,6 +614,7 @@ fun ClubDetail(
                             )
                         }
                         DetailTabType.RECRUIT.strResId -> {
+
                         }
                         DetailTabType.EVENT.strResId -> {
                         }

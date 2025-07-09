@@ -114,6 +114,10 @@
     <string name="club_modify_logo_description">클릭하여 이미지를\n변경해주세요.(선택)</string>
     <string name="club_modify_success_snackbar">동아리 정보가 수정되었습니다.</string>
 
+    <string name="club_recruit_create_title">동아리 모집 생성</string>
+    <string name="club_recruit_create_logo_description">클릭하여 사진을\n업로드해주세요.</string>
+
+
     <string name="club_image_upload_failed">이미지 업로드에 실패했습니다.</string>
     <string name="club_dialog_ok">확인</string>
 </resources>
