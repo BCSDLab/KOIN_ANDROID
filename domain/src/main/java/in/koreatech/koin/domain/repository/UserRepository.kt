@@ -42,7 +42,6 @@ interface UserRepository {
     suspend fun verifyPassword(hashedPassword: String)
 
     suspend fun updateUserPassword(
-        user: User,
         hashedPassword: String
     )
 

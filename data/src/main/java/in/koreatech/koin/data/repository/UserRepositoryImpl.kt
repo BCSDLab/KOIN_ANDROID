@@ -3,7 +3,6 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toCodeCount
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
-import `in`.koreatech.koin.data.mapper.toUserRequestWithPassword
 import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
 import `in`.koreatech.koin.data.request.user.ABTestRequest
 import `in`.koreatech.koin.data.request.user.EmailSendRequest
@@ -219,19 +218,9 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserPassword(
-        user: User,
         hashedPassword: String
     ) {
-        when (user) {
-            User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
-            is User.Student -> {
-                userRemoteDataSource.updateStudentUser(user.toUserRequestWithPassword(hashedPassword))
-            }
-
-            is User.General -> {
-                userRemoteDataSource.updateGeneralUser(user.toUserRequestWithPassword(hashedPassword))
-            }
-        }
+        userRemoteDataSource.updateUserPassword(hashedPassword) // TODO: Handle error after error code PR is completed.
     }
 
     override suspend fun requestSmsVerification(phoneNumber: String): Result<CodeCount> {

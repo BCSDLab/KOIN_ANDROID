@@ -64,22 +64,6 @@ fun User.Student.toUserRequest() =
         hashedPassword = null
     )
 
-fun User.Student.toUserRequestWithPassword(hashedPassword: String) =
-    StudentUserRequest(
-        nickname = nickname,
-        name = name,
-        studentNumber = studentNumber,
-        major = major,
-        phoneNumber = phoneNumber,
-        gender = when (gender) {
-            Gender.Man -> 0
-            Gender.Woman -> 1
-            else -> null
-        },
-        email = email,
-        hashedPassword = hashedPassword
-    )
-
 fun User.General.toUserRequest() = GeneralUserRequest(
     nickname = nickname,
     name = name,
@@ -92,20 +76,6 @@ fun User.General.toUserRequest() = GeneralUserRequest(
     email = email,
     hashedPassword = null
 )
-
-fun User.General.toUserRequestWithPassword(hashedPassword: String) =
-    GeneralUserRequest(
-        nickname = nickname,
-        name = name,
-        phoneNumber = phoneNumber,
-        gender = when (gender) {
-            Gender.Man -> 0
-            Gender.Woman -> 1
-            else -> null
-        },
-        email = email,
-        hashedPassword = hashedPassword
-    )
 
 fun Graduated.toBoolean(): Boolean {
     return this == Graduated.Graduate

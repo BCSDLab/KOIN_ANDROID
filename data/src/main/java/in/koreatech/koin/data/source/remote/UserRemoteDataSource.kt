@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.request.user.GeneralInfoRequest
 import `in`.koreatech.koin.data.request.user.GeneralUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.NewPasswordRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
@@ -84,6 +85,10 @@ class UserRemoteDataSource(
 
     suspend fun updateGeneralUser(generalUserRequest: GeneralUserRequest): GeneralUserResponse {
         return userAuthApi.putGeneralUser(generalUserRequest)
+    }
+
+    suspend fun updateUserPassword(password: String) {
+        userAuthApi.updateUserPassword(NewPasswordRequest(password))
     }
 
     suspend fun updateDeviceToken(token: String) {
