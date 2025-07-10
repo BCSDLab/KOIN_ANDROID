@@ -18,8 +18,10 @@ class ClubRemoteDataSource @Inject constructor(
 
     suspend fun getClubs(
         categoryId: Int?,
-        sortType: String
-    ) = clubAuthApi.getClubs(categoryId, sortType)
+        sortType: String,
+        isRecruiting: Boolean,
+        query: String
+    ) = clubAuthApi.getClubs(categoryId, sortType, isRecruiting, query)
 
     suspend fun getClubDetails(clubId: Int) = clubAuthApi.getClubDetails(clubId)
 

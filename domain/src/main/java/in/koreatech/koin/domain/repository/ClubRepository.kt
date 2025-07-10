@@ -13,7 +13,9 @@ interface ClubRepository {
 
     suspend fun getClubs(
         categoryId: Int?,
-        sortType: String
+        sortType: String,
+        isRecruiting: Boolean,
+        query: String
     ): Result<Clubs>
 
     suspend fun getClubDetails(

@@ -9,8 +9,10 @@ class GetClubsUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         categoryId: Int? = null,
-        sortType: String = "NONE"
+        sortType: String = "NONE",
+        isRecruiting: Boolean = false,
+        query: String = ""
     ): Result<Clubs> {
-        return clubRepository.getClubs(categoryId, sortType)
+        return clubRepository.getClubs(categoryId, sortType, isRecruiting, query)
     }
 }
